@@ -14,11 +14,11 @@ const eslintConfig = [
     {
         rules: {
             // Basic formatting (Prettier will handle most)
-            'indent': ['error', 4],
-            'quotes': ['error', 'single'],
-            'semi': ['error', 'never'],
-        }
-    }
+            indent: ['error', 4],
+            quotes: ['error', 'single'],
+            semi: ['error', 'never'],
+        },
+    },
 ]
 
 export default eslintConfig
