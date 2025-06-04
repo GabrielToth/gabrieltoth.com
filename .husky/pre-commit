@@ -1,0 +1,5 @@
+# Run lint-staged (linting and formatting)
+npx lint-staged
+
+# Run type checking
+npm run type-check
