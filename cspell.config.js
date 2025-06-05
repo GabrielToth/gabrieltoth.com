@@ -1,6 +1,7 @@
 module.exports = {
     version: '0.2',
     language: 'en,pt,pt_BR',
+    import: ['@cspell/dict-pt-br/cspell-ext.json'],
     dictionaries: [
         'typescript',
         'node',
@@ -11,8 +12,8 @@ module.exports = {
         'filetypes',
         'companies',
         'softwareTerms',
-        'pt_br',
-        'en_us',
+        'pt-br',
+        'en-us',
     ],
     dictionaryDefinitions: [
         {

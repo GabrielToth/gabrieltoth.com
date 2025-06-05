@@ -9,6 +9,8 @@ clsx
 twmerge
 toth
 gonçalves
+geist
+brgb
 esbenp
 dbaeumer
 bradlc
@@ -17,22 +19,6 @@ gruntfuggly
 yzhang
 hookyqr
 bhsl
+# Only keeping project-specific Portuguese terms that might not be in the standard dictionary
 àáâãäåæçèéêëìíîïñòóôõöøùúûüýÿ
-ções
-usuario
-perfil
-senha
-preco
-botao
-descricao
-configuracao
-projeto
-produto
-cliente
-empresa
-informacao
-processo
-aplicacao
-desenvolvimento
-programacao
-tecnologia
+singlequote

@@ -1,0 +1,87 @@
+{
+    "nav": {
+        "home": "Home",
+        "about": "About",
+        "projects": "Projects",
+        "contact": "Contact",
+        "language": "Language"
+    },
+    "hero": {
+        "greeting": "Hello, I'm",
+        "name": "Gabriel Toth",
+        "title": "Full Stack Developer",
+        "subtitle": "Passionate about creating innovative digital solutions with modern technologies",
+        "cta": "Get in touch",
+        "resume": "Download Resume"
+    },
+    "about": {
+        "title": "About Me",
+        "subtitle": "Passionate developer focused on creating amazing digital experiences",
+        "description": "I'm Gabriel Toth Gonçalves, a Full Stack Developer with extensive experience in modern web technologies. I specialize in creating scalable, efficient, and user-friendly applications using cutting-edge tools and frameworks.",
+        "experience": "Experience",
+        "projects": "Projects Completed",
+        "technologies": "Technologies",
+        "skills": {
+            "frontend": "Frontend",
+            "backend": "Backend",
+            "database": "Database",
+            "tools": "Tools & DevOps"
+        },
+        "values": {
+            "innovation": {
+                "title": "Innovation",
+                "description": "Always seeking new technologies and methodologies to improve development processes"
+            },
+            "quality": {
+                "title": "Quality",
+                "description": "Committed to writing clean, maintainable, and well-tested code"
+            },
+            "collaboration": {
+                "title": "Collaboration",
+                "description": "Strong believer in teamwork and knowledge sharing"
+            }
+        }
+    },
+    "projects": {
+        "title": "Featured Projects",
+        "subtitle": "Some of my recent work showcasing different technologies and approaches",
+        "viewProject": "View Project",
+        "viewCode": "View Code",
+        "technologies": "Technologies Used"
+    },
+    "contact": {
+        "title": "Let's Work Together",
+        "subtitle": "Ready to bring your ideas to life? Let's discuss your next project",
+        "form": {
+            "name": "Your Name",
+            "email": "Your Email",
+            "subject": "Subject",
+            "message": "Your Message",
+            "send": "Send Message",
+            "sending": "Sending...",
+            "success": "Message sent successfully!",
+            "error": "Failed to send message. Please try again."
+        },
+        "info": {
+            "email": "Email",
+            "location": "Location",
+            "availability": "Availability"
+        },
+        "social": {
+            "title": "Find me on"
+        }
+    },
+    "footer": {
+        "rights": "All rights reserved",
+        "built": "Built with",
+        "source": "View Source Code"
+    },
+    "common": {
+        "loading": "Loading...",
+        "error": "Something went wrong",
+        "retry": "Try Again",
+        "close": "Close",
+        "open": "Open",
+        "menu": "Menu"
+    }
+}

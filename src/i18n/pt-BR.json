@@ -1,0 +1,87 @@
+{
+    "nav": {
+        "home": "Início",
+        "about": "Sobre",
+        "projects": "Projetos",
+        "contact": "Contato",
+        "language": "Idioma"
+    },
+    "hero": {
+        "greeting": "Olá, eu sou",
+        "name": "Gabriel Toth",
+        "title": "Desenvolvedor Full Stack",
+        "subtitle": "Apaixonado por criar soluções digitais inovadoras com tecnologias modernas",
+        "cta": "Entre em contato",
+        "resume": "Baixar Currículo"
+    },
+    "about": {
+        "title": "Sobre Mim",
+        "subtitle": "Desenvolvedor apaixonado focado em criar experiências digitais incríveis",
+        "description": "Sou Gabriel Toth Gonçalves, um Desenvolvedor Full Stack com ampla experiência em tecnologias web modernas. Especializo-me em criar aplicações escaláveis, eficientes e amigáveis ao usuário usando ferramentas e frameworks de ponta.",
+        "experience": "Experiência",
+        "projects": "Projetos Concluídos",
+        "technologies": "Tecnologias",
+        "skills": {
+            "frontend": "Frontend",
+            "backend": "Backend",
+            "database": "Banco de Dados",
+            "tools": "Ferramentas & DevOps"
+        },
+        "values": {
+            "innovation": {
+                "title": "Inovação",
+                "description": "Sempre buscando novas tecnologias e metodologias para melhorar os processos de desenvolvimento"
+            },
+            "quality": {
+                "title": "Qualidade",
+                "description": "Comprometido em escrever código limpo, sustentável e bem testado"
+            },
+            "collaboration": {
+                "title": "Colaboração",
+                "description": "Forte defensor do trabalho em equipe e compartilhamento de conhecimento"
+            }
+        }
+    },
+    "projects": {
+        "title": "Projetos em Destaque",
+        "subtitle": "Alguns dos meus trabalhos recentes mostrando diferentes tecnologias e abordagens",
+        "viewProject": "Ver Projeto",
+        "viewCode": "Ver Código",
+        "technologies": "Tecnologias Utilizadas"
+    },
+    "contact": {
+        "title": "Vamos Trabalhar Juntos",
+        "subtitle": "Pronto para dar vida às suas ideias? Vamos discutir seu próximo projeto",
+        "form": {
+            "name": "Seu Nome",
+            "email": "Seu Email",
+            "subject": "Assunto",
+            "message": "Sua Mensagem",
+            "send": "Enviar Mensagem",
+            "sending": "Enviando...",
+            "success": "Mensagem enviada com sucesso!",
+            "error": "Falha ao enviar mensagem. Tente novamente."
+        },
+        "info": {
+            "email": "Email",
+            "location": "Localização",
+            "availability": "Disponibilidade"
+        },
+        "social": {
+            "title": "Me encontre em"
+        }
+    },
+    "footer": {
+        "rights": "Todos os direitos reservados",
+        "built": "Construído com",
+        "source": "Ver Código Fonte"
+    },
+    "common": {
+        "loading": "Carregando...",
+        "error": "Algo deu errado",
+        "retry": "Tentar Novamente",
+        "close": "Fechar",
+        "open": "Abrir",
+        "menu": "Menu"
+    }
+}

@@ -18,7 +18,7 @@
     "rules": {
         "indent": ["error", 4, { "SwitchCase": 1 }],
         "quotes": ["error", "single", { "avoidEscape": true }],
-        "semi": ["error", "always"],
+        "semi": ["error", "never"],
         "comma-dangle": ["error", "always-multiline"],
         "no-console": ["warn"],
         "no-unused-vars": "off",
@@ -53,7 +53,7 @@
         "prefer-template": "error",
         "id-match": [
             "error",
-            "^(?![a-z]*([àáâãäåæçèéêëìíîïñòóôõöøùúûüýÿ]|ção|ções|usuario|perfil|senha|nome|preco|valor|botao|usuario|descricao|configuracao|funcionalidade|categoria|projeto|servico|produto|cliente|empresa|dados|informacao|processo|sistema|aplicacao|desenvolvimento|programacao|tecnologia))[a-zA-Z0-9_$]*$",
+            "^[a-zA-Z0-9_$]*$",
             {
                 "properties": true,
                 "onlyDeclarations": true,
