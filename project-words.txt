@@ -9,6 +9,7 @@ clsx
 twmerge
 toth
 gonçalves
+curriculo
 geist
 brgb
 esbenp

@@ -3,7 +3,7 @@
     "version": "0.1.0",
     "private": true,
     "scripts": {
-        "dev": "next dev --turbopack",
+        "dev": "next dev",
         "build": "next build",
         "start": "next start",
         "lint": "next lint",
@@ -14,17 +14,14 @@
         "spell-check": "cspell \"src/**/*.{ts,tsx,js,jsx,md,json}\"",
         "spell-check:fix": "cspell \"src/**/*.{ts,tsx,js,jsx,md,json}\" --fix",
         "test:all": "npm run type-check && npm run lint && npm run format:check && npm run spell-check",
-        "clean": "rm -rf .next dist out",
+        "clean": "Remove-Item -Recurse -Force .next, dist, out -ErrorAction SilentlyContinue",
         "prepare": "husky"
     },
     "dependencies": {
-        "class-variance-authority": "^0.7.1",
-        "clsx": "^2.1.1",
         "lucide-react": "^0.513.0",
         "next": "15.3.3",
         "react": "^19.0.0",
-        "react-dom": "^19.0.0",
-        "tailwind-merge": "^3.3.0"
+        "react-dom": "^19.0.0"
     },
     "devDependencies": {
         "@cspell/dict-pt-br": "^2.4.0",
