@@ -1,9 +1,17 @@
 import { locales, type Locale } from "@/lib/i18n"
 import { cn } from "@/lib/utils"
-import { Inter } from "next/font/google"
+import { Geist, Geist_Mono } from "next/font/google"
 import "../globals.css"
 
-const inter = Inter({ subsets: ["latin"] })
+const geistSans = Geist({
+    variable: "--font-geist-sans",
+    subsets: ["latin"],
+})
+
+const geistMono = Geist_Mono({
+    variable: "--font-geist-mono",
+    subsets: ["latin"],
+})
 
 interface LocaleLayoutProps {
     children: React.ReactNode
@@ -71,7 +79,13 @@ export default async function LocaleLayout({
     const { locale } = await params
     return (
         <html lang={locale} suppressHydrationWarning>
-            <body className={cn(inter.className, "antialiased")}>
+            <body
+                className={cn(
+                    geistSans.variable,
+                    geistMono.variable,
+                    "antialiased font-sans"
+                )}
+            >
                 {children}
             </body>
         </html>

@@ -48,8 +48,13 @@ module.exports = {
                 sm: "calc(var(--radius) - 4px)",
             },
             fontFamily: {
-                sans: ["var(--font-inter)", "Inter", "system-ui", "sans-serif"],
-                mono: ["var(--font-roboto-mono)", "Roboto Mono", "monospace"],
+                sans: [
+                    "var(--font-geist-sans)",
+                    "Geist",
+                    "system-ui",
+                    "sans-serif",
+                ],
+                mono: ["var(--font-geist-mono)", "Geist Mono", "monospace"],
             },
             animation: {
                 "fade-in": "fadeIn 0.5s ease-in-out",
