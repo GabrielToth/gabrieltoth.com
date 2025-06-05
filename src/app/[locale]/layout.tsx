@@ -1,9 +1,9 @@
-import { locales, type Locale } from '@/lib/i18n'
-import { cn } from '@/lib/utils'
-import { Inter } from 'next/font/google'
-import '../globals.css'
+import { locales, type Locale } from "@/lib/i18n"
+import { cn } from "@/lib/utils"
+import { Inter } from "next/font/google"
+import "../globals.css"
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ subsets: ["latin"] })
 
 interface LocaleLayoutProps {
     children: React.ReactNode
@@ -20,45 +20,45 @@ export async function generateMetadata({
     params: Promise<{ locale: Locale }>
 }) {
     const { locale } = await params
-    const isPortuguese = locale === 'pt-BR'
+    const isPortuguese = locale === "pt-BR"
 
     return {
         title: isPortuguese
-            ? 'Gabriel Toth - Desenvolvedor Full Stack'
-            : 'Gabriel Toth - Full Stack Developer',
+            ? "Gabriel Toth - Desenvolvedor Full Stack"
+            : "Gabriel Toth - Full Stack Developer",
         description: isPortuguese
-            ? 'Portfólio de Gabriel Toth Gonçalves - Desenvolvedor Full Stack especializado em React, Next.js, TypeScript e Node.js'
-            : 'Gabriel Toth Gonçalves Portfolio - Full Stack Developer specialized in React, Next.js, TypeScript and Node.js',
+            ? "Portfólio de Gabriel Toth Gonçalves - Desenvolvedor Full Stack especializado em React, Next.js, TypeScript e Node.js"
+            : "Gabriel Toth Gonçalves Portfolio - Full Stack Developer specialized in React, Next.js, TypeScript and Node.js",
         keywords: isPortuguese
-            ? 'desenvolvedor, full stack, react, nextjs, typescript, nodejs, web development, gabriel toth'
-            : 'developer, full stack, react, nextjs, typescript, nodejs, web development, gabriel toth',
-        authors: [{ name: 'Gabriel Toth Gonçalves' }],
+            ? "desenvolvedor, full stack, react, nextjs, typescript, nodejs, web development, gabriel toth"
+            : "developer, full stack, react, nextjs, typescript, nodejs, web development, gabriel toth",
+        authors: [{ name: "Gabriel Toth Gonçalves" }],
         openGraph: {
             title: isPortuguese
-                ? 'Gabriel Toth - Desenvolvedor Full Stack'
-                : 'Gabriel Toth - Full Stack Developer',
+                ? "Gabriel Toth - Desenvolvedor Full Stack"
+                : "Gabriel Toth - Full Stack Developer",
             description: isPortuguese
-                ? 'Portfólio de Gabriel Toth Gonçalves - Desenvolvedor Full Stack'
-                : 'Gabriel Toth Gonçalves Portfolio - Full Stack Developer',
-            url: 'https://gabrieltoth.com',
-            siteName: 'Gabriel Toth Portfolio',
+                ? "Portfólio de Gabriel Toth Gonçalves - Desenvolvedor Full Stack"
+                : "Gabriel Toth Gonçalves Portfolio - Full Stack Developer",
+            url: "https://gabrieltoth.com",
+            siteName: "Gabriel Toth Portfolio",
             locale: locale,
-            type: 'website',
+            type: "website",
         },
         twitter: {
-            card: 'summary_large_image',
+            card: "summary_large_image",
             title: isPortuguese
-                ? 'Gabriel Toth - Desenvolvedor Full Stack'
-                : 'Gabriel Toth - Full Stack Developer',
+                ? "Gabriel Toth - Desenvolvedor Full Stack"
+                : "Gabriel Toth - Full Stack Developer",
             description: isPortuguese
-                ? 'Portfólio de Gabriel Toth Gonçalves - Desenvolvedor Full Stack'
-                : 'Gabriel Toth Gonçalves Portfolio - Full Stack Developer',
+                ? "Portfólio de Gabriel Toth Gonçalves - Desenvolvedor Full Stack"
+                : "Gabriel Toth Gonçalves Portfolio - Full Stack Developer",
         },
         alternates: {
-            canonical: 'https://gabrieltoth.com',
+            canonical: "https://gabrieltoth.com",
             languages: {
-                en: 'https://gabrieltoth.com',
-                'pt-BR': 'https://gabrieltoth.com/pt-BR',
+                en: "https://gabrieltoth.com",
+                "pt-BR": "https://gabrieltoth.com/pt-BR",
             },
         },
     }
@@ -71,7 +71,7 @@ export default async function LocaleLayout({
     const { locale } = await params
     return (
         <html lang={locale} suppressHydrationWarning>
-            <body className={cn(inter.className, 'antialiased')}>
+            <body className={cn(inter.className, "antialiased")}>
                 {children}
             </body>
         </html>

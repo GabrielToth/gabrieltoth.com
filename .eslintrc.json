@@ -17,7 +17,7 @@
     "plugins": ["@typescript-eslint", "react", "react-hooks", "jsx-a11y"],
     "rules": {
         "indent": ["error", 4, { "SwitchCase": 1 }],
-        "quotes": ["error", "single", { "avoidEscape": true }],
+        "quotes": ["error", "double", { "avoidEscape": true }],
         "semi": ["error", "never"],
         "comma-dangle": ["error", "always-multiline"],
         "no-console": ["warn"],

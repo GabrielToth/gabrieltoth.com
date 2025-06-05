@@ -1,15 +1,15 @@
-export const defaultLocale = 'en'
-export const locales = ['en', 'pt-BR'] as const
+export const defaultLocale = "en"
+export const locales = ["en", "pt-BR"] as const
 
 export type Locale = (typeof locales)[number]
 
 export const localeNames: Record<Locale, string> = {
-    en: 'English',
-    'pt-BR': 'Português',
+    en: "English",
+    "pt-BR": "Português",
 }
 
 export const getLocaleFromUrl = (pathname: string): Locale => {
-    const segments = pathname.split('/')
+    const segments = pathname.split("/")
     const localeSegment = segments[1]
 
     if (locales.includes(localeSegment as Locale)) {
