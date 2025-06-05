@@ -16,6 +16,7 @@ const getTranslations = (locale: Locale) => {
         home: isPortuguese ? "Início" : "Home",
         about: isPortuguese ? "Sobre" : "About",
         projects: isPortuguese ? "Projetos" : "Projects",
+        channels: isPortuguese ? "Canais" : "Channels",
         contact: isPortuguese ? "Contato" : "Contact",
         language: isPortuguese ? "Idioma" : "Language",
     }
@@ -31,6 +32,7 @@ export default function Header({ locale }: HeaderProps) {
         { name: t.home, href: "#hero" },
         { name: t.about, href: "#about" },
         { name: t.projects, href: "#projects" },
+        { name: t.channels, href: "#channel-management" },
         { name: t.contact, href: "#contact" },
     ]
 

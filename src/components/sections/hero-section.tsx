@@ -14,8 +14,8 @@ const getTranslations = (locale: Locale) => {
         greeting: isPortuguese ? "Olá, eu sou" : "Hello, I'm",
         name: "Gabriel Toth Gonçalves",
         title: isPortuguese
-            ? "Desenvolvedor Full Stack"
-            : "Full Stack Developer",
+            ? "Desenvolvedor Full Stack & Gerente de Canais"
+            : "Full Stack Developer & Channel Manager",
         subtitle: isPortuguese
             ? "Apaixonado por criar soluções digitais inovadoras com tecnologias modernas"
             : "Passionate about creating innovative digital solutions with modern technologies",
