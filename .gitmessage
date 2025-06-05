@@ -1,0 +1,30 @@
+# <type>: <short description>
+#
+# <detailed description>
+# - What was changed and why
+# - Any breaking changes
+# - Related issues or PRs
+#
+# Types:
+# feat:     New feature
+# fix:      Bug fix
+# docs:     Documentation changes
+# style:    Code style changes (formatting, semicolons, etc)
+# refactor: Code refactoring
+# test:     Adding or updating tests
+# chore:    Build process or auxiliary tool changes
+#
+# Rules:
+# - ALL commit messages MUST be in English
+# - First line: max 50 characters
+# - Body: wrap at 72 characters
+# - Use imperative mood ("add" not "added")
+# - Explain what and why, not how
+#
+# Example:
+# feat: add user authentication system
+#
+# - Implement JWT-based authentication
+# - Add login and registration forms
+# - Include password reset functionality
+# - Add proper error handling and validation

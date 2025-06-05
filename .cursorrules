@@ -1,0 +1,214 @@
+# Gabriel Toth Portfolio - Cursor Rules
+
+## Project
+
+Gabriel Toth Gonçalves Personal Portfolio - Full Stack Developer
+Website: https://gabrieltoth.com
+
+## Tech Stack
+
+- **Framework**: Next.js 15 (App Router)
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS + shadcn/ui
+- **Internationalization**: i18n (EN/PT-BR)
+- **Deployment**: Vercel
+
+## Language Policy
+
+- **PRIMARY LANGUAGE**: English (ALL code, comments, documentation, commits)
+- **Code**: All variables, functions, classes, comments MUST be in English
+- **Documentation**: README, comments, JSDoc - ALL in English
+- **Git**: Commit messages, branch names, PR descriptions - ALL in English
+- **Portuguese**: ONLY for user-facing content translations (i18n files)
+
+## Code Rules
+
+### Formatting
+
+- **Indentation**: 4 spaces (ALWAYS)
+- **Quotes**: Single for strings, double for JSX
+- **Semicolon**: Always required
+- **Trailing comma**: Always in multi-line objects/arrays
+
+### File Structure
+
+```
+src/
+├── app/
+│   ├── [locale]/           # Internationalized routes
+│   ├── globals.css         # Global styles
+│   └── layout.tsx          # Root layout
+├── components/
+│   ├── ui/                 # shadcn/ui components
+│   ├── layout/             # Header, Footer
+│   └── sections/           # Page sections
+├── lib/
+│   ├── utils.ts            # Utilities (cn, etc)
+│   └── i18n.ts             # i18n configuration
+└── i18n/
+    ├── en.json             # English translations
+    └── pt-BR.json          # Portuguese translations
+```
+
+### React Components
+
+- **Always use TypeScript** with well-defined interfaces
+- **Function components** with arrow functions
+- **Props destructuring** in function parameters
+- **Export default** at the end of file
+- **Component names** in PascalCase
+- **File names** in kebab-case
+- **ALL NAMES IN ENGLISH** - no Portuguese variable/function names
+
+### Component Example:
+
+```tsx
+interface HeroSectionProps {
+    title: string
+    description: string
+}
+
+const HeroSection = ({ title, description }: HeroSectionProps) => {
+    return (
+        <section className='min-h-screen flex items-center justify-center'>
+            <div className='text-center'>
+                <h1 className='text-4xl font-bold'>{title}</h1>
+                <p className='text-lg text-muted-foreground'>{description}</p>
+            </div>
+        </section>
+    )
+}
+
+export default HeroSection
+```
+
+### Internationalization
+
+- **Always use** translation functions
+- **Keys organized** hierarchically
+- **Fallbacks** for missing translations
+- **Consistency** between languages
+- **Translation keys** in English (snake_case or dot.notation)
+
+### Tailwind CSS
+
+- **Mobile-first** approach
+- **Design tokens** from shadcn/ui
+- **Utility classes** preferred
+- **Custom components** when necessary
+- **Dark mode** supported
+
+### Performance
+
+- **Next.js Image** for all images
+- **Lazy loading** for heavy sections
+- **Dynamic imports** when appropriate
+- **SEO optimization** with metadata
+
+### Git & Commits (ENGLISH ONLY)
+
+- **Commit format**: `type: short description`
+- **Commit body**: Detailed description when needed
+- **Example**:
+
+    ```
+    feat: add hero section with responsive design
+
+    - Implement hero section component with TypeScript
+    - Add responsive design for mobile and desktop
+    - Include animation effects with Tailwind CSS
+    - Add proper SEO meta tags for hero content
+    ```
+
+- **Types**: feat, fix, docs, style, refactor, test, chore
+- **Branch naming**: `feature/component-name`, `fix/issue-description`
+- **ALL ENGLISH**: No Portuguese in commit messages, branch names, or PR descriptions
+
+### Best Practices
+
+1. **Accessibility**: Always consider a11y
+2. **Responsiveness**: Mobile-first design
+3. **SEO**: Meta tags and structured data
+4. **Performance**: Core Web Vitals
+5. **Maintainability**: Clean and documented code
+
+### Allowed Libraries
+
+- shadcn/ui (components)
+- lucide-react (icons)
+- clsx/cn (conditional classes)
+- next-intl (i18n)
+- framer-motion (animations, if needed)
+
+### Avoid
+
+- Unnecessary CSS-in-JS
+- Heavy libraries without justification
+- Untyped components
+- Magic numbers/strings
+- Duplicated code
+- Portuguese in code/comments (except i18n content)
+
+## Useful Commands
+
+```bash
+npm run dev          # Development
+npm run build        # Production build
+npm run lint         # Linting
+npm run lint:fix     # Auto fix
+```
+
+## Translation Structure
+
+```json
+{
+    "nav": {
+        "home": "Home",
+        "about": "About",
+        "projects": "Projects",
+        "contact": "Contact"
+    },
+    "hero": {
+        "title": "Main title",
+        "subtitle": "Descriptive subtitle"
+    }
+}
+```
+
+## Documentation Standards
+
+- **README**: English only
+- **Code comments**: English only
+- **JSDoc**: English only
+- **API documentation**: English only
+- **Technical specs**: English only
+
+## Naming Conventions (ENGLISH ONLY)
+
+```tsx
+// ✅ CORRECT - English names
+const userProfile = { name: 'Gabriel' }
+const calculateTotalPrice = () => {}
+const isUserAuthenticated = false
+
+// ❌ WRONG - Portuguese names
+const perfilUsuario = { nome: 'Gabriel' }
+const calcularPrecoTotal = () => {}
+const usuarioAutenticado = false
+```
+
+## Priorities
+
+1. **Functionality** over aesthetics
+2. **Performance** is fundamental
+3. **Accessibility** is not optional
+4. **English** is the primary language for code
+5. **Clean and maintainable** code
+
+## Strict Rules
+
+- NO Portuguese variable names, function names, or comments
+- ALL documentation in English
+- ALL commit messages in English with proper format
+- Portuguese ONLY in i18n translation files
+- English is the default and primary language

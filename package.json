@@ -11,34 +11,43 @@
         "format": "prettier --write .",
         "format:check": "prettier --check .",
         "type-check": "tsc --noEmit",
+        "spell-check": "cspell \"src/**/*.{ts,tsx,js,jsx,md,json}\"",
+        "spell-check:fix": "cspell \"src/**/*.{ts,tsx,js,jsx,md,json}\" --fix",
+        "test:all": "npm run type-check && npm run lint && npm run format:check && npm run spell-check",
+        "clean": "rm -rf .next dist out",
         "prepare": "husky"
     },
     "dependencies": {
+        "class-variance-authority": "^0.7.1",
+        "clsx": "^2.1.1",
+        "lucide-react": "^0.513.0",
         "next": "15.3.3",
         "react": "^19.0.0",
-        "react-dom": "^19.0.0"
+        "react-dom": "^19.0.0",
+        "tailwind-merge": "^3.3.0"
     },
     "devDependencies": {
         "@eslint/eslintrc": "^3",
+        "@tailwindcss/aspect-ratio": "^0.4.2",
+        "@tailwindcss/forms": "^0.5.10",
         "@tailwindcss/postcss": "^4",
+        "@tailwindcss/typography": "^0.5.16",
         "@types/node": "^20",
         "@types/react": "^19",
         "@types/react-dom": "^19",
+        "@typescript-eslint/eslint-plugin": "^8.33.1",
+        "@typescript-eslint/parser": "^8.33.1",
+        "cspell": "^9.0.2",
         "eslint": "^9",
         "eslint-config-next": "15.3.3",
+        "eslint-config-prettier": "^10.1.5",
+        "eslint-plugin-jsx-a11y": "^6.10.2",
+        "eslint-plugin-react": "^7.37.5",
+        "eslint-plugin-react-hooks": "^5.2.0",
         "husky": "^9.1.7",
         "lint-staged": "^16.1.0",
         "prettier": "^3.5.3",
         "tailwindcss": "^4",
         "typescript": "^5"
-    },
-    "lint-staged": {
-        "*.{js,jsx,ts,tsx}": [
-            "eslint --fix",
-            "prettier --write"
-        ],
-        "*.{json,css,md}": [
-            "prettier --write"
-        ]
     }
 }

@@ -1,5 +1,4 @@
-# Run lint-staged (linting and formatting)
-npx lint-staged
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
 
-# Run type checking
-npm run type-check
+npx lint-staged

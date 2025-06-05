@@ -1,0 +1,5 @@
+{
+    "*.{js,jsx,ts,tsx}": ["eslint --fix", "prettier --write"],
+    "*.{json,md,mdx,css,scss,sass,yaml,yml}": ["prettier --write"],
+    "*.{ts,tsx,js,jsx,md,json}": ["cspell --no-must-find-files"]
+}

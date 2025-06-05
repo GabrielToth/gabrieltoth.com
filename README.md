@@ -1,36 +1,147 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Gabriel Toth Portfolio
 
-## Getting Started
+Personal portfolio of Gabriel Toth Gonçalves - Full Stack Developer
 
-First, run the development server:
+## 🚀 Demo
+
+- **Production**: [https://gabrieltoth.com](https://gabrieltoth.com)
+- **Repository**: [GitHub](https://github.com/gabrieltoth)
+
+## ⚡ Tech Stack
+
+- **Framework**: Next.js 15 (App Router)
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS
+- **Components**: shadcn/ui
+- **Icons**: Lucide React
+- **Deployment**: Vercel
+- **Internationalization**: EN/PT-BR support
+
+## 🛠️ Development Tools
+
+- **Linting**: ESLint with custom rules
+- **Formatting**: Prettier
+- **Spell Check**: CSpell (EN + PT-BR)
+- **Git Hooks**: Husky + lint-staged
+- **Type Checking**: TypeScript strict mode
+
+## 📦 Installation
 
 ```bash
+# Clone the repository
+git clone https://github.com/gabrieltoth/gabrieltoth.com.git
+
+# Navigate to directory
+cd gabrieltoth.com
+
+# Install dependencies
+npm install
+
+# Run in development
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🔧 Available Scripts
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+# Development
+npm run dev              # Start development server (Turbopack)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+# Build and Deploy
+npm run build            # Generate production build
+npm run start            # Start production server
 
-## Learn More
+# Code Quality
+npm run lint             # Check linting
+npm run lint:fix         # Auto fix linting issues
+npm run format           # Format code with Prettier
+npm run format:check     # Check if code is formatted
+npm run type-check       # Check TypeScript types
+npm run spell-check      # Check spelling
+npm run test:all         # Run all quality tests
 
-To learn more about Next.js, take a look at the following resources:
+# Utilities
+npm run clean            # Clean build files
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 📁 Project Structure
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+src/
+├── app/                 # Next.js App Router
+│   ├── globals.css     # Global styles
+│   ├── layout.tsx      # Root layout
+│   └── page.tsx        # Main page
+├── components/          # React components
+│   ├── ui/             # shadcn/ui components
+│   ├── layout/         # Header, Footer, etc.
+│   └── sections/       # Page sections
+└── lib/                # Utilities and configurations
+    └── utils.ts        # Utility functions (cn, etc.)
+```
 
-## Deploy on Vercel
+## 🎨 Style Configuration
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **Indentation**: 4 spaces
+- **Quotes**: Single for strings, double for JSX
+- **Semicolon**: Always required
+- **Trailing comma**: In multi-line objects/arrays
+- **Line length**: Maximum 120 characters
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🔍 Features
+
+- ✅ Responsive design (mobile-first)
+- ✅ Dark/light mode
+- ✅ SEO optimization
+- ✅ Optimized performance
+- ✅ Accessibility (a11y)
+- ✅ PWA ready
+- ✅ Core Web Vitals optimized
+
+## 🌐 Internationalization
+
+The project supports multiple languages:
+
+- **English** (en) - Default
+- **Portuguese Brazilian** (pt-BR)
+
+## 🌍 Language Policy
+
+- **Code**: All variables, functions, classes, and comments in English
+- **Documentation**: README, code comments, JSDoc in English
+- **Git**: Commit messages, branch names, PR descriptions in English
+- **Portuguese**: Only for user-facing content translations
+
+## 📝 Contribution
+
+1. Fork the project
+2. Create a feature branch (`git checkout -b feature/new-feature`)
+3. Commit your changes (`git commit -m 'feat: add new feature'`)
+4. Push to the branch (`git push origin feature/new-feature`)
+5. Open a Pull Request
+
+### Commit Convention
+
+```
+type: short description
+
+- Detailed description when needed
+- Use conventional commit types: feat, fix, docs, style, refactor, test, chore
+- ALL commit messages in English
+```
+
+## 📄 License
+
+This project is under the MIT license. See the [LICENSE](LICENSE) file for more details.
+
+## 👤 Author
+
+**Gabriel Toth Gonçalves**
+
+- Website: [gabrieltoth.com](https://gabrieltoth.com)
+- GitHub: [@gabrieltoth](https://github.com/gabrieltoth)
+- LinkedIn: [Gabriel Toth](https://linkedin.com/in/gabriel-toth)
+
+---
+
+Made with ❤️ by Gabriel Toth
