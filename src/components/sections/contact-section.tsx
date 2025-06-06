@@ -1,7 +1,17 @@
 "use client"
 
+import { useContactForm } from "@/hooks/use-contact-form"
 import { type Locale } from "@/lib/i18n"
-import { Github, Linkedin, Mail, MapPin, Youtube } from "lucide-react"
+import {
+    AlertCircle,
+    CheckCircle,
+    Github,
+    Linkedin,
+    Loader2,
+    Mail,
+    MapPin,
+    Youtube,
+} from "lucide-react"
 
 interface ContactSectionProps {
     locale: Locale
@@ -18,12 +28,22 @@ const getTranslations = (locale: Locale) => {
         socialTitle: isPortuguese ? "Redes Sociais" : "Social Media",
         locationTitle: isPortuguese ? "Localização" : "Location",
         location: "Brasil",
-        emailPlaceholder: isPortuguese ? "Seu email" : "Your email",
-        messagePlaceholder: isPortuguese ? "Sua mensagem" : "Your message",
+        nameLabel: isPortuguese ? "Nome" : "Name",
+        emailLabel: "Email",
+        messageLabel: isPortuguese ? "Mensagem" : "Message",
+        namePlaceholder: isPortuguese ? "Seu nome completo" : "Your full name",
+        emailPlaceholder: isPortuguese ? "seu@email.com" : "your@email.com",
+        messagePlaceholder: isPortuguese
+            ? "Conte-me sobre seu projeto ou como posso ajudar..."
+            : "Tell me about your project or how I can help...",
         sendMessage: isPortuguese ? "Enviar Mensagem" : "Send Message",
+        sending: isPortuguese ? "Enviando..." : "Sending...",
         contactInfo: isPortuguese
-            ? "Você pode me encontrar nas seguintes plataformas ou enviar um email diretamente."
-            : "You can find me on the following platforms or send an email directly.",
+            ? "Você pode me encontrar nas seguintes plataformas ou usar o formulário ao lado."
+            : "You can find me on the following platforms or use the form on the side.",
+        emailRequirement: isPortuguese
+            ? "* Aceito apenas emails de provedores confiáveis para evitar spam"
+            : "* I only accept emails from trusted providers to prevent spam",
         socialMedia: [
             {
                 name: "LinkedIn",
@@ -58,16 +78,20 @@ const getTranslations = (locale: Locale) => {
 
 export default function ContactSection({ locale }: ContactSectionProps) {
     const t = getTranslations(locale)
+    const {
+        formData,
+        status,
+        updateField,
+        submitForm,
+        isValid,
+        validateName,
+        validateEmailField,
+        validateMessage,
+    } = useContactForm(locale)
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault()
-        // For now, we'll redirect to email
-        const subject = encodeURIComponent(
-            locale === "pt-BR"
-                ? "Contato via Portfolio"
-                : "Contact from Portfolio"
-        )
-        window.location.href = `mailto:gabriel@gabrieltoth.com?subject=${subject}`
+        submitForm()
     }
 
     return (
@@ -153,38 +177,178 @@ export default function ContactSection({ locale }: ContactSectionProps) {
                         </h3>
 
                         <form onSubmit={handleSubmit} className="space-y-6">
+                            {/* Name Field */}
                             <div>
-                                <label htmlFor="email" className="sr-only">
-                                    Email
+                                <label
+                                    htmlFor="name"
+                                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                                >
+                                    {t.nameLabel}
+                                </label>
+                                <input
+                                    type="text"
+                                    id="name"
+                                    name="name"
+                                    value={formData.name}
+                                    onChange={e =>
+                                        updateField("name", e.target.value)
+                                    }
+                                    className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 ${
+                                        formData.name &&
+                                        validateName(formData.name)
+                                            ? "border-red-500 dark:border-red-400"
+                                            : "border-gray-300 dark:border-gray-600"
+                                    }`}
+                                    placeholder={t.namePlaceholder}
+                                    required
+                                />
+                                {formData.name &&
+                                    validateName(formData.name) && (
+                                        <p className="text-red-500 text-xs mt-1">
+                                            {validateName(formData.name)}
+                                        </p>
+                                    )}
+                            </div>
+
+                            {/* Email Field */}
+                            <div>
+                                <label
+                                    htmlFor="email"
+                                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                                >
+                                    {t.emailLabel}
                                 </label>
                                 <input
                                     type="email"
                                     id="email"
                                     name="email"
-                                    required
-                                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
+                                    value={formData.email}
+                                    onChange={e =>
+                                        updateField("email", e.target.value)
+                                    }
+                                    className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 ${
+                                        formData.email &&
+                                        validateEmailField(formData.email)
+                                            ? "border-red-500 dark:border-red-400"
+                                            : "border-gray-300 dark:border-gray-600"
+                                    }`}
                                     placeholder={t.emailPlaceholder}
+                                    required
                                 />
+                                {formData.email &&
+                                validateEmailField(formData.email) ? (
+                                    <p className="text-red-500 text-xs mt-1">
+                                        {validateEmailField(formData.email)}
+                                    </p>
+                                ) : (
+                                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                                        {t.emailRequirement}
+                                    </p>
+                                )}
                             </div>
+
+                            {/* Message Field */}
                             <div>
-                                <label htmlFor="message" className="sr-only">
-                                    Message
+                                <label
+                                    htmlFor="message"
+                                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                                >
+                                    {t.messageLabel}
                                 </label>
                                 <textarea
                                     id="message"
                                     name="message"
                                     rows={6}
-                                    required
-                                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 resize-none"
+                                    maxLength={1000}
+                                    value={formData.message}
+                                    onChange={e =>
+                                        updateField("message", e.target.value)
+                                    }
+                                    className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 resize-none ${
+                                        formData.message &&
+                                        validateMessage(formData.message)
+                                            ? "border-red-500 dark:border-red-400"
+                                            : "border-gray-300 dark:border-gray-600"
+                                    }`}
                                     placeholder={t.messagePlaceholder}
+                                    required
+                                />
+                                <div className="flex justify-between items-center mt-1">
+                                    <div>
+                                        {formData.message &&
+                                            validateMessage(
+                                                formData.message
+                                            ) && (
+                                                <p className="text-red-500 text-xs">
+                                                    {validateMessage(
+                                                        formData.message
+                                                    )}
+                                                </p>
+                                            )}
+                                    </div>
+                                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                                        {formData.message.length}/1000
+                                    </p>
+                                </div>
+                            </div>
+
+                            {/* Honeypot field (hidden anti-spam) */}
+                            <div className="hidden">
+                                <label htmlFor="website" className="sr-only">
+                                    Website (leave blank)
+                                </label>
+                                <input
+                                    type="text"
+                                    id="website"
+                                    name="website"
+                                    value={formData.honeypot || ""}
+                                    onChange={e =>
+                                        updateField("honeypot", e.target.value)
+                                    }
+                                    tabIndex={-1}
+                                    autoComplete="off"
                                 />
                             </div>
+
+                            {/* Status Messages */}
+                            {status.message && (
+                                <div
+                                    className={`flex items-center space-x-2 p-4 rounded-lg ${
+                                        status.status === "success"
+                                            ? "bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-300"
+                                            : "bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-300"
+                                    }`}
+                                >
+                                    {status.status === "success" ? (
+                                        <CheckCircle className="w-5 h-5" />
+                                    ) : (
+                                        <AlertCircle className="w-5 h-5" />
+                                    )}
+                                    <span className="text-sm">
+                                        {status.message}
+                                    </span>
+                                </div>
+                            )}
+
+                            {/* Submit Button */}
                             <button
                                 type="submit"
-                                className="w-full bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors flex items-center justify-center space-x-2"
+                                disabled={
+                                    status.status === "loading" || !isValid
+                                }
+                                className="w-full bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
                             >
-                                <Mail size={20} />
-                                <span>{t.sendMessage}</span>
+                                {status.status === "loading" ? (
+                                    <>
+                                        <Loader2 className="w-5 h-5 animate-spin" />
+                                        <span>{t.sending}</span>
+                                    </>
+                                ) : (
+                                    <>
+                                        <Mail size={20} />
+                                        <span>{t.sendMessage}</span>
+                                    </>
+                                )}
                             </button>
                         </form>
                     </div>

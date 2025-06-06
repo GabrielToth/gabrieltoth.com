@@ -12,16 +12,27 @@ const getTranslations = (locale: Locale) => {
             ? "Desenvolvedor apaixonado por tecnologia e inovação"
             : "Developer passionate about technology and innovation",
         intro: isPortuguese
-            ? "Olá! Sou Gabriel Toth Gonçalves, um desenvolvedor Full Stack brasileiro apaixonado por criar soluções digitais inovadoras. Minha jornada na programação começou com curiosidade e evoluiu para uma carreira dedicada a transformar ideias em realidade através do código."
-            : "Hello! I'm Gabriel Toth Gonçalves, a Brazilian Full Stack developer passionate about creating innovative digital solutions. My programming journey began with curiosity and evolved into a career dedicated to transforming ideas into reality through code.",
+            ? "Olá! Sou Gabriel Toth Gonçalves, um cientista de dados pleno e desenvolvedor Full Stack brasileiro. Formado em Ciência da Computação com especialização em Ciência de Dados, atualmente trabalho no projeto social-analytics-engine, realizando análises avançadas de campanhas digitais e métricas de conversão."
+            : "Hello! I'm Gabriel Toth Gonçalves, a senior data scientist and Full Stack developer from Brazil. With a Computer Science degree and specialization in Data Science, I currently work on the social-analytics-engine project, performing advanced digital campaign analysis and conversion metrics.",
         experience: isPortuguese
-            ? "Tenho experiência sólida em desenvolvimento web moderno, trabalhando com tecnologias como React, Next.js, TypeScript, Node.js e Python. Paralelamente, atuo como gerente de canais do YouTube, onde ajudo criadores de conteúdo a crescer e otimizar suas presenças digitais, incluindo o gerenciamento do canal WaveIGL com mais de 2 milhões de visualizações mensais."
-            : "I have solid experience in modern web development, working with technologies like React, Next.js, TypeScript, Node.js, and Python. Additionally, I work as a YouTube channel manager, helping content creators grow and optimize their digital presence, including managing the WaveIGL channel with over 2 million monthly views.",
+            ? "Meu trabalho envolve a integração de dados do Google Analytics com métricas de redes sociais (YouTube, Instagram, X, Telegram) e análise de conversões Stripe usando Python, PostgreSQL, SQLAlchemy e Docker. Também desenvolvo soluções web empresariais, tendo criado sites como softclever.com.br e sistemasatfiscal.com.br, utilizando WordPress e tecnologias modernas."
+            : "My work involves integrating Google Analytics data with social media metrics (YouTube, Instagram, X, Telegram) and Stripe conversion analysis using Python, PostgreSQL, SQLAlchemy, and Docker. I also develop enterprise web solutions, having created sites like softclever.com.br and sistemasatfiscal.com.br, using WordPress and modern technologies.",
         passion: isPortuguese
-            ? "Minha paixão pela tecnologia vai além do código. Acredito no poder da educação e do compartilhamento de conhecimento para construir uma comunidade de desenvolvedores mais forte e inclusiva. Sempre busco aprender novas tecnologias e compartilhar o que aprendo."
-            : "My passion for technology goes beyond code. I believe in the power of education and knowledge sharing to build a stronger and more inclusive developer community. I'm always looking to learn new technologies and share what I learn.",
+            ? "Além da análise de dados, gerencio o canal WaveIGL com mais de 2 milhões de visualizações mensais e crio conteúdo educacional no YouTube. Tenho paixão por transformar dados em insights acionáveis e usar machine learning para otimizar campanhas digitais e experiências do usuário."
+            : "Beyond data analysis, I manage the WaveIGL channel with over 2 million monthly views and create educational content on YouTube. I'm passionate about transforming data into actionable insights and using machine learning to optimize digital campaigns and user experiences.",
         skills: {
             title: isPortuguese ? "Principais Habilidades" : "Core Skills",
+            dataScience: {
+                title: isPortuguese ? "Ciência de Dados" : "Data Science",
+                items: [
+                    "Python",
+                    "PostgreSQL",
+                    "SQLAlchemy",
+                    "Google APIs",
+                    "Power BI",
+                    "pytest",
+                ],
+            },
             frontend: {
                 title: "Frontend",
                 items: [
@@ -38,13 +49,21 @@ const getTranslations = (locale: Locale) => {
                     "Node.js",
                     "Python",
                     "PostgreSQL",
-                    "MongoDB",
                     "REST APIs",
+                    "WordPress",
                 ],
             },
             tools: {
                 title: isPortuguese ? "Ferramentas" : "Tools",
-                items: ["Git", "Docker", "AWS", "Vercel", "GitHub Actions"],
+                items: [
+                    "Git",
+                    "Docker",
+                    "Stripe API",
+                    "Vercel",
+                    "Social Media APIs",
+                    "Figma",
+                    "Cypress",
+                ],
             },
         },
         location: isPortuguese ? "📍 Brasil" : "📍 Brazil",
@@ -93,7 +112,7 @@ export default function AboutSection({ locale }: AboutSectionProps) {
                             </span>
                             <span className="text-gray-400">•</span>
                             <span className="text-gray-600 dark:text-gray-300">
-                                Full Stack Developer
+                                Data Scientist & Full Stack Developer
                             </span>
                         </div>
                     </div>
@@ -105,6 +124,23 @@ export default function AboutSection({ locale }: AboutSectionProps) {
                         </h3>
 
                         <div className="space-y-8">
+                            {/* Data Science */}
+                            <div>
+                                <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                                    {t.skills.dataScience.title}
+                                </h4>
+                                <div className="flex flex-wrap gap-2">
+                                    {t.skills.dataScience.items.map(skill => (
+                                        <span
+                                            key={skill}
+                                            className="px-3 py-1 bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 rounded-full text-sm font-medium"
+                                        >
+                                            {skill}
+                                        </span>
+                                    ))}
+                                </div>
+                            </div>
+
                             {/* Frontend */}
                             <div>
                                 <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">

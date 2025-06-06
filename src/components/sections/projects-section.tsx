@@ -16,6 +16,39 @@ const getTranslations = (locale: Locale) => {
         liveDemo: isPortuguese ? "Demo" : "Live Demo",
         projects: [
             {
+                title: "Social Analytics Engine",
+                description: isPortuguese
+                    ? "Sistema de análise de campanhas digitais que integra Google Analytics com métricas de redes sociais (YouTube, Instagram, X, Telegram) e conversões Stripe. Desenvolvido com Python, PostgreSQL, SQLAlchemy e Docker."
+                    : "Digital campaign analysis system that integrates Google Analytics with social media metrics (YouTube, Instagram, X, Telegram) and Stripe conversions. Built with Python, PostgreSQL, SQLAlchemy, and Docker.",
+                tech: [
+                    "Python",
+                    "PostgreSQL",
+                    "SQLAlchemy",
+                    "Docker",
+                    "Google APIs",
+                    "Stripe API",
+                ],
+                github: undefined,
+                demo: undefined,
+                featured: true,
+            },
+            {
+                title: "Soft Clever - Software ERP",
+                description: isPortuguese
+                    ? "Site institucional principal da Soft Clever, empresa de software empresarial com mais de 31 anos de experiência e 12.000+ usuários. Desenvolvido com design moderno e responsivo, destacando soluções ERP, SAT e NFC-e."
+                    : "Main corporate website for Soft Clever, an enterprise software company with over 31 years of experience and 12,000+ users. Developed with modern responsive design, showcasing ERP, SAT, and NFC-e solutions.",
+                tech: [
+                    "WordPress",
+                    "PHP",
+                    "CSS",
+                    "JavaScript",
+                    "Responsive Design",
+                ],
+                github: undefined,
+                demo: "https://softclever.com.br",
+                featured: true,
+            },
+            {
                 title: "Gabriel Toth Portfolio",
                 description: isPortuguese
                     ? "Meu portfólio pessoal construído com Next.js 15, TypeScript e Tailwind CSS. Implementa internacionalização (EN/PT-BR), SEO otimizado e design responsivo."
@@ -37,13 +70,24 @@ const getTranslations = (locale: Locale) => {
                 featured: true,
             },
             {
+                title: "Sistema SAT Fiscal",
+                description: isPortuguese
+                    ? "Meu primeiro site empresarial desenvolvido para a Soft Clever, focado em soluções fiscais SAT e NFC-e. Site responsivo com design profissional para apresentar produtos e serviços fiscais."
+                    : "My first enterprise website developed for Soft Clever, focused on SAT and NFC-e fiscal solutions. Responsive website with professional design to showcase fiscal products and services.",
+                tech: ["WordPress", "PHP", "CSS", "JavaScript"],
+                github: undefined,
+                demo: "https://www.sistemasatfiscal.com.br",
+                featured: false,
+            },
+
+            {
                 title: "Minecraft Plugin - NoHitDelay",
                 description: isPortuguese
                     ? "Plugin para Bukkit/Spigot 1.17.1 que modifica o delay de hit no Minecraft. Demonstra conhecimento em Java e desenvolvimento de plugins para servidores de Minecraft."
                     : "Bukkit/Spigot 1.17.1 plugin that modifies hit delay in Minecraft. Demonstrates knowledge in Java and Minecraft server plugin development.",
                 tech: ["Java", "Bukkit", "Spigot", "Minecraft"],
                 github: "https://github.com/GabrielToth/Minecraft-Plugin-NoHitDelay",
-                demo: null,
+                demo: undefined,
                 featured: false,
             },
         ],
@@ -112,17 +156,19 @@ export default function ProjectsSection({ locale }: ProjectsSectionProps) {
 
                             {/* Actions */}
                             <div className="flex space-x-4">
-                                <a
-                                    href={project.github}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="flex items-center space-x-2 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
-                                >
-                                    <Github size={18} />
-                                    <span className="text-sm font-medium">
-                                        {t.viewCode}
-                                    </span>
-                                </a>
+                                {project.github && (
+                                    <a
+                                        href={project.github}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="flex items-center space-x-2 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                                    >
+                                        <Github size={18} />
+                                        <span className="text-sm font-medium">
+                                            {t.viewCode}
+                                        </span>
+                                    </a>
+                                )}
                                 {project.demo && (
                                     <a
                                         href={project.demo}
