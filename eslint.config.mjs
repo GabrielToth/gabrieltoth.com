@@ -29,12 +29,13 @@ const eslintConfig = [
             ".git/",
         ],
         rules: {
-            // Basic formatting (Prettier will handle most)
-            indent: ["error", 4],
+            // Let Prettier handle formatting
             quotes: ["error", "double"],
             semi: ["error", "never"],
             // Allow double quotes in JSX content
             "react/no-unescaped-entities": ["error", { forbid: [] }],
+            // Disable indent rule to avoid conflicts with Prettier
+            indent: "off",
         },
     },
 ]
