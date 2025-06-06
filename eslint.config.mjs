@@ -33,6 +33,8 @@ const eslintConfig = [
             indent: ["error", 4],
             quotes: ["error", "double"],
             semi: ["error", "never"],
+            // Allow double quotes in JSX content
+            "react/no-unescaped-entities": ["error", { forbid: [] }],
         },
     },
 ]

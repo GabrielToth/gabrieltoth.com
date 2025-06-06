@@ -1,3 +1,5 @@
+"use client"
+
 import { type Locale } from "@/lib/i18n"
 import {
     CheckCircle,
@@ -465,7 +467,7 @@ export default function PCOptimizationLanding({
                                     )}
                                 </div>
                                 <p className="text-gray-300 mb-6 italic text-lg">
-                                    &quot;{testimonial.content}&quot;
+                                    {testimonial.content}
                                 </p>
                                 <div>
                                     <div className="font-bold text-white">

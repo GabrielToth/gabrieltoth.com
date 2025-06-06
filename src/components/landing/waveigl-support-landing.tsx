@@ -669,7 +669,7 @@ export default function WaveIGLSupportLanding({
                                     </div>
                                 </div>
                                 <p className="text-gray-600 dark:text-gray-300 italic text-center">
-                                    &quot;{testimonial.content}&quot;
+                                    {testimonial.content}
                                 </p>
                             </div>
                         ))}
