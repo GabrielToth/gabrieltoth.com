@@ -204,10 +204,10 @@ export default function ContactSection({ locale }: ContactSectionProps) {
                                 />
                                 {formData.name &&
                                     validateName(formData.name) && (
-                                    <p className="text-red-500 text-xs mt-1">
-                                        {validateName(formData.name)}
-                                    </p>
-                                )}
+                                        <p className="text-red-500 text-xs mt-1">
+                                            {validateName(formData.name)}
+                                        </p>
+                                    )}
                             </div>
 
                             {/* Email Field */}
@@ -237,14 +237,14 @@ export default function ContactSection({ locale }: ContactSectionProps) {
                                 />
                                 {formData.email &&
                                 validateEmailField(formData.email) ? (
-                                        <p className="text-red-500 text-xs mt-1">
-                                            {validateEmailField(formData.email)}
-                                        </p>
-                                    ) : (
-                                        <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                                            {t.emailRequirement}
-                                        </p>
-                                    )}
+                                    <p className="text-red-500 text-xs mt-1">
+                                        {validateEmailField(formData.email)}
+                                    </p>
+                                ) : (
+                                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                                        {t.emailRequirement}
+                                    </p>
+                                )}
                             </div>
 
                             {/* Message Field */}
@@ -279,12 +279,12 @@ export default function ContactSection({ locale }: ContactSectionProps) {
                                             validateMessage(
                                                 formData.message
                                             ) && (
-                                            <p className="text-red-500 text-xs">
-                                                {validateMessage(
-                                                    formData.message
-                                                )}
-                                            </p>
-                                        )}
+                                                <p className="text-red-500 text-xs">
+                                                    {validateMessage(
+                                                        formData.message
+                                                    )}
+                                                </p>
+                                            )}
                                     </div>
                                     <p className="text-xs text-gray-500 dark:text-gray-400">
                                         {formData.message.length}/1000
