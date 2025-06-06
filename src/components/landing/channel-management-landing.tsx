@@ -435,7 +435,7 @@ export default function ChannelManagementLanding({
                                     )}
                                 </div>
                                 <p className="text-gray-600 dark:text-gray-300 mb-6 italic">
-                                    "{testimonial.content}"
+                                    &quot;{testimonial.content}&quot;
                                 </p>
                                 <div>
                                     <div className="font-semibold text-gray-900 dark:text-white">

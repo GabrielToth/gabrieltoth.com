@@ -465,7 +465,7 @@ export default function PCOptimizationLanding({
                                     )}
                                 </div>
                                 <p className="text-gray-300 mb-6 italic text-lg">
-                                    "{testimonial.content}"
+                                    &quot;{testimonial.content}&quot;
                                 </p>
                                 <div>
                                     <div className="font-bold text-white">
