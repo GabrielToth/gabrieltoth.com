@@ -1,6 +1,23 @@
 {
     "version": "0.2",
-    "language": "en",
+    "language": "en,pt-BR",
+    "languageSettings": [
+        {
+            "languageId": "typescript,javascript,typescriptreact,javascriptreact",
+            "language": "en,pt-BR"
+        },
+        {
+            "languageId": "markdown",
+            "language": "en,pt-BR"
+        }
+    ],
+    "dictionaries": ["en", "pt-br"],
+    "dictionaryDefinitions": [
+        {
+            "name": "pt-br",
+            "path": "./node_modules/cspell-dict-pt-br/cspell-ext.json"
+        }
+    ],
     "ignorePaths": [
         "src/app/[locale]/**",
         "src/app/api/**",

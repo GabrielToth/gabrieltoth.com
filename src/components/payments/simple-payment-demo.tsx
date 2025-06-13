@@ -42,8 +42,8 @@ export default function SimplePaymentDemo({
     const [orderData, setOrderData] = useState<OrderData | null>(null)
     const [paymentData, setPaymentData] = useState<PaymentData | null>(null)
     const [copiedText, setCopiedText] = useState<string | null>(null)
-    const [error, setError] = useState<string | null>(null)
-    const [isLoading, setIsLoading] = useState(false)
+    const [, setError] = useState<string | null>(null)
+    const [, setIsLoading] = useState(false)
 
     // Create payment order
     const createPayment = async () => {
@@ -74,7 +74,7 @@ export default function SimplePaymentDemo({
             } else {
                 alert(`Erro: ${data.error}`)
             }
-        } catch (_) {
+        } catch {
             setError("Failed to create PIX payment")
             setIsLoading(false)
         } finally {
@@ -88,7 +88,7 @@ export default function SimplePaymentDemo({
             await navigator.clipboard.writeText(text)
             setCopiedText(label)
             setTimeout(() => setCopiedText(null), 2000)
-        } catch (_) {
+        } catch {
             alert("Erro ao copiar")
         }
     }
