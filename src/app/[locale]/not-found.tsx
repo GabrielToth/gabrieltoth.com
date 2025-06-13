@@ -6,8 +6,11 @@ import { useEffect, useState } from "react"
 
 export default function LocaleNotFound() {
     const [locale, setLocale] = useState<string>("en")
+    const [mounted, setMounted] = useState(false)
 
     useEffect(() => {
+        setMounted(true)
+
         // Get locale from URL path
         const path = window.location.pathname
         const pathSegments = path.split("/").filter(Boolean)
@@ -35,6 +38,27 @@ export default function LocaleNotFound() {
     }, [])
 
     const isPortuguese = locale === "pt-BR"
+
+    // Prevent hydration mismatch
+    if (!mounted) {
+        return (
+            <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 dark:from-gray-900 dark:to-blue-900 flex items-center justify-center px-4">
+                <div className="max-w-4xl mx-auto text-center">
+                    <div className="mb-12">
+                        <h1 className="text-8xl font-bold text-blue-600 dark:text-blue-400 mb-4">
+                            404
+                        </h1>
+                        <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+                            Page Not Found
+                        </h2>
+                        <p className="text-lg text-gray-600 dark:text-gray-300 mb-8">
+                            Loading...
+                        </p>
+                    </div>
+                </div>
+            </div>
+        )
+    }
 
     const content = {
         title: isPortuguese ? "Página Não Encontrada" : "Page Not Found",

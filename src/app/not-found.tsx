@@ -2,8 +2,14 @@
 
 import { ArrowLeft, ExternalLink, Home } from "lucide-react"
 import Link from "next/link"
+import { useEffect, useState } from "react"
 
 export default function NotFound() {
+    const [mounted, setMounted] = useState(false)
+
+    useEffect(() => {
+        setMounted(true)
+    }, [])
     const products = [
         {
             title: "Gerenciamento de Canais",
@@ -125,13 +131,15 @@ export default function NotFound() {
                         <Home className="mr-2" size={20} />
                         Home Page (EN)
                     </Link>
-                    <button
-                        onClick={() => window.history.back()}
-                        className="inline-flex items-center px-6 py-3 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg font-medium hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
-                    >
-                        <ArrowLeft className="mr-2" size={20} />
-                        Voltar | Go Back
-                    </button>
+                    {mounted && (
+                        <button
+                            onClick={() => window.history.back()}
+                            className="inline-flex items-center px-6 py-3 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg font-medium hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+                        >
+                            <ArrowLeft className="mr-2" size={20} />
+                            Voltar | Go Back
+                        </button>
+                    )}
                 </div>
 
                 {/* Help Text */}

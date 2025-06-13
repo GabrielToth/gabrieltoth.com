@@ -15,6 +15,7 @@ import {
     Youtube,
     Zap,
 } from "lucide-react"
+import { useEffect, useState } from "react"
 
 interface WaveIGLSupportLandingProps {
     locale: Locale
@@ -379,27 +380,34 @@ const getTranslations = (locale: Locale) => {
 export default function WaveIGLSupportLanding({
     locale,
 }: WaveIGLSupportLandingProps) {
+    const [mounted, setMounted] = useState(false)
     const t = getTranslations(locale)
+
+    useEffect(() => {
+        setMounted(true)
+    }, [])
 
     return (
         <div className="min-h-screen bg-white dark:bg-gray-900">
             {/* Language Selector for Landing Page */}
             <div className="fixed top-4 right-4 z-50">
                 <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-lg p-2 shadow-md">
-                    <select
-                        value={locale}
-                        onChange={e =>
-                            (window.location.href =
-                                window.location.pathname +
-                                "?lang=" +
-                                e.target.value)
-                        }
-                        className="text-sm border-none bg-transparent focus:outline-none cursor-pointer"
-                        aria-label="Select language"
-                    >
-                        <option value="en">🇺🇸 English</option>
-                        <option value="pt-BR">🇧🇷 Português</option>
-                    </select>
+                    {mounted && (
+                        <select
+                            value={locale}
+                            onChange={e =>
+                                (window.location.href =
+                                    window.location.pathname +
+                                    "?lang=" +
+                                    e.target.value)
+                            }
+                            className="text-sm border-none bg-transparent focus:outline-none cursor-pointer"
+                            aria-label="Select language"
+                        >
+                            <option value="en">🇺🇸 English</option>
+                            <option value="pt-BR">🇧🇷 Português</option>
+                        </select>
+                    )}
                 </div>
             </div>
 
