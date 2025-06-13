@@ -2,7 +2,6 @@
 
 import Footer from "@/components/layout/footer"
 import PricingToggle from "@/components/ui/pricing-toggle"
-import { useMoneroPricing } from "@/hooks/use-monero-pricing"
 import { type Locale } from "@/lib/i18n"
 import {
     BarChart3,
@@ -398,7 +397,16 @@ export default function ChannelManagementLanding({
     locale,
 }: ChannelManagementLandingProps) {
     const t = getTranslations(locale)
-    const { calculatePrice } = useMoneroPricing()
+
+    // Simple price calculation without Monero
+    const calculatePrice = (basePrice: number) => ({
+        current: basePrice * 2, // PIX/Card price (double the base)
+        original: basePrice * 2,
+        currency: "R$",
+        displayPrice: `R$ ${basePrice * 2}`,
+        originalPrice: `R$ ${basePrice * 2}`,
+        isMonero: false,
+    })
 
     const generateWhatsAppMessage = (
         planName: string,
@@ -745,7 +753,7 @@ export default function ChannelManagementLanding({
                                     <a
                                         href={generateWhatsAppMessage(
                                             plan.name,
-                                            pricing.displayPrice,
+                                            pricing.current,
                                             pricing.isMonero
                                         )}
                                         target="_blank"

@@ -1,7 +1,6 @@
 "use client"
 
 import PricingToggle from "@/components/ui/pricing-toggle"
-import { useMoneroPricing } from "@/hooks/use-monero-pricing"
 import { type Locale } from "@/lib/i18n"
 import {
     CheckCircle,
@@ -336,7 +335,16 @@ export default function PCOptimizationLanding({
     locale,
 }: PCOptimizationLandingProps) {
     const t = getTranslations(locale)
-    const { calculatePrice } = useMoneroPricing()
+
+    // Simple price calculation without Monero
+    const calculatePrice = (basePrice: number) => ({
+        current: basePrice * 2, // PIX/Card price (double the base)
+        original: basePrice * 2,
+        currency: "R$",
+        displayPrice: `R$ ${basePrice * 2}`,
+        originalPrice: `R$ ${basePrice * 2}`,
+        isMonero: false,
+    })
 
     return (
         <div className="min-h-screen bg-black text-white overflow-hidden">

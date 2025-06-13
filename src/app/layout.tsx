@@ -1,6 +1,5 @@
 import { ThemeProvider } from "@/components/theme/theme-provider"
 import { ThemeScript } from "@/components/theme/theme-script"
-import { MoneroPricingProvider } from "@/hooks/use-monero-pricing"
 import { Analytics } from "@vercel/analytics/next"
 import { type Metadata } from "next"
 import { Geist, Geist_Mono } from "next/font/google"
@@ -34,9 +33,7 @@ export default function RootLayout({
             <body
                 className={`${geistSans.variable} ${geistMono.variable} antialiased font-sans`}
             >
-                <ThemeProvider>
-                    <MoneroPricingProvider>{children}</MoneroPricingProvider>
-                </ThemeProvider>
+                <ThemeProvider>{children}</ThemeProvider>
                 <Analytics />
             </body>
         </html>
