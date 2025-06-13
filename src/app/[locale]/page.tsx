@@ -16,11 +16,11 @@ export default async function HomePage({ params }: HomePageProps) {
     return (
         <main className="min-h-screen bg-white dark:bg-gray-900">
             <Header locale={locale} />
-            <HeroSection locale={locale} />
-            <AboutSection locale={locale} />
-            <ProjectsSection locale={locale} />
-            <ChannelManagementSection locale={locale} />
-            <ContactSection locale={locale} />
+            <HeroSection />
+            <AboutSection />
+            <ProjectsSection />
+            <ChannelManagementSection />
+            <ContactSection />
             <Footer locale={locale} />
         </main>
     )

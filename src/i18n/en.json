@@ -3,6 +3,7 @@
         "home": "Home",
         "about": "About",
         "projects": "Projects",
+        "investments": "Investments",
         "contact": "Contact",
         "language": "Language"
     },
@@ -10,13 +11,13 @@
         "greeting": "Hello, I'm",
         "name": "Gabriel Toth",
         "title": "Full Stack Developer",
-        "subtitle": "Passionate about creating innovative digital solutions with modern technologies",
+        "subtitle": "Focused on creating innovative digital solutions with modern technologies",
         "cta": "Get in touch",
         "resume": "Download Resume"
     },
     "about": {
         "title": "About Me",
-        "subtitle": "Passionate developer focused on creating amazing digital experiences",
+        "subtitle": "Focused developer creating amazing digital experiences",
         "description": "I'm Gabriel Toth Gonçalves, a Full Stack Developer with extensive experience in modern web technologies. I specialize in creating scalable, efficient, and user-friendly applications using cutting-edge tools and frameworks.",
         "experience": "Experience",
         "projects": "Projects Completed",
@@ -75,6 +76,96 @@
         "rights": "All rights reserved",
         "built": "Built with",
         "source": "View Source Code"
+    },
+    "investments": {
+        "title": "WaveIGL Project - Open for Donations",
+        "subtitle": "Complete automation system for streamers - Help bring this innovative project to life",
+        "waveigl": {
+            "title": "WaveIGL Automation Platform",
+            "description": "Advanced system that unifies and automates stream management, integrating Google, Twitch, Discord, YouTube and WhatsApp in a single professional platform.",
+            "what": {
+                "title": "What this site will contain:",
+                "login": "Login via Google with linking permissions for Twitch, Discord and YouTube Channel (Non-proprietary)",
+                "funnel": "Funnel page for SUBs to automatically access WhatsApp groups and Discord linking (Non-proprietary)",
+                "chatUnify": "Unification of YouTube and Twitch chats (Non-proprietary)",
+                "moderation": "Moderation tools for both chats (Non-proprietary)",
+                "landing": "Landing Page for Private Classes with payment automation (Proprietary)"
+            },
+            "benefits": {
+                "title": "How this helps:",
+                "automation": "SUBs will have automatic access to groups without manual errors or confusion",
+                "centralization": "Centralization of people in environment with complete data control",
+                "moderation": "Facilitated moderation for the entire team",
+                "professional": "Professional environment that increases project visibility"
+            },
+            "pricing": {
+                "title": "Value of each feature:",
+                "landing": {
+                    "name": "Landing page (3-5 sections)",
+                    "price": "$80 (Monero discount - $160 regular)",
+                    "time": "1 week after design confirmation",
+                    "note": "Modifications after visual approval will incur additional charges"
+                },
+                "payments": {
+                    "name": "Payment automation",
+                    "price": "$170 (Monero discount - $340 regular)",
+                    "time": "2 weeks",
+                    "note": "Mercado Pago/Stripe. Crypto available with additional cost"
+                },
+                "ddos": {
+                    "name": "DDoS protection via CloudFlare",
+                    "price": "$80 (Monero discount - $160 regular)",
+                    "time": "1 week",
+                    "note": "Not necessary while site doesn't go down"
+                },
+                "login": {
+                    "name": "Login with Google, YouTube, Discord and Twitch",
+                    "price": "$1,700 (Monero discount - $3,400 regular)",
+                    "time": "3-5 months",
+                    "note": ""
+                },
+                "funnel": {
+                    "name": "Funnel for subscribers",
+                    "price": "$170 (Monero discount - $340 regular)",
+                    "time": "2 weeks",
+                    "note": "Requires login above"
+                },
+                "chat": {
+                    "name": "Unification of YouTube and Twitch Chats",
+                    "price": "$1,000 (Monero discount - $2,000 regular)",
+                    "time": "3 months",
+                    "note": ""
+                },
+                "modTools": {
+                    "name": "Moderation tools for all chats",
+                    "price": "$1,360 (Monero discount - $2,720 regular)",
+                    "time": "4 months",
+                    "note": ""
+                }
+            },
+            "ownership": {
+                "title": "About Ownership:",
+                "nonProprietary": "\"Non-proprietary\" features: No exclusive rights. Can be redistributed to other projects, including commercially.",
+                "proprietary": "\"Proprietary\" features: Your exclusive rights. You can modify, commercialize and redistribute as desired."
+            },
+            "total": {
+                "title": "Estimated Total Investment:",
+                "amount": "$4,560 (Monero discount - $9,120 regular)",
+                "subtitle": "For all complete functionalities"
+            }
+        },
+        "payment": {
+            "title": "Payment Methods for Donations",
+            "pix": "Traditional payments: Regular price (2x Monero value)",
+            "monero": "Monero: 50% discount from regular price",
+            "note": "Monero offers significant savings - pay half the regular price!",
+            "partial": "Partial donations are accepted - any amount helps!"
+        },
+        "contact": {
+            "title": "Want to Help Make This Reality?",
+            "description": "Contact us to discuss how you can contribute to this innovative project. All help is welcome!",
+            "cta": "Donate to Project"
+        }
     },
     "common": {
         "loading": "Loading...",
