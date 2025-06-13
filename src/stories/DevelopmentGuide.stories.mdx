@@ -1,0 +1,525 @@
+import { Meta } from "@storybook/blocks"
+
+<Meta title="Gabriel Toth Portfolio/Development Guide" />
+
+# Development Guide
+
+This guide provides comprehensive instructions for developing, testing, and contributing to the Gabriel Toth Portfolio project.
+
+## Getting Started
+
+### Prerequisites
+
+- **Node.js**: v18.0.0 or higher
+- **npm**: v8.0.0 or higher
+- **Git**: Latest version
+- **VSCode**: Recommended editor with extensions
+
+### Recommended VSCode Extensions
+
+```json
+{
+    "recommendations": [
+        "bradlc.vscode-tailwindcss",
+        "esbenp.prettier-vscode",
+        "ms-vscode.vscode-typescript-next",
+        "streetsidesoftware.code-spell-checker",
+        "ms-playwright.playwright",
+        "storybook.storybook-vscode"
+    ]
+}
+```
+
+### Initial Setup
+
+```bash
+# Clone the repository
+git clone https://github.com/your-username/gabrieltoth.com.git
+cd gabrieltoth.com
+
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+
+# Open Storybook in parallel
+npm run storybook
+```
+
+## Project Architecture
+
+### Folder Structure
+
+```
+gabrieltoth.com/
+├── .storybook/              # Storybook configuration
+├── cypress/                 # E2E tests
+│   ├── e2e/                # Test specifications
+│   ├── fixtures/           # Test data
+│   └── support/            # Test utilities
+├── public/                 # Static assets
+├── src/
+│   ├── app/                # Next.js App Router
+│   │   ├── [locale]/       # Internationalized routes
+│   │   ├── api/            # API routes
+│   │   ├── globals.css     # Global styles
+│   │   └── layout.tsx      # Root layout
+│   ├── components/         # React components
+│   │   ├── ui/             # shadcn/ui components
+│   │   ├── layout/         # Layout components
+│   │   ├── sections/       # Page sections
+│   │   ├── landing/        # Landing pages
+│   │   ├── payments/       # Payment system
+│   │   └── theme/          # Theme components
+│   ├── hooks/              # Custom React hooks
+│   ├── lib/                # Utilities and config
+│   ├── i18n/               # Translation files
+│   └── stories/            # Storybook stories
+├── middleware.ts           # Next.js middleware
+└── package.json            # Project dependencies
+```
+
+## Development Workflow
+
+### 1. Component Development
+
+#### Creating a New Component
+
+```typescript
+// src/components/ui/example-component.tsx
+import React from 'react'
+import { cn } from '@/lib/utils'
+
+interface ExampleComponentProps {
+    children: React.ReactNode
+    variant?: 'default' | 'primary' | 'secondary'
+    size?: 'sm' | 'md' | 'lg'
+    className?: string
+}
+
+const ExampleComponent = React.forwardRef<
+    HTMLDivElement,
+    ExampleComponentProps
+>(({ children, variant = 'default', size = 'md', className, ...props }, ref) => {
+    return (
+        <div
+            ref={ref}
+            className={cn(
+                // Base styles
+                'rounded-md border transition-colors',
+                // Variant styles
+                {
+                    'bg-white border-gray-200': variant === 'default',
+                    'bg-blue-600 border-blue-600 text-white': variant === 'primary',
+                    'bg-gray-100 border-gray-300': variant === 'secondary',
+                },
+                // Size styles
+                {
+                    'px-2 py-1 text-sm': size === 'sm',
+                    'px-4 py-2 text-base': size === 'md',
+                    'px-6 py-3 text-lg': size === 'lg',
+                },
+                className
+            )}
+            {...props}
+        >
+            {children}
+        </div>
+    )
+})
+
+ExampleComponent.displayName = 'ExampleComponent'
+
+export { ExampleComponent }
+```
+
+#### Creating a Storybook Story
+
+```typescript
+// src/stories/ExampleComponent.stories.ts
+import type { Meta, StoryObj } from '@storybook/react'
+import { ExampleComponent } from '@/components/ui/example-component'
+
+const meta: Meta<typeof ExampleComponent> = {
+    title: 'UI/ExampleComponent',
+    component: ExampleComponent,
+    parameters: {
+        layout: 'centered',
+        docs: {
+            description: {
+                component: 'A flexible example component with multiple variants and sizes.'
+            }
+        }
+    },
+    tags: ['autodocs'],
+    argTypes: {
+        variant: {
+            control: { type: 'select' },
+            options: ['default', 'primary', 'secondary'],
+            description: 'The visual variant of the component'
+        },
+        size: {
+            control: { type: 'select' },
+            options: ['sm', 'md', 'lg'],
+            description: 'The size of the component'
+        },
+        children: {
+            control: { type: 'text' },
+            description: 'The content of the component'
+        }
+    }
+}
+
+export default meta
+type Story = StoryObj<typeof meta>
+
+export const Default: Story = {
+    args: {
+        children: 'Default Component',
+        variant: 'default',
+        size: 'md'
+    }
+}
+
+export const Primary: Story = {
+    args: {
+        children: 'Primary Component',
+        variant: 'primary',
+        size: 'md'
+    }
+}
+
+export const AllSizes: Story = {
+    render: () => (
+        <div className="space-y-4">
+            <ExampleComponent size="sm">Small Component</ExampleComponent>
+            <ExampleComponent size="md">Medium Component</ExampleComponent>
+            <ExampleComponent size="lg">Large Component</ExampleComponent>
+        </div>
+    )
+}
+```
+
+### 2. Internationalization
+
+#### Adding New Translations
+
+```json
+// src/i18n/en.json
+{
+    "nav": {
+        "home": "Home",
+        "about": "About",
+        "services": "Services",
+        "contact": "Contact"
+    },
+    "hero": {
+        "title": "Gabriel Toth Gonçalves",
+        "subtitle": "Full Stack Developer",
+        "description": "Creating innovative digital solutions..."
+    }
+}
+```
+
+```json
+// src/i18n/pt-BR.json
+{
+    "nav": {
+        "home": "Início",
+        "about": "Sobre",
+        "services": "Serviços",
+        "contact": "Contato"
+    },
+    "hero": {
+        "title": "Gabriel Toth Gonçalves",
+        "subtitle": "Desenvolvedor Full Stack",
+        "description": "Criando soluções digitais inovadoras..."
+    }
+}
+```
+
+#### Using Translations in Components
+
+```typescript
+import { useLocale } from '@/hooks/use-locale'
+import { getTranslations } from '@/lib/i18n'
+
+export default function MyComponent() {
+    const { locale } = useLocale()
+    const t = getTranslations(locale)
+
+    return (
+        <div>
+            <h1>{t.hero.title}</h1>
+            <p>{t.hero.description}</p>
+        </div>
+    )
+}
+```
+
+### 3. Testing
+
+#### Writing Cypress E2E Tests
+
+```typescript
+// cypress/e2e/example.cy.ts
+describe("Example Feature", () => {
+    beforeEach(() => {
+        cy.visit("/")
+
+        // Handle uncaught exceptions
+        cy.on("uncaught:exception", err => {
+            if (err.message.includes("Hydration failed")) {
+                return false
+            }
+            return true
+        })
+    })
+
+    it("should navigate to about section", () => {
+        cy.get("[data-cy=nav-about]").click()
+        cy.url().should("include", "#about")
+        cy.get("[data-cy=about-section]").should("be.visible")
+    })
+
+    it("should change language", () => {
+        cy.get("[data-cy=language-selector]").click()
+        cy.get("[data-cy=language-en]").click()
+        cy.get("[data-cy=nav-home]").should("contain", "Home")
+
+        cy.get("[data-cy=language-selector]").click()
+        cy.get("[data-cy=language-pt-BR]").click()
+        cy.get("[data-cy=nav-home]").should("contain", "Início")
+    })
+})
+```
+
+#### Adding data-cy Attributes
+
+```typescript
+// Always add data-cy attributes for testable elements
+<button
+    data-cy="submit-button"
+    onClick={handleSubmit}
+    className="btn-primary"
+>
+    Submit
+</button>
+
+<input
+    data-cy="email-input"
+    type="email"
+    placeholder="Email"
+/>
+```
+
+## Code Standards
+
+### TypeScript Guidelines
+
+```typescript
+// ✅ DO: Use explicit interfaces
+interface ButtonProps {
+    children: React.ReactNode
+    onClick?: () => void
+    disabled?: boolean
+    variant?: "primary" | "secondary"
+}
+
+// ✅ DO: Use proper typing for event handlers
+const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault()
+    // Handle click
+}
+
+// ✅ DO: Use generic types appropriately
+interface ApiResponse<T> {
+    data: T
+    success: boolean
+    message?: string
+}
+
+// ❌ DON'T: Use any type
+const badFunction = (data: any) => {
+    return data.whatever
+}
+```
+
+### Naming Conventions
+
+```typescript
+// ✅ Components: PascalCase
+const UserProfile = () => {}
+const NavigationMenu = () => {}
+
+// ✅ Files: kebab-case
+user - profile.tsx
+navigation - menu.tsx
+
+// ✅ Variables/Functions: camelCase
+const userName = "gabriel"
+const handleUserLogin = () => {}
+
+// ✅ Constants: UPPER_SNAKE_CASE
+const API_BASE_URL = "https://api.example.com"
+const MAX_RETRY_ATTEMPTS = 3
+
+// ✅ Interfaces: PascalCase with descriptive names
+interface UserProfileProps {}
+interface ApiResponseData {}
+```
+
+### CSS/Tailwind Guidelines
+
+```typescript
+// ✅ DO: Use semantic class grouping
+<div className={cn(
+    // Layout
+    'flex flex-col md:flex-row',
+    // Spacing
+    'p-4 gap-4',
+    // Appearance
+    'bg-white dark:bg-gray-900 rounded-lg shadow-sm',
+    // Interactive
+    'hover:shadow-md transition-shadow',
+    // Conditional
+    isActive && 'ring-2 ring-blue-500'
+)}>
+
+// ✅ DO: Use the cn() utility for conditional classes
+const buttonClasses = cn(
+    'px-4 py-2 rounded font-medium transition-colors',
+    {
+        'bg-blue-600 text-white': variant === 'primary',
+        'bg-gray-200 text-gray-900': variant === 'secondary',
+        'opacity-50 cursor-not-allowed': disabled
+    }
+)
+
+// ❌ DON'T: Write long className strings without organization
+<div className="flex flex-col md:flex-row p-4 gap-4 bg-white dark:bg-gray-900 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+```
+
+## Git Workflow
+
+### Commit Message Format
+
+```bash
+# Format: type: short description
+#
+# Body (optional): Detailed explanation
+#
+# Types: feat, fix, docs, style, refactor, test, chore
+
+# Examples:
+feat: add user authentication system
+fix: resolve hydration error in theme provider
+docs: update API documentation
+style: improve button hover animations
+refactor: extract common form validation logic
+test: add E2E tests for payment flow
+chore: update dependencies and build configuration
+```
+
+### Branch Naming
+
+```bash
+# Feature branches
+feature/user-authentication
+feature/payment-integration
+feature/responsive-navigation
+
+# Bug fix branches
+fix/hydration-error
+fix/mobile-menu-overflow
+fix/contact-form-validation
+
+# Documentation branches
+docs/storybook-setup
+docs/api-documentation
+docs/deployment-guide
+```
+
+### Pull Request Process
+
+1. **Create feature branch** from main
+2. **Implement changes** following code standards
+3. **Add/update tests** for new functionality
+4. **Update documentation** if needed
+5. **Run quality checks** (lint, type-check, test)
+6. **Create pull request** with descriptive title and body
+7. **Request code review** from team members
+8. **Address review feedback** if any
+9. **Merge after approval** using squash merge
+
+## Performance Optimization
+
+### Bundle Analysis
+
+```bash
+# Analyze bundle size
+npm run build
+npx @next/bundle-analyzer
+
+# Monitor performance
+npm run lighthouse
+```
+
+### Image Optimization
+
+```typescript
+// ✅ Use Next.js Image component
+import Image from 'next/image'
+
+<Image
+    src="/hero-image.jpg"
+    alt="Hero image"
+    width={1200}
+    height={600}
+    priority // For above-the-fold images
+    placeholder="blur" // Optional blur placeholder
+/>
+```
+
+### Code Splitting
+
+```typescript
+// ✅ Dynamic imports for heavy components
+import dynamic from 'next/dynamic'
+
+const HeavyComponent = dynamic(() => import('./HeavyComponent'), {
+    loading: () => <div>Loading...</div>,
+    ssr: false // If component doesn't need SSR
+})
+```
+
+## Deployment
+
+### Environment Variables
+
+```bash
+# .env.local (local development)
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
+DATABASE_URL=postgresql://localhost:5432/portfolio
+RESEND_API_KEY=your-resend-key
+
+# Production environment
+NEXT_PUBLIC_SITE_URL=https://gabrieltoth.com
+VERCEL_URL=automatically-set-by-vercel
+```
+
+### Build Process
+
+```bash
+# Production build
+npm run build
+
+# Test production build locally
+npm run start
+
+# Deploy to Vercel (automatic on main branch push)
+git push origin main
+```
+
+This development guide ensures consistent, high-quality development practices across the Gabriel Toth Portfolio project.

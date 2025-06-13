@@ -8,7 +8,6 @@ import {
     BarChart3,
     CheckCircle,
     DollarSign,
-    Edit3,
     MessageCircle,
     Percent,
     Star,
@@ -17,6 +16,7 @@ import {
     Video,
     Youtube,
 } from "lucide-react"
+import Link from "next/link"
 
 interface ChannelManagementLandingProps {
     locale: Locale
@@ -397,8 +397,7 @@ export default function ChannelManagementLanding({
     locale,
 }: ChannelManagementLandingProps) {
     const t = getTranslations(locale)
-    const { showMoneroPrice, toggleMoneroPrice, calculatePrice } =
-        useMoneroPricing()
+    const { calculatePrice } = useMoneroPricing()
 
     const generateWhatsAppMessage = (
         planName: string,
@@ -408,16 +407,16 @@ export default function ChannelManagementLanding({
         const paymentMethod = isMonero ? "Monero (XMR)" : "PIX/Cartão"
         const baseMessage =
             locale === "pt-BR"
-                ? `Olá! Tenho interesse na consultoria de canal.%0A%0A` +
+                ? "Olá! Tenho interesse na consultoria de canal.%0A%0A" +
                   `📋 Plano escolhido: ${planName}%0A` +
                   `💰 Valor: R$ ${price}%0A` +
                   `💳 Forma de pagamento: ${paymentMethod}%0A%0A` +
-                  `Nome:%0ACanal do YouTube:%0AQual seu principal objetivo:%0ATipo de conteúdo:%0AFrequência de postagem:%0A%0AAguardo o contato!`
-                : `Hello! I'm interested in channel consulting.%0A%0A` +
+                  "Nome:%0ACanal do YouTube:%0AQual seu principal objetivo:%0ATipo de conteúdo:%0AFrequência de postagem:%0A%0AAguardo o contato!"
+                : "Hello! I'm interested in channel consulting.%0A%0A" +
                   `📋 Chosen plan: ${planName}%0A` +
                   `💰 Price: R$ ${price}%0A` +
                   `💳 Payment method: ${paymentMethod}%0A%0A` +
-                  `Name:%0AYouTube Channel:%0AYour main goal:%0AContent type:%0APosting frequency:%0A%0ALooking forward to hearing from you!`
+                  "Name:%0AYouTube Channel:%0AYour main goal:%0AContent type:%0APosting frequency:%0A%0ALooking forward to hearing from you!"
 
         return `https://wa.me/5511936191346?text=${baseMessage}`
     }
@@ -788,15 +787,12 @@ export default function ChannelManagementLanding({
                                 ? "Falar no WhatsApp"
                                 : "Message on WhatsApp"}
                         </a>
-                        <a
+                        <Link
                             href="/editors"
-                            className="inline-flex items-center px-8 py-4 border-2 border-white text-white rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition-colors text-lg"
+                            className="text-blue-600 hover:text-blue-800 font-medium"
                         >
-                            <Edit3 className="mr-2" size={20} />
-                            {locale === "pt-BR"
-                                ? "Trabalhe Como Editor"
-                                : "Work as Editor"}
-                        </a>
+                            Editores
+                        </Link>
                     </div>
                 </div>
             </section>

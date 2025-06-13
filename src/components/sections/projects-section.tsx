@@ -103,7 +103,7 @@ export default function ProjectsSection() {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {displayedProjects.map((project, index) => (
+                    {displayedProjects.map((project, _) => (
                         <div
                             key={project.title}
                             className={`bg-gray-50 dark:bg-gray-800 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 ${
@@ -133,12 +133,12 @@ export default function ProjectsSection() {
                                         {t.technologies}:
                                     </p>
                                     <div className="flex flex-wrap gap-2">
-                                        {project.tags.map(tag => (
+                                        {project.tags.map((tech, _) => (
                                             <span
-                                                key={tag}
+                                                key={tech}
                                                 className="px-2 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded text-xs font-medium"
                                             >
-                                                {tag}
+                                                {tech}
                                             </span>
                                         ))}
                                     </div>

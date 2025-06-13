@@ -27,11 +27,11 @@ export async function POST(req: NextRequest) {
             const message = body.entry[0].changes[0].value.messages[0]
             const from = message.from
             const text = message.text?.body || ""
-            const messageType = message.type
+            const _messageType = message.type
 
             console.log(`WhatsApp message from ${from}: ${text}`)
 
-            await processWhatsAppMessage(from, text, messageType)
+            await processWhatsAppMessage(from, text, _messageType)
         }
 
         return new NextResponse("OK")

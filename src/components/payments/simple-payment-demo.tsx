@@ -17,6 +17,19 @@ interface SimplePaymentDemoProps {
     amount: number
 }
 
+interface PaymentData {
+    qrCode?: string
+    copyPasteCode?: string
+    address?: string
+    amount?: number
+    amountBrl?: number
+}
+
+interface OrderData {
+    trackingCode: string
+    status: string
+}
+
 export default function SimplePaymentDemo({
     serviceType,
     amount,
@@ -26,9 +39,11 @@ export default function SimplePaymentDemo({
     )
     const [whatsappNumber, setWhatsappNumber] = useState("")
     const [isCreatingOrder, setIsCreatingOrder] = useState(false)
-    const [orderData, setOrderData] = useState<any>(null)
-    const [paymentData, setPaymentData] = useState<any>(null)
+    const [orderData, setOrderData] = useState<OrderData | null>(null)
+    const [paymentData, setPaymentData] = useState<PaymentData | null>(null)
     const [copiedText, setCopiedText] = useState<string | null>(null)
+    const [error, setError] = useState<string | null>(null)
+    const [isLoading, setIsLoading] = useState(false)
 
     // Create payment order
     const createPayment = async () => {
@@ -59,8 +74,9 @@ export default function SimplePaymentDemo({
             } else {
                 alert(`Erro: ${data.error}`)
             }
-        } catch (error) {
-            alert("Erro ao criar pagamento")
+        } catch (_) {
+            setError("Failed to create PIX payment")
+            setIsLoading(false)
         } finally {
             setIsCreatingOrder(false)
         }
@@ -72,7 +88,7 @@ export default function SimplePaymentDemo({
             await navigator.clipboard.writeText(text)
             setCopiedText(label)
             setTimeout(() => setCopiedText(null), 2000)
-        } catch (error) {
+        } catch (_) {
             alert("Erro ao copiar")
         }
     }
@@ -257,10 +273,14 @@ export default function SimplePaymentDemo({
                                                 variant="outline"
                                                 size="sm"
                                                 onClick={() =>
+                                                    paymentData.copyPasteCode &&
                                                     copyToClipboard(
                                                         paymentData.copyPasteCode,
                                                         "pix"
                                                     )
+                                                }
+                                                disabled={
+                                                    !paymentData.copyPasteCode
                                                 }
                                             >
                                                 {copiedText === "pix" ? (
@@ -280,7 +300,7 @@ export default function SimplePaymentDemo({
                                     <div>
                                         <label className="block text-sm font-medium mb-2">
                                             Valor:{" "}
-                                            {paymentData.amount.toFixed(6)} XMR
+                                            {paymentData.amount?.toFixed(6)} XMR
                                         </label>
                                         <p className="text-xs text-gray-600">
                                             ≈ R$ {paymentData.amountBrl}
@@ -303,11 +323,13 @@ export default function SimplePaymentDemo({
                                                 variant="outline"
                                                 size="sm"
                                                 onClick={() =>
+                                                    paymentData.address &&
                                                     copyToClipboard(
                                                         paymentData.address,
                                                         "address"
                                                     )
                                                 }
+                                                disabled={!paymentData.address}
                                             >
                                                 {copiedText === "address" ? (
                                                     <Check className="h-4 w-4" />
@@ -325,7 +347,7 @@ export default function SimplePaymentDemo({
                                         <ol className="text-sm text-purple-800 space-y-1">
                                             <li>
                                                 1. Envie{" "}
-                                                {paymentData.amount.toFixed(6)}{" "}
+                                                {paymentData.amount?.toFixed(6)}{" "}
                                                 XMR para o endereço acima
                                             </li>
                                             <li>

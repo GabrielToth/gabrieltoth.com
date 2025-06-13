@@ -46,7 +46,7 @@ export const getLocaleFromUrl = (pathname: string): Locale => {
 }
 
 // Generate localized path (now just returns the path since we don't use locale in URLs)
-export const getLocalizedPath = (path: string, locale?: Locale): string => {
+export const getLocalizedPath = (path: string, _locale?: Locale): string => {
     // Remove any existing locale from the path
     const cleanPath = path.replace(/^\/(en|pt-BR)/, "") || "/"
     return cleanPath

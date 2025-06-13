@@ -97,7 +97,7 @@ export default function ContactSection() {
             } else {
                 setSubmitStatus("error")
             }
-        } catch (error) {
+        } catch (_) {
             setSubmitStatus("error")
         } finally {
             setIsSubmitting(false)

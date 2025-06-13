@@ -42,7 +42,7 @@ export async function generatePixQR(
         merchantName: PIX_MERCHANT_NAME,
         merchantCity: PIX_MERCHANT_CITY,
         amount: data.amount,
-        description: data.description,
+        _description: data.description,
         txId: data.orderId,
     })
 
@@ -71,14 +71,14 @@ function createPixPayload({
     merchantName,
     merchantCity,
     amount,
-    description,
+    _description,
     txId,
 }: {
     pixKey: string
     merchantName: string
     merchantCity: string
     amount: number
-    description: string
+    _description: string
     txId: string
 }): string {
     // This is a simplified PIX payload
@@ -188,7 +188,7 @@ export function validatePixPayment(
 export async function generateServicePixQR(
     serviceType: string,
     amount: number,
-    whatsappNumber?: string
+    _whatsappNumber?: string
 ): Promise<PixResponse> {
     const trackingCode = generateTrackingCode()
 

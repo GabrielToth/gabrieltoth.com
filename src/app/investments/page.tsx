@@ -3,6 +3,8 @@
 import Header from "@/components/layout/header"
 import { useLocale } from "@/hooks/use-locale"
 import { type Locale } from "@/lib/i18n"
+import { ArrowRight } from "lucide-react"
+import Link from "next/link"
 
 const getTranslations = (locale: Locale) => {
     const translations = {
@@ -62,12 +64,13 @@ export default function InvestmentsPage() {
                             <p className="text-gray-600 dark:text-gray-300 mb-6">
                                 {t.socialAnalyticsDesc}
                             </p>
-                            <a
+                            <Link
                                 href="/social-analytics-investment"
-                                className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
+                                className="inline-flex items-center text-blue-600 dark:text-blue-400 hover:underline"
                             >
-                                {t.learnMore}
-                            </a>
+                                Ver Detalhes
+                                <ArrowRight className="ml-1 h-4 w-4" />
+                            </Link>
                         </div>
 
                         <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-8">
