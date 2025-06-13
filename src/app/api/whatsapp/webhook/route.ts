@@ -27,11 +27,10 @@ export async function POST(req: NextRequest) {
             const message = body.entry[0].changes[0].value.messages[0]
             const from = message.from
             const text = message.text?.body || ""
-            const _messageType = message.type
 
             console.log(`WhatsApp message from ${from}: ${text}`)
 
-            await processWhatsAppMessage(from, text, _messageType)
+            await processWhatsAppMessage(from, text)
         }
 
         return new NextResponse("OK")
@@ -41,11 +40,7 @@ export async function POST(req: NextRequest) {
     }
 }
 
-async function processWhatsAppMessage(
-    from: string,
-    text: string,
-    _messageType: string
-) {
+async function processWhatsAppMessage(from: string, text: string) {
     try {
         // Clean phone number (remove country code prefix if present)
         const cleanNumber = from.replace(/^\+?55/, "").replace(/\D/g, "")

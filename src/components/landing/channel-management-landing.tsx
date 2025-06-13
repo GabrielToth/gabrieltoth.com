@@ -8,6 +8,7 @@ import {
     BarChart3,
     CheckCircle,
     DollarSign,
+    Edit3,
     MessageCircle,
     Percent,
     Star,
@@ -789,9 +790,12 @@ export default function ChannelManagementLanding({
                         </a>
                         <Link
                             href="/editors"
-                            className="text-blue-600 hover:text-blue-800 font-medium"
+                            className="inline-flex items-center px-8 py-4 border-2 border-white text-white rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition-colors text-lg"
                         >
-                            Editores
+                            <Edit3 className="mr-2" size={20} />
+                            {locale === "pt-BR"
+                                ? "Trabalhe Como Editor"
+                                : "Work as Editor"}
                         </Link>
                     </div>
                 </div>
