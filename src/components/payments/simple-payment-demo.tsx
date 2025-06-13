@@ -10,7 +10,8 @@ import {
     CardTitle,
 } from "@/components/ui/card"
 import { Check, Copy, CreditCard, Phone } from "lucide-react"
-import { useState } from "react"
+import Image from "next/image"
+import { useEffect, useState } from "react"
 
 interface SimplePaymentDemoProps {
     serviceType: string
@@ -42,8 +43,13 @@ export default function SimplePaymentDemo({
     const [orderData, setOrderData] = useState<OrderData | null>(null)
     const [paymentData, setPaymentData] = useState<PaymentData | null>(null)
     const [copiedText, setCopiedText] = useState<string | null>(null)
+    const [mounted, setMounted] = useState(false)
     const [, setError] = useState<string | null>(null)
     const [, setIsLoading] = useState(false)
+
+    useEffect(() => {
+        setMounted(true)
+    }, [])
 
     // Create payment order
     const createPayment = async () => {
@@ -104,6 +110,31 @@ export default function SimplePaymentDemo({
                       "Aguardando confirmação do pagamento."
               )}`
             : ""
+
+    // Prevent hydration mismatch
+    if (!mounted) {
+        return (
+            <div className="max-w-2xl mx-auto p-6 space-y-6">
+                <Card>
+                    <CardHeader>
+                        <CardTitle className="flex items-center gap-2">
+                            <CreditCard className="h-5 w-5" />
+                            Sistema de Pagamento Gratuito
+                        </CardTitle>
+                        <CardDescription>
+                            Carregando sistema de pagamentos...
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <div className="animate-pulse space-y-4">
+                            <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+                            <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+                        </div>
+                    </CardContent>
+                </Card>
+            </div>
+        )
+    }
 
     return (
         <div className="max-w-2xl mx-auto p-6 space-y-6">
@@ -247,11 +278,16 @@ export default function SimplePaymentDemo({
                                             QR Code PIX
                                         </h4>
                                         <div className="bg-white p-4 rounded-lg inline-block border">
-                                            <img
-                                                src={paymentData.qrCode}
-                                                alt="PIX QR Code"
-                                                className="w-48 h-48 mx-auto"
-                                            />
+                                            {paymentData.qrCode && (
+                                                <Image
+                                                    src={paymentData.qrCode}
+                                                    alt="PIX QR Code"
+                                                    width={192}
+                                                    height={192}
+                                                    className="w-48 h-48 mx-auto"
+                                                    unoptimized
+                                                />
+                                            )}
                                         </div>
                                     </div>
 
