@@ -149,6 +149,7 @@ export default function Header() {
                                     setIsLanguageMenuOpen(!isLanguageMenuOpen)
                                 }
                                 className="flex items-center space-x-1 text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
+                                data-cy="language-selector"
                             >
                                 <Globe size={16} />
                                 <span>{localeNames[locale]}</span>
@@ -167,6 +168,7 @@ export default function Header() {
                                                     ? "text-blue-600 dark:text-blue-400 font-medium"
                                                     : "text-gray-600 dark:text-gray-300"
                                             }`}
+                                            data-cy={`language-${loc}`}
                                         >
                                             {localeNames[loc]}
                                         </button>
