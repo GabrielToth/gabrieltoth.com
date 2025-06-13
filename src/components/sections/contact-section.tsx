@@ -1,97 +1,131 @@
 "use client"
 
-import { useContactForm } from "@/hooks/use-contact-form"
+import { useLocale } from "@/hooks/use-locale"
 import { type Locale } from "@/lib/i18n"
 import {
-    AlertCircle,
-    CheckCircle,
+    Calendar,
+    Clock,
+    Download,
+    FileText,
     Github,
     Linkedin,
-    Loader2,
     Mail,
-    MapPin,
+    MessageCircle,
     Youtube,
 } from "lucide-react"
-
-interface ContactSectionProps {
-    locale: Locale
-}
+import { useState } from "react"
 
 const getTranslations = (locale: Locale) => {
     const isPortuguese = locale === "pt-BR"
     return {
-        title: isPortuguese ? "Vamos Conversar!" : "Let's Talk!",
-        description: isPortuguese
-            ? "Estou sempre aberto a novas oportunidades e colaborações. Entre em contato!"
-            : "I'm always open to new opportunities and collaborations. Get in touch!",
-        getInTouch: isPortuguese ? "Entre em Contato" : "Get in Touch",
-        socialTitle: isPortuguese ? "Redes Sociais" : "Social Media",
-        locationTitle: isPortuguese ? "Localização" : "Location",
-        location: "Brasil",
-        nameLabel: isPortuguese ? "Nome" : "Name",
-        emailLabel: "Email",
-        messageLabel: isPortuguese ? "Mensagem" : "Message",
-        namePlaceholder: isPortuguese ? "Seu nome completo" : "Your full name",
-        emailPlaceholder: isPortuguese ? "seu@email.com" : "your@email.com",
-        messagePlaceholder: isPortuguese
-            ? "Conte-me sobre seu projeto ou como posso ajudar..."
-            : "Tell me about your project or how I can help...",
-        sendMessage: isPortuguese ? "Enviar Mensagem" : "Send Message",
-        sending: isPortuguese ? "Enviando..." : "Sending...",
-        contactInfo: isPortuguese
-            ? "Você pode me encontrar nas seguintes plataformas ou usar o formulário ao lado."
-            : "You can find me on the following platforms or use the form on the side.",
-        emailRequirement: isPortuguese
-            ? "* Aceito apenas emails de provedores confiáveis para evitar spam"
-            : "* I only accept emails from trusted providers to prevent spam",
-        socialMedia: [
-            {
-                name: "LinkedIn",
-                url: "https://www.linkedin.com/in/ogabrieltoth/",
-                icon: Linkedin,
-                color: "text-blue-600 dark:text-blue-400",
-                description: isPortuguese
-                    ? "Conecte-se comigo"
-                    : "Connect with me",
-            },
-            {
-                name: "GitHub",
-                url: "https://github.com/GabrielToth",
-                icon: Github,
-                color: "text-gray-800 dark:text-gray-200",
-                description: isPortuguese
-                    ? "Veja meus códigos"
-                    : "Check my code",
-            },
-            {
-                name: "YouTube",
-                url: "https://www.youtube.com/@ogabrieltoth",
-                icon: Youtube,
-                color: "text-red-600 dark:text-red-400",
-                description: isPortuguese
-                    ? "Assista meus vídeos"
-                    : "Watch my videos",
-            },
-        ],
+        title: isPortuguese ? "Vamos trabalhar juntos" : "Let's work together",
+        subtitle: isPortuguese
+            ? "Pronto para transformar suas ideias em realidade digital"
+            : "Ready to transform your ideas into digital reality",
+        getInTouch: isPortuguese ? "Entre em contato" : "Get in touch",
+        email: "Email",
+        scheduleCall: isPortuguese ? "Agendar chamada" : "Schedule a call",
+        downloadResume: isPortuguese ? "Baixar currículo" : "Download resume",
+        followMe: isPortuguese ? "Me siga" : "Follow me",
+        services: {
+            title: isPortuguese ? "Serviços disponíveis" : "Available services",
+            dataScience: isPortuguese ? "Ciência de Dados" : "Data Science",
+            webDev: isPortuguese ? "Desenvolvimento Web" : "Web Development",
+            consulting: isPortuguese ? "Consultoria Tech" : "Tech Consulting",
+            channelManagement: isPortuguese
+                ? "Gestão de Canais"
+                : "Channel Management",
+        },
+        availability: {
+            title: isPortuguese ? "Disponibilidade" : "Availability",
+            status: isPortuguese
+                ? "Disponível para novos projetos"
+                : "Available for new projects",
+            timezone: isPortuguese ? "Fuso horário: UTC-3" : "Timezone: UTC-3",
+            response: isPortuguese
+                ? "Resposta em até 24h"
+                : "Response within 24h",
+        },
+        contactForm: {
+            name: isPortuguese ? "Seu nome" : "Your name",
+            email: "Email",
+            subject: isPortuguese ? "Assunto" : "Subject",
+            message: isPortuguese ? "Mensagem" : "Message",
+            send: isPortuguese ? "Enviar mensagem" : "Send message",
+            sending: isPortuguese ? "Enviando..." : "Sending...",
+            success: isPortuguese
+                ? "Mensagem enviada com sucesso!"
+                : "Message sent successfully!",
+            error: isPortuguese
+                ? "Erro ao enviar mensagem. Tente novamente."
+                : "Error sending message. Please try again.",
+        },
     }
 }
 
-export default function ContactSection({ locale }: ContactSectionProps) {
-    const t = getTranslations(locale)
-    const {
-        formData,
-        status,
-        updateField,
-        submitForm,
-        isValid,
-        validateName,
-        validateEmailField,
-        validateMessage,
-    } = useContactForm(locale)
+export default function ContactSection() {
+    const { locale } = useLocale()
+    const [formData, setFormData] = useState({
+        name: "",
+        email: "",
+        subject: "",
+        message: "",
+    })
+    const [isSubmitting, setIsSubmitting] = useState(false)
+    const [submitStatus, setSubmitStatus] = useState<
+        "idle" | "success" | "error"
+    >("idle")
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const t = getTranslations(locale)
+
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
-        submitForm()
+        setIsSubmitting(true)
+
+        try {
+            const response = await fetch("/api/contact", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(formData),
+            })
+
+            if (response.ok) {
+                setSubmitStatus("success")
+                setFormData({ name: "", email: "", subject: "", message: "" })
+            } else {
+                setSubmitStatus("error")
+            }
+        } catch (error) {
+            setSubmitStatus("error")
+        } finally {
+            setIsSubmitting(false)
+            setTimeout(() => setSubmitStatus("idle"), 5000)
+        }
+    }
+
+    const handleChange = (
+        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    ) => {
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value,
+        })
+    }
+
+    const downloadResume = () => {
+        const resumeFile =
+            locale === "pt-BR"
+                ? "/resume/Gabriel-Toth-Goncalves-Curriculo-PT.pdf"
+                : "/resume/Gabriel-Toth-Goncalves-Resume-EN.pdf"
+
+        const link = document.createElement("a")
+        link.href = resumeFile
+        link.download = `Gabriel-Toth-Goncalves-${locale === "pt-BR" ? "Curriculo" : "Resume"}.pdf`
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
     }
 
     return (
@@ -102,7 +136,7 @@ export default function ContactSection({ locale }: ContactSectionProps) {
                         {t.title}
                     </h2>
                     <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-                        {t.description}
+                        {t.subtitle}
                     </p>
                 </div>
 
@@ -110,246 +144,215 @@ export default function ContactSection({ locale }: ContactSectionProps) {
                     {/* Contact Info */}
                     <div className="space-y-8">
                         <div>
-                            <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+                            <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
                                 {t.getInTouch}
                             </h3>
-                            <p className="text-gray-700 dark:text-gray-300 mb-8 leading-relaxed">
-                                {t.contactInfo}
-                            </p>
-                        </div>
 
-                        {/* Location */}
-                        <div className="flex items-start space-x-4">
-                            <div className="p-3 bg-blue-100 dark:bg-blue-900 rounded-lg">
-                                <MapPin className="w-6 h-6 text-blue-600 dark:text-blue-400" />
-                            </div>
-                            <div>
-                                <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-                                    {t.locationTitle}
-                                </h4>
-                                <p className="text-gray-600 dark:text-gray-300">
-                                    {t.location}
-                                </p>
-                            </div>
-                        </div>
-
-                        {/* Social Media */}
-                        <div>
-                            <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">
-                                {t.socialTitle}
-                            </h4>
                             <div className="space-y-4">
-                                {t.socialMedia.map(social => (
-                                    <a
-                                        key={social.name}
-                                        href={social.url}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="flex items-center space-x-4 p-4 bg-white dark:bg-gray-900 rounded-lg hover:shadow-md transition-all duration-300 hover:-translate-y-1"
-                                    >
-                                        <div
-                                            className={
-                                                "p-2 rounded-lg bg-gray-50 dark:bg-gray-800"
-                                            }
-                                        >
-                                            <social.icon
-                                                className={`w-5 h-5 ${social.color}`}
-                                            />
-                                        </div>
-                                        <div>
-                                            <h5 className="font-semibold text-gray-900 dark:text-white">
-                                                {social.name}
-                                            </h5>
-                                            <p className="text-sm text-gray-600 dark:text-gray-300">
-                                                {social.description}
-                                            </p>
-                                        </div>
-                                    </a>
-                                ))}
+                                <a
+                                    href="mailto:contato@gabrieltoth.com"
+                                    className="flex items-center space-x-3 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                                >
+                                    <Mail size={20} />
+                                    <span>contato@gabrieltoth.com</span>
+                                </a>
+
+                                <a
+                                    href="https://calendly.com/gabrieltoth"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="flex items-center space-x-3 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                                >
+                                    <Calendar size={20} />
+                                    <span>{t.scheduleCall}</span>
+                                </a>
+
+                                <button
+                                    onClick={downloadResume}
+                                    className="flex items-center space-x-3 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                                >
+                                    <Download size={20} />
+                                    <span>{t.downloadResume}</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        {/* Services */}
+                        <div>
+                            <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                                {t.services.title}
+                            </h4>
+                            <ul className="space-y-2 text-gray-600 dark:text-gray-300">
+                                <li className="flex items-center space-x-2">
+                                    <FileText size={16} />
+                                    <span>{t.services.dataScience}</span>
+                                </li>
+                                <li className="flex items-center space-x-2">
+                                    <FileText size={16} />
+                                    <span>{t.services.webDev}</span>
+                                </li>
+                                <li className="flex items-center space-x-2">
+                                    <MessageCircle size={16} />
+                                    <span>{t.services.consulting}</span>
+                                </li>
+                                <li className="flex items-center space-x-2">
+                                    <Youtube size={16} />
+                                    <span>{t.services.channelManagement}</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        {/* Availability */}
+                        <div>
+                            <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                                {t.availability.title}
+                            </h4>
+                            <div className="space-y-2 text-gray-600 dark:text-gray-300">
+                                <div className="flex items-center space-x-2">
+                                    <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                                    <span>{t.availability.status}</span>
+                                </div>
+                                <div className="flex items-center space-x-2">
+                                    <Clock size={16} />
+                                    <span>{t.availability.timezone}</span>
+                                </div>
+                                <div className="flex items-center space-x-2">
+                                    <Mail size={16} />
+                                    <span>{t.availability.response}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Social Links */}
+                        <div>
+                            <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                                {t.followMe}
+                            </h4>
+                            <div className="flex space-x-4">
+                                <a
+                                    href="https://github.com/GabrielToth"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+                                >
+                                    <Github size={24} />
+                                </a>
+                                <a
+                                    href="https://linkedin.com/in/gabriel-toth-goncalves"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-gray-600 dark:text-gray-400 hover:text-blue-600 transition-colors"
+                                >
+                                    <Linkedin size={24} />
+                                </a>
+                                <a
+                                    href="https://youtube.com/@WaveIGL"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-gray-600 dark:text-gray-400 hover:text-red-600 transition-colors"
+                                >
+                                    <Youtube size={24} />
+                                </a>
                             </div>
                         </div>
                     </div>
 
                     {/* Contact Form */}
                     <div className="bg-white dark:bg-gray-900 rounded-2xl p-8 shadow-lg">
-                        <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
-                            {t.sendMessage}
-                        </h3>
-
                         <form onSubmit={handleSubmit} className="space-y-6">
-                            {/* Name Field */}
                             <div>
                                 <label
                                     htmlFor="name"
-                                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                                    className="block text-sm font-medium text-gray-900 dark:text-white mb-2"
                                 >
-                                    {t.nameLabel}
+                                    {t.contactForm.name}
                                 </label>
                                 <input
                                     type="text"
                                     id="name"
                                     name="name"
                                     value={formData.name}
-                                    onChange={e =>
-                                        updateField("name", e.target.value)
-                                    }
-                                    className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 ${
-                                        formData.name &&
-                                        validateName(formData.name)
-                                            ? "border-red-500 dark:border-red-400"
-                                            : "border-gray-300 dark:border-gray-600"
-                                    }`}
-                                    placeholder={t.namePlaceholder}
+                                    onChange={handleChange}
                                     required
+                                    className="w-full px-4 py-3 border border-gray-200 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
                                 />
-                                {formData.name &&
-                                    validateName(formData.name) && (
-                                        <p className="text-red-500 text-xs mt-1">
-                                            {validateName(formData.name)}
-                                        </p>
-                                    )}
                             </div>
 
-                            {/* Email Field */}
                             <div>
                                 <label
                                     htmlFor="email"
-                                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                                    className="block text-sm font-medium text-gray-900 dark:text-white mb-2"
                                 >
-                                    {t.emailLabel}
+                                    {t.contactForm.email}
                                 </label>
                                 <input
                                     type="email"
                                     id="email"
                                     name="email"
                                     value={formData.email}
-                                    onChange={e =>
-                                        updateField("email", e.target.value)
-                                    }
-                                    className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 ${
-                                        formData.email &&
-                                        validateEmailField(formData.email)
-                                            ? "border-red-500 dark:border-red-400"
-                                            : "border-gray-300 dark:border-gray-600"
-                                    }`}
-                                    placeholder={t.emailPlaceholder}
+                                    onChange={handleChange}
                                     required
+                                    className="w-full px-4 py-3 border border-gray-200 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
                                 />
-                                {formData.email &&
-                                validateEmailField(formData.email) ? (
-                                    <p className="text-red-500 text-xs mt-1">
-                                        {validateEmailField(formData.email)}
-                                    </p>
-                                ) : (
-                                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                                        {t.emailRequirement}
-                                    </p>
-                                )}
                             </div>
 
-                            {/* Message Field */}
+                            <div>
+                                <label
+                                    htmlFor="subject"
+                                    className="block text-sm font-medium text-gray-900 dark:text-white mb-2"
+                                >
+                                    {t.contactForm.subject}
+                                </label>
+                                <input
+                                    type="text"
+                                    id="subject"
+                                    name="subject"
+                                    value={formData.subject}
+                                    onChange={handleChange}
+                                    required
+                                    className="w-full px-4 py-3 border border-gray-200 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                                />
+                            </div>
+
                             <div>
                                 <label
                                     htmlFor="message"
-                                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                                    className="block text-sm font-medium text-gray-900 dark:text-white mb-2"
                                 >
-                                    {t.messageLabel}
+                                    {t.contactForm.message}
                                 </label>
                                 <textarea
                                     id="message"
                                     name="message"
                                     rows={6}
-                                    maxLength={1000}
                                     value={formData.message}
-                                    onChange={e =>
-                                        updateField("message", e.target.value)
-                                    }
-                                    className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 resize-none ${
-                                        formData.message &&
-                                        validateMessage(formData.message)
-                                            ? "border-red-500 dark:border-red-400"
-                                            : "border-gray-300 dark:border-gray-600"
-                                    }`}
-                                    placeholder={t.messagePlaceholder}
+                                    onChange={handleChange}
                                     required
-                                />
-                                <div className="flex justify-between items-center mt-1">
-                                    <div>
-                                        {formData.message &&
-                                            validateMessage(
-                                                formData.message
-                                            ) && (
-                                                <p className="text-red-500 text-xs">
-                                                    {validateMessage(
-                                                        formData.message
-                                                    )}
-                                                </p>
-                                            )}
-                                    </div>
-                                    <p className="text-xs text-gray-500 dark:text-gray-400">
-                                        {formData.message.length}/1000
-                                    </p>
-                                </div>
-                            </div>
-
-                            {/* Honeypot field (hidden anti-spam) */}
-                            <div className="hidden">
-                                <label htmlFor="website" className="sr-only">
-                                    Website (leave blank)
-                                </label>
-                                <input
-                                    type="text"
-                                    id="website"
-                                    name="website"
-                                    value={formData.honeypot || ""}
-                                    onChange={e =>
-                                        updateField("honeypot", e.target.value)
-                                    }
-                                    tabIndex={-1}
-                                    autoComplete="off"
+                                    className="w-full px-4 py-3 border border-gray-200 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white resize-none"
                                 />
                             </div>
 
-                            {/* Status Messages */}
-                            {status.message && (
-                                <div
-                                    className={`flex items-center space-x-2 p-4 rounded-lg ${
-                                        status.status === "success"
-                                            ? "bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-300"
-                                            : "bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-300"
-                                    }`}
-                                >
-                                    {status.status === "success" ? (
-                                        <CheckCircle className="w-5 h-5" />
-                                    ) : (
-                                        <AlertCircle className="w-5 h-5" />
-                                    )}
-                                    <span className="text-sm">
-                                        {status.message}
-                                    </span>
-                                </div>
-                            )}
-
-                            {/* Submit Button */}
                             <button
                                 type="submit"
-                                disabled={
-                                    status.status === "loading" || !isValid
-                                }
-                                className="w-full bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                                disabled={isSubmitting}
+                                className="w-full bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                             >
-                                {status.status === "loading" ? (
-                                    <>
-                                        <Loader2 className="w-5 h-5 animate-spin" />
-                                        <span>{t.sending}</span>
-                                    </>
-                                ) : (
-                                    <>
-                                        <Mail size={20} />
-                                        <span>{t.sendMessage}</span>
-                                    </>
-                                )}
+                                {isSubmitting
+                                    ? t.contactForm.sending
+                                    : t.contactForm.send}
                             </button>
+
+                            {submitStatus === "success" && (
+                                <p className="text-green-600 text-sm text-center">
+                                    {t.contactForm.success}
+                                </p>
+                            )}
+
+                            {submitStatus === "error" && (
+                                <p className="text-red-600 text-sm text-center">
+                                    {t.contactForm.error}
+                                </p>
+                            )}
                         </form>
                     </div>
                 </div>

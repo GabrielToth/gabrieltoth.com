@@ -1,8 +1,7 @@
-import { type Locale } from "@/lib/i18n"
+"use client"
 
-interface AboutSectionProps {
-    locale: Locale
-}
+import { useLocale } from "@/hooks/use-locale"
+import { type Locale } from "@/lib/i18n"
 
 const getTranslations = (locale: Locale) => {
     const isPortuguese = locale === "pt-BR"
@@ -15,8 +14,8 @@ const getTranslations = (locale: Locale) => {
             ? "Olá! Sou Gabriel Toth Gonçalves, um cientista de dados pleno e desenvolvedor Full Stack brasileiro. Formado em Ciência da Computação com especialização em Ciência de Dados, atualmente trabalho no projeto social-analytics-engine, realizando análises avançadas de campanhas digitais e métricas de conversão."
             : "Hello! I'm Gabriel Toth Gonçalves, a senior data scientist and Full Stack developer from Brazil. With a Computer Science degree and specialization in Data Science, I currently work on the social-analytics-engine project, performing advanced digital campaign analysis and conversion metrics.",
         experience: isPortuguese
-            ? "Meu trabalho envolve a integração de dados do Google Analytics com métricas de redes sociais (YouTube, Instagram, X, Telegram) e análise de conversões Stripe usando Python, PostgreSQL, SQLAlchemy e Docker. Também desenvolvo soluções web empresariais, tendo criado sites como softclever.com.br e sistemasatfiscal.com.br, utilizando WordPress e tecnologias modernas."
-            : "My work involves integrating Google Analytics data with social media metrics (YouTube, Instagram, X, Telegram) and Stripe conversion analysis using Python, PostgreSQL, SQLAlchemy, and Docker. I also develop enterprise web solutions, having created sites like softclever.com.br and sistemasatfiscal.com.br, using WordPress and modern technologies.",
+            ? "Meu trabalho envolve a integração de dados do Google Analytics com métricas de redes sociais (YouTube, Instagram, X, Telegram) e análise de conversões Stripe usando Python, PostgreSQL, SQLAlchemy e Docker. Também desenvolvo soluções web empresariais, tendo criado sites como softclever.com.br (React) e sistemasatfiscal.com.br (Angular), utilizando tecnologias modernas."
+            : "My work involves integrating Google Analytics data with social media metrics (YouTube, Instagram, X, Telegram) and Stripe conversion analysis using Python, PostgreSQL, SQLAlchemy, and Docker. I also develop enterprise web solutions, having created sites like softclever.com.br (React) and sistemasatfiscal.com.br (Angular), using modern technologies.",
         passion: isPortuguese
             ? "Além da análise de dados, gerencio o canal WaveIGL com mais de 2 milhões de visualizações mensais e crio conteúdo educacional no YouTube. Tenho paixão por transformar dados em insights acionáveis e usar machine learning para otimizar campanhas digitais e experiências do usuário."
             : "Beyond data analysis, I manage the WaveIGL channel with over 2 million monthly views and create educational content on YouTube. I'm passionate about transforming data into actionable insights and using machine learning to optimize digital campaigns and user experiences.",
@@ -50,7 +49,7 @@ const getTranslations = (locale: Locale) => {
                     "Python",
                     "PostgreSQL",
                     "REST APIs",
-                    "WordPress",
+                    "Angular",
                 ],
             },
             tools: {
@@ -73,7 +72,8 @@ const getTranslations = (locale: Locale) => {
     }
 }
 
-export default function AboutSection({ locale }: AboutSectionProps) {
+export default function AboutSection() {
+    const { locale } = useLocale()
     const t = getTranslations(locale)
 
     return (

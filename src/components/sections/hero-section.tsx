@@ -1,12 +1,9 @@
 "use client"
 
+import { useLocale } from "@/hooks/use-locale"
 import { type Locale } from "@/lib/i18n"
 import { ChevronDown, Download, Mail } from "lucide-react"
 import { useEffect, useState } from "react"
-
-interface HeroSectionProps {
-    locale: Locale
-}
 
 const getTranslations = (locale: Locale) => {
     const isPortuguese = locale === "pt-BR"
@@ -37,7 +34,8 @@ const technologies = [
     "Tailwind CSS",
 ]
 
-export default function HeroSection({ locale }: HeroSectionProps) {
+export default function HeroSection() {
+    const { locale } = useLocale()
     const [mounted, setMounted] = useState(false)
     const [currentTech, setCurrentTech] = useState(0)
     const t = getTranslations(locale)

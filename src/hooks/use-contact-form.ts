@@ -5,6 +5,7 @@ import { useState } from "react"
 interface ContactFormData {
     name: string
     email: string
+    subject: string
     message: string
     honeypot?: string // Anti-spam field
 }
@@ -35,6 +36,7 @@ export function useContactForm(locale: "en" | "pt-BR") {
     const [formData, setFormData] = useState<ContactFormData>({
         name: "",
         email: "",
+        subject: "",
         message: "",
         honeypot: "",
     })
@@ -97,6 +99,28 @@ export function useContactForm(locale: "en" | "pt-BR") {
         return null
     }
 
+    const validateSubject = (subject: string): string | null => {
+        if (!subject.trim()) {
+            return isPortuguese
+                ? "Assunto é obrigatório"
+                : "Subject is required"
+        }
+
+        if (subject.length < 3) {
+            return isPortuguese
+                ? "Assunto deve ter pelo menos 3 caracteres"
+                : "Subject must be at least 3 characters"
+        }
+
+        if (subject.length > 100) {
+            return isPortuguese
+                ? "Assunto deve ter no máximo 100 caracteres"
+                : "Subject must be at most 100 characters"
+        }
+
+        return null
+    }
+
     const validateMessage = (message: string): string | null => {
         if (!message.trim()) {
             return isPortuguese
@@ -125,6 +149,9 @@ export function useContactForm(locale: "en" | "pt-BR") {
 
         const emailError = validateEmailField(formData.email)
         if (emailError) return emailError
+
+        const subjectError = validateSubject(formData.subject)
+        if (subjectError) return subjectError
 
         const messageError = validateMessage(formData.message)
         if (messageError) return messageError
@@ -155,6 +182,7 @@ export function useContactForm(locale: "en" | "pt-BR") {
                 body: JSON.stringify({
                     name: formData.name.trim(),
                     email: formData.email.trim().toLowerCase(),
+                    subject: formData.subject.trim(),
                     message: formData.message.trim(),
                     locale,
                 }),
@@ -167,7 +195,13 @@ export function useContactForm(locale: "en" | "pt-BR") {
                         ? "Mensagem enviada com sucesso! Retornarei em breve."
                         : "Message sent successfully! I'll get back to you soon.",
                 })
-                setFormData({ name: "", email: "", message: "", honeypot: "" })
+                setFormData({
+                    name: "",
+                    email: "",
+                    subject: "",
+                    message: "",
+                    honeypot: "",
+                })
             } else {
                 const errorData = await response.json()
                 setStatus({
@@ -204,6 +238,7 @@ export function useContactForm(locale: "en" | "pt-BR") {
         isValid: validateForm() === null,
         validateName,
         validateEmailField,
+        validateSubject,
         validateMessage,
     }
 }

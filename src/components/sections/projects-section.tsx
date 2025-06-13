@@ -1,101 +1,94 @@
-import { type Locale } from "@/lib/i18n"
-import { ExternalLink, Github, Star } from "lucide-react"
+"use client"
 
-interface ProjectsSectionProps {
-    locale: Locale
-}
+import { useLocale } from "@/hooks/use-locale"
+import { type Locale } from "@/lib/i18n"
+import { ExternalLink, Github } from "lucide-react"
+import { useState } from "react"
 
 const getTranslations = (locale: Locale) => {
     const isPortuguese = locale === "pt-BR"
     return {
         title: isPortuguese ? "Projetos" : "Projects",
         description: isPortuguese
-            ? "Alguns dos projetos que desenvolvi e contribuí"
-            : "Some of the projects I've developed and contributed to",
-        viewCode: isPortuguese ? "Ver Código" : "View Code",
-        liveDemo: isPortuguese ? "Demo" : "Live Demo",
+            ? "Alguns dos projetos que desenvolvi usando tecnologias modernas"
+            : "Some of the projects I've developed using modern technologies",
+        viewProject: isPortuguese ? "Ver Projeto" : "View Project",
+        sourceCode: isPortuguese ? "Código Fonte" : "Source Code",
+        technologies: isPortuguese ? "Tecnologias" : "Technologies",
+        showMore: isPortuguese ? "Ver Mais" : "Show More",
+        showLess: isPortuguese ? "Ver Menos" : "Show Less",
         projects: [
+            {
+                title: "Sistema SAT Fiscal - Website",
+                description: isPortuguese
+                    ? "Website institucional para empresa especializada em soluções fiscais e contábeis. Desenvolvido com foco em apresentar serviços fiscais, gestão tributária e soluções empresariais de forma clara e profissional."
+                    : "Institutional website for company specialized in fiscal and accounting solutions. Developed with focus on presenting fiscal services, tax management and business solutions in a clear and professional way.",
+                image: "/projects/sat-fiscal.jpg",
+                tags: ["HTML", "CSS", "JavaScript", "SEO", "Design"],
+                liveUrl: "https://sistemasatfiscal.com.br",
+                featured: true,
+            },
+            {
+                title: "Softclever - Website",
+                description: isPortuguese
+                    ? "Site empresarial desenvolvido em React para empresa de software, com design moderno e responsivo. Implementa seções para serviços, portfólio e contato, utilizando tecnologias como React, CSS moderno e otimizações de SEO."
+                    : "Corporate website developed in React for software company, with modern and responsive design. Implements sections for services, portfolio and contact, using technologies like React, modern CSS and SEO optimizations.",
+                image: "/projects/softclever.jpg",
+                tags: ["React", "CSS", "JavaScript", "SEO"],
+                liveUrl: "https://softclever.com.br",
+                githubUrl: "https://github.com/gabrieltoth/softclever",
+            },
+            {
+                title: "WaveIGL Project",
+                description: isPortuguese
+                    ? "Projeto educacional completo incluindo canal no YouTube com mais de 2 milhões de visualizações mensais, sistema de pagamentos integrado para investimentos e gestão de canais. Inclui criação de conteúdo sobre tecnologia, programação e desenvolvimento de games."
+                    : "Complete educational project including YouTube channel with over 2 million monthly views, integrated payment system for investments and channel management. Includes content creation about technology, programming and game development.",
+                image: "/projects/waveigl.jpg",
+                tags: [
+                    "YouTube",
+                    "Content Creation",
+                    "Payment Integration",
+                    "Next.js",
+                    "Stripe",
+                    "PIX",
+                ],
+                liveUrl: "/waveigl-support",
+            },
             {
                 title: "Social Analytics Engine",
                 description: isPortuguese
-                    ? "Sistema de análise de campanhas digitais que integra Google Analytics com métricas de redes sociais (YouTube, Instagram, X, Telegram) e conversões Stripe. Desenvolvido com Python, PostgreSQL, SQLAlchemy e Docker."
-                    : "Digital campaign analysis system that integrates Google Analytics with social media metrics (YouTube, Instagram, X, Telegram) and Stripe conversions. Built with Python, PostgreSQL, SQLAlchemy, and Docker.",
-                tech: [
+                    ? "Sistema completo de análise de campanhas digitais integrando dados do Google Analytics com métricas de redes sociais (YouTube, Instagram, X, Telegram) e análise de conversões Stripe. Utiliza Python, PostgreSQL, SQLAlchemy e Docker para processar e analisar dados de campanhas em tempo real."
+                    : "Complete digital campaign analysis system integrating Google Analytics data with social media metrics (YouTube, Instagram, X, Telegram) and Stripe conversion analysis. Uses Python, PostgreSQL, SQLAlchemy, and Docker to process and analyze campaign data in real-time.",
+                image: "/projects/social-analytics.jpg",
+                tags: [
                     "Python",
                     "PostgreSQL",
-                    "SQLAlchemy",
-                    "Docker",
                     "Google APIs",
                     "Stripe API",
+                    "Docker",
+                    "SQLAlchemy",
                 ],
-                github: undefined,
-                demo: undefined,
-                featured: true,
+                liveUrl: "/social-analytics-investment",
             },
             {
-                title: "Soft Clever - Software ERP",
+                title: "PC Optimization Service",
                 description: isPortuguese
-                    ? "Site institucional principal da Soft Clever, empresa de software empresarial com mais de 31 anos de experiência e 12.000+ usuários. Desenvolvido com design moderno e responsivo, destacando soluções ERP, SAT e NFC-e."
-                    : "Main corporate website for Soft Clever, an enterprise software company with over 31 years of experience and 12,000+ users. Developed with modern responsive design, showcasing ERP, SAT, and NFC-e solutions.",
-                tech: [
-                    "WordPress",
-                    "PHP",
-                    "CSS",
-                    "JavaScript",
-                    "Responsive Design",
-                ],
-                github: undefined,
-                demo: "https://softclever.com.br",
-                featured: true,
-            },
-            {
-                title: "Gabriel Toth Portfolio",
-                description: isPortuguese
-                    ? "Meu portfólio pessoal construído com Next.js 15, TypeScript e Tailwind CSS. Implementa internacionalização (EN/PT-BR), SEO otimizado e design responsivo."
-                    : "My personal portfolio built with Next.js 15, TypeScript, and Tailwind CSS. Features internationalization (EN/PT-BR), optimized SEO, and responsive design.",
-                tech: ["Next.js", "TypeScript", "Tailwind CSS", "Vercel"],
-                github: "https://github.com/GabrielToth/gabrieltoth.com",
-                demo: "https://gabrieltoth.com",
-                featured: true,
-            },
-            {
-                title: "Angular V17 Template",
-                description: isPortuguese
-                    ? "Template Angular 17 que enfatiza práticas de código limpo e desenvolvimento amigável para testes. Com 61 estrelas no GitHub, é uma base sólida para projetos Angular modernos."
-                    : "Angular 17 template that emphasizes clean code practices and test-friendly development. With 61 stars on GitHub, it's a solid foundation for modern Angular projects.",
-                tech: ["Angular", "TypeScript", "Jest", "Frontend"],
-                github: "https://github.com/GabrielToth/Angular-V17-Template",
-                demo: null,
-                stars: 61,
-                featured: true,
-            },
-            {
-                title: "Sistema SAT Fiscal",
-                description: isPortuguese
-                    ? "Meu primeiro site empresarial desenvolvido para a Soft Clever, focado em soluções fiscais SAT e NFC-e. Site responsivo com design profissional para apresentar produtos e serviços fiscais."
-                    : "My first enterprise website developed for Soft Clever, focused on SAT and NFC-e fiscal solutions. Responsive website with professional design to showcase fiscal products and services.",
-                tech: ["WordPress", "PHP", "CSS", "JavaScript"],
-                github: undefined,
-                demo: "https://www.sistemasatfiscal.com.br",
-                featured: false,
-            },
-
-            {
-                title: "Minecraft Plugin - NoHitDelay",
-                description: isPortuguese
-                    ? "Plugin para Bukkit/Spigot 1.17.1 que modifica o delay de hit no Minecraft. Demonstra conhecimento em Java e desenvolvimento de plugins para servidores de Minecraft."
-                    : "Bukkit/Spigot 1.17.1 plugin that modifies hit delay in Minecraft. Demonstrates knowledge in Java and Minecraft server plugin development.",
-                tech: ["Java", "Bukkit", "Spigot", "Minecraft"],
-                github: "https://github.com/GabrielToth/Minecraft-Plugin-NoHitDelay",
-                demo: undefined,
-                featured: false,
+                    ? "Serviço especializado de otimização de PCs para gaming, com foco em maximizar performance em jogos e reduzir latência. Inclui configurações avançadas de sistema, otimização de hardware e software personalizado."
+                    : "Specialized PC optimization service for gaming, focused on maximizing game performance and reducing latency. Includes advanced system configurations, hardware optimization and custom software.",
+                image: "/projects/pc-optimization.jpg",
+                tags: ["Windows", "Gaming", "Performance", "Hardware"],
+                liveUrl: "/pc-optimization",
             },
         ],
     }
 }
 
-export default function ProjectsSection({ locale }: ProjectsSectionProps) {
+export default function ProjectsSection() {
+    const { locale } = useLocale()
+    const [showAll, setShowAll] = useState(false)
     const t = getTranslations(locale)
+
+    const displayedProjects = showAll ? t.projects : t.projects.slice(0, 3)
 
     return (
         <section id="projects" className="py-24 bg-white dark:bg-gray-900">
@@ -109,100 +102,83 @@ export default function ProjectsSection({ locale }: ProjectsSectionProps) {
                     </p>
                 </div>
 
-                <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
-                    {t.projects.map(project => (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    {displayedProjects.map((project, index) => (
                         <div
                             key={project.title}
-                            className={`bg-gray-50 dark:bg-gray-800 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 ${
+                            className={`bg-gray-50 dark:bg-gray-800 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 ${
                                 project.featured
-                                    ? "lg:col-span-2 xl:col-span-1"
+                                    ? "md:col-span-2 lg:col-span-2"
                                     : ""
                             }`}
                         >
-                            {/* Header */}
-                            <div className="flex items-start justify-between mb-4">
-                                <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+                            <div
+                                className={`w-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold text-lg ${
+                                    project.featured ? "h-48" : "h-32"
+                                }`}
+                            >
+                                {project.title}
+                            </div>
+
+                            <div className="p-6">
+                                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">
                                     {project.title}
                                 </h3>
-                                {project.stars && (
-                                    <div className="flex items-center text-yellow-500">
-                                        <Star
-                                            size={16}
-                                            className="fill-current"
-                                        />
-                                        <span className="ml-1 text-sm font-medium">
-                                            {project.stars}
-                                        </span>
+                                <p className="text-gray-600 dark:text-gray-300 mb-4 line-clamp-3">
+                                    {project.description}
+                                </p>
+
+                                <div className="mb-4">
+                                    <p className="text-sm font-medium text-gray-900 dark:text-white mb-2">
+                                        {t.technologies}:
+                                    </p>
+                                    <div className="flex flex-wrap gap-2">
+                                        {project.tags.map(tag => (
+                                            <span
+                                                key={tag}
+                                                className="px-2 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded text-xs font-medium"
+                                            >
+                                                {tag}
+                                            </span>
+                                        ))}
                                     </div>
-                                )}
-                            </div>
+                                </div>
 
-                            {/* Description */}
-                            <p className="text-gray-700 dark:text-gray-300 mb-6 leading-relaxed">
-                                {project.description}
-                            </p>
-
-                            {/* Tech Stack */}
-                            <div className="flex flex-wrap gap-2 mb-6">
-                                {project.tech.map(tech => (
-                                    <span
-                                        key={tech}
-                                        className="px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-sm font-medium"
-                                    >
-                                        {tech}
-                                    </span>
-                                ))}
-                            </div>
-
-                            {/* Actions */}
-                            <div className="flex space-x-4">
-                                {project.github && (
+                                <div className="flex space-x-3">
                                     <a
-                                        href={project.github}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="flex items-center space-x-2 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                                        href={project.liveUrl}
+                                        className="flex items-center space-x-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
                                     >
-                                        <Github size={18} />
-                                        <span className="text-sm font-medium">
-                                            {t.viewCode}
-                                        </span>
+                                        <ExternalLink size={16} />
+                                        <span>{t.viewProject}</span>
                                     </a>
-                                )}
-                                {project.demo && (
-                                    <a
-                                        href={project.demo}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="flex items-center space-x-2 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
-                                    >
-                                        <ExternalLink size={18} />
-                                        <span className="text-sm font-medium">
-                                            {t.liveDemo}
-                                        </span>
-                                    </a>
-                                )}
+                                    {project.githubUrl && (
+                                        <a
+                                            href={project.githubUrl}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="flex items-center space-x-2 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 px-4 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors text-sm font-medium"
+                                        >
+                                            <Github size={16} />
+                                            <span>{t.sourceCode}</span>
+                                        </a>
+                                    )}
+                                </div>
                             </div>
                         </div>
                     ))}
                 </div>
 
-                {/* GitHub Link */}
-                <div className="text-center mt-12">
-                    <a
-                        href="https://github.com/GabrielToth"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center space-x-2 bg-gray-900 dark:bg-white text-white dark:text-gray-900 px-6 py-3 rounded-lg font-medium hover:bg-gray-800 dark:hover:bg-gray-100 transition-colors"
-                    >
-                        <Github size={20} />
-                        <span>
-                            {locale === "pt-BR"
-                                ? "Ver mais no GitHub"
-                                : "View more on GitHub"}
-                        </span>
-                    </a>
-                </div>
+                {t.projects.length > 3 && (
+                    <div className="text-center mt-12">
+                        <button
+                            onClick={() => setShowAll(!showAll)}
+                            className="bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white px-6 py-3 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors font-medium"
+                        >
+                            {showAll ? t.showLess : t.showMore}
+                        </button>
+                    </div>
+                )}
             </div>
         </section>
     )
