@@ -14,7 +14,9 @@ export default function LocaleProvider({
 }: LocaleProviderProps) {
     useEffect(() => {
         // Update the HTML lang attribute when locale changes
-        document.documentElement.lang = locale
+        if (typeof document !== "undefined") {
+            document.documentElement.lang = locale
+        }
     }, [locale])
 
     return <>{children}</>

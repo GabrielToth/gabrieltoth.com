@@ -205,7 +205,7 @@ export default function SimplePaymentDemo({
                         <p className="text-sm text-gray-600">
                             Para receber notificações e verificação automática
                         </p>
-                        {whatsappLink && (
+                        {whatsappLink && mounted && (
                             <Button
                                 variant="outline"
                                 size="sm"

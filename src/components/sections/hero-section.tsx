@@ -49,16 +49,24 @@ export default function HeroSection() {
     }, [])
 
     const scrollToAbout = () => {
-        document.getElementById("about")?.scrollIntoView({ behavior: "smooth" })
+        if (mounted) {
+            document
+                .getElementById("about")
+                ?.scrollIntoView({ behavior: "smooth" })
+        }
     }
 
     const scrollToContact = () => {
-        document
-            .getElementById("contact")
-            ?.scrollIntoView({ behavior: "smooth" })
+        if (mounted) {
+            document
+                .getElementById("contact")
+                ?.scrollIntoView({ behavior: "smooth" })
+        }
     }
 
     const downloadResume = () => {
+        if (!mounted) return
+
         const resumeFile =
             locale === "pt-BR"
                 ? "/resume/Gabriel-Toth-Goncalves-Curriculo-PT.pdf"

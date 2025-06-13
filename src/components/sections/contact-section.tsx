@@ -115,6 +115,8 @@ export default function ContactSection() {
     }
 
     const downloadResume = () => {
+        if (typeof document === "undefined") return
+
         const resumeFile =
             locale === "pt-BR"
                 ? "/resume/Gabriel-Toth-Goncalves-Curriculo-PT.pdf"

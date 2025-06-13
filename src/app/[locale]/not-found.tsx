@@ -22,17 +22,24 @@ export default function LocaleNotFound() {
             setLocale(potentialLocale)
         } else {
             // Try to detect from cookie or browser
-            const cookieLocale = document.cookie
-                .split("; ")
-                .find(row => row.startsWith("locale="))
-                ?.split("=")[1]
+            const cookieLocale =
+                typeof document !== "undefined"
+                    ? document.cookie
+                          .split("; ")
+                          .find(row => row.startsWith("locale="))
+                          ?.split("=")[1]
+                    : null
 
             if (cookieLocale && validLocales.includes(cookieLocale)) {
                 setLocale(cookieLocale)
             } else {
                 // Detect from browser language
-                const browserLang = navigator.language
-                setLocale(browserLang.startsWith("pt") ? "pt-BR" : "en")
+                if (typeof navigator !== "undefined") {
+                    const browserLang = navigator.language
+                    setLocale(browserLang.startsWith("pt") ? "pt-BR" : "en")
+                } else {
+                    setLocale("en")
+                }
             }
         }
     }, [])
