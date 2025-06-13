@@ -21,11 +21,11 @@ import {
     Phone,
     Users,
 } from "lucide-react"
-import { useTranslations } from "next-intl"
+import { getTranslations } from "next-intl/server"
 import Link from "next/link"
 
-export default function InvestmentsPage() {
-    const t = useTranslations("investments")
+export default async function InvestmentsPage() {
+    const t = await getTranslations("investments")
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
