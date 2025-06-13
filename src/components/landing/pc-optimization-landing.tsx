@@ -1,5 +1,7 @@
 "use client"
 
+import PricingToggle from "@/components/ui/pricing-toggle"
+import { useMoneroPricing } from "@/hooks/use-monero-pricing"
 import { type Locale } from "@/lib/i18n"
 import {
     CheckCircle,
@@ -8,6 +10,7 @@ import {
     Gamepad2,
     HardDrive,
     Monitor,
+    Percent,
     Shield,
     Star,
     Target,
@@ -24,6 +27,20 @@ interface PCOptimizationLandingProps {
 const getTranslations = (locale: Locale) => {
     const isPortuguese = locale === "pt-BR"
     return {
+        moneroToggle: {
+            title: isPortuguese
+                ? "Preços com Monero (XMR)"
+                : "Monero (XMR) Pricing",
+            description: isPortuguese
+                ? "Ative para ver preços com 50% de desconto usando Monero"
+                : "Enable to see 50% discount prices using Monero",
+            enabled: isPortuguese
+                ? "💰 Preços com Monero (50% OFF)"
+                : "💰 Monero Prices (50% OFF)",
+            disabled: isPortuguese
+                ? "💴 Preços Regulares (PIX/Card)"
+                : "💴 Regular Prices (PIX/Card)",
+        },
         hero: {
             badge: isPortuguese ? "⚡ PC LENTO?" : "⚡ SLOW PC?",
             problems: [
@@ -143,8 +160,7 @@ const getTranslations = (locale: Locale) => {
                     name: isPortuguese
                         ? "Boost de Performance Windows"
                         : "Windows Performance Boost",
-                    price: "R$ 149",
-                    originalPrice: "R$ 199",
+                    basePrice: 149, // Monero base price
                     description: isPortuguese
                         ? "Windows e Rede otimizados para jogos. Limpo, rápido e totalmente otimizado."
                         : "Game-ready Windows & Network. Clean, fast, and fully optimized for peak performance.",
@@ -169,8 +185,7 @@ const getTranslations = (locale: Locale) => {
                     name: isPortuguese
                         ? "Otimização Nível Pro"
                         : "Pro-Level System Optimization",
-                    price: "R$ 249",
-                    originalPrice: "R$ 329",
+                    basePrice: 249, // Monero base price
                     description: isPortuguese
                         ? "Desbloqueie o verdadeiro potencial do hardware com ajustes de OS e BIOS."
                         : "Unlock your hardware's true potential with OS and BIOS fine-tuning, including hidden tweaks.",
@@ -197,8 +212,7 @@ const getTranslations = (locale: Locale) => {
                     name: isPortuguese
                         ? "Overhaul de Performance Suprema"
                         : "Ultimate Performance Overhaul",
-                    price: "R$ 449",
-                    originalPrice: "R$ 599",
+                    basePrice: 449, // Monero base price
                     description: isPortuguese
                         ? "Otimização completa com overclock de CPU, GPU e RAM para performance máxima."
                         : "All-in-one tuning with CPU, GPU & RAM overclocking for peak performance.",
@@ -322,6 +336,7 @@ export default function PCOptimizationLanding({
     locale,
 }: PCOptimizationLandingProps) {
     const t = getTranslations(locale)
+    const { calculatePrice } = useMoneroPricing()
 
     return (
         <div className="min-h-screen bg-black text-white overflow-hidden">
@@ -497,57 +512,83 @@ export default function PCOptimizationLanding({
                             {t.pricing.subtitle}
                         </p>
                     </div>
+                    <PricingToggle locale={locale} />
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                        {t.pricing.plans.map((plan, index) => (
-                            <div
-                                key={index}
-                                className={`bg-black/50 backdrop-blur border rounded-lg p-8 relative ${
-                                    plan.popular
-                                        ? "border-blue-500 transform scale-105"
-                                        : "border-gray-700"
-                                }`}
-                            >
-                                {plan.popular && (
-                                    <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                                        <span className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2 rounded-full text-sm font-bold">
-                                            MAIS POPULAR
-                                        </span>
+                        {t.pricing.plans.map((plan, index) => {
+                            const pricing = calculatePrice(plan.basePrice)
+                            return (
+                                <div
+                                    key={index}
+                                    className={`bg-black/50 backdrop-blur border rounded-lg p-8 relative ${
+                                        plan.popular
+                                            ? "border-blue-500 transform scale-105"
+                                            : "border-gray-700"
+                                    }`}
+                                >
+                                    {plan.popular && (
+                                        <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                                            <span className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2 rounded-full text-sm font-bold">
+                                                MAIS POPULAR
+                                            </span>
+                                        </div>
+                                    )}
+
+                                    {/* Monero Discount Badge */}
+                                    {pricing.isMonero && (
+                                        <div className="absolute -top-2 -right-2">
+                                            <div className="bg-orange-500 text-white px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1">
+                                                <Percent className="w-3 h-3" />
+                                                50% OFF
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    <div className="text-center mb-8">
+                                        <h3 className="text-xl font-bold text-white mb-2">
+                                            {plan.name}
+                                        </h3>
+                                        <div className="flex items-center justify-center gap-2 mb-2">
+                                            <span className="text-4xl font-black text-blue-400">
+                                                {pricing.currency}{" "}
+                                                {pricing.displayPrice}
+                                            </span>
+                                            {pricing.originalPrice && (
+                                                <span className="text-lg text-gray-500 line-through">
+                                                    R$ {pricing.originalPrice}
+                                                </span>
+                                            )}
+                                        </div>
+                                        {pricing.isMonero && (
+                                            <div className="text-orange-400 text-sm font-medium">
+                                                💰 Preço com Monero (XMR)
+                                            </div>
+                                        )}
+                                        <p className="text-gray-400">
+                                            {plan.description}
+                                        </p>
                                     </div>
-                                )}
-                                <div className="text-center mb-8">
-                                    <h3 className="text-xl font-bold text-white mb-2">
-                                        {plan.name}
-                                    </h3>
-                                    <div className="flex items-center justify-center gap-2 mb-2">
-                                        <span className="text-4xl font-black text-blue-400">
-                                            {plan.price}
-                                        </span>
-                                        <span className="text-lg text-gray-500 line-through">
-                                            {plan.originalPrice}
-                                        </span>
-                                    </div>
-                                    <p className="text-gray-400">
-                                        {plan.description}
-                                    </p>
+                                    <ul className="space-y-4 mb-8">
+                                        {plan.features.map((feature, idx) => (
+                                            <li
+                                                key={idx}
+                                                className="flex items-center text-gray-300"
+                                            >
+                                                <CheckCircle className="w-5 h-5 text-green-400 mr-3" />
+                                                {feature}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                    <a
+                                        href={`/${locale}/pc-optimization/terms`}
+                                        className="w-full py-4 px-6 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-bold hover:from-blue-700 hover:to-purple-700 transition-all transform hover:scale-105 text-center block"
+                                    >
+                                        {locale === "pt-BR"
+                                            ? "LER TERMOS E CONTRATAR"
+                                            : "READ TERMS & GET STARTED"}
+                                    </a>
                                 </div>
-                                <ul className="space-y-4 mb-8">
-                                    {plan.features.map((feature, idx) => (
-                                        <li
-                                            key={idx}
-                                            className="flex items-center text-gray-300"
-                                        >
-                                            <CheckCircle className="w-5 h-5 text-green-400 mr-3" />
-                                            {feature}
-                                        </li>
-                                    ))}
-                                </ul>
-                                <button className="w-full py-4 px-6 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-bold hover:from-blue-700 hover:to-purple-700 transition-all transform hover:scale-105">
-                                    {locale === "pt-BR"
-                                        ? "CONTRATAR AGORA"
-                                        : "GET STARTED"}
-                                </button>
-                            </div>
-                        ))}
+                            )
+                        })}
                     </div>
                 </div>
             </section>
@@ -587,7 +628,7 @@ export default function PCOptimizationLanding({
                         {t.cta.subtitle}
                     </p>
                     <a
-                        href="#pricing"
+                        href={`/${locale}/pc-optimization/terms`}
                         className="inline-flex items-center px-12 py-6 bg-black text-white rounded-lg font-bold hover:bg-gray-900 transition-all transform hover:scale-105 text-xl"
                     >
                         <Zap className="mr-3" size={24} />

@@ -1,12 +1,21 @@
+"use client"
+
+import Footer from "@/components/layout/footer"
+import PricingToggle from "@/components/ui/pricing-toggle"
+import { useMoneroPricing } from "@/hooks/use-monero-pricing"
 import { type Locale } from "@/lib/i18n"
 import {
     BarChart3,
     CheckCircle,
     DollarSign,
+    Edit3,
     MessageCircle,
+    Percent,
     Star,
     Target,
     TrendingUp,
+    Video,
+    Youtube,
 } from "lucide-react"
 
 interface ChannelManagementLandingProps {
@@ -16,6 +25,20 @@ interface ChannelManagementLandingProps {
 const getTranslations = (locale: Locale) => {
     const isPortuguese = locale === "pt-BR"
     return {
+        moneroToggle: {
+            title: isPortuguese
+                ? "Preços com Monero (XMR)"
+                : "Monero (XMR) Pricing",
+            description: isPortuguese
+                ? "Ative para ver preços com 50% de desconto usando Monero"
+                : "Enable to see 50% discount prices using Monero",
+            enabled: isPortuguese
+                ? "💰 Preços com Monero (50% OFF)"
+                : "💰 Monero Prices (50% OFF)",
+            disabled: isPortuguese
+                ? "💴 Preços Regulares (PIX/Card)"
+                : "💴 Regular Prices (PIX/Card)",
+        },
         hero: {
             badge: isPortuguese
                 ? "🚀 Consultoria Especializada"
@@ -24,28 +47,51 @@ const getTranslations = (locale: Locale) => {
                 ? "Transforme Seu Canal em uma Máquina de Crescimento"
                 : "Transform Your Channel into a Growth Machine",
             subtitle: isPortuguese
-                ? "Desbloqueie todo o potencial do seu canal do YouTube com consultoria especializada em analytics, otimização de conteúdo e estratégias de monetização."
-                : "Unlock your YouTube channel's full potential with specialized consulting in analytics, content optimization and monetization strategies.",
-            cta: isPortuguese ? "Agendar Consultoria" : "Schedule Consultation",
+                ? "Especializado em analytics, otimização de conteúdo e estratégias de monetização para múltiplas plataformas. + de 2M de visualizações mensais somadas entre YouTube, Instagram, TikTok, Twitch e outras redes sociais."
+                : "Specialized in analytics, content optimization and monetization strategies for multiple platforms. + 2M monthly views combined across YouTube, Instagram, TikTok, Twitch and other social networks.",
+            cta: isPortuguese ? "Solicitar Consultoria" : "Request Consulting",
             stats: [
                 {
                     number: "2M+",
                     label: isPortuguese
-                        ? "Visualizações mensais gerenciadas"
-                        : "Monthly views managed",
+                        ? "Views mensais somadas (todas as plataformas)"
+                        : "Monthly views combined (all platforms)",
                 },
                 {
-                    number: "300%",
+                    number: "1M+",
                     label: isPortuguese
-                        ? "Crescimento médio dos clientes"
-                        : "Average client growth",
+                        ? "Views com menos de 1K subs (recorde)"
+                        : "Views with under 1K subs (record)",
                 },
                 {
-                    number: "5+",
+                    number: "10+",
                     label: isPortuguese
-                        ? "Anos de experiência"
-                        : "Years of experience",
+                        ? "Anos de experiência (desde 2013)"
+                        : "Years of experience (since 2013)",
                 },
+            ],
+        },
+        about: {
+            title: isPortuguese ? "Sobre Mim" : "About Me",
+            description: isPortuguese
+                ? "Cientista de Dados & Desenvolvedor Full Stack focado em crescimento digital"
+                : "Data Scientist & Full Stack Developer focused on digital growth",
+            intro: isPortuguese
+                ? "Sou Gabriel Toth Gonçalves, cientista de dados pleno e desenvolvedor Full Stack brasileiro. Formado em Ciência da Computação com especialização em Ciência de Dados, atualmente trabalho no projeto social-analytics-engine, realizando análises avançadas de campanhas digitais e métricas de conversão."
+                : "I'm Gabriel Toth Gonçalves, a senior data scientist and Full Stack developer from Brazil. With a Computer Science degree and specialization in Data Science, I currently work on the social-analytics-engine project, performing advanced digital campaign analysis and conversion metrics.",
+            experience: isPortuguese
+                ? "Meu trabalho envolve a integração de dados do Google Analytics com métricas de redes sociais (YouTube, Instagram, X, Telegram) e análise de conversões Stripe usando Python, PostgreSQL, SQLAlchemy e Docker. Também desenvolvo soluções web empresariais, tendo criado sites como softclever.com.br (React) e sistemasatfiscal.com.br (Angular)."
+                : "My work involves integrating Google Analytics data with social media metrics (YouTube, Instagram, X, Telegram) and Stripe conversion analysis using Python, PostgreSQL, SQLAlchemy, and Docker. I also develop enterprise web solutions, having created sites like softclever.com.br (React) and sistemasatfiscal.com.br (Angular).",
+            passion: isPortuguese
+                ? "Além da análise de dados, gerencio múltiplas redes sociais incluindo o projeto WaveIGL (YouTube, Instagram, TikTok, Twitch) com mais de 2 milhões de visualizações mensais somadas. Tenho um case impressionante: alcancei mais de 1 milhão de views em um canal antes mesmo de ter 1000 inscritos. Gerencio canais desde 2013 e uso machine learning para otimizar campanhas em múltiplas plataformas."
+                : "Beyond data analysis, I manage multiple social networks including the WaveIGL project (YouTube, Instagram, TikTok, Twitch) with over 2 million monthly views combined. I have an impressive case: I reached over 1 million views on a channel that still had less than 1000 subscribers. I've been managing channels since 2013 and use machine learning to optimize campaigns across multiple platforms.",
+            skills: [
+                { icon: BarChart3, name: "Analytics & Data Science" },
+                { icon: Video, name: "Content Strategy" },
+                { icon: DollarSign, name: "Monetization" },
+                { icon: TrendingUp, name: "Growth Hacking" },
+                { icon: Youtube, name: "YouTube Optimization" },
+                { icon: Target, name: "Audience Development" },
             ],
         },
         problems: {
@@ -105,87 +151,155 @@ const getTranslations = (locale: Locale) => {
                 {
                     icon: BarChart3,
                     title: isPortuguese
-                        ? "Análise Completa de Performance"
-                        : "Complete Performance Analysis",
+                        ? "Análise Multi-Plataforma Completa"
+                        : "Complete Multi-Platform Analysis",
                     description: isPortuguese
-                        ? "Auditoria profunda dos seus analytics com insights acionáveis para otimização imediata."
-                        : "Deep audit of your analytics with actionable insights for immediate optimization.",
+                        ? "Auditoria profunda dos seus analytics em YouTube, Instagram, TikTok, Twitch e outras plataformas com insights acionáveis para otimização imediata."
+                        : "Deep audit of your analytics across YouTube, Instagram, TikTok, Twitch and other platforms with actionable insights for immediate optimization.",
                     features: [
                         isPortuguese
-                            ? "Análise de métricas avançadas"
-                            : "Advanced metrics analysis",
+                            ? "Análise cross-platform de métricas"
+                            : "Cross-platform metrics analysis",
                         isPortuguese
-                            ? "Identificação de gargalos"
-                            : "Bottleneck identification",
+                            ? "Identificação de gargalos por rede social"
+                            : "Social network bottleneck identification",
                         isPortuguese
-                            ? "Relatório personalizado"
-                            : "Custom report",
+                            ? "Relatório consolidado personalizado"
+                            : "Custom consolidated report",
                     ],
                 },
                 {
                     icon: Target,
                     title: isPortuguese
-                        ? "Estratégia de Conteúdo"
-                        : "Content Strategy",
+                        ? "Estratégia de Conteúdo Multi-Plataforma"
+                        : "Multi-Platform Content Strategy",
                     description: isPortuguese
-                        ? "Desenvolvimento de estratégia de conteúdo baseada em dados para maximizar alcance e engajamento."
-                        : "Data-driven content strategy development to maximize reach and engagement.",
+                        ? "Desenvolvimento de estratégia de conteúdo baseada em dados para maximizar alcance e engajamento em YouTube, Instagram, TikTok, Twitch e outras redes sociais."
+                        : "Data-driven content strategy development to maximize reach and engagement across YouTube, Instagram, TikTok, Twitch and other social networks.",
                     features: [
                         isPortuguese
-                            ? "Calendário editorial"
-                            : "Editorial calendar",
+                            ? "Calendário editorial sincronizado"
+                            : "Synchronized editorial calendar",
                         isPortuguese
-                            ? "Otimização de títulos e thumbnails"
-                            : "Title and thumbnail optimization",
+                            ? "Otimização específica por plataforma"
+                            : "Platform-specific optimization",
                         isPortuguese
-                            ? "Análise de tendências"
-                            : "Trend analysis",
+                            ? "Análise de tendências cross-platform"
+                            : "Cross-platform trend analysis",
                     ],
                 },
                 {
                     icon: DollarSign,
                     title: isPortuguese
-                        ? "Otimização de Monetização"
-                        : "Monetization Optimization",
+                        ? "Monetização Diversificada"
+                        : "Diversified Monetization",
                     description: isPortuguese
-                        ? "Estratégias para maximizar revenue através de múltiplos canais de monetização."
-                        : "Strategies to maximize revenue through multiple monetization channels.",
+                        ? "Estratégias para maximizar revenue através de múltiplos canais de monetização em todas as plataformas onde você atua."
+                        : "Strategies to maximize revenue through multiple monetization channels across all platforms where you operate.",
                     features: [
                         isPortuguese
-                            ? "Otimização de AdSense"
-                            : "AdSense optimization",
+                            ? "Monetização YouTube + Creator Funds"
+                            : "YouTube monetization + Creator Funds",
                         isPortuguese
-                            ? "Estratégias de patrocínio"
-                            : "Sponsorship strategies",
-                        isPortuguese ? "Produtos digitais" : "Digital products",
+                            ? "Estratégias de patrocínio multi-plataforma"
+                            : "Multi-platform sponsorship strategies",
+                        isPortuguese
+                            ? "Produtos digitais e affiliate marketing"
+                            : "Digital products and affiliate marketing",
+                    ],
+                },
+            ],
+        },
+        results: {
+            title: isPortuguese ? "Resultados Comprovados" : "Proven Results",
+            subtitle: isPortuguese
+                ? "Cases reais de crescimento"
+                : "Real growth cases",
+            items: [
+                {
+                    channel: "WaveIGL Multi-Platform",
+                    description: isPortuguese
+                        ? "Projeto completo multi-plataforma gerenciado por mim"
+                        : "Complete multi-platform project managed by me",
+                    metrics: [
+                        {
+                            label: isPortuguese
+                                ? "Views mensais somadas"
+                                : "Combined monthly views",
+                            value: "2M+",
+                        },
+                        {
+                            label: isPortuguese
+                                ? "YouTube (400K) + outras plataformas"
+                                : "YouTube (400K) + other platforms",
+                            value: "1.6M",
+                        },
+                        {
+                            label: isPortuguese
+                                ? "Plataformas ativas"
+                                : "Active platforms",
+                            value: "5+",
+                        },
+                    ],
+                },
+                {
+                    channel: isPortuguese
+                        ? "Case Histórico"
+                        : "Historical Case",
+                    description: isPortuguese
+                        ? "Recorde pessoal - canal que gerenciei"
+                        : "Personal record - channel I managed",
+                    metrics: [
+                        {
+                            label: isPortuguese
+                                ? "Views totais"
+                                : "Total views",
+                            value: "1M+",
+                        },
+                        {
+                            label: isPortuguese
+                                ? "Inscritos na época"
+                                : "Subscribers at the time",
+                            value: "<1K",
+                        },
+                        {
+                            label: isPortuguese
+                                ? "Performance viral"
+                                : "Viral performance",
+                            value: "Epic",
+                        },
                     ],
                 },
             ],
         },
         testimonials: {
-            title: isPortuguese ? "Resultados Comprovados" : "Proven Results",
+            title: isPortuguese
+                ? "Minha Experiência e Resultados"
+                : "My Experience and Results",
             subtitle: isPortuguese
-                ? "Veja o que outros criadores estão dizendo"
-                : "See what other creators are saying",
+                ? "Cases reais e conquistas ao longo de 10+ anos de experiência"
+                : "Real cases and achievements over 10+ years of experience",
             items: [
                 {
-                    name: "WaveIGL Channel",
+                    name: "WaveIGL Multi-Platform",
                     role: isPortuguese
-                        ? "Canal Gaming - 2M+ visualizações/mês"
-                        : "Gaming Channel - 2M+ views/month",
+                        ? "Projeto próprio - Crescimento multi-plataforma"
+                        : "Own project - Multi-platform growth",
                     content: isPortuguese
-                        ? "Gabriel transformou completamente minha estratégia de conteúdo. Em 6 meses, triplicamos as visualizações e dobrou a receita."
-                        : "Gabriel completely transformed my content strategy. In 6 months, we tripled views and doubled revenue.",
+                        ? "Desenvolvi e gerencio todas as redes sociais do WaveIGL desde o início. Atualmente somamos 2M+ views mensais distribuídos entre YouTube (400K), Instagram, TikTok, Twitch e outras plataformas. O projeto cresce consistentemente há anos."
+                        : "I developed and manage all WaveIGL social networks from the beginning. We currently total 2M+ monthly views distributed across YouTube (400K), Instagram, TikTok, Twitch and other platforms. The project has been growing consistently for years.",
                     rating: 5,
                 },
                 {
-                    name: "TechCreator",
+                    name: isPortuguese
+                        ? "Case Histórico Viral"
+                        : "Historical Viral Case",
                     role: isPortuguese
-                        ? "Canal de Tecnologia - 500K+ subs"
-                        : "Tech Channel - 500K+ subs",
+                        ? "Conquista pessoal - Resultado extraordinário"
+                        : "Personal achievement - Extraordinary result",
                     content: isPortuguese
-                        ? "A análise de dados que o Gabriel fez revelou oportunidades que eu nunca tinha visto. Meu canal nunca cresceu tão rápido."
-                        : "Gabriel's data analysis revealed opportunities I had never seen. My channel has never grown so fast.",
+                        ? "Um dos meus casos mais impressionantes: consegui mais de 1 milhão de visualizações em um canal que ainda tinha menos de 1000 inscritos. Isso demonstra minha capacidade de criar conteúdo viral e entender profundamente os algoritmos das plataformas."
+                        : "One of my most impressive cases: I achieved over 1 million views on a channel that still had less than 1000 subscribers. This demonstrates my ability to create viral content and deeply understand platform algorithms.",
                     rating: 5,
                 },
             ],
@@ -200,7 +314,7 @@ const getTranslations = (locale: Locale) => {
             plans: [
                 {
                     name: isPortuguese ? "Análise Express" : "Express Analysis",
-                    price: "R$ 497",
+                    basePrice: 497,
                     description: isPortuguese
                         ? "Auditoria completa com relatório detalhado"
                         : "Complete audit with detailed report",
@@ -224,7 +338,7 @@ const getTranslations = (locale: Locale) => {
                     name: isPortuguese
                         ? "Consultoria Completa"
                         : "Complete Consulting",
-                    price: "R$ 1.497",
+                    basePrice: 1497,
                     description: isPortuguese
                         ? "Estratégia + implementação + acompanhamento"
                         : "Strategy + implementation + follow-up",
@@ -251,7 +365,7 @@ const getTranslations = (locale: Locale) => {
                     name: isPortuguese
                         ? "Mentoria Intensiva"
                         : "Intensive Mentoring",
-                    price: isPortuguese ? "Sob consulta" : "Quote on request",
+                    basePrice: 2997,
                     description: isPortuguese
                         ? "Acompanhamento mensal personalizado"
                         : "Personalized monthly follow-up",
@@ -276,17 +390,6 @@ const getTranslations = (locale: Locale) => {
                 },
             ],
         },
-        cta: {
-            title: isPortuguese
-                ? "Pronto Para Acelerar Seu Crescimento?"
-                : "Ready to Accelerate Your Growth?",
-            subtitle: isPortuguese
-                ? "Agende uma conversa gratuita de 30 minutos para discutirmos seu canal"
-                : "Schedule a free 30-minute conversation to discuss your channel",
-            button: isPortuguese
-                ? "Agendar Conversa Gratuita"
-                : "Schedule Free Conversation",
-        },
     }
 }
 
@@ -294,23 +397,52 @@ export default function ChannelManagementLanding({
     locale,
 }: ChannelManagementLandingProps) {
     const t = getTranslations(locale)
+    const { showMoneroPrice, toggleMoneroPrice, calculatePrice } =
+        useMoneroPricing()
+
+    const generateWhatsAppMessage = (
+        planName: string,
+        price: number,
+        isMonero: boolean
+    ) => {
+        const paymentMethod = isMonero ? "Monero (XMR)" : "PIX/Cartão"
+        const baseMessage =
+            locale === "pt-BR"
+                ? `Olá! Tenho interesse na consultoria de canal.%0A%0A` +
+                  `📋 Plano escolhido: ${planName}%0A` +
+                  `💰 Valor: R$ ${price}%0A` +
+                  `💳 Forma de pagamento: ${paymentMethod}%0A%0A` +
+                  `Nome:%0ACanal do YouTube:%0AQual seu principal objetivo:%0ATipo de conteúdo:%0AFrequência de postagem:%0A%0AAguardo o contato!`
+                : `Hello! I'm interested in channel consulting.%0A%0A` +
+                  `📋 Chosen plan: ${planName}%0A` +
+                  `💰 Price: R$ ${price}%0A` +
+                  `💳 Payment method: ${paymentMethod}%0A%0A` +
+                  `Name:%0AYouTube Channel:%0AYour main goal:%0AContent type:%0APosting frequency:%0A%0ALooking forward to hearing from you!`
+
+        return `https://wa.me/5511936191346?text=${baseMessage}`
+    }
 
     return (
         <div className="min-h-screen bg-white dark:bg-gray-900">
             {/* Hero Section */}
-            <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-blue-900">
+            <section className="relative py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-blue-900/20 dark:to-indigo-900/20">
                 <div className="max-w-7xl mx-auto text-center">
-                    <div className="inline-flex items-center px-4 py-2 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-sm font-medium mb-8">
-                        {t.hero.badge}
+                    <div className="inline-block mb-6">
+                        <span className="bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200 text-sm font-semibold px-4 py-2 rounded-full">
+                            {t.hero.badge}
+                        </span>
                     </div>
                     <h1 className="text-4xl sm:text-6xl font-bold text-gray-900 dark:text-white mb-6">
                         {t.hero.title}
                     </h1>
-                    <p className="text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-3xl mx-auto">
+                    <p className="text-xl text-gray-600 dark:text-gray-300 mb-12 max-w-4xl mx-auto leading-relaxed">
                         {t.hero.subtitle}
                     </p>
+
                     <a
-                        href="#pricing"
+                        href={generateWhatsAppMessage(t.hero.cta, 0, false)}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="inline-flex items-center px-8 py-4 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors text-lg"
                     >
                         <MessageCircle className="mr-2" size={20} />
@@ -336,8 +468,42 @@ export default function ChannelManagementLanding({
                 </div>
             </section>
 
-            {/* Problems Section */}
+            {/* About Section */}
             <section className="py-20 px-4 sm:px-6 lg:px-8">
+                <div className="max-w-7xl mx-auto">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                        <div>
+                            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-6">
+                                {t.about.title}
+                            </h2>
+                            <p className="text-lg text-blue-600 dark:text-blue-400 mb-6 font-medium">
+                                {t.about.description}
+                            </p>
+                            <div className="space-y-4 text-gray-600 dark:text-gray-300 leading-relaxed">
+                                <p>{t.about.intro}</p>
+                                <p>{t.about.experience}</p>
+                                <p>{t.about.passion}</p>
+                            </div>
+                        </div>
+                        <div className="grid grid-cols-2 gap-4">
+                            {t.about.skills.map((skill, index) => (
+                                <div
+                                    key={index}
+                                    className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg text-center"
+                                >
+                                    <skill.icon className="w-10 h-10 text-blue-600 dark:text-blue-400 mx-auto mb-4" />
+                                    <h3 className="font-semibold text-gray-900 dark:text-white">
+                                        {skill.name}
+                                    </h3>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* Problems Section */}
+            <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-800">
                 <div className="max-w-7xl mx-auto">
                     <div className="text-center mb-16">
                         <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
@@ -347,17 +513,17 @@ export default function ChannelManagementLanding({
                             {t.problems.subtitle}
                         </p>
                     </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                         {t.problems.items.map((problem, index) => (
                             <div
                                 key={index}
-                                className="text-center p-6 bg-red-50 dark:bg-red-900/20 rounded-lg"
+                                className="bg-white dark:bg-gray-900 rounded-lg p-6 shadow-lg text-center"
                             >
-                                <problem.icon className="w-12 h-12 text-red-600 dark:text-red-400 mx-auto mb-4" />
-                                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+                                <problem.icon className="w-12 h-12 text-red-500 mx-auto mb-4" />
+                                <h3 className="font-bold text-gray-900 dark:text-white mb-3">
                                     {problem.title}
                                 </h3>
-                                <p className="text-gray-600 dark:text-gray-300">
+                                <p className="text-gray-600 dark:text-gray-300 text-sm">
                                     {problem.description}
                                 </p>
                             </div>
@@ -367,7 +533,7 @@ export default function ChannelManagementLanding({
             </section>
 
             {/* Services Section */}
-            <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-800">
+            <section className="py-20 px-4 sm:px-6 lg:px-8">
                 <div className="max-w-7xl mx-auto">
                     <div className="text-center mb-16">
                         <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
@@ -381,7 +547,7 @@ export default function ChannelManagementLanding({
                         {t.services.items.map((service, index) => (
                             <div
                                 key={index}
-                                className="bg-white dark:bg-gray-900 rounded-lg p-8 shadow-lg"
+                                className="bg-white dark:bg-gray-800 rounded-lg p-8 shadow-lg"
                             >
                                 <service.icon className="w-12 h-12 text-blue-600 dark:text-blue-400 mb-6" />
                                 <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
@@ -396,8 +562,10 @@ export default function ChannelManagementLanding({
                                             key={idx}
                                             className="flex items-center text-gray-600 dark:text-gray-300"
                                         >
-                                            <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
-                                            {feature}
+                                            <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
+                                            <span className="text-sm">
+                                                {feature}
+                                            </span>
                                         </li>
                                     ))}
                                 </ul>
@@ -407,8 +575,49 @@ export default function ChannelManagementLanding({
                 </div>
             </section>
 
+            {/* Results Section */}
+            <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-800">
+                <div className="max-w-7xl mx-auto">
+                    <div className="text-center mb-16">
+                        <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+                            {t.results.title}
+                        </h2>
+                        <p className="text-xl text-gray-600 dark:text-gray-300">
+                            {t.results.subtitle}
+                        </p>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        {t.results.items.map((result, index) => (
+                            <div
+                                key={index}
+                                className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-lg p-8"
+                            >
+                                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                                    {result.channel}
+                                </h3>
+                                <p className="text-gray-600 dark:text-gray-300 mb-6">
+                                    {result.description}
+                                </p>
+                                <div className="grid grid-cols-3 gap-4">
+                                    {result.metrics.map((metric, idx) => (
+                                        <div key={idx} className="text-center">
+                                            <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+                                                {metric.value}
+                                            </div>
+                                            <div className="text-sm text-gray-600 dark:text-gray-300">
+                                                {metric.label}
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
             {/* Testimonials Section */}
-            <section className="py-20 px-4 sm:px-6 lg:px-8">
+            <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-800">
                 <div className="max-w-7xl mx-auto">
                     <div className="text-center mb-16">
                         <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
@@ -422,7 +631,7 @@ export default function ChannelManagementLanding({
                         {t.testimonials.items.map((testimonial, index) => (
                             <div
                                 key={index}
-                                className="bg-white dark:bg-gray-800 rounded-lg p-8 shadow-lg"
+                                className="bg-white dark:bg-gray-900 rounded-lg p-8 shadow-lg"
                             >
                                 <div className="flex items-center mb-4">
                                     {[...Array(testimonial.rating)].map(
@@ -465,52 +674,91 @@ export default function ChannelManagementLanding({
                             {t.pricing.subtitle}
                         </p>
                     </div>
+                    <PricingToggle locale={locale} />
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                        {t.pricing.plans.map((plan, index) => (
-                            <div
-                                key={index}
-                                className={`bg-white dark:bg-gray-900 rounded-lg p-8 shadow-lg relative ${
-                                    plan.popular
-                                        ? "border-2 border-blue-500 transform scale-105"
-                                        : ""
-                                }`}
-                            >
-                                {plan.popular && (
-                                    <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                                        <span className="bg-blue-500 text-white px-4 py-2 rounded-full text-sm font-semibold">
-                                            Mais Popular
-                                        </span>
+                        {t.pricing.plans.map((plan, index) => {
+                            const pricing = calculatePrice(plan.basePrice)
+                            return (
+                                <div
+                                    key={index}
+                                    className={`bg-white dark:bg-gray-900 rounded-lg p-8 shadow-lg relative ${
+                                        plan.popular
+                                            ? "border-2 border-blue-500 transform scale-105"
+                                            : ""
+                                    }`}
+                                >
+                                    {plan.popular && (
+                                        <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                                            <span className="bg-blue-500 text-white px-4 py-2 rounded-full text-sm font-semibold">
+                                                {locale === "pt-BR"
+                                                    ? "Mais Popular"
+                                                    : "Most Popular"}
+                                            </span>
+                                        </div>
+                                    )}
+
+                                    {/* Monero Discount Badge */}
+                                    {pricing.isMonero && (
+                                        <div className="absolute -top-2 -right-2">
+                                            <div className="bg-orange-500 text-white px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1">
+                                                <Percent className="w-3 h-3" />
+                                                50% OFF
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    <div className="text-center mb-8">
+                                        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
+                                            {plan.name}
+                                        </h3>
+                                        <div className="flex items-center justify-center gap-2 mb-2">
+                                            <div className="text-3xl font-bold text-blue-600 dark:text-blue-400">
+                                                {pricing.currency}{" "}
+                                                {pricing.displayPrice}
+                                            </div>
+                                            {pricing.originalPrice && (
+                                                <span className="text-lg text-gray-500 line-through">
+                                                    R$ {pricing.originalPrice}
+                                                </span>
+                                            )}
+                                        </div>
+                                        {pricing.isMonero && (
+                                            <div className="text-orange-400 text-sm font-medium">
+                                                💰 Preço com Monero (XMR)
+                                            </div>
+                                        )}
+                                        <p className="text-gray-600 dark:text-gray-300">
+                                            {plan.description}
+                                        </p>
                                     </div>
-                                )}
-                                <div className="text-center mb-8">
-                                    <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
-                                        {plan.name}
-                                    </h3>
-                                    <div className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-2">
-                                        {plan.price}
-                                    </div>
-                                    <p className="text-gray-600 dark:text-gray-300">
-                                        {plan.description}
-                                    </p>
+                                    <ul className="space-y-4 mb-8">
+                                        {plan.features.map((feature, idx) => (
+                                            <li
+                                                key={idx}
+                                                className="flex items-center text-gray-600 dark:text-gray-300"
+                                            >
+                                                <CheckCircle className="w-5 h-5 text-green-500 mr-3" />
+                                                {feature}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                    <a
+                                        href={generateWhatsAppMessage(
+                                            plan.name,
+                                            pricing.displayPrice,
+                                            pricing.isMonero
+                                        )}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="w-full py-3 px-6 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors text-center block"
+                                    >
+                                        {locale === "pt-BR"
+                                            ? "Contratar Agora"
+                                            : "Get Started"}
+                                    </a>
                                 </div>
-                                <ul className="space-y-4 mb-8">
-                                    {plan.features.map((feature, idx) => (
-                                        <li
-                                            key={idx}
-                                            className="flex items-center text-gray-600 dark:text-gray-300"
-                                        >
-                                            <CheckCircle className="w-5 h-5 text-green-500 mr-3" />
-                                            {feature}
-                                        </li>
-                                    ))}
-                                </ul>
-                                <button className="w-full py-3 px-6 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors">
-                                    {locale === "pt-BR"
-                                        ? "Contratar Agora"
-                                        : "Get Started"}
-                                </button>
-                            </div>
-                        ))}
+                            )
+                        })}
                     </div>
                 </div>
             </section>
@@ -518,17 +766,41 @@ export default function ChannelManagementLanding({
             {/* Final CTA Section */}
             <section className="py-20 px-4 sm:px-6 lg:px-8 bg-blue-600 text-white">
                 <div className="max-w-4xl mx-auto text-center">
-                    <h2 className="text-3xl font-bold mb-4">{t.cta.title}</h2>
-                    <p className="text-xl mb-8 opacity-90">{t.cta.subtitle}</p>
-                    <a
-                        href="mailto:gabriel@gabrieltoth.com"
-                        className="inline-flex items-center px-8 py-4 bg-white text-blue-600 rounded-lg font-semibold hover:bg-gray-100 transition-colors text-lg"
-                    >
-                        <MessageCircle className="mr-2" size={20} />
-                        {t.cta.button}
-                    </a>
+                    <h2 className="text-3xl font-bold mb-4">
+                        {locale === "pt-BR"
+                            ? "Pronto Para Acelerar Seu Crescimento?"
+                            : "Ready to Accelerate Your Growth?"}
+                    </h2>
+                    <p className="text-xl mb-8 opacity-90">
+                        {locale === "pt-BR"
+                            ? "Entre em contato via WhatsApp para alinharmos as expectativas"
+                            : "Contact us via WhatsApp to align expectations"}
+                    </p>
+                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                        <a
+                            href={generateWhatsAppMessage(t.hero.cta, 0, false)}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center px-8 py-4 bg-white text-blue-600 rounded-lg font-semibold hover:bg-gray-100 transition-colors text-lg"
+                        >
+                            <MessageCircle className="mr-2" size={20} />
+                            {locale === "pt-BR"
+                                ? "Falar no WhatsApp"
+                                : "Message on WhatsApp"}
+                        </a>
+                        <a
+                            href="/editors"
+                            className="inline-flex items-center px-8 py-4 border-2 border-white text-white rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition-colors text-lg"
+                        >
+                            <Edit3 className="mr-2" size={20} />
+                            {locale === "pt-BR"
+                                ? "Trabalhe Como Editor"
+                                : "Work as Editor"}
+                        </a>
+                    </div>
                 </div>
             </section>
+            <Footer locale={locale} />
         </div>
     )
 }

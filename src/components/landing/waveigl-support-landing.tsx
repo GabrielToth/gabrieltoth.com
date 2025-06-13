@@ -381,6 +381,26 @@ export default function WaveIGLSupportLanding({
 
     return (
         <div className="min-h-screen bg-white dark:bg-gray-900">
+            {/* Language Selector for Landing Page */}
+            <div className="fixed top-4 right-4 z-50">
+                <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-lg p-2 shadow-md">
+                    <select
+                        value={locale}
+                        onChange={e =>
+                            (window.location.href =
+                                window.location.pathname +
+                                "?lang=" +
+                                e.target.value)
+                        }
+                        className="text-sm border-none bg-transparent focus:outline-none cursor-pointer"
+                        aria-label="Select language"
+                    >
+                        <option value="en">🇺🇸 English</option>
+                        <option value="pt-BR">🇧🇷 Português</option>
+                    </select>
+                </div>
+            </div>
+
             {/* Hero Section */}
             <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 text-white">
                 <div className="max-w-7xl mx-auto text-center">
@@ -730,12 +750,12 @@ export default function WaveIGLSupportLanding({
                             </div>
                             <div>
                                 <div className="font-bold text-lg">
-                                    R$ 58.000
+                                    R$ 1.500/mês
                                 </div>
                                 <div className="text-white/70">
                                     {locale === "pt-BR"
-                                        ? "Meta anual"
-                                        : "Annual goal"}
+                                        ? "Meta mensal"
+                                        : "Monthly goal"}
                                 </div>
                             </div>
                         </div>
