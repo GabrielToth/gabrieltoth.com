@@ -185,7 +185,7 @@ async function getTransactionDetails(txHash: string): Promise<{
 
         // Extract total output amount (simplified)
         const totalAmount =
-            tx.outputs?.reduce((sum: number, output: any) => {
+            tx.outputs?.reduce((sum: number, output: { amount?: number }) => {
                 return sum + (output.amount || 0)
             }, 0) || 0
 
@@ -245,7 +245,8 @@ async function verifyTransactionOutputs(
 
         const outputs = data.data?.outputs || []
         const totalAmount = outputs.reduce(
-            (sum: number, output: any) => sum + (output.amount || 0),
+            (sum: number, output: { amount?: number }) =>
+                sum + (output.amount || 0),
             0
         )
 

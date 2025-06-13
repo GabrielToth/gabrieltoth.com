@@ -1,42 +1,7 @@
 {
     "version": "0.2",
     "language": "en,pt-BR",
-    "languageSettings": [
-        {
-            "languageId": "typescript,javascript,typescriptreact,javascriptreact",
-            "language": "en,pt-BR"
-        },
-        {
-            "languageId": "markdown",
-            "language": "en,pt-BR"
-        }
-    ],
-    "dictionaries": ["en", "pt-br"],
-    "dictionaryDefinitions": [
-        {
-            "name": "pt-br",
-            "path": "./node_modules/cspell-dict-pt-br/cspell-ext.json"
-        }
-    ],
-    "ignorePaths": [
-        "src/app/[locale]/**",
-        "src/app/api/**",
-        "src/app/editors/**",
-        "src/app/investments/**",
-        "src/app/not-found.tsx",
-        "src/app/payment-demo/**",
-        "src/app/pc-optimization/**",
-        "src/app/social-analytics-investment/**",
-        "src/app/waveigl-support/**",
-        "src/components/**",
-        "src/hooks/**",
-        "src/lib/discord.ts",
-        "src/lib/i18n.ts",
-        "src/i18n/**",
-        "*.stories.tsx",
-        "*.stories.mdx",
-        ".storybook/**"
-    ],
+    "import": ["cspell-dict-pt-br/cspell-ext.json"],
     "words": [
         "monero",
         "Monero",
@@ -72,6 +37,9 @@
         "mdx",
         "tsx",
         "jsx",
+        "Softclever",
+        "gabrieltoth",
+        "Toth",
         "autodocs",
         "Autodocs",
         "supabase",
@@ -82,10 +50,6 @@
         "xmrchain",
         "pytest",
         "protonmail",
-        "softclever",
-        "Softclever",
-        "Toth",
-        "gabrieltoth",
         "PUBG",
         "Valorant",
         "Fortnite",
@@ -93,8 +57,15 @@
         "CAGR",
         "financials",
         "Frametimes",
-        "Microstutters"
+        "Microstutters",
+        "adsense",
+        "overclocks",
+        "Overclocks",
+        "criptomoedas",
+        "Mentoria",
+        "mentoria",
+        "codando",
+        "Curriculo"
     ],
-    "ignoreWords": [],
-    "import": []
+    "ignoreWords": []
 }
