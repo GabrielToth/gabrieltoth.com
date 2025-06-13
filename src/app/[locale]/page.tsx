@@ -15,7 +15,7 @@ export default async function HomePage({ params }: HomePageProps) {
     const { locale } = await params
     return (
         <main className="min-h-screen bg-white dark:bg-gray-900">
-            <Header locale={locale} />
+            <Header />
             <HeroSection />
             <AboutSection />
             <ProjectsSection />
