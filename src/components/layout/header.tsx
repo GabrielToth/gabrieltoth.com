@@ -1,14 +1,11 @@
 "use client"
 
-import { getLocalizedPath, type Locale, localeNames, locales } from "@/lib/i18n"
+import { ThemeToggleClient } from "@/components/theme/theme-toggle-client"
+import { useLocale } from "@/hooks/use-locale"
+import { localeNames, locales, type Locale } from "@/lib/i18n"
 import { Globe, Menu, X } from "lucide-react"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
 import { useState } from "react"
-
-interface HeaderProps {
-    locale: Locale
-}
 
 const getTranslations = (locale: Locale) => {
     const isPortuguese = locale === "pt-BR"
@@ -16,6 +13,7 @@ const getTranslations = (locale: Locale) => {
         home: isPortuguese ? "Início" : "Home",
         about: isPortuguese ? "Sobre" : "About",
         projects: isPortuguese ? "Projetos" : "Projects",
+        investments: isPortuguese ? "Investimentos" : "Investments",
         services: isPortuguese ? "Serviços" : "Services",
         channels: isPortuguese ? "Canais" : "Channels",
         contact: isPortuguese ? "Contato" : "Contact",
@@ -30,25 +28,26 @@ const getTranslations = (locale: Locale) => {
     }
 }
 
-export default function Header({ locale }: HeaderProps) {
+export default function Header() {
+    const { locale, changeLocale } = useLocale()
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-    const [isLanguageMenuOpen, setIsLanguageMenuOpen] = useState(false)
     const [isServicesMenuOpen, setIsServicesMenuOpen] = useState(false)
-    const pathname = usePathname()
+    const [isLanguageMenuOpen, setIsLanguageMenuOpen] = useState(false)
     const t = getTranslations(locale)
 
     const navigation = [
-        { name: t.home, href: "#hero" },
-        { name: t.about, href: "#about" },
-        { name: t.projects, href: "#projects" },
-        { name: t.channels, href: "#channel-management" },
-        { name: t.contact, href: "#contact" },
+        { name: t.home, href: "/#hero" },
+        { name: t.about, href: "/#about" },
+        { name: t.projects, href: "/#projects" },
+        { name: t.investments, href: `/${locale}/investments` },
+        { name: t.channels, href: "/#channel-management" },
+        { name: t.contact, href: "/#contact" },
     ]
 
     const servicesDropdown = [
         {
             name: t.channelManagement,
-            href: getLocalizedPath("/channel-management", locale),
+            href: `/${locale}/channel-management`,
             description:
                 locale === "pt-BR"
                     ? "Consultoria e gestão de canais"
@@ -56,7 +55,7 @@ export default function Header({ locale }: HeaderProps) {
         },
         {
             name: t.pcOptimization,
-            href: getLocalizedPath("/pc-optimization", locale),
+            href: `/${locale}/pc-optimization`,
             description:
                 locale === "pt-BR"
                     ? "Otimização de performance gaming"
@@ -64,7 +63,7 @@ export default function Header({ locale }: HeaderProps) {
         },
         {
             name: t.investment,
-            href: getLocalizedPath("/social-analytics-investment", locale),
+            href: `/${locale}/social-analytics-investment`,
             description:
                 locale === "pt-BR"
                     ? "Invista no Social Analytics Engine"
@@ -72,7 +71,7 @@ export default function Header({ locale }: HeaderProps) {
         },
         {
             name: t.support,
-            href: getLocalizedPath("/waveigl-support", locale),
+            href: `/${locale}/waveigl-support`,
             description:
                 locale === "pt-BR"
                     ? "Apoie a comunidade WaveIGL"
@@ -80,7 +79,10 @@ export default function Header({ locale }: HeaderProps) {
         },
     ]
 
-    const currentPath = pathname.replace(`/${locale}`, "") || "/"
+    const handleLanguageChange = (newLocale: Locale) => {
+        changeLocale(newLocale)
+        setIsLanguageMenuOpen(false)
+    }
 
     return (
         <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-700">
@@ -88,7 +90,7 @@ export default function Header({ locale }: HeaderProps) {
                 <div className="flex justify-between items-center h-16">
                     {/* Logo */}
                     <Link
-                        href={getLocalizedPath("/", locale)}
+                        href={`/${locale}`}
                         className="text-xl font-bold text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
                     >
                         Gabriel Toth Gonçalves
@@ -155,27 +157,26 @@ export default function Header({ locale }: HeaderProps) {
                             {isLanguageMenuOpen && (
                                 <div className="absolute right-0 mt-2 w-32 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md shadow-lg">
                                     {locales.map(loc => (
-                                        <Link
+                                        <button
                                             key={loc}
-                                            href={getLocalizedPath(
-                                                currentPath,
-                                                loc
-                                            )}
-                                            className={`block px-4 py-2 text-sm hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors ${
+                                            onClick={() =>
+                                                handleLanguageChange(loc)
+                                            }
+                                            className={`block w-full text-left px-4 py-2 text-sm hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors ${
                                                 loc === locale
                                                     ? "text-blue-600 dark:text-blue-400 font-medium"
                                                     : "text-gray-600 dark:text-gray-300"
                                             }`}
-                                            onClick={() =>
-                                                setIsLanguageMenuOpen(false)
-                                            }
                                         >
                                             {localeNames[loc]}
-                                        </Link>
+                                        </button>
                                     ))}
                                 </div>
                             )}
                         </div>
+
+                        {/* Theme Toggle */}
+                        <ThemeToggleClient />
                     </div>
 
                     {/* Mobile Menu Button */}
@@ -228,25 +229,25 @@ export default function Header({ locale }: HeaderProps) {
                             {/* Mobile Language Switcher */}
                             <div className="flex space-x-4 pt-4 border-t border-gray-200 dark:border-gray-700">
                                 {locales.map(loc => (
-                                    <Link
+                                    <button
                                         key={loc}
-                                        href={getLocalizedPath(
-                                            currentPath,
-                                            loc
-                                        )}
+                                        onClick={() => {
+                                            handleLanguageChange(loc)
+                                            setIsMobileMenuOpen(false)
+                                        }}
                                         className={`text-sm font-medium transition-colors ${
                                             loc === locale
                                                 ? "text-blue-600 dark:text-blue-400"
                                                 : "text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
                                         }`}
-                                        onClick={() =>
-                                            setIsMobileMenuOpen(false)
-                                        }
                                     >
                                         {localeNames[loc]}
-                                    </Link>
+                                    </button>
                                 ))}
                             </div>
+
+                            {/* Theme Toggle */}
+                            <ThemeToggleClient />
                         </div>
                     </div>
                 )}
