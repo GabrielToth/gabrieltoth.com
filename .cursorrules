@@ -70,10 +70,10 @@ interface HeroSectionProps {
 
 const HeroSection = ({ title, description }: HeroSectionProps) => {
     return (
-        <section className='min-h-screen flex items-center justify-center'>
-            <div className='text-center'>
-                <h1 className='text-4xl font-bold'>{title}</h1>
-                <p className='text-lg text-muted-foreground'>{description}</p>
+        <section className="min-h-screen flex items-center justify-center">
+            <div className="text-center">
+                <h1 className="text-4xl font-bold">{title}</h1>
+                <p className="text-lg text-muted-foreground">{description}</p>
             </div>
         </section>
     )
@@ -182,17 +182,19 @@ npm run lint:fix     # Auto fix
 - **JSDoc**: English only
 - **API documentation**: English only
 - **Technical specs**: English only
+- **Markdown files (.md)**: English only
+- **Documentation files**: English only
 
 ## Naming Conventions (ENGLISH ONLY)
 
 ```tsx
 // ✅ CORRECT - English names
-const userProfile = { name: 'Gabriel' }
+const userProfile = { name: "Gabriel" }
 const calculateTotalPrice = () => {}
 const isUserAuthenticated = false
 
 // ❌ WRONG - Portuguese names
-const perfilUsuario = { nome: 'Gabriel' }
+const perfilUsuario = { nome: "Gabriel" }
 const calcularPrecoTotal = () => {}
 const usuarioAutenticado = false
 ```
