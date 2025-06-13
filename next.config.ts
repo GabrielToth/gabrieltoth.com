@@ -5,7 +5,6 @@ const withNextIntl = createNextIntlPlugin()
 
 const nextConfig: NextConfig = {
     reactStrictMode: false,
-    swcMinify: false,
     experimental: {
         forceSwcTransforms: false,
     },

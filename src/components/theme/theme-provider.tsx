@@ -18,26 +18,37 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     useEffect(() => {
         setMounted(true)
 
-        // Check if there's a saved theme preference
-        const savedTheme = localStorage.getItem("theme") as Theme | null
+        // Check if there's a saved theme preference (only on client)
+        const savedTheme =
+            typeof window !== "undefined"
+                ? (localStorage.getItem("theme") as Theme | null)
+                : null
 
         // Use saved theme or default to dark
         const initialTheme = savedTheme || "dark"
         setTheme(initialTheme)
 
-        // Apply theme to document
-        document.documentElement.classList.remove("light", "dark")
-        document.documentElement.classList.add(initialTheme)
+        // Apply theme to document (only on client)
+        if (typeof document !== "undefined") {
+            document.documentElement.classList.remove("light", "dark")
+            document.documentElement.classList.add(initialTheme)
+        }
     }, [])
 
     const toggleTheme = () => {
         const newTheme = theme === "light" ? "dark" : "light"
         setTheme(newTheme)
-        localStorage.setItem("theme", newTheme)
 
-        // Apply theme to document
-        document.documentElement.classList.remove("light", "dark")
-        document.documentElement.classList.add(newTheme)
+        // Save theme preference (only on client)
+        if (typeof window !== "undefined") {
+            localStorage.setItem("theme", newTheme)
+        }
+
+        // Apply theme to document (only on client)
+        if (typeof document !== "undefined") {
+            document.documentElement.classList.remove("light", "dark")
+            document.documentElement.classList.add(newTheme)
+        }
     }
 
     // Prevent hydration mismatch

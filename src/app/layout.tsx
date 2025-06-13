@@ -32,6 +32,7 @@ export default function RootLayout({
             </head>
             <body
                 className={`${geistSans.variable} ${geistMono.variable} antialiased font-sans`}
+                suppressHydrationWarning
             >
                 <ThemeProvider>{children}</ThemeProvider>
                 <Analytics />
