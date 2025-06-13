@@ -13,6 +13,19 @@ jobs:
         steps:
             - name: Checkout
               uses: actions/checkout@v4
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: "20"
+                  cache: "npm"
+
+            - name: Install dependencies
+              run: npm ci
+
+            - name: Build application
+              run: npm run build
+
             - name: Cypress run
               # Uses the official Cypress GitHub action https://github.com/cypress-io/github-action
               uses: cypress-io/github-action@v6
@@ -25,6 +38,7 @@ jobs:
                   # https://docs.cypress.io/guides/cloud/projects#Set-up-a-project-to-record
                   record: true
                   parallel: true # Runs test in parallel using settings above
+                  install: false # Skip install since we already installed
               env:
                   # For recording and parallelization to work you must set your CYPRESS_RECORD_KEY
                   # in GitHub repo → Settings → Secrets → Actions
