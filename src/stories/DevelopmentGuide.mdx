@@ -1,0 +1,185 @@
+import { Meta } from "@storybook/blocks"
+
+<Meta title="Gabriel Toth Portfolio/Development Guide" />
+
+# Development Guide
+
+This guide provides comprehensive instructions for developing, testing, and contributing to the Gabriel Toth Portfolio project.
+
+## Getting Started
+
+### Prerequisites
+
+- **Node.js**: v18.0.0 or higher
+- **npm**: v8.0.0 or higher
+- **Git**: Latest version
+- **VSCode**: Recommended editor with extensions
+
+### Recommended VSCode Extensions
+
+```json
+{
+    "recommendations": [
+        "bradlc.vscode-tailwindcss",
+        "esbenp.prettier-vscode",
+        "ms-vscode.vscode-typescript-next",
+        "streetsidesoftware.code-spell-checker",
+        "ms-playwright.playwright",
+        "storybook.storybook-vscode"
+    ]
+}
+```
+
+### Initial Setup
+
+```bash
+# Clone the repository
+git clone https://github.com/your-username/gabrieltoth.com.git
+cd gabrieltoth.com
+
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+
+# Open Storybook in parallel
+npm run storybook
+```
+
+## Project Architecture
+
+### Folder Structure
+
+```
+gabrieltoth.com/
+├── .storybook/              # Storybook configuration
+├── cypress/                 # E2E tests
+│   ├── e2e/                # Test specifications
+│   ├── fixtures/           # Test data
+│   └── support/            # Test utilities
+├── public/                 # Static assets
+├── src/
+│   ├── app/                # Next.js App Router
+│   │   ├── [locale]/       # Internationalized routes
+│   │   ├── api/            # API routes
+│   │   ├── globals.css     # Global styles
+│   │   └── layout.tsx      # Root layout
+│   ├── components/         # React components
+│   │   ├── ui/             # shadcn/ui components
+│   │   ├── layout/         # Layout components
+│   │   ├── sections/       # Page sections
+│   │   ├── landing/        # Landing pages
+│   │   ├── payments/       # Payment system
+│   │   └── theme/          # Theme components
+│   ├── hooks/              # Custom React hooks
+│   ├── lib/                # Utilities and config
+│   ├── i18n/               # Translation files
+│   └── stories/            # Storybook stories
+├── middleware.ts           # Next.js middleware
+└── package.json            # Project dependencies
+```
+
+## Development Workflow
+
+### 1. Component Development
+
+#### Creating a New Component
+
+```typescript
+// src/components/ui/example-component.tsx
+import React from 'react'
+import { cn } from '@/lib/utils'
+
+interface ExampleComponentProps {
+    children: React.ReactNode
+    variant?: 'default' | 'primary' | 'secondary'
+    size?: 'sm' | 'md' | 'lg'
+    className?: string
+}
+
+const ExampleComponent = React.forwardRef<
+    HTMLDivElement,
+    ExampleComponentProps
+>(({ children, variant = 'default', size = 'md', className, ...props }, ref) => {
+    return (
+        <div
+            ref={ref}
+            className={cn(
+                // Base styles
+                'rounded-md border transition-colors',
+                // Variant styles
+                {
+                    'bg-white border-gray-200': variant === 'default',
+                    'bg-blue-600 border-blue-600 text-white': variant === 'primary',
+                    'bg-gray-100 border-gray-300': variant === 'secondary',
+                },
+                // Size styles
+                {
+                    'px-2 py-1 text-sm': size === 'sm',
+                    'px-4 py-2 text-base': size === 'md',
+                    'px-6 py-3 text-lg': size === 'lg',
+                },
+                className
+            )}
+            {...props}
+        >
+            {children}
+        </div>
+    )
+})
+
+ExampleComponent.displayName = 'ExampleComponent'
+
+export { ExampleComponent }
+```
+
+## Code Standards
+
+### TypeScript Guidelines
+
+```typescript
+// ✅ DO: Use explicit interfaces
+interface ButtonProps {
+    children: React.ReactNode
+    onClick?: () => void
+    disabled?: boolean
+    variant?: "primary" | "secondary"
+}
+
+// ✅ DO: Use proper typing for event handlers
+const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault()
+    // Handle click
+}
+```
+
+### Naming Conventions
+
+```typescript
+// ✅ Components: PascalCase
+const UserProfile = () => {}
+const NavigationMenu = () => {}
+
+// ✅ Files: kebab-case
+user - profile.tsx
+navigation - menu.tsx
+
+// ✅ Variables/Functions: camelCase
+const userName = "gabriel"
+const handleUserLogin = () => {}
+```
+
+## Git Workflow
+
+### Commit Message Format
+
+```bash
+# Format: type: short description
+# Examples:
+feat: add user authentication system
+fix: resolve hydration error in theme provider
+docs: update API documentation
+```
+
+This development guide ensures consistent, high-quality development practices across the Gabriel Toth Portfolio project.

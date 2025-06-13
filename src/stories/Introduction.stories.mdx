@@ -1,0 +1,194 @@
+import { Meta } from "@storybook/blocks"
+
+<Meta title="Gabriel Toth Portfolio/Introduction" />
+
+# Gabriel Toth Portfolio - Component Documentation
+
+Welcome to the **Gabriel Toth Portfolio** component library documentation powered by Storybook.
+
+## Overview
+
+This project is a **Next.js 15** portfolio website for Gabriel Toth Gonçalves, a Full Stack Developer, featuring a modern component-based architecture with comprehensive internationalization support.
+
+## Tech Stack
+
+- **Framework**: Next.js 15 (App Router)
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS + shadcn/ui
+- **Internationalization**: i18n (EN/PT-BR)
+- **Testing**: Cypress E2E + Vitest
+- **Documentation**: Storybook
+- **Deployment**: Vercel
+
+## Component Architecture
+
+### UI Components (`/src/components/ui/`)
+
+- **Button**: Primary interaction components with multiple variants
+- **Badge**: Status and category indicators
+- **Dialog**: Modal and popup interfaces
+- **Tabs**: Tabbed content organization
+- **Language Selector**: Internationalization controls
+- **Pricing Toggle**: Dynamic pricing display with Monero/PIX options
+
+### Layout Components (`/src/components/layout/`)
+
+- **Header**: Main navigation with services dropdown and language switching
+- **Footer**: Site-wide footer with localized content
+
+### Section Components (`/src/components/sections/`)
+
+- **Hero Section**: Landing page introduction
+- **About Section**: Personal and professional information
+- **Projects Section**: Portfolio showcase
+- **Contact Section**: Contact form and information
+
+### Landing Pages (`/src/components/landing/`)
+
+- **Channel Management**: Service-specific landing page
+- **PC Optimization**: Gaming performance services
+- **WaveIGL Support**: Community support page
+- **Editors Landing**: Content creation services
+
+## Design System
+
+### Colors
+
+- **Primary**: Blue gradient system for main actions
+- **Secondary**: Gray scale for neutral elements
+- **Accent**: Orange for special features (Monero pricing)
+- **Semantic**: Green (success), Red (error), Yellow (warning)
+
+### Typography
+
+- **Primary Font**: Geist Sans (modern, clean)
+- **Monospace**: Geist Mono (code and technical content)
+- **Hierarchy**: 6 heading levels with consistent spacing
+
+### Spacing
+
+- **Base Unit**: 4px (Tailwind standard)
+- **Component Padding**: 12px, 16px, 24px
+- **Section Spacing**: 64px, 96px, 128px
+
+## Internationalization
+
+The project supports **English** and **Portuguese (Brazil)** with:
+
+- **Route-based locales**: `/en/` and `/pt-BR/`
+- **Automatic detection**: Based on browser preferences
+- **Manual switching**: Language selector in header
+- **Consistent translations**: Shared translation keys across components
+
+## Payment System
+
+Integrated payment support for:
+
+- **PIX**: Brazilian instant payment system
+- **Monero**: Cryptocurrency with 50% discount incentive
+- **Dynamic pricing**: Real-time price calculations
+- **Payment modal**: Unified checkout experience
+
+## Testing Strategy
+
+### E2E Testing (Cypress)
+
+- **Navigation**: Route testing and language switching
+- **Forms**: Contact form submission and validation
+- **Services**: Dropdown menus and page transitions
+- **Responsive**: Mobile and desktop behavior
+
+### Component Testing (Vitest)
+
+- **Unit tests**: Individual component behavior
+- **Integration**: Component interaction testing
+- **Accessibility**: A11y compliance verification
+
+## Development Workflow
+
+### Component Development
+
+1. Create component in appropriate directory
+2. Add TypeScript interfaces for props
+3. Implement responsive design with Tailwind
+4. Add internationalization support
+5. Create Storybook story with variants
+6. Write E2E tests for user interactions
+
+### Code Standards
+
+- **Language**: All code in English
+- **Formatting**: 4-space indentation, single quotes
+- **Naming**: PascalCase components, kebab-case files
+- **Comments**: JSDoc for complex functions
+- **Git**: Atomic commits with conventional format
+
+## Available Scripts
+
+```bash
+# Development
+npm run dev                    # Start development server
+npm run build                  # Production build
+npm run start                  # Start production server
+
+# Testing
+npm run test:e2e              # Run Cypress E2E tests
+npm run cypress:open          # Open Cypress GUI
+
+# Documentation
+npm run storybook             # Start Storybook dev server
+npm run build-storybook       # Build static Storybook
+
+# Quality
+npm run lint                  # ESLint checking
+npm run type-check           # TypeScript validation
+npm run spell-check          # Spell checking
+```
+
+## Project Structure
+
+```
+src/
+├── app/                      # Next.js App Router
+│   ├── [locale]/            # Internationalized routes
+│   ├── api/                 # API routes (contact, payments)
+│   └── globals.css          # Global styles
+├── components/              # React components
+│   ├── ui/                  # shadcn/ui base components
+│   ├── layout/              # Header, Footer
+│   ├── sections/            # Page sections
+│   ├── landing/             # Service landing pages
+│   ├── payments/            # Payment system
+│   └── theme/               # Dark/light theme
+├── hooks/                   # Custom React hooks
+├── lib/                     # Utilities and configurations
+├── i18n/                    # Translation files
+└── stories/                 # Storybook documentation
+```
+
+## Getting Started
+
+1. **Clone repository**
+2. **Install dependencies**: `npm install`
+3. **Start development**: `npm run dev`
+4. **Open Storybook**: `npm run storybook`
+5. **Run tests**: `npm run test:e2e`
+
+## Contributing
+
+- Follow TypeScript strict mode
+- Maintain accessibility standards
+- Add stories for new components
+- Update documentation for new features
+- Ensure responsive design
+- Test on multiple browsers
+
+## Performance Optimization
+
+- **Next.js Image**: Optimized image loading
+- **Dynamic imports**: Code splitting for heavy components
+- **CSS optimization**: Tailwind purging and minification
+- **Bundle analysis**: Regular size monitoring
+- **Core Web Vitals**: Performance metrics tracking
+
+This documentation serves as a comprehensive guide for understanding, using, and contributing to the Gabriel Toth Portfolio component library.

@@ -1,0 +1,259 @@
+import { Meta } from "@storybook/blocks"
+
+<Meta title="Gabriel Toth Portfolio/Design System" />
+
+# Design System
+
+The Gabriel Toth Portfolio follows a comprehensive design system built on **Tailwind CSS** and **shadcn/ui** components, ensuring consistency and accessibility across all interfaces.
+
+## Color Palette
+
+### Primary Colors
+
+Our primary color palette uses a sophisticated blue gradient system that conveys professionalism and trust.
+
+```css
+/* Light Mode */
+--primary: oklch(0.205 0 0) /* #3b3b3b */ --primary-foreground: oklch(0.985 0 0)
+    /* #fcfcfc */ /* Dark Mode */ --primary: oklch(0.922 0 0) /* #ebebeb */
+    --primary-foreground: oklch(0.205 0 0) /* #3b3b3b */;
+```
+
+### Semantic Colors
+
+#### Success (Green)
+
+- Used for successful actions, confirmations, and positive feedback
+- Applied to: Success messages, completed states, positive indicators
+
+#### Warning (Orange)
+
+- Used for Monero pricing, special offers, and attention-grabbing elements
+- Applied to: Discount badges, cryptocurrency options, important notifications
+
+#### Error (Red)
+
+- Used for error states, validation failures, and destructive actions
+- Applied to: Form errors, deletion confirmations, failed states
+
+#### Info (Blue)
+
+- Used for informational content, links, and neutral actions
+- Applied to: Information messages, navigation links, secondary actions
+
+### Neutral Grays
+
+Our gray scale provides the foundation for text, borders, and background elements.
+
+```css
+/* Background System */
+--background: oklch(1 0 0) /* Pure white (light) */
+    --background: oklch(0.145 0 0) /* Deep gray (dark) */ /* Text System */
+    --foreground: oklch(0.145 0 0) /* Dark text (light mode) */
+    --foreground: oklch(0.985 0 0) /* Light text (dark mode) */
+    /* Muted Elements */ --muted: oklch(0.97 0 0) /* Light gray backgrounds */
+    --muted-foreground: oklch(0.556 0 0) /* Muted text */;
+```
+
+## Typography
+
+### Font System
+
+We use **Geist** as our primary font family, providing excellent readability and modern aesthetics.
+
+#### Primary Font: Geist Sans
+
+- **Usage**: Body text, headings, navigation, buttons
+- **Characteristics**: Clean, modern, highly legible
+- **Weights**: 400 (Regular), 500 (Medium), 600 (Semibold), 700 (Bold)
+
+#### Monospace Font: Geist Mono
+
+- **Usage**: Code snippets, technical content, data display
+- **Characteristics**: Fixed-width, optimized for code
+- **Weights**: 400 (Regular), 500 (Medium)
+
+### Heading Hierarchy
+
+```typescript
+// Heading Scale (Tailwind Classes)
+h1: "text-4xl md:text-5xl lg:text-6xl font-bold" // 36px → 48px → 60px
+h2: "text-3xl md:text-4xl lg:text-5xl font-bold" // 30px → 36px → 48px
+h3: "text-2xl md:text-3xl font-semibold" // 24px → 30px
+h4: "text-xl md:text-2xl font-semibold" // 20px → 24px
+h5: "text-lg md:text-xl font-medium" // 18px → 20px
+h6: "text-base md:text-lg font-medium" // 16px → 18px
+```
+
+### Body Text Scale
+
+```typescript
+// Body Text Scale
+"text-lg" // 18px - Large body text, introductions
+"text-base" // 16px - Default body text
+"text-sm" // 14px - Small text, captions
+"text-xs" // 12px - Fine print, labels
+```
+
+## Spacing System
+
+### Base Unit
+
+Our spacing system follows **Tailwind's 4px base unit**, providing consistent and predictable spacing throughout the interface.
+
+### Component Spacing
+
+```typescript
+// Internal Component Padding
+"p-3" // 12px - Compact elements (buttons, badges)
+"p-4" // 16px - Standard elements (cards, form fields)
+"p-6" // 24px - Spacious elements (modals, large cards)
+"p-8" // 32px - Hero sections, main containers
+
+// Section Spacing
+"py-16" // 64px - Section separation
+"py-24" // 96px - Major section separation
+"py-32" // 128px - Hero and landing sections
+```
+
+### Layout Grid
+
+```typescript
+// Container Widths
+"max-w-7xl" // 1280px - Main site container
+"max-w-4xl" // 896px - Content containers
+"max-w-2xl" // 672px - Text content, forms
+"max-w-md" // 448px - Narrow content, mobile
+
+// Grid Systems
+"grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3" // Responsive grid
+"flex flex-col md:flex-row" // Flexible layouts
+```
+
+## Component Variants
+
+### Button System
+
+Our button system provides clear hierarchy and consistent interaction patterns.
+
+#### Primary Buttons
+
+- **Usage**: Main actions, form submissions, primary CTAs
+- **Style**: Solid background, high contrast text
+- **States**: Default, hover, active, disabled, loading
+
+#### Secondary Buttons
+
+- **Usage**: Secondary actions, cancel buttons
+- **Style**: Outlined or ghost appearance
+- **States**: Default, hover, active, disabled
+
+#### Ghost Buttons
+
+- **Usage**: Subtle actions, navigation elements
+- **Style**: Transparent background, minimal styling
+- **States**: Hover reveals background
+
+### Card Components
+
+Cards provide consistent content containers with appropriate elevation and spacing.
+
+```typescript
+// Card Variants
+"bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg"
+"shadow-sm hover:shadow-md transition-shadow" // Subtle elevation
+"shadow-lg" // Prominent elevation
+```
+
+## Responsive Design
+
+### Breakpoint System
+
+We follow Tailwind's mobile-first responsive design approach.
+
+```typescript
+// Breakpoints
+sm: "640px"   // Small tablets
+md: "768px"   // Tablets
+lg: "1024px"  // Laptops
+xl: "1280px"  // Desktops
+2xl: "1536px" // Large screens
+```
+
+### Responsive Patterns
+
+```typescript
+// Layout Responsive Pattern
+"flex flex-col md:flex-row" // Stack on mobile, row on desktop
+"grid grid-cols-1 md:grid-cols-2" // Single column to two columns
+"hidden md:block" // Hide on mobile, show on desktop
+"block md:hidden" // Show on mobile, hide on desktop
+
+// Typography Responsive Pattern
+"text-2xl md:text-3xl lg:text-4xl" // Progressive text scaling
+"px-4 md:px-6 lg:px-8" // Progressive padding scaling
+```
+
+## Dark Mode Support
+
+### Implementation
+
+Our dark mode implementation uses CSS custom properties and Tailwind's `dark:` prefix for seamless theme switching.
+
+```typescript
+// Dark Mode Classes
+"bg-white dark:bg-gray-900" // Backgrounds
+"text-gray-900 dark:text-white" // Text
+"border-gray-200 dark:border-gray-700" // Borders
+"hover:bg-gray-50 dark:hover:bg-gray-800" // Interactive states
+```
+
+### Theme Toggle
+
+The theme system automatically detects user preferences and provides manual switching capabilities.
+
+## Accessibility Standards
+
+### Color Contrast
+
+All color combinations meet WCAG 2.1 AA standards with minimum contrast ratios:
+
+- **Normal text**: 4.5:1 contrast ratio
+- **Large text**: 3:1 contrast ratio
+- **Interactive elements**: 3:1 contrast ratio
+
+### Focus Management
+
+- **Focus indicators**: Clear, visible focus rings on all interactive elements
+- **Keyboard navigation**: Full keyboard accessibility for all UI components
+- **Screen readers**: Proper ARIA labels and semantic HTML structure
+
+### Motion and Animation
+
+- **Reduced motion**: Respects user's `prefers-reduced-motion` settings
+- **Animation duration**: Consistent timing functions and durations
+- **Purposeful motion**: Animations enhance UX without being distracting
+
+## Implementation Guidelines
+
+### Component Creation
+
+1. **Start with semantic HTML**: Use appropriate HTML elements
+2. **Apply base styles**: Use Tailwind classes for consistent styling
+3. **Add responsive behavior**: Ensure mobile-first responsive design
+4. **Include dark mode**: Add dark mode variants for all elements
+5. **Ensure accessibility**: Include proper ARIA attributes and focus management
+
+### Customization
+
+```typescript
+// Extending the design system
+const customButton = `
+  ${baseButtonClasses}
+  bg-gradient-to-r from-blue-600 to-purple-600
+  hover:from-blue-700 hover:to-purple-700
+  focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
+`
+```
+
+This design system ensures consistent, accessible, and maintainable user interfaces across the entire Gabriel Toth Portfolio project.
