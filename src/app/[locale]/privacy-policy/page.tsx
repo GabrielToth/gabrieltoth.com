@@ -19,8 +19,8 @@ export default async function PrivacyPolicyPage({
             intro: {
                 title: isPortuguese ? "1. Introdução" : "1. Introduction",
                 content: isPortuguese
-                    ? "Esta Política de Privacidade descreve como Gabriel Toth Gonçalves ('nós', 'nosso' ou 'nos') coleta, usa, armazena e protege suas informações pessoais quando você utiliza nossos serviços de consultoria em canais digitais, SpeedPC e outras soluções tecnológicas."
-                    : "This Privacy Policy describes how Gabriel Toth Gonçalves ('we', 'our' or 'us') collects, uses, stores and protects your personal information when you use our digital channel consulting, SpeedPC and other technology solution services.",
+                    ? "Esta Política de Privacidade descreve como Gabriel Toth Gonçalves ('nós', 'nosso' ou 'nos') coleta, usa, armazena e protege suas informações pessoais quando você utiliza nossos serviços de consultoria em canais digitais, otimização de PC e outras soluções tecnológicas."
+                    : "This Privacy Policy describes how Gabriel Toth Gonçalves ('we', 'our' or 'us') collects, uses, stores and protects your personal information when you use our digital channel consulting, PC optimization and other technology solution services.",
             },
             collection: {
                 title: isPortuguese
@@ -31,7 +31,7 @@ export default async function PrivacyPolicyPage({
                           "• Dados de contato: nome, email, telefone, WhatsApp",
                           "• Informações do canal: URL do YouTube, tipo de conteúdo, estatísticas",
                           "• Dados de pagamento: informações para processamento de transações",
-                          "• Dados técnicos: especificações do PC para SpeedPC",
+                          "• Dados técnicos: especificações do PC para otimização",
                           "• Comunicações: mensagens trocadas durante a consultoria",
                       ]
                     : [

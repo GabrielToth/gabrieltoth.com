@@ -31,7 +31,7 @@ export default async function TermsOfServicePage({
                 content: isPortuguese
                     ? [
                           "• Consultoria para crescimento de canais no YouTube e outras plataformas",
-                          "• SpeedPC para gaming e trabalho",
+                          "• Otimização de performance de PCs para gaming e trabalho",
                           "• Serviços de edição de vídeos com remuneração baseada em AdSense",
                           "• Desenvolvimento de soluções tecnológicas personalizadas",
                           "• Suporte técnico e consultoria em projetos digitais",

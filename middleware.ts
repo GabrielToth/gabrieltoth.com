@@ -42,7 +42,6 @@ function isValidPath(path: string): boolean {
         "/pc-optimization",
         "/social-analytics-investment",
         "/waveigl-support",
-        "/waveigl-investment",
         "/editors",
         "/privacy-policy",
         "/terms-of-service",

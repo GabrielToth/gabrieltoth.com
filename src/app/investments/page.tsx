@@ -3,6 +3,8 @@
 import Header from "@/components/layout/header"
 import { useLocale } from "@/hooks/use-locale"
 import { type Locale } from "@/lib/i18n"
+import { ArrowRight } from "lucide-react"
+import Link from "next/link"
 
 const getTranslations = (locale: Locale) => {
     const translations = {
@@ -54,8 +56,24 @@ export default function InvestmentsPage() {
                         </p>
                     </div>
 
-                    <div className="mt-16 flex justify-center">
-                        <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-8 max-w-md w-full">
+                    <div className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-8">
+                            <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+                                {t.socialAnalyticsTitle}
+                            </h3>
+                            <p className="text-gray-600 dark:text-gray-300 mb-6">
+                                {t.socialAnalyticsDesc}
+                            </p>
+                            <Link
+                                href="/social-analytics-investment"
+                                className="inline-flex items-center text-blue-600 dark:text-blue-400 hover:underline"
+                            >
+                                Ver Detalhes
+                                <ArrowRight className="ml-1 h-4 w-4" />
+                            </Link>
+                        </div>
+
+                        <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-8">
                             <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
                                 {t.techConsultingTitle}
                             </h3>

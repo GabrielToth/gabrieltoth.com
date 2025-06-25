@@ -1,8 +1,14 @@
-// cspell:ignore-file
 module.exports = {
     version: "0.2",
     language: "en,pt,pt_BR",
     import: ["@cspell/dict-pt-br/cspell-ext.json"],
+    dictionaryDefinitions: [
+        {
+            name: "project-words",
+            path: "./project-words.txt",
+            addWords: true,
+        },
+    ],
     dictionaries: [
         "typescript",
         "node",
@@ -15,26 +21,13 @@ module.exports = {
         "softwareTerms",
         "pt-br",
         "en-us",
+        "project-words",
     ],
     words: [
-        // English Variants
-        "customise",
-
-        // SVG Related
-        "evenodd",
-
-        // Special Characters
-        "àáâãäåæçèéêëìíîïñòóôõöøùúûüýÿ",
-
         // Personal/Project
         "gabrieltoth",
         "framesync",
         "ViraTrend",
-        "SpeedPC",
-        "waveigl",
-        "goncalves",
-        "gonçalves",
-        "toth",
 
         // Tech Stack
         "vercel",
@@ -100,7 +93,6 @@ module.exports = {
         "node",
         "deno",
         "bun",
-        "Turbopack",
 
         // Services
         "stripe",
@@ -123,27 +115,6 @@ module.exports = {
         "discord",
         "figma",
         "bhsl",
-
-        // Testing/Development Tools
-        "clsx",
-        "twmerge",
-        "lucide",
-        "geist",
-        "brgb",
-        "esbenp",
-        "dbaeumer",
-        "bradlc",
-        "humao",
-        "gruntfuggly",
-        "yzhang",
-        "hookyqr",
-        "codando",
-        "bukkit",
-        "spigot",
-        "minecraft",
-        "kwai",
-        "curriculo",
-        "singlequote",
     ],
     ignorePaths: [
         "node_modules/**",
@@ -167,11 +138,6 @@ module.exports = {
         "*.ttf",
         "*.otf",
         "cspell.config.js",
-        "tsconfig.tsbuildinfo",
-        "cypress/**",
-        "__tests__/**",
-        "**/*.test.*",
-        "**/*.spec.*",
     ],
     enableFiletypes: [
         "typescript",
@@ -189,11 +155,6 @@ module.exports = {
     ],
     allowCompoundWords: true,
     caseSensitive: false,
-    minWordLength: 3,
-    maxNumberOfProblems: 1000,
-    maxDuplicateProblems: 100,
-    suggestionNumChanges: 3,
-    noSuggest: true,
     ignoreRegExpList: [
         "/\\b[A-Z]{2,}\\b/g",
         "/\\b\\d+\\b/g",

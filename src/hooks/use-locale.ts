@@ -65,11 +65,6 @@ export function useLocale() {
     const changeLocale = (newLocale: Locale) => {
         setLocaleCookie(newLocale)
 
-        // Redirecionar para a nova URL com o idioma
-        const currentPath = window.location.pathname
-        const newPath = `/${newLocale}${currentPath.replace(/^\/(en|pt-BR)/, "")}`
-        window.location.href = newPath
-
         // Notificar todas as instâncias
         notifyListeners(newLocale)
     }

@@ -6,9 +6,9 @@ import { type Locale } from "@/lib/i18n"
 const getTranslations = (locale: Locale) => {
     const translations = {
         en: {
-            title: "SpeedPC Services",
+            title: "PC Optimization Services",
             description:
-                "Professional SpeedPC services to maximize your gaming performance and reduce latency.",
+                "Professional PC optimization services to maximize your gaming performance and reduce latency.",
             performanceTitle: "Performance Optimization",
             performanceDesc:
                 "System tweaks and optimizations to maximize FPS and reduce input lag.",
@@ -20,9 +20,9 @@ const getTranslations = (locale: Locale) => {
                 "Personalized gaming setup configuration and software optimization.",
         },
         "pt-BR": {
-            title: "Serviços SpeedPC",
+            title: "Serviços de Otimização de PC",
             description:
-                "Serviços profissionais SpeedPC para maximizar sua performance gaming e reduzir latência.",
+                "Serviços profissionais de otimização de PC para maximizar sua performance gaming e reduzir latência.",
             performanceTitle: "Otimização de Performance",
             performanceDesc:
                 "Ajustes e otimizações no sistema para maximizar FPS e reduzir input lag.",

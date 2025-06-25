@@ -14,11 +14,11 @@ export async function generateMetadata({
 
     return {
         title: isPortuguese
-            ? "Termos SpeedPC - Gabriel Toth"
-            : "SpeedPC Terms - Gabriel Toth",
+            ? "Termos de Otimização de PC - Gabriel Toth"
+            : "PC Optimization Terms - Gabriel Toth",
         description: isPortuguese
-            ? "Termos e condições para serviços SpeedPC"
-            : "Terms and conditions for SpeedPC services",
+            ? "Termos e condições para serviços de otimização de PC"
+            : "Terms and conditions for PC optimization services",
         robots: "noindex, nofollow",
     }
 }
@@ -138,8 +138,8 @@ export default async function PCOptimizationTermsPage({ params }: PageProps) {
     }
 
     const whatsappMessage = isPortuguese
-        ? "Olá! Tenho interesse no SpeedPC.%0A%0ANome:%0ATipo de PC (Gaming/Trabalho):%0APrincipal objetivo:%0AEspecificações do hardware:%0AJogos principais:%0AProblemas atuais:%0A%0AAguardo o contato!"
-        : "Hello! I'm interested in SpeedPC.%0A%0AName:%0APC Type (Gaming/Work):%0AMain objective:%0AHardware specifications:%0AMain games:%0ACurrent problems:%0A%0ALooking forward to hearing from you!"
+        ? "Olá! Tenho interesse na otimização de PC.%0A%0ANome:%0ATipo de PC (Gaming/Trabalho):%0APrincipal objetivo:%0AEspecificações do hardware:%0AJogos principais:%0AProblemas atuais:%0A%0AAguardo o contato!"
+        : "Hello! I'm interested in PC optimization.%0A%0AName:%0APC Type (Gaming/Work):%0AMain objective:%0AHardware specifications:%0AMain games:%0ACurrent problems:%0A%0ALooking forward to hearing from you!"
 
     return (
         <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-12 px-4 sm:px-6 lg:px-8">
