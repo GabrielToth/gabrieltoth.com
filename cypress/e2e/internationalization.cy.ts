@@ -14,22 +14,20 @@ describe("Internationalization (i18n) Tests", () => {
     })
 
     describe("Language Detection and Persistence", () => {
-        it("should default to Portuguese when visiting root", () => {
+        it("should default to English when visiting root", () => {
             cy.visit("/")
             cy.wait(2000)
 
-            // Should redirect to /pt-BR or show Portuguese content
-            cy.url().should("match", /\/(pt-BR)?/)
+            // Should redirect to English by default
+            cy.url().should("match", /\/(en\/)?/)
 
-            // Check for Portuguese content
-            cy.get("html")
-                .should("have.attr", "lang")
-                .and("match", /pt|pt-BR/)
+            // Check for English content
+            cy.get("html").should("have.attr", "lang").and("match", /en/)
         })
 
         it("should maintain language when navigating", () => {
             // Start with English
-            cy.visit("/en")
+            cy.visit("/en/")
             cy.wait(2000)
 
             // Navigate to different pages and check language persistence
@@ -51,7 +49,7 @@ describe("Internationalization (i18n) Tests", () => {
 
         it("should maintain Portuguese when navigating", () => {
             // Start with Portuguese
-            cy.visit("/pt-BR")
+            cy.visit("/pt-BR/")
             cy.wait(2000)
 
             // Navigate to different pages and check language persistence
@@ -73,28 +71,8 @@ describe("Internationalization (i18n) Tests", () => {
     })
 
     describe("Language Switching", () => {
-        it("should switch from Portuguese to English", () => {
-            cy.visit("/pt-BR")
-            cy.wait(2000)
-
-            // Look for language switcher
-            cy.get("body").then($body => {
-                if ($body.find("[data-cy=language-selector]").length > 0) {
-                    cy.get("[data-cy=language-selector]").click()
-                    cy.get("[data-cy=language-en]").click()
-                    cy.wait(1000)
-                    cy.url().should("include", "/en")
-                } else {
-                    // Alternative: direct navigation
-                    cy.visit("/en")
-                    cy.wait(1000)
-                    cy.url().should("include", "/en")
-                }
-            })
-        })
-
         it("should switch from English to Portuguese", () => {
-            cy.visit("/en")
+            cy.visit("/en/")
             cy.wait(2000)
 
             // Look for language switcher
@@ -106,9 +84,29 @@ describe("Internationalization (i18n) Tests", () => {
                     cy.url().should("include", "/pt-BR")
                 } else {
                     // Alternative: direct navigation
-                    cy.visit("/pt-BR")
+                    cy.visit("/pt-BR/")
                     cy.wait(1000)
                     cy.url().should("include", "/pt-BR")
+                }
+            })
+        })
+
+        it("should switch from Portuguese to English", () => {
+            cy.visit("/pt-BR/")
+            cy.wait(2000)
+
+            // Look for language switcher
+            cy.get("body").then($body => {
+                if ($body.find("[data-cy=language-selector]").length > 0) {
+                    cy.get("[data-cy=language-selector]").click()
+                    cy.get("[data-cy=language-en]").click()
+                    cy.wait(1000)
+                    cy.url().should("include", "/en")
+                } else {
+                    // Alternative: direct navigation
+                    cy.visit("/en/")
+                    cy.wait(1000)
+                    cy.url().should("include", "/en")
                 }
             })
         })
@@ -117,17 +115,21 @@ describe("Internationalization (i18n) Tests", () => {
     describe("Content Translation", () => {
         const contentChecks = [
             {
-                page: "/en",
-                englishText: ["Home", "About", "Projects", "Contact"],
-                portugueseText: ["Início", "Sobre", "Projetos", "Contato"],
+                page: "/",
+                englishText: ["Hello", "Gabriel Toth", "Full Stack Developer"],
+                portugueseText: ["Olá", "Gabriel Toth", "Full Stack Developer"],
             },
             {
                 page: "/channel-management",
-                englishText: ["Channel Management", "Analytics", "Growth"],
+                englishText: [
+                    "Channel Management",
+                    "Transform Your Channel",
+                    "Growth Machine",
+                ],
                 portugueseText: [
-                    "Gerenciamento de Canais",
-                    "Análises",
-                    "Crescimento",
+                    "Gestão de Canais",
+                    "Transforme Seu Canal",
+                    "Máquina de Crescimento",
                 ],
             },
         ]
@@ -135,7 +137,7 @@ describe("Internationalization (i18n) Tests", () => {
         contentChecks.forEach(check => {
             it(`should show correct translations on ${check.page}`, () => {
                 // Test English
-                cy.visit(`/en${check.page === "/en" ? "" : check.page}`)
+                cy.visit(`/en${check.page === "/" ? "/" : check.page}`)
                 cy.wait(2000)
 
                 check.englishText.forEach(text => {
@@ -143,7 +145,7 @@ describe("Internationalization (i18n) Tests", () => {
                 })
 
                 // Test Portuguese
-                cy.visit(`/pt-BR${check.page === "/en" ? "" : check.page}`)
+                cy.visit(`/pt-BR${check.page === "/" ? "/" : check.page}`)
                 cy.wait(2000)
 
                 check.portugueseText.forEach(text => {
@@ -156,17 +158,15 @@ describe("Internationalization (i18n) Tests", () => {
     describe("SEO and Meta Tags", () => {
         it("should have correct meta tags for each language", () => {
             // English meta tags
-            cy.visit("/en")
+            cy.visit("/en/")
             cy.wait(2000)
-
             cy.get("html").should("have.attr", "lang", "en")
             cy.get("title").should("not.be.empty")
             cy.get('meta[name="description"]').should("exist")
 
             // Portuguese meta tags
-            cy.visit("/pt-BR")
+            cy.visit("/pt-BR/")
             cy.wait(2000)
-
             cy.get("html").should("have.attr", "lang").and("match", /pt/)
             cy.get("title").should("not.be.empty")
             cy.get('meta[name="description"]').should("exist")
