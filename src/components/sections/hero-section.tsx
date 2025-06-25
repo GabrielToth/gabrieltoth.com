@@ -167,7 +167,7 @@ export default function HeroSection() {
                 {/* Scroll Indicator */}
                 <button
                     onClick={scrollToAbout}
-                    className={`absolute bottom-8 left-1/2 transform -translate-x-1/2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-all duration-300 animate-bounce ${
+                    className={`absolute bottom-4 left-1/2 transform -translate-x-1/2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-all duration-300 animate-bounce ${
                         mounted ? "opacity-100" : "opacity-0"
                     }`}
                     aria-label="Scroll to about section"

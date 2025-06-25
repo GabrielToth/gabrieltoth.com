@@ -24,10 +24,7 @@ export default function PaymentDemoPage() {
                     </div>
                 </div>
 
-                <SimplePaymentDemo
-                    serviceType="Otimização de PC Gaming"
-                    amount={249}
-                />
+                <SimplePaymentDemo serviceType="SpeedPC Gaming" amount={249} />
 
                 <div className="mt-12 text-center">
                     <div className="bg-card p-6 rounded-lg max-w-4xl mx-auto">

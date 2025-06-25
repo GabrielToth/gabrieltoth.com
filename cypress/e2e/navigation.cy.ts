@@ -60,7 +60,7 @@ describe("Navigation Tests", () => {
     it("should open services dropdown", () => {
         cy.contains("Serviços").click()
         cy.contains("ViraTrend").should("be.visible")
-        cy.contains("Otimização de PC").should("be.visible")
+        cy.contains("SpeedPC").should("be.visible")
     })
 
     it("should navigate to channel management page", () => {

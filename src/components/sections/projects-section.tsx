@@ -52,7 +52,7 @@ const getTranslations = (locale: Locale) => {
                     "Stripe",
                     "PIX",
                 ],
-                liveUrl: "/waveigl-support",
+                liveUrl: "/waveigl-investment",
             },
             {
                 title: "Social Analytics Engine",
@@ -71,10 +71,10 @@ const getTranslations = (locale: Locale) => {
                 liveUrl: "/social-analytics-investment",
             },
             {
-                title: "PC Optimization Service",
+                title: "SpeedPC",
                 description: isPortuguese
-                    ? "Serviço especializado de otimização de PCs para gaming, com foco em maximizar performance em jogos e reduzir latência. Inclui configurações avançadas de sistema, otimização de hardware e software personalizado."
-                    : "Specialized PC optimization service for gaming, focused on maximizing game performance and reducing latency. Includes advanced system configurations, hardware optimization and custom software.",
+                    ? "Serviço especializado SpeedPC para gaming, com foco em maximizar performance em jogos e reduzir latência. Inclui configurações avançadas de sistema, otimização de hardware e software personalizado."
+                    : "Specialized SpeedPC service for gaming, focused on maximizing game performance and reducing latency. Includes advanced system configurations, hardware optimization and custom software.",
                 image: "/projects/pc-optimization.jpg",
                 tags: ["Windows", "Gaming", "Performance", "Hardware"],
                 liveUrl: "/pc-optimization",

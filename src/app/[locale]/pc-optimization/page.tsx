@@ -14,18 +14,18 @@ export async function generateMetadata({
 
     return {
         title: isPortuguese
-            ? "Otimização de PC Gaming - Gabriel Toth Tech"
-            : "Gaming PC Optimization - Gabriel Toth Tech",
+            ? "SpeedPC - Gabriel Toth Tech"
+            : "SpeedPC - Gabriel Toth Tech",
         description: isPortuguese
-            ? "Desbloqueie o verdadeiro potencial do seu PC! Otimização profissional para mais FPS, menos lag e performance máxima em todos os jogos."
-            : "Unlock your PC's true potential! Professional optimization for more FPS, less lag and maximum performance in all games.",
+            ? "Desbloqueie o verdadeiro potencial do seu PC! SpeedPC profissional para mais FPS, menos lag e performance máxima em todos os jogos."
+            : "Unlock your PC's true potential! Professional SpeedPC for more FPS, less lag and maximum performance in all games.",
         keywords: isPortuguese
             ? "otimização pc, gaming, fps, performance, lag, windows optimization, overclocking"
             : "pc optimization, gaming, fps, performance, lag, windows optimization, overclocking",
         openGraph: {
             title: isPortuguese
-                ? "Otimização de PC Gaming - Gabriel Toth Tech"
-                : "Gaming PC Optimization - Gabriel Toth Tech",
+                ? "SpeedPC - Gabriel Toth Tech"
+                : "SpeedPC - Gabriel Toth Tech",
             description: isPortuguese
                 ? "Desbloqueie o verdadeiro potencial do seu PC gaming"
                 : "Unlock your gaming PC's true potential",

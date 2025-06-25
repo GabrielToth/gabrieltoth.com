@@ -22,9 +22,7 @@ export default function Footer({ locale }: FooterProps) {
                         href: `/${locale}/channel-management`,
                     },
                     {
-                        name: isPortuguese
-                            ? "Otimização de PC"
-                            : "PC Optimization",
+                        name: isPortuguese ? "SpeedPC" : "SpeedPC",
                         href: `/${locale}/pc-optimization`,
                     },
                     {

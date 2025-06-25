@@ -28,6 +28,8 @@ module.exports = {
         "gabrieltoth",
         "framesync",
         "ViraTrend",
+        "SpeedPC",
+        "waveigl",
 
         // Tech Stack
         "vercel",

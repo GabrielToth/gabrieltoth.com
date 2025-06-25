@@ -271,7 +271,7 @@ Para criar um novo pedido, acesse:
 https://gabrieltoth.com
 
 Nossos serviços:
-• Otimização de PC
+                • SpeedPC
 • Gerenciamento de Canais
 • Consultoria em Analytics
             `
@@ -327,7 +327,7 @@ async function sendHelpMessage(whatsappNumber: string) {
    Para ver este menu
 
 *Serviços disponíveis:*
-• 🖥️ Otimização de PC Gaming
+                • 🖥️ SpeedPC Gaming
 • 📺 Gerenciamento de Canais
 • 📊 Consultoria em Analytics
 • 🎮 Suporte WaveIGL

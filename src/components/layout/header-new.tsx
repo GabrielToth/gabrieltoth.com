@@ -18,7 +18,7 @@ const getTranslations = (locale: string) => {
         channels: isPortuguese ? "Canais" : "Channels",
         contact: isPortuguese ? "Contato" : "Contact",
         channelManagement: isPortuguese ? "ViraTrend" : "ViraTrend",
-        pcOptimization: isPortuguese ? "Otimização de PC" : "PC Optimization",
+        pcOptimization: isPortuguese ? "SpeedPC" : "SpeedPC",
         investment: isPortuguese ? "Investimento" : "Investment",
         support: isPortuguese ? "Apoiar WaveIGL" : "Support WaveIGL",
     }
@@ -53,17 +53,10 @@ export default function Header() {
             href: "/pc-optimization",
             description:
                 locale === "pt-BR"
-                    ? "Otimização de performance gaming"
-                    : "Gaming performance optimization",
+                    ? "SpeedPC para performance gaming"
+                    : "SpeedPC for gaming performance",
         },
-        {
-            name: t.investment,
-            href: "/social-analytics-investment",
-            description:
-                locale === "pt-BR"
-                    ? "Invista no Social Analytics Engine"
-                    : "Invest in Social Analytics Engine",
-        },
+
         {
             name: t.support,
             href: "/waveigl-support",

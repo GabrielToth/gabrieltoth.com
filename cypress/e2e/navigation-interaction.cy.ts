@@ -57,10 +57,7 @@ describe("Navigation and Interaction Tests", () => {
                         "contain.text",
                         /Gerenciamento|Channel/
                     )
-                    cy.get("body").should(
-                        "contain.text",
-                        /Otimização|Optimization/
-                    )
+                    cy.get("body").should("contain.text", /SpeedPC/)
                 }
             })
         })
@@ -71,7 +68,7 @@ describe("Navigation and Interaction Tests", () => {
 
             const servicePages = [
                 { text: /Gerenciamento|Channel/, url: "channel-management" },
-                { text: /Otimização|Optimization/, url: "pc-optimization" },
+                { text: /SpeedPC/, url: "pc-optimization" },
             ]
 
             servicePages.forEach(service => {

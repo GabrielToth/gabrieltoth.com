@@ -89,12 +89,10 @@ export default function LocaleNotFound() {
             href: `/${locale}/channel-management`,
         },
         {
-            title: isPortuguese
-                ? "Otimização de PC Gaming"
-                : "PC Gaming Optimization",
+            title: isPortuguese ? "SpeedPC Gaming" : "SpeedPC Gaming",
             description: isPortuguese
-                ? "Serviços de otimização para melhor performance"
-                : "Optimization services for better performance",
+                ? "Serviços SpeedPC para melhor performance"
+                : "SpeedPC services for better performance",
             href: `/${locale}/pc-optimization`,
         },
         {
