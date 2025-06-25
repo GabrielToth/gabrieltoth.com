@@ -15,6 +15,10 @@
 /test-results/
 /playwright-report/
 /playwright/.cache/
+/cypress/screenshots/
+/cypress/videos/
+/cypress/downloads/
+/cypress/results/
 
 # next.js
 /.next/

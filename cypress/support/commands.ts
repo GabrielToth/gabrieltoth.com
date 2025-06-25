@@ -10,31 +10,14 @@
 // https://on.cypress.io/custom-commands
 // ***********************************************
 
-declare global {
-    namespace Cypress {
-        interface Chainable {
-            /**
-             * Custom command to select DOM element by data-cy attribute.
-             * @example cy.dataCy('greeting')
-             */
-            dataCy(value: string): Chainable<JQuery<HTMLElement>>
+// -- This is a parent command --
+// Cypress.Commands.add('login', (email, password) => { ... })
 
-            /**
-             * Custom command to change language
-             * @example cy.changeLanguage('en')
-             */
-            changeLanguage(locale: "en" | "pt-BR"): Chainable<void>
-        }
-    }
-}
+// -- This is a child command --
+// Cypress.Commands.add('drag', { prevSubject: 'element'}, (subject, options) => { ... })
 
-Cypress.Commands.add("dataCy", value => {
-    return cy.get(`[data-cy=${value}]`)
-})
+// -- This is a dual command --
+// Cypress.Commands.add('dismiss', { prevSubject: 'optional'}, (subject, options) => { ... })
 
-Cypress.Commands.add("changeLanguage", locale => {
-    cy.get("[data-cy=language-selector]").click()
-    cy.get(`[data-cy=language-${locale}]`).click()
-})
-
-export {}
+// -- This will overwrite an existing command --
+// Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
