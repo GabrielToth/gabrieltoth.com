@@ -25,6 +25,8 @@ gruntfuggly
 yzhang
 hookyqr
 bhsl
+ViraTrend
+viratrend
 # Only keeping project-specific Portuguese terms that might not be in the standard dictionary
 àáâãäåæçèéêëìíîïñòóôõöøùúûüýÿ
 singlequote

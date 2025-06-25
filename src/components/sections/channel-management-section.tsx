@@ -181,11 +181,13 @@ export default function ChannelManagementSection() {
                     <div className="inline-flex items-center px-4 py-2 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-sm font-medium mb-8">
                         🚀{" "}
                         {locale === "pt-BR"
-                            ? "Consultoria Especializada"
-                            : "Specialized Consulting"}
+                            ? "ViraTrend - Consultoria Especializada"
+                            : "ViraTrend - Specialized Consulting"}
                     </div>
                     <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-                        {t.title}
+                        <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                            ViraTrend
+                        </span>
                     </h2>
                     <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto mb-8">
                         {t.subtitle}

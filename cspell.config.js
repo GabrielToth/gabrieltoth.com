@@ -2,6 +2,13 @@ module.exports = {
     version: "0.2",
     language: "en,pt,pt_BR",
     import: ["@cspell/dict-pt-br/cspell-ext.json"],
+    dictionaryDefinitions: [
+        {
+            name: "project-words",
+            path: "./project-words.txt",
+            addWords: true,
+        },
+    ],
     dictionaries: [
         "typescript",
         "node",
@@ -14,19 +21,14 @@ module.exports = {
         "softwareTerms",
         "pt-br",
         "en-us",
+        "project-words",
     ],
-    dictionaryDefinitions: [
-        {
-            name: "project-words",
-            path: "./project-words.txt",
-            addWords: true,
-        },
-    ],
-    dictionaries: [...(module.exports.dictionaries || []), "project-words"],
     words: [
         // Personal/Project
         "gabrieltoth",
         "framesync",
+        "viratrend",
+        "ViraTrend",
 
         // Tech Stack
         "vercel",
@@ -44,7 +46,7 @@ module.exports = {
         "nodejs",
 
         // Databases
-        "mongdb",
+        "mongodb",
         "postgresql",
         "redis",
         "planetscale",
@@ -113,6 +115,7 @@ module.exports = {
         "twitch",
         "discord",
         "figma",
+        "bhsl",
     ],
     ignorePaths: [
         "node_modules/**",
@@ -135,6 +138,7 @@ module.exports = {
         "*.woff2",
         "*.ttf",
         "*.otf",
+        "cspell.config.js",
     ],
     enableFiletypes: [
         "typescript",

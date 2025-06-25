@@ -41,8 +41,8 @@ const getTranslations = (locale: Locale) => {
         },
         hero: {
             badge: isPortuguese
-                ? "🚀 Consultoria Especializada"
-                : "🚀 Specialized Consulting",
+                ? "🚀 ViraTrend - Consultoria Especializada"
+                : "🚀 ViraTrend - Specialized Consulting",
             title: isPortuguese
                 ? "Transforme Seu Canal em uma Máquina de Crescimento"
                 : "Transform Your Channel into a Growth Machine",

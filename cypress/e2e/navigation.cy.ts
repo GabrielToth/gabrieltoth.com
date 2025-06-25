@@ -27,15 +27,15 @@ describe("Navigation Tests", () => {
 
     it("should navigate to different sections", () => {
         // Test navigation to about section
-        cy.get('a[href*="#about"]').click()
+        cy.get("a[href*=\"#about\"]").click()
         cy.url().should("include", "#about")
 
         // Test navigation to projects section
-        cy.get('a[href*="#projects"]').click()
+        cy.get("a[href*=\"#projects\"]").click()
         cy.url().should("include", "#projects")
 
         // Test navigation to contact section
-        cy.get('a[href*="#contact"]').click()
+        cy.get("a[href*=\"#contact\"]").click()
         cy.url().should("include", "#contact")
     })
 

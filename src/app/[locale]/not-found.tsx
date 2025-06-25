@@ -82,12 +82,10 @@ export default function LocaleNotFound() {
 
     const products = [
         {
-            title: isPortuguese
-                ? "Gerenciamento de Canais"
-                : "Channel Management",
+            title: isPortuguese ? "ViraTrend" : "ViraTrend",
             description: isPortuguese
-                ? "Consultoria especializada para crescimento no YouTube"
-                : "Specialized consulting for YouTube growth",
+                ? "Consultoria especializada para crescimento digital"
+                : "Specialized consulting for digital growth",
             href: `/${locale}/channel-management`,
         },
         {

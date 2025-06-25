@@ -14,21 +14,21 @@ export async function generateMetadata({
 
     return {
         title: isPortuguese
-            ? "Gerenciamento de Canais e Consultoria - Gabriel Toth"
-            : "Channel Management & Consulting - Gabriel Toth",
+            ? "ViraTrend - Consultoria de Crescimento Digital - Gabriel Toth"
+            : "ViraTrend - Digital Growth Consulting - Gabriel Toth",
         description: isPortuguese
-            ? "Transforme seu canal do YouTube em uma máquina de crescimento. Consultoria especializada em analytics, otimização de conteúdo e estratégias de monetização."
-            : "Transform your YouTube channel into a growth machine. Specialized consulting in analytics, content optimization and monetization strategies.",
+            ? "ViraTrend: Transforme seu canal em uma máquina de crescimento. Consultoria especializada em analytics, otimização de conteúdo e estratégias de monetização para criadores de conteúdo."
+            : "ViraTrend: Transform your channel into a growth machine. Specialized consulting in analytics, content optimization and monetization strategies for content creators.",
         keywords: isPortuguese
-            ? "gerenciamento de canal, consultoria youtube, analytics, otimização de conteúdo, monetização, crescimento de canal"
-            : "channel management, youtube consulting, analytics, content optimization, monetization, channel growth",
+            ? "ViraTrend, consultoria crescimento digital, consultoria youtube, analytics, otimização de conteúdo, monetização, crescimento de canal"
+            : "ViraTrend, digital growth consulting, youtube consulting, analytics, content optimization, monetization, channel growth",
         openGraph: {
             title: isPortuguese
-                ? "Gerenciamento de Canais e Consultoria - Gabriel Toth"
-                : "Channel Management & Consulting - Gabriel Toth",
+                ? "ViraTrend - Consultoria de Crescimento Digital - Gabriel Toth"
+                : "ViraTrend - Digital Growth Consulting - Gabriel Toth",
             description: isPortuguese
-                ? "Transforme seu canal do YouTube em uma máquina de crescimento"
-                : "Transform your YouTube channel into a growth machine",
+                ? "ViraTrend: Transforme seu canal em uma máquina de crescimento"
+                : "ViraTrend: Transform your channel into a growth machine",
             type: "website",
             locale: locale,
         },

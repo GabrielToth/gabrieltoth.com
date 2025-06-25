@@ -5,7 +5,8 @@
         "projects": "Projects",
         "investments": "Investments",
         "contact": "Contact",
-        "language": "Language"
+        "language": "Language",
+        "ViraTrend": "ViraTrend"
     },
     "hero": {
         "greeting": "Hello, I'm",

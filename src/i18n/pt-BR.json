@@ -5,7 +5,8 @@
         "projects": "Projetos",
         "investments": "Investimentos",
         "contact": "Contato",
-        "language": "Idioma"
+        "language": "Idioma",
+        "ViraTrend": "ViraTrend"
     },
     "hero": {
         "greeting": "Olá, eu sou",

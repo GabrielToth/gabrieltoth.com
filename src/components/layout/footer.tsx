@@ -18,9 +18,7 @@ export default function Footer({ locale }: FooterProps) {
                 title: isPortuguese ? "Serviços" : "Services",
                 items: [
                     {
-                        name: isPortuguese
-                            ? "Gerenciamento de Canais"
-                            : "Channel Management",
+                        name: isPortuguese ? "ViraTrend" : "ViraTrend",
                         href: `/${locale}/channel-management`,
                     },
                     {

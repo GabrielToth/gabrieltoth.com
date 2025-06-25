@@ -17,9 +17,7 @@ const getTranslations = (locale: string) => {
         services: isPortuguese ? "Serviços" : "Services",
         channels: isPortuguese ? "Canais" : "Channels",
         contact: isPortuguese ? "Contato" : "Contact",
-        channelManagement: isPortuguese
-            ? "Gerenciamento de Canais"
-            : "Channel Management",
+        channelManagement: isPortuguese ? "ViraTrend" : "ViraTrend",
         pcOptimization: isPortuguese ? "Otimização de PC" : "PC Optimization",
         investment: isPortuguese ? "Investimento" : "Investment",
         support: isPortuguese ? "Apoiar WaveIGL" : "Support WaveIGL",
@@ -47,8 +45,8 @@ export default function Header() {
             href: "/channel-management",
             description:
                 locale === "pt-BR"
-                    ? "Consultoria e gestão de canais"
-                    : "Consulting and channel management",
+                    ? "Produto ViraTrend - Consultoria de crescimento"
+                    : "ViraTrend Product - Growth consulting",
         },
         {
             name: t.pcOptimization,
