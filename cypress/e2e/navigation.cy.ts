@@ -27,15 +27,15 @@ describe("Navigation Tests", () => {
 
     it("should navigate to different sections", () => {
         // Test navigation to about section
-        cy.get("a[href*=\"#about\"]").click()
+        cy.get('a[href*="#about"]').click()
         cy.url().should("include", "#about")
 
         // Test navigation to projects section
-        cy.get("a[href*=\"#projects\"]").click()
+        cy.get('a[href*="#projects"]').click()
         cy.url().should("include", "#projects")
 
         // Test navigation to contact section
-        cy.get("a[href*=\"#contact\"]").click()
+        cy.get('a[href*="#contact"]').click()
         cy.url().should("include", "#contact")
     })
 
@@ -59,13 +59,13 @@ describe("Navigation Tests", () => {
 
     it("should open services dropdown", () => {
         cy.contains("Serviços").click()
-        cy.contains("Gerenciamento de Canais").should("be.visible")
+        cy.contains("ViraTrend").should("be.visible")
         cy.contains("Otimização de PC").should("be.visible")
     })
 
     it("should navigate to channel management page", () => {
         cy.contains("Serviços").click()
-        cy.contains("Gerenciamento de Canais").click()
+        cy.contains("ViraTrend").click()
         cy.url().should("include", "/channel-management")
     })
 })

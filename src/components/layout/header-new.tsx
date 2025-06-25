@@ -45,8 +45,8 @@ export default function Header() {
             href: "/channel-management",
             description:
                 locale === "pt-BR"
-                    ? "Produto ViraTrend - Consultoria de crescimento"
-                    : "ViraTrend Product - Growth consulting",
+                    ? "Serviço ViraTrend - Consultoria de crescimento"
+                    : "ViraTrend Service - Growth consulting",
         },
         {
             name: t.pcOptimization,

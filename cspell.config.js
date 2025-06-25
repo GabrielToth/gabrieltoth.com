@@ -27,7 +27,6 @@ module.exports = {
         // Personal/Project
         "gabrieltoth",
         "framesync",
-        "viratrend",
         "ViraTrend",
 
         // Tech Stack
