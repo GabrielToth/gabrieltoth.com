@@ -1,3 +1,4 @@
+// cspell:ignore-file
 module.exports = {
     version: "0.2",
     language: "en,pt,pt_BR",
@@ -16,6 +17,12 @@ module.exports = {
         "en-us",
     ],
     words: [
+        // English Variants
+        "customise",
+
+        // SVG Related
+        "evenodd",
+
         // Special Characters
         "àáâãäåæçèéêëìíîïñòóôõöøùúûüýÿ",
 
@@ -93,6 +100,7 @@ module.exports = {
         "node",
         "deno",
         "bun",
+        "Turbopack",
 
         // Services
         "stripe",
@@ -159,6 +167,7 @@ module.exports = {
         "*.ttf",
         "*.otf",
         "cspell.config.js",
+        "tsconfig.tsbuildinfo",
         "cypress/**",
         "__tests__/**",
         "**/*.test.*",
