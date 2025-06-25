@@ -99,8 +99,8 @@ export default async function PrivacyPolicyPage({
             contact: {
                 title: isPortuguese ? "7. Contato" : "7. Contact",
                 content: isPortuguese
-                    ? "Para questões sobre esta política ou seus dados pessoais, entre em contato: gabrieltothgoncalves@gmail.com ou WhatsApp: +55 11 93619-1346"
-                    : "For questions about this policy or your personal data, contact us: gabrieltothgoncalves@gmail.com or WhatsApp: +55 11 93619-1346",
+                    ? "Para questões sobre esta política ou seus dados pessoais, entre em contato: gabrieltothgoncalves@gmail.com ou WhatsApp: +55 11 993313606"
+                    : "For questions about this policy or your personal data, contact us: gabrieltothgoncalves@gmail.com or WhatsApp: +55 11 993313606",
             },
         },
     }

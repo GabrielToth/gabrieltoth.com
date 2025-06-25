@@ -105,8 +105,8 @@ export default async function TermsOfServicePage({
             contact: {
                 title: isPortuguese ? "9. Contato" : "9. Contact",
                 content: isPortuguese
-                    ? "Para questões sobre estes termos, entre em contato: gabrieltothgoncalves@gmail.com ou WhatsApp: +55 11 93619-1346"
-                    : "For questions about these terms, contact us: gabrieltothgoncalves@gmail.com or WhatsApp: +55 11 93619-1346",
+                    ? "Para questões sobre estes termos, entre em contato: gabrieltothgoncalves@gmail.com ou WhatsApp: +55 11 993313606"
+                    : "For questions about these terms, contact us: gabrieltothgoncalves@gmail.com or WhatsApp: +55 11 993313606",
             },
         },
     }

@@ -81,24 +81,28 @@ const getTranslations = (locale: Locale) => {
                     ],
                 },
                 {
-                    channel: "TechCreator",
+                    channel: "Gabriel Toth (desativado)",
                     description: isPortuguese
-                        ? "Canal de tecnologia - consultoria completa"
-                        : "Tech channel - complete consulting",
+                        ? "Meu canal pessoal - Case histórico"
+                        : "My personal channel - Historical case",
                     metrics: [
                         {
-                            label: isPortuguese ? "Inscritos" : "Subscribers",
-                            value: "500K+",
-                        },
-                        {
-                            label: isPortuguese ? "CTR" : "CTR",
-                            value: "+300%",
+                            label: isPortuguese
+                                ? "Views totais"
+                                : "Total views",
+                            value: "1M+",
                         },
                         {
                             label: isPortuguese
-                                ? "Tempo de view"
-                                : "Watch time",
-                            value: "+250%",
+                                ? "Inscritos atuais"
+                                : "Current subscribers",
+                            value: "1.4K+",
+                        },
+                        {
+                            label: isPortuguese
+                                ? "Views com <1K subs"
+                                : "Views with <1K subs",
+                            value: "1M+",
                         },
                     ],
                 },

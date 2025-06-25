@@ -222,7 +222,7 @@ export default async function PCOptimizationTermsPage({ params }: PageProps) {
                             {content.buttons.back}
                         </Link>
                         <a
-                            href={`https://wa.me/5511936191346?text=${whatsappMessage}`}
+                            href={`https://wa.me/5511993313606?text=${whatsappMessage}`}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="inline-flex items-center justify-center px-8 py-3 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition-colors"

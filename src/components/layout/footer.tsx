@@ -66,7 +66,7 @@ export default function Footer({ locale }: FooterProps) {
                     },
                     {
                         name: "WhatsApp",
-                        href: "https://wa.me/5511936191346",
+                        href: "https://wa.me/5511993313606",
                         external: true,
                     },
                 ],

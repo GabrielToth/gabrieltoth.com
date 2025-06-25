@@ -427,7 +427,7 @@ export default function ChannelManagementLanding({
                   `💳 Payment method: ${paymentMethod}%0A%0A` +
                   "Name:%0AYouTube Channel:%0AYour main goal:%0AContent type:%0APosting frequency:%0A%0ALooking forward to hearing from you!"
 
-        return `https://wa.me/5511936191346?text=${baseMessage}`
+        return `https://wa.me/5511993313606?text=${baseMessage}`
     }
 
     return (
