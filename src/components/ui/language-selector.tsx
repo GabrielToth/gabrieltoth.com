@@ -29,24 +29,24 @@ export default function LanguageSelector({
     const variants = {
         default: {
             container: "relative inline-block",
-            button: "flex items-center space-x-2 px-3 py-2 border border-gray-300 rounded-md text-sm font-medium bg-white hover:bg-gray-50 transition-colors",
+            button: "flex items-center space-x-2 px-3 py-2 border border-gray-700 rounded-md text-sm font-medium bg-gray-800 text-white hover:bg-gray-700 transition-colors",
             dropdown:
-                "absolute right-0 mt-2 w-32 bg-white border border-gray-200 rounded-md shadow-lg z-50",
-            option: "block w-full px-4 py-2 text-sm text-left hover:bg-gray-100 transition-colors",
+                "absolute right-0 mt-2 w-32 bg-gray-800 border border-gray-700 rounded-md shadow-lg z-50",
+            option: "block w-full px-4 py-2 text-sm text-left text-gray-200 hover:bg-gray-700 transition-colors",
         },
         header: {
             container: "relative inline-block",
-            button: "flex items-center space-x-1 text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors",
+            button: "flex items-center space-x-1 text-sm font-medium text-gray-200 hover:text-white transition-colors",
             dropdown:
-                "absolute right-0 mt-2 w-32 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md shadow-lg z-50",
-            option: "block w-full px-4 py-2 text-sm text-left hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors text-gray-600 dark:text-gray-300",
+                "absolute right-0 mt-2 w-32 bg-gray-800 border border-gray-700 rounded-md shadow-lg z-50",
+            option: "block w-full px-4 py-2 text-sm text-left text-gray-200 hover:bg-gray-700 transition-colors",
         },
         footer: {
             container: "relative inline-block",
-            button: "flex items-center space-x-2 text-sm text-gray-500 hover:text-gray-700 transition-colors",
+            button: "flex items-center space-x-2 text-sm text-gray-400 hover:text-white transition-colors",
             dropdown:
-                "absolute bottom-full right-0 mb-2 w-32 bg-white border border-gray-200 rounded-md shadow-lg z-50",
-            option: "block w-full px-4 py-2 text-sm text-left hover:bg-gray-100 transition-colors",
+                "absolute bottom-full right-0 mb-2 w-32 bg-gray-800 border border-gray-700 rounded-md shadow-lg z-50",
+            option: "block w-full px-4 py-2 text-sm text-left text-gray-200 hover:bg-gray-700 transition-colors",
         },
     }
 
@@ -84,7 +84,7 @@ export default function LanguageSelector({
                                 }}
                                 className={`${currentVariant.option} ${
                                     loc === locale
-                                        ? "text-blue-600 font-medium"
+                                        ? "text-blue-400 font-medium"
                                         : ""
                                 }`}
                                 data-cy={`language-${loc}`}

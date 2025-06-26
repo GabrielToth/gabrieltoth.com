@@ -15,7 +15,6 @@ import {
     Star,
     Users,
     Youtube,
-    Zap,
 } from "lucide-react"
 import { useEffect, useState } from "react"
 
@@ -28,33 +27,31 @@ const getTranslations = (locale: Locale) => {
     return {
         hero: {
             badge: isPortuguese
-                ? "💜 Apoie a Comunidade"
-                : "💜 Support the Community",
+                ? "Apoie a Comunidade e Salve Vidas"
+                : "💜 Support the Community and Save Lives",
             title: isPortuguese
-                ? "Construa Conosco o Futuro da Comunidade WaveIGL"
-                : "Build the Future of WaveIGL Community With Us",
+                ? "Construa Conosco o Futuro da Comunidade WaveIGL e Ajude a Salvar Vidas"
+                : "Build the Future of WaveIGL Community and Help Save Lives With Us",
             subtitle: isPortuguese
-                ? "Suas doações financiam o desenvolvimento de plataformas, ferramentas e recursos para nossa comunidade de mais de 2 milhões de espectadores mensais."
-                : "Your donations fund the development of platforms, tools and resources for our community of over 2 million monthly viewers.",
+                ? "Suas doações não apenas financiam o desenvolvimento de plataformas e recursos para nossa comunidade de 2 milhões de espectadores mensais, mas também ajudam a salvar uma vida através de nossos projetos sociais e de saúde mental."
+                : "Your donations not only fund the development of platforms and resources for our 2 million monthly viewers community, but also help save a life through our social and mental health projects.",
             cta: isPortuguese ? "Apoiar Agora" : "Support Now",
             stats: [
                 {
                     number: "2M+",
                     label: isPortuguese
-                        ? "Visualizações mensais"
-                        : "Monthly views",
+                        ? "Vidas impactadas mensalmente"
+                        : "Lives impacted monthly",
                 },
                 {
                     number: "150K+",
-                    label: isPortuguese
-                        ? "Membros da comunidade"
-                        : "Community members",
+                    label: isPortuguese ? "Pessoas ajudadas" : "People helped",
                 },
                 {
                     number: "5+",
                     label: isPortuguese
-                        ? "Anos construindo conteúdo"
-                        : "Years building content",
+                        ? "Anos salvando vidas"
+                        : "Years saving lives",
                 },
             ],
         },
@@ -67,13 +64,22 @@ const getTranslations = (locale: Locale) => {
                 : "WaveIGL isn't just a channel - it's an ecosystem",
             points: [
                 {
+                    icon: Heart,
+                    title: isPortuguese
+                        ? "Impacto Social e Saúde Mental"
+                        : "Social Impact & Mental Health",
+                    description: isPortuguese
+                        ? "Desenvolvemos programas de apoio à saúde mental e prevenção, salvando vidas através do gaming"
+                        : "We develop mental health support and prevention programs, saving lives through gaming",
+                },
+                {
                     icon: Users,
                     title: isPortuguese
-                        ? "Comunidade Unida"
-                        : "United Community",
+                        ? "Comunidade Unida e Acolhedora"
+                        : "United & Welcoming Community",
                     description: isPortuguese
-                        ? "Criamos um espaço onde gamers, streamers e criadores se conectam e crescem juntos"
-                        : "We create a space where gamers, streamers and creators connect and grow together",
+                        ? "Criamos um espaço seguro onde gamers podem encontrar apoio, amizade e ajuda profissional quando precisam"
+                        : "We create a safe space where gamers can find support, friendship and professional help when needed",
                 },
                 {
                     icon: Youtube,
@@ -111,18 +117,16 @@ const getTranslations = (locale: Locale) => {
                 : "Every contribution helps us build something bigger",
             list: [
                 {
-                    icon: Globe,
+                    icon: Heart,
                     title: isPortuguese
-                        ? "Plataforma WaveIGL Hub"
-                        : "WaveIGL Hub Platform",
+                        ? "Programa de Apoio e Prevenção"
+                        : "Support & Prevention Program",
                     description: isPortuguese
-                        ? "Portal central da comunidade com fóruns, recursos, tutoriais e ferramentas exclusivas para membros"
-                        : "Central community portal with forums, resources, tutorials and exclusive tools for members",
-                    progress: 35,
-                    budget: "R$ 15.000",
-                    status: isPortuguese
-                        ? "Em desenvolvimento"
-                        : "In development",
+                        ? "Rede de profissionais e recursos para suporte emocional, prevenção e acolhimento 24/7"
+                        : "Network of professionals and resources for 24/7 emotional support, prevention and care",
+                    progress: 40,
+                    budget: "R$ 20.000",
+                    status: isPortuguese ? "Prioridade Alta" : "High Priority",
                 },
                 {
                     icon: Gamepad2,
@@ -184,13 +188,13 @@ const getTranslations = (locale: Locale) => {
                 {
                     amount: "R$ 50",
                     title: isPortuguese ? "Contribuidor" : "Contributor",
-                    icon: Zap,
+                    icon: Heart,
                     description: isPortuguese
-                        ? "Cobre custos de servidor por uma semana para manter tudo funcionando"
-                        : "Covers server costs for a week to keep everything running",
+                        ? "Ajuda a manter nossa linha de apoio emocional funcionando por um dia"
+                        : "Helps keep our emotional support line running for a day",
                     impact: isPortuguese
-                        ? "Mantém a infraestrutura online"
-                        : "Keeps infrastructure online",
+                        ? "Pode ajudar a salvar uma vida"
+                        : "Can help save a life",
                 },
                 {
                     amount: "R$ 150",
@@ -218,51 +222,51 @@ const getTranslations = (locale: Locale) => {
         },
         transparency: {
             title: isPortuguese
-                ? "Transparência Total"
-                : "Complete Transparency",
+                ? "Transparência e Impacto Social"
+                : "Transparency & Social Impact",
             subtitle: isPortuguese
-                ? "Você tem o direito de saber exatamente onde cada centavo é usado"
-                : "You have the right to know exactly where every penny is used",
+                ? "Cada centavo é usado com responsabilidade para maximizar nosso impacto social e salvar vidas"
+                : "Every penny is used responsibly to maximize our social impact and save lives",
             breakdown: [
                 {
                     category: isPortuguese
-                        ? "Desenvolvimento de Software"
-                        : "Software Development",
+                        ? "Programas de Apoio e Prevenção"
+                        : "Support & Prevention Programs",
                     percentage: 40,
                     amount: "40%",
                     description: isPortuguese
-                        ? "Programação, design e testes das plataformas"
-                        : "Programming, design and platform testing",
+                        ? "Rede de profissionais, recursos e suporte 24/7"
+                        : "Network of professionals, resources and 24/7 support",
                 },
                 {
                     category: isPortuguese
-                        ? "Infraestrutura e Hosting"
-                        : "Infrastructure & Hosting",
+                        ? "Infraestrutura de Acolhimento"
+                        : "Support Infrastructure",
                     percentage: 25,
                     amount: "25%",
                     description: isPortuguese
-                        ? "Servidores, CDN, banco de dados e segurança"
-                        : "Servers, CDN, databases and security",
+                        ? "Plataformas e ferramentas de apoio emocional"
+                        : "Emotional support platforms and tools",
                 },
                 {
                     category: isPortuguese
-                        ? "Criação de Conteúdo"
-                        : "Content Creation",
+                        ? "Treinamento e Capacitação"
+                        : "Training & Development",
                     percentage: 20,
                     amount: "20%",
                     description: isPortuguese
-                        ? "Equipamentos, software e produção de vídeos"
-                        : "Equipment, software and video production",
+                        ? "Preparação de moderadores e voluntários"
+                        : "Training moderators and volunteers",
                 },
                 {
                     category: isPortuguese
-                        ? "Eventos e Comunidade"
-                        : "Events & Community",
+                        ? "Conscientização e Prevenção"
+                        : "Awareness & Prevention",
                     percentage: 15,
                     amount: "15%",
                     description: isPortuguese
-                        ? "Torneios, prêmios e atividades comunitárias"
-                        : "Tournaments, prizes and community activities",
+                        ? "Campanhas e conteúdo educativo"
+                        : "Educational campaigns and content",
                 },
             ],
             commitment: isPortuguese
@@ -327,39 +331,21 @@ const getTranslations = (locale: Locale) => {
         },
         testimonials: {
             title: isPortuguese
-                ? "Vozes da Nossa Comunidade"
-                : "Voices From Our Community",
+                ? "Depoimento da Comunidade"
+                : "Community Testimonial",
             subtitle: isPortuguese
-                ? "Veja o que outros membros estão dizendo"
-                : "See what other members are saying",
+                ? "Veja o que nossos membros estão dizendo"
+                : "See what our members are saying",
             items: [
                 {
-                    name: "GameMaster_BR",
+                    name: "ogabrieltoth",
                     role: isPortuguese
-                        ? "Apoiador há 2 anos"
-                        : "Supporter for 2 years",
+                        ? "Content Creator / Desenvolvedor Full Stack"
+                        : "Content Creator / Full Stack Developer",
                     content: isPortuguese
-                        ? "WaveIGL mudou minha forma de ver o gaming. A comunidade é incrível e os projetos realmente fazem diferença!"
-                        : "WaveIGL changed how I see gaming. The community is incredible and the projects really make a difference!",
-                    amount: "R$ 50/mês",
-                },
-                {
-                    name: "StreamerPro",
-                    role: isPortuguese
-                        ? "Criador de conteúdo"
-                        : "Content creator",
-                    content: isPortuguese
-                        ? "As ferramentas que eles desenvolvem são game-changing. Meu canal cresceu 200% usando os recursos da comunidade!"
-                        : "The tools they develop are game-changing. My channel grew 200% using community resources!",
-                    amount: "R$ 100/mês",
-                },
-                {
-                    name: "RetroGamer",
-                    role: isPortuguese ? "Membro veterano" : "Veteran member",
-                    content: isPortuguese
-                        ? "É gratificante ver minha contribuição ajudando a construir algo tão especial. WaveIGL é família!"
-                        : "It's rewarding to see my contribution helping build something so special. WaveIGL is family!",
-                    amount: "R$ 25/mês",
+                        ? "Conheci o WaveIGL há mais de 6 anos, subi de Prata 3 para AK Cruzada no CS:GO, nos tornamos parceiros há mais de 3 anos. Me ajudou não somente in-game, mas também para a vida."
+                        : "I've known WaveIGL for over 6 years, climbed from Silver 3 to AK Cross in CS:GO, we became partners over 3 years ago. It helped me not only in-game, but also in life.",
+                    amount: "R$ 9,90",
                 },
             ],
         },
@@ -668,29 +654,31 @@ export default function WaveIGLSupportLanding({
                             {t.testimonials.subtitle}
                         </p>
                     </div>
-                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <div className="flex justify-center">
                         {t.testimonials.items.map((testimonial, index) => (
                             <div
                                 key={index}
-                                className="bg-white dark:bg-gray-900 rounded-lg p-8 shadow-lg"
+                                className="bg-white dark:bg-gray-900 rounded-lg p-8 shadow-lg max-w-2xl w-full border border-gray-200 dark:border-gray-700"
                             >
                                 <div className="text-center mb-6">
-                                    <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-white font-bold text-xl mx-auto mb-4">
-                                        {testimonial.name.charAt(0)}
+                                    <div className="w-20 h-20 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-white font-bold text-2xl mx-auto mb-4">
+                                        {testimonial.name
+                                            .charAt(0)
+                                            .toUpperCase()}
                                     </div>
-                                    <h3 className="font-bold text-gray-900 dark:text-white">
+                                    <h3 className="text-xl font-bold text-gray-900 dark:text-white">
                                         {testimonial.name}
                                     </h3>
-                                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                                    <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">
                                         {testimonial.role}
                                     </p>
-                                    <div className="inline-block bg-purple-100 dark:bg-purple-900/20 text-purple-600 px-3 py-1 rounded-full text-sm font-semibold mt-2">
+                                    <div className="inline-block bg-purple-100 dark:bg-purple-800/30 text-purple-700 dark:text-purple-200 px-4 py-2 rounded-full text-sm font-semibold border border-purple-200 dark:border-purple-600">
                                         {testimonial.amount}
                                     </div>
                                 </div>
-                                <p className="text-gray-600 dark:text-gray-300 italic text-center">
-                                    {testimonial.content}
-                                </p>
+                                <blockquote className="text-gray-700 dark:text-gray-200 italic text-center text-lg leading-relaxed">
+                                    "{testimonial.content}"
+                                </blockquote>
                             </div>
                         ))}
                     </div>
