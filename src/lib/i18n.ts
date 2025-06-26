@@ -7,7 +7,7 @@ export const localeNames: Record<Locale, string> = {
     "pt-BR": "Português",
 }
 
-export const defaultLocale: Locale = "en"
+export const defaultLocale: Locale = "pt-BR"
 
 // Get locale from cookie (client-side)
 export const getLocaleFromCookie = (): Locale => {

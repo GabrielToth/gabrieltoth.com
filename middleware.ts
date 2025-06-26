@@ -43,6 +43,7 @@ function isValidPath(path: string): boolean {
         "/social-analytics-investment",
         "/waveigl-support",
         "/editors",
+        "/editores",
         "/privacy-policy",
         "/terms-of-service",
     ]
@@ -63,10 +64,6 @@ export function middleware(request: NextRequest) {
         return
     }
 
-    // Check if this is a retry attempt (to avoid infinite loops)
-    const isRetryAttempt =
-        request.headers.get("x-url-correction-attempt") === "true"
-
     // Parse URL to check if it has a locale
     const pathSegments = pathname.split("/").filter(Boolean)
     const potentialLocale = pathSegments[0]
@@ -83,31 +80,35 @@ export function middleware(request: NextRequest) {
         currentLocale = getLocaleFromAcceptLanguage(acceptLanguage)
     }
 
-    // Case 1: URL has invalid locale but valid path
-    if (!hasValidLocale && !isRetryAttempt && isValidPath(restOfPath)) {
-        // Try to redirect to correct locale + path
-        const correctedUrl = new URL(
-            `/${currentLocale}${restOfPath}`,
-            request.url
-        )
-
+    // Case 1: Root path or no locale - redirect to default locale
+    if (pathname === "/" || pathSegments.length === 0) {
+        const correctedUrl = new URL(`/${currentLocale}/`, request.url)
         const response = NextResponse.redirect(correctedUrl)
-        response.headers.set("x-url-correction-attempt", "true")
+        response.cookies.set("locale", currentLocale, {
+            maxAge: 365 * 24 * 60 * 60,
+            path: "/",
+            sameSite: "lax",
+        })
         return response
     }
 
-    // Case 2: URL has no locale at all and is a valid path
-    if (pathSegments.length > 0 && !hasValidLocale && isValidPath(pathname)) {
+    // Case 2: URL has no locale but is a valid path - redirect to include locale
+    if (!hasValidLocale && isValidPath(pathname)) {
         const correctedUrl = new URL(
             `/${currentLocale}${pathname}`,
             request.url
         )
-        return NextResponse.redirect(correctedUrl)
+        const response = NextResponse.redirect(correctedUrl)
+        response.cookies.set("locale", currentLocale, {
+            maxAge: 365 * 24 * 60 * 60,
+            path: "/",
+            sameSite: "lax",
+        })
+        return response
     }
 
-    // Case 3: URL has valid locale but invalid path - let it through to show 404
-    if (hasValidLocale && !isValidPath(restOfPath)) {
-        // Don't try to correct, let it show the 404 page
+    // Case 3: URL has valid locale - proceed normally
+    if (hasValidLocale) {
         const response = NextResponse.next()
         response.cookies.set("locale", potentialLocale, {
             maxAge: 365 * 24 * 60 * 60,
@@ -118,34 +119,18 @@ export function middleware(request: NextRequest) {
         return response
     }
 
-    // Case 4: URL has invalid locale AND invalid path - let it show 404
-    if (!hasValidLocale && !isValidPath(restOfPath) && !isRetryAttempt) {
-        // Try once with detected locale
-        const correctedUrl = new URL(
-            `/${currentLocale}${restOfPath}`,
-            request.url
-        )
-
-        const response = NextResponse.redirect(correctedUrl)
-        response.headers.set("x-url-correction-attempt", "true")
-        return response
-    }
-
     // Default behavior - create response with locale detection
     const response = NextResponse.next()
 
-    // Determine which locale to use
-    const localeToUse = hasValidLocale ? potentialLocale : currentLocale
-
     // Set the locale in a cookie (expires in 1 year)
-    response.cookies.set("locale", localeToUse, {
+    response.cookies.set("locale", currentLocale, {
         maxAge: 365 * 24 * 60 * 60,
         path: "/",
         sameSite: "lax",
     })
 
     // Set a header so we can access the locale in components
-    response.headers.set("x-locale", localeToUse)
+    response.headers.set("x-locale", currentLocale)
 
     return response
 }
