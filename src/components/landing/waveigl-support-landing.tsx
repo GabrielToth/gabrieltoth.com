@@ -548,22 +548,22 @@ export default function WaveIGLSupportLanding({
                         {t.impact.tiers.map((tier, index) => (
                             <div
                                 key={index}
-                                className="bg-white dark:bg-gray-800 rounded-lg p-8 shadow-lg border-2 border-transparent hover:border-purple-500 transition-all"
+                                className="bg-white dark:bg-gray-800 rounded-lg p-8 shadow-lg border-2 border-gray-200 dark:border-gray-700 hover:border-purple-500 dark:hover:border-purple-400 transition-all"
                             >
                                 <div className="text-center mb-6">
-                                    <tier.icon className="w-16 h-16 text-purple-600 mx-auto mb-4" />
-                                    <div className="text-2xl font-black text-purple-600 mb-2">
+                                    <tier.icon className="w-16 h-16 text-purple-600 dark:text-purple-400 mx-auto mb-4" />
+                                    <div className="text-2xl font-black text-purple-600 dark:text-purple-400 mb-2">
                                         {tier.amount}
                                     </div>
                                     <h3 className="text-lg font-bold text-gray-900 dark:text-white">
                                         {tier.title}
                                     </h3>
                                 </div>
-                                <p className="text-gray-600 dark:text-gray-300 mb-4 text-center">
+                                <p className="text-gray-700 dark:text-gray-200 mb-4 text-center">
                                     {tier.description}
                                 </p>
-                                <div className="bg-purple-50 dark:bg-purple-900/20 rounded-lg p-3 text-center">
-                                    <p className="text-sm font-semibold text-purple-700 dark:text-purple-300">
+                                <div className="bg-purple-100 dark:bg-purple-800/30 rounded-lg p-3 text-center border border-purple-200 dark:border-purple-600">
+                                    <p className="text-sm font-semibold text-purple-800 dark:text-purple-200">
                                         💡 {tier.impact}
                                     </p>
                                 </div>
@@ -574,7 +574,7 @@ export default function WaveIGLSupportLanding({
             </section>
 
             {/* Transparency Section */}
-            <section className="py-20 px-4 sm:px-6 lg:px-8 bg-blue-50 dark:bg-blue-900/20">
+            <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-900">
                 <div className="max-w-7xl mx-auto">
                     <div className="text-center mb-16">
                         <h2 className="text-4xl font-black text-gray-900 dark:text-white mb-4">
@@ -588,12 +588,12 @@ export default function WaveIGLSupportLanding({
                         {t.transparency.breakdown.map((item, index) => (
                             <div
                                 key={index}
-                                className="bg-white dark:bg-gray-800 rounded-lg p-6 text-center shadow-lg"
+                                className="bg-white dark:bg-gray-800 rounded-lg p-6 text-center shadow-lg border border-gray-200 dark:border-gray-700"
                             >
                                 <div
-                                    className="w-20 h-20 rounded-full mx-auto mb-4 flex items-center justify-center text-white font-bold text-lg"
+                                    className="w-20 h-20 rounded-full mx-auto mb-4 flex items-center justify-center text-white font-bold text-lg shadow-md"
                                     style={{
-                                        background: `conic-gradient(#8B5CF6 0% ${item.percentage}%, #E5E7EB ${item.percentage}% 100%)`,
+                                        background: `conic-gradient(#8B5CF6 0% ${item.percentage}%, #D1D5DB ${item.percentage}% 100%)`,
                                     }}
                                 >
                                     {item.amount}
@@ -601,13 +601,13 @@ export default function WaveIGLSupportLanding({
                                 <h3 className="font-bold text-gray-900 dark:text-white mb-2">
                                     {item.category}
                                 </h3>
-                                <p className="text-sm text-gray-600 dark:text-gray-300">
+                                <p className="text-sm text-gray-700 dark:text-gray-200">
                                     {item.description}
                                 </p>
                             </div>
                         ))}
                     </div>
-                    <div className="text-center bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg">
+                    <div className="text-center bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg border border-gray-200 dark:border-gray-700">
                         <p className="text-lg font-semibold text-blue-600 dark:text-blue-400">
                             {t.transparency.commitment}
                         </p>
@@ -630,10 +630,10 @@ export default function WaveIGLSupportLanding({
                         {t.rewards.perks.map((perk, index) => (
                             <div
                                 key={index}
-                                className="bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 rounded-lg p-8"
+                                className="bg-white dark:bg-gray-800 border-2 border-purple-200 dark:border-purple-700 rounded-lg p-8 shadow-lg"
                             >
                                 <div className="text-center mb-6">
-                                    <Sparkles className="w-12 h-12 text-purple-600 mx-auto mb-4" />
+                                    <Sparkles className="w-12 h-12 text-purple-600 dark:text-purple-400 mx-auto mb-4" />
                                     <h3 className="text-xl font-bold text-gray-900 dark:text-white">
                                         {perk.tier}
                                     </h3>
@@ -642,10 +642,12 @@ export default function WaveIGLSupportLanding({
                                     {perk.benefits.map((benefit, idx) => (
                                         <li
                                             key={idx}
-                                            className="flex items-center text-gray-600 dark:text-gray-300"
+                                            className="flex items-center text-gray-800 dark:text-gray-100"
                                         >
-                                            <CheckCircle className="w-5 h-5 text-green-500 mr-3" />
-                                            {benefit}
+                                            <CheckCircle className="w-5 h-5 text-green-600 dark:text-green-400 mr-3 flex-shrink-0" />
+                                            <span className="text-sm leading-relaxed">
+                                                {benefit}
+                                            </span>
                                         </li>
                                     ))}
                                 </ul>
