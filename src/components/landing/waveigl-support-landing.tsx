@@ -1,5 +1,7 @@
 "use client"
 
+import LanguageSelector from "@/components/ui/language-selector"
+import { useLocale } from "@/hooks/use-locale"
 import { type Locale } from "@/lib/i18n"
 import {
     CheckCircle,
@@ -378,8 +380,9 @@ const getTranslations = (locale: Locale) => {
 }
 
 export default function WaveIGLSupportLanding({
-    locale,
+    locale: initialLocale,
 }: WaveIGLSupportLandingProps) {
+    const { locale } = useLocale()
     const [mounted, setMounted] = useState(false)
     const t = getTranslations(locale)
 
@@ -392,22 +395,7 @@ export default function WaveIGLSupportLanding({
             {/* Language Selector for Landing Page */}
             <div className="fixed top-4 right-4 z-50">
                 <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-lg p-2 shadow-md">
-                    {mounted && (
-                        <select
-                            value={locale}
-                            onChange={e =>
-                                (window.location.href =
-                                    window.location.pathname +
-                                    "?lang=" +
-                                    e.target.value)
-                            }
-                            className="text-sm border-none bg-transparent focus:outline-none cursor-pointer"
-                            aria-label="Select language"
-                        >
-                            <option value="en">🇺🇸 English</option>
-                            <option value="pt-BR">🇧🇷 Português</option>
-                        </select>
-                    )}
+                    {mounted && <LanguageSelector variant="default" />}
                 </div>
             </div>
 

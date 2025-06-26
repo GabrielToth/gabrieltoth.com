@@ -52,7 +52,7 @@ const getTranslations = (locale: Locale) => {
                     "Stripe",
                     "PIX",
                 ],
-                liveUrl: "/waveigl-support",
+                liveUrl: `/${locale}/waveigl-support`,
             },
             {
                 title: "Social Analytics Engine",
@@ -68,7 +68,7 @@ const getTranslations = (locale: Locale) => {
                     "Docker",
                     "SQLAlchemy",
                 ],
-                liveUrl: "/social-analytics-investment",
+                liveUrl: `/${locale}/social-analytics-investment`,
             },
             {
                 title: "PC Optimization Service",
@@ -77,7 +77,7 @@ const getTranslations = (locale: Locale) => {
                     : "Specialized PC optimization service for gaming, focused on maximizing game performance and reducing latency. Includes advanced system configurations, hardware optimization and custom software.",
                 image: "/projects/pc-optimization.jpg",
                 tags: ["Windows", "Gaming", "Performance", "Hardware"],
-                liveUrl: "/pc-optimization",
+                liveUrl: `/${locale}/pc-optimization`,
             },
         ],
     }

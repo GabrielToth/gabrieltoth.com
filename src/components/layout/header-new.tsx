@@ -34,7 +34,7 @@ export default function Header() {
         { name: t.home, href: "#hero" },
         { name: t.about, href: "#about" },
         { name: t.projects, href: "#projects" },
-        { name: t.investments, href: "/investments" },
+        { name: t.investments, href: `/${locale}/investments` },
         { name: t.channels, href: "#channel-management" },
         { name: t.contact, href: "#contact" },
     ]
@@ -42,7 +42,7 @@ export default function Header() {
     const servicesDropdown = [
         {
             name: t.channelManagement,
-            href: "/channel-management",
+            href: `/${locale}/channel-management`,
             description:
                 locale === "pt-BR"
                     ? "Serviço ViraTrend - Consultoria de crescimento"
@@ -50,7 +50,7 @@ export default function Header() {
         },
         {
             name: t.pcOptimization,
-            href: "/pc-optimization",
+            href: `/${locale}/pc-optimization`,
             description:
                 locale === "pt-BR"
                     ? "Otimização de performance gaming"
@@ -58,7 +58,7 @@ export default function Header() {
         },
         {
             name: t.investment,
-            href: "/social-analytics-investment",
+            href: `/${locale}/social-analytics-investment`,
             description:
                 locale === "pt-BR"
                     ? "Invista no Social Analytics Engine"
@@ -66,7 +66,7 @@ export default function Header() {
         },
         {
             name: t.support,
-            href: "/waveigl-support",
+            href: `/${locale}/waveigl-support`,
             description:
                 locale === "pt-BR"
                     ? "Apoie a comunidade WaveIGL"

@@ -65,10 +65,10 @@ export default function InvestmentsPage() {
                                 {t.socialAnalyticsDesc}
                             </p>
                             <Link
-                                href="/social-analytics-investment"
+                                href={`/${locale}/social-analytics-investment`}
                                 className="inline-flex items-center text-blue-600 dark:text-blue-400 hover:underline"
                             >
-                                Ver Detalhes
+                                {t.learnMore}
                                 <ArrowRight className="ml-1 h-4 w-4" />
                             </Link>
                         </div>
