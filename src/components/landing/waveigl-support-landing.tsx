@@ -366,11 +366,11 @@ const getTranslations = (locale: Locale) => {
 }
 
 export default function WaveIGLSupportLanding({
-    locale: initialLocale,
+    locale,
 }: WaveIGLSupportLandingProps) {
-    const { locale } = useLocale()
+    const { locale: currentLocale } = useLocale()
     const [mounted, setMounted] = useState(false)
-    const t = getTranslations(locale)
+    const t = getTranslations(currentLocale)
 
     useEffect(() => {
         setMounted(true)
@@ -435,13 +435,13 @@ export default function WaveIGLSupportLanding({
                             {t.mission.subtitle}
                         </p>
                     </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-8 max-w-5xl mx-auto">
                         {t.mission.points.map((point, index) => (
                             <div
                                 key={index}
-                                className="text-center bg-gradient-to-br from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 rounded-lg p-8"
+                                className="text-center bg-gradient-to-br from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 rounded-lg p-8 flex flex-col items-center"
                             >
-                                <point.icon className="w-12 h-12 text-purple-600 mx-auto mb-6" />
+                                <point.icon className="w-12 h-12 text-purple-600 mb-6" />
                                 <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
                                     {point.title}
                                 </h3>
