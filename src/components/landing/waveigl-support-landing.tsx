@@ -926,36 +926,40 @@ export default function WaveIGLSupportLanding({
                             ))}
 
                         {/* Card de Investimento Total no final */}
-                        <div className="relative flex items-center mb-16 justify-center md:mb-24">
+                        <div className="relative flex flex-col items-center mb-16 md:mb-24">
                             <div className="absolute left-1/2 transform -translate-x-1/2 -top-8 h-8 w-1 bg-purple-200 dark:bg-purple-800"></div>
-                            <div className="absolute left-1/2 transform -translate-x-1/2 w-6 h-6 rounded-full border-4 bg-purple-600 border-purple-200 dark:border-purple-800 z-10"></div>
+                            <div className="absolute left-1/2 transform -translate-x-1/2 top-0 w-6 h-6 rounded-full border-4 bg-purple-600 border-purple-200 dark:border-purple-800 z-10"></div>
 
-                            <div className="bg-white dark:bg-gray-900 rounded-lg p-6 shadow-lg border-2 border-purple-200 dark:border-purple-700 max-w-md w-full">
-                                <div className="text-sm text-gray-500 dark:text-gray-400 mb-2 text-center">
-                                    {locale === "pt-BR"
-                                        ? "Investimento Total Necessário"
-                                        : "Total Investment Needed"}
-                                </div>
-                                <div className="text-3xl font-bold text-purple-600 text-center">
-                                    {locale === "pt-BR"
-                                        ? "R$ 27.360"
-                                        : "$4,560"}
-                                </div>
-                                <div className="mt-4 flex items-center justify-center gap-2">
-                                    <div className="text-sm text-gray-500 dark:text-gray-400">
-                                        {locale === "pt-BR"
-                                            ? "Progresso Geral"
-                                            : "Overall Progress"}
+                            <div className="w-full md:w-8/12 mt-12">
+                                <div className="bg-gray-900 rounded-xl p-6 shadow-lg border-2 border-purple-500/20">
+                                    <div className="text-center">
+                                        <div className="text-gray-400 mb-2">
+                                            {locale === "pt-BR"
+                                                ? "Investimento Total Necessário"
+                                                : "Total Investment Needed"}
+                                        </div>
+                                        <div className="text-4xl font-bold text-purple-500 mb-4">
+                                            {locale === "pt-BR"
+                                                ? "R$ 27.360"
+                                                : "$4,560"}
+                                        </div>
+                                        <div className="flex items-center justify-center gap-2 mb-2">
+                                            <div className="text-sm text-gray-400">
+                                                {locale === "pt-BR"
+                                                    ? "Progresso Geral"
+                                                    : "Overall Progress"}
+                                            </div>
+                                            <div className="text-sm font-bold text-green-500">
+                                                0%
+                                            </div>
+                                        </div>
+                                        <div className="w-full bg-gray-800 rounded-full h-2">
+                                            <div
+                                                className="bg-gradient-to-r from-purple-500 to-pink-500 h-2 rounded-full transition-all duration-500"
+                                                style={{ width: "0%" }}
+                                            ></div>
+                                        </div>
                                     </div>
-                                    <div className="text-sm font-bold text-green-600">
-                                        0%
-                                    </div>
-                                </div>
-                                <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 mt-2">
-                                    <div
-                                        className="bg-gradient-to-r from-green-500 to-green-600 h-2 rounded-full transition-all duration-500"
-                                        style={{ width: "0%" }}
-                                    ></div>
                                 </div>
                             </div>
                         </div>
