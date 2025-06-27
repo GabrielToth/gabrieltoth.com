@@ -41,6 +41,7 @@
         "next": "15.3.3",
         "next-intl": "^4.1.0",
         "qrcode": "^1.5.4",
+        "qrcode.react": "^4.2.0",
         "react": "^19.0.0",
         "react-dom": "^19.0.0",
         "resend": "^4.5.2",

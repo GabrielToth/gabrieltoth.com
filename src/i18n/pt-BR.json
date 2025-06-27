@@ -175,5 +175,68 @@
         "close": "Fechar",
         "open": "Abrir",
         "menu": "Menu"
+    },
+    "payment": {
+        "methods": {
+            "pix": {
+                "title": "PIX/Cartão",
+                "description": "Preço regular",
+                "features": [
+                    "Pagamento instantâneo",
+                    "Sem taxas adicionais",
+                    "Recibo automático"
+                ]
+            },
+            "monero": {
+                "title": "Monero (XMR)",
+                "description": "50% de desconto!",
+                "features": [
+                    "Totalmente anônimo",
+                    "Privacidade garantida",
+                    "Sem KYC necessário"
+                ]
+            }
+        },
+        "dialog": {
+            "oneTime": "Doação Única",
+            "monthly": "Apoio Mensal",
+            "description": "Escolha um valor e sua forma de pagamento preferida",
+            "customAmount": "Valor personalizado",
+            "instantPayment": "Pagamento instantâneo",
+            "anonymousPayment": "Pagamento anônimo"
+        }
+    },
+    "donation": {
+        "title": "Seja Parte da História",
+        "subtitle": "Juntos, estamos construindo o futuro da comunidade gaming brasileira",
+        "moneroBonus": "✨ Doações em Monero valem o dobro! 🌟",
+        "suggestedAmounts": {
+            "donator": {
+                "amount": "9.90",
+                "label": "WaveIGL - Donator",
+                "description": "Apoio mensal para o projeto"
+            },
+            "theDonator": {
+                "label": "WaveIGL - THE Donator",
+                "description": "Escolha o valor do seu apoio mensal"
+            }
+        },
+        "oneTime": "Doação única",
+        "monthly": "Apoio mensal",
+        "customAmount": "Valor personalizado",
+        "paymentMethod": "Método de pagamento",
+        "pix": "PIX",
+        "monero": "Monero (50% OFF)",
+        "amount": "Valor",
+        "currency": "R$",
+        "next": "Continuar",
+        "back": "Voltar",
+        "copy": "Copiar",
+        "copied": "Copiado!",
+        "waitingPayment": "Aguardando pagamento...",
+        "confirmed": "Pagamento confirmado!",
+        "error": "Erro no pagamento",
+        "tryAgain": "Tentar novamente",
+        "chooseAmount": "Escolha o valor do seu apoio"
     }
 }

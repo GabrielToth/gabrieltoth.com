@@ -1,25 +1,55 @@
 "use client"
 
+import { Button } from "@/components/ui/button"
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+} from "@/components/ui/dialog"
 import LanguageSelector from "@/components/ui/language-selector"
 import { useLocale } from "@/hooks/use-locale"
 import { type Locale } from "@/lib/i18n"
 import {
+    AlertCircle,
     CheckCircle,
-    Coffee,
+    CreditCard,
     Crown,
-    Gamepad2,
+    DollarSign,
     Gift,
     Globe,
     Heart,
+    Layout,
+    MessageSquare,
+    Shield,
     Sparkles,
     Star,
     Users,
-    Youtube,
 } from "lucide-react"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
 interface WaveIGLSupportLandingProps {
     locale: Locale
+}
+
+type DonationTranslations = {
+    title: string
+    subtitle: string
+    moneroBonus: string
+    suggestedAmounts: {
+        donator: {
+            amount: string
+            label: string
+            description: string
+        }
+        theDonator: {
+            label: string
+            description: string
+        }
+    }
+    oneTime: string
+    monthly: string
 }
 
 const getTranslations = (locale: Locale) => {
@@ -27,251 +57,235 @@ const getTranslations = (locale: Locale) => {
     return {
         hero: {
             badge: isPortuguese
-                ? "Apoie a Comunidade e Salve Vidas"
-                : "💜 Support the Community and Save Lives",
+                ? "💜 Apoie a Comunidade WaveIGL e ajude ogabrieltoth a salvar uma vida"
+                : "💜 Support the WaveIGL Community and help ogabrieltoth save a life",
             title: isPortuguese
-                ? "Construa Conosco o Futuro da Comunidade WaveIGL e Ajude a Salvar Vidas"
-                : "Build the Future of WaveIGL Community and Help Save Lives With Us",
+                ? "O Futuro da Comunidade WaveIGL Ajude ogabrieltoth a salvar uma vida"
+                : "The Future of WaveIGL Community Help ogabrieltoth save a life",
             subtitle: isPortuguese
-                ? "Suas doações não apenas financiam o desenvolvimento de plataformas e recursos para nossa comunidade de 2 milhões de espectadores mensais, mas também ajudam a salvar uma vida através de nossos projetos sociais e de saúde mental."
-                : "Your donations not only fund the development of platforms and resources for our 2 million monthly viewers community, but also help save a life through our social and mental health projects.",
-            cta: isPortuguese ? "Apoiar Agora" : "Support Now",
+                ? "Unificação de chats do YouTube e Twitch em uma única plataforma profissional, com integração automática de grupos no WhatsApp e Discord para SUBs."
+                : "YouTube and Twitch chat unification in a single professional platform, with automatic WhatsApp and Discord group integration for SUBs.",
+            cta: isPortuguese ? "Apoiar o Projeto" : "Support the Project",
             stats: [
                 {
-                    number: "2M+",
+                    number: isPortuguese ? "R$ 27.360" : "$4,560",
                     label: isPortuguese
-                        ? "Vidas impactadas mensalmente"
-                        : "Lives impacted monthly",
+                        ? "Investimento Total (Desconto Monero)"
+                        : "Total Investment (Monero discount)",
                 },
                 {
-                    number: "150K+",
-                    label: isPortuguese ? "Pessoas ajudadas" : "People helped",
+                    number: "7",
+                    label: isPortuguese
+                        ? "Funcionalidades Principais"
+                        : "Core Features",
                 },
                 {
                     number: "5+",
                     label: isPortuguese
-                        ? "Anos salvando vidas"
-                        : "Years saving lives",
+                        ? "Plataformas Integradas"
+                        : "Integrated Platforms",
                 },
             ],
         },
         mission: {
-            title: isPortuguese
-                ? "Nossa Missão: Mais que Entretenimento"
-                : "Our Mission: More Than Entertainment",
+            title: isPortuguese ? "Como Isso Ajuda" : "How This Helps",
             subtitle: isPortuguese
-                ? "WaveIGL não é apenas um canal - é um ecossistema"
-                : "WaveIGL isn't just a channel - it's an ecosystem",
+                ? "Benefícios diretos para o streamer e a comunidade"
+                : "Direct benefits for the streamer and community",
             points: [
                 {
-                    icon: Heart,
+                    icon: CheckCircle,
                     title: isPortuguese
-                        ? "Impacto Social e Saúde Mental"
-                        : "Social Impact & Mental Health",
+                        ? "Acesso Automático"
+                        : "Automatic Access",
                     description: isPortuguese
-                        ? "Desenvolvemos programas de apoio à saúde mental e prevenção, salvando vidas através do gaming"
-                        : "We develop mental health support and prevention programs, saving lives through gaming",
+                        ? "SUBs terão acesso automático aos grupos sem erros manuais, atrasos ou confusão"
+                        : "SUBs will have automatic access to groups without manual errors, delays or confusion",
                 },
                 {
                     icon: Users,
                     title: isPortuguese
-                        ? "Comunidade Unida e Acolhedora"
-                        : "United & Welcoming Community",
+                        ? "Centralização de Dados"
+                        : "Data Centralization",
                     description: isPortuguese
-                        ? "Criamos um espaço seguro onde gamers podem encontrar apoio, amizade e ajuda profissional quando precisam"
-                        : "We create a safe space where gamers can find support, friendship and professional help when needed",
+                        ? "Centralização de pessoas em ambiente com controle completo de dados"
+                        : "Centralization of people in environment with complete data control",
                 },
                 {
-                    icon: Youtube,
+                    icon: Shield,
                     title: isPortuguese
-                        ? "Conteúdo Educativo"
-                        : "Educational Content",
+                        ? "Moderação Facilitada"
+                        : "Easy Moderation",
                     description: isPortuguese
-                        ? "Produzimos tutoriais, análises e conteúdo que realmente agrega valor à comunidade gaming"
-                        : "We produce tutorials, analysis and content that truly adds value to the gaming community",
+                        ? "Moderação facilitada para toda a equipe"
+                        : "Facilitated moderation for the entire team",
                 },
                 {
-                    icon: Gamepad2,
+                    icon: Star,
                     title: isPortuguese
-                        ? "Inovação Gaming"
-                        : "Gaming Innovation",
+                        ? "Ambiente Profissional"
+                        : "Professional Environment",
                     description: isPortuguese
-                        ? "Desenvolvemos ferramentas e recursos para melhorar a experiência de todos os gamers"
-                        : "We develop tools and resources to improve the experience of all gamers",
-                },
-                {
-                    icon: Globe,
-                    title: isPortuguese ? "Impacto Global" : "Global Impact",
-                    description: isPortuguese
-                        ? "Nossa influência vai além do Brasil, inspirando criadores ao redor do mundo"
-                        : "Our influence goes beyond Brazil, inspiring creators around the world",
+                        ? "Ambiente profissional que aumenta a visibilidade do projeto"
+                        : "Professional environment that increases project visibility",
                 },
             ],
         },
         projects: {
             title: isPortuguese
-                ? "Projetos que Suas Doações Financiam"
-                : "Projects Your Donations Fund",
+                ? "Funcionalidades do Projeto"
+                : "Project Features",
             subtitle: isPortuguese
-                ? "Cada contribuição nos ajuda a construir algo maior"
-                : "Every contribution helps us build something bigger",
+                ? "Cada funcionalidade foi cuidadosamente planejada e tem seu próprio valor de investimento"
+                : "Each feature has been carefully planned and has its own investment value",
             list: [
                 {
-                    icon: Heart,
-                    title: isPortuguese
-                        ? "Programa de Apoio e Prevenção"
-                        : "Support & Prevention Program",
+                    icon: Layout,
+                    title: isPortuguese ? "Landing Page" : "Landing Page",
                     description: isPortuguese
-                        ? "Rede de profissionais e recursos para suporte emocional, prevenção e acolhimento 24/7"
-                        : "Network of professionals and resources for 24/7 emotional support, prevention and care",
-                    progress: 40,
-                    budget: "R$ 20.000",
-                    status: isPortuguese ? "Prioridade Alta" : "High Priority",
+                        ? "3-5 seções, 1 semana após confirmação do design"
+                        : "3-5 sections, 1 week after design confirmation",
+                    progress: 0,
+                    budget: isPortuguese ? "R$ 480" : "$80",
+                    status: isPortuguese ? "Proprietário" : "Proprietary",
                 },
                 {
-                    icon: Gamepad2,
+                    icon: CreditCard,
                     title: isPortuguese
-                        ? "Ferramentas para Criadores"
-                        : "Creator Tools",
+                        ? "Automação de Pagamento"
+                        : "Payment Automation",
                     description: isPortuguese
-                        ? "Suite de ferramentas para otimização de streams, análise de performance e crescimento de canal"
-                        : "Suite of tools for stream optimization, performance analysis and channel growth",
-                    progress: 60,
-                    budget: "R$ 25.000",
-                    status: isPortuguese ? "Beta testing" : "Beta testing",
+                        ? "Mercado Pago/Stripe. Crypto disponível com custo adicional"
+                        : "Mercado Pago/Stripe. Crypto available with additional cost",
+                    progress: 0,
+                    budget: isPortuguese ? "R$ 1.020" : "$170",
+                    status: isPortuguese ? "Proprietário" : "Proprietary",
+                },
+                {
+                    icon: Shield,
+                    title: isPortuguese ? "Proteção DDoS" : "DDoS Protection",
+                    description: isPortuguese
+                        ? "Via CloudFlare, 1 semana de implementação"
+                        : "Via CloudFlare, 1 week implementation",
+                    progress: 0,
+                    budget: isPortuguese ? "R$ 480" : "$80",
+                    status: isPortuguese
+                        ? "Não Proprietário"
+                        : "Non-proprietary",
+                },
+                {
+                    icon: Globe,
+                    title: isPortuguese
+                        ? "Login Multi-Plataforma"
+                        : "Multi-Platform Login",
+                    description: isPortuguese
+                        ? "3-5 meses de desenvolvimento"
+                        : "3-5 months of development",
+                    progress: 0,
+                    budget: isPortuguese ? "R$ 10.200" : "$1,700",
+                    status: isPortuguese
+                        ? "Não Proprietário"
+                        : "Non-proprietary",
+                },
+                {
+                    icon: MessageSquare,
+                    title: isPortuguese
+                        ? "Unificação de Chats"
+                        : "Chat Unification",
+                    description: isPortuguese
+                        ? "Unificação dos chats do YouTube e Twitch"
+                        : "YouTube and Twitch chat unification",
+                    progress: 0,
+                    budget: isPortuguese ? "R$ 6.000" : "$1,000",
+                    status: isPortuguese
+                        ? "Não Proprietário"
+                        : "Non-proprietary",
                 },
                 {
                     icon: Users,
                     title: isPortuguese
-                        ? "Eventos da Comunidade"
-                        : "Community Events",
+                        ? "Funil para Inscritos"
+                        : "Subscriber Funnel",
                     description: isPortuguese
-                        ? "Torneios, meetups virtuais, workshops e eventos especiais para fortalecer nossa comunidade"
-                        : "Tournaments, virtual meetups, workshops and special events to strengthen our community",
-                    progress: 80,
-                    budget: "R$ 10.000",
-                    status: isPortuguese ? "Ativo" : "Active",
+                        ? "Página de funil para SUBs acessarem automaticamente grupos do WhatsApp e vinculação do Discord"
+                        : "Funnel page for SUBs to automatically access WhatsApp groups and Discord linking",
+                    progress: 0,
+                    budget: isPortuguese ? "R$ 1.020" : "$170",
+                    status: isPortuguese
+                        ? "Não Proprietário"
+                        : "Non-proprietary",
                 },
                 {
-                    icon: Star,
+                    icon: Shield,
                     title: isPortuguese
-                        ? "Programa de Mentoria"
-                        : "Mentorship Program",
+                        ? "Ferramentas de Moderação"
+                        : "Moderation Tools",
                     description: isPortuguese
-                        ? "Conectamos novos criadores com veteranos para acelerar o crescimento e compartilhar conhecimento"
-                        : "We connect new creators with veterans to accelerate growth and share knowledge",
-                    progress: 20,
-                    budget: "R$ 8.000",
-                    status: isPortuguese ? "Planejado" : "Planned",
+                        ? "Ferramentas de moderação para todos os chats"
+                        : "Moderation tools for all chats",
+                    progress: 0,
+                    budget: isPortuguese ? "R$ 8.160" : "$1,360",
+                    status: isPortuguese
+                        ? "Não Proprietário"
+                        : "Non-proprietary",
                 },
             ],
         },
         impact: {
-            title: isPortuguese
-                ? "O Impacto das Suas Doações"
-                : "The Impact of Your Donations",
+            title: isPortuguese ? "Sobre a Propriedade" : "About Ownership",
             subtitle: isPortuguese
-                ? "Veja como cada contribuição faz a diferença"
-                : "See how each contribution makes a difference",
-            tiers: [
+                ? "Entenda os direitos de cada funcionalidade"
+                : "Understand the rights for each feature",
+            breakdown: [
                 {
-                    amount: "R$ 10",
-                    title: isPortuguese ? "Apoiador" : "Supporter",
-                    icon: Coffee,
+                    category: isPortuguese
+                        ? "Funcionalidades Não Proprietárias"
+                        : "Non-proprietary Features",
+                    percentage: 80,
+                    amount: "80%",
                     description: isPortuguese
-                        ? "Compra um café para a equipe durante as madrugadas de desenvolvimento"
-                        : "Buys a coffee for the team during development all-nighters",
-                    impact: isPortuguese
-                        ? "Financia 1 hora de desenvolvimento"
-                        : "Funds 1 hour of development",
+                        ? "Sem direitos exclusivos. Podem ser redistribuídas para outros projetos, inclusive comercialmente"
+                        : "No exclusive rights. Can be redistributed to other projects, including commercially",
                 },
                 {
-                    amount: "R$ 50",
-                    title: isPortuguese ? "Contribuidor" : "Contributor",
-                    icon: Heart,
+                    category: isPortuguese
+                        ? "Funcionalidades Proprietárias"
+                        : "Proprietary Features",
+                    percentage: 20,
+                    amount: "20%",
                     description: isPortuguese
-                        ? "Ajuda a manter nossa linha de apoio emocional funcionando por um dia"
-                        : "Helps keep our emotional support line running for a day",
-                    impact: isPortuguese
-                        ? "Pode ajudar a salvar uma vida"
-                        : "Can help save a life",
-                },
-                {
-                    amount: "R$ 150",
-                    title: isPortuguese ? "Patrocinador" : "Sponsor",
-                    icon: Gift,
-                    description: isPortuguese
-                        ? "Financia desenvolvimento de uma nova funcionalidade da plataforma"
-                        : "Funds development of a new platform feature",
-                    impact: isPortuguese
-                        ? "Acelera o lançamento de recursos"
-                        : "Accelerates feature releases",
-                },
-                {
-                    amount: "R$ 500",
-                    title: isPortuguese ? "Guardião" : "Guardian",
-                    icon: Crown,
-                    description: isPortuguese
-                        ? "Garante um mês completo de desenvolvimento focado em melhorias"
-                        : "Ensures a full month of development focused on improvements",
-                    impact: isPortuguese
-                        ? "Impulsiona projetos importantes"
-                        : "Drives important projects",
+                        ? "Seus direitos exclusivos. Você pode modificar, comercializar e redistribuir como desejar"
+                        : "Your exclusive rights. You can modify, commercialize and redistribute as desired",
                 },
             ],
         },
         transparency: {
-            title: isPortuguese
-                ? "Transparência e Impacto Social"
-                : "Transparency & Social Impact",
+            title: isPortuguese ? "Sobre a Propriedade" : "About Ownership",
             subtitle: isPortuguese
-                ? "Cada centavo é usado com responsabilidade para maximizar nosso impacto social e salvar vidas"
-                : "Every penny is used responsibly to maximize our social impact and save lives",
+                ? "Entenda os direitos de cada funcionalidade"
+                : "Understand the rights for each feature",
             breakdown: [
                 {
                     category: isPortuguese
-                        ? "Programas de Apoio e Prevenção"
-                        : "Support & Prevention Programs",
-                    percentage: 40,
-                    amount: "40%",
+                        ? "Funcionalidades Não Proprietárias"
+                        : "Non-proprietary Features",
+                    percentage: 80,
+                    amount: "80%",
                     description: isPortuguese
-                        ? "Rede de profissionais, recursos e suporte 24/7"
-                        : "Network of professionals, resources and 24/7 support",
+                        ? "Sem direitos exclusivos. Podem ser redistribuídas para outros projetos, inclusive comercialmente"
+                        : "No exclusive rights. Can be redistributed to other projects, including commercially",
                 },
                 {
                     category: isPortuguese
-                        ? "Infraestrutura de Acolhimento"
-                        : "Support Infrastructure",
-                    percentage: 25,
-                    amount: "25%",
-                    description: isPortuguese
-                        ? "Plataformas e ferramentas de apoio emocional"
-                        : "Emotional support platforms and tools",
-                },
-                {
-                    category: isPortuguese
-                        ? "Treinamento e Capacitação"
-                        : "Training & Development",
+                        ? "Funcionalidades Proprietárias"
+                        : "Proprietary Features",
                     percentage: 20,
                     amount: "20%",
                     description: isPortuguese
-                        ? "Preparação de moderadores e voluntários"
-                        : "Training moderators and volunteers",
-                },
-                {
-                    category: isPortuguese
-                        ? "Conscientização e Prevenção"
-                        : "Awareness & Prevention",
-                    percentage: 15,
-                    amount: "15%",
-                    description: isPortuguese
-                        ? "Campanhas e conteúdo educativo"
-                        : "Educational campaigns and content",
+                        ? "Seus direitos exclusivos. Você pode modificar, comercializar e redistribuir como desejar"
+                        : "Your exclusive rights. You can modify, commercialize and redistribute as desired",
                 },
             ],
-            commitment: isPortuguese
-                ? "📊 Relatórios mensais de transparência enviados para todos os apoiadores"
-                : "📊 Monthly transparency reports sent to all supporters",
         },
         rewards: {
             title: isPortuguese
@@ -287,8 +301,8 @@ const getTranslations = (locale: Locale) => {
                         : "All Supporters",
                     benefits: [
                         isPortuguese
-                            ? "Badge exclusivo no Discord"
-                            : "Exclusive Discord badge",
+                            ? "Badge exclusivo no Discord do Canal"
+                            : "Exclusive badge on Channel's Discord",
                         isPortuguese
                             ? "Acesso antecipado a novos recursos"
                             : "Early access to new features",
@@ -307,8 +321,8 @@ const getTranslations = (locale: Locale) => {
                             ? "Nome nos créditos dos projetos"
                             : "Name in project credits",
                         isPortuguese
-                            ? "Convites para eventos especiais"
-                            : "Invitations to special events",
+                            ? "Acesso ao WhatsApp pessoal do ogabrieltoth"
+                            : "Access to ogabrieltoth's personal WhatsApp",
                     ],
                 },
                 {
@@ -323,8 +337,8 @@ const getTranslations = (locale: Locale) => {
                             ? "Influência direta nas decisões de desenvolvimento"
                             : "Direct influence on development decisions",
                         isPortuguese
-                            ? "Acesso VIP ao WaveIGL Hub"
-                            : "VIP access to WaveIGL Hub",
+                            ? "Prioridade no suporte via WhatsApp"
+                            : "Priority support via WhatsApp",
                     ],
                 },
             ],
@@ -349,35 +363,374 @@ const getTranslations = (locale: Locale) => {
                 },
             ],
         },
-        cta: {
+        donation: {
             title: isPortuguese
                 ? "Seja Parte da História"
                 : "Be Part of History",
             subtitle: isPortuguese
                 ? "Juntos, estamos construindo o futuro da comunidade gaming brasileira"
-                : "Together, we're building the future of Brazilian gaming community",
-            button: isPortuguese
-                ? "Apoiar a Comunidade"
-                : "Support the Community",
+                : "Together, we're building the future of the Brazilian gaming community",
+            moneroBonus: isPortuguese
+                ? "✨ Doações em Monero valem o dobro! 🌟"
+                : "✨ Monero donations count double! 🌟",
+            suggestedAmounts: {
+                donator: {
+                    amount: "9.90",
+                    label: isPortuguese
+                        ? "WaveIGL - Donator"
+                        : "WaveIGL - Donator",
+                    description: isPortuguese
+                        ? "Apoio mensal para o projeto"
+                        : "Monthly support for the project",
+                },
+                theDonator: {
+                    label: isPortuguese
+                        ? "WaveIGL - THE Donator"
+                        : "WaveIGL - THE Donator",
+                    description: isPortuguese
+                        ? "Escolha o valor do seu apoio mensal"
+                        : "Choose your monthly support amount",
+                },
+            },
             oneTime: isPortuguese ? "Doação única" : "One-time donation",
             monthly: isPortuguese ? "Apoio mensal" : "Monthly support",
         },
+        payment: {
+            methods: {
+                pix: {
+                    title: isPortuguese ? "PIX/Cartão" : "PIX/Card",
+                    description: isPortuguese
+                        ? "Preço regular"
+                        : "Regular price",
+                    features: [
+                        isPortuguese
+                            ? "Pagamento instantâneo"
+                            : "Instant payment",
+                        isPortuguese
+                            ? "Sem taxas adicionais"
+                            : "No additional fees",
+                        isPortuguese
+                            ? "Recibo automático"
+                            : "Automatic receipt",
+                    ],
+                },
+                monero: {
+                    title: "Monero (XMR)",
+                    description: isPortuguese
+                        ? "50% de desconto!"
+                        : "50% discount!",
+                    features: [
+                        isPortuguese ? "Totalmente anônimo" : "Fully anonymous",
+                        isPortuguese
+                            ? "Privacidade garantida"
+                            : "Privacy guaranteed",
+                        isPortuguese ? "Sem KYC necessário" : "No KYC required",
+                    ],
+                },
+            },
+            dialog: {
+                oneTime: isPortuguese ? "Doação Única" : "One-time Donation",
+                monthly: isPortuguese ? "Apoio Mensal" : "Monthly Support",
+                description: isPortuguese
+                    ? "Escolha um valor e sua forma de pagamento preferida"
+                    : "Choose an amount and your preferred payment method",
+                customAmount: isPortuguese
+                    ? "Valor personalizado"
+                    : "Custom amount",
+                instantPayment: isPortuguese
+                    ? "Pagamento instantâneo"
+                    : "Instant payment",
+                anonymousPayment: isPortuguese
+                    ? "Pagamento anônimo"
+                    : "Anonymous payment",
+            },
+        },
     }
 }
+
+const MERCADO_PAGO_SCRIPT = `
+(function() {
+    function $MPC_load() {
+        window.$MPC_loaded !== true && (function() {
+            var s = document.createElement("script");
+            s.type = "text/javascript";
+            s.async = true;
+            s.src = document.location.protocol + "//secure.mlstatic.com/mptools/render.js";
+            var x = document.getElementsByTagName('script')[0];
+            x.parentNode.insertBefore(s, x);
+            window.$MPC_loaded = true;
+        })();
+    }
+    window.$MPC_loaded !== true ? (window.attachEvent ? window.attachEvent('onload', $MPC_load) : window.addEventListener('load', $MPC_load, false)) : null;
+})();
+`
 
 export default function WaveIGLSupportLanding({
     locale,
 }: WaveIGLSupportLandingProps) {
     const { locale: currentLocale } = useLocale()
     const [mounted, setMounted] = useState(false)
+    const [selectedMethod, setSelectedMethod] = useState<"pix" | "monero">(
+        "pix"
+    )
+    const [customAmount, setCustomAmount] = useState("")
+    const [paymentType, setPaymentType] = useState<"one-time" | "subscription">(
+        "subscription"
+    )
+    const donationSectionRef = useRef<HTMLDivElement>(null)
     const t = getTranslations(currentLocale)
+    const isPortuguese = currentLocale === "pt-BR"
 
     useEffect(() => {
         setMounted(true)
     }, [])
 
+    useEffect(() => {
+        const script = document.createElement("script")
+        script.type = "text/javascript"
+        script.text = MERCADO_PAGO_SCRIPT
+        document.body.appendChild(script)
+
+        return () => {
+            document.body.removeChild(script)
+        }
+    }, [])
+
+    const scrollToDonation = () => {
+        donationSectionRef.current?.scrollIntoView({ behavior: "smooth" })
+    }
+
+    const handlePaymentMethodClick = async (method: "monero" | "pix") => {
+        if (!customAmount) {
+            alert(
+                isPortuguese
+                    ? "Por favor, insira um valor"
+                    : "Please enter an amount"
+            )
+            return
+        }
+
+        const amount = Number(customAmount)
+
+        if (method === "monero") {
+            window.open(
+                `/payment-demo?method=monero&amount=${amount}&type=${paymentType}`,
+                "_blank"
+            )
+        } else if (method === "pix") {
+            if (paymentType === "subscription") {
+                alert(
+                    isPortuguese
+                        ? "Desculpe, ainda não temos suporte para PIX mensal automático. Por favor, use Monero para apoio mensal."
+                        : "Sorry, we don't support automatic monthly PIX yet. Please use Monero for monthly support."
+                )
+                return
+            }
+            window.open(
+                `/payment-demo?method=pix&amount=${amount}&type=${paymentType}`,
+                "_blank"
+            )
+        }
+    }
+
+    const PaymentMethodToggle = () => (
+        <div className="flex items-center gap-4 p-4 bg-gray-100 dark:bg-gray-800 rounded-lg mb-6">
+            <div className="flex-1">
+                <label className="flex items-center gap-2 cursor-pointer">
+                    <input
+                        type="radio"
+                        name="paymentMethod"
+                        value="pix"
+                        checked={selectedMethod === "pix"}
+                        onChange={() => setSelectedMethod("pix")}
+                        className="sr-only peer"
+                    />
+                    <div
+                        className={`p-3 rounded-lg flex items-center gap-2 transition-all w-full ${
+                            selectedMethod === "pix"
+                                ? "bg-blue-500 text-white"
+                                : "bg-white dark:bg-gray-700"
+                        }`}
+                    >
+                        <DollarSign className="w-5 h-5" />
+                        <div>
+                            <div className="font-medium">
+                                {t.payment.methods.pix.title}
+                            </div>
+                            <div className="text-sm opacity-80">
+                                {t.payment.methods.pix.description}
+                            </div>
+                        </div>
+                    </div>
+                </label>
+            </div>
+            <div className="flex-1">
+                <label className="flex items-center gap-2 cursor-pointer">
+                    <input
+                        type="radio"
+                        name="paymentMethod"
+                        value="monero"
+                        checked={selectedMethod === "monero"}
+                        onChange={() => setSelectedMethod("monero")}
+                        className="sr-only peer"
+                    />
+                    <div
+                        className={`p-3 rounded-lg flex items-center gap-2 transition-all w-full ${
+                            selectedMethod === "monero"
+                                ? "bg-orange-500 text-white"
+                                : "bg-white dark:bg-gray-700"
+                        }`}
+                    >
+                        <Shield className="w-5 h-5" />
+                        <div>
+                            <div className="font-medium">
+                                {t.payment.methods.monero.title}
+                            </div>
+                            <div className="text-sm opacity-80">
+                                {t.payment.methods.monero.description}
+                            </div>
+                        </div>
+                    </div>
+                </label>
+            </div>
+        </div>
+    )
+
+    const PriceComparison = ({ basePrice }: { basePrice: number }) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+            <div
+                className={`p-4 border rounded-lg transition-all ${
+                    selectedMethod === "pix"
+                        ? "border-blue-500 bg-blue-50 dark:bg-blue-900/20"
+                        : "border-gray-200 dark:border-gray-700"
+                }`}
+            >
+                <div className="text-lg font-medium mb-2">
+                    {t.payment.methods.pix.title}
+                </div>
+                <div className="text-2xl font-bold">R$ {basePrice * 2}</div>
+                <ul className="mt-4 space-y-2 text-sm">
+                    {t.payment.methods.pix.features.map((feature, index) => (
+                        <li key={index} className="flex items-center gap-2">
+                            <CheckCircle className="w-4 h-4 text-blue-500" />
+                            {feature}
+                        </li>
+                    ))}
+                </ul>
+            </div>
+            <div
+                className={`p-4 border rounded-lg transition-all ${
+                    selectedMethod === "monero"
+                        ? "border-orange-500 bg-orange-50 dark:bg-orange-900/20"
+                        : "border-gray-200 dark:border-gray-700"
+                }`}
+            >
+                <div className="text-lg font-medium mb-2">
+                    {t.payment.methods.monero.title}
+                </div>
+                <div className="text-2xl font-bold text-orange-600">
+                    R$ {basePrice}
+                </div>
+                <div className="text-sm text-orange-600 font-medium">
+                    50% OFF!
+                </div>
+                <ul className="mt-4 space-y-2 text-sm">
+                    {t.payment.methods.monero.features.map((feature, index) => (
+                        <li key={index} className="flex items-center gap-2">
+                            <CheckCircle className="w-4 h-4 text-orange-500" />
+                            {feature}
+                        </li>
+                    ))}
+                </ul>
+            </div>
+        </div>
+    )
+
+    const PaymentDialog = () => (
+        <Dialog>
+            <DialogContent className="sm:max-w-[525px] bg-gray-900 text-white">
+                <DialogHeader>
+                    <DialogTitle className="text-2xl font-bold">
+                        {
+                            t.payment.dialog[
+                                paymentType === "one-time"
+                                    ? "oneTime"
+                                    : "monthly"
+                            ]
+                        }
+                    </DialogTitle>
+                    <DialogDescription className="text-gray-400">
+                        {t.payment.dialog.description}
+                    </DialogDescription>
+                </DialogHeader>
+
+                <PaymentMethodToggle />
+
+                <div className="py-2">
+                    <input
+                        type="number"
+                        value={customAmount}
+                        onChange={e => setCustomAmount(e.target.value)}
+                        placeholder={t.payment.dialog.customAmount}
+                        className="w-full p-3 rounded-lg bg-gray-800 border border-gray-700 text-white placeholder-gray-400 focus:border-purple-500 focus:outline-none transition-colors"
+                    />
+                </div>
+
+                {customAmount && Number(customAmount) > 0 && (
+                    <PriceComparison basePrice={Number(customAmount)} />
+                )}
+
+                <div className="flex flex-col gap-2 mt-4">
+                    <button
+                        onClick={() => handlePaymentMethodClick(selectedMethod)}
+                        className={`w-full p-3 rounded-lg flex items-center justify-between transition-all ${
+                            selectedMethod === "monero"
+                                ? "bg-orange-500 hover:bg-orange-600"
+                                : "bg-blue-500 hover:bg-blue-600"
+                        }`}
+                    >
+                        <div className="text-left">
+                            <div className="font-medium">
+                                {selectedMethod === "monero"
+                                    ? "Monero (XMR)"
+                                    : "PIX"}
+                            </div>
+                            <div className="text-sm text-white/80">
+                                {
+                                    t.payment.dialog[
+                                        selectedMethod === "monero"
+                                            ? "anonymousPayment"
+                                            : "instantPayment"
+                                    ]
+                                }
+                            </div>
+                        </div>
+                        {selectedMethod === "monero" ? (
+                            <Shield className="w-5 h-5" />
+                        ) : (
+                            <DollarSign className="w-5 h-5" />
+                        )}
+                    </button>
+                </div>
+
+                {paymentType === "subscription" && selectedMethod === "pix" && (
+                    <div className="mt-4 p-3 bg-yellow-500/20 border border-yellow-500/50 rounded-lg">
+                        <div className="flex items-center gap-2 text-yellow-400">
+                            <AlertCircle className="w-5 h-5" />
+                            <p className="text-sm">
+                                {isPortuguese
+                                    ? "PIX mensal automático ainda não disponível. Use Monero para apoio mensal."
+                                    : "Automatic monthly PIX not available yet. Please use Monero for monthly support."}
+                            </p>
+                        </div>
+                    </div>
+                )}
+            </DialogContent>
+        </Dialog>
+    )
+
     return (
-        <div className="min-h-screen bg-white dark:bg-gray-900">
+        <div className="min-h-screen bg-gradient-to-br from-purple-600 via-purple-500 to-pink-500">
             {/* Language Selector for Landing Page */}
             <div className="fixed top-4 right-4 z-50">
                 <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-lg p-2 shadow-md">
@@ -391,19 +744,22 @@ export default function WaveIGLSupportLanding({
                     <div className="inline-flex items-center px-4 py-2 rounded-full bg-purple-400 text-purple-900 text-sm font-bold mb-8">
                         {t.hero.badge}
                     </div>
+
                     <h1 className="text-5xl sm:text-7xl font-black mb-6">
                         {t.hero.title}
                     </h1>
+
                     <p className="text-xl mb-8 max-w-4xl mx-auto opacity-90">
                         {t.hero.subtitle}
                     </p>
-                    <a
-                        href="#support"
+
+                    <Button
+                        onClick={scrollToDonation}
                         className="inline-flex items-center px-10 py-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg font-bold hover:from-purple-600 hover:to-pink-600 transition-colors text-lg"
                     >
-                        <Heart className="mr-3" size={20} />
+                        <Heart className="w-5 h-5 mr-2" />
                         {t.hero.cta}
-                    </a>
+                    </Button>
 
                     {/* Stats */}
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
@@ -425,27 +781,27 @@ export default function WaveIGLSupportLanding({
             </section>
 
             {/* Mission Section */}
-            <section className="py-20 px-4 sm:px-6 lg:px-8">
-                <div className="max-w-7xl mx-auto">
-                    <div className="text-center mb-16">
-                        <h2 className="text-4xl font-black text-gray-900 dark:text-white mb-4">
-                            {t.mission.title}
-                        </h2>
-                        <p className="text-xl text-gray-600 dark:text-gray-300">
-                            {t.mission.subtitle}
-                        </p>
-                    </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-900">
+                <div className="max-w-7xl mx-auto text-center">
+                    <h2 className="text-4xl font-black mb-4 text-white">
+                        {t.mission.title}
+                    </h2>
+                    <p className="text-xl mb-12 text-gray-300">
+                        {t.mission.subtitle}
+                    </p>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         {t.mission.points.map((point, index) => (
                             <div
                                 key={index}
-                                className="text-center bg-gradient-to-br from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 rounded-lg p-8 flex flex-col items-center"
+                                className="p-6 rounded-xl bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 hover:border-purple-500/50 transition-all"
                             >
-                                <point.icon className="w-12 h-12 text-purple-600 mb-6" />
-                                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+                                <div className="flex items-center justify-center w-12 h-12 mb-4 mx-auto bg-purple-900/30 rounded-full">
+                                    <point.icon className="w-6 h-6 text-purple-400" />
+                                </div>
+                                <h3 className="text-xl font-bold mb-2 text-white">
                                     {point.title}
                                 </h3>
-                                <p className="text-gray-600 dark:text-gray-300">
+                                <p className="text-gray-300">
                                     {point.description}
                                 </p>
                             </div>
@@ -461,106 +817,154 @@ export default function WaveIGLSupportLanding({
                         <h2 className="text-4xl font-black text-gray-900 dark:text-white mb-4">
                             {t.projects.title}
                         </h2>
-                        <p className="text-xl text-gray-600 dark:text-gray-300">
+                        <p className="text-xl text-gray-600 dark:text-gray-300 mb-8">
                             {t.projects.subtitle}
                         </p>
                     </div>
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                        {t.projects.list.map((project, index) => (
-                            <div
-                                key={index}
-                                className="bg-white dark:bg-gray-900 rounded-lg p-8 shadow-lg"
-                            >
-                                <div className="flex items-start justify-between mb-6">
-                                    <project.icon className="w-12 h-12 text-purple-600" />
-                                    <span className="text-sm font-semibold text-purple-600 bg-purple-100 dark:bg-purple-900/20 px-3 py-1 rounded-full">
-                                        {project.status}
-                                    </span>
-                                </div>
-                                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
-                                    {project.title}
-                                </h3>
-                                <p className="text-gray-600 dark:text-gray-300 mb-6">
-                                    {project.description}
-                                </p>
-                                <div className="space-y-3">
-                                    <div className="flex justify-between text-sm">
-                                        <span className="text-gray-500 dark:text-gray-400">
-                                            {locale === "pt-BR"
-                                                ? "Progresso"
-                                                : "Progress"}
-                                        </span>
-                                        <span className="font-bold text-purple-600">
-                                            {project.progress}%
-                                        </span>
-                                    </div>
-                                    <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                                        <div
-                                            className="bg-gradient-to-r from-purple-500 to-pink-500 h-2 rounded-full"
-                                            style={{
-                                                width: `${project.progress}%`,
-                                            }}
-                                        ></div>
-                                    </div>
-                                    <div className="text-right">
-                                        <span className="text-lg font-bold text-green-600">
-                                            {project.budget}
-                                        </span>
-                                        <span className="text-sm text-gray-500 dark:text-gray-400 ml-1">
-                                            {locale === "pt-BR"
-                                                ? "necessários"
-                                                : "needed"}
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </section>
 
-            {/* Impact Section */}
-            <section className="py-20 px-4 sm:px-6 lg:px-8">
-                <div className="max-w-7xl mx-auto">
-                    <div className="text-center mb-16">
-                        <h2 className="text-4xl font-black text-gray-900 dark:text-white mb-4">
-                            {t.impact.title}
-                        </h2>
-                        <p className="text-xl text-gray-600 dark:text-gray-300">
-                            {t.impact.subtitle}
-                        </p>
-                    </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                        {t.impact.tiers.map((tier, index) => (
-                            <div
-                                key={index}
-                                className="bg-white dark:bg-gray-800 rounded-lg p-8 shadow-lg border-2 border-gray-200 dark:border-gray-700 hover:border-purple-500 dark:hover:border-purple-400 transition-all"
-                            >
-                                <div className="text-center mb-6">
-                                    <tier.icon className="w-16 h-16 text-purple-600 dark:text-purple-400 mx-auto mb-4" />
-                                    <div className="text-2xl font-black text-purple-600 dark:text-purple-400 mb-2">
-                                        {tier.amount}
+                    <div className="relative max-w-5xl mx-auto">
+                        {/* Linha vertical central */}
+                        <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-purple-200 dark:bg-purple-800"></div>
+
+                        {/* Features na linha do tempo */}
+                        {t.projects.list
+                            .sort((a, b) => {
+                                // Remove currency symbols and convert to number for comparison
+                                const getNumericValue = (str: string) =>
+                                    Number(str.replace(/[^0-9]/g, ""))
+                                return (
+                                    getNumericValue(a.budget) -
+                                    getNumericValue(b.budget)
+                                )
+                            })
+                            .map((project, index) => (
+                                <div
+                                    key={index}
+                                    className={`relative flex items-center mb-16 ${
+                                        index % 2 === 0
+                                            ? "justify-end"
+                                            : "justify-start"
+                                    } md:mb-24`}
+                                >
+                                    {/* Linha conectora */}
+                                    {index > 0 && (
+                                        <div className="absolute left-1/2 transform -translate-x-1/2 -top-8 h-8 w-1 bg-purple-200 dark:bg-purple-800"></div>
+                                    )}
+
+                                    {/* Círculo na linha do tempo */}
+                                    <div
+                                        className={`absolute left-1/2 transform -translate-x-1/2 w-6 h-6 rounded-full border-4 transition-colors duration-500 ${
+                                            project.progress > 0
+                                                ? "bg-green-500 border-green-200 dark:border-green-800"
+                                                : "bg-purple-600 border-purple-200 dark:border-purple-800"
+                                        } z-10`}
+                                    ></div>
+
+                                    {/* Card da funcionalidade */}
+                                    <div
+                                        className={`w-full md:w-5/12 ${index % 2 === 0 ? "md:mr-8 pr-4" : "md:ml-8 pl-4"}`}
+                                    >
+                                        <div className="bg-white dark:bg-gray-900 rounded-lg p-6 shadow-lg border-2 border-purple-200 dark:border-purple-700 hover:border-purple-500 dark:hover:border-purple-400 transition-all">
+                                            <div className="flex items-start justify-between mb-4">
+                                                <project.icon className="w-10 h-10 text-purple-600" />
+                                                <span
+                                                    className={`text-sm font-semibold px-3 py-1 rounded-full ${
+                                                        project.progress > 0
+                                                            ? "bg-green-100 text-green-600 dark:bg-green-900/20 dark:text-green-400"
+                                                            : "bg-purple-100 text-purple-600 dark:bg-purple-900/20 dark:text-purple-400"
+                                                    }`}
+                                                >
+                                                    {project.progress > 0
+                                                        ? locale === "pt-BR"
+                                                            ? "Em Desenvolvimento"
+                                                            : "In Development"
+                                                        : project.status}
+                                                </span>
+                                            </div>
+                                            <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">
+                                                {project.title}
+                                            </h3>
+                                            <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">
+                                                {project.description}
+                                            </p>
+                                            <div className="space-y-2">
+                                                <div className="flex justify-between text-sm">
+                                                    <span className="text-gray-500 dark:text-gray-400">
+                                                        {locale === "pt-BR"
+                                                            ? "Progresso"
+                                                            : "Progress"}
+                                                    </span>
+                                                    <span className="font-bold text-purple-600">
+                                                        {project.progress}%
+                                                    </span>
+                                                </div>
+                                                <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                                                    <div
+                                                        className="bg-gradient-to-r from-purple-500 to-pink-500 h-2 rounded-full transition-all duration-500"
+                                                        style={{
+                                                            width: `${project.progress}%`,
+                                                        }}
+                                                    ></div>
+                                                </div>
+                                                <div className="flex justify-between items-center mt-2">
+                                                    <span className="text-sm text-gray-500 dark:text-gray-400">
+                                                        {locale === "pt-BR"
+                                                            ? "Meta"
+                                                            : "Goal"}
+                                                    </span>
+                                                    <span className="text-lg font-bold text-green-600">
+                                                        {project.budget}
+                                                    </span>
+                                                </div>
+                                                <div className="text-sm text-gray-500 dark:text-gray-400 mt-4">
+                                                    {project.description}
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <h3 className="text-lg font-bold text-gray-900 dark:text-white">
-                                        {tier.title}
-                                    </h3>
                                 </div>
-                                <p className="text-gray-700 dark:text-gray-200 mb-4 text-center">
-                                    {tier.description}
-                                </p>
-                                <div className="bg-purple-100 dark:bg-purple-800/30 rounded-lg p-3 text-center border border-purple-200 dark:border-purple-600">
-                                    <p className="text-sm font-semibold text-purple-800 dark:text-purple-200">
-                                        💡 {tier.impact}
-                                    </p>
+                            ))}
+
+                        {/* Card de Investimento Total no final */}
+                        <div className="relative flex items-center mb-16 justify-center md:mb-24">
+                            <div className="absolute left-1/2 transform -translate-x-1/2 -top-8 h-8 w-1 bg-purple-200 dark:bg-purple-800"></div>
+                            <div className="absolute left-1/2 transform -translate-x-1/2 w-6 h-6 rounded-full border-4 bg-purple-600 border-purple-200 dark:border-purple-800 z-10"></div>
+
+                            <div className="bg-white dark:bg-gray-900 rounded-lg p-6 shadow-lg border-2 border-purple-200 dark:border-purple-700 max-w-md w-full">
+                                <div className="text-sm text-gray-500 dark:text-gray-400 mb-2 text-center">
+                                    {locale === "pt-BR"
+                                        ? "Investimento Total Necessário"
+                                        : "Total Investment Needed"}
+                                </div>
+                                <div className="text-3xl font-bold text-purple-600 text-center">
+                                    {locale === "pt-BR"
+                                        ? "R$ 27.360"
+                                        : "$4,560"}
+                                </div>
+                                <div className="mt-4 flex items-center justify-center gap-2">
+                                    <div className="text-sm text-gray-500 dark:text-gray-400">
+                                        {locale === "pt-BR"
+                                            ? "Progresso Geral"
+                                            : "Overall Progress"}
+                                    </div>
+                                    <div className="text-sm font-bold text-green-600">
+                                        0%
+                                    </div>
+                                </div>
+                                <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 mt-2">
+                                    <div
+                                        className="bg-gradient-to-r from-green-500 to-green-600 h-2 rounded-full transition-all duration-500"
+                                        style={{ width: "0%" }}
+                                    ></div>
                                 </div>
                             </div>
-                        ))}
+                        </div>
                     </div>
                 </div>
             </section>
 
             {/* Transparency Section */}
-            <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-900">
+            <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-800">
                 <div className="max-w-7xl mx-auto">
                     <div className="text-center mb-16">
                         <h2 className="text-4xl font-black text-gray-900 dark:text-white mb-4">
@@ -570,186 +974,262 @@ export default function WaveIGLSupportLanding({
                             {t.transparency.subtitle}
                         </p>
                     </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
                         {t.transparency.breakdown.map((item, index) => (
                             <div
                                 key={index}
-                                className="bg-white dark:bg-gray-800 rounded-lg p-6 text-center shadow-lg border border-gray-200 dark:border-gray-700"
+                                className="bg-white dark:bg-gray-900 rounded-lg p-8 text-center"
                             >
-                                <div
-                                    className="w-20 h-20 rounded-full mx-auto mb-4 flex items-center justify-center text-white font-bold text-lg shadow-md"
-                                    style={{
-                                        background: `conic-gradient(#8B5CF6 0% ${item.percentage}%, #D1D5DB ${item.percentage}% 100%)`,
-                                    }}
-                                >
-                                    {item.amount}
+                                <div className="relative w-32 h-32 mx-auto mb-6">
+                                    {/* Círculo base (background) */}
+                                    <div className="absolute inset-0 rounded-full border-8 border-purple-200 dark:border-purple-900"></div>
+
+                                    {/* Círculo de progresso */}
+                                    <svg className="absolute inset-0 w-full h-full -rotate-90 transform">
+                                        <circle
+                                            className="text-purple-600 dark:text-purple-400"
+                                            strokeWidth="8"
+                                            stroke="currentColor"
+                                            fill="transparent"
+                                            r="48"
+                                            cx="64"
+                                            cy="64"
+                                            style={{
+                                                strokeDasharray: "301.59",
+                                                strokeDashoffset:
+                                                    301.59 -
+                                                    (301.59 * item.percentage) /
+                                                        100,
+                                                transition:
+                                                    "stroke-dashoffset 1s ease-in-out",
+                                            }}
+                                        />
+                                    </svg>
+
+                                    {/* Texto do percentual */}
+                                    <div className="absolute inset-0 flex items-center justify-center">
+                                        <span className="text-2xl font-bold text-gray-900 dark:text-white">
+                                            {item.amount}
+                                        </span>
+                                    </div>
                                 </div>
-                                <h3 className="font-bold text-gray-900 dark:text-white mb-2">
+                                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
                                     {item.category}
                                 </h3>
-                                <p className="text-sm text-gray-700 dark:text-gray-200">
+                                <p className="text-gray-600 dark:text-gray-300">
                                     {item.description}
                                 </p>
                             </div>
                         ))}
                     </div>
-                    <div className="text-center bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg border border-gray-200 dark:border-gray-700">
-                        <p className="text-lg font-semibold text-blue-600 dark:text-blue-400">
-                            {t.transparency.commitment}
-                        </p>
-                    </div>
                 </div>
             </section>
 
-            {/* Rewards Section */}
-            <section className="py-20 px-4 sm:px-6 lg:px-8">
-                <div className="max-w-7xl mx-auto">
-                    <div className="text-center mb-16">
-                        <h2 className="text-4xl font-black text-gray-900 dark:text-white mb-4">
-                            {t.rewards.title}
-                        </h2>
-                        <p className="text-xl text-gray-600 dark:text-gray-300">
-                            {t.rewards.subtitle}
-                        </p>
-                    </div>
-                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                        {t.rewards.perks.map((perk, index) => (
-                            <div
-                                key={index}
-                                className="bg-white dark:bg-gray-800 border-2 border-purple-200 dark:border-purple-700 rounded-lg p-8 shadow-lg"
-                            >
-                                <div className="text-center mb-6">
-                                    <Sparkles className="w-12 h-12 text-purple-600 dark:text-purple-400 mx-auto mb-4" />
-                                    <h3 className="text-xl font-bold text-gray-900 dark:text-white">
-                                        {perk.tier}
-                                    </h3>
-                                </div>
-                                <ul className="space-y-3">
-                                    {perk.benefits.map((benefit, idx) => (
-                                        <li
-                                            key={idx}
-                                            className="flex items-center text-gray-800 dark:text-gray-100"
-                                        >
-                                            <CheckCircle className="w-5 h-5 text-green-600 dark:text-green-400 mr-3 flex-shrink-0" />
-                                            <span className="text-sm leading-relaxed">
-                                                {benefit}
-                                            </span>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </section>
-
-            {/* Testimonials Section */}
-            <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-800">
-                <div className="max-w-7xl mx-auto">
-                    <div className="text-center mb-16">
-                        <h2 className="text-4xl font-black text-gray-900 dark:text-white mb-4">
-                            {t.testimonials.title}
-                        </h2>
-                        <p className="text-xl text-gray-600 dark:text-gray-300">
-                            {t.testimonials.subtitle}
-                        </p>
-                    </div>
-                    <div className="flex justify-center">
-                        {t.testimonials.items.map((testimonial, index) => (
-                            <div
-                                key={index}
-                                className="bg-white dark:bg-gray-900 rounded-lg p-8 shadow-lg max-w-2xl w-full border border-gray-200 dark:border-gray-700"
-                            >
-                                <div className="text-center mb-6">
-                                    <div className="w-20 h-20 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-white font-bold text-2xl mx-auto mb-4">
-                                        {testimonial.name
-                                            .charAt(0)
-                                            .toUpperCase()}
-                                    </div>
-                                    <h3 className="text-xl font-bold text-gray-900 dark:text-white">
-                                        {testimonial.name}
-                                    </h3>
-                                    <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">
-                                        {testimonial.role}
-                                    </p>
-                                    <div className="inline-block bg-purple-100 dark:bg-purple-800/30 text-purple-700 dark:text-purple-200 px-4 py-2 rounded-full text-sm font-semibold border border-purple-200 dark:border-purple-600">
-                                        {testimonial.amount}
-                                    </div>
-                                </div>
-                                <blockquote className="text-gray-700 dark:text-gray-200 italic text-center text-lg leading-relaxed">
-                                    "{testimonial.content}"
-                                </blockquote>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </section>
-
-            {/* CTA Section */}
+            {/* Donation Section */}
             <section
-                id="support"
-                className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-purple-600 via-pink-600 to-purple-600 text-white"
+                ref={donationSectionRef}
+                className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-900"
             >
-                <div className="max-w-4xl mx-auto text-center">
-                    <h2 className="text-5xl font-black mb-6">{t.cta.title}</h2>
-                    <p className="text-xl mb-12 opacity-90">{t.cta.subtitle}</p>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                        <a
-                            href="#"
-                            className="inline-flex items-center justify-center px-8 py-4 bg-white text-purple-600 rounded-lg font-bold hover:bg-gray-100 transition-colors text-lg"
-                        >
-                            <Gift className="mr-3" size={20} />
-                            {t.cta.oneTime}
-                        </a>
-                        <a
-                            href="#"
-                            className="inline-flex items-center justify-center px-8 py-4 bg-purple-800 text-white rounded-lg font-bold hover:bg-purple-900 transition-colors text-lg border-2 border-white"
-                        >
-                            <Heart className="mr-3" size={20} />
-                            {t.cta.monthly}
-                        </a>
-                    </div>
-
-                    <div className="bg-white/10 backdrop-blur rounded-lg p-6">
-                        <p className="text-white/80 mb-4">
-                            {locale === "pt-BR"
-                                ? "🎮 Junte-se a mais de 500 apoiadores que já fazem parte desta jornada!"
-                                : "🎮 Join over 500 supporters who are already part of this journey!"}
+                <div className="max-w-4xl mx-auto">
+                    <div className="text-center mb-12">
+                        <h2 className="text-4xl font-black mb-4">
+                            {t.donation.title}
+                        </h2>
+                        <p className="text-xl mb-8 opacity-90">
+                            {t.donation.subtitle}
                         </p>
-                        <div className="flex justify-center space-x-6 text-sm">
-                            <div>
-                                <div className="font-bold text-lg">
-                                    R$ 12.450
-                                </div>
-                                <div className="text-white/70">
-                                    {locale === "pt-BR"
-                                        ? "Arrecadados"
-                                        : "Raised"}
-                                </div>
-                            </div>
-                            <div>
-                                <div className="font-bold text-lg">543</div>
-                                <div className="text-white/70">
-                                    {locale === "pt-BR"
-                                        ? "Apoiadores"
-                                        : "Supporters"}
-                                </div>
-                            </div>
-                            <div>
-                                <div className="font-bold text-lg">
-                                    R$ 1.500/mês
-                                </div>
-                                <div className="text-white/70">
-                                    {locale === "pt-BR"
-                                        ? "Meta mensal"
-                                        : "Monthly goal"}
-                                </div>
+                        <div className="inline-flex items-center gap-2 bg-orange-500/20 text-orange-300 px-4 py-2 rounded-full mb-8">
+                            <Sparkles className="w-5 h-5" />
+                            {t.donation.moneroBonus}
+                        </div>
+
+                        {/* Toggle de Tipo de Pagamento */}
+                        <div className="flex justify-center mb-8">
+                            <div className="bg-gray-800 p-1 rounded-lg inline-flex">
+                                <button
+                                    onClick={() =>
+                                        setPaymentType("subscription")
+                                    }
+                                    className={`px-4 py-2 rounded-md transition-all ${
+                                        paymentType === "subscription"
+                                            ? "bg-purple-600 text-white"
+                                            : "text-gray-400 hover:text-white"
+                                    }`}
+                                >
+                                    {isPortuguese
+                                        ? "Plano Mensal/Anual"
+                                        : "Monthly/Annual Plan"}
+                                </button>
+                                <button
+                                    onClick={() => setPaymentType("one-time")}
+                                    className={`px-4 py-2 rounded-md transition-all ${
+                                        paymentType === "one-time"
+                                            ? "bg-purple-600 text-white"
+                                            : "text-gray-400 hover:text-white"
+                                    }`}
+                                >
+                                    {isPortuguese
+                                        ? "Doação Única"
+                                        : "One-time Donation"}
+                                </button>
                             </div>
                         </div>
                     </div>
+
+                    {paymentType === "subscription" ? (
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                            {/* Cards de Planos existentes */}
+                            {/* WaveIGL - Donator Mensal */}
+                            <a
+                                href="https://www.mercadopago.com.br/subscriptions/checkout?preapproval_plan_id=2c93808497ad02ae0197ae8d256c00d0"
+                                data-mp-button
+                                className="relative p-6 rounded-xl bg-purple-900/50 hover:bg-purple-800/50 transition-all group w-full text-left backdrop-blur-sm border-2 border-purple-500/20 hover:border-purple-400"
+                            >
+                                <div className="absolute -top-3 right-4 bg-purple-500 text-white px-3 py-1 rounded-full text-sm font-bold shadow-lg">
+                                    R$ 9,90
+                                </div>
+                                <div className="mb-4">
+                                    <div className="text-xl font-bold text-white mb-2">
+                                        WaveIGL - Donator
+                                    </div>
+                                    <div className="text-white/90">
+                                        {isPortuguese
+                                            ? "Apoio mensal para o projeto"
+                                            : "Monthly support for the project"}
+                                    </div>
+                                </div>
+                                <div className="mt-4">
+                                    <div className="flex items-center gap-2 text-white group-hover:text-purple-300 transition-colors">
+                                        <Gift className="w-5 h-5" />
+                                        <span className="font-medium">
+                                            {isPortuguese
+                                                ? "Mensal"
+                                                : "Monthly"}
+                                        </span>
+                                    </div>
+                                </div>
+                            </a>
+
+                            {/* WaveIGL - Donator Anual */}
+                            <a
+                                href="https://www.mercadopago.com.br/subscriptions/checkout?preapproval_plan_id=2c93808497ad02ae0197aea01ba700db"
+                                data-mp-button
+                                className="relative p-6 rounded-xl bg-purple-900/50 hover:bg-purple-800/50 transition-all group w-full text-left backdrop-blur-sm border-2 border-purple-500/20 hover:border-purple-400"
+                            >
+                                <div className="absolute -top-3 right-4 bg-purple-500 text-white px-3 py-1 rounded-full text-sm font-bold shadow-lg">
+                                    R$ 97,00
+                                </div>
+                                <div className="mb-4">
+                                    <div className="text-xl font-bold text-white mb-2">
+                                        WaveIGL - Donator
+                                    </div>
+                                    <div className="text-white/90">
+                                        {isPortuguese
+                                            ? "Apoio anual para o projeto"
+                                            : "Annual support for the project"}
+                                    </div>
+                                </div>
+                                <div className="mt-4">
+                                    <div className="flex items-center gap-2 text-white group-hover:text-purple-300 transition-colors">
+                                        <Gift className="w-5 h-5" />
+                                        <span className="font-medium">
+                                            {isPortuguese ? "Anual" : "Annual"}
+                                        </span>
+                                    </div>
+                                </div>
+                            </a>
+
+                            {/* WaveIGL - THE Donator */}
+                            <a
+                                href="https://www.mercadopago.com.br/subscriptions/checkout?preapproval_plan_id=2c93808497ad02ae0197ae90c71800d2"
+                                data-mp-button
+                                className="relative p-6 rounded-xl bg-purple-900/50 hover:bg-purple-800/50 transition-all group w-full text-left backdrop-blur-sm border-2 border-purple-500/20 hover:border-purple-400"
+                            >
+                                <div className="absolute -top-3 right-4 bg-purple-500 text-white px-3 py-1 rounded-full text-sm font-bold shadow-lg">
+                                    {isPortuguese
+                                        ? "Escolha o valor"
+                                        : "Choose amount"}
+                                </div>
+                                <div className="mb-4">
+                                    <div className="text-xl font-bold text-white mb-2">
+                                        WaveIGL - THE Donator
+                                    </div>
+                                    <div className="text-white/90">
+                                        {isPortuguese
+                                            ? "Escolha o valor do seu apoio mensal"
+                                            : "Choose your monthly support amount"}
+                                    </div>
+                                </div>
+                                <div className="mt-4">
+                                    <div className="flex items-center gap-2 text-white group-hover:text-purple-300 transition-colors">
+                                        <Crown className="w-5 h-5" />
+                                        <span className="font-medium">
+                                            {isPortuguese
+                                                ? "Mensal"
+                                                : "Monthly"}
+                                        </span>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    ) : (
+                        <div className="max-w-md mx-auto">
+                            <div className="p-6 rounded-xl bg-purple-900/50 backdrop-blur-sm border-2 border-purple-500/20 text-center">
+                                <h3 className="text-xl font-bold text-white mb-4">
+                                    {isPortuguese
+                                        ? "Doação via PIX"
+                                        : "PIX Donation"}
+                                </h3>
+                                <div className="bg-white p-4 rounded-lg mb-4">
+                                    <img
+                                        src="/qr_code.webp"
+                                        alt="QR Code PIX"
+                                        className="w-48 h-48 mx-auto"
+                                        onError={e => {
+                                            console.error(
+                                                "Erro ao carregar QR Code:",
+                                                e
+                                            )
+                                            e.currentTarget.style.display =
+                                                "none"
+                                        }}
+                                    />
+                                </div>
+                                <p className="text-gray-300 mb-4">
+                                    {isPortuguese
+                                        ? "Escaneie o QR Code ou copie a chave PIX abaixo:"
+                                        : "Scan the QR Code or copy the PIX key below:"}
+                                </p>
+                                <div className="bg-gray-800 p-3 rounded-lg mb-4">
+                                    <code className="text-purple-300 select-all">
+                                        gabrieltothgoncalves@gmail.com
+                                    </code>
+                                </div>
+                                <button
+                                    onClick={() => {
+                                        navigator.clipboard.writeText(
+                                            "gabrieltothgoncalves@gmail.com"
+                                        )
+                                        alert(
+                                            isPortuguese
+                                                ? "Chave PIX copiada!"
+                                                : "PIX key copied!"
+                                        )
+                                    }}
+                                    className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors"
+                                >
+                                    {isPortuguese
+                                        ? "Copiar Chave PIX"
+                                        : "Copy PIX Key"}
+                                </button>
+                            </div>
+                        </div>
+                    )}
                 </div>
             </section>
+
+            {/* Payment Dialog */}
+            <PaymentDialog />
         </div>
     )
 }
