@@ -27,29 +27,11 @@ import {
     Star,
     Users,
 } from "lucide-react"
+import Image from "next/image"
 import { useEffect, useRef, useState } from "react"
 
 interface WaveIGLSupportLandingProps {
     locale: Locale
-}
-
-type DonationTranslations = {
-    title: string
-    subtitle: string
-    moneroBonus: string
-    suggestedAmounts: {
-        donator: {
-            amount: string
-            label: string
-            description: string
-        }
-        theDonator: {
-            label: string
-            description: string
-        }
-    }
-    oneTime: string
-    monthly: string
 }
 
 const getTranslations = (locale: Locale) => {
@@ -1185,18 +1167,12 @@ export default function WaveIGLSupportLanding({
                                         : "PIX Donation"}
                                 </h3>
                                 <div className="bg-white p-4 rounded-lg mb-4">
-                                    <img
+                                    <Image
                                         src="/qr_code.webp"
                                         alt="QR Code PIX"
-                                        className="w-48 h-48 mx-auto"
-                                        onError={e => {
-                                            console.error(
-                                                "Erro ao carregar QR Code:",
-                                                e
-                                            )
-                                            e.currentTarget.style.display =
-                                                "none"
-                                        }}
+                                        width={192}
+                                        height={192}
+                                        className="mx-auto"
                                     />
                                 </div>
                                 <p className="text-gray-300 mb-4">
