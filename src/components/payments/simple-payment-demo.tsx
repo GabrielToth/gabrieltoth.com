@@ -1,453 +1,230 @@
 "use client"
 
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card"
-import { Check, Copy, CreditCard, Phone } from "lucide-react"
-import Image from "next/image"
+import { useLocale } from "@/hooks/use-locale"
+import { useSearchParams } from "next/navigation"
+import { QRCodeSVG } from "qrcode.react"
 import { useEffect, useState } from "react"
 
-interface SimplePaymentDemoProps {
-    serviceType: string
-    amount: number
-}
+export default function SimplePaymentDemo() {
+    const searchParams = useSearchParams()
+    const { locale: currentLocale } = useLocale()
+    const isPortuguese = currentLocale === "pt-BR"
 
-interface PaymentData {
-    qrCode?: string
-    copyPasteCode?: string
-    address?: string
-    amount?: number
-    amountBrl?: number
-}
+    const method = searchParams.get("method")
+    const amount = searchParams.get("amount")
+    const type = searchParams.get("type")
 
-interface OrderData {
-    trackingCode: string
-    status: string
-}
-
-export default function SimplePaymentDemo({
-    serviceType,
-    amount,
-}: SimplePaymentDemoProps) {
-    const [selectedMethod, setSelectedMethod] = useState<"pix" | "monero">(
-        "pix"
-    )
-    const [whatsappNumber, setWhatsappNumber] = useState("")
-    const [isCreatingOrder, setIsCreatingOrder] = useState(false)
-    const [orderData, setOrderData] = useState<OrderData | null>(null)
-    const [paymentData, setPaymentData] = useState<PaymentData | null>(null)
-    const [copiedText, setCopiedText] = useState<string | null>(null)
-    const [mounted, setMounted] = useState(false)
-    const [, setError] = useState<string | null>(null)
-    const [, setIsLoading] = useState(false)
+    const [pixKey, setPixKey] = useState("")
+    const [moneroAddress, setMoneroAddress] = useState("")
+    const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-        setMounted(true)
+        // Simular carregamento dos dados
+        setTimeout(() => {
+            setPixKey(
+                "00020126580014BR.GOV.BCB.PIX0136f5c32293-4b1e-4c39-a91b-011f1e23d6a90217Doacao para Gabriel5204000053039865802BR5925Gabriel Toth Goncalves6009SAO PAULO62070503***6304E2CA"
+            )
+            setMoneroAddress(
+                "44AFFq5kSiGBoZ4NMDwYtN18obc8AemS33DBLWs3H7otXft3XjrpDtQGv7SqSsaBYBb98uNbr2VBBEt7f2wfn3RVGQBEP3A"
+            )
+            setLoading(false)
+        }, 1500)
     }, [])
 
-    // Create payment order
-    const createPayment = async () => {
-        setIsCreatingOrder(true)
-        try {
-            const endpoint =
-                selectedMethod === "pix"
-                    ? "/api/payments/pix/create"
-                    : "/api/payments/monero/create"
-
-            const response = await fetch(endpoint, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    serviceType,
-                    amount,
-                    whatsappNumber: whatsappNumber || undefined,
-                }),
-            })
-
-            const data = await response.json()
-
-            if (data.success) {
-                setOrderData(data.order)
-                setPaymentData(
-                    selectedMethod === "pix" ? data.pix : data.monero
-                )
-            } else {
-                alert(`Erro: ${data.error}`)
-            }
-        } catch {
-            setError("Failed to create PIX payment")
-            setIsLoading(false)
-        } finally {
-            setIsCreatingOrder(false)
-        }
-    }
-
-    // Copy to clipboard
-    const copyToClipboard = async (text: string, label: string) => {
-        try {
-            await navigator.clipboard.writeText(text)
-            setCopiedText(label)
-            setTimeout(() => setCopiedText(null), 2000)
-        } catch {
-            alert("Erro ao copiar")
-        }
-    }
-
-    // WhatsApp link
-    const whatsappLink =
-        whatsappNumber && orderData
-            ? `https://wa.me/55${whatsappNumber.replace(/\D/g, "")}?text=${encodeURIComponent(
-                  `🤖 Pagamento ${serviceType}\n\n` +
-                      `📋 Código: ${orderData.trackingCode}\n` +
-                      `💰 Valor: R$ ${amount}\n` +
-                      `📱 Método: ${selectedMethod.toUpperCase()}\n\n` +
-                      "Aguardando confirmação do pagamento."
-              )}`
-            : ""
-
-    // Prevent hydration mismatch
-    if (!mounted) {
+    if (loading) {
         return (
-            <div className="max-w-2xl mx-auto p-6 space-y-6">
-                <Card>
-                    <CardHeader>
-                        <CardTitle className="flex items-center gap-2">
-                            <CreditCard className="h-5 w-5" />
-                            Sistema de Pagamento Gratuito
-                        </CardTitle>
-                        <CardDescription>
-                            Carregando sistema de pagamentos...
-                        </CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                        <div className="animate-pulse space-y-4">
-                            <div className="h-4 bg-gray-200 rounded w-3/4"></div>
-                            <div className="h-4 bg-gray-200 rounded w-1/2"></div>
-                        </div>
-                    </CardContent>
-                </Card>
+            <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center">
+                <div className="text-center">
+                    <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-white mx-auto"></div>
+                    <h2 className="text-2xl font-bold mt-8">
+                        {isPortuguese
+                            ? "Gerando pagamento..."
+                            : "Generating payment..."}
+                    </h2>
+                </div>
             </div>
         )
     }
 
     return (
-        <div className="max-w-2xl mx-auto p-6 space-y-6">
-            {/* Header */}
-            <Card>
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                        <CreditCard className="h-5 w-5" />
-                        Sistema de Pagamento Gratuito
-                    </CardTitle>
-                    <CardDescription>
-                        PIX (0% taxa) • Monero (~$0.01 taxa) • Discord
-                        Notifications
-                    </CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <div className="space-y-4">
+        <div className="min-h-screen bg-gray-900 text-white p-8">
+            <div className="max-w-2xl mx-auto">
+                <h1 className="text-3xl font-bold mb-8">
+                    {isPortuguese ? "Detalhes do Pagamento" : "Payment Details"}
+                </h1>
+
+                <div className="bg-gray-800 rounded-lg p-6 mb-8">
+                    <h2 className="text-xl font-semibold mb-4">
+                        {isPortuguese ? "Resumo" : "Summary"}
+                    </h2>
+                    <div className="grid gap-2">
                         <div className="flex justify-between">
-                            <span>Serviço:</span>
-                            <span className="font-medium">{serviceType}</span>
+                            <span className="text-gray-400">
+                                {isPortuguese ? "Método" : "Method"}:
+                            </span>
+                            <span className="font-medium">
+                                {method?.toUpperCase()}
+                            </span>
                         </div>
                         <div className="flex justify-between">
-                            <span>Valor:</span>
+                            <span className="text-gray-400">
+                                {isPortuguese ? "Valor" : "Amount"}:
+                            </span>
                             <span className="font-medium">R$ {amount}</span>
                         </div>
-                        {orderData && (
-                            <>
-                                <div className="flex justify-between">
-                                    <span>Código:</span>
-                                    <span className="font-mono text-sm">
-                                        {orderData.trackingCode}
-                                    </span>
-                                </div>
-                                <div className="flex justify-between">
-                                    <span>Status:</span>
-                                    <Badge
-                                        variant={
-                                            orderData.status === "confirmed"
-                                                ? "default"
-                                                : "secondary"
-                                        }
-                                    >
-                                        {orderData.status}
-                                    </Badge>
-                                </div>
-                            </>
-                        )}
+                        <div className="flex justify-between">
+                            <span className="text-gray-400">
+                                {isPortuguese ? "Tipo" : "Type"}:
+                            </span>
+                            <span className="font-medium">
+                                {type === "subscription"
+                                    ? isPortuguese
+                                        ? "Mensal"
+                                        : "Monthly"
+                                    : isPortuguese
+                                      ? "Único"
+                                      : "One-time"}
+                            </span>
+                        </div>
                     </div>
-                </CardContent>
-            </Card>
+                </div>
 
-            {/* WhatsApp Input */}
-            <Card>
-                <CardHeader>
-                    <CardTitle className="text-lg">
-                        WhatsApp (Opcional)
-                    </CardTitle>
-                </CardHeader>
-                <CardContent>
-                    <div className="space-y-3">
-                        <input
-                            type="tel"
-                            placeholder="(11) 99999-9999"
-                            value={whatsappNumber}
-                            onChange={e => setWhatsappNumber(e.target.value)}
-                            className="w-full p-2 border rounded"
-                        />
-                        <p className="text-sm text-gray-600">
-                            Para receber notificações e verificação automática
-                        </p>
-                        {whatsappLink && mounted && (
-                            <Button
-                                variant="outline"
-                                size="sm"
-                                onClick={() =>
-                                    window.open(whatsappLink, "_blank")
-                                }
-                                className="w-full"
-                            >
-                                <Phone className="h-4 w-4 mr-2" />
-                                Abrir WhatsApp
-                            </Button>
-                        )}
-                    </div>
-                </CardContent>
-            </Card>
-
-            {/* Payment Method Selection */}
-            <Card>
-                <CardHeader>
-                    <CardTitle>Método de Pagamento</CardTitle>
-                </CardHeader>
-                <CardContent>
-                    <div className="grid grid-cols-2 gap-4 mb-4">
-                        <Button
-                            variant={
-                                selectedMethod === "pix" ? "default" : "outline"
-                            }
-                            onClick={() => setSelectedMethod("pix")}
-                            className="h-16"
-                        >
-                            <div className="text-center">
-                                <div className="font-medium">PIX</div>
-                                <div className="text-xs">0% taxa</div>
-                            </div>
-                        </Button>
-                        <Button
-                            variant={
-                                selectedMethod === "monero"
-                                    ? "default"
-                                    : "outline"
-                            }
-                            onClick={() => setSelectedMethod("monero")}
-                            className="h-16"
-                        >
-                            <div className="text-center">
-                                <div className="font-medium">Monero</div>
-                                <div className="text-xs">Anônimo</div>
-                            </div>
-                        </Button>
-                    </div>
-
-                    {!orderData ? (
-                        <Button
-                            onClick={createPayment}
-                            disabled={isCreatingOrder}
-                            size="lg"
-                            className="w-full"
-                        >
-                            {isCreatingOrder
-                                ? "Gerando..."
-                                : `Gerar Pagamento ${selectedMethod.toUpperCase()}`}
-                        </Button>
-                    ) : (
+                {method === "pix" && (
+                    <div className="bg-gray-800 rounded-lg p-6">
+                        <h2 className="text-xl font-semibold mb-4">
+                            {isPortuguese ? "QR Code PIX" : "PIX QR Code"}
+                        </h2>
+                        <div className="bg-white p-4 rounded-lg w-fit mx-auto mb-4">
+                            <QRCodeSVG value={pixKey} size={256} />
+                        </div>
                         <div className="space-y-4">
-                            {/* PIX Payment */}
-                            {selectedMethod === "pix" && paymentData && (
-                                <div className="space-y-4">
-                                    <div className="text-center">
-                                        <h4 className="font-medium mb-3">
-                                            QR Code PIX
-                                        </h4>
-                                        <div className="bg-white p-4 rounded-lg inline-block border">
-                                            {paymentData.qrCode && (
-                                                <Image
-                                                    src={paymentData.qrCode}
-                                                    alt="PIX QR Code"
-                                                    width={192}
-                                                    height={192}
-                                                    className="w-48 h-48 mx-auto"
-                                                    unoptimized
-                                                />
-                                            )}
-                                        </div>
-                                    </div>
-
-                                    <div>
-                                        <label className="block text-sm font-medium mb-2">
-                                            Código PIX (Copiar e Colar)
-                                        </label>
-                                        <div className="flex gap-2">
-                                            <textarea
-                                                value={
-                                                    paymentData.copyPasteCode
-                                                }
-                                                readOnly
-                                                className="flex-1 p-2 border rounded font-mono text-xs"
-                                                rows={3}
-                                                aria-label="Código PIX para copiar e colar"
-                                            />
-                                            <Button
-                                                variant="outline"
-                                                size="sm"
-                                                onClick={() =>
-                                                    paymentData.copyPasteCode &&
-                                                    copyToClipboard(
-                                                        paymentData.copyPasteCode,
-                                                        "pix"
-                                                    )
-                                                }
-                                                disabled={
-                                                    !paymentData.copyPasteCode
-                                                }
-                                            >
-                                                {copiedText === "pix" ? (
-                                                    <Check className="h-4 w-4" />
-                                                ) : (
-                                                    <Copy className="h-4 w-4" />
-                                                )}
-                                            </Button>
-                                        </div>
-                                    </div>
+                            <div>
+                                <label className="block text-sm font-medium text-gray-400 mb-1">
+                                    {isPortuguese ? "Chave PIX" : "PIX Key"}
+                                </label>
+                                <div className="flex">
+                                    <input
+                                        type="text"
+                                        value={pixKey}
+                                        readOnly
+                                        title={
+                                            isPortuguese
+                                                ? "Chave PIX"
+                                                : "PIX Key"
+                                        }
+                                        aria-label={
+                                            isPortuguese
+                                                ? "Chave PIX"
+                                                : "PIX Key"
+                                        }
+                                        className="flex-1 bg-gray-700 rounded-l px-3 py-2 text-sm"
+                                    />
+                                    <button
+                                        onClick={() =>
+                                            navigator.clipboard.writeText(
+                                                pixKey
+                                            )
+                                        }
+                                        className="bg-purple-600 text-white px-4 rounded-r hover:bg-purple-700 transition-colors"
+                                    >
+                                        {isPortuguese ? "Copiar" : "Copy"}
+                                    </button>
                                 </div>
-                            )}
+                            </div>
+                            <p className="text-sm text-gray-400">
+                                {isPortuguese
+                                    ? "Escaneie o QR Code acima ou copie a chave PIX para fazer o pagamento."
+                                    : "Scan the QR Code above or copy the PIX key to make the payment."}
+                            </p>
+                        </div>
+                    </div>
+                )}
 
-                            {/* Monero Payment */}
-                            {selectedMethod === "monero" && paymentData && (
-                                <div className="space-y-4">
-                                    <div>
-                                        <label className="block text-sm font-medium mb-2">
-                                            Valor:{" "}
-                                            {paymentData.amount?.toFixed(6)} XMR
-                                        </label>
-                                        <p className="text-xs text-gray-600">
-                                            ≈ R$ {paymentData.amountBrl}
-                                        </p>
-                                    </div>
-
-                                    <div>
-                                        <label className="block text-sm font-medium mb-2">
-                                            Endereço Monero
-                                        </label>
-                                        <div className="flex gap-2">
-                                            <textarea
-                                                value={paymentData.address}
-                                                readOnly
-                                                className="flex-1 p-2 border rounded font-mono text-xs"
-                                                rows={3}
-                                                aria-label="Endereço Monero para pagamento"
-                                            />
-                                            <Button
-                                                variant="outline"
-                                                size="sm"
-                                                onClick={() =>
-                                                    paymentData.address &&
-                                                    copyToClipboard(
-                                                        paymentData.address,
-                                                        "address"
-                                                    )
-                                                }
-                                                disabled={!paymentData.address}
-                                            >
-                                                {copiedText === "address" ? (
-                                                    <Check className="h-4 w-4" />
-                                                ) : (
-                                                    <Copy className="h-4 w-4" />
-                                                )}
-                                            </Button>
-                                        </div>
-                                    </div>
-
-                                    <div className="bg-purple-50 p-4 rounded-lg">
-                                        <h5 className="font-medium text-purple-900 mb-2">
-                                            Instruções
-                                        </h5>
-                                        <ol className="text-sm text-purple-800 space-y-1">
-                                            <li>
-                                                1. Envie{" "}
-                                                {paymentData.amount?.toFixed(6)}{" "}
-                                                XMR para o endereço acima
-                                            </li>
-                                            <li>
-                                                2. Copie o hash da transação
-                                            </li>
-                                            <li>
-                                                3. Envie o hash via WhatsApp ou
-                                                cole no site
-                                            </li>
-                                            <li>
-                                                4. Aguarde ~20 minutos para
-                                                confirmação
-                                            </li>
-                                        </ol>
-                                    </div>
+                {method === "monero" && (
+                    <div className="bg-gray-800 rounded-lg p-6">
+                        <h2 className="text-xl font-semibold mb-4">
+                            {isPortuguese
+                                ? "Endereço Monero"
+                                : "Monero Address"}
+                        </h2>
+                        <div className="space-y-4">
+                            <div>
+                                <label className="block text-sm font-medium text-gray-400 mb-1">
+                                    {isPortuguese
+                                        ? "Endereço XMR"
+                                        : "XMR Address"}
+                                </label>
+                                <div className="flex">
+                                    <input
+                                        type="text"
+                                        value={moneroAddress}
+                                        readOnly
+                                        title={
+                                            isPortuguese
+                                                ? "Endereço Monero"
+                                                : "Monero Address"
+                                        }
+                                        aria-label={
+                                            isPortuguese
+                                                ? "Endereço Monero"
+                                                : "Monero Address"
+                                        }
+                                        className="flex-1 bg-gray-700 rounded-l px-3 py-2 text-sm"
+                                    />
+                                    <button
+                                        onClick={() =>
+                                            navigator.clipboard.writeText(
+                                                moneroAddress
+                                            )
+                                        }
+                                        className="bg-purple-600 text-white px-4 rounded-r hover:bg-purple-700 transition-colors"
+                                    >
+                                        {isPortuguese ? "Copiar" : "Copy"}
+                                    </button>
+                                </div>
+                            </div>
+                            <div className="bg-gray-700 rounded p-4">
+                                <h3 className="font-medium mb-2">
+                                    {isPortuguese
+                                        ? "Instruções"
+                                        : "Instructions"}
+                                </h3>
+                                <ol className="list-decimal list-inside space-y-2 text-sm text-gray-300">
+                                    <li>
+                                        {isPortuguese
+                                            ? "Copie o endereço Monero acima"
+                                            : "Copy the Monero address above"}
+                                    </li>
+                                    <li>
+                                        {isPortuguese
+                                            ? "Abra sua carteira Monero"
+                                            : "Open your Monero wallet"}
+                                    </li>
+                                    <li>
+                                        {isPortuguese
+                                            ? "Envie a quantidade equivalente em XMR"
+                                            : "Send the equivalent amount in XMR"}
+                                    </li>
+                                    <li>
+                                        {isPortuguese
+                                            ? "Aguarde a confirmação da transação"
+                                            : "Wait for transaction confirmation"}
+                                    </li>
+                                </ol>
+                            </div>
+                            {type === "subscription" && (
+                                <div className="bg-purple-900/50 rounded p-4 text-sm">
+                                    <p>
+                                        {isPortuguese
+                                            ? "Para apoio mensal, por favor envie o mesmo valor todo mês. Você receberá lembretes por email."
+                                            : "For monthly support, please send the same amount every month. You will receive email reminders."}
+                                    </p>
                                 </div>
                             )}
                         </div>
-                    )}
-                </CardContent>
-            </Card>
-
-            {/* Free Tier Info */}
-            <Card>
-                <CardHeader>
-                    <CardTitle className="text-lg text-green-600">
-                        🆓 100% Gratuito
-                    </CardTitle>
-                </CardHeader>
-                <CardContent>
-                    <div className="grid md:grid-cols-2 gap-4 text-sm">
-                        <div>
-                            <h4 className="font-medium mb-2">
-                                Serviços Gratuitos:
-                            </h4>
-                            <ul className="space-y-1">
-                                <li>• Supabase (500MB)</li>
-                                <li>• WhatsApp API (1K msgs)</li>
-                                <li>• Discord Webhooks</li>
-                                <li>• Monero APIs</li>
-                                <li>• Vercel Hosting</li>
-                            </ul>
-                        </div>
-                        <div>
-                            <h4 className="font-medium mb-2">
-                                Funcionalidades:
-                            </h4>
-                            <ul className="space-y-1">
-                                <li>• PIX QR codes</li>
-                                <li>• Monero verification</li>
-                                <li>• WhatsApp bot</li>
-                                <li>• Discord notifications</li>
-                                <li>• Order tracking</li>
-                            </ul>
-                        </div>
                     </div>
-                    <div className="mt-4 p-3 bg-green-50 rounded-lg">
-                        <p className="text-sm text-green-800">
-                            <strong>Custo total:</strong> R$ 0/mês para até
-                            1.000 transações
-                        </p>
-                    </div>
-                </CardContent>
-            </Card>
+                )}
+            </div>
         </div>
     )
 }
