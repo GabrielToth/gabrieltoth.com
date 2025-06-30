@@ -331,8 +331,8 @@ const getTranslations = (locale: Locale) => {
                 ? "Agendar Reunião de Investimento"
                 : "Schedule Investment Meeting",
             contact: isPortuguese
-                ? "gabriel@gabrieltoth.com | +55 (xx) xxxx-xxxx"
-                : "gabriel@gabrieltoth.com | +55 (xx) xxxx-xxxx",
+                ? "gabrieltothgoncalves@gmail.com | +55 11 993313606"
+                : "gabrieltothgoncalves@gmail.com | +55 11 993313606",
         },
     }
 }
@@ -695,7 +695,7 @@ export default function SocialAnalyticsInvestmentLanding({
                     <h2 className="text-4xl font-black mb-6">{t.cta.title}</h2>
                     <p className="text-xl mb-8 opacity-90">{t.cta.subtitle}</p>
                     <a
-                        href="mailto:gabriel@gabrieltoth.com"
+                        href="mailto:gabrieltothgoncalves@gmail.com"
                         className="inline-flex items-center px-10 py-4 bg-white text-purple-600 rounded-lg font-bold hover:bg-gray-100 transition-colors text-lg mb-6"
                     >
                         <Rocket className="mr-3" size={20} />
