@@ -1,3 +1,5 @@
+import PerformanceMonitor from "@/components/analytics/performance-monitor"
+import WebVitalsReport from "@/components/analytics/web-vitals"
 import { ThemeProvider } from "@/components/theme/theme-provider"
 import { ThemeScript } from "@/components/theme/theme-script"
 import { Analytics } from "@vercel/analytics/next"
@@ -35,6 +37,8 @@ export default function RootLayout({
                 suppressHydrationWarning
             >
                 <ThemeProvider>{children}</ThemeProvider>
+                <WebVitalsReport />
+                <PerformanceMonitor />
                 <Analytics />
             </body>
         </html>
