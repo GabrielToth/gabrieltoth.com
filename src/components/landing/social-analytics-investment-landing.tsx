@@ -233,44 +233,7 @@ const getTranslations = (locale: Locale) => {
                 },
             ],
         },
-        financials: {
-            title: isPortuguese
-                ? "Projeções Financeiras"
-                : "Financial Projections",
-            subtitle: isPortuguese
-                ? "Crescimento exponencial baseado em dados reais do mercado"
-                : "Exponential growth based on real market data",
-            years: [
-                {
-                    year: "2025",
-                    revenue: "$150K",
-                    customers: "25",
-                    arr: "$120K",
-                    team: "3",
-                },
-                {
-                    year: "2026",
-                    revenue: "$750K",
-                    customers: "150",
-                    arr: "$600K",
-                    team: "8",
-                },
-                {
-                    year: "2027",
-                    revenue: "$3.2M",
-                    customers: "500",
-                    arr: "$2.8M",
-                    team: "15",
-                },
-                {
-                    year: "2028",
-                    revenue: "$12M",
-                    customers: "1500",
-                    arr: "$10.5M",
-                    team: "35",
-                },
-            ],
-        },
+
         investment: {
             title: isPortuguese
                 ? "Oportunidade de Investimento"
@@ -553,69 +516,6 @@ export default function SocialAnalyticsInvestmentLanding({
                                 </p>
                             </div>
                         ))}
-                    </div>
-                </div>
-            </section>
-
-            {/* Financial Projections */}
-            <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-800">
-                <div className="max-w-7xl mx-auto">
-                    <div className="text-center mb-16">
-                        <h2 className="text-4xl font-black text-gray-900 dark:text-white mb-4">
-                            {t.financials.title}
-                        </h2>
-                        <p className="text-xl text-gray-600 dark:text-gray-300">
-                            {t.financials.subtitle}
-                        </p>
-                    </div>
-                    <div className="overflow-x-auto">
-                        <table className="w-full bg-white dark:bg-gray-900 rounded-lg shadow-lg">
-                            <thead className="bg-blue-600 text-white">
-                                <tr>
-                                    <th className="p-4 text-left">
-                                        {locale === "pt-BR" ? "Ano" : "Year"}
-                                    </th>
-                                    <th className="p-4 text-left">
-                                        {locale === "pt-BR"
-                                            ? "Receita"
-                                            : "Revenue"}
-                                    </th>
-                                    <th className="p-4 text-left">
-                                        {locale === "pt-BR"
-                                            ? "Clientes"
-                                            : "Customers"}
-                                    </th>
-                                    <th className="p-4 text-left">ARR</th>
-                                    <th className="p-4 text-left">
-                                        {locale === "pt-BR" ? "Equipe" : "Team"}
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {t.financials.years.map((year, index) => (
-                                    <tr
-                                        key={index}
-                                        className="border-b border-gray-200 dark:border-gray-700"
-                                    >
-                                        <td className="p-4 font-bold text-gray-900 dark:text-white">
-                                            {year.year}
-                                        </td>
-                                        <td className="p-4 text-green-600 font-bold">
-                                            {year.revenue}
-                                        </td>
-                                        <td className="p-4 text-gray-600 dark:text-gray-300">
-                                            {year.customers}
-                                        </td>
-                                        <td className="p-4 text-blue-600 font-bold">
-                                            {year.arr}
-                                        </td>
-                                        <td className="p-4 text-gray-600 dark:text-gray-300">
-                                            {year.team}
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
                     </div>
                 </div>
             </section>

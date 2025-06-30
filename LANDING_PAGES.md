@@ -64,7 +64,7 @@ Foram criadas 4 landing pages otimizadas para conversão, cada uma com foco espe
 - Solução revolucionária (integração total, AI-powered insights, ROI tracking)
 - Tamanho de mercado ($786B digital marketing, $1.2T projeção 2030)
 - Vantagem competitiva (primeira plataforma completa, tecnologia proprietária)
-- Projeções financeiras (2025-2028: $150K → $12M revenue)
+- Vantagem competitiva (primeira plataforma completa, tecnologia proprietária)
 - Rounds de investimento (Seed: $500K por 15%, Series A: $3M por 20%)
 - Uso dos recursos (40% produto, 30% marketing, 20% equipe, 10% infra)
 - Equipe fundadora (Gabriel Toth - CEO)

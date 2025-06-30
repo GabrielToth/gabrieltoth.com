@@ -26,6 +26,11 @@ yzhang
 hookyqr
 bhsl
 ViraTrend
+ogabrieltoth
+ogabrieltoth's
+mlstatic
+mptools
+Doacao
 # Only keeping project-specific Portuguese terms that might not be in the standard dictionary
 àáâãäåæçèéêëìíîïñòóôõöøùúûüýÿ
 singlequote
