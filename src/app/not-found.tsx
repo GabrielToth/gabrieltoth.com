@@ -28,14 +28,7 @@ export default function NotFound() {
             href: "/pt-BR/pc-optimization",
             hrefEn: "/pc-optimization",
         },
-        {
-            title: "Investimentos",
-            titleEn: "Investments",
-            description: "Oportunidades de investimento em projetos tech",
-            descriptionEn: "Investment opportunities in tech projects",
-            href: "/pt-BR/investments",
-            hrefEn: "/investments",
-        },
+
         {
             title: "Trabalhe Como Editor",
             titleEn: "Work as Editor",

@@ -13,13 +13,13 @@ const getTranslations = (locale: string) => {
         home: isPortuguese ? "Início" : "Home",
         about: isPortuguese ? "Sobre" : "About",
         projects: isPortuguese ? "Projetos" : "Projects",
-        investments: isPortuguese ? "Investimentos" : "Investments",
+
         services: isPortuguese ? "Serviços" : "Services",
         channels: isPortuguese ? "Canais" : "Channels",
         contact: isPortuguese ? "Contato" : "Contact",
         channelManagement: isPortuguese ? "ViraTrend" : "ViraTrend",
         pcOptimization: isPortuguese ? "Otimização de PC" : "PC Optimization",
-        investment: isPortuguese ? "Investimento" : "Investment",
+
         support: isPortuguese ? "Apoiar WaveIGL" : "Support WaveIGL",
     }
 }
@@ -34,7 +34,7 @@ export default function Header() {
         { name: t.home, href: "#hero" },
         { name: t.about, href: "#about" },
         { name: t.projects, href: "#projects" },
-        { name: t.investments, href: `/${locale}/investments` },
+
         { name: t.channels, href: "#channel-management" },
         { name: t.contact, href: "#contact" },
     ]
@@ -56,14 +56,7 @@ export default function Header() {
                     ? "Otimização de performance gaming"
                     : "Gaming performance optimization",
         },
-        {
-            name: t.investment,
-            href: `/${locale}/social-analytics-investment`,
-            description:
-                locale === "pt-BR"
-                    ? "Invista no Social Analytics Engine"
-                    : "Invest in Social Analytics Engine",
-        },
+
         {
             name: t.support,
             href: `/${locale}/waveigl-support`,

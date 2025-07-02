@@ -23,16 +23,7 @@ describe("All Pages E2E Tests", () => {
         { path: "/pt-BR/pc-optimization", name: "PC Optimization (PT)" },
         { path: "/en/waveigl-support", name: "WaveIGL Support (EN)" },
         { path: "/pt-BR/waveigl-support", name: "WaveIGL Support (PT)" },
-        {
-            path: "/en/social-analytics-investment",
-            name: "Social Analytics Investment (EN)",
-        },
-        {
-            path: "/pt-BR/social-analytics-investment",
-            name: "Social Analytics Investment (PT)",
-        },
-        { path: "/en/investments", name: "Investments (EN)" },
-        { path: "/pt-BR/investments", name: "Investments (PT)" },
+
         { path: "/en/terms-of-service", name: "Terms of Service (EN)" },
         { path: "/pt-BR/terms-of-service", name: "Terms of Service (PT)" },
         { path: "/en/privacy-policy", name: "Privacy Policy (EN)" },

@@ -6,7 +6,7 @@ module.exports = {
                 "http://localhost:3000/en",
                 "http://localhost:3000/pt-BR",
                 "http://localhost:3000/en/channel-management",
-                "http://localhost:3000/en/investments",
+
                 "http://localhost:3000/en/pc-optimization",
             ],
             startServerCommand: "npm run build && npm start",

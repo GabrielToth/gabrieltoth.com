@@ -33,10 +33,6 @@ export default function Footer({ locale }: FooterProps) {
                             : "Work as Editor",
                         href: `/${locale}/editors`,
                     },
-                    {
-                        name: isPortuguese ? "Investimentos" : "Investments",
-                        href: `/${locale}/investments`,
-                    },
                 ],
             },
             legal: {

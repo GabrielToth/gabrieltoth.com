@@ -3,7 +3,7 @@
         "home": "Início",
         "about": "Sobre",
         "projects": "Projetos",
-        "investments": "Investimentos",
+
         "contact": "Contato",
         "language": "Idioma",
         "ViraTrend": "ViraTrend"
@@ -77,96 +77,6 @@
         "rights": "Todos os direitos reservados",
         "built": "Construído com",
         "source": "Ver Código Fonte"
-    },
-    "investments": {
-        "title": "Projeto WaveIGL - Aberto para Doações",
-        "subtitle": "Sistema completo de automação para streamers - Dê vida a este projeto inovador",
-        "waveigl": {
-            "title": "Plataforma de Automação WaveIGL",
-            "description": "Sistema avançado que unifica e automatiza a gestão de streams, integrando Google, Twitch, Discord, YouTube e WhatsApp em uma plataforma profissional única.",
-            "what": {
-                "title": "O que este site conterá:",
-                "login": "Login via Google com permissão de vínculo com Twitch, Discord e Canal do YouTube (Não proprietário)",
-                "funnel": "Página de funil para SUBs acessarem automaticamente grupo do WhatsApp e vinculação com Discord (Não proprietário)",
-                "chatUnify": "Unificação dos chats do YouTube e Twitch (Não proprietário)",
-                "moderation": "Ferramentas para moderação de ambos os chats (Não proprietário)",
-                "landing": "Landing Page para Aulas Particulares com automação dos pagamentos (Proprietário)"
-            },
-            "benefits": {
-                "title": "Em que isso ajuda:",
-                "automation": "SUBs terão acesso automático aos grupos sem erros manuais ou confusões",
-                "centralization": "Centralização de pessoas em ambiente com controle total dos dados",
-                "moderation": "Facilitação da moderação para toda a equipe",
-                "professional": "Ambiente profissional que aumenta a visibilidade do projeto"
-            },
-            "pricing": {
-                "title": "Valores de cada feature:",
-                "landing": {
-                    "name": "Landing page (3-5 seções)",
-                    "price": "R$500",
-                    "time": "1 semana após confirmação do design",
-                    "note": "Modificações após aceite visual terão cobranças adicionais"
-                },
-                "payments": {
-                    "name": "Automação dos pagamentos",
-                    "price": "R$1.000",
-                    "time": "2 semanas",
-                    "note": "Mercado Pago/Stripe. Cripto disponível com custo adicional"
-                },
-                "ddos": {
-                    "name": "Proteção contra DDoS via CloudFlare",
-                    "price": "R$500",
-                    "time": "1 semana",
-                    "note": "Não necessário enquanto site não cair"
-                },
-                "login": {
-                    "name": "Login com Google, YouTube, Discord e Twitch",
-                    "price": "R$10.000",
-                    "time": "3-5 meses",
-                    "note": ""
-                },
-                "funnel": {
-                    "name": "Funil para quem der SUB",
-                    "price": "R$1.000",
-                    "time": "2 semanas",
-                    "note": "Precisa do login acima"
-                },
-                "chat": {
-                    "name": "Unificação dos Chats YouTube e Twitch",
-                    "price": "R$6.000",
-                    "time": "3 meses",
-                    "note": ""
-                },
-                "modTools": {
-                    "name": "Ferramentas para moderação em todos os chats",
-                    "price": "R$8.000",
-                    "time": "4 meses",
-                    "note": ""
-                }
-            },
-            "ownership": {
-                "title": "Sobre Propriedade:",
-                "nonProprietary": "Features \"Não proprietárias\": Sem direitos exclusivos. Podem ser redistribuídas para outros projetos, inclusive comercialmente.",
-                "proprietary": "Features \"Proprietárias\": Direitos exclusivos seus. Pode modificar, comercializar e redistribuir como desejar."
-            },
-            "total": {
-                "title": "Investimento Total Estimado:",
-                "amount": "R$27.000",
-                "subtitle": "Para todas as funcionalidades completas"
-            }
-        },
-        "payment": {
-            "title": "Formas de Pagamento para Doações",
-            "pix": "PIX: 2x o valor original",
-            "monero": "Monero: Valor original",
-            "note": "Monero é o valor base, PIX é 2x o valor cotado.",
-            "partial": "Doações parciais são aceitas - qualquer valor ajuda!"
-        },
-        "contact": {
-            "title": "Quer Ajudar a Tornar Isso Realidade?",
-            "description": "Entre em contato para discutir como você pode contribuir para este projeto inovador. Toda ajuda é bem-vinda!",
-            "cta": "Doar para o Projeto"
-        }
     },
     "common": {
         "loading": "Carregando...",

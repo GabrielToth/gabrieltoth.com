@@ -34,7 +34,6 @@ describe("Internationalization (i18n) Tests", () => {
             const englishPages = [
                 "/en/channel-management",
                 "/en/pc-optimization",
-                "/en/investments",
             ]
 
             englishPages.forEach(page => {
@@ -56,7 +55,6 @@ describe("Internationalization (i18n) Tests", () => {
             const portuguesePages = [
                 "/pt-BR/channel-management",
                 "/pt-BR/pc-optimization",
-                "/pt-BR/investments",
             ]
 
             portuguesePages.forEach(page => {

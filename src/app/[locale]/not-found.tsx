@@ -97,13 +97,7 @@ export default function LocaleNotFound() {
                 : "Optimization services for better performance",
             href: `/${locale}/pc-optimization`,
         },
-        {
-            title: isPortuguese ? "Investimentos" : "Investments",
-            description: isPortuguese
-                ? "Oportunidades de investimento em projetos tech"
-                : "Investment opportunities in tech projects",
-            href: `/${locale}/investments`,
-        },
+
         {
             title: isPortuguese ? "Trabalhe Como Editor" : "Work as Editor",
             description: isPortuguese

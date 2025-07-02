@@ -54,22 +54,7 @@ const getTranslations = (locale: Locale) => {
                 ],
                 liveUrl: `/${locale}/waveigl-support`,
             },
-            {
-                title: "Social Analytics Engine",
-                description: isPortuguese
-                    ? "Sistema completo de análise de campanhas digitais integrando dados do Google Analytics com métricas de redes sociais (YouTube, Instagram, X, Telegram) e análise de conversões Stripe. Utiliza Python, PostgreSQL, SQLAlchemy e Docker para processar e analisar dados de campanhas em tempo real."
-                    : "Complete digital campaign analysis system integrating Google Analytics data with social media metrics (YouTube, Instagram, X, Telegram) and Stripe conversion analysis. Uses Python, PostgreSQL, SQLAlchemy, and Docker to process and analyze campaign data in real-time.",
-                image: "/projects/social-analytics.jpg",
-                tags: [
-                    "Python",
-                    "PostgreSQL",
-                    "Google APIs",
-                    "Stripe API",
-                    "Docker",
-                    "SQLAlchemy",
-                ],
-                liveUrl: `/${locale}/social-analytics-investment`,
-            },
+
             {
                 title: "PC Optimization Service",
                 description: isPortuguese

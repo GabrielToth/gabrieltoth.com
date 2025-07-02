@@ -37,10 +37,10 @@ function isValidPath(path: string): boolean {
         "",
         "/",
         "/channel-management",
-        "/investments",
+
         "/payment-demo",
         "/pc-optimization",
-        "/social-analytics-investment",
+
         "/editors",
         "/editores",
         "/privacy-policy",
