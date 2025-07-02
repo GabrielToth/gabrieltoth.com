@@ -39,11 +39,11 @@ const getTranslations = (locale: Locale) => {
     return {
         hero: {
             badge: isPortuguese
-                ? "💜 Apoie a Comunidade WaveIGL e ajude ogabrieltoth a salvar uma vida"
-                : "💜 Support the WaveIGL Community and help ogabrieltoth save a life",
+                ? "💜 Apoie a Comunidade WaveIGL"
+                : "💜 Support the WaveIGL Community",
             title: isPortuguese
-                ? "O Futuro da Comunidade WaveIGL Ajude ogabrieltoth a salvar uma vida"
-                : "The Future of WaveIGL Community Help ogabrieltoth save a life",
+                ? "O Futuro da Comunidade WaveIGL"
+                : "The Future of WaveIGL Community",
             subtitle: isPortuguese
                 ? "Unificação de chats do YouTube e Twitch em uma única plataforma profissional, com integração automática de grupos no WhatsApp e Discord para SUBs."
                 : "YouTube and Twitch chat unification in a single professional platform, with automatic WhatsApp and Discord group integration for SUBs.",

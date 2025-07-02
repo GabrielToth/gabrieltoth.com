@@ -28,6 +28,13 @@ module.exports = {
         "gabrieltoth",
         "framesync",
         "ViraTrend",
+        "ogabrieltoth",
+        "ogabrieltoth's",
+        "mlstatic",
+        "mptools",
+        "Doacao",
+        "ttfb",
+        "TTFB",
 
         // Tech Stack
         "vercel",
