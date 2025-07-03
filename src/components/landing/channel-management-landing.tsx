@@ -2,6 +2,7 @@
 
 import Footer from "@/components/layout/footer"
 import PricingToggle from "@/components/ui/pricing-toggle"
+import { useMoneroPricing } from "@/hooks/use-monero-pricing"
 import { type Locale } from "@/lib/i18n"
 import {
     BarChart3,
@@ -397,16 +398,20 @@ export default function ChannelManagementLanding({
     locale,
 }: ChannelManagementLandingProps) {
     const t = getTranslations(locale)
+    const { calculatePrice: calculateMoneroPrice } = useMoneroPricing()
 
-    // Simple price calculation without Monero
-    const calculatePrice = (basePrice: number) => ({
-        current: basePrice * 2, // PIX/Card price (double the base)
-        original: basePrice * 2,
-        currency: "R$",
-        displayPrice: `R$ ${basePrice * 2}`,
-        originalPrice: `R$ ${basePrice * 2}`,
-        isMonero: false,
-    })
+    // Updated price calculation with Monero support
+    const calculatePrice = (basePrice: number) => {
+        const moneroCalc = calculateMoneroPrice(basePrice)
+        return {
+            current: moneroCalc.displayPrice,
+            original: moneroCalc.originalPrice,
+            currency: "R$",
+            displayPrice: moneroCalc.displayPrice.toString(),
+            originalPrice: moneroCalc.originalPrice?.toString(),
+            isMonero: moneroCalc.isMonero,
+        }
+    }
 
     const generateWhatsAppMessage = (
         planName: string,
@@ -724,11 +729,14 @@ export default function ChannelManagementLanding({
                                                 {pricing.currency}{" "}
                                                 {pricing.displayPrice}
                                             </div>
-                                            {pricing.originalPrice && (
-                                                <span className="text-lg text-gray-500 line-through">
-                                                    R$ {pricing.originalPrice}
-                                                </span>
-                                            )}
+                                            {pricing.originalPrice &&
+                                                pricing.originalPrice !==
+                                                    pricing.displayPrice && (
+                                                    <span className="text-lg text-gray-500 line-through">
+                                                        R${" "}
+                                                        {pricing.originalPrice}
+                                                    </span>
+                                                )}
                                         </div>
                                         {pricing.isMonero && (
                                             <div className="text-orange-400 text-sm font-medium">

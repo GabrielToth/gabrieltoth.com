@@ -31,6 +31,8 @@ ogabrieltoth's
 mlstatic
 mptools
 Doacao
+ttfb
+TTFB
 # Only keeping project-specific Portuguese terms that might not be in the standard dictionary
 àáâãäåæçèéêëìíîïñòóôõöøùúûüýÿ
 singlequote

@@ -1,5 +1,6 @@
 "use client"
 
+import { MoneroPricingProvider } from "@/hooks/use-monero-pricing"
 import { type Locale } from "@/lib/i18n"
 import { useEffect } from "react"
 
@@ -19,5 +20,5 @@ export default function LocaleProvider({
         }
     }, [locale])
 
-    return <>{children}</>
+    return <MoneroPricingProvider>{children}</MoneroPricingProvider>
 }
