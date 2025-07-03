@@ -1,6 +1,7 @@
 "use client"
 
 import Footer from "@/components/layout/footer"
+import LanguageSelector from "@/components/ui/language-selector"
 import PricingToggle from "@/components/ui/pricing-toggle"
 import { useMoneroPricing } from "@/hooks/use-monero-pricing"
 import { type Locale } from "@/lib/i18n"
@@ -18,6 +19,7 @@ import {
     Youtube,
 } from "lucide-react"
 import Link from "next/link"
+import { useEffect, useState } from "react"
 
 interface ChannelManagementLandingProps {
     locale: Locale
@@ -397,8 +399,13 @@ const getTranslations = (locale: Locale) => {
 export default function ChannelManagementLanding({
     locale,
 }: ChannelManagementLandingProps) {
+    const [mounted, setMounted] = useState(false)
     const t = getTranslations(locale)
     const { calculatePrice: calculateMoneroPrice } = useMoneroPricing()
+
+    useEffect(() => {
+        setMounted(true)
+    }, [])
 
     // Updated price calculation with Monero support
     const calculatePrice = (basePrice: number) => {
@@ -437,6 +444,13 @@ export default function ChannelManagementLanding({
 
     return (
         <div className="min-h-screen bg-white dark:bg-gray-900">
+            {/* Language Selector for Landing Page */}
+            <div className="fixed top-4 right-4 z-50">
+                <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-lg p-2 shadow-md">
+                    {mounted && <LanguageSelector variant="default" />}
+                </div>
+            </div>
+
             {/* Hero Section */}
             <section className="relative py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-blue-900/20 dark:to-indigo-900/20">
                 <div className="max-w-7xl mx-auto text-center">
