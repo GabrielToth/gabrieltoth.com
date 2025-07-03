@@ -429,7 +429,7 @@ export default function ChannelManagementLanding({
             ? "Monero (XMR)"
             : locale === "pt-BR"
               ? "PIX/Cartão"
-              : "PIX/Card"
+              : "Card"
         const currency = locale === "en" ? "$" : "R$"
         const baseMessage =
             locale === "pt-BR"

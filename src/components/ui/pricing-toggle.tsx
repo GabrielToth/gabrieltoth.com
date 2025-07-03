@@ -42,7 +42,7 @@ function PricingToggleClient({ locale }: PricingToggleProps) {
                     }`}
                 >
                     <DollarSign className="w-4 h-4" />
-                    {isPortuguese ? "PIX/Cartão" : "PIX/Card"}
+                    {isPortuguese ? "PIX/Cartão" : "Card"}
                 </button>
             </div>
         </div>
@@ -65,7 +65,7 @@ function PricingToggleFallback({ locale }: PricingToggleProps) {
                 </div>
                 <div className="px-4 py-2 rounded-md text-sm font-medium text-gray-600 dark:text-gray-400 flex items-center gap-2">
                     <DollarSign className="w-4 h-4" />
-                    {isPortuguese ? "PIX/Cartão" : "PIX/Card"}
+                    {isPortuguese ? "PIX/Cartão" : "Card"}
                 </div>
             </div>
         </div>
