@@ -1,5 +1,6 @@
 "use client"
 
+import { useMoneroPricing } from "@/hooks/use-monero-pricing"
 import { DollarSign } from "lucide-react"
 import dynamic from "next/dynamic"
 import { useEffect, useState } from "react"
@@ -10,7 +11,6 @@ interface PricingToggleProps {
 
 // Client-only component that uses the hook
 function PricingToggleClient({ locale }: PricingToggleProps) {
-    const { useMoneroPricing } = require("@/hooks/use-monero-pricing")
     const { showMoneroPrice, toggleMoneroPrice } = useMoneroPricing()
     const isPortuguese = locale === "pt-BR"
 

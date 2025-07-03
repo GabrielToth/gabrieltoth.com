@@ -407,13 +407,13 @@ export default function ChannelManagementLanding({
         setMounted(true)
     }, [])
 
-    // Updated price calculation with Monero support
+    // Updated price calculation with Monero support and currency conversion
     const calculatePrice = (basePrice: number) => {
-        const moneroCalc = calculateMoneroPrice(basePrice)
+        const moneroCalc = calculateMoneroPrice(basePrice, locale)
         return {
             current: moneroCalc.displayPrice,
             original: moneroCalc.originalPrice,
-            currency: "R$",
+            currency: moneroCalc.currency,
             displayPrice: moneroCalc.displayPrice.toString(),
             originalPrice: moneroCalc.originalPrice?.toString(),
             isMonero: moneroCalc.isMonero,
@@ -425,17 +425,22 @@ export default function ChannelManagementLanding({
         price: number,
         isMonero: boolean
     ) => {
-        const paymentMethod = isMonero ? "Monero (XMR)" : "PIX/Cartão"
+        const paymentMethod = isMonero
+            ? "Monero (XMR)"
+            : locale === "pt-BR"
+              ? "PIX/Cartão"
+              : "PIX/Card"
+        const currency = locale === "en" ? "$" : "R$"
         const baseMessage =
             locale === "pt-BR"
                 ? "Olá! Tenho interesse na consultoria de canal.%0A%0A" +
                   `📋 Plano escolhido: ${planName}%0A` +
-                  `💰 Valor: R$ ${price}%0A` +
+                  `💰 Valor: ${currency} ${price}%0A` +
                   `💳 Forma de pagamento: ${paymentMethod}%0A%0A` +
                   "Nome:%0ACanal do YouTube:%0AQual seu principal objetivo:%0ATipo de conteúdo:%0AFrequência de postagem:%0A%0AAguardo o contato!"
                 : "Hello! I'm interested in channel consulting.%0A%0A" +
                   `📋 Chosen plan: ${planName}%0A` +
-                  `💰 Price: R$ ${price}%0A` +
+                  `💰 Price: ${currency} ${price}%0A` +
                   `💳 Payment method: ${paymentMethod}%0A%0A` +
                   "Name:%0AYouTube Channel:%0AYour main goal:%0AContent type:%0APosting frequency:%0A%0ALooking forward to hearing from you!"
 
@@ -747,7 +752,7 @@ export default function ChannelManagementLanding({
                                                 pricing.originalPrice !==
                                                     pricing.displayPrice && (
                                                     <span className="text-lg text-gray-500 line-through">
-                                                        R${" "}
+                                                        {pricing.currency}{" "}
                                                         {pricing.originalPrice}
                                                     </span>
                                                 )}

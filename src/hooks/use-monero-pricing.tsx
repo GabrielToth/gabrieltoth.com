@@ -1,11 +1,15 @@
 "use client"
 
+import { type Locale } from "@/lib/i18n"
 import React, { createContext, useContext, useState } from "react"
 
 interface MoneroPricingContextType {
     showMoneroPrice: boolean
     toggleMoneroPrice: () => void
-    calculatePrice: (baseMoneroPrice: number) => {
+    calculatePrice: (
+        baseMoneroPrice: number,
+        locale?: Locale
+    ) => {
         displayPrice: number
         originalPrice: number | null
         currency: string
@@ -29,13 +33,25 @@ export function MoneroPricingProvider({
         setShowMoneroPrice(!showMoneroPrice)
     }
 
-    const calculatePrice = (baseMoneroPrice: number) => {
+    const calculatePrice = (
+        baseMoneroPrice: number,
+        locale: Locale = "pt-BR"
+    ) => {
+        const isEnglish = locale === "en"
+        const conversionRate = isEnglish ? 6 : 1
+        const currency = isEnglish ? "$" : "R$"
+
+        const convertedMoneroPrice = baseMoneroPrice / conversionRate
+        const convertedPixPrice = (baseMoneroPrice * 2) / conversionRate
+
         return {
             displayPrice: showMoneroPrice
-                ? baseMoneroPrice
-                : baseMoneroPrice * 2,
-            originalPrice: showMoneroPrice ? baseMoneroPrice * 2 : null,
-            currency: "R$",
+                ? Math.round(convertedMoneroPrice)
+                : Math.round(convertedPixPrice),
+            originalPrice: showMoneroPrice
+                ? Math.round(convertedPixPrice)
+                : null,
+            currency,
             discount: showMoneroPrice ? 50 : 0,
             isMonero: showMoneroPrice,
         }
@@ -58,13 +74,25 @@ export function useMoneroPricing() {
         return {
             showMoneroPrice: true,
             toggleMoneroPrice: () => {},
-            calculatePrice: (baseMoneroPrice: number) => ({
-                displayPrice: baseMoneroPrice,
-                originalPrice: baseMoneroPrice * 2,
-                currency: "R$",
-                discount: 50,
-                isMonero: true,
-            }),
+            calculatePrice: (
+                baseMoneroPrice: number,
+                locale: Locale = "pt-BR"
+            ) => {
+                const isEnglish = locale === "en"
+                const conversionRate = isEnglish ? 6 : 1
+                const currency = isEnglish ? "$" : "R$"
+
+                const convertedMoneroPrice = baseMoneroPrice / conversionRate
+                const convertedPixPrice = (baseMoneroPrice * 2) / conversionRate
+
+                return {
+                    displayPrice: Math.round(convertedMoneroPrice),
+                    originalPrice: Math.round(convertedPixPrice),
+                    currency,
+                    discount: 50,
+                    isMonero: true,
+                }
+            },
         }
     }
 
