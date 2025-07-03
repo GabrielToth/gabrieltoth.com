@@ -14,8 +14,8 @@ export default async function TermsOfServicePage({
     const content = {
         title: isPortuguese ? "Termos de Serviço" : "Terms of Service",
         lastUpdated: isPortuguese
-            ? "Última atualização: Janeiro 2024"
-            : "Last updated: January 2024",
+            ? "Última atualização: Julho 2025"
+            : "Last updated: January 2025",
         sections: {
             intro: {
                 title: isPortuguese
@@ -232,7 +232,7 @@ export default async function TermsOfServicePage({
 
                     <footer className="mt-12 pt-8 border-t border-gray-200 dark:border-gray-700">
                         <p className="text-sm text-gray-500 dark:text-gray-400 text-center">
-                            © 2024 Gabriel Toth Gonçalves.{" "}
+                            © 2025 Gabriel Toth Gonçalves.{" "}
                             {isPortuguese
                                 ? "Todos os direitos reservados."
                                 : "All rights reserved."}

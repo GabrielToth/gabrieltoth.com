@@ -1,5 +1,6 @@
 "use client"
 
+import LanguageSelector from "@/components/ui/language-selector"
 import PricingToggle from "@/components/ui/pricing-toggle"
 import { type Locale } from "@/lib/i18n"
 import {
@@ -348,6 +349,11 @@ export default function PCOptimizationLanding({
 
     return (
         <div className="min-h-screen bg-black text-white overflow-hidden">
+            {/* Language Selector */}
+            <div className="fixed top-4 right-4 z-50">
+                <LanguageSelector />
+            </div>
+
             {/* Hero Section */}
             <section className="relative py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-black via-gray-900 to-black">
                 {/* Animated background elements */}
