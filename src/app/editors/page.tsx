@@ -11,5 +11,5 @@ export default async function EditorsRedirect() {
             ? "en"
             : "pt-BR"
 
-    redirect(`/${preferredLocale}/editores`)
+    redirect(`/${preferredLocale}/editors`)
 }

@@ -1,0 +1,462 @@
+"use client"
+
+import Footer from "@/components/layout/footer"
+import LanguageSelector from "@/components/ui/language-selector"
+import PricingToggle from "@/components/ui/pricing-toggle"
+import { CheckCircle, MessageCircle, Percent, Star } from "lucide-react"
+import { useEffect, useState } from "react"
+import { useCalculatePrice } from "./channel-management-calculate-price"
+import { ChannelManagementTranslations } from "./channel-management-section-types"
+import { getChannelManagementTranslations } from "./channel-management-translations"
+import { ChannelManagementLandingProps } from "./channel-management-types"
+import { generateWhatsAppMessage } from "./channel-management-whatsapp-message"
+
+// Hero Section Component
+const HeroSection = ({
+    t,
+    locale,
+}: {
+    t: ChannelManagementTranslations
+    locale: "en" | "pt-BR"
+}) => {
+    return (
+        <section className="relative py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-blue-900/20 dark:to-indigo-900/20">
+            <div className="max-w-7xl mx-auto text-center">
+                <div className="inline-block mb-6">
+                    <span className="bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200 text-sm font-semibold px-4 py-2 rounded-full">
+                        {t.hero.badge}
+                    </span>
+                </div>
+                <h1 className="text-4xl sm:text-6xl font-bold text-gray-900 dark:text-white mb-6">
+                    {t.hero.title}
+                </h1>
+                <p className="text-xl text-gray-600 dark:text-gray-300 mb-12 max-w-4xl mx-auto leading-relaxed">
+                    {t.hero.subtitle}
+                </p>
+
+                <a
+                    href={generateWhatsAppMessage(t.hero.cta, 0, false, locale)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center px-8 py-4 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors text-lg"
+                >
+                    <MessageCircle className="mr-2" size={20} />
+                    {t.hero.cta}
+                </a>
+
+                {/* Stats */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
+                    {t.hero.stats.map((stat, index) => (
+                        <div
+                            key={index}
+                            className="text-center bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg"
+                        >
+                            <div className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-2">
+                                {stat.number}
+                            </div>
+                            <div className="text-gray-600 dark:text-gray-300">
+                                {stat.label}
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </section>
+    )
+}
+
+// About Section Component
+const AboutSection = ({ t }: { t: ChannelManagementTranslations }) => {
+    return (
+        <section className="py-20 px-4 sm:px-6 lg:px-8">
+            <div className="max-w-7xl mx-auto">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-6">
+                            {t.about.title}
+                        </h2>
+                        <p className="text-lg text-blue-600 dark:text-blue-400 mb-6 font-medium">
+                            {t.about.description}
+                        </p>
+                        <div className="space-y-4 text-gray-600 dark:text-gray-300 leading-relaxed">
+                            <p>{t.about.intro}</p>
+                            <p>{t.about.experience}</p>
+                            <p>{t.about.passion}</p>
+                        </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                        {t.about.skills.map((skill, index) => (
+                            <div
+                                key={index}
+                                className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg text-center"
+                            >
+                                <skill.icon className="w-10 h-10 text-blue-600 dark:text-blue-400 mx-auto mb-4" />
+                                <h3 className="font-semibold text-gray-900 dark:text-white">
+                                    {skill.name}
+                                </h3>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+        </section>
+    )
+}
+
+// Problems Section Component
+const ProblemsSection = ({ t }: { t: ChannelManagementTranslations }) => {
+    return (
+        <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-800">
+            <div className="max-w-7xl mx-auto">
+                <div className="text-center mb-16">
+                    <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+                        {t.problems.title}
+                    </h2>
+                    <p className="text-xl text-gray-600 dark:text-gray-300">
+                        {t.problems.subtitle}
+                    </p>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    {t.problems.items.map((problem, index) => (
+                        <div
+                            key={index}
+                            className="bg-white dark:bg-gray-900 rounded-lg p-6 shadow-lg text-center"
+                        >
+                            <problem.icon className="w-12 h-12 text-red-500 mx-auto mb-4" />
+                            <h3 className="font-bold text-gray-900 dark:text-white mb-3">
+                                {problem.title}
+                            </h3>
+                            <p className="text-gray-600 dark:text-gray-300 text-sm">
+                                {problem.description}
+                            </p>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </section>
+    )
+}
+
+// Services Section Component
+const ServicesSection = ({ t }: { t: ChannelManagementTranslations }) => {
+    return (
+        <section className="py-20 px-4 sm:px-6 lg:px-8">
+            <div className="max-w-7xl mx-auto">
+                <div className="text-center mb-16">
+                    <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+                        {t.services.title}
+                    </h2>
+                    <p className="text-xl text-gray-600 dark:text-gray-300">
+                        {t.services.subtitle}
+                    </p>
+                </div>
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    {t.services.items.map((service, index) => (
+                        <div
+                            key={index}
+                            className="bg-white dark:bg-gray-800 rounded-lg p-8 shadow-lg"
+                        >
+                            <service.icon className="w-12 h-12 text-blue-600 dark:text-blue-400 mb-6" />
+                            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+                                {service.title}
+                            </h3>
+                            <p className="text-gray-600 dark:text-gray-300 mb-6">
+                                {service.description}
+                            </p>
+                            <ul className="space-y-2">
+                                {service.features.map((feature, idx) => (
+                                    <li
+                                        key={idx}
+                                        className="flex items-center text-gray-600 dark:text-gray-300"
+                                    >
+                                        <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
+                                        <span className="text-sm">
+                                            {feature}
+                                        </span>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </section>
+    )
+}
+
+// Results Section Component
+const ResultsSection = ({ t }: { t: ChannelManagementTranslations }) => {
+    return (
+        <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white dark:bg-gray-800">
+            <div className="max-w-7xl mx-auto">
+                <div className="text-center mb-16">
+                    <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+                        {t.results.title}
+                    </h2>
+                    <p className="text-xl text-gray-600 dark:text-gray-300">
+                        {t.results.subtitle}
+                    </p>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    {t.results.items.map((result, index) => (
+                        <div
+                            key={index}
+                            className="bg-gray-50 dark:bg-gray-900 rounded-lg p-8 shadow-lg"
+                        >
+                            <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                                {result.channel}
+                            </h3>
+                            <p className="text-gray-700 dark:text-gray-300 mb-6">
+                                {result.description}
+                            </p>
+                            <div className="grid grid-cols-3 gap-4">
+                                {result.metrics.map((metric, idx) => (
+                                    <div key={idx} className="text-center">
+                                        <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+                                            {metric.value}
+                                        </div>
+                                        <div className="text-sm text-gray-600 dark:text-gray-300">
+                                            {metric.label}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </section>
+    )
+}
+
+// Testimonials Section Component
+const TestimonialsSection = ({ t }: { t: ChannelManagementTranslations }) => {
+    return (
+        <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-900">
+            <div className="max-w-7xl mx-auto">
+                <div className="text-center mb-16">
+                    <h2 className="text-3xl font-bold text-gray-800 dark:text-white mb-4">
+                        {t.testimonials.title}
+                    </h2>
+                    <p className="text-xl text-gray-600 dark:text-gray-300">
+                        {t.testimonials.subtitle}
+                    </p>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    {t.testimonials.items.map((testimonial, index) => (
+                        <div
+                            key={index}
+                            className="bg-white dark:bg-gray-800 rounded-lg p-8 shadow-lg backdrop-blur-sm"
+                        >
+                            <div>
+                                <div className="font-semibold text-gray-900 dark:text-white">
+                                    {testimonial.name}
+                                </div>
+                                <div className="text-sm text-gray-500 dark:text-gray-400">
+                                    {testimonial.role}
+                                </div>
+                            </div>
+                            <div className="flex items-center mb-4">
+                                {[...Array(testimonial.rating)].map((_, i) => (
+                                    <Star
+                                        key={i}
+                                        className="w-5 h-5 text-yellow-400 fill-current"
+                                    />
+                                ))}
+                            </div>
+                            <p className="text-gray-700 dark:text-gray-300 mb-6 italic">
+                                {testimonial.content}
+                            </p>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </section>
+    )
+}
+
+// Pricing Section Component
+const PricingSection = ({
+    t,
+    locale,
+    calculatePrice,
+}: {
+    t: ChannelManagementTranslations
+    locale: "en" | "pt-BR"
+    calculatePrice: (basePrice: number) => {
+        current: number
+        original: number | null
+        currency: string
+        displayPrice: string
+        originalPrice: string | undefined
+        isMonero: boolean
+    }
+}) => {
+    return (
+        <section
+            id="pricing"
+            className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-800"
+        >
+            <div className="max-w-7xl mx-auto">
+                <div className="text-center mb-16">
+                    <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+                        {t.pricing.title}
+                    </h2>
+                    <p className="text-xl text-gray-600 dark:text-gray-300">
+                        {t.pricing.subtitle}
+                    </p>
+                </div>
+                <PricingToggle locale={locale} />
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    {t.pricing.plans.map((plan, index) => {
+                        const pricing = calculatePrice(plan.basePrice)
+                        return (
+                            <div
+                                key={index}
+                                className={`bg-white dark:bg-gray-900 rounded-lg p-8 shadow-lg relative ${
+                                    plan.popular
+                                        ? "border-2 border-blue-500 transform scale-105"
+                                        : ""
+                                }`}
+                            >
+                                {plan.popular && (
+                                    <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                                        <span className="bg-blue-500 text-white px-4 py-2 rounded-full text-sm font-semibold">
+                                            {locale === "pt-BR"
+                                                ? "Mais Popular"
+                                                : "Most Popular"}
+                                        </span>
+                                    </div>
+                                )}
+
+                                {/* Monero Discount Badge */}
+                                {pricing.isMonero && (
+                                    <div className="absolute -top-2 -right-2">
+                                        <div className="bg-orange-500 text-white px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1">
+                                            <Percent className="w-3 h-3" />
+                                            50% OFF
+                                        </div>
+                                    </div>
+                                )}
+
+                                <div className="text-center mb-8">
+                                    <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
+                                        {plan.name}
+                                    </h3>
+                                    <div className="flex items-center justify-center gap-2 mb-2">
+                                        <span className="text-3xl font-bold text-blue-600 dark:text-blue-400">
+                                            {pricing.currency}{" "}
+                                            {pricing.displayPrice}
+                                        </span>
+                                        {pricing.isMonero &&
+                                            pricing.originalPrice &&
+                                            pricing.originalPrice !==
+                                                pricing.displayPrice && (
+                                                <span className="text-lg text-gray-500 line-through">
+                                                    {pricing.currency}{" "}
+                                                    {pricing.originalPrice}
+                                                </span>
+                                            )}
+                                    </div>
+                                    {pricing.isMonero && (
+                                        <div className="text-orange-400 text-sm font-medium">
+                                            💰 Preço com Monero (XMR)
+                                        </div>
+                                    )}
+                                    <p className="text-gray-600 dark:text-gray-300">
+                                        {plan.description}
+                                    </p>
+                                </div>
+                                <ul className="space-y-4 mb-8">
+                                    {plan.features.map((feature, idx) => {
+                                        const isEditingFeature =
+                                            feature.startsWith(
+                                                locale === "pt-BR"
+                                                    ? "Edição inclusa:"
+                                                    : "Editing included:"
+                                            )
+                                        return (
+                                            <li
+                                                key={idx}
+                                                className="flex flex-col items-start text-gray-600 dark:text-gray-300"
+                                            >
+                                                <span className="flex items-center">
+                                                    <CheckCircle className="w-5 h-5 text-green-500 mr-3" />
+                                                    {feature}
+                                                </span>
+                                                {isEditingFeature &&
+                                                    plan.editingNote && (
+                                                        <span className="ml-8 text-xs italic text-gray-500 dark:text-gray-400 mt-1">
+                                                            {plan.editingNote}
+                                                        </span>
+                                                    )}
+                                            </li>
+                                        )
+                                    })}
+                                </ul>
+                                <a
+                                    href={generateWhatsAppMessage(
+                                        plan.name,
+                                        pricing.current,
+                                        pricing.isMonero,
+                                        locale
+                                    )}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="w-full py-3 px-6 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors text-center block"
+                                >
+                                    {locale === "pt-BR"
+                                        ? "Contratar Agora"
+                                        : "Get Started"}
+                                </a>
+                            </div>
+                        )
+                    })}
+                </div>
+                {/* Observação sobre edição */}
+                <div className="mt-8 text-center text-sm text-gray-500 dark:text-gray-400 max-w-2xl mx-auto">
+                    {t.pricing.note}
+                </div>
+            </div>
+        </section>
+    )
+}
+
+// Main Component
+const ChannelManagementView = ({ locale }: ChannelManagementLandingProps) => {
+    const [mounted, setMounted] = useState(false)
+    const t = getChannelManagementTranslations(locale)
+    const { calculatePrice } = useCalculatePrice(locale)
+
+    useEffect(() => {
+        setMounted(true)
+    }, [])
+
+    return (
+        <div className="min-h-screen bg-white dark:bg-gray-900">
+            {/* Language Selector */}
+            <div className="fixed top-4 right-4 z-50">
+                <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-lg p-2 shadow-md">
+                    {mounted && <LanguageSelector variant="default" />}
+                </div>
+            </div>
+
+            {/* Page Sections */}
+            <HeroSection t={t} locale={locale} />
+            <AboutSection t={t} />
+            <ProblemsSection t={t} />
+            <ServicesSection t={t} />
+            <ResultsSection t={t} />
+            <TestimonialsSection t={t} />
+            <PricingSection
+                t={t}
+                locale={locale}
+                calculatePrice={calculatePrice}
+            />
+
+            <Footer locale={locale} />
+        </div>
+    )
+}
+
+export default ChannelManagementView

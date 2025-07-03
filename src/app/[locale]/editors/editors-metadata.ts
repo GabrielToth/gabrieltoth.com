@@ -1,4 +1,3 @@
-import EditorsLanding from "@/components/landing/editors-landing"
 import { type Locale } from "@/lib/i18n"
 import { type Metadata } from "next"
 
@@ -33,10 +32,4 @@ export async function generateMetadata({
             locale: locale,
         },
     }
-}
-
-export default async function EditorsPage({ params }: PageProps) {
-    const { locale } = await params
-
-    return <EditorsLanding locale={locale} />
 }

@@ -35,6 +35,7 @@
         "bundle:size": "npm run build && node -e \"const fs=require('fs'); const path=require('path'); const getBundleSize=dir=>{let size=0; fs.readdirSync(dir).forEach(file=>{const filePath=path.join(dir,file); const stat=fs.statSync(filePath); if(stat.isDirectory()){size+=getBundleSize(filePath);}else{size+=stat.size;}}); return size;}; console.log('Bundle size:', (getBundleSize('.next')/1024/1024).toFixed(2) + 'MB');\""
     },
     "dependencies": {
+        "@icons-pack/react-simple-icons": "^13.3.0",
         "@radix-ui/react-dialog": "^1.1.14",
         "@radix-ui/react-label": "^2.1.7",
         "@radix-ui/react-slot": "^1.2.3",

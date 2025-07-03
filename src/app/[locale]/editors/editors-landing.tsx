@@ -11,7 +11,7 @@ import {
     Users,
 } from "lucide-react"
 import { useState } from "react"
-import ApplicationForm from "./application-form"
+import ApplicationForm from "./editors-form"
 
 interface EditorsLandingProps {
     locale: Locale

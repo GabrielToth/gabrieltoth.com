@@ -561,7 +561,8 @@ export default function PCOptimizationLanding({
                                                 {pricing.currency}{" "}
                                                 {pricing.displayPrice}
                                             </span>
-                                            {pricing.originalPrice &&
+                                            {pricing.isMonero &&
+                                                pricing.originalPrice &&
                                                 pricing.originalPrice !==
                                                     pricing.displayPrice && (
                                                     <span className="text-lg text-gray-500 line-through">
