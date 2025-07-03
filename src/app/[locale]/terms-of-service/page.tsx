@@ -1,3 +1,4 @@
+import LanguageSelector from "@/components/ui/language-selector"
 import { type Locale } from "@/lib/i18n"
 
 interface TermsOfServicePageProps {
@@ -105,14 +106,19 @@ export default async function TermsOfServicePage({
             contact: {
                 title: isPortuguese ? "9. Contato" : "9. Contact",
                 content: isPortuguese
-                    ? "Para questões sobre estes termos, entre em contato: gabrieltothgoncalves@gmail.com ou WhatsApp: +55 11 993313606"
-                    : "For questions about these terms, contact us: gabrieltothgoncalves@gmail.com or WhatsApp: +55 11 993313606",
+                    ? "Para questões sobre estes termos, entre em contato: gabrieltothgoncalves@gmail.com"
+                    : "For questions about these terms, contact us: gabrieltothgoncalves@gmail.com",
             },
         },
     }
 
     return (
         <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-12">
+            {/* Language Selector */}
+            <div className="fixed top-4 right-4 z-50">
+                <LanguageSelector />
+            </div>
+
             <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8">
                     <header className="mb-8">
