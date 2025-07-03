@@ -2,6 +2,7 @@
 
 import LanguageSelector from "@/components/ui/language-selector"
 import PricingToggle from "@/components/ui/pricing-toggle"
+import { useMoneroPricing } from "@/hooks/use-monero-pricing"
 import { type Locale } from "@/lib/i18n"
 import {
     CheckCircle,
@@ -336,16 +337,7 @@ export default function PCOptimizationLanding({
     locale,
 }: PCOptimizationLandingProps) {
     const t = getTranslations(locale)
-
-    // Simple price calculation without Monero
-    const calculatePrice = (basePrice: number) => ({
-        current: basePrice * 2, // PIX/Card price (double the base)
-        original: basePrice * 2,
-        currency: "R$",
-        displayPrice: `R$ ${basePrice * 2}`,
-        originalPrice: `R$ ${basePrice * 2}`,
-        isMonero: false,
-    })
+    const { calculatePrice } = useMoneroPricing()
 
     return (
         <div className="min-h-screen bg-black text-white overflow-hidden">
@@ -529,7 +521,10 @@ export default function PCOptimizationLanding({
                     <PricingToggle locale={locale} />
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                         {t.pricing.plans.map((plan, index) => {
-                            const pricing = calculatePrice(plan.basePrice)
+                            const pricing = calculatePrice(
+                                plan.basePrice,
+                                locale
+                            )
                             return (
                                 <div
                                     key={index}
@@ -566,11 +561,14 @@ export default function PCOptimizationLanding({
                                                 {pricing.currency}{" "}
                                                 {pricing.displayPrice}
                                             </span>
-                                            {pricing.originalPrice && (
-                                                <span className="text-lg text-gray-500 line-through">
-                                                    R$ {pricing.originalPrice}
-                                                </span>
-                                            )}
+                                            {pricing.originalPrice &&
+                                                pricing.originalPrice !==
+                                                    pricing.displayPrice && (
+                                                    <span className="text-lg text-gray-500 line-through">
+                                                        {pricing.currency}{" "}
+                                                        {pricing.originalPrice}
+                                                    </span>
+                                                )}
                                         </div>
                                         {pricing.isMonero && (
                                             <div className="text-orange-400 text-sm font-medium">
