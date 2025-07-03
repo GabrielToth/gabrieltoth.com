@@ -52,10 +52,21 @@ export function MoneroPricingProvider({
 
 export function useMoneroPricing() {
     const context = useContext(MoneroPricingContext)
+
+    // If context is not available, provide default values
     if (context === undefined) {
-        throw new Error(
-            "useMoneroPricing must be used within a MoneroPricingProvider"
-        )
+        return {
+            showMoneroPrice: false,
+            toggleMoneroPrice: () => {},
+            calculatePrice: (baseMoneroPrice: number) => ({
+                displayPrice: baseMoneroPrice * 2,
+                originalPrice: null,
+                currency: "R$",
+                discount: 0,
+                isMonero: false,
+            }),
+        }
     }
+
     return context
 }
