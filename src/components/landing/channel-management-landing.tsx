@@ -334,7 +334,13 @@ const getTranslations = (locale: Locale) => {
                         isPortuguese
                             ? "Lista de ações prioritárias"
                             : "Priority action list",
+                        isPortuguese
+                            ? "Edição inclusa: até 300 minutos/mês"
+                            : "Editing included: up to 300 minutes/month",
                     ],
+                    editingNote: isPortuguese
+                        ? "Edição simples e dinâmica para redes sociais. Nós cuidamos de tudo para quem não tem experiência em edição. (10 minutos de conteúdo bruto por dia)"
+                        : "Simple, dynamic editing for social media. We handle everything for those with no editing experience. (10 minutes of raw content per day)",
                     popular: false,
                 },
                 {
@@ -361,7 +367,13 @@ const getTranslations = (locale: Locale) => {
                         isPortuguese
                             ? "Suporte via WhatsApp por 30 dias"
                             : "WhatsApp support for 30 days",
+                        isPortuguese
+                            ? "Edição inclusa: até 900 minutos/mês"
+                            : "Editing included: up to 900 minutes/month",
                     ],
+                    editingNote: isPortuguese
+                        ? "Edição simples e dinâmica para redes sociais. Você só precisa criar o conteúdo, nós editamos para você. (30 minutos de conteúdo bruto por dia)"
+                        : "Simple, dynamic editing for social media. You just create, we edit for you. (30 minutes of raw content per day)",
                     popular: true,
                 },
                 {
@@ -388,10 +400,19 @@ const getTranslations = (locale: Locale) => {
                         isPortuguese
                             ? "Acesso a ferramentas exclusivas"
                             : "Access to exclusive tools",
+                        isPortuguese
+                            ? "Edição inclusa: até 1800 minutos/mês"
+                            : "Editing included: up to 1800 minutes/month",
                     ],
+                    editingNote: isPortuguese
+                        ? "Edição simples e dinâmica para redes sociais. Foco total na criação, sem se preocupar com edição. (60 minutos de conteúdo bruto por dia)"
+                        : "Simple, dynamic editing for social media. Full focus on creation, no editing worries. (60 minutes of raw content per day)",
                     popular: false,
                 },
             ],
+            note: isPortuguese
+                ? "As edições são simples, focadas em dinamismo e formatos para redes sociais. Não realizamos edições profissionais avançadas no momento."
+                : "Edits are simple, focused on dynamic and social media formats. We do not provide advanced professional editing at this time.",
         },
     }
 }
@@ -767,15 +788,33 @@ export default function ChannelManagementLanding({
                                         </p>
                                     </div>
                                     <ul className="space-y-4 mb-8">
-                                        {plan.features.map((feature, idx) => (
-                                            <li
-                                                key={idx}
-                                                className="flex items-center text-gray-600 dark:text-gray-300"
-                                            >
-                                                <CheckCircle className="w-5 h-5 text-green-500 mr-3" />
-                                                {feature}
-                                            </li>
-                                        ))}
+                                        {plan.features.map((feature, idx) => {
+                                            const isEditingFeature =
+                                                feature.startsWith(
+                                                    locale === "pt-BR"
+                                                        ? "Edição inclusa:"
+                                                        : "Editing included:"
+                                                )
+                                            return (
+                                                <li
+                                                    key={idx}
+                                                    className="flex flex-col items-start text-gray-600 dark:text-gray-300"
+                                                >
+                                                    <span className="flex items-center">
+                                                        <CheckCircle className="w-5 h-5 text-green-500 mr-3" />
+                                                        {feature}
+                                                    </span>
+                                                    {isEditingFeature &&
+                                                        plan.editingNote && (
+                                                            <span className="ml-8 text-xs italic text-gray-500 dark:text-gray-400 mt-1">
+                                                                {
+                                                                    plan.editingNote
+                                                                }
+                                                            </span>
+                                                        )}
+                                                </li>
+                                            )
+                                        })}
                                     </ul>
                                     <a
                                         href={generateWhatsAppMessage(
@@ -794,6 +833,10 @@ export default function ChannelManagementLanding({
                                 </div>
                             )
                         })}
+                    </div>
+                    {/* Observação sobre edição */}
+                    <div className="mt-8 text-center text-sm text-gray-500 dark:text-gray-400 max-w-2xl mx-auto">
+                        {t.pricing.note}
                     </div>
                 </div>
             </section>
