@@ -18,6 +18,7 @@ const getTranslations = (locale: string) => {
         channels: isPortuguese ? "Canais" : "Channels",
         contact: isPortuguese ? "Contato" : "Contact",
         channelManagement: isPortuguese ? "ViraTrend" : "ViraTrend",
+        videoEditing: isPortuguese ? "Edição de Vídeos" : "Video Editing",
         pcOptimization: isPortuguese ? "Otimização de PC" : "PC Optimization",
 
         support: isPortuguese ? "Apoiar WaveIGL" : "Support WaveIGL",
@@ -49,6 +50,14 @@ export default function Header() {
                     : "ViraTrend Service - Growth consulting",
         },
         {
+            name: t.videoEditing,
+            href: `/${locale}/editors`,
+            description:
+                locale === "pt-BR"
+                    ? "Edição profissional de vídeos"
+                    : "Professional video editing",
+        },
+        {
             name: t.pcOptimization,
             href: `/${locale}/pc-optimization`,
             description:
@@ -56,7 +65,6 @@ export default function Header() {
                     ? "Otimização de performance gaming"
                     : "Gaming performance optimization",
         },
-
         {
             name: t.support,
             href: `/${locale}/waveigl-support`,

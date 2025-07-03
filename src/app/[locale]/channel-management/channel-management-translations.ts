@@ -287,8 +287,8 @@ export const getChannelManagementTranslations = (locale: Locale) => {
                         ? "Gabriel Toth (canal atual) - @ogabrieltoth"
                         : "Gabriel Toth (current channel) - @ogabrieltoth",
                     role: isPortuguese
-                        ? "Canal atual - Previsão de 100K views mensais"
-                        : "Current channel - 100K monthly views prediction",
+                        ? "Canal atual - Previsão de 100K views no mês de Julho"
+                        : "Current channel - 100K views prediction in July",
                     content: isPortuguese
                         ? "Colocando em prática a estratégia de conteúdo multi-plataforma, estou mostrando na prática que o crescimento é possível para todos."
                         : "Putting into practice the multi-platform content strategy, I'm showing in practice that growth is possible for everyone.",

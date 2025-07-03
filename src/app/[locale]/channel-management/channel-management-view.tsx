@@ -1,10 +1,10 @@
 "use client"
 
 import Footer from "@/components/layout/footer"
+import { Button } from "@/components/ui/button"
 import LanguageSelector from "@/components/ui/language-selector"
 import PricingToggle from "@/components/ui/pricing-toggle"
 import { CheckCircle, MessageCircle, Percent, Star } from "lucide-react"
-import { useEffect, useState } from "react"
 import { useCalculatePrice } from "./channel-management-calculate-price"
 import { ChannelManagementTranslations } from "./channel-management-section-types"
 import { getChannelManagementTranslations } from "./channel-management-translations"
@@ -68,7 +68,7 @@ const HeroSection = ({
 // About Section Component
 const AboutSection = ({ t }: { t: ChannelManagementTranslations }) => {
     return (
-        <section className="py-20 px-4 sm:px-6 lg:px-8">
+        <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-900">
             <div className="max-w-7xl mx-auto">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                     <div>
@@ -140,7 +140,7 @@ const ProblemsSection = ({ t }: { t: ChannelManagementTranslations }) => {
 // Services Section Component
 const ServicesSection = ({ t }: { t: ChannelManagementTranslations }) => {
     return (
-        <section className="py-20 px-4 sm:px-6 lg:px-8">
+        <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-900">
             <div className="max-w-7xl mx-auto">
                 <div className="text-center mb-16">
                     <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
@@ -422,22 +422,71 @@ const PricingSection = ({
     )
 }
 
-// Main Component
-const ChannelManagementView = ({ locale }: ChannelManagementLandingProps) => {
-    const [mounted, setMounted] = useState(false)
-    const t = getChannelManagementTranslations(locale)
-    const { calculatePrice } = useCalculatePrice(locale)
-
-    useEffect(() => {
-        setMounted(true)
-    }, [])
+// Editor Section Component
+const EditorSection = ({ locale }: { locale: "en" | "pt-BR" }) => {
+    const isPortuguese = locale === "pt-BR"
+    const defaultTitle = isPortuguese
+        ? "Pronto para Acelerar seu Crescimento?"
+        : "Ready to Accelerate Your Growth?"
+    const defaultSubtitle = isPortuguese
+        ? "Entre em contato via WhatsApp para alinhar expectativas"
+        : "Contact us via WhatsApp to align expectations"
+    const defaultWhatsappText = isPortuguese
+        ? "Mensagem no WhatsApp"
+        : "Message on WhatsApp"
+    const alternativeText = isPortuguese
+        ? "Trabalhar como Editor"
+        : "Work as Editor"
 
     return (
-        <div className="min-h-screen bg-white dark:bg-gray-900">
+        <section className="w-full bg-blue-600 py-20 px-4 sm:px-6 lg:px-8">
+            <div className="max-w-7xl mx-auto text-center">
+                <h2 className="text-3xl font-bold text-white mb-4">
+                    {defaultTitle}
+                </h2>
+                <p className="text-lg text-blue-100 mb-8">{defaultSubtitle}</p>
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                    <a
+                        href="https://wa.me/5511993313606"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-full sm:w-auto"
+                    >
+                        <Button
+                            variant="outline"
+                            size="lg"
+                            className="w-full border-white text-blue-600 bg-white hover:bg-blue-600 hover:text-white"
+                        >
+                            {defaultWhatsappText}
+                        </Button>
+                    </a>
+                    <a href={`/${locale}/editors`} className="w-full sm:w-auto">
+                        <Button
+                            variant="outline"
+                            size="lg"
+                            className="w-full bg-transparent border-white text-white hover:bg-white hover:text-blue-600"
+                        >
+                            {alternativeText}
+                        </Button>
+                    </a>
+                </div>
+            </div>
+        </section>
+    )
+}
+
+// Main Component
+const ChannelManagementView = ({ locale }: ChannelManagementLandingProps) => {
+    const t = getChannelManagementTranslations(locale)
+    const isPortuguese = locale === "pt-BR"
+    const { calculatePrice } = useCalculatePrice(locale)
+
+    return (
+        <main className="flex min-h-screen flex-col">
             {/* Language Selector */}
             <div className="fixed top-4 right-4 z-50">
                 <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-lg p-2 shadow-md">
-                    {mounted && <LanguageSelector variant="default" />}
+                    <LanguageSelector variant="default" />
                 </div>
             </div>
 
@@ -453,9 +502,9 @@ const ChannelManagementView = ({ locale }: ChannelManagementLandingProps) => {
                 locale={locale}
                 calculatePrice={calculatePrice}
             />
-
+            <EditorSection locale={locale} />
             <Footer locale={locale} />
-        </div>
+        </main>
     )
 }
 
