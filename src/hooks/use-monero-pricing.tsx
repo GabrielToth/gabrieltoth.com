@@ -23,7 +23,7 @@ export function MoneroPricingProvider({
 }: {
     children: React.ReactNode
 }) {
-    const [showMoneroPrice, setShowMoneroPrice] = useState(false)
+    const [showMoneroPrice, setShowMoneroPrice] = useState(true)
 
     const toggleMoneroPrice = () => {
         setShowMoneroPrice(!showMoneroPrice)
@@ -53,17 +53,17 @@ export function MoneroPricingProvider({
 export function useMoneroPricing() {
     const context = useContext(MoneroPricingContext)
 
-    // If context is not available, provide default values
+    // If context is not available, provide default values (Monero as default)
     if (context === undefined) {
         return {
-            showMoneroPrice: false,
+            showMoneroPrice: true,
             toggleMoneroPrice: () => {},
             calculatePrice: (baseMoneroPrice: number) => ({
-                displayPrice: baseMoneroPrice * 2,
-                originalPrice: null,
+                displayPrice: baseMoneroPrice,
+                originalPrice: baseMoneroPrice * 2,
                 currency: "R$",
-                discount: 0,
-                isMonero: false,
+                discount: 50,
+                isMonero: true,
             }),
         }
     }

@@ -56,7 +56,14 @@ function PricingToggleFallback({ locale }: PricingToggleProps) {
     return (
         <div className="flex items-center justify-center mb-8">
             <div className="bg-gray-100 dark:bg-gray-800 p-1 rounded-lg flex">
-                <div className="px-4 py-2 rounded-md text-sm font-medium bg-blue-500 text-white shadow-md flex items-center gap-2">
+                <div className="px-4 py-2 rounded-md text-sm font-medium bg-orange-500 text-white shadow-md flex items-center gap-2">
+                    <span className="text-orange-100">₽</span>
+                    Monero
+                    <span className="bg-orange-600 text-xs px-2 py-1 rounded-full">
+                        50% OFF
+                    </span>
+                </div>
+                <div className="px-4 py-2 rounded-md text-sm font-medium text-gray-600 dark:text-gray-400 flex items-center gap-2">
                     <DollarSign className="w-4 h-4" />
                     {isPortuguese ? "PIX/Cartão" : "PIX/Card"}
                 </div>
