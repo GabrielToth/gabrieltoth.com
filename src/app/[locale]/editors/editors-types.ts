@@ -1,4 +1,5 @@
 import { LucideIcon } from "lucide-react"
+import { EditorTranslations } from "./editors-translations"
 
 export interface EditorsLandingProps {
     locale: "en" | "pt-BR"
@@ -36,4 +37,12 @@ export interface Plan {
     features: string[]
     popular?: boolean
     editingNote?: string
+}
+
+export interface SectionProps {
+    t: EditorTranslations
+}
+
+export interface PageProps {
+    params: Promise<{ locale: "en" | "pt-BR" }>
 }

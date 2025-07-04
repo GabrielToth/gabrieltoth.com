@@ -1,3 +1,4 @@
+import { PageProps } from "@/app/[locale]/editors/editors-types"
 import { Metadata } from "next"
 import { getEditorsTranslations } from "./editors-translations"
 import {
@@ -15,12 +16,8 @@ export const metadata: Metadata = {
         "Join our global team of professional video editors. Work on interesting projects with flexible hours and competitive pay.",
 }
 
-export default async function EditorsPage({
-    params,
-}: {
-    params: { locale: "en" | "pt-BR" }
-}) {
-    const locale = params.locale
+export default async function EditorsPage({ params }: PageProps) {
+    const { locale } = await params
     const t = await getEditorsTranslations(locale)
 
     return (
