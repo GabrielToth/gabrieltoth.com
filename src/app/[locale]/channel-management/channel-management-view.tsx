@@ -424,19 +424,20 @@ const PricingSection = ({
 
 // Editor Section Component
 const EditorSection = ({ locale }: { locale: "en" | "pt-BR" }) => {
-    const isPortuguese = locale === "pt-BR"
-    const defaultTitle = isPortuguese
-        ? "Pronto para Acelerar seu Crescimento?"
-        : "Ready to Accelerate Your Growth?"
-    const defaultSubtitle = isPortuguese
-        ? "Entre em contato via WhatsApp para alinhar expectativas"
-        : "Contact us via WhatsApp to align expectations"
-    const defaultWhatsappText = isPortuguese
-        ? "Mensagem no WhatsApp"
-        : "Message on WhatsApp"
-    const alternativeText = isPortuguese
-        ? "Trabalhar como Editor"
-        : "Work as Editor"
+    const defaultTitle =
+        locale === "pt-BR"
+            ? "Pronto para Acelerar seu Crescimento?"
+            : "Ready to Accelerate Your Growth?"
+    const defaultSubtitle =
+        locale === "pt-BR"
+            ? "Entre em contato via WhatsApp para alinhar expectativas"
+            : "Contact us via WhatsApp to align expectations"
+    const defaultWhatsappText =
+        locale === "pt-BR"
+            ? "Olá! Gostaria de saber mais sobre o serviço de gestão de canais."
+            : "Hi! I would like to know more about the channel management service."
+    const alternativeText =
+        locale === "pt-BR" ? "Trabalhar como Editor" : "Work as Editor"
 
     return (
         <section className="w-full bg-blue-600 py-20 px-4 sm:px-6 lg:px-8">
@@ -478,7 +479,6 @@ const EditorSection = ({ locale }: { locale: "en" | "pt-BR" }) => {
 // Main Component
 const ChannelManagementView = ({ locale }: ChannelManagementLandingProps) => {
     const t = getChannelManagementTranslations(locale)
-    const isPortuguese = locale === "pt-BR"
     const { calculatePrice } = useCalculatePrice(locale)
 
     return (
