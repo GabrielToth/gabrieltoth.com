@@ -1,32 +1,41 @@
+import { BenefitCard } from "@/components/editors/benefit-card"
 import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
-import PricingToggle from "@/components/ui/pricing-toggle"
-import { Separator } from "@/components/ui/separator"
-import { cn } from "@/lib/utils"
-import { Star } from "lucide-react"
+import { DynamicIcon } from "@/components/ui/dynamic-icon"
+import LanguageSelector from "@/components/ui/language-selector"
+import WhatsAppButton from "@/components/ui/whatsapp-button"
 import { Metadata } from "next"
 import { getEditorsTranslations } from "./editors-translations"
 
 export const metadata: Metadata = {
-    title: "Professional Video Editing Services | Gabriel Toth",
+    title: "Join Our Video Editing Team | Gabriel Toth",
     description:
-        "Professional video editing services including motion graphics, color grading, and sound design. Over 10 years of experience in content creation.",
+        "Join our global team of professional video editors. Work on interesting projects with flexible hours and competitive pay.",
 }
 
-export default function EditorsPage({
+export default async function EditorsPage({
     params,
 }: {
     params: { locale: "en" | "pt-BR" }
 }) {
-    const t = getEditorsTranslations(params.locale)
-    const isPortuguese = params.locale === "pt-BR"
+    const locale = params.locale
+    const t = await getEditorsTranslations(locale)
+    const isPortuguese = locale === "pt-BR"
+
+    const defaultWhatsappText = isPortuguese
+        ? "Olá! Gostaria de me candidatar para a vaga de editor de vídeos."
+        : "Hi! I would like to apply for the video editor position."
+
+    const whatsappNumber = "5511993313606"
 
     return (
         <main className="flex min-h-screen flex-col items-center justify-between">
             {/* Hero Section */}
             <section className="w-full bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 py-20 px-4 sm:px-6 lg:px-8">
                 <div className="max-w-7xl mx-auto text-center">
+                    <div className="flex justify-end mb-4">
+                        <LanguageSelector variant="default" />
+                    </div>
                     <Badge variant="secondary" className="mb-4">
                         {t.hero.badge}
                     </Badge>
@@ -36,7 +45,14 @@ export default function EditorsPage({
                     <p className="text-lg text-gray-600 dark:text-gray-300 mb-8 max-w-2xl mx-auto">
                         {t.hero.subtitle}
                     </p>
-                    <Button size="lg">{t.hero.cta}</Button>
+                    <WhatsAppButton
+                        phoneNumber={whatsappNumber}
+                        text={defaultWhatsappText}
+                        size="lg"
+                        className="bg-blue-600 hover:bg-blue-700 text-white"
+                    >
+                        {t.hero.cta}
+                    </WhatsAppButton>
 
                     <div className="mt-16 grid grid-cols-1 gap-8 sm:grid-cols-3">
                         {t.hero.stats.map((stat, index) => (
@@ -77,7 +93,11 @@ export default function EditorsPage({
                                 key={index}
                                 className="flex flex-col items-center text-center"
                             >
-                                <skill.icon className="h-8 w-8 mb-2" />
+                                <DynamicIcon
+                                    name={skill.iconName}
+                                    size={32}
+                                    className="mb-2"
+                                />
                                 <p>{skill.name}</p>
                             </div>
                         ))}
@@ -103,7 +123,11 @@ export default function EditorsPage({
                                 key={index}
                                 className="p-6 text-center backdrop-blur-sm bg-white/50 dark:bg-gray-900/50"
                             >
-                                <tool.icon className="h-12 w-12 mx-auto mb-4" />
+                                <DynamicIcon
+                                    name={tool.iconName}
+                                    size={48}
+                                    className="mx-auto mb-4"
+                                />
                                 <h3 className="font-semibold mb-2">
                                     {tool.name}
                                 </h3>
@@ -116,36 +140,45 @@ export default function EditorsPage({
                 </div>
             </section>
 
-            {/* Services Section */}
-            <section className="w-full bg-white dark:bg-gray-900 py-20 px-4 sm:px-6 lg:px-8">
+            {/* Requirements Section */}
+            <section className="w-full bg-gray-50 dark:bg-gray-900 py-20 px-4 sm:px-6 lg:px-8">
                 <div className="max-w-7xl mx-auto">
                     <div className="text-center mb-16">
-                        <h2 className="text-3xl font-bold mb-4">
-                            {t.services.title}
+                        <h2 className="text-4xl font-bold mb-4 text-white">
+                            {t.requirements.title}
                         </h2>
-                        <p className="text-gray-600 dark:text-gray-300">
-                            {t.services.subtitle}
+                        <p className="text-blue-400">
+                            {t.requirements.subtitle}
                         </p>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        {t.services.items.map((service, index) => (
-                            <Card key={index} className="p-6">
-                                <service.icon className="h-8 w-8 mb-4" />
-                                <h3 className="text-xl font-semibold mb-4">
-                                    {service.title}
+                        {t.requirements.items.map((requirement, index) => (
+                            <Card
+                                key={index}
+                                className="p-6 bg-gray-100 dark:bg-gray-800 border-0 shadow-xl hover:shadow-2xl transition-shadow duration-300"
+                            >
+                                <DynamicIcon
+                                    name={requirement.iconName}
+                                    size={32}
+                                    className="mb-4 text-blue-400"
+                                />
+                                <h3 className="text-xl font-semibold mb-4 text-white">
+                                    {requirement.title}
                                 </h3>
-                                <p className="text-gray-600 dark:text-gray-300 mb-6">
-                                    {service.description}
+                                <p className="text-gray-300 mb-6">
+                                    {requirement.description}
                                 </p>
-                                <ul className="space-y-2">
-                                    {service.features.map(
+                                <ul className="space-y-3">
+                                    {requirement.features.map(
                                         (feature, featureIndex) => (
                                             <li
                                                 key={featureIndex}
-                                                className="flex items-center text-sm"
+                                                className="flex items-center text-sm text-gray-300"
                                             >
-                                                <span className="mr-2">•</span>
+                                                <span className="mr-2 text-blue-400">
+                                                    •
+                                                </span>
                                                 {feature}
                                             </li>
                                         )
@@ -157,158 +190,60 @@ export default function EditorsPage({
                 </div>
             </section>
 
-            {/* Testimonials Section */}
+            {/* Benefits Section */}
             <section className="w-full bg-gray-50 dark:bg-gray-800 py-20 px-4 sm:px-6 lg:px-8">
                 <div className="max-w-7xl mx-auto">
                     <div className="text-center mb-16">
                         <h2 className="text-3xl font-bold mb-4">
-                            {t.testimonials.title}
+                            {t.benefits.title}
                         </h2>
                         <p className="text-gray-600 dark:text-gray-300">
-                            {t.testimonials.subtitle}
+                            {t.benefits.subtitle}
                         </p>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        {t.testimonials.items.map((testimonial, index) => (
-                            <Card
-                                key={index}
-                                className="p-6 backdrop-blur-sm bg-white/50 dark:bg-gray-900/50"
-                            >
-                                <div className="flex mb-4">
-                                    {[...Array(testimonial.rating)].map(
-                                        (_, i) => (
-                                            <Star
-                                                key={i}
-                                                className="h-5 w-5 text-yellow-400 fill-current"
-                                            />
-                                        )
-                                    )}
-                                </div>
-                                <p className="text-lg mb-4">
-                                    {testimonial.content}
-                                </p>
-                                <div>
-                                    <p className="font-semibold">
-                                        {testimonial.name}
-                                    </p>
-                                    <p className="text-gray-600 dark:text-gray-300">
-                                        {testimonial.role}
-                                    </p>
-                                </div>
-                            </Card>
-                        ))}
-                    </div>
-                </div>
-            </section>
-
-            {/* Pricing Section */}
-            <section className="w-full bg-white dark:bg-gray-900 py-20 px-4 sm:px-6 lg:px-8">
-                <div className="max-w-7xl mx-auto">
-                    <div className="text-center mb-8">
-                        <h2 className="text-3xl font-bold mb-4">
-                            {t.pricing.title}
-                        </h2>
-                        <p className="text-gray-600 dark:text-gray-300 mb-8">
-                            {t.pricing.subtitle}
-                        </p>
-                        <div className="flex justify-center mb-8">
-                            <PricingToggle locale={params.locale} />
-                        </div>
+                    <div className="max-w-3xl mx-auto text-center mb-12">
+                        <p className="text-lg">{t.benefits.description}</p>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
-                        {t.pricing.plans.map((plan, index) => (
-                            <Card
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        {t.benefits.items.map((benefit, index) => (
+                            <BenefitCard
                                 key={index}
-                                className={cn(
-                                    "p-8",
-                                    plan.popular &&
-                                        "border-2 border-primary relative"
-                                )}
-                            >
-                                {plan.popular && (
-                                    <div className="absolute -top-4 left-1/2 -translate-x-1/2">
-                                        <Badge variant="secondary">
-                                            Popular
-                                        </Badge>
-                                    </div>
-                                )}
-                                <h3 className="text-2xl font-bold mb-2">
-                                    {plan.name}
-                                </h3>
-                                <div className="mb-4">
-                                    <span className="text-4xl font-bold">
-                                        ${plan.basePrice}
-                                    </span>
-                                    <span className="text-gray-600 dark:text-gray-300">
-                                        /video
-                                    </span>
-                                </div>
-                                <p className="text-gray-600 dark:text-gray-300 mb-6">
-                                    {plan.description}
-                                </p>
-                                <Separator className="mb-6" />
-                                <ul className="space-y-4 mb-8">
-                                    {plan.features.map(
-                                        (feature, featureIndex) => (
-                                            <li
-                                                key={featureIndex}
-                                                className="flex items-center"
-                                            >
-                                                <span className="mr-2">✓</span>
-                                                {feature}
-                                            </li>
-                                        )
-                                    )}
-                                </ul>
-                                <Button
-                                    className="w-full"
-                                    variant={
-                                        plan.popular ? "default" : "outline"
-                                    }
-                                >
-                                    {t.hero.cta}
-                                </Button>
-                            </Card>
+                                title={benefit.title}
+                                description={benefit.description}
+                                iconName={benefit.iconName}
+                            />
                         ))}
                     </div>
 
-                    <p className="text-center text-sm text-gray-600 dark:text-gray-300">
-                        {t.pricing.note}
-                    </p>
-                </div>
-            </section>
-
-            {/* Contact Section */}
-            <section className="w-full bg-blue-600 py-20 px-4 sm:px-6 lg:px-8">
-                <div className="max-w-7xl mx-auto text-center">
-                    <h2 className="text-3xl font-bold text-white mb-4">
-                        {isPortuguese
-                            ? "Pronto para Começar seu Projeto?"
-                            : "Ready to Start Your Project?"}
-                    </h2>
-                    <p className="text-lg text-blue-100 mb-8">
-                        {isPortuguese
-                            ? "Entre em contato via WhatsApp para discutir seu projeto"
-                            : "Contact us via WhatsApp to discuss your project"}
-                    </p>
-                    <a
-                        href="https://wa.me/5511993313606"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-block w-full sm:w-auto"
-                    >
-                        <Button
-                            variant="outline"
+                    <div className="mt-12 text-center">
+                        <WhatsAppButton
+                            phoneNumber={whatsappNumber}
+                            text={defaultWhatsappText}
                             size="lg"
-                            className="w-full border-white text-white bg-white hover:bg-blue-600 hover:text-white"
+                            className="bg-blue-600 hover:bg-blue-700 text-white"
                         >
-                            {isPortuguese
-                                ? "Mensagem no WhatsApp"
-                                : "Message on WhatsApp"}
-                        </Button>
-                    </a>
+                            {t.cta.button}
+                        </WhatsAppButton>
+                    </div>
+                </div>
+            </section>
+
+            {/* Final CTA Section */}
+            <section className="w-full bg-blue-600 text-white py-20 px-4 sm:px-6 lg:px-8">
+                <div className="max-w-7xl mx-auto text-center">
+                    <h2 className="text-3xl font-bold mb-4">{t.cta.title}</h2>
+                    <p className="text-lg mb-8">{t.cta.description}</p>
+                    <WhatsAppButton
+                        phoneNumber={whatsappNumber}
+                        text={defaultWhatsappText}
+                        size="lg"
+                        variant="outline"
+                        className="border-white text-blue-600 bg-white hover:bg-blue-600 hover:text-white"
+                    >
+                        {t.cta.button}
+                    </WhatsAppButton>
                 </div>
             </section>
         </main>

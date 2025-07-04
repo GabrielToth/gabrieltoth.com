@@ -1,300 +1,627 @@
-import { Locale } from "@/lib/i18n"
-import {
-    SiAdobeaftereffects,
-    SiAdobephotoshop,
-    SiAdobepremierepro,
-} from "@icons-pack/react-simple-icons"
-import {
-    Code2,
-    FileVideo2,
-    Headphones,
-    MonitorPlay,
-    Music2,
-    Scissors,
-    Settings2,
-    Video,
-    Wand2,
-} from "lucide-react"
+import { IconName } from "@/lib/icons"
+import { LucideIcon } from "lucide-react"
+import { IconType } from "react-icons"
 
-export const getEditorsTranslations = (locale: Locale) => {
-    const isPortuguese = locale === "pt-BR"
+type IconComponent = LucideIcon | IconType
+
+interface Translations {
+    moneroToggle: {
+        title: string
+        description: string
+        enabled: string
+        disabled: string
+    }
+    hero: {
+        badge: string
+        title: string
+        subtitle: string
+        cta: string
+        stats: Array<{
+            number: string
+            label: string
+        }>
+    }
+    about: {
+        title: string
+        description: string
+        intro: string
+        experience: string
+        passion: string
+        skills: Array<{
+            name: string
+            iconName: IconName
+        }>
+    }
+    tools: {
+        title: string
+        subtitle: string
+        items: Array<{
+            name: string
+            description: string
+            iconName: IconName
+        }>
+    }
+    services: {
+        title: string
+        subtitle: string
+        items: Array<{
+            iconName: IconName
+            title: string
+            description: string
+            features: string[]
+        }>
+    }
+    testimonials: {
+        title: string
+        subtitle: string
+        items: Array<{
+            rating: number
+            content: string
+            name: string
+            role: string
+        }>
+    }
+    pricing: {
+        title: string
+        subtitle: string
+        plans: Array<{
+            name: string
+            basePrice: number
+            description: string
+            features: string[]
+            popular?: boolean
+        }>
+        note: string
+    }
+    requirements: {
+        title: string
+        subtitle: string
+        items: Array<{
+            iconName: IconName
+            title: string
+            description: string
+            features: string[]
+        }>
+    }
+    benefits: {
+        title: string
+        subtitle: string
+        description: string
+        items: Array<{
+            title: string
+            description: string
+            iconName: IconName
+        }>
+    }
+    cta: {
+        title: string
+        description: string
+        button: string
+    }
+}
+
+export async function getEditorsTranslations(
+    locale: "en" | "pt-BR"
+): Promise<Translations> {
+    "use server"
+
+    if (locale === "pt-BR") {
+        return {
+            moneroToggle: {
+                title: "Preços com Monero (XMR)",
+                description:
+                    "Ative para ver preços com 50% de desconto usando Monero",
+                enabled: "💰 Preços com Monero (50% OFF)",
+                disabled: "💴 Preços Regulares (PIX/Card)",
+            },
+            hero: {
+                badge: "🎬 Junte-se à Nossa Equipe",
+                title: "Procuramos Editores Talentosos",
+                subtitle:
+                    "Faça parte de uma equipe global de editores profissionais. Trabalhe com projetos interessantes e tenha flexibilidade de horário.",
+                cta: "Candidate-se Agora",
+                stats: [
+                    {
+                        number: "50+",
+                        label: "Editores ativos",
+                    },
+                    {
+                        number: "100+",
+                        label: "Projetos por mês",
+                    },
+                    {
+                        number: "24/7",
+                        label: "Suporte à equipe",
+                    },
+                ],
+            },
+            about: {
+                title: "Por Que Trabalhar Conosco?",
+                description:
+                    "Oferecemos um ambiente flexível e recompensador para editores talentosos",
+                intro: "Buscamos editores apaixonados por criar conteúdo de qualidade. Oferecemos projetos diversificados, pagamento competitivo e a liberdade de trabalhar de onde quiser.",
+                experience:
+                    "Nossa plataforma conecta você a clientes globais, garantindo um fluxo constante de projetos interessantes. Você escolhe quais projetos aceitar e define seu próprio ritmo.",
+                passion:
+                    "Valorizamos criatividade e qualidade. Se você é detalhista, organizado e ama edição de vídeos, queremos você em nossa equipe.",
+                skills: [
+                    {
+                        iconName: "Video" as IconName,
+                        name: "Edição de Vídeo",
+                    },
+                    {
+                        iconName: "Wand2" as IconName,
+                        name: "Color Grading",
+                    },
+                    {
+                        iconName: "Music2" as IconName,
+                        name: "Sound Design",
+                    },
+                    {
+                        iconName: "MonitorPlay" as IconName,
+                        name: "Motion Graphics",
+                    },
+                    {
+                        iconName: "Settings2" as IconName,
+                        name: "Pós-Produção",
+                    },
+                    {
+                        iconName: "Code2" as IconName,
+                        name: "Automação",
+                    },
+                ],
+            },
+            tools: {
+                title: "Ferramentas Necessárias",
+                subtitle: "Software e equipamentos que você precisa ter",
+                items: [
+                    {
+                        iconName: "SiAdobepremierepro" as IconName,
+                        name: "Adobe Premiere Pro",
+                        description: "Principal software de edição",
+                    },
+                    {
+                        iconName: "SiAdobeaftereffects" as IconName,
+                        name: "Adobe After Effects",
+                        description: "Para motion graphics e VFX",
+                    },
+                    {
+                        iconName: "SiAdobephotoshop" as IconName,
+                        name: "Adobe Photoshop",
+                        description: "Para edição de thumbnails",
+                    },
+                    {
+                        iconName: "Headphones" as IconName,
+                        name: "Equipamento de Áudio",
+                        description: "Para edição de áudio profissional",
+                    },
+                ],
+            },
+            services: {
+                title: "Serviços de Edição",
+                subtitle: "Soluções completas para seu conteúdo",
+                items: [
+                    {
+                        iconName: "Scissors" as IconName,
+                        title: "Edição Completa",
+                        description:
+                            "Edição profissional do seu conteúdo com cortes dinâmicos, transições suaves e ritmo adequado.",
+                        features: [
+                            "Cortes dinâmicos e precisos",
+                            "Transições personalizadas",
+                            "Otimização de ritmo",
+                        ],
+                    },
+                    {
+                        iconName: "MonitorPlay" as IconName,
+                        title: "Motion Graphics",
+                        description:
+                            "Animações e efeitos visuais para deixar seu conteúdo mais profissional e atraente.",
+                        features: [
+                            "Animações personalizadas",
+                            "Lower thirds e títulos",
+                            "Efeitos visuais",
+                        ],
+                    },
+                    {
+                        iconName: "FileVideo2" as IconName,
+                        title: "Pacote Completo",
+                        description:
+                            "Solução completa incluindo edição, motion graphics, color grading e sound design.",
+                        features: [
+                            "Edição profissional",
+                            "Motion graphics e VFX",
+                            "Color grading e sound design",
+                        ],
+                    },
+                ],
+            },
+            testimonials: {
+                title: "Feedback dos Clientes",
+                subtitle: "O que dizem sobre meu trabalho",
+                items: [
+                    {
+                        rating: 5,
+                        content:
+                            "Excelente trabalho! Superou minhas expectativas com a qualidade da edição e as animações personalizadas.",
+                        name: "Carlos Silva",
+                        role: "YouTuber Tech",
+                    },
+                    {
+                        rating: 5,
+                        content:
+                            "Profissional incrível! Entregou antes do prazo e com qualidade excepcional. Recomendo muito!",
+                        name: "Ana Costa",
+                        role: "Criadora de Conteúdo",
+                    },
+                ],
+            },
+            pricing: {
+                title: "Pacotes de Edição",
+                subtitle: "Escolha o melhor plano para seu conteúdo",
+                plans: [
+                    {
+                        name: "Básico",
+                        basePrice: 150,
+                        description: "Edição profissional para vídeos simples",
+                        features: [
+                            "Edição básica de vídeo",
+                            "Cortes e transições",
+                            "Ajustes de áudio básicos",
+                            "Até 10 minutos de vídeo",
+                            "2 revisões incluídas",
+                        ],
+                    },
+                    {
+                        name: "Profissional",
+                        basePrice: 300,
+                        description: "Edição completa com motion graphics",
+                        features: [
+                            "Tudo do plano Básico",
+                            "Motion graphics personalizados",
+                            "Color grading",
+                            "Sound design",
+                            "Até 20 minutos de vídeo",
+                            "3 revisões incluídas",
+                        ],
+                        popular: true,
+                    },
+                    {
+                        name: "Premium",
+                        basePrice: 500,
+                        description: "Pacote completo para projetos especiais",
+                        features: [
+                            "Tudo do plano Profissional",
+                            "VFX avançados",
+                            "Animações 3D",
+                            "Consultoria de conteúdo",
+                            "Até 30 minutos de vídeo",
+                            "Revisões ilimitadas",
+                        ],
+                    },
+                ],
+                note: "* Todos os pacotes incluem entrega em até 5 dias úteis. Projetos urgentes podem ter taxa adicional.",
+            },
+            requirements: {
+                title: "Requisitos",
+                subtitle: "O que procuramos em nossos editores",
+                items: [
+                    {
+                        title: "Vontade de Aprender",
+                        description:
+                            "Disposição para aprender e evoluir constantemente através de tutoriais e prática",
+                        iconName: "GraduationCap",
+                        features: [
+                            "Buscar tutoriais por conta própria",
+                            "Praticar constantemente",
+                            "Aceitar feedback e melhorar",
+                        ],
+                    },
+                    {
+                        title: "Habilidades Técnicas",
+                        description:
+                            "Familiaridade básica ou disposição para aprender as ferramentas",
+                        iconName: "MonitorPlay",
+                        features: [
+                            "Conhecimento básico de edição",
+                            "Interesse em motion graphics",
+                            "Vontade de aprender áudio",
+                        ],
+                    },
+                    {
+                        title: "Soft Skills",
+                        description:
+                            "Habilidades essenciais para trabalhar em nossa equipe",
+                        iconName: "Users",
+                        features: [
+                            "Comunicação clara",
+                            "Organização e pontualidade",
+                            "Trabalho em equipe",
+                        ],
+                    },
+                ],
+            },
+            benefits: {
+                title: "Benefício",
+                subtitle: "Ganhe 100% da monetização do seu trabalho",
+                description:
+                    "Você recebe 100% do valor de monetização do vídeo ou shorts no YouTube durante o primeiro mês após a publicação.",
+                items: [
+                    {
+                        title: "Monetização YouTube",
+                        description: "100% do valor por 30 dias",
+                        iconName: "Youtube" as IconName,
+                    },
+                    {
+                        title: "Período",
+                        description: "Primeiro mês após publicação",
+                        iconName: "Clock" as IconName,
+                    },
+                    {
+                        title: "Tipos de Conteúdo",
+                        description: "Vídeos e Shorts",
+                        iconName: "Video" as IconName,
+                    },
+                ],
+            },
+            cta: {
+                title: "Pronto para se Juntar à Nossa Equipe?",
+                description: "Envie seu portfólio e currículo para começarmos",
+                button: "Enviar Candidatura",
+            },
+        }
+    }
+
     return {
         moneroToggle: {
-            title: isPortuguese
-                ? "Preços com Monero (XMR)"
-                : "Monero (XMR) Pricing",
-            description: isPortuguese
-                ? "Ative para ver preços com 50% de desconto usando Monero"
-                : "Enable to see 50% discount prices using Monero",
-            enabled: isPortuguese
-                ? "💰 Preços com Monero (50% OFF)"
-                : "💰 Monero Prices (50% OFF)",
-            disabled: isPortuguese
-                ? "💴 Preços Regulares (PIX/Card)"
-                : "💴 Regular Prices (PIX/Card)",
+            title: "Monero (XMR) Pricing",
+            description: "Enable to see 50% discount prices using Monero",
+            enabled: "💰 Monero Prices (50% OFF)",
+            disabled: "💴 Regular Prices (PIX/Card)",
         },
         hero: {
-            badge: isPortuguese
-                ? "🎬 Edição Profissional de Vídeos"
-                : "🎬 Professional Video Editing",
-            title: isPortuguese
-                ? "Edição de Alta Qualidade para Seu Conteúdo"
-                : "High Quality Editing for Your Content",
-            subtitle: isPortuguese
-                ? "Transforme suas ideias em vídeos profissionais. Edição completa com motion graphics, sound design e color grading."
-                : "Transform your ideas into professional videos. Complete editing with motion graphics, sound design and color grading.",
-            cta: isPortuguese ? "Solicitar Orçamento" : "Request Quote",
+            badge: "🎬 Junte-se à Nossa Equipe",
+            title: "Procuramos Editores Talentosos",
+            subtitle:
+                "Faça parte de uma equipe global de editores profissionais. Trabalhe com projetos interessantes e tenha flexibilidade de horário.",
+            cta: "Candidate-se Agora",
             stats: [
                 {
-                    number: "500+",
-                    label: isPortuguese ? "Vídeos editados" : "Videos edited",
+                    number: "50+",
+                    label: "Active editors",
                 },
                 {
-                    number: "10+",
-                    label: isPortuguese
-                        ? "Anos de experiência"
-                        : "Years of experience",
+                    number: "100+",
+                    label: "Projects per month",
                 },
                 {
-                    number: "100%",
-                    label: isPortuguese
-                        ? "Satisfação garantida"
-                        : "Satisfaction guaranteed",
+                    number: "24/7",
+                    label: "Team support",
                 },
             ],
         },
         about: {
-            title: isPortuguese ? "Por Que Me Escolher?" : "Why Choose Me?",
-            description: isPortuguese
-                ? "Editor profissional com experiência em múltiplos formatos"
-                : "Professional editor with experience in multiple formats",
-            intro: isPortuguese
-                ? "Com mais de 10 anos de experiência em edição de vídeos, ofereço um serviço completo que vai além do básico. Minha expertise inclui motion graphics, sound design, color grading e otimização para diferentes plataformas."
-                : "With over 10 years of video editing experience, I offer a complete service that goes beyond the basics. My expertise includes motion graphics, sound design, color grading and optimization for different platforms.",
-            experience: isPortuguese
-                ? "Trabalho com diversos formatos de conteúdo, desde vídeos para YouTube e redes sociais até projetos corporativos e publicitários. Minha abordagem é focada em qualidade e atenção aos detalhes."
-                : "I work with various content formats, from YouTube and social media videos to corporate and advertising projects. My approach is focused on quality and attention to detail.",
-            passion: isPortuguese
-                ? "Além da edição técnica, entendo a importância do storytelling e do engajamento. Cada projeto é tratado de forma única, garantindo que sua mensagem seja transmitida da melhor forma possível."
-                : "Beyond technical editing, I understand the importance of storytelling and engagement. Each project is treated uniquely, ensuring your message is conveyed in the best possible way.",
+            title: "Why Work With Us?",
+            description:
+                "We're looking for editors passionate about creating quality content. We offer diverse projects, competitive pay, and the freedom to work from anywhere.",
+            intro: "With years of video editing experience, our team works with the best content creators in Brazil and worldwide.",
+            experience:
+                "Our passion is transforming ideas into impactful visual stories that captivate and engage audiences.",
+            passion:
+                "We value creativity and quality. If you're detail-oriented, organized, and love video editing, we want you on our team.",
             skills: [
-                { icon: Video, name: "Video Editing" },
-                { icon: Wand2, name: "Color Grading" },
-                { icon: Music2, name: "Sound Design" },
-                { icon: MonitorPlay, name: "Motion Graphics" },
-                { icon: Settings2, name: "Post-Production" },
-                { icon: Code2, name: "Automation" },
+                {
+                    iconName: "Video" as IconName,
+                    name: "Video Editing",
+                },
+                {
+                    iconName: "Wand2" as IconName,
+                    name: "Color Grading",
+                },
+                {
+                    iconName: "Music2" as IconName,
+                    name: "Sound Design",
+                },
+                {
+                    iconName: "MonitorPlay" as IconName,
+                    name: "Motion Graphics",
+                },
+                {
+                    iconName: "Settings2" as IconName,
+                    name: "Post-Production",
+                },
+                {
+                    iconName: "Code2" as IconName,
+                    name: "Automation",
+                },
             ],
         },
         tools: {
-            title: isPortuguese
-                ? "Ferramentas Profissionais"
-                : "Professional Tools",
-            subtitle: isPortuguese
-                ? "Software e equipamentos de alta qualidade"
-                : "High quality software and equipment",
+            title: "Required Tools",
+            subtitle: "Software and equipment you need to have",
             items: [
                 {
-                    icon: SiAdobepremierepro,
+                    iconName: "SiAdobepremierepro" as IconName,
                     name: "Adobe Premiere Pro",
-                    description: isPortuguese
-                        ? "Edição profissional de vídeo"
-                        : "Professional video editing",
+                    description: "Main editing software",
                 },
                 {
-                    icon: SiAdobeaftereffects,
+                    iconName: "SiAdobeaftereffects" as IconName,
                     name: "Adobe After Effects",
-                    description: isPortuguese
-                        ? "Motion graphics e efeitos visuais"
-                        : "Motion graphics and visual effects",
+                    description: "For motion graphics and VFX",
                 },
                 {
-                    icon: SiAdobephotoshop,
+                    iconName: "SiAdobephotoshop" as IconName,
                     name: "Adobe Photoshop",
-                    description: isPortuguese
-                        ? "Edição de imagens e thumbnails"
-                        : "Image and thumbnail editing",
+                    description: "For thumbnail editing",
                 },
                 {
-                    icon: Headphones,
-                    name: "Audio Suite",
-                    description: isPortuguese
-                        ? "Edição e mixagem de áudio"
-                        : "Audio editing and mixing",
+                    iconName: "Headphones" as IconName,
+                    name: "Audio Equipment",
+                    description: "For professional audio editing",
                 },
             ],
         },
         services: {
-            title: isPortuguese ? "Serviços de Edição" : "Editing Services",
-            subtitle: isPortuguese
-                ? "Soluções completas para seu conteúdo"
-                : "Complete solutions for your content",
+            title: "Editing Services",
+            subtitle: "Complete solutions for your content",
             items: [
                 {
-                    icon: Scissors,
-                    title: isPortuguese
-                        ? "Edição Completa"
-                        : "Complete Editing",
-                    description: isPortuguese
-                        ? "Edição profissional do seu conteúdo com cortes dinâmicos, transições suaves e ritmo adequado."
-                        : "Professional editing of your content with dynamic cuts, smooth transitions and proper pacing.",
+                    iconName: "Scissors" as IconName,
+                    title: "Complete Editing",
+                    description:
+                        "Professional editing of your content with dynamic cuts, smooth transitions and proper pacing.",
                     features: [
-                        isPortuguese
-                            ? "Cortes dinâmicos e precisos"
-                            : "Dynamic and precise cuts",
-                        isPortuguese
-                            ? "Transições personalizadas"
-                            : "Custom transitions",
-                        isPortuguese
-                            ? "Otimização de ritmo"
-                            : "Pacing optimization",
+                        "Dynamic and precise cuts",
+                        "Custom transitions",
+                        "Pacing optimization",
                     ],
                 },
                 {
-                    icon: MonitorPlay,
-                    title: isPortuguese ? "Motion Graphics" : "Motion Graphics",
-                    description: isPortuguese
-                        ? "Animações e efeitos visuais para deixar seu conteúdo mais profissional e atraente."
-                        : "Animations and visual effects to make your content more professional and attractive.",
+                    iconName: "MonitorPlay" as IconName,
+                    title: "Motion Graphics",
+                    description:
+                        "Animations and visual effects to make your content more professional and attractive.",
                     features: [
-                        isPortuguese
-                            ? "Animações personalizadas"
-                            : "Custom animations",
-                        isPortuguese
-                            ? "Lower thirds e títulos"
-                            : "Lower thirds and titles",
-                        isPortuguese ? "Efeitos visuais" : "Visual effects",
+                        "Custom animations",
+                        "Lower thirds and titles",
+                        "Visual effects",
                     ],
                 },
                 {
-                    icon: FileVideo2,
-                    title: isPortuguese
-                        ? "Pacote Completo"
-                        : "Complete Package",
-                    description: isPortuguese
-                        ? "Solução completa incluindo edição, motion graphics, color grading e sound design."
-                        : "Complete solution including editing, motion graphics, color grading and sound design.",
+                    iconName: "FileVideo2" as IconName,
+                    title: "Complete Package",
+                    description:
+                        "Complete solution including editing, motion graphics, color grading and sound design.",
                     features: [
-                        isPortuguese
-                            ? "Edição profissional"
-                            : "Professional editing",
-                        isPortuguese
-                            ? "Motion graphics e VFX"
-                            : "Motion graphics and VFX",
-                        isPortuguese
-                            ? "Color grading e sound design"
-                            : "Color grading and sound design",
+                        "Professional editing",
+                        "Motion graphics and VFX",
+                        "Color grading and sound design",
                     ],
                 },
             ],
         },
         testimonials: {
-            title: isPortuguese ? "Feedback dos Clientes" : "Client Feedback",
-            subtitle: isPortuguese
-                ? "O que dizem sobre meu trabalho"
-                : "What they say about my work",
+            title: "Client Feedback",
+            subtitle: "What they say about my work",
             items: [
                 {
                     rating: 5,
-                    content: isPortuguese
-                        ? "Excelente trabalho! Superou minhas expectativas com a qualidade da edição e as animações personalizadas."
-                        : "Excellent work! Exceeded my expectations with the quality of editing and custom animations.",
+                    content:
+                        "Excellent work! Exceeded my expectations with the quality of editing and custom animations.",
                     name: "Carlos Silva",
-                    role: isPortuguese ? "YouTuber Tech" : "Tech YouTuber",
+                    role: "Tech YouTuber",
                 },
                 {
                     rating: 5,
-                    content: isPortuguese
-                        ? "Profissional incrível! Entregou antes do prazo e com qualidade excepcional. Recomendo muito!"
-                        : "Amazing professional! Delivered ahead of schedule and with exceptional quality. Highly recommend!",
+                    content:
+                        "Amazing professional! Delivered ahead of schedule and with exceptional quality. Highly recommend!",
                     name: "Ana Costa",
-                    role: isPortuguese
-                        ? "Criadora de Conteúdo"
-                        : "Content Creator",
+                    role: "Content Creator",
                 },
             ],
         },
         pricing: {
-            title: isPortuguese ? "Pacotes de Edição" : "Editing Packages",
-            subtitle: isPortuguese
-                ? "Escolha o melhor plano para seu conteúdo"
-                : "Choose the best plan for your content",
+            title: "Editing Packages",
+            subtitle: "Choose the best plan for your content",
             plans: [
                 {
-                    name: isPortuguese ? "Básico" : "Basic",
+                    name: "Basic",
                     basePrice: 150,
-                    description: isPortuguese
-                        ? "Edição profissional para vídeos simples"
-                        : "Professional editing for simple videos",
+                    description: "Professional editing for simple videos",
                     features: [
-                        isPortuguese
-                            ? "Edição básica de vídeo"
-                            : "Basic video editing",
-                        isPortuguese
-                            ? "Cortes e transições"
-                            : "Cuts and transitions",
-                        isPortuguese
-                            ? "Ajustes de áudio básicos"
-                            : "Basic audio adjustments",
-                        isPortuguese
-                            ? "Até 10 minutos de vídeo"
-                            : "Up to 10 minutes of video",
-                        isPortuguese
-                            ? "2 revisões incluídas"
-                            : "2 revisions included",
+                        "Basic video editing",
+                        "Cuts and transitions",
+                        "Basic audio adjustments",
+                        "Up to 10 minutes of video",
+                        "2 revisions included",
                     ],
                 },
                 {
-                    name: isPortuguese ? "Profissional" : "Professional",
+                    name: "Professional",
                     basePrice: 300,
-                    description: isPortuguese
-                        ? "Edição completa com motion graphics"
-                        : "Complete editing with motion graphics",
+                    description: "Complete editing with motion graphics",
                     features: [
-                        isPortuguese
-                            ? "Tudo do plano Básico"
-                            : "Everything in Basic",
-                        isPortuguese
-                            ? "Motion graphics personalizados"
-                            : "Custom motion graphics",
-                        isPortuguese ? "Color grading" : "Color grading",
-                        isPortuguese ? "Sound design" : "Sound design",
-                        isPortuguese
-                            ? "Até 20 minutos de vídeo"
-                            : "Up to 20 minutes of video",
-                        isPortuguese
-                            ? "3 revisões incluídas"
-                            : "3 revisions included",
+                        "Everything in Basic",
+                        "Custom motion graphics",
+                        "Color grading",
+                        "Sound design",
+                        "Up to 20 minutes of video",
+                        "3 revisions included",
                     ],
                     popular: true,
                 },
                 {
-                    name: isPortuguese ? "Premium" : "Premium",
+                    name: "Premium",
                     basePrice: 500,
-                    description: isPortuguese
-                        ? "Pacote completo para projetos especiais"
-                        : "Complete package for special projects",
+                    description: "Complete package for special projects",
                     features: [
-                        isPortuguese
-                            ? "Tudo do plano Profissional"
-                            : "Everything in Professional",
-                        isPortuguese ? "VFX avançados" : "Advanced VFX",
-                        isPortuguese ? "Animações 3D" : "3D animations",
-                        isPortuguese
-                            ? "Consultoria de conteúdo"
-                            : "Content consulting",
-                        isPortuguese
-                            ? "Até 30 minutos de vídeo"
-                            : "Up to 30 minutes of video",
-                        isPortuguese
-                            ? "Revisões ilimitadas"
-                            : "Unlimited revisions",
+                        "Everything in Professional",
+                        "Advanced VFX",
+                        "3D animations",
+                        "Content consulting",
+                        "Up to 30 minutes of video",
+                        "Unlimited revisions",
                     ],
                 },
             ],
-            note: isPortuguese
-                ? "* Todos os pacotes incluem entrega em até 5 dias úteis. Projetos urgentes podem ter taxa adicional."
-                : "* All packages include delivery within 5 business days. Rush projects may have additional fee.",
+            note: "* All packages include delivery within 5 business days. Rush projects may have additional fee.",
+        },
+        requirements: {
+            title: "Requirements",
+            subtitle: "What we look for in our editors",
+            items: [
+                {
+                    title: "Willingness to Learn",
+                    description:
+                        "Disposition to constantly learn and evolve through tutorials and practice",
+                    iconName: "GraduationCap",
+                    features: [
+                        "Self-learn through tutorials",
+                        "Practice consistently",
+                        "Accept feedback and improve",
+                    ],
+                },
+                {
+                    title: "Technical Skills",
+                    description:
+                        "Basic familiarity or willingness to learn the tools",
+                    iconName: "MonitorPlay",
+                    features: [
+                        "Basic editing knowledge",
+                        "Interest in motion graphics",
+                        "Willingness to learn audio",
+                    ],
+                },
+                {
+                    title: "Soft Skills",
+                    description: "Essential skills to work in our team",
+                    iconName: "Users",
+                    features: [
+                        "Clear communication",
+                        "Organization and punctuality",
+                        "Teamwork",
+                    ],
+                },
+            ],
+        },
+        benefits: {
+            title: "Benefits",
+            subtitle: "Earn 100% of your work's monetization",
+            description:
+                "You receive 100% of the video or shorts monetization value on YouTube during the first month after posting.",
+            items: [
+                {
+                    title: "Flexibility",
+                    description: "Work from anywhere, anytime",
+                    iconName: "Clock" as IconName,
+                },
+            ],
+        },
+        cta: {
+            title: "Ready to Join Our Team?",
+            description: "Send your portfolio and resume to get started",
+            button: "Submit Application",
         },
     }
 }
