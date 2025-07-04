@@ -1,8 +1,5 @@
-"use client"
-
-import { useLocale } from "@/hooks/use-locale"
 import { type Locale } from "@/lib/i18n"
-import { Award, BarChart3, Play, TrendingUp, Users } from "lucide-react"
+import { BarChart3, Play, TrendingUp, Users } from "lucide-react"
 import Link from "next/link"
 
 const getTranslations = (locale: Locale) => {
@@ -171,8 +168,13 @@ const getTranslations = (locale: Locale) => {
     }
 }
 
-export default function ChannelManagementSection() {
-    const { locale } = useLocale()
+interface ChannelManagementSectionProps {
+    params: { locale: Locale }
+}
+
+export default function ChannelManagementSection({
+    params: { locale },
+}: ChannelManagementSectionProps) {
     const t = getTranslations(locale)
 
     return (
@@ -274,73 +276,133 @@ export default function ChannelManagementSection() {
                     </div>
                 </div>
 
-                {/* Results Section */}
+                {/* Results */}
                 <div className="mb-16">
-                    <div className="text-center mb-12">
-                        <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-                            {t.results.title}
-                        </h3>
-                        <p className="text-gray-600 dark:text-gray-300">
-                            {t.results.subtitle}
-                        </p>
-                    </div>
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                        {t.results.cases.map((result, index) => (
+                    <h3 className="text-2xl font-bold text-center text-gray-900 dark:text-white mb-4">
+                        {t.results.title}
+                    </h3>
+                    <p className="text-center text-gray-600 dark:text-gray-300 mb-12">
+                        {t.results.subtitle}
+                    </p>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        {t.results.cases.map((caseStudy, index) => (
                             <div
                                 key={index}
                                 className="bg-white dark:bg-gray-900 rounded-2xl p-8 shadow-lg"
                             >
-                                <div className="flex items-center mb-4">
-                                    <div className="bg-blue-100 dark:bg-blue-900 w-12 h-12 rounded-lg flex items-center justify-center mr-4">
-                                        <Award className="w-6 h-6 text-blue-600 dark:text-blue-400" />
-                                    </div>
-                                    <div>
-                                        <h4 className="text-lg font-bold text-gray-900 dark:text-white">
-                                            {result.channel}
-                                        </h4>
-                                        <p className="text-sm text-gray-600 dark:text-gray-300">
-                                            {result.description}
-                                        </p>
-                                    </div>
-                                </div>
+                                <h4 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
+                                    {caseStudy.channel}
+                                </h4>
+                                <p className="text-gray-600 dark:text-gray-300 text-sm mb-6">
+                                    {caseStudy.description}
+                                </p>
+
                                 <div className="grid grid-cols-3 gap-4">
-                                    {result.metrics.map(
-                                        (metric, metricIndex) => (
-                                            <div
-                                                key={metricIndex}
-                                                className="text-center"
-                                            >
-                                                <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
-                                                    {metric.value}
-                                                </div>
-                                                <div className="text-xs text-gray-600 dark:text-gray-300">
-                                                    {metric.label}
-                                                </div>
+                                    {caseStudy.metrics.map((metric, idx) => (
+                                        <div key={idx} className="text-center">
+                                            <div className="text-2xl font-bold text-blue-600 dark:text-blue-400 mb-1">
+                                                {metric.value}
                                             </div>
-                                        )
-                                    )}
+                                            <div className="text-sm text-gray-600 dark:text-gray-300">
+                                                {metric.label}
+                                            </div>
+                                        </div>
+                                    ))}
                                 </div>
                             </div>
                         ))}
                     </div>
                 </div>
 
+                {/* Pricing */}
+                <div className="mb-16">
+                    <h3 className="text-2xl font-bold text-center text-gray-900 dark:text-white mb-12">
+                        {t.pricing.title}
+                    </h3>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        {/* Express */}
+                        <div className="bg-white dark:bg-gray-900 rounded-2xl p-8 shadow-lg relative">
+                            <h4 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+                                {t.pricing.express.name}
+                            </h4>
+                            <div className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-4">
+                                {t.pricing.express.price}
+                            </div>
+                            <p className="text-gray-600 dark:text-gray-300 mb-8">
+                                {t.pricing.express.description}
+                            </p>
+                            <Link
+                                href={`/${locale}/channel-management`}
+                                className="block w-full bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white text-center py-3 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+                            >
+                                {t.cta.button}
+                            </Link>
+                        </div>
+
+                        {/* Complete */}
+                        <div className="bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-900/50 dark:to-purple-900/50 rounded-2xl p-8 shadow-lg relative transform scale-105">
+                            {t.pricing.complete.popular && (
+                                <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                                    <div className="bg-blue-600 text-white px-4 py-1 rounded-full text-sm font-medium">
+                                        Popular
+                                    </div>
+                                </div>
+                            )}
+                            <h4 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+                                {t.pricing.complete.name}
+                            </h4>
+                            <div className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-4">
+                                {t.pricing.complete.price}
+                            </div>
+                            <p className="text-gray-600 dark:text-gray-300 mb-8">
+                                {t.pricing.complete.description}
+                            </p>
+                            <Link
+                                href={`/${locale}/channel-management`}
+                                className="block w-full bg-blue-600 text-white text-center py-3 rounded-lg hover:bg-blue-700 transition-colors"
+                            >
+                                {t.cta.button}
+                            </Link>
+                        </div>
+
+                        {/* Intensive */}
+                        <div className="bg-white dark:bg-gray-900 rounded-2xl p-8 shadow-lg relative">
+                            <h4 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+                                {t.pricing.intensive.name}
+                            </h4>
+                            <div className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-4">
+                                {t.pricing.intensive.price}
+                            </div>
+                            <p className="text-gray-600 dark:text-gray-300 mb-8">
+                                {t.pricing.intensive.description}
+                            </p>
+                            <Link
+                                href={`/${locale}/channel-management`}
+                                className="block w-full bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white text-center py-3 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+                            >
+                                {t.cta.button}
+                            </Link>
+                        </div>
+                    </div>
+                </div>
+
                 {/* CTA */}
-                <div className="text-center bg-white dark:bg-gray-900 rounded-2xl p-12 shadow-lg">
+                <div className="text-center">
                     <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
                         {t.cta.title}
                     </h3>
                     <p className="text-gray-600 dark:text-gray-300 mb-8 max-w-2xl mx-auto">
                         {t.cta.description}
                     </p>
-                    <div className="flex justify-center">
-                        <Link
-                            href={`/${locale}/channel-management`}
-                            className="inline-flex items-center justify-center bg-blue-600 text-white px-8 py-4 rounded-lg font-medium hover:bg-blue-700 transition-colors"
-                        >
-                            {locale === "pt-BR" ? "Ver Planos" : "View Plans"}
-                        </Link>
-                    </div>
+                    <Link
+                        href={`/${locale}/channel-management`}
+                        className="inline-flex items-center space-x-2 bg-blue-600 text-white px-8 py-4 rounded-lg hover:bg-blue-700 transition-colors font-medium text-lg"
+                    >
+                        <Users size={20} />
+                        <span>{t.cta.button}</span>
+                    </Link>
                 </div>
             </div>
         </section>

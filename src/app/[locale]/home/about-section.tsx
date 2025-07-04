@@ -1,6 +1,3 @@
-"use client"
-
-import { useLocale } from "@/hooks/use-locale"
 import { type Locale } from "@/lib/i18n"
 
 const getTranslations = (locale: Locale) => {
@@ -67,8 +64,13 @@ const getTranslations = (locale: Locale) => {
     }
 }
 
-export default function AboutSection() {
-    const { locale } = useLocale()
+interface AboutSectionProps {
+    params: { locale: Locale }
+}
+
+export default function AboutSection({
+    params: { locale },
+}: AboutSectionProps) {
     const t = getTranslations(locale)
 
     return (

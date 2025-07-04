@@ -1,6 +1,6 @@
 "use client"
 
-import { BenefitCard } from "@/components/editors/benefit-card"
+import { BenefitCard } from "@/app/[locale]/editors/editors-card"
 import { Badge } from "@/components/ui/badge"
 import { Card } from "@/components/ui/card"
 import { DynamicIcon } from "@/components/ui/dynamic-icon"
