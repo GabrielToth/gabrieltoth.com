@@ -29,7 +29,8 @@ export const HeroSection = ({ t }: SectionProps) => {
                 </p>
                 <WhatsAppButton
                     phoneNumber={whatsappNumber}
-                    text={getApplicationTemplate(t.locale)}
+                    message={getApplicationTemplate(t.locale)}
+                    text={t.hero.cta}
                     size="lg"
                     className="bg-blue-600 hover:bg-blue-700 hover:cursor-pointer text-white"
                 >
@@ -213,7 +214,8 @@ export const CTASection = ({ t }: SectionProps) => {
                 <p className="text-lg mb-8">{t.cta.description}</p>
                 <WhatsAppButton
                     phoneNumber={whatsappNumber}
-                    text={getApplicationTemplate(t.locale)}
+                    message={getApplicationTemplate(t.locale)}
+                    text={t.cta.button}
                     size="lg"
                     variant="outline"
                     className="border-white text-blue-600 bg-white hover:bg-blue-600 hover:text-white"

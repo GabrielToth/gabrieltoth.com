@@ -4,6 +4,7 @@ import { Button, ButtonProps } from "@/components/ui/button"
 
 interface WhatsAppButtonProps extends Omit<ButtonProps, "onClick"> {
     text: string
+    message: string
     phoneNumber: string
     children: React.ReactNode
     variant?: "default" | "outline"
@@ -13,6 +14,7 @@ interface WhatsAppButtonProps extends Omit<ButtonProps, "onClick"> {
 
 const WhatsAppButton = ({
     text,
+    message,
     phoneNumber,
     children,
     variant = "default",
@@ -21,7 +23,7 @@ const WhatsAppButton = ({
     ...props
 }: WhatsAppButtonProps) => {
     const handleClick = () => {
-        const whatsappLink = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(text)}`
+        const whatsappLink = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`
         window.open(whatsappLink, "_blank")
     }
 
