@@ -1,10 +1,6 @@
 import { IconName } from "@/lib/icons"
-import { LucideIcon } from "lucide-react"
-import { IconType } from "react-icons"
-
-type IconComponent = LucideIcon | IconType
-
-interface Translations {
+export interface EditorTranslations {
+    locale: "en" | "pt-BR"
     moneroToggle: {
         title: string
         description: string
@@ -77,9 +73,9 @@ interface Translations {
         title: string
         subtitle: string
         items: Array<{
-            iconName: IconName
             title: string
             description: string
+            iconName: IconName
             features: string[]
         }>
     }
@@ -102,11 +98,12 @@ interface Translations {
 
 export async function getEditorsTranslations(
     locale: "en" | "pt-BR"
-): Promise<Translations> {
+): Promise<EditorTranslations> {
     "use server"
 
     if (locale === "pt-BR") {
         return {
+            locale,
             moneroToggle: {
                 title: "Preços com Monero (XMR)",
                 description:
@@ -373,6 +370,7 @@ export async function getEditorsTranslations(
     }
 
     return {
+        locale,
         moneroToggle: {
             title: "Monero (XMR) Pricing",
             description: "Enable to see 50% discount prices using Monero",
@@ -600,7 +598,7 @@ export async function getEditorsTranslations(
                     features: [
                         "Clear communication",
                         "Organization and punctuality",
-                        "Teamwork",
+                        "Trabalho em equipe",
                     ],
                 },
             ],
@@ -612,9 +610,19 @@ export async function getEditorsTranslations(
                 "You receive 100% of the video or shorts monetization value on YouTube during the first month after posting.",
             items: [
                 {
-                    title: "Flexibility",
-                    description: "Work from anywhere, anytime",
+                    title: "YouTube Monetization",
+                    description: "100% of value for 30 days",
+                    iconName: "Youtube" as IconName,
+                },
+                {
+                    title: "Period",
+                    description: "First month after posting",
                     iconName: "Clock" as IconName,
+                },
+                {
+                    title: "Content Types",
+                    description: "Videos and Shorts",
+                    iconName: "Video" as IconName,
                 },
             ],
         },
