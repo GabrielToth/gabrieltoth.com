@@ -55,6 +55,43 @@ s-maxage
 smaxage
 subcomponents
 oprimeirogabrieltoth
+# Enhanced SEO terms
+breadcrumbs
+aggregateRating
+LocalBusiness
+ContactPoint
+aggregaterating
+mainEntity
+mainEntityOfPage
+ratingValue
+ratingCount
+reviewCount
+bestRating
+priceCurrency
+priceRange
+availableLanguage
+datePublished
+dateModified
+PostalAddress
+availabilityScore
+contentRating
+# Schema.org types
+WebPage
+BlogPosting
+NewsArticle
+VideoObject
+ImageObject
+FAQPage
+BreadcrumbList
+ListItem
+# Bot names
+Googlebot
+Bingbot
+facebookexternalhit
+Twitterbot
+# Portuguese words that might not be in dictionary
+portifolio
+tecnico
 # Only keeping project-specific Portuguese terms that might not be in the standard dictionary
 àáâãäåæçèéêëìíîïñòóôõöøùúûüýÿ
 singlequote

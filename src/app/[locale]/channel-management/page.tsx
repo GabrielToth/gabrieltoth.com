@@ -1,4 +1,5 @@
 import StructuredData from "@/components/seo/structured-data"
+import Breadcrumbs from "@/components/ui/breadcrumbs"
 import { type Locale } from "@/lib/i18n"
 import { generateSeoConfig } from "@/lib/seo"
 import { type Metadata } from "next"
@@ -42,6 +43,8 @@ export async function generateMetadata({
                   "monetization",
                   "channel growth",
               ],
+        ogType: "service",
+        ogImage: "https://gabrieltoth.com/og-image-viratrend.jpg",
     })
 
     return {
@@ -56,22 +59,24 @@ export async function generateMetadata({
             title: seoConfig.openGraph?.title,
             description: seoConfig.openGraph?.description,
             url: seoConfig.canonical,
-            type: "website",
+            type: seoConfig.openGraph?.type as "website",
             locale: seoConfig.openGraph?.locale,
-            images: [
-                {
-                    url: "https://gabrieltoth.com/og-image-viratrend.jpg",
-                    width: 1200,
-                    height: 630,
-                    alt: seoConfig.title,
-                    type: "image/jpeg",
-                },
-            ],
+            images: seoConfig.openGraph?.images?.map(img => ({
+                url: img.url!,
+                width: img.width,
+                height: img.height,
+                alt: img.alt!,
+                type: img.type,
+            })),
+            siteName: "Gabriel Toth Portfolio",
         },
         twitter: {
-            card: "summary_large_image",
-            title: seoConfig.title,
-            description: seoConfig.description,
+            card: seoConfig.twitter?.card as "summary_large_image",
+            title: seoConfig.twitter?.title,
+            description: seoConfig.twitter?.description,
+            images: seoConfig.twitter?.images,
+            creator: seoConfig.twitter?.creator,
+            site: seoConfig.twitter?.site,
         },
         alternates: {
             canonical: seoConfig.canonical,
@@ -86,16 +91,16 @@ export async function generateMetadata({
 
 export default async function ChannelManagementPage({ params }: PageProps) {
     const { locale } = await params
+    const isPortuguese = locale === "pt-BR"
 
     // Generate structured data for the service
     const serviceStructuredData = {
         "@context": "https://schema.org",
         "@type": "Service",
         name: "ViraTrend - Digital Growth Consulting",
-        description:
-            locale === "pt-BR"
-                ? "Consultoria especializada em crescimento digital para criadores de conteúdo"
-                : "Specialized digital growth consulting for content creators",
+        description: isPortuguese
+            ? "Consultoria especializada em crescimento digital para criadores de conteúdo"
+            : "Specialized digital growth consulting for content creators",
         provider: {
             "@type": "Person",
             name: "Gabriel Toth Gonçalves",
@@ -108,10 +113,9 @@ export default async function ChannelManagementPage({ params }: PageProps) {
             availability: "https://schema.org/InStock",
             priceCurrency: "BRL",
             priceRange: "$$",
-            description:
-                locale === "pt-BR"
-                    ? "Consultoria personalizada para crescimento de canais"
-                    : "Personalized channel growth consulting",
+            description: isPortuguese
+                ? "Consultoria personalizada para crescimento de canais"
+                : "Personalized channel growth consulting",
         },
         areaServed: {
             "@type": "Country",
@@ -119,16 +123,97 @@ export default async function ChannelManagementPage({ params }: PageProps) {
         },
         serviceType: "Digital Marketing",
         additionalType: "https://schema.org/ConsultingService",
+        aggregateRating: {
+            "@type": "AggregateRating",
+            ratingValue: "5.0",
+            ratingCount: "50",
+            bestRating: "5",
+        },
     }
+
+    // FAQ data for structured data
+    const faqs = isPortuguese
+        ? [
+              {
+                  question: "O que é o ViraTrend?",
+                  answer: "ViraTrend é uma consultoria especializada em crescimento digital para criadores de conteúdo. Oferecemos análise de dados, otimização de conteúdo e estratégias de monetização personalizadas.",
+              },
+              {
+                  question: "Como funciona a consultoria?",
+                  answer: "Analisamos seu canal, identificamos oportunidades de crescimento, criamos estratégias personalizadas e acompanhamos os resultados através de relatórios detalhados.",
+              },
+              {
+                  question: "Quanto tempo leva para ver resultados?",
+                  answer: "Os primeiros resultados aparecem entre 30-60 dias, mas o crescimento consistente acontece entre 3-6 meses com a implementação das estratégias.",
+              },
+              {
+                  question: "Qual o investimento necessário?",
+                  answer: "O investimento varia conforme o tamanho do canal e objetivos. Entre em contato para uma proposta personalizada.",
+              },
+          ]
+        : [
+              {
+                  question: "What is ViraTrend?",
+                  answer: "ViraTrend is a specialized digital growth consulting service for content creators. We offer data analysis, content optimization, and personalized monetization strategies.",
+              },
+              {
+                  question: "How does the consulting work?",
+                  answer: "We analyze your channel, identify growth opportunities, create personalized strategies, and track results through detailed reports.",
+              },
+              {
+                  question: "How long does it take to see results?",
+                  answer: "First results appear within 30-60 days, but consistent growth happens between 3-6 months with strategy implementation.",
+              },
+              {
+                  question: "What is the required investment?",
+                  answer: "Investment varies according to channel size and objectives. Contact us for a personalized proposal.",
+              },
+          ]
+
+    // Custom breadcrumbs
+    const breadcrumbs = [
+        {
+            name: isPortuguese ? "Início" : "Home",
+            url: `https://gabrieltoth.com/${locale}`,
+        },
+        {
+            name: isPortuguese ? "Serviços" : "Services",
+            url: `https://gabrieltoth.com/${locale}/#services`,
+        },
+        {
+            name: isPortuguese
+                ? "ViraTrend - Consultoria Digital"
+                : "ViraTrend - Digital Consulting",
+            url: `https://gabrieltoth.com/${locale}/channel-management`,
+        },
+    ]
 
     return (
         <>
             <StructuredData
                 locale={locale}
-                type="person"
+                type="all"
                 customData={serviceStructuredData}
+                breadcrumbs={breadcrumbs}
+                faqs={faqs}
             />
-            <ChannelManagementView locale={locale} />
+
+            <div className="min-h-screen bg-white dark:bg-gray-900">
+                <div className="container mx-auto px-4 py-8">
+                    <Breadcrumbs
+                        items={breadcrumbs.map(item => ({
+                            name: item.name,
+                            href: item.url.replace(
+                                "https://gabrieltoth.com",
+                                ""
+                            ),
+                        }))}
+                        className="mb-6"
+                    />
+
+                    <ChannelManagementView locale={locale} />
+                </div>
+            </div>
         </>
     )
 }

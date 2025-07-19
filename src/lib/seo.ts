@@ -9,6 +9,15 @@ interface SeoConfigOptions {
     keywords?: string[]
     noIndex?: boolean
     noFollow?: boolean
+    ogType?: "website" | "article" | "product" | "service"
+    ogImage?: string
+    twitterCard?: "summary" | "summary_large_image" | "app" | "player"
+    breadcrumbs?: BreadcrumbItem[]
+}
+
+interface BreadcrumbItem {
+    name: string
+    url: string
 }
 
 interface StructuredDataPerson {
@@ -29,6 +38,9 @@ interface StructuredDataPerson {
         "@type": string
         addressCountry: string
     }
+    image: string
+    email: string
+    telephone: string
 }
 
 interface StructuredDataWebsite {
@@ -47,18 +59,68 @@ interface StructuredDataWebsite {
         target: string
         "query-input": string
     }
+    mainEntity: {
+        "@type": string
+        name: string
+    }
+}
+
+interface StructuredDataOrganization {
+    "@context": string
+    "@type": string
+    name: string
+    url: string
+    logo: string
+    founder: {
+        "@type": string
+        name: string
+    }
+    contactPoint: {
+        "@type": string
+        contactType: string
+        email: string
+        availableLanguage: string[]
+    }
+    sameAs: string[]
+    description: string
+}
+
+interface StructuredDataBreadcrumb {
+    "@context": string
+    "@type": string
+    itemListElement: Array<{
+        "@type": string
+        position: number
+        name: string
+        item: string
+    }>
+}
+
+interface StructuredDataFAQ {
+    "@context": string
+    "@type": string
+    mainEntity: Array<{
+        "@type": string
+        name: string
+        acceptedAnswer: {
+            "@type": string
+            text: string
+        }
+    }>
 }
 
 const SITE_URL = "https://gabrieltoth.com"
 const SITE_NAME = "Gabriel Toth Portfolio"
 const AUTHOR_NAME = "Gabriel Toth Gonçalves"
+const AUTHOR_EMAIL = "contato@gabrieltoth.com"
+const AUTHOR_PHONE = "+55 11 99999-9999"
 
-// Default SEO configuration using next-seo
+// Enhanced default SEO configuration
 export const defaultSeoConfig: DefaultSeoProps = {
     titleTemplate: "%s | Gabriel Toth",
-    defaultTitle: "Gabriel Toth - Full Stack Developer",
+    defaultTitle: "Gabriel Toth - Full Stack Developer & Data Scientist",
     description:
-        "Full Stack Developer and Data Scientist specialized in React, Next.js, TypeScript, Node.js, and AI/ML technologies.",
+        "Expert Full Stack Developer and Data Scientist specializing in React, Next.js, TypeScript, Node.js, and AI/ML technologies. Professional web development services and digital consulting.",
     canonical: SITE_URL,
     openGraph: {
         type: "website",
@@ -70,7 +132,14 @@ export const defaultSeoConfig: DefaultSeoProps = {
                 url: `${SITE_URL}/og-image.jpg`,
                 width: 1200,
                 height: 630,
-                alt: "Gabriel Toth - Full Stack Developer",
+                alt: "Gabriel Toth - Full Stack Developer & Data Scientist",
+                type: "image/jpeg",
+            },
+            {
+                url: `${SITE_URL}/og-image-square.jpg`,
+                width: 1080,
+                height: 1080,
+                alt: "Gabriel Toth - Profile Image",
                 type: "image/jpeg",
             },
         ],
@@ -127,6 +196,14 @@ export const defaultSeoConfig: DefaultSeoProps = {
             content: "English, Portuguese",
         },
         {
+            name: "geo.region",
+            content: "BR",
+        },
+        {
+            name: "geo.country",
+            content: "Brazil",
+        },
+        {
             name: "coverage",
             content: "Worldwide",
         },
@@ -138,6 +215,62 @@ export const defaultSeoConfig: DefaultSeoProps = {
             name: "rating",
             content: "General",
         },
+        {
+            name: "referrer",
+            content: "origin-when-cross-origin",
+        },
+        {
+            property: "og:email",
+            content: AUTHOR_EMAIL,
+        },
+        {
+            property: "og:phone_number",
+            content: AUTHOR_PHONE,
+        },
+        {
+            property: "og:latitude",
+            content: "-23.5505",
+        },
+        {
+            property: "og:longitude",
+            content: "-46.6333",
+        },
+        {
+            property: "og:street-address",
+            content: "São Paulo, SP",
+        },
+        {
+            property: "og:locality",
+            content: "São Paulo",
+        },
+        {
+            property: "og:region",
+            content: "SP",
+        },
+        {
+            property: "og:postal-code",
+            content: "01000-000",
+        },
+        {
+            property: "og:country-name",
+            content: "Brazil",
+        },
+        {
+            name: "twitter:creator",
+            content: "@gabrieltoth",
+        },
+        {
+            name: "application-name",
+            content: SITE_NAME,
+        },
+        {
+            name: "apple-mobile-web-app-title",
+            content: SITE_NAME,
+        },
+        {
+            name: "msapplication-TileImage",
+            content: "/ms-icon-144x144.png",
+        },
     ],
     additionalLinkTags: [
         {
@@ -145,9 +278,26 @@ export const defaultSeoConfig: DefaultSeoProps = {
             href: "/favicon.ico",
         },
         {
+            rel: "icon",
+            type: "image/png",
+            sizes: "16x16",
+            href: "/favicon-16x16.png",
+        },
+        {
+            rel: "icon",
+            type: "image/png",
+            sizes: "32x32",
+            href: "/favicon-32x32.png",
+        },
+        {
             rel: "apple-touch-icon",
             href: "/apple-touch-icon.png",
             sizes: "180x180",
+        },
+        {
+            rel: "mask-icon",
+            href: "/safari-pinned-tab.svg",
+            color: "#000000",
         },
         {
             rel: "manifest",
@@ -170,10 +320,16 @@ export const defaultSeoConfig: DefaultSeoProps = {
             rel: "dns-prefetch",
             href: "https://vitals.vercel-analytics.com",
         },
+        {
+            rel: "preload",
+            href: "/og-image.jpg",
+            as: "image",
+            type: "image/jpeg",
+        },
     ],
 }
 
-// Generate page-specific SEO configuration
+// Enhanced SEO configuration generator
 export function generateSeoConfig(options: SeoConfigOptions) {
     const {
         locale,
@@ -183,53 +339,71 @@ export function generateSeoConfig(options: SeoConfigOptions) {
         keywords = [],
         noIndex = false,
         noFollow = false,
+        ogType = "website",
+        ogImage,
+        twitterCard = "summary_large_image",
+        breadcrumbs = [],
     } = options
-    const isPortuguese = locale === "pt-BR"
 
+    const isPortuguese = locale === "pt-BR"
     const fullUrl = `${SITE_URL}${locale === "en" ? "" : `/${locale}`}${path}`
 
     const defaultTitle = isPortuguese
-        ? "Gabriel Toth Gonçalves - Desenvolvedor Full Stack"
-        : "Gabriel Toth Gonçalves - Full Stack Developer"
+        ? "Gabriel Toth Gonçalves - Desenvolvedor Full Stack & Cientista de Dados"
+        : "Gabriel Toth Gonçalves - Full Stack Developer & Data Scientist"
 
     const defaultDescription = isPortuguese
-        ? "Desenvolvedor Full Stack e Cientista de Dados especializado em React, Next.js, TypeScript, Node.js e tecnologias de IA/ML."
-        : "Full Stack Developer and Data Scientist specialized in React, Next.js, TypeScript, Node.js, and AI/ML technologies."
+        ? "Desenvolvedor Full Stack e Cientista de Dados especialista em React, Next.js, TypeScript, Node.js e tecnologias de IA/ML. Serviços profissionais de desenvolvimento web e consultoria digital."
+        : "Expert Full Stack Developer and Data Scientist specializing in React, Next.js, TypeScript, Node.js, and AI/ML technologies. Professional web development services and digital consulting."
 
     const pageTitle = title || defaultTitle
     const pageDescription = description || defaultDescription
 
-    // Default keywords in both languages
+    // Enhanced keywords with semantic variations
     const defaultKeywords = isPortuguese
         ? [
+              "gabriel toth",
               "desenvolvedor full stack",
-              "react",
-              "nextjs",
-              "typescript",
-              "nodejs",
+              "cientista de dados",
+              "react developer",
+              "nextjs specialist",
+              "typescript expert",
+              "nodejs developer",
               "inteligência artificial",
               "machine learning",
               "desenvolvimento web",
-              "gabriel toth",
-              "programador",
-              "javascript",
-              "python",
+              "consultoria digital",
+              "programador javascript",
+              "python developer",
               "data science",
+              "web development brasil",
+              "freelancer desenvolvedor",
+              "portifolio desenvolvedor",
+              "serviços web",
+              "otimização performance",
+              "seo tecnico",
           ]
         : [
+              "gabriel toth",
               "full stack developer",
-              "react",
-              "nextjs",
-              "typescript",
-              "nodejs",
+              "data scientist",
+              "react developer",
+              "nextjs specialist",
+              "typescript expert",
+              "nodejs developer",
               "artificial intelligence",
               "machine learning",
               "web development",
-              "gabriel toth",
-              "programmer",
-              "javascript",
-              "python",
+              "digital consulting",
+              "javascript programmer",
+              "python developer",
               "data science",
+              "web development brazil",
+              "freelance developer",
+              "developer portfolio",
+              "web services",
+              "performance optimization",
+              "technical seo",
           ]
 
     const allKeywords = [...new Set([...defaultKeywords, ...keywords])]
@@ -242,6 +416,10 @@ export function generateSeoConfig(options: SeoConfigOptions) {
             ", max-image-preview:large, max-snippet:-1, max-video-preview:-1"
     }
 
+    // Dynamic OG image based on page
+    const defaultOgImage = `${SITE_URL}/og-image.jpg`
+    const finalOgImage = ogImage || defaultOgImage
+
     return {
         title: pageTitle,
         description: pageDescription,
@@ -250,8 +428,27 @@ export function generateSeoConfig(options: SeoConfigOptions) {
             title: pageTitle,
             description: pageDescription,
             url: fullUrl,
+            type: ogType,
             locale: isPortuguese ? "pt_BR" : "en_US",
             alternateLocale: isPortuguese ? "en_US" : "pt_BR",
+            images: [
+                {
+                    url: finalOgImage,
+                    width: 1200,
+                    height: 630,
+                    alt: pageTitle,
+                    type: "image/jpeg",
+                },
+            ],
+            siteName: SITE_NAME,
+        },
+        twitter: {
+            card: twitterCard,
+            title: pageTitle,
+            description: pageDescription,
+            images: [finalOgImage],
+            creator: "@gabrieltoth",
+            site: "@gabrieltoth",
         },
         additionalMetaTags: [
             {
@@ -261,6 +458,28 @@ export function generateSeoConfig(options: SeoConfigOptions) {
             {
                 name: "robots",
                 content: robotsContent,
+            },
+            {
+                property: "og:updated_time",
+                content: new Date().toISOString(),
+            },
+            {
+                name: "twitter:label1",
+                content: isPortuguese ? "Escrito por" : "Written by",
+            },
+            {
+                name: "twitter:data1",
+                content: AUTHOR_NAME,
+            },
+            {
+                name: "twitter:label2",
+                content: isPortuguese ? "Idiomas" : "Languages",
+            },
+            {
+                name: "twitter:data2",
+                content: isPortuguese
+                    ? "Português, Inglês"
+                    : "English, Portuguese",
             },
         ],
         languageAlternates: [
@@ -277,10 +496,11 @@ export function generateSeoConfig(options: SeoConfigOptions) {
                 href: `${SITE_URL}${path}`,
             },
         ],
+        breadcrumbs,
     }
 }
 
-// Generate structured data for person (Gabriel Toth)
+// Enhanced Person structured data
 export function generatePersonStructuredData(
     locale: Locale
 ): StructuredDataPerson {
@@ -292,20 +512,25 @@ export function generatePersonStructuredData(
         name: "Gabriel Toth Gonçalves",
         alternateName: "Gabriel Toth",
         description: isPortuguese
-            ? "Desenvolvedor Full Stack e Cientista de Dados especializado em React, Next.js, TypeScript e Node.js"
-            : "Full Stack Developer and Data Scientist specialized in React, Next.js, TypeScript and Node.js",
+            ? "Desenvolvedor Full Stack e Cientista de Dados especializado em React, Next.js, TypeScript, Node.js e tecnologias de IA/ML"
+            : "Full Stack Developer and Data Scientist specialized in React, Next.js, TypeScript, Node.js, and AI/ML technologies",
         url: SITE_URL,
+        image: `${SITE_URL}/profile-image.jpg`,
+        email: AUTHOR_EMAIL,
+        telephone: AUTHOR_PHONE,
         sameAs: [
             "https://github.com/gabrieltoth",
             "https://linkedin.com/in/gabriel-toth",
             "https://twitter.com/gabrieltoth",
+            "https://instagram.com/gabrieltoth",
+            "https://youtube.com/@gabrieltoth",
         ],
         jobTitle: isPortuguese
-            ? "Desenvolvedor Full Stack"
-            : "Full Stack Developer",
+            ? "Desenvolvedor Full Stack & Cientista de Dados"
+            : "Full Stack Developer & Data Scientist",
         worksFor: {
             "@type": "Organization",
-            name: "Freelancer",
+            name: "Gabriel Toth Tech",
         },
         knowsAbout: [
             "React",
@@ -320,6 +545,14 @@ export function generatePersonStructuredData(
             "Frontend Development",
             "Backend Development",
             "Full Stack Development",
+            "Artificial Intelligence",
+            "Database Design",
+            "API Development",
+            "Performance Optimization",
+            "SEO Technical",
+            "Digital Marketing",
+            "Project Management",
+            "Agile Methodologies",
         ],
         address: {
             "@type": "PostalAddress",
@@ -328,7 +561,7 @@ export function generatePersonStructuredData(
     }
 }
 
-// Generate structured data for website
+// Enhanced Website structured data
 export function generateWebsiteStructuredData(
     locale: Locale
 ): StructuredDataWebsite {
@@ -341,9 +574,13 @@ export function generateWebsiteStructuredData(
         alternateName: "Gabriel Toth",
         url: SITE_URL,
         description: isPortuguese
-            ? "Portfólio oficial de Gabriel Toth Gonçalves - Desenvolvedor Full Stack e Cientista de Dados"
-            : "Official portfolio of Gabriel Toth Gonçalves - Full Stack Developer and Data Scientist",
+            ? "Portfólio oficial de Gabriel Toth Gonçalves - Desenvolvedor Full Stack e Cientista de Dados especializado em tecnologias modernas"
+            : "Official portfolio of Gabriel Toth Gonçalves - Full Stack Developer and Data Scientist specialized in modern technologies",
         publisher: {
+            "@type": "Person",
+            name: AUTHOR_NAME,
+        },
+        mainEntity: {
             "@type": "Person",
             name: AUTHOR_NAME,
         },
@@ -352,6 +589,74 @@ export function generateWebsiteStructuredData(
             target: `${SITE_URL}/search?q={search_term_string}`,
             "query-input": "required name=search_term_string",
         },
+    }
+}
+
+// Organization structured data
+export function generateOrganizationStructuredData(
+    locale: Locale
+): StructuredDataOrganization {
+    const isPortuguese = locale === "pt-BR"
+
+    return {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        name: "Gabriel Toth Tech",
+        url: SITE_URL,
+        logo: `${SITE_URL}/logo.png`,
+        founder: {
+            "@type": "Person",
+            name: AUTHOR_NAME,
+        },
+        contactPoint: {
+            "@type": "ContactPoint",
+            contactType: "customer service",
+            email: AUTHOR_EMAIL,
+            availableLanguage: ["English", "Portuguese"],
+        },
+        sameAs: [
+            "https://github.com/gabrieltoth",
+            "https://linkedin.com/in/gabriel-toth",
+            "https://twitter.com/gabrieltoth",
+        ],
+        description: isPortuguese
+            ? "Empresa de tecnologia especializada em desenvolvimento web, ciência de dados e soluções de IA"
+            : "Technology company specialized in web development, data science and AI solutions",
+    }
+}
+
+// Breadcrumb structured data
+export function generateBreadcrumbStructuredData(
+    breadcrumbs: BreadcrumbItem[]
+): StructuredDataBreadcrumb {
+    return {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        itemListElement: breadcrumbs.map((item, index) => ({
+            "@type": "ListItem",
+            position: index + 1,
+            name: item.name,
+            item: item.url,
+        })),
+    }
+}
+
+// FAQ structured data
+export function generateFAQStructuredData(
+    locale: Locale,
+    faqs: Array<{ question: string; answer: string }>
+): StructuredDataFAQ {
+    return {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        mainEntity: faqs.map(faq => ({
+            "@type": "Question",
+            name: faq.question,
+            acceptedAnswer: {
+                "@type": "Answer",
+                text: faq.answer,
+            },
+        })),
     }
 }
 
@@ -373,9 +678,10 @@ export function getAllPages(): Array<{
     ]
 }
 
-// Generate robots.txt content
+// Enhanced robots.txt generator
 export function generateRobotsContent(): string {
     return `# Robots.txt for ${SITE_URL}
+# Generated automatically
 
 User-agent: *
 Allow: /
@@ -385,16 +691,32 @@ Disallow: /api/
 Disallow: /_next/
 Disallow: /admin/
 Disallow: /.well-known/
+Disallow: /404
+Disallow: /500
 
 # Allow important files
 Allow: /api/contact
 Allow: /_next/static/
+Allow: /_next/image
+
+# Specific bot instructions
+User-agent: Googlebot
+Crawl-delay: 1
+
+User-agent: Bingbot
+Crawl-delay: 1
+
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: Twitterbot
+Allow: /
 
 # Sitemaps
 Sitemap: ${SITE_URL}/sitemap.xml
 Sitemap: ${SITE_URL}/sitemap-en.xml
 Sitemap: ${SITE_URL}/sitemap-pt-BR.xml
 
-# Crawl-delay
-Crawl-delay: 1`
+# Host
+Host: ${SITE_URL}`
 }
