@@ -1,3 +1,5 @@
+import StructuredData from "@/components/seo/structured-data"
+import Breadcrumbs from "@/components/ui/breadcrumbs"
 import LanguageSelector from "@/components/ui/language-selector"
 import { type Locale } from "@/lib/i18n"
 import { generateSeoConfig } from "@/lib/seo"
@@ -247,130 +249,133 @@ export default async function TermsOfServicePage({
                     <Breadcrumbs
                         items={breadcrumbs.map(item => ({
                             name: item.name,
-                            href: item.url.replace('https://gabrieltoth.com', ''),
+                            href: item.url.replace(
+                                "https://gabrieltoth.com",
+                                ""
+                            ),
                         }))}
                         className="mb-6"
                     />
 
-                    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8">
-                    <header className="mb-8">
-                        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-                            {content.title}
-                        </h1>
-                        <p className="text-gray-600 dark:text-gray-300">
-                            {content.lastUpdated}
-                        </p>
-                    </header>
-
-                    <div className="space-y-8">
-                        {/* Introduction */}
-                        <section>
-                            <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
-                                {content.sections.intro.title}
-                            </h2>
-                            <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-                                {content.sections.intro.content}
+                    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8">
+                        <header className="mb-8">
+                            <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+                                {content.title}
+                            </h1>
+                            <p className="text-gray-600 dark:text-gray-300">
+                                {content.lastUpdated}
                             </p>
-                        </section>
+                        </header>
 
-                        {/* Services */}
-                        <section>
-                            <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
-                                {content.sections.services.title}
-                            </h2>
-                            <ul className="space-y-2 text-gray-700 dark:text-gray-300">
-                                {content.sections.services.content.map(
-                                    (item, index) => (
-                                        <li key={index}>{item}</li>
-                                    )
-                                )}
-                            </ul>
-                        </section>
+                        <div className="space-y-8">
+                            {/* Introduction */}
+                            <section>
+                                <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+                                    {content.sections.intro.title}
+                                </h2>
+                                <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+                                    {content.sections.intro.content}
+                                </p>
+                            </section>
 
-                        {/* Obligations */}
-                        <section>
-                            <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
-                                {content.sections.obligations.title}
-                            </h2>
-                            <ul className="space-y-2 text-gray-700 dark:text-gray-300">
-                                {content.sections.obligations.content.map(
-                                    (item, index) => (
-                                        <li key={index}>{item}</li>
-                                    )
-                                )}
-                            </ul>
-                        </section>
+                            {/* Services */}
+                            <section>
+                                <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+                                    {content.sections.services.title}
+                                </h2>
+                                <ul className="space-y-2 text-gray-700 dark:text-gray-300">
+                                    {content.sections.services.content.map(
+                                        (item, index) => (
+                                            <li key={index}>{item}</li>
+                                        )
+                                    )}
+                                </ul>
+                            </section>
 
-                        {/* Payment */}
-                        <section>
-                            <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
-                                {content.sections.payment.title}
-                            </h2>
-                            <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-                                {content.sections.payment.content}
+                            {/* Obligations */}
+                            <section>
+                                <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+                                    {content.sections.obligations.title}
+                                </h2>
+                                <ul className="space-y-2 text-gray-700 dark:text-gray-300">
+                                    {content.sections.obligations.content.map(
+                                        (item, index) => (
+                                            <li key={index}>{item}</li>
+                                        )
+                                    )}
+                                </ul>
+                            </section>
+
+                            {/* Payment */}
+                            <section>
+                                <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+                                    {content.sections.payment.title}
+                                </h2>
+                                <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+                                    {content.sections.payment.content}
+                                </p>
+                            </section>
+
+                            {/* Liability */}
+                            <section>
+                                <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+                                    {content.sections.liability.title}
+                                </h2>
+                                <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+                                    {content.sections.liability.content}
+                                </p>
+                            </section>
+
+                            {/* Intellectual Property */}
+                            <section>
+                                <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+                                    {content.sections.intellectual.title}
+                                </h2>
+                                <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+                                    {content.sections.intellectual.content}
+                                </p>
+                            </section>
+
+                            {/* Confidentiality */}
+                            <section>
+                                <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+                                    {content.sections.confidentiality.title}
+                                </h2>
+                                <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+                                    {content.sections.confidentiality.content}
+                                </p>
+                            </section>
+
+                            {/* Termination */}
+                            <section>
+                                <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+                                    {content.sections.termination.title}
+                                </h2>
+                                <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+                                    {content.sections.termination.content}
+                                </p>
+                            </section>
+
+                            {/* Contact */}
+                            <section>
+                                <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+                                    {content.sections.contact.title}
+                                </h2>
+                                <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+                                    {content.sections.contact.content}
+                                </p>
+                            </section>
+                        </div>
+
+                        <footer className="mt-12 pt-8 border-t border-gray-200 dark:border-gray-700">
+                            <p className="text-sm text-gray-500 dark:text-gray-400 text-center">
+                                © 2025 Gabriel Toth Gonçalves.{" "}
+                                {isPortuguese
+                                    ? "Todos os direitos reservados."
+                                    : "All rights reserved."}
                             </p>
-                        </section>
-
-                        {/* Liability */}
-                        <section>
-                            <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
-                                {content.sections.liability.title}
-                            </h2>
-                            <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-                                {content.sections.liability.content}
-                            </p>
-                        </section>
-
-                        {/* Intellectual Property */}
-                        <section>
-                            <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
-                                {content.sections.intellectual.title}
-                            </h2>
-                            <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-                                {content.sections.intellectual.content}
-                            </p>
-                        </section>
-
-                        {/* Confidentiality */}
-                        <section>
-                            <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
-                                {content.sections.confidentiality.title}
-                            </h2>
-                            <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-                                {content.sections.confidentiality.content}
-                            </p>
-                        </section>
-
-                        {/* Termination */}
-                        <section>
-                            <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
-                                {content.sections.termination.title}
-                            </h2>
-                            <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-                                {content.sections.termination.content}
-                            </p>
-                        </section>
-
-                        {/* Contact */}
-                        <section>
-                            <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
-                                {content.sections.contact.title}
-                            </h2>
-                            <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-                                {content.sections.contact.content}
-                            </p>
-                        </section>
+                        </footer>
                     </div>
-
-                    <footer className="mt-12 pt-8 border-t border-gray-200 dark:border-gray-700">
-                        <p className="text-sm text-gray-500 dark:text-gray-400 text-center">
-                            © 2025 Gabriel Toth Gonçalves.{" "}
-                            {isPortuguese
-                                ? "Todos os direitos reservados."
-                                : "All rights reserved."}
-                        </p>
-                    </footer>
                 </div>
             </div>
         </>
