@@ -1,8 +1,88 @@
 import LanguageSelector from "@/components/ui/language-selector"
 import { type Locale } from "@/lib/i18n"
+import { generateSeoConfig } from "@/lib/seo"
+import { type Metadata } from "next"
 
 interface TermsOfServicePageProps {
     params: Promise<{ locale: Locale }>
+}
+
+export async function generateMetadata({
+    params,
+}: TermsOfServicePageProps): Promise<Metadata> {
+    const { locale } = await params
+    const isPortuguese = locale === "pt-BR"
+
+    const seoConfig = generateSeoConfig({
+        locale,
+        path: "/terms-of-service",
+        title: isPortuguese
+            ? "Termos de Serviço - Gabriel Toth"
+            : "Terms of Service - Gabriel Toth",
+        description: isPortuguese
+            ? "Termos de serviço da Gabriel Toth. Conheça as condições de uso de nossos serviços de consultoria digital, otimização de PC e desenvolvimento."
+            : "Gabriel Toth terms of service. Learn about the usage conditions for our digital consulting, PC optimization and development services.",
+        keywords: isPortuguese
+            ? [
+                  "termos de serviço",
+                  "condições de uso",
+                  "contrato",
+                  "serviços",
+                  "gabriel toth",
+                  "consultoria",
+              ]
+            : [
+                  "terms of service",
+                  "terms of use",
+                  "contract",
+                  "services",
+                  "gabriel toth",
+                  "consulting",
+              ],
+        ogType: "article",
+        ogImage: "https://gabrieltoth.com/og-image-terms.jpg",
+    })
+
+    return {
+        title: seoConfig.title,
+        description: seoConfig.description,
+        keywords: seoConfig.additionalMetaTags?.find(
+            tag => tag.name === "keywords"
+        )?.content,
+        robots: seoConfig.additionalMetaTags?.find(tag => tag.name === "robots")
+            ?.content,
+        openGraph: {
+            title: seoConfig.openGraph?.title,
+            description: seoConfig.openGraph?.description,
+            url: seoConfig.canonical,
+            type: seoConfig.openGraph?.type as "website",
+            locale: seoConfig.openGraph?.locale,
+            images: seoConfig.openGraph?.images?.map(img => ({
+                url: img.url!,
+                width: img.width,
+                height: img.height,
+                alt: img.alt!,
+                type: img.type,
+            })),
+            siteName: "Gabriel Toth Portfolio",
+        },
+        twitter: {
+            card: seoConfig.twitter?.card as "summary_large_image",
+            title: seoConfig.twitter?.title,
+            description: seoConfig.twitter?.description,
+            images: seoConfig.twitter?.images,
+            creator: seoConfig.twitter?.creator,
+            site: seoConfig.twitter?.site,
+        },
+        alternates: {
+            canonical: seoConfig.canonical,
+            languages: {
+                en: "https://gabrieltoth.com/terms-of-service",
+                "pt-BR": "https://gabrieltoth.com/pt-BR/terms-of-service",
+                "x-default": "https://gabrieltoth.com/terms-of-service",
+            },
+        },
+    }
 }
 
 export default async function TermsOfServicePage({
@@ -10,6 +90,42 @@ export default async function TermsOfServicePage({
 }: TermsOfServicePageProps) {
     const { locale } = await params
     const isPortuguese = locale === "pt-BR"
+
+    // Breadcrumbs
+    const breadcrumbs = [
+        {
+            name: isPortuguese ? "Início" : "Home",
+            url: `https://gabrieltoth.com/${locale}`,
+        },
+        {
+            name: isPortuguese ? "Legal" : "Legal",
+            url: `https://gabrieltoth.com/${locale}/#legal`,
+        },
+        {
+            name: isPortuguese ? "Termos de Serviço" : "Terms of Service",
+            url: `https://gabrieltoth.com/${locale}/terms-of-service`,
+        },
+    ]
+
+    // WebPage structured data
+    const webPageStructuredData = {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        name: isPortuguese ? "Termos de Serviço" : "Terms of Service",
+        description: isPortuguese
+            ? "Termos de serviço detalhando as condições de uso dos nossos serviços"
+            : "Terms of service detailing the usage conditions for our services",
+        url: `https://gabrieltoth.com${locale === "en" ? "" : `/${locale}`}/terms-of-service`,
+        isPartOf: {
+            "@type": "WebSite",
+            name: "Gabriel Toth Portfolio",
+            url: "https://gabrieltoth.com",
+        },
+        about: {
+            "@type": "Thing",
+            name: isPortuguese ? "Condições de Uso" : "Usage Terms",
+        },
+    }
 
     const content = {
         title: isPortuguese ? "Termos de Serviço" : "Terms of Service",
@@ -113,13 +229,30 @@ export default async function TermsOfServicePage({
     }
 
     return (
-        <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-12">
-            {/* Language Selector */}
-            <div className="fixed top-4 right-4 z-50">
-                <LanguageSelector />
-            </div>
+        <>
+            <StructuredData
+                locale={locale}
+                type="all"
+                customData={webPageStructuredData}
+                breadcrumbs={breadcrumbs}
+            />
 
-            <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-12">
+                {/* Language Selector */}
+                <div className="fixed top-4 right-4 z-50">
+                    <LanguageSelector />
+                </div>
+
+                <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <Breadcrumbs
+                        items={breadcrumbs.map(item => ({
+                            name: item.name,
+                            href: item.url.replace('https://gabrieltoth.com', ''),
+                        }))}
+                        className="mb-6"
+                    />
+
+                    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8">
                     <header className="mb-8">
                         <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
@@ -240,6 +373,6 @@ export default async function TermsOfServicePage({
                     </footer>
                 </div>
             </div>
-        </div>
+        </>
     )
 }

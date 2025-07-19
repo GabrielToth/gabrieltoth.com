@@ -1,7 +1,89 @@
+import StructuredData from "@/components/seo/structured-data"
+import Breadcrumbs from "@/components/ui/breadcrumbs"
 import { type Locale } from "@/lib/i18n"
+import { generateSeoConfig } from "@/lib/seo"
+import { type Metadata } from "next"
 
 interface PrivacyPolicyPageProps {
     params: Promise<{ locale: Locale }>
+}
+
+export async function generateMetadata({
+    params,
+}: PrivacyPolicyPageProps): Promise<Metadata> {
+    const { locale } = await params
+    const isPortuguese = locale === "pt-BR"
+
+    const seoConfig = generateSeoConfig({
+        locale,
+        path: "/privacy-policy",
+        title: isPortuguese
+            ? "Política de Privacidade - Gabriel Toth"
+            : "Privacy Policy - Gabriel Toth",
+        description: isPortuguese
+            ? "Política de privacidade da Gabriel Toth. Saiba como coletamos, usamos e protegemos suas informações pessoais em nossos serviços de consultoria digital e desenvolvimento."
+            : "Gabriel Toth privacy policy. Learn how we collect, use and protect your personal information in our digital consulting and development services.",
+        keywords: isPortuguese
+            ? [
+                  "política de privacidade",
+                  "proteção de dados",
+                  "lgpd",
+                  "privacidade",
+                  "gabriel toth",
+                  "dados pessoais",
+              ]
+            : [
+                  "privacy policy",
+                  "data protection",
+                  "gdpr",
+                  "privacy",
+                  "gabriel toth",
+                  "personal data",
+              ],
+        ogType: "article",
+        ogImage: "https://gabrieltoth.com/og-image-privacy.jpg",
+    })
+
+    return {
+        title: seoConfig.title,
+        description: seoConfig.description,
+        keywords: seoConfig.additionalMetaTags?.find(
+            tag => tag.name === "keywords"
+        )?.content,
+        robots: seoConfig.additionalMetaTags?.find(tag => tag.name === "robots")
+            ?.content,
+        openGraph: {
+            title: seoConfig.openGraph?.title,
+            description: seoConfig.openGraph?.description,
+            url: seoConfig.canonical,
+            type: seoConfig.openGraph?.type as "website",
+            locale: seoConfig.openGraph?.locale,
+            images: seoConfig.openGraph?.images?.map(img => ({
+                url: img.url!,
+                width: img.width,
+                height: img.height,
+                alt: img.alt!,
+                type: img.type,
+            })),
+            siteName: "Gabriel Toth Portfolio",
+        },
+        twitter: {
+            card: seoConfig.twitter?.card as "summary_large_image",
+            title: seoConfig.twitter?.title,
+            description: seoConfig.twitter?.description,
+            images: seoConfig.twitter?.images,
+            creator: seoConfig.twitter?.creator,
+            site: seoConfig.twitter?.site,
+        },
+        alternates: {
+            canonical: seoConfig.canonical,
+            languages: {
+                en: "https://gabrieltoth.com/privacy-policy",
+                "pt-BR": "https://gabrieltoth.com/pt-BR/privacy-policy",
+                "x-default": "https://gabrieltoth.com/privacy-policy",
+            },
+        },
+    }
 }
 
 export default async function PrivacyPolicyPage({
@@ -9,6 +91,42 @@ export default async function PrivacyPolicyPage({
 }: PrivacyPolicyPageProps) {
     const { locale } = await params
     const isPortuguese = locale === "pt-BR"
+
+    // Breadcrumbs
+    const breadcrumbs = [
+        {
+            name: isPortuguese ? "Início" : "Home",
+            url: `https://gabrieltoth.com/${locale}`,
+        },
+        {
+            name: isPortuguese ? "Legal" : "Legal",
+            url: `https://gabrieltoth.com/${locale}/#legal`,
+        },
+        {
+            name: isPortuguese ? "Política de Privacidade" : "Privacy Policy",
+            url: `https://gabrieltoth.com/${locale}/privacy-policy`,
+        },
+    ]
+
+    // WebPage structured data
+    const webPageStructuredData = {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        name: isPortuguese ? "Política de Privacidade" : "Privacy Policy",
+        description: isPortuguese
+            ? "Política de privacidade detalhando como protegemos e utilizamos dados pessoais"
+            : "Privacy policy detailing how we protect and use personal data",
+        url: `https://gabrieltoth.com${locale === "en" ? "" : `/${locale}`}/privacy-policy`,
+        isPartOf: {
+            "@type": "WebSite",
+            name: "Gabriel Toth Portfolio",
+            url: "https://gabrieltoth.com",
+        },
+        about: {
+            "@type": "Thing",
+            name: isPortuguese ? "Proteção de Dados" : "Data Protection",
+        },
+    }
 
     const content = {
         title: isPortuguese ? "Política de Privacidade" : "Privacy Policy",
@@ -106,112 +224,132 @@ export default async function PrivacyPolicyPage({
     }
 
     return (
-        <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-12">
-            <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8">
-                    <header className="mb-8">
-                        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-                            {content.title}
-                        </h1>
-                        <p className="text-gray-600 dark:text-gray-300">
-                            {content.lastUpdated}
-                        </p>
-                    </header>
+        <>
+            <StructuredData
+                locale={locale}
+                type="all"
+                customData={webPageStructuredData}
+                breadcrumbs={breadcrumbs}
+            />
 
-                    <div className="space-y-8">
-                        {/* Introduction */}
-                        <section>
-                            <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
-                                {content.sections.intro.title}
-                            </h2>
-                            <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-                                {content.sections.intro.content}
+            <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-12">
+                <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <Breadcrumbs
+                        items={breadcrumbs.map(item => ({
+                            name: item.name,
+                            href: item.url.replace(
+                                "https://gabrieltoth.com",
+                                ""
+                            ),
+                        }))}
+                        className="mb-6"
+                    />
+
+                    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8">
+                        <header className="mb-8">
+                            <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+                                {content.title}
+                            </h1>
+                            <p className="text-gray-600 dark:text-gray-300">
+                                {content.lastUpdated}
                             </p>
-                        </section>
+                        </header>
 
-                        {/* Information Collection */}
-                        <section>
-                            <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
-                                {content.sections.collection.title}
-                            </h2>
-                            <ul className="space-y-2 text-gray-700 dark:text-gray-300">
-                                {content.sections.collection.content.map(
-                                    (item, index) => (
-                                        <li key={index}>{item}</li>
-                                    )
-                                )}
-                            </ul>
-                        </section>
+                        <div className="space-y-8">
+                            {/* Introduction */}
+                            <section>
+                                <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+                                    {content.sections.intro.title}
+                                </h2>
+                                <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+                                    {content.sections.intro.content}
+                                </p>
+                            </section>
 
-                        {/* Usage */}
-                        <section>
-                            <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
-                                {content.sections.usage.title}
-                            </h2>
-                            <ul className="space-y-2 text-gray-700 dark:text-gray-300">
-                                {content.sections.usage.content.map(
-                                    (item, index) => (
-                                        <li key={index}>{item}</li>
-                                    )
-                                )}
-                            </ul>
-                        </section>
+                            {/* Information Collection */}
+                            <section>
+                                <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+                                    {content.sections.collection.title}
+                                </h2>
+                                <ul className="space-y-2 text-gray-700 dark:text-gray-300">
+                                    {content.sections.collection.content.map(
+                                        (item, index) => (
+                                            <li key={index}>{item}</li>
+                                        )
+                                    )}
+                                </ul>
+                            </section>
 
-                        {/* Sharing */}
-                        <section>
-                            <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
-                                {content.sections.sharing.title}
-                            </h2>
-                            <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-                                {content.sections.sharing.content}
+                            {/* Usage */}
+                            <section>
+                                <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+                                    {content.sections.usage.title}
+                                </h2>
+                                <ul className="space-y-2 text-gray-700 dark:text-gray-300">
+                                    {content.sections.usage.content.map(
+                                        (item, index) => (
+                                            <li key={index}>{item}</li>
+                                        )
+                                    )}
+                                </ul>
+                            </section>
+
+                            {/* Sharing */}
+                            <section>
+                                <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+                                    {content.sections.sharing.title}
+                                </h2>
+                                <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+                                    {content.sections.sharing.content}
+                                </p>
+                            </section>
+
+                            {/* Security */}
+                            <section>
+                                <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+                                    {content.sections.security.title}
+                                </h2>
+                                <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+                                    {content.sections.security.content}
+                                </p>
+                            </section>
+
+                            {/* Rights */}
+                            <section>
+                                <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+                                    {content.sections.rights.title}
+                                </h2>
+                                <ul className="space-y-2 text-gray-700 dark:text-gray-300">
+                                    {content.sections.rights.content.map(
+                                        (item, index) => (
+                                            <li key={index}>{item}</li>
+                                        )
+                                    )}
+                                </ul>
+                            </section>
+
+                            {/* Contact */}
+                            <section>
+                                <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+                                    {content.sections.contact.title}
+                                </h2>
+                                <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+                                    {content.sections.contact.content}
+                                </p>
+                            </section>
+                        </div>
+
+                        <footer className="mt-12 pt-8 border-t border-gray-200 dark:border-gray-700">
+                            <p className="text-sm text-gray-500 dark:text-gray-400 text-center">
+                                © 2025 Gabriel Toth Gonçalves.{" "}
+                                {isPortuguese
+                                    ? "Todos os direitos reservados."
+                                    : "All rights reserved."}
                             </p>
-                        </section>
-
-                        {/* Security */}
-                        <section>
-                            <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
-                                {content.sections.security.title}
-                            </h2>
-                            <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-                                {content.sections.security.content}
-                            </p>
-                        </section>
-
-                        {/* Rights */}
-                        <section>
-                            <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
-                                {content.sections.rights.title}
-                            </h2>
-                            <ul className="space-y-2 text-gray-700 dark:text-gray-300">
-                                {content.sections.rights.content.map(
-                                    (item, index) => (
-                                        <li key={index}>{item}</li>
-                                    )
-                                )}
-                            </ul>
-                        </section>
-
-                        {/* Contact */}
-                        <section>
-                            <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
-                                {content.sections.contact.title}
-                            </h2>
-                            <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-                                {content.sections.contact.content}
-                            </p>
-                        </section>
+                        </footer>
                     </div>
-
-                    <footer className="mt-12 pt-8 border-t border-gray-200 dark:border-gray-700">
-                        <p className="text-sm text-gray-500 dark:text-gray-400 text-center">
-                            © 2025 Gabriel Toth Gonçalves.{" "}
-                            {isPortuguese
-                                ? "Todos os direitos reservados."
-                                : "All rights reserved."}
-                        </p>
-                    </footer>
                 </div>
             </div>
-        </div>
+        </>
     )
 }
