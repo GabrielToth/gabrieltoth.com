@@ -1,15 +1,13 @@
+import { locales, type Locale } from "@/lib/i18n"
 import { getRequestConfig } from "next-intl/server"
-import { defaultLocale, locales, type Locale } from "../lib/i18n"
 
 export default getRequestConfig(async ({ locale }) => {
-    // Ensure we have a valid locale
-    const validLocale: Locale =
-        locale && locales.includes(locale as Locale)
-            ? (locale as Locale)
-            : defaultLocale
+    // Validate that the incoming `locale` parameter is valid and ensure it's a string
+    const validLocale =
+        locale && locales.includes(locale as Locale) ? locale : "en"
 
     return {
-        locale: validLocale,
-        messages: (await import(`./${validLocale}.json`)).default,
+        locale: validLocale as string,
+        messages: {},
     }
 })
