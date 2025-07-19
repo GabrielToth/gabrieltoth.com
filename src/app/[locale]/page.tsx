@@ -6,13 +6,15 @@ import ProjectsSection from "@/app/[locale]/home/projects-section"
 import Footer from "@/components/layout/footer"
 import Header from "@/components/layout/header"
 import StructuredData from "@/components/seo/structured-data"
+import Breadcrumbs from "@/components/ui/breadcrumbs"
 import { type Locale } from "@/lib/i18n"
+import { generateMetadata } from "./home-metadata"
 
 interface HomePageProps {
     params: Promise<{ locale: Locale }>
 }
 
-export { generateMetadata } from "./home-metadata"
+export { generateMetadata }
 
 export default async function HomePage({ params }: HomePageProps) {
     const { locale } = await params
@@ -56,6 +58,9 @@ export default async function HomePage({ params }: HomePageProps) {
 
             <main className="min-h-screen bg-white dark:bg-gray-900">
                 <Header />
+                <div className="container mx-auto px-4 pt-20">
+                    <Breadcrumbs className="mb-6" hideHome={true} />
+                </div>
                 <HeroSection />
                 <AboutSection params={{ locale }} />
                 <ProjectsSection />

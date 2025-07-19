@@ -53,95 +53,77 @@ export default async function PrivacyPolicyPage({
     const content = {
         title: isPortuguese ? "Política de Privacidade" : "Privacy Policy",
         lastUpdated: isPortuguese
-            ? "Última atualização: Julho 2025"
-            : "Last updated: January 2025",
-        sections: {
-            intro: {
-                title: isPortuguese ? "1. Introdução" : "1. Introduction",
-                content: isPortuguese
-                    ? "Esta Política de Privacidade descreve como Gabriel Toth Gonçalves ('nós', 'nosso' ou 'nos') coleta, usa, armazena e protege suas informações pessoais quando você utiliza nossos serviços de consultoria em canais digitais, otimização de PC e outras soluções tecnológicas."
-                    : "This Privacy Policy describes how Gabriel Toth Gonçalves ('we', 'our' or 'us') collects, uses, stores and protects your personal information when you use our digital channel consulting, PC optimization and other technology solution services.",
-            },
-            collection: {
-                title: isPortuguese
-                    ? "2. Informações que Coletamos"
-                    : "2. Information We Collect",
-                content: isPortuguese
-                    ? [
-                          "• Dados de contato: nome, email, telefone, WhatsApp",
-                          "• Informações do canal: URL do YouTube, tipo de conteúdo, estatísticas",
-                          "• Dados de pagamento: informações para processamento de transações",
-                          "• Dados técnicos: especificações do PC para otimização",
-                          "• Comunicações: mensagens trocadas durante a consultoria",
-                      ]
-                    : [
-                          "• Contact data: name, email, phone, WhatsApp",
-                          "• Channel information: YouTube URL, content type, statistics",
-                          "• Payment data: information for transaction processing",
-                          "• Technical data: PC specifications for optimization",
-                          "• Communications: messages exchanged during consulting",
-                      ],
-            },
-            usage: {
-                title: isPortuguese
-                    ? "3. Como Usamos suas Informações"
-                    : "3. How We Use Your Information",
-                content: isPortuguese
-                    ? [
-                          "• Prestar serviços de consultoria personalizados",
-                          "• Processar pagamentos e emitir faturas",
-                          "• Comunicar sobre projetos e atualizações",
-                          "• Melhorar nossos serviços",
-                          "• Cumprir obrigações legais",
-                      ]
-                    : [
-                          "• Provide personalized consulting services",
-                          "• Process payments and issue invoices",
-                          "• Communicate about projects and updates",
-                          "• Improve our services",
-                          "• Comply with legal obligations",
-                      ],
-            },
-            sharing: {
-                title: isPortuguese
-                    ? "4. Compartilhamento de Dados"
-                    : "4. Data Sharing",
-                content: isPortuguese
-                    ? "Não vendemos, alugamos ou compartilhamos suas informações pessoais com terceiros, exceto quando necessário para prestação dos serviços (processadores de pagamento, ferramentas de análise) ou quando exigido por lei."
-                    : "We do not sell, rent or share your personal information with third parties, except when necessary for service provision (payment processors, analytics tools) or when required by law.",
-            },
-            security: {
-                title: isPortuguese
-                    ? "5. Segurança dos Dados"
-                    : "5. Data Security",
-                content: isPortuguese
-                    ? "Implementamos medidas de segurança técnicas e organizacionais adequadas para proteger suas informações contra acesso não autorizado, alteração, divulgação ou destruição."
-                    : "We implement appropriate technical and organizational security measures to protect your information against unauthorized access, alteration, disclosure or destruction.",
-            },
-            rights: {
-                title: isPortuguese ? "6. Seus Direitos" : "6. Your Rights",
-                content: isPortuguese
-                    ? [
-                          "• Acessar suas informações pessoais",
-                          "• Corrigir dados incorretos",
-                          "• Solicitar exclusão de dados",
-                          "• Portabilidade dos dados",
-                          "• Revogar consentimento",
-                      ]
-                    : [
-                          "• Access your personal information",
-                          "• Correct incorrect data",
-                          "• Request data deletion",
-                          "• Data portability",
-                          "• Revoke consent",
-                      ],
-            },
-            contact: {
-                title: isPortuguese ? "7. Contato" : "7. Contact",
-                content: isPortuguese
-                    ? "Para questões sobre esta política ou seus dados pessoais, entre em contato: gabrieltothgoncalves@gmail.com ou WhatsApp: +55 11 993313606"
-                    : "For questions about this policy or your personal data, contact us: gabrieltothgoncalves@gmail.com or WhatsApp: +55 11 993313606",
-            },
+            ? "Última atualização: 15 de dezembro de 2024"
+            : "Last updated: December 15, 2024",
+        introduction: {
+            title: isPortuguese ? "1. Introdução" : "1. Introduction",
+            text: isPortuguese
+                ? "Esta Política de Privacidade descreve como coletamos, usamos, armazenamos e protegemos suas informações pessoais quando você visita nosso site ou utiliza nossos serviços."
+                : "This Privacy Policy describes how we collect, use, store, and protect your personal information when you visit our website or use our services.",
+        },
+        collection: {
+            title: isPortuguese
+                ? "2. Informações que Coletamos"
+                : "2. Information We Collect",
+            text: isPortuguese
+                ? "Coletamos informações que você nos fornece diretamente (como formulários de contato), informações de uso do site (cookies, analytics) e informações técnicas (endereço IP, tipo de navegador)."
+                : "We collect information you provide directly to us (such as contact forms), website usage information (cookies, analytics), and technical information (IP address, browser type).",
+        },
+        usage: {
+            title: isPortuguese
+                ? "3. Como Usamos suas Informações"
+                : "3. How We Use Your Information",
+            text: isPortuguese
+                ? "Utilizamos suas informações para fornecer nossos serviços, melhorar a experiência do usuário, comunicar-nos com você sobre nossos serviços e cumprir obrigações legais."
+                : "We use your information to provide our services, improve user experience, communicate with you about our services, and comply with legal obligations.",
+        },
+        sharing: {
+            title: isPortuguese
+                ? "4. Compartilhamento de Informações"
+                : "4. Information Sharing",
+            text: isPortuguese
+                ? "Não vendemos, alugamos ou compartilhamos suas informações pessoais com terceiros, exceto quando necessário para fornecer nossos serviços ou quando exigido por lei."
+                : "We do not sell, rent, or share your personal information with third parties, except when necessary to provide our services or when required by law.",
+        },
+        cookies: {
+            title: isPortuguese
+                ? "5. Cookies e Tecnologias Similares"
+                : "5. Cookies and Similar Technologies",
+            text: isPortuguese
+                ? "Utilizamos cookies e tecnologias similares para melhorar a funcionalidade do site, analisar o uso e personalizar sua experiência. Você pode controlar o uso de cookies através das configurações do seu navegador."
+                : "We use cookies and similar technologies to improve website functionality, analyze usage, and personalize your experience. You can control cookie usage through your browser settings.",
+        },
+        security: {
+            title: isPortuguese ? "6. Segurança dos Dados" : "6. Data Security",
+            text: isPortuguese
+                ? "Implementamos medidas de segurança adequadas para proteger suas informações contra acesso não autorizado, alteração, divulgação ou destruição."
+                : "We implement appropriate security measures to protect your information against unauthorized access, alteration, disclosure, or destruction.",
+        },
+        rights: {
+            title: isPortuguese ? "7. Seus Direitos" : "7. Your Rights",
+            text: isPortuguese
+                ? "Você tem o direito de acessar, corrigir, excluir ou limitar o processamento de suas informações pessoais. Para exercer esses direitos, entre em contato conosco."
+                : "You have the right to access, correct, delete, or limit the processing of your personal information. To exercise these rights, please contact us.",
+        },
+        retention: {
+            title: isPortuguese ? "8. Retenção de Dados" : "8. Data Retention",
+            text: isPortuguese
+                ? "Mantemos suas informações pessoais apenas pelo tempo necessário para cumprir os propósitos descritos nesta política ou conforme exigido por lei."
+                : "We retain your personal information only for as long as necessary to fulfill the purposes described in this policy or as required by law.",
+        },
+        changes: {
+            title: isPortuguese
+                ? "9. Alterações nesta Política"
+                : "9. Changes to This Policy",
+            text: isPortuguese
+                ? "Podemos atualizar esta Política de Privacidade periodicamente. Notificaremos você sobre mudanças significativas através do site ou por outros meios apropriados."
+                : "We may update this Privacy Policy periodically. We will notify you of significant changes through the website or other appropriate means.",
+        },
+        contact: {
+            title: isPortuguese ? "10. Contato" : "10. Contact",
+            text: isPortuguese
+                ? "Se você tiver dúvidas sobre esta Política de Privacidade ou sobre como tratamos suas informações, entre em contato conosco através dos canais disponíveis no site."
+                : "If you have questions about this Privacy Policy or about how we handle your information, please contact us through the channels available on the website.",
         },
     }
 
@@ -180,95 +162,112 @@ export default async function PrivacyPolicyPage({
                         <div className="space-y-8">
                             {/* Introduction */}
                             <section>
-                                <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
-                                    {content.sections.intro.title}
+                                <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">
+                                    {content.introduction.title}
                                 </h2>
                                 <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-                                    {content.sections.intro.content}
+                                    {content.introduction.text}
                                 </p>
                             </section>
 
                             {/* Information Collection */}
                             <section>
-                                <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
-                                    {content.sections.collection.title}
-                                </h2>
-                                <ul className="space-y-2 text-gray-700 dark:text-gray-300">
-                                    {content.sections.collection.content.map(
-                                        (item, index) => (
-                                            <li key={index}>{item}</li>
-                                        )
-                                    )}
-                                </ul>
-                            </section>
-
-                            {/* Usage */}
-                            <section>
-                                <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
-                                    {content.sections.usage.title}
-                                </h2>
-                                <ul className="space-y-2 text-gray-700 dark:text-gray-300">
-                                    {content.sections.usage.content.map(
-                                        (item, index) => (
-                                            <li key={index}>{item}</li>
-                                        )
-                                    )}
-                                </ul>
-                            </section>
-
-                            {/* Sharing */}
-                            <section>
-                                <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
-                                    {content.sections.sharing.title}
+                                <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">
+                                    {content.collection.title}
                                 </h2>
                                 <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-                                    {content.sections.sharing.content}
+                                    {content.collection.text}
+                                </p>
+                            </section>
+
+                            {/* Information Usage */}
+                            <section>
+                                <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">
+                                    {content.usage.title}
+                                </h2>
+                                <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+                                    {content.usage.text}
+                                </p>
+                            </section>
+
+                            {/* Information Sharing */}
+                            <section>
+                                <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">
+                                    {content.sharing.title}
+                                </h2>
+                                <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+                                    {content.sharing.text}
+                                </p>
+                            </section>
+
+                            {/* Cookies */}
+                            <section>
+                                <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">
+                                    {content.cookies.title}
+                                </h2>
+                                <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+                                    {content.cookies.text}
                                 </p>
                             </section>
 
                             {/* Security */}
                             <section>
-                                <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
-                                    {content.sections.security.title}
+                                <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">
+                                    {content.security.title}
                                 </h2>
                                 <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-                                    {content.sections.security.content}
+                                    {content.security.text}
                                 </p>
                             </section>
 
                             {/* Rights */}
                             <section>
-                                <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
-                                    {content.sections.rights.title}
+                                <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">
+                                    {content.rights.title}
                                 </h2>
-                                <ul className="space-y-2 text-gray-700 dark:text-gray-300">
-                                    {content.sections.rights.content.map(
-                                        (item, index) => (
-                                            <li key={index}>{item}</li>
-                                        )
-                                    )}
-                                </ul>
+                                <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+                                    {content.rights.text}
+                                </p>
+                            </section>
+
+                            {/* Data Retention */}
+                            <section>
+                                <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">
+                                    {content.retention.title}
+                                </h2>
+                                <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+                                    {content.retention.text}
+                                </p>
+                            </section>
+
+                            {/* Policy Changes */}
+                            <section>
+                                <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">
+                                    {content.changes.title}
+                                </h2>
+                                <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+                                    {content.changes.text}
+                                </p>
                             </section>
 
                             {/* Contact */}
                             <section>
-                                <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
-                                    {content.sections.contact.title}
+                                <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">
+                                    {content.contact.title}
                                 </h2>
                                 <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-                                    {content.sections.contact.content}
+                                    {content.contact.text}
                                 </p>
                             </section>
                         </div>
 
-                        <footer className="mt-12 pt-8 border-t border-gray-200 dark:border-gray-700">
+                        <div className="mt-12 pt-8 border-t border-gray-200 dark:border-gray-700">
                             <p className="text-sm text-gray-500 dark:text-gray-400 text-center">
-                                © 2025 Gabriel Toth Gonçalves.{" "}
                                 {isPortuguese
-                                    ? "Todos os direitos reservados."
-                                    : "All rights reserved."}
+                                    ? "Esta política está em conformidade com a Lei Geral de Proteção de Dados (LGPD) e outras regulamentações aplicáveis."
+                                    : "This policy complies with the General Data Protection Law (LGPD) and other applicable regulations."}
                             </p>
-                        </footer>
+                        </div>
                     </div>
                 </div>
             </div>

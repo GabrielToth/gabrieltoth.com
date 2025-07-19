@@ -1,5 +1,6 @@
 import Footer from "@/components/layout/footer"
 import StructuredData from "@/components/seo/structured-data"
+import Breadcrumbs from "@/components/ui/breadcrumbs"
 import { type Locale } from "@/lib/i18n"
 import { generateMetadata } from "./channel-management-metadata"
 import ChannelManagementView from "./channel-management-view"
@@ -49,15 +50,15 @@ export default async function ChannelManagementPage({ params }: PageProps) {
             ratingValue: "5.0",
             ratingCount: "50",
             bestRating: "5",
+            worstRating: "1",
         },
     }
 
-    // FAQ data for structured data
     const faqs = isPortuguese
         ? [
               {
                   question: "O que é o ViraTrend?",
-                  answer: "ViraTrend é uma consultoria especializada em crescimento digital para criadores de conteúdo. Oferecemos análise de dados, otimização de conteúdo e estratégias de monetização personalizadas.",
+                  answer: "ViraTrend é um serviço de consultoria especializado em crescimento digital para criadores de conteúdo. Oferecemos análise de dados, otimização de conteúdo e estratégias personalizadas de monetização.",
               },
               {
                   question: "Como funciona a consultoria?",
@@ -121,6 +122,7 @@ export default async function ChannelManagementPage({ params }: PageProps) {
 
             <div className="min-h-screen bg-white dark:bg-gray-900">
                 <div className="container mx-auto px-4 py-8">
+                    <Breadcrumbs className="mb-6" />
                     <ChannelManagementView locale={locale} />
                 </div>
                 <Footer locale={locale} />

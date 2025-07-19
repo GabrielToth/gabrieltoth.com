@@ -1,6 +1,7 @@
 import WaveIGLSupportLanding from "@/app/[locale]/waveigl-support/waveigl-support-landing"
 import Footer from "@/components/layout/footer"
 import StructuredData from "@/components/seo/structured-data"
+import Breadcrumbs from "@/components/ui/breadcrumbs"
 import { type Locale } from "@/lib/i18n"
 
 interface PageProps {
@@ -13,61 +14,60 @@ export default async function WaveIGLSupportPage({ params }: PageProps) {
     const { locale } = await params
     const isPortuguese = locale === "pt-BR"
 
-    // Organization/Community structured data
+    // Organization structured data
     const organizationStructuredData = {
         "@context": "https://schema.org",
         "@type": "Organization",
-        name: "WaveIGL Community",
+        name: "WaveIGL",
         description: isPortuguese
-            ? "Comunidade gaming brasileira com mais de 2 milhões de espectadores focada em entretenimento e desenvolvimento de ferramentas"
-            : "Brazilian gaming community with over 2 million viewers focused on entertainment and tool development",
-        founder: {
-            "@type": "Person",
-            name: "Gabriel Toth Gonçalves",
-            url: "https://gabrieltoth.com",
-        },
-        url: `https://gabrieltoth.com${locale === "en" ? "" : `/${locale}`}/waveigl-support`,
-        sameAs: ["https://youtube.com/@waveigl", "https://twitter.com/waveigl"],
-        audience: {
-            "@type": "Audience",
-            audienceType: "Gaming Community",
-        },
-        seeks: {
-            "@type": "Thing",
-            name: isPortuguese
-                ? "Apoio financeiro para desenvolvimento"
-                : "Financial support for development",
+            ? "Comunidade de jogadores e criadores de conteúdo focada em gaming"
+            : "Gaming community of players and content creators focused on gaming",
+        url: "https://gabrieltoth.com/waveigl-support",
+        foundingDate: "2023",
+        areaServed: "Brazil",
+        sameAs: ["https://discord.gg/waveigl", "https://youtube.com/@waveigl"],
+        brand: {
+            "@type": "Brand",
+            name: "WaveIGL",
         },
     }
 
-    // FAQ data
+    // FAQs structured data
     const faqs = isPortuguese
         ? [
               {
-                  question: "Para que são usadas as doações?",
-                  answer: "As doações são investidas 100% no desenvolvimento de ferramentas, plataformas e recursos para a comunidade WaveIGL, incluindo servidores, software e infraestrutura.",
+                  question: "O que é a WaveIGL?",
+                  answer: "WaveIGL é uma comunidade dedicada a jogadores e criadores de conteúdo de gaming, oferecendo suporte, networking e oportunidades de crescimento.",
               },
               {
-                  question: "Como posso acompanhar o uso das doações?",
-                  answer: "Publicamos relatórios mensais de transparência mostrando como cada real foi investido no desenvolvimento da comunidade.",
+                  question: "Como posso apoiar a WaveIGL?",
+                  answer: "Você pode apoiar através de doações, participação ativa na comunidade, compartilhamento de conteúdo e ajudando outros membros.",
               },
               {
-                  question: "Existe valor mínimo para doação?",
-                  answer: "Não há valor mínimo. Qualquer contribuição, por menor que seja, faz diferença e é muito valorizada pela comunidade.",
+                  question: "Quais são os benefícios de apoiar?",
+                  answer: "Apoiadores recebem acesso a conteúdo exclusivo, participação em eventos especiais, suporte personalizado e reconhecimento na comunidade.",
+              },
+              {
+                  question: "Como funciona o sistema de doações?",
+                  answer: "Aceitamos doações via PIX, cartão de crédito e criptomoedas. Todo o valor é investido de volta na comunidade através de melhorias e eventos.",
               },
           ]
         : [
               {
-                  question: "What are donations used for?",
-                  answer: "Donations are 100% invested in developing tools, platforms and resources for the WaveIGL community, including servers, software and infrastructure.",
+                  question: "What is WaveIGL?",
+                  answer: "WaveIGL is a community dedicated to gaming players and content creators, offering support, networking and growth opportunities.",
               },
               {
-                  question: "How can I track donation usage?",
-                  answer: "We publish monthly transparency reports showing how every dollar was invested in community development.",
+                  question: "How can I support WaveIGL?",
+                  answer: "You can support through donations, active community participation, content sharing and helping other members.",
               },
               {
-                  question: "Is there a minimum donation amount?",
-                  answer: "There's no minimum amount. Any contribution, however small, makes a difference and is highly valued by the community.",
+                  question: "What are the benefits of supporting?",
+                  answer: "Supporters receive access to exclusive content, participation in special events, personalized support and community recognition.",
+              },
+              {
+                  question: "How does the donation system work?",
+                  answer: "We accept donations via PIX, credit card and cryptocurrencies. All value is reinvested back into the community through improvements and events.",
               },
           ]
 
@@ -99,6 +99,7 @@ export default async function WaveIGLSupportPage({ params }: PageProps) {
 
             <div className="min-h-screen bg-white dark:bg-gray-900">
                 <main className="container mx-auto px-4 py-8">
+                    <Breadcrumbs className="mb-6" />
                     <WaveIGLSupportLanding locale={locale} />
                 </main>
                 <Footer locale={locale} />
