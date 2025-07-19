@@ -1,0 +1,80 @@
+{
+    "nav": {
+        "home": "Startseite",
+        "about": "Über mich",
+        "projects": "Projekte",
+        "contact": "Kontakt",
+        "language": "Sprache",
+        "ViraTrend": "ViraTrend"
+    },
+    "hero": {
+        "greeting": "Hallo, ich bin",
+        "name": "Gabriel Toth",
+        "title": "Full Stack Entwickler",
+        "subtitle": "Fokussiert auf die Erstellung innovativer digitaler Lösungen mit modernen Technologien",
+        "cta": "Kontakt aufnehmen",
+        "resume": "Lebenslauf herunterladen"
+    },
+    "about": {
+        "title": "Über Mich",
+        "subtitle": "Fokussierter Entwickler, der erstaunliche digitale Erfahrungen schafft",
+        "description": "Ich bin Gabriel Toth Gonçalves, ein Full Stack Entwickler mit umfangreicher Erfahrung in modernen Web-Technologien. Ich spezialisiere mich auf die Erstellung skalierbarer, effizienter und benutzerfreundlicher Anwendungen mit modernsten Tools und Frameworks.",
+        "experience": "Erfahrung",
+        "projects": "Abgeschlossene Projekte",
+        "technologies": "Technologien",
+        "skills": {
+            "frontend": "Frontend",
+            "backend": "Backend",
+            "database": "Datenbank",
+            "tools": "Tools & DevOps"
+        },
+        "values": {
+            "innovation": {
+                "title": "Innovation",
+                "description": "Immer auf der Suche nach neuen Technologien und Methoden zur Verbesserung von Entwicklungsprozessen"
+            },
+            "quality": {
+                "title": "Qualität",
+                "description": "Verpflichtet, sauberen, wartbaren und gut getesteten Code zu schreiben"
+            },
+            "collaboration": {
+                "title": "Zusammenarbeit",
+                "description": "Überzeugter Verfechter von Teamarbeit und Wissensaustausch"
+            }
+        }
+    },
+    "projects": {
+        "title": "Ausgewählte Projekte",
+        "subtitle": "Einige meiner neuesten Arbeiten, die verschiedene Technologien und Ansätze zeigen",
+        "viewProject": "Projekt ansehen",
+        "techStack": "Tech Stack",
+        "liveDemo": "Live Demo",
+        "sourceCode": "Quellcode"
+    },
+    "contact": {
+        "title": "Lass uns sprechen",
+        "subtitle": "Haben Sie ein Projekt im Kopf? Ich würde gerne von Ihnen hören",
+        "form": {
+            "name": "Name",
+            "email": "E-Mail",
+            "subject": "Betreff",
+            "message": "Nachricht",
+            "send": "Nachricht senden",
+            "sending": "Wird gesendet...",
+            "success": "Nachricht erfolgreich gesendet!",
+            "error": "Fehler beim Senden der Nachricht. Bitte versuchen Sie es erneut."
+        },
+        "info": {
+            "email": "E-Mail",
+            "location": "Standort",
+            "availability": "Verfügbarkeit"
+        }
+    },
+    "footer": {
+        "description": "Full Stack Entwickler spezialisiert auf die Erstellung innovativer digitaler Lösungen.",
+        "quickLinks": "Schnelllinks",
+        "services": "Dienstleistungen",
+        "social": "Folgen Sie mir",
+        "rights": "Alle Rechte vorbehalten"
+    }
+}

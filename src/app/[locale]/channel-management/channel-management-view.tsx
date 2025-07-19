@@ -4,6 +4,7 @@ import Footer from "@/components/layout/footer"
 import { Button } from "@/components/ui/button"
 import LanguageSelector from "@/components/ui/language-selector"
 import PricingToggle from "@/components/ui/pricing-toggle"
+import { type Locale } from "@/lib/i18n"
 import { CheckCircle, MessageCircle, Percent, Star } from "lucide-react"
 import { useCalculatePrice } from "./channel-management-calculate-price"
 import { ChannelManagementTranslations } from "./channel-management-section-types"
@@ -17,7 +18,7 @@ const HeroSection = ({
     locale,
 }: {
     t: ChannelManagementTranslations
-    locale: "en" | "pt-BR"
+    locale: Locale
 }) => {
     return (
         <section className="relative py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-blue-900/20 dark:to-indigo-900/20">
@@ -282,7 +283,7 @@ const PricingSection = ({
     calculatePrice,
 }: {
     t: ChannelManagementTranslations
-    locale: "en" | "pt-BR"
+    locale: Locale
     calculatePrice: (basePrice: number) => {
         current: number
         original: number | null
@@ -423,7 +424,7 @@ const PricingSection = ({
 }
 
 // Editor Section Component
-const EditorSection = ({ locale }: { locale: "en" | "pt-BR" }) => {
+const EditorSection = ({ locale }: { locale: Locale }) => {
     const defaultTitle =
         locale === "pt-BR"
             ? "Pronto para Acelerar seu Crescimento?"

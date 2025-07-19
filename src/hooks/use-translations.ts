@@ -1,6 +1,8 @@
 "use client"
 
+import deTranslations from "@/i18n/de.json"
 import enTranslations from "@/i18n/en.json"
+import esTranslations from "@/i18n/es.json"
 import ptTranslations from "@/i18n/pt-BR.json"
 import { getLocaleFromUrl } from "@/lib/i18n"
 import { usePathname } from "next/navigation"
@@ -8,6 +10,8 @@ import { usePathname } from "next/navigation"
 const translations = {
     en: enTranslations,
     "pt-BR": ptTranslations,
+    es: esTranslations,
+    de: deTranslations,
 }
 
 export const useTranslations = () => {

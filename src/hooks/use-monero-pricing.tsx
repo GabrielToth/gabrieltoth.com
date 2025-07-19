@@ -37,9 +37,21 @@ export function MoneroPricingProvider({
         baseMoneroPrice: number,
         locale: Locale = "pt-BR"
     ) => {
-        const isEnglish = locale === "en"
-        const conversionRate = isEnglish ? 6 : 1
-        const currency = isEnglish ? "$" : "R$"
+        // Currency and conversion logic by locale
+        const getCurrencyInfo = (locale: Locale) => {
+            switch (locale) {
+                case "en":
+                    return { conversionRate: 6, currency: "$" }
+                case "es":
+                case "de":
+                    return { conversionRate: 5.5, currency: "€" } // EUR conversion
+                case "pt-BR":
+                default:
+                    return { conversionRate: 1, currency: "R$" } // BRL base
+            }
+        }
+
+        const { conversionRate, currency } = getCurrencyInfo(locale)
 
         const convertedMoneroPrice = baseMoneroPrice / conversionRate
         const convertedPixPrice = (baseMoneroPrice * 2) / conversionRate

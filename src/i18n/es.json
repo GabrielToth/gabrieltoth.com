@@ -1,0 +1,80 @@
+{
+    "nav": {
+        "home": "Inicio",
+        "about": "Acerca de",
+        "projects": "Proyectos",
+        "contact": "Contacto",
+        "language": "Idioma",
+        "ViraTrend": "ViraTrend"
+    },
+    "hero": {
+        "greeting": "Hola, soy",
+        "name": "Gabriel Toth",
+        "title": "Desarrollador Full Stack",
+        "subtitle": "Enfocado en crear soluciones digitales innovadoras con tecnologías modernas",
+        "cta": "Ponte en contacto",
+        "resume": "Descargar CV"
+    },
+    "about": {
+        "title": "Acerca de Mí",
+        "subtitle": "Desarrollador enfocado en crear experiencias digitales increíbles",
+        "description": "Soy Gabriel Toth Gonçalves, un Desarrollador Full Stack con amplia experiencia en tecnologías web modernas. Me especializo en crear aplicaciones escalables, eficientes y fáciles de usar utilizando herramientas y frameworks de vanguardia.",
+        "experience": "Experiencia",
+        "projects": "Proyectos Completados",
+        "technologies": "Tecnologías",
+        "skills": {
+            "frontend": "Frontend",
+            "backend": "Backend",
+            "database": "Base de Datos",
+            "tools": "Herramientas y DevOps"
+        },
+        "values": {
+            "innovation": {
+                "title": "Innovación",
+                "description": "Siempre buscando nuevas tecnologías y metodologías para mejorar los procesos de desarrollo"
+            },
+            "quality": {
+                "title": "Calidad",
+                "description": "Comprometido con escribir código limpio, mantenible y bien probado"
+            },
+            "collaboration": {
+                "title": "Colaboración",
+                "description": "Firme creyente en el trabajo en equipo y el intercambio de conocimientos"
+            }
+        }
+    },
+    "projects": {
+        "title": "Proyectos Destacados",
+        "subtitle": "Algunos de mis trabajos recientes mostrando diferentes tecnologías y enfoques",
+        "viewProject": "Ver Proyecto",
+        "techStack": "Stack Tecnológico",
+        "liveDemo": "Demo en Vivo",
+        "sourceCode": "Código Fuente"
+    },
+    "contact": {
+        "title": "Hablemos",
+        "subtitle": "¿Tienes un proyecto en mente? Me encantaría saber de ti",
+        "form": {
+            "name": "Nombre",
+            "email": "Email",
+            "subject": "Asunto",
+            "message": "Mensaje",
+            "send": "Enviar Mensaje",
+            "sending": "Enviando...",
+            "success": "¡Mensaje enviado con éxito!",
+            "error": "Error al enviar el mensaje. Por favor, inténtalo de nuevo."
+        },
+        "info": {
+            "email": "Email",
+            "location": "Ubicación",
+            "availability": "Disponibilidad"
+        }
+    },
+    "footer": {
+        "description": "Desarrollador Full Stack especializado en crear soluciones digitales innovadoras.",
+        "quickLinks": "Enlaces Rápidos",
+        "services": "Servicios",
+        "social": "Sígueme",
+        "rights": "Todos los derechos reservados"
+    }
+}

@@ -1,4 +1,5 @@
 import { useMoneroPricing } from "@/hooks/use-monero-pricing"
+import { type Locale } from "@/lib/i18n"
 
 interface PriceCalculation {
     current: number
@@ -9,7 +10,7 @@ interface PriceCalculation {
     isMonero: boolean
 }
 
-export const useCalculatePrice = (locale: "en" | "pt-BR") => {
+export const useCalculatePrice = (locale: Locale) => {
     const { calculatePrice: calculateMoneroPrice } = useMoneroPricing()
 
     const calculatePrice = (basePrice: number): PriceCalculation => {
