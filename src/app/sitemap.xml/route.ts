@@ -1,21 +1,19 @@
 const SITE_URL = "https://gabrieltoth.com"
 
 export async function GET() {
-    const currentDate = new Date().toISOString()
+    const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+    <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+        <sitemap>
+            <loc>https://gabrieltoth.com/sitemap-en.xml</loc>
+            <lastmod>${new Date().toISOString()}</lastmod>
+        </sitemap>
+        <sitemap>
+            <loc>https://gabrieltoth.com/sitemap-pt-BR.xml</loc>
+            <lastmod>${new Date().toISOString()}</lastmod>
+        </sitemap>
+    </sitemapindex>` // cspell:disable-line
 
-    const sitemapIndex = `<?xml version="1.0" encoding="UTF-8"?>
-<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-    <sitemap>
-        <loc>${SITE_URL}/sitemap-en.xml</loc>
-        <lastmod>${currentDate}</lastmod>
-    </sitemap>
-    <sitemap>
-        <loc>${SITE_URL}/sitemap-pt-BR.xml</loc>
-        <lastmod>${currentDate}</lastmod>
-    </sitemap>
-</sitemapindex>`
-
-    return new Response(sitemapIndex, {
+    return new Response(sitemap, {
         status: 200,
         headers: {
             "Content-Type": "application/xml",

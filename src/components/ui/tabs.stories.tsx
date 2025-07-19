@@ -6,6 +6,7 @@ const meta: Meta<typeof Tabs> = {
     title: "UI/Tabs",
     component: Tabs,
     tags: ["autodocs"],
+    subcomponents: { TabsList, TabsTrigger, TabsContent }, // cspell:disable-line
     parameters: {
         docs: {
             description: {

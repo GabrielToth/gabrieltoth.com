@@ -14,6 +14,7 @@ const meta: Meta<typeof Card> = {
     title: "UI/Card",
     component: Card,
     tags: ["autodocs"],
+    subcomponents: { CardHeader, CardContent, CardFooter }, // cspell:disable-line
     parameters: {
         docs: {
             description: {

@@ -1,9 +1,7 @@
 {
     "version": "0.2",
     "language": "en,pt-BR",
-    "import": [
-        "cspell-dict-pt-br/cspell-ext.json"
-    ],
+    "import": ["cspell-dict-pt-br/cspell-ext.json"],
     "words": [
         "Adobeaftereffects",
         "Adobephotoshop",
@@ -34,6 +32,7 @@
         "JavaScript",
         "JSON",
         "jsx",
+        "lgpd",
         "mdx",
         "mentoria",
         "Mentoria",
@@ -50,6 +49,7 @@
         "PGRST",
         "pix",
         "PIX",
+        "portifolio",
         "protonmail",
         "PUBG",
         "pytest",
@@ -57,9 +57,12 @@
         "React",
         "shadcn",
         "sistemasatfiscal",
+        "sitemap",
+        "sitemapindex",
         "Softclever",
         "storybook",
         "Storybook",
+        "subcomponents",
         "supabase",
         "Supabase",
         "SUPABASE",

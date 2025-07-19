@@ -271,9 +271,10 @@ export const getChannelManagementTranslations = (locale: Locale) => {
                     rating: 5,
                 },
                 {
+                    // cspell:disable-next-line
                     name: isPortuguese
                         ? "Gabriel Toth (canal antigo) - @oprimeirogabrieltoth"
-                        : "Gabriel Toth (old channel) - @oprimeirogabrieltoth",
+                        : "Gabriel Toth (old channel) - @oprimeirogabrieltoth", // cspell:disable-line
                     role: isPortuguese
                         ? "Canal antigo - Resultado extraordinário"
                         : "Old channel - Extraordinary result",

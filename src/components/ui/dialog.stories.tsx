@@ -14,6 +14,15 @@ const meta: Meta<typeof Dialog> = {
     title: "UI/Dialog",
     component: Dialog,
     tags: ["autodocs"],
+    // cspell:disable-next-line
+    subcomponents: {
+        DialogTrigger,
+        DialogContent,
+        DialogHeader,
+        DialogTitle,
+        DialogDescription,
+        DialogFooter,
+    },
     parameters: {
         docs: {
             description: {

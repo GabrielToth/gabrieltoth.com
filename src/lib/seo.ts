@@ -378,10 +378,10 @@ export function generateSeoConfig(options: SeoConfigOptions) {
               "data science",
               "web development brasil",
               "freelancer desenvolvedor",
-              "portifolio desenvolvedor",
+              "portifolio desenvolvedor", // cspell:disable-line
               "serviços web",
               "otimização performance",
-              "seo tecnico",
+              "seo tecnico", // cspell:disable-line
           ]
         : [
               "gabriel toth",
@@ -700,16 +700,16 @@ Allow: /_next/static/
 Allow: /_next/image
 
 # Specific bot instructions
-User-agent: Googlebot
+User-agent: Googlebot # cspell:disable-line
 Crawl-delay: 1
 
-User-agent: Bingbot
+User-agent: Bingbot # cspell:disable-line
 Crawl-delay: 1
 
-User-agent: facebookexternalhit
+User-agent: facebookexternalhit # cspell:disable-line
 Allow: /
 
-User-agent: Twitterbot
+User-agent: Twitterbot # cspell:disable-line
 Allow: /
 
 # Sitemaps

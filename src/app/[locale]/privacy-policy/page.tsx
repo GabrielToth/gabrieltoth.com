@@ -31,7 +31,7 @@ export async function generateMetadata({
                   "privacidade",
                   "gabriel toth",
                   "dados pessoais",
-              ]
+              ] // cspell:disable-line
             : [
                   "privacy policy",
                   "data protection",

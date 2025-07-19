@@ -43,7 +43,7 @@ export async function generateMetadata({
                   "desenvolvimento web",
                   "consultoria digital",
                   "portifolio desenvolvedor",
-              ]
+              ] // cspell:disable-line
             : [
                   "gabriel toth",
                   "full stack developer",
