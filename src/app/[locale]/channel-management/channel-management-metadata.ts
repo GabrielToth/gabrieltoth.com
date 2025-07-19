@@ -80,9 +80,9 @@ export async function generateMetadata({
         alternates: {
             canonical: seoConfig.canonical,
             languages: {
-                en: "https://gabrieltoth.com/channel-management",
+                en: "https://gabrieltoth.com/en/channel-management",
                 "pt-BR": "https://gabrieltoth.com/pt-BR/channel-management",
-                "x-default": "https://gabrieltoth.com/channel-management",
+                "x-default": "https://gabrieltoth.com/en/channel-management",
             },
         },
     }

@@ -76,11 +76,13 @@ export async function generateMetadata({
             site: seoConfig.twitter?.site,
         },
         alternates: {
-            canonical: seoConfig.canonical,
+            canonical: isPortuguese
+                ? "https://gabrieltoth.com/pt-BR/privacy-policy"
+                : "https://gabrieltoth.com/en/privacy-policy",
             languages: {
-                en: "https://gabrieltoth.com/privacy-policy",
+                en: "https://gabrieltoth.com/en/privacy-policy",
                 "pt-BR": "https://gabrieltoth.com/pt-BR/privacy-policy",
-                "x-default": "https://gabrieltoth.com/privacy-policy",
+                "x-default": "https://gabrieltoth.com/en/privacy-policy",
             },
         },
     }

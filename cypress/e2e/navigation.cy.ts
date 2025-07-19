@@ -58,14 +58,31 @@ describe("Navigation Tests", () => {
     })
 
     it("should open services dropdown", () => {
-        cy.contains("Serviços").click()
+        cy.visit("/en") // Força idioma inglês
+        cy.wait(2000)
+
+        // Procura por "Services" especificamente
+        cy.contains("Services").click({ force: true })
+        cy.wait(1000)
+
+        // Verifica se dropdown está visível
         cy.contains("ViraTrend").should("be.visible")
-        cy.contains("Otimização de PC").should("be.visible")
+        cy.contains("PC Optimization").should("be.visible")
     })
 
     it("should navigate to channel management page", () => {
-        cy.contains("Serviços").click()
-        cy.contains("ViraTrend").click()
+        cy.visit("/en") // Força idioma inglês
+        cy.wait(2000)
+
+        // Abre dropdown
+        cy.contains("Services").click({ force: true })
+        cy.wait(1000)
+
+        // Clica em ViraTrend
+        cy.contains("ViraTrend").click({ force: true })
+        cy.wait(2000)
+
+        // Verifica URL
         cy.url().should("include", "/channel-management")
     })
 })

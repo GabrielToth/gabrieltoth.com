@@ -80,9 +80,9 @@ export async function generateMetadata({
         alternates: {
             canonical: seoConfig.canonical,
             languages: {
-                en: "https://gabrieltoth.com/editors",
+                en: "https://gabrieltoth.com/en/editors",
                 "pt-BR": "https://gabrieltoth.com/pt-BR/editors",
-                "x-default": "https://gabrieltoth.com/editors",
+                "x-default": "https://gabrieltoth.com/en/editors",
             },
         },
     }

@@ -33,64 +33,42 @@ describe("Navigation and Interaction Tests", () => {
         })
 
         it("should open and navigate services dropdown", () => {
-            cy.visit("/")
+            cy.visit("/en") // Força idioma inglês
             cy.wait(2000)
 
-            // Look for services menu
             cy.get("body").then($body => {
-                if (
-                    $body
-                        .find("*")
-                        .filter((i, el) =>
-                            Boolean(
-                                el.textContent?.includes("Serviços") ||
-                                    el.textContent?.includes("Services")
-                            )
-                        ).length > 0
-                ) {
+                if ($body.find(':contains("Services")').length > 0) {
                     // Click services
-                    cy.contains(/Serviços|Services/).click()
+                    cy.contains("Services").click({ force: true })
                     cy.wait(1000)
 
                     // Check if dropdown items are visible
-                    cy.get("body").should(
-                        "contain.text",
-                        /Gerenciamento|Channel/
-                    )
-                    cy.get("body").should(
-                        "contain.text",
-                        /Otimização|Optimization/
-                    )
+                    cy.contains("ViraTrend").should("be.visible")
+                    cy.contains("PC Optimization").should("be.visible")
                 }
             })
         })
 
         it("should navigate to service pages from dropdown", () => {
-            cy.visit("/")
-            cy.wait(2000)
-
             const servicePages = [
-                { text: /Gerenciamento|Channel/, url: "channel-management" },
-                { text: /Otimização|Optimization/, url: "pc-optimization" },
+                { text: "ViraTrend", url: "channel-management" },
+                { text: "PC Optimization", url: "pc-optimization" },
             ]
 
             servicePages.forEach(service => {
-                cy.visit("/")
+                cy.visit("/en") // Força idioma inglês
+                cy.wait(2000)
+
+                // Abre dropdown
+                cy.contains("Services").click({ force: true })
                 cy.wait(1000)
 
-                cy.get("body").then($body => {
-                    if (
-                        $body
-                            .find("*")
-                            .filter((i, el) =>
-                                service.text.test(el.textContent || "")
-                            ).length > 0
-                    ) {
-                        cy.contains(service.text).click()
-                        cy.wait(2000)
-                        cy.url().should("include", service.url)
-                    }
-                })
+                // Clica no serviço
+                cy.contains(service.text).click({ force: true })
+                cy.wait(2000)
+
+                // Verifica URL
+                cy.url().should("include", service.url)
             })
         })
     })
@@ -255,39 +233,36 @@ describe("Navigation and Interaction Tests", () => {
     describe("Responsive Navigation", () => {
         it("should work on mobile viewport", () => {
             cy.viewport(375, 667) // iPhone SE
-            cy.visit("/")
+            cy.visit("/en") // Força idioma inglês
             cy.wait(2000)
 
-            // Check if mobile navigation works
+            // Check if page loads properly
             cy.get("body").should("be.visible")
+            cy.get("header").should("be.visible")
 
-            // Look for mobile menu toggle
-            cy.get("body").then($body => {
-                if (
-                    $body.find("button").filter((i, el) => {
-                        const text = el.textContent?.toLowerCase() || ""
-                        return (
-                            text.includes("menu") ||
-                            el.querySelector("svg") !== null
-                        )
-                    }).length > 0
-                ) {
-                    cy.get("button")
-                        .filter((i, el) => {
-                            return (
-                                el.querySelector("svg") !== null ||
-                                (el.textContent?.toLowerCase() || "").includes(
-                                    "menu"
-                                )
-                            )
-                        })
-                        .first()
-                        .click()
+            // Look for mobile menu toggle (usually a hamburger menu)
+            cy.get("header").then($header => {
+                const menuButton = $header.find(
+                    '[data-cy="mobile-menu-toggle"], button[aria-label*="menu"], button:has(svg)'
+                )
 
+                if (menuButton.length > 0) {
+                    // Click mobile menu if it exists
+                    cy.wrap(menuButton.first()).click({ force: true })
                     cy.wait(1000)
+
+                    // Menu should open/close
                     cy.get("body").should("be.visible")
+                } else {
+                    // If no mobile menu, just verify basic navigation works
+                    cy.get("header a").first().should("be.visible")
                 }
             })
+
+            // Test basic mobile interaction - scroll works
+            cy.scrollTo("bottom")
+            cy.wait(500)
+            cy.scrollTo("top")
         })
 
         it("should work on tablet viewport", () => {

@@ -83,11 +83,13 @@ export async function generateMetadata({
             site: seoConfig.twitter?.site,
         },
         alternates: {
-            canonical: seoConfig.canonical,
+            canonical: isPortuguese
+                ? "https://gabrieltoth.com/pt-BR/waveigl-support"
+                : "https://gabrieltoth.com/en/waveigl-support",
             languages: {
-                en: "https://gabrieltoth.com/waveigl-support",
+                en: "https://gabrieltoth.com/en/waveigl-support",
                 "pt-BR": "https://gabrieltoth.com/pt-BR/waveigl-support",
-                "x-default": "https://gabrieltoth.com/waveigl-support",
+                "x-default": "https://gabrieltoth.com/en/waveigl-support",
             },
         },
     }
