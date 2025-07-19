@@ -30,6 +30,7 @@ import Breadcrumbs from "../ui/breadcrumbs"
 import StructuredData from "./structured-data"
 
 // Example 1: Basic SEO usage for a standard page
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function BasicSEOExample({ locale }: { locale: Locale }) {
     const { nextSeoConfig, structuredDataProps } = useSeo({
         title: "My Page Title",
@@ -52,6 +53,7 @@ export function BasicSEOExample({ locale }: { locale: Locale }) {
 }
 
 // Example 2: Service page with custom structured data
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function ServicePageExample({ locale }: { locale: Locale }) {
     const serviceData = {
         "@context": "https://schema.org",
@@ -91,6 +93,7 @@ export function ServicePageExample({ locale }: { locale: Locale }) {
 }
 
 // Example 3: FAQ page with structured data
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function FAQPageExample({ locale }: { locale: Locale }) {
     const faqs = [
         {
@@ -139,6 +142,7 @@ export function FAQPageExample({ locale }: { locale: Locale }) {
 }
 
 // Example 4: Article/Blog post with rich structured data
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function ArticlePageExample({ locale }: { locale: Locale }) {
     const articleData = {
         "@context": "https://schema.org",
@@ -206,6 +210,7 @@ export function ArticlePageExample({ locale }: { locale: Locale }) {
 }
 
 // Example 5: Product/E-commerce page
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function ProductPageExample({ locale }: { locale: Locale }) {
     const productData = {
         "@context": "https://schema.org",
@@ -258,7 +263,7 @@ export function ProductPageExample({ locale }: { locale: Locale }) {
     )
 }
 
-// Example 6: Manual structured data usage
+// Example 6: Manual structured data usage (actually uses locale)
 export function ManualStructuredDataExample({ locale }: { locale: Locale }) {
     const customBreadcrumbs = [
         { name: "Home", url: "https://gabrieltoth.com" },
