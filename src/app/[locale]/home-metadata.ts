@@ -2,6 +2,8 @@ import { type Locale } from "@/lib/i18n"
 import { generateSeoConfig } from "@/lib/seo"
 import { type Metadata } from "next"
 
+/* cspell:disable */
+
 interface HomePageProps {
     params: Promise<{ locale: Locale }>
 }

@@ -5,7 +5,9 @@ export type Locale = (typeof locales)[number]
 export const localeNames: Record<Locale, string> = {
     en: "English",
     "pt-BR": "Português",
+    /* cspell:disable-next-line */
     es: "Español",
+    /* cspell:disable-next-line */
     de: "Deutsch",
 }
 

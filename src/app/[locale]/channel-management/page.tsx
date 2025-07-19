@@ -1,5 +1,5 @@
+import Footer from "@/components/layout/footer"
 import StructuredData from "@/components/seo/structured-data"
-import Breadcrumbs from "@/components/ui/breadcrumbs"
 import { type Locale } from "@/lib/i18n"
 import { generateMetadata } from "./channel-management-metadata"
 import ChannelManagementView from "./channel-management-view"
@@ -121,19 +121,9 @@ export default async function ChannelManagementPage({ params }: PageProps) {
 
             <div className="min-h-screen bg-white dark:bg-gray-900">
                 <div className="container mx-auto px-4 py-8">
-                    <Breadcrumbs
-                        items={breadcrumbs.map(item => ({
-                            name: item.name,
-                            href: item.url.replace(
-                                "https://gabrieltoth.com",
-                                ""
-                            ),
-                        }))}
-                        className="mb-6"
-                    />
-
                     <ChannelManagementView locale={locale} />
                 </div>
+                <Footer locale={locale} />
             </div>
         </>
     )

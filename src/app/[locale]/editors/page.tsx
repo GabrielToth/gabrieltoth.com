@@ -1,6 +1,6 @@
 import { PageProps } from "@/app/[locale]/editors/editors-types"
+import Footer from "@/components/layout/footer"
 import StructuredData from "@/components/seo/structured-data"
-import Breadcrumbs from "@/components/ui/breadcrumbs"
 import { generateMetadata } from "./editors-metadata"
 import { getEditorsTranslations } from "./editors-translations"
 import {
@@ -118,17 +118,6 @@ export default async function EditorsPage({ params }: PageProps) {
 
             <div className="min-h-screen bg-white dark:bg-gray-900">
                 <div className="container mx-auto px-4 py-8">
-                    <Breadcrumbs
-                        items={breadcrumbs.map(item => ({
-                            name: item.name,
-                            href: item.url.replace(
-                                "https://gabrieltoth.com",
-                                ""
-                            ),
-                        }))}
-                        className="mb-6"
-                    />
-
                     <main className="flex min-h-screen flex-col items-center justify-between">
                         <HeroSection t={t} />
                         <AboutSection t={t} />
@@ -138,6 +127,7 @@ export default async function EditorsPage({ params }: PageProps) {
                         <CTASection t={t} />
                     </main>
                 </div>
+                <Footer locale={locale} />
             </div>
         </>
     )

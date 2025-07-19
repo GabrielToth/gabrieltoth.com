@@ -5,6 +5,7 @@ import { useLocale } from "@/hooks/use-locale"
 import { localeNames, locales, type Locale } from "@/lib/i18n"
 import { Globe, Menu, X } from "lucide-react"
 import Link from "next/link"
+import { usePathname } from "next/navigation"
 import { useState } from "react"
 
 const getTranslations = (locale: Locale) => {
@@ -13,7 +14,6 @@ const getTranslations = (locale: Locale) => {
         home: isPortuguese ? "Início" : "Home",
         about: isPortuguese ? "Sobre" : "About",
         projects: isPortuguese ? "Projetos" : "Projects",
-
         services: isPortuguese ? "Serviços" : "Services",
         channels: isPortuguese ? "Canais" : "Channels",
         contact: isPortuguese ? "Contato" : "Contact",
@@ -21,26 +21,37 @@ const getTranslations = (locale: Locale) => {
         // Services dropdown
         channelManagement: isPortuguese ? "ViraTrend" : "ViraTrend",
         pcOptimization: isPortuguese ? "Otimização de PC" : "PC Optimization",
-
         support: isPortuguese ? "Apoiar WaveIGL" : "Support WaveIGL",
     }
 }
 
 export default function Header() {
     const { locale, changeLocale } = useLocale()
+    const pathname = usePathname()
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
     const [isServicesMenuOpen, setIsServicesMenuOpen] = useState(false)
     const [isLanguageMenuOpen, setIsLanguageMenuOpen] = useState(false)
     const t = getTranslations(locale)
 
-    const navigation = [
-        { name: t.home, href: "/#hero" },
-        { name: t.about, href: "/#about" },
-        { name: t.projects, href: "/#projects" },
+    // Check if we're on the homepage
+    const isHomepage = pathname === `/${locale}` || pathname === `/${locale}/`
 
-        { name: t.channels, href: "/#channel-management" },
-        { name: t.contact, href: "/#contact" },
-    ]
+    // Create navigation links based on current page
+    const navigation = isHomepage
+        ? [
+              { name: t.home, href: "/#hero" },
+              { name: t.about, href: "/#about" },
+              { name: t.projects, href: "/#projects" },
+              { name: t.channels, href: "/#channel-management" },
+              { name: t.contact, href: "/#contact" },
+          ]
+        : [
+              { name: t.home, href: `/${locale}/#hero` },
+              { name: t.about, href: `/${locale}/#about` },
+              { name: t.projects, href: `/${locale}/#projects` },
+              { name: t.channels, href: `/${locale}/#channel-management` },
+              { name: t.contact, href: `/${locale}/#contact` },
+          ]
 
     const servicesDropdown = [
         {
@@ -59,7 +70,6 @@ export default function Header() {
                     ? "Otimização de performance gaming"
                     : "Gaming performance optimization",
         },
-
         {
             name: t.support,
             href: `/${locale}/waveigl-support`,
@@ -133,7 +143,7 @@ export default function Header() {
                             )}
                         </div>
 
-                        {/* Language Switcher */}
+                        {/* Language Dropdown */}
                         <div className="relative">
                             <button
                                 onClick={() =>
@@ -143,7 +153,7 @@ export default function Header() {
                                 data-cy="language-selector"
                             >
                                 <Globe size={16} />
-                                <span>{localeNames[locale]}</span>
+                                <span>{t.language}</span>
                             </button>
 
                             {isLanguageMenuOpen && (
@@ -201,7 +211,7 @@ export default function Header() {
                             ))}
 
                             {/* Mobile Services */}
-                            <div className="pt-2 border-t border-gray-200 dark:border-gray-700">
+                            <div className="border-t border-gray-200 dark:border-gray-700 pt-4">
                                 <div className="text-base font-medium text-gray-900 dark:text-white mb-2">
                                     {t.services}
                                 </div>
@@ -220,7 +230,7 @@ export default function Header() {
                             </div>
 
                             {/* Mobile Language Switcher */}
-                            <div className="flex space-x-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+                            <div className="border-t border-gray-200 dark:border-gray-700 pt-4">
                                 {locales.map(loc => (
                                     <button
                                         key={loc}

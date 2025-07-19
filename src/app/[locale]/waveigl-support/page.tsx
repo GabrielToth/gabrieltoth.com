@@ -1,8 +1,6 @@
 import WaveIGLSupportLanding from "@/app/[locale]/waveigl-support/waveigl-support-landing"
 import Footer from "@/components/layout/footer"
-import Header from "@/components/layout/header"
 import StructuredData from "@/components/seo/structured-data"
-import Breadcrumbs from "@/components/ui/breadcrumbs"
 import { type Locale } from "@/lib/i18n"
 
 interface PageProps {
@@ -100,19 +98,7 @@ export default async function WaveIGLSupportPage({ params }: PageProps) {
             />
 
             <div className="min-h-screen bg-white dark:bg-gray-900">
-                <Header />
                 <main className="container mx-auto px-4 py-8">
-                    <Breadcrumbs
-                        items={breadcrumbs.map(item => ({
-                            name: item.name,
-                            href: item.url.replace(
-                                "https://gabrieltoth.com",
-                                ""
-                            ),
-                        }))}
-                        className="mb-6"
-                    />
-
                     <WaveIGLSupportLanding locale={locale} />
                 </main>
                 <Footer locale={locale} />

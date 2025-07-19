@@ -1,7 +1,7 @@
 import { headers } from "next/headers"
 import { redirect } from "next/navigation"
 
-export default async function PCOptimizationRedirect() {
+export default async function ChannelManagementRedirect() {
     const headersList = await headers()
     const acceptLanguage = headersList.get("accept-language") || ""
 
@@ -11,5 +11,5 @@ export default async function PCOptimizationRedirect() {
             ? "en"
             : "pt-BR"
 
-    redirect(`/${preferredLocale}/pc-optimization`)
+    redirect(`/${preferredLocale}/channel-management`)
 }
