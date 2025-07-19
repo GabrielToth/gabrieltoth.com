@@ -460,10 +460,6 @@ export function generateSeoConfig(options: SeoConfigOptions) {
                 content: robotsContent,
             },
             {
-                property: "og:updated_time",
-                content: new Date().toISOString(),
-            },
-            {
                 name: "twitter:label1",
                 content: isPortuguese ? "Escrito por" : "Written by",
             },
