@@ -30,7 +30,6 @@ export const HeroSection = ({ t }: SectionProps) => {
                 <WhatsAppButton
                     phoneNumber={whatsappNumber}
                     message={getApplicationTemplate(t.locale)}
-                    text={t.hero.cta}
                     size="lg"
                     className="bg-blue-600 hover:bg-blue-700 hover:cursor-pointer text-white"
                 >
@@ -215,7 +214,6 @@ export const CTASection = ({ t }: SectionProps) => {
                 <WhatsAppButton
                     phoneNumber={whatsappNumber}
                     message={getApplicationTemplate(t.locale)}
-                    text={t.cta.button}
                     size="lg"
                     variant="outline"
                     className="border-white text-blue-600 bg-white hover:bg-blue-600 hover:text-white"
