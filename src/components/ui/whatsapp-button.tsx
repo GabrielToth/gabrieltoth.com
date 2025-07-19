@@ -3,7 +3,6 @@
 import { Button, ButtonProps } from "@/components/ui/button"
 
 interface WhatsAppButtonProps extends Omit<ButtonProps, "onClick"> {
-    text: string
     message: string
     phoneNumber: string
     children: React.ReactNode
@@ -13,7 +12,6 @@ interface WhatsAppButtonProps extends Omit<ButtonProps, "onClick"> {
 }
 
 const WhatsAppButton = ({
-    text,
     message,
     phoneNumber,
     children,

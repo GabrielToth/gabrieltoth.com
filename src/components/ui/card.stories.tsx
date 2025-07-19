@@ -1,4 +1,5 @@
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/nextjs-vite"
+import Image from "next/image"
 import { Button } from "./button"
 import {
     Card,
@@ -56,9 +57,11 @@ export const SimpleCard: Story = {
 export const WithImage: Story = {
     render: () => (
         <Card className="w-[350px]">
-            <img
+            <Image
                 src="https://via.placeholder.com/350x200"
                 alt="Example"
+                width={350}
+                height={200}
                 className="w-full h-[200px] object-cover"
             />
             <CardHeader>
