@@ -53,11 +53,11 @@ export async function generateMetadata({
         alternates: {
             canonical: isPortuguese
                 ? "https://gabrieltoth.com/pt-BR/pc-optimization"
-                : "https://gabrieltoth.com/pc-optimization",
+                : "https://gabrieltoth.com/en/pc-optimization",
             languages: {
-                en: "https://gabrieltoth.com/pc-optimization",
+                en: "https://gabrieltoth.com/en/pc-optimization",
                 "pt-BR": "https://gabrieltoth.com/pt-BR/pc-optimization",
-                "x-default": "https://gabrieltoth.com/pc-optimization",
+                "x-default": "https://gabrieltoth.com/en/pc-optimization",
             },
         },
     }
