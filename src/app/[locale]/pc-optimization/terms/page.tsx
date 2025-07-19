@@ -1,3 +1,5 @@
+import StructuredData from "@/components/seo/structured-data"
+import Breadcrumbs from "@/components/ui/breadcrumbs"
 import { type Locale } from "@/lib/i18n"
 import { generateSeoConfig } from "@/lib/seo"
 import { type Metadata } from "next"
@@ -201,96 +203,119 @@ export default async function PCOptimizationTermsPage({ params }: PageProps) {
         : "Hello! I'm interested in PC optimization.%0A%0AName:%0APC Type (Gaming/Work):%0AMain objective:%0AHardware specifications:%0AMain games:%0ACurrent problems:%0A%0ALooking forward to hearing from you!"
 
     return (
-        <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-12 px-4 sm:px-6 lg:px-8">
-            <div className="max-w-4xl mx-auto">
-                <div className="bg-white dark:bg-gray-800 shadow-xl rounded-lg p-8">
-                    <div className="text-center mb-8">
-                        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
-                            {content.title}
-                        </h1>
-                        <p className="text-lg text-gray-600 dark:text-gray-300">
-                            {content.subtitle}
-                        </p>
-                    </div>
+        <>
+            <StructuredData
+                locale={locale}
+                type="all"
+                breadcrumbs={breadcrumbs}
+            />
 
-                    {/* General Terms */}
-                    <div className="mb-8">
-                        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
-                            {content.generalTerms.title}
-                        </h2>
-                        <div className="space-y-6">
-                            {content.generalTerms.items.map((item, index) => (
-                                <div
-                                    key={index}
-                                    className="bg-gray-50 dark:bg-gray-700 rounded-lg p-6"
-                                >
-                                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
-                                        {item.title}
-                                    </h3>
-                                    <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-                                        {item.content}
-                                    </p>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
+            <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-12 px-4 sm:px-6 lg:px-8">
+                <div className="max-w-4xl mx-auto">
+                    <Breadcrumbs
+                        items={breadcrumbs.map(item => ({
+                            name: item.name,
+                            href: item.url.replace(
+                                "https://gabrieltoth.com",
+                                ""
+                            ),
+                        }))}
+                        className="mb-6"
+                    />
 
-                    {/* Overclock Terms */}
-                    <div className="mb-8">
-                        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-                            {content.overclockTerms.title}
-                        </h2>
-                        <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-6 mb-6">
-                            <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
-                                {content.overclockTerms.subtitle}
-                            </p>
-                            <p className="text-gray-700 dark:text-gray-300 leading-relaxed font-medium">
-                                {content.overclockTerms.subtitle2}
+                    <div className="bg-white dark:bg-gray-800 shadow-xl rounded-lg p-8">
+                        <div className="text-center mb-8">
+                            <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+                                {content.title}
+                            </h1>
+                            <p className="text-lg text-gray-600 dark:text-gray-300">
+                                {content.subtitle}
                             </p>
                         </div>
-                        <div className="space-y-6">
-                            {content.overclockTerms.items.map((item, index) => (
-                                <div
-                                    key={index}
-                                    className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-6"
-                                >
-                                    <h3 className="text-lg font-semibold text-red-900 dark:text-red-300 mb-3">
-                                        {item.title}
-                                    </h3>
-                                    <p className="text-red-700 dark:text-red-300 leading-relaxed">
-                                        {item.content}
-                                    </p>
-                                </div>
-                            ))}
+
+                        {/* General Terms */}
+                        <div className="mb-8">
+                            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+                                {content.generalTerms.title}
+                            </h2>
+                            <div className="space-y-6">
+                                {content.generalTerms.items.map(
+                                    (item, index) => (
+                                        <div
+                                            key={index}
+                                            className="bg-gray-50 dark:bg-gray-700 rounded-lg p-6"
+                                        >
+                                            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+                                                {item.title}
+                                            </h3>
+                                            <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+                                                {item.content}
+                                            </p>
+                                        </div>
+                                    )
+                                )}
+                            </div>
                         </div>
-                    </div>
 
-                    {/* Final Acceptance */}
-                    <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-6 mb-8">
-                        <p className="text-blue-900 dark:text-blue-300 font-medium text-center">
-                            {content.acceptance}
-                        </p>
-                    </div>
+                        {/* Overclock Terms */}
+                        <div className="mb-8">
+                            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+                                {content.overclockTerms.title}
+                            </h2>
+                            <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-6 mb-6">
+                                <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
+                                    {content.overclockTerms.subtitle}
+                                </p>
+                                <p className="text-gray-700 dark:text-gray-300 leading-relaxed font-medium">
+                                    {content.overclockTerms.subtitle2}
+                                </p>
+                            </div>
+                            <div className="space-y-6">
+                                {content.overclockTerms.items.map(
+                                    (item, index) => (
+                                        <div
+                                            key={index}
+                                            className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-6"
+                                        >
+                                            <h3 className="text-lg font-semibold text-red-900 dark:text-red-300 mb-3">
+                                                {item.title}
+                                            </h3>
+                                            <p className="text-red-700 dark:text-red-300 leading-relaxed">
+                                                {item.content}
+                                            </p>
+                                        </div>
+                                    )
+                                )}
+                            </div>
+                        </div>
 
-                    {/* Action Buttons */}
-                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                        <Link
-                            href={`/${locale}/pc-optimization`}
-                            className="inline-flex items-center justify-center px-6 py-3 border border-gray-300 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
-                        >
-                            {content.buttons.back}
-                        </Link>
-                        <a
-                            href={`https://wa.me/5511993313606?text=${whatsappMessage}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center justify-center px-8 py-3 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition-colors"
-                        >
-                            {content.buttons.accept}
-                        </a>
+                        {/* Final Acceptance */}
+                        <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-6 mb-8">
+                            <p className="text-blue-900 dark:text-blue-300 font-medium text-center">
+                                {content.acceptance}
+                            </p>
+                        </div>
+
+                        {/* Action Buttons */}
+                        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                            <Link
+                                href={`/${locale}/pc-optimization`}
+                                className="inline-flex items-center justify-center px-6 py-3 border border-gray-300 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+                            >
+                                {content.buttons.back}
+                            </Link>
+                            <a
+                                href={`https://wa.me/5511993313606?text=${whatsappMessage}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center justify-center px-8 py-3 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition-colors"
+                            >
+                                {content.buttons.accept}
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </>
     )
 }
