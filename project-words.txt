@@ -33,6 +33,28 @@ mptools
 Doacao
 ttfb
 TTFB
+# SEO related terms
+hreflang
+sitemap
+sitemaps
+sitemapindex
+noindex
+nofollow
+OpenGraph
+jsonld
+microdata
+structureddata
+changefreq
+lastmod
+urlset
+robotstxt
+metadesc
+canonicalization
+maxage
+s-maxage
+smaxage
+subcomponents
+oprimeirogabrieltoth
 # Only keeping project-specific Portuguese terms that might not be in the standard dictionary
 àáâãäåæçèéêëìíîïñòóôõöøùúûüýÿ
 singlequote
