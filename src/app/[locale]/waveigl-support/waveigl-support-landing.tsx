@@ -8,7 +8,6 @@ import {
     DialogHeader,
     DialogTitle,
 } from "@/components/ui/dialog"
-import LanguageSelector from "@/components/ui/language-selector"
 import { useLocale } from "@/hooks/use-locale"
 import { type Locale } from "@/lib/i18n"
 import {
@@ -451,7 +450,6 @@ export default function WaveIGLSupportLanding({
     locale,
 }: WaveIGLSupportLandingProps) {
     const { locale: currentLocale } = useLocale()
-    const [mounted, setMounted] = useState(false)
     const [selectedMethod, setSelectedMethod] = useState<"pix" | "monero">(
         "pix"
     )
@@ -462,10 +460,6 @@ export default function WaveIGLSupportLanding({
     const donationSectionRef = useRef<HTMLDivElement>(null)
     const t = getTranslations(currentLocale)
     const isPortuguese = currentLocale === "pt-BR"
-
-    useEffect(() => {
-        setMounted(true)
-    }, [])
 
     useEffect(() => {
         const script = document.createElement("script")
@@ -713,13 +707,6 @@ export default function WaveIGLSupportLanding({
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-purple-600 via-purple-500 to-pink-500">
-            {/* Language Selector for Landing Page */}
-            <div className="fixed top-4 right-4 z-50">
-                <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-lg p-2 shadow-md">
-                    {mounted && <LanguageSelector variant="default" />}
-                </div>
-            </div>
-
             {/* Hero Section */}
             <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 text-white">
                 <div className="max-w-7xl mx-auto text-center">

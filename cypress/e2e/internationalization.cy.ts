@@ -120,13 +120,13 @@ describe("Internationalization (i18n) Tests", () => {
             {
                 page: "/channel-management",
                 englishText: [
-                    "Channel Management",
+                    "ViraTrend",
                     "Transform Your Channel",
                     "Growth Machine",
                 ],
                 portugueseText: [
-                    "Gestão de Canais",
-                    "Transforme Seu Canal",
+                    "ViraTrend",
+                    "Transforme seu Canal",
                     "Máquina de Crescimento",
                 ],
             },

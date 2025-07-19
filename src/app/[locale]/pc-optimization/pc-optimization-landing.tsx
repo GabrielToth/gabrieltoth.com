@@ -1,21 +1,13 @@
 "use client"
 
-import LanguageSelector from "@/components/ui/language-selector"
-import PricingToggle from "@/components/ui/pricing-toggle"
-import { useMoneroPricing } from "@/hooks/use-monero-pricing"
 import { type Locale } from "@/lib/i18n"
 import {
     CheckCircle,
     Clock,
     Cpu,
     Gamepad2,
-    HardDrive,
     Monitor,
-    Percent,
     Shield,
-    Star,
-    Target,
-    TrendingUp,
     Trophy,
     Users,
     Zap,
@@ -56,99 +48,56 @@ const getTranslations = (locale: Locale) => {
             videoText: isPortuguese
                 ? "É ASSIM QUE UM PC OTIMIZADO SE SENTE"
                 : "THAT'S HOW AN OPTIMIZED PC FEELS LIKE",
+            stats: [
+                { value: "99.9%", label: "Uptime" },
+                { value: "1ms", label: "Latency" },
+                { value: "1000+", label: "Games Optimized" },
+                { value: "500+", label: "Happy Customers" },
+            ],
+            learnMore: isPortuguese ? "Saiba Mais" : "Learn More",
         },
-        benefits: [
-            {
-                icon: Target,
-                title: isPortuguese
-                    ? "Hit Registration Instantâneo"
-                    : "Instant Hit Registration",
-                description: isPortuguese
-                    ? "Seus tiros finalmente acertam onde miram"
-                    : "Your shots finally hit where you aim",
-            },
-            {
-                icon: Zap,
-                title: isPortuguese
-                    ? "Baixa Latência Real"
-                    : "TRUE Low Latency",
-                description: isPortuguese
-                    ? "Resposta imediata em cada clique"
-                    : "Immediate response on every click",
-            },
-            {
-                icon: TrendingUp,
-                title: isPortuguese ? "FPS Alto" : "High FPS",
-                description: isPortuguese
-                    ? "Performance máxima do seu hardware"
-                    : "Maximum performance from your hardware",
-            },
-            {
-                icon: Shield,
-                title: isPortuguese ? "Sem Stutters" : "No Stutters",
-                description: isPortuguese
-                    ? "Jogabilidade suave e consistente"
-                    : "Smooth and consistent gameplay",
-            },
-        ],
-        sections: [
-            {
-                badge: isPortuguese ? "GAMEPLAY SEM LAG" : "LAG-FREE GAMEPLAY",
-                title: isPortuguese
-                    ? "Pare de Perder Por Causa da Conexão"
-                    : "Stop Losing Because of Connection",
-                description: isPortuguese
-                    ? "Está se perguntando por que seus tiros atravessam os inimigos como fantasmas? Não é você - é sua configuração de rede. Vamos garantir que sua internet esteja totalmente otimizada para jogos."
-                    : "Wondering why your shots go through enemies like ghosts? It's not you - it's your network setup. We'll make sure your internet is fully game-ready.",
-                highlight: isPortuguese
-                    ? "🌐 Lag fora, vitórias dentro!"
-                    : "🌐 Lag out, wins in!",
-                icon: Target,
-            },
-            {
-                badge: isPortuguese
-                    ? "FRAMES VENCEM JOGOS"
-                    : "FRAMES WIN GAMES",
-                title: isPortuguese
-                    ? "Seu Hardware É Capaz de Mais"
-                    : "Your Hardware is Capable of More",
-                description: isPortuguese
-                    ? "Desbloqueamos performance não utilizada em cada frame. Desde ajuste de GPU e priorização de CPU até otimização de processos em segundo plano. A maioria dos nossos clientes ganha entre 30% e 50% mais FPS."
-                    : "We unlock untapped performance in every frame. From GPU tuning and CPU prioritization to background process optimization. Most of our customers gain between 30% and 50% more FPS.",
-                highlight: isPortuguese
-                    ? "🎮 Extraia cada gota de poder do seu sistema"
-                    : "🎮 Squeeze every last drop of power from your system",
-                icon: Cpu,
-            },
-            {
-                badge: isPortuguese ? "ADEUS, STUTTERS" : "GOODBYE, STUTTERS",
-                title: isPortuguese
-                    ? "Microstutters Matam o Momentum"
-                    : "Microstutters Kill Momentum",
-                description: isPortuguese
-                    ? "Nosso processo de ajuste estabiliza seu sistema de ponta a ponta: planos de energia, timers, alocação de memória, serviços em segundo plano e configurações de jogos."
-                    : "Our tuning process stabilizes your system end-to-end: power plans, timers, memory allocation, background services, and game configs.",
-                highlight: isPortuguese
-                    ? "🎯 Performance suave e consistente"
-                    : "🎯 Smooth, consistent performance",
-                icon: Monitor,
-            },
-            {
-                badge: isPortuguese
-                    ? "CONSISTÊNCIA É REI"
-                    : "CONSISTENCY IS KING",
-                title: isPortuguese
-                    ? "FPS Alto é Ótimo, Frametimes Suaves São Essenciais"
-                    : "High FPS is Great, Smooth Frametimes Are Essential",
-                description: isPortuguese
-                    ? "Otimizamos seu sistema para manter entrega estável em cada frame, reduzindo jitter e eliminando problemas de frame pacing. Movimento de câmera suave como manteiga."
-                    : "We optimize your system to maintain stable delivery across every frame, reducing jitter and eliminating frame pacing issues. Buttery smooth camera movement.",
-                highlight: isPortuguese
-                    ? "📈 Movimento fluido que simplesmente funciona"
-                    : "📈 Fluid motion that just feels right",
-                icon: HardDrive,
-            },
-        ],
+        features: {
+            title: isPortuguese ? "O que fazemos" : "What We Do",
+            subtitle: isPortuguese
+                ? "Nós oferecemos uma solução completa para otimizar seu PC, desde a configuração de rede até otimização de energia."
+                : "We offer a complete solution to optimize your PC, from network configuration to power optimization.",
+            list: [
+                {
+                    icon: Gamepad2,
+                    title: isPortuguese
+                        ? "Otimização de Jogos"
+                        : "Game Optimization",
+                    description: isPortuguese
+                        ? "Otimizamos seu jogo para garantir que você obtenha o melhor desempenho possível, incluindo ajustes de configuração de rede e otimização de energia."
+                        : "We optimize your game to ensure you get the best possible performance, including network configuration adjustments and power optimization.",
+                },
+                {
+                    icon: Cpu,
+                    title: isPortuguese
+                        ? "Otimização de Hardware"
+                        : "Hardware Optimization",
+                    description: isPortuguese
+                        ? "Otimizamos seu hardware para garantir que você obtenha o melhor desempenho, incluindo ajustes de BIOS e otimização de energia."
+                        : "We optimize your hardware to ensure you get the best performance, including BIOS fine-tuning and power optimization.",
+                },
+                {
+                    icon: Monitor,
+                    title: isPortuguese
+                        ? "Otimização de Monitor"
+                        : "Monitor Optimization",
+                    description: isPortuguese
+                        ? "Otimizamos seu monitor para garantir que você obtenha a melhor experiência de jogo, incluindo ajustes de resolução e taxa de quadros."
+                        : "We optimize your monitor to ensure you get the best gaming experience, including resolution and frame rate adjustments.",
+                },
+                {
+                    icon: Shield,
+                    title: isPortuguese ? "Segurança" : "Security",
+                    description: isPortuguese
+                        ? "Garantimos que seu PC esteja protegido contra malware e outros riscos, incluindo otimização de firewall e atualização de software."
+                        : "We guarantee your PC is protected against malware and other risks, including firewall optimization and software updates.",
+                },
+            ],
+        },
         pricing: {
             title: isPortuguese
                 ? "Escolha Seu Nível de Otimização"
@@ -240,6 +189,10 @@ const getTranslations = (locale: Locale) => {
                     popular: false,
                 },
             ],
+            popular: isPortuguese ? "MAIS POPULAR" : "MOST POPULAR",
+            cta: isPortuguese
+                ? "LER TERMOS E CONTRATAR"
+                : "READ TERMS & GET STARTED",
         },
         testimonials: {
             title: isPortuguese
@@ -337,122 +290,52 @@ export default function PCOptimizationLanding({
     locale,
 }: PCOptimizationLandingProps) {
     const t = getTranslations(locale)
-    const { calculatePrice } = useMoneroPricing()
 
     return (
         <div className="min-h-screen bg-black text-white overflow-hidden">
-            {/* Language Selector */}
-            <div className="fixed top-4 right-4 z-50">
-                <LanguageSelector />
-            </div>
-
             {/* Hero Section */}
-            <section className="relative py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-black via-gray-900 to-black">
-                {/* Animated background elements */}
-                <div className="absolute inset-0 overflow-hidden">
-                    <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl animate-pulse"></div>
-                    <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
+            <section className="relative min-h-screen flex items-center justify-center">
+                {/* Background Effects */}
+                <div className="absolute inset-0">
+                    <div className="absolute inset-0 bg-gradient-to-br from-blue-900/30 via-purple-900/20 to-black"></div>
+                    <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse"></div>
+                    <div className="absolute top-3/4 right-1/4 w-96 h-96 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse delay-700"></div>
                 </div>
 
-                <div className="relative max-w-7xl mx-auto text-center">
-                    {/* Scrolling problems text */}
-                    <div className="mb-8 overflow-hidden">
-                        <div className="animate-marquee whitespace-nowrap text-red-500 text-2xl font-bold">
-                            {t.hero.badge}{" "}
-                            {t.hero.problems.map((problem, i) => (
-                                <span key={i}>{problem} </span>
-                            ))}
-                            {t.hero.badge}{" "}
-                            {t.hero.problems.map((problem, i) => (
-                                <span key={i}>{problem} </span>
-                            ))}
-                        </div>
+                <div className="relative z-10 max-w-7xl mx-auto px-4 text-center">
+                    <div className="inline-flex items-center px-4 py-2 rounded-full bg-blue-500/20 border border-blue-500/30 mb-8">
+                        <Zap className="w-4 h-4 mr-2 text-blue-400" />
+                        <span className="text-blue-300 text-sm font-medium">
+                            {t.hero.badge}
+                        </span>
                     </div>
 
-                    <h1 className="text-6xl sm:text-8xl font-black text-white mb-8 tracking-wider">
+                    <h1 className="text-5xl md:text-7xl font-black mb-6 bg-gradient-to-r from-blue-400 via-purple-400 to-blue-600 bg-clip-text text-transparent">
                         {t.hero.title}
                     </h1>
 
-                    <p className="text-xl text-gray-300 mb-12 max-w-3xl mx-auto">
+                    <p className="text-xl md:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto">
                         {t.hero.subtitle}
                     </p>
 
-                    <a
-                        href="#pricing"
-                        className="inline-flex items-center px-12 py-6 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-bold hover:from-blue-700 hover:to-purple-700 transition-all transform hover:scale-105 text-xl"
-                    >
-                        <Gamepad2 className="mr-3" size={24} />
-                        {t.hero.cta}
-                    </a>
-
-                    {/* Benefits Grid */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-16">
-                        {t.benefits.map((benefit, index) => (
-                            <div
-                                key={index}
-                                className="bg-gray-900/50 backdrop-blur border border-gray-700 rounded-lg p-6 hover:border-blue-500 transition-all"
-                            >
-                                <benefit.icon className="w-10 h-10 text-blue-400 mb-4 mx-auto" />
-                                <h3 className="font-bold text-white mb-2">
-                                    {benefit.title}
-                                </h3>
-                                <p className="text-gray-400 text-sm">
-                                    {benefit.description}
-                                </p>
-                            </div>
-                        ))}
+                    <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
+                        <button className="px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 rounded-lg font-semibold text-lg transition-all duration-300 transform hover:scale-105">
+                            {t.hero.cta}
+                        </button>
+                        <button className="px-8 py-4 border border-gray-600 hover:border-gray-400 rounded-lg font-semibold text-lg transition-all duration-300 hover:bg-gray-800">
+                            {t.hero.learnMore}
+                        </button>
                     </div>
-                </div>
-            </section>
 
-            {/* Features Sections */}
-            {t.sections.map((section, index) => (
-                <section
-                    key={index}
-                    className={`py-20 px-4 sm:px-6 lg:px-8 ${
-                        index % 2 === 0 ? "bg-gray-900" : "bg-black"
-                    }`}
-                >
-                    <div className="max-w-7xl mx-auto">
-                        <div className="text-center mb-12">
-                            <div className="inline-block mb-6">
-                                <div className="animate-marquee-slow whitespace-nowrap text-blue-400 text-lg font-bold">
-                                    {section.badge} {section.badge}{" "}
-                                    {section.badge}
+                    {/* Performance Stats */}
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto">
+                        {t.hero.stats.map((stat, index) => (
+                            <div key={index} className="text-center">
+                                <div className="text-3xl md:text-4xl font-black text-blue-400 mb-2">
+                                    {stat.value}
                                 </div>
-                            </div>
-                            <h2 className="text-4xl font-black text-white mb-6">
-                                {section.title}
-                            </h2>
-                            <p className="text-xl text-gray-300 mb-8 max-w-4xl mx-auto">
-                                {section.description}
-                            </p>
-                            <div className="text-2xl font-bold text-yellow-400">
-                                {section.highlight}
-                            </div>
-                        </div>
-                    </div>
-                </section>
-            ))}
-
-            {/* Games Section */}
-            <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-900">
-                <div className="max-w-7xl mx-auto text-center">
-                    <h2 className="text-4xl font-black text-white mb-6">
-                        {t.games.title}
-                    </h2>
-                    <p className="text-xl text-gray-300 mb-12 max-w-4xl mx-auto">
-                        {t.games.subtitle}
-                    </p>
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                        {t.games.list.map((game, index) => (
-                            <div
-                                key={index}
-                                className="bg-black/50 backdrop-blur border border-gray-700 rounded-lg p-6 hover:border-blue-500 transition-all"
-                            >
-                                <Gamepad2 className="w-8 h-8 text-blue-400 mb-3 mx-auto" />
-                                <div className="font-bold text-white text-sm">
-                                    {game}
+                                <div className="text-gray-400 text-sm">
+                                    {stat.label}
                                 </div>
                             </div>
                         ))}
@@ -460,44 +343,33 @@ export default function PCOptimizationLanding({
                 </div>
             </section>
 
-            {/* Testimonials */}
-            <section className="py-20 px-4 sm:px-6 lg:px-8 bg-black">
-                <div className="max-w-7xl mx-auto">
+            {/* Features Section */}
+            <section className="py-24 bg-gradient-to-b from-black to-gray-900">
+                <div className="max-w-7xl mx-auto px-4">
                     <div className="text-center mb-16">
-                        <h2 className="text-4xl font-black text-white mb-6">
-                            {t.testimonials.title}
+                        <h2 className="text-4xl md:text-5xl font-black mb-6 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+                            {t.features.title}
                         </h2>
-                        <p className="text-xl text-gray-300">
-                            {t.testimonials.subtitle}
+                        <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+                            {t.features.subtitle}
                         </p>
                     </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        {t.testimonials.items.map((testimonial, index) => (
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        {t.features.list.map((feature, index) => (
                             <div
                                 key={index}
-                                className="bg-gray-900/50 backdrop-blur border border-gray-700 rounded-lg p-8"
+                                className="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-xl p-6 hover:border-blue-500/50 transition-all duration-300 hover:transform hover:scale-105"
                             >
-                                <div className="flex items-center mb-4">
-                                    {[...Array(testimonial.rating)].map(
-                                        (_, i) => (
-                                            <Star
-                                                key={i}
-                                                className="w-5 h-5 text-yellow-400 fill-current"
-                                            />
-                                        )
-                                    )}
+                                <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-500 rounded-lg flex items-center justify-center mb-4">
+                                    <feature.icon className="w-6 h-6 text-white" />
                                 </div>
-                                <p className="text-gray-300 mb-6 italic text-lg">
-                                    {testimonial.content}
+                                <h3 className="text-xl font-bold mb-3 text-white">
+                                    {feature.title}
+                                </h3>
+                                <p className="text-gray-300 leading-relaxed">
+                                    {feature.description}
                                 </p>
-                                <div>
-                                    <div className="font-bold text-white">
-                                        {testimonial.name}
-                                    </div>
-                                    <div className="text-blue-400">
-                                        {testimonial.role}
-                                    </div>
-                                </div>
                             </div>
                         ))}
                     </div>
@@ -505,100 +377,73 @@ export default function PCOptimizationLanding({
             </section>
 
             {/* Pricing Section */}
-            <section
-                id="pricing"
-                className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-900"
-            >
-                <div className="max-w-7xl mx-auto">
+            <section className="py-24 bg-gradient-to-b from-gray-900 to-black">
+                <div className="max-w-7xl mx-auto px-4">
                     <div className="text-center mb-16">
-                        <h2 className="text-4xl font-black text-white mb-6">
+                        <h2 className="text-4xl md:text-5xl font-black mb-6 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
                             {t.pricing.title}
                         </h2>
-                        <p className="text-xl text-gray-300">
+                        <p className="text-xl text-gray-300 max-w-3xl mx-auto">
                             {t.pricing.subtitle}
                         </p>
                     </div>
-                    <PricingToggle locale={locale} />
+
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                         {t.pricing.plans.map((plan, index) => {
-                            const pricing = calculatePrice(
-                                plan.basePrice,
-                                locale
-                            )
                             return (
                                 <div
                                     key={index}
-                                    className={`bg-black/50 backdrop-blur border rounded-lg p-8 relative ${
+                                    className={`relative bg-gray-800/50 backdrop-blur-sm border rounded-2xl p-8 hover:transform hover:scale-105 transition-all duration-300 ${
                                         plan.popular
-                                            ? "border-blue-500 transform scale-105"
+                                            ? "border-blue-500 shadow-2xl shadow-blue-500/20"
                                             : "border-gray-700"
                                     }`}
                                 >
                                     {plan.popular && (
                                         <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                                            <span className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2 rounded-full text-sm font-bold">
-                                                MAIS POPULAR
-                                            </span>
-                                        </div>
-                                    )}
-
-                                    {/* Monero Discount Badge */}
-                                    {pricing.isMonero && (
-                                        <div className="absolute -top-2 -right-2">
-                                            <div className="bg-orange-500 text-white px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1">
-                                                <Percent className="w-3 h-3" />
-                                                50% OFF
+                                            <div className="bg-gradient-to-r from-blue-500 to-purple-500 text-white px-4 py-1 rounded-full text-sm font-bold">
+                                                {t.pricing.popular}
                                             </div>
                                         </div>
                                     )}
 
                                     <div className="text-center mb-8">
-                                        <h3 className="text-xl font-bold text-white mb-2">
+                                        <h3 className="text-2xl font-bold text-white mb-4">
                                             {plan.name}
                                         </h3>
                                         <div className="flex items-center justify-center gap-2 mb-2">
                                             <span className="text-4xl font-black text-blue-400">
-                                                {pricing.currency}{" "}
-                                                {pricing.displayPrice}
+                                                R$ {plan.basePrice}
                                             </span>
-                                            {pricing.isMonero &&
-                                                pricing.originalPrice &&
-                                                pricing.originalPrice !==
-                                                    pricing.displayPrice && (
-                                                    <span className="text-lg text-gray-500 line-through">
-                                                        {pricing.currency}{" "}
-                                                        {pricing.originalPrice}
-                                                    </span>
-                                                )}
                                         </div>
-                                        {pricing.isMonero && (
-                                            <div className="text-orange-400 text-sm font-medium">
-                                                💰 Preço com Monero (XMR)
-                                            </div>
-                                        )}
                                         <p className="text-gray-400">
                                             {plan.description}
                                         </p>
                                     </div>
+
                                     <ul className="space-y-4 mb-8">
                                         {plan.features.map((feature, idx) => (
                                             <li
                                                 key={idx}
-                                                className="flex items-center text-gray-300"
+                                                className="flex items-center gap-3"
                                             >
-                                                <CheckCircle className="w-5 h-5 text-green-400 mr-3" />
-                                                {feature}
+                                                <CheckCircle className="w-5 h-5 text-green-400 flex-shrink-0" />
+                                                <span className="text-gray-300">
+                                                    {feature}
+                                                </span>
                                             </li>
                                         ))}
                                     </ul>
-                                    <a
-                                        href={`/${locale}/pc-optimization/terms`}
-                                        className="w-full py-4 px-6 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-bold hover:from-blue-700 hover:to-purple-700 transition-all transform hover:scale-105 text-center block"
+
+                                    <button
+                                        className={`w-full py-3 rounded-lg font-semibold transition-all duration-300 ${
+                                            plan.popular
+                                                ? "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white"
+                                                : "bg-gray-700 hover:bg-gray-600 text-gray-300"
+                                        }`}
                                     >
-                                        {locale === "pt-BR"
-                                            ? "LER TERMOS E CONTRATAR"
-                                            : "READ TERMS & GET STARTED"}
-                                    </a>
+                                        {t.pricing.cta}
+                                    </button>
                                 </div>
                             )
                         })}
@@ -606,51 +451,21 @@ export default function PCOptimizationLanding({
                 </div>
             </section>
 
-            {/* Guarantee Section */}
-            <section className="py-20 px-4 sm:px-6 lg:px-8 bg-black">
-                <div className="max-w-7xl mx-auto">
-                    <h2 className="text-4xl font-black text-white text-center mb-16">
-                        {t.guarantee.title}
-                    </h2>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        {t.guarantee.items.map((item, index) => (
-                            <div
-                                key={index}
-                                className="text-center bg-gray-900/50 backdrop-blur border border-gray-700 rounded-lg p-8"
-                            >
-                                <item.icon className="w-16 h-16 text-blue-400 mx-auto mb-6" />
-                                <h3 className="text-xl font-bold text-white mb-4">
-                                    {item.title}
-                                </h3>
-                                <p className="text-gray-400">
-                                    {item.description}
-                                </p>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </section>
-
-            {/* Final CTA */}
-            <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-blue-600 via-purple-600 to-blue-600">
-                <div className="max-w-4xl mx-auto text-center">
-                    <h2 className="text-5xl font-black text-white mb-6">
+            {/* CTA Section */}
+            <section className="py-24 bg-gradient-to-r from-blue-900 to-purple-900">
+                <div className="max-w-4xl mx-auto px-4 text-center">
+                    <h2 className="text-4xl md:text-5xl font-black mb-6 text-white">
                         {t.cta.title}
                     </h2>
-                    <p className="text-xl text-white/90 mb-12">
+                    <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
                         {t.cta.subtitle}
                     </p>
-                    <a
-                        href={`/${locale}/pc-optimization/terms`}
-                        className="inline-flex items-center px-12 py-6 bg-black text-white rounded-lg font-bold hover:bg-gray-900 transition-all transform hover:scale-105 text-xl"
-                    >
-                        <Zap className="mr-3" size={24} />
+                    <button className="px-8 py-4 bg-white text-blue-900 hover:bg-gray-100 rounded-lg font-semibold text-lg transition-all duration-300 transform hover:scale-105">
                         {t.cta.button}
-                    </a>
+                    </button>
                 </div>
             </section>
 
-            {/* Custom CSS for animations */}
             <style jsx>{`
                 @keyframes marquee {
                     0% {
@@ -662,10 +477,10 @@ export default function PCOptimizationLanding({
                 }
                 @keyframes marquee-slow {
                     0% {
-                        transform: translateX(50%);
+                        transform: translateX(100%);
                     }
                     100% {
-                        transform: translateX(-50%);
+                        transform: translateX(-200%);
                     }
                 }
                 .animate-marquee {
