@@ -1,65 +1,113 @@
-# Header Presence Tests
+# Navigation Structure Tests
 
 ## Overview
 
 Este conjunto de testes garante que a estrutura de navegação esteja correta em todo o site, especificamente verificando:
 
-- **Landing Pages**: NÃO devem ter header/navegação
-- **Homepage**: DEVE ter header completo com navegação
-- **Páginas Institucionais**: DEVEM ter header quando apropriado
+- **Landing Pages**: NÃO devem ter header principal de navegação, MAS devem ter breadcrumbs
+- **Homepage**: DEVE ter header completo com navegação E breadcrumbs
+- **Páginas Institucionais**: DEVEM ter breadcrumbs e seletor de idioma
+- **Todas as Páginas**: DEVEM ter breadcrumbs para navegação estrutural
 
 ## Arquivos de Teste
 
 ### 1. `header-presence.cy.ts` (Testes Completos)
-- Testa todas as landing pages em inglês e português
-- Verifica funcionalidade completa do header
-- Testa dropdown de serviços
-- Verifica navegação condicional
-- **Tempo**: ~2-3 minutos para executar
+- Testa a presença/ausência do header principal em todas as páginas
+- Verifica breadcrumbs em todas as páginas
+- Testa funcionalidade completa do header na homepage
+- Verifica dropdown de serviços apenas na homepage
+- Testa navegação estrutural dos breadcrumbs
+- **Tempo**: ~3-4 minutos para executar
 
 ### 2. `header-presence-simple.cy.ts` (Testes Rápidos)
 - Versão simplificada para CI/CD
-- Testa apenas páginas principais
-- Foco na verificação básica de presença/ausência
-- **Tempo**: ~30 segundos para executar
+- Testa apenas funcionalidades principais
+- Foco na verificação básica de estrutura de navegação
+- **Tempo**: ~45 segundos para executar
 
-## Landing Pages Testadas
+## Estrutura de Navegação por Tipo de Página
 
-Estas páginas **NÃO DEVEM** ter header:
+### Landing Pages (NÃO devem ter header principal)
 - `/[locale]/pc-optimization`
 - `/[locale]/channel-management`
-- `/[locale]/waveigl-support`
+- `/[locale]/waveigl-support` 
 - `/[locale]/editors`
 
-## Páginas com Header
+**Estrutura esperada:**
+- ❌ Elemento `<header>` (navegação principal)
+- ❌ Menu "Services"/"Serviços"
+- ❌ Seletor de idioma no header
+- ✅ Breadcrumbs (`<nav aria-label="Breadcrumb">`)
+- ✅ Footer
 
-Estas páginas **DEVEM** ter header:
-- `/[locale]` (Homepage)
+### Homepage (DEVE ter header + breadcrumbs)
+- `/[locale]` (página inicial)
+
+**Estrutura esperada:**
+- ✅ Elemento `<header>` com navegação principal
+- ✅ Menu "Services"/"Serviços" no header
+- ✅ Seletor de idioma no header
+- ✅ Breadcrumbs (separados do header)
+- ✅ Footer
+
+### Páginas Institucionais (breadcrumbs + seletor de idioma)
 - `/[locale]/privacy-policy`
 - `/[locale]/terms-of-service`
+- `/[locale]/pc-optimization/terms`
+
+**Estrutura esperada:**
+- ❌ Header principal de navegação
+- ✅ Seletor de idioma (implementação específica)
+- ✅ Breadcrumbs para navegação estrutural
+- ✅ Footer
+
+## Tipos de Navegação
+
+### 1. Header Principal (apenas homepage)
+```html
+<header>
+  <nav>
+    <!-- Links: Home, About, Projects, Services, Contact -->
+    <!-- Services dropdown -->
+    <!-- Language selector -->
+    <!-- Theme toggle -->
+  </nav>
+</header>
+```
+
+### 2. Breadcrumbs (todas as páginas)
+```html
+<nav aria-label="Breadcrumb navigation">
+  <!-- Home > Categoria > Página Atual -->
+</nav>
+```
 
 ## Verificações Realizadas
 
-### Landing Pages (Não devem ter header)
-- ✅ Elemento `<header>` não existe
-- ✅ Elemento `<nav>` não existe
-- ✅ Logo "Gabriel Toth Gonçalves" não é um link
-- ✅ Seletor de idioma não existe
-- ✅ Dropdown de serviços não existe
-- ✅ Footer existe
+### Landing Pages
+- ✅ **SEM** elemento `<header>`
+- ✅ **SEM** menu "Services"/"Serviços"
+- ✅ **SEM** seletor de idioma do header
+- ✅ **COM** breadcrumbs navigation
+- ✅ **COM** footer
 
-### Homepage (Deve ter header)
-- ✅ Elemento `<header>` existe e é visível
-- ✅ Elemento `<nav>` existe e é visível
-- ✅ Logo "Gabriel Toth Gonçalves" é um link
-- ✅ Seletor de idioma existe
-- ✅ Dropdown de serviços existe
-- ✅ Links de navegação funcionam
-- ✅ Footer existe
+### Homepage
+- ✅ **COM** elemento `<header>` visível
+- ✅ **COM** navegação `<nav>` dentro do header
+- ✅ **COM** logo "Gabriel Toth Gonçalves" como link
+- ✅ **COM** seletor de idioma no header
+- ✅ **COM** dropdown "Services"/"Serviços"
+- ✅ **COM** breadcrumbs (separados do header)
+- ✅ **COM** footer
+
+### Páginas Institucionais
+- ✅ **COM** breadcrumbs navigation
+- ✅ **COM** seletor de idioma (implementação específica)
+- ✅ **COM** footer
 
 ## Como Executar
 
-### Todos os testes de header:
+### Todos os testes de navegação:
 ```bash
 npx cypress run --spec "cypress/e2e/header-presence.cy.ts"
 ```
@@ -76,19 +124,51 @@ npx cypress open
 
 ## Importância dos Testes
 
-1. **UX Consistency**: Garante experiência consistente
-2. **Landing Page Optimization**: LPs sem distração melhoram conversão
-3. **Navigation Integrity**: Header funciona onde deveria
-4. **Regression Prevention**: Evita reintrodução de problemas
+1. **Consistência de UX**: Garante que cada tipo de página tenha a navegação apropriada
+2. **Landing Page Optimization**: LPs sem distração do header melhoram conversão
+3. **Navigation Clarity**: Breadcrumbs fornecem contexto e navegação em todas as páginas
+4. **Header Functionality**: Header principal funciona corretamente na homepage
+5. **Regression Prevention**: Evita reintrodução de problemas de navegação
+
+## Diferenças entre Tipos de Navegação
+
+### Header Principal vs Breadcrumbs
+
+| Aspecto | Header Principal | Breadcrumbs |
+|---------|------------------|-------------|
+| **Localização** | Apenas homepage | Todas as páginas |
+| **Propósito** | Navegação entre seções | Contexto hierárquico |
+| **Elementos** | Menu, Services, Language | Caminho: Home > Categoria > Página |
+| **Posição** | Fixo no topo | Abaixo do header (quando existe) |
+| **Styling** | Background com blur | Simples, texto pequeno |
 
 ## Integração com CI/CD
 
-Recomenda-se usar `header-presence-simple.cy.ts` no pipeline para:
+### Para Pipelines Rápidos:
+Use `header-presence-simple.cy.ts`:
 - Verificação rápida em PRs
 - Validação pré-deploy
 - Smoke tests em produção
 
-E usar `header-presence.cy.ts` para:
+### Para Validação Completa:
+Use `header-presence.cy.ts`:
 - Testes noturnos completos
 - Validação pré-release
-- Debugging de problemas específicos 
+- Debugging de problemas específicos
+
+## Debugging de Problemas
+
+### Problema: "Teste falhando - header encontrado onde não deveria"
+- Verifique se a página é realmente uma landing page
+- Confirme que não há `<header>` no código da página
+- Verifique se breadcrumbs não estão sendo confundidos com header
+
+### Problema: "Breadcrumbs não encontrados"
+- Verifique se o seletor `nav[aria-label*="Breadcrumb"]` está correto
+- Confirme que o componente Breadcrumbs está sendo importado
+- Verifique se `aria-label` está definido corretamente
+
+### Problema: "Services dropdown não funciona"
+- Confirme que está testando na homepage (único lugar onde deve existir)
+- Verifique se o seletor está correto: `header` + `contains("Services")`
+- Confirme que o dropdown não está sendo testado em landing pages 
