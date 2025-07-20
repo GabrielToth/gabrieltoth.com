@@ -1,0 +1,50 @@
+{
+    "breadcrumbs": [
+        { "name": "Home", "href": "/" },
+        { "name": "Terms of Service", "href": "/terms-of-service" }
+    ],
+    "title": "Terms of Service",
+    "lastUpdated": "Last updated: December 15, 2024",
+    "sections": [
+        {
+            "title": "1. Acceptance of Terms",
+            "content": "By accessing and using our services, you agree to comply with and be bound by these Terms of Service. If you do not agree with any part of these terms, you should not use our services."
+        },
+        {
+            "title": "2. Service Description",
+            "content": "We offer services including:\n• Digital growth consulting (ViraTrend)\n• Gaming performance optimization\n• WaveIGL channel support\n• Web development and data analysis"
+        },
+        {
+            "title": "3. User Responsibilities",
+            "content": "You agree to:\n• Provide accurate and up-to-date information\n• Use our services legally and ethically\n• Not interfere with the operation of our systems\n• Respect intellectual property rights"
+        },
+        {
+            "title": "4. Payments and Refunds",
+            "content": "• Payments must be made as agreed\n• We accept PIX, credit card, and Monero (XMR)\n• Refunds are processed according to our policy\n• Prices may be changed with prior notice"
+        },
+        {
+            "title": "5. Limitation of Liability",
+            "content": "Our services are provided \"as is\". We do not guarantee specific results and are not responsible for indirect or consequential damages."
+        },
+        {
+            "title": "6. Intellectual Property",
+            "content": "All content and materials provided are protected by copyright and other intellectual property laws. You may not reproduce or distribute without authorization."
+        },
+        {
+            "title": "7. Termination",
+            "content": "We may terminate or suspend your access to our services at any time, for any reason, including violation of these terms."
+        },
+        {
+            "title": "8. Changes to Terms",
+            "content": "We reserve the right to modify these terms at any time. Changes will take effect immediately upon posting."
+        },
+        {
+            "title": "9. Applicable Law",
+            "content": "These terms are governed by Brazilian laws. Any disputes will be resolved in the competent courts of Brazil."
+        },
+        {
+            "title": "10. Contact",
+            "content": "For questions about these Terms of Service:\n• Email: contato@gabrieltoth.com\n• WhatsApp: +55 11 99331-3606"
+        }
+    ]
+}

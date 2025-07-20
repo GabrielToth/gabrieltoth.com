@@ -1,0 +1,102 @@
+{
+    "hero": {
+        "title": "Support WaveIGL Channel",
+        "subtitle": "Help maintain content quality and accelerate community growth",
+        "description": "With over 2 million monthly views, WaveIGL has become a reference in gaming content. Your support is essential for us to continue creating quality content.",
+        "cta": "Choose Plan"
+    },
+    "stats": {
+        "title": "Our Impact",
+        "items": [
+            { "number": "2M+", "label": "Monthly views" },
+            { "number": "50K+", "label": "Subscribers" },
+            { "number": "1000+", "label": "Videos created" },
+            { "number": "5+", "label": "Years online" }
+        ]
+    },
+    "plans": {
+        "title": "Support Plans",
+        "subtitle": "Choose the way that best fits your budget",
+        "items": [
+            {
+                "name": "Supporter",
+                "price": 10,
+                "description": "Basic monthly support",
+                "features": [
+                    "Thanks in videos",
+                    "VIP Discord",
+                    "Early access",
+                    "Exclusive badge"
+                ]
+            },
+            {
+                "name": "Pro Supporter",
+                "price": 25,
+                "description": "Intermediate monthly support",
+                "features": [
+                    "Everything from Supporter",
+                    "Direct chat",
+                    "Content suggestions",
+                    "Custom emoji"
+                ],
+                "popular": true
+            },
+            {
+                "name": "Elite Supporter",
+                "price": 50,
+                "description": "Premium monthly support",
+                "features": [
+                    "Everything from Pro",
+                    "Monthly call",
+                    "Project previews",
+                    "Name in credits"
+                ]
+            }
+        ]
+    },
+    "benefits": {
+        "title": "How Your Support Helps",
+        "items": [
+            {
+                "title": "Better Equipment",
+                "description": "Investment in cameras, microphones and setup for better quality"
+            },
+            {
+                "title": "More Time for Content",
+                "description": "Full dedication to creating videos and streams"
+            },
+            {
+                "title": "Bigger Projects",
+                "description": "Possibility to create series and more elaborate content"
+            }
+        ]
+    },
+    "testimonials": {
+        "title": "What the Community Says",
+        "items": [
+            {
+                "name": "João_Gamer",
+                "message": "Best gaming channel in Brazil! I always learn something new.",
+                "type": "supporter"
+            },
+            {
+                "name": "AnaPlay",
+                "message": "Quality content and always updated. Worth every penny!",
+                "type": "pro"
+            }
+        ]
+    },
+    "faq": {
+        "title": "Frequently Asked Questions",
+        "items": [
+            {
+                "question": "Can I cancel anytime?",
+                "answer": "Yes! You can cancel or change your plan at any time."
+            },
+            {
+                "question": "How do I receive the benefits?",
+                "answer": "After payment confirmation, you'll receive instructions by email."
+            }
+        ]
+    }
+}

@@ -1,0 +1,227 @@
+{
+    "moneroToggle": {
+        "title": "Preços com Monero (XMR)",
+        "description": "Ative para ver preços com 50% de desconto usando Monero",
+        "enabled": "💰 Preços com Monero (50% OFF)",
+        "disabled": "💴 Preços Regulares (PIX/Card)"
+    },
+    "hero": {
+        "badge": "🎬 Junte-se à Nossa Equipe",
+        "title": "Procuramos Editores Talentosos",
+        "subtitle": "Faça parte de uma equipe global de editores profissionais. Trabalhe com projetos interessantes e tenha flexibilidade de horário.",
+        "cta": "Candidate-se Agora",
+        "stats": [
+            { "number": "50+", "label": "Editores ativos" },
+            { "number": "100+", "label": "Projetos por mês" },
+            { "number": "24/7", "label": "Suporte à equipe" }
+        ]
+    },
+    "about": {
+        "title": "Por Que Trabalhar Conosco?",
+        "description": "Oferecemos um ambiente flexível e recompensador para editores talentosos",
+        "intro": "Buscamos editores apaixonados por criar conteúdo de qualidade. Oferecemos projetos diversificados, pagamento competitivo e a liberdade de trabalhar de onde quiser.",
+        "experience": "Nossa plataforma conecta você a clientes globais, garantindo um fluxo constante de projetos interessantes. Você escolhe quais projetos aceitar e define seu próprio ritmo.",
+        "passion": "Valorizamos criatividade e qualidade. Se você é detalhista, organizado e ama edição de vídeos, queremos você em nossa equipe.",
+        "skills": [
+            { "name": "Edição de Vídeo", "iconName": "Video" },
+            { "name": "Motion Graphics", "iconName": "Wand2" },
+            { "name": "Color Grading", "iconName": "Palette" },
+            { "name": "Sound Design", "iconName": "Volume2" }
+        ]
+    },
+    "tools": {
+        "title": "Ferramentas Que Usamos",
+        "subtitle": "Software profissional para resultados de qualidade",
+        "items": [
+            {
+                "name": "Adobe Premiere Pro",
+                "description": "Edição de vídeo profissional",
+                "iconName": "Video"
+            },
+            {
+                "name": "After Effects",
+                "description": "Motion graphics e VFX",
+                "iconName": "Wand2"
+            },
+            {
+                "name": "DaVinci Resolve",
+                "description": "Color grading avançado",
+                "iconName": "Palette"
+            },
+            {
+                "name": "Audition",
+                "description": "Edição de áudio profissional",
+                "iconName": "Volume2"
+            }
+        ]
+    },
+    "services": {
+        "title": "Tipos de Projetos",
+        "subtitle": "Variedade de trabalhos disponíveis",
+        "items": [
+            {
+                "iconName": "Youtube",
+                "title": "YouTube Videos",
+                "description": "Edição completa para criadores de conteúdo",
+                "features": [
+                    "Cortes dinâmicos",
+                    "Thumbnails",
+                    "Intros/Outros",
+                    "Legendas"
+                ]
+            },
+            {
+                "iconName": "Megaphone",
+                "title": "Conteúdo Publicitário",
+                "description": "Vídeos promocionais e comerciais",
+                "features": [
+                    "Roteiro visual",
+                    "Animações",
+                    "Branding",
+                    "Call-to-action"
+                ]
+            },
+            {
+                "iconName": "Users",
+                "title": "Redes Sociais",
+                "description": "Conteúdo para Instagram, TikTok, etc",
+                "features": [
+                    "Formato vertical",
+                    "Trending effects",
+                    "Hashtags",
+                    "Stories"
+                ]
+            }
+        ]
+    },
+    "testimonials": {
+        "title": "O Que Nossos Editores Dizem",
+        "subtitle": "Depoimentos reais da nossa equipe",
+        "items": [
+            {
+                "rating": 5,
+                "content": "Trabalho aqui há 2 anos e é incrível! Projetos variados, pagamento em dia e total flexibilidade de horário.",
+                "name": "Maria Silva",
+                "role": "Editor Sênior"
+            },
+            {
+                "rating": 5,
+                "content": "A melhor plataforma para editores freelancers. Suporte excepcional e clientes de qualidade.",
+                "name": "João Santos",
+                "role": "Motion Designer"
+            }
+        ]
+    },
+    "pricing": {
+        "title": "Estrutura de Pagamento",
+        "subtitle": "Remuneração competitiva por projeto",
+        "plans": [
+            {
+                "name": "Editor Iniciante",
+                "basePrice": 50,
+                "description": "Para editores com até 1 ano de experiência",
+                "features": [
+                    "Projetos básicos",
+                    "Suporte 24/7",
+                    "Feedback detalhado",
+                    "Crescimento gradual"
+                ]
+            },
+            {
+                "name": "Editor Intermediário",
+                "basePrice": 100,
+                "description": "Para editores com 1-3 anos de experiência",
+                "features": [
+                    "Projetos complexos",
+                    "Cliente direto",
+                    "Revisões ilimitadas",
+                    "Bônus por qualidade"
+                ],
+                "popular": true
+            },
+            {
+                "name": "Editor Sênior",
+                "basePrice": 200,
+                "description": "Para editores experientes (3+ anos)",
+                "features": [
+                    "Projetos premium",
+                    "Equipe própria",
+                    "Supervisão de qualidade",
+                    "Participação nos lucros"
+                ]
+            }
+        ],
+        "note": "*Valores base por projeto. Bônus por performance e complexidade."
+    },
+    "requirements": {
+        "title": "Requisitos",
+        "subtitle": "O que você precisa para fazer parte da equipe",
+        "items": [
+            {
+                "title": "Hardware",
+                "description": "Equipamentos mínimos necessários",
+                "iconName": "Monitor",
+                "features": [
+                    "PC com 16GB RAM mínimo",
+                    "Placa de vídeo dedicada",
+                    "SSD para projetos",
+                    "Internet estável"
+                ]
+            },
+            {
+                "title": "Software",
+                "description": "Programas que você deve dominar",
+                "iconName": "Code",
+                "features": [
+                    "Adobe Premiere Pro",
+                    "After Effects (desejável)",
+                    "Photoshop básico",
+                    "Noções de áudio"
+                ]
+            },
+            {
+                "title": "Experiência",
+                "description": "Conhecimentos e habilidades",
+                "iconName": "Star",
+                "features": [
+                    "Portfolio disponível",
+                    "Inglês básico",
+                    "Organização",
+                    "Pontualidade"
+                ]
+            }
+        ]
+    },
+    "benefits": {
+        "title": "Benefícios",
+        "subtitle": "Vantagens de trabalhar conosco",
+        "description": "Oferecemos muito mais que apenas projetos",
+        "items": [
+            {
+                "title": "Flexibilidade Total",
+                "description": "Trabalhe quando e onde quiser",
+                "iconName": "Clock"
+            },
+            {
+                "title": "Pagamento Garantido",
+                "description": "Receba sempre em dia, sem atrasos",
+                "iconName": "CreditCard"
+            },
+            {
+                "title": "Crescimento Profissional",
+                "description": "Desenvolva suas habilidades continuamente",
+                "iconName": "TrendingUp"
+            },
+            {
+                "title": "Suporte Dedicado",
+                "description": "Equipe sempre disponível para ajudar",
+                "iconName": "MessageSquare"
+            }
+        ]
+    },
+    "cta": {
+        "title": "Pronto para Começar?",
+        "description": "Junte-se à nossa equipe de editores talentosos hoje mesmo",
+        "button": "Enviar Candidatura"
+    }
+}

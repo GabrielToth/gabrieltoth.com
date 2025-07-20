@@ -1,0 +1,50 @@
+{
+    "breadcrumbs": [
+        { "name": "Início", "href": "/" },
+        { "name": "Termos de Serviço", "href": "/terms-of-service" }
+    ],
+    "title": "Termos de Serviço",
+    "lastUpdated": "Última atualização: 15 de dezembro de 2024",
+    "sections": [
+        {
+            "title": "1. Aceitação dos Termos",
+            "content": "Ao acessar e usar nossos serviços, você concorda em cumprir e estar vinculado a estes Termos de Serviço. Se você não concordar com qualquer parte destes termos, não deve usar nossos serviços."
+        },
+        {
+            "title": "2. Descrição dos Serviços",
+            "content": "Oferecemos serviços de:\n• Consultoria em crescimento digital (ViraTrend)\n• Otimização de performance para gaming\n• Suporte para canal WaveIGL\n• Desenvolvimento web e análise de dados"
+        },
+        {
+            "title": "3. Responsabilidades do Usuário",
+            "content": "Você concorda em:\n• Fornecer informações precisas e atualizadas\n• Usar nossos serviços de forma legal e ética\n• Não interferir no funcionamento dos nossos sistemas\n• Respeitar os direitos de propriedade intelectual"
+        },
+        {
+            "title": "4. Pagamentos e Reembolsos",
+            "content": "• Os pagamentos devem ser feitos conforme acordado\n• Aceitamos PIX, cartão de crédito e Monero (XMR)\n• Reembolsos são processados conforme nossa política\n• Preços podem ser alterados com aviso prévio"
+        },
+        {
+            "title": "5. Limitação de Responsabilidade",
+            "content": "Nossos serviços são fornecidos \"como estão\". Não garantimos resultados específicos e não somos responsáveis por danos indiretos ou consequenciais."
+        },
+        {
+            "title": "6. Propriedade Intelectual",
+            "content": "Todo o conteúdo e materiais fornecidos são protegidos por direitos autorais e outras leis de propriedade intelectual. Você não pode reproduzir ou distribuir sem autorização."
+        },
+        {
+            "title": "7. Rescisão",
+            "content": "Podemos encerrar ou suspender seu acesso aos nossos serviços a qualquer momento, por qualquer motivo, incluindo violação destes termos."
+        },
+        {
+            "title": "8. Alterações nos Termos",
+            "content": "Reservamo-nos o direito de modificar estes termos a qualquer momento. As alterações entrarão em vigor imediatamente após a publicação."
+        },
+        {
+            "title": "9. Lei Aplicável",
+            "content": "Estes termos são regidos pelas leis brasileiras. Qualquer disputa será resolvida nos tribunais competentes do Brasil."
+        },
+        {
+            "title": "10. Contato",
+            "content": "Para questões sobre estes Termos de Serviço:\n• Email: contato@gabrieltoth.com\n• WhatsApp: +55 11 99331-3606"
+        }
+    ]
+}

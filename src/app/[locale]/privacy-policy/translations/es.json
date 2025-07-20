@@ -1,0 +1,38 @@
+{
+    "breadcrumbs": [
+        { "name": "Inicio", "href": "/" },
+        { "name": "Política de Privacidad", "href": "/privacy-policy" }
+    ],
+    "title": "Política de Privacidad",
+    "lastUpdated": "Última actualización: 15 de diciembre de 2024",
+    "sections": [
+        {
+            "title": "1. Información que Recopilamos",
+            "content": "Recopilamos información que nos proporciona directamente, como cuando:\n• Completa formularios de contacto\n• Se suscribe a nuestros servicios\n• Interactúa con nuestro sitio web\n• Envía mensajes a través de WhatsApp"
+        },
+        {
+            "title": "2. Cómo Usamos Su Información",
+            "content": "Utilizamos su información para:\n• Responder a sus consultas\n• Proporcionar nuestros servicios\n• Mejorar nuestro sitio web y servicios\n• Enviar comunicaciones relacionadas con los servicios"
+        },
+        {
+            "title": "3. Compartir Información",
+            "content": "No vendemos, comercializamos o transferimos su información personal a terceros, excepto:\n• Cuando sea necesario para proporcionar nuestros servicios\n• Para cumplir con obligaciones legales\n• Con su consentimiento explícito"
+        },
+        {
+            "title": "4. Cookies y Tecnologías Similares",
+            "content": "Utilizamos cookies y tecnologías similares para:\n• Mejorar la funcionalidad del sitio web\n• Analizar el uso del sitio web\n• Personalizar su experiencia\n• Puede gestionar sus preferencias de cookies en la configuración de su navegador"
+        },
+        {
+            "title": "5. Seguridad de los Datos",
+            "content": "Implementamos medidas de seguridad apropiadas para proteger su información personal contra acceso no autorizado, alteración, divulgación o destrucción."
+        },
+        {
+            "title": "6. Sus Derechos",
+            "content": "Usted tiene derecho a:\n• Acceder a su información personal\n• Corregir información incorrecta\n• Solicitar la eliminación de sus datos\n• Retirar su consentimiento en cualquier momento"
+        },
+        {
+            "title": "7. Contacto",
+            "content": "Si tiene preguntas sobre esta Política de Privacidad, contáctenos:\n• Email: contato@gabrieltoth.com\n• WhatsApp: +55 11 99331-3606"
+        }
+    ]
+}

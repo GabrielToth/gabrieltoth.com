@@ -1,0 +1,227 @@
+{
+    "moneroToggle": {
+        "title": "Monero (XMR) Preise",
+        "description": "Aktivieren, um 50% Rabattpreise mit Monero zu sehen",
+        "enabled": "💰 Monero Preise (50% OFF)",
+        "disabled": "💴 Reguläre Preise (PIX/Karte)"
+    },
+    "hero": {
+        "badge": "🎬 Tritt Unserem Team Bei",
+        "title": "Wir Suchen Talentierte Editoren",
+        "subtitle": "Sei Teil eines globalen Teams professioneller Editoren. Arbeite an interessanten Projekten mit flexiblen Arbeitszeiten.",
+        "cta": "Jetzt Bewerben",
+        "stats": [
+            { "number": "50+", "label": "Aktive Editoren" },
+            { "number": "100+", "label": "Projekte pro Monat" },
+            { "number": "24/7", "label": "Team-Support" }
+        ]
+    },
+    "about": {
+        "title": "Warum Mit Uns Arbeiten?",
+        "description": "Wir bieten eine flexible und lohnende Umgebung für talentierte Editoren",
+        "intro": "Wir suchen Editoren, die leidenschaftlich qualitativ hochwertige Inhalte erstellen. Wir bieten vielfältige Projekte, wettbewerbsfähige Bezahlung und die Freiheit, von überall zu arbeiten.",
+        "experience": "Unsere Plattform verbindet Sie mit globalen Kunden und gewährleistet einen konstanten Fluss interessanter Projekte. Sie wählen, welche Projekte Sie annehmen und bestimmen Ihr eigenes Tempo.",
+        "passion": "Wir schätzen Kreativität und Qualität. Wenn Sie detailorientiert, organisiert sind und Videobearbeitung lieben, wollen wir Sie in unserem Team.",
+        "skills": [
+            { "name": "Videobearbeitung", "iconName": "Video" },
+            { "name": "Motion Graphics", "iconName": "Wand2" },
+            { "name": "Color Grading", "iconName": "Palette" },
+            { "name": "Sound Design", "iconName": "Volume2" }
+        ]
+    },
+    "tools": {
+        "title": "Tools Die Wir Verwenden",
+        "subtitle": "Professionelle Software für Qualitätsergebnisse",
+        "items": [
+            {
+                "name": "Adobe Premiere Pro",
+                "description": "Professionelle Videobearbeitung",
+                "iconName": "Video"
+            },
+            {
+                "name": "After Effects",
+                "description": "Motion Graphics und VFX",
+                "iconName": "Wand2"
+            },
+            {
+                "name": "DaVinci Resolve",
+                "description": "Erweiterte Farbkorrektur",
+                "iconName": "Palette"
+            },
+            {
+                "name": "Audition",
+                "description": "Professionelle Audiobearbeitung",
+                "iconName": "Volume2"
+            }
+        ]
+    },
+    "services": {
+        "title": "Projekt-Typen",
+        "subtitle": "Vielfalt verfügbarer Arbeiten",
+        "items": [
+            {
+                "iconName": "Youtube",
+                "title": "YouTube Videos",
+                "description": "Komplette Bearbeitung für Content-Ersteller",
+                "features": [
+                    "Dynamische Schnitte",
+                    "Thumbnails",
+                    "Intros/Outros",
+                    "Untertitel"
+                ]
+            },
+            {
+                "iconName": "Megaphone",
+                "title": "Werbeinhalte",
+                "description": "Werbe- und kommerzielle Videos",
+                "features": [
+                    "Visuelles Skript",
+                    "Animationen",
+                    "Branding",
+                    "Call-to-Action"
+                ]
+            },
+            {
+                "iconName": "Users",
+                "title": "Soziale Medien",
+                "description": "Inhalte für Instagram, TikTok, etc",
+                "features": [
+                    "Vertikales Format",
+                    "Trending-Effekte",
+                    "Hashtags",
+                    "Stories"
+                ]
+            }
+        ]
+    },
+    "testimonials": {
+        "title": "Was Unsere Editoren Sagen",
+        "subtitle": "Echte Erfahrungsberichte von unserem Team",
+        "items": [
+            {
+                "rating": 5,
+                "content": "Ich arbeite hier seit 2 Jahren und es ist fantastisch! Vielfältige Projekte, pünktliche Bezahlung und totale Zeitflexibilität.",
+                "name": "Maria Silva",
+                "role": "Senior Editor"
+            },
+            {
+                "rating": 5,
+                "content": "Die beste Plattform für Freelance-Editoren. Außergewöhnlicher Support und qualitativ hochwertige Kunden.",
+                "name": "João Santos",
+                "role": "Motion Designer"
+            }
+        ]
+    },
+    "pricing": {
+        "title": "Zahlungsstruktur",
+        "subtitle": "Wettbewerbsfähige Vergütung pro Projekt",
+        "plans": [
+            {
+                "name": "Einsteiger Editor",
+                "basePrice": 50,
+                "description": "Für Editoren mit bis zu 1 Jahr Erfahrung",
+                "features": [
+                    "Grundprojekte",
+                    "24/7 Support",
+                    "Detailliertes Feedback",
+                    "Schrittweises Wachstum"
+                ]
+            },
+            {
+                "name": "Fortgeschrittener Editor",
+                "basePrice": 100,
+                "description": "Für Editoren mit 1-3 Jahren Erfahrung",
+                "features": [
+                    "Komplexe Projekte",
+                    "Direkter Kunde",
+                    "Unbegrenzte Überarbeitungen",
+                    "Qualitätsboni"
+                ],
+                "popular": true
+            },
+            {
+                "name": "Senior Editor",
+                "basePrice": 200,
+                "description": "Für erfahrene Editoren (3+ Jahre)",
+                "features": [
+                    "Premium-Projekte",
+                    "Eigenes Team",
+                    "Qualitätsüberwachung",
+                    "Gewinnbeteiligung"
+                ]
+            }
+        ],
+        "note": "*Grundwerte pro Projekt. Leistungs- und Komplexitätsboni."
+    },
+    "requirements": {
+        "title": "Anforderungen",
+        "subtitle": "Was Sie brauchen, um Teil des Teams zu werden",
+        "items": [
+            {
+                "title": "Hardware",
+                "description": "Mindestens erforderliche Ausrüstung",
+                "iconName": "Monitor",
+                "features": [
+                    "PC mit mindestens 16GB RAM",
+                    "Dedizierte Grafikkarte",
+                    "SSD für Projekte",
+                    "Stabiles Internet"
+                ]
+            },
+            {
+                "title": "Software",
+                "description": "Programme, die Sie beherrschen sollten",
+                "iconName": "Code",
+                "features": [
+                    "Adobe Premiere Pro",
+                    "After Effects (wünschenswert)",
+                    "Grundlagen Photoshop",
+                    "Audio-Grundlagen"
+                ]
+            },
+            {
+                "title": "Erfahrung",
+                "description": "Wissen und Fähigkeiten",
+                "iconName": "Star",
+                "features": [
+                    "Verfügbares Portfolio",
+                    "Grundkenntnisse Englisch",
+                    "Organisation",
+                    "Pünktlichkeit"
+                ]
+            }
+        ]
+    },
+    "benefits": {
+        "title": "Vorteile",
+        "subtitle": "Vorteile der Arbeit mit uns",
+        "description": "Wir bieten viel mehr als nur Projekte",
+        "items": [
+            {
+                "title": "Totale Flexibilität",
+                "description": "Arbeiten Sie wann und wo Sie wollen",
+                "iconName": "Clock"
+            },
+            {
+                "title": "Garantierte Bezahlung",
+                "description": "Immer pünktlich bezahlt, keine Verzögerungen",
+                "iconName": "CreditCard"
+            },
+            {
+                "title": "Berufliches Wachstum",
+                "description": "Entwickeln Sie Ihre Fähigkeiten kontinuierlich",
+                "iconName": "TrendingUp"
+            },
+            {
+                "title": "Dedizierter Support",
+                "description": "Team immer verfügbar, um zu helfen",
+                "iconName": "MessageSquare"
+            }
+        ]
+    },
+    "cta": {
+        "title": "Bereit Anzufangen?",
+        "description": "Treten Sie heute unserem Team talentierter Editoren bei",
+        "button": "Bewerbung Einreichen"
+    }
+}

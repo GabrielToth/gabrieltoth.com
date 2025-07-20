@@ -1,0 +1,164 @@
+{
+    "moneroToggle": {
+        "title": "Monero (XMR) Pricing",
+        "description": "Enable to see 50% discount prices using Monero",
+        "enabled": "💰 Monero Prices (50% OFF)",
+        "disabled": "💴 Regular Prices (PIX/Card)"
+    },
+    "hero": {
+        "badge": "🚀 ViraTrend - Specialized Consulting",
+        "title": "Transform Your Channel into a Growth Machine",
+        "subtitle": "Specialized in analytics, content optimization and monetization strategies for multiple platforms. + 2M monthly views combined across YouTube, Instagram, TikTok, Twitch and other social networks.",
+        "cta": "Request Consulting",
+        "stats": [
+            {
+                "number": "2M+",
+                "label": "Monthly views combined (all platforms)"
+            },
+            {
+                "number": "1M+",
+                "label": "Views with under 1K subs (record)"
+            },
+            {
+                "number": "10+",
+                "label": "Years of experience (since 2013)"
+            }
+        ]
+    },
+    "about": {
+        "title": "About ViraTrend",
+        "subtitle": "Your specialized digital growth consulting",
+        "description": "ViraTrend was born from real experience of those who understand the challenge of growing on social media. With over 10 years creating content, going through all phases - from zero to millions of views - we've developed unique methodologies based on real data and proven results.",
+        "features": [
+            {
+                "title": "Deep Data Analysis",
+                "description": "We dive deep into your analytics to find hidden opportunities"
+            },
+            {
+                "title": "Personalized Strategies",
+                "description": "Each channel is unique, so we create tailored strategies for your niche"
+            },
+            {
+                "title": "Complete Support",
+                "description": "Continuous monitoring throughout the entire strategy implementation"
+            },
+            {
+                "title": "Proven Results",
+                "description": "Methodology tested and refined with over 2 million monthly views"
+            }
+        ]
+    },
+    "services": {
+        "title": "Our Services",
+        "subtitle": "Complete solutions for every stage of your growth",
+        "items": [
+            {
+                "title": "Analytics & Diagnosis",
+                "description": "Complete analysis of current performance and opportunity identification",
+                "features": [
+                    "Complete channel audit",
+                    "Competition analysis",
+                    "Trend identification",
+                    "Detailed report"
+                ],
+                "price": 350
+            },
+            {
+                "title": "Content Strategy",
+                "description": "Strategic content planning based on data",
+                "features": [
+                    "Editorial calendar",
+                    "Content ideas",
+                    "Title optimization",
+                    "Engagement strategies"
+                ],
+                "price": 500
+            },
+            {
+                "title": "Monetization Optimization",
+                "description": "Revenue maximization through multiple sources",
+                "features": [
+                    "Revenue analysis",
+                    "Monetization strategies",
+                    "CPM optimization",
+                    "Income diversification"
+                ],
+                "price": 650
+            },
+            {
+                "title": "Complete Consulting",
+                "description": "Complete package with all services included",
+                "features": [
+                    "All previous services",
+                    "Monthly follow-up",
+                    "Priority support",
+                    "Guided implementation"
+                ],
+                "price": 1200
+            }
+        ]
+    },
+    "testimonials": {
+        "title": "What Our Clients Say",
+        "subtitle": "Real results from those who trust ViraTrend",
+        "items": [
+            {
+                "name": "Carlos Silva",
+                "channel": "TechTalks BR",
+                "content": "In 3 months applying ViraTrend strategies, my channel grew 300% in subscribers and 450% in views. Data analysis was fundamental!",
+                "result": "+300% growth"
+            },
+            {
+                "name": "Ana Costa",
+                "channel": "Lifestyle Ana",
+                "content": "The consulting helped me finally understand how to monetize my content. In 2 months I already doubled my monthly revenue.",
+                "result": "+200% revenue"
+            },
+            {
+                "name": "João Santos",
+                "channel": "Gaming Zone",
+                "content": "The engagement strategies completely changed my channel. Now I have a much more active and engaged community.",
+                "result": "+500% engagement"
+            }
+        ]
+    },
+    "pricing": {
+        "title": "Choose Your Plan",
+        "subtitle": "Investment that pays for itself",
+        "cta": "Hire Now",
+        "features": {
+            "analytics": "Analytics & Diagnosis",
+            "strategy": "Content Strategy",
+            "monetization": "Monetization Optimization",
+            "complete": "Complete Consulting"
+        }
+    },
+    "faq": {
+        "title": "Frequently Asked Questions",
+        "subtitle": "Clear your main doubts about our consulting",
+        "items": [
+            {
+                "question": "How soon do I see results?",
+                "answer": "First insights appear immediately after analysis. Practical growth results start appearing between 30-60 days with consistent strategy application."
+            },
+            {
+                "question": "Does it work for any niche?",
+                "answer": "Yes! Our methodology is adaptable to all niches. We've worked with gaming, lifestyle, education, tech, entertainment and many others."
+            },
+            {
+                "question": "Do I need many subscribers?",
+                "answer": "No! We work from beginner channels to creators with millions of followers. Our strategies are adapted for each growth stage."
+            },
+            {
+                "question": "Is support included?",
+                "answer": "Yes, all plans include support during implementation. The Complete plan includes monthly follow-up."
+            }
+        ]
+    },
+    "cta": {
+        "title": "Ready to Transform Your Channel?",
+        "subtitle": "Join the creators who are already growing with our strategies",
+        "button": "Start Now",
+        "whatsapp": "Chat on WhatsApp"
+    }
+}

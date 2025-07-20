@@ -1,0 +1,38 @@
+{
+    "breadcrumbs": [
+        { "name": "Startseite", "href": "/" },
+        { "name": "Datenschutzrichtlinie", "href": "/privacy-policy" }
+    ],
+    "title": "Datenschutzrichtlinie",
+    "lastUpdated": "Letzte Aktualisierung: 15. Dezember 2024",
+    "sections": [
+        {
+            "title": "1. Informationen die Wir Sammeln",
+            "content": "Wir sammeln Informationen, die Sie uns direkt zur Verfügung stellen, wie wenn Sie:\n• Kontaktformulare ausfüllen\n• Sich für unsere Dienste anmelden\n• Mit unserer Website interagieren\n• Nachrichten über WhatsApp senden"
+        },
+        {
+            "title": "2. Wie Wir Ihre Informationen Verwenden",
+            "content": "Wir verwenden Ihre Informationen um:\n• Auf Ihre Anfragen zu antworten\n• Unsere Dienste zu erbringen\n• Unsere Website und Dienste zu verbessern\n• Dienstbezogene Kommunikation zu senden"
+        },
+        {
+            "title": "3. Weitergabe von Informationen",
+            "content": "Wir verkaufen, handeln oder übertragen Ihre persönlichen Informationen nicht an Dritte, außer:\n• Wenn es zur Erbringung unserer Dienste notwendig ist\n• Um rechtliche Verpflichtungen zu erfüllen\n• Mit Ihrer ausdrücklichen Zustimmung"
+        },
+        {
+            "title": "4. Cookies und Ähnliche Technologien",
+            "content": "Wir verwenden Cookies und ähnliche Technologien um:\n• Die Website-Funktionalität zu verbessern\n• Die Website-Nutzung zu analysieren\n• Ihr Erlebnis zu personalisieren\n• Sie können Ihre Cookie-Präferenzen in Ihren Browser-Einstellungen verwalten"
+        },
+        {
+            "title": "5. Datensicherheit",
+            "content": "Wir implementieren angemessene Sicherheitsmaßnahmen, um Ihre persönlichen Informationen vor unbefugtem Zugriff, Änderung, Offenlegung oder Zerstörung zu schützen."
+        },
+        {
+            "title": "6. Ihre Rechte",
+            "content": "Sie haben das Recht:\n• Auf Ihre persönlichen Informationen zuzugreifen\n• Ungenaue Informationen zu korrigieren\n• Die Löschung Ihrer Daten zu beantragen\n• Ihre Zustimmung jederzeit zu widerrufen"
+        },
+        {
+            "title": "7. Kontakt",
+            "content": "Wenn Sie Fragen zu dieser Datenschutzrichtlinie haben, kontaktieren Sie uns:\n• E-Mail: contato@gabrieltoth.com\n• WhatsApp: +55 11 99331-3606"
+        }
+    ]
+}

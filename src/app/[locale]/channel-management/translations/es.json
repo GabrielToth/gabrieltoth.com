@@ -1,0 +1,164 @@
+{
+    "moneroToggle": {
+        "title": "Precios con Monero (XMR)",
+        "description": "Activar para ver precios con 50% de descuento usando Monero",
+        "enabled": "💰 Precios con Monero (50% OFF)",
+        "disabled": "💴 Precios Regulares (PIX/Tarjeta)"
+    },
+    "hero": {
+        "badge": "🚀 ViraTrend - Consultoría Especializada",
+        "title": "Transforma tu Canal en una Máquina de Crecimiento",
+        "subtitle": "Especializado en analytics, optimización de contenido y estrategias de monetización para múltiples plataformas. + de 2M de visualizaciones mensuales combinadas entre YouTube, Instagram, TikTok, Twitch y otras redes sociales.",
+        "cta": "Solicitar Consultoría",
+        "stats": [
+            {
+                "number": "2M+",
+                "label": "Visualizaciones mensuales combinadas (todas las plataformas)"
+            },
+            {
+                "number": "1M+",
+                "label": "Visualizaciones con menos de 1K subs (récord)"
+            },
+            {
+                "number": "10+",
+                "label": "Años de experiencia (desde 2013)"
+            }
+        ]
+    },
+    "about": {
+        "title": "Sobre ViraTrend",
+        "subtitle": "Tu consultoría especializada en crecimiento digital",
+        "description": "ViraTrend nació de la experiencia real de quienes entienden el desafío de crecer en redes sociales. Con más de 10 años creando contenido, pasando por todas las fases - desde cero hasta millones de visualizaciones - hemos desarrollado metodologías únicas basadas en datos reales y resultados comprobados.",
+        "features": [
+            {
+                "title": "Análisis Profundo de Datos",
+                "description": "Nos sumergimos profundamente en tus analytics para encontrar oportunidades ocultas"
+            },
+            {
+                "title": "Estrategias Personalizadas",
+                "description": "Cada canal es único, por eso creamos estrategias a medida para tu nicho"
+            },
+            {
+                "title": "Soporte Completo",
+                "description": "Seguimiento continuo durante toda la implementación de las estrategias"
+            },
+            {
+                "title": "Resultados Comprobados",
+                "description": "Metodología probada y refinada con más de 2 millones de visualizaciones mensuales"
+            }
+        ]
+    },
+    "services": {
+        "title": "Nuestros Servicios",
+        "subtitle": "Soluciones completas para cada etapa de tu crecimiento",
+        "items": [
+            {
+                "title": "Analytics y Diagnóstico",
+                "description": "Análisis completo del rendimiento actual e identificación de oportunidades",
+                "features": [
+                    "Auditoría completa del canal",
+                    "Análisis de competencia",
+                    "Identificación de tendencias",
+                    "Informe detallado"
+                ],
+                "price": 350
+            },
+            {
+                "title": "Estrategia de Contenido",
+                "description": "Planificación estratégica de contenido basada en datos",
+                "features": [
+                    "Calendario editorial",
+                    "Ideas de contenido",
+                    "Optimización de títulos",
+                    "Estrategias de engagement"
+                ],
+                "price": 500
+            },
+            {
+                "title": "Optimización de Monetización",
+                "description": "Maximización de ingresos a través de múltiples fuentes",
+                "features": [
+                    "Análisis de ingresos",
+                    "Estrategias de monetización",
+                    "Optimización de CPM",
+                    "Diversificación de ingresos"
+                ],
+                "price": 650
+            },
+            {
+                "title": "Consultoría Completa",
+                "description": "Paquete completo con todos los servicios incluidos",
+                "features": [
+                    "Todos los servicios anteriores",
+                    "Seguimiento mensual",
+                    "Soporte prioritario",
+                    "Implementación guiada"
+                ],
+                "price": 1200
+            }
+        ]
+    },
+    "testimonials": {
+        "title": "Lo que Dicen Nuestros Clientes",
+        "subtitle": "Resultados reales de quienes confían en ViraTrend",
+        "items": [
+            {
+                "name": "Carlos Silva",
+                "channel": "TechTalks BR",
+                "content": "En 3 meses aplicando las estrategias de ViraTrend, mi canal creció 300% en suscriptores y 450% en visualizaciones. ¡El análisis de datos fue fundamental!",
+                "result": "+300% crecimiento"
+            },
+            {
+                "name": "Ana Costa",
+                "channel": "Lifestyle Ana",
+                "content": "La consultoría me ayudó a entender finalmente cómo monetizar mi contenido. En 2 meses ya dupliqué mis ingresos mensuales.",
+                "result": "+200% ingresos"
+            },
+            {
+                "name": "João Santos",
+                "channel": "Gaming Zone",
+                "content": "Las estrategias de engagement cambiaron completamente mi canal. Ahora tengo una comunidad mucho más activa y comprometida.",
+                "result": "+500% engagement"
+            }
+        ]
+    },
+    "pricing": {
+        "title": "Elige tu Plan",
+        "subtitle": "Inversión que se paga sola",
+        "cta": "Contratar Ahora",
+        "features": {
+            "analytics": "Analytics y Diagnóstico",
+            "strategy": "Estrategia de Contenido",
+            "monetization": "Optimización de Monetización",
+            "complete": "Consultoría Completa"
+        }
+    },
+    "faq": {
+        "title": "Preguntas Frecuentes",
+        "subtitle": "Resuelve tus principales dudas sobre nuestra consultoría",
+        "items": [
+            {
+                "question": "¿En cuánto tiempo veo resultados?",
+                "answer": "Los primeros insights aparecen inmediatamente después del análisis. Los resultados prácticos en crecimiento comienzan a aparecer entre 30-60 días con aplicación consistente de las estrategias."
+            },
+            {
+                "question": "¿Funciona para cualquier nicho?",
+                "answer": "¡Sí! Nuestra metodología es adaptable a todos los nichos. Ya hemos trabajado con gaming, lifestyle, educación, tech, entretenimiento y muchos otros."
+            },
+            {
+                "question": "¿Necesito muchos suscriptores?",
+                "answer": "¡No! Trabajamos desde canales principiantes hasta creadores con millones de seguidores. Nuestras estrategias se adaptan a cada etapa del crecimiento."
+            },
+            {
+                "question": "¿El soporte está incluido?",
+                "answer": "Sí, todos los planes incluyen soporte durante la implementación. El plan Completo incluye seguimiento mensual."
+            }
+        ]
+    },
+    "cta": {
+        "title": "¿Listo para Transformar tu Canal?",
+        "subtitle": "Únete a los creadores que ya están creciendo con nuestras estrategias",
+        "button": "Empezar Ahora",
+        "whatsapp": "Hablar por WhatsApp"
+    }
+}

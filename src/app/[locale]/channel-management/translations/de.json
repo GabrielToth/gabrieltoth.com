@@ -1,0 +1,164 @@
+{
+    "moneroToggle": {
+        "title": "Monero (XMR) Preise",
+        "description": "Aktivieren, um 50% Rabattpreise mit Monero zu sehen",
+        "enabled": "💰 Monero Preise (50% OFF)",
+        "disabled": "💴 Reguläre Preise (PIX/Karte)"
+    },
+    "hero": {
+        "badge": "🚀 ViraTrend - Spezialisierte Beratung",
+        "title": "Verwandeln Sie Ihren Kanal in eine Wachstumsmaschine",
+        "subtitle": "Spezialisiert auf Analytics, Content-Optimierung und Monetarisierungsstrategien für mehrere Plattformen. + 2M monatliche Aufrufe kombiniert über YouTube, Instagram, TikTok, Twitch und andere soziale Netzwerke.",
+        "cta": "Beratung Anfragen",
+        "stats": [
+            {
+                "number": "2M+",
+                "label": "Monatliche Aufrufe kombiniert (alle Plattformen)"
+            },
+            {
+                "number": "1M+",
+                "label": "Aufrufe mit unter 1K Abonnenten (Rekord)"
+            },
+            {
+                "number": "10+",
+                "label": "Jahre Erfahrung (seit 2013)"
+            }
+        ]
+    },
+    "about": {
+        "title": "Über ViraTrend",
+        "subtitle": "Ihre spezialisierte digitale Wachstumsberatung",
+        "description": "ViraTrend entstand aus der realen Erfahrung derer, die die Herausforderung des Wachstums in sozialen Medien verstehen. Mit über 10 Jahren Erfahrung in der Content-Erstellung, durch alle Phasen - von null bis zu Millionen von Aufrufen - haben wir einzigartige Methodologien entwickelt, die auf realen Daten und bewährten Ergebnissen basieren.",
+        "features": [
+            {
+                "title": "Tiefgehende Datenanalyse",
+                "description": "Wir tauchen tief in Ihre Analytics ein, um versteckte Möglichkeiten zu finden"
+            },
+            {
+                "title": "Personalisierte Strategien",
+                "description": "Jeder Kanal ist einzigartig, deshalb erstellen wir maßgeschneiderte Strategien für Ihre Nische"
+            },
+            {
+                "title": "Vollständige Unterstützung",
+                "description": "Kontinuierliche Überwachung während der gesamten Strategieumsetzung"
+            },
+            {
+                "title": "Bewährte Ergebnisse",
+                "description": "Methodologie getestet und verfeinert mit über 2 Millionen monatlichen Aufrufen"
+            }
+        ]
+    },
+    "services": {
+        "title": "Unsere Dienstleistungen",
+        "subtitle": "Komplette Lösungen für jede Phase Ihres Wachstums",
+        "items": [
+            {
+                "title": "Analytics & Diagnose",
+                "description": "Vollständige Analyse der aktuellen Leistung und Identifikation von Möglichkeiten",
+                "features": [
+                    "Vollständige Kanal-Audit",
+                    "Konkurrenzanalyse",
+                    "Trend-Identifikation",
+                    "Detaillierter Bericht"
+                ],
+                "price": 350
+            },
+            {
+                "title": "Content-Strategie",
+                "description": "Strategische Content-Planung basierend auf Daten",
+                "features": [
+                    "Redaktionskalender",
+                    "Content-Ideen",
+                    "Titel-Optimierung",
+                    "Engagement-Strategien"
+                ],
+                "price": 500
+            },
+            {
+                "title": "Monetarisierungs-Optimierung",
+                "description": "Umsatzmaximierung durch mehrere Quellen",
+                "features": [
+                    "Umsatzanalyse",
+                    "Monetarisierungsstrategien",
+                    "CPM-Optimierung",
+                    "Einkommensdiversifikation"
+                ],
+                "price": 650
+            },
+            {
+                "title": "Vollständige Beratung",
+                "description": "Komplettes Paket mit allen Dienstleistungen inklusive",
+                "features": [
+                    "Alle vorherigen Dienstleistungen",
+                    "Monatliche Nachverfolgung",
+                    "Prioritärer Support",
+                    "Geführte Implementierung"
+                ],
+                "price": 1200
+            }
+        ]
+    },
+    "testimonials": {
+        "title": "Was Unsere Kunden Sagen",
+        "subtitle": "Echte Ergebnisse von denen, die ViraTrend vertrauen",
+        "items": [
+            {
+                "name": "Carlos Silva",
+                "channel": "TechTalks BR",
+                "content": "In 3 Monaten mit der Anwendung der ViraTrend-Strategien wuchs mein Kanal um 300% bei Abonnenten und 450% bei Aufrufen. Die Datenanalyse war fundamental!",
+                "result": "+300% Wachstum"
+            },
+            {
+                "name": "Ana Costa",
+                "channel": "Lifestyle Ana",
+                "content": "Die Beratung half mir endlich zu verstehen, wie ich meinen Content monetarisieren kann. In 2 Monaten verdoppelte ich bereits meine monatlichen Einnahmen.",
+                "result": "+200% Umsatz"
+            },
+            {
+                "name": "João Santos",
+                "channel": "Gaming Zone",
+                "content": "Die Engagement-Strategien veränderten meinen Kanal komplett. Jetzt habe ich eine viel aktivere und engagiertere Community.",
+                "result": "+500% Engagement"
+            }
+        ]
+    },
+    "pricing": {
+        "title": "Wählen Sie Ihren Plan",
+        "subtitle": "Investition, die sich selbst bezahlt",
+        "cta": "Jetzt Beauftragen",
+        "features": {
+            "analytics": "Analytics & Diagnose",
+            "strategy": "Content-Strategie",
+            "monetization": "Monetarisierungs-Optimierung",
+            "complete": "Vollständige Beratung"
+        }
+    },
+    "faq": {
+        "title": "Häufig Gestellte Fragen",
+        "subtitle": "Klären Sie Ihre wichtigsten Zweifel über unsere Beratung",
+        "items": [
+            {
+                "question": "Wie schnell sehe ich Ergebnisse?",
+                "answer": "Erste Erkenntnisse erscheinen sofort nach der Analyse. Praktische Wachstumsergebnisse beginnen zwischen 30-60 Tagen mit konsequenter Strategieanwendung zu erscheinen."
+            },
+            {
+                "question": "Funktioniert es für jede Nische?",
+                "answer": "Ja! Unsere Methodologie ist an alle Nischen anpassbar. Wir haben bereits mit Gaming, Lifestyle, Bildung, Tech, Unterhaltung und vielen anderen gearbeitet."
+            },
+            {
+                "question": "Benötige ich viele Abonnenten?",
+                "answer": "Nein! Wir arbeiten von Anfängerkanälen bis zu Erstellern mit Millionen von Followern. Unsere Strategien sind für jede Wachstumsphase angepasst."
+            },
+            {
+                "question": "Ist Support inbegriffen?",
+                "answer": "Ja, alle Pläne beinhalten Support während der Implementierung. Der Vollständige Plan beinhaltet monatliche Nachverfolgung."
+            }
+        ]
+    },
+    "cta": {
+        "title": "Bereit, Ihren Kanal zu Transformieren?",
+        "subtitle": "Schließen Sie sich den Erstellern an, die bereits mit unseren Strategien wachsen",
+        "button": "Jetzt Starten",
+        "whatsapp": "Auf WhatsApp Chatten"
+    }
+}
