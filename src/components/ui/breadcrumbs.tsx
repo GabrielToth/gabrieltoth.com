@@ -120,11 +120,18 @@ function generateBreadcrumbsFromPath(
     locale: string,
     isPortuguese: boolean
 ): BreadcrumbItem[] {
-    const segments = pathname.split("/").filter(Boolean)
+    // Remove anchor/hash from pathname
+    const cleanPathname = pathname.split("#")[0]
+    const segments = cleanPathname.split("/").filter(Boolean)
 
     // Remove locale from segments if present
     if (segments[0] === locale) {
         segments.shift()
+    }
+
+    // If no segments remain after removing locale, this is the homepage - return empty array
+    if (segments.length === 0) {
+        return []
     }
 
     const breadcrumbs: BreadcrumbItem[] = []

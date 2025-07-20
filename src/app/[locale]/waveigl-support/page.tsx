@@ -1,5 +1,6 @@
 import WaveIGLSupportLanding from "@/app/[locale]/waveigl-support/waveigl-support-landing"
 import Footer from "@/components/layout/footer"
+import Header from "@/components/layout/header"
 import StructuredData from "@/components/seo/structured-data"
 import Breadcrumbs from "@/components/ui/breadcrumbs"
 import { type Locale } from "@/lib/i18n"
@@ -20,66 +21,58 @@ export default async function WaveIGLSupportPage({ params }: PageProps) {
         "@type": "Organization",
         name: "WaveIGL",
         description: isPortuguese
-            ? "Comunidade de jogadores e criadores de conteúdo focada em gaming"
-            : "Gaming community of players and content creators focused on gaming",
+            ? "Canal de gaming com foco em conteúdo de qualidade e crescimento da comunidade"
+            : "Gaming channel focused on quality content and community growth",
         url: "https://gabrieltoth.com/waveigl-support",
-        foundingDate: "2023",
-        areaServed: "Brazil",
-        sameAs: ["https://discord.gg/waveigl", "https://youtube.com/@waveigl"],
-        brand: {
-            "@type": "Brand",
-            name: "WaveIGL",
-        },
+        logo: "https://gabrieltoth.com/logo.png",
+        sameAs: [
+            "https://youtube.com/@WaveIGL",
+            "https://twitch.tv/WaveIGL",
+            "https://discord.gg/WaveIGL",
+        ],
     }
 
-    // FAQs structured data
-    const faqs = isPortuguese
-        ? [
-              {
-                  question: "O que é a WaveIGL?",
-                  answer: "WaveIGL é uma comunidade dedicada a jogadores e criadores de conteúdo de gaming, oferecendo suporte, networking e oportunidades de crescimento.",
-              },
-              {
-                  question: "Como posso apoiar a WaveIGL?",
-                  answer: "Você pode apoiar através de doações, participação ativa na comunidade, compartilhamento de conteúdo e ajudando outros membros.",
-              },
-              {
-                  question: "Quais são os benefícios de apoiar?",
-                  answer: "Apoiadores recebem acesso a conteúdo exclusivo, participação em eventos especiais, suporte personalizado e reconhecimento na comunidade.",
-              },
-              {
-                  question: "Como funciona o sistema de doações?",
-                  answer: "Aceitamos doações via PIX, cartão de crédito e criptomoedas. Todo o valor é investido de volta na comunidade através de melhorias e eventos.",
-              },
-          ]
-        : [
-              {
-                  question: "What is WaveIGL?",
-                  answer: "WaveIGL is a community dedicated to gaming players and content creators, offering support, networking and growth opportunities.",
-              },
-              {
-                  question: "How can I support WaveIGL?",
-                  answer: "You can support through donations, active community participation, content sharing and helping other members.",
-              },
-              {
-                  question: "What are the benefits of supporting?",
-                  answer: "Supporters receive access to exclusive content, participation in special events, personalized support and community recognition.",
-              },
-              {
-                  question: "How does the donation system work?",
-                  answer: "We accept donations via PIX, credit card and cryptocurrencies. All value is reinvested back into the community through improvements and events.",
-              },
-          ]
+    // FAQ structured data
+    const faqs = [
+        {
+            question: isPortuguese
+                ? "Como posso apoiar o canal WaveIGL?"
+                : "How can I support the WaveIGL channel?",
+            answer: isPortuguese
+                ? "Você pode apoiar através de doações via PIX, cartão de crédito ou criptomoedas. Todo valor é reinvestido na comunidade."
+                : "You can support through donations via PIX, credit card, or cryptocurrencies. All value is reinvested back into the community.",
+        },
+        {
+            question: isPortuguese
+                ? "Quais são os benefícios de apoiar?"
+                : "What are the benefits of supporting?",
+            answer: isPortuguese
+                ? "Apoiadores recebem acesso exclusivo a conteúdos, participação em eventos especiais e reconhecimento na comunidade."
+                : "Supporters receive exclusive access to content, participation in special events, and community recognition.",
+        },
+        {
+            question: isPortuguese
+                ? "Como o dinheiro arrecadado é utilizado?"
+                : "How is the raised money used?",
+            answer: isPortuguese
+                ? "100% dos valores arrecadados são reinvestidos em melhorias de equipamento, software premium e eventos para a comunidade."
+                : "100% of raised funds are reinvested in equipment improvements, premium software, and community events.",
+        },
+        {
+            question: isPortuguese
+                ? "Quais formas de pagamento são aceitas?"
+                : "What payment methods are accepted?",
+            answer: isPortuguese
+                ? "Aceitamos doações via PIX, cartão de crédito e criptomoedas. Todo valor é reinvestido de volta na comunidade através de melhorias e eventos."
+                : "We accept donations via PIX, credit card and cryptocurrencies. All value is reinvested back into the community through improvements and events.",
+        },
+    ]
 
-    // Breadcrumbs
+    // Breadcrumbs (simplified - no community section)
     const breadcrumbs = [
         {
             name: isPortuguese ? "Início" : "Home",
             href: `/${locale}`,
-        },
-        {
-            name: isPortuguese ? "Comunidade" : "Community",
-            href: `/${locale}/#community`,
         },
         {
             name: isPortuguese ? "Apoie WaveIGL" : "Support WaveIGL",
@@ -98,7 +91,8 @@ export default async function WaveIGLSupportPage({ params }: PageProps) {
             />
 
             <div className="min-h-screen bg-white dark:bg-gray-900">
-                <main className="container mx-auto px-4 py-8">
+                <Header />
+                <main className="container mx-auto px-4 py-8 pt-20">
                     <Breadcrumbs items={breadcrumbs} className="mb-6" />
                     <WaveIGLSupportLanding locale={locale} />
                 </main>
