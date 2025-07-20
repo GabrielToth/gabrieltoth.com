@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button"
 import { useLocale } from "@/hooks/use-locale"
 import { localeNames, localeNamesShort, locales } from "@/lib/i18n"
 import { Globe } from "lucide-react"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 interface LanguageSelectorProps {
     variant?: "default" | "header" | "footer"
@@ -15,13 +15,21 @@ export default function LanguageSelector({
     variant = "default",
     className = "",
 }: LanguageSelectorProps) {
-    const { locale, changeLocale, isLoading } = useLocale()
+    const { locale, changeLocale } = useLocale()
     const [isOpen, setIsOpen] = useState(false)
+    const [isMounted, setIsMounted] = useState(false)
 
-    if (isLoading) {
+    // Fix hydration mismatch by only rendering after mount
+    useEffect(() => {
+        setIsMounted(true)
+    }, [])
+
+    // Don't render until mounted to avoid hydration issues
+    if (!isMounted) {
         return (
-            <div className={`animate-pulse ${className}`}>
-                <div className="w-20 h-8 bg-gray-200 rounded"></div>
+            <div className={`flex items-center space-x-2 ${className}`}>
+                <Globe size={16} />
+                <span className="min-w-[20px]">EN</span>
             </div>
         )
     }
@@ -60,6 +68,7 @@ export default function LanguageSelector({
                 onClick={() => setIsOpen(!isOpen)}
                 className={currentVariant.button}
                 data-cy="language-selector"
+                data-testid="language-selector"
             >
                 <Globe size={16} />
                 <span className="min-w-[20px]">{localeNamesShort[locale]}</span>
