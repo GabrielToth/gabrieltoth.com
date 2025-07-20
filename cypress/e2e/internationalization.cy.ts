@@ -76,8 +76,19 @@ describe("Internationalization (i18n) Tests", () => {
             // Look for language switcher
             cy.get("body").then($body => {
                 if ($body.find("[data-cy=language-selector]").length > 0) {
-                    cy.get("[data-cy=language-selector]").click()
-                    cy.get("[data-cy=language-pt-BR]").click()
+                    // Check if it's a select element
+                    cy.get("[data-cy=language-selector]").then($el => {
+                        if ($el.is("select")) {
+                            // Use cy.select() for native select elements
+                            cy.get("[data-cy=language-selector]").select(
+                                "pt-BR"
+                            )
+                        } else {
+                            // Use click for custom components
+                            cy.get("[data-cy=language-selector]").click()
+                            cy.get("[data-cy=language-pt-BR]").click()
+                        }
+                    })
                     cy.wait(1000)
                     cy.url().should("include", "/pt-BR")
                 } else {
@@ -96,8 +107,17 @@ describe("Internationalization (i18n) Tests", () => {
             // Look for language switcher
             cy.get("body").then($body => {
                 if ($body.find("[data-cy=language-selector]").length > 0) {
-                    cy.get("[data-cy=language-selector]").click()
-                    cy.get("[data-cy=language-en]").click()
+                    // Check if it's a select element
+                    cy.get("[data-cy=language-selector]").then($el => {
+                        if ($el.is("select")) {
+                            // Use cy.select() for native select elements
+                            cy.get("[data-cy=language-selector]").select("en")
+                        } else {
+                            // Use click for custom components
+                            cy.get("[data-cy=language-selector]").click()
+                            cy.get("[data-cy=language-en]").click()
+                        }
+                    })
                     cy.wait(1000)
                     cy.url().should("include", "/en")
                 } else {
