@@ -1,6 +1,5 @@
 import WaveIGLSupportLanding from "@/app/[locale]/waveigl-support/waveigl-support-landing"
 import Footer from "@/components/layout/footer"
-import Header from "@/components/layout/header"
 import StructuredData from "@/components/seo/structured-data"
 import Breadcrumbs from "@/components/ui/breadcrumbs"
 import { type Locale } from "@/lib/i18n"
@@ -71,7 +70,7 @@ export default async function WaveIGLSupportPage({ params }: PageProps) {
     // Breadcrumbs (simplified - no community section)
     const breadcrumbs = [
         {
-            name: isPortuguese ? "Início" : "Home",
+            name: "Início",
             href: `/${locale}`,
         },
         {
@@ -91,8 +90,7 @@ export default async function WaveIGLSupportPage({ params }: PageProps) {
             />
 
             <div className="min-h-screen bg-white dark:bg-gray-900">
-                <Header />
-                <main className="container mx-auto px-4 py-8 pt-20">
+                <main className="container mx-auto px-4 py-8">
                     <Breadcrumbs items={breadcrumbs} className="mb-6" />
                     <WaveIGLSupportLanding locale={locale} />
                 </main>

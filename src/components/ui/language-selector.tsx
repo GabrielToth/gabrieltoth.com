@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button"
 import { useLocale } from "@/hooks/use-locale"
-import { localeNames, locales } from "@/lib/i18n"
+import { localeNames, localeNamesShort, locales } from "@/lib/i18n"
 import { Globe } from "lucide-react"
 import { useState } from "react"
 
@@ -62,7 +62,7 @@ export default function LanguageSelector({
                 data-cy="language-selector"
             >
                 <Globe size={16} />
-                <span>{localeNames[locale]}</span>
+                <span className="min-w-[20px]">{localeNamesShort[locale]}</span>
             </Button>
 
             {isOpen && (

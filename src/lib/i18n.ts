@@ -11,6 +11,14 @@ export const localeNames: Record<Locale, string> = {
     de: "Deutsch",
 }
 
+// Short versions for language selector to avoid text overflow
+export const localeNamesShort: Record<Locale, string> = {
+    en: "EN",
+    "pt-BR": "PT",
+    es: "ES",
+    de: "DE",
+}
+
 export const defaultLocale: Locale = "pt-BR"
 
 // Get locale from cookie (client-side)

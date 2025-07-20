@@ -33,6 +33,12 @@ const Breadcrumbs = ({
     const breadcrumbItems =
         items || generateBreadcrumbsFromPath(pathname, locale, isPortuguese)
 
+    // Never show breadcrumbs on homepage (it IS the beginning)
+    const isHomepage = pathname === `/${locale}` || pathname === `/${locale}/`
+    if (isHomepage && !items) {
+        return null
+    }
+
     // Add home item if not hidden and not already present
     const finalItems = breadcrumbItems
     if (
@@ -42,17 +48,8 @@ const Breadcrumbs = ({
         )
     ) {
         finalItems.unshift({
-            name: isPortuguese ? "Início" : "Home",
+            name: "Início", // Always use "Início" regardless of language
             href: `/${locale}`,
-        })
-    }
-
-    // If we have no items at all (like on homepage), always show Home breadcrumb unless explicitly hidden
-    if (finalItems.length === 0 && !hideHome) {
-        finalItems.push({
-            name: isPortuguese ? "Início" : "Home",
-            href: `/${locale}`,
-            current: true,
         })
     }
 
@@ -70,7 +67,7 @@ const Breadcrumbs = ({
         >
             {finalItems.map((item, index) => {
                 const isLast = index === finalItems.length - 1
-                const isHome = item.href === `/${locale}` || item.href === "/"
+                const isHome = item.name === "Início"
 
                 return (
                     <div key={item.href} className="flex items-center">
@@ -145,8 +142,8 @@ function generateBreadcrumbsFromPath(
         "pc-optimization": isPortuguese
             ? "Otimização de PC"
             : "PC Optimization",
-        "waveigl-support": isPortuguese ? "Suporte WaveIGL" : "WaveIGL Support",
-        editors: isPortuguese ? "Trabalhe Como Editor" : "Work as Editor",
+        "waveigl-support": isPortuguese ? "Apoie WaveIGL" : "Support WaveIGL",
+        editors: isPortuguese ? "Editores" : "Editors",
         "privacy-policy": isPortuguese
             ? "Política de Privacidade"
             : "Privacy Policy",
@@ -185,7 +182,7 @@ export function getBreadcrumbsForStructuredData(
 
     // Add home
     const homeItem = {
-        name: isPortuguese ? "Início" : "Home",
+        name: "Início",
         url: `https://gabrieltoth.com/${locale}`,
     }
 
