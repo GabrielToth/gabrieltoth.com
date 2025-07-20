@@ -47,6 +47,15 @@ const Breadcrumbs = ({
         })
     }
 
+    // If we have no items at all (like on homepage), always show Home breadcrumb unless explicitly hidden
+    if (finalItems.length === 0 && !hideHome) {
+        finalItems.push({
+            name: isPortuguese ? "Início" : "Home",
+            href: `/${locale}`,
+            current: true,
+        })
+    }
+
     if (finalItems.length === 0) return null
 
     return (

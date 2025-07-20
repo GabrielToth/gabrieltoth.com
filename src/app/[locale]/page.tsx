@@ -59,7 +59,7 @@ export default async function HomePage({ params }: HomePageProps) {
             <main className="min-h-screen bg-white dark:bg-gray-900">
                 <Header />
                 <div className="container mx-auto px-4 pt-20">
-                    <Breadcrumbs className="mb-6" hideHome={true} />
+                    <Breadcrumbs className="mb-6" />
                 </div>
                 <HeroSection />
                 <AboutSection params={{ locale }} />
