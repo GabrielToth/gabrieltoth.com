@@ -27,39 +27,11 @@ Este conjunto de testes garante que a estrutura de navegação esteja correta em
 
 ## Estrutura de Navegação por Tipo de Página
 
-### Landing Pages (NÃO devem ter header principal)
-- `/[locale]/pc-optimization`
-- `/[locale]/channel-management`
-- `/[locale]/waveigl-support` 
-- `/[locale]/editors`
-
-**Estrutura esperada:**
-- ❌ Elemento `<header>` (navegação principal)
-- ❌ Menu "Services"/"Serviços"
-- ❌ Seletor de idioma no header
-- ✅ Breadcrumbs (`<nav aria-label="Breadcrumb">`)
-- ✅ Footer
-
-### Homepage (DEVE ter header + breadcrumbs)
-- `/[locale]` (página inicial)
-
-**Estrutura esperada:**
-- ✅ Elemento `<header>` com navegação principal
-- ✅ Menu "Services"/"Serviços" no header
-- ✅ Seletor de idioma no header
-- ✅ Breadcrumbs (separados do header)
-- ✅ Footer
-
-### Páginas Institucionais (breadcrumbs + seletor de idioma)
-- `/[locale]/privacy-policy`
-- `/[locale]/terms-of-service`
-- `/[locale]/pc-optimization/terms`
-
-**Estrutura esperada:**
-- ❌ Header principal de navegação
-- ✅ Seletor de idioma (implementação específica)
-- ✅ Breadcrumbs para navegação estrutural
-- ✅ Footer
+| Tipo de Página | Header Principal | Breadcrumbs | Services Menu |
+|----------------|------------------|-------------|---------------|
+| **Homepage** | ✅ | ✅ | ✅ |
+| **Landing Pages** | ❌ | ✅ | ❌ |
+| **Institucionais** | ✅ | ✅ | ❌ |
 
 ## Tipos de Navegação
 

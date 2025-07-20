@@ -1,3 +1,5 @@
+import Footer from "@/components/layout/footer"
+import Header from "@/components/layout/header"
 import StructuredData from "@/components/seo/structured-data"
 import Breadcrumbs from "@/components/ui/breadcrumbs"
 import LanguageSelector from "@/components/ui/language-selector"
@@ -18,15 +20,25 @@ export default async function TermsOfServicePage({
     // Breadcrumbs
     const breadcrumbs = [
         {
-            name: isPortuguese ? "Início" : "Home",
+            name:
+                locale === "pt-BR"
+                    ? "Início"
+                    : locale === "es"
+                      ? "Inicio"
+                      : locale === "de"
+                        ? "Startseite"
+                        : "Home",
             url: `https://gabrieltoth.com/${locale}`,
         },
         {
-            name: isPortuguese ? "Legal" : "Legal",
-            url: `https://gabrieltoth.com/${locale}/#legal`,
-        },
-        {
-            name: isPortuguese ? "Termos de Serviço" : "Terms of Service",
+            name:
+                locale === "pt-BR"
+                    ? "Termos de Serviço"
+                    : locale === "es"
+                      ? "Términos de Servicio"
+                      : locale === "de"
+                        ? "Nutzungsbedingungen"
+                        : "Terms of Service",
             url: `https://gabrieltoth.com/${locale}/terms-of-service`,
         },
     ]
@@ -130,6 +142,8 @@ export default async function TermsOfServicePage({
                 customData={webPageStructuredData}
                 breadcrumbs={breadcrumbs}
             />
+
+            <Header />
 
             <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-12">
                 {/* Language Selector */}
@@ -261,6 +275,8 @@ export default async function TermsOfServicePage({
                     </div>
                 </div>
             </div>
+
+            <Footer locale={locale} />
         </>
     )
 }

@@ -54,16 +54,48 @@ describe("Navigation Structure - Quick Tests", () => {
         cy.get("footer").should("exist")
     })
 
-    it("All pages should have breadcrumbs navigation", () => {
-        const testPages = [
+    it("All non-landing pages should have main header AND breadcrumbs", () => {
+        const nonLandingPages = [
             "/en",
-            "/en/pc-optimization",
-            "/en/channel-management",
             "/en/privacy-policy",
             "/en/terms-of-service",
         ]
 
-        testPages.forEach(path => {
+        nonLandingPages.forEach(path => {
+            cy.visit(path, { failOnStatusCode: false })
+            cy.wait(1000)
+
+            // Should have main header
+            cy.get("header").should("exist").and("be.visible")
+
+            // Should have main navigation in header
+            cy.get("header nav").should("exist").and("be.visible")
+
+            // Should have language selector in header
+            cy.get('header [data-cy="language-selector"]').should("exist")
+
+            // Should also have breadcrumbs (separate from header)
+            cy.get(
+                'nav[aria-label*="Breadcrumb"], nav[aria-label*="estrutural"]'
+            ).should("exist")
+
+            // Should have footer
+            cy.get("footer").should("exist")
+        })
+    })
+
+    it("All pages should have breadcrumbs navigation", () => {
+        const allPages = [
+            "/en",
+            "/en/pc-optimization",
+            "/en/channel-management",
+            "/en/waveigl-support",
+            "/en/editors",
+            "/en/privacy-policy",
+            "/en/terms-of-service",
+        ]
+
+        allPages.forEach(path => {
             cy.visit(path, { failOnStatusCode: false })
             cy.wait(1000)
 

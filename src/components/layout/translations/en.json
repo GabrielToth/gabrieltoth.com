@@ -1,0 +1,14 @@
+{
+    "home": "Home",
+    "about": "About",
+    "projects": "Projects",
+    "services": "Services",
+    "channels": "Channels",
+    "contact": "Contact",
+    "language": "Language",
+    "servicesDropdown": {
+        "channelManagement": "ViraTrend",
+        "pcOptimization": "PC Optimization",
+        "support": "Support WaveIGL"
+    }
+}

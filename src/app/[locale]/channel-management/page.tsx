@@ -95,17 +95,25 @@ export default async function ChannelManagementPage({ params }: PageProps) {
     // Custom breadcrumbs
     const breadcrumbs = [
         {
-            name: isPortuguese ? "Início" : "Home",
+            name:
+                locale === "pt-BR"
+                    ? "Início"
+                    : locale === "es"
+                      ? "Inicio"
+                      : locale === "de"
+                        ? "Startseite"
+                        : "Home",
             url: `https://gabrieltoth.com/${locale}`,
         },
         {
-            name: isPortuguese ? "Serviços" : "Services",
-            url: `https://gabrieltoth.com/${locale}/#services`,
-        },
-        {
-            name: isPortuguese
-                ? "ViraTrend - Consultoria Digital"
-                : "ViraTrend - Digital Consulting",
+            name:
+                locale === "pt-BR"
+                    ? "ViraTrend - Consultoria Digital"
+                    : locale === "es"
+                      ? "ViraTrend - Consultoría Digital"
+                      : locale === "de"
+                        ? "ViraTrend - Digitale Beratung"
+                        : "ViraTrend - Digital Consulting",
             url: `https://gabrieltoth.com/${locale}/channel-management`,
         },
     ]

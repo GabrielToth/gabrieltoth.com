@@ -1,7 +1,6 @@
 "use client"
 
 import { useLocale } from "@/hooks/use-locale"
-import { type Locale } from "@/lib/i18n"
 import {
     Calendar,
     Clock,
@@ -14,148 +13,71 @@ import {
     Youtube,
 } from "lucide-react"
 import { useState } from "react"
-
-const getTranslations = (locale: Locale) => {
-    const isPortuguese = locale === "pt-BR"
-    return {
-        title: isPortuguese ? "Vamos trabalhar juntos" : "Let's work together",
-        subtitle: isPortuguese
-            ? "Pronto para transformar suas ideias em realidade digital"
-            : "Ready to transform your ideas into digital reality",
-        getInTouch: isPortuguese ? "Entre em contato" : "Get in touch",
-        email: "Email",
-        scheduleCall: isPortuguese ? "Agendar chamada" : "Schedule a call",
-        downloadResume: isPortuguese ? "Baixar currículo" : "Download resume",
-        followMe: isPortuguese ? "Me siga" : "Follow me",
-        services: {
-            title: isPortuguese ? "Serviços disponíveis" : "Available services",
-            dataScience: isPortuguese ? "Ciência de Dados" : "Data Science",
-            webDev: isPortuguese ? "Desenvolvimento Web" : "Web Development",
-            consulting: isPortuguese ? "Consultoria Tech" : "Tech Consulting",
-            channelManagement: isPortuguese
-                ? "Gestão de Canais"
-                : "Channel Management",
-        },
-        availability: {
-            title: isPortuguese ? "Disponibilidade" : "Availability",
-            status: isPortuguese
-                ? "Disponível para novos projetos"
-                : "Available for new projects",
-            timezone: isPortuguese ? "Fuso horário: UTC-3" : "Timezone: UTC-3",
-            response: isPortuguese
-                ? "Resposta em até 24h"
-                : "Response within 24h",
-        },
-        contactForm: {
-            name: isPortuguese ? "Seu nome" : "Your name",
-            email: "Email",
-            subject: isPortuguese ? "Assunto" : "Subject",
-            message: isPortuguese ? "Mensagem" : "Message",
-            send: isPortuguese ? "Enviar mensagem" : "Send message",
-            sending: isPortuguese ? "Enviando..." : "Sending...",
-            success: isPortuguese
-                ? "Mensagem enviada com sucesso!"
-                : "Message sent successfully!",
-            error: isPortuguese
-                ? "Erro ao enviar mensagem. Tente novamente."
-                : "Error sending message. Please try again.",
-        },
-    }
-}
+import { getContactTranslations } from "./translations"
 
 export default function ContactSection() {
     const { locale } = useLocale()
-    const [formData, setFormData] = useState({
-        name: "",
-        email: "",
-        subject: "",
-        message: "",
-    })
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [submitStatus, setSubmitStatus] = useState<
         "idle" | "success" | "error"
     >("idle")
 
-    const t = getTranslations(locale)
+    // Get translations
+    const t = getContactTranslations(locale)
 
-    const handleSubmit = async (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         setIsSubmitting(true)
+        setSubmitStatus("idle")
 
         try {
+            const formData = new FormData(e.currentTarget)
             const response = await fetch("/api/contact", {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(formData),
+                body: formData,
             })
 
             if (response.ok) {
                 setSubmitStatus("success")
-                setFormData({ name: "", email: "", subject: "", message: "" })
+                ;(e.target as HTMLFormElement).reset()
             } else {
                 setSubmitStatus("error")
             }
-        } catch {
+        } catch (error) {
             setSubmitStatus("error")
         } finally {
             setIsSubmitting(false)
-            setTimeout(() => setSubmitStatus("idle"), 5000)
         }
     }
 
-    const handleChange = (
-        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-    ) => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value,
-        })
-    }
-
-    const downloadResume = () => {
-        if (typeof document === "undefined") return
-
-        const resumeFile =
-            locale === "pt-BR"
-                ? "/resume/Gabriel-Toth-Goncalves-Curriculo-PT.pdf"
-                : "/resume/Gabriel-Toth-Goncalves-Resume-EN.pdf"
-
-        const link = document.createElement("a")
-        link.href = resumeFile
-        link.download = `Gabriel-Toth-Goncalves-${locale === "pt-BR" ? "Curriculo" : "Resume"}.pdf`
-        document.body.appendChild(link)
-        link.click()
-        document.body.removeChild(link)
-    }
-
     return (
-        <section id="contact" className="py-24 bg-gray-50 dark:bg-gray-800">
+        <section id="contact" className="py-24 bg-white dark:bg-gray-900">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                {/* Header */}
                 <div className="text-center mb-16">
                     <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4">
                         {t.title}
                     </h2>
-                    <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+                    <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
                         {t.subtitle}
                     </p>
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-                    {/* Contact Info */}
+                    {/* Contact Information */}
                     <div className="space-y-8">
                         <div>
                             <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
                                 {t.getInTouch}
                             </h3>
 
+                            {/* Contact Methods */}
                             <div className="space-y-4">
                                 <a
                                     href="mailto:contato@gabrieltoth.com"
-                                    className="flex items-center space-x-3 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                                    className="flex items-center space-x-3 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
                                 >
-                                    <Mail size={20} />
+                                    <Mail className="h-5 w-5" />
                                     <span>contato@gabrieltoth.com</span>
                                 </a>
 
@@ -163,39 +85,41 @@ export default function ContactSection() {
                                     href="https://calendly.com/gabrieltoth"
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="flex items-center space-x-3 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                                    className="flex items-center space-x-3 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
                                 >
-                                    <Calendar size={20} />
+                                    <Calendar className="h-5 w-5" />
                                     <span>{t.scheduleCall}</span>
                                 </a>
 
-                                <button
-                                    onClick={downloadResume}
-                                    className="flex items-center space-x-3 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                                <a
+                                    href="/resume/Gabriel-Toth-Goncalves-Curriculo-PT.pdf"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="flex items-center space-x-3 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
                                 >
-                                    <Download size={20} />
+                                    <Download className="h-5 w-5" />
                                     <span>{t.downloadResume}</span>
-                                </button>
+                                </a>
                             </div>
                         </div>
 
                         {/* Services */}
-                        <div>
+                        <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-6">
                             <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
                                 {t.services.title}
                             </h4>
-                            <ul className="space-y-2 text-gray-600 dark:text-gray-300">
+                            <ul className="space-y-3">
                                 <li className="flex items-center space-x-2">
                                     <FileText size={16} />
-                                    <span>{t.services.dataScience}</span>
+                                    <span>{t.services.dataScience.title}</span>
                                 </li>
                                 <li className="flex items-center space-x-2">
                                     <FileText size={16} />
-                                    <span>{t.services.webDev}</span>
+                                    <span>{t.services.webDev.title}</span>
                                 </li>
                                 <li className="flex items-center space-x-2">
                                     <MessageCircle size={16} />
-                                    <span>{t.services.consulting}</span>
+                                    <span>{t.services.consulting.title}</span>
                                 </li>
                                 <li className="flex items-center space-x-2">
                                     <Youtube size={16} />
@@ -205,22 +129,22 @@ export default function ContactSection() {
                         </div>
 
                         {/* Availability */}
-                        <div>
+                        <div className="bg-green-50 dark:bg-green-900/20 rounded-lg p-6">
                             <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
                                 {t.availability.title}
                             </h4>
-                            <div className="space-y-2 text-gray-600 dark:text-gray-300">
+                            <div className="space-y-2">
                                 <div className="flex items-center space-x-2">
                                     <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                                    <span>{t.availability.status}</span>
+                                    <span>{t.availability.current}</span>
+                                </div>
+                                <div className="flex items-center space-x-2">
+                                    <Clock size={16} />
+                                    <span>{t.availability.response}</span>
                                 </div>
                                 <div className="flex items-center space-x-2">
                                     <Clock size={16} />
                                     <span>{t.availability.timezone}</span>
-                                </div>
-                                <div className="flex items-center space-x-2">
-                                    <Mail size={16} />
-                                    <span>{t.availability.response}</span>
                                 </div>
                             </div>
                         </div>
@@ -232,51 +156,53 @@ export default function ContactSection() {
                             </h4>
                             <div className="flex space-x-4">
                                 <a
-                                    href="https://github.com/GabrielToth"
+                                    href="https://github.com/gabrieltoth"
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+                                    className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-colors"
                                 >
-                                    <Github size={24} />
+                                    <Github className="h-6 w-6" />
                                 </a>
                                 <a
-                                    href="https://linkedin.com/in/gabriel-toth-goncalves"
+                                    href="https://linkedin.com/in/gabriel-toth"
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="text-gray-600 dark:text-gray-400 hover:text-blue-600 transition-colors"
+                                    className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-colors"
                                 >
-                                    <Linkedin size={24} />
+                                    <Linkedin className="h-6 w-6" />
                                 </a>
                                 <a
-                                    href="https://youtube.com/@WaveIGL"
+                                    href="https://youtube.com/@gabrieltoth"
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="text-gray-600 dark:text-gray-400 hover:text-red-600 transition-colors"
+                                    className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-colors"
                                 >
-                                    <Youtube size={24} />
+                                    <Youtube className="h-6 w-6" />
                                 </a>
                             </div>
                         </div>
                     </div>
 
                     {/* Contact Form */}
-                    <div className="bg-white dark:bg-gray-900 rounded-2xl p-8 shadow-lg">
+                    <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-8">
+                        <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+                            {t.getInTouch}
+                        </h3>
+
                         <form onSubmit={handleSubmit} className="space-y-6">
                             <div>
                                 <label
                                     htmlFor="name"
                                     className="block text-sm font-medium text-gray-900 dark:text-white mb-2"
                                 >
-                                    {t.contactForm.name}
+                                    {t.form.name}
                                 </label>
                                 <input
                                     type="text"
                                     id="name"
                                     name="name"
-                                    value={formData.name}
-                                    onChange={handleChange}
                                     required
-                                    className="w-full px-4 py-3 border border-gray-200 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                                 />
                             </div>
 
@@ -285,16 +211,15 @@ export default function ContactSection() {
                                     htmlFor="email"
                                     className="block text-sm font-medium text-gray-900 dark:text-white mb-2"
                                 >
-                                    {t.contactForm.email}
+                                    {t.form.email}
                                 </label>
                                 <input
                                     type="email"
                                     id="email"
                                     name="email"
-                                    value={formData.email}
-                                    onChange={handleChange}
                                     required
-                                    className="w-full px-4 py-3 border border-gray-200 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                                    placeholder={t.form.emailPlaceholder}
+                                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                                 />
                             </div>
 
@@ -303,16 +228,14 @@ export default function ContactSection() {
                                     htmlFor="subject"
                                     className="block text-sm font-medium text-gray-900 dark:text-white mb-2"
                                 >
-                                    {t.contactForm.subject}
+                                    {t.form.subject}
                                 </label>
                                 <input
                                     type="text"
                                     id="subject"
                                     name="subject"
-                                    value={formData.subject}
-                                    onChange={handleChange}
                                     required
-                                    className="w-full px-4 py-3 border border-gray-200 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                                 />
                             </div>
 
@@ -321,38 +244,35 @@ export default function ContactSection() {
                                     htmlFor="message"
                                     className="block text-sm font-medium text-gray-900 dark:text-white mb-2"
                                 >
-                                    {t.contactForm.message}
+                                    {t.form.message}
                                 </label>
                                 <textarea
                                     id="message"
                                     name="message"
-                                    rows={6}
-                                    value={formData.message}
-                                    onChange={handleChange}
+                                    rows={4}
                                     required
-                                    className="w-full px-4 py-3 border border-gray-200 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white resize-none"
-                                />
+                                    placeholder={t.form.messagePlaceholder}
+                                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                                ></textarea>
                             </div>
 
                             <button
                                 type="submit"
                                 disabled={isSubmitting}
-                                className="w-full bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                                className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                             >
-                                {isSubmitting
-                                    ? t.contactForm.sending
-                                    : t.contactForm.send}
+                                {isSubmitting ? t.form.sending : t.form.send}
                             </button>
 
                             {submitStatus === "success" && (
                                 <p className="text-green-600 text-sm text-center">
-                                    {t.contactForm.success}
+                                    {t.form.success}
                                 </p>
                             )}
 
                             {submitStatus === "error" && (
                                 <p className="text-red-600 text-sm text-center">
-                                    {t.contactForm.error}
+                                    {t.form.error}
                                 </p>
                             )}
                         </form>

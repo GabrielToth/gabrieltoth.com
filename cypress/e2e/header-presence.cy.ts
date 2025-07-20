@@ -119,24 +119,30 @@ describe("Navigation Structure Tests", () => {
                 // Check that the page loads
                 cy.get("body").should("be.visible")
 
-                // Note: Institutional pages actually don't have main header based on current implementation
-                // They have language selector and breadcrumbs
+                // Check that main header exists
+                cy.get("header").should("exist").and("be.visible")
+
+                // Check that main navigation exists
+                cy.get("header nav").should("exist").and("be.visible")
+
+                // Check that the Gabriel Toth Gonçalves logo link exists in header
+                cy.get("header")
+                    .contains("Gabriel Toth Gonçalves")
+                    .should("be.visible")
+                    .and("have.attr", "href")
+
+                // Check that language selector exists in header
+                cy.get('header [data-cy="language-selector"]')
+                    .should("exist")
+                    .and("be.visible")
 
                 // Check that breadcrumbs exist
                 cy.get(
                     'nav[aria-label*="Breadcrumb"], nav[aria-label*="estrutural"]'
                 ).should("exist")
 
-                // Check for language selector (different from header implementation)
-                cy.get("body").then($body => {
-                    if (
-                        $body.text().includes("English") ||
-                        $body.text().includes("Português")
-                    ) {
-                        // Language selector found
-                        cy.get("body").should("be.visible")
-                    }
-                })
+                // Check that footer exists
+                cy.get("footer").should("exist")
             })
         })
     })

@@ -93,7 +93,6 @@ export default async function WaveIGLSupportPage({ params }: PageProps) {
                 locale={locale}
                 type="all"
                 customData={organizationStructuredData}
-                breadcrumbs={breadcrumbs}
                 faqs={faqs}
             />
 

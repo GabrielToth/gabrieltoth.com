@@ -1,3 +1,5 @@
+import Footer from "@/components/layout/footer"
+import Header from "@/components/layout/header"
 import StructuredData from "@/components/seo/structured-data"
 import Breadcrumbs from "@/components/ui/breadcrumbs"
 import { type Locale } from "@/lib/i18n"
@@ -17,15 +19,25 @@ export default async function PrivacyPolicyPage({
     // Breadcrumbs
     const breadcrumbs = [
         {
-            name: isPortuguese ? "Início" : "Home",
+            name:
+                locale === "pt-BR"
+                    ? "Início"
+                    : locale === "es"
+                      ? "Inicio"
+                      : locale === "de"
+                        ? "Startseite"
+                        : "Home",
             url: `https://gabrieltoth.com/${locale}`,
         },
         {
-            name: isPortuguese ? "Legal" : "Legal",
-            url: `https://gabrieltoth.com/${locale}/#legal`,
-        },
-        {
-            name: isPortuguese ? "Política de Privacidade" : "Privacy Policy",
+            name:
+                locale === "pt-BR"
+                    ? "Política de Privacidade"
+                    : locale === "es"
+                      ? "Política de Privacidad"
+                      : locale === "de"
+                        ? "Datenschutzrichtlinie"
+                        : "Privacy Policy",
             url: `https://gabrieltoth.com/${locale}/privacy-policy`,
         },
     ]
@@ -135,6 +147,8 @@ export default async function PrivacyPolicyPage({
                 customData={webPageStructuredData}
                 breadcrumbs={breadcrumbs}
             />
+
+            <Header />
 
             <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-12">
                 <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -271,6 +285,8 @@ export default async function PrivacyPolicyPage({
                     </div>
                 </div>
             </div>
+
+            <Footer locale={locale} />
         </>
     )
 }

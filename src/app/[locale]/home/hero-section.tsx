@@ -1,25 +1,9 @@
 "use client"
 
 import { useLocale } from "@/hooks/use-locale"
-import { type Locale } from "@/lib/i18n"
 import { ChevronDown, Download, Mail } from "lucide-react"
 import { useEffect, useState } from "react"
-
-const getTranslations = (locale: Locale) => {
-    const isPortuguese = locale === "pt-BR"
-    return {
-        greeting: isPortuguese ? "Olá, eu sou" : "Hello, I'm",
-        name: "Gabriel Toth Gonçalves",
-        title: isPortuguese
-            ? "Cientista de Dados & Desenvolvedor Full Stack"
-            : "Data Scientist & Full Stack Developer",
-        subtitle: isPortuguese
-            ? "Apaixonado por criar soluções digitais inovadoras com tecnologias modernas"
-            : "Passionate about creating innovative digital solutions with modern technologies",
-        cta: isPortuguese ? "Entre em contato" : "Get in touch",
-        resume: isPortuguese ? "Baixar Currículo" : "Download Resume",
-    }
-}
+import { getHeroTranslations } from "./translations"
 
 const technologies = [
     "React",
@@ -38,142 +22,92 @@ export default function HeroSection() {
     const { locale } = useLocale()
     const [mounted, setMounted] = useState(false)
     const [currentTech, setCurrentTech] = useState(0)
-    const t = getTranslations(locale)
+
+    // Get translations
+    const t = getHeroTranslations(locale)
 
     useEffect(() => {
         setMounted(true)
         const interval = setInterval(() => {
             setCurrentTech(prev => (prev + 1) % technologies.length)
         }, 2000)
+
         return () => clearInterval(interval)
     }, [])
 
-    const scrollToAbout = () => {
-        if (mounted) {
-            document
-                .getElementById("about")
-                ?.scrollIntoView({ behavior: "smooth" })
-        }
-    }
-
-    const scrollToContact = () => {
-        if (mounted) {
-            document
-                .getElementById("contact")
-                ?.scrollIntoView({ behavior: "smooth" })
-        }
-    }
-
-    const downloadResume = () => {
-        if (!mounted) return
-
-        const resumeFile =
-            locale === "pt-BR"
-                ? "/resume/Gabriel-Toth-Goncalves-Curriculo-PT.pdf"
-                : "/resume/Gabriel-Toth-Goncalves-Resume-EN.pdf"
-
-        const link = document.createElement("a")
-        link.href = resumeFile
-        link.download = `Gabriel-Toth-Goncalves-${locale === "pt-BR" ? "Curriculo" : "Resume"}.pdf`
-        document.body.appendChild(link)
-        link.click()
-        document.body.removeChild(link)
-    }
+    if (!mounted) return null
 
     return (
-        <section
-            id="hero"
-            className="min-h-screen flex items-center justify-center relative bg-gradient-to-br from-white via-white to-gray-50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800"
-        >
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-                <div
-                    className={`transition-all duration-1000 ease-out ${
-                        mounted
-                            ? "opacity-100 translate-y-0"
-                            : "opacity-0 translate-y-8"
-                    }`}
-                >
+        <section className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-white via-gray-50 to-blue-50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800 overflow-hidden">
+            {/* Animated background elements */}
+            <div className="absolute inset-0 overflow-hidden">
+                <div className="absolute -top-40 -right-40 w-80 h-80 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
+                <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-yellow-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
+                <div className="absolute top-40 left-40 w-80 h-80 bg-pink-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
+            </div>
+
+            <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <div className="space-y-8">
                     {/* Greeting */}
-                    <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-300 mb-4 font-medium">
-                        {t.greeting}
-                    </p>
+                    <div className="space-y-4">
+                        <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-300 font-medium">
+                            {t.greeting}
+                        </p>
 
-                    {/* Name */}
-                    <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold text-gray-900 dark:text-white mb-6 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                        {t.name}
-                    </h1>
+                        {/* Name with gradient */}
+                        <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold bg-gradient-to-r from-purple-600 via-blue-600 to-purple-800 bg-clip-text text-transparent leading-tight">
+                            {t.name}
+                        </h1>
+                    </div>
 
-                    {/* Title with Rotating Tech */}
-                    <div className="mb-8">
-                        <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-gray-900 dark:text-white mb-4">
+                    {/* Title with rotating tech */}
+                    <div className="space-y-4">
+                        <h2 className="text-xl sm:text-2xl lg:text-3xl font-semibold text-gray-800 dark:text-white">
                             {t.title}
                         </h2>
 
-                        {/* Rotating Technology */}
+                        {/* Rotating technology */}
                         <div className="h-8 flex items-center justify-center">
-                            <span className="text-lg text-gray-600 dark:text-gray-300 mr-2">
-                                {locale === "pt-BR"
-                                    ? "especializado em"
-                                    : "specialized in"}
-                            </span>
-                            <span className="text-lg text-blue-600 dark:text-blue-400 font-medium min-w-[120px] text-left">
-                                {mounted && technologies[currentTech]}
+                            <span className="text-base sm:text-lg text-purple-600 dark:text-purple-400 font-medium">
+                                Especialista em{" "}
+                                <span className="inline-block min-w-[120px] text-left transition-all duration-500 ease-in-out">
+                                    {technologies[currentTech]}
+                                </span>
                             </span>
                         </div>
                     </div>
 
                     {/* Subtitle */}
-                    <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-300 mb-12 max-w-3xl mx-auto leading-relaxed">
+                    <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
                         {t.subtitle}
                     </p>
 
-                    {/* Call to Action Buttons */}
-                    <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
-                        <button
-                            onClick={scrollToContact}
-                            className="group bg-blue-600 text-white px-8 py-4 rounded-lg font-medium text-lg hover:bg-blue-700 transition-all duration-300 flex items-center space-x-2 hover:scale-105"
+                    {/* CTA Buttons */}
+                    <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-8">
+                        <a
+                            href="#contact"
+                            className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-purple-600 to-blue-600 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 group"
                         >
-                            <Mail size={20} />
-                            <span>{t.cta}</span>
-                        </button>
+                            <Mail className="mr-2 h-5 w-5 group-hover:scale-110 transition-transform" />
+                            {t.cta}
+                        </a>
 
-                        <button
-                            onClick={downloadResume}
-                            className="group border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white px-8 py-4 rounded-lg font-medium text-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-all duration-300 flex items-center space-x-2 hover:scale-105"
+                        <a
+                            href="/resume/Gabriel-Toth-Goncalves-Curriculo-PT.pdf"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center px-8 py-4 border-2 border-purple-600 text-purple-600 dark:text-purple-400 font-semibold rounded-lg hover:bg-purple-600 hover:text-white dark:hover:bg-purple-500 transition-all duration-300 group"
                         >
-                            <Download size={20} />
-                            <span>{t.resume}</span>
-                        </button>
+                            <Download className="mr-2 h-5 w-5 group-hover:scale-110 transition-transform" />
+                            {t.resume}
+                        </a>
                     </div>
 
-                    {/* Tech Stack Pills */}
-                    <div className="flex flex-wrap justify-center gap-3 mb-16">
-                        {technologies.slice(0, 6).map((tech, index) => (
-                            <span
-                                key={tech}
-                                className={`px-4 py-2 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-full text-sm font-medium transition-all duration-300 hover:bg-gray-200 dark:hover:bg-gray-700 ${
-                                    mounted
-                                        ? "opacity-100 translate-y-0"
-                                        : "opacity-0 translate-y-4"
-                                }`}
-                                style={{ transitionDelay: `${index * 100}ms` }}
-                            >
-                                {tech}
-                            </span>
-                        ))}
+                    {/* Scroll indicator */}
+                    <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+                        <ChevronDown className="h-6 w-6 text-gray-400" />
                     </div>
                 </div>
-
-                {/* Scroll Indicator */}
-                <button
-                    onClick={scrollToAbout}
-                    className={`absolute bottom-8 left-1/2 transform -translate-x-1/2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-all duration-300 animate-bounce ${
-                        mounted ? "opacity-100" : "opacity-0"
-                    }`}
-                    aria-label="Scroll to about section"
-                >
-                    <ChevronDown size={32} />
-                </button>
             </div>
         </section>
     )
