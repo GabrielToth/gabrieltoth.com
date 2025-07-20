@@ -1,6 +1,7 @@
 module.exports = {
     version: "0.2",
     language: "en,pt,pt_BR,es,de",
+    caseSensitive: false,
     import: ["@cspell/dict-pt-br/cspell-ext.json"],
     dictionaryDefinitions: [
         {
@@ -22,6 +23,11 @@ module.exports = {
         "pt-br",
         "en-us",
         "project-words",
+    ],
+    ignorePaths: [
+        "**/translations/*.json",
+        "**/translations/**/*.json",
+        "**/*translations*.json",
     ],
     words: [
         "oprimeirogabrieltoth",
@@ -61,29 +67,6 @@ module.exports = {
         "Español",
         "Deutsch",
     ],
-    ignorePaths: [
-        "node_modules/**",
-        ".next/**",
-        "dist/**",
-        "build/**",
-        "*.min.js",
-        "*.min.css",
-        "package-lock.json",
-        "yarn.lock",
-        "pnpm-lock.yaml",
-        ".git/**",
-        "*.svg",
-        "*.png",
-        "*.jpg",
-        "*.jpeg",
-        "*.webp",
-        "*.ico",
-        "*.woff",
-        "*.woff2",
-        "*.ttf",
-        "*.otf",
-        "cspell.config.js",
-    ],
     enableFiletypes: [
         "typescript",
         "typescriptreact",
@@ -99,7 +82,6 @@ module.exports = {
         "less",
     ],
     allowCompoundWords: true,
-    caseSensitive: false,
     ignoreRegExpList: [
         "/\\b[A-Z]{2,}\\b/g",
         "/\\b\\d+\\b/g",

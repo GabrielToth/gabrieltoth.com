@@ -75,15 +75,16 @@ export default async function WaveIGLSupportPage({ params }: PageProps) {
     const breadcrumbs = [
         {
             name: isPortuguese ? "Início" : "Home",
-            url: `https://gabrieltoth.com/${locale}`,
+            href: `/${locale}`,
         },
         {
             name: isPortuguese ? "Comunidade" : "Community",
-            url: `https://gabrieltoth.com/${locale}/#community`,
+            href: `/${locale}/#community`,
         },
         {
             name: isPortuguese ? "Apoie WaveIGL" : "Support WaveIGL",
-            url: `https://gabrieltoth.com/${locale}/waveigl-support`,
+            href: `/${locale}/waveigl-support`,
+            current: true,
         },
     ]
 
@@ -98,7 +99,7 @@ export default async function WaveIGLSupportPage({ params }: PageProps) {
 
             <div className="min-h-screen bg-white dark:bg-gray-900">
                 <main className="container mx-auto px-4 py-8">
-                    <Breadcrumbs className="mb-6" />
+                    <Breadcrumbs items={breadcrumbs} className="mb-6" />
                     <WaveIGLSupportLanding locale={locale} />
                 </main>
                 <Footer locale={locale} />
