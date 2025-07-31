@@ -696,16 +696,16 @@ Allow: /_next/static/
 Allow: /_next/image
 
 # Specific bot instructions
-User-agent: Googlebot # cspell:disable-line
+User-agent: Googlebot
 Crawl-delay: 1
 
-User-agent: Bingbot # cspell:disable-line
+User-agent: Bingbot
 Crawl-delay: 1
 
-User-agent: facebookexternalhit # cspell:disable-line
+User-agent: facebookexternalhit
 Allow: /
 
-User-agent: Twitterbot # cspell:disable-line
+User-agent: Twitterbot
 Allow: /
 
 # Sitemaps

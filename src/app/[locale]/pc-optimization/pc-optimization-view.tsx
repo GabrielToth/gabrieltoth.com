@@ -13,6 +13,7 @@ import {
     Star,
     Zap,
 } from "lucide-react"
+import { generatePCOptimizationWhatsAppMessage } from "./pc-optimization-whatsapp"
 import { getPCOptimizationTranslations } from "./translations"
 
 interface PCOptimizationViewProps {
@@ -60,12 +61,20 @@ export default function PCOptimizationView({
                     </p>
 
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
-                        <button className="px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 rounded-lg font-semibold text-lg transition-all duration-300 transform hover:scale-105">
+                        <a
+                            href="#pricing"
+                            className="px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 rounded-lg font-semibold text-lg transition-all duration-300 transform hover:scale-105"
+                        >
                             {t.hero.cta}
-                        </button>
-                        <button className="px-8 py-4 border border-gray-600 hover:border-gray-400 rounded-lg font-semibold text-lg transition-all duration-300">
+                        </a>
+                        <a
+                            href={generatePCOptimizationWhatsAppMessage(locale)}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="px-8 py-4 border border-gray-600 hover:border-gray-400 rounded-lg font-semibold text-lg transition-all duration-300"
+                        >
                             {t.hero.learnMore}
-                        </button>
+                        </a>
                     </div>
 
                     {/* Stats */}
@@ -103,7 +112,7 @@ export default function PCOptimizationView({
                         </p>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
                         {t.features.list.map((feature, index) => {
                             const iconMap = [Cpu, Gamepad2, Monitor, Shield]
                             const IconComponent = iconMap[index] || Cpu
@@ -129,7 +138,10 @@ export default function PCOptimizationView({
             </section>
 
             {/* Pricing Section */}
-            <section className="py-24 bg-gradient-to-b from-gray-900 to-black">
+            <section
+                id="pricing"
+                className="py-24 bg-gradient-to-b from-gray-900 to-black"
+            >
                 <div className="max-w-7xl mx-auto px-4">
                     <div className="text-center mb-16">
                         <h2 className="text-4xl md:text-5xl font-black mb-6 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
@@ -281,9 +293,14 @@ export default function PCOptimizationView({
                     <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
                         {t.cta.subtitle}
                     </p>
-                    <button className="px-8 py-4 bg-white text-blue-900 hover:bg-gray-100 rounded-lg font-semibold text-lg transition-all duration-300 transform hover:scale-105">
+                    <a
+                        href={generatePCOptimizationWhatsAppMessage(locale)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-block px-8 py-4 bg-white text-blue-900 hover:bg-gray-100 rounded-lg font-semibold text-lg transition-all duration-300 transform hover:scale-105"
+                    >
                         {t.cta.button}
-                    </button>
+                    </a>
                 </div>
             </section>
 

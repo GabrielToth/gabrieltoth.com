@@ -1,3 +1,22 @@
+/**
+ * TODO: MIGRATION NEEDED
+ * This file should be migrated to translations/ folder with proper JSON structure
+ * Currently contains complex programmatic translation logic with icon injection
+ * Similar to how pc-optimization was refactored to use translations/index.ts
+ * 
+ * The translations/ folder already exists with proper JSON files for all languages (en, pt-BR, es, de)
+ * But this mediator contains additional programmatic sections like:
+ * - about.skills with icon components
+ * - problems section with icon mapping
+ * - services section with icon injection
+ * - results section with dynamic content
+ * 
+ * Future refactor should:
+ * 1. Move programmatic content to JSON files
+ * 2. Inject icon components in translations/index.ts
+ * 3. Remove this mediator file completely
+ */
+
 import { Locale } from "@/lib/i18n"
 import { SiYoutube } from "@icons-pack/react-simple-icons"
 import { BarChart3, DollarSign, Target, TrendingUp, Video } from "lucide-react"

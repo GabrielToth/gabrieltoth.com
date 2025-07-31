@@ -3,7 +3,6 @@ import Footer from "@/components/layout/footer"
 import StructuredData from "@/components/seo/structured-data"
 import Breadcrumbs from "@/components/ui/breadcrumbs"
 import { generateMetadata } from "./editors-metadata"
-import { getEditorsTranslations } from "./editors-translations"
 import {
     AboutSection,
     BenefitsSection,
@@ -12,6 +11,8 @@ import {
     RequirementsSection,
     ToolsSection,
 } from "./editors-view"
+// TODO: Migrate to translations/ folder - currently using mediator due to complex programmatic content
+import { getEditorsTranslations } from "./editors-translations"
 
 export { generateMetadata }
 
@@ -127,7 +128,7 @@ export default async function EditorsPage({ params }: PageProps) {
 
             <main className="min-h-screen bg-white dark:bg-gray-900">
                 <div className="container mx-auto px-4 py-8">
-                    <Breadcrumbs 
+                    <Breadcrumbs
                         items={breadcrumbs.map((item, index) => ({
                             name: item.name,
                             href: item.url.replace(
@@ -137,7 +138,7 @@ export default async function EditorsPage({ params }: PageProps) {
                             current: index === breadcrumbs.length - 1,
                         }))}
                         hideHome={true}
-                        className="mb-6" 
+                        className="mb-6"
                     />
                 </div>
                 <HeroSection t={t} />

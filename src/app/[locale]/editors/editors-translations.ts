@@ -1,3 +1,23 @@
+/**
+ * TODO: MIGRATION NEEDED  
+ * This file should be migrated to translations/ folder with proper JSON structure
+ * Currently contains complex programmatic translation logic with icon name mapping
+ * Similar to how pc-optimization was refactored to use translations/index.ts
+ * 
+ * The translations/ folder already exists with proper JSON files for all languages (en, pt-BR, es, de)
+ * But this mediator contains additional programmatic sections like:
+ * - about.skills with iconName mapping
+ * - tools.items with iconName references  
+ * - services.items with iconName and dynamic features
+ * - Complex conditional logic for PT-BR vs EN
+ * 
+ * Future refactor should:
+ * 1. Move all programmatic content to JSON files  
+ * 2. Inject icon components in translations/index.ts using iconName mapping
+ * 3. Remove this mediator file completely
+ * 4. Update function to be synchronous (remove async/await)
+ */
+
 import { IconName } from "@/lib/icons"
 export interface EditorTranslations {
     locale: "en" | "pt-BR"

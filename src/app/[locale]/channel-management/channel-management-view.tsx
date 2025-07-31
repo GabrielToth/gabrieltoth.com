@@ -6,10 +6,11 @@ import PricingToggle from "@/components/ui/pricing-toggle"
 import { type Locale } from "@/lib/i18n"
 import { CheckCircle, MessageCircle, Percent, Star } from "lucide-react"
 import { useCalculatePrice } from "./channel-management-calculate-price"
-import { ChannelManagementTranslations } from "./channel-management-section-types"
-import { getChannelManagementTranslations } from "./channel-management-translations"
 import { ChannelManagementLandingProps } from "./channel-management-types"
 import { generateWhatsAppMessage } from "./channel-management-whatsapp-message"
+// TODO: Migrate to translations/ folder - currently using mediator due to complex icon injection
+import { getChannelManagementTranslations } from "./channel-management-translations"
+import { ChannelManagementTranslations } from "./channel-management-section-types"
 
 // Hero Section Component
 const HeroSection = ({
