@@ -14,13 +14,13 @@ export default async function PCOptimizationPage({ params }: PageProps) {
 
     return (
         <>
-            <div className="min-h-screen bg-white dark:bg-gray-900">
+            <main className="min-h-screen bg-white dark:bg-gray-900">
                 <div className="container mx-auto px-4 py-8">
                     <Breadcrumbs className="mb-6" />
-                    <PCOptimizationLanding locale={locale} />
                 </div>
-            </div>
-            <Footer locale={locale} />
+                <PCOptimizationLanding locale={locale} />
+                <Footer locale={locale} />
+            </main>
         </>
     )
 }

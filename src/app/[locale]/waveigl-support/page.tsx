@@ -89,13 +89,13 @@ export default async function WaveIGLSupportPage({ params }: PageProps) {
                 faqs={faqs}
             />
 
-            <div className="min-h-screen bg-white dark:bg-gray-900">
-                <main className="container mx-auto px-4 py-8">
+            <main className="min-h-screen bg-white dark:bg-gray-900">
+                <div className="container mx-auto px-4 py-8">
                     <Breadcrumbs items={breadcrumbs} className="mb-6" />
-                    <WaveIGLSupportLanding locale={locale} />
-                </main>
+                </div>
+                <WaveIGLSupportLanding locale={locale} />
                 <Footer locale={locale} />
-            </div>
+            </main>
         </>
     )
 }

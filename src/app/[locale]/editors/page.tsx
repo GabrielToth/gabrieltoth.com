@@ -129,20 +129,18 @@ export default async function EditorsPage({ params }: PageProps) {
                 faqs={faqs}
             />
 
-            <div className="min-h-screen bg-white dark:bg-gray-900">
+            <main className="min-h-screen bg-white dark:bg-gray-900">
                 <div className="container mx-auto px-4 py-8">
                     <Breadcrumbs className="mb-6" />
-                    <main className="flex min-h-screen flex-col items-center justify-between">
-                        <HeroSection t={t} />
-                        <AboutSection t={t} />
-                        <ToolsSection t={t} />
-                        <RequirementsSection t={t} />
-                        <BenefitsSection t={t} />
-                        <CTASection t={t} />
-                    </main>
                 </div>
+                <HeroSection t={t} />
+                <AboutSection t={t} />
+                <ToolsSection t={t} />
+                <RequirementsSection t={t} />
+                <BenefitsSection t={t} />
+                <CTASection t={t} />
                 <Footer locale={locale} />
-            </div>
+            </main>
         </>
     )
 }

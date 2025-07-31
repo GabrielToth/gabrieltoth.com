@@ -128,7 +128,7 @@ export default async function ChannelManagementPage({ params }: PageProps) {
                 faqs={faqs}
             />
 
-            <div className="min-h-screen bg-white dark:bg-gray-900">
+            <main className="min-h-screen bg-white dark:bg-gray-900">
                 <div className="container mx-auto px-4 py-8">
                     <Breadcrumbs
                         items={breadcrumbs.map((item, index) => ({
@@ -141,10 +141,10 @@ export default async function ChannelManagementPage({ params }: PageProps) {
                         }))}
                         className="mb-6"
                     />
-                    <ChannelManagementView locale={locale} />
                 </div>
+                <ChannelManagementView locale={locale} />
                 <Footer locale={locale} />
-            </div>
+            </main>
         </>
     )
 }
