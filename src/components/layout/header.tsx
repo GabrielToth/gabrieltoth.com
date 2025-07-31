@@ -1,16 +1,16 @@
 "use client"
 
 import { ThemeToggleClient } from "@/components/theme/theme-toggle-client"
+import LanguageSelector from "@/components/ui/language-selector"
 import { useLocale } from "@/hooks/use-locale"
-import { localeNames, locales, type Locale } from "@/lib/i18n"
-import { Globe, Menu, X } from "lucide-react"
+import { Menu, X } from "lucide-react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useState } from "react"
 import { getHeaderTranslations } from "./translations"
 
 export default function Header() {
-    const { locale, changeLocale } = useLocale()
+    const { locale } = useLocale()
     const pathname = usePathname()
     const [isServicesOpen, setIsServicesOpen] = useState(false)
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
@@ -143,33 +143,13 @@ export default function Header() {
                         <ThemeToggleClient />
 
                         {/* Language Selector */}
-                        <div className="relative">
-                            <select
-                                value={locale}
-                                onChange={e =>
-                                    changeLocale(e.target.value as Locale)
-                                }
-                                className="appearance-none bg-transparent border border-gray-300 dark:border-gray-600 rounded px-3 py-1 text-sm text-gray-700 dark:text-gray-300 hover:border-gray-400 dark:hover:border-gray-500 transition-colors cursor-pointer"
-                                data-cy="language-selector"
-                                aria-label={t.language}
-                            >
-                                {locales.map(loc => (
-                                    <option
-                                        key={loc}
-                                        value={loc}
-                                        className="bg-white dark:bg-gray-800"
-                                    >
-                                        {localeNames[loc]}
-                                    </option>
-                                ))}
-                            </select>
-                            <Globe className="absolute right-1 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400 pointer-events-none" />
-                        </div>
+                        <LanguageSelector variant="header" />
                     </nav>
 
                     {/* Mobile menu button */}
                     <div className="md:hidden flex items-center space-x-2">
                         <ThemeToggleClient />
+                        <LanguageSelector variant="header" />
 
                         <button
                             onClick={() =>
@@ -226,27 +206,6 @@ export default function Header() {
                                         {link.label}
                                     </Link>
                                 ))}
-                            </div>
-
-                            {/* Mobile Language Selector */}
-                            <div className="px-3 py-2">
-                                <label className="block text-sm font-medium text-gray-900 dark:text-white mb-2">
-                                    {t.language}
-                                </label>
-                                <select
-                                    value={locale}
-                                    onChange={e =>
-                                        changeLocale(e.target.value as Locale)
-                                    }
-                                    className="w-full border border-gray-300 dark:border-gray-600 rounded px-3 py-2 text-sm bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300"
-                                    aria-label={t.language}
-                                >
-                                    {locales.map(loc => (
-                                        <option key={loc} value={loc}>
-                                            {localeNames[loc]}
-                                        </option>
-                                    ))}
-                                </select>
                             </div>
                         </div>
                     </div>

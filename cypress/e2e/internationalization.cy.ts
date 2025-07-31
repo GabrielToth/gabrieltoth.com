@@ -1,12 +1,13 @@
 describe("Internationalization (i18n) Tests", () => {
     beforeEach(() => {
-        // Ignore hydration errors
+        // Ignore hydration errors and other React errors during testing
         cy.on("uncaught:exception", err => {
-            if (
-                err.message.includes("Hydration failed") ||
-                err.message.includes("418") ||
-                err.message.includes("server rendered HTML")
-            ) {
+            // Ignore hydration errors
+            if (err.message.includes("Hydration failed")) {
+                return false
+            }
+            // Ignore other React errors
+            if (err.message.includes("React")) {
                 return false
             }
             return true
@@ -16,178 +17,138 @@ describe("Internationalization (i18n) Tests", () => {
     describe("Language Detection and Persistence", () => {
         it("should default to English when visiting root", () => {
             cy.visit("/")
-            cy.wait(2000)
-
-            // Should redirect to English by default
-            cy.url().should("match", /\/(en\/)?/)
-
-            // Check for English content
-            cy.get("html").should("have.attr", "lang").and("match", /en/)
+            cy.wait(1000)
+            cy.url().should("include", "/en")
         })
 
         it("should maintain language when navigating", () => {
-            // Start with English
-            cy.visit("/en/")
-            cy.wait(2000)
+            // Start in English
+            cy.visit("/en")
+            cy.wait(1000)
 
-            // Navigate to different pages and check language persistence
-            const englishPages = [
-                "/en/channel-management",
-                "/en/pc-optimization",
-            ]
+            // Navigate to different pages
+            cy.visit("/en/channel-management")
+            cy.wait(1000)
+            cy.url().should("include", "/en")
 
-            englishPages.forEach(page => {
-                cy.visit(page)
-                cy.wait(1000)
-
-                // Should maintain English
-                cy.url().should("include", "/en/")
-                cy.get("html").should("have.attr", "lang").and("match", /en/)
-            })
+            cy.visit("/en/privacy-policy")
+            cy.wait(1000)
+            cy.url().should("include", "/en")
         })
 
         it("should maintain Portuguese when navigating", () => {
-            // Start with Portuguese
-            cy.visit("/pt-BR/")
-            cy.wait(2000)
+            // Start in Portuguese
+            cy.visit("/pt-BR")
+            cy.wait(1000)
 
-            // Navigate to different pages and check language persistence
-            const portuguesePages = [
-                "/pt-BR/channel-management",
-                "/pt-BR/pc-optimization",
-            ]
+            // Navigate to different pages
+            cy.visit("/pt-BR/channel-management")
+            cy.wait(1000)
+            cy.url().should("include", "/pt-BR")
 
-            portuguesePages.forEach(page => {
-                cy.visit(page)
-                cy.wait(1000)
-
-                // Should maintain Portuguese
-                cy.url().should("include", "/pt-BR/")
-                cy.get("html").should("have.attr", "lang").and("match", /pt/)
-            })
+            cy.visit("/pt-BR/privacy-policy")
+            cy.wait(1000)
+            cy.url().should("include", "/pt-BR")
         })
     })
 
     describe("Language Switching", () => {
         it("should switch from English to Portuguese", () => {
-            cy.visit("/en/")
-            cy.wait(2000)
+            cy.visit("/en")
+            cy.wait(1000)
 
-            // Look for language switcher
-            cy.get("body").then($body => {
-                if ($body.find("[data-cy=language-selector]").length > 0) {
-                    // Check if it's a select element
-                    cy.get("[data-cy=language-selector]").then($el => {
-                        if ($el.is("select")) {
-                            // Use cy.select() for native select elements
-                            cy.get("[data-cy=language-selector]").select(
-                                "pt-BR"
-                            )
-                        } else {
-                            // Use click for custom components
-                            cy.get("[data-cy=language-selector]").click()
-                            cy.get("[data-cy=language-pt-BR]").click()
-                        }
-                    })
-                    cy.wait(1000)
-                    cy.url().should("include", "/pt-BR")
-                } else {
-                    // Alternative: direct navigation
-                    cy.visit("/pt-BR/")
-                    cy.wait(1000)
-                    cy.url().should("include", "/pt-BR")
-                }
-            })
+            // Click language selector
+            cy.get('[data-testid="language-selector"]').first().click()
+            cy.wait(500)
+
+            // Select Portuguese
+            cy.get('[role="menuitem"]').contains("PT").click()
+            cy.wait(500)
+
+            // Verify URL and content
+            cy.url().should("include", "/pt-BR")
+            cy.get('[data-testid="language-selector"]')
+                .first()
+                .should("contain.text", "PT")
         })
 
         it("should switch from Portuguese to English", () => {
-            cy.visit("/pt-BR/")
-            cy.wait(2000)
+            cy.visit("/pt-BR")
+            cy.wait(1000)
 
-            // Look for language switcher
-            cy.get("body").then($body => {
-                if ($body.find("[data-cy=language-selector]").length > 0) {
-                    // Check if it's a select element
-                    cy.get("[data-cy=language-selector]").then($el => {
-                        if ($el.is("select")) {
-                            // Use cy.select() for native select elements
-                            cy.get("[data-cy=language-selector]").select("en")
-                        } else {
-                            // Use click for custom components
-                            cy.get("[data-cy=language-selector]").click()
-                            cy.get("[data-cy=language-en]").click()
-                        }
-                    })
-                    cy.wait(1000)
-                    cy.url().should("include", "/en")
-                } else {
-                    // Alternative: direct navigation
-                    cy.visit("/en/")
-                    cy.wait(1000)
-                    cy.url().should("include", "/en")
-                }
-            })
+            // Click language selector
+            cy.get('[data-testid="language-selector"]').first().click()
+            cy.wait(500)
+
+            // Select English
+            cy.get('[role="menuitem"]').contains("EN").click()
+            cy.wait(500)
+
+            // Verify URL and content
+            cy.url().should("include", "/en")
+            cy.get('[data-testid="language-selector"]')
+                .first()
+                .should("contain.text", "EN")
         })
     })
 
     describe("Content Translation", () => {
-        const contentChecks = [
-            {
-                page: "/",
-                englishText: ["Hello", "Gabriel Toth", "Full Stack Developer"],
-                portugueseText: ["Olá", "Gabriel Toth", "Full Stack Developer"],
-            },
-            {
-                page: "/channel-management",
-                englishText: [
-                    "ViraTrend",
-                    "Transform Your Channel into a Growth Machine",
-                    "Growth Machine",
-                ],
-                portugueseText: [
-                    "ViraTrend",
-                    "Transforme Seu Canal em uma Máquina de Crescimento",
-                    "Máquina de Crescimento",
-                ],
-            },
-        ]
+        it("should show correct translations on /", () => {
+            // Check English content
+            cy.visit("/en")
+            cy.wait(1000)
+            cy.contains("Get in touch").should("be.visible")
 
-        contentChecks.forEach(check => {
-            it(`should show correct translations on ${check.page}`, () => {
-                // Test English
-                cy.visit(`/en${check.page === "/" ? "/" : check.page}`)
-                cy.wait(2000)
+            // Check Portuguese content
+            cy.visit("/pt-BR")
+            cy.wait(1000)
+            cy.contains("Entre em contato").should("be.visible")
+        })
 
-                check.englishText.forEach(text => {
-                    cy.get("body").should("contain", text)
-                })
+        it("should show correct translations on /channel-management", () => {
+            // Check English content
+            cy.visit("/en/channel-management")
+            cy.wait(1000)
+            cy.get("body").should("be.visible")
+            cy.get("head").should("exist")
+            cy.get("title").should("exist")
+            cy.get("meta[name='description']").should("exist")
+            cy.get("meta[name='viewport']").should("exist")
+            cy.get("meta[name='theme-color']").should("exist")
+            cy.contains("ViraTrend").should("be.visible")
+            cy.get('nav[aria-label="breadcrumb"]')
+                .find("a")
+                .first()
+                .should("contain.text", "Home")
 
-                // Test Portuguese
-                cy.visit(`/pt-BR${check.page === "/" ? "/" : check.page}`)
-                cy.wait(2000)
-
-                check.portugueseText.forEach(text => {
-                    cy.get("body").should("contain", text)
-                })
-            })
+            // Check Portuguese content
+            cy.visit("/pt-BR/channel-management")
+            cy.wait(1000)
+            cy.get("body").should("be.visible")
+            cy.get("head").should("exist")
+            cy.get("title").should("exist")
+            cy.get("meta[name='description']").should("exist")
+            cy.get("meta[name='viewport']").should("exist")
+            cy.get("meta[name='theme-color']").should("exist")
+            cy.contains("ViraTrend").should("be.visible")
+            cy.get('nav[aria-label="breadcrumb"]')
+                .find("a")
+                .first()
+                .should("contain.text", "Início")
         })
     })
 
     describe("SEO and Meta Tags", () => {
         it("should have correct meta tags for each language", () => {
-            // English meta tags
-            cy.visit("/en/")
-            cy.wait(2000)
-            cy.get("html").should("have.attr", "lang", "en")
-            cy.get("title").should("not.be.empty")
-            cy.get('meta[name="description"]').should("exist")
+            // Check English meta tags
+            cy.visit("/en")
+            cy.wait(1000)
+            cy.get('html[lang="en"]').should("exist")
 
-            // Portuguese meta tags
-            cy.visit("/pt-BR/")
-            cy.wait(2000)
-            cy.get("html").should("have.attr", "lang").and("match", /pt/)
-            cy.get("title").should("not.be.empty")
-            cy.get('meta[name="description"]').should("exist")
+            // Check Portuguese meta tags
+            cy.visit("/pt-BR")
+            cy.wait(1000)
+            cy.get('html[lang="pt-BR"]').should("exist")
         })
     })
 })

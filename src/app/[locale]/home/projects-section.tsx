@@ -87,21 +87,13 @@ export default function ProjectsSection() {
                     </p>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 auto-rows-fr">
                     {displayedProjects.map(project => (
                         <div
                             key={project.title}
-                            className={`bg-gray-50 dark:bg-gray-800 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 ${
-                                project.featured
-                                    ? "md:col-span-2 lg:col-span-2"
-                                    : ""
-                            }`}
+                            className="bg-gray-50 dark:bg-gray-800 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
                         >
-                            <div
-                                className={`w-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold text-lg ${
-                                    project.featured ? "h-48" : "h-32"
-                                }`}
-                            >
+                            <div className="w-full h-32 bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold text-lg">
                                 {project.title}
                             </div>
 

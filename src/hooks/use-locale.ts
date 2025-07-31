@@ -4,6 +4,7 @@ import {
     defaultLocale,
     detectBrowserLanguage,
     getLocaleFromCookie,
+    locales,
     setLocaleCookie,
     type Locale,
 } from "@/lib/i18n"
@@ -32,7 +33,10 @@ export function useLocale() {
         const pathSegments = pathname.split("/").filter(Boolean)
         const currentPathLocale = pathSegments[0]
 
-        if (currentPathLocale && ["en", "pt-BR"].includes(currentPathLocale)) {
+        if (
+            currentPathLocale &&
+            locales.includes(currentPathLocale as Locale)
+        ) {
             if (globalLocale !== currentPathLocale) {
                 globalLocale = currentPathLocale as Locale
                 setLocale(currentPathLocale as Locale)
@@ -88,7 +92,7 @@ export function useLocale() {
         const currentPathLocale = pathSegments[0]
 
         let newPath: string
-        if (["en", "pt-BR"].includes(currentPathLocale)) {
+        if (locales.includes(currentPathLocale as Locale)) {
             // Replace existing locale
             pathSegments[0] = newLocale
             newPath = "/" + pathSegments.join("/")

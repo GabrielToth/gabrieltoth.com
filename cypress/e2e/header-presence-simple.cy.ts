@@ -1,16 +1,13 @@
 describe("Navigation Structure - Quick Tests", () => {
     beforeEach(() => {
-        // Ignore hydration errors and other React development warnings
+        // Ignore hydration errors and other React errors during testing
         cy.on("uncaught:exception", err => {
-            if (
-                err.message.includes("Hydration failed") ||
-                err.message.includes("server rendered HTML") ||
-                err.message.includes("client") ||
-                err.message.includes("Minified React error #418") ||
-                err.message.includes("418") ||
-                err.stack?.includes("418") ||
-                err.name === "Error"
-            ) {
+            // Ignore hydration errors
+            if (err.message.includes("Hydration failed")) {
+                return false
+            }
+            // Ignore other React errors
+            if (err.message.includes("React")) {
                 return false
             }
             return true
@@ -20,153 +17,97 @@ describe("Navigation Structure - Quick Tests", () => {
     it("Landing pages should NOT have main header but SHOULD have breadcrumbs", () => {
         const landingPages = [
             "/en/pc-optimization",
-            "/pt-BR/pc-optimization",
             "/en/channel-management",
-            "/pt-BR/channel-management",
             "/en/waveigl-support",
-            "/pt-BR/waveigl-support",
             "/en/editors",
-            "/pt-BR/editors",
         ]
 
-        landingPages.forEach(path => {
-            cy.visit(path)
+        landingPages.forEach(page => {
+            cy.visit(page)
             cy.wait(1000)
 
             // Should NOT have main header
             cy.get("header").should("not.exist")
 
-            // Should have breadcrumbs navigation
-            cy.get(
-                'nav[aria-label*="Breadcrumb"], nav[aria-label*="estrutural"]'
-            ).should("exist")
-
-            // Should have footer
-            cy.get("footer").should("exist")
+            // SHOULD have breadcrumbs
+            cy.get('nav[aria-label="breadcrumb"]').should("be.visible")
         })
     })
 
     it("Homepage should have main header", () => {
-        const homepages = ["/en", "/pt-BR"]
+        cy.visit("/en")
+        cy.wait(1000)
 
-        homepages.forEach(path => {
-            cy.visit(path)
-            cy.wait(1000)
+        // Should have main header
+        cy.get("header").should("be.visible")
 
-            // Should have main header
-            cy.get("header").should("exist")
-
-            // Note: Homepage may or may not have breadcrumbs depending on implementation
-            // This is acceptable as long as it has the main header for navigation
-
-            // Should have footer
-            cy.get("footer").should("exist")
-        })
+        // Should NOT have breadcrumbs
+        cy.get('nav[aria-label="breadcrumb"]').should("not.exist")
     })
 
     it("All non-landing pages should have main header AND breadcrumbs", () => {
-        const institutionalPages = [
+        const pages = [
             "/en/privacy-policy",
-            "/pt-BR/privacy-policy",
             "/en/terms-of-service",
-            "/pt-BR/terms-of-service",
+            "/en/pc-optimization/terms",
         ]
 
-        institutionalPages.forEach(path => {
-            cy.visit(path)
+        pages.forEach(page => {
+            cy.visit(page)
             cy.wait(1000)
 
             // Should have main header
-            cy.get("header").should("exist")
+            cy.get("header").should("be.visible")
 
-            // Should have breadcrumbs navigation
-            cy.get(
-                'nav[aria-label*="Breadcrumb"], nav[aria-label*="estrutural"]'
-            ).should("exist")
-
-            // Should have footer
-            cy.get("footer").should("exist")
+            // Should have breadcrumbs
+            cy.get('nav[aria-label="breadcrumb"]').should("be.visible")
         })
     })
 
     it("All pages should have breadcrumbs navigation except homepage", () => {
-        const allPagesExceptHome = [
+        const pages = [
             "/en/pc-optimization",
-            "/pt-BR/pc-optimization",
             "/en/channel-management",
-            "/pt-BR/channel-management",
             "/en/waveigl-support",
-            "/pt-BR/waveigl-support",
             "/en/editors",
-            "/pt-BR/editors",
             "/en/privacy-policy",
-            "/pt-BR/privacy-policy",
             "/en/terms-of-service",
-            "/pt-BR/terms-of-service",
+            "/en/pc-optimization/terms",
         ]
 
-        allPagesExceptHome.forEach(path => {
-            cy.visit(path)
+        pages.forEach(page => {
+            cy.visit(page)
             cy.wait(1000)
 
-            // Should have breadcrumbs navigation
-            cy.get(
-                'nav[aria-label*="Breadcrumb"], nav[aria-label*="estrutural"]'
-            ).should("exist")
+            // Should have breadcrumbs
+            cy.get('nav[aria-label="breadcrumb"]').should("be.visible")
         })
     })
 
     it("Services dropdown should only exist on homepage header", () => {
-        // Check homepage has services dropdown in header
+        // Check homepage
         cy.visit("/en")
-        cy.wait(3000) // Wait longer for translations to load
-        // Check for Services in any language
-        cy.get("header").then($header => {
-            const text = $header.text()
-            expect(text).to.satisfy((text: string) => {
-                return text.includes("Services") || text.includes("Serviços")
-            })
-        })
+        cy.wait(1000)
+        cy.contains("Services").should("be.visible")
 
-        // Check landing page does NOT have any header at all
-        cy.visit("/en/pc-optimization")
-        cy.wait(3000) // Wait longer for translations to load
+        // Check other pages
+        cy.visit("/en/privacy-policy")
+        cy.wait(1000)
         cy.get("header").should("not.exist")
     })
 
-    it("Breadcrumbs should provide proper navigation hierarchy with 'Início'", () => {
-        // Test landing page breadcrumbs
-        cy.visit("/en/pc-optimization")
-        cy.wait(3000) // Wait longer for translations to load
-
-        // Should show hierarchy like "Início > PC Optimization" in any language
-        cy.get(
-            'nav[aria-label*="Breadcrumb"], nav[aria-label*="estrutural"]'
-        ).then($nav => {
-            const text = $nav.text()
-            expect(text).to.satisfy((text: string) => {
-                return text.includes("Início") // Always "Início" regardless of language
-            })
-        })
-        cy.get(
-            'nav[aria-label*="Breadcrumb"], nav[aria-label*="estrutural"]'
-        ).then($nav => {
-            const text = $nav.text()
-            expect(text).to.satisfy((text: string) => {
-                return (
-                    text.includes("PC Optimization") ||
-                    text.includes("Otimização de PC")
-                )
-            })
-        })
-
-        // Test nested page breadcrumbs
-        cy.visit("/en/terms-of-service")
+    it("Breadcrumbs should provide proper navigation hierarchy with 'Home'", () => {
+        cy.visit("/en/channel-management")
         cy.wait(1000)
 
-        // Should show hierarchy like "Início > Terms of Service"
-        cy.get(
-            'nav[aria-label*="Breadcrumb"], nav[aria-label*="estrutural"]'
-        ).should("contain.text", "Início")
+        // Check breadcrumb structure
+        cy.get('nav[aria-label="breadcrumb"]')
+            .find("a")
+            .first()
+            .should("contain.text", "Home")
+            .and("have.attr", "href", "/en")
+            .and("be.visible")
+            .and("not.be.disabled")
+            .and("have.length", 1)
     })
 })

@@ -3,9 +3,10 @@
         "greeting": "Hello, I'm",
         "name": "Gabriel Toth Gonçalves",
         "title": "Data Scientist & Full Stack Developer",
-        "subtitle": "Passionate about creating innovative digital solutions with modern technologies",
+        "subtitle": "Specialized in creating innovative digital solutions with modern technologies",
         "cta": "Get in touch",
-        "resume": "Download Resume"
+        "resume": "Download Resume",
+        "disabled": "Disabled"
     },
     "about": {
         "title": "About Me",
@@ -15,17 +16,21 @@
         "passion": "Beyond data analysis and science, I manage channels like the WaveIGL channel with over 2 million monthly views and create content on social media. I developed ViraTrend, a specialized service for digital growth consulting for content creators. I'm passionate about transforming data into actionable insights and using machine learning to optimize digital campaigns and user experiences.",
         "location": "📍 Brazil",
         "interests": "When I'm not coding, you can find me creating educational content, exploring new technologies, or playing Minecraft (yes, I even have my own plugin!).",
+        "specializedIn": "Specialized in",
         "skills": {
             "title": "Core Skills",
             "dataScience": {
                 "title": "Data Science",
                 "items": [
                     "Python",
-                    "PostgreSQL",
                     "SQLAlchemy",
                     "Google APIs",
                     "Power BI",
-                    "pytest"
+                    "pytest",
+                    "Pandas",
+                    "Matplotlib",
+                    "Scikit-learn",
+                    "NumPy"
                 ]
             },
             "frontend": {
@@ -36,7 +41,12 @@
                     "TypeScript",
                     "Tailwind CSS",
                     "JavaScript",
-                    "Angular"
+                    "Angular",
+                    "HTML",
+                    "CSS",
+                    "SCSS",
+                    "SASS",
+                    "WordPress"
                 ]
             },
             "backend": {
@@ -47,7 +57,11 @@
                     "PostgreSQL",
                     "Docker",
                     "Google Cloud",
-                    "REST APIs"
+                    "REST APIs",
+                    "AWS",
+                    "MySQL",
+                    "Go",
+                    "Java"
                 ]
             },
             "tools": {
@@ -58,7 +72,13 @@
                     "VS Code",
                     "Figma",
                     "Power BI",
-                    "Slack"
+                    "Slack",
+                    "Excel",
+                    "Metabase",
+                    "Jira",
+                    "Notion",
+                    "GitHub",
+                    "GitLab"
                 ]
             }
         },
@@ -69,7 +89,7 @@
         }
     },
     "contact": {
-        "title": "Let's work together",
+        "title": "Turn Your Project Into Reality",
         "subtitle": "Ready to transform your ideas into digital reality",
         "getInTouch": "Get in touch",
         "email": "Email",

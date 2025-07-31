@@ -3,9 +3,10 @@
         "greeting": "Hallo, ich bin",
         "name": "Gabriel Toth Gonçalves",
         "title": "Datenwissenschaftler & Full Stack Entwickler",
-        "subtitle": "Leidenschaftlich für die Entwicklung innovativer digitaler Lösungen mit modernen Technologien",
+        "subtitle": "Spezialisiert auf die Entwicklung innovativer digitaler Lösungen mit modernen Technologien",
         "cta": "Kontakt aufnehmen",
-        "resume": "Lebenslauf herunterladen"
+        "resume": "Lebenslauf herunterladen",
+        "disabled": "Deaktiviert"
     },
     "about": {
         "title": "Über Mich",
@@ -15,17 +16,21 @@
         "passion": "Neben Datenanalyse und Data Science verwalte ich Kanäle wie den WaveIGL-Kanal mit über 2 Millionen monatlichen Aufrufen und erstelle Inhalte für soziale Medien. Ich entwickelte ViraTrend, einen spezialisierten Service für digitale Wachstumsberatung für Content-Ersteller. Ich bin leidenschaftlich daran interessiert, Daten in umsetzbare Erkenntnisse umzuwandeln und maschinelles Lernen zu verwenden, um digitale Kampagnen und Benutzererfahrungen zu optimieren.",
         "location": "📍 Brasilien",
         "interests": "Wenn ich nicht programmiere, können Sie mich dabei finden, wie ich Bildungsinhalte erstelle, neue Technologien erkunde oder Minecraft spiele (ja, ich habe sogar mein eigenes Plugin!).",
+        "specializedIn": "Spezialisiert auf",
         "skills": {
             "title": "Kernkompetenzen",
             "dataScience": {
                 "title": "Datenwissenschaft",
                 "items": [
                     "Python",
-                    "PostgreSQL",
                     "SQLAlchemy",
                     "Google APIs",
                     "Power BI",
-                    "pytest"
+                    "pytest",
+                    "Pandas",
+                    "Matplotlib",
+                    "Scikit-learn",
+                    "NumPy"
                 ]
             },
             "frontend": {
@@ -36,7 +41,12 @@
                     "TypeScript",
                     "Tailwind CSS",
                     "JavaScript",
-                    "Angular"
+                    "Angular",
+                    "HTML",
+                    "CSS",
+                    "SCSS",
+                    "SASS",
+                    "WordPress"
                 ]
             },
             "backend": {
@@ -47,7 +57,11 @@
                     "PostgreSQL",
                     "Docker",
                     "Google Cloud",
-                    "REST APIs"
+                    "REST APIs",
+                    "AWS",
+                    "MySQL",
+                    "Go",
+                    "Java"
                 ]
             },
             "tools": {
@@ -58,7 +72,13 @@
                     "VS Code",
                     "Figma",
                     "Power BI",
-                    "Slack"
+                    "Slack",
+                    "Excel",
+                    "Metabase",
+                    "Jira",
+                    "Notion",
+                    "GitHub",
+                    "GitLab"
                 ]
             }
         },
@@ -69,7 +89,7 @@
         }
     },
     "contact": {
-        "title": "Lass uns zusammenarbeiten",
+        "title": "Verwandle Dein Projekt In Realität",
         "subtitle": "Bereit, Ihre Ideen in digitale Realität zu verwandeln",
         "getInTouch": "Kontakt aufnehmen",
         "email": "E-Mail",

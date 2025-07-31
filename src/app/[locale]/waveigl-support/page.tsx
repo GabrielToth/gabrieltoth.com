@@ -2,7 +2,6 @@ import WaveIGLSupportLanding from "@/app/[locale]/waveigl-support/waveigl-suppor
 import Footer from "@/components/layout/footer"
 import StructuredData from "@/components/seo/structured-data"
 import Breadcrumbs from "@/components/ui/breadcrumbs"
-import LanguageSelector from "@/components/ui/language-selector"
 import { type Locale } from "@/lib/i18n"
 
 interface PageProps {
@@ -91,12 +90,7 @@ export default async function WaveIGLSupportPage({ params }: PageProps) {
             />
 
             <div className="min-h-screen bg-white dark:bg-gray-900">
-                {/* Language Selector for Landing Page */}
-                <div className="container mx-auto px-4 py-4 flex justify-end">
-                    <LanguageSelector />
-                </div>
-
-                <main className="container mx-auto px-4 pb-8">
+                <main className="container mx-auto px-4 py-8">
                     <Breadcrumbs items={breadcrumbs} className="mb-6" />
                     <WaveIGLSupportLanding locale={locale} />
                 </main>

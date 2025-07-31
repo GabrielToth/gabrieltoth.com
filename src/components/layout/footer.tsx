@@ -105,8 +105,8 @@ export default function Footer({ locale }: FooterProps) {
                             </h3>
                             <p className="text-gray-400 text-sm leading-relaxed">
                                 {isPortuguese
-                                    ? "Desenvolvedor Full Stack especializado em soluções digitais inovadoras e consultoria em canais."
-                                    : "Full Stack Developer specialized in innovative digital solutions and channel consulting."}
+                                    ? "Desenvolvedor Full Stack especializado em Ciência de Dados com serviços de consultoria em canais, soluções digitais para projetos pessoais e empresariais, e serviços de edição de vídeo para canais."
+                                    : "Full Stack Developer specialized in Data Science with channel consulting services, digital solutions for personal and business projects, and video editing services for channels."}
                             </p>
                         </div>
 

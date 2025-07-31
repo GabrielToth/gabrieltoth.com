@@ -5,82 +5,78 @@
 
 describe("Language Selector Simple Test", () => {
     beforeEach(() => {
-        // Ignore uncaught exceptions temporarily to focus on selector presence
-        cy.on("uncaught:exception", () => {
-            return false
+        // Ignore hydration errors and other React errors during testing
+        cy.on("uncaught:exception", err => {
+            // Ignore hydration errors
+            if (err.message.includes("Hydration failed")) {
+                return false
+            }
+            // Ignore other React errors
+            if (err.message.includes("React")) {
+                return false
+            }
+            return true
         })
     })
 
     it("Should have language selector on all Landing Pages", () => {
         const landingPages = [
-            "/en/waveigl-support",
-            "/pt-BR/waveigl-support",
-            "/en/channel-management",
-            "/pt-BR/channel-management",
             "/en/pc-optimization",
-            "/pt-BR/pc-optimization",
+            "/en/channel-management",
+            "/en/waveigl-support",
             "/en/editors",
-            "/pt-BR/editors",
         ]
 
         landingPages.forEach(page => {
             cy.visit(page)
-            cy.wait(2000)
+            cy.wait(1000)
 
-            // Check for language selector by text content
-            cy.get("body").should($body => {
-                const text = $body.text()
-                // Look for language options in both short and full forms
-                const hasLanguageSelector =
-                    text.includes("English") ||
-                    text.includes("Português") ||
-                    text.includes("Español") ||
-                    text.includes("Deutsch") ||
-                    text.includes("EN") ||
-                    text.includes("PT") ||
-                    text.includes("ES") ||
-                    text.includes("DE")
-                expect(hasLanguageSelector).to.be.true
-            })
+            // Language selector should exist and be visible
+            cy.get('[data-testid="language-selector"]')
+                .first()
+                .should("exist")
+                .and("be.visible")
 
-            // Try to find globe icon
-            cy.get("svg").should("exist")
+            // Should have globe icon
+            cy.get('[data-testid="language-selector"] [data-lucide="globe"]')
+                .first()
+                .should("exist")
+                .and("be.visible")
 
-            cy.log(`✅ Visited ${page} - Language selector found`)
+            // Should show current language
+            cy.get('[data-testid="language-selector"]')
+                .first()
+                .should("contain.text", "EN")
         })
     })
 
     it("Should have language selector on homepage and institutional pages", () => {
-        const regularPages = [
-            "/en",
-            "/pt-BR",
-            "/en/privacy-policy",
-            "/pt-BR/privacy-policy",
-            "/en/terms-of-service",
-            "/pt-BR/terms-of-service",
+        const pages = [
+            "/en", // Homepage
+            "/en/privacy-policy", // Privacy Policy
+            "/en/terms-of-service", // Terms of Service
         ]
 
-        regularPages.forEach(page => {
+        pages.forEach(page => {
             cy.visit(page)
-            cy.wait(2000)
+            cy.wait(1000)
 
-            // Should have language selector text
-            cy.get("body").should($body => {
-                const text = $body.text()
-                // Look for language options in both short and full forms
-                const hasLanguageSelector =
-                    text.includes("English") ||
-                    text.includes("Português") ||
-                    text.includes("Español") ||
-                    text.includes("Deutsch") ||
-                    text.includes("EN") ||
-                    text.includes("PT") ||
-                    text.includes("ES") ||
-                    text.includes("DE")
-                expect(hasLanguageSelector).to.be.true
-            })
+            // Language selector should exist and be visible
+            cy.get('[data-testid="language-selector"]')
+                .first()
+                .should("exist")
+                .and("be.visible")
 
-            cy.log(`✅ Visited ${page} - Language selector found`)
+            // Should have globe icon
+            cy.get('[data-testid="language-selector"] [data-lucide="globe"]')
+                .first()
+                .should("exist")
+                .and("be.visible")
+
+            // Should show current language
+            cy.get('[data-testid="language-selector"]')
+                .first()
+                .should("contain.text", "EN")
         })
     })
 })

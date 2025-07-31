@@ -48,7 +48,7 @@ const Breadcrumbs = ({
         )
     ) {
         finalItems.unshift({
-            name: "Início", // Always use "Início" regardless of language
+            name: isPortuguese ? "Início" : "Home",
             href: `/${locale}`,
         })
     }
@@ -61,13 +61,11 @@ const Breadcrumbs = ({
                 "flex items-center space-x-1 text-sm text-gray-500",
                 className
             )}
-            aria-label={
-                isPortuguese ? "Navegação estrutural" : "Breadcrumb navigation"
-            }
+            aria-label="breadcrumb"
         >
             {finalItems.map((item, index) => {
                 const isLast = index === finalItems.length - 1
-                const isHome = item.name === "Início"
+                const isHome = item.name === (isPortuguese ? "Início" : "Home")
 
                 return (
                     <div key={item.href} className="flex items-center">
@@ -182,7 +180,7 @@ export function getBreadcrumbsForStructuredData(
 
     // Add home
     const homeItem = {
-        name: "Início",
+        name: isPortuguese ? "Início" : "Home",
         url: `https://gabrieltoth.com/${locale}`,
     }
 

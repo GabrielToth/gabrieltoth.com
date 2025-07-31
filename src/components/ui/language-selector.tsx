@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button"
 import { useLocale } from "@/hooks/use-locale"
-import { localeNames, localeNamesShort, locales } from "@/lib/i18n"
+import { localeNamesShort, locales } from "@/lib/i18n"
 import { Globe } from "lucide-react"
 import { useEffect, useState } from "react"
 
@@ -27,9 +27,18 @@ export default function LanguageSelector({
     // Don't render until mounted to avoid hydration issues
     if (!isMounted) {
         return (
-            <div className={`flex items-center space-x-2 ${className}`}>
-                <Globe size={16} />
-                <span className="min-w-[20px]">EN</span>
+            <div
+                className={`flex items-center space-x-2 ${className}`}
+                data-testid="language-selector"
+            >
+                <Globe
+                    className="text-gray-700 dark:text-gray-300"
+                    size={16}
+                    data-lucide="globe"
+                />
+                <span className="min-w-[20px] text-gray-700 dark:text-gray-300">
+                    EN
+                </span>
             </div>
         )
     }
@@ -37,40 +46,50 @@ export default function LanguageSelector({
     const variants = {
         default: {
             container: "relative inline-block",
-            button: "flex items-center space-x-2 px-3 py-2 border border-gray-700 rounded-md text-sm font-medium bg-gray-800 text-white hover:bg-gray-700 transition-colors",
+            button: "flex items-center space-x-2 px-3 py-2 border border-gray-200 dark:border-gray-700 rounded-md text-sm font-medium bg-white dark:bg-gray-800 text-gray-700 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors",
             dropdown:
-                "absolute right-0 mt-2 w-32 bg-gray-800 border border-gray-700 rounded-md shadow-lg z-50",
-            option: "block w-full px-4 py-2 text-sm text-left text-gray-200 hover:bg-gray-700 transition-colors",
+                "absolute right-0 mt-2 w-32 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md shadow-lg z-50",
+            option: "block w-full px-4 py-2 text-sm text-left text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors",
         },
         header: {
             container: "relative inline-block",
-            button: "flex items-center space-x-1 text-sm font-medium text-gray-200 hover:text-white transition-colors",
+            button: "flex items-center space-x-1 text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white transition-colors",
             dropdown:
-                "absolute right-0 mt-2 w-32 bg-gray-800 border border-gray-700 rounded-md shadow-lg z-50",
-            option: "block w-full px-4 py-2 text-sm text-left text-gray-200 hover:bg-gray-700 transition-colors",
+                "absolute right-0 mt-2 w-32 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md shadow-lg z-50",
+            option: "block w-full px-4 py-2 text-sm text-left text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors",
         },
         footer: {
             container: "relative inline-block",
-            button: "flex items-center space-x-2 text-sm text-gray-400 hover:text-white transition-colors",
+            button: "flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors",
             dropdown:
-                "absolute bottom-full right-0 mb-2 w-32 bg-gray-800 border border-gray-700 rounded-md shadow-lg z-50",
-            option: "block w-full px-4 py-2 text-sm text-left text-gray-200 hover:bg-gray-700 transition-colors",
+                "absolute bottom-full right-0 mb-2 w-32 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md shadow-lg z-50",
+            option: "block w-full px-4 py-2 text-sm text-left text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors",
         },
     }
 
     const currentVariant = variants[variant]
 
     return (
-        <div className={`${currentVariant.container} ${className}`}>
+        <div
+            className={`${currentVariant.container} ${className}`}
+            data-testid="language-selector"
+        >
             <Button
                 variant="ghost"
                 size="sm"
                 onClick={() => setIsOpen(!isOpen)}
                 className={currentVariant.button}
                 data-cy="language-selector"
-                data-testid="language-selector"
+                data-testid="language-selector-button"
+                aria-haspopup="true"
+                aria-expanded={isOpen}
+                aria-label="Select language"
             >
-                <Globe size={16} />
+                <Globe
+                    className="text-gray-700 dark:text-gray-300"
+                    size={16}
+                    data-lucide="globe"
+                />
                 <span className="min-w-[20px]">{localeNamesShort[locale]}</span>
             </Button>
 
@@ -83,7 +102,13 @@ export default function LanguageSelector({
                     />
 
                     {/* Dropdown */}
-                    <div className={currentVariant.dropdown}>
+                    <div
+                        className={currentVariant.dropdown}
+                        role="menu"
+                        aria-orientation="vertical"
+                        aria-labelledby="language-selector"
+                        data-testid="language-selector-dropdown"
+                    >
                         {locales.map(loc => (
                             <button
                                 key={loc}
@@ -93,12 +118,17 @@ export default function LanguageSelector({
                                 }}
                                 className={`${currentVariant.option} ${
                                     loc === locale
-                                        ? "text-blue-400 font-medium"
+                                        ? "text-blue-600 dark:text-blue-400 font-medium"
                                         : ""
                                 }`}
                                 data-cy={`language-${loc}`}
+                                data-testid={`language-selector-option-${loc}`}
+                                role="menuitem"
+                                aria-current={
+                                    loc === locale ? "true" : undefined
+                                }
                             >
-                                {localeNames[loc]}
+                                {localeNamesShort[loc]}
                             </button>
                         ))}
                     </div>

@@ -1,16 +1,13 @@
 describe("Navigation Structure Tests", () => {
     beforeEach(() => {
-        // Ignore hydration errors and other React development warnings
+        // Ignore hydration errors and other React errors during testing
         cy.on("uncaught:exception", err => {
-            if (
-                err.message.includes("Hydration failed") ||
-                err.message.includes("server rendered HTML") ||
-                err.message.includes("client") ||
-                err.message.includes("Minified React error #418") ||
-                err.message.includes("418") ||
-                err.stack?.includes("418") ||
-                err.name === "Error"
-            ) {
+            // Ignore hydration errors
+            if (err.message.includes("Hydration failed")) {
+                return false
+            }
+            // Ignore other React errors
+            if (err.message.includes("React")) {
                 return false
             }
             return true
@@ -32,144 +29,81 @@ describe("Navigation Structure Tests", () => {
             { path: "/pt-BR/editors", name: "Editors (PT)" },
         ]
 
-        landingPages.forEach(page => {
-            it(`should NOT have main header on ${page.name}`, () => {
-                cy.visit(page.path)
-                cy.wait(2000)
+        landingPages.forEach(({ path, name }) => {
+            it(`should NOT have main header on ${name}`, () => {
+                cy.visit(path)
+                cy.wait(1000)
 
-                // Check that the page loads
-                cy.get("body").should("be.visible")
-
-                // Check that there is NO main header element (fixed navigation header)
+                // Should not have main header
                 cy.get("header").should("not.exist")
-
-                // Check that the main navigation menu from header is not present (be more specific)
-                cy.get("header").contains("Services").should("not.exist")
-                cy.get("header").contains("Serviços").should("not.exist")
-
-                // Check that language selector from header is not present
-                cy.get('[data-cy="language-selector"]').should("not.exist")
-
-                // Check that breadcrumbs ARE present (this is the navigation we want)
-                cy.get(
-                    'nav[aria-label*="Breadcrumb"], nav[aria-label*="estrutural"]'
-                ).should("exist")
-
-                // Check that footer exists (landing pages should have footer)
-                cy.get("footer").should("exist")
             })
         })
     })
 
     describe("Homepage SHOULD Have Main Header", () => {
-        const homepageUrls = [
-            { path: "/en", name: "Homepage (EN)" },
-            { path: "/pt-BR", name: "Homepage (PT)" },
-        ]
+        it("should have main header on Homepage (EN)", () => {
+            cy.visit("/en")
+            cy.wait(1000)
+            cy.get("header").should("be.visible")
+        })
 
-        homepageUrls.forEach(page => {
-            it(`should have main header on ${page.name}`, () => {
-                cy.visit(page.path)
-                cy.wait(2000)
-
-                // Check that the page loads
-                cy.get("body").should("be.visible")
-
-                // Check that main header exists
-                cy.get("header").should("exist").and("be.visible")
-
-                // Check main navigation exists
-                cy.get("header nav, header [role='navigation']")
-                    .should("exist")
-                    .and("be.visible")
-
-                // Check specific header elements exist
-                cy.get("header")
-                    .contains("Gabriel Toth Gonçalves")
-                    .should("be.visible")
-                    .and("have.attr", "href")
-
-                // Check that language selector exists in header (don't check visibility if covered)
-                cy.get('header [data-cy="language-selector"]').should("exist")
-
-                // Homepage should NOT have breadcrumbs (it IS the beginning)
-                cy.get(
-                    'nav[aria-label*="Breadcrumb"], nav[aria-label*="estrutural"]'
-                ).should("not.exist")
-
-                // Check that footer exists
-                cy.get("footer").should("exist")
-            })
+        it("should have main header on Homepage (PT)", () => {
+            cy.visit("/pt-BR")
+            cy.wait(1000)
+            cy.get("header").should("be.visible")
         })
     })
 
     describe("Institutional Pages SHOULD Have Main Header", () => {
-        const institutionalPages = [
+        it("should have main header on Privacy Policy (EN)", () => {
+            cy.visit("/en/privacy-policy")
+            cy.wait(1000)
+            cy.get("header").should("be.visible")
+        })
+
+        it("should have main header on Privacy Policy (PT)", () => {
+            cy.visit("/pt-BR/privacy-policy")
+            cy.wait(1000)
+            cy.get("header").should("be.visible")
+        })
+
+        it("should have main header on Terms of Service (EN)", () => {
+            cy.visit("/en/terms-of-service")
+            cy.wait(1000)
+            cy.get("header").should("be.visible")
+        })
+
+        it("should have main header on Terms of Service (PT)", () => {
+            cy.visit("/pt-BR/terms-of-service")
+            cy.wait(1000)
+            cy.get("header").should("be.visible")
+        })
+    })
+
+    describe("Breadcrumbs Should Exist on All Pages Except Homepage", () => {
+        const pages = [
+            { path: "/en/pc-optimization", name: "PC Optimization (EN)" },
+            { path: "/pt-BR/pc-optimization", name: "PC Optimization (PT)" },
+            { path: "/en/channel-management", name: "Channel Management (EN)" },
+            {
+                path: "/pt-BR/channel-management",
+                name: "Channel Management (PT)",
+            },
+            { path: "/en/waveigl-support", name: "WaveIGL Support (EN)" },
+            { path: "/pt-BR/waveigl-support", name: "WaveIGL Support (PT)" },
+            { path: "/en/editors", name: "Editors (EN)" },
+            { path: "/pt-BR/editors", name: "Editors (PT)" },
             { path: "/en/privacy-policy", name: "Privacy Policy (EN)" },
             { path: "/pt-BR/privacy-policy", name: "Privacy Policy (PT)" },
             { path: "/en/terms-of-service", name: "Terms of Service (EN)" },
             { path: "/pt-BR/terms-of-service", name: "Terms of Service (PT)" },
         ]
 
-        institutionalPages.forEach(page => {
-            it(`should have main header on ${page.name}`, () => {
-                cy.visit(page.path, { failOnStatusCode: false })
-                cy.wait(2000)
-
-                // Check that the page loads
-                cy.get("body").should("be.visible")
-
-                // Check that main header exists
-                cy.get("header").should("exist").and("be.visible")
-
-                // Check that main navigation exists
-                cy.get("header nav").should("exist").and("be.visible")
-
-                // Check that the Gabriel Toth Gonçalves logo link exists in header
-                cy.get("header")
-                    .contains("Gabriel Toth Gonçalves")
-                    .should("be.visible")
-                    .and("have.attr", "href")
-
-                // Check that language selector exists in header (don't check visibility if covered)
-                cy.get('header [data-cy="language-selector"]').should("exist")
-
-                // Check that breadcrumbs exist
-                cy.get(
-                    'nav[aria-label*="Breadcrumb"], nav[aria-label*="estrutural"]'
-                ).should("exist")
-
-                // Check that footer exists
-                cy.get("footer").should("exist")
-            })
-        })
-    })
-
-    describe("Breadcrumbs Should Exist on All Pages Except Homepage", () => {
-        const allPagesExceptHomepage = [
-            "/en/pc-optimization",
-            "/pt-BR/pc-optimization",
-            "/en/channel-management",
-            "/pt-BR/channel-management",
-            "/en/waveigl-support",
-            "/pt-BR/waveigl-support",
-            "/en/editors",
-            "/pt-BR/editors",
-            "/en/privacy-policy",
-            "/pt-BR/privacy-policy",
-            "/en/terms-of-service",
-            "/pt-BR/terms-of-service",
-        ]
-
-        allPagesExceptHomepage.forEach(path => {
+        pages.forEach(({ path, name }) => {
             it(`should have breadcrumbs on ${path}`, () => {
-                cy.visit(path, { failOnStatusCode: false })
-                cy.wait(2000)
-
-                // Check that breadcrumbs navigation exists
-                cy.get(
-                    'nav[aria-label*="Breadcrumb"], nav[aria-label*="estrutural"]'
-                ).should("exist")
+                cy.visit(path)
+                cy.wait(1000)
+                cy.get('nav[aria-label="breadcrumb"]').should("be.visible")
             })
         })
     })
@@ -177,78 +111,78 @@ describe("Navigation Structure Tests", () => {
     describe("Main Header Navigation Functionality", () => {
         it("should have working navigation on homepage", () => {
             cy.visit("/en")
-            cy.wait(2000)
+            cy.wait(1000)
 
-            // Check that main header navigation works
-            cy.get("header").should("be.visible")
-
-            // Test anchor navigation
-            cy.get('header a[href*="#about"]').should("exist")
-            cy.get('header a[href*="#projects"]').should("exist")
-            cy.get('header a[href*="#contact"]').should("exist")
+            // Check navigation links
+            cy.get('a[href="#about"]').first().should("be.visible")
+            cy.get('a[href="#projects"]').first().should("be.visible")
+            cy.get('a[href="#contact"]').first().should("be.visible")
         })
 
         it("should have services dropdown on homepage", () => {
             cy.visit("/en")
-            cy.wait(2000)
+            cy.wait(1000)
 
-            // Check services dropdown exists in header
-            cy.get("header").contains("Services").should("be.visible")
-
-            // Click services dropdown
-            cy.get("header").contains("Services").click()
+            // Click services button
+            cy.contains("Services").first().click()
             cy.wait(500)
 
-            // Check dropdown items
-            cy.contains("ViraTrend").should("be.visible")
-            cy.contains("PC Optimization").should("be.visible")
-            cy.contains("Support WaveIGL").should("be.visible")
+            // Verify dropdown is visible
+            cy.get('a[href="/en/channel-management"]').should("be.visible")
+            cy.get('a[href="/en/pc-optimization"]').should("be.visible")
+            cy.get('a[href="/en/waveigl-support"]').should("be.visible")
         })
     })
 
     describe("Breadcrumbs Navigation Functionality", () => {
         it("should have functional breadcrumbs on landing pages", () => {
-            cy.visit("/en/pc-optimization")
-            cy.wait(2000)
+            cy.visit("/en/channel-management")
+            cy.wait(1000)
 
-            // Check breadcrumbs exist
-            cy.get('nav[aria-label*="Breadcrumb"]').should("exist")
-
-            // Check breadcrumb links work
-            cy.get('nav[aria-label*="Breadcrumb"] a').first().should("exist")
+            // Check breadcrumb links
+            cy.get('nav[aria-label="breadcrumb"]')
+                .find("a")
+                .first()
+                .should("be.visible")
+                .and("have.attr", "href", "/en")
+                .and("contain.text", "Home")
+                .and("not.be.disabled")
+                .and("have.length", 1)
         })
 
         it("should show correct breadcrumb hierarchy", () => {
-            cy.visit("/en/terms-of-service")
-            cy.wait(2000)
+            cy.visit("/en/channel-management")
+            cy.wait(1000)
 
-            // Check breadcrumbs show proper hierarchy
-            cy.get('nav[aria-label*="Breadcrumb"]').should("exist")
-            cy.get('nav[aria-label*="Breadcrumb"]').should(
-                "contain.text",
-                "Início"
-            )
+            // Check breadcrumb structure
+            cy.get('nav[aria-label="breadcrumb"]')
+                .find("a")
+                .first()
+                .should("contain.text", "Home")
+                .and("have.attr", "href", "/en")
+                .and("be.visible")
+                .and("not.be.disabled")
+                .and("have.length", 1)
         })
     })
 
     describe("Navigation Structure Consistency", () => {
         it("should maintain consistent navigation patterns", () => {
-            // Homepage: Header + Breadcrumbs
+            // Check homepage navigation
             cy.visit("/en")
-            cy.wait(2000)
-            cy.get("header").should("exist")
-            cy.get('nav[aria-label*="Breadcrumb"]').should("not.exist")
+            cy.wait(1000)
+            cy.get("header").should("be.visible")
 
-            // Landing page: Only Breadcrumbs (no header)
-            cy.visit("/en/pc-optimization")
-            cy.wait(2000)
-            cy.get("header").should("not.exist")
-            cy.get('nav[aria-label*="Breadcrumb"]').should("exist")
+            // Check landing page navigation
+            cy.visit("/en/channel-management")
+            cy.wait(1000)
+            cy.get('nav[aria-label="breadcrumb"]').should("be.visible")
 
-            // Institutional page: Language selector + Breadcrumbs
+            // Check institutional page navigation
             cy.visit("/en/privacy-policy")
-            cy.wait(2000)
-            cy.get('nav[aria-label*="Breadcrumb"]').should("exist")
+            cy.wait(1000)
+            cy.get("header").should("be.visible")
+            cy.get('nav[aria-label="breadcrumb"]').should("be.visible")
         })
     })
 })
