@@ -1,27 +1,18 @@
-import { type Locale } from "@/lib/i18n"
+import { Locale } from "@/lib/i18n"
+import deTranslations from "./de.json"
+import enTranslations from "./en.json"
+import esTranslations from "./es.json"
+import ptBRTranslations from "./pt-BR.json"
 
-// Import all translation files
-import de from "./de.json"
-import en from "./en.json"
-import es from "./es.json"
-import ptBR from "./pt-BR.json"
-
-// Translation type based on the structure
-export type PCOptimizationTranslations = typeof en
-
-// Translation map
-const translations: Record<Locale, PCOptimizationTranslations> = {
-    en,
-    "pt-BR": ptBR,
-    es,
-    de,
+export const pcOptimizationTranslations = {
+    de: deTranslations,
+    en: enTranslations,
+    es: esTranslations,
+    "pt-BR": ptBRTranslations,
 }
 
-/**
- * Get translations for PC optimization page based on locale
- */
-export function getPCOptimizationTranslations(
-    locale: Locale
-): PCOptimizationTranslations {
-    return translations[locale] || translations.en
+export const getPCOptimizationTranslations = (locale: Locale) => {
+    return pcOptimizationTranslations[locale] || pcOptimizationTranslations.en
 }
+
+export type PCOptimizationTranslations = typeof enTranslations

@@ -1,187 +1,158 @@
 {
     "moneroToggle": {
         "title": "Monero (XMR) Preise",
-        "description": "Aktivieren, um 50% Rabattpreise mit Monero zu sehen",
+        "description": "Aktivieren Sie, um Preise mit 50% Rabatt mit Monero zu sehen",
         "enabled": "💰 Monero Preise (50% OFF)",
         "disabled": "💴 Reguläre Preise (PIX/Karte)"
     },
     "hero": {
         "badge": "⚡ LANGSAMER PC?",
-        "problems": ["INPUT LAG?", "SCHLECHTE HIT REG?"],
-        "title": "NICHT IN UNSERER WACHE!",
-        "subtitle": "Komplette Performance-Optimierung, damit Sie sich nie wieder über Lag Sorgen machen müssen.",
+        "title": "NICHT IN UNSERER SCHICHT!",
+        "subtitle": "Komplette Leistungsoptimierung, damit Sie sich nie wieder Sorgen über Lag machen müssen.",
         "cta": "Pläne Ansehen",
-        "videoText": "SO FÜHLT SICH EIN OPTIMIERTER PC AN"
+        "videoText": "SO FÜHLT SICH EIN OPTIMIERTER PC AN",
+        "stats": [
+            {
+                "value": "99.9%",
+                "label": "Betriebszeit"
+            },
+            {
+                "value": "niedrig",
+                "label": "Latenz"
+            },
+            {
+                "value": "20+",
+                "label": "Optimierte Spiele"
+            },
+            {
+                "value": "5+",
+                "label": "Zufriedene Kunden"
+            }
+        ],
+        "learnMore": "Mehr Erfahren"
     },
-    "problems": {
-        "title": "Häufige Probleme, die wir lösen",
-        "items": [
+    "features": {
+        "title": "Warum Unsere Optimierung Wählen",
+        "subtitle": "Bewährte Techniken, die echte Ergebnisse für ernsthafte Gamer liefern",
+        "list": [
             {
-                "title": "Inkonsistente FPS",
-                "description": "Plötzliche FPS-Einbrüche während des Gameplays",
-                "solution": "Treiber-Optimierung und Systemeinstellungen"
+                "title": "CPU-Optimierung",
+                "description": "Wir optimieren Ihre Prozessoreinstellungen für maximale Gaming-Leistung, einschließlich Prozessprioritäten und Energiekonfigurationen."
             },
             {
-                "title": "Hoher Input Lag",
-                "description": "Verzögerung zwischen Befehl und Aktion im Spiel",
-                "solution": "Polling-Raten und System-Latenz-Konfiguration"
+                "title": "Spiel-Konfiguration",
+                "description": "Wir konfigurieren jedes Spiel individuell, um sicherzustellen, dass Sie die bestmögliche FPS erhalten, ohne die visuelle Qualität zu opfern."
             },
             {
-                "title": "Stuttering und Freezes",
-                "description": "Momentane Einfrierungen während des Spielens",
-                "solution": "Cache-, RAM- und CPU-Einstellungen Anpassung"
+                "title": "Display-Optimierung",
+                "description": "Wir optimieren Ihren Monitor, um sicherzustellen, dass Sie die beste Gaming-Erfahrung erhalten, einschließlich Auflösungs- und Bildrate-Anpassungen."
             },
             {
-                "title": "Hohe Temperaturen",
-                "description": "PC überhitzt bei intensiver Nutzung",
-                "solution": "Kühlungsoptimierung und Performance-Profile"
+                "title": "Sicherheit",
+                "description": "Wir garantieren, dass Ihr PC vor Malware und anderen Risiken geschützt ist, einschließlich Firewall-Optimierung und Software-Updates."
             }
         ]
     },
-    "benefits": {
-        "title": "Was Sie Bekommen",
-        "subtitle": "Komplette Transformation in der Gaming-Erfahrung",
-        "items": [
+    "pricing": {
+        "title": "Wählen Sie Ihre Optimierungsstufe",
+        "subtitle": "Wir kümmern uns um die Optimierung, Sie genießen die Leistung",
+        "plans": [
             {
-                "title": "Höhere und Stabile FPS",
-                "description": "Bis zu 30% mehr FPS mit totaler Stabilität"
-            },
-            {
-                "title": "Null Input Lag",
-                "description": "Sofortige Antwort bei allen Befehlen"
-            },
-            {
-                "title": "Kontrollierte Temperatur",
-                "description": "PC läuft immer bei idealer Temperatur"
-            },
-            {
-                "title": "Optimiertes System",
-                "description": "Maximale Leistung in allen Anwendungen"
-            }
-        ]
-    },
-    "process": {
-        "title": "Unser Prozess",
-        "subtitle": "Wie wir Ihren PC in eine Gaming-Maschine verwandeln",
-        "steps": [
-            {
-                "title": "Vollständige Diagnose",
-                "description": "Detaillierte Hardware- und Software-Analyse"
-            },
-            {
-                "title": "Personalisierter Plan",
-                "description": "Spezifische Strategie für Ihr Setup"
-            },
-            {
-                "title": "Erweiterte Optimierung",
-                "description": "Implementierung aller Verbesserungen"
-            },
-            {
-                "title": "Tests und Validierung",
-                "description": "Überprüfung aller Performance-Gewinne"
-            }
-        ]
-    },
-    "plans": {
-        "title": "Optimierungspläne",
-        "subtitle": "Wählen Sie, was am besten zu Ihren Bedürfnissen passt",
-        "items": [
-            {
-                "name": "Essential",
-                "price": 150,
-                "description": "Grundlegende Optimierung für sofortige Verbesserung",
+                "name": "Windows Leistungsschub",
+                "basePrice": 149,
+                "description": "Spielbereites Windows & Netzwerk. Sauber, schnell und vollständig optimiert.",
                 "features": [
-                    "Vollständige Diagnose",
-                    "System-Bereinigung",
-                    "Grundlegende Treiber-Optimierung",
-                    "Energieeinstellungen"
+                    "Manuelle Windows-Optimierung",
+                    "Gaming-Netzwerkkonfiguration",
+                    "Bloatware-Entfernung",
+                    "Energieoptimierung",
+                    "7-Tage-Support"
                 ],
-                "cta": "Essential Beauftragen"
+                "popular": false
             },
             {
-                "name": "Pro Gaming",
-                "price": 250,
-                "description": "Erweiterte Optimierung für ernsthafte Gamer",
+                "name": "Pro-Level System-Optimierung",
+                "basePrice": 249,
+                "description": "Entfesseln Sie das wahre Potenzial Ihrer Hardware mit OS- und BIOS-Feinabstimmung.",
                 "features": [
-                    "Alles von Essential",
-                    "Sicheres Overclocking",
-                    "Latenz-Optimierung",
-                    "Benutzerdefinierte Profile",
-                    "30-Tage Support"
+                    "Alles vom vorherigen Plan",
+                    "Erweiterte BIOS-Optimierung",
+                    "Versteckte System-Tweaks",
+                    "Peripherie-Konfiguration",
+                    "Stabilitätstests"
                 ],
-                "cta": "Pro Gaming Beauftragen",
                 "popular": true
             },
             {
-                "name": "Elite Performance",
-                "price": 400,
-                "description": "Maximale Leistung für kompetitives Gaming",
+                "name": "Ultimative Leistungsüberholung",
+                "basePrice": 449,
+                "description": "Komplette Optimierung mit CPU-, GPU- und RAM-Overclocking für maximale Leistung.",
                 "features": [
-                    "Alles von Pro Gaming",
-                    "Extreme Optimierung",
-                    "Hardware-Analyse",
-                    "Upgrade-Empfehlungen",
-                    "Prioritärer Support 60 Tage"
+                    "Alles von den vorherigen Plänen",
+                    "Sicheres CPU-Overclocking",
+                    "Optimiertes GPU-Overclocking",
+                    "RAM-Overclocking (XMP+)",
+                    "Temperaturüberwachung",
+                    "Stabilitätsgarantie"
                 ],
-                "cta": "Elite Beauftragen"
+                "popular": false
             }
-        ]
+        ],
+        "popular": "AM BELIEBTESTEN",
+        "cta": "BEDINGUNGEN LESEN & BEAUFTRAGEN"
     },
     "testimonials": {
-        "title": "Echte Ergebnisse",
-        "subtitle": "Sehen Sie, was unsere Kunden erreicht haben",
+        "title": "Vertraut von Pros, Geliebt von Gamern",
+        "subtitle": "Sie sind nicht der Erste. Schließen Sie sich Hunderten von Spielern an, die Elite-Leistung freigeschaltet haben.",
         "items": [
             {
-                "name": "Lucas M.",
-                "game": "Valorant",
-                "before": "180 FPS mit Einbrüchen",
-                "after": "240 FPS stabil",
-                "improvement": "+33% FPS",
-                "quote": "Nie wieder Lag-Probleme gehabt. Das Spiel läuft perfekt!"
+                "name": "ProGamer",
+                "role": "Wettkampfspieler",
+                "content": "Mein Spiel hat sich nie besser angefühlt! Ich bekomme jetzt fast doppelt so viele FPS - das ist absolut unglaublich.",
+                "rating": 5
             },
             {
-                "name": "Ana S.",
-                "game": "CS2",
-                "before": "Spürbare Input-Lag",
-                "after": "Sofortige Antwort",
-                "improvement": "Null Input Lag",
-                "quote": "Der Unterschied ist absurd. Ich fühle, dass ich viel besser spiele jetzt."
-            },
-            {
-                "name": "Pedro R.",
-                "game": "Fortnite",
-                "before": "Konstantes Stuttering",
-                "after": "Flüssiges Gameplay",
-                "improvement": "100% stabil",
-                "quote": "Es war unerträglich vorher. Jetzt ist es ein komplett neuer PC."
+                "name": "StreamerPro",
+                "role": "Content Creator",
+                "content": "Endlich kann ich spielen und streamen ohne FPS-Drops. Die Optimierung war perfekt!",
+                "rating": 5
             }
         ]
     },
-    "faq": {
-        "title": "Häufig Gestellte Fragen",
+    "games": {
+        "title": "Jedes Spiel, Jedes Mal",
+        "subtitle": "Von schnellen Shootern bis hin zu Open-World-Spielen - wir wissen, wie wir Ihr Spiel genau so laufen lassen, wie Sie es möchten.",
+        "list": [
+            "Call of Duty",
+            "PUBG",
+            "Marvel Rivals",
+            "Rainbow Six Siege",
+            "Valorant",
+            "Fortnite",
+            "CS2",
+            "Apex Legends"
+        ]
+    },
+    "guarantee": {
+        "title": "Ergebnisgarantie",
         "items": [
             {
-                "question": "Funktioniert es bei jedem PC?",
-                "answer": "Ja! Unser Prozess ist für jede spezifische Konfiguration angepasst, von grundlegenden PCs bis zu High-End-Setups."
+                "title": "Bewährte Methoden",
+                "description": "Unsere Spezialisten optimieren CPU, GPU, RAM und Netzwerkkarte und führen dann verschiedene Stresstests durch."
             },
             {
-                "question": "Verliere ich meine Dateien?",
-                "answer": "Nein. Der gesamte Prozess ist sicher und beeinflusst nicht Ihre persönlichen Dateien oder installierten Programme."
+                "title": "Kostenloser Support",
+                "description": "Wir stehen zur Verfügung, um Probleme bis zu 7 Tage nach der Optimierung zu lösen."
             },
             {
-                "question": "Wie lange dauert es?",
-                "answer": "Der komplette Prozess dauert zwischen 2-4 Stunden, abhängig vom gewählten Plan und PC-Spezifikationen."
-            },
-            {
-                "question": "Was ist, wenn ich nicht zufrieden bin?",
-                "answer": "Wir bieten Zufriedenheitsgarantie. Wenn Sie keine signifikanten Verbesserungen sehen, erstatten wir 100% des Werts zurück."
+                "title": "Jahre der Erfahrung",
+                "description": "Wir haben Jahre damit verbracht, Systeme zu testen und für maximale Leistung zu optimieren."
             }
         ]
     },
     "cta": {
-        "title": "Bereit zu Dominieren?",
-        "subtitle": "Verwandeln Sie Ihren PC in die Gaming-Maschine Ihrer Träume",
-        "button": "Optimierung Starten",
-        "guarantee": "30-Tage Zufriedenheitsgarantie"
+        "title": "HÖREN SIE AUF, IHRE ZEIT ZU VERSCHWENDEN",
+        "subtitle": "Jede Sekunde, die Sie durch Lag verlieren, dominiert jemand anderes das Match.",
+        "button": "VOLLE KRAFT FREISCHALTEN"
     }
 }

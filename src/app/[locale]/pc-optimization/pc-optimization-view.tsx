@@ -6,10 +6,14 @@ import { useMoneroPricing } from "@/hooks/use-monero-pricing"
 import { type Locale } from "@/lib/i18n"
 import {
     CheckCircle,
+    Cpu,
+    Gamepad2,
+    Monitor,
+    Shield,
     Star,
     Zap,
 } from "lucide-react"
-import { getPCOptimizationTranslations } from "./pc-optimization-translations"
+import { getPCOptimizationTranslations } from "./translations"
 
 interface PCOptimizationViewProps {
     locale: Locale
@@ -100,22 +104,26 @@ export default function PCOptimizationView({
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {t.features.list.map((feature, index) => (
-                            <div
-                                key={index}
-                                className="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-xl p-6 hover:border-blue-500/50 transition-all duration-300 hover:transform hover:scale-105"
-                            >
-                                <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-500 rounded-lg flex items-center justify-center mb-4">
-                                    <feature.icon className="w-6 h-6 text-white" />
+                        {t.features.list.map((feature, index) => {
+                            const iconMap = [Cpu, Gamepad2, Monitor, Shield]
+                            const IconComponent = iconMap[index] || Cpu
+                            return (
+                                <div
+                                    key={index}
+                                    className="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-xl p-6 hover:border-blue-500/50 transition-all duration-300 hover:transform hover:scale-105"
+                                >
+                                    <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-500 rounded-lg flex items-center justify-center mb-4">
+                                        <IconComponent className="w-6 h-6 text-white" />
+                                    </div>
+                                    <h3 className="text-xl font-bold mb-3 text-white">
+                                        {feature.title}
+                                    </h3>
+                                    <p className="text-gray-300 leading-relaxed">
+                                        {feature.description}
+                                    </p>
                                 </div>
-                                <h3 className="text-xl font-bold mb-3 text-white">
-                                    {feature.title}
-                                </h3>
-                                <p className="text-gray-300 leading-relaxed">
-                                    {feature.description}
-                                </p>
-                            </div>
-                        ))}
+                            )
+                        })}
                     </div>
                 </div>
             </section>
@@ -238,12 +246,14 @@ export default function PCOptimizationView({
                                 className="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-xl p-6"
                             >
                                 <div className="flex items-center mb-4">
-                                    {[...Array(testimonial.rating)].map((_, i) => (
-                                        <Star
-                                            key={i}
-                                            className="w-5 h-5 text-yellow-400 fill-current"
-                                        />
-                                    ))}
+                                    {[...Array(testimonial.rating)].map(
+                                        (_, i) => (
+                                            <Star
+                                                key={i}
+                                                className="w-5 h-5 text-yellow-400 fill-current"
+                                            />
+                                        )
+                                    )}
                                 </div>
                                 <p className="text-gray-300 mb-4 leading-relaxed">
                                     "{testimonial.content}"

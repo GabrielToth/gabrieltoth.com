@@ -7,181 +7,152 @@
     },
     "hero": {
         "badge": "⚡ PC LENTO?",
-        "problems": ["INPUT LAG?", "HIT REG RUIM?"],
         "title": "NÃO NO NOSSO PLANTÃO!",
         "subtitle": "Otimização completa de performance para que você nunca mais se preocupe com lag novamente.",
         "cta": "Ver Planos",
-        "videoText": "É ASSIM QUE UM PC OTIMIZADO SE SENTE"
+        "videoText": "É ASSIM QUE UM PC OTIMIZADO SE SENTE",
+        "stats": [
+            {
+                "value": "99.9%",
+                "label": "Uptime"
+            },
+            {
+                "value": "baixo",
+                "label": "Latência"
+            },
+            {
+                "value": "20+",
+                "label": "Jogos Otimizados"
+            },
+            {
+                "value": "5+",
+                "label": "Clientes Felizes"
+            }
+        ],
+        "learnMore": "Saiba Mais"
     },
-    "problems": {
-        "title": "Problemas Comuns que Resolvemos",
-        "items": [
+    "features": {
+        "title": "Por Que Escolher Nossa Otimização",
+        "subtitle": "Técnicas comprovadas que entregam resultados reais para gamers sérios",
+        "list": [
             {
-                "title": "FPS Inconsistente",
-                "description": "Quedas abruptas de FPS durante gameplay",
-                "solution": "Otimização de drivers e configurações de sistema"
+                "title": "Otimização de CPU",
+                "description": "Ajustamos configurações do processador para máxima performance em jogos, incluindo prioridades de processos e configurações de energia."
             },
             {
-                "title": "Input Lag Alto",
-                "description": "Delay entre comando e ação no jogo",
-                "solution": "Configuração de polling rates e latência de sistema"
+                "title": "Configuração de Jogos",
+                "description": "Configuramos cada jogo individualmente para garantir que você obtenha o melhor FPS possível sem sacrificar a qualidade visual."
             },
             {
-                "title": "Stuttering e Freezes",
-                "description": "Travamentos momentâneos durante o jogo",
-                "solution": "Ajuste de cache, RAM e configurações de CPU"
+                "title": "Otimização de Display",
+                "description": "Otimizamos seu monitor para garantir que você obtenha a melhor experiência de jogo, incluindo ajustes de resolução e taxa de quadros."
             },
             {
-                "title": "Temperatures Altas",
-                "description": "PC superaquecendo durante uso intenso",
-                "solution": "Otimização de cooling e profiles de performance"
+                "title": "Segurança",
+                "description": "Garantimos que seu PC esteja protegido contra malware e outros riscos, incluindo otimização de firewall e atualização de software."
             }
         ]
     },
-    "benefits": {
-        "title": "O Que Você Ganha",
-        "subtitle": "Transformação completa na experiência gaming",
-        "items": [
+    "pricing": {
+        "title": "Escolha Seu Nível de Otimização",
+        "subtitle": "Cuidamos da otimização, você aproveita a performance",
+        "plans": [
             {
-                "title": "FPS Mais Alto e Estável",
-                "description": "Até 30% mais FPS com estabilidade total"
-            },
-            {
-                "title": "Zero Input Lag",
-                "description": "Resposta instantânea em todos os comandos"
-            },
-            {
-                "title": "Temperatura Controlada",
-                "description": "PC rodando sempre na temperatura ideal"
-            },
-            {
-                "title": "Sistema Otimizado",
-                "description": "Performance máxima em todos os aplicativos"
-            }
-        ]
-    },
-    "process": {
-        "title": "Nosso Processo",
-        "subtitle": "Como transformamos seu PC em uma máquina gaming",
-        "steps": [
-            {
-                "title": "Diagnóstico Completo",
-                "description": "Análise detalhada de hardware e software"
-            },
-            {
-                "title": "Plano Personalizado",
-                "description": "Estratégia específica para seu setup"
-            },
-            {
-                "title": "Otimização Avançada",
-                "description": "Implementação de todas as melhorias"
-            },
-            {
-                "title": "Testes e Validação",
-                "description": "Verificação de todos os ganhos de performance"
-            }
-        ]
-    },
-    "plans": {
-        "title": "Planos de Otimização",
-        "subtitle": "Escolha o que melhor se adapta às suas necessidades",
-        "items": [
-            {
-                "name": "Essential",
-                "price": 150,
-                "description": "Otimização básica para melhoria imediata",
+                "name": "Boost de Performance Windows",
+                "basePrice": 149,
+                "description": "Windows e Rede otimizados para jogos. Limpo, rápido e totalmente otimizado.",
                 "features": [
-                    "Diagnóstico completo",
-                    "Limpeza do sistema",
-                    "Otimização básica de drivers",
-                    "Configurações de energia"
+                    "Otimização manual do Windows",
+                    "Configuração de rede para jogos",
+                    "Remoção de bloatware",
+                    "Otimização de energia",
+                    "Suporte 7 dias"
                 ],
-                "cta": "Contratar Essential"
+                "popular": false
             },
             {
-                "name": "Pro Gaming",
-                "price": 250,
-                "description": "Otimização avançada para gamers sérios",
+                "name": "Otimização Nível Pro",
+                "basePrice": 249,
+                "description": "Desbloqueie o verdadeiro potencial do hardware com ajustes de OS e BIOS.",
                 "features": [
-                    "Tudo do Essential",
-                    "Overclock seguro",
-                    "Otimização de latência",
-                    "Profiles personalizados",
-                    "Suporte por 30 dias"
+                    "Tudo do plano anterior",
+                    "Otimização avançada de BIOS",
+                    "Tweaks ocultos do sistema",
+                    "Configuração de periféricos",
+                    "Testes de estabilidade"
                 ],
-                "cta": "Contratar Pro Gaming",
                 "popular": true
             },
             {
-                "name": "Elite Performance",
-                "price": 400,
-                "description": "Máxima performance para competitivo",
+                "name": "Overhaul de Performance Suprema",
+                "basePrice": 449,
+                "description": "Otimização completa com overclock de CPU, GPU e RAM para performance máxima.",
                 "features": [
-                    "Tudo do Pro Gaming",
-                    "Otimização extrema",
-                    "Análise de hardware",
-                    "Recommendations de upgrade",
-                    "Suporte prioritário 60 dias"
+                    "Tudo dos planos anteriores",
+                    "Overclock seguro de CPU",
+                    "Overclock de GPU otimizado",
+                    "Overclock de RAM (XMP+)",
+                    "Monitoramento de temperatura",
+                    "Garantia de estabilidade"
                 ],
-                "cta": "Contratar Elite"
+                "popular": false
             }
-        ]
+        ],
+        "popular": "MAIS POPULAR",
+        "cta": "LER TERMOS E CONTRATAR"
     },
     "testimonials": {
-        "title": "Resultados Reais",
-        "subtitle": "Veja o que nossos clientes alcançaram",
+        "title": "Confiado por Pros, Amado por Gamers",
+        "subtitle": "Você não é o primeiro. Junte-se às centenas de jogadores que desbloquearam performance elite.",
         "items": [
             {
-                "name": "Lucas M.",
-                "game": "Valorant",
-                "before": "180 FPS com drops",
-                "after": "240 FPS estável",
-                "improvement": "+33% FPS",
-                "quote": "Nunca mais tive problema de lag. O jogo roda perfeito!"
+                "name": "ProGamer",
+                "role": "Jogador Competitivo",
+                "content": "Meu jogo nunca se sentiu melhor! Ganhando quase o dobro de FPS agora - isso é absolutamente incrível.",
+                "rating": 5
             },
             {
-                "name": "Ana S.",
-                "game": "CS2",
-                "before": "Input lag perceptível",
-                "after": "Resposta instantânea",
-                "improvement": "Zero input lag",
-                "quote": "A diferença é absurda. Sinto que jogo muito melhor agora."
-            },
-            {
-                "name": "Pedro R.",
-                "game": "Fortnite",
-                "before": "Stuttering constante",
-                "after": "Gameplay fluido",
-                "improvement": "100% estável",
-                "quote": "Era insuportável antes. Agora é um PC completamente novo."
+                "name": "StreamerPro",
+                "role": "Streamer",
+                "content": "Finalmente posso jogar e fazer stream sem drops de FPS. A otimização foi perfeita!",
+                "rating": 5
             }
         ]
     },
-    "faq": {
-        "title": "Perguntas Frequentes",
+    "games": {
+        "title": "Qualquer Jogo, Toda Vez",
+        "subtitle": "De shooters rápidos a mundo aberto, sabemos como fazer seu jogo rodar exatamente como você quer.",
+        "list": [
+            "Call of Duty",
+            "PUBG",
+            "Marvel Rivals",
+            "Rainbow Six Siege",
+            "Valorant",
+            "Fortnite",
+            "CS2",
+            "Apex Legends"
+        ]
+    },
+    "guarantee": {
+        "title": "Garantia de Resultados",
         "items": [
             {
-                "question": "Funciona em qualquer PC?",
-                "answer": "Sim! Nosso processo é adaptado para cada configuração específica, desde PCs básicos até setups high-end."
+                "title": "Métodos Comprovados",
+                "description": "Nossos especialistas otimizam CPU, GPU, RAM e placa de rede, passando por vários testes de stress."
             },
             {
-                "question": "Vou perder meus arquivos?",
-                "answer": "Não. Todo o processo é seguro e não afeta seus arquivos pessoais ou programas instalados."
+                "title": "Suporte Gratuito",
+                "description": "Disponíveis para resolver qualquer problema por até 7 dias após a otimização."
             },
             {
-                "question": "Quanto tempo demora?",
-                "answer": "O processo completo leva entre 2-4 horas, dependendo do plano escolhido e especificações do PC."
-            },
-            {
-                "question": "E se não ficar satisfeito?",
-                "answer": "Oferecemos garantia de satisfação. Se não ver melhorias significativas, devolvemos 100% do valor."
+                "title": "Anos de Experiência",
+                "description": "Passamos anos testando e ajustando sistemas para performance máxima."
             }
         ]
     },
     "cta": {
-        "title": "Pronto para Dominar?",
-        "subtitle": "Transforme seu PC na máquina gaming dos seus sonhos",
-        "button": "Começar Otimização",
-        "guarantee": "Garantia de satisfação de 30 dias"
+        "title": "PARE DE DESPERDIÇAR SEU TEMPO",
+        "subtitle": "A cada segundo que você perde com lag, alguém está dominando a partida.",
+        "button": "DESBLOQUEAR POTÊNCIA MÁXIMA"
     }
 }
