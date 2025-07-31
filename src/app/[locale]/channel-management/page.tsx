@@ -97,12 +97,12 @@ export default async function ChannelManagementPage({ params }: PageProps) {
         {
             name:
                 locale === "pt-BR"
-                    ? "Início"
+                    ? "Serviços"
                     : locale === "es"
-                      ? "Inicio"
+                      ? "Servicios"
                       : locale === "de"
-                        ? "Startseite"
-                        : "Home",
+                        ? "Dienstleistungen"
+                        : "Services",
             url: `https://gabrieltoth.com${locale === "en" ? "" : `/${locale}`}`,
         },
         {
@@ -132,19 +132,21 @@ export default async function ChannelManagementPage({ params }: PageProps) {
                 <ChannelManagementView locale={locale} />
 
                 {/* Breadcrumbs overlay */}
-                <div className="absolute top-0 left-0 right-0 z-50">
+                <div className="absolute top-0 left-0 z-40 pointer-events-none">
                     <div className="container mx-auto px-4 py-8">
-                        <Breadcrumbs
-                            items={breadcrumbs.map((item, index) => ({
-                                name: item.name,
-                                href: item.url.replace(
-                                    "https://gabrieltoth.com",
-                                    ""
-                                ),
-                                current: index === breadcrumbs.length - 1,
-                            }))}
-                            className="mb-6"
-                        />
+                        <div className="pointer-events-auto">
+                            <Breadcrumbs
+                                items={breadcrumbs.map((item, index) => ({
+                                    name: item.name,
+                                    href: item.url.replace(
+                                        "https://gabrieltoth.com",
+                                        ""
+                                    ),
+                                    current: index === breadcrumbs.length - 1,
+                                }))}
+                                className="mb-6"
+                            />
+                        </div>
                     </div>
                 </div>
 

@@ -106,12 +106,8 @@ export default async function EditorsPage({ params }: PageProps) {
     // Breadcrumbs
     const breadcrumbs = [
         {
-            name: isPortuguese ? "Início" : "Home",
+            name: isPortuguese ? "Serviços" : "Services",
             url: `https://gabrieltoth.com${locale === "en" ? "" : `/${locale}`}`,
-        },
-        {
-            name: isPortuguese ? "Oportunidades" : "Opportunities",
-            url: `https://gabrieltoth.com${locale === "en" ? "" : `/${locale}`}/#opportunities`,
         },
         {
             name: isPortuguese ? "Trabalhe Como Editor" : "Work as Editor",
