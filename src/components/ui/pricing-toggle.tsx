@@ -16,7 +16,7 @@ function PricingToggleClient({ locale }: PricingToggleProps) {
     const isPortuguese = locale === "pt-BR"
 
     return (
-        <div className="flex items-center justify-center mb-8">
+        <div className="flex items-center justify-center mb-12">
             <div className="bg-gray-100 dark:bg-gray-800 p-1 rounded-lg flex">
                 <button
                     onClick={toggleMoneroPrice}
@@ -55,7 +55,7 @@ function PricingToggleFallback({ locale }: PricingToggleProps) {
     const isPortuguese = locale === "pt-BR"
 
     return (
-        <div className="flex items-center justify-center mb-8">
+        <div className="flex items-center justify-center mb-12">
             <div className="bg-gray-100 dark:bg-gray-800 p-1 rounded-lg flex">
                 <div className="px-4 py-2 rounded-md text-sm font-medium bg-orange-500 text-white shadow-md flex items-center gap-2">
                     <span className="text-orange-100">₽</span>

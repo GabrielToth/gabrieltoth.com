@@ -107,15 +107,15 @@ export default async function EditorsPage({ params }: PageProps) {
     const breadcrumbs = [
         {
             name: isPortuguese ? "Início" : "Home",
-            url: `https://gabrieltoth.com/${locale}`,
+            url: `https://gabrieltoth.com${locale === "en" ? "" : `/${locale}`}`,
         },
         {
             name: isPortuguese ? "Oportunidades" : "Opportunities",
-            url: `https://gabrieltoth.com/${locale}/#opportunities`,
+            url: `https://gabrieltoth.com${locale === "en" ? "" : `/${locale}`}/#opportunities`,
         },
         {
             name: isPortuguese ? "Trabalhe Como Editor" : "Work as Editor",
-            url: `https://gabrieltoth.com/${locale}/editors`,
+            url: `https://gabrieltoth.com${locale === "en" ? "" : `/${locale}`}/editors`,
         },
     ]
 

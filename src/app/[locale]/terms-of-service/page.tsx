@@ -28,7 +28,7 @@ export default async function TermsOfServicePage({
                       : locale === "de"
                         ? "Startseite"
                         : "Home",
-            url: `https://gabrieltoth.com/${locale}`,
+            url: `https://gabrieltoth.com${locale === "en" ? "" : `/${locale}`}`,
         },
         {
             name:
@@ -39,7 +39,7 @@ export default async function TermsOfServicePage({
                       : locale === "de"
                         ? "Nutzungsbedingungen"
                         : "Terms of Service",
-            url: `https://gabrieltoth.com/${locale}/terms-of-service`,
+            url: `https://gabrieltoth.com${locale === "en" ? "" : `/${locale}`}/terms-of-service`,
         },
     ]
 

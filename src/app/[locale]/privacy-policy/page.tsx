@@ -27,7 +27,7 @@ export default async function PrivacyPolicyPage({
                       : locale === "de"
                         ? "Startseite"
                         : "Home",
-            url: `https://gabrieltoth.com/${locale}`,
+            url: `https://gabrieltoth.com${locale === "en" ? "" : `/${locale}`}`,
         },
         {
             name:
@@ -38,7 +38,7 @@ export default async function PrivacyPolicyPage({
                       : locale === "de"
                         ? "Datenschutzrichtlinie"
                         : "Privacy Policy",
-            url: `https://gabrieltoth.com/${locale}/privacy-policy`,
+            url: `https://gabrieltoth.com${locale === "en" ? "" : `/${locale}`}/privacy-policy`,
         },
     ]
 

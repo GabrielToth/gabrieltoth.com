@@ -17,15 +17,15 @@ export default async function PCOptimizationTermsPage({ params }: PageProps) {
     const breadcrumbs = [
         {
             name: isPortuguese ? "Início" : "Home",
-            url: `https://gabrieltoth.com/${locale}`,
+            url: `https://gabrieltoth.com${locale === "en" ? "" : `/${locale}`}`,
         },
         {
             name: isPortuguese ? "Otimização de PC" : "PC Optimization",
-            url: `https://gabrieltoth.com/${locale}/pc-optimization`,
+            url: `https://gabrieltoth.com${locale === "en" ? "" : `/${locale}`}/pc-optimization`,
         },
         {
             name: isPortuguese ? "Termos" : "Terms",
-            url: `https://gabrieltoth.com/${locale}/pc-optimization/terms`,
+            url: `https://gabrieltoth.com${locale === "en" ? "" : `/${locale}`}/pc-optimization/terms`,
         },
     ]
 

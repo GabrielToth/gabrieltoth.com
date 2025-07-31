@@ -103,7 +103,7 @@ export default async function ChannelManagementPage({ params }: PageProps) {
                       : locale === "de"
                         ? "Startseite"
                         : "Home",
-            url: `https://gabrieltoth.com/${locale}`,
+            url: `https://gabrieltoth.com${locale === "en" ? "" : `/${locale}`}`,
         },
         {
             name:
@@ -114,7 +114,7 @@ export default async function ChannelManagementPage({ params }: PageProps) {
                       : locale === "de"
                         ? "ViraTrend - Digitale Beratung"
                         : "ViraTrend - Digital Consulting",
-            url: `https://gabrieltoth.com/${locale}/channel-management`,
+            url: `https://gabrieltoth.com${locale === "en" ? "" : `/${locale}`}/channel-management`,
         },
     ]
 
@@ -128,21 +128,26 @@ export default async function ChannelManagementPage({ params }: PageProps) {
                 faqs={faqs}
             />
 
-            <main className="min-h-screen bg-white dark:bg-gray-900">
-                <div className="container mx-auto px-4 py-8">
-                    <Breadcrumbs
-                        items={breadcrumbs.map((item, index) => ({
-                            name: item.name,
-                            href: item.url.replace(
-                                "https://gabrieltoth.com",
-                                ""
-                            ),
-                            current: index === breadcrumbs.length - 1,
-                        }))}
-                        className="mb-6"
-                    />
-                </div>
+            <main className="min-h-screen bg-white dark:bg-gray-900 relative">
                 <ChannelManagementView locale={locale} />
+
+                {/* Breadcrumbs overlay */}
+                <div className="absolute top-0 left-0 right-0 z-50">
+                    <div className="container mx-auto px-4 py-8">
+                        <Breadcrumbs
+                            items={breadcrumbs.map((item, index) => ({
+                                name: item.name,
+                                href: item.url.replace(
+                                    "https://gabrieltoth.com",
+                                    ""
+                                ),
+                                current: index === breadcrumbs.length - 1,
+                            }))}
+                            className="mb-6"
+                        />
+                    </div>
+                </div>
+
                 <Footer locale={locale} />
             </main>
         </>

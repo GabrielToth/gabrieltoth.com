@@ -57,7 +57,7 @@ export default function Footer({ locale }: FooterProps) {
                 items: [
                     {
                         name: "Email",
-                        href: "mailto:gabrieltothgoncalves@gmail.com",
+                        href: `mailto:${isPortuguese ? "contato@gabrieltoth.com" : "contact@gabrieltoth.com"}`,
                         external: true,
                     },
                     {
