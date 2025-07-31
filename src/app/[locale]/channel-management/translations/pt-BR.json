@@ -216,6 +216,74 @@
             }
         ]
     },
+    "testimonials": {
+        "title": "O Que Nossos Clientes Dizem",
+        "subtitle": "Depoimentos reais de criadores que transformaram seus canais",
+        "items": [
+            {
+                "name": "João Silva",
+                "role": "Criador do YouTube",
+                "content": "Gabriel me ajudou a crescer de 1K para 50K inscritos em apenas 6 meses. Sua abordagem baseada em dados é incrível!",
+                "rating": 5
+            },
+            {
+                "name": "Maria Santos",
+                "role": "Criadora de Conteúdo",
+                "content": "Os insights de analytics mudaram completamente como eu crio conteúdo. Agora sei exatamente o que minha audiência quer.",
+                "rating": 5
+            }
+        ]
+    },
+    "pricing": {
+        "title": "Escolha Seu Plano de Crescimento",
+        "subtitle": "Investimento que se paga em crescimento",
+        "plans": [
+            {
+                "name": "Análise Express",
+                "basePrice": 497,
+                "description": "Auditoria completa com relatório detalhado",
+                "features": [
+                    "Análise de 3 meses de dados",
+                    "Relatório de 20+ páginas",
+                    "Reunião de 1h para apresentação",
+                    "Lista de ações prioritárias",
+                    "Edição inclusa: até 300 minutos/mês"
+                ],
+                "popular": false,
+                "editingNote": "Edição profissional de vídeo para maximizar engajamento"
+            },
+            {
+                "name": "Estratégia Completa",
+                "basePrice": 997,
+                "description": "Estratégia completa com suporte de implementação",
+                "features": [
+                    "Tudo da Análise Express",
+                    "Desenvolvimento de estratégia de conteúdo",
+                    "Sessões mensais de otimização",
+                    "Suporte direto via WhatsApp",
+                    "Edição inclusa: até 600 minutos/mês"
+                ],
+                "popular": true,
+                "editingNote": "Edição prioritária com entrega mais rápida"
+            },
+            {
+                "name": "Parceria de Crescimento",
+                "basePrice": 1997,
+                "description": "Gestão completa e otimização",
+                "features": [
+                    "Tudo da Estratégia Completa",
+                    "Gestão do canal",
+                    "Planejamento de calendário de conteúdo",
+                    "Gestão de comunidade",
+                    "Edição inclusa: ilimitada"
+                ],
+                "popular": false,
+                "editingNote": "Suporte completo de produção com editor dedicado"
+            }
+        ],
+        "note": "Todos os planos incluem serviços profissionais de edição de vídeo. A capacidade de edição varia por plano e pode ser ajustada conforme suas necessidades.",
+        "cta": "Começar Agora"
+    },
     "cta": {
         "title": "Pronto para Transformar Seu Canal?",
         "subtitle": "Junte-se aos criadores que já estão crescendo com nossas estratégias",

@@ -88,7 +88,7 @@ const AboutSection = ({ t }: { t: ChannelManagementTranslations }) => {
                         </div>
                     </div>
                     <div className="grid grid-cols-2 gap-4">
-                        {t.personalAbout.skills.map((skill, index) => (
+                        {t.personalAbout.skills.map((skill: any, index) => (
                             <div
                                 key={index}
                                 className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg text-center"
@@ -120,7 +120,7 @@ const ProblemsSection = ({ t }: { t: ChannelManagementTranslations }) => {
                     </p>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    {t.problems.items.map((problem, index) => (
+                    {t.problems.items.map((problem: any, index) => (
                         <div
                             key={index}
                             className="bg-white dark:bg-gray-900 rounded-lg p-6 shadow-lg text-center"
@@ -154,7 +154,7 @@ const ServicesSection = ({ t }: { t: ChannelManagementTranslations }) => {
                     </p>
                 </div>
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    {t.services.items.map((service, index) => (
+                    {t.services.items.map((service: any, index) => (
                         <div
                             key={index}
                             className="bg-white dark:bg-gray-800 rounded-lg p-8 shadow-lg"
@@ -167,17 +167,19 @@ const ServicesSection = ({ t }: { t: ChannelManagementTranslations }) => {
                                 {service.description}
                             </p>
                             <ul className="space-y-2">
-                                {service.features.map((feature, idx) => (
-                                    <li
-                                        key={idx}
-                                        className="flex items-center text-gray-600 dark:text-gray-300"
-                                    >
-                                        <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
-                                        <span className="text-sm">
-                                            {feature}
-                                        </span>
-                                    </li>
-                                ))}
+                                {service.features.map(
+                                    (feature: string, idx: number) => (
+                                        <li
+                                            key={idx}
+                                            className="flex items-center text-gray-600 dark:text-gray-300"
+                                        >
+                                            <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
+                                            <span className="text-sm">
+                                                {feature}
+                                            </span>
+                                        </li>
+                                    )
+                                )}
                             </ul>
                         </div>
                     ))}
@@ -211,9 +213,14 @@ const ResultsSection = ({ t }: { t: ChannelManagementTranslations }) => {
                                     {result.name}
                                 </h3>
                                 <div className="flex">
-                                    {[...Array(result.rating)].map((_, starIdx) => (
-                                        <Star key={starIdx} className="w-5 h-5 text-yellow-400 fill-current" />
-                                    ))}
+                                    {[...Array(result.rating)].map(
+                                        (_, starIdx) => (
+                                            <Star
+                                                key={starIdx}
+                                                className="w-5 h-5 text-yellow-400 fill-current"
+                                            />
+                                        )
+                                    )}
                                 </div>
                             </div>
                             <p className="text-blue-600 dark:text-blue-400 font-medium mb-3">

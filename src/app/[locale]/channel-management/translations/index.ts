@@ -22,6 +22,10 @@ const translations: Record<Locale, ChannelManagementTranslations> = {
 /**
  * Get translations for channel management page based on locale
  */
+export interface ChannelManagementTranslations {
+    [key: string]: any
+}
+
 export function getChannelManagementTranslations(
     locale: Locale
 ): ChannelManagementTranslations {
@@ -32,8 +36,8 @@ export function getChannelManagementTranslations(
         ...t,
         personalAbout: {
             ...t.personalAbout,
-            skills: t.personalAbout.skills.map(
-                (skill: string, index: number) => {
+            skills:
+                t.personalAbout?.skills?.map((skill: string, index: number) => {
                     const icons = [
                         BarChart3,
                         Video,
@@ -43,22 +47,23 @@ export function getChannelManagementTranslations(
                         Target,
                     ]
                     return { icon: icons[index], name: skill }
-                }
-            ),
+                }) || [],
         },
         problems: {
             ...t.problems,
-            items: t.problems.items.map((item: any, index: number) => {
-                const icons = [TrendingUp, BarChart3, DollarSign, Target]
-                return { ...item, icon: icons[index] }
-            }),
+            items:
+                t.problems?.items?.map((item: any, index: number) => {
+                    const icons = [TrendingUp, BarChart3, DollarSign, Target]
+                    return { ...item, icon: icons[index] }
+                }) || [],
         },
         services: {
             ...t.services,
-            items: t.services.items.map((item: any, index: number) => {
-                const icons = [BarChart3, Video, DollarSign, Target]
-                return { ...item, icon: icons[index] }
-            }),
+            items:
+                t.services?.items?.map((item: any, index: number) => {
+                    const icons = [BarChart3, Video, DollarSign, Target]
+                    return { ...item, icon: icons[index] }
+                }) || [],
         },
     }
 }

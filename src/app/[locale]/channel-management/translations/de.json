@@ -216,6 +216,74 @@
             }
         ]
     },
+    "testimonials": {
+        "title": "Was Unsere Kunden Sagen",
+        "subtitle": "Echte Testimonials von Erstellern, die ihre Kanäle transformiert haben",
+        "items": [
+            {
+                "name": "João Silva",
+                "role": "YouTube Creator",
+                "content": "Gabriel half mir, von 1K auf 50K Abonnenten in nur 6 Monaten zu wachsen. Sein datenbasierter Ansatz ist unglaublich!",
+                "rating": 5
+            },
+            {
+                "name": "Maria Santos",
+                "role": "Content Creator",
+                "content": "Die Analytics-Einblicke veränderten vollständig, wie ich Inhalte erstelle. Jetzt weiß ich genau, was meine Zielgruppe will.",
+                "rating": 5
+            }
+        ]
+    },
+    "pricing": {
+        "title": "Wählen Sie Ihren Wachstumsplan",
+        "subtitle": "Investition, die sich durch Wachstum auszahlt",
+        "plans": [
+            {
+                "name": "Express-Analyse",
+                "basePrice": 497,
+                "description": "Vollständige Prüfung mit detailliertem Bericht",
+                "features": [
+                    "3-monatige Datenanalyse",
+                    "20+ Seiten Bericht",
+                    "1h Präsentationsmeeting",
+                    "Prioritätenliste der Maßnahmen",
+                    "Bearbeitung inbegriffen: bis zu 300 Minuten/Monat"
+                ],
+                "popular": false,
+                "editingNote": "Professionelle Videobearbeitung zur Maximierung des Engagements"
+            },
+            {
+                "name": "Vollständige Strategie",
+                "basePrice": 997,
+                "description": "Vollständige Strategie mit Implementierungsunterstützung",
+                "features": [
+                    "Alles von Express-Analyse",
+                    "Content-Strategieentwicklung",
+                    "Monatliche Optimierungssitzungen",
+                    "Direkte WhatsApp-Unterstützung",
+                    "Bearbeitung inbegriffen: bis zu 600 Minuten/Monat"
+                ],
+                "popular": true,
+                "editingNote": "Prioritätsbearbeitung mit schnellerer Bearbeitungszeit"
+            },
+            {
+                "name": "Wachstumspartnerschaft",
+                "basePrice": 1997,
+                "description": "Vollständiges Management und Optimierung",
+                "features": [
+                    "Alles von Vollständiger Strategie",
+                    "Kanalmanagement",
+                    "Content-Kalenderplanung",
+                    "Community-Management",
+                    "Bearbeitung inbegriffen: unbegrenzt"
+                ],
+                "popular": false,
+                "editingNote": "Vollständige Produktionsunterstützung mit dediziertem Editor"
+            }
+        ],
+        "note": "Alle Pläne beinhalten professionelle Videobearbeitungsdienste. Die Bearbeitungskapazität variiert je nach Plan und kann entsprechend Ihren Bedürfnissen angepasst werden.",
+        "cta": "Jetzt Starten"
+    },
     "cta": {
         "title": "Bereit, Ihren Kanal zu Transformieren?",
         "subtitle": "Schließen Sie sich den Erstellern an, die bereits mit unseren Strategien wachsen",

@@ -216,6 +216,74 @@
             }
         ]
     },
+    "testimonials": {
+        "title": "What Our Clients Say",
+        "subtitle": "Real testimonials from creators who transformed their channels",
+        "items": [
+            {
+                "name": "João Silva",
+                "role": "YouTube Creator",
+                "content": "Gabriel helped me grow from 1K to 50K subscribers in just 6 months. His data-driven approach is incredible!",
+                "rating": 5
+            },
+            {
+                "name": "Maria Santos",
+                "role": "Content Creator",
+                "content": "The analytics insights completely changed how I create content. Now I know exactly what my audience wants.",
+                "rating": 5
+            }
+        ]
+    },
+    "pricing": {
+        "title": "Choose Your Growth Plan",
+        "subtitle": "Investment that pays for itself in growth",
+        "plans": [
+            {
+                "name": "Express Analysis",
+                "basePrice": 497,
+                "description": "Complete audit with detailed report",
+                "features": [
+                    "3-month data analysis",
+                    "20+ page report",
+                    "1h presentation meeting",
+                    "Priority action list",
+                    "Editing included: up to 300 minutes/month"
+                ],
+                "popular": false,
+                "editingNote": "Professional video editing to maximize engagement"
+            },
+            {
+                "name": "Complete Strategy",
+                "basePrice": 997,
+                "description": "Full strategy with implementation support",
+                "features": [
+                    "Everything from Express",
+                    "Content strategy development",
+                    "Monthly optimization sessions",
+                    "Direct WhatsApp support",
+                    "Editing included: up to 600 minutes/month"
+                ],
+                "popular": true,
+                "editingNote": "Priority editing with faster turnaround"
+            },
+            {
+                "name": "Growth Partnership",
+                "basePrice": 1997,
+                "description": "Complete management and optimization",
+                "features": [
+                    "Everything from Complete",
+                    "Channel management",
+                    "Content calendar planning",
+                    "Community management",
+                    "Editing included: unlimited"
+                ],
+                "popular": false,
+                "editingNote": "Full production support with dedicated editor"
+            }
+        ],
+        "note": "All plans include professional video editing services. Editing capacity varies by plan and can be adjusted based on your needs.",
+        "cta": "Get Started"
+    },
     "cta": {
         "title": "Ready to Transform Your Channel?",
         "subtitle": "Join the creators who are already growing with our strategies",

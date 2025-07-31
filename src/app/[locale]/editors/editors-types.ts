@@ -1,5 +1,5 @@
 import { LucideIcon } from "lucide-react"
-import { EditorTranslations } from "./editors-translations"
+import { EditorsTranslations } from "./translations" // ✅ MIGRATED: Now using translations/ folder
 
 export interface EditorsLandingProps {
     locale: "en" | "pt-BR"
@@ -40,7 +40,7 @@ export interface Plan {
 }
 
 export interface SectionProps {
-    t: EditorTranslations
+    t: EditorsTranslations // ✅ MIGRATED: Now uses type from translations/ folder
 }
 
 export interface PageProps {

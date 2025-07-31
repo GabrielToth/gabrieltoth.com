@@ -11,15 +11,15 @@ import {
     RequirementsSection,
     ToolsSection,
 } from "./editors-view"
-// TODO: Migrate to translations/ folder - currently using mediator due to complex programmatic content
-import { getEditorsTranslations } from "./editors-translations"
+// ✅ MIGRATED: Now using translations/ folder with JSON + icon injection
+import { getEditorsTranslations } from "./translations"
 
 export { generateMetadata }
 
 export default async function EditorsPage({ params }: PageProps) {
     const { locale } = await params
     const isPortuguese = locale === "pt-BR"
-    const t = await getEditorsTranslations(locale)
+    const t = getEditorsTranslations(locale)
 
     // Job posting structured data
     const jobStructuredData = {
