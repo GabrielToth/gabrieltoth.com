@@ -21,8 +21,8 @@ const HeroSection = ({
     locale: Locale
 }) => {
     return (
-        <section className="relative py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-blue-900/20 dark:to-indigo-900/20">
-            <div className="max-w-7xl mx-auto text-center">
+        <section className="relative py-20 bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-blue-900/20 dark:to-indigo-900/20">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
                 <div className="inline-block mb-6">
                     <span className="bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200 text-sm font-semibold px-4 py-2 rounded-full">
                         {t.hero.badge}
@@ -69,8 +69,8 @@ const HeroSection = ({
 // About Section Component
 const AboutSection = ({ t }: { t: ChannelManagementTranslations }) => {
     return (
-        <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-900">
-            <div className="max-w-7xl mx-auto">
+        <section className="py-20 bg-gray-50 dark:bg-gray-900">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                     <div>
                         <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-6">
@@ -107,8 +107,8 @@ const AboutSection = ({ t }: { t: ChannelManagementTranslations }) => {
 // Problems Section Component
 const ProblemsSection = ({ t }: { t: ChannelManagementTranslations }) => {
     return (
-        <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-800">
-            <div className="max-w-7xl mx-auto">
+        <section className="py-20 bg-gray-50 dark:bg-gray-800">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="text-center mb-16">
                     <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
                         {t.problems.title}
@@ -141,8 +141,8 @@ const ProblemsSection = ({ t }: { t: ChannelManagementTranslations }) => {
 // Services Section Component
 const ServicesSection = ({ t }: { t: ChannelManagementTranslations }) => {
     return (
-        <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-900">
-            <div className="max-w-7xl mx-auto">
+        <section className="py-20 bg-gray-50 dark:bg-gray-900">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="text-center mb-16">
                     <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
                         {t.services.title}
@@ -188,8 +188,8 @@ const ServicesSection = ({ t }: { t: ChannelManagementTranslations }) => {
 // Results Section Component
 const ResultsSection = ({ t }: { t: ChannelManagementTranslations }) => {
     return (
-        <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white dark:bg-gray-800">
-            <div className="max-w-7xl mx-auto">
+        <section className="py-20 bg-white dark:bg-gray-800">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="text-center mb-16">
                     <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
                         {t.results.title}
@@ -233,8 +233,8 @@ const ResultsSection = ({ t }: { t: ChannelManagementTranslations }) => {
 // Testimonials Section Component
 const TestimonialsSection = ({ t }: { t: ChannelManagementTranslations }) => {
     return (
-        <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-900">
-            <div className="max-w-7xl mx-auto">
+        <section className="py-20 bg-gray-50 dark:bg-gray-900">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="text-center mb-16">
                     <h2 className="text-3xl font-bold text-gray-800 dark:text-white mb-4">
                         {t.testimonials.title}
@@ -296,9 +296,9 @@ const PricingSection = ({
     return (
         <section
             id="pricing"
-            className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-800"
+            className="py-20 bg-gray-50 dark:bg-gray-800"
         >
-            <div className="max-w-7xl mx-auto">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="text-center mb-16">
                     <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
                         {t.pricing.title}
@@ -441,8 +441,8 @@ const EditorSection = ({ locale }: { locale: Locale }) => {
         locale === "pt-BR" ? "Trabalhar como Editor" : "Work as Editor"
 
     return (
-        <section className="w-full bg-blue-600 py-20 px-4 sm:px-6 lg:px-8">
-            <div className="max-w-7xl mx-auto text-center">
+        <section className="w-full bg-blue-600 py-20">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
                 <h2 className="text-3xl font-bold text-white mb-4">
                     {defaultTitle}
                 </h2>
