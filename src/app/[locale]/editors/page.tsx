@@ -127,7 +127,18 @@ export default async function EditorsPage({ params }: PageProps) {
 
             <main className="min-h-screen bg-white dark:bg-gray-900">
                 <div className="container mx-auto px-4 py-8">
-                    <Breadcrumbs className="mb-6" />
+                    <Breadcrumbs 
+                        items={breadcrumbs.map((item, index) => ({
+                            name: item.name,
+                            href: item.url.replace(
+                                "https://gabrieltoth.com",
+                                ""
+                            ),
+                            current: index === breadcrumbs.length - 1,
+                        }))}
+                        hideHome={true}
+                        className="mb-6" 
+                    />
                 </div>
                 <HeroSection t={t} />
                 <AboutSection t={t} />

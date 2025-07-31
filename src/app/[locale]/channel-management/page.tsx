@@ -144,6 +144,7 @@ export default async function ChannelManagementPage({ params }: PageProps) {
                                     ),
                                     current: index === breadcrumbs.length - 1,
                                 }))}
+                                hideHome={true}
                                 className="mb-6"
                             />
                         </div>
