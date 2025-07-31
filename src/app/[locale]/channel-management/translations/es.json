@@ -155,6 +155,67 @@
             }
         ]
     },
+    "personalAbout": {
+        "title": "Sobre Mí",
+        "description": "Científico de Datos y Desarrollador Full Stack enfocado en crecimiento digital",
+        "intro": "Soy Gabriel Toth Gonçalves, científico de datos senior y desarrollador Full Stack de Brasil. Con título en Ciencias de la Computación y especialización en Ciencia de Datos, actualmente trabajo en el proyecto social-analytics-engine, realizando análisis avanzados de campañas digitales y métricas de conversión.",
+        "experience": "Mi trabajo involucra la integración de datos de Google Analytics con métricas de redes sociales (YouTube, Instagram, X, Telegram) y análisis de conversiones Stripe usando Python, PostgreSQL, SQLAlchemy y Docker. También desarrollo soluciones web empresariales, habiendo creado sitios como softclever.com.br (React) y sistemasatfiscal.com.br (Angular).",
+        "passion": "Además del análisis de datos, gestiono múltiples redes sociales incluyendo el proyecto WaveIGL (YouTube, Instagram, TikTok, Twitch) con más de 2 millones de visualizaciones mensuales combinadas. Tengo un caso impresionante: alcancé más de 1 millón de views en un canal que aún tenía menos de 1000 suscriptores. Gestiono canales desde 2013 y uso machine learning para optimizar campañas en múltiples plataformas.",
+        "skills": [
+            "Analytics y Ciencia de Datos",
+            "Estrategia de Contenido",
+            "Monetización",
+            "Growth Hacking",
+            "Optimización YouTube",
+            "Desarrollo de Audiencia"
+        ]
+    },
+    "problems": {
+        "title": "Tus Desafíos de Crecimiento",
+        "subtitle": "¿Reconoces algunos de estos problemas?",
+        "items": [
+            {
+                "title": "Crecimiento Estancado",
+                "description": "Tu canal dejó de crecer y no sabes por qué"
+            },
+            {
+                "title": "Analytics Confusos",
+                "description": "Muchos datos, pero ninguna dirección clara sobre qué hacer"
+            },
+            {
+                "title": "Monetización Baja",
+                "description": "Los ingresos no coinciden con el número de visualizaciones"
+            },
+            {
+                "title": "Contenido Sin Enfoque",
+                "description": "Creando contenido sin una estrategia clara de crecimiento"
+            }
+        ]
+    },
+    "results": {
+        "title": "Resultados Reales de Nuestras Consultorías",
+        "subtitle": "Casos reales y logros a lo largo de más de 10 años de experiencia",
+        "items": [
+            {
+                "name": "WaveIGL",
+                "role": "YouTube, Instagram, TikTok, Twitch y otras plataformas",
+                "content": "Desarrollé y gestiono todas las redes sociales de WaveIGL desde el inicio. Actualmente sumamos más de 2M de views mensuales distribuidos entre YouTube (400K), Instagram, TikTok, Twitch y otras plataformas. El proyecto ha crecido consistentemente durante años.",
+                "rating": 5
+            },
+            {
+                "name": "Gabriel Toth (canal antiguo) - @oprimeirogabrieltoth",
+                "role": "Canal antiguo - Resultado extraordinario",
+                "content": "Uno de mis casos más impresionantes: logré más de 1 millón de visualizaciones en un canal que aún tenía menos de 1000 suscriptores. Esto demuestra mi capacidad para crear contenido viral y entender profundamente los algoritmos de las plataformas.",
+                "rating": 5
+            },
+            {
+                "name": "Gabriel Toth (canal actual) - @ogabrieltoth",
+                "role": "Canal actual - Predicción de 100K views en julio",
+                "content": "Poniendo en práctica la estrategia de contenido multiplataforma, estoy demostrando en la práctica que el crecimiento es posible para todos.",
+                "rating": 5
+            }
+        ]
+    },
     "cta": {
         "title": "¿Listo para Transformar tu Canal?",
         "subtitle": "Únete a los creadores que ya están creciendo con nuestras estrategias",

@@ -488,6 +488,14 @@ export function generateSeoConfig(options: SeoConfigOptions) {
                 href: `${SITE_URL}/pt-BR${path}`,
             },
             {
+                hrefLang: "es",
+                href: `${SITE_URL}/es${path}`,
+            },
+            {
+                hrefLang: "de",
+                href: `${SITE_URL}/de${path}`,
+            },
+            {
                 hrefLang: "x-default",
                 href: `${SITE_URL}${path}`,
             },
@@ -712,6 +720,8 @@ Allow: /
 Sitemap: ${SITE_URL}/sitemap.xml
 Sitemap: ${SITE_URL}/sitemap-en.xml
 Sitemap: ${SITE_URL}/sitemap-pt-BR.xml
+Sitemap: ${SITE_URL}/sitemap-es.xml
+Sitemap: ${SITE_URL}/sitemap-de.xml
 
 # Host
 Host: ${SITE_URL}`

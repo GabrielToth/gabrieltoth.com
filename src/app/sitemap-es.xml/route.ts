@@ -8,9 +8,9 @@ export async function GET() {
 
     const urlEntries = pages
         .map(({ path, priority, changefreq }) => {
-            const fullUrl = `${SITE_URL}/pt-BR${path}`
+            const fullUrl = `${SITE_URL}/es${path}`
             const enUrl = `${SITE_URL}${path}`
-            const esUrl = `${SITE_URL}/es${path}`
+            const ptUrl = `${SITE_URL}/pt-BR${path}`
             const deUrl = `${SITE_URL}/de${path}`
 
             return `
@@ -20,8 +20,8 @@ export async function GET() {
         <changefreq>${changefreq}</changefreq>
         <priority>${priority}</priority>
         <xhtml:link rel="alternate" hreflang="en" href="${enUrl}" />
-        <xhtml:link rel="alternate" hreflang="pt-BR" href="${fullUrl}" />
-        <xhtml:link rel="alternate" hreflang="es" href="${esUrl}" />
+        <xhtml:link rel="alternate" hreflang="pt-BR" href="${ptUrl}" />
+        <xhtml:link rel="alternate" hreflang="es" href="${fullUrl}" />
         <xhtml:link rel="alternate" hreflang="de" href="${deUrl}" />
         <xhtml:link rel="alternate" hreflang="x-default" href="${enUrl}" />
     </url>`

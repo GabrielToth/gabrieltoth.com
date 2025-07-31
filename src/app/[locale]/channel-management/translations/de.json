@@ -155,6 +155,67 @@
             }
         ]
     },
+    "personalAbout": {
+        "title": "Über Mich",
+        "description": "Datenwissenschaftler und Full Stack Entwickler fokussiert auf digitales Wachstum",
+        "intro": "Ich bin Gabriel Toth Gonçalves, ein senior Datenwissenschaftler und Full Stack Entwickler aus Brasilien. Mit einem Abschluss in Informatik und Spezialisierung in Datenwissenschaft arbeite ich derzeit am social-analytics-engine Projekt und führe erweiterte Analysen von digitalen Kampagnen und Konversionsmetriken durch.",
+        "experience": "Meine Arbeit umfasst die Integration von Google Analytics Daten mit Social Media Metriken (YouTube, Instagram, X, Telegram) und Stripe Konversionsanalyse mit Python, PostgreSQL, SQLAlchemy und Docker. Ich entwickle auch Unternehmens-Weblösungen und habe Websites wie softclever.com.br (React) und sistemasatfiscal.com.br (Angular) erstellt.",
+        "passion": "Neben der Datenanalyse verwalte ich mehrere soziale Netzwerke einschließlich des WaveIGL Projekts (YouTube, Instagram, TikTok, Twitch) mit über 2 Millionen monatlichen Aufrufen zusammen. Ich habe einen beeindruckenden Fall: Ich erreichte über 1 Million Views auf einem Kanal, der noch weniger als 1000 Abonnenten hatte. Ich verwalte Kanäle seit 2013 und verwende maschinelles Lernen zur Optimierung von Kampagnen auf mehreren Plattformen.",
+        "skills": [
+            "Analytics und Datenwissenschaft",
+            "Content-Strategie",
+            "Monetarisierung",
+            "Growth Hacking",
+            "YouTube Optimierung",
+            "Audience Development"
+        ]
+    },
+    "problems": {
+        "title": "Ihre Wachstumsherausforderungen",
+        "subtitle": "Erkennen Sie einige dieser Probleme?",
+        "items": [
+            {
+                "title": "Stagnierendes Wachstum",
+                "description": "Ihr Kanal hat aufgehört zu wachsen und Sie wissen nicht warum"
+            },
+            {
+                "title": "Verwirrende Analytics",
+                "description": "Viele Daten, aber keine klare Richtung, was zu tun ist"
+            },
+            {
+                "title": "Niedrige Monetarisierung",
+                "description": "Einnahmen entsprechen nicht der Anzahl der Aufrufe"
+            },
+            {
+                "title": "Unfokussierter Inhalt",
+                "description": "Erstellung von Inhalten ohne klare Wachstumsstrategie"
+            }
+        ]
+    },
+    "results": {
+        "title": "Echte Ergebnisse Unserer Beratungen",
+        "subtitle": "Echte Fälle und Erfolge über mehr als 10 Jahre Erfahrung",
+        "items": [
+            {
+                "name": "WaveIGL",
+                "role": "YouTube, Instagram, TikTok, Twitch und andere Plattformen",
+                "content": "Ich entwickelte und verwalte alle sozialen Netzwerke von WaveIGL von Anfang an. Wir erreichen derzeit über 2M monatliche Aufrufe verteilt auf YouTube (400K), Instagram, TikTok, Twitch und andere Plattformen. Das Projekt wächst seit Jahren konstant.",
+                "rating": 5
+            },
+            {
+                "name": "Gabriel Toth (alter Kanal) - @oprimeirogabrieltoth",
+                "role": "Alter Kanal - Außergewöhnliches Ergebnis",
+                "content": "Einer meiner beeindruckendsten Fälle: Ich erreichte über 1 Million Aufrufe auf einem Kanal, der noch weniger als 1000 Abonnenten hatte. Dies zeigt meine Fähigkeit, viralen Content zu erstellen und Plattform-Algorithmen tief zu verstehen.",
+                "rating": 5
+            },
+            {
+                "name": "Gabriel Toth (aktueller Kanal) - @ogabrieltoth",
+                "role": "Aktueller Kanal - 100K Views Prognose im Juli",
+                "content": "Durch die Umsetzung der Multi-Plattform Content-Strategie zeige ich in der Praxis, dass Wachstum für alle möglich ist.",
+                "rating": 5
+            }
+        ]
+    },
     "cta": {
         "title": "Bereit, Ihren Kanal zu Transformieren?",
         "subtitle": "Schließen Sie sich den Erstellern an, die bereits mit unseren Strategien wachsen",

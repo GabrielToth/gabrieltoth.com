@@ -40,7 +40,7 @@ export interface Plan {
 }
 
 export interface SectionProps {
-    t: EditorsTranslations
+    t: EditorTranslations
 }
 
 export interface PageProps {

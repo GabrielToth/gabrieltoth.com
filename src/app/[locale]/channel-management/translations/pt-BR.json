@@ -155,6 +155,67 @@
             }
         ]
     },
+    "personalAbout": {
+        "title": "Sobre Mim",
+        "description": "Cientista de Dados & Desenvolvedor Full Stack focado em crescimento digital",
+        "intro": "Sou Gabriel Toth Gonçalves, cientista de dados pleno e desenvolvedor Full Stack brasileiro. Formado em Ciência da Computação com especialização em Ciência de Dados, atualmente trabalho no projeto social-analytics-engine, realizando análises avançadas de campanhas digitais e métricas de conversão.",
+        "experience": "Meu trabalho envolve a integração de dados do Google Analytics com métricas de redes sociais (YouTube, Instagram, X, Telegram) e análise de conversões Stripe usando Python, PostgreSQL, SQLAlchemy e Docker. Também desenvolvo soluções web empresariais, tendo criado sites como softclever.com.br (React) e sistemasatfiscal.com.br (Angular).",
+        "passion": "Além da análise de dados, gerencio múltiplas redes sociais incluindo o projeto WaveIGL (YouTube, Instagram, TikTok, Twitch) com mais de 2 milhões de visualizações mensais somadas. Tenho um case impressionante: alcancei mais de 1 milhão de views em um canal antes mesmo de ter 1000 inscritos. Gerencio canais desde 2013 e uso machine learning para otimizar campanhas em múltiplas plataformas.",
+        "skills": [
+            "Analytics & Data Science",
+            "Estratégia de Conteúdo",
+            "Monetização",
+            "Growth Hacking",
+            "Otimização YouTube",
+            "Desenvolvimento de Audiência"
+        ]
+    },
+    "problems": {
+        "title": "Seus Desafios de Crescimento",
+        "subtitle": "Reconhece alguns destes problemas?",
+        "items": [
+            {
+                "title": "Crescimento Estagnado",
+                "description": "Seu canal parou de crescer e você não sabe o motivo"
+            },
+            {
+                "title": "Analytics Confusos",
+                "description": "Muitos dados, mas nenhuma direção clara sobre o que fazer"
+            },
+            {
+                "title": "Monetização Baixa",
+                "description": "Revenue não condiz com o número de visualizações"
+            },
+            {
+                "title": "Conteúdo Sem Foco",
+                "description": "Criando conteúdo sem uma estratégia clara de crescimento"
+            }
+        ]
+    },
+    "results": {
+        "title": "Resultados Reais das Nossas Consultorias",
+        "subtitle": "Cases reais e conquistas ao longo de 10+ anos de experiência",
+        "items": [
+            {
+                "name": "WaveIGL",
+                "role": "Youtube, Instagram, TikTok, Twitch e outras plataformas",
+                "content": "Desenvolvi e gerencio todas as redes sociais do WaveIGL desde o início. Atualmente somamos 2M+ views mensais distribuídos entre YouTube (400K), Instagram, TikTok, Twitch e outras plataformas. O projeto cresce consistentemente há anos.",
+                "rating": 5
+            },
+            {
+                "name": "Gabriel Toth (canal antigo) - @oprimeirogabrieltoth",
+                "role": "Canal antigo - Resultado extraordinário",
+                "content": "Um dos meus casos mais impressionantes: consegui mais de 1 milhão de visualizações em um canal que ainda tinha menos de 1000 inscritos. Isso demonstra minha capacidade de criar conteúdo viral e entender profundamente os algoritmos das plataformas.",
+                "rating": 5
+            },
+            {
+                "name": "Gabriel Toth (canal atual) - @ogabrieltoth",
+                "role": "Canal atual - Previsão de 100K views no mês de Julho",
+                "content": "Colocando em prática a estratégia de conteúdo multi-plataforma, estou mostrando na prática que o crescimento é possível para todos.",
+                "rating": 5
+            }
+        ]
+    },
     "cta": {
         "title": "Pronto para Transformar Seu Canal?",
         "subtitle": "Junte-se aos criadores que já estão crescendo com nossas estratégias",

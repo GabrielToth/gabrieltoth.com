@@ -8,9 +8,11 @@ import { CheckCircle, MessageCircle, Percent, Star } from "lucide-react"
 import { useCalculatePrice } from "./channel-management-calculate-price"
 import { ChannelManagementLandingProps } from "./channel-management-types"
 import { generateWhatsAppMessage } from "./channel-management-whatsapp-message"
-// TODO: Migrate to translations/ folder - currently using mediator due to complex icon injection
-import { getChannelManagementTranslations } from "./channel-management-translations"
-import { ChannelManagementTranslations } from "./channel-management-section-types"
+// ✅ MIGRATED: Now using translations/ folder with JSON + icon injection
+import {
+    ChannelManagementTranslations,
+    getChannelManagementTranslations,
+} from "./translations"
 
 // Hero Section Component
 const HeroSection = ({
@@ -74,19 +76,19 @@ const AboutSection = ({ t }: { t: ChannelManagementTranslations }) => {
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                     <div>
                         <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-6">
-                            {t.about.title}
+                            {t.personalAbout.title}
                         </h2>
                         <p className="text-lg text-blue-600 dark:text-blue-400 mb-6 font-medium">
-                            {t.about.description}
+                            {t.personalAbout.description}
                         </p>
                         <div className="space-y-4 text-gray-600 dark:text-gray-300 leading-relaxed">
-                            <p>{t.about.intro}</p>
-                            <p>{t.about.experience}</p>
-                            <p>{t.about.passion}</p>
+                            <p>{t.personalAbout.intro}</p>
+                            <p>{t.personalAbout.experience}</p>
+                            <p>{t.personalAbout.passion}</p>
                         </div>
                     </div>
                     <div className="grid grid-cols-2 gap-4">
-                        {t.about.skills.map((skill, index) => (
+                        {t.personalAbout.skills.map((skill, index) => (
                             <div
                                 key={index}
                                 className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg text-center"
@@ -204,24 +206,22 @@ const ResultsSection = ({ t }: { t: ChannelManagementTranslations }) => {
                             key={index}
                             className="bg-gray-50 dark:bg-gray-900 rounded-lg p-8 shadow-lg"
                         >
-                            <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-                                {result.channel}
-                            </h3>
-                            <p className="text-gray-700 dark:text-gray-300 mb-6">
-                                {result.description}
-                            </p>
-                            <div className="grid grid-cols-3 gap-4">
-                                {result.metrics.map((metric, idx) => (
-                                    <div key={idx} className="text-center">
-                                        <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
-                                            {metric.value}
-                                        </div>
-                                        <div className="text-sm text-gray-600 dark:text-gray-300">
-                                            {metric.label}
-                                        </div>
-                                    </div>
-                                ))}
+                            <div className="flex items-center justify-between mb-4">
+                                <h3 className="text-lg font-bold text-gray-900 dark:text-white">
+                                    {result.name}
+                                </h3>
+                                <div className="flex">
+                                    {[...Array(result.rating)].map((_, starIdx) => (
+                                        <Star key={starIdx} className="w-5 h-5 text-yellow-400 fill-current" />
+                                    ))}
+                                </div>
                             </div>
+                            <p className="text-blue-600 dark:text-blue-400 font-medium mb-3">
+                                {result.role}
+                            </p>
+                            <p className="text-gray-700 dark:text-gray-300 mb-6 leading-relaxed">
+                                "{result.content}"
+                            </p>
                         </div>
                     ))}
                 </div>
