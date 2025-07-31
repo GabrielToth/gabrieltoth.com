@@ -27,12 +27,6 @@ export default function Footer({ locale }: FooterProps) {
                             : "PC Optimization",
                         href: `/${locale}/pc-optimization`,
                     },
-                    {
-                        name: isPortuguese
-                            ? "Trabalhe Como Editor"
-                            : "Work as Editor",
-                        href: `/${locale}/editors`,
-                    },
                 ],
             },
             legal: {
@@ -64,6 +58,12 @@ export default function Footer({ locale }: FooterProps) {
                         name: "WhatsApp",
                         href: "https://wa.me/5511993313606",
                         external: true,
+                    },
+                    {
+                        name: isPortuguese
+                            ? "Trabalhe Como Editor"
+                            : "Work as Editor",
+                        href: `/${locale}/editors`,
                     },
                 ],
             },

@@ -1,5 +1,7 @@
 "use client"
 
+import PricingToggle from "@/components/ui/pricing-toggle"
+import { useMoneroPricing } from "@/hooks/use-monero-pricing"
 import { type Locale } from "@/lib/i18n"
 import {
     CheckCircle,
@@ -290,6 +292,7 @@ export default function PCOptimizationLanding({
     locale,
 }: PCOptimizationLandingProps) {
     const t = getTranslations(locale)
+    const { calculatePrice } = useMoneroPricing()
 
     return (
         <div className="min-h-screen bg-black text-white overflow-hidden">
@@ -388,8 +391,12 @@ export default function PCOptimizationLanding({
                         </p>
                     </div>
 
+                    {/* Pricing Toggle */}
+                    <PricingToggle locale={locale} />
+
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                         {t.pricing.plans.map((plan, index) => {
+                            const pricing = calculatePrice(plan.basePrice, locale)
                             return (
                                 <div
                                     key={index}
@@ -407,13 +414,27 @@ export default function PCOptimizationLanding({
                                         </div>
                                     )}
 
+                                    {/* Monero Discount Badge */}
+                                    {pricing.isMonero && pricing.discount > 0 && (
+                                        <div className="absolute -top-2 -right-2">
+                                            <div className="bg-orange-500 text-white text-xs font-bold px-2 py-1 rounded-full shadow-lg">
+                                                -{pricing.discount}%
+                                            </div>
+                                        </div>
+                                    )}
+
                                     <div className="text-center mb-8">
                                         <h3 className="text-2xl font-bold text-white mb-4">
                                             {plan.name}
                                         </h3>
                                         <div className="flex items-center justify-center gap-2 mb-2">
+                                            {pricing.originalPrice && (
+                                                <span className="text-lg text-gray-500 line-through">
+                                                    {pricing.currency} {pricing.originalPrice}
+                                                </span>
+                                            )}
                                             <span className="text-4xl font-black text-blue-400">
-                                                R$ {plan.basePrice}
+                                                {pricing.currency} {pricing.displayPrice}
                                             </span>
                                         </div>
                                         <p className="text-gray-400">

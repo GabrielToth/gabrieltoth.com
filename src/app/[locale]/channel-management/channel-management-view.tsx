@@ -431,8 +431,12 @@ const EditorSection = ({ locale }: { locale: Locale }) => {
             : "Contact us via WhatsApp to align expectations"
     const defaultWhatsappText =
         locale === "pt-BR"
-            ? "Olá! Gostaria de saber mais sobre o serviço de gestão de canais."
-            : "Hi! I would like to know more about the channel management service."
+            ? "Saiba mais"
+            : locale === "es"
+              ? "Saber más"
+              : locale === "de"
+                ? "Mehr erfahren"
+                : "Learn more"
     const alternativeText =
         locale === "pt-BR" ? "Trabalhar como Editor" : "Work as Editor"
 
