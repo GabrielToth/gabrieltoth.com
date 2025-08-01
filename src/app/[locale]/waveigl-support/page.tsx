@@ -1,5 +1,8 @@
-import WaveIGLSupportLanding from "@/app/[locale]/waveigl-support/waveigl-support-landing"
+import { getWaveIGLSupportTranslations } from "@/app/[locale]/waveigl-support/translations"
+import { getWaveIGLSupportBreadcrumbs } from "@/app/[locale]/waveigl-support/waveigl-support-breadcrumbs"
+import WaveIGLSupportClientPage from "@/app/[locale]/waveigl-support/waveigl-support-client-page"
 import Footer from "@/components/layout/footer"
+import Header from "@/components/layout/header"
 import StructuredData from "@/components/seo/structured-data"
 import Breadcrumbs from "@/components/ui/breadcrumbs"
 import { type Locale } from "@/lib/i18n"
@@ -12,16 +15,16 @@ export { generateMetadata } from "./waveigl-support-metadata"
 
 export default async function WaveIGLSupportPage({ params }: PageProps) {
     const { locale } = await params
+    const translations = getWaveIGLSupportTranslations(locale)
     const isPortuguese = locale === "pt-BR"
+    const isSpanish = locale === "es"
 
     // Organization structured data
     const organizationStructuredData = {
         "@context": "https://schema.org",
         "@type": "Organization",
         name: "WaveIGL",
-        description: isPortuguese
-            ? "Canal de gaming com foco em conteúdo de qualidade e crescimento da comunidade"
-            : "Gaming channel focused on quality content and community growth",
+        description: translations.organizationDescription,
         url: "https://gabrieltoth.com/waveigl-support",
         logo: "https://gabrieltoth.com/logo.png",
         sameAs: [
@@ -34,51 +37,25 @@ export default async function WaveIGLSupportPage({ params }: PageProps) {
     // FAQ structured data
     const faqs = [
         {
-            question: isPortuguese
-                ? "Como posso apoiar o canal WaveIGL?"
-                : "How can I support the WaveIGL channel?",
-            answer: isPortuguese
-                ? "Você pode apoiar através de doações via PIX, cartão de crédito ou criptomoedas. Todo valor é reinvestido na comunidade."
-                : "You can support through donations via PIX, credit card, or cryptocurrencies. All value is reinvested back into the community.",
+            question: translations.faq.question1,
+            answer: translations.faq.answer1,
         },
         {
-            question: isPortuguese
-                ? "Quais são os benefícios de apoiar?"
-                : "What are the benefits of supporting?",
-            answer: isPortuguese
-                ? "Apoiadores recebem acesso exclusivo a conteúdos, participação em eventos especiais e reconhecimento na comunidade."
-                : "Supporters receive exclusive access to content, participation in special events, and community recognition.",
+            question: translations.faq.question2,
+            answer: translations.faq.answer2,
         },
         {
-            question: isPortuguese
-                ? "Como o dinheiro arrecadado é utilizado?"
-                : "How is the raised money used?",
-            answer: isPortuguese
-                ? "100% dos valores arrecadados são reinvestidos em melhorias de equipamento, software premium e eventos para a comunidade."
-                : "100% of raised funds are reinvested in equipment improvements, premium software, and community events.",
+            question: translations.faq.question3,
+            answer: translations.faq.answer3,
         },
         {
-            question: isPortuguese
-                ? "Quais formas de pagamento são aceitas?"
-                : "What payment methods are accepted?",
-            answer: isPortuguese
-                ? "Aceitamos doações via PIX, cartão de crédito e criptomoedas. Todo valor é reinvestido de volta na comunidade através de melhorias e eventos."
-                : "We accept donations via PIX, credit card and cryptocurrencies. All value is reinvested back into the community through improvements and events.",
+            question: translations.faq.question4,
+            answer: translations.faq.answer4,
         },
     ]
 
-    // Breadcrumbs (simplified - no community section)
-    const breadcrumbs = [
-        {
-            name: "Início",
-            href: `/${locale}`,
-        },
-        {
-            name: isPortuguese ? "Apoie WaveIGL" : "Support WaveIGL",
-            href: `/${locale}/waveigl-support`,
-            current: true,
-        },
-    ]
+    // Breadcrumbs with proper translation
+    const breadcrumbs = getWaveIGLSupportBreadcrumbs(locale)
 
     return (
         <>
@@ -89,11 +66,24 @@ export default async function WaveIGLSupportPage({ params }: PageProps) {
                 faqs={faqs}
             />
 
-            <main className="min-h-screen bg-white dark:bg-gray-900">
-                <div className="container mx-auto px-4 py-8">
-                    <Breadcrumbs items={breadcrumbs} className="mb-6" />
+            <Header />
+
+            <main className="min-h-screen bg-white dark:bg-gray-900 relative">
+                {/* Breadcrumbs overlay */}
+                <div className="absolute top-0 left-0 right-0 z-10 bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm">
+                    <div className="container mx-auto px-4 py-4">
+                        <Breadcrumbs items={breadcrumbs} />
+                    </div>
                 </div>
-                <WaveIGLSupportLanding locale={locale} />
+
+                {/* Add padding to content to account for overlaid breadcrumbs */}
+                <div className="pt-16">
+                    <WaveIGLSupportClientPage
+                        initialLocale={locale}
+                        translations={translations}
+                    />
+                </div>
+
                 <Footer locale={locale} />
             </main>
         </>

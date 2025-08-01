@@ -47,8 +47,14 @@ const Breadcrumbs = ({
             item => item.href === `/${locale}` || item.href === "/"
         )
     ) {
+        const getHomeName = () => {
+            if (isPortuguese) return "Início"
+            if (locale === "es") return "Inicio"
+            return "Home"
+        }
+
         finalItems.unshift({
-            name: isPortuguese ? "Início" : "Home",
+            name: getHomeName(),
             href: `/${locale}`,
         })
     }
@@ -65,7 +71,12 @@ const Breadcrumbs = ({
         >
             {finalItems.map((item, index) => {
                 const isLast = index === finalItems.length - 1
-                const isHome = item.name === (isPortuguese ? "Início" : "Home")
+                const getHomeName = () => {
+                    if (isPortuguese) return "Início"
+                    if (locale === "es") return "Inicio"
+                    return "Home"
+                }
+                const isHome = item.name === getHomeName()
 
                 return (
                     <div key={item.href} className="flex items-center">
@@ -133,22 +144,35 @@ function generateBreadcrumbsFromPath(
     let currentPath = `/${locale}`
 
     // Page name mappings
+    const isSpanish = locale === "es"
     const pageNames = {
-        "channel-management": isPortuguese
-            ? "Gerenciamento de Canais"
-            : "Channel Management",
-        "pc-optimization": isPortuguese
-            ? "Otimização de PC"
-            : "PC Optimization",
-        "waveigl-support": isPortuguese ? "Apoie WaveIGL" : "Support WaveIGL",
-        editors: isPortuguese ? "Editores" : "Editors",
-        "privacy-policy": isPortuguese
-            ? "Política de Privacidade"
-            : "Privacy Policy",
-        "terms-of-service": isPortuguese
-            ? "Termos de Serviço"
-            : "Terms of Service",
-        terms: isPortuguese ? "Termos" : "Terms",
+        "channel-management": isSpanish
+            ? "Gestión de Canales"
+            : isPortuguese
+              ? "Gerenciamento de Canais"
+              : "Channel Management",
+        "pc-optimization": isSpanish
+            ? "Optimización de PC"
+            : isPortuguese
+              ? "Otimização de PC"
+              : "PC Optimization",
+        "waveigl-support": isSpanish
+            ? "Apoyar WaveIGL"
+            : isPortuguese
+              ? "Apoie WaveIGL"
+              : "Support WaveIGL",
+        editors: isSpanish ? "Editores" : isPortuguese ? "Editores" : "Editors",
+        "privacy-policy": isSpanish
+            ? "Política de Privacidad"
+            : isPortuguese
+              ? "Política de Privacidade"
+              : "Privacy Policy",
+        "terms-of-service": isSpanish
+            ? "Términos de Servicio"
+            : isPortuguese
+              ? "Termos de Serviço"
+              : "Terms of Service",
+        terms: isSpanish ? "Términos" : isPortuguese ? "Termos" : "Terms",
     }
 
     segments.forEach((segment, index) => {
@@ -179,8 +203,9 @@ export function getBreadcrumbsForStructuredData(
     const items = generateBreadcrumbsFromPath(pathname, locale, isPortuguese)
 
     // Add home
+    const isSpanish = locale === "es"
     const homeItem = {
-        name: isPortuguese ? "Início" : "Home",
+        name: isSpanish ? "Inicio" : isPortuguese ? "Início" : "Home",
         url: `https://gabrieltoth.com/${locale}`,
     }
 

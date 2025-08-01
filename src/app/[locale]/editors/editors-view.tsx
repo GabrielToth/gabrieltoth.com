@@ -6,10 +6,15 @@ import { Card } from "@/components/ui/card"
 import { DynamicIcon } from "@/components/ui/dynamic-icon"
 import LanguageSelector from "@/components/ui/language-selector"
 import WhatsAppButton from "@/components/ui/whatsapp-button"
+import { type Locale } from "@/lib/i18n"
 import { type SectionProps } from "./editors-types"
 import { getApplicationTemplate } from "./editors-whatsapp"
 
-export const HeroSection = ({ t }: SectionProps) => {
+interface SectionPropsWithLocale extends SectionProps {
+    locale: Locale
+}
+
+export const HeroSection = ({ t, locale }: SectionPropsWithLocale) => {
     const whatsappNumber = "5511993313606"
 
     return (
@@ -29,7 +34,7 @@ export const HeroSection = ({ t }: SectionProps) => {
                 </p>
                 <WhatsAppButton
                     phoneNumber={whatsappNumber}
-                    message={getApplicationTemplate(t.locale)}
+                    message={getApplicationTemplate(locale as "en" | "pt-BR")}
                     size="lg"
                     className="bg-blue-600 hover:bg-blue-700 hover:cursor-pointer text-white"
                 >
@@ -37,7 +42,7 @@ export const HeroSection = ({ t }: SectionProps) => {
                 </WhatsAppButton>
 
                 <div className="mt-16 grid grid-cols-1 gap-8 sm:grid-cols-3">
-                    {t.hero.stats.map((stat, index) => (
+                    {t.hero.stats.map((stat: any, index: number) => (
                         <div key={index} className="text-center">
                             <p className="text-4xl font-bold">{stat.number}</p>
                             <p className="mt-2 text-gray-600 dark:text-gray-300">
@@ -69,7 +74,7 @@ export const AboutSection = ({ t }: SectionProps) => {
                 </div>
 
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8">
-                    {t.about.skills.map((skill, index) => (
+                    {t.about.skills.map((skill: any, index: number) => (
                         <div
                             key={index}
                             className="flex flex-col items-center text-center"
@@ -100,7 +105,7 @@ export const ToolsSection = ({ t }: SectionProps) => {
                 </div>
 
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-                    {t.tools.items.map((tool, index) => (
+                    {t.tools.items.map((tool: any, index: number) => (
                         <Card
                             key={index}
                             className="p-6 text-center backdrop-blur-sm bg-white/50 dark:bg-gray-900/50"
@@ -136,39 +141,44 @@ export const RequirementsSection = ({ t }: SectionProps) => {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    {t.requirements.items.map((requirement, index) => (
-                        <Card
-                            key={index}
-                            className="p-6 bg-gray-100 dark:bg-gray-800 border-0 shadow-xl hover:shadow-2xl transition-shadow duration-300"
-                        >
-                            <DynamicIcon
-                                name={requirement.iconName}
-                                size={32}
-                                className="mb-4 text-blue-400"
-                            />
-                            <h3 className="text-xl font-semibold mb-4">
-                                {requirement.title}
-                            </h3>
-                            <p className="text-gray-600 dark:text-gray-300 mb-6">
-                                {requirement.description}
-                            </p>
-                            <ul className="space-y-3">
-                                {requirement.features.map(
-                                    (feature, featureIndex) => (
-                                        <li
-                                            key={featureIndex}
-                                            className="flex items-center text-sm text-gray-600 dark:text-gray-300"
-                                        >
-                                            <span className="mr-2 text-blue-400">
-                                                •
-                                            </span>
-                                            {feature}
-                                        </li>
-                                    )
-                                )}
-                            </ul>
-                        </Card>
-                    ))}
+                    {t.requirements.items.map(
+                        (requirement: any, index: number) => (
+                            <Card
+                                key={index}
+                                className="p-6 bg-gray-100 dark:bg-gray-800 border-0 shadow-xl hover:shadow-2xl transition-shadow duration-300"
+                            >
+                                <DynamicIcon
+                                    name={requirement.iconName}
+                                    size={32}
+                                    className="mb-4 text-blue-400"
+                                />
+                                <h3 className="text-xl font-semibold mb-4">
+                                    {requirement.title}
+                                </h3>
+                                <p className="text-gray-600 dark:text-gray-300 mb-6">
+                                    {requirement.description}
+                                </p>
+                                <ul className="space-y-3">
+                                    {requirement.features.map(
+                                        (
+                                            feature: string,
+                                            featureIndex: number
+                                        ) => (
+                                            <li
+                                                key={featureIndex}
+                                                className="flex items-center text-sm text-gray-600 dark:text-gray-300"
+                                            >
+                                                <span className="mr-2 text-blue-400">
+                                                    •
+                                                </span>
+                                                {feature}
+                                            </li>
+                                        )
+                                    )}
+                                </ul>
+                            </Card>
+                        )
+                    )}
                 </div>
             </div>
         </section>
@@ -188,8 +198,8 @@ export const BenefitsSection = ({ t }: SectionProps) => {
                     </p>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    {t.benefits.items.map((benefit, index) => (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    {t.benefits.items.map((benefit: any, index: number) => (
                         <BenefitCard
                             key={index}
                             title={benefit.title}
@@ -203,7 +213,7 @@ export const BenefitsSection = ({ t }: SectionProps) => {
     )
 }
 
-export const CTASection = ({ t }: SectionProps) => {
+export const CTASection = ({ t, locale }: SectionPropsWithLocale) => {
     const whatsappNumber = "5511993313606"
 
     return (
@@ -213,7 +223,7 @@ export const CTASection = ({ t }: SectionProps) => {
                 <p className="text-lg mb-8">{t.cta.description}</p>
                 <WhatsAppButton
                     phoneNumber={whatsappNumber}
-                    message={getApplicationTemplate(t.locale)}
+                    message={getApplicationTemplate(locale as "en" | "pt-BR")}
                     size="lg"
                     variant="outline"
                     className="border-white text-blue-600 bg-white hover:bg-blue-600 hover:text-white"

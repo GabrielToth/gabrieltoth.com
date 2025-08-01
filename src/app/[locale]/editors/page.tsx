@@ -141,12 +141,12 @@ export default async function EditorsPage({ params }: PageProps) {
                         className="mb-6"
                     />
                 </div>
-                <HeroSection t={t} />
+                <HeroSection t={t} locale={locale} />
                 <AboutSection t={t} />
                 <ToolsSection t={t} />
                 <RequirementsSection t={t} />
                 <BenefitsSection t={t} />
-                <CTASection t={t} />
+                <CTASection t={t} locale={locale} />
                 <Footer locale={locale} />
             </main>
         </>
