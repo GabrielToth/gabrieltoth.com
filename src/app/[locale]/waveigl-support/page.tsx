@@ -16,8 +16,6 @@ export { generateMetadata } from "./waveigl-support-metadata"
 export default async function WaveIGLSupportPage({ params }: PageProps) {
     const { locale } = await params
     const translations = getWaveIGLSupportTranslations(locale)
-    const isPortuguese = locale === "pt-BR"
-    const isSpanish = locale === "es"
 
     // Organization structured data
     const organizationStructuredData = {
@@ -78,10 +76,7 @@ export default async function WaveIGLSupportPage({ params }: PageProps) {
 
                 {/* Add padding to content to account for overlaid breadcrumbs */}
                 <div className="pt-16">
-                    <WaveIGLSupportClientPage
-                        initialLocale={locale}
-                        translations={translations}
-                    />
+                    <WaveIGLSupportClientPage translations={translations} />
                 </div>
 
                 <Footer locale={locale} />

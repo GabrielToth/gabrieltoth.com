@@ -25,6 +25,7 @@ export interface HeroStat {
 export interface MissionPoint {
     title: string
     description: string
+    icon?: string
 }
 
 export interface ProjectItem {
@@ -33,6 +34,7 @@ export interface ProjectItem {
     progress: number
     budget: string
     status: string
+    icon?: string
 }
 
 export interface TransparencyBreakdown {

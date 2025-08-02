@@ -51,8 +51,6 @@ export default function WaveIGLSupportView({
     onScrollToDonation,
     donationSectionRef,
 }: WaveIGLSupportViewProps) {
-    const isPortuguese = locale === "pt-BR"
-
     const PaymentMethodToggle = () => (
         <div className="flex items-center gap-4 p-4 bg-gray-100 dark:bg-gray-800 rounded-lg mb-6">
             <div className="flex-1">

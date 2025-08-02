@@ -7,6 +7,7 @@ import { DynamicIcon } from "@/components/ui/dynamic-icon"
 import LanguageSelector from "@/components/ui/language-selector"
 import WhatsAppButton from "@/components/ui/whatsapp-button"
 import { type Locale } from "@/lib/i18n"
+import { type IconName } from "@/lib/icons"
 import { type SectionProps } from "./editors-types"
 import { getApplicationTemplate } from "./editors-whatsapp"
 
@@ -42,14 +43,21 @@ export const HeroSection = ({ t, locale }: SectionPropsWithLocale) => {
                 </WhatsAppButton>
 
                 <div className="mt-16 grid grid-cols-1 gap-8 sm:grid-cols-3">
-                    {t.hero.stats.map((stat: any, index: number) => (
-                        <div key={index} className="text-center">
-                            <p className="text-4xl font-bold">{stat.number}</p>
-                            <p className="mt-2 text-gray-600 dark:text-gray-300">
-                                {stat.label}
-                            </p>
-                        </div>
-                    ))}
+                    {t.hero.stats.map(
+                        (
+                            stat: { number: string; label: string },
+                            index: number
+                        ) => (
+                            <div key={index} className="text-center">
+                                <p className="text-4xl font-bold">
+                                    {stat.number}
+                                </p>
+                                <p className="mt-2 text-gray-600 dark:text-gray-300">
+                                    {stat.label}
+                                </p>
+                            </div>
+                        )
+                    )}
                 </div>
             </div>
         </section>
@@ -74,19 +82,24 @@ export const AboutSection = ({ t }: SectionProps) => {
                 </div>
 
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8">
-                    {t.about.skills.map((skill: any, index: number) => (
-                        <div
-                            key={index}
-                            className="flex flex-col items-center text-center"
-                        >
-                            <DynamicIcon
-                                name={skill.iconName}
-                                size={32}
-                                className="mb-2"
-                            />
-                            <p>{skill.name}</p>
-                        </div>
-                    ))}
+                    {t.about.skills.map(
+                        (
+                            skill: { iconName: string; name: string },
+                            index: number
+                        ) => (
+                            <div
+                                key={index}
+                                className="flex flex-col items-center text-center"
+                            >
+                                <DynamicIcon
+                                    name={skill.iconName as IconName}
+                                    size={32}
+                                    className="mb-2"
+                                />
+                                <p>{skill.name}</p>
+                            </div>
+                        )
+                    )}
                 </div>
             </div>
         </section>
@@ -105,22 +118,33 @@ export const ToolsSection = ({ t }: SectionProps) => {
                 </div>
 
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-                    {t.tools.items.map((tool: any, index: number) => (
-                        <Card
-                            key={index}
-                            className="p-6 text-center backdrop-blur-sm bg-white/50 dark:bg-gray-900/50"
-                        >
-                            <DynamicIcon
-                                name={tool.iconName}
-                                size={48}
-                                className="mx-auto mb-4"
-                            />
-                            <h3 className="font-semibold mb-2">{tool.name}</h3>
-                            <p className="text-gray-600 dark:text-gray-300">
-                                {tool.description}
-                            </p>
-                        </Card>
-                    ))}
+                    {t.tools.items.map(
+                        (
+                            tool: {
+                                iconName: string
+                                name: string
+                                description: string
+                            },
+                            index: number
+                        ) => (
+                            <Card
+                                key={index}
+                                className="p-6 text-center backdrop-blur-sm bg-white/50 dark:bg-gray-900/50"
+                            >
+                                <DynamicIcon
+                                    name={tool.iconName as IconName}
+                                    size={48}
+                                    className="mx-auto mb-4"
+                                />
+                                <h3 className="font-semibold mb-2">
+                                    {tool.name}
+                                </h3>
+                                <p className="text-gray-600 dark:text-gray-300">
+                                    {tool.description}
+                                </p>
+                            </Card>
+                        )
+                    )}
                 </div>
             </div>
         </section>
@@ -142,13 +166,21 @@ export const RequirementsSection = ({ t }: SectionProps) => {
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                     {t.requirements.items.map(
-                        (requirement: any, index: number) => (
+                        (
+                            requirement: {
+                                iconName: string
+                                title: string
+                                description: string
+                                features?: string[]
+                            },
+                            index: number
+                        ) => (
                             <Card
                                 key={index}
                                 className="p-6 bg-gray-100 dark:bg-gray-800 border-0 shadow-xl hover:shadow-2xl transition-shadow duration-300"
                             >
                                 <DynamicIcon
-                                    name={requirement.iconName}
+                                    name={requirement.iconName as IconName}
                                     size={32}
                                     className="mb-4 text-blue-400"
                                 />
@@ -158,24 +190,26 @@ export const RequirementsSection = ({ t }: SectionProps) => {
                                 <p className="text-gray-600 dark:text-gray-300 mb-6">
                                     {requirement.description}
                                 </p>
-                                <ul className="space-y-3">
-                                    {requirement.features.map(
-                                        (
-                                            feature: string,
-                                            featureIndex: number
-                                        ) => (
-                                            <li
-                                                key={featureIndex}
-                                                className="flex items-center text-sm text-gray-600 dark:text-gray-300"
-                                            >
-                                                <span className="mr-2 text-blue-400">
-                                                    •
-                                                </span>
-                                                {feature}
-                                            </li>
-                                        )
-                                    )}
-                                </ul>
+                                {requirement.features && (
+                                    <ul className="space-y-3">
+                                        {requirement.features.map(
+                                            (
+                                                feature: string,
+                                                featureIndex: number
+                                            ) => (
+                                                <li
+                                                    key={featureIndex}
+                                                    className="flex items-center text-sm text-gray-600 dark:text-gray-300"
+                                                >
+                                                    <span className="mr-2 text-blue-400">
+                                                        •
+                                                    </span>
+                                                    {feature}
+                                                </li>
+                                            )
+                                        )}
+                                    </ul>
+                                )}
                             </Card>
                         )
                     )}
@@ -199,14 +233,23 @@ export const BenefitsSection = ({ t }: SectionProps) => {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    {t.benefits.items.map((benefit: any, index: number) => (
-                        <BenefitCard
-                            key={index}
-                            title={benefit.title}
-                            description={benefit.description}
-                            iconName={benefit.iconName}
-                        />
-                    ))}
+                    {t.benefits.items.map(
+                        (
+                            benefit: {
+                                title: string
+                                description: string
+                                iconName: string
+                            },
+                            index: number
+                        ) => (
+                            <BenefitCard
+                                key={index}
+                                title={benefit.title}
+                                description={benefit.description}
+                                iconName={benefit.iconName as IconName}
+                            />
+                        )
+                    )}
                 </div>
             </div>
         </section>

@@ -1,13 +1,12 @@
 "use client"
 
+import { type WaveIGLSupportTranslations } from "@/app/[locale]/waveigl-support/waveigl-support-types"
 import WaveIGLSupportView from "@/app/[locale]/waveigl-support/waveigl-support-view"
 import { useLocale } from "@/hooks/use-locale"
-import { type Locale } from "@/lib/i18n"
 import { useEffect, useRef, useState } from "react"
 
 interface WaveIGLSupportClientPageProps {
-    initialLocale: Locale
-    translations: any
+    translations: WaveIGLSupportTranslations
 }
 
 const MERCADO_PAGO_SCRIPT = `
@@ -28,7 +27,6 @@ const MERCADO_PAGO_SCRIPT = `
 `
 
 export default function WaveIGLSupportClientPage({
-    initialLocale,
     translations,
 }: WaveIGLSupportClientPageProps) {
     const { locale } = useLocale()

@@ -6,6 +6,14 @@ import en from "./en.json"
 import es from "./es.json"
 import ptBR from "./pt-BR.json"
 
+// Internal type for testimonial items
+interface TestimonialItem {
+    name: string
+    role: string
+    content: string
+    rating?: number
+}
+
 const translations = {
     en,
     "pt-BR": ptBR,
@@ -16,9 +24,7 @@ const translations = {
 /**
  * Interface for editor translations without icon injection
  */
-export interface EditorsTranslations {
-    [key: string]: any
-}
+export type EditorsTranslations = typeof en
 
 /**
  * Get translations for editors page based on locale
@@ -32,7 +38,7 @@ export function getEditorsTranslations(locale: Locale): EditorsTranslations {
         testimonials: {
             ...t.testimonials,
             items:
-                t.testimonials?.items?.map((item: any) => ({
+                t.testimonials?.items?.map((item: TestimonialItem) => ({
                     ...item,
                     rating: item.rating || 5,
                 })) || [],

@@ -4,7 +4,18 @@ import { Button } from "@/components/ui/button"
 import LanguageSelector from "@/components/ui/language-selector"
 import PricingToggle from "@/components/ui/pricing-toggle"
 import { type Locale } from "@/lib/i18n"
-import { CheckCircle, MessageCircle, Percent, Star } from "lucide-react"
+import { SiYoutube } from "@icons-pack/react-simple-icons"
+import {
+    BarChart3,
+    CheckCircle,
+    DollarSign,
+    MessageCircle,
+    Percent,
+    Star,
+    Target,
+    TrendingUp,
+    Video,
+} from "lucide-react"
 import { useCalculatePrice } from "./channel-management-calculate-price"
 import { ChannelManagementLandingProps } from "./channel-management-types"
 import { generateWhatsAppMessage } from "./channel-management-whatsapp-message"
@@ -13,6 +24,19 @@ import {
     ChannelManagementTranslations,
     getChannelManagementTranslations,
 } from "./translations"
+
+// Internal types for consistency
+interface ProblemItem {
+    title: string
+    description: string
+}
+
+interface ServiceItem {
+    title: string
+    description: string
+    features: string[]
+    price: number
+}
 
 // Hero Section Component
 const HeroSection = ({
@@ -88,17 +112,30 @@ const AboutSection = ({ t }: { t: ChannelManagementTranslations }) => {
                         </div>
                     </div>
                     <div className="grid grid-cols-2 gap-4">
-                        {t.personalAbout.skills.map((skill: any, index) => (
-                            <div
-                                key={index}
-                                className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg text-center"
-                            >
-                                <skill.icon className="w-10 h-10 text-blue-600 dark:text-blue-400 mx-auto mb-4" />
-                                <h3 className="font-semibold text-gray-900 dark:text-white">
-                                    {skill.name}
-                                </h3>
-                            </div>
-                        ))}
+                        {t.personalAbout.skills.map(
+                            (skill: string, index: number) => {
+                                const icons = [
+                                    BarChart3,
+                                    Video,
+                                    DollarSign,
+                                    TrendingUp,
+                                    SiYoutube,
+                                    Target,
+                                ]
+                                const IconComponent = icons[index] || BarChart3
+                                return (
+                                    <div
+                                        key={index}
+                                        className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg text-center"
+                                    >
+                                        <IconComponent className="w-10 h-10 text-blue-600 dark:text-blue-400 mx-auto mb-4" />
+                                        <h3 className="font-semibold text-gray-900 dark:text-white">
+                                            {skill}
+                                        </h3>
+                                    </div>
+                                )
+                            }
+                        )}
                     </div>
                 </div>
             </div>
@@ -120,20 +157,31 @@ const ProblemsSection = ({ t }: { t: ChannelManagementTranslations }) => {
                     </p>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    {t.problems.items.map((problem: any, index) => (
-                        <div
-                            key={index}
-                            className="bg-white dark:bg-gray-900 rounded-lg p-6 shadow-lg text-center"
-                        >
-                            <problem.icon className="w-12 h-12 text-red-500 mx-auto mb-4" />
-                            <h3 className="font-bold text-gray-900 dark:text-white mb-3">
-                                {problem.title}
-                            </h3>
-                            <p className="text-gray-600 dark:text-gray-300 text-sm">
-                                {problem.description}
-                            </p>
-                        </div>
-                    ))}
+                    {t.problems.items.map(
+                        (problem: ProblemItem, index: number) => {
+                            const icons = [
+                                TrendingUp,
+                                BarChart3,
+                                DollarSign,
+                                Target,
+                            ]
+                            const IconComponent = icons[index] || TrendingUp
+                            return (
+                                <div
+                                    key={index}
+                                    className="bg-white dark:bg-gray-900 rounded-lg p-6 shadow-lg text-center"
+                                >
+                                    <IconComponent className="w-12 h-12 text-red-500 mx-auto mb-4" />
+                                    <h3 className="font-bold text-gray-900 dark:text-white mb-3">
+                                        {problem.title}
+                                    </h3>
+                                    <p className="text-gray-600 dark:text-gray-300 text-sm">
+                                        {problem.description}
+                                    </p>
+                                </div>
+                            )
+                        }
+                    )}
                 </div>
             </div>
         </section>
@@ -154,35 +202,41 @@ const ServicesSection = ({ t }: { t: ChannelManagementTranslations }) => {
                     </p>
                 </div>
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    {t.services.items.map((service: any, index) => (
-                        <div
-                            key={index}
-                            className="bg-white dark:bg-gray-800 rounded-lg p-8 shadow-lg"
-                        >
-                            <service.icon className="w-12 h-12 text-blue-600 dark:text-blue-400 mb-6" />
-                            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
-                                {service.title}
-                            </h3>
-                            <p className="text-gray-600 dark:text-gray-300 mb-6">
-                                {service.description}
-                            </p>
-                            <ul className="space-y-2">
-                                {service.features.map(
-                                    (feature: string, idx: number) => (
-                                        <li
-                                            key={idx}
-                                            className="flex items-center text-gray-600 dark:text-gray-300"
-                                        >
-                                            <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
-                                            <span className="text-sm">
-                                                {feature}
-                                            </span>
-                                        </li>
-                                    )
-                                )}
-                            </ul>
-                        </div>
-                    ))}
+                    {t.services.items.map(
+                        (service: ServiceItem, index: number) => {
+                            const icons = [BarChart3, Video, DollarSign, Target]
+                            const IconComponent = icons[index] || BarChart3
+                            return (
+                                <div
+                                    key={index}
+                                    className="bg-white dark:bg-gray-800 rounded-lg p-8 shadow-lg"
+                                >
+                                    <IconComponent className="w-12 h-12 text-blue-600 dark:text-blue-400 mb-6" />
+                                    <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+                                        {service.title}
+                                    </h3>
+                                    <p className="text-gray-600 dark:text-gray-300 mb-6">
+                                        {service.description}
+                                    </p>
+                                    <ul className="space-y-2">
+                                        {service.features.map(
+                                            (feature: string, idx: number) => (
+                                                <li
+                                                    key={idx}
+                                                    className="flex items-center text-gray-600 dark:text-gray-300"
+                                                >
+                                                    <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
+                                                    <span className="text-sm">
+                                                        {feature}
+                                                    </span>
+                                                </li>
+                                            )
+                                        )}
+                                    </ul>
+                                </div>
+                            )
+                        }
+                    )}
                 </div>
             </div>
         </section>
