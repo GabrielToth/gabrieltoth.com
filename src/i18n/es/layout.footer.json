@@ -1,0 +1,35 @@
+{
+    "dataInfo": {
+        "title": "Transparencia de Datos",
+        "text": "Recopilamos solo datos esenciales para la prestación de servicios: información de contacto, datos del canal y comunicaciones. No vendemos ni compartimos tus datos."
+    },
+    "companyDescription": "Desarrollador Full Stack especializado en Ciencia de Datos con consultoría de canales, soluciones digitales para proyectos personales y empresariales, y servicios de edición de video para canales.",
+    "links": {
+        "services": {
+            "title": "Servicios",
+            "items": {
+                "pcOptimization": "Optimización de PC"
+            }
+        },
+        "legal": {
+            "title": "Legal",
+            "items": {
+                "privacy": "Política de Privacidad",
+                "terms": "Términos de Servicio"
+            }
+        },
+        "contact": {
+            "title": "Contacto",
+            "items": {
+                "workAsEditor": "Trabaja como Editor"
+            }
+        }
+    },
+    "rights": "Todos los derechos reservados.",
+    "short": {
+        "privacy": "Privacidad",
+        "terms": "Términos",
+        "secureData": "Datos seguros",
+        "openSource": "Código abierto • Totalmente público"
+    }
+}

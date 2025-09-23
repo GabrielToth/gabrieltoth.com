@@ -1,0 +1,215 @@
+{
+    "hero": {
+        "greeting": "Hola, soy",
+        "name": "Gabriel Toth Gonçalves",
+        "title": "Científico de Datos & Desarrollador Full Stack",
+        "subtitle": "Especializado en crear soluciones digitales innovadoras con tecnologías modernas",
+        "cta": "Ponte en contacto",
+        "resume": "Descargar CV",
+        "disabled": "Desactivado",
+        "contactEmail": "contact@gabrieltoth.com",
+        "resumeUrl": "/resume/Gabriel Toth - Curriculum EN.pdf"
+    },
+    "about": {
+        "title": "Sobre Mí",
+        "description": "Desarrollador apasionado por la tecnología e innovación",
+        "role": "Científico de Datos & Desarrollador Full Stack",
+        "intro": "¡Hola! Soy Gabriel Toth Gonçalves, científico de datos senior y desarrollador Full Stack brasileño. Graduado en Ciencias de la Computación con especialización en Ciencia de Datos, actualmente trabajo en el proyecto social-analytics-engine, realizando análisis avanzados de campañas digitales y métricas de conversión.",
+        "experience": "Mi trabajo actual involucra la integración de datos de Google Analytics con métricas de redes sociales (YouTube, Instagram, X, Telegram) y análisis de conversiones Stripe usando Python, PostgreSQL, SQLAlchemy y Docker. También desarrollo soluciones web empresariales, habiendo creado sitios como softclever.com.br (React) y sistemasatfiscal.com.br (Angular), utilizando tecnologías modernas.",
+        "passion": "Además del análisis y ciencia de datos, gestiono canales como el canal WaveIGL con más de 2 millones de visualizaciones mensuales creando contenido en redes sociales. Desarrollé ViraTrend, un servicio especializado en consultoría de crecimiento digital para creadores de contenido. Me apasiona transformar datos en insights accionables y usar machine learning para optimizar campañas digitales y experiencias de usuario.",
+        "location": "📍 Brasil",
+        "interests": "Cuando no estoy programando, me puedes encontrar creando contenido educativo, explorando nuevas tecnologías o jugando Minecraft (¡sí, hasta tengo mi propio plugin!).",
+        "specializedIn": "Especializado en",
+        "skills": {
+            "title": "Habilidades Principales",
+            "dataScience": {
+                "title": "Ciencia de Datos",
+                "items": [
+                    "Python",
+                    "SQLAlchemy",
+                    "Google APIs",
+                    "Power BI",
+                    "pytest",
+                    "Pandas",
+                    "Matplotlib",
+                    "Scikit-learn",
+                    "NumPy"
+                ]
+            },
+            "frontend": {
+                "title": "Frontend",
+                "items": [
+                    "React",
+                    "Next.js",
+                    "TypeScript",
+                    "Tailwind CSS",
+                    "JavaScript",
+                    "Angular",
+                    "HTML",
+                    "CSS",
+                    "SCSS",
+                    "SASS",
+                    "WordPress"
+                ]
+            },
+            "backend": {
+                "title": "Backend",
+                "items": [
+                    "Node.js",
+                    "Python",
+                    "PostgreSQL",
+                    "Docker",
+                    "Google Cloud",
+                    "REST APIs",
+                    "AWS",
+                    "MySQL",
+                    "Go",
+                    "Java"
+                ]
+            },
+            "tools": {
+                "title": "Herramientas",
+                "items": [
+                    "Git",
+                    "Docker",
+                    "VS Code",
+                    "Figma",
+                    "Power BI",
+                    "Slack",
+                    "Excel",
+                    "Metabase",
+                    "Jira",
+                    "Notion",
+                    "GitHub",
+                    "GitLab"
+                ]
+            }
+        },
+        "contact": {
+            "title": "Contáctame",
+            "description": "Listo para colaborar o discutir tu próximo proyecto",
+            "button": "Conversemos"
+        }
+    },
+    "contact": {
+        "title": "Convierte Tu Proyecto En Realidad",
+        "subtitle": "Listo para transformar tus ideas en realidad digital",
+        "contactEmail": "contact@gabrieltoth.com",
+        "resumeUrl": "/resume/Gabriel Toth - Curriculum EN.pdf",
+        "getInTouch": "Ponte en contacto",
+        "email": "Email",
+        "scheduleCall": "Programar llamada",
+        "downloadResume": "Descargar CV",
+        "followMe": "Sígueme",
+        "services": {
+            "title": "Servicios Disponibles",
+            "dataScience": {
+                "title": "Análisis de Datos",
+                "description": "Análisis avanzado de campañas digitales y métricas de conversión"
+            },
+            "webDev": {
+                "title": "Desarrollo Web",
+                "description": "Sitios web y aplicaciones modernas con React y Next.js"
+            },
+            "consulting": {
+                "title": "Consultoría Digital",
+                "description": "Estrategias de crecimiento para creadores de contenido"
+            },
+            "channelManagement": "Gestión de Canales"
+        },
+        "availability": {
+            "title": "Disponibilidad",
+            "current": "Disponible para nuevos proyectos",
+            "response": "Respuesta en 24h",
+            "timezone": "Zona horaria: UTC-3"
+        },
+        "form": {
+            "name": "Tu nombre",
+            "email": "Email",
+            "subject": "Asunto",
+            "message": "Mensaje",
+            "emailPlaceholder": "tu@email.com",
+            "messagePlaceholder": "Cuéntame sobre tu proyecto...",
+            "send": "Enviar mensaje",
+            "sending": "Enviando...",
+            "success": "¡Mensaje enviado con éxito!",
+            "error": "Error al enviar mensaje. Inténtalo de nuevo."
+        }
+    },
+    "projects": {
+        "title": "Proyectos",
+        "description": "Algunos de los proyectos que he desarrollado con tecnologías modernas",
+        "viewProject": "Ver Proyecto",
+        "sourceCode": "Código Fuente",
+        "technologies": "Tecnologías",
+        "showMore": "Ver Más",
+        "showLess": "Ver Menos",
+        "items": [
+            {
+                "title": "Sistema SAT Fiscal - Sitio Web",
+                "description": "Sitio institucional para empresa especializada en soluciones fiscales y contables. Desarrollado con enfoque en presentar servicios fiscales, gestión tributaria y soluciones empresariales de forma clara y profesional.",
+                "image": "/projects/sat-fiscal.jpg",
+                "tags": ["HTML", "CSS", "JavaScript", "SEO", "Diseño"],
+                "liveUrl": "https://sistemasatfiscal.com.br",
+                "featured": true
+            },
+            {
+                "title": "Softclever - Sitio Web",
+                "description": "Sitio corporativo desarrollado en React para empresa de software, con diseño moderno y responsivo. Implementa secciones para servicios, portafolio y contacto, utilizando tecnologías como React, CSS moderno y optimizaciones de SEO.",
+                "image": "/projects/softclever.jpg",
+                "tags": ["React", "CSS", "JavaScript", "SEO"],
+                "liveUrl": "https://softclever.com.br",
+                "githubUrl": "https://github.com/gabrieltoth/softclever"
+            },
+            {
+                "title": "Proyecto WaveIGL",
+                "description": "Proyecto educativo completo incluyendo canal de YouTube con más de 2 millones de visualizaciones mensuales, sistema de pagos integrado para inversiones y gestión de canales. Incluye creación de contenido sobre tecnología, programación y desarrollo de juegos.",
+                "image": "/projects/waveigl.jpg",
+                "tags": [
+                    "YouTube",
+                    "Creación de Contenido",
+                    "Integración de Pagos",
+                    "Next.js",
+                    "Stripe",
+                    "PIX"
+                ],
+                "slug": "/waveigl-support"
+            },
+            {
+                "title": "Servicio de Optimización de PC",
+                "description": "Servicio especializado de optimización de PC para gaming, enfocado en maximizar el rendimiento en juegos y reducir la latencia. Incluye configuraciones avanzadas del sistema, optimización de hardware y software personalizado.",
+                "image": "/projects/pc-optimization.jpg",
+                "tags": ["Windows", "Gaming", "Rendimiento", "Hardware"],
+                "slug": "/pc-optimization"
+            }
+        ]
+    },
+    "seo": {
+        "personDescription": "Desarrollador Full Stack y Científico de Datos especializado en tecnologías modernas",
+        "jobTitle": "Desarrollador Full Stack y Científico de Datos"
+    },
+    "structuredData": {
+        "profilePage": {
+            "@context": "https://schema.org",
+            "@type": "ProfilePage",
+            "mainEntity": {
+                "@type": "Person",
+                "name": "Gabriel Toth Gonçalves",
+                "alternateName": "Gabriel Toth",
+                "description": "Desarrollador Full Stack y Científico de Datos especializado en tecnologías modernas",
+                "url": "https://gabrieltoth.com",
+                "image": "https://gabrieltoth.com/profile-image.jpg",
+                "sameAs": [
+                    "https://github.com/gabrieltoth",
+                    "https://linkedin.com/in/gabriel-toth",
+                    "https://twitter.com/gabrieltoth"
+                ],
+                "jobTitle": "Desarrollador Full Stack y Científico de Datos",
+                "worksFor": {
+                    "@type": "Organization",
+                    "name": "Gabriel Toth Tech"
+                }
+            }
+        }
+    }
+}

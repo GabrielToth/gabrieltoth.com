@@ -11,114 +11,220 @@ export { generateMetadata } from "./terms-metadata"
 
 export default async function PCOptimizationTermsPage({ params }: PageProps) {
     const { locale } = await params
-    const isPortuguese = locale === "pt-BR"
 
     // Breadcrumbs
     const breadcrumbs = [
         {
-            name: isPortuguese ? "Início" : "Home",
+            name:
+                locale === "pt-BR"
+                    ? "Início"
+                    : locale === "es"
+                      ? "Inicio"
+                      : locale === "de"
+                        ? "Startseite"
+                        : "Home",
             url: `https://gabrieltoth.com${locale === "en" ? "" : `/${locale}`}`,
         },
         {
-            name: isPortuguese ? "Otimização de PC" : "PC Optimization",
+            name:
+                locale === "pt-BR"
+                    ? "Otimização de PC"
+                    : locale === "es"
+                      ? "Optimización de PC"
+                      : locale === "de"
+                        ? "PC-Optimierung"
+                        : "PC Optimization",
             url: `https://gabrieltoth.com${locale === "en" ? "" : `/${locale}`}/pc-optimization`,
         },
         {
-            name: isPortuguese ? "Termos" : "Terms",
+            name:
+                locale === "pt-BR"
+                    ? "Termos"
+                    : locale === "es"
+                      ? "Términos"
+                      : locale === "de"
+                        ? "Bedingungen"
+                        : "Terms",
             url: `https://gabrieltoth.com${locale === "en" ? "" : `/${locale}`}/pc-optimization/terms`,
         },
     ]
 
     const content = {
-        title: isPortuguese
-            ? "Termos e Avisos Importantes – Otimização de Desempenho"
-            : "Important Terms and Notices – Performance Optimization",
-        subtitle: isPortuguese
-            ? "Ao contratar os serviços de otimização de desempenho e ajustes avançados para computadores, o cliente declara estar ciente e de acordo com os seguintes pontos:"
-            : "By contracting performance optimization and advanced computer tuning services, the client declares to be aware and agree with the following points:",
+        title:
+            locale === "pt-BR"
+                ? "Termos e Avisos Importantes – Otimização de Desempenho"
+                : locale === "es"
+                  ? "Términos y Avisos Importantes – Optimización de Rendimiento"
+                  : locale === "de"
+                    ? "Wichtige Bedingungen und Hinweise – Leistungsoptimierung"
+                    : "Important Terms and Notices – Performance Optimization",
+        subtitle:
+            locale === "pt-BR"
+                ? "Ao contratar os serviços de otimização de desempenho e ajustes avançados para computadores, o cliente declara estar ciente e de acordo com os seguintes pontos:"
+                : locale === "es"
+                  ? "Al contratar servicios de optimización de rendimiento y ajustes avanzados, el cliente declara estar al tanto y de acuerdo con lo siguiente:"
+                  : locale === "de"
+                    ? "Durch die Beauftragung von Leistungsoptimierung und erweiterten Anpassungen erklärt sich der Kunde mit Folgendem einverstanden:"
+                    : "By contracting performance optimization and advanced computer tuning services, the client declares to be aware and agree with the following points:",
         generalTerms: {
-            title: isPortuguese
-                ? "Termos Gerais de Otimização"
-                : "General Optimization Terms",
-            items: isPortuguese
-                ? [
-                      "1. **Natureza dos Serviços**: Os serviços incluem ajustes de sistema, configurações de hardware/software, instalação de drivers, otimização de perfis de energia e configurações específicas para gaming ou trabalho.",
-                      "2. **Tempo de Execução**: O processo completo pode levar de 2 a 6 horas, dependendo das configurações iniciais do sistema e dos objetivos específicos.",
-                      "3. **Acesso Remoto**: Alguns ajustes podem ser realizados remotamente através de software especializado, sempre com autorização prévia do cliente.",
-                      "4. **Documentação**: Todas as alterações realizadas serão documentadas e fornecidas ao cliente.",
-                  ]
-                : [
-                      "1. **Nature of Services**: Services include system adjustments, hardware/software configurations, driver installation, power profile optimization, and specific settings for gaming or work.",
-                      "2. **Execution Time**: The complete process may take 2 to 6 hours, depending on initial system settings and specific objectives.",
-                      "3. **Remote Access**: Some adjustments may be performed remotely through specialized software, always with prior client authorization.",
-                      "4. **Documentation**: All changes made will be documented and provided to the client.",
-                  ],
+            title:
+                locale === "pt-BR"
+                    ? "Termos Gerais de Otimização"
+                    : locale === "es"
+                      ? "Términos Generales de Optimización"
+                      : locale === "de"
+                        ? "Allgemeine Optimierungsbedingungen"
+                        : "General Optimization Terms",
+            items:
+                locale === "pt-BR"
+                    ? [
+                          "1. **Natureza dos Serviços**: Os serviços incluem ajustes de sistema, configurações de hardware/software, instalação de drivers, otimização de perfis de energia e configurações específicas para gaming ou trabalho.",
+                          "2. **Tempo de Execução**: O processo completo pode levar de 2 a 6 horas, dependendo das configurações iniciais do sistema e dos objetivos específicos.",
+                          "3. **Acesso Remoto**: Alguns ajustes podem ser realizados remotamente através de software especializado, sempre com autorização prévia do cliente.",
+                          "4. **Documentação**: Todas as alterações realizadas serão documentadas e fornecidas ao cliente.",
+                      ]
+                    : locale === "es"
+                      ? [
+                            "1. **Naturaleza de los Servicios**: ...",
+                            "2. **Tiempo de Ejecución**: ...",
+                            "3. **Acceso Remoto**: ...",
+                            "4. **Documentación**: ...",
+                        ]
+                      : [
+                            "1. **Nature of Services**: Services include system adjustments, hardware/software configurations, driver installation, power profile optimization, and specific settings for gaming or work.",
+                            "2. **Execution Time**: The complete process may take 2 to 6 hours, depending on initial system settings and specific objectives.",
+                            "3. **Remote Access**: Some adjustments may be performed remotely through specialized software, always with prior client authorization.",
+                            "4. **Documentation**: All changes made will be documented and provided to the client.",
+                        ],
         },
         warranties: {
-            title: isPortuguese
-                ? "Garantias e Limitações"
-                : "Warranties and Limitations",
-            items: isPortuguese
-                ? [
-                      "• **Garantia de Serviço**: 30 dias para correção de problemas diretamente relacionados às otimizações realizadas.",
-                      "• **Limite de Responsabilidade**: Não nos responsabilizamos por danos a hardware pré-existentes ou falhas não relacionadas aos ajustes realizados.",
-                      "• **Compatibilidade**: Algumas otimizações podem não ser compatíveis com softwares específicos ou hardware muito antigo.",
-                      "• **Performance**: Melhorias de performance variam conforme hardware disponível e uso pretendido.",
-                  ]
-                : [
-                      "• **Service Warranty**: 30 days for correction of problems directly related to performed optimizations.",
-                      "• **Liability Limit**: We are not responsible for pre-existing hardware damage or failures unrelated to performed adjustments.",
-                      "• **Compatibility**: Some optimizations may not be compatible with specific software or very old hardware.",
-                      "• **Performance**: Performance improvements vary according to available hardware and intended use.",
-                  ],
+            title:
+                locale === "pt-BR"
+                    ? "Garantias e Limitações"
+                    : locale === "es"
+                      ? "Garantías y Limitaciones"
+                      : locale === "de"
+                        ? "Garantien und Einschränkungen"
+                        : "Warranties and Limitations",
+            items:
+                locale === "pt-BR"
+                    ? [
+                          "• **Garantia de Serviço**: 30 dias para correção de problemas diretamente relacionados às otimizações realizadas.",
+                          "• **Limite de Responsabilidade**: Não nos responsabilizamos por danos a hardware pré-existentes ou falhas não relacionadas aos ajustes realizados.",
+                          "• **Compatibilidade**: Algumas otimizações podem não ser compatíveis com softwares específicos ou hardware muito antigo.",
+                          "• **Performance**: Melhorias de performance variam conforme hardware disponível e uso pretendido.",
+                      ]
+                    : locale === "es"
+                      ? [
+                            "• **Garantía del Servicio**: ...",
+                            "• **Límite de Responsabilidad**: ...",
+                            "• **Compatibilidad**: ...",
+                            "• **Rendimiento**: ...",
+                        ]
+                      : [
+                            "• **Service Warranty**: 30 days for correction of problems directly related to performed optimizations.",
+                            "• **Liability Limit**: We are not responsible for pre-existing hardware damage or failures unrelated to performed adjustments.",
+                            "• **Compatibility**: Some optimizations may not be compatible with specific software or very old hardware.",
+                            "• **Performance**: Performance improvements vary according to available hardware and intended use.",
+                        ],
         },
         requirements: {
-            title: isPortuguese
-                ? "Requisitos e Responsabilidades do Cliente"
-                : "Client Requirements and Responsibilities",
-            items: isPortuguese
-                ? [
-                      "• **Backup de Dados**: É recomendável realizar backup de dados importantes antes dos ajustes.",
-                      "• **Informações do Sistema**: Fornecer informações precisas sobre hardware, software instalado e uso pretendido.",
-                      "• **Acesso Administrativo**: Disponibilizar acesso de administrador ao sistema durante o processo.",
-                      "• **Ambiente Adequado**: Garantir ambiente livre de vírus e malwares antes dos ajustes.",
-                  ]
-                : [
-                      "• **Data Backup**: It is recommended to backup important data before adjustments.",
-                      "• **System Information**: Provide accurate information about hardware, installed software, and intended use.",
-                      "• **Administrative Access**: Provide administrator access to the system during the process.",
-                      "• **Proper Environment**: Ensure virus and malware-free environment before adjustments.",
-                  ],
+            title:
+                locale === "pt-BR"
+                    ? "Requisitos e Responsabilidades do Cliente"
+                    : locale === "es"
+                      ? "Requisitos y Responsabilidades del Cliente"
+                      : locale === "de"
+                        ? "Anforderungen und Verantwortlichkeiten des Kunden"
+                        : "Client Requirements and Responsibilities",
+            items:
+                locale === "pt-BR"
+                    ? [
+                          "• **Backup de Dados**: É recomendável realizar backup de dados importantes antes dos ajustes.",
+                          "• **Informações do Sistema**: Fornecer informações precisas sobre hardware, software instalado e uso pretendido.",
+                          "• **Acesso Administrativo**: Disponibilizar acesso de administrador ao sistema durante o processo.",
+                          "• **Ambiente Adequado**: Garantir ambiente livre de vírus e malwares antes dos ajustes.",
+                      ]
+                    : locale === "es"
+                      ? [
+                            "• **Copia de Seguridad de Datos**: ...",
+                            "• **Información del Sistema**: ...",
+                            "• **Acceso Administrativo**: ...",
+                            "• **Entorno Adecuado**: ...",
+                        ]
+                      : [
+                            "• **Data Backup**: It is recommended to backup important data before adjustments.",
+                            "• **System Information**: Provide accurate information about hardware, installed software, and intended use.",
+                            "• **Administrative Access**: Provide administrator access to the system during the process.",
+                            "• **Proper Environment**: Ensure virus and malware-free environment before adjustments.",
+                        ],
         },
         warnings: {
-            title: isPortuguese ? "Avisos Importantes" : "Important Warnings",
-            items: isPortuguese
-                ? [
-                      "⚠️ **Overclocking**: Serviços de overclocking aumentam performance mas podem reduzir vida útil do hardware.",
-                      "⚠️ **Configurações Experimentais**: Algumas configurações avançadas podem exigir reversão em caso de incompatibilidade.",
-                      "⚠️ **Atualizações do Sistema**: Atualizações futuras do Windows podem reverter algumas otimizações.",
-                      "⚠️ **Hardware Antigo**: Sistemas muito antigos podem ter limitações físicas que impedem certas otimizações.",
-                  ]
-                : [
-                      "⚠️ **Overclocking**: Overclocking services increase performance but may reduce hardware lifespan.",
-                      "⚠️ **Experimental Settings**: Some advanced settings may require reversal in case of incompatibility.",
-                      "⚠️ **System Updates**: Future Windows updates may revert some optimizations.",
-                      "⚠️ **Old Hardware**: Very old systems may have physical limitations that prevent certain optimizations.",
-                  ],
+            title:
+                locale === "pt-BR"
+                    ? "Avisos Importantes"
+                    : locale === "es"
+                      ? "Avisos Importantes"
+                      : locale === "de"
+                        ? "Wichtige Hinweise"
+                        : "Important Warnings",
+            items:
+                locale === "pt-BR"
+                    ? [
+                          "⚠️ **Overclocking**: Serviços de overclocking aumentam performance mas podem reduzir vida útil do hardware.",
+                          "⚠️ **Configurações Experimentais**: Algumas configurações avançadas podem exigir reversão em caso de incompatibilidade.",
+                          "⚠️ **Atualizações do Sistema**: Atualizações futuras do Windows podem reverter algumas otimizações.",
+                          "⚠️ **Hardware Antigo**: Sistemas muito antigos podem ter limitações físicas que impedem certas otimizações.",
+                      ]
+                    : locale === "es"
+                      ? [
+                            "⚠️ **Overclocking**: ...",
+                            "⚠️ **Configuraciones Experimentales**: ...",
+                            "⚠️ **Actualizaciones del Sistema**: ...",
+                            "⚠️ **Hardware Antiguo**: ...",
+                        ]
+                      : [
+                            "⚠️ **Overclocking**: Overclocking services increase performance but may reduce hardware lifespan.",
+                            "⚠️ **Experimental Settings**: Some advanced settings may require reversal in case of incompatibility.",
+                            "⚠️ **System Updates**: Future Windows updates may revert some optimizations.",
+                            "⚠️ **Old Hardware**: Very old systems may have physical limitations that prevent certain optimizations.",
+                        ],
         },
         payment: {
-            title: isPortuguese ? "Condições de Pagamento" : "Payment Terms",
-            text: isPortuguese
-                ? "O pagamento é realizado após a conclusão e aprovação dos serviços. Valores variam conforme complexidade e tempo necessário. Forma de pagamento: PIX, cartão de crédito ou outros métodos acordados previamente."
-                : "Payment is made after completion and approval of services. Prices vary according to complexity and required time. Payment methods: PIX, credit card, or other previously agreed methods.",
+            title:
+                locale === "pt-BR"
+                    ? "Condições de Pagamento"
+                    : locale === "es"
+                      ? "Términos de Pago"
+                      : locale === "de"
+                        ? "Zahlungsbedingungen"
+                        : "Payment Terms",
+            text:
+                locale === "pt-BR"
+                    ? "O pagamento é realizado após a conclusão e aprovação dos serviços. Valores variam conforme complexidade e tempo necessário. Forma de pagamento: PIX, cartão de crédito ou outros métodos acordados previamente."
+                    : locale === "es"
+                      ? "El pago se realiza tras la finalización y aprobación del servicio. Los valores varían según la complejidad y el tiempo requerido. Métodos de pago: PIX, tarjeta de crédito u otros métodos previamente acordados."
+                      : locale === "de"
+                        ? "Die Zahlung erfolgt nach Abschluss und Genehmigung der Leistungen. Die Preise variieren je nach Komplexität und erforderlicher Zeit. Zahlungsmethoden: PIX, Kreditkarte oder andere zuvor vereinbarte Methoden."
+                        : "Payment is made after completion and approval of services. Prices vary according to complexity and required time. Payment methods: PIX, credit card, or other previously agreed methods.",
         },
         support: {
-            title: isPortuguese
-                ? "Suporte Pós-Serviço"
-                : "Post-Service Support",
-            text: isPortuguese
-                ? "Oferecemos suporte de 30 dias para esclarecimentos sobre as otimizações realizadas e correção de problemas relacionados. Suporte adicional pode ser contratado separadamente."
-                : "We offer 30-day support for clarifications about performed optimizations and correction of related problems. Additional support can be contracted separately.",
+            title:
+                locale === "pt-BR"
+                    ? "Suporte Pós-Serviço"
+                    : locale === "es"
+                      ? "Soporte Postservicio"
+                      : locale === "de"
+                        ? "Kundendienst"
+                        : "Post-Service Support",
+            text:
+                locale === "pt-BR"
+                    ? "Oferecemos suporte de 30 dias para esclarecimentos sobre as otimizações realizadas e correção de problemas relacionados. Suporte adicional pode ser contratado separadamente."
+                    : locale === "es"
+                      ? "Ofrecemos soporte de 30 días para aclaraciones sobre las optimizaciones realizadas y corrección de problemas relacionados. Un soporte adicional se puede contratar por separado."
+                      : locale === "de"
+                        ? "Wir bieten 30 Tage Support für Fragen zu den durchgeführten Optimierungen und zur Behebung damit verbundener Probleme. Zusätzlicher Support kann separat vereinbart werden."
+                        : "We offer 30-day support for clarifications about performed optimizations and correction of related problems. Additional support can be contracted separately.",
         },
     }
 
@@ -266,17 +372,25 @@ export default async function PCOptimizationTermsPage({ params }: PageProps) {
                         {/* Footer */}
                         <div className="border-t border-gray-200 dark:border-gray-700 pt-6 text-center">
                             <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
-                                {isPortuguese
+                                {locale === "pt-BR"
                                     ? "Ao contratar nossos serviços, você concorda com todos os termos descritos acima."
-                                    : "By hiring our services, you agree to all terms described above."}
+                                    : locale === "es"
+                                      ? "Al contratar nuestros servicios, acepta todos los términos descritos anteriormente."
+                                      : locale === "de"
+                                        ? "Mit der Beauftragung unserer Dienste akzeptieren Sie alle oben beschriebenen Bedingungen."
+                                        : "By hiring our services, you agree to all terms described above."}
                             </p>
                             <Link
                                 href={`/${locale}/pc-optimization`}
                                 className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                             >
-                                {isPortuguese
+                                {locale === "pt-BR"
                                     ? "← Voltar para Otimização de PC"
-                                    : "← Back to PC Optimization"}
+                                    : locale === "es"
+                                      ? "← Volver a Optimización de PC"
+                                      : locale === "de"
+                                        ? "← Zurück zur PC-Optimierung"
+                                        : "← Back to PC Optimization"}
                             </Link>
                         </div>
                     </div>

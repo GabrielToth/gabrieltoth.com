@@ -135,11 +135,44 @@ describe("Navigation Structure Tests", () => {
     })
 
     describe("Breadcrumbs Navigation Functionality", () => {
-        it("should have functional breadcrumbs on landing pages", () => {
+        it("should have functional breadcrumbs on service pages", () => {
             cy.visit("/en/channel-management")
             cy.wait(1000)
 
-            // Check breadcrumb links
+            // Check breadcrumb links - should start with "Services" for service pages
+            cy.get('nav[aria-label="breadcrumb"]')
+                .find("a")
+                .first()
+                .should("be.visible")
+                .and("have.attr", "href", "/en")
+                .and("contain.text", "Services")
+                .and("not.be.disabled")
+        })
+
+        it("should show correct breadcrumb hierarchy for services", () => {
+            cy.visit("/en/channel-management")
+            cy.wait(1000)
+
+            // Check breadcrumb structure - Services > Service Name
+            cy.get('nav[aria-label="breadcrumb"]')
+                .find("a")
+                .first()
+                .should("contain.text", "Services")
+                .and("have.attr", "href", "/en")
+                .and("be.visible")
+                .and("not.be.disabled")
+
+            // Check that we have the service name as current page
+            cy.get('nav[aria-label="breadcrumb"]')
+                .find('span[aria-current="page"]')
+                .should("contain.text", "ViraTrend - Digital Consulting")
+        })
+
+        it("should have functional breadcrumbs on support pages", () => {
+            cy.visit("/en/waveigl-support")
+            cy.wait(1000)
+
+            // Check breadcrumb links - should start with "Home" for non-service pages
             cy.get('nav[aria-label="breadcrumb"]')
                 .find("a")
                 .first()
@@ -147,22 +180,6 @@ describe("Navigation Structure Tests", () => {
                 .and("have.attr", "href", "/en")
                 .and("contain.text", "Home")
                 .and("not.be.disabled")
-                .and("have.length", 1)
-        })
-
-        it("should show correct breadcrumb hierarchy", () => {
-            cy.visit("/en/channel-management")
-            cy.wait(1000)
-
-            // Check breadcrumb structure
-            cy.get('nav[aria-label="breadcrumb"]')
-                .find("a")
-                .first()
-                .should("contain.text", "Home")
-                .and("have.attr", "href", "/en")
-                .and("be.visible")
-                .and("not.be.disabled")
-                .and("have.length", 1)
         })
     })
 

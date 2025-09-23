@@ -345,66 +345,123 @@ export function generateSeoConfig(options: SeoConfigOptions) {
         breadcrumbs = [],
     } = options
 
-    const isPortuguese = locale === "pt-BR"
     const fullUrl = `${SITE_URL}${locale === "en" ? "" : `/${locale}`}${path}`
 
-    const defaultTitle = isPortuguese
-        ? "Gabriel Toth Gonçalves - Desenvolvedor Full Stack & Cientista de Dados"
-        : "Gabriel Toth Gonçalves - Full Stack Developer & Data Scientist"
+    const titleByLocale: Record<Locale, string> = {
+        en: "Gabriel Toth Gonçalves - Full Stack Developer & Data Scientist",
+        "pt-BR":
+            "Gabriel Toth Gonçalves - Desenvolvedor Full Stack & Cientista de Dados",
+        es: "Gabriel Toth Gonçalves - Desarrollador Full Stack y Científico de Datos",
+        de: "Gabriel Toth Gonçalves - Full Stack Entwickler & Datenwissenschaftler",
+    }
 
-    const defaultDescription = isPortuguese
-        ? "Desenvolvedor Full Stack e Cientista de Dados especialista em React, Next.js, TypeScript, Node.js e tecnologias de IA/ML. Serviços profissionais de desenvolvimento web e consultoria digital."
-        : "Expert Full Stack Developer and Data Scientist specializing in React, Next.js, TypeScript, Node.js, and AI/ML technologies. Professional web development services and digital consulting."
+    const descriptionByLocale: Record<Locale, string> = {
+        en: "Expert Full Stack Developer and Data Scientist specializing in React, Next.js, TypeScript, Node.js, and AI/ML technologies. Professional web development services and digital consulting.",
+        "pt-BR":
+            "Desenvolvedor Full Stack e Cientista de Dados especialista em React, Next.js, TypeScript, Node.js e tecnologias de IA/ML. Serviços profissionais de desenvolvimento web e consultoria digital.",
+        es: "Desarrollador Full Stack y Científico de Datos especializado en React, Next.js, TypeScript, Node.js y tecnologías de IA/ML. Servicios profesionales de desarrollo web y consultoría digital.",
+        de: "Full Stack Entwickler und Datenwissenschaftler mit Spezialisierung auf React, Next.js, TypeScript, Node.js und KI/ML-Technologien. Professionelle Webentwicklung und digitale Beratung.",
+    }
+
+    const defaultTitle = titleByLocale[locale]
+    const defaultDescription = descriptionByLocale[locale]
 
     const pageTitle = title || defaultTitle
     const pageDescription = description || defaultDescription
 
     // Enhanced keywords with semantic variations
-    const defaultKeywords = isPortuguese
-        ? [
-              "gabriel toth",
-              "desenvolvedor full stack",
-              "cientista de dados",
-              "react developer",
-              "nextjs specialist",
-              "typescript expert",
-              "nodejs developer",
-              "inteligência artificial",
-              "machine learning",
-              "desenvolvimento web",
-              "consultoria digital",
-              "programador javascript",
-              "python developer",
-              "data science",
-              "web development brasil",
-              "freelancer desenvolvedor",
-              "portifolio desenvolvedor", // cspell:disable-line
-              "serviços web",
-              "otimização performance",
-              "seo tecnico", // cspell:disable-line
-          ]
-        : [
-              "gabriel toth",
-              "full stack developer",
-              "data scientist",
-              "react developer",
-              "nextjs specialist",
-              "typescript expert",
-              "nodejs developer",
-              "artificial intelligence",
-              "machine learning",
-              "web development",
-              "digital consulting",
-              "javascript programmer",
-              "python developer",
-              "data science",
-              "web development brazil",
-              "freelance developer",
-              "developer portfolio",
-              "web services",
-              "performance optimization",
-              "technical seo",
-          ]
+    const keywordsByLocale: Record<Locale, string[]> = {
+        en: [
+            "gabriel toth",
+            "full stack developer",
+            "data scientist",
+            "react developer",
+            "nextjs specialist",
+            "typescript expert",
+            "nodejs developer",
+            "artificial intelligence",
+            "machine learning",
+            "web development",
+            "digital consulting",
+            "javascript programmer",
+            "python developer",
+            "data science",
+            "web development brazil",
+            "freelance developer",
+            "developer portfolio",
+            "web services",
+            "performance optimization",
+            "technical seo",
+        ],
+        "pt-BR": [
+            "gabriel toth",
+            "desenvolvedor full stack",
+            "cientista de dados",
+            "react",
+            "nextjs",
+            "typescript",
+            "nodejs",
+            "inteligência artificial",
+            "machine learning",
+            "desenvolvimento web",
+            "consultoria digital",
+            "programador javascript",
+            "python",
+            "data science",
+            "web brasil",
+            "freelancer desenvolvedor",
+            "portfólio desenvolvedor",
+            "serviços web",
+            "otimização de performance",
+            "seo técnico",
+        ],
+        es: [
+            "gabriel toth",
+            "desarrollador full stack",
+            "científico de datos",
+            "react",
+            "nextjs",
+            "typescript",
+            "nodejs",
+            "inteligencia artificial",
+            "aprendizaje automático",
+            "desarrollo web",
+            "consultoría digital",
+            "programador javascript",
+            "python",
+            "data science",
+            "web brasil",
+            "freelance",
+            "portafolio desarrollador",
+            "servicios web",
+            "optimización de rendimiento",
+            "seo técnico",
+        ],
+        de: [
+            "gabriel toth",
+            "full stack entwickler",
+            "datenwissenschaftler",
+            "react",
+            "nextjs",
+            "typescript",
+            "nodejs",
+            "künstliche intelligenz",
+            "maschinenlernen",
+            "webentwicklung",
+            "digitale beratung",
+            "javascript programmierer",
+            "python",
+            "data science",
+            "web brasil",
+            "freelance entwickler",
+            "entwickler portfolio",
+            "webdienste",
+            "leistungsoptimierung",
+            "technisches seo",
+        ],
+    }
+
+    const defaultKeywords = keywordsByLocale[locale]
 
     const allKeywords = [...new Set([...defaultKeywords, ...keywords])]
 
@@ -429,8 +486,15 @@ export function generateSeoConfig(options: SeoConfigOptions) {
             description: pageDescription,
             url: fullUrl,
             type: ogType,
-            locale: isPortuguese ? "pt_BR" : "en_US",
-            alternateLocale: isPortuguese ? "en_US" : "pt_BR",
+            locale:
+                locale === "pt-BR"
+                    ? "pt_BR"
+                    : locale === "es"
+                      ? "es_ES"
+                      : locale === "de"
+                        ? "de_DE"
+                        : "en_US",
+            alternateLocale: "en_US",
             images: [
                 {
                     url: finalOgImage,
@@ -461,21 +525,23 @@ export function generateSeoConfig(options: SeoConfigOptions) {
             },
             {
                 name: "twitter:label1",
-                content: isPortuguese ? "Escrito por" : "Written by",
+                content:
+                    locale === "pt-BR"
+                        ? "Escrito por"
+                        : locale === "es"
+                          ? "Escrito por"
+                          : locale === "de"
+                            ? "Geschrieben von"
+                            : "Written by",
             },
             {
                 name: "twitter:data1",
                 content: AUTHOR_NAME,
             },
-            {
-                name: "twitter:label2",
-                content: isPortuguese ? "Idiomas" : "Languages",
-            },
+            { name: "twitter:label2", content: "Languages" },
             {
                 name: "twitter:data2",
-                content: isPortuguese
-                    ? "Português, Inglês"
-                    : "English, Portuguese",
+                content: "English, Portuguese, Spanish, German",
             },
         ],
         languageAlternates: [
@@ -508,16 +574,19 @@ export function generateSeoConfig(options: SeoConfigOptions) {
 export function generatePersonStructuredData(
     locale: Locale
 ): StructuredDataPerson {
-    const isPortuguese = locale === "pt-BR"
-
     return {
         "@context": "https://schema.org",
         "@type": "Person",
         name: "Gabriel Toth Gonçalves",
         alternateName: "Gabriel Toth",
-        description: isPortuguese
-            ? "Desenvolvedor Full Stack e Cientista de Dados especializado em React, Next.js, TypeScript, Node.js e tecnologias de IA/ML"
-            : "Full Stack Developer and Data Scientist specialized in React, Next.js, TypeScript, Node.js, and AI/ML technologies",
+        description:
+            locale === "pt-BR"
+                ? "Desenvolvedor Full Stack e Cientista de Dados especializado em React, Next.js, TypeScript, Node.js e tecnologias de IA/ML"
+                : locale === "es"
+                  ? "Desarrollador Full Stack y Científico de Datos especializado en React, Next.js, TypeScript, Node.js y tecnologías de IA/ML"
+                  : locale === "de"
+                    ? "Full Stack Entwickler und Datenwissenschaftler spezialisiert auf React, Next.js, TypeScript, Node.js und KI/ML-Technologien"
+                    : "Full Stack Developer and Data Scientist specialized in React, Next.js, TypeScript, Node.js, and AI/ML technologies",
         url: SITE_URL,
         image: `${SITE_URL}/profile-image.jpg`,
         email: AUTHOR_EMAIL,
@@ -529,9 +598,14 @@ export function generatePersonStructuredData(
             "https://instagram.com/gabrieltoth",
             "https://youtube.com/@gabrieltoth",
         ],
-        jobTitle: isPortuguese
-            ? "Desenvolvedor Full Stack & Cientista de Dados"
-            : "Full Stack Developer & Data Scientist",
+        jobTitle:
+            locale === "pt-BR"
+                ? "Desenvolvedor Full Stack & Cientista de Dados"
+                : locale === "es"
+                  ? "Desarrollador Full Stack y Científico de Datos"
+                  : locale === "de"
+                    ? "Full Stack Entwickler & Datenwissenschaftler"
+                    : "Full Stack Developer & Data Scientist",
         worksFor: {
             "@type": "Organization",
             name: "Gabriel Toth Tech",
@@ -569,17 +643,20 @@ export function generatePersonStructuredData(
 export function generateWebsiteStructuredData(
     locale: Locale
 ): StructuredDataWebsite {
-    const isPortuguese = locale === "pt-BR"
-
     return {
         "@context": "https://schema.org",
         "@type": "WebSite",
         name: SITE_NAME,
         alternateName: "Gabriel Toth",
         url: SITE_URL,
-        description: isPortuguese
-            ? "Portfólio oficial de Gabriel Toth Gonçalves - Desenvolvedor Full Stack e Cientista de Dados especializado em tecnologias modernas"
-            : "Official portfolio of Gabriel Toth Gonçalves - Full Stack Developer and Data Scientist specialized in modern technologies",
+        description:
+            locale === "pt-BR"
+                ? "Portfólio oficial de Gabriel Toth Gonçalves - Desenvolvedor Full Stack e Cientista de Dados especializado em tecnologias modernas"
+                : locale === "es"
+                  ? "Portafolio oficial de Gabriel Toth Gonçalves - Desarrollador Full Stack y Científico de Datos especializado en tecnologías modernas"
+                  : locale === "de"
+                    ? "Offizielles Portfolio von Gabriel Toth Gonçalves - Full Stack Entwickler und Datenwissenschaftler, spezialisiert auf moderne Technologien"
+                    : "Official portfolio of Gabriel Toth Gonçalves - Full Stack Developer and Data Scientist specialized in modern technologies",
         publisher: {
             "@type": "Person",
             name: AUTHOR_NAME,
@@ -600,8 +677,6 @@ export function generateWebsiteStructuredData(
 export function generateOrganizationStructuredData(
     locale: Locale
 ): StructuredDataOrganization {
-    const isPortuguese = locale === "pt-BR"
-
     return {
         "@context": "https://schema.org",
         "@type": "Organization",
@@ -623,9 +698,14 @@ export function generateOrganizationStructuredData(
             "https://linkedin.com/in/gabriel-toth",
             "https://twitter.com/gabrieltoth",
         ],
-        description: isPortuguese
-            ? "Empresa de tecnologia especializada em desenvolvimento web, ciência de dados e soluções de IA"
-            : "Technology company specialized in web development, data science and AI solutions",
+        description:
+            locale === "pt-BR"
+                ? "Empresa de tecnologia especializada em desenvolvimento web, ciência de dados e soluções de IA"
+                : locale === "es"
+                  ? "Empresa de tecnología especializada en desarrollo web, ciencia de datos y soluciones de IA"
+                  : locale === "de"
+                    ? "Technologieunternehmen, spezialisiert auf Webentwicklung, Data Science und KI-Lösungen"
+                    : "Technology company specialized in web development, data science and AI solutions",
     }
 }
 

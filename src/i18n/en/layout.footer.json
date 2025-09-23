@@ -1,0 +1,35 @@
+{
+    "dataInfo": {
+        "title": "Data Transparency",
+        "text": "We only collect essential data for service provision: contact information, channel data and communications. We do not sell or share your data."
+    },
+    "companyDescription": "Full Stack Developer specialized in Data Science with channel consulting services, digital solutions for personal and business projects, and video editing services for channels.",
+    "links": {
+        "services": {
+            "title": "Services",
+            "items": {
+                "pcOptimization": "PC Optimization"
+            }
+        },
+        "legal": {
+            "title": "Legal",
+            "items": {
+                "privacy": "Privacy Policy",
+                "terms": "Terms of Service"
+            }
+        },
+        "contact": {
+            "title": "Contact",
+            "items": {
+                "workAsEditor": "Work as Editor"
+            }
+        }
+    },
+    "rights": "All rights reserved.",
+    "short": {
+        "privacy": "Privacy",
+        "terms": "Terms",
+        "secureData": "Secure data",
+        "openSource": "Open source • Fully public"
+    }
+}

@@ -17,7 +17,7 @@ export default function LocaleNotFound() {
         const potentialLocale = pathSegments[0]
 
         // Check if it's a valid locale
-        const validLocales = ["en", "pt-BR"]
+        const validLocales = ["en", "pt-BR", "es", "de"]
         if (validLocales.includes(potentialLocale)) {
             setLocale(potentialLocale)
         } else {
@@ -36,15 +36,16 @@ export default function LocaleNotFound() {
                 // Detect from browser language
                 if (typeof navigator !== "undefined") {
                     const browserLang = navigator.language
-                    setLocale(browserLang.startsWith("pt") ? "pt-BR" : "en")
+                    if (browserLang.startsWith("pt")) setLocale("pt-BR")
+                    else if (browserLang.startsWith("es")) setLocale("es")
+                    else if (browserLang.startsWith("de")) setLocale("de")
+                    else setLocale("en")
                 } else {
                     setLocale("en")
                 }
             }
         }
     }, [])
-
-    const isPortuguese = locale === "pt-BR"
 
     // Prevent hydration mismatch
     if (!mounted) {
@@ -68,48 +69,124 @@ export default function LocaleNotFound() {
     }
 
     const content = {
-        title: isPortuguese ? "Página Não Encontrada" : "Page Not Found",
-        subtitle: isPortuguese
-            ? "A página que você procura não existe, mas temos outras opções interessantes!"
-            : "The page you're looking for doesn't exist, but we have other interesting options!",
-        homeButton: isPortuguese ? "Página Inicial" : "Home Page",
-        backButton: isPortuguese ? "Voltar" : "Go Back",
-        contactText: isPortuguese
-            ? "Se você acha que isso é um erro, entre em contato conosco."
-            : "If you think this is an error, please contact us.",
-        viewButton: isPortuguese ? "Ver Página" : "View Page",
+        title:
+            locale === "pt-BR"
+                ? "Página Não Encontrada"
+                : locale === "es"
+                  ? "Página No Encontrada"
+                  : locale === "de"
+                    ? "Seite nicht gefunden"
+                    : "Page Not Found",
+        subtitle:
+            locale === "pt-BR"
+                ? "A página que você procura não existe, mas temos outras opções interessantes!"
+                : locale === "es"
+                  ? "La página que buscas no existe, ¡pero tenemos otras opciones interesantes!"
+                  : locale === "de"
+                    ? "Die gesuchte Seite existiert nicht, aber wir haben andere interessante Optionen!"
+                    : "The page you're looking for doesn't exist, but we have other interesting options!",
+        homeButton:
+            locale === "pt-BR"
+                ? "Página Inicial"
+                : locale === "es"
+                  ? "Página de Inicio"
+                  : locale === "de"
+                    ? "Startseite"
+                    : "Home Page",
+        backButton:
+            locale === "pt-BR"
+                ? "Voltar"
+                : locale === "es"
+                  ? "Volver"
+                  : locale === "de"
+                    ? "Zurück"
+                    : "Go Back",
+        contactText:
+            locale === "pt-BR"
+                ? "Se você acha que isso é um erro, entre em contato conosco."
+                : locale === "es"
+                  ? "Si crees que esto es un error, por favor contáctanos."
+                  : locale === "de"
+                    ? "Wenn Sie glauben, dass dies ein Fehler ist, kontaktieren Sie uns bitte."
+                    : "If you think this is an error, please contact us.",
+        viewButton:
+            locale === "pt-BR"
+                ? "Ver Página"
+                : locale === "es"
+                  ? "Ver Página"
+                  : locale === "de"
+                    ? "Seite ansehen"
+                    : "View Page",
     }
 
     const products = [
         {
-            title: isPortuguese ? "ViraTrend" : "ViraTrend",
-            description: isPortuguese
-                ? "Consultoria especializada para crescimento digital"
-                : "Specialized consulting for digital growth",
+            title: "ViraTrend",
+            description:
+                locale === "pt-BR"
+                    ? "Consultoria especializada para crescimento digital"
+                    : locale === "es"
+                      ? "Consultoría especializada para crecimiento digital"
+                      : locale === "de"
+                        ? "Spezialisierte Beratung für digitales Wachstum"
+                        : "Specialized consulting for digital growth",
             href: `/${locale}/channel-management`,
         },
         {
-            title: isPortuguese
-                ? "Otimização de PC Gaming"
-                : "PC Gaming Optimization",
-            description: isPortuguese
-                ? "Serviços de otimização para melhor performance"
-                : "Optimization services for better performance",
+            title:
+                locale === "pt-BR"
+                    ? "Otimização de PC Gaming"
+                    : locale === "es"
+                      ? "Optimización de PC Gaming"
+                      : locale === "de"
+                        ? "PC-Gaming-Optimierung"
+                        : "PC Gaming Optimization",
+            description:
+                locale === "pt-BR"
+                    ? "Serviços de otimização para melhor performance"
+                    : locale === "es"
+                      ? "Servicios de optimización para un mejor rendimiento"
+                      : locale === "de"
+                        ? "Optimierungsdienste für bessere Leistung"
+                        : "Optimization services for better performance",
             href: `/${locale}/pc-optimization`,
         },
-
         {
-            title: isPortuguese ? "Trabalhe Como Editor" : "Work as Editor",
-            description: isPortuguese
-                ? "Ganhe 90% do AdSense editando vídeos"
-                : "Earn 90% of AdSense editing videos",
+            title:
+                locale === "pt-BR"
+                    ? "Trabalhe Como Editor"
+                    : locale === "es"
+                      ? "Trabaja como Editor"
+                      : locale === "de"
+                        ? "Als Editor arbeiten"
+                        : "Work as Editor",
+            description:
+                locale === "pt-BR"
+                    ? "Ganhe 90% do AdSense editando vídeos"
+                    : locale === "es"
+                      ? "Gana el 90% de AdSense editando videos"
+                      : locale === "de"
+                        ? "Verdiene 90% der AdSense-Einnahmen durch Videobearbeitung"
+                        : "Earn 90% of AdSense editing videos",
             href: `/${locale}/editors`,
         },
         {
-            title: isPortuguese ? "Suporte WaveIGL" : "WaveIGL Support",
-            description: isPortuguese
-                ? "Apoie nossa comunidade gaming"
-                : "Support our gaming community",
+            title:
+                locale === "pt-BR"
+                    ? "Suporte WaveIGL"
+                    : locale === "es"
+                      ? "Soporte WaveIGL"
+                      : locale === "de"
+                        ? "WaveIGL Unterstützung"
+                        : "WaveIGL Support",
+            description:
+                locale === "pt-BR"
+                    ? "Apoie nossa comunidade gaming"
+                    : locale === "es"
+                      ? "Apoya nuestra comunidad gaming"
+                      : locale === "de"
+                        ? "Unterstütze unsere Gaming-Community"
+                        : "Support our gaming community",
             href: `/${locale}/waveigl-support`,
         },
     ]

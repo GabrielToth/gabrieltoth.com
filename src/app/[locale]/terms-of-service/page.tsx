@@ -4,6 +4,7 @@ import StructuredData from "@/components/seo/structured-data"
 import Breadcrumbs from "@/components/ui/breadcrumbs"
 import LanguageSelector from "@/components/ui/language-selector"
 import { type Locale } from "@/lib/i18n"
+import { getTranslations } from "next-intl/server"
 
 interface TermsOfServicePageProps {
     params: Promise<{ locale: Locale }>
@@ -15,42 +16,26 @@ export default async function TermsOfServicePage({
     params,
 }: TermsOfServicePageProps) {
     const { locale } = await params
-    const isPortuguese = locale === "pt-BR"
+    const t = await getTranslations({ locale, namespace: "termsOfService" })
 
     // Breadcrumbs
-    const breadcrumbs = [
-        {
-            name:
-                locale === "pt-BR"
-                    ? "Início"
-                    : locale === "es"
-                      ? "Inicio"
-                      : locale === "de"
-                        ? "Startseite"
-                        : "Home",
-            url: `https://gabrieltoth.com${locale === "en" ? "" : `/${locale}`}`,
-        },
-        {
-            name:
-                locale === "pt-BR"
-                    ? "Termos de Serviço"
-                    : locale === "es"
-                      ? "Términos de Servicio"
-                      : locale === "de"
-                        ? "Nutzungsbedingungen"
-                        : "Terms of Service",
-            url: `https://gabrieltoth.com${locale === "en" ? "" : `/${locale}`}/terms-of-service`,
-        },
-    ]
+    const breadcrumbs = (
+        t.raw("breadcrumbs") as Array<{ name: string; href: string }>
+    ).map(b => ({
+        name: b.name,
+        url: `https://gabrieltoth.com${locale === "en" ? "" : `/${locale}`}${b.href}`,
+    }))
 
     // WebPage structured data
     const webPageStructuredData = {
         "@context": "https://schema.org",
         "@type": "WebPage",
-        name: isPortuguese ? "Termos de Serviço" : "Terms of Service",
-        description: isPortuguese
-            ? "Termos de serviço detalhando as condições de uso dos nossos serviços"
-            : "Terms of service detailing the usage conditions for our services",
+        name: t("title"),
+        description:
+            ((t.raw("sections") as any)?.acceptance?.text || "").slice(
+                0,
+                160
+            ) || t("title"),
         url: `https://gabrieltoth.com${locale === "en" ? "" : `/${locale}`}/terms-of-service`,
         isPartOf: {
             "@type": "WebSite",
@@ -59,79 +44,26 @@ export default async function TermsOfServicePage({
         },
         about: {
             "@type": "Thing",
-            name: isPortuguese ? "Condições de Uso" : "Usage Terms",
+            name: t("title"),
         },
     }
 
+    const s = t.raw("sections") as Record<
+        string,
+        { title: string; text: string }
+    >
     const content = {
-        title: isPortuguese ? "Termos de Serviço" : "Terms of Service",
-        lastUpdated: isPortuguese
-            ? "Última atualização: 15 de dezembro de 2024"
-            : "Last updated: December 15, 2024",
-        acceptance: {
-            title: isPortuguese
-                ? "1. Aceitação dos Termos"
-                : "1. Acceptance of Terms",
-            text: isPortuguese
-                ? "Ao acessar e usar este site, você aceita e concorda estar vinculado aos termos e condições de uso aqui descritos. Se você não concordar com algum destes termos, não deverá usar este site."
-                : "By accessing and using this website, you accept and agree to be bound by the terms and conditions of use described herein. If you do not agree to any of these terms, you should not use this website.",
-        },
-        services: {
-            title: isPortuguese
-                ? "2. Descrição dos Serviços"
-                : "2. Service Description",
-            text: isPortuguese
-                ? "Este site oferece serviços de desenvolvimento web, consultoria digital, e soluções tecnológicas. Os serviços podem incluir, mas não se limitam a: desenvolvimento de websites, otimização de performance, consultoria em crescimento digital, e suporte técnico."
-                : "This website offers web development services, digital consulting, and technological solutions. Services may include, but are not limited to: website development, performance optimization, digital growth consulting, and technical support.",
-        },
-        responsibilities: {
-            title: isPortuguese
-                ? "3. Responsabilidades do Usuário"
-                : "3. User Responsibilities",
-            text: isPortuguese
-                ? "Você é responsável por manter a confidencialidade de suas informações de conta e senha, e por todas as atividades que ocorrem sob sua conta. Você concorda em notificar imediatamente sobre qualquer uso não autorizado de sua conta."
-                : "You are responsible for maintaining the confidentiality of your account information and password, and for all activities that occur under your account. You agree to immediately notify us of any unauthorized use of your account.",
-        },
-        limitations: {
-            title: isPortuguese
-                ? "4. Limitações de Responsabilidade"
-                : "4. Limitation of Liability",
-            text: isPortuguese
-                ? "Em nenhuma circunstância seremos responsáveis por quaisquer danos diretos, indiretos, incidentais, especiais ou consequenciais que resultem do uso ou incapacidade de usar nossos serviços."
-                : "Under no circumstances shall we be liable for any direct, indirect, incidental, special, or consequential damages resulting from the use or inability to use our services.",
-        },
-        privacy: {
-            title: isPortuguese ? "5. Privacidade" : "5. Privacy",
-            text: isPortuguese
-                ? "Sua privacidade é importante para nós. Consulte nossa Política de Privacidade para informações sobre como coletamos, usamos e protegemos suas informações pessoais."
-                : "Your privacy is important to us. Please review our Privacy Policy for information on how we collect, use, and protect your personal information.",
-        },
-        modifications: {
-            title: isPortuguese
-                ? "6. Modificações dos Termos"
-                : "6. Terms Modifications",
-            text: isPortuguese
-                ? "Reservamo-nos o direito de modificar estes termos de serviço a qualquer momento. As modificações entrarão em vigor imediatamente após a publicação no site."
-                : "We reserve the right to modify these terms of service at any time. Modifications will take effect immediately upon posting on the website.",
-        },
-        termination: {
-            title: isPortuguese ? "7. Rescisão" : "7. Termination",
-            text: isPortuguese
-                ? "Podemos encerrar ou suspender sua conta e acesso aos serviços imediatamente, sem aviso prévio, por qualquer motivo, incluindo violação destes termos."
-                : "We may terminate or suspend your account and access to services immediately, without prior notice, for any reason, including breach of these terms.",
-        },
-        governing: {
-            title: isPortuguese ? "8. Lei Aplicável" : "8. Governing Law",
-            text: isPortuguese
-                ? "Estes termos serão regidos e interpretados de acordo com as leis do Brasil, sem dar efeito a quaisquer princípios de conflitos de lei."
-                : "These terms shall be governed by and construed in accordance with the laws of Brazil, without giving effect to any principles of conflicts of law.",
-        },
-        contact: {
-            title: isPortuguese ? "9. Contato" : "9. Contact",
-            text: isPortuguese
-                ? "Se você tiver dúvidas sobre estes Termos de Serviço, entre em contato conosco através dos canais disponíveis no site."
-                : "If you have questions about these Terms of Service, please contact us through the channels available on the website.",
-        },
+        title: t("title"),
+        lastUpdated: t("lastUpdated"),
+        acceptance: s.acceptance,
+        services: s.services,
+        responsibilities: s.responsibilities,
+        limitations: s.limitations,
+        privacy: s.privacy,
+        modifications: s.modifications,
+        termination: s.termination,
+        governing: s.governing,
+        contact: s.contact,
     }
 
     return (
@@ -267,9 +199,10 @@ export default async function TermsOfServicePage({
 
                         <div className="mt-12 pt-8 border-t border-gray-200 dark:border-gray-700">
                             <p className="text-sm text-gray-500 dark:text-gray-400 text-center">
-                                {isPortuguese
-                                    ? "Este documento constitui um acordo legalmente vinculativo entre você e Gabriel Toth Gonçalves."
-                                    : "This document constitutes a legally binding agreement between you and Gabriel Toth Gonçalves."}
+                                {t("bindingNote", {
+                                    default:
+                                        "This document constitutes a legally binding agreement between you and Gabriel Toth Gonçalves.",
+                                })}
                             </p>
                         </div>
                     </div>
@@ -280,3 +213,5 @@ export default async function TermsOfServicePage({
         </>
     )
 }
+
+export const revalidate = 3600

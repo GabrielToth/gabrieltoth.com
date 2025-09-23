@@ -1,0 +1,47 @@
+{
+    "title": "Nutzungsbedingungen",
+    "lastUpdated": "Letzte Aktualisierung: 15. Dezember 2024",
+    "breadcrumbs": [
+        { "name": "Startseite", "href": "/" },
+        { "name": "Nutzungsbedingungen", "href": "/terms-of-service" }
+    ],
+    "sections": {
+        "acceptance": {
+            "title": "1. Annahme der Bedingungen",
+            "text": "Durch den Zugriff auf und die Nutzung dieser Website akzeptieren Sie die hier beschriebenen Nutzungsbedingungen. Wenn Sie mit einem dieser Bedingungen nicht einverstanden sind, sollten Sie diese Website nicht nutzen."
+        },
+        "services": {
+            "title": "2. Leistungsbeschreibung",
+            "text": "Diese Website bietet Webentwicklungsdienste, digitale Beratung und technologische Lösungen an. Die Dienstleistungen können unter anderem die Entwicklung von Websites, Leistungsoptimierung, digitales Wachstum und technischen Support umfassen."
+        },
+        "responsibilities": {
+            "title": "3. Pflichten des Nutzers",
+            "text": "Sie sind dafür verantwortlich, die Vertraulichkeit Ihrer Kontoinformationen und Ihres Passworts zu wahren und für alle Aktivitäten verantwortlich, die unter Ihrem Konto stattfinden. Sie erklären sich damit einverstanden, uns unverzüglich über jede unbefugte Nutzung Ihres Kontos zu informieren."
+        },
+        "limitations": {
+            "title": "4. Haftungsbeschränkung",
+            "text": "Unter keinen Umständen haften wir für direkte, indirekte, zufällige, besondere oder Folgeschäden, die sich aus der Nutzung oder der Unmöglichkeit der Nutzung unserer Dienste ergeben."
+        },
+        "privacy": {
+            "title": "5. Datenschutz",
+            "text": "Ihre Privatsphäre ist uns wichtig. Bitte lesen Sie unsere Datenschutzrichtlinie, um zu erfahren, wie wir Ihre personenbezogenen Daten erfassen, verwenden und schützen."
+        },
+        "modifications": {
+            "title": "6. Änderungen der Bedingungen",
+            "text": "Wir behalten uns das Recht vor, diese Nutzungsbedingungen jederzeit zu ändern. Änderungen treten sofort nach der Veröffentlichung auf der Website in Kraft."
+        },
+        "termination": {
+            "title": "7. Kündigung",
+            "text": "Wir können Ihr Konto und den Zugriff auf Dienste jederzeit und ohne vorherige Ankündigung kündigen oder sperren, aus welchem Grund auch immer, einschließlich eines Verstoßes gegen diese Bedingungen."
+        },
+        "governing": {
+            "title": "8. Anwendbares Recht",
+            "text": "Diese Bedingungen unterliegen den Gesetzen Brasiliens und werden gemäß diesen ausgelegt, ohne dass Grundsätze des Kollisionsrechts zur Anwendung kommen."
+        },
+        "contact": {
+            "title": "9. Kontakt",
+            "text": "Wenn Sie Fragen zu diesen Nutzungsbedingungen haben, kontaktieren Sie uns bitte über die auf der Website verfügbaren Kanäle."
+        }
+    },
+    "bindingNote": "Dieses Dokument stellt eine rechtsverbindliche Vereinbarung zwischen Ihnen und Gabriel Toth Gonçalves dar."
+}

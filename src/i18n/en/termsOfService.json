@@ -1,0 +1,47 @@
+{
+    "title": "Terms of Service",
+    "lastUpdated": "Last updated: December 15, 2024",
+    "breadcrumbs": [
+        { "name": "Home", "href": "/" },
+        { "name": "Terms of Service", "href": "/terms-of-service" }
+    ],
+    "sections": {
+        "acceptance": {
+            "title": "1. Acceptance of Terms",
+            "text": "By accessing and using this website, you accept and agree to be bound by the terms and conditions of use described herein. If you do not agree to any of these terms, you should not use this website."
+        },
+        "services": {
+            "title": "2. Service Description",
+            "text": "This website offers web development services, digital consulting, and technological solutions. Services may include, but are not limited to: website development, performance optimization, digital growth consulting, and technical support."
+        },
+        "responsibilities": {
+            "title": "3. User Responsibilities",
+            "text": "You are responsible for maintaining the confidentiality of your account information and password, and for all activities that occur under your account. You agree to immediately notify us of any unauthorized use of your account."
+        },
+        "limitations": {
+            "title": "4. Limitation of Liability",
+            "text": "Under no circumstances shall we be liable for any direct, indirect, incidental, special, or consequential damages resulting from the use or inability to use our services."
+        },
+        "privacy": {
+            "title": "5. Privacy",
+            "text": "Your privacy is important to us. Please review our Privacy Policy for information on how we collect, use, and protect your personal information."
+        },
+        "modifications": {
+            "title": "6. Terms Modifications",
+            "text": "We reserve the right to modify these terms of service at any time. Modifications will take effect immediately upon posting on the website."
+        },
+        "termination": {
+            "title": "7. Termination",
+            "text": "We may terminate or suspend your account and access to services immediately, without prior notice, for any reason, including breach of these terms."
+        },
+        "governing": {
+            "title": "8. Governing Law",
+            "text": "These terms shall be governed by and construed in accordance with the laws of Brazil, without giving effect to any principles of conflicts of law."
+        },
+        "contact": {
+            "title": "9. Contact",
+            "text": "If you have questions about these Terms of Service, please contact us through the channels available on the website."
+        }
+    },
+    "bindingNote": "This document constitutes a legally binding agreement between you and Gabriel Toth Gonçalves."
+}

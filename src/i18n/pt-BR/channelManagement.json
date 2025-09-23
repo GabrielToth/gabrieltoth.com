@@ -1,0 +1,286 @@
+{
+    "hero": {
+        "badge": "🚀 ViraTrend - Consultoria Especializada",
+        "title": "Transforme Seu Canal em uma Máquina de Crescimento",
+        "subtitle": "Especializado em analytics, otimização de conteúdo e estratégias de monetização para múltiplas plataformas. + de 2M de visualizações mensais somadas entre YouTube, Instagram, TikTok, Twitch e outras redes sociais.",
+        "cta": "Solicitar Consultoria",
+        "stats": [
+            {
+                "number": "2M+",
+                "label": "Views mensais somadas (todas as plataformas)"
+            },
+            {
+                "number": "1M+",
+                "label": "Views com menos de 1K subs (recorde)"
+            },
+            { "number": "10+", "label": "Anos de experiência (desde 2013)" }
+        ]
+    },
+    "about": {
+        "title": "Sobre o ViraTrend",
+        "subtitle": "Sua consultoria especializada em crescimento digital",
+        "description": "O ViraTrend nasceu da experiência real de quem entende o desafio de crescer nas redes sociais. Com mais de 10 anos criando conteúdo, passando por todas as fases - desde zero até milhões de visualizações - desenvolvemos metodologias únicas baseadas em dados reais e resultados comprovados.",
+        "features": [
+            {
+                "title": "Análise Profunda de Dados",
+                "description": "Mergulhamos fundo nos seus analytics para encontrar oportunidades ocultas"
+            },
+            {
+                "title": "Estratégias Personalizadas",
+                "description": "Cada canal é único, por isso criamos estratégias sob medida para seu nicho"
+            },
+            {
+                "title": "Suporte Completo",
+                "description": "Acompanhamento contínuo durante toda a implementação das estratégias"
+            },
+            {
+                "title": "Resultados Comprovados",
+                "description": "Metodologia testada e refinada com mais de 2 milhões de views mensais"
+            }
+        ]
+    },
+    "services": {
+        "title": "Nossos Serviços",
+        "subtitle": "Soluções completas para cada fase do seu crescimento",
+        "items": [
+            {
+                "title": "Analytics e Diagnóstico",
+                "description": "Análise completa do desempenho atual e identificação de oportunidades",
+                "features": [
+                    "Auditoria completa do canal",
+                    "Análise de concorrência",
+                    "Identificação de tendências",
+                    "Relatório detalhado"
+                ],
+                "price": 350
+            },
+            {
+                "title": "Estratégia de Conteúdo",
+                "description": "Planejamento estratégico de conteúdo baseado em dados",
+                "features": [
+                    "Calendário editorial",
+                    "Ideias de conteúdo",
+                    "Otimização de títulos",
+                    "Estratégias de engagement"
+                ],
+                "price": 500
+            },
+            {
+                "title": "Otimização de Monetização",
+                "description": "Maximização de receita através de múltiplas fontes",
+                "features": [
+                    "Análise de revenue",
+                    "Estratégias de monetização",
+                    "Otimização de CPM",
+                    "Diversificação de renda"
+                ],
+                "price": 650
+            },
+            {
+                "title": "Consultoria Completa",
+                "description": "Pacote completo com todos os serviços inclusos",
+                "features": [
+                    "Todos os serviços anteriores",
+                    "Acompanhamento mensal",
+                    "Suporte prioritário",
+                    "Implementação guiada"
+                ],
+                "price": 1200
+            }
+        ]
+    },
+    "testimonials": {
+        "title": "O Que Nossos Clientes Dizem",
+        "subtitle": "Depoimentos reais de quem confia no ViraTrend",
+        "items": [
+            {
+                "name": "Carlos Silva",
+                "channel": "TechTalks BR",
+                "content": "Em 3 meses aplicando as estratégias do ViraTrend, meu canal cresceu 300% em subscribers e 450% em views. A análise de dados foi fundamental!",
+                "result": "+300% crescimento"
+            },
+            {
+                "name": "Ana Costa",
+                "channel": "Lifestyle Ana",
+                "content": "A consultoria me ajudou a entender finalmente como monetizar meu conteúdo. Em 2 meses já dobrei minha receita mensal.",
+                "result": "+200% receita"
+            },
+            {
+                "name": "João Santos",
+                "channel": "Gaming Zone",
+                "content": "As estratégias de engagement mudaram completamente meu canal. Agora tenho uma comunidade muito mais ativa e engajada.",
+                "result": "+500% engagement"
+            }
+        ]
+    },
+    "pricing": {
+        "title": "Escolha Seu Plano",
+        "subtitle": "Investimento que se paga sozinho",
+        "cta": "Contratar Agora",
+        "mostPopular": "Mais Popular",
+        "features": {
+            "analytics": "Analytics e Diagnóstico",
+            "strategy": "Estratégia de Conteúdo",
+            "monetization": "Otimização de Monetização",
+            "complete": "Consultoria Completa"
+        },
+        "plans": [
+            {
+                "name": "Análise Express",
+                "basePrice": 497,
+                "description": "Auditoria completa com relatório detalhado",
+                "features": [
+                    "Análise de 3 meses de dados",
+                    "Relatório de 20+ páginas",
+                    "Reunião de 1h para apresentação",
+                    "Lista de ações prioritárias",
+                    "Edição inclusa: até 300 minutos/mês"
+                ],
+                "popular": false,
+                "editingNote": "Edição profissional de vídeo para maximizar engajamento"
+            },
+            {
+                "name": "Estratégia Completa",
+                "basePrice": 997,
+                "description": "Estratégia completa com suporte de implementação",
+                "features": [
+                    "Tudo da Análise Express",
+                    "Desenvolvimento de estratégia de conteúdo",
+                    "Sessões mensais de otimização",
+                    "Suporte direto via WhatsApp",
+                    "Edição inclusa: até 600 minutos/mês"
+                ],
+                "popular": true,
+                "editingNote": "Edição prioritária com entrega mais rápida"
+            },
+            {
+                "name": "Parceria de Crescimento",
+                "basePrice": 1997,
+                "description": "Gestão completa e otimização",
+                "features": [
+                    "Tudo da Estratégia Completa",
+                    "Gestão do canal",
+                    "Planejamento de calendário de conteúdo",
+                    "Gestão de comunidade",
+                    "Edição inclusa: ilimitada"
+                ],
+                "popular": false,
+                "editingNote": "Suporte completo de produção com editor dedicado"
+            }
+        ],
+        "note": "Todos os planos incluem serviços profissionais de edição de vídeo. A capacidade de edição varia por plano e pode ser ajustada conforme suas necessidades."
+    },
+    "faq": {
+        "title": "Perguntas Frequentes",
+        "subtitle": "Tire suas principais dúvidas sobre nossa consultoria",
+        "items": [
+            {
+                "question": "Em quanto tempo vejo resultados?",
+                "answer": "Os primeiros insights aparecem imediatamente após a análise. Resultados práticos em crescimento começam a aparecer entre 30-60 dias com aplicação consistente das estratégias."
+            },
+            {
+                "question": "Funciona para qualquer nicho?",
+                "answer": "Sim! Nossa metodologia é adaptável para todos os nichos. Já trabalhamos com gaming, lifestyle, educação, tech, entretenimento e muitos outros."
+            },
+            {
+                "question": "Preciso ter muitos subscribers?",
+                "answer": "Não! Trabalhamos desde canais iniciantes até criadores com milhões de seguidores. Nossas estratégias são adaptadas para cada fase do crescimento."
+            },
+            {
+                "question": "O suporte é incluso?",
+                "answer": "Sim, todos os planos incluem suporte durante a implementação. O plano Completo inclui acompanhamento mensal."
+            }
+        ]
+    },
+    "personalAbout": {
+        "title": "Sobre Mim",
+        "description": "Cientista de Dados & Desenvolvedor Full Stack focado em crescimento digital",
+        "intro": "Sou Gabriel Toth Gonçalves, cientista de dados pleno e desenvolvedor Full Stack brasileiro. Formado em Ciência da Computação com especialização em Ciência de Dados, atualmente trabalho no projeto social-analytics-engine, realizando análises avançadas de campanhas digitais e métricas de conversão.",
+        "experience": "Meu trabalho envolve a integração de dados do Google Analytics com métricas de redes sociais (YouTube, Instagram, X, Telegram) e análise de conversões Stripe usando Python, PostgreSQL, SQLAlchemy e Docker. Também desenvolvo soluções web empresariais, tendo criado sites como softclever.com.br (React) e sistemasatfiscal.com.br (Angular).",
+        "passion": "Além da análise de dados, gerencio múltiplas redes sociais incluindo o projeto WaveIGL (YouTube, Instagram, TikTok, Twitch) com mais de 2 milhões de visualizações mensais somadas. Tenho um case impressionante: alcancei mais de 1 milhão de views em um canal antes mesmo de ter 1000 inscritos. Gerencio canais desde 2013 e uso machine learning para otimizar campanhas em múltiplas plataformas.",
+        "skills": [
+            "Analytics & Data Science",
+            "Estratégia de Conteúdo",
+            "Monetização",
+            "Growth Hacking",
+            "Otimização YouTube",
+            "Desenvolvimento de Audiência"
+        ]
+    },
+    "problems": {
+        "title": "Seus Desafios de Crescimento",
+        "subtitle": "Reconhece alguns destes problemas?",
+        "items": [
+            {
+                "title": "Crescimento Estagnado",
+                "description": "Seu canal parou de crescer e você não sabe o motivo"
+            },
+            {
+                "title": "Analytics Confusos",
+                "description": "Muitos dados, mas nenhuma direção clara sobre o que fazer"
+            },
+            {
+                "title": "Monetização Baixa",
+                "description": "Revenue não condiz com o número de visualizações"
+            },
+            {
+                "title": "Conteúdo Sem Foco",
+                "description": "Criando conteúdo sem uma estratégia clara de crescimento"
+            }
+        ]
+    },
+    "results": {
+        "title": "Resultados Reais das Nossas Consultorias",
+        "subtitle": "Cases reais e conquistas ao longo de 10+ anos de experiência",
+        "items": [
+            {
+                "name": "WaveIGL",
+                "role": "Youtube, Instagram, TikTok, Twitch e outras plataformas",
+                "content": "Desenvolvi e gerencio todas as redes sociais do WaveIGL desde o início. Atualmente somamos 2M+ views mensais distribuídos entre YouTube (400K), Instagram, TikTok, Twitch e outras plataformas. O projeto cresce consistentemente há anos.",
+                "rating": 5
+            },
+            {
+                "name": "Gabriel Toth (canal antigo) - @oprimeirogabrieltoth",
+                "role": "Canal antigo - Resultado extraordinário",
+                "content": "Um dos meus casos mais impressionantes: consegui mais de 1 milhão de visualizações em um canal que ainda tinha menos de 1000 inscritos. Isso demonstra minha capacidade de criar conteúdo viral e entender profundamente os algoritmos das plataformas.",
+                "rating": 5
+            },
+            {
+                "name": "Gabriel Toth (canal atual) - @ogabrieltoth",
+                "role": "Canal atual - Previsão de 100K views no mês de Julho",
+                "content": "Colocando em prática a estratégia de conteúdo multi-plataforma, estou mostrando na prática que o crescimento é possível para todos.",
+                "rating": 5
+            }
+        ]
+    },
+    "testimonials": {
+        "title": "O Que Nossos Clientes Dizem",
+        "subtitle": "Depoimentos reais de criadores que transformaram seus canais",
+        "items": [
+            {
+                "name": "João Silva",
+                "role": "Criador do YouTube",
+                "content": "Gabriel me ajudou a crescer de 1K para 50K inscritos em apenas 6 meses. Sua abordagem baseada em dados é incrível!",
+                "rating": 5
+            },
+            {
+                "name": "Maria Santos",
+                "role": "Criadora de Conteúdo",
+                "content": "Os insights de analytics mudaram completamente como eu crio conteúdo. Agora sei exatamente o que minha audiência quer.",
+                "rating": 5
+            }
+        ]
+    },
+    "cta": {
+        "title": "Pronto para Transformar Seu Canal?",
+        "subtitle": "Junte-se aos criadores que já estão crescendo com nossas estratégias",
+        "button": "Começar Agora",
+        "whatsapp": "Falar no WhatsApp"
+    },
+    "editorCta": {
+        "title": "Pronto para Acelerar seu Crescimento?",
+        "subtitle": "Entre em contato via WhatsApp para alinhar expectativas",
+        "more": "Saiba mais",
+        "workAsEditor": "Trabalhar como Editor"
+    }
+}

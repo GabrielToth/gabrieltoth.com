@@ -1,0 +1,257 @@
+{
+    "hero": {
+        "badge": "🚀 ViraTrend - Consultoría Especializada",
+        "title": "Transforma tu Canal en una Máquina de Crecimiento",
+        "subtitle": "Especialistas en analítica, optimización de contenido y estrategias de monetización para múltiples plataformas. 2M+ de visualizaciones mensuales combinadas en YouTube, Instagram, TikTok, Twitch y otras redes.",
+        "cta": "Solicitar Consultoría",
+        "stats": [
+            {
+                "number": "2M+",
+                "label": "Vistas mensuales combinadas (todas las plataformas)"
+            },
+            {
+                "number": "1M+",
+                "label": "Vistas con menos de 1K subs (récord)"
+            },
+            { "number": "10+", "label": "Años de experiencia (desde 2013)" }
+        ]
+    },
+    "about": {
+        "title": "Sobre ViraTrend",
+        "subtitle": "Tu consultoría especializada en crecimiento digital",
+        "description": "ViraTrend nació de la experiencia real de quien entiende el desafío de crecer en redes sociales. Con más de 10 años creando contenido y pasando por todas las fases —de cero a millones de visualizaciones— desarrollamos metodologías únicas basadas en datos reales y resultados comprobados.",
+        "features": [
+            {
+                "title": "Análisis Profundo de Datos",
+                "description": "Sumergimos en tus analytics para encontrar oportunidades ocultas"
+            },
+            {
+                "title": "Estrategias Personalizadas",
+                "description": "Cada canal es único; creamos estrategias a medida para tu nicho"
+            },
+            {
+                "title": "Soporte Completo",
+                "description": "Acompañamiento continuo durante toda la implementación"
+            },
+            {
+                "title": "Resultados Comprobados",
+                "description": "Metodología probada y refinada con más de 2M de vistas mensuales"
+            }
+        ]
+    },
+    "services": {
+        "title": "Nuestros Servicios",
+        "subtitle": "Soluciones completas para cada etapa de tu crecimiento",
+        "items": [
+            {
+                "title": "Analytics y Diagnóstico",
+                "description": "Análisis completo del desempeño actual e identificación de oportunidades",
+                "features": [
+                    "Auditoría completa del canal",
+                    "Análisis de competencia",
+                    "Identificación de tendencias",
+                    "Informe detallado"
+                ],
+                "price": 350
+            },
+            {
+                "title": "Estrategia de Contenido",
+                "description": "Planificación estratégica de contenido basada en datos",
+                "features": [
+                    "Calendario editorial",
+                    "Ideas de contenido",
+                    "Optimización de títulos",
+                    "Estrategias de engagement"
+                ],
+                "price": 500
+            },
+            {
+                "title": "Optimización de Monetización",
+                "description": "Maximización de ingresos a través de múltiples fuentes",
+                "features": [
+                    "Análisis de revenue",
+                    "Estrategias de monetización",
+                    "Optimización de CPM",
+                    "Diversificación de ingresos"
+                ],
+                "price": 650
+            },
+            {
+                "title": "Consultoría Completa",
+                "description": "Paquete completo con todos los servicios incluidos",
+                "features": [
+                    "Todos los servicios anteriores",
+                    "Seguimiento mensual",
+                    "Soporte prioritario",
+                    "Implementación guiada"
+                ],
+                "price": 1200
+            }
+        ]
+    },
+    "results": {
+        "title": "Resultados Reales de Nuestras Consultorías",
+        "subtitle": "Casos reales y logros a lo largo de 10+ años de experiencia",
+        "items": [
+            {
+                "name": "WaveIGL",
+                "role": "YouTube, Instagram, TikTok, Twitch y otras plataformas",
+                "content": "Desarrollé y gestiono todas las redes sociales de WaveIGL desde el inicio. Actualmente sumamos 2M+ de vistas mensuales distribuidas entre YouTube (400K), Instagram, TikTok, Twitch y otras plataformas. El proyecto crece consistentemente hace años.",
+                "rating": 5
+            },
+            {
+                "name": "Gabriel Toth (canal antiguo) - @oprimeirogabrieltoth",
+                "role": "Canal antiguo - Resultado extraordinario",
+                "content": "Uno de mis casos más impresionantes: conseguí más de 1 millón de visualizaciones en un canal con menos de 1000 suscriptores. Esto demuestra mi capacidad de crear contenido viral y entender profundamente los algoritmos.",
+                "rating": 5
+            },
+            {
+                "name": "Gabriel Toth (canal actual) - @ogabrieltoth",
+                "role": "Canal actual - Predicción de 100K vistas en julio",
+                "content": "Poniendo en práctica la estrategia de contenido multiplataforma, demuestro en la práctica que el crecimiento es posible para todos.",
+                "rating": 5
+            }
+        ]
+    },
+    "personalAbout": {
+        "title": "Sobre Mí",
+        "description": "Científico de Datos & Desarrollador Full Stack enfocado en crecimiento digital",
+        "intro": "Soy Gabriel Toth Gonçalves, científico de datos y desarrollador Full Stack. Graduado en Ciencias de la Computación con especialización en Ciencia de Datos, trabajo en el proyecto social-analytics-engine realizando análisis avanzados de campañas digitales y métricas de conversión.",
+        "experience": "Mi trabajo integra datos de Google Analytics con métricas de redes (YouTube, Instagram, X, Telegram) y análisis de conversiones con Stripe usando Python, PostgreSQL, SQLAlchemy y Docker. También desarrollo soluciones web empresariales.",
+        "passion": "Además del análisis de datos, gestiono múltiples redes sociales incluyendo el proyecto WaveIGL (YouTube, Instagram, TikTok, Twitch) con más de 2M de vistas mensuales. Uso machine learning para optimizar campañas en múltiples plataformas.",
+        "skills": [
+            "Analítica & Data Science",
+            "Estrategia de Contenido",
+            "Monetización",
+            "Growth Hacking",
+            "Optimización de YouTube",
+            "Desarrollo de Audiencia"
+        ]
+    },
+    "problems": {
+        "title": "Tus Desafíos de Crecimiento",
+        "subtitle": "¿Reconoces alguno de estos problemas?",
+        "items": [
+            {
+                "title": "Crecimiento Estancado",
+                "description": "Tu canal dejó de crecer y no sabes por qué"
+            },
+            {
+                "title": "Analytics Confusos",
+                "description": "Muchos datos, pero sin dirección clara"
+            },
+            {
+                "title": "Monetización Baja",
+                "description": "Los ingresos no acompañan las visualizaciones"
+            },
+            {
+                "title": "Contenido Sin Enfoque",
+                "description": "Creación sin estrategia clara de crecimiento"
+            }
+        ]
+    },
+    "testimonials": {
+        "title": "Lo Que Dicen Nuestros Clientes",
+        "subtitle": "Testimonios reales de creadores que transformaron sus canales",
+        "items": [
+            {
+                "name": "João Silva",
+                "role": "Creador en YouTube",
+                "content": "Gabriel me ayudó a crecer de 1K a 50K suscriptores en solo 6 meses. ¡Su enfoque basado en datos es increíble!",
+                "rating": 5
+            },
+            {
+                "name": "Maria Santos",
+                "role": "Creadora de Contenido",
+                "content": "Los insights de analítica cambiaron por completo cómo creo contenido. Ahora sé exactamente lo que quiere mi audiencia.",
+                "rating": 5
+            }
+        ]
+    },
+    "pricing": {
+        "title": "Elige Tu Plan",
+        "subtitle": "Una inversión que se paga sola",
+        "cta": "Contratar Ahora",
+        "mostPopular": "Más Popular",
+        "features": {
+            "analytics": "Analytics y Diagnóstico",
+            "strategy": "Estrategia de Contenido",
+            "monetization": "Optimización de Monetización",
+            "complete": "Consultoría Completa"
+        },
+        "plans": [
+            {
+                "name": "Análisis Express",
+                "basePrice": 497,
+                "description": "Auditoría completa con informe detallado",
+                "features": [
+                    "Análisis de 3 meses de datos",
+                    "Informe de 20+ páginas",
+                    "Reunión de 1h para presentación",
+                    "Lista de acciones prioritarias",
+                    "Edición incluida: hasta 300 minutos/mes"
+                ]
+            },
+            {
+                "name": "Estrategia Completa",
+                "basePrice": 997,
+                "description": "Estrategia completa con soporte de implementación",
+                "features": [
+                    "Todo del Análisis Express",
+                    "Desarrollo de estrategia de contenido",
+                    "Sesiones mensuales de optimización",
+                    "Soporte directo por WhatsApp",
+                    "Edición incluida: hasta 600 minutos/mes"
+                ],
+                "popular": true
+            },
+            {
+                "name": "Sociedad de Crecimiento",
+                "basePrice": 1997,
+                "description": "Gestión completa y optimización",
+                "features": [
+                    "Todo de Estrategia Completa",
+                    "Gestión del canal",
+                    "Planificación del calendario de contenido",
+                    "Gestión de comunidad",
+                    "Edición incluida: ilimitada"
+                ]
+            }
+        ],
+        "note": "Todos los planes incluyen servicios profesionales de edición de video. La capacidad de edición varía por plan y puede ajustarse según tus necesidades."
+    },
+    "cta": {
+        "title": "¿Listo para Transformar tu Canal?",
+        "subtitle": "Únete a los creadores que ya están creciendo con nuestras estrategias",
+        "button": "Empezar Ahora",
+        "whatsapp": "Hablar por WhatsApp"
+    },
+    "editorCta": {
+        "title": "¿Listo para Acelerar tu Crecimiento?",
+        "subtitle": "Contáctanos por WhatsApp para alinear expectativas",
+        "more": "Saber más",
+        "workAsEditor": "Trabaja como Editor"
+    },
+    "faq": {
+        "title": "Preguntas Frecuentes",
+        "subtitle": "Aclara tus principales dudas sobre nuestra consultoría",
+        "items": [
+            {
+                "question": "¿En cuánto tiempo veo resultados?",
+                "answer": "Los primeros insights aparecen inmediatamente después del análisis. Resultados prácticos de crecimiento empiezan a verse entre 30 y 60 días con la aplicación consistente de la estrategia."
+            },
+            {
+                "question": "¿Funciona para cualquier nicho?",
+                "answer": "¡Sí! Nuestra metodología se adapta a todos los nichos. Hemos trabajado con gaming, lifestyle, educación, tecnología, entretenimiento y muchos otros."
+            },
+            {
+                "question": "¿Necesito muchos suscriptores?",
+                "answer": "¡No! Trabajamos desde canales principiantes hasta creadores con millones de seguidores. Nuestras estrategias se adaptan a cada etapa de crecimiento."
+            },
+            {
+                "question": "¿El soporte está incluido?",
+                "answer": "Sí, todos los planes incluyen soporte durante la implementación. El plan Completo incluye seguimiento mensual."
+            }
+        ]
+    }
+}

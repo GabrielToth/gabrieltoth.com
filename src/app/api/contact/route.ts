@@ -1,3 +1,6 @@
+import { notifyError } from "@/lib/discord"
+import { basicFirewall, getClientIp } from "@/lib/firewall"
+import { buildClientKey, rateLimitByKey } from "@/lib/rate-limit"
 import { NextRequest, NextResponse } from "next/server"
 import { Resend } from "resend"
 
@@ -7,6 +10,7 @@ interface ContactFormData {
     subject: string
     message: string
     locale: "en" | "pt-BR"
+    turnstileToken?: string
 }
 
 // Initialize Resend (conditionally to avoid build errors)
@@ -14,13 +18,9 @@ const resend = process.env.RESEND_API_KEY
     ? new Resend(process.env.RESEND_API_KEY)
     : null
 
-// Rate limiting básico - em uma aplicação real, use Redis ou similar
+// In-memory fallback for dev; production uses Upstash via lib/rate-limit
 const submissions = new Map<string, number[]>()
-
-const RATE_LIMIT = {
-    MAX_REQUESTS: 3, // Máximo 3 emails por IP
-    WINDOW_MS: 60 * 60 * 1000, // Janela de 1 hora
-}
+const RATE_LIMIT = { MAX_REQUESTS: 5, WINDOW_MS: 15 * 60 * 1000 }
 
 // Lista de palavras/padrões suspeitos de spam
 const SPAM_PATTERNS = [
@@ -42,19 +42,35 @@ const SPAM_PATTERNS = [
     /act now/i,
 ]
 
-function getClientIP(request: NextRequest): string {
-    const forwarded = request.headers.get("x-forwarded-for")
-    const real = request.headers.get("x-real-ip")
+// getClientIP moved to lib/firewall as getClientIp
 
-    if (forwarded) {
-        return forwarded.split(",")[0].trim()
+async function verifyTurnstileToken(token: string | undefined, ip: string) {
+    const secret = process.env.TURNSTILE_SECRET_KEY
+    if (!secret) return { success: true }
+    if (!token) return { success: false }
+    try {
+        const resp = await fetch(
+            "https://challenges.cloudflare.com/turnstile/v0/siteverify",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+                body: new URLSearchParams({
+                    secret,
+                    response: token,
+                    remoteip: ip,
+                }),
+            }
+        )
+        const data = (await resp.json()) as {
+            success: boolean
+            "error-codes"?: string[]
+        }
+        return data
+    } catch (e) {
+        return { success: false }
     }
-
-    if (real) {
-        return real
-    }
-
-    return "127.0.0.1"
 }
 
 function isRateLimited(ip: string): boolean {
@@ -198,10 +214,27 @@ function getConfirmationEmailContent(
 
 export async function POST(request: NextRequest) {
     try {
-        const clientIP = getClientIP(request)
+        const clientIP = getClientIp(request)
+        const userAgent = request.headers.get("user-agent") || ""
+        const path = "/api/contact"
 
-        // Verificar rate limiting
-        if (isRateLimited(clientIP)) {
+        // App-level firewall checks
+        const fw = basicFirewall(request, [
+            "https://gabrieltoth.com",
+            "https://www.gabrieltoth.com",
+        ])
+        if (!fw.ok) {
+            await notifyError({
+                type: "FIREWALL_BLOCK",
+                message: fw.reason || "BLOCKED",
+            })
+            return NextResponse.json({ message: "Forbidden" }, { status: 403 })
+        }
+
+        // Persistent rate limit (Upstash) + fallback in-memory
+        const key = buildClientKey({ ip: clientIP, path, userAgent })
+        const rl = await rateLimitByKey(key)
+        if (!rl.success || isRateLimited(clientIP)) {
             return NextResponse.json(
                 {
                     message: "Too many requests. Please try again later.",
@@ -211,8 +244,44 @@ export async function POST(request: NextRequest) {
             )
         }
 
-        const body: ContactFormData = await request.json()
-        const { name, email, subject, message, locale } = body
+        const contentType = request.headers.get("content-type") || ""
+        let parsed: ContactFormData
+        if (contentType.includes("application/json")) {
+            parsed = (await request.json()) as ContactFormData
+        } else {
+            const form = await request.formData()
+            parsed = {
+                name: String(form.get("name") || ""),
+                email: String(form.get("email") || ""),
+                subject: String(form.get("subject") || ""),
+                message: String(form.get("message") || ""),
+                locale: String(form.get("locale") || "pt-BR") as "en" | "pt-BR",
+                turnstileToken: String(form.get("cf-turnstile-response") || ""),
+            }
+        }
+
+        const { name, email, subject, message, locale, turnstileToken } = parsed
+
+        // Checar Origin/Referer (básico)
+        // origin/referer já checados no firewall
+
+        // Verificar Turnstile
+        const turnstileResult = await verifyTurnstileToken(
+            turnstileToken,
+            clientIP
+        )
+        if (!turnstileResult.success) {
+            return NextResponse.json(
+                {
+                    message:
+                        locale === "pt-BR"
+                            ? "Falha na verificação anti-bot"
+                            : "Bot verification failed",
+                    error: "TURNSTILE_FAILED",
+                },
+                { status: 400 }
+            )
+        }
 
         // Validações básicas
         if (
@@ -361,6 +430,10 @@ ${message}
         )
     } catch (error) {
         console.error("Erro na API de contato:", error)
+        await notifyError({
+            type: "CONTACT_API_ERROR",
+            message: error instanceof Error ? error.message : String(error),
+        })
 
         return NextResponse.json(
             {

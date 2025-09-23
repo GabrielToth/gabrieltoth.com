@@ -44,3 +44,5 @@ export default async function PCOptimizationPage({ params }: PageProps) {
         </>
     )
 }
+
+export const revalidate = 3600

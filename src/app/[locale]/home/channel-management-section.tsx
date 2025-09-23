@@ -3,102 +3,212 @@ import { BarChart3, Play, TrendingUp, Users } from "lucide-react"
 import Link from "next/link"
 
 const getTranslations = (locale: Locale) => {
-    const isPortuguese = locale === "pt-BR"
     return {
-        title: isPortuguese ? "Gestão de Canais" : "Channel Management",
-        subtitle: isPortuguese
-            ? "Transforme Seu Canal em uma Máquina de Crescimento"
-            : "Transform Your Channel into a Growth Machine",
-        description: isPortuguese
-            ? "Especializado em analytics, otimização de conteúdo e estratégias de monetização para YouTube. + de 2M de visualizações mensais gerenciadas com resultados comprovados."
-            : "Specialized in analytics, content optimization and monetization strategies for YouTube. + 2M monthly views managed with proven results.",
+        title:
+            locale === "pt-BR"
+                ? "Gestão de Canais"
+                : locale === "es"
+                  ? "Gestión de Canales"
+                  : locale === "de"
+                    ? "Kanalverwaltung"
+                    : "Channel Management",
+        subtitle:
+            locale === "pt-BR"
+                ? "Transforme Seu Canal em uma Máquina de Crescimento"
+                : locale === "es"
+                  ? "Transforma tu canal en una máquina de crecimiento"
+                  : locale === "de"
+                    ? "Verwandle deinen Kanal in eine Wachstumsmaschine"
+                    : "Transform Your Channel into a Growth Machine",
+        description:
+            locale === "pt-BR"
+                ? "Especializado em analytics, otimização de conteúdo e estratégias de monetização para YouTube. + de 2M de visualizações mensais gerenciadas com resultados comprovados."
+                : locale === "es"
+                  ? "Especializado en analítica, optimización de contenido y estrategias de monetización para YouTube. Más de 2M de visualizaciones mensuales gestionadas con resultados comprobados."
+                  : locale === "de"
+                    ? "Spezialisiert auf Analytik, Inhaltsoptimierung und Monetarisierungsstrategien für YouTube. Über 2 Mio. monatliche Aufrufe mit nachgewiesenen Ergebnissen."
+                    : "Specialized in analytics, content optimization and monetization strategies for YouTube. + 2M monthly views managed with proven results.",
         features: {
-            title: isPortuguese
-                ? "Como Posso Ajudar Seu Canal"
-                : "How I Can Help Your Channel",
+            title:
+                locale === "pt-BR"
+                    ? "Como Posso Ajudar Seu Canal"
+                    : locale === "es"
+                      ? "Cómo puedo ayudar a tu canal"
+                      : locale === "de"
+                        ? "Wie ich deinem Kanal helfen kann"
+                        : "How I Can Help Your Channel",
             analytics: {
-                title: isPortuguese
-                    ? "Análise Completa de Performance"
-                    : "Complete Performance Analysis",
-                description: isPortuguese
-                    ? "Auditoria profunda dos seus analytics com insights acionáveis para otimização imediata"
-                    : "Deep audit of your analytics with actionable insights for immediate optimization",
+                title:
+                    locale === "pt-BR"
+                        ? "Análise Completa de Performance"
+                        : locale === "es"
+                          ? "Análisis Completo de Rendimiento"
+                          : locale === "de"
+                            ? "Umfassende Leistungsanalyse"
+                            : "Complete Performance Analysis",
+                description:
+                    locale === "pt-BR"
+                        ? "Auditoria profunda dos seus analytics com insights acionáveis para otimização imediata"
+                        : locale === "es"
+                          ? "Auditoría profunda de tus analíticas con insights accionables para optimización inmediata"
+                          : locale === "de"
+                            ? "Tiefgreifende Analyse Ihrer Analytics mit umsetzbaren Erkenntnissen für sofortige Optimierung"
+                            : "Deep audit of your analytics with actionable insights for immediate optimization",
             },
             optimization: {
-                title: isPortuguese
-                    ? "Estratégia de Conteúdo"
-                    : "Content Strategy",
-                description: isPortuguese
-                    ? "Desenvolvimento de estratégia de conteúdo baseada em dados para maximizar alcance e engajamento"
-                    : "Data-driven content strategy development to maximize reach and engagement",
+                title:
+                    locale === "pt-BR"
+                        ? "Estratégia de Conteúdo"
+                        : locale === "es"
+                          ? "Estrategia de Contenido"
+                          : locale === "de"
+                            ? "Content-Strategie"
+                            : "Content Strategy",
+                description:
+                    locale === "pt-BR"
+                        ? "Desenvolvimento de estratégia de conteúdo baseada em dados para maximizar alcance e engajamento"
+                        : locale === "es"
+                          ? "Desarrollo de estrategia de contenido basada en datos para maximizar alcance y engagement"
+                          : locale === "de"
+                            ? "Entwicklung einer datengesteuerten Content-Strategie zur Maximierung von Reichweite und Engagement"
+                            : "Data-driven content strategy development to maximize reach and engagement",
             },
             growth: {
-                title: isPortuguese
-                    ? "Estratégias de Crescimento"
-                    : "Growth Strategies",
-                description: isPortuguese
-                    ? "Planos personalizados para crescimento sustentável e engajamento com foco em resultados"
-                    : "Custom plans for sustainable growth and engagement with focus on results",
+                title:
+                    locale === "pt-BR"
+                        ? "Estratégias de Crescimento"
+                        : locale === "es"
+                          ? "Estrategias de Crecimiento"
+                          : locale === "de"
+                            ? "Wachstumsstrategien"
+                            : "Growth Strategies",
+                description:
+                    locale === "pt-BR"
+                        ? "Planos personalizados para crescimento sustentável e engajamento com foco em resultados"
+                        : locale === "es"
+                          ? "Planes personalizados para un crecimiento sostenible y engagement con foco en resultados"
+                          : locale === "de"
+                            ? "Individuelle Pläne für nachhaltiges Wachstum und Engagement mit Fokus auf Ergebnisse"
+                            : "Custom plans for sustainable growth and engagement with focus on results",
             },
             monetization: {
-                title: isPortuguese
-                    ? "Otimização de Monetização"
-                    : "Monetization Optimization",
-                description: isPortuguese
-                    ? "Estratégias para maximizar revenue através de múltiplos canais de monetização"
-                    : "Strategies to maximize revenue through multiple monetization channels",
+                title:
+                    locale === "pt-BR"
+                        ? "Otimização de Monetização"
+                        : locale === "es"
+                          ? "Optimización de Monetización"
+                          : locale === "de"
+                            ? "Monetarisierungsoptimierung"
+                            : "Monetization Optimization",
+                description:
+                    locale === "pt-BR"
+                        ? "Estratégias para maximizar revenue através de múltiplos canais de monetização"
+                        : locale === "es"
+                          ? "Estrategias para maximizar ingresos a través de múltiples canales de monetización"
+                          : locale === "de"
+                            ? "Strategien zur Maximierung der Einnahmen über mehrere Monetarisierungskanäle"
+                            : "Strategies to maximize revenue through multiple monetization channels",
             },
         },
         results: {
-            title: isPortuguese ? "Resultados Comprovados" : "Proven Results",
-            subtitle: isPortuguese
-                ? "Cases reais de crescimento"
-                : "Real growth cases",
+            title:
+                locale === "pt-BR"
+                    ? "Resultados Comprovados"
+                    : locale === "es"
+                      ? "Resultados Comprobados"
+                      : locale === "de"
+                        ? "Nachgewiesene Ergebnisse"
+                        : "Proven Results",
+            subtitle:
+                locale === "pt-BR"
+                    ? "Cases reais de crescimento"
+                    : locale === "es"
+                      ? "Casos reales de crecimiento"
+                      : locale === "de"
+                        ? "Reale Wachstumsfälle"
+                        : "Real growth cases",
             cases: [
                 {
                     channel: "WaveIGL",
-                    description: isPortuguese
-                        ? "Canal Gaming gerenciado por mim"
-                        : "Gaming channel managed by me",
+                    description:
+                        locale === "pt-BR"
+                            ? "Canal Gaming gerenciado por mim"
+                            : locale === "es"
+                              ? "Canal de Gaming gestionado por mí"
+                              : locale === "de"
+                                ? "Gaming-Kanal, den ich verwalte"
+                                : "Gaming channel managed by me",
                     metrics: [
                         {
-                            label: isPortuguese
-                                ? "Views mensais"
-                                : "Monthly views",
+                            label:
+                                locale === "pt-BR"
+                                    ? "Views mensais"
+                                    : locale === "es"
+                                      ? "Vistas mensuales"
+                                      : locale === "de"
+                                        ? "Monatliche Aufrufe"
+                                        : "Monthly views",
                             value: "2M+",
                         },
                         {
-                            label: isPortuguese ? "Crescimento" : "Growth",
+                            label:
+                                locale === "pt-BR"
+                                    ? "Crescimento"
+                                    : locale === "es"
+                                      ? "Crecimiento"
+                                      : locale === "de"
+                                        ? "Wachstum"
+                                        : "Growth",
                             value: "400%",
                         },
                         {
-                            label: isPortuguese ? "Revenue" : "Revenue",
+                            label: locale === "pt-BR" ? "Revenue" : "Revenue",
                             value: "5x",
                         },
                     ],
                 },
                 {
                     channel: "Gabriel Toth (desativado)",
-                    description: isPortuguese
-                        ? "Meu canal pessoal - Case histórico"
-                        : "My personal channel - Historical case",
+                    description:
+                        locale === "pt-BR"
+                            ? "Meu canal pessoal - Case histórico"
+                            : locale === "es"
+                              ? "Mi canal personal - Caso histórico"
+                              : locale === "de"
+                                ? "Mein persönlicher Kanal - Historischer Fall"
+                                : "My personal channel - Historical case",
                     metrics: [
                         {
-                            label: isPortuguese
-                                ? "Views totais"
-                                : "Total views",
+                            label:
+                                locale === "pt-BR"
+                                    ? "Views totais"
+                                    : locale === "es"
+                                      ? "Vistas totales"
+                                      : locale === "de"
+                                        ? "Gesamtaufrufe"
+                                        : "Total views",
                             value: "1M+",
                         },
                         {
-                            label: isPortuguese
-                                ? "Inscritos atuais"
-                                : "Current subscribers",
+                            label:
+                                locale === "pt-BR"
+                                    ? "Inscritos atuais"
+                                    : locale === "es"
+                                      ? "Suscriptores actuales"
+                                      : locale === "de"
+                                        ? "Aktuelle Abonnenten"
+                                        : "Current subscribers",
                             value: "1.4K+",
                         },
                         {
-                            label: isPortuguese
-                                ? "Views com <1K subs"
-                                : "Views with <1K subs",
+                            label:
+                                locale === "pt-BR"
+                                    ? "Views com <1K subs"
+                                    : locale === "es"
+                                      ? "Vistas con <1K subs"
+                                      : locale === "de"
+                                        ? "Aufrufe mit <1K Abos"
+                                        : "Views with <1K subs",
                             value: "1M+",
                         },
                     ],
@@ -106,63 +216,139 @@ const getTranslations = (locale: Locale) => {
             ],
         },
         cta: {
-            title: isPortuguese
-                ? "Pronto para acelerar seu crescimento?"
-                : "Ready to accelerate your growth?",
-            description: isPortuguese
-                ? "Solicite uma consultoria personalizada e descubra como transformar seu canal"
-                : "Request a personalized consultation and discover how to transform your channel",
-            button: isPortuguese
-                ? "Solicitar Consultoria"
-                : "Request Consultation",
+            title:
+                locale === "pt-BR"
+                    ? "Pronto para acelerar seu crescimento?"
+                    : locale === "es"
+                      ? "¿Listo para acelerar tu crecimiento?"
+                      : locale === "de"
+                        ? "Bereit, dein Wachstum zu beschleunigen?"
+                        : "Ready to accelerate your growth?",
+            description:
+                locale === "pt-BR"
+                    ? "Solicite uma consultoria personalizada e descubra como transformar seu canal"
+                    : locale === "es"
+                      ? "Solicita una consultoría personalizada y descubre cómo transformar tu canal"
+                      : locale === "de"
+                        ? "Fordere eine personalisierte Beratung an und entdecke, wie du deinen Kanal transformieren kannst"
+                        : "Request a personalized consultation and discover how to transform your channel",
+            button:
+                locale === "pt-BR"
+                    ? "Solicitar Consultoria"
+                    : locale === "es"
+                      ? "Solicitar Consultoría"
+                      : locale === "de"
+                        ? "Beratung anfordern"
+                        : "Request Consultation",
         },
         stats: [
             {
                 value: "2M+",
-                label: isPortuguese
-                    ? "Visualizações mensais gerenciadas"
-                    : "Monthly views managed",
+                label:
+                    locale === "pt-BR"
+                        ? "Visualizações mensais gerenciadas"
+                        : locale === "es"
+                          ? "Vistas mensuales gestionadas"
+                          : locale === "de"
+                            ? "Verwaltete monatliche Aufrufe"
+                            : "Monthly views managed",
             },
             {
                 value: "300%",
-                label: isPortuguese
-                    ? "Crescimento médio dos clientes"
-                    : "Average client growth",
+                label:
+                    locale === "pt-BR"
+                        ? "Crescimento médio dos clientes"
+                        : locale === "es"
+                          ? "Crecimiento medio de clientes"
+                          : locale === "de"
+                            ? "Durchschnittliches Kundenwachstum"
+                            : "Average client growth",
             },
             {
                 value: "5+",
-                label: isPortuguese
-                    ? "Anos de experiência"
-                    : "Years of experience",
+                label:
+                    locale === "pt-BR"
+                        ? "Anos de experiência"
+                        : locale === "es"
+                          ? "Años de experiencia"
+                          : locale === "de"
+                            ? "Jahre Erfahrung"
+                            : "Years of experience",
             },
         ],
         pricing: {
-            title: isPortuguese ? "Planos de Consultoria" : "Consulting Plans",
+            title:
+                locale === "pt-BR"
+                    ? "Planos de Consultoria"
+                    : locale === "es"
+                      ? "Planes de Consultoría"
+                      : locale === "de"
+                        ? "Beratungspläne"
+                        : "Consulting Plans",
             express: {
-                name: isPortuguese ? "Análise Express" : "Express Analysis",
+                name:
+                    locale === "pt-BR"
+                        ? "Análise Express"
+                        : locale === "es"
+                          ? "Análisis Express"
+                          : locale === "de"
+                            ? "Express-Analyse"
+                            : "Express Analysis",
                 price: "R$ 497",
-                description: isPortuguese
-                    ? "Auditoria completa com relatório detalhado"
-                    : "Complete audit with detailed report",
+                description:
+                    locale === "pt-BR"
+                        ? "Auditoria completa com relatório detalhado"
+                        : locale === "es"
+                          ? "Auditoría completa con informe detallado"
+                          : locale === "de"
+                            ? "Umfassendes Audit mit detailliertem Bericht"
+                            : "Complete audit with detailed report",
             },
             complete: {
-                name: isPortuguese
-                    ? "Consultoria Completa"
-                    : "Complete Consulting",
+                name:
+                    locale === "pt-BR"
+                        ? "Consultoria Completa"
+                        : locale === "es"
+                          ? "Consultoría Completa"
+                          : locale === "de"
+                            ? "Komplette Beratung"
+                            : "Complete Consulting",
                 price: "R$ 1.497",
-                description: isPortuguese
-                    ? "Estratégia + implementação + acompanhamento"
-                    : "Strategy + implementation + follow-up",
+                description:
+                    locale === "pt-BR"
+                        ? "Estratégia + implementação + acompanhamento"
+                        : locale === "es"
+                          ? "Estrategia + implementación + seguimiento"
+                          : locale === "de"
+                            ? "Strategie + Umsetzung + Betreuung"
+                            : "Strategy + implementation + follow-up",
                 popular: true,
             },
             intensive: {
-                name: isPortuguese
-                    ? "Mentoria Intensiva"
-                    : "Intensive Mentoring",
-                price: isPortuguese ? "Sob consulta" : "Quote on request",
-                description: isPortuguese
-                    ? "Acompanhamento mensal personalizado"
-                    : "Personalized monthly follow-up",
+                name:
+                    locale === "pt-BR"
+                        ? "Mentoria Intensiva"
+                        : locale === "es"
+                          ? "Mentoría Intensiva"
+                          : locale === "de"
+                            ? "Intensivbetreuung"
+                            : "Intensive Mentoring",
+                price:
+                    locale === "pt-BR"
+                        ? "Sob consulta"
+                        : locale === "es"
+                          ? "A consultar"
+                          : locale === "de"
+                            ? "Auf Anfrage"
+                            : "Quote on request",
+                description:
+                    locale === "pt-BR"
+                        ? "Acompanhamento mensal personalizado"
+                        : locale === "es"
+                          ? "Acompañamiento mensual personalizado"
+                          : locale === "de"
+                            ? "Personalisierte monatliche Betreuung"
+                            : "Personalized monthly follow-up",
             },
         },
     }
@@ -188,7 +374,11 @@ export default function ChannelManagementSection({
                         🚀{" "}
                         {locale === "pt-BR"
                             ? "ViraTrend - Consultoria Especializada"
-                            : "ViraTrend - Specialized Consulting"}
+                            : locale === "es"
+                              ? "ViraTrend - Consultoría Especializada"
+                              : locale === "de"
+                                ? "ViraTrend - Spezialisierte Beratung"
+                                : "ViraTrend - Specialized Consulting"}
                     </div>
                     <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4">
                         <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">

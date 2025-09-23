@@ -1,6 +1,7 @@
 import { type Locale } from "@/lib/i18n"
 import { generateSeoConfig } from "@/lib/seo"
 import { type Metadata } from "next"
+import { getTranslations } from "next-intl/server"
 
 interface PrivacyPolicyPageProps {
     params: Promise<{ locale: Locale }>
@@ -10,34 +11,22 @@ export async function generateMetadata({
     params,
 }: PrivacyPolicyPageProps): Promise<Metadata> {
     const { locale } = await params
-    const isPortuguese = locale === "pt-BR"
+    const t = await getTranslations({ locale, namespace: "privacyPolicy" })
 
     const seoConfig = generateSeoConfig({
         locale,
         path: "/privacy-policy",
-        title: isPortuguese
-            ? "Política de Privacidade - Gabriel Toth"
-            : "Privacy Policy - Gabriel Toth",
-        description: isPortuguese
-            ? "Política de privacidade da Gabriel Toth. Saiba como coletamos, usamos e protegemos suas informações pessoais em nossos serviços de consultoria digital e desenvolvimento."
-            : "Gabriel Toth privacy policy. Learn how we collect, use and protect your personal information in our digital consulting and development services.",
-        keywords: isPortuguese
-            ? [
-                  "política de privacidade",
-                  "proteção de dados",
-                  "lgpd",
-                  "privacidade",
-                  "gabriel toth",
-                  "dados pessoais",
-              ] // cspell:disable-line
-            : [
-                  "privacy policy",
-                  "data protection",
-                  "gdpr",
-                  "privacy",
-                  "gabriel toth",
-                  "personal data",
-              ],
+        title: t("title"),
+        description:
+            (
+                (
+                    t.raw("sections") as Array<{
+                        title: string
+                        content: string
+                    }>
+                )[0]?.content || ""
+            ).slice(0, 160) || t("title"),
+        keywords: [],
         ogType: "website",
         ogImage: "https://gabrieltoth.com/og-image-privacy.jpg",
     })
@@ -74,13 +63,13 @@ export async function generateMetadata({
             site: seoConfig.twitter?.site,
         },
         alternates: {
-            canonical: isPortuguese
-                ? "https://gabrieltoth.com/pt-BR/privacy-policy"
-                : "https://gabrieltoth.com/en/privacy-policy",
+            canonical: seoConfig.canonical,
             languages: {
                 en: "https://gabrieltoth.com/en/privacy-policy",
                 "pt-BR": "https://gabrieltoth.com/pt-BR/privacy-policy",
-                "x-default": "https://gabrieltoth.com/en/privacy-policy",
+                es: "https://gabrieltoth.com/es/privacy-policy",
+                de: "https://gabrieltoth.com/de/privacy-policy",
+                "x-default": "https://gabrieltoth.com/privacy-policy",
             },
         },
     }

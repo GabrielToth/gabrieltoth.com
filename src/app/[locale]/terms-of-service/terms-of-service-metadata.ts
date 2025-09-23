@@ -1,6 +1,7 @@
 import { type Locale } from "@/lib/i18n"
 import { generateSeoConfig } from "@/lib/seo"
 import { type Metadata } from "next"
+import { getTranslations } from "next-intl/server"
 
 interface TermsOfServicePageProps {
     params: Promise<{ locale: Locale }>
@@ -10,34 +11,18 @@ export async function generateMetadata({
     params,
 }: TermsOfServicePageProps): Promise<Metadata> {
     const { locale } = await params
-    const isPortuguese = locale === "pt-BR"
+    const t = await getTranslations({ locale, namespace: "termsOfService" })
 
     const seoConfig = generateSeoConfig({
         locale,
         path: "/terms-of-service",
-        title: isPortuguese
-            ? "Termos de Serviço - Gabriel Toth"
-            : "Terms of Service - Gabriel Toth",
-        description: isPortuguese
-            ? "Termos de serviço da Gabriel Toth. Conheça as condições de uso de nossos serviços de consultoria digital, otimização de PC e desenvolvimento."
-            : "Gabriel Toth terms of service. Learn about the usage conditions for our digital consulting, PC optimization and development services.",
-        keywords: isPortuguese
-            ? [
-                  "termos de serviço",
-                  "condições de uso",
-                  "contrato",
-                  "serviços",
-                  "gabriel toth",
-                  "consultoria",
-              ]
-            : [
-                  "terms of service",
-                  "terms of use",
-                  "contract",
-                  "services",
-                  "gabriel toth",
-                  "consulting",
-              ],
+        title: t("title"),
+        description:
+            ((t.raw("sections") as any)?.acceptance?.text || "").slice(
+                0,
+                160
+            ) || t("title"),
+        keywords: [],
         ogType: "website",
         ogImage: "https://gabrieltoth.com/og-image-terms.jpg",
     })
@@ -74,13 +59,13 @@ export async function generateMetadata({
             site: seoConfig.twitter?.site,
         },
         alternates: {
-            canonical: isPortuguese
-                ? "https://gabrieltoth.com/pt-BR/terms-of-service"
-                : "https://gabrieltoth.com/en/terms-of-service",
+            canonical: seoConfig.canonical,
             languages: {
                 en: "https://gabrieltoth.com/en/terms-of-service",
                 "pt-BR": "https://gabrieltoth.com/pt-BR/terms-of-service",
-                "x-default": "https://gabrieltoth.com/en/terms-of-service",
+                es: "https://gabrieltoth.com/es/terms-of-service",
+                de: "https://gabrieltoth.com/de/terms-of-service",
+                "x-default": "https://gabrieltoth.com/terms-of-service",
             },
         },
     }

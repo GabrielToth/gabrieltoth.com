@@ -10,32 +10,13 @@ export async function generateMetadata({
     params,
 }: PageProps): Promise<Metadata> {
     const { locale } = await params
-    const isPortuguese = locale === "pt-BR"
 
     const seoConfig = generateSeoConfig({
         locale,
         path: "/pc-optimization/terms",
-        title: isPortuguese
-            ? "Termos de Otimização de PC - Gabriel Toth"
-            : "PC Optimization Terms - Gabriel Toth",
-        description: isPortuguese
-            ? "Termos e condições específicos para serviços de otimização de PC Gaming. Conheça as condições de uso, garantias e responsabilidades."
-            : "Specific terms and conditions for Gaming PC optimization services. Learn about usage conditions, warranties and responsibilities.",
-        keywords: isPortuguese
-            ? [
-                  "termos otimização pc",
-                  "condições uso",
-                  "garantia pc",
-                  "responsabilidades",
-                  "gabriel toth",
-              ]
-            : [
-                  "pc optimization terms",
-                  "usage conditions",
-                  "pc warranty",
-                  "responsibilities",
-                  "gabriel toth",
-              ],
+        title: undefined,
+        description: undefined,
+        keywords: [],
         ogType: "website",
         ogImage: "https://gabrieltoth.com/og-image-pc-optimization.jpg",
     })
@@ -72,13 +53,13 @@ export async function generateMetadata({
             site: seoConfig.twitter?.site,
         },
         alternates: {
-            canonical: isPortuguese
-                ? "https://gabrieltoth.com/pt-BR/pc-optimization/terms"
-                : "https://gabrieltoth.com/en/pc-optimization/terms",
+            canonical: seoConfig.canonical,
             languages: {
                 en: "https://gabrieltoth.com/en/pc-optimization/terms",
                 "pt-BR": "https://gabrieltoth.com/pt-BR/pc-optimization/terms",
-                "x-default": "https://gabrieltoth.com/en/pc-optimization/terms",
+                es: "https://gabrieltoth.com/es/pc-optimization/terms",
+                de: "https://gabrieltoth.com/de/pc-optimization/terms",
+                "x-default": "https://gabrieltoth.com/pc-optimization/terms",
             },
         },
     }

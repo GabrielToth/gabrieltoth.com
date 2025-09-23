@@ -1,6 +1,7 @@
 import { type Locale } from "@/lib/i18n"
 import { generateSeoConfig } from "@/lib/seo"
 import { type Metadata } from "next"
+import { getTranslations } from "next-intl/server"
 
 interface PageProps {
     params: Promise<{ locale: Locale }>
@@ -10,40 +11,14 @@ export async function generateMetadata({
     params,
 }: PageProps): Promise<Metadata> {
     const { locale } = await params
-    const isPortuguese = locale === "pt-BR"
+    const t = await getTranslations({ locale, namespace: "waveiglSupport" })
 
     const seoConfig = generateSeoConfig({
         locale,
         path: "/waveigl-support",
-        title: isPortuguese
-            ? "Apoie a Comunidade WaveIGL - Desenvolvimento do Ecossistema - Gabriel Toth"
-            : "Support WaveIGL Community - Ecosystem Development - Gabriel Toth",
-        description: isPortuguese
-            ? "Ajude a construir o futuro da comunidade WaveIGL. Suas doações financiam o desenvolvimento de plataformas, ferramentas e recursos para nossa comunidade de mais de 2 milhões de espectadores."
-            : "Help build the future of WaveIGL community. Your donations fund the development of platforms, tools and resources for our community of over 2 million viewers.",
-        keywords: isPortuguese
-            ? [
-                  "waveigl",
-                  "comunidade gaming",
-                  "doação",
-                  "apoio",
-                  "desenvolvimento",
-                  "ecossistema",
-                  "youtube",
-                  "gabriel toth",
-                  "gaming community",
-              ]
-            : [
-                  "waveigl",
-                  "gaming community",
-                  "donation",
-                  "support",
-                  "development",
-                  "ecosystem",
-                  "youtube",
-                  "gabriel toth",
-                  "gaming community",
-              ],
+        title: t("hero.title"),
+        description: t("hero.subtitle"),
+        keywords: [],
         ogType: "website",
         ogImage: "https://gabrieltoth.com/og-image-waveigl.jpg",
     })
@@ -80,13 +55,13 @@ export async function generateMetadata({
             site: seoConfig.twitter?.site,
         },
         alternates: {
-            canonical: isPortuguese
-                ? "https://gabrieltoth.com/pt-BR/waveigl-support"
-                : "https://gabrieltoth.com/en/waveigl-support",
+            canonical: seoConfig.canonical,
             languages: {
                 en: "https://gabrieltoth.com/en/waveigl-support",
                 "pt-BR": "https://gabrieltoth.com/pt-BR/waveigl-support",
-                "x-default": "https://gabrieltoth.com/en/waveigl-support",
+                es: "https://gabrieltoth.com/es/waveigl-support",
+                de: "https://gabrieltoth.com/de/waveigl-support",
+                "x-default": "https://gabrieltoth.com/waveigl-support",
             },
         },
     }

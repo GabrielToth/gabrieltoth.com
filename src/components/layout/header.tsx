@@ -4,10 +4,10 @@ import { ThemeToggleClient } from "@/components/theme/theme-toggle-client"
 import LanguageSelector from "@/components/ui/language-selector"
 import { useLocale } from "@/hooks/use-locale"
 import { Menu, X } from "lucide-react"
+import { useTranslations } from "next-intl"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useState } from "react"
-import { getHeaderTranslations } from "./translations"
 
 export default function Header() {
     const { locale } = useLocale()
@@ -16,7 +16,7 @@ export default function Header() {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
     // Get translations
-    const t = getHeaderTranslations(locale)
+    const t = useTranslations("layout.header")
 
     // Determine if we're on the homepage
     const isHomepage = pathname === `/${locale}` || pathname === "/"
@@ -26,16 +26,16 @@ export default function Header() {
         if (isHomepage) {
             // Homepage: anchor links
             return [
-                { href: "#about", label: t.about },
-                { href: "#projects", label: t.projects },
-                { href: "#contact", label: t.contact },
+                { href: "#about", label: t("about") },
+                { href: "#projects", label: t("projects") },
+                { href: "#contact", label: t("contact") },
             ]
         } else {
             // Other pages: full URLs
             return [
-                { href: `/${locale}#about`, label: t.about },
-                { href: `/${locale}#projects`, label: t.projects },
-                { href: `/${locale}#contact`, label: t.contact },
+                { href: `/${locale}#about`, label: t("about") },
+                { href: `/${locale}#projects`, label: t("projects") },
+                { href: `/${locale}#contact`, label: t("contact") },
             ]
         }
     }
@@ -47,15 +47,15 @@ export default function Header() {
     const getServicesLinks = () => [
         {
             href: `/${locale}/channel-management`,
-            label: t.servicesDropdown.channelManagement,
+            label: t("servicesDropdown.channelManagement"),
         },
         {
             href: `/${locale}/pc-optimization`,
-            label: t.servicesDropdown.pcOptimization,
+            label: t("servicesDropdown.pcOptimization"),
         },
         {
             href: `/${locale}/waveigl-support`,
-            label: t.servicesDropdown.support,
+            label: t("servicesDropdown.support"),
         },
     ]
 
@@ -82,7 +82,7 @@ export default function Header() {
                             href={getHomeLink()}
                             className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
                         >
-                            {t.home}
+                            {t("home")}
                         </Link>
 
                         {navigationLinks.map(link => (
@@ -103,7 +103,7 @@ export default function Header() {
                                 }
                                 className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors flex items-center"
                             >
-                                {t.services}
+                                {t("services")}
                                 <svg
                                     className={`ml-1 h-4 w-4 transition-transform ${
                                         isServicesOpen ? "rotate-180" : ""
@@ -175,7 +175,7 @@ export default function Header() {
                                 className="block px-3 py-2 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
                                 onClick={() => setIsMobileMenuOpen(false)}
                             >
-                                {t.home}
+                                {t("home")}
                             </Link>
 
                             {navigationLinks.map(link => (
@@ -192,7 +192,7 @@ export default function Header() {
                             {/* Mobile Services */}
                             <div className="px-3 py-2">
                                 <div className="text-gray-900 dark:text-white font-medium mb-2">
-                                    {t.services}
+                                    {t("services")}
                                 </div>
                                 {servicesLinks.map(link => (
                                     <Link

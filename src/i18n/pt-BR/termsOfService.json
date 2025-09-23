@@ -1,0 +1,47 @@
+{
+    "title": "Termos de Serviço",
+    "lastUpdated": "Última atualização: 15 de dezembro de 2024",
+    "breadcrumbs": [
+        { "name": "Início", "href": "/" },
+        { "name": "Termos de Serviço", "href": "/terms-of-service" }
+    ],
+    "sections": {
+        "acceptance": {
+            "title": "1. Aceitação dos Termos",
+            "text": "Ao acessar e usar este site, você aceita e concorda estar vinculado aos termos e condições de uso aqui descritos. Se você não concordar com algum destes termos, não deverá usar este site."
+        },
+        "services": {
+            "title": "2. Descrição dos Serviços",
+            "text": "Este site oferece serviços de desenvolvimento web, consultoria digital e soluções tecnológicas. Os serviços podem incluir, entre outros: desenvolvimento de websites, otimização de performance, consultoria em crescimento digital e suporte técnico."
+        },
+        "responsibilities": {
+            "title": "3. Responsabilidades do Usuário",
+            "text": "Você é responsável por manter a confidencialidade de suas informações de conta e senha, e por todas as atividades que ocorrem sob sua conta. Você concorda em nos notificar imediatamente sobre qualquer uso não autorizado de sua conta."
+        },
+        "limitations": {
+            "title": "4. Limitações de Responsabilidade",
+            "text": "Em nenhuma circunstância seremos responsáveis por quaisquer danos diretos, indiretos, incidentais, especiais ou consequenciais que resultem do uso ou incapacidade de usar nossos serviços."
+        },
+        "privacy": {
+            "title": "5. Privacidade",
+            "text": "Sua privacidade é importante para nós. Consulte nossa Política de Privacidade para informações sobre como coletamos, usamos e protegemos suas informações pessoais."
+        },
+        "modifications": {
+            "title": "6. Modificações dos Termos",
+            "text": "Reservamo-nos o direito de modificar estes termos de serviço a qualquer momento. As modificações entrarão em vigor imediatamente após a publicação no site."
+        },
+        "termination": {
+            "title": "7. Rescisão",
+            "text": "Podemos encerrar ou suspender sua conta e acesso aos serviços imediatamente, sem aviso prévio, por qualquer motivo, incluindo violação destes termos."
+        },
+        "governing": {
+            "title": "8. Lei Aplicável",
+            "text": "Estes termos serão regidos e interpretados de acordo com as leis do Brasil, sem dar efeito a quaisquer princípios de conflitos de lei."
+        },
+        "contact": {
+            "title": "9. Contato",
+            "text": "Se você tiver dúvidas sobre estes Termos de Serviço, entre em contato conosco através dos canais disponíveis no site."
+        }
+    },
+    "bindingNote": "Este documento constitui um acordo legalmente vinculativo entre você e Gabriel Toth Gonçalves."
+}

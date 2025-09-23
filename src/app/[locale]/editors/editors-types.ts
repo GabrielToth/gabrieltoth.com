@@ -1,5 +1,5 @@
 import { LucideIcon } from "lucide-react"
-import { EditorsTranslations } from "./translations" // ✅ MIGRATED: Now using translations/ folder
+export type EditorsTranslations = typeof import("@/i18n/en/editors.json")
 
 export interface EditorsLandingProps {
     locale: "en" | "pt-BR"

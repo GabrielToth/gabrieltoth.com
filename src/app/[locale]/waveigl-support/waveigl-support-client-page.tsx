@@ -3,6 +3,7 @@
 import { type WaveIGLSupportTranslations } from "@/app/[locale]/waveigl-support/waveigl-support-types"
 import WaveIGLSupportView from "@/app/[locale]/waveigl-support/waveigl-support-view"
 import { useLocale } from "@/hooks/use-locale"
+import { useTranslations } from "next-intl"
 import { useEffect, useRef, useState } from "react"
 
 interface WaveIGLSupportClientPageProps {
@@ -30,6 +31,7 @@ export default function WaveIGLSupportClientPage({
     translations,
 }: WaveIGLSupportClientPageProps) {
     const { locale } = useLocale()
+    const t = useTranslations("waveiglSupport")
     const [selectedMethod, setSelectedMethod] = useState<"pix" | "monero">(
         "pix"
     )
@@ -82,7 +84,7 @@ export default function WaveIGLSupportClientPage({
     return (
         <WaveIGLSupportView
             locale={locale}
-            translations={translations}
+            translations={translations || (t.raw("") as any)}
             selectedMethod={selectedMethod}
             setSelectedMethod={setSelectedMethod}
             customAmount={customAmount}

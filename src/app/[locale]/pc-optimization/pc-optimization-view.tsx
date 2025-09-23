@@ -13,8 +13,8 @@ import {
     Star,
     Zap,
 } from "lucide-react"
+import { useTranslations } from "next-intl"
 import { generatePCOptimizationWhatsAppMessage } from "./pc-optimization-whatsapp"
-import { getPCOptimizationTranslations } from "./translations"
 
 interface PCOptimizationViewProps {
     locale: Locale
@@ -23,8 +23,29 @@ interface PCOptimizationViewProps {
 export default function PCOptimizationView({
     locale,
 }: PCOptimizationViewProps) {
-    const t = getPCOptimizationTranslations(locale)
+    const t = useTranslations("pcOptimization")
     const { calculatePrice } = useMoneroPricing()
+    const heroStats = t.raw("hero.stats") as Array<{
+        value: string
+        label: string
+    }>
+    const featuresList = t.raw("features.list") as Array<{
+        title: string
+        description: string
+    }>
+    const pricingPlans = t.raw("pricing.plans") as Array<{
+        name: string
+        basePrice: number
+        description: string
+        features: string[]
+        popular?: boolean
+    }>
+    const testimonialsList = t.raw("testimonials.items") as Array<{
+        name: string
+        role: string
+        content: string
+        rating: number
+    }>
 
     return (
         <div className="min-h-screen bg-black text-white overflow-hidden">
@@ -48,16 +69,16 @@ export default function PCOptimizationView({
                     <div className="inline-flex items-center px-4 py-2 rounded-full bg-blue-500/20 border border-blue-500/30 mb-8">
                         <Zap className="w-4 h-4 mr-2 text-blue-400" />
                         <span className="text-blue-300 text-sm font-medium">
-                            {t.hero.badge}
+                            {t("hero.badge")}
                         </span>
                     </div>
 
                     <h1 className="text-5xl md:text-7xl font-black mb-6 bg-gradient-to-r from-blue-400 via-purple-400 to-blue-600 bg-clip-text text-transparent">
-                        {t.hero.title}
+                        {t("hero.title")}
                     </h1>
 
                     <p className="text-xl md:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto">
-                        {t.hero.subtitle}
+                        {t("hero.subtitle")}
                     </p>
 
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
@@ -65,7 +86,7 @@ export default function PCOptimizationView({
                             href="#pricing"
                             className="px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 rounded-lg font-semibold text-lg transition-all duration-300 transform hover:scale-105"
                         >
-                            {t.hero.cta}
+                            {t("hero.cta")}
                         </a>
                         <a
                             href={generatePCOptimizationWhatsAppMessage(locale)}
@@ -73,13 +94,13 @@ export default function PCOptimizationView({
                             rel="noopener noreferrer"
                             className="px-8 py-4 border border-gray-600 hover:border-gray-400 rounded-lg font-semibold text-lg transition-all duration-300"
                         >
-                            {t.hero.learnMore}
+                            {t("hero.learnMore")}
                         </a>
                     </div>
 
                     {/* Stats */}
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto">
-                        {t.hero.stats.map((stat, index) => (
+                        {heroStats.map((stat, index) => (
                             <div key={index} className="text-center">
                                 <div className="text-3xl md:text-4xl font-black text-blue-400 mb-2">
                                     {stat.value}
@@ -105,15 +126,15 @@ export default function PCOptimizationView({
                 <div className="max-w-7xl mx-auto px-4">
                     <div className="text-center mb-16">
                         <h2 className="text-4xl md:text-5xl font-black mb-6 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-                            {t.features.title}
+                            {t("features.title")}
                         </h2>
                         <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-                            {t.features.subtitle}
+                            {t("features.subtitle")}
                         </p>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-                        {t.features.list.map((feature, index) => {
+                        {featuresList.map((feature, index) => {
                             const iconMap = [Cpu, Gamepad2, Monitor, Shield]
                             const IconComponent = iconMap[index] || Cpu
                             return (
@@ -145,10 +166,10 @@ export default function PCOptimizationView({
                 <div className="max-w-7xl mx-auto px-4">
                     <div className="text-center mb-16">
                         <h2 className="text-4xl md:text-5xl font-black mb-6 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-                            {t.pricing.title}
+                            {t("pricing.title")}
                         </h2>
                         <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-                            {t.pricing.subtitle}
+                            {t("pricing.subtitle")}
                         </p>
                     </div>
 
@@ -156,7 +177,7 @@ export default function PCOptimizationView({
                     <PricingToggle locale={locale} />
 
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                        {t.pricing.plans.map((plan, index) => {
+                        {pricingPlans.map((plan, index) => {
                             const pricing = calculatePrice(
                                 plan.basePrice,
                                 locale
@@ -173,7 +194,7 @@ export default function PCOptimizationView({
                                     {plan.popular && (
                                         <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
                                             <div className="bg-gradient-to-r from-blue-500 to-purple-500 text-white px-4 py-1 rounded-full text-sm font-bold">
-                                                {t.pricing.popular}
+                                                {t("pricing.popular")}
                                             </div>
                                         </div>
                                     )}
@@ -230,7 +251,7 @@ export default function PCOptimizationView({
                                                 : "bg-gray-700 hover:bg-gray-600 text-gray-300"
                                         }`}
                                     >
-                                        {t.pricing.cta}
+                                        {t("pricing.cta")}
                                     </button>
                                 </div>
                             )
@@ -244,15 +265,15 @@ export default function PCOptimizationView({
                 <div className="max-w-7xl mx-auto px-4">
                     <div className="text-center mb-16">
                         <h2 className="text-4xl md:text-5xl font-black mb-6 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-                            {t.testimonials.title}
+                            {t("testimonials.title")}
                         </h2>
                         <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-                            {t.testimonials.subtitle}
+                            {t("testimonials.subtitle")}
                         </p>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        {t.testimonials.items.map((testimonial, index) => (
+                        {testimonialsList.map((testimonial, index) => (
                             <div
                                 key={index}
                                 className="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-xl p-6"
@@ -288,10 +309,10 @@ export default function PCOptimizationView({
             <section className="py-24 bg-gradient-to-r from-blue-900 to-purple-900">
                 <div className="max-w-4xl mx-auto px-4 text-center">
                     <h2 className="text-4xl md:text-5xl font-black mb-6 text-white">
-                        {t.cta.title}
+                        {t("cta.title")}
                     </h2>
                     <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
-                        {t.cta.subtitle}
+                        {t("cta.subtitle")}
                     </p>
                     <a
                         href={generatePCOptimizationWhatsAppMessage(locale)}
@@ -299,7 +320,7 @@ export default function PCOptimizationView({
                         rel="noopener noreferrer"
                         className="inline-block px-8 py-4 bg-white text-blue-900 hover:bg-gray-100 rounded-lg font-semibold text-lg transition-all duration-300 transform hover:scale-105"
                     >
-                        {t.cta.button}
+                        {t("cta.button")}
                     </a>
                 </div>
             </section>

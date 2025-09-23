@@ -13,7 +13,15 @@ interface PricingToggleProps {
 // Client-only component that uses the hook
 function PricingToggleClient({ locale }: PricingToggleProps) {
     const { showMoneroPrice, toggleMoneroPrice } = useMoneroPricing()
-    const isPortuguese = locale === "pt-BR"
+
+    const cardLabel =
+        locale === "pt-BR"
+            ? "PIX/Cartão"
+            : locale === "es"
+              ? "Tarjeta"
+              : locale === "de"
+                ? "Karte"
+                : "Card"
 
     return (
         <div className="flex items-center justify-center mb-12">
@@ -43,7 +51,7 @@ function PricingToggleClient({ locale }: PricingToggleProps) {
                     }`}
                 >
                     <DollarSign className="w-4 h-4" />
-                    {isPortuguese ? "PIX/Cartão" : "Card"}
+                    {cardLabel}
                 </button>
             </div>
         </div>
@@ -52,7 +60,14 @@ function PricingToggleClient({ locale }: PricingToggleProps) {
 
 // Fallback component for SSR
 function PricingToggleFallback({ locale }: PricingToggleProps) {
-    const isPortuguese = locale === "pt-BR"
+    const cardLabel =
+        locale === "pt-BR"
+            ? "PIX/Cartão"
+            : locale === "es"
+              ? "Tarjeta"
+              : locale === "de"
+                ? "Karte"
+                : "Card"
 
     return (
         <div className="flex items-center justify-center mb-12">
@@ -66,7 +81,7 @@ function PricingToggleFallback({ locale }: PricingToggleProps) {
                 </div>
                 <div className="px-4 py-2 rounded-md text-sm font-medium text-gray-600 dark:text-gray-400 flex items-center gap-2">
                     <DollarSign className="w-4 h-4" />
-                    {isPortuguese ? "PIX/Cartão" : "Card"}
+                    {cardLabel}
                 </div>
             </div>
         </div>

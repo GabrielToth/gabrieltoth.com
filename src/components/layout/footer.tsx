@@ -1,82 +1,14 @@
 import { type Locale } from "@/lib/i18n"
+import { getTranslations } from "next-intl/server"
 import Link from "next/link"
 
 interface FooterProps {
     locale: Locale
 }
 
-export default function Footer({ locale }: FooterProps) {
-    const isPortuguese = locale === "pt-BR"
-
-    const content = {
-        company: "Gabriel Toth Gonçalves",
-        rights: isPortuguese
-            ? "Todos os direitos reservados."
-            : "All rights reserved.",
-        links: {
-            services: {
-                title: isPortuguese ? "Serviços" : "Services",
-                items: [
-                    {
-                        name: isPortuguese ? "ViraTrend" : "ViraTrend",
-                        href: `/${locale}/channel-management`,
-                    },
-                    {
-                        name: isPortuguese
-                            ? "Otimização de PC"
-                            : "PC Optimization",
-                        href: `/${locale}/pc-optimization`,
-                    },
-                ],
-            },
-            legal: {
-                title: isPortuguese ? "Jurídico" : "Legal",
-                items: [
-                    {
-                        name: isPortuguese
-                            ? "Política de Privacidade"
-                            : "Privacy Policy",
-                        href: `/${locale}/privacy-policy`,
-                    },
-                    {
-                        name: isPortuguese
-                            ? "Termos de Serviço"
-                            : "Terms of Service",
-                        href: `/${locale}/terms-of-service`,
-                    },
-                ],
-            },
-            contact: {
-                title: isPortuguese ? "Contato" : "Contact",
-                items: [
-                    {
-                        name: "Email",
-                        href: `mailto:${isPortuguese ? "contato@gabrieltoth.com" : "contact@gabrieltoth.com"}`,
-                        external: true,
-                    },
-                    {
-                        name: "WhatsApp",
-                        href: "https://wa.me/5511993313606",
-                        external: true,
-                    },
-                    {
-                        name: isPortuguese
-                            ? "Trabalhe Como Editor"
-                            : "Work as Editor",
-                        href: `/${locale}/editors`,
-                    },
-                ],
-            },
-        },
-        dataInfo: {
-            title: isPortuguese
-                ? "Transparência de Dados"
-                : "Data Transparency",
-            text: isPortuguese
-                ? "Coletamos apenas dados essenciais para prestação de serviços: informações de contato, dados do canal e comunicações. Não vendemos ou compartilhamos seus dados."
-                : "We only collect essential data for service provision: contact information, channel data and communications. We do not sell or share your data.",
-        },
-    }
+export default async function Footer({ locale }: FooterProps) {
+    const t = await getTranslations({ locale, namespace: "layout.footer" })
+    const tHome = await getTranslations({ locale, namespace: "home.contact" })
 
     return (
         <footer className="bg-gray-900 text-white">
@@ -85,10 +17,10 @@ export default function Footer({ locale }: FooterProps) {
                 <div className="max-w-7xl mx-auto">
                     <div className="text-center">
                         <h4 className="text-sm font-semibold text-blue-100 mb-2">
-                            {content.dataInfo.title}
+                            {t("dataInfo.title")}
                         </h4>
                         <p className="text-xs text-blue-200">
-                            {content.dataInfo.text}
+                            {t("dataInfo.text")}
                         </p>
                     </div>
                 </div>
@@ -101,86 +33,116 @@ export default function Footer({ locale }: FooterProps) {
                         {/* Company Info */}
                         <div className="col-span-1 md:col-span-1">
                             <h3 className="text-lg font-bold mb-4">
-                                {content.company}
+                                Gabriel Toth Gonçalves
                             </h3>
                             <p className="text-gray-400 text-sm leading-relaxed">
-                                {isPortuguese
-                                    ? "Desenvolvedor Full Stack especializado em Ciência de Dados com serviços de consultoria em canais, soluções digitais para projetos pessoais e empresariais, e serviços de edição de vídeo para canais."
-                                    : "Full Stack Developer specialized in Data Science with channel consulting services, digital solutions for personal and business projects, and video editing services for channels."}
+                                {t("companyDescription")}
                             </p>
                         </div>
 
                         {/* Services */}
                         <div>
                             <h4 className="text-sm font-semibold text-gray-300 uppercase tracking-wider mb-4">
-                                {content.links.services.title}
+                                {t("links.services.title")}
                             </h4>
                             <ul className="space-y-2">
-                                {content.links.services.items.map(
-                                    (item, index) => (
-                                        <li key={index}>
-                                            <Link
-                                                href={item.href}
-                                                className="text-gray-400 hover:text-white transition-colors text-sm"
-                                            >
-                                                {item.name}
-                                            </Link>
-                                        </li>
-                                    )
-                                )}
+                                {[
+                                    {
+                                        name: "ViraTrend",
+                                        href: `/${locale}/channel-management`,
+                                    },
+                                    {
+                                        name: t(
+                                            "links.services.items.pcOptimization"
+                                        ),
+                                        href: `/${locale}/pc-optimization`,
+                                    },
+                                ].map((item, index) => (
+                                    <li key={index}>
+                                        <Link
+                                            href={item.href}
+                                            className="text-gray-400 hover:text-white transition-colors text-sm"
+                                        >
+                                            {item.name}
+                                        </Link>
+                                    </li>
+                                ))}
                             </ul>
                         </div>
 
                         {/* Legal */}
                         <div>
                             <h4 className="text-sm font-semibold text-gray-300 uppercase tracking-wider mb-4">
-                                {content.links.legal.title}
+                                {t("links.legal.title")}
                             </h4>
                             <ul className="space-y-2">
-                                {content.links.legal.items.map(
-                                    (item, index) => (
-                                        <li key={index}>
-                                            <Link
-                                                href={item.href}
-                                                className="text-gray-400 hover:text-white transition-colors text-sm"
-                                            >
-                                                {item.name}
-                                            </Link>
-                                        </li>
-                                    )
-                                )}
+                                {[
+                                    {
+                                        name: t("links.legal.items.privacy"),
+                                        href: `/${locale}/privacy-policy`,
+                                    },
+                                    {
+                                        name: t("links.legal.items.terms"),
+                                        href: `/${locale}/terms-of-service`,
+                                    },
+                                ].map((item, index) => (
+                                    <li key={index}>
+                                        <Link
+                                            href={item.href}
+                                            className="text-gray-400 hover:text-white transition-colors text-sm"
+                                        >
+                                            {item.name}
+                                        </Link>
+                                    </li>
+                                ))}
                             </ul>
                         </div>
 
                         {/* Contact */}
                         <div>
                             <h4 className="text-sm font-semibold text-gray-300 uppercase tracking-wider mb-4">
-                                {content.links.contact.title}
+                                {t("links.contact.title")}
                             </h4>
                             <ul className="space-y-2">
-                                {content.links.contact.items.map(
-                                    (item, index) => (
-                                        <li key={index}>
-                                            {item.external ? (
-                                                <a
-                                                    href={item.href}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    className="text-gray-400 hover:text-white transition-colors text-sm"
-                                                >
-                                                    {item.name}
-                                                </a>
-                                            ) : (
-                                                <Link
-                                                    href={item.href}
-                                                    className="text-gray-400 hover:text-white transition-colors text-sm"
-                                                >
-                                                    {item.name}
-                                                </Link>
-                                            )}
-                                        </li>
-                                    )
-                                )}
+                                {[
+                                    {
+                                        name: "Email",
+                                        href: `mailto:${tHome("contactEmail")}`,
+                                        external: true,
+                                    },
+                                    {
+                                        name: "WhatsApp",
+                                        href: "https://wa.me/5511993313606",
+                                        external: true,
+                                    },
+                                    {
+                                        name: t(
+                                            "links.contact.items.workAsEditor"
+                                        ),
+                                        href: `/${locale}/editors`,
+                                        external: false,
+                                    },
+                                ].map((item, index) => (
+                                    <li key={index}>
+                                        {item.external ? (
+                                            <a
+                                                href={item.href}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="text-gray-400 hover:text-white transition-colors text-sm"
+                                            >
+                                                {item.name}
+                                            </a>
+                                        ) : (
+                                            <Link
+                                                href={item.href}
+                                                className="text-gray-400 hover:text-white transition-colors text-sm"
+                                            >
+                                                {item.name}
+                                            </Link>
+                                        )}
+                                    </li>
+                                ))}
                             </ul>
                         </div>
                     </div>
@@ -189,34 +151,26 @@ export default function Footer({ locale }: FooterProps) {
                     <div className="mt-12 pt-8 border-t border-gray-800">
                         <div className="text-center">
                             <p className="text-gray-400 text-sm">
-                                © 2025 {content.company}. {content.rights}
+                                © 2025 Gabriel Toth Gonçalves. {t("rights")}
                             </p>
                             <div className="mt-2 flex justify-center space-x-4 text-xs text-gray-500">
                                 <Link
                                     href={`/${locale}/privacy-policy`}
                                     className="hover:text-gray-300"
                                 >
-                                    {isPortuguese ? "Privacidade" : "Privacy"}
+                                    {t("short.privacy")}
                                 </Link>
                                 <span>•</span>
                                 <Link
                                     href={`/${locale}/terms-of-service`}
                                     className="hover:text-gray-300"
                                 >
-                                    {isPortuguese ? "Termos" : "Terms"}
+                                    {t("short.terms")}
                                 </Link>
                                 <span>•</span>
-                                <span>
-                                    {isPortuguese
-                                        ? "Dados seguros"
-                                        : "Secure data"}
-                                </span>
+                                <span>{t("short.secureData")}</span>
                                 <span>•</span>
-                                <span>
-                                    {isPortuguese
-                                        ? "Código aberto • Totalmente público"
-                                        : "Open source • Fully public"}
-                                </span>
+                                <span>{t("short.openSource")}</span>
                             </div>
                         </div>
                     </div>

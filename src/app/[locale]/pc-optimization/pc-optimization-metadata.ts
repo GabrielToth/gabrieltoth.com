@@ -1,6 +1,6 @@
 import { type Locale } from "@/lib/i18n"
 import { type Metadata } from "next"
-import { getPCOptimizationTranslations } from "./translations"
+import { getTranslations } from "next-intl/server"
 
 interface PageProps {
     params: Promise<{ locale: Locale }>
@@ -10,7 +10,7 @@ export async function generateMetadata({
     params,
 }: PageProps): Promise<Metadata> {
     const { locale } = await params
-    const t = getPCOptimizationTranslations(locale)
+    const t = await getTranslations({ locale, namespace: "pcOptimization" })
 
     const titles = {
         "pt-BR": "Otimização de PC Gaming - Máxima Performance - Gabriel Toth",
@@ -43,7 +43,7 @@ export async function generateMetadata({
                     : "gaming pc optimization, more fps, less lag, gaming performance, windows optimization, overclocking, gabriel toth, gaming pc, performance improvement",
         openGraph: {
             title,
-            description: t.hero.subtitle,
+            description: t("hero.subtitle"),
             type: "website",
             locale: locale,
             images: [
@@ -59,7 +59,7 @@ export async function generateMetadata({
         twitter: {
             card: "summary_large_image",
             title,
-            description: t.hero.subtitle,
+            description: t("hero.subtitle"),
             images: ["https://gabrieltoth.com/og-image-pc-optimization.jpg"],
         },
         alternates: {

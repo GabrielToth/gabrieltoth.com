@@ -31,25 +31,6 @@ function getLocaleFromAcceptLanguage(acceptLanguage: string): string {
     return defaultLocale
 }
 
-function isValidPath(path: string): boolean {
-    // Define valid paths (without locale)
-    const validPaths = [
-        "",
-        "/",
-        "/channel-management",
-
-        "/payment-demo",
-        "/pc-optimization",
-
-        "/editors",
-        "/editores",
-        "/privacy-policy",
-        "/terms-of-service",
-    ]
-
-    return validPaths.includes(path) || path.startsWith("/api/")
-}
-
 export function middleware(request: NextRequest) {
     const pathname = request.nextUrl.pathname
 
@@ -91,8 +72,13 @@ export function middleware(request: NextRequest) {
         return response
     }
 
-    // Case 2: URL has no locale but is a valid path - redirect to include locale
-    if (!hasValidLocale && isValidPath(pathname)) {
+    // Case 2: URL has no locale - redirect to include locale (non-static)
+    if (
+        !hasValidLocale &&
+        !pathname.startsWith("/api/") &&
+        !pathname.startsWith("/_next/") &&
+        !pathname.includes(".")
+    ) {
         const correctedUrl = new URL(
             `/${currentLocale}${pathname}`,
             request.url

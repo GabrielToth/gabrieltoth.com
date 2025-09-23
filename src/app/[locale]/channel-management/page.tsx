@@ -2,6 +2,7 @@ import Footer from "@/components/layout/footer"
 import StructuredData from "@/components/seo/structured-data"
 import Breadcrumbs from "@/components/ui/breadcrumbs"
 import { type Locale } from "@/lib/i18n"
+import { getTranslations } from "next-intl/server"
 import { generateMetadata } from "./channel-management-metadata"
 import ChannelManagementView from "./channel-management-view"
 
@@ -13,16 +14,14 @@ export { generateMetadata }
 
 export default async function ChannelManagementPage({ params }: PageProps) {
     const { locale } = await params
-    const isPortuguese = locale === "pt-BR"
+    const t = await getTranslations({ locale, namespace: "channelManagement" })
 
     // Generate structured data for the service
     const serviceStructuredData = {
         "@context": "https://schema.org",
         "@type": "Service",
         name: "ViraTrend - Digital Growth Consulting",
-        description: isPortuguese
-            ? "Consultoria especializada em crescimento digital para criadores de conteúdo"
-            : "Specialized digital growth consulting for content creators",
+        description: t("about.description"),
         provider: {
             "@type": "Person",
             name: "Gabriel Toth Gonçalves",
@@ -35,9 +34,7 @@ export default async function ChannelManagementPage({ params }: PageProps) {
             availability: "https://schema.org/InStock",
             priceCurrency: "BRL",
             priceRange: "$$",
-            description: isPortuguese
-                ? "Consultoria personalizada para crescimento de canais"
-                : "Personalized channel growth consulting",
+            description: t("services.subtitle"),
         },
         areaServed: {
             "@type": "Country",
@@ -54,66 +51,18 @@ export default async function ChannelManagementPage({ params }: PageProps) {
         },
     }
 
-    const faqs = isPortuguese
-        ? [
-              {
-                  question: "O que é o ViraTrend?",
-                  answer: "ViraTrend é um serviço de consultoria especializado em crescimento digital para criadores de conteúdo. Oferecemos análise de dados, otimização de conteúdo e estratégias personalizadas de monetização.",
-              },
-              {
-                  question: "Como funciona a consultoria?",
-                  answer: "Analisamos seu canal, identificamos oportunidades de crescimento, criamos estratégias personalizadas e acompanhamos os resultados através de relatórios detalhados.",
-              },
-              {
-                  question: "Quanto tempo leva para ver resultados?",
-                  answer: "Os primeiros resultados aparecem entre 30-60 dias, mas o crescimento consistente acontece entre 3-6 meses com a implementação das estratégias.",
-              },
-              {
-                  question: "Qual o investimento necessário?",
-                  answer: "O investimento varia conforme o tamanho do canal e objetivos. Entre em contato para uma proposta personalizada.",
-              },
-          ]
-        : [
-              {
-                  question: "What is ViraTrend?",
-                  answer: "ViraTrend is a specialized digital growth consulting service for content creators. We offer data analysis, content optimization, and personalized monetization strategies.",
-              },
-              {
-                  question: "How does the consulting work?",
-                  answer: "We analyze your channel, identify growth opportunities, create personalized strategies, and track results through detailed reports.",
-              },
-              {
-                  question: "How long does it take to see results?",
-                  answer: "First results appear within 30-60 days, but consistent growth happens between 3-6 months with strategy implementation.",
-              },
-              {
-                  question: "What is the required investment?",
-                  answer: "Investment varies according to channel size and objectives. Contact us for a personalized proposal.",
-              },
-          ]
+    const faqs = (
+        t.raw("faq.items") as Array<{ question: string; answer: string }>
+    ).map((item: any) => ({ question: item.question, answer: item.answer }))
 
     // Custom breadcrumbs
     const breadcrumbs = [
         {
-            name:
-                locale === "pt-BR"
-                    ? "Serviços"
-                    : locale === "es"
-                      ? "Servicios"
-                      : locale === "de"
-                        ? "Dienstleistungen"
-                        : "Services",
+            name: t("services.title"),
             url: `https://gabrieltoth.com${locale === "en" ? "" : `/${locale}`}`,
         },
         {
-            name:
-                locale === "pt-BR"
-                    ? "ViraTrend - Consultoria Digital"
-                    : locale === "es"
-                      ? "ViraTrend - Consultoría Digital"
-                      : locale === "de"
-                        ? "ViraTrend - Digitale Beratung"
-                        : "ViraTrend - Digital Consulting",
+            name: t("hero.badge"),
             url: `https://gabrieltoth.com${locale === "en" ? "" : `/${locale}`}/channel-management`,
         },
     ]
@@ -156,3 +105,5 @@ export default async function ChannelManagementPage({ params }: PageProps) {
         </>
     )
 }
+
+export const revalidate = 3600

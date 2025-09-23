@@ -1,11 +1,9 @@
-import { getWaveIGLSupportTranslations } from "@/app/[locale]/waveigl-support/translations"
-import { getWaveIGLSupportBreadcrumbs } from "@/app/[locale]/waveigl-support/waveigl-support-breadcrumbs"
 import WaveIGLSupportClientPage from "@/app/[locale]/waveigl-support/waveigl-support-client-page"
 import Footer from "@/components/layout/footer"
-import Header from "@/components/layout/header"
 import StructuredData from "@/components/seo/structured-data"
 import Breadcrumbs from "@/components/ui/breadcrumbs"
 import { type Locale } from "@/lib/i18n"
+import { getTranslations } from "next-intl/server"
 
 interface PageProps {
     params: Promise<{ locale: Locale }>
@@ -15,45 +13,28 @@ export { generateMetadata } from "./waveigl-support-metadata"
 
 export default async function WaveIGLSupportPage({ params }: PageProps) {
     const { locale } = await params
-    const translations = getWaveIGLSupportTranslations(locale)
+    const t = await getTranslations({ locale, namespace: "waveiglSupport" })
+    const translations = (await import(`@/i18n/${locale}/waveiglSupport.json`))
+        .default
 
-    // Organization structured data
-    const organizationStructuredData = {
-        "@context": "https://schema.org",
-        "@type": "Organization",
-        name: "WaveIGL",
-        description: translations.organizationDescription,
-        url: "https://gabrieltoth.com/waveigl-support",
-        logo: "https://gabrieltoth.com/logo.png",
-        sameAs: [
-            "https://youtube.com/@WaveIGL",
-            "https://twitch.tv/WaveIGL",
-            "https://discord.gg/WaveIGL",
-        ],
-    }
+    // Organization structured data from i18n
+    const organizationStructuredData = t.raw(
+        "structuredData.organization"
+    ) as Record<string, unknown>
 
-    // FAQ structured data
-    const faqs = [
-        {
-            question: translations.faq.question1,
-            answer: translations.faq.answer1,
-        },
-        {
-            question: translations.faq.question2,
-            answer: translations.faq.answer2,
-        },
-        {
-            question: translations.faq.question3,
-            answer: translations.faq.answer3,
-        },
-        {
-            question: translations.faq.question4,
-            answer: translations.faq.answer4,
-        },
-    ]
+    // FAQ structured data from i18n
+    const faqs = t.raw("structuredData.faqs") as Array<{
+        question: string
+        answer: string
+    }>
 
     // Breadcrumbs with proper translation
-    const breadcrumbs = getWaveIGLSupportBreadcrumbs(locale)
+    const breadcrumbs = [
+        {
+            name: t("hero.badge"),
+            href: `/${locale}/waveigl-support`,
+        },
+    ]
 
     return (
         <>
@@ -63,8 +44,6 @@ export default async function WaveIGLSupportPage({ params }: PageProps) {
                 customData={organizationStructuredData}
                 faqs={faqs}
             />
-
-            <Header />
 
             <main className="min-h-screen bg-white dark:bg-gray-900 relative">
                 {/* Breadcrumbs overlay */}
@@ -84,3 +63,5 @@ export default async function WaveIGLSupportPage({ params }: PageProps) {
         </>
     )
 }
+
+export const revalidate = 3600

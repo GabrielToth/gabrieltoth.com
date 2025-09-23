@@ -1,0 +1,146 @@
+{
+    "moneroToggle": {
+        "title": "Preços com Monero (XMR)",
+        "description": "Ative para ver preços com 50% de desconto usando Monero",
+        "enabled": "💰 Preços Monero (50% OFF)",
+        "disabled": "💴 Preços Regulares (PIX/Cartão)"
+    },
+    "hero": {
+        "badge": "⚡ PC LENTO?",
+        "title": "AQUI NÃO!",
+        "subtitle": "Ajuste completo de performance para você nunca mais sofrer com lag.",
+        "cta": "Ver Planos",
+        "videoText": "ASSIM É UM PC OTIMIZADO",
+        "stats": [
+            { "value": "99.9%", "label": "Uptime" },
+            { "value": "baixo", "label": "Latência" },
+            { "value": "20+", "label": "Jogos Otimizados" },
+            { "value": "5+", "label": "Clientes Satisfeitos" }
+        ],
+        "learnMore": "Saiba Mais"
+    },
+    "features": {
+        "title": "Por Que Escolher Nossa Otimização",
+        "subtitle": "Técnicas comprovadas que entregam resultados reais para gamers de verdade",
+        "list": [
+            {
+                "title": "Otimização de CPU",
+                "description": "Ajustamos seu processador para máximo desempenho em jogos, incluindo prioridades de processo e energia."
+            },
+            {
+                "title": "Configuração por Jogo",
+                "description": "Configuramos cada jogo individualmente para garantir o melhor FPS sem sacrificar a qualidade visual."
+            },
+            {
+                "title": "Otimização de Display",
+                "description": "Otimizamos seu monitor para a melhor experiência, incluindo resolução e taxa de quadros."
+            },
+            {
+                "title": "Segurança",
+                "description": "Fazemos atualizações de software mantendo o máximo de segurança possível."
+            }
+        ]
+    },
+    "pricing": {
+        "title": "Escolha Seu Nível de Otimização",
+        "subtitle": "Nós ajustamos tudo, você curte a performance",
+        "plans": [
+            {
+                "name": "Windows Performance Boost",
+                "basePrice": 149,
+                "description": "Windows & Rede prontos para jogar. Limpo, rápido e totalmente otimizado.",
+                "features": [
+                    "Otimização manual do Windows",
+                    "Configuração de rede para jogos",
+                    "Remoção de bloatware",
+                    "Otimização de energia",
+                    "Suporte de 7 dias"
+                ],
+                "popular": false
+            },
+            {
+                "name": "Otimização de Sistema Pro",
+                "basePrice": 249,
+                "description": "Desbloqueie o verdadeiro potencial do seu hardware com ajustes finos de SO e BIOS.",
+                "features": [
+                    "Tudo do plano anterior",
+                    "Otimização avançada de BIOS",
+                    "Tweaks ocultos do sistema",
+                    "Configuração de periféricos",
+                    "Testes de estabilidade"
+                ],
+                "popular": true
+            },
+            {
+                "name": "Overhaul de Performance Máxima",
+                "basePrice": 449,
+                "description": "Ajuste total com overclock de CPU, GPU e RAM para performance máxima.",
+                "features": [
+                    "Tudo do plano Pro",
+                    "Overclock seguro de CPU",
+                    "Overclock otimizado de GPU",
+                    "Overclock de RAM (XMP+)",
+                    "Monitoramento de temperatura",
+                    "Garantia de estabilidade"
+                ],
+                "popular": false
+            }
+        ],
+        "popular": "MAIS POPULAR",
+        "cta": "LER TERMOS & COMEÇAR"
+    },
+    "testimonials": {
+        "title": "Confiado por Pros, Amado por Gamers",
+        "subtitle": "Você não é o primeiro. Junte-se aos jogadores que já desbloquearam performance de elite.",
+        "items": [
+            {
+                "name": "ProGamer",
+                "role": "Jogador Competitivo",
+                "content": "Meu jogo nunca esteve tão suave! Quase dobrei os frames — incrível.",
+                "rating": 5
+            },
+            {
+                "name": "StreamerPro",
+                "role": "Criador de Conteúdo",
+                "content": "Finalmente consigo jogar e streamar sem quedas de FPS. A otimização foi perfeita!",
+                "rating": 5
+            }
+        ]
+    },
+    "games": {
+        "title": "Qualquer Jogo, Sempre",
+        "subtitle": "De shooters frenéticos a mundos abertos, sabemos como fazer seu jogo rodar do jeito que você quer.",
+        "list": [
+            "Call of Duty",
+            "PUBG",
+            "Marvel Rivals",
+            "Rainbow Six Siege",
+            "Valorant",
+            "Fortnite",
+            "CS2",
+            "Apex Legends"
+        ]
+    },
+    "guarantee": {
+        "title": "Garantia de Resultados",
+        "items": [
+            {
+                "title": "Métodos Comprovados",
+                "description": "Otimizamos CPU, GPU, RAM e NIC e depois realizamos diversos testes de estresse."
+            },
+            {
+                "title": "Suporte Gratuito",
+                "description": "Disponíveis por até 7 dias após a otimização para qualquer problema."
+            },
+            {
+                "title": "Anos de Experiência",
+                "description": "Anos testando, benchmarkando e ajustando sistemas para performance máxima."
+            }
+        ]
+    },
+    "cta": {
+        "title": "PARE DE PERDER TEMPO",
+        "subtitle": "Cada segundo perdido com lag é alguém dominando a partida.",
+        "button": "LIBERAR POTÊNCIA TOTAL"
+    }
+}

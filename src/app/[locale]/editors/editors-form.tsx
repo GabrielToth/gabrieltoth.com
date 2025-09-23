@@ -19,159 +19,205 @@ interface ApplicationFormProps {
 }
 
 const getTranslations = (locale: Locale, type: string) => {
-    const isPortuguese = locale === "pt-BR"
-
     if (type === "channel-management") {
         return {
-            title: isPortuguese
-                ? "Solicitar Consultoria de Canal"
-                : "Request Channel Consulting",
-            subtitle: isPortuguese
-                ? "Preencha as informações do seu canal para uma análise personalizada"
-                : "Fill in your channel information for a personalized analysis",
+            title:
+                locale === "pt-BR"
+                    ? "Solicitar Consultoria de Canal"
+                    : "Request Channel Consulting",
+            subtitle:
+                locale === "pt-BR"
+                    ? "Preencha as informações do seu canal para uma análise personalizada"
+                    : "Fill in your channel information for a personalized analysis",
             form: {
-                personalInfo: isPortuguese
-                    ? "Informações Pessoais"
-                    : "Personal Information",
-                name: isPortuguese ? "Nome completo" : "Full name",
-                email: isPortuguese ? "Email" : "Email",
-                channelInfo: isPortuguese
-                    ? "Informações do Canal"
-                    : "Channel Information",
-                channelName: isPortuguese ? "Nome do canal" : "Channel name",
-                channelUrl: isPortuguese
-                    ? "URL do canal (YouTube)"
-                    : "Channel URL (YouTube)",
-                subscribers: isPortuguese
-                    ? "Número de inscritos"
-                    : "Number of subscribers",
-                monthlyViews: isPortuguese
-                    ? "Visualizações mensais"
-                    : "Monthly views",
-                currentRevenue: isPortuguese
-                    ? "Receita mensal atual (R$)"
-                    : "Current monthly revenue (R$)",
-                goals: isPortuguese
-                    ? "Objetivos e Desafios"
-                    : "Goals and Challenges",
-                mainGoal: isPortuguese ? "Principal objetivo" : "Main goal",
-                biggestChallenge: isPortuguese
-                    ? "Maior desafio atual"
-                    : "Biggest current challenge",
-                expectedGrowth: isPortuguese
-                    ? "Crescimento esperado (%)"
-                    : "Expected growth (%)",
-                budget: isPortuguese
-                    ? "Orçamento para consultoria (R$)"
-                    : "Consulting budget (R$)",
-                additionalInfo: isPortuguese
-                    ? "Informações adicionais"
-                    : "Additional information",
-                submit: isPortuguese
-                    ? "Solicitar Consultoria"
-                    : "Request Consulting",
+                personalInfo:
+                    locale === "pt-BR"
+                        ? "Informações Pessoais"
+                        : "Personal Information",
+                name: locale === "pt-BR" ? "Nome completo" : "Full name",
+                email: locale === "pt-BR" ? "Email" : "Email",
+                channelInfo:
+                    locale === "pt-BR"
+                        ? "Informações do Canal"
+                        : "Channel Information",
+                channelName:
+                    locale === "pt-BR" ? "Nome do canal" : "Channel name",
+                channelUrl:
+                    locale === "pt-BR"
+                        ? "URL do canal (YouTube)"
+                        : "Channel URL (YouTube)",
+                subscribers:
+                    locale === "pt-BR"
+                        ? "Número de inscritos"
+                        : "Number of subscribers",
+                monthlyViews:
+                    locale === "pt-BR"
+                        ? "Visualizações mensais"
+                        : "Monthly views",
+                currentRevenue:
+                    locale === "pt-BR"
+                        ? "Receita mensal atual (R$)"
+                        : "Current monthly revenue (R$)",
+                goals:
+                    locale === "pt-BR"
+                        ? "Objetivos e Desafios"
+                        : "Goals and Challenges",
+                mainGoal:
+                    locale === "pt-BR" ? "Principal objetivo" : "Main goal",
+                biggestChallenge:
+                    locale === "pt-BR"
+                        ? "Maior desafio atual"
+                        : "Biggest current challenge",
+                expectedGrowth:
+                    locale === "pt-BR"
+                        ? "Crescimento esperado (%)"
+                        : "Expected growth (%)",
+                budget:
+                    locale === "pt-BR"
+                        ? "Orçamento para consultoria (R$)"
+                        : "Consulting budget (R$)",
+                additionalInfo:
+                    locale === "pt-BR"
+                        ? "Informações adicionais"
+                        : "Additional information",
+                submit:
+                    locale === "pt-BR"
+                        ? "Solicitar Consultoria"
+                        : "Request Consulting",
             },
             placeholders: {
-                name: isPortuguese ? "Seu nome completo" : "Your full name",
-                email: isPortuguese ? "seu@email.com" : "your@email.com",
-                channelName: isPortuguese
-                    ? "Nome do seu canal"
-                    : "Your channel name",
-                channelUrl: isPortuguese
-                    ? "https://youtube.com/@seucanal"
-                    : "https://youtube.com/@yourchannel",
-                subscribers: isPortuguese ? "Ex: 10000" : "Ex: 10000",
-                monthlyViews: isPortuguese ? "Ex: 100000" : "Ex: 100000",
-                currentRevenue: isPortuguese ? "Ex: 5000" : "Ex: 5000",
-                mainGoal: isPortuguese
-                    ? "Ex: Aumentar monetização, crescer audiência..."
-                    : "Ex: Increase monetization, grow audience...",
-                biggestChallenge: isPortuguese
-                    ? "Ex: Baixo engajamento, views estagnadas..."
-                    : "Ex: Low engagement, stagnant views...",
-                expectedGrowth: isPortuguese
-                    ? "Ex: 200% em 6 meses"
-                    : "Ex: 200% in 6 months",
-                budget: isPortuguese ? "Ex: 1500" : "Ex: 1500",
-                additionalInfo: isPortuguese
-                    ? "Conte mais sobre seu canal e necessidades..."
-                    : "Tell us more about your channel and needs...",
+                name:
+                    locale === "pt-BR" ? "Seu nome completo" : "Your full name",
+                email: locale === "pt-BR" ? "seu@email.com" : "your@email.com",
+                channelName:
+                    locale === "pt-BR"
+                        ? "Nome do seu canal"
+                        : "Your channel name",
+                channelUrl:
+                    locale === "pt-BR"
+                        ? "https://youtube.com/@seucanal"
+                        : "https://youtube.com/@yourchannel",
+                subscribers: locale === "pt-BR" ? "Ex: 10000" : "Ex: 10000",
+                monthlyViews: locale === "pt-BR" ? "Ex: 100000" : "Ex: 100000",
+                currentRevenue: locale === "pt-BR" ? "Ex: 5000" : "Ex: 5000",
+                mainGoal:
+                    locale === "pt-BR"
+                        ? "Ex: Aumentar monetização, crescer audiência..."
+                        : "Ex: Increase monetization, grow audience...",
+                biggestChallenge:
+                    locale === "pt-BR"
+                        ? "Ex: Baixo engajamento, views estagnadas..."
+                        : "Ex: Low engagement, stagnant views...",
+                expectedGrowth:
+                    locale === "pt-BR"
+                        ? "Ex: 200% em 6 meses"
+                        : "Ex: 200% in 6 months",
+                budget: locale === "pt-BR" ? "Ex: 1500" : "Ex: 1500",
+                additionalInfo:
+                    locale === "pt-BR"
+                        ? "Conte mais sobre seu canal e necessidades..."
+                        : "Tell us more about your channel and needs...",
             },
         }
     } else {
         return {
-            title: isPortuguese ? "Aplicar como Editor" : "Apply as Editor",
-            subtitle: isPortuguese
-                ? "Junte-se à nossa equipe de editores talentosos"
-                : "Join our team of talented editors",
+            title:
+                locale === "pt-BR" ? "Aplicar como Editor" : "Apply as Editor",
+            subtitle:
+                locale === "pt-BR"
+                    ? "Junte-se à nossa equipe de editores talentosos"
+                    : "Join our team of talented editors",
             form: {
-                personalInfo: isPortuguese
-                    ? "Informações Pessoais"
-                    : "Personal Information",
-                name: isPortuguese ? "Nome completo" : "Full name",
-                email: isPortuguese ? "Email" : "Email",
-                age: isPortuguese ? "Idade" : "Age",
-                location: isPortuguese ? "Localização" : "Location",
-                experience: isPortuguese ? "Experiência" : "Experience",
-                experienceLevel: isPortuguese
-                    ? "Nível de experiência"
-                    : "Experience level",
-                software: isPortuguese
-                    ? "Softwares de edição"
-                    : "Editing software",
-                portfolio: isPortuguese ? "Portfólio" : "Portfolio",
-                portfolioUrl: isPortuguese
-                    ? "Link do portfólio"
-                    : "Portfolio link",
-                sampleWork: isPortuguese
-                    ? "Trabalho de amostra"
-                    : "Sample work",
-                workStyle: isPortuguese ? "Estilo de trabalho" : "Work style",
-                availability: isPortuguese ? "Disponibilidade" : "Availability",
-                hoursPerWeek: isPortuguese
-                    ? "Horas por semana"
-                    : "Hours per week",
-                preferredContent: isPortuguese
-                    ? "Tipo de conteúdo preferido"
-                    : "Preferred content type",
-                expectedRate: isPortuguese
-                    ? "Taxa esperada (R$/hora)"
-                    : "Expected rate (R$/hour)",
-                motivation: isPortuguese ? "Motivação" : "Motivation",
-                whyJoin: isPortuguese
-                    ? "Por que quer se juntar?"
-                    : "Why do you want to join?",
-                submit: isPortuguese
-                    ? "Enviar Aplicação"
-                    : "Submit Application",
+                personalInfo:
+                    locale === "pt-BR"
+                        ? "Informações Pessoais"
+                        : "Personal Information",
+                name: locale === "pt-BR" ? "Nome completo" : "Full name",
+                email: locale === "pt-BR" ? "Email" : "Email",
+                age: locale === "pt-BR" ? "Idade" : "Age",
+                location: locale === "pt-BR" ? "Localização" : "Location",
+                experience: locale === "pt-BR" ? "Experiência" : "Experience",
+                experienceLevel:
+                    locale === "pt-BR"
+                        ? "Nível de experiência"
+                        : "Experience level",
+                software:
+                    locale === "pt-BR"
+                        ? "Softwares de edição"
+                        : "Editing software",
+                portfolio: locale === "pt-BR" ? "Portfólio" : "Portfolio",
+                portfolioUrl:
+                    locale === "pt-BR" ? "Link do portfólio" : "Portfolio link",
+                sampleWork:
+                    locale === "pt-BR" ? "Trabalho de amostra" : "Sample work",
+                workStyle:
+                    locale === "pt-BR" ? "Estilo de trabalho" : "Work style",
+                availability:
+                    locale === "pt-BR" ? "Disponibilidade" : "Availability",
+                hoursPerWeek:
+                    locale === "pt-BR" ? "Horas por semana" : "Hours per week",
+                preferredContent:
+                    locale === "pt-BR"
+                        ? "Tipo de conteúdo preferido"
+                        : "Preferred content type",
+                expectedRate:
+                    locale === "pt-BR"
+                        ? "Taxa esperada (R$/hora)"
+                        : "Expected rate (R$/hour)",
+                motivation: locale === "pt-BR" ? "Motivação" : "Motivation",
+                whyJoin:
+                    locale === "pt-BR"
+                        ? "Por que quer se juntar?"
+                        : "Why do you want to join?",
+                submit:
+                    locale === "pt-BR"
+                        ? "Enviar Aplicação"
+                        : "Submit Application",
             },
             placeholders: {
-                name: isPortuguese ? "Seu nome completo" : "Your full name",
-                email: isPortuguese ? "seu@email.com" : "your@email.com",
-                age: isPortuguese ? "Ex: 25" : "Ex: 25",
-                location: isPortuguese ? "Cidade, Estado" : "City, State",
-                software: isPortuguese
-                    ? "Ex: Adobe Premiere, After Effects, DaVinci..."
-                    : "Ex: Adobe Premiere, After Effects, DaVinci...",
-                portfolioUrl: isPortuguese
-                    ? "https://seu-portfolio.com"
-                    : "https://your-portfolio.com",
-                sampleWork: isPortuguese
-                    ? "Link para vídeo editado por você"
-                    : "Link to video edited by you",
-                hoursPerWeek: isPortuguese ? "Ex: 20" : "Ex: 20",
-                preferredContent: isPortuguese
-                    ? "Gaming, vlogs, educacional..."
-                    : "Gaming, vlogs, educational...",
-                expectedRate: isPortuguese ? "Ex: 50" : "Ex: 50",
-                whyJoin: isPortuguese
-                    ? "Conte sobre sua paixão por edição e objetivos..."
-                    : "Tell us about your passion for editing and goals...",
+                name:
+                    locale === "pt-BR" ? "Seu nome completo" : "Your full name",
+                email: locale === "pt-BR" ? "seu@email.com" : "your@email.com",
+                age: locale === "pt-BR" ? "Ex: 25" : "Ex: 25",
+                location: locale === "pt-BR" ? "Cidade, Estado" : "City, State",
+                software:
+                    locale === "pt-BR"
+                        ? "Ex: Adobe Premiere, After Effects, DaVinci..."
+                        : "Ex: Adobe Premiere, After Effects, DaVinci...",
+                portfolioUrl:
+                    locale === "pt-BR"
+                        ? "https://seu-portfolio.com"
+                        : "https://your-portfolio.com",
+                sampleWork:
+                    locale === "pt-BR"
+                        ? "Link para vídeo editado por você"
+                        : "Link to video edited by you",
+                hoursPerWeek: locale === "pt-BR" ? "Ex: 20" : "Ex: 20",
+                preferredContent:
+                    locale === "pt-BR"
+                        ? "Gaming, vlogs, educacional..."
+                        : "Gaming, vlogs, educational...",
+                expectedRate: locale === "pt-BR" ? "Ex: 50" : "Ex: 50",
+                whyJoin:
+                    locale === "pt-BR"
+                        ? "Conte sobre sua paixão por edição e objetivos..."
+                        : "Tell us about your passion for editing and goals...",
             },
             options: {
-                experienceLevel: isPortuguese
-                    ? ["Iniciante", "Intermediário", "Avançado", "Profissional"]
-                    : ["Beginner", "Intermediate", "Advanced", "Professional"],
+                experienceLevel:
+                    locale === "pt-BR"
+                        ? [
+                              "Iniciante",
+                              "Intermediário",
+                              "Avançado",
+                              "Profissional",
+                          ]
+                        : [
+                              "Beginner",
+                              "Intermediate",
+                              "Advanced",
+                              "Professional",
+                          ],
             },
         }
     }

@@ -1,0 +1,35 @@
+{
+    "dataInfo": {
+        "title": "Datentransparenz",
+        "text": "Wir erfassen nur wesentliche Daten für die Dienstleistungserbringung: Kontaktinformationen, Kanaldaten und Kommunikation. Wir verkaufen oder teilen Ihre Daten nicht."
+    },
+    "companyDescription": "Full Stack Entwickler, spezialisiert auf Datenwissenschaft, mit Kanalberatung, digitalen Lösungen für persönliche und geschäftliche Projekte und Videobearbeitungsdiensten für Kanäle.",
+    "links": {
+        "services": {
+            "title": "Dienstleistungen",
+            "items": {
+                "pcOptimization": "PC-Optimierung"
+            }
+        },
+        "legal": {
+            "title": "Rechtliches",
+            "items": {
+                "privacy": "Datenschutz",
+                "terms": "Nutzungsbedingungen"
+            }
+        },
+        "contact": {
+            "title": "Kontakt",
+            "items": {
+                "workAsEditor": "Arbeiten als Editor"
+            }
+        }
+    },
+    "rights": "Alle Rechte vorbehalten.",
+    "short": {
+        "privacy": "Datenschutz",
+        "terms": "Bedingungen",
+        "secureData": "Sichere Daten",
+        "openSource": "Open Source • Vollständig öffentlich"
+    }
+}

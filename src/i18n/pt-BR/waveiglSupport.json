@@ -1,0 +1,333 @@
+{
+    "hero": {
+        "badge": "💜 Apoie a Comunidade WaveIGL",
+        "title": "O Futuro da Comunidade WaveIGL",
+        "subtitle": "Unificação de chats do YouTube e Twitch em uma única plataforma profissional, com integração automática de grupos no WhatsApp e Discord para SUBs.",
+        "cta": "Apoiar o Projeto",
+        "stats": [
+            {
+                "number": "R$ 27.360",
+                "label": "Investimento Total (Desconto Monero)"
+            },
+            { "number": "7", "label": "Funcionalidades Principais" },
+            { "number": "5+", "label": "Plataformas Integradas" }
+        ]
+    },
+    "mission": {
+        "title": "Como Isso Ajuda",
+        "subtitle": "Benefícios diretos para o streamer e a comunidade",
+        "points": [
+            {
+                "title": "Acesso Automático",
+                "description": "SUBs terão acesso automático aos grupos sem erros manuais, atrasos ou confusão"
+            },
+            {
+                "title": "Centralização de Dados",
+                "description": "Centralização de pessoas em ambiente com controle completo de dados"
+            },
+            {
+                "title": "Moderação Facilitada",
+                "description": "Moderação facilitada para toda a equipe"
+            },
+            {
+                "title": "Ambiente Profissional",
+                "description": "Ambiente profissional que aumenta a visibilidade do projeto"
+            }
+        ]
+    },
+    "projects": {
+        "title": "Funcionalidades do Projeto",
+        "subtitle": "Cada funcionalidade foi cuidadosamente planejada e tem seu próprio valor de investimento",
+        "list": [
+            {
+                "title": "Landing Page",
+                "description": "3-5 seções, 1 semana após confirmação do design",
+                "progress": 0,
+                "budget": "R$ 480",
+                "status": "Proprietário"
+            },
+            {
+                "title": "Pagamento Mercado Pago",
+                "description": "Integração completa com gateway Mercado Pago para doações",
+                "progress": 0,
+                "budget": "R$ 340",
+                "status": "Proprietário"
+            },
+            {
+                "title": "Pagamento Stripe",
+                "description": "Integração internacional com Stripe para doações globais",
+                "progress": 0,
+                "budget": "R$ 340",
+                "status": "Proprietário"
+            },
+            {
+                "title": "Pagamento Crypto",
+                "description": "Sistema de doações em criptomoedas (Bitcoin, Ethereum, etc)",
+                "progress": 0,
+                "budget": "R$ 340",
+                "status": "Proprietário"
+            },
+            {
+                "title": "Proteção DDoS",
+                "description": "Via CloudFlare, 1 semana de implementação",
+                "progress": 0,
+                "budget": "R$ 480",
+                "status": "Não Proprietário"
+            },
+            {
+                "title": "Login Google",
+                "description": "Autenticação via conta Google",
+                "progress": 0,
+                "budget": "R$ 2.550",
+                "status": "Não Proprietário"
+            },
+            {
+                "title": "Login YouTube",
+                "description": "Autenticação via canal do YouTube",
+                "progress": 0,
+                "budget": "R$ 2.550",
+                "status": "Não Proprietário"
+            },
+            {
+                "title": "Login Twitch",
+                "description": "Autenticação via conta da Twitch",
+                "progress": 0,
+                "budget": "R$ 2.550",
+                "status": "Não Proprietário"
+            },
+            {
+                "title": "Login Kick",
+                "description": "Autenticação via conta do Kick",
+                "progress": 0,
+                "budget": "R$ 2.550",
+                "status": "Não Proprietário"
+            },
+            {
+                "title": "Chat YouTube",
+                "description": "Unificação e gerenciamento do chat do YouTube",
+                "progress": 0,
+                "budget": "R$ 2.000",
+                "status": "Não Proprietário"
+            },
+            {
+                "title": "Chat Twitch",
+                "description": "Unificação e gerenciamento do chat da Twitch",
+                "progress": 0,
+                "budget": "R$ 2.000",
+                "status": "Não Proprietário"
+            },
+            {
+                "title": "Chat Kick",
+                "description": "Unificação e gerenciamento do chat do Kick",
+                "progress": 0,
+                "budget": "R$ 2.000",
+                "status": "Não Proprietário"
+            },
+            {
+                "title": "Grupos WhatsApp",
+                "description": "Sistema automático de acesso a grupos do WhatsApp para SUBs",
+                "progress": 0,
+                "budget": "R$ 510",
+                "status": "Não Proprietário"
+            },
+            {
+                "title": "Vinculação Discord",
+                "description": "Sistema automático de vinculação ao Discord para SUBs",
+                "progress": 0,
+                "budget": "R$ 510",
+                "status": "Não Proprietário"
+            },
+            {
+                "title": "Moderação YouTube",
+                "description": "Ferramentas de moderação específicas para YouTube",
+                "progress": 0,
+                "budget": "R$ 2.720",
+                "status": "Não Proprietário"
+            },
+            {
+                "title": "Moderação Twitch",
+                "description": "Ferramentas de moderação específicas para Twitch",
+                "progress": 0,
+                "budget": "R$ 2.720",
+                "status": "Não Proprietário"
+            },
+            {
+                "title": "Moderação Kick",
+                "description": "Ferramentas de moderação específicas para Kick",
+                "progress": 0,
+                "budget": "R$ 2.720",
+                "status": "Não Proprietário"
+            }
+        ]
+    },
+    "transparency": {
+        "title": "Sobre a Propriedade",
+        "subtitle": "Entenda os direitos de cada funcionalidade",
+        "breakdown": [
+            {
+                "category": "Funcionalidades Não Proprietárias",
+                "percentage": 80,
+                "amount": "80%",
+                "description": "Sem direitos exclusivos. Podem ser redistribuídas para outros projetos, inclusive comercialmente"
+            },
+            {
+                "category": "Funcionalidades Proprietárias",
+                "percentage": 20,
+                "amount": "20%",
+                "description": "Seus direitos exclusivos. Você pode modificar, comercializar e redistribuir como desejar"
+            }
+        ]
+    },
+    "rewards": {
+        "title": "Recompensas Exclusivas",
+        "subtitle": "Nossa forma de agradecer por fazer parte desta jornada",
+        "perks": [
+            {
+                "tier": "Todos os Apoiadores",
+                "benefits": [
+                    "Badge exclusivo no Discord do Canal",
+                    "Acesso antecipado a novos recursos",
+                    "Relatórios mensais de progresso"
+                ]
+            },
+            {
+                "tier": "Apoiadores R$50+",
+                "benefits": [
+                    "Participação em sessões de feedback",
+                    "Nome nos créditos dos projetos",
+                    "Acesso ao WhatsApp pessoal do ogabrieltoth"
+                ]
+            },
+            {
+                "tier": "Apoiadores R$150+",
+                "benefits": [
+                    "Reunião mensal com a equipe",
+                    "Influência direta nas decisões de desenvolvimento",
+                    "Prioridade no suporte via WhatsApp"
+                ]
+            }
+        ]
+    },
+    "testimonials": {
+        "title": "Depoimento da Comunidade",
+        "subtitle": "Veja o que nossos membros estão dizendo",
+        "items": [
+            {
+                "name": "ogabrieltoth",
+                "role": "Content Creator / Desenvolvedor Full Stack",
+                "content": "Conheci o WaveIGL há mais de 6 anos, subi de Prata 3 para AK Cruzada no CS:GO, nos tornamos parceiros há mais de 3 anos. Me ajudou não somente in-game, mas também para a vida.",
+                "amount": "R$ 9,90"
+            }
+        ]
+    },
+    "donation": {
+        "title": "Seja Parte da História",
+        "subtitle": "Juntos, estamos construindo o futuro da comunidade gaming brasileira",
+        "moneroBonus": "✨ Doações em Monero valem o dobro! 🌟",
+        "suggestedAmounts": {
+            "donator": {
+                "amount": "9.90",
+                "label": "WaveIGL - Donator",
+                "description": "Apoio mensal para o projeto"
+            },
+            "theDonator": {
+                "label": "WaveIGL - THE Donator",
+                "description": "Escolha o valor do seu apoio mensal"
+            }
+        },
+        "oneTime": "Doação única",
+        "monthly": "Apoio mensal",
+        "monthlyAnnualPlan": "Plano Mensal/Anual",
+        "pixDonation": "Doação via PIX",
+        "scanQrCode": "Escaneie o QR Code ou copie a chave PIX abaixo:",
+        "copyPixKey": "Copiar Chave PIX",
+        "pixKeyCopied": "Chave PIX copiada!",
+        "chooseAmount": "Escolha o valor",
+        "annual": "Anual"
+    },
+    "payment": {
+        "methods": {
+            "pix": {
+                "title": "PIX/Cartão",
+                "description": "Preço regular",
+                "features": [
+                    "Pagamento instantâneo",
+                    "Sem taxas adicionais",
+                    "Recibo automático"
+                ]
+            },
+            "monero": {
+                "title": "Monero (XMR)",
+                "description": "50% de desconto!",
+                "features": [
+                    "Totalmente anônimo",
+                    "Privacidade garantizada",
+                    "Sem KYC necessário"
+                ]
+            }
+        },
+        "dialog": {
+            "oneTime": "Doação Única",
+            "monthly": "Apoio Mensal",
+            "description": "Escolha um valor e sua forma de pagamento preferida",
+            "customAmount": "Valor personalizado",
+            "instantPayment": "Pagamento instantâneo",
+            "anonymousPayment": "Pagamento anônimo"
+        },
+        "alerts": {
+            "enterAmount": "Por favor, insira um valor",
+            "pixMonthlyNotSupported": "Desculpe, ainda não temos suporte para PIX mensal automático. Por favor, use Monero para apoio mensal."
+        }
+    },
+    "common": {
+        "progress": "Progresso",
+        "goal": "Meta",
+        "totalInvestmentNeeded": "Investimento Total Necessário",
+        "overallProgress": "Progresso Geral",
+        "inDevelopment": "Em Desenvolvimento"
+    },
+    "faq": {
+        "question1": "Como posso apoiar o canal WaveIGL?",
+        "answer1": "Você pode apoiar através de doações via PIX, cartão de crédito ou criptomoedas. Todo valor é reinvestido na comunidade.",
+        "question2": "Quais são os benefícios de apoiar?",
+        "answer2": "Apoiadores recebem acesso exclusivo a conteúdos, participação em eventos especiais e reconhecimento na comunidade.",
+        "question3": "Como o dinheiro arrecadado é utilizado?",
+        "answer3": "100% dos valores arrecadados são reinvestidos em melhorias de equipamento, software premium e eventos para a comunidade.",
+        "question4": "Quais formas de pagamento são aceitas?",
+        "answer4": "Aceitamos doações via PIX, cartão de crédito e criptomoedas. Todo valor é reinvestido de volta na comunidade através de melhorias e eventos."
+    },
+    "organizationDescription": "Canal de gaming focado em conteúdo de qualidade e crescimento da comunidade",
+    "structuredData": {
+        "organization": {
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            "name": "WaveIGL",
+            "description": "Canal de gaming focado em conteúdo de qualidade e crescimento da comunidade",
+            "url": "https://gabrieltoth.com/waveigl-support",
+            "logo": "https://gabrieltoth.com/logo.png",
+            "sameAs": [
+                "https://youtube.com/@WaveIGL",
+                "https://twitch.tv/WaveIGL",
+                "https://discord.gg/WaveIGL"
+            ]
+        },
+        "faqs": [
+            {
+                "question": "Como posso apoiar o canal WaveIGL?",
+                "answer": "Você pode apoiar através de doações via PIX, cartão de crédito ou criptomoedas. Todo valor é reinvestido na comunidade."
+            },
+            {
+                "question": "Quais são os benefícios de apoiar?",
+                "answer": "Apoiadores recebem acesso exclusivo a conteúdos, participação em eventos especiais e reconhecimento na comunidade."
+            },
+            {
+                "question": "Como o dinheiro arrecadado é utilizado?",
+                "answer": "100% dos valores arrecadados são reinvestidos em melhorias de equipamento, software premium e eventos para a comunidade."
+            },
+            {
+                "question": "Quais formas de pagamento são aceitas?",
+                "answer": "Aceitamos doações via PIX, cartão de crédito e criptomoedas. Todo valor é reinvestido de volta na comunidade através de melhorias e eventos."
+            }
+        ]
+    }
+}

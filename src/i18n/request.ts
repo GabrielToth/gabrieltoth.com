@@ -1,13 +1,66 @@
-import { locales, type Locale } from "@/lib/i18n"
+import { defaultLocale, locales, type Locale } from "@/lib/i18n"
 import { getRequestConfig } from "next-intl/server"
 
+type MessagesRecord = Record<string, any>
+
+async function loadJson<T = any>(
+    importer: () => Promise<{ default: T }>
+): Promise<T | {}> {
+    try {
+        const mod = await importer()
+        return mod.default as T
+    } catch {
+        return {} as T
+    }
+}
+
 export default getRequestConfig(async ({ locale }) => {
-    // Validate that the incoming `locale` parameter is valid and ensure it's a string
-    const validLocale =
-        locale && locales.includes(locale as Locale) ? locale : "en"
+    const selectedLocale: Locale = locales.includes(locale as Locale)
+        ? (locale as Locale)
+        : defaultLocale
+
+    // Load namespaces from src/i18n/{locale}/{namespace}.json (migrating progressively)
+    const [
+        home,
+        editors,
+        channelManagement,
+        pcOptimization,
+        privacyPolicy,
+        termsOfService,
+        waveiglSupport,
+        header,
+    ] = await Promise.all([
+        loadJson(() => import(`@/i18n/${selectedLocale}/home.json`)),
+        loadJson(() => import(`@/i18n/${selectedLocale}/editors.json`)),
+        loadJson(
+            () => import(`@/i18n/${selectedLocale}/channelManagement.json`)
+        ),
+        loadJson(() => import(`@/i18n/${selectedLocale}/pcOptimization.json`)),
+        loadJson(() => import(`@/i18n/${selectedLocale}/privacyPolicy.json`)),
+        loadJson(() => import(`@/i18n/${selectedLocale}/termsOfService.json`)),
+        loadJson(() => import(`@/i18n/${selectedLocale}/waveiglSupport.json`)),
+        loadJson(() => import(`@/i18n/${selectedLocale}/layout.header.json`)),
+    ])
+
+    const messages: MessagesRecord = {
+        common: {},
+        home,
+        editors,
+        channelManagement,
+        pcOptimization,
+        privacyPolicy,
+        termsOfService,
+        waveiglSupport,
+        layout: {
+            header,
+            footer: await loadJson(
+                () => import(`@/i18n/${selectedLocale}/layout.footer.json`)
+            ),
+        },
+    }
 
     return {
-        locale: validLocale as string,
-        messages: {},
+        locale: selectedLocale as string,
+        messages,
     }
 })

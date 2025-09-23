@@ -3,6 +3,7 @@
 import { useLocale } from "@/hooks/use-locale"
 import { cn } from "@/lib/utils"
 import { ChevronRight, Home } from "lucide-react"
+import { useTranslations } from "next-intl"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 
@@ -27,11 +28,12 @@ const Breadcrumbs = ({
 }: BreadcrumbsProps) => {
     const pathname = usePathname()
     const { locale } = useLocale()
-    const isPortuguese = locale === "pt-BR"
+    const tHeader = useTranslations("layout.header")
+    const tFooter = useTranslations("layout.footer")
 
     // Auto-generate breadcrumbs from pathname if items not provided
     const breadcrumbItems =
-        items || generateBreadcrumbsFromPath(pathname, locale, isPortuguese)
+        items || generateBreadcrumbsFromPath(pathname, locale)
 
     // Never show breadcrumbs on homepage (it IS the beginning)
     const isHomepage = pathname === `/${locale}` || pathname === `/${locale}/`
@@ -47,11 +49,7 @@ const Breadcrumbs = ({
             item => item.href === `/${locale}` || item.href === "/"
         )
     ) {
-        const getHomeName = () => {
-            if (isPortuguese) return "Início"
-            if (locale === "es") return "Inicio"
-            return "Home"
-        }
+        const getHomeName = () => tHeader("home")
 
         finalItems.unshift({
             name: getHomeName(),
@@ -71,11 +69,7 @@ const Breadcrumbs = ({
         >
             {finalItems.map((item, index) => {
                 const isLast = index === finalItems.length - 1
-                const getHomeName = () => {
-                    if (isPortuguese) return "Início"
-                    if (locale === "es") return "Inicio"
-                    return "Home"
-                }
+                const getHomeName = () => tHeader("home")
                 const isHome = item.name === getHomeName()
 
                 return (
@@ -123,8 +117,7 @@ const Breadcrumbs = ({
 // Helper function to generate breadcrumbs from pathname
 function generateBreadcrumbsFromPath(
     pathname: string,
-    locale: string,
-    isPortuguese: boolean
+    locale: string
 ): BreadcrumbItem[] {
     // Remove anchor/hash from pathname
     const cleanPathname = pathname.split("#")[0]
@@ -144,36 +137,15 @@ function generateBreadcrumbsFromPath(
     let currentPath = `/${locale}`
 
     // Page name mappings
-    const isSpanish = locale === "es"
     const pageNames = {
-        "channel-management": isSpanish
-            ? "Gestión de Canales"
-            : isPortuguese
-              ? "Gerenciamento de Canais"
-              : "Channel Management",
-        "pc-optimization": isSpanish
-            ? "Optimización de PC"
-            : isPortuguese
-              ? "Otimização de PC"
-              : "PC Optimization",
-        "waveigl-support": isSpanish
-            ? "Apoyar WaveIGL"
-            : isPortuguese
-              ? "Apoie WaveIGL"
-              : "Support WaveIGL",
-        editors: isSpanish ? "Editores" : isPortuguese ? "Editores" : "Editors",
-        "privacy-policy": isSpanish
-            ? "Política de Privacidad"
-            : isPortuguese
-              ? "Política de Privacidade"
-              : "Privacy Policy",
-        "terms-of-service": isSpanish
-            ? "Términos de Servicio"
-            : isPortuguese
-              ? "Termos de Serviço"
-              : "Terms of Service",
-        terms: isSpanish ? "Términos" : isPortuguese ? "Termos" : "Terms",
-    }
+        "channel-management": tHeader("servicesDropdown.channelManagement"),
+        "pc-optimization": tHeader("servicesDropdown.pcOptimization"),
+        "waveigl-support": tHeader("servicesDropdown.support"),
+        editors: tHeader("editors"),
+        "privacy-policy": tFooter("links.legal.items.privacy"),
+        "terms-of-service": tFooter("links.legal.items.terms"),
+        terms: tFooter("short.terms"),
+    } as Record<string, string>
 
     segments.forEach((segment, index) => {
         currentPath += `/${segment}`
@@ -199,13 +171,16 @@ export function getBreadcrumbsForStructuredData(
     pathname: string,
     locale: string
 ): Array<{ name: string; url: string }> {
-    const isPortuguese = locale === "pt-BR"
-    const items = generateBreadcrumbsFromPath(pathname, locale, isPortuguese)
+    const items = generateBreadcrumbsFromPath(pathname, locale)
 
-    // Add home
-    const isSpanish = locale === "es"
+    const homeNames: Record<string, string> = {
+        "pt-BR": "Início",
+        es: "Inicio",
+        de: "Startseite",
+        en: "Home",
+    }
     const homeItem = {
-        name: isSpanish ? "Inicio" : isPortuguese ? "Início" : "Home",
+        name: homeNames[locale] || "Home",
         url: `https://gabrieltoth.com/${locale}`,
     }
 

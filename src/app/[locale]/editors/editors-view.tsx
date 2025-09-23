@@ -8,14 +8,19 @@ import LanguageSelector from "@/components/ui/language-selector"
 import WhatsAppButton from "@/components/ui/whatsapp-button"
 import { type Locale } from "@/lib/i18n"
 import { type IconName } from "@/lib/icons"
-import { type SectionProps } from "./editors-types"
+import { useTranslations } from "next-intl"
 import { getApplicationTemplate } from "./editors-whatsapp"
 
 interface SectionPropsWithLocale extends SectionProps {
     locale: Locale
 }
 
-export const HeroSection = ({ t, locale }: SectionPropsWithLocale) => {
+export const HeroSection = ({ locale }: SectionPropsWithLocale) => {
+    const t = useTranslations("editors")
+    const stats = t.raw("hero.stats") as Array<{
+        number: string
+        label: string
+    }>
     const whatsappNumber = "5511993313606"
 
     return (
@@ -25,13 +30,13 @@ export const HeroSection = ({ t, locale }: SectionPropsWithLocale) => {
                     <LanguageSelector variant="default" />
                 </div>
                 <Badge variant="secondary" className="mb-4">
-                    {t.hero.badge}
+                    {t("hero.badge")}
                 </Badge>
                 <h1 className="text-4xl font-bold tracking-tight sm:text-6xl mb-6">
-                    {t.hero.title}
+                    {t("hero.title")}
                 </h1>
                 <p className="text-lg text-gray-600 dark:text-gray-300 mb-8 max-w-2xl mx-auto">
-                    {t.hero.subtitle}
+                    {t("hero.subtitle")}
                 </p>
                 <WhatsAppButton
                     phoneNumber={whatsappNumber}
@@ -39,11 +44,11 @@ export const HeroSection = ({ t, locale }: SectionPropsWithLocale) => {
                     size="lg"
                     className="bg-blue-600 hover:bg-blue-700 hover:cursor-pointer text-white"
                 >
-                    {t.hero.cta}
+                    {t("hero.cta")}
                 </WhatsAppButton>
 
                 <div className="mt-16 grid grid-cols-1 gap-8 sm:grid-cols-3">
-                    {t.hero.stats.map(
+                    {stats.map(
                         (
                             stat: { number: string; label: string },
                             index: number
@@ -64,25 +69,32 @@ export const HeroSection = ({ t, locale }: SectionPropsWithLocale) => {
     )
 }
 
-export const AboutSection = ({ t }: SectionProps) => {
+export const AboutSection = () => {
+    const t = useTranslations("editors")
+    const skills = t.raw("about.skills") as Array<{
+        iconName: string
+        name: string
+    }>
     return (
         <section className="w-full bg-white dark:bg-gray-900 py-20 px-4 sm:px-6 lg:px-8">
             <div className="max-w-7xl mx-auto">
                 <div className="text-center mb-16">
-                    <h2 className="text-3xl font-bold mb-4">{t.about.title}</h2>
+                    <h2 className="text-3xl font-bold mb-4">
+                        {t("about.title")}
+                    </h2>
                     <p className="text-gray-600 dark:text-gray-300">
-                        {t.about.description}
+                        {t("about.description")}
                     </p>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-                    <p className="text-lg">{t.about.intro}</p>
-                    <p className="text-lg">{t.about.experience}</p>
-                    <p className="text-lg">{t.about.passion}</p>
+                    <p className="text-lg">{t("about.intro")}</p>
+                    <p className="text-lg">{t("about.experience")}</p>
+                    <p className="text-lg">{t("about.passion")}</p>
                 </div>
 
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8">
-                    {t.about.skills.map(
+                    {skills.map(
                         (
                             skill: { iconName: string; name: string },
                             index: number
@@ -106,19 +118,27 @@ export const AboutSection = ({ t }: SectionProps) => {
     )
 }
 
-export const ToolsSection = ({ t }: SectionProps) => {
+export const ToolsSection = () => {
+    const t = useTranslations("editors")
+    const tools = t.raw("tools.items") as Array<{
+        iconName: string
+        name: string
+        description: string
+    }>
     return (
         <section className="w-full bg-gray-50 dark:bg-gray-800 py-20 px-4 sm:px-6 lg:px-8">
             <div className="max-w-7xl mx-auto">
                 <div className="text-center mb-16">
-                    <h2 className="text-3xl font-bold mb-4">{t.tools.title}</h2>
+                    <h2 className="text-3xl font-bold mb-4">
+                        {t("tools.title")}
+                    </h2>
                     <p className="text-gray-600 dark:text-gray-300">
-                        {t.tools.subtitle}
+                        {t("tools.subtitle")}
                     </p>
                 </div>
 
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-                    {t.tools.items.map(
+                    {tools.map(
                         (
                             tool: {
                                 iconName: string
@@ -151,21 +171,28 @@ export const ToolsSection = ({ t }: SectionProps) => {
     )
 }
 
-export const RequirementsSection = ({ t }: SectionProps) => {
+export const RequirementsSection = () => {
+    const t = useTranslations("editors")
+    const items = t.raw("requirements.items") as Array<{
+        iconName: string
+        title: string
+        description: string
+        features?: string[]
+    }>
     return (
         <section className="w-full bg-gray-50 dark:bg-gray-900 py-20 px-4 sm:px-6 lg:px-8">
             <div className="max-w-7xl mx-auto">
                 <div className="text-center mb-16">
                     <h2 className="text-4xl font-bold mb-4">
-                        {t.requirements.title}
+                        {t("requirements.title")}
                     </h2>
                     <p className="text-gray-600 dark:text-gray-300">
-                        {t.requirements.subtitle}
+                        {t("requirements.subtitle")}
                     </p>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    {t.requirements.items.map(
+                    {items.map(
                         (
                             requirement: {
                                 iconName: string
@@ -219,21 +246,27 @@ export const RequirementsSection = ({ t }: SectionProps) => {
     )
 }
 
-export const BenefitsSection = ({ t }: SectionProps) => {
+export const BenefitsSection = () => {
+    const t = useTranslations("editors")
+    const items = t.raw("benefits.items") as Array<{
+        title: string
+        description: string
+        iconName: string
+    }>
     return (
         <section className="w-full bg-white dark:bg-gray-800 py-20 px-4 sm:px-6 lg:px-8">
             <div className="max-w-7xl mx-auto">
                 <div className="text-center mb-16">
                     <h2 className="text-3xl font-bold mb-4">
-                        {t.benefits.title}
+                        {t("benefits.title")}
                     </h2>
                     <p className="text-gray-600 dark:text-gray-300">
-                        {t.benefits.subtitle}
+                        {t("benefits.subtitle")}
                     </p>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    {t.benefits.items.map(
+                    {items.map(
                         (
                             benefit: {
                                 title: string
@@ -256,14 +289,15 @@ export const BenefitsSection = ({ t }: SectionProps) => {
     )
 }
 
-export const CTASection = ({ t, locale }: SectionPropsWithLocale) => {
+export const CTASection = ({ locale }: SectionPropsWithLocale) => {
+    const t = useTranslations("editors")
     const whatsappNumber = "5511993313606"
 
     return (
         <section className="w-full bg-blue-600 text-white py-20 px-4 sm:px-6 lg:px-8">
             <div className="max-w-7xl mx-auto text-center">
-                <h2 className="text-3xl font-bold mb-4">{t.cta.title}</h2>
-                <p className="text-lg mb-8">{t.cta.description}</p>
+                <h2 className="text-3xl font-bold mb-4">{t("cta.title")}</h2>
+                <p className="text-lg mb-8">{t("cta.description")}</p>
                 <WhatsAppButton
                     phoneNumber={whatsappNumber}
                     message={getApplicationTemplate(locale as "en" | "pt-BR")}
@@ -271,7 +305,7 @@ export const CTASection = ({ t, locale }: SectionPropsWithLocale) => {
                     variant="outline"
                     className="border-white text-blue-600 bg-white hover:bg-blue-600 hover:text-white"
                 >
-                    {t.cta.button}
+                    {t("cta.button")}
                 </WhatsAppButton>
             </div>
         </section>

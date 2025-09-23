@@ -1,0 +1,279 @@
+{
+    "moneroToggle": {
+        "title": "Precios con Monero (XMR)",
+        "description": "Activar para ver precios con 50% de descuento usando Monero",
+        "enabled": "💰 Precios con Monero (50% OFF)",
+        "disabled": "💴 Precios Regulares (PIX/Tarjeta)"
+    },
+    "hero": {
+        "badge": "🎬 Únete a Nuestro Equipo",
+        "title": "Buscamos Editores Talentosos",
+        "subtitle": "Forma parte de un equipo global de editores profesionales. Trabaja en proyectos interesantes con horarios flexibles.",
+        "cta": "Aplicar Ahora",
+        "stats": [
+            { "number": "50+", "label": "Editores activos" },
+            { "number": "100+", "label": "Proyectos por mes" },
+            { "number": "24/7", "label": "Soporte al equipo" }
+        ]
+    },
+    "about": {
+        "title": "¿Por Qué Trabajar Con Nosotros?",
+        "description": "Ofrecemos un ambiente flexible y gratificante para editores talentosos",
+        "intro": "Buscamos editores apasionados por crear contenido de calidad. Ofrecemos proyectos diversos, pago competitivo y libertad para trabajar desde cualquier lugar.",
+        "experience": "Nuestra plataforma te conecta con clientes globales, asegurando un flujo constante de proyectos interesantes. Tú eliges qué proyectos aceptar y defines tu propio ritmo.",
+        "passion": "Valoramos la creatividad y calidad. Si eres detallista, organizado y amas la edición de videos, te queremos en nuestro equipo.",
+        "skills": [
+            { "name": "Edición de Video", "iconName": "Video" },
+            { "name": "Motion Graphics", "iconName": "Wand2" },
+            { "name": "Color Grading", "iconName": "Palette" },
+            { "name": "Diseño de Sonido", "iconName": "Volume2" }
+        ]
+    },
+    "tools": {
+        "title": "Herramientas que Usamos",
+        "subtitle": "Software profesional para resultados de calidad",
+        "items": [
+            {
+                "name": "Adobe Premiere Pro",
+                "description": "Edición de video profesional",
+                "iconName": "Video"
+            },
+            {
+                "name": "After Effects",
+                "description": "Motion graphics y VFX",
+                "iconName": "Wand2"
+            },
+            {
+                "name": "DaVinci Resolve",
+                "description": "Color grading avanzado",
+                "iconName": "Palette"
+            },
+            {
+                "name": "Audition",
+                "description": "Edición de audio profesional",
+                "iconName": "Volume2"
+            }
+        ]
+    },
+    "services": {
+        "title": "Tipos de Proyectos",
+        "subtitle": "Variedad de trabajos disponibles",
+        "items": [
+            {
+                "iconName": "Youtube",
+                "title": "Videos de YouTube",
+                "description": "Edición completa para creadores de contenido",
+                "features": [
+                    "Cortes dinámicos",
+                    "Miniaturas",
+                    "Intros/Outros",
+                    "Subtítulos"
+                ]
+            },
+            {
+                "iconName": "Megaphone",
+                "title": "Contenido Publicitario",
+                "description": "Videos promocionales y comerciales",
+                "features": [
+                    "Guión visual",
+                    "Animaciones",
+                    "Branding",
+                    "Call-to-action"
+                ]
+            },
+            {
+                "iconName": "Users",
+                "title": "Redes Sociales",
+                "description": "Contenido para Instagram, TikTok, etc",
+                "features": [
+                    "Formato vertical",
+                    "Efectos trending",
+                    "Hashtags",
+                    "Stories"
+                ]
+            }
+        ]
+    },
+    "testimonials": {
+        "title": "Lo que Dicen Nuestros Editores",
+        "subtitle": "Testimonios reales de nuestro equipo",
+        "items": [
+            {
+                "rating": 5,
+                "content": "¡He estado trabajando aquí por 2 años y es increíble! Proyectos variados, pago puntual y total flexibilidad de horario.",
+                "name": "Maria Silva",
+                "role": "Editor Senior"
+            },
+            {
+                "rating": 5,
+                "content": "La mejor plataforma para editores freelance. Soporte excepcional y clientes de calidad.",
+                "name": "João Santos",
+                "role": "Motion Designer"
+            }
+        ]
+    },
+    "pricing": {
+        "title": "Estructura de Pago",
+        "subtitle": "Compensación competitiva por proyecto",
+        "plans": [
+            {
+                "name": "Editor Principiante",
+                "basePrice": 50,
+                "description": "Para editores con hasta 1 año de experiencia",
+                "features": [
+                    "Proyectos básicos",
+                    "Soporte 24/7",
+                    "Feedback detallado",
+                    "Crecimiento gradual"
+                ]
+            },
+            {
+                "name": "Editor Intermedio",
+                "basePrice": 100,
+                "description": "Para editores con 1-3 años de experiencia",
+                "features": [
+                    "Proyectos complejos",
+                    "Cliente directo",
+                    "Revisiones ilimitadas",
+                    "Bonos por calidad"
+                ],
+                "popular": true
+            },
+            {
+                "name": "Editor Senior",
+                "basePrice": 200,
+                "description": "Para editores experimentados (3+ años)",
+                "features": [
+                    "Proyectos premium",
+                    "Equipo propio",
+                    "Supervisión de calidad",
+                    "Participación en ganancias"
+                ]
+            }
+        ],
+        "note": "*Valores base por proyecto. Bonos por rendimiento y complejidad."
+    },
+    "requirements": {
+        "title": "Requisitos",
+        "subtitle": "Lo que necesitas para ser parte del equipo",
+        "items": [
+            {
+                "title": "Hardware",
+                "description": "Equipos mínimos necesarios",
+                "iconName": "Monitor",
+                "features": [
+                    "PC con 16GB RAM mínimo",
+                    "Tarjeta gráfica dedicada",
+                    "SSD para proyectos",
+                    "Internet estable"
+                ]
+            },
+            {
+                "title": "Software",
+                "description": "Programas que debes dominar",
+                "iconName": "Code",
+                "features": [
+                    "Adobe Premiere Pro",
+                    "After Effects (deseable)",
+                    "Photoshop básico",
+                    "Nociones de audio"
+                ]
+            },
+            {
+                "title": "Experiencia",
+                "description": "Conocimientos y habilidades",
+                "iconName": "Star",
+                "features": [
+                    "Portfolio disponible",
+                    "Inglés básico",
+                    "Organización",
+                    "Puntualidad"
+                ]
+            }
+        ]
+    },
+    "benefits": {
+        "title": "Beneficios",
+        "subtitle": "Ventajas de trabajar con nosotros",
+        "description": "Ofrecemos mucho más que solo proyectos",
+        "items": [
+            {
+                "title": "Flexibilidad Total",
+                "description": "Trabaja cuando y donde quieras",
+                "iconName": "Clock"
+            },
+            {
+                "title": "Pago Garantizado",
+                "description": "Siempre recibe a tiempo, sin retrasos",
+                "iconName": "CreditCard"
+            },
+            {
+                "title": "Crecimiento Profesional",
+                "description": "Desarrolla tus habilidades continuamente",
+                "iconName": "TrendingUp"
+            },
+            {
+                "title": "Soporte Dedicado",
+                "description": "Equipo siempre disponible para ayudar",
+                "iconName": "MessageSquare"
+            }
+        ]
+    },
+    "cta": {
+        "title": "¿Listo para Empezar?",
+        "description": "Únete a nuestro equipo de editores talentosos hoy",
+        "button": "Enviar Aplicación"
+    },
+    "structuredData": {
+        "jobPosting": {
+            "@context": "https://schema.org",
+            "@type": "JobPosting",
+            "title": "Editor de Video Freelancer",
+            "description": "Oportunidad única de trabajar como editor de video y ganar el 90% del AdSense de los videos editados",
+            "hiringOrganization": {
+                "@type": "Organization",
+                "name": "Gabriel Toth Gonçalves",
+                "sameAs": "https://gabrieltoth.com"
+            },
+            "datePosted": "2024-12-15",
+            "employmentType": "CONTRACTOR",
+            "workHours": "Horario flexible",
+            "jobLocation": {
+                "@type": "Place",
+                "address": {
+                    "@type": "PostalAddress",
+                    "addressCountry": "BR",
+                    "addressRegion": "São Paulo"
+                }
+            },
+            "baseSalary": {
+                "@type": "MonetaryAmount",
+                "currency": "BRL",
+                "value": {
+                    "@type": "QuantitativeValue",
+                    "unitText": "90% de AdSense por video"
+                }
+            },
+            "qualifications": "Experiencia en edición de video, conocimiento en software de edición",
+            "responsibilities": "Editar videos para YouTube, aplicar miniaturas, optimizar para SEO"
+        }
+    },
+    "faqs": [
+        {
+            "question": "¿Cómo funciona el pago del 90% de AdSense?",
+            "answer": "Recibes el 90% de todos los ingresos de AdSense generados por los videos que editas. El pago se realiza mensualmente vía PIX."
+        },
+        {
+            "question": "¿Necesito equipos específicos?",
+            "answer": "Necesitas una computadora capaz de ejecutar software de edición y una conexión a internet estable para subir videos."
+        },
+        {
+            "question": "¿Cuánto puedo ganar al mes?",
+            "answer": "Las ganancias varían según el rendimiento de los videos. Editores experimentados pueden ganar entre R$ 2.000 a R$ 8.000+ por mes."
+        },
+        {
+            "question": "¿Cómo es el proceso de selección?",
+            "answer": "Analizamos tu portafolio, realizamos una prueba práctica de edición y una entrevista para evaluar la compatibilidad."
+        }
+    ]
+}
