@@ -7,7 +7,7 @@ import LocaleProvider from "./locale-provider"
 
 interface LocaleLayoutProps {
     children: React.ReactNode
-    params: Promise<{ locale: Locale }>
+    params: Promise<{ locale: string }>
 }
 
 export function generateStaticParams() {
@@ -20,7 +20,8 @@ export default async function LocaleLayout({
     children,
     params,
 }: LocaleLayoutProps) {
-    const { locale } = await params
+    const { locale: localeParam } = await params
+    const locale = localeParam as Locale
     const messages = await getMessages({ locale })
 
     return (
