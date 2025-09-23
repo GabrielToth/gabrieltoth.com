@@ -18,10 +18,14 @@ export async function generateMetadata({
         path: "/terms-of-service",
         title: t("title"),
         description:
-            ((t.raw("sections") as any)?.acceptance?.text || "").slice(
-                0,
-                160
-            ) || t("title"),
+            (
+                (
+                    t.raw("sections") as Record<
+                        string,
+                        { title: string; text: string }
+                    >
+                )?.acceptance?.text || ""
+            ).slice(0, 160) || t("title"),
         keywords: [],
         ogType: "website",
         ogImage: "https://gabrieltoth.com/og-image-terms.jpg",

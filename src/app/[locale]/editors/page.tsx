@@ -12,13 +12,13 @@ import {
     ToolsSection,
 } from "./editors-view"
 // ✅ MIGRATED: Now using translations/ folder with JSON + icon injection
-import { useTranslations } from "next-intl"
+import { getTranslations } from "next-intl/server"
 
 export { generateMetadata }
 
 export default async function EditorsPage({ params }: PageProps) {
     const { locale } = await params
-    const t = useTranslations("editors")
+    const t = await getTranslations({ locale, namespace: "editors" })
 
     // Job posting structured data from i18n
     const jobStructuredData = t.raw("structuredData.jobPosting") as Record<

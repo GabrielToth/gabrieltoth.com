@@ -10,8 +10,9 @@ import { type Locale } from "@/lib/i18n"
 import { type IconName } from "@/lib/icons"
 import { useTranslations } from "next-intl"
 import { getApplicationTemplate } from "./editors-whatsapp"
+// Removed SectionProps dependency; this file uses next-intl hooks directly
 
-interface SectionPropsWithLocale extends SectionProps {
+interface SectionPropsWithLocale {
     locale: Locale
 }
 

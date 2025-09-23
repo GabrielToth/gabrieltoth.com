@@ -237,6 +237,7 @@ export default function ContactSection() {
                                         .NEXT_PUBLIC_TURNSTILE_SITE_KEY || ""
                                 }
                                 data-theme="auto"
+                                hidden={!turnstileReady}
                             />
 
                             <div>

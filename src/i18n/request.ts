@@ -1,16 +1,16 @@
 import { defaultLocale, locales, type Locale } from "@/lib/i18n"
 import { getRequestConfig } from "next-intl/server"
 
-type MessagesRecord = Record<string, any>
+type MessagesRecord = Record<string, unknown>
 
-async function loadJson<T = any>(
+async function loadJson<T = unknown>(
     importer: () => Promise<{ default: T }>
-): Promise<T | {}> {
+): Promise<T | object> {
     try {
         const mod = await importer()
         return mod.default as T
     } catch {
-        return {} as T
+        return {}
     }
 }
 

@@ -68,7 +68,7 @@ async function verifyTurnstileToken(token: string | undefined, ip: string) {
             "error-codes"?: string[]
         }
         return data
-    } catch (e) {
+    } catch {
         return { success: false }
     }
 }

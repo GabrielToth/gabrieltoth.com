@@ -51,9 +51,14 @@ export default async function ChannelManagementPage({ params }: PageProps) {
         },
     }
 
-    const faqs = (
-        t.raw("faq.items") as Array<{ question: string; answer: string }>
-    ).map((item: any) => ({ question: item.question, answer: item.answer }))
+    const faqsRaw = t.raw("faq.items") as Array<{
+        question: string
+        answer: string
+    }>
+    const faqs = faqsRaw.map(item => ({
+        question: item.question,
+        answer: item.answer,
+    }))
 
     // Custom breadcrumbs
     const breadcrumbs = [

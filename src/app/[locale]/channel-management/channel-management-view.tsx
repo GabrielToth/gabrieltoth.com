@@ -246,7 +246,12 @@ const ServicesSection = () => {
 // Results Section Component
 const ResultsSection = () => {
     const t = useTranslations("channelManagement")
-    const items = t.raw("results.items") as Array<any>
+    const items = t.raw("results.items") as Array<{
+        name: string
+        role: string
+        content: string
+        rating: number
+    }>
     return (
         <section className="py-20 bg-white dark:bg-gray-800">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -296,7 +301,12 @@ const ResultsSection = () => {
 // Testimonials Section Component
 const TestimonialsSection = () => {
     const t = useTranslations("channelManagement")
-    const items = t.raw("testimonials.items") as Array<any>
+    const items = t.raw("testimonials.items") as Array<{
+        name: string
+        role: string
+        content: string
+        rating: number
+    }>
     return (
         <section className="py-20 bg-gray-50 dark:bg-gray-900">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -357,7 +367,13 @@ const PricingSection = ({
     }
 }) => {
     const t = useTranslations("channelManagement")
-    const plans = t.raw("pricing.plans") as Array<any>
+    const plans = t.raw("pricing.plans") as Array<{
+        name: string
+        basePrice: number
+        description: string
+        features: string[]
+        popular?: boolean
+    }>
     return (
         <section id="pricing" className="py-20 bg-gray-50 dark:bg-gray-800">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

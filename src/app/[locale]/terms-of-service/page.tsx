@@ -32,10 +32,14 @@ export default async function TermsOfServicePage({
         "@type": "WebPage",
         name: t("title"),
         description:
-            ((t.raw("sections") as any)?.acceptance?.text || "").slice(
-                0,
-                160
-            ) || t("title"),
+            (
+                (
+                    t.raw("sections") as Record<
+                        string,
+                        { title: string; text: string }
+                    >
+                )?.acceptance?.text || ""
+            ).slice(0, 160) || t("title"),
         url: `https://gabrieltoth.com${locale === "en" ? "" : `/${locale}`}/terms-of-service`,
         isPartOf: {
             "@type": "WebSite",

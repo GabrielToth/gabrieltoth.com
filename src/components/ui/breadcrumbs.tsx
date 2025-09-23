@@ -33,7 +33,7 @@ const Breadcrumbs = ({
 
     // Auto-generate breadcrumbs from pathname if items not provided
     const breadcrumbItems =
-        items || generateBreadcrumbsFromPath(pathname, locale)
+        items || generateBreadcrumbsFromPath(pathname, locale, tHeader, tFooter)
 
     // Never show breadcrumbs on homepage (it IS the beginning)
     const isHomepage = pathname === `/${locale}` || pathname === `/${locale}/`
@@ -117,7 +117,9 @@ const Breadcrumbs = ({
 // Helper function to generate breadcrumbs from pathname
 function generateBreadcrumbsFromPath(
     pathname: string,
-    locale: string
+    locale: string,
+    tHeader: (key: string) => string,
+    tFooter: (key: string) => string
 ): BreadcrumbItem[] {
     // Remove anchor/hash from pathname
     const cleanPathname = pathname.split("#")[0]
@@ -171,7 +173,9 @@ export function getBreadcrumbsForStructuredData(
     pathname: string,
     locale: string
 ): Array<{ name: string; url: string }> {
-    const items = generateBreadcrumbsFromPath(pathname, locale)
+    // Fallback translators for static generation context
+    const noop = (key: string) => key
+    const items = generateBreadcrumbsFromPath(pathname, locale, noop, noop)
 
     const homeNames: Record<string, string> = {
         "pt-BR": "Início",

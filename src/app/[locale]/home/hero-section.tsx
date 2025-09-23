@@ -8,7 +8,7 @@ interface HeroSectionProps {
     locale: Locale
 }
 
-export default function HeroSection({ locale }: HeroSectionProps) {
+export default function HeroSection({}: HeroSectionProps) {
     const t = useTranslations("home.hero")
 
     return (
