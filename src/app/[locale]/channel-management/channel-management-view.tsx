@@ -411,7 +411,9 @@ const PricingSection = ({
                                     <div className="absolute -top-2 -right-2">
                                         <div className="bg-orange-500 text-white px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1">
                                             <Percent className="w-3 h-3" />
-                                            50% OFF
+                                            {t("moneroToggle.enabled")
+                                                .replace(/^[^\(]*\(/, "")
+                                                .replace(/\).*$/, "% OFF")}
                                         </div>
                                     </div>
                                 )}
@@ -437,7 +439,10 @@ const PricingSection = ({
                                     </div>
                                     {pricing.isMonero && (
                                         <div className="text-orange-400 text-sm font-medium">
-                                            💰 Monero (XMR)
+                                            {t("moneroToggle.title").replace(
+                                                "Pricing",
+                                                ""
+                                            )}
                                         </div>
                                     )}
                                     <p className="text-gray-600 dark:text-gray-300">

@@ -3,7 +3,9 @@
         "title": "Monero (XMR) Pricing",
         "description": "Enable to see 50% discount prices using Monero",
         "enabled": "💰 Monero Prices (50% OFF)",
-        "disabled": "💴 Regular Prices (PIX/Card)"
+        "disabled": "💴 Regular Prices (PIX/Card)",
+        "currencySymbol": "$",
+        "conversionRate": 6
     },
     "hero": {
         "badge": "⚡ SLOW PC?",

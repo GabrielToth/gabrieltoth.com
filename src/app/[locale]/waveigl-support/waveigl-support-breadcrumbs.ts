@@ -6,40 +6,21 @@ interface BreadcrumbItem {
     current?: boolean
 }
 
-export function getWaveIGLSupportBreadcrumbs(locale: Locale): BreadcrumbItem[] {
-    const getHomeName = () => {
-        switch (locale) {
-            case "pt-BR":
-                return "Início"
-            case "es":
-                return "Inicio"
-            case "de":
-                return "Startseite"
-            default:
-                return "Home"
-        }
-    }
-
-    const getSupportName = () => {
-        switch (locale) {
-            case "pt-BR":
-                return "Apoie WaveIGL"
-            case "es":
-                return "Apoyar WaveIGL"
-            case "de":
-                return "WaveIGL unterstützen"
-            default:
-                return "Support WaveIGL"
-        }
-    }
+export async function getWaveIGLSupportBreadcrumbs(
+    locale: Locale
+): Promise<BreadcrumbItem[]> {
+    const header = (await import(`@/i18n/${locale}/layout.header.json`))
+        .default as { home: string }
+    const wave = (await import(`@/i18n/${locale}/waveiglSupport.json`))
+        .default as { hero: { badge: string } }
 
     return [
         {
-            name: getHomeName(),
+            name: header.home || "Home",
             href: `/${locale}`,
         },
         {
-            name: getSupportName(),
+            name: wave.hero.badge,
             href: `/${locale}/waveigl-support`,
             current: true,
         },

@@ -3,7 +3,9 @@
         "title": "Precios con Monero (XMR)",
         "description": "Activar para ver precios con 50% de descuento usando Monero",
         "enabled": "💰 Precios con Monero (50% OFF)",
-        "disabled": "💴 Precios Regulares (PIX/Tarjeta)"
+        "disabled": "💴 Precios Regulares (PIX/Tarjeta)",
+        "currencySymbol": "€",
+        "conversionRate": 5.5
     },
     "hero": {
         "badge": "⚡ ¿PC LENTO?",

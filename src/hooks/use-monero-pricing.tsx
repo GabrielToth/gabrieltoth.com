@@ -1,7 +1,24 @@
 "use client"
 
+import de from "@/i18n/de/channelManagement.json"
+import en from "@/i18n/en/channelManagement.json"
+import es from "@/i18n/es/channelManagement.json"
+import pt from "@/i18n/pt-BR/channelManagement.json"
 import { type Locale } from "@/lib/i18n"
 import React, { createContext, useContext, useState } from "react"
+
+interface MoneroToggleConfig {
+    title: string
+    description: string
+    enabled: string
+    disabled: string
+    currencySymbol?: string
+    conversionRate?: number
+}
+
+interface ChannelManagementNs {
+    moneroToggle?: MoneroToggleConfig
+}
 
 interface MoneroPricingContextType {
     showMoneroPrice: boolean
@@ -37,21 +54,14 @@ export function MoneroPricingProvider({
         baseMoneroPrice: number,
         locale: Locale = "pt-BR"
     ) => {
-        // Currency and conversion logic by locale
-        const getCurrencyInfo = (locale: Locale) => {
-            switch (locale) {
-                case "en":
-                    return { conversionRate: 6, currency: "$" }
-                case "es":
-                case "de":
-                    return { conversionRate: 5.5, currency: "€" } // EUR conversion
-                case "pt-BR":
-                default:
-                    return { conversionRate: 1, currency: "R$" } // BRL base
-            }
-        }
-
-        const { conversionRate, currency } = getCurrencyInfo(locale)
+        // Currency and conversion logic by locale (from i18n)
+        const localesMap = { en, "pt-BR": pt, es, de } as const
+        const ns = localesMap[
+            locale as keyof typeof localesMap
+        ] as unknown as ChannelManagementNs
+        const currency = (ns.moneroToggle as MoneroToggleConfig).currencySymbol!
+        const conversionRate = (ns.moneroToggle as MoneroToggleConfig)
+            .conversionRate!
 
         const convertedMoneroPrice = baseMoneroPrice / conversionRate
         const convertedPixPrice = (baseMoneroPrice * 2) / conversionRate
@@ -90,9 +100,14 @@ export function useMoneroPricing() {
                 baseMoneroPrice: number,
                 locale: Locale = "pt-BR"
             ) => {
-                const isEnglish = locale === "en"
-                const conversionRate = isEnglish ? 6 : 1
-                const currency = isEnglish ? "$" : "R$"
+                const localesMap = { en, "pt-BR": pt, es, de } as const
+                const ns = localesMap[
+                    locale as keyof typeof localesMap
+                ] as unknown as ChannelManagementNs
+                const currency = (ns.moneroToggle as MoneroToggleConfig)
+                    .currencySymbol!
+                const conversionRate = (ns.moneroToggle as MoneroToggleConfig)
+                    .conversionRate!
 
                 const convertedMoneroPrice = baseMoneroPrice / conversionRate
                 const convertedPixPrice = (baseMoneroPrice * 2) / conversionRate

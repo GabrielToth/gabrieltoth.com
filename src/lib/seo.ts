@@ -592,11 +592,17 @@ export function generatePersonStructuredData(
         email: AUTHOR_EMAIL,
         telephone: AUTHOR_PHONE,
         sameAs: [
-            "https://github.com/gabrieltoth",
-            "https://linkedin.com/in/gabriel-toth",
-            "https://twitter.com/gabrieltoth",
-            "https://instagram.com/gabrieltoth",
-            "https://youtube.com/@gabrieltoth",
+            "https://github.com/GabrielToth",
+            "https://www.facebook.com/ogabrieltoth",
+            "https://www.youtube.com/@ogabrieltoth",
+            "https://twitter.com/ogabrieltoth",
+            "https://x.com/ogabrieltoth",
+            "https://www.linkedin.com/in/ogabrieltoth",
+            "https://www.instagram.com/ogabrieltoth",
+            "https://kick.com/ogabrieltoth",
+            "https://trovo.live/ogabrieltoth",
+            "https://dlive.tv/ogabrieltoth",
+            "https://odysee.com/@ogabrieltoth",
         ],
         jobTitle:
             locale === "pt-BR"
@@ -694,9 +700,17 @@ export function generateOrganizationStructuredData(
             availableLanguage: ["English", "Portuguese"],
         },
         sameAs: [
-            "https://github.com/gabrieltoth",
-            "https://linkedin.com/in/gabriel-toth",
-            "https://twitter.com/gabrieltoth",
+            "https://github.com/GabrielToth",
+            "https://www.facebook.com/ogabrieltoth",
+            "https://www.youtube.com/@ogabrieltoth",
+            "https://twitter.com/ogabrieltoth",
+            "https://x.com/ogabrieltoth",
+            "https://www.linkedin.com/in/ogabrieltoth",
+            "https://www.instagram.com/ogabrieltoth",
+            "https://kick.com/ogabrieltoth",
+            "https://trovo.live/ogabrieltoth",
+            "https://dlive.tv/ogabrieltoth",
+            "https://odysee.com/@ogabrieltoth",
         ],
         description:
             locale === "pt-BR"

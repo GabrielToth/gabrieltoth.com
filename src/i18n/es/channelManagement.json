@@ -1,4 +1,12 @@
 {
+    "moneroToggle": {
+        "title": "Precios con Monero (XMR)",
+        "description": "Activa para ver precios con 50% de descuento usando Monero",
+        "enabled": "💰 Precios Monero (50% OFF)",
+        "disabled": "💴 Precios Regulares (PIX/Tarjeta)",
+        "currencySymbol": "€",
+        "conversionRate": 5.5
+    },
     "hero": {
         "badge": "🚀 ViraTrend - Consultoría Especializada",
         "title": "Transforma tu Canal en una Máquina de Crecimiento",

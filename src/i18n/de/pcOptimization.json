@@ -3,7 +3,9 @@
         "title": "Monero (XMR) Preise",
         "description": "Aktivieren Sie, um Preise mit 50% Rabatt mit Monero zu sehen",
         "enabled": "💰 Monero Preise (50% OFF)",
-        "disabled": "💴 Reguläre Preise (PIX/Karte)"
+        "disabled": "💴 Reguläre Preise (PIX/Karte)",
+        "currencySymbol": "€",
+        "conversionRate": 5.5
     },
     "hero": {
         "badge": "⚡ LANGSAMER PC?",
