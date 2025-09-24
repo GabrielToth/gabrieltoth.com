@@ -16,5 +16,13 @@
 // Import commands.js using ES2015 syntax:
 import "./commands"
 
+// Ignore cross-origin script errors coming from third-parties to avoid flakiness
+Cypress.on("uncaught:exception", err => {
+    if (String(err).includes("Script error")) {
+        return false
+    }
+    return true
+})
+
 // Alternatively you can use CommonJS syntax:
 // require('./commands')

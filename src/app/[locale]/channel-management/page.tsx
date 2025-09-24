@@ -2,8 +2,8 @@ import Footer from "@/components/layout/footer"
 import StructuredData from "@/components/seo/structured-data"
 import Breadcrumbs from "@/components/ui/breadcrumbs"
 import { type Locale } from "@/lib/i18n"
-import { getTranslations } from "next-intl/server"
 import { generateMetadata } from "./channel-management-metadata"
+import { buildChannelManagementStructured } from "./channel-management-structured"
 import ChannelManagementView from "./channel-management-view"
 
 interface PageProps {
@@ -14,70 +14,17 @@ export { generateMetadata }
 
 export default async function ChannelManagementPage({ params }: PageProps) {
     const { locale } = await params
-    const t = await getTranslations({ locale, namespace: "channelManagement" })
+    const { serviceStructuredData, faqs, breadcrumbs, offerCatalog } =
+        await buildChannelManagementStructured(locale)
 
-    // Generate structured data for the service
-    const serviceStructuredData = {
-        "@context": "https://schema.org",
-        "@type": "Service",
-        name: "ViraTrend - Digital Growth Consulting",
-        description: t("about.description"),
-        provider: {
-            "@type": "Person",
-            name: "Gabriel Toth Gonçalves",
-            url: "https://gabrieltoth.com",
-        },
-        category: "Digital Marketing Consulting",
-        url: `https://gabrieltoth.com${locale === "en" ? "" : `/${locale}`}/channel-management`,
-        offers: {
-            "@type": "Offer",
-            availability: "https://schema.org/InStock",
-            priceCurrency: "BRL",
-            priceRange: "$$",
-            description: t("services.subtitle"),
-        },
-        areaServed: {
-            "@type": "Country",
-            name: "Brazil",
-        },
-        serviceType: "Digital Marketing",
-        additionalType: "https://schema.org/ConsultingService",
-        aggregateRating: {
-            "@type": "AggregateRating",
-            ratingValue: "5.0",
-            ratingCount: "50",
-            bestRating: "5",
-            worstRating: "1",
-        },
-    }
-
-    const faqsRaw = t.raw("faq.items") as Array<{
-        question: string
-        answer: string
-    }>
-    const faqs = faqsRaw.map(item => ({
-        question: item.question,
-        answer: item.answer,
-    }))
-
-    // Custom breadcrumbs
-    const breadcrumbs = [
-        {
-            name: t("services.title"),
-            url: `https://gabrieltoth.com${locale === "en" ? "" : `/${locale}`}`,
-        },
-        {
-            name: t("hero.badge"),
-            url: `https://gabrieltoth.com${locale === "en" ? "" : `/${locale}`}/channel-management`,
-        },
-    ]
+    // breadcrumbs moved to structured helper
 
     return (
         <>
             <StructuredData
                 locale={locale}
                 type="all"
-                customData={serviceStructuredData}
+                customData={[serviceStructuredData, offerCatalog]}
                 breadcrumbs={breadcrumbs}
                 faqs={faqs}
             />
@@ -92,10 +39,7 @@ export default async function ChannelManagementPage({ params }: PageProps) {
                             <Breadcrumbs
                                 items={breadcrumbs.map((item, index) => ({
                                     name: item.name,
-                                    href: item.url.replace(
-                                        "https://gabrieltoth.com",
-                                        ""
-                                    ),
+                                    href: item.url,
                                     current: index === breadcrumbs.length - 1,
                                 }))}
                                 hideHome={true}

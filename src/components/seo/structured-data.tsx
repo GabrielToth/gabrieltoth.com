@@ -37,7 +37,7 @@ interface StructuredDataProps {
         | "faq"
         | "both"
         | "all"
-    customData?: Record<string, unknown>
+    customData?: Record<string, unknown> | Array<Record<string, unknown>>
     breadcrumbs?: BreadcrumbItem[]
     faqs?: FAQItem[]
 }
@@ -74,9 +74,13 @@ const StructuredData = ({
         structuredDataArray.push(generateFAQStructuredData(locale, faqs))
     }
 
-    // Add custom data
+    // Add custom data (single or multiple JSON-LD blocks)
     if (customData) {
-        structuredDataArray.push(customData)
+        if (Array.isArray(customData)) {
+            customData.forEach(data => structuredDataArray.push(data))
+        } else {
+            structuredDataArray.push(customData)
+        }
     }
 
     return (

@@ -32,8 +32,22 @@ const Breadcrumbs = ({
     const tFooter = useTranslations("layout.footer")
 
     // Auto-generate breadcrumbs from pathname if items not provided
-    const breadcrumbItems =
-        items || generateBreadcrumbsFromPath(pathname, locale, tHeader, tFooter)
+    const normalizeHref = (href: string): string => {
+        if (!href) return `/${locale}`
+        if (href.startsWith("http")) {
+            try {
+                const u = new URL(href)
+                return u.pathname || `/${locale}`
+            } catch {
+                return href
+            }
+        }
+        return href
+    }
+
+    const breadcrumbItems = items
+        ? items.map(item => ({ ...item, href: normalizeHref(item.href) }))
+        : generateBreadcrumbsFromPath(pathname, locale, tHeader, tFooter)
 
     // Never show breadcrumbs on homepage (it IS the beginning)
     const isHomepage = pathname === `/${locale}` || pathname === `/${locale}/`

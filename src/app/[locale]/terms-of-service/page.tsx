@@ -4,7 +4,8 @@ import StructuredData from "@/components/seo/structured-data"
 import Breadcrumbs from "@/components/ui/breadcrumbs"
 import LanguageSelector from "@/components/ui/language-selector"
 import { type Locale } from "@/lib/i18n"
-import { getTranslations } from "next-intl/server"
+import { buildTermsOfServiceStructured } from "./terms-of-service-structured"
+import { type TermsContent } from "./terms-of-service-types"
 
 interface TermsOfServicePageProps {
     params: Promise<{ locale: Locale }>
@@ -16,59 +17,9 @@ export default async function TermsOfServicePage({
     params,
 }: TermsOfServicePageProps) {
     const { locale } = await params
-    const t = await getTranslations({ locale, namespace: "termsOfService" })
-
-    // Breadcrumbs
-    const breadcrumbs = (
-        t.raw("breadcrumbs") as Array<{ name: string; href: string }>
-    ).map(b => ({
-        name: b.name,
-        url: `https://gabrieltoth.com${locale === "en" ? "" : `/${locale}`}${b.href}`,
-    }))
-
-    // WebPage structured data
-    const webPageStructuredData = {
-        "@context": "https://schema.org",
-        "@type": "WebPage",
-        name: t("title"),
-        description:
-            (
-                (
-                    t.raw("sections") as Record<
-                        string,
-                        { title: string; text: string }
-                    >
-                )?.acceptance?.text || ""
-            ).slice(0, 160) || t("title"),
-        url: `https://gabrieltoth.com${locale === "en" ? "" : `/${locale}`}/terms-of-service`,
-        isPartOf: {
-            "@type": "WebSite",
-            name: "Gabriel Toth Portfolio",
-            url: "https://gabrieltoth.com",
-        },
-        about: {
-            "@type": "Thing",
-            name: t("title"),
-        },
-    }
-
-    const s = t.raw("sections") as Record<
-        string,
-        { title: string; text: string }
-    >
-    const content = {
-        title: t("title"),
-        lastUpdated: t("lastUpdated"),
-        acceptance: s.acceptance,
-        services: s.services,
-        responsibilities: s.responsibilities,
-        limitations: s.limitations,
-        privacy: s.privacy,
-        modifications: s.modifications,
-        termination: s.termination,
-        governing: s.governing,
-        contact: s.contact,
-    }
+    const { breadcrumbs, webPageStructuredData, content } =
+        await buildTermsOfServiceStructured(locale)
+    const typed: TermsContent = content
 
     return (
         <>
@@ -113,100 +64,97 @@ export default async function TermsOfServicePage({
                             {/* Acceptance of Terms */}
                             <section>
                                 <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">
-                                    {content.acceptance.title}
+                                    {typed.acceptance.title}
                                 </h2>
                                 <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-                                    {content.acceptance.text}
+                                    {typed.acceptance.text}
                                 </p>
                             </section>
 
                             {/* Service Description */}
                             <section>
                                 <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">
-                                    {content.services.title}
+                                    {typed.services.title}
                                 </h2>
                                 <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-                                    {content.services.text}
+                                    {typed.services.text}
                                 </p>
                             </section>
 
                             {/* User Responsibilities */}
                             <section>
                                 <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">
-                                    {content.responsibilities.title}
+                                    {typed.responsibilities.title}
                                 </h2>
                                 <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-                                    {content.responsibilities.text}
+                                    {typed.responsibilities.text}
                                 </p>
                             </section>
 
                             {/* Limitation of Liability */}
                             <section>
                                 <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">
-                                    {content.limitations.title}
+                                    {typed.limitations.title}
                                 </h2>
                                 <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-                                    {content.limitations.text}
+                                    {typed.limitations.text}
                                 </p>
                             </section>
 
                             {/* Privacy */}
                             <section>
                                 <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">
-                                    {content.privacy.title}
+                                    {typed.privacy.title}
                                 </h2>
                                 <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-                                    {content.privacy.text}
+                                    {typed.privacy.text}
                                 </p>
                             </section>
 
                             {/* Terms Modifications */}
                             <section>
                                 <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">
-                                    {content.modifications.title}
+                                    {typed.modifications.title}
                                 </h2>
                                 <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-                                    {content.modifications.text}
+                                    {typed.modifications.text}
                                 </p>
                             </section>
 
                             {/* Termination */}
                             <section>
                                 <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">
-                                    {content.termination.title}
+                                    {typed.termination.title}
                                 </h2>
                                 <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-                                    {content.termination.text}
+                                    {typed.termination.text}
                                 </p>
                             </section>
 
                             {/* Governing Law */}
                             <section>
                                 <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">
-                                    {content.governing.title}
+                                    {typed.governing.title}
                                 </h2>
                                 <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-                                    {content.governing.text}
+                                    {typed.governing.text}
                                 </p>
                             </section>
 
                             {/* Contact */}
                             <section>
                                 <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">
-                                    {content.contact.title}
+                                    {typed.contact.title}
                                 </h2>
                                 <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-                                    {content.contact.text}
+                                    {typed.contact.text}
                                 </p>
                             </section>
                         </div>
 
                         <div className="mt-12 pt-8 border-t border-gray-200 dark:border-gray-700">
                             <p className="text-sm text-gray-500 dark:text-gray-400 text-center">
-                                {t("bindingNote", {
-                                    default:
-                                        "This document constitutes a legally binding agreement between you and Gabriel Toth Gonçalves.",
-                                })}
+                                {typed.lastUpdated}
                             </p>
                         </div>
                     </div>

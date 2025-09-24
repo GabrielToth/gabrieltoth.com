@@ -3,7 +3,7 @@ import Header from "@/components/layout/header"
 import StructuredData from "@/components/seo/structured-data"
 import Breadcrumbs from "@/components/ui/breadcrumbs"
 import { type Locale } from "@/lib/i18n"
-import { getTranslations } from "next-intl/server"
+import { buildPrivacyPolicyStructured } from "./privacy-policy-structured"
 
 interface PrivacyPolicyPageProps {
     params: Promise<{ locale: Locale }>
@@ -15,45 +15,8 @@ export default async function PrivacyPolicyPage({
     params,
 }: PrivacyPolicyPageProps) {
     const { locale } = await params
-    const t = await getTranslations({ locale, namespace: "privacyPolicy" })
-
-    // Breadcrumbs
-    const breadcrumbs = (
-        t.raw("breadcrumbs") as Array<{ name: string; href: string }>
-    ).map(b => ({
-        name: b.name,
-        url: `https://gabrieltoth.com${locale === "en" ? "" : `/${locale}`}${b.href}`,
-    }))
-
-    // WebPage structured data
-    const webPageStructuredData = {
-        "@context": "https://schema.org",
-        "@type": "WebPage",
-        name: t("title"),
-        description:
-            (
-                (
-                    t.raw("sections") as Array<{
-                        title: string
-                        content: string
-                    }>
-                )[0]?.content || ""
-            ).slice(0, 160) || t("title"),
-        url: `https://gabrieltoth.com${locale === "en" ? "" : `/${locale}`}/privacy-policy`,
-        isPartOf: {
-            "@type": "WebSite",
-            name: "Gabriel Toth Portfolio",
-            url: "https://gabrieltoth.com",
-        },
-        about: {
-            "@type": "Thing",
-            name: "Data Protection",
-        },
-    }
-    const sections = t.raw("sections") as Array<{
-        title: string
-        content: string
-    }>
+    const { breadcrumbs, webPageStructuredData, sections } =
+        await buildPrivacyPolicyStructured(locale)
 
     return (
         <>
@@ -69,12 +32,10 @@ export default async function PrivacyPolicyPage({
             <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-12">
                 <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
                     <Breadcrumbs
-                        items={breadcrumbs.map(item => ({
+                        items={breadcrumbs.map((item, index) => ({
                             name: item.name,
-                            href: item.url.replace(
-                                "https://gabrieltoth.com",
-                                ""
-                            ),
+                            href: item.url,
+                            current: index === breadcrumbs.length - 1,
                         }))}
                         className="mb-6"
                     />

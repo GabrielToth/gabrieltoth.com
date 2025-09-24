@@ -11,35 +11,15 @@ import {
     RequirementsSection,
     ToolsSection,
 } from "./editors-view"
-// ✅ MIGRATED: Now using translations/ folder with JSON + icon injection
-import { getTranslations } from "next-intl/server"
+
+import { buildEditorsStructured } from "./editors-structured"
 
 export { generateMetadata }
 
 export default async function EditorsPage({ params }: PageProps) {
     const { locale } = await params
-    const t = await getTranslations({ locale, namespace: "editors" })
-
-    // Job posting structured data from i18n
-    const jobStructuredData = t.raw("structuredData.jobPosting") as Record<
-        string,
-        unknown
-    >
-
-    // FAQs from i18n
-    const faqs = t.raw("faqs") as Array<{ question: string; answer: string }>
-
-    // Breadcrumbs
-    const breadcrumbs = [
-        {
-            name: t("services.title"),
-            url: `https://gabrieltoth.com${locale === "en" ? "" : `/${locale}`}`,
-        },
-        {
-            name: t("hero.badge"),
-            url: `https://gabrieltoth.com${locale === "en" ? "" : `/${locale}`}/editors`,
-        },
-    ]
+    const { jobStructuredData, faqs, breadcrumbs } =
+        await buildEditorsStructured(locale)
 
     return (
         <>
@@ -56,10 +36,7 @@ export default async function EditorsPage({ params }: PageProps) {
                     <Breadcrumbs
                         items={breadcrumbs.map((item, index) => ({
                             name: item.name,
-                            href: item.url.replace(
-                                "https://gabrieltoth.com",
-                                ""
-                            ),
+                            href: item.url,
                             current: index === breadcrumbs.length - 1,
                         }))}
                         hideHome={true}

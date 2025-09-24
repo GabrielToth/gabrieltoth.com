@@ -2,8 +2,8 @@ import Footer from "@/components/layout/footer"
 import StructuredData from "@/components/seo/structured-data"
 import Breadcrumbs from "@/components/ui/breadcrumbs"
 import { type Locale } from "@/lib/i18n"
-import { getTranslations } from "next-intl/server"
 import { getPCOptimizationBreadcrumbs } from "./pc-optimization-breadcrumbs"
+import { buildPCOptimizationStructured } from "./pc-optimization-structured"
 import PCOptimizationView from "./pc-optimization-view"
 
 interface PageProps {
@@ -15,30 +15,16 @@ export { generateMetadata } from "./pc-optimization-metadata"
 export default async function PCOptimizationPage({ params }: PageProps) {
     const { locale } = await params
     const breadcrumbs = getPCOptimizationBreadcrumbs(locale)
-    const t = await getTranslations({ locale, namespace: "pcOptimization" })
-    const howTo = {
-        "@context": "https://schema.org",
-        "@type": "HowTo",
-        name: t("hero.title"),
-        description: t("hero.subtitle"),
-        step: [
-            {
-                "@type": "HowToStep",
-                name: t("pricing.title"),
-                text: t("pricing.subtitle"),
-            },
-            {
-                "@type": "HowToStep",
-                name: t("cta.title"),
-                text: t("cta.subtitle"),
-            },
-        ],
-    } as Record<string, unknown>
+    const { howTo, offerCatalog } = await buildPCOptimizationStructured(locale)
 
     return (
         <>
             <main className="min-h-screen bg-white dark:bg-gray-900 relative">
-                <StructuredData locale={locale} type="all" customData={howTo} />
+                <StructuredData
+                    locale={locale}
+                    type="all"
+                    customData={[howTo, offerCatalog]}
+                />
                 <PCOptimizationView locale={locale} />
 
                 {/* Breadcrumbs overlay */}
@@ -48,10 +34,7 @@ export default async function PCOptimizationPage({ params }: PageProps) {
                             <Breadcrumbs
                                 items={breadcrumbs.map((item, index) => ({
                                     name: item.name,
-                                    href: item.url.replace(
-                                        "https://gabrieltoth.com",
-                                        ""
-                                    ),
+                                    href: item.url,
                                     current: index === breadcrumbs.length - 1,
                                 }))}
                                 hideHome={true}
