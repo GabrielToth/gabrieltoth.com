@@ -67,6 +67,67 @@ const nextConfig: NextConfig = {
     // Headers for performance
     async headers() {
         return [
+            // Explicit content-type for XML and robots
+            {
+                source: "/sitemap.xml",
+                headers: [
+                    { key: "Content-Type", value: "application/xml" },
+                    {
+                        key: "Cache-Control",
+                        value: "public, max-age=86400, s-max-age=86400",
+                    },
+                ],
+            },
+            {
+                source: "/sitemap-en.xml",
+                headers: [
+                    { key: "Content-Type", value: "application/xml" },
+                    {
+                        key: "Cache-Control",
+                        value: "public, max-age=86400, s-max-age=86400",
+                    },
+                ],
+            },
+            {
+                source: "/sitemap-pt-BR.xml",
+                headers: [
+                    { key: "Content-Type", value: "application/xml" },
+                    {
+                        key: "Cache-Control",
+                        value: "public, max-age=86400, s-max-age=86400",
+                    },
+                ],
+            },
+            {
+                source: "/sitemap-es.xml",
+                headers: [
+                    { key: "Content-Type", value: "application/xml" },
+                    {
+                        key: "Cache-Control",
+                        value: "public, max-age=86400, s-max-age=86400",
+                    },
+                ],
+            },
+            {
+                source: "/sitemap-de.xml",
+                headers: [
+                    { key: "Content-Type", value: "application/xml" },
+                    {
+                        key: "Cache-Control",
+                        value: "public, max-age=86400, s-max-age=86400",
+                    },
+                ],
+            },
+            {
+                source: "/robots.txt",
+                headers: [
+                    { key: "Content-Type", value: "text/plain" },
+                    {
+                        key: "Cache-Control",
+                        value: "public, max-age=86400, s-max-age=86400",
+                    },
+                ],
+            },
             {
                 source: "/(.*)",
                 headers: [
