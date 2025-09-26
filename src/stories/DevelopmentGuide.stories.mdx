@@ -54,10 +54,7 @@ npm run storybook
 ```
 gabrieltoth.com/
 ├── .storybook/              # Storybook configuration
-├── cypress/                 # E2E tests
-│   ├── e2e/                # Test specifications
-│   ├── fixtures/           # Test data
-│   └── support/            # Test utilities
+├── tests/                   # Playwright E2E tests
 ├── public/                 # Static assets
 ├── src/
 │   ├── app/                # Next.js App Router
@@ -260,58 +257,12 @@ export default function MyComponent() {
 
 ### 3. Testing
 
-#### Writing Cypress E2E Tests
+#### Running Playwright E2E Tests
 
-```typescript
-// cypress/e2e/example.cy.ts
-describe("Example Feature", () => {
-    beforeEach(() => {
-        cy.visit("/")
-
-        // Handle uncaught exceptions
-        cy.on("uncaught:exception", err => {
-            if (err.message.includes("Hydration failed")) {
-                return false
-            }
-            return true
-        })
-    })
-
-    it("should navigate to about section", () => {
-        cy.get("[data-cy=nav-about]").click()
-        cy.url().should("include", "#about")
-        cy.get("[data-cy=about-section]").should("be.visible")
-    })
-
-    it("should change language", () => {
-        cy.get("[data-cy=language-selector]").click()
-        cy.get("[data-cy=language-en]").click()
-        cy.get("[data-cy=nav-home]").should("contain", "Home")
-
-        cy.get("[data-cy=language-selector]").click()
-        cy.get("[data-cy=language-pt-BR]").click()
-        cy.get("[data-cy=nav-home]").should("contain", "Início")
-    })
-})
-```
-
-#### Adding data-cy Attributes
-
-```typescript
-// Always add data-cy attributes for testable elements
-<button
-    data-cy="submit-button"
-    onClick={handleSubmit}
-    className="btn-primary"
->
-    Submit
-</button>
-
-<input
-    data-cy="email-input"
-    type="email"
-    placeholder="Email"
-/>
+```bash
+npm run test:e2e            # Run tests headless in all browsers
+npm run test:e2e:ui         # Run tests in UI mode
+npm run test:e2e:report     # Open last HTML report
 ```
 
 ## Code Standards

@@ -71,6 +71,7 @@ export default function Header() {
                         <Link
                             href={getHomeLink()}
                             className="text-xl font-bold text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                            data-testid="nav-home"
                         >
                             Gabriel Toth Gonçalves
                         </Link>
@@ -81,6 +82,7 @@ export default function Header() {
                         <Link
                             href={getHomeLink()}
                             className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
+                            data-testid="nav-home-desktop"
                         >
                             {t("home")}
                         </Link>
@@ -90,6 +92,15 @@ export default function Header() {
                                 key={link.href}
                                 href={link.href}
                                 className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
+                                data-testid={
+                                    link.href.includes("#about")
+                                        ? "nav-about"
+                                        : link.href.includes("#projects")
+                                          ? "nav-projects"
+                                          : link.href.includes("#contact")
+                                            ? "nav-contact"
+                                            : undefined
+                                }
                             >
                                 {link.label}
                             </Link>
@@ -102,6 +113,7 @@ export default function Header() {
                                     setIsServicesOpen(!isServicesOpen)
                                 }
                                 className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors flex items-center"
+                                data-testid="services-button"
                             >
                                 {t("services")}
                                 <svg
@@ -130,6 +142,21 @@ export default function Header() {
                                             className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                                             onClick={() =>
                                                 setIsServicesOpen(false)
+                                            }
+                                            data-testid={
+                                                link.href.endsWith(
+                                                    "/channel-management"
+                                                )
+                                                    ? "services-link-channel-management"
+                                                    : link.href.endsWith(
+                                                            "/pc-optimization"
+                                                        )
+                                                      ? "services-link-pc-optimization"
+                                                      : link.href.endsWith(
+                                                              "/waveigl-support"
+                                                          )
+                                                        ? "services-link-support"
+                                                        : undefined
                                             }
                                         >
                                             {link.label}
@@ -174,6 +201,7 @@ export default function Header() {
                                 href={getHomeLink()}
                                 className="block px-3 py-2 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
                                 onClick={() => setIsMobileMenuOpen(false)}
+                                data-testid="nav-home-mobile"
                             >
                                 {t("home")}
                             </Link>
@@ -184,6 +212,15 @@ export default function Header() {
                                     href={link.href}
                                     className="block px-3 py-2 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
                                     onClick={() => setIsMobileMenuOpen(false)}
+                                    data-testid={
+                                        link.href.includes("#about")
+                                            ? "nav-about-mobile"
+                                            : link.href.includes("#projects")
+                                              ? "nav-projects-mobile"
+                                              : link.href.includes("#contact")
+                                                ? "nav-contact-mobile"
+                                                : undefined
+                                    }
                                 >
                                     {link.label}
                                 </Link>
@@ -201,6 +238,21 @@ export default function Header() {
                                         className="block pl-4 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
                                         onClick={() =>
                                             setIsMobileMenuOpen(false)
+                                        }
+                                        data-testid={
+                                            link.href.endsWith(
+                                                "/channel-management"
+                                            )
+                                                ? "services-link-channel-management"
+                                                : link.href.endsWith(
+                                                        "/pc-optimization"
+                                                    )
+                                                  ? "services-link-pc-optimization"
+                                                  : link.href.endsWith(
+                                                          "/waveigl-support"
+                                                      )
+                                                    ? "services-link-support"
+                                                    : undefined
                                         }
                                     >
                                         {link.label}

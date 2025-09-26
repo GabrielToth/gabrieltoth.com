@@ -212,7 +212,11 @@ export default function ContactSection() {
                         </div>
 
                         {/* Contact Form */}
-                        <form onSubmit={handleSubmit} className="space-y-6">
+                        <form
+                            onSubmit={handleSubmit}
+                            className="space-y-6"
+                            data-testid="contact-form"
+                        >
                             <div>
                                 <label
                                     htmlFor="name"
@@ -226,6 +230,7 @@ export default function ContactSection() {
                                     id="name"
                                     required
                                     className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-600 dark:focus:ring-purple-400 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                                    data-testid="contact-name"
                                 />
                             </div>
 
@@ -254,6 +259,7 @@ export default function ContactSection() {
                                     required
                                     placeholder={t("form.emailPlaceholder")}
                                     className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-600 dark:focus:ring-purple-400 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                                    data-testid="contact-email"
                                 />
                             </div>
 
@@ -270,6 +276,7 @@ export default function ContactSection() {
                                     id="subject"
                                     required
                                     className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-600 dark:focus:ring-purple-400 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                                    data-testid="contact-subject"
                                 />
                             </div>
 
@@ -287,6 +294,7 @@ export default function ContactSection() {
                                     required
                                     placeholder={t("form.messagePlaceholder")}
                                     className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-600 dark:focus:ring-purple-400 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                                    data-testid="contact-message"
                                 />
                             </div>
 
@@ -294,6 +302,7 @@ export default function ContactSection() {
                                 type="submit"
                                 disabled={isSubmitting}
                                 className="w-full px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white font-medium rounded-lg shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300"
+                                data-testid="contact-submit"
                             >
                                 {isSubmitting
                                     ? t("form.sending")
@@ -301,13 +310,19 @@ export default function ContactSection() {
                             </button>
 
                             {submitStatus === "success" && (
-                                <p className="text-green-600 dark:text-green-400 text-center">
+                                <p
+                                    className="text-green-600 dark:text-green-400 text-center"
+                                    data-testid="contact-success"
+                                >
                                     {t("form.success")}
                                 </p>
                             )}
 
                             {submitStatus === "error" && (
-                                <p className="text-red-600 dark:text-red-400 text-center">
+                                <p
+                                    className="text-red-600 dark:text-red-400 text-center"
+                                    data-testid="contact-error"
+                                >
                                     {t("form.error")}
                                 </p>
                             )}

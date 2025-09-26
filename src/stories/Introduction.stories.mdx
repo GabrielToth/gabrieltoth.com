@@ -16,7 +16,7 @@ This project is a **Next.js 15** portfolio website for Gabriel Toth Gonçalves, 
 - **Language**: TypeScript
 - **Styling**: Tailwind CSS + shadcn/ui
 - **Internationalization**: i18n (EN/PT-BR)
-- **Testing**: Cypress E2E + Vitest
+- **Testing**: Playwright E2E + Vitest
 - **Documentation**: Storybook
 - **Deployment**: Vercel
 
@@ -91,7 +91,7 @@ Integrated payment support for:
 
 ## Testing Strategy
 
-### E2E Testing (Cypress)
+### E2E Testing (Playwright)
 
 - **Navigation**: Route testing and language switching
 - **Forms**: Contact form submission and validation
@@ -132,8 +132,8 @@ npm run build                  # Production build
 npm run start                  # Start production server
 
 # Testing
-npm run test:e2e              # Run Cypress E2E tests
-npm run cypress:open          # Open Cypress GUI
+npm run test:e2e              # Run Playwright tests
+npm run test:e2e:ui           # Open Playwright UI mode
 
 # Documentation
 npm run storybook             # Start Storybook dev server

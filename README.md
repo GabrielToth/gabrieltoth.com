@@ -58,91 +58,21 @@ npm run format           # Format code with Prettier
 npm run format:check     # Check if code is formatted
 npm run type-check       # Check TypeScript types
 npm run spell-check      # Check spelling
-npm run test:all         # Run all quality tests
+npm run test             # Run Vitest (non-failing if no tests)
+npm run test:unit        # Run Vitest
+npm run test:e2e         # Run Playwright tests
 
 # Utilities
 npm run clean            # Clean build files
 ```
 
-## 📁 Project Structure
+## ✅ Testing Strategy
 
-```
-src/
-├── app/                 # Next.js App Router
-│   ├── globals.css     # Global styles
-│   ├── layout.tsx      # Root layout
-│   └── page.tsx        # Main page
-├── components/          # React components
-│   ├── ui/             # shadcn/ui components
-│   ├── layout/         # Header, Footer, etc.
-│   └── sections/       # Page sections
-└── lib/                # Utilities and configurations
-    └── utils.ts        # Utility functions (cn, etc.)
-```
+- End-to-end: Playwright (`tests/**`). These tests validate navigation, i18n, and UI behavior across browsers. Artifacts (report, traces) are generated on failures.
+- Unit/Component: Vitest for Storybook stories (via `@storybook/addon-vitest`). Run with `npm run test:unit`.
+- Jest: Kept for compatibility; `npm test` runs with `--passWithNoTests` so it won’t fail if there are no Jest tests yet.
 
-## 🎨 Style Configuration
+## 🧪 Artifacts Policy
 
-- **Indentation**: 4 spaces
-- **Quotes**: Single for strings, double for JSX
-- **Semicolon**: Always required
-- **Trailing comma**: In multi-line objects/arrays
-- **Line length**: Maximum 120 characters
-
-## 🔍 Features
-
-- ✅ Responsive design (mobile-first)
-- ✅ Dark/light mode
-- ✅ SEO optimization
-- ✅ Optimized performance
-- ✅ Accessibility (a11y)
-- ✅ PWA ready
-- ✅ Core Web Vitals optimized
-
-## 🌐 Internationalization
-
-The project supports multiple languages:
-
-- **English** (en) - Default
-- **Portuguese Brazilian** (pt-BR)
-
-## 🌍 Language Policy
-
-- **Code**: All variables, functions, classes, and comments in English
-- **Documentation**: README, code comments, JSDoc in English
-- **Git**: Commit messages, branch names, PR descriptions in English
-- **Portuguese**: Only for user-facing content translations
-
-## 📝 Contribution
-
-1. Fork the project
-2. Create a feature branch (`git checkout -b feature/new-feature`)
-3. Commit your changes (`git commit -m 'feat: add new feature'`)
-4. Push to the branch (`git push origin feature/new-feature`)
-5. Open a Pull Request
-
-### Commit Convention
-
-```
-type: short description
-
-- Detailed description when needed
-- Use conventional commit types: feat, fix, docs, style, refactor, test, chore
-- ALL commit messages in English
-```
-
-## 📄 License
-
-This project is under the MIT license. See the [LICENSE](LICENSE) file for more details.
-
-## 👤 Author
-
-**Gabriel Toth Gonçalves**
-
-- Website: [gabrieltoth.com](https://gabrieltoth.com)
-- GitHub: [@gabrieltoth](https://github.com/gabrieltoth)
-- LinkedIn: [Gabriel Toth](https://linkedin.com/in/gabriel-toth)
-
----
-
-Made with ❤️ by Gabriel Toth
- 
+- Playwright: `playwright-report/` and `test-results/` are gitignored. Use `npm run test:e2e:report` to open the report.
+- Lighthouse CI: `.lighthouseci/` and `lhci_reports/` are gitignored. Use `npm run lighthouse`

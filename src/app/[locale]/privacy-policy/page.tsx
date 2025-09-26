@@ -3,6 +3,7 @@ import Header from "@/components/layout/header"
 import StructuredData from "@/components/seo/structured-data"
 import Breadcrumbs from "@/components/ui/breadcrumbs"
 import { type Locale } from "@/lib/i18n"
+import { getTranslations } from "next-intl/server"
 import { buildPrivacyPolicyStructured } from "./privacy-policy-structured"
 
 interface PrivacyPolicyPageProps {
@@ -17,6 +18,7 @@ export default async function PrivacyPolicyPage({
     const { locale } = await params
     const { breadcrumbs, webPageStructuredData, sections } =
         await buildPrivacyPolicyStructured(locale)
+    const t = await getTranslations({ locale, namespace: "privacyPolicy" })
 
     return (
         <>

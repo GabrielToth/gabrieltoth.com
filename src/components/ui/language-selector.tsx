@@ -79,7 +79,6 @@ export default function LanguageSelector({
                 size="sm"
                 onClick={() => setIsOpen(!isOpen)}
                 className={currentVariant.button}
-                data-cy="language-selector"
                 data-testid="language-selector-button"
                 aria-haspopup="true"
                 aria-expanded={isOpen}
@@ -121,7 +120,6 @@ export default function LanguageSelector({
                                         ? "text-blue-600 dark:text-blue-400 font-medium"
                                         : ""
                                 }`}
-                                data-cy={`language-${loc}`}
                                 data-testid={`language-selector-option-${loc}`}
                                 role="menuitem"
                                 aria-current={
