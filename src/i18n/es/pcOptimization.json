@@ -49,7 +49,7 @@
         "plans": [
             {
                 "name": "Windows Performance Boost",
-                "basePrice": 149,
+                "basePrice": 50,
                 "description": "Windows y Red listos para jugar. Limpio, rápido y totalmente optimizado.",
                 "features": [
                     "Optimización manual de Windows",
@@ -62,7 +62,7 @@
             },
             {
                 "name": "Optimización de Sistema Pro",
-                "basePrice": 249,
+                "basePrice": 75,
                 "description": "Desbloquea el verdadero potencial de tu hardware con ajustes finos de SO y BIOS.",
                 "features": [
                     "Todo del plan anterior",
@@ -75,7 +75,7 @@
             },
             {
                 "name": "Overhaul de Rendimiento Máximo",
-                "basePrice": 449,
+                "basePrice": 100,
                 "description": "Ajuste total con overclock de CPU, GPU y RAM para máximo rendimiento.",
                 "features": [
                     "Todo del plan Pro",

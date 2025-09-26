@@ -49,7 +49,7 @@
         "plans": [
             {
                 "name": "Windows Leistungsschub",
-                "basePrice": 149,
+                "basePrice": 50,
                 "description": "Spielbereites Windows & Netzwerk. Sauber, schnell und vollständig optimiert.",
                 "features": [
                     "Manuelle Windows-Optimierung",
@@ -62,7 +62,7 @@
             },
             {
                 "name": "Pro-Level System-Optimierung",
-                "basePrice": 249,
+                "basePrice": 75,
                 "description": "Entfesseln Sie das wahre Potenzial Ihrer Hardware mit OS- und BIOS-Feinabstimmung.",
                 "features": [
                     "Alles vom vorherigen Plan",
@@ -75,7 +75,7 @@
             },
             {
                 "name": "Ultimative Leistungsüberholung",
-                "basePrice": 449,
+                "basePrice": 100,
                 "description": "Komplette Optimierung mit CPU-, GPU- und RAM-Overclocking für maximale Leistung.",
                 "features": [
                     "Alles von den vorherigen Plänen",

@@ -49,7 +49,7 @@
         "plans": [
             {
                 "name": "Windows Performance Boost",
-                "basePrice": 149,
+                "basePrice": 50,
                 "description": "Game-ready Windows & Network. Clean, fast, and fully optimized for peak performance.",
                 "features": [
                     "Manual Windows optimization",
@@ -62,7 +62,7 @@
             },
             {
                 "name": "Pro-Level System Optimization",
-                "basePrice": 249,
+                "basePrice": 75,
                 "description": "Unlock your hardware's true potential with OS and BIOS fine-tuning, including hidden tweaks.",
                 "features": [
                     "Everything from Windows Boost",
@@ -75,7 +75,7 @@
             },
             {
                 "name": "Ultimate Performance Overhaul",
-                "basePrice": 449,
+                "basePrice": 100,
                 "description": "All-in-one tuning with CPU, GPU & RAM overclocking for peak performance.",
                 "features": [
                     "Everything from Pro-Level",
