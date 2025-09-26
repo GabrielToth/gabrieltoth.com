@@ -59,7 +59,7 @@
         "plans": [
             {
                 "name": "Impulso de Rendimiento Windows",
-                "basePrice": 149,
+                "basePrice": 50,
                 "description": "Windows y Red optimizados para juegos. Limpio, rápido y totalmente optimizado.",
                 "features": [
                     "Optimización manual de Windows",
@@ -72,7 +72,7 @@
             },
             {
                 "name": "Optimización Nivel Pro",
-                "basePrice": 249,
+                "basePrice": 75,
                 "description": "Desbloquea el verdadero potencial del hardware con ajustes de OS y BIOS.",
                 "features": [
                     "Todo del plan anterior",
@@ -85,7 +85,7 @@
             },
             {
                 "name": "Renovación de Rendimiento Supremo",
-                "basePrice": 449,
+                "basePrice": 100,
                 "description": "Optimización completa con overclock de CPU, GPU y RAM para máximo rendimiento.",
                 "features": [
                     "Todo de los planes anteriores",
