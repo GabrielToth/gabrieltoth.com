@@ -10,6 +10,7 @@ const withBundleAnalyzer = require("@next/bundle-analyzer")({
 })
 
 const nextConfig: NextConfig = {
+    generateEtags: false,
     typescript: {
         ignoreBuildErrors: true,
     },
@@ -71,61 +72,58 @@ const nextConfig: NextConfig = {
             {
                 source: "/sitemap.xml",
                 headers: [
-                    { key: "Content-Type", value: "application/xml" },
                     {
-                        key: "Cache-Control",
-                        value: "public, max-age=86400, s-max-age=86400",
+                        key: "Content-Type",
+                        value: "application/xml; charset=utf-8",
                     },
+                    { key: "Cache-Control", value: "no-store" },
                 ],
             },
             {
                 source: "/sitemap-en.xml",
                 headers: [
-                    { key: "Content-Type", value: "application/xml" },
                     {
-                        key: "Cache-Control",
-                        value: "public, max-age=86400, s-max-age=86400",
+                        key: "Content-Type",
+                        value: "application/xml; charset=utf-8",
                     },
+                    { key: "Cache-Control", value: "no-store" },
                 ],
             },
             {
                 source: "/sitemap-pt-BR.xml",
                 headers: [
-                    { key: "Content-Type", value: "application/xml" },
                     {
-                        key: "Cache-Control",
-                        value: "public, max-age=86400, s-max-age=86400",
+                        key: "Content-Type",
+                        value: "application/xml; charset=utf-8",
                     },
+                    { key: "Cache-Control", value: "no-store" },
                 ],
             },
             {
                 source: "/sitemap-es.xml",
                 headers: [
-                    { key: "Content-Type", value: "application/xml" },
                     {
-                        key: "Cache-Control",
-                        value: "public, max-age=86400, s-max-age=86400",
+                        key: "Content-Type",
+                        value: "application/xml; charset=utf-8",
                     },
+                    { key: "Cache-Control", value: "no-store" },
                 ],
             },
             {
                 source: "/sitemap-de.xml",
                 headers: [
-                    { key: "Content-Type", value: "application/xml" },
                     {
-                        key: "Cache-Control",
-                        value: "public, max-age=86400, s-max-age=86400",
+                        key: "Content-Type",
+                        value: "application/xml; charset=utf-8",
                     },
+                    { key: "Cache-Control", value: "no-store" },
                 ],
             },
             {
                 source: "/robots.txt",
                 headers: [
-                    { key: "Content-Type", value: "text/plain" },
-                    {
-                        key: "Cache-Control",
-                        value: "public, max-age=86400, s-max-age=86400",
-                    },
+                    { key: "Content-Type", value: "text/plain; charset=utf-8" },
+                    { key: "Cache-Control", value: "no-store" },
                 ],
             },
             {

@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic"
+export const revalidate = 0
 import { getAllPages } from "@/lib/seo"
 
 const SITE_URL = "https://gabrieltoth.com"
@@ -37,8 +39,8 @@ export async function GET() {
     return new Response(sitemap, {
         status: 200,
         headers: {
-            "Content-Type": "application/xml",
-            "Cache-Control": "public, max-age=86400, s-max-age=86400", // Cache for 24 hours
+            "Content-Type": "application/xml; charset=utf-8",
+            "Cache-Control": "no-store",
         },
     })
 }
@@ -47,8 +49,8 @@ export async function HEAD() {
     return new Response(null, {
         status: 200,
         headers: {
-            "Content-Type": "application/xml",
-            "Cache-Control": "public, max-age=86400, s-max-age=86400",
+            "Content-Type": "application/xml; charset=utf-8",
+            "Cache-Control": "no-store",
         },
     })
 }
