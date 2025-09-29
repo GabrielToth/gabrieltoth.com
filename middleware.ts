@@ -44,6 +44,21 @@ export function middleware(request: NextRequest) {
         return
     }
 
+    // Permanent redirects for non-locale canonical routes
+    const staticRedirectMap: Record<string, string> = {
+        "/": "/en",
+        "/channel-management": "/en/channel-management",
+        "/editors": "/en/editors",
+        "/pc-optimization": "/en/pc-optimization",
+        "/privacy-policy": "/en/privacy-policy",
+        "/terms-of-service": "/en/terms-of-service",
+    }
+
+    if (staticRedirectMap[pathname]) {
+        const correctedUrl = new URL(staticRedirectMap[pathname], request.url)
+        return NextResponse.redirect(correctedUrl, 308)
+    }
+
     // Parse URL to check if it has a locale
     const pathSegments = pathname.split("/").filter(Boolean)
     const potentialLocale = pathSegments[0]
@@ -60,17 +75,7 @@ export function middleware(request: NextRequest) {
         currentLocale = getLocaleFromAcceptLanguage(acceptLanguage)
     }
 
-    // Case 1: Root path or no locale - redirect to default locale
-    if (pathname === "/" || pathSegments.length === 0) {
-        const correctedUrl = new URL(`/${currentLocale}/`, request.url)
-        const response = NextResponse.redirect(correctedUrl)
-        response.cookies.set("locale", currentLocale, {
-            maxAge: 365 * 24 * 60 * 60,
-            path: "/",
-            sameSite: "lax",
-        })
-        return response
-    }
+    // Case 1: (handled above for "/")
 
     // Case 2: URL has no locale - redirect to include locale (non-static)
     if (

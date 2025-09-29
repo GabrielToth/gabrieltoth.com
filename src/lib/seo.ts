@@ -345,7 +345,9 @@ export function generateSeoConfig(options: SeoConfigOptions) {
         breadcrumbs = [],
     } = options
 
-    const fullUrl = `${SITE_URL}${locale === "en" ? "" : `/${locale}`}${path}`
+    // Always use locale-prefixed canonical to avoid redirect chains
+    const localeSegment = `/${locale}`
+    const fullUrl = `${SITE_URL}${localeSegment}${path}`
 
     const titleByLocale: Record<Locale, string> = {
         en: "Gabriel Toth Gonçalves - Full Stack Developer & Data Scientist",
@@ -547,7 +549,7 @@ export function generateSeoConfig(options: SeoConfigOptions) {
         languageAlternates: [
             {
                 hrefLang: "en",
-                href: `${SITE_URL}${path}`,
+                href: `${SITE_URL}/en${path}`,
             },
             {
                 hrefLang: "pt-BR",
@@ -563,7 +565,7 @@ export function generateSeoConfig(options: SeoConfigOptions) {
             },
             {
                 hrefLang: "x-default",
-                href: `${SITE_URL}${path}`,
+                href: `${SITE_URL}/en${path}`,
             },
         ],
         breadcrumbs,

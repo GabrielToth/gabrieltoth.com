@@ -59,7 +59,7 @@ export async function generateMetadata({
                 "pt-BR": "https://gabrieltoth.com/pt-BR/channel-management",
                 es: "https://gabrieltoth.com/es/channel-management",
                 de: "https://gabrieltoth.com/de/channel-management",
-                "x-default": "https://gabrieltoth.com/channel-management",
+                "x-default": "https://gabrieltoth.com/en/channel-management",
             },
         },
         other: {

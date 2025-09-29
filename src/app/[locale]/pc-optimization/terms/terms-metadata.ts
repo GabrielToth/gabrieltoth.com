@@ -59,7 +59,7 @@ export async function generateMetadata({
                 "pt-BR": "https://gabrieltoth.com/pt-BR/pc-optimization/terms",
                 es: "https://gabrieltoth.com/es/pc-optimization/terms",
                 de: "https://gabrieltoth.com/de/pc-optimization/terms",
-                "x-default": "https://gabrieltoth.com/pc-optimization/terms",
+                "x-default": "https://gabrieltoth.com/en/pc-optimization/terms",
             },
         },
     }

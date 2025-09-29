@@ -69,7 +69,7 @@ export async function generateMetadata({
                 "pt-BR": "https://gabrieltoth.com/pt-BR/privacy-policy",
                 es: "https://gabrieltoth.com/es/privacy-policy",
                 de: "https://gabrieltoth.com/de/privacy-policy",
-                "x-default": "https://gabrieltoth.com/privacy-policy",
+                "x-default": "https://gabrieltoth.com/en/privacy-policy",
             },
         },
     }

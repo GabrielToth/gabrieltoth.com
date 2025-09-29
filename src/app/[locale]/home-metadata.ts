@@ -61,7 +61,7 @@ export async function generateMetadata({
                 "pt-BR": "https://gabrieltoth.com/pt-BR",
                 es: "https://gabrieltoth.com/es",
                 de: "https://gabrieltoth.com/de",
-                "x-default": "https://gabrieltoth.com",
+                "x-default": "https://gabrieltoth.com/en",
             },
         },
     }

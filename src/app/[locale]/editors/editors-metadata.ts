@@ -59,7 +59,7 @@ export async function generateMetadata({
                 "pt-BR": "https://gabrieltoth.com/pt-BR/editors",
                 es: "https://gabrieltoth.com/es/editors",
                 de: "https://gabrieltoth.com/de/editors",
-                "x-default": "https://gabrieltoth.com/editors",
+                "x-default": "https://gabrieltoth.com/en/editors",
             },
         },
     }

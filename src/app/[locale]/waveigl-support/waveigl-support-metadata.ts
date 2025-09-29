@@ -61,7 +61,7 @@ export async function generateMetadata({
                 "pt-BR": "https://gabrieltoth.com/pt-BR/waveigl-support",
                 es: "https://gabrieltoth.com/es/waveigl-support",
                 de: "https://gabrieltoth.com/de/waveigl-support",
-                "x-default": "https://gabrieltoth.com/waveigl-support",
+                "x-default": "https://gabrieltoth.com/en/waveigl-support",
             },
         },
     }

@@ -10,7 +10,7 @@ export async function GET() {
 
     const urlEntries = pages
         .map(({ path, priority, changefreq }) => {
-            const fullUrl = `${SITE_URL}${path}`
+            const fullUrl = `${SITE_URL}/en${path}`
             const ptUrl = `${SITE_URL}/pt-BR${path}`
             const esUrl = `${SITE_URL}/es${path}`
             const deUrl = `${SITE_URL}/de${path}`
