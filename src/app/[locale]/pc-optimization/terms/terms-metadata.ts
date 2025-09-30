@@ -53,13 +53,13 @@ export async function generateMetadata({
             site: seoConfig.twitter?.site,
         },
         alternates: {
-            canonical: seoConfig.canonical,
             languages: {
                 en: "https://gabrieltoth.com/en/pc-optimization/terms",
                 "pt-BR": "https://gabrieltoth.com/pt-BR/pc-optimization/terms",
                 es: "https://gabrieltoth.com/es/pc-optimization/terms",
                 de: "https://gabrieltoth.com/de/pc-optimization/terms",
-                "x-default": "https://gabrieltoth.com/en/pc-optimization/terms",
+                "x-default":
+                    "https://gabrieltoth.com/pt-BR/pc-optimization/terms",
             },
         },
     }

@@ -25,7 +25,7 @@ export async function GET() {
         <xhtml:link rel="alternate" hreflang="pt-BR" href="${fullUrl}" />
         <xhtml:link rel="alternate" hreflang="es" href="${esUrl}" />
         <xhtml:link rel="alternate" hreflang="de" href="${deUrl}" />
-        <xhtml:link rel="alternate" hreflang="x-default" href="${enUrl}" />
+        <xhtml:link rel="alternate" hreflang="x-default" href="${fullUrl}" />
     </url>`
         })
         .join("")

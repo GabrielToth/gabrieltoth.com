@@ -1,5 +1,5 @@
 import { permanentRedirect } from "next/navigation"
 
 export default function TermsOfServiceRedirect() {
-    permanentRedirect("/en/terms-of-service")
+    permanentRedirect("/pt-BR/terms-of-service")
 }

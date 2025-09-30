@@ -55,13 +55,12 @@ export async function generateMetadata({
             site: seoConfig.twitter?.site,
         },
         alternates: {
-            canonical: seoConfig.canonical,
             languages: {
                 en: "https://gabrieltoth.com/en",
                 "pt-BR": "https://gabrieltoth.com/pt-BR",
                 es: "https://gabrieltoth.com/es",
                 de: "https://gabrieltoth.com/de",
-                "x-default": "https://gabrieltoth.com/en",
+                "x-default": "https://gabrieltoth.com/pt-BR",
             },
         },
     }

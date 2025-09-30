@@ -46,12 +46,12 @@ export function middleware(request: NextRequest) {
 
     // Permanent redirects for non-locale canonical routes
     const staticRedirectMap: Record<string, string> = {
-        "/": "/en",
-        "/channel-management": "/en/channel-management",
-        "/editors": "/en/editors",
-        "/pc-optimization": "/en/pc-optimization",
-        "/privacy-policy": "/en/privacy-policy",
-        "/terms-of-service": "/en/terms-of-service",
+        "/": "/pt-BR",
+        "/channel-management": "/pt-BR/channel-management",
+        "/editors": "/pt-BR/editors",
+        "/pc-optimization": "/pt-BR/pc-optimization",
+        "/privacy-policy": "/pt-BR/privacy-policy",
+        "/terms-of-service": "/pt-BR/terms-of-service",
     }
 
     if (staticRedirectMap[pathname]) {
