@@ -54,13 +54,13 @@ export async function generateMetadata({
         },
         alternates: {
             languages: {
-                en: "https://www.gabrieltoth.com/en/pc-optimization/terms",
+                en: "https://www.gabrieltoth.com/en/pc-optimization/terms/",
                 "pt-BR":
-                    "https://www.gabrieltoth.com/pt-BR/pc-optimization/terms",
-                es: "https://www.gabrieltoth.com/es/pc-optimization/terms",
-                de: "https://www.gabrieltoth.com/de/pc-optimization/terms",
+                    "https://www.gabrieltoth.com/pt-BR/pc-optimization/terms/",
+                es: "https://www.gabrieltoth.com/es/pc-optimization/terms/",
+                de: "https://www.gabrieltoth.com/de/pc-optimization/terms/",
                 "x-default":
-                    "https://www.gabrieltoth.com/pt-BR/pc-optimization/terms",
+                    "https://www.gabrieltoth.com/pt-BR/pc-optimization/terms/",
             },
         },
     }

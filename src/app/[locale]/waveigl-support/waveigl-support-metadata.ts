@@ -56,12 +56,12 @@ export async function generateMetadata({
         },
         alternates: {
             languages: {
-                en: "https://www.gabrieltoth.com/en/waveigl-support",
-                "pt-BR": "https://www.gabrieltoth.com/pt-BR/waveigl-support",
-                es: "https://www.gabrieltoth.com/es/waveigl-support",
-                de: "https://www.gabrieltoth.com/de/waveigl-support",
+                en: "https://www.gabrieltoth.com/en/waveigl-support/",
+                "pt-BR": "https://www.gabrieltoth.com/pt-BR/waveigl-support/",
+                es: "https://www.gabrieltoth.com/es/waveigl-support/",
+                de: "https://www.gabrieltoth.com/de/waveigl-support/",
                 "x-default":
-                    "https://www.gabrieltoth.com/pt-BR/waveigl-support",
+                    "https://www.gabrieltoth.com/pt-BR/waveigl-support/",
             },
         },
     }

@@ -64,11 +64,12 @@ export async function generateMetadata({
         },
         alternates: {
             languages: {
-                en: "https://www.gabrieltoth.com/en/privacy-policy",
-                "pt-BR": "https://www.gabrieltoth.com/pt-BR/privacy-policy",
-                es: "https://www.gabrieltoth.com/es/privacy-policy",
-                de: "https://www.gabrieltoth.com/de/privacy-policy",
-                "x-default": "https://www.gabrieltoth.com/pt-BR/privacy-policy",
+                en: "https://www.gabrieltoth.com/en/privacy-policy/",
+                "pt-BR": "https://www.gabrieltoth.com/pt-BR/privacy-policy/",
+                es: "https://www.gabrieltoth.com/es/privacy-policy/",
+                de: "https://www.gabrieltoth.com/de/privacy-policy/",
+                "x-default":
+                    "https://www.gabrieltoth.com/pt-BR/privacy-policy/",
             },
         },
     }

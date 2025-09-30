@@ -50,11 +50,11 @@ export async function generateMetadata({
         },
         alternates: {
             languages: {
-                en: "https://www.gabrieltoth.com/en",
-                "pt-BR": "https://www.gabrieltoth.com/pt-BR",
-                es: "https://www.gabrieltoth.com/es",
-                de: "https://www.gabrieltoth.com/de",
-                "x-default": "https://www.gabrieltoth.com/pt-BR",
+                en: "https://www.gabrieltoth.com/en/",
+                "pt-BR": "https://www.gabrieltoth.com/pt-BR/",
+                es: "https://www.gabrieltoth.com/es/",
+                de: "https://www.gabrieltoth.com/de/",
+                "x-default": "https://www.gabrieltoth.com/pt-BR/",
             },
         },
     }

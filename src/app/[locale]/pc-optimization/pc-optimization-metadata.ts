@@ -66,12 +66,12 @@ export async function generateMetadata({
         },
         alternates: {
             languages: {
-                en: "https://www.gabrieltoth.com/en/pc-optimization",
-                "pt-BR": "https://www.gabrieltoth.com/pt-BR/pc-optimization",
-                es: "https://www.gabrieltoth.com/es/pc-optimization",
-                de: "https://www.gabrieltoth.com/de/pc-optimization",
+                en: "https://www.gabrieltoth.com/en/pc-optimization/",
+                "pt-BR": "https://www.gabrieltoth.com/pt-BR/pc-optimization/",
+                es: "https://www.gabrieltoth.com/es/pc-optimization/",
+                de: "https://www.gabrieltoth.com/de/pc-optimization/",
                 "x-default":
-                    "https://www.gabrieltoth.com/pt-BR/pc-optimization",
+                    "https://www.gabrieltoth.com/pt-BR/pc-optimization/",
             },
         },
     }

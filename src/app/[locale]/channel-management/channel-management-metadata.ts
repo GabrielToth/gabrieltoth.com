@@ -54,12 +54,13 @@ export async function generateMetadata({
         },
         alternates: {
             languages: {
-                en: "https://www.gabrieltoth.com/en/channel-management",
-                "pt-BR": "https://www.gabrieltoth.com/pt-BR/channel-management",
-                es: "https://www.gabrieltoth.com/es/channel-management",
-                de: "https://www.gabrieltoth.com/de/channel-management",
+                en: "https://www.gabrieltoth.com/en/channel-management/",
+                "pt-BR":
+                    "https://www.gabrieltoth.com/pt-BR/channel-management/",
+                es: "https://www.gabrieltoth.com/es/channel-management/",
+                de: "https://www.gabrieltoth.com/de/channel-management/",
                 "x-default":
-                    "https://www.gabrieltoth.com/pt-BR/channel-management",
+                    "https://www.gabrieltoth.com/pt-BR/channel-management/",
             },
         },
         other: {
