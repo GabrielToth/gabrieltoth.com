@@ -54,7 +54,7 @@ interface StructuredDataWebsite {
         "@type": string
         name: string
     }
-    potentialAction: {
+    potentialAction?: {
         "@type": string
         target: string
         "query-input": string
@@ -347,7 +347,10 @@ export function generateSeoConfig(options: SeoConfigOptions) {
 
     // Always use locale-prefixed canonical to avoid redirect chains
     const localeSegment = `/${locale}`
-    const fullUrl = `${SITE_URL}${localeSegment}${path}`
+    const fullUrl = `${SITE_URL}${localeSegment}${path}`.replace(
+        /(?<!\/)$/,
+        "/"
+    )
 
     const titleByLocale: Record<Locale, string> = {
         en: "Gabriel Toth Gonçalves - Full Stack Developer & Data Scientist",
@@ -549,23 +552,23 @@ export function generateSeoConfig(options: SeoConfigOptions) {
         languageAlternates: [
             {
                 hrefLang: "en",
-                href: `${SITE_URL}/en${path}`,
+                href: `${SITE_URL}/en${path}`.replace(/(?<!\/)$/, "/"),
             },
             {
                 hrefLang: "pt-BR",
-                href: `${SITE_URL}/pt-BR${path}`,
+                href: `${SITE_URL}/pt-BR${path}`.replace(/(?<!\/)$/, "/"),
             },
             {
                 hrefLang: "es",
-                href: `${SITE_URL}/es${path}`,
+                href: `${SITE_URL}/es${path}`.replace(/(?<!\/)$/, "/"),
             },
             {
                 hrefLang: "de",
-                href: `${SITE_URL}/de${path}`,
+                href: `${SITE_URL}/de${path}`.replace(/(?<!\/)$/, "/"),
             },
             {
                 hrefLang: "x-default",
-                href: `${SITE_URL}/en${path}`,
+                href: `${SITE_URL}/en${path}`.replace(/(?<!\/)$/, "/"),
             },
         ],
         breadcrumbs,
@@ -672,11 +675,6 @@ export function generateWebsiteStructuredData(
         mainEntity: {
             "@type": "Person",
             name: AUTHOR_NAME,
-        },
-        potentialAction: {
-            "@type": "SearchAction",
-            target: `${SITE_URL}/search?q={search_term_string}`,
-            "query-input": "required name=search_term_string",
         },
     }
 }

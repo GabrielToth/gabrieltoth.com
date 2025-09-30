@@ -10,6 +10,7 @@ const withBundleAnalyzer = require("@next/bundle-analyzer")({
 })
 
 const nextConfig: NextConfig = {
+    trailingSlash: true,
     generateEtags: false,
     typescript: {
         ignoreBuildErrors: true,

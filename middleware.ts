@@ -55,7 +55,11 @@ export function middleware(request: NextRequest) {
     }
 
     if (staticRedirectMap[pathname]) {
-        const correctedUrl = new URL(staticRedirectMap[pathname], request.url)
+        const to = staticRedirectMap[pathname]
+        const correctedUrl = new URL(
+            to.endsWith("/") ? to : `${to}/`,
+            request.url
+        )
         return NextResponse.redirect(correctedUrl, 308)
     }
 
@@ -84,8 +88,9 @@ export function middleware(request: NextRequest) {
         !pathname.startsWith("/_next/") &&
         !pathname.includes(".")
     ) {
+        const destination = `/${currentLocale}${pathname}`
         const correctedUrl = new URL(
-            `/${currentLocale}${pathname}`,
+            destination.endsWith("/") ? destination : `${destination}/`,
             request.url
         )
         const response = NextResponse.redirect(correctedUrl)
