@@ -34,6 +34,14 @@ function getLocaleFromAcceptLanguage(acceptLanguage: string): string {
 export function middleware(request: NextRequest) {
     const pathname = request.nextUrl.pathname
 
+    // Normalize host: redirect www -> apex domain
+    const host = request.nextUrl.hostname.toLowerCase()
+    if (host.startsWith("www.")) {
+        const target = new URL(request.url)
+        target.hostname = host.slice(4)
+        return NextResponse.redirect(target, 308)
+    }
+
     // Skip API routes, static files, etc.
     if (
         pathname.startsWith("/api/") ||

@@ -16,7 +16,7 @@ export async function buildTermsOfServiceStructured(locale: Locale): Promise<{
         t.raw("breadcrumbs") as Array<{ name: string; href: string }>
     ).map(b => ({
         name: b.name,
-        url: `https://gabrieltoth.com${locale === "en" ? "" : `/${locale}`}${b.href}`,
+        url: `https://www.gabrieltoth.com${locale === "en" ? "" : `/${locale}`}${b.href}`,
     }))
 
     const webPageStructuredData = {
@@ -32,11 +32,11 @@ export async function buildTermsOfServiceStructured(locale: Locale): Promise<{
                     >
                 )?.acceptance?.text || ""
             ).slice(0, 160) || t("title"),
-        url: `https://gabrieltoth.com${locale === "en" ? "" : `/${locale}`}/terms-of-service`,
+        url: `https://www.gabrieltoth.com${locale === "en" ? "" : `/${locale}`}/terms-of-service`,
         isPartOf: {
             "@type": "WebSite",
             name: "Gabriel Toth Portfolio",
-            url: "https://gabrieltoth.com",
+            url: "https://www.gabrieltoth.com",
         },
         about: {
             "@type": "Thing",

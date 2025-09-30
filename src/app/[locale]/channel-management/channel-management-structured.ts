@@ -19,10 +19,10 @@ export async function buildChannelManagementStructured(
         provider: {
             "@type": "Person",
             name: "Gabriel Toth Gonçalves",
-            url: "https://gabrieltoth.com",
+            url: "https://www.gabrieltoth.com",
         },
         category: "Digital Marketing Consulting",
-        url: `https://gabrieltoth.com${locale === "en" ? "" : `/${locale}`}/channel-management`,
+        url: `https://www.gabrieltoth.com${locale === "en" ? "" : `/${locale}`}/channel-management`,
         offers: {
             "@type": "Offer",
             availability: "https://schema.org/InStock",
@@ -54,11 +54,11 @@ export async function buildChannelManagementStructured(
     const breadcrumbs = [
         {
             name: t("services.title"),
-            url: `https://gabrieltoth.com${locale === "en" ? "" : `/${locale}`}`,
+            url: `https://www.gabrieltoth.com${locale === "en" ? "" : `/${locale}`}`,
         },
         {
             name: t("hero.badge"),
-            url: `https://gabrieltoth.com${locale === "en" ? "" : `/${locale}`}/channel-management`,
+            url: `https://www.gabrieltoth.com${locale === "en" ? "" : `/${locale}`}/channel-management`,
         },
     ]
 

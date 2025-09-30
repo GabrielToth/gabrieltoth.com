@@ -2,7 +2,7 @@ import { getAllPages } from "@/lib/seo"
 export const dynamic = "force-dynamic"
 export const revalidate = 0
 
-const SITE_URL = "https://gabrieltoth.com"
+const SITE_URL = "https://www.gabrieltoth.com"
 
 export async function GET() {
     const pages = getAllPages()

@@ -199,7 +199,7 @@ export function getBreadcrumbsForStructuredData(
     }
     const homeItem = {
         name: homeNames[locale] || "Home",
-        url: `https://gabrieltoth.com/${locale}`,
+        url: `https://www.gabrieltoth.com/${locale}`,
     }
 
     const structuredItems = [homeItem]
@@ -207,7 +207,7 @@ export function getBreadcrumbsForStructuredData(
     items.forEach(item => {
         structuredItems.push({
             name: item.name,
-            url: `https://gabrieltoth.com${item.href}`,
+            url: `https://www.gabrieltoth.com${item.href}`,
         })
     })
 

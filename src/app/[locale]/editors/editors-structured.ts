@@ -18,11 +18,11 @@ export async function buildEditorsStructured(locale: Locale): Promise<{
     const breadcrumbs = [
         {
             name: t("services.title"),
-            url: `https://gabrieltoth.com${locale === "en" ? "" : `/${locale}`}`,
+            url: `https://www.gabrieltoth.com${locale === "en" ? "" : `/${locale}`}`,
         },
         {
             name: t("hero.badge"),
-            url: `https://gabrieltoth.com${locale === "en" ? "" : `/${locale}`}/editors`,
+            url: `https://www.gabrieltoth.com${locale === "en" ? "" : `/${locale}`}/editors`,
         },
     ]
 

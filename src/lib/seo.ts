@@ -109,7 +109,7 @@ interface StructuredDataFAQ {
     }>
 }
 
-const SITE_URL = "https://gabrieltoth.com"
+const SITE_URL = "https://www.gabrieltoth.com"
 const SITE_NAME = "Gabriel Toth Portfolio"
 const AUTHOR_NAME = "Gabriel Toth Gonçalves"
 const AUTHOR_EMAIL = "contato@gabrieltoth.com"
