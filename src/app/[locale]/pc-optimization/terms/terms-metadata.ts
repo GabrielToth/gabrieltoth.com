@@ -18,7 +18,7 @@ export async function generateMetadata({
         description: undefined,
         keywords: [],
         ogType: "website",
-        ogImage: "https://gabrieltoth.com/og-image-pc-optimization.jpg",
+        ogImage: "https://www.gabrieltoth.com/og-image-pc-optimization.jpg",
     })
 
     return {
@@ -54,12 +54,13 @@ export async function generateMetadata({
         },
         alternates: {
             languages: {
-                en: "https://gabrieltoth.com/en/pc-optimization/terms",
-                "pt-BR": "https://gabrieltoth.com/pt-BR/pc-optimization/terms",
-                es: "https://gabrieltoth.com/es/pc-optimization/terms",
-                de: "https://gabrieltoth.com/de/pc-optimization/terms",
+                en: "https://www.gabrieltoth.com/en/pc-optimization/terms",
+                "pt-BR":
+                    "https://www.gabrieltoth.com/pt-BR/pc-optimization/terms",
+                es: "https://www.gabrieltoth.com/es/pc-optimization/terms",
+                de: "https://www.gabrieltoth.com/de/pc-optimization/terms",
                 "x-default":
-                    "https://gabrieltoth.com/pt-BR/pc-optimization/terms",
+                    "https://www.gabrieltoth.com/pt-BR/pc-optimization/terms",
             },
         },
     }

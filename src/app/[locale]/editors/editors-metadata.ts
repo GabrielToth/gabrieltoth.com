@@ -18,7 +18,7 @@ export async function generateMetadata({
         description: undefined,
         keywords: [],
         ogType: "article",
-        ogImage: "https://gabrieltoth.com/og-image-editors.jpg",
+        ogImage: "https://www.gabrieltoth.com/og-image-editors.jpg",
     })
 
     return {
@@ -54,11 +54,11 @@ export async function generateMetadata({
         },
         alternates: {
             languages: {
-                en: "https://gabrieltoth.com/en/editors",
-                "pt-BR": "https://gabrieltoth.com/pt-BR/editors",
-                es: "https://gabrieltoth.com/es/editors",
-                de: "https://gabrieltoth.com/de/editors",
-                "x-default": "https://gabrieltoth.com/pt-BR/editors",
+                en: "https://www.gabrieltoth.com/en/editors",
+                "pt-BR": "https://www.gabrieltoth.com/pt-BR/editors",
+                es: "https://www.gabrieltoth.com/es/editors",
+                de: "https://www.gabrieltoth.com/de/editors",
+                "x-default": "https://www.gabrieltoth.com/pt-BR/editors",
             },
         },
     }

@@ -35,7 +35,7 @@ export async function generateMetadata({
             type: "website",
             images: [
                 {
-                    url: "https://gabrieltoth.com/og-image.jpg",
+                    url: "https://www.gabrieltoth.com/og-image.jpg",
                     width: 1200,
                     height: 630,
                     alt: seoConfig.title,
@@ -50,11 +50,11 @@ export async function generateMetadata({
         },
         alternates: {
             languages: {
-                en: "https://gabrieltoth.com/en",
-                "pt-BR": "https://gabrieltoth.com/pt-BR",
-                es: "https://gabrieltoth.com/es",
-                de: "https://gabrieltoth.com/de",
-                "x-default": "https://gabrieltoth.com/pt-BR",
+                en: "https://www.gabrieltoth.com/en",
+                "pt-BR": "https://www.gabrieltoth.com/pt-BR",
+                es: "https://www.gabrieltoth.com/es",
+                de: "https://www.gabrieltoth.com/de",
+                "x-default": "https://www.gabrieltoth.com/pt-BR",
             },
         },
     }

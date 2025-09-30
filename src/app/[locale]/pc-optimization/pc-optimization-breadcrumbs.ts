@@ -11,7 +11,7 @@ export const getPCOptimizationBreadcrumbs = (locale: Locale) => {
                       : locale === "de"
                         ? "Dienstleistungen"
                         : "Services",
-            url: `https://gabrieltoth.com${locale === "en" ? "" : `/${locale}`}`,
+            url: `https://www.gabrieltoth.com${locale === "en" ? "" : `/${locale}`}`,
         },
         {
             name:
@@ -22,7 +22,7 @@ export const getPCOptimizationBreadcrumbs = (locale: Locale) => {
                       : locale === "de"
                         ? "PC-Optimierung"
                         : "PC Optimization",
-            url: `https://gabrieltoth.com${locale === "en" ? "" : `/${locale}`}/pc-optimization`,
+            url: `https://www.gabrieltoth.com${locale === "en" ? "" : `/${locale}`}/pc-optimization`,
         },
     ]
 }

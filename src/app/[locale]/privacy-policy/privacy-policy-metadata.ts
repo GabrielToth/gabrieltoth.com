@@ -28,7 +28,7 @@ export async function generateMetadata({
             ).slice(0, 160) || t("title"),
         keywords: [],
         ogType: "website",
-        ogImage: "https://gabrieltoth.com/og-image-privacy.jpg",
+        ogImage: "https://www.gabrieltoth.com/og-image-privacy.jpg",
     })
 
     return {
@@ -64,11 +64,11 @@ export async function generateMetadata({
         },
         alternates: {
             languages: {
-                en: "https://gabrieltoth.com/en/privacy-policy",
-                "pt-BR": "https://gabrieltoth.com/pt-BR/privacy-policy",
-                es: "https://gabrieltoth.com/es/privacy-policy",
-                de: "https://gabrieltoth.com/de/privacy-policy",
-                "x-default": "https://gabrieltoth.com/pt-BR/privacy-policy",
+                en: "https://www.gabrieltoth.com/en/privacy-policy",
+                "pt-BR": "https://www.gabrieltoth.com/pt-BR/privacy-policy",
+                es: "https://www.gabrieltoth.com/es/privacy-policy",
+                de: "https://www.gabrieltoth.com/de/privacy-policy",
+                "x-default": "https://www.gabrieltoth.com/pt-BR/privacy-policy",
             },
         },
     }

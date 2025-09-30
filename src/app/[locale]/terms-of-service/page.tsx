@@ -43,7 +43,7 @@ export default async function TermsOfServicePage({
                         items={breadcrumbs.map(item => ({
                             name: item.name,
                             href: item.url.replace(
-                                "https://gabrieltoth.com",
+                                "https://www.gabrieltoth.com",
                                 ""
                             ),
                         }))}

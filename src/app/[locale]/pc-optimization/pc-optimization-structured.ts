@@ -55,7 +55,7 @@ export async function buildPCOptimizationStructured(locale: Locale): Promise<{
     const breadcrumbs = [
         {
             name: t("hero.badge"),
-            url: `https://gabrieltoth.com${locale === "en" ? "" : `/${locale}`}/pc-optimization`,
+            url: `https://www.gabrieltoth.com${locale === "en" ? "" : `/${locale}`}/pc-optimization`,
         },
     ]
 

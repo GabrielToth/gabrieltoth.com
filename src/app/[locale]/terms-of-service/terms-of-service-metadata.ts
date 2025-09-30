@@ -28,7 +28,7 @@ export async function generateMetadata({
             ).slice(0, 160) || t("title"),
         keywords: [],
         ogType: "website",
-        ogImage: "https://gabrieltoth.com/og-image-terms.jpg",
+        ogImage: "https://www.gabrieltoth.com/og-image-terms.jpg",
     })
 
     return {
@@ -64,11 +64,12 @@ export async function generateMetadata({
         },
         alternates: {
             languages: {
-                en: "https://gabrieltoth.com/en/terms-of-service",
-                "pt-BR": "https://gabrieltoth.com/pt-BR/terms-of-service",
-                es: "https://gabrieltoth.com/es/terms-of-service",
-                de: "https://gabrieltoth.com/de/terms-of-service",
-                "x-default": "https://gabrieltoth.com/pt-BR/terms-of-service",
+                en: "https://www.gabrieltoth.com/en/terms-of-service",
+                "pt-BR": "https://www.gabrieltoth.com/pt-BR/terms-of-service",
+                es: "https://www.gabrieltoth.com/es/terms-of-service",
+                de: "https://www.gabrieltoth.com/de/terms-of-service",
+                "x-default":
+                    "https://www.gabrieltoth.com/pt-BR/terms-of-service",
             },
         },
     }

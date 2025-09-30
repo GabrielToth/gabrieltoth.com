@@ -18,7 +18,7 @@ export async function generateMetadata({
         description: undefined,
         keywords: [],
         ogType: "website",
-        ogImage: "https://gabrieltoth.com/og-image-viratrend.jpg",
+        ogImage: "https://www.gabrieltoth.com/og-image-viratrend.jpg",
     })
 
     return {
@@ -54,11 +54,12 @@ export async function generateMetadata({
         },
         alternates: {
             languages: {
-                en: "https://gabrieltoth.com/en/channel-management",
-                "pt-BR": "https://gabrieltoth.com/pt-BR/channel-management",
-                es: "https://gabrieltoth.com/es/channel-management",
-                de: "https://gabrieltoth.com/de/channel-management",
-                "x-default": "https://gabrieltoth.com/pt-BR/channel-management",
+                en: "https://www.gabrieltoth.com/en/channel-management",
+                "pt-BR": "https://www.gabrieltoth.com/pt-BR/channel-management",
+                es: "https://www.gabrieltoth.com/es/channel-management",
+                de: "https://www.gabrieltoth.com/de/channel-management",
+                "x-default":
+                    "https://www.gabrieltoth.com/pt-BR/channel-management",
             },
         },
         other: {

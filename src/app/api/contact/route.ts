@@ -154,7 +154,7 @@ function getConfirmationEmailContent(
                     <p style="margin-top: 30px;">
                         <strong>Gabriel Toth Gonçalves</strong><br>
                         Full Stack Developer<br>
-                        <a href="https://gabrieltoth.com">gabrieltoth.com</a>
+                        <a href="https://www.gabrieltoth.com">gabrieltoth.com</a>
                     </p>
                 </div>
             `,
@@ -204,7 +204,7 @@ function getConfirmationEmailContent(
                     <p style="margin-top: 30px;">
                         <strong>Gabriel Toth Gonçalves</strong><br>
                         Full Stack Developer<br>
-                        <a href="https://gabrieltoth.com">gabrieltoth.com</a>
+                        <a href="https://www.gabrieltoth.com">gabrieltoth.com</a>
                     </p>
                 </div>
             `,
@@ -220,7 +220,7 @@ export async function POST(request: NextRequest) {
 
         // App-level firewall checks
         const fw = basicFirewall(request, [
-            "https://gabrieltoth.com",
+            "https://www.gabrieltoth.com",
             "https://www.gabrieltoth.com",
         ])
         if (!fw.ok) {

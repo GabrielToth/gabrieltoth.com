@@ -4,7 +4,7 @@ Personal portfolio of Gabriel Toth Gonçalves - Full Stack Developer
 
 ## 🚀 Demo
 
-- **Production**: [https://gabrieltoth.com](https://gabrieltoth.com)
+- **Production**: [https://www.gabrieltoth.com](https://www.gabrieltoth.com)
 - **Repository**: [GitHub](https://github.com/gabrieltoth)
 
 ## ⚡ Tech Stack

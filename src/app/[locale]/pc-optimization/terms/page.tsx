@@ -23,7 +23,7 @@ export default async function PCOptimizationTermsPage({ params }: PageProps) {
                       : locale === "de"
                         ? "Startseite"
                         : "Home",
-            url: `https://gabrieltoth.com${locale === "en" ? "" : `/${locale}`}`,
+            url: `https://www.gabrieltoth.com${locale === "en" ? "" : `/${locale}`}`,
         },
         {
             name:
@@ -34,7 +34,7 @@ export default async function PCOptimizationTermsPage({ params }: PageProps) {
                       : locale === "de"
                         ? "PC-Optimierung"
                         : "PC Optimization",
-            url: `https://gabrieltoth.com${locale === "en" ? "" : `/${locale}`}/pc-optimization`,
+            url: `https://www.gabrieltoth.com${locale === "en" ? "" : `/${locale}`}/pc-optimization`,
         },
         {
             name:
@@ -45,7 +45,7 @@ export default async function PCOptimizationTermsPage({ params }: PageProps) {
                       : locale === "de"
                         ? "Bedingungen"
                         : "Terms",
-            url: `https://gabrieltoth.com${locale === "en" ? "" : `/${locale}`}/pc-optimization/terms`,
+            url: `https://www.gabrieltoth.com${locale === "en" ? "" : `/${locale}`}/pc-optimization/terms`,
         },
     ]
 

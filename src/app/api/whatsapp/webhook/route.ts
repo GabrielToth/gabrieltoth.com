@@ -101,7 +101,7 @@ async function processMoneroTxHash(whatsappNumber: string, txHash: string) {
 ❌ *Nenhum pedido Monero pendente encontrado*
 
 Para criar um novo pedido, acesse:
-https://gabrieltoth.com
+https://www.gabrieltoth.com
 
 Precisa de ajuda? Digite "ajuda"
             `
@@ -268,7 +268,7 @@ async function sendUserOrders(whatsappNumber: string) {
 📋 *Nenhum pedido encontrado*
 
 Para criar um novo pedido, acesse:
-https://gabrieltoth.com
+https://www.gabrieltoth.com
 
 Nossos serviços:
 • Otimização de PC
@@ -332,7 +332,7 @@ async function sendHelpMessage(whatsappNumber: string) {
 • 📊 Consultoria em Analytics
 • 🎮 Suporte WaveIGL
 
-🌐 Site: https://gabrieltoth.com
+🌐 Site: https://www.gabrieltoth.com
 📧 Email: gabriel@gabrieltoth.com
     `
     )
