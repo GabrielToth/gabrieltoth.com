@@ -62,6 +62,17 @@ export default function Header() {
     const navigationLinks = getNavigationLinks()
     const servicesLinks = getServicesLinks()
 
+    // Show theme toggle inside language menu only on selected pages
+    const pagesWithThemeInLanguage = [
+        "/channel-management",
+        "/pc-optimization",
+        "/waveigl-support",
+    ]
+    const includeThemeInLanguage = pagesWithThemeInLanguage.some(slug => {
+        const base = `/${locale}${slug}`
+        return pathname === base || pathname.startsWith(`${base}/`)
+    })
+
     return (
         <header className="fixed top-0 w-full bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 z-50">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -166,17 +177,23 @@ export default function Header() {
                             )}
                         </div>
 
-                        {/* Theme Toggle */}
+                        {/* Theme Toggle (outside language) */}
                         <ThemeToggleClient />
 
                         {/* Language Selector */}
-                        <LanguageSelector variant="header" />
+                        <LanguageSelector
+                            variant="header"
+                            includeThemeToggle={includeThemeInLanguage}
+                        />
                     </nav>
 
                     {/* Mobile menu button */}
                     <div className="md:hidden flex items-center space-x-2">
                         <ThemeToggleClient />
-                        <LanguageSelector variant="header" />
+                        <LanguageSelector
+                            variant="header"
+                            includeThemeToggle={includeThemeInLanguage}
+                        />
 
                         <button
                             onClick={() =>

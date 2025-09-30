@@ -1,21 +1,25 @@
 "use client"
 
+import { useTheme } from "@/components/theme/theme-provider"
 import { Button } from "@/components/ui/button"
 import { useLocale } from "@/hooks/use-locale"
 import { localeNamesShort, locales } from "@/lib/i18n"
-import { Globe } from "lucide-react"
+import { Globe, Moon, Sun } from "lucide-react"
 import { useEffect, useState } from "react"
 
 interface LanguageSelectorProps {
     variant?: "default" | "header" | "footer"
     className?: string
+    includeThemeToggle?: boolean
 }
 
 export default function LanguageSelector({
     variant = "default",
     className = "",
+    includeThemeToggle = false,
 }: LanguageSelectorProps) {
     const { locale, changeLocale } = useLocale()
+    const { theme, toggleTheme } = useTheme()
     const [isOpen, setIsOpen] = useState(false)
     const [isMounted, setIsMounted] = useState(false)
 
@@ -129,6 +133,28 @@ export default function LanguageSelector({
                                 {localeNamesShort[loc]}
                             </button>
                         ))}
+
+                        {includeThemeToggle && (
+                            <>
+                                <div className="h-px w-full bg-gray-200 dark:bg-gray-700 my-1" />
+                                <button
+                                    onClick={() => {
+                                        toggleTheme()
+                                        setIsOpen(false)
+                                    }}
+                                    className={`${currentVariant.option} flex items-center justify-between`}
+                                    role="menuitem"
+                                    aria-label={`Toggle theme`}
+                                >
+                                    <span>Theme</span>
+                                    {theme === "light" ? (
+                                        <Moon className="h-4 w-4" />
+                                    ) : (
+                                        <Sun className="h-4 w-4" />
+                                    )}
+                                </button>
+                            </>
+                        )}
                     </div>
                 </>
             )}

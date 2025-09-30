@@ -155,6 +155,53 @@ const nextConfig: NextConfig = {
             },
         ]
     },
+    async redirects() {
+        return [
+            // Canonicalize apex to www (preserve path)
+            {
+                source: "/:path*",
+                has: [
+                    {
+                        type: "host",
+                        value: "gabrieltoth.com",
+                    },
+                ],
+                destination: "https://www.gabrieltoth.com/:path*",
+                permanent: true,
+            },
+            // Locale-prefixed canonical routes (static known paths)
+            {
+                source: "/",
+                destination: "/pt-BR/",
+                permanent: true,
+            },
+            {
+                source: "/channel-management",
+                destination: "/pt-BR/channel-management/",
+                permanent: true,
+            },
+            {
+                source: "/editors",
+                destination: "/pt-BR/editors/",
+                permanent: true,
+            },
+            {
+                source: "/pc-optimization",
+                destination: "/pt-BR/pc-optimization/",
+                permanent: true,
+            },
+            {
+                source: "/privacy-policy",
+                destination: "/pt-BR/privacy-policy/",
+                permanent: true,
+            },
+            {
+                source: "/terms-of-service",
+                destination: "/pt-BR/terms-of-service/",
+                permanent: true,
+            },
+        ]
+    },
 }
 
 export default withBundleAnalyzer(withNextIntl(nextConfig))

@@ -32,17 +32,25 @@ const Breadcrumbs = ({
     const tFooter = useTranslations("layout.footer")
 
     // Auto-generate breadcrumbs from pathname if items not provided
+    const ensureLocalePrefixedPath = (path: string): string => {
+        if (!path || path === "/") return `/${locale}`
+        if (path === `/${locale}` || path.startsWith(`/${locale}/`)) return path
+        if (path.startsWith("/")) return `/${locale}${path}`
+        return `/${locale}/${path}`
+    }
+
     const normalizeHref = (href: string): string => {
         if (!href) return `/${locale}`
         if (href.startsWith("http")) {
             try {
                 const u = new URL(href)
-                return u.pathname || `/${locale}`
+                const path = u.pathname || "/"
+                return ensureLocalePrefixedPath(path)
             } catch {
-                return href
+                return ensureLocalePrefixedPath(href)
             }
         }
-        return href
+        return ensureLocalePrefixedPath(href)
     }
 
     const breadcrumbItems = items

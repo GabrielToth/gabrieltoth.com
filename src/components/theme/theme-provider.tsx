@@ -51,14 +51,10 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
         }
     }
 
-    // Prevent hydration mismatch
-    if (!mounted) {
-        return <div className="dark">{children}</div>
-    }
-
+    // Always provide context; use fallback class before mount to avoid mismatch
     return (
         <ThemeContext.Provider value={{ theme, toggleTheme }}>
-            <div className={theme}>{children}</div>
+            <div className={mounted ? theme : "dark"}>{children}</div>
         </ThemeContext.Provider>
     )
 }

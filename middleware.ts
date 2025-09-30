@@ -101,41 +101,16 @@ export function middleware(request: NextRequest) {
             destination.endsWith("/") ? destination : `${destination}/`,
             request.url
         )
-        const response = NextResponse.redirect(correctedUrl)
-        response.cookies.set("locale", currentLocale, {
-            maxAge: 365 * 24 * 60 * 60,
-            path: "/",
-            sameSite: "lax",
-        })
-        return response
+        return NextResponse.redirect(correctedUrl, 308)
     }
 
     // Case 3: URL has valid locale - proceed normally
     if (hasValidLocale) {
-        const response = NextResponse.next()
-        response.cookies.set("locale", potentialLocale, {
-            maxAge: 365 * 24 * 60 * 60,
-            path: "/",
-            sameSite: "lax",
-        })
-        response.headers.set("x-locale", potentialLocale)
-        return response
+        return NextResponse.next()
     }
 
     // Default behavior - create response with locale detection
-    const response = NextResponse.next()
-
-    // Set the locale in a cookie (expires in 1 year)
-    response.cookies.set("locale", currentLocale, {
-        maxAge: 365 * 24 * 60 * 60,
-        path: "/",
-        sameSite: "lax",
-    })
-
-    // Set a header so we can access the locale in components
-    response.headers.set("x-locale", currentLocale)
-
-    return response
+    return NextResponse.next()
 }
 
 export const config = {

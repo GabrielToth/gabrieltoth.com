@@ -53,7 +53,14 @@ export async function buildChannelManagementStructured(
 
     const breadcrumbs = [
         {
-            name: t("services.title"),
+            name:
+                locale === "pt-BR"
+                    ? "Serviços"
+                    : locale === "es"
+                      ? "Servicios"
+                      : locale === "de"
+                        ? "Dienstleistungen"
+                        : "Services",
             url: `https://www.gabrieltoth.com${locale === "en" ? "" : `/${locale}`}`,
         },
         {

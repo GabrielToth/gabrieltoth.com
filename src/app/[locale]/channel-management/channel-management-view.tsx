@@ -1,7 +1,7 @@
 "use client"
 
+import LanguageSelectorWrapper from "@/components/layout/language-selector-wrapper"
 import { Button } from "@/components/ui/button"
-import LanguageSelector from "@/components/ui/language-selector"
 import PricingToggle from "@/components/ui/pricing-toggle"
 import { type Locale } from "@/lib/i18n"
 import { SiYoutube } from "@icons-pack/react-simple-icons"
@@ -542,7 +542,10 @@ const ChannelManagementView = ({ locale }: ChannelManagementLandingProps) => {
             {/* Language Selector */}
             <div className="fixed top-4 right-4 z-50">
                 <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-lg p-2 shadow-md">
-                    <LanguageSelector variant="default" />
+                    <LanguageSelectorWrapper
+                        variant="default"
+                        includeThemeToggle={true}
+                    />
                 </div>
             </div>
 

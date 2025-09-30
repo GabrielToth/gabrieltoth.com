@@ -1,6 +1,6 @@
 "use client"
 
-import LanguageSelector from "@/components/ui/language-selector"
+import LanguageSelectorWrapper from "@/components/layout/language-selector-wrapper"
 import PricingToggle from "@/components/ui/pricing-toggle"
 import { useMoneroPricing } from "@/hooks/use-monero-pricing"
 import { type Locale } from "@/lib/i18n"
@@ -52,7 +52,10 @@ export default function PCOptimizationView({
             {/* Language Selector */}
             <div className="fixed top-4 right-4 z-50">
                 <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-lg p-2 shadow-md">
-                    <LanguageSelector variant="default" />
+                    <LanguageSelectorWrapper
+                        variant="default"
+                        includeThemeToggle={true}
+                    />
                 </div>
             </div>
 

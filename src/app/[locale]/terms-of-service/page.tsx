@@ -2,7 +2,6 @@ import Footer from "@/components/layout/footer"
 import Header from "@/components/layout/header"
 import StructuredData from "@/components/seo/structured-data"
 import Breadcrumbs from "@/components/ui/breadcrumbs"
-import LanguageSelector from "@/components/ui/language-selector"
 import { type Locale } from "@/lib/i18n"
 import { buildTermsOfServiceStructured } from "./terms-of-service-structured"
 import { type TermsContent } from "./terms-of-service-types"
@@ -33,11 +32,6 @@ export default async function TermsOfServicePage({
             <Header />
 
             <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-12">
-                {/* Language Selector */}
-                <div className="fixed top-4 right-4 z-50">
-                    <LanguageSelector />
-                </div>
-
                 <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
                     <Breadcrumbs
                         items={breadcrumbs.map(item => ({
