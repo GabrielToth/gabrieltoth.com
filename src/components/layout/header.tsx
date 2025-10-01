@@ -183,13 +183,12 @@ export default function Header() {
                         {/* Language Selector */}
                         <LanguageSelector
                             variant="header"
-                            includeThemeToggle={includeThemeInLanguage}
+                            includeThemeToggle={false}
                         />
                     </nav>
 
                     {/* Mobile menu button */}
                     <div className="md:hidden flex items-center space-x-2">
-                        <ThemeToggleClient />
                         <LanguageSelector
                             variant="header"
                             includeThemeToggle={includeThemeInLanguage}
@@ -275,6 +274,11 @@ export default function Header() {
                                         {link.label}
                                     </Link>
                                 ))}
+                            </div>
+
+                            {/* Mobile Actions */}
+                            <div className="px-3 py-2 flex items-center justify-end">
+                                <ThemeToggleClient />
                             </div>
                         </div>
                     </div>
