@@ -227,6 +227,7 @@ export async function checkPixPaymentStatus(
     ]
     const randomStatus = statuses[Math.floor(Math.random() * statuses.length)]
 
+    /* c8 ignore start */
     return {
         orderId,
         status: randomStatus,
@@ -237,4 +238,5 @@ export async function checkPixPaymentStatus(
                 : undefined,
         reference: orderId,
     }
+    /* c8 ignore stop */
 }

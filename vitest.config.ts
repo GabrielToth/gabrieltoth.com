@@ -15,5 +15,17 @@ export default defineConfig({
         globals: true,
         reporters: "default",
         setupFiles: ["./vitest.setup.ts"],
+        coverage: {
+            provider: "v8",
+            reportsDirectory: "./coverage",
+            reporter: ["text", "html", "lcov", "json-summary"],
+            include: ["src/**/*.{ts,tsx}"],
+            exclude: [
+                "src/**/__tests__/**",
+                "**/*.d.ts",
+                "**/*-types.ts",
+                "**/*section-types.ts",
+            ],
+        },
     },
 })

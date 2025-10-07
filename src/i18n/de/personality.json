@@ -1,0 +1,66 @@
+{
+    "title": "Persönlichkeitstest",
+    "description": "Beantworte 35 kurze Aussagen, um Deine Persönlichkeitsmerkmale (Big Five) einzuschätzen.",
+    "cta": { "start": "Test starten" },
+    "landing": {
+        "h2": "Kostenloser Persönlichkeitstest online – Big Five",
+        "p1": "Mache einen kostenlosen Persönlichkeitstest mit 35 Aussagen, die Offenheit, Gewissenhaftigkeit, Extraversion, Verträglichkeit und Neurotizismus messen.",
+        "p2": "Keywords: kostenloser Persönlichkeitstest, Big Five Test, Persönlichkeit online, 35 Fragen, Extraversion, Offenheit, Gewissenhaftigkeit, Verträglichkeit, Neurotizismus"
+    },
+    "steps": {
+        "progress": "Schritt {step} von {total}",
+        "prev": "Zurück",
+        "next": "Weiter",
+        "finish": "Fertigstellen"
+    },
+    "choices": [
+        "Stimme überhaupt nicht zu",
+        "Stimme nicht zu",
+        "Stimme zu",
+        "Stimme voll zu"
+    ],
+    "questions": {
+        "q1": { "text": "Ich bin gesprächig." },
+        "q2": { "text": "Ich fühle mich in Gruppen wohl." },
+        "q3": { "text": "Ich beginne Gespräche." },
+        "q4": { "text": "Ich bin voller Energie." },
+        "q5": { "text": "Ich mag es, Aufmerksamkeit auf mich zu ziehen." },
+        "q6": { "text": "Ich finde leicht Freunde." },
+        "q7": { "text": "Ich leite gern Gruppen." },
+        "q8": { "text": "Ich bringe Menschen dazu, sich wohl zu fühlen." },
+        "q9": { "text": "Ich nehme mir Zeit für andere." },
+        "q10": { "text": "Ich habe wenig Mitgefühl für andere." },
+        "q11": { "text": "Ich interessiere mich für Problemlösung." },
+        "q12": { "text": "Ich empfinde Mitgefühl für die Gefühle anderer." },
+        "q13": { "text": "Ich beleidige Menschen." },
+        "q14": {
+            "text": "Ich bin rücksichtsvoll und freundlich zu fast allen."
+        },
+        "q15": { "text": "Ich bin immer vorbereitet." },
+        "q16": { "text": "Ich achte auf Details." },
+        "q17": { "text": "Ich lasse meine Sachen herumliegen." },
+        "q18": { "text": "Ich erledige Aufgaben sofort." },
+        "q19": { "text": "Ich halte mich an einen Zeitplan." },
+        "q20": { "text": "Ich mache Dinge unordentlich." },
+        "q21": { "text": "Ich mag Ordnung." },
+        "q22": { "text": "Ich werde leicht gestresst." },
+        "q23": { "text": "Ich mache mir Sorgen um Dinge." },
+        "q24": { "text": "Ich fühle mich selten niedergeschlagen." },
+        "q25": { "text": "Ich bin leicht aus der Ruhe zu bringen." },
+        "q26": { "text": "Ich werde leicht gereizt." },
+        "q27": { "text": "Ich bleibe unter Druck ruhig." },
+        "q28": { "text": "Ich fühle mich emotional stabil." },
+        "q29": { "text": "Ich habe einen großen Wortschatz." },
+        "q30": { "text": "Ich habe eine lebhafte Vorstellungskraft." },
+        "q31": { "text": "Ich verstehe Dinge schnell." },
+        "q32": { "text": "Ich interessiere mich nicht für abstrakte Ideen." },
+        "q33": { "text": "Ich habe hervorragende Ideen." },
+        "q34": { "text": "Ich denke über Dinge nach." },
+        "q35": { "text": "Ich bin voller Ideen." }
+    },
+    "summary": {
+        "title": "Zusammenfassung",
+        "subtitle": "Abschließen, um dein detailliertes Ergebnis zu sehen.",
+        "paywallText": "Abgeschlossen – schalte dein Ergebnis frei, um deine Auswertung zu sehen."
+    }
+}

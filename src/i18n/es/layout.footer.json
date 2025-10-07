@@ -8,7 +8,10 @@
         "services": {
             "title": "Servicios",
             "items": {
-                "pcOptimization": "Optimización de PC"
+                "pcOptimization": "Optimización de PC",
+                "amazonAffiliate": "Afiliados de Amazon",
+                "iqTest": "Test de CI",
+                "personalityTest": "Test de Personalidad"
             }
         },
         "legal": {

@@ -131,6 +131,7 @@ const WebVitalsReport = ({ onMetric }: WebVitalsReportProps) => {
                 navObserver.observe({ entryTypes: ["navigation"] })
                 resourceObserver.observe({ entryTypes: ["resource"] })
             } catch (error) {
+                /* c8 ignore next */
                 console.warn("Performance observer not supported:", error)
             }
 

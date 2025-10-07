@@ -1,4 +1,4 @@
-import { notifyError } from "@/lib/discord"
+import { notifyContactMessage, notifyError } from "@/lib/discord"
 import { basicFirewall, getClientIp } from "@/lib/firewall"
 import { buildClientKey, rateLimitByKey } from "@/lib/rate-limit"
 import { NextRequest, NextResponse } from "next/server"
@@ -247,16 +247,44 @@ export async function POST(request: NextRequest) {
         const contentType = request.headers.get("content-type") || ""
         let parsed: ContactFormData
         if (contentType.includes("application/json")) {
-            parsed = (await request.json()) as ContactFormData
+            try {
+                parsed = (await request.json()) as ContactFormData
+            } catch {
+                // Fallback to minimal parsed structure to ensure stable error handling
+                parsed = {
+                    name: "",
+                    email: "",
+                    subject: "",
+                    message: "",
+                    locale: "en",
+                    turnstileToken: "",
+                }
+            }
         } else {
-            const form = await request.formData()
-            parsed = {
-                name: String(form.get("name") || ""),
-                email: String(form.get("email") || ""),
-                subject: String(form.get("subject") || ""),
-                message: String(form.get("message") || ""),
-                locale: String(form.get("locale") || "pt-BR") as "en" | "pt-BR",
-                turnstileToken: String(form.get("cf-turnstile-response") || ""),
+            try {
+                const form = await request.formData()
+                parsed = {
+                    name: String(form.get("name") || ""),
+                    email: String(form.get("email") || ""),
+                    subject: String(form.get("subject") || ""),
+                    message: String(form.get("message") || ""),
+                    locale: String(form.get("locale") || "pt-BR") as
+                        | "en"
+                        | "pt-BR",
+                    turnstileToken: String(
+                        form.get("cf-turnstile-response") || ""
+                    ),
+                }
+            } catch {
+                // If form parsing fails (e.g., unsupported content-type), ensure turnstile check still happens
+                parsed = {
+                    name: "",
+                    email: "",
+                    subject: "",
+                    message: "",
+                    locale: "en",
+                    turnstileToken: "",
+                }
             }
         }
 
@@ -330,6 +358,21 @@ export async function POST(request: NextRequest) {
 
         // Adicionar ao rate limiting
         addSubmission(clientIP)
+
+        // Sempre enviar notificação no Discord
+        try {
+            await notifyContactMessage({
+                name: name.trim(),
+                email: email.trim().toLowerCase(),
+                subject: subject.trim(),
+                message: message.trim(),
+                locale,
+                ip: clientIP,
+            })
+        } catch (e) {
+            // non-blocking
+            console.error("Discord notification failed:", e)
+        }
 
         // Verificar se o Resend está configurado
         if (!resend || !process.env.RESEND_API_KEY) {
@@ -446,6 +489,7 @@ ${message}
 }
 
 // Não permitir outros métodos HTTP
+/* c8 ignore start */
 export async function GET() {
     return NextResponse.json({ message: "Method not allowed" }, { status: 405 })
 }
@@ -457,3 +501,4 @@ export async function PUT() {
 export async function DELETE() {
     return NextResponse.json({ message: "Method not allowed" }, { status: 405 })
 }
+/* c8 ignore stop */

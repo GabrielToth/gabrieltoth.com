@@ -1,0 +1,64 @@
+{
+    "title": "Test de Personalidad",
+    "description": "Responde 35 afirmaciones rápidas para evaluar tus rasgos de personalidad (Big Five).",
+    "cta": { "start": "Comenzar" },
+    "landing": {
+        "h2": "Test de personalidad gratis online – Big Five",
+        "p1": "Realiza un test de personalidad gratis con 35 afirmaciones que miden apertura, responsabilidad, extraversión, amabilidad y neuroticismo.",
+        "p2": "Palabras clave: test de personalidad gratis, test Big Five, test online, 35 preguntas, rasgos, extraversión, apertura, responsabilidad, amabilidad, neuroticismo"
+    },
+    "steps": {
+        "progress": "Paso {step} de {total}",
+        "prev": "Anterior",
+        "next": "Siguiente",
+        "finish": "Finalizar"
+    },
+    "choices": [
+        "Totalmente en desacuerdo",
+        "En desacuerdo",
+        "De acuerdo",
+        "Totalmente de acuerdo"
+    ],
+    "questions": {
+        "q1": { "text": "Soy comunicativo/a." },
+        "q2": { "text": "Me siento cómodo/a en grupos." },
+        "q3": { "text": "Inicio conversaciones." },
+        "q4": { "text": "Estoy lleno/a de energía." },
+        "q5": { "text": "Me gusta llamar la atención." },
+        "q6": { "text": "Hago amigos con facilidad." },
+        "q7": { "text": "Disfruto liderar grupos." },
+        "q8": { "text": "Hago que la gente se sienta cómoda." },
+        "q9": { "text": "Dedico tiempo a los demás." },
+        "q10": { "text": "Siento poca preocupación por los demás." },
+        "q11": { "text": "Me interesa resolver problemas." },
+        "q12": { "text": "Siento empatía por los sentimientos de otros." },
+        "q13": { "text": "Insulto a las personas." },
+        "q14": { "text": "Soy considerado/a y amable con casi todos." },
+        "q15": { "text": "Siempre estoy preparado/a." },
+        "q16": { "text": "Presto atención a los detalles." },
+        "q17": { "text": "Dejo mis pertenencias por ahí." },
+        "q18": { "text": "Hago las tareas de inmediato." },
+        "q19": { "text": "Sigo un horario." },
+        "q20": { "text": "Hago un lío de las cosas." },
+        "q21": { "text": "Me gusta el orden." },
+        "q22": { "text": "Me estreso con facilidad." },
+        "q23": { "text": "Me preocupo por las cosas." },
+        "q24": { "text": "Rara vez me siento triste." },
+        "q25": { "text": "Me perturbo fácilmente." },
+        "q26": { "text": "Me irrito con facilidad." },
+        "q27": { "text": "Permanezco calmado/a bajo presión." },
+        "q28": { "text": "Me siento emocionalmente estable." },
+        "q29": { "text": "Tengo un vocabulario rico." },
+        "q30": { "text": "Tengo una imaginación vívida." },
+        "q31": { "text": "Entiendo rápido las cosas." },
+        "q32": { "text": "No me interesan las ideas abstractas." },
+        "q33": { "text": "Tengo ideas excelentes." },
+        "q34": { "text": "Reflexiono sobre las cosas." },
+        "q35": { "text": "Estoy lleno/a de ideas." }
+    },
+    "summary": {
+        "title": "Resumen",
+        "subtitle": "Finaliza para ver tu resultado detallado.",
+        "paywallText": "Completado – desbloquea tu resultado para ver tu análisis de rasgos."
+    }
+}

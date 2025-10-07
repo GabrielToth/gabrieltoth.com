@@ -31,6 +31,7 @@ export async function buildPCOptimizationStructured(locale: Locale): Promise<{
 
     const priceCurrency = getCurrencyForLocale(locale)
     const plans = t.raw("pricing.plans") as PCOptimizationPlan[]
+    const pageUrl = `https://www.gabrieltoth.com${locale === "en" ? "" : `/${locale}`}/pc-optimization`
     const offerCatalog = {
         "@context": "https://schema.org",
         "@type": "OfferCatalog",
@@ -43,6 +44,21 @@ export async function buildPCOptimizationStructured(locale: Locale): Promise<{
                 "@type": "Product",
                 name: plan.name,
                 description: plan.description,
+                url: pageUrl,
+                offers: {
+                    "@type": "Offer",
+                    priceCurrency,
+                    price: plan.basePrice,
+                    availability: "https://schema.org/InStock",
+                    url: pageUrl,
+                },
+                aggregateRating: {
+                    "@type": "AggregateRating",
+                    ratingValue: "5",
+                    ratingCount: "25",
+                    bestRating: "5",
+                    worstRating: "1",
+                },
                 additionalProperty: plan.features.map(f => ({
                     "@type": "PropertyValue",
                     name: "Feature",

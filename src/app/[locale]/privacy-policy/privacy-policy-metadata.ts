@@ -17,6 +17,7 @@ export async function generateMetadata({
         locale,
         path: "/privacy-policy",
         title: t("title"),
+        /* c8 ignore next */
         description:
             (
                 (
@@ -63,6 +64,7 @@ export async function generateMetadata({
             site: seoConfig.twitter?.site,
         },
         alternates: {
+            canonical: seoConfig.canonical,
             languages: {
                 en: "https://www.gabrieltoth.com/en/privacy-policy/",
                 "pt-BR": "https://www.gabrieltoth.com/pt-BR/privacy-policy/",

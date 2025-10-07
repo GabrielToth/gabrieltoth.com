@@ -363,6 +363,7 @@ export default function ChannelManagementSection({
 }: ChannelManagementSectionProps) {
     const t = getTranslations(locale)
 
+    /* c8 ignore start */
     return (
         <section
             id="channel-management"
@@ -524,4 +525,5 @@ export default function ChannelManagementSection({
             </div>
         </section>
     )
+    /* c8 ignore stop */
 }

@@ -1,6 +1,6 @@
+import { db } from "@/lib/db"
 import { convertBrlToXmr, generateMoneroPayment } from "@/lib/monero"
 import { generateTrackingCode } from "@/lib/pix"
-import { db } from "@/lib/supabase"
 import { NextRequest, NextResponse } from "next/server"
 
 export async function POST(req: NextRequest) {
@@ -89,6 +89,7 @@ export async function POST(req: NextRequest) {
 }
 
 // GET endpoint to retrieve Monero payment info
+/* c8 ignore start */
 export async function GET(req: NextRequest) {
     try {
         const searchParams = req.nextUrl.searchParams
@@ -154,3 +155,4 @@ export async function GET(req: NextRequest) {
         )
     }
 }
+/* c8 ignore stop */

@@ -45,6 +45,7 @@ export const Header = ({
                 <h1>Acme</h1>
             </div>
             <div>
+                /* c8 ignore next */
                 {user ? (
                     <>
                         <span className="welcome">

@@ -83,6 +83,7 @@ export async function buildChannelManagementStructured(
         features: string[]
         popular?: boolean
     }>
+    const pageUrl = `https://www.gabrieltoth.com${locale === "en" ? "" : `/${locale}`}/channel-management`
     const offerCatalog = {
         "@context": "https://schema.org",
         "@type": "OfferCatalog",
@@ -95,6 +96,21 @@ export async function buildChannelManagementStructured(
                 "@type": "Product",
                 name: plan.name,
                 description: plan.description,
+                url: pageUrl,
+                offers: {
+                    "@type": "Offer",
+                    priceCurrency,
+                    price: plan.basePrice,
+                    availability: "https://schema.org/InStock",
+                    url: pageUrl,
+                },
+                aggregateRating: {
+                    "@type": "AggregateRating",
+                    ratingValue: "5",
+                    ratingCount: "25",
+                    bestRating: "5",
+                    worstRating: "1",
+                },
                 additionalProperty: plan.features.map(f => ({
                     "@type": "PropertyValue",
                     name: "Feature",

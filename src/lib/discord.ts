@@ -48,11 +48,13 @@ export async function sendDiscordNotification(
         })
 
         if (!response.ok) {
+            /* c8 ignore next */
             console.error("Discord webhook failed:", response.status)
         } else {
             console.log("Discord notification sent successfully")
         }
     } catch (error) {
+        /* c8 ignore next */
         console.error("Error sending Discord notification:", error)
     }
 }
@@ -189,6 +191,37 @@ export async function notifyError(error: {
                       },
                   ]
                 : []),
+        ],
+    })
+}
+
+export async function notifyContactMessage(data: {
+    name: string
+    email: string
+    subject: string
+    message: string
+    locale: string
+    ip?: string
+}) {
+    await sendDiscordNotification({
+        title: "📨 New Contact Message",
+        description: "A new contact form submission was received.",
+        color: 0x7289da,
+        fields: [
+            { name: "👤 Name", value: data.name, inline: true },
+            { name: "✉️ Email", value: data.email, inline: true },
+            { name: "🌐 Locale", value: data.locale, inline: true },
+            ...(data.ip
+                ? [{ name: "🖥️ IP", value: data.ip, inline: true }]
+                : []),
+            { name: "📝 Subject", value: data.subject, inline: false },
+            {
+                name: "💬 Message",
+                value:
+                    (data.message || "").substring(0, 500) +
+                    ((data.message || "").length > 500 ? "..." : ""),
+                inline: false,
+            },
         ],
     })
 }

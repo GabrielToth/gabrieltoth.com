@@ -1,0 +1,63 @@
+{
+    "title": "Test de CI",
+    "description": "Responde 35 preguntas rápidas para estimar tu CI.",
+    "cta": { "start": "Comenzar" },
+    "prompts": {
+        "sequence": "Completa la secuencia: {series}",
+        "analogy": "{a} es a {b} como {c} es a ?",
+        "oddOneOut": "Selecciona el que no pertenece:",
+        "math": "Resuelve: {expr}"
+    },
+    "promo": {
+        "title": "",
+        "subtitle": ""
+    },
+    "landing": {
+        "h2": "Test de CI gratis online – evaluación precisa de habilidades cognitivas",
+        "p1": "Realiza nuestro test de CI gratis con 35 preguntas rápidas que evalúan reconocimiento de patrones, razonamiento lógico, series numéricas e inteligencia espacial. Optimizado para móvil y escritorio.",
+        "p2": "Disponible para personas a partir de 12 años en cualquier país e idioma. 35 preguntas de opción múltiple con dificultad progresiva. Al final verás un resultado estimado."
+    },
+    "meta": {
+        "updated": "Actualizado en octubre de 2025",
+        "review": "Revisión psicológica: Marco Aurélio Virgílio — Psicólogo (CRP 50.893-0)"
+    },
+    "sections": {
+        "introTitle": "Test de CI online",
+        "introBody": "Para hacer el test de CI, observa el patrón mostrado en la parte superior de cada pregunta y selecciona la alternativa que complete la secuencia de la forma más lógica.",
+        "whatEvaluatesTitle": "¿Qué evalúa este test de CI?",
+        "whatEvaluatesBody": "Este test sigue el principio de las matrices progresivas (Raven): mide el razonamiento abstracto, base de la lógica y la resolución de problemas, a partir de la información percibida por los sentidos.",
+        "whoCanDoTitle": "¿Quién puede realizarlo?",
+        "whoCanDoBody": "Recomendado para personas entre 12 y 65 años, de cualquier cultura, idioma o nivel educativo. No requiere vocabulario avanzado: se centra en patrones visuales y lógica.",
+        "howWorksTitle": "¿Cómo funciona el test?",
+        "howWorksBody": "El test se divide en bloques cortos que suman 35 preguntas. La dificultad aumenta gradualmente, exigiendo atención a reglas y transformaciones en los patrones.",
+        "influencesTitle": "¿Qué puede influir en el resultado?",
+        "influencesBody": "El CI es multifactorial. No debe utilizarse como única medida de inteligencia o del pensamiento.",
+        "influencesList": [
+            "Motivación y concentración en el momento de la prueba",
+            "Enfermedades crónicas u otras preocupaciones",
+            "Acceso a educación de calidad",
+            "Situación económica y entorno social",
+            "Ocupación y antecedentes familiares"
+        ]
+    },
+    "steps": {
+        "progress": "Paso {step} de {total}",
+        "question": "Pregunta del paso {step}",
+        "options": {
+            "a": "Opción A",
+            "b": "Opción B",
+            "c": "Opción C",
+            "d": "Opción D"
+        },
+        "prev": "Anterior",
+        "next": "Siguiente",
+        "finish": "Finalizar"
+    },
+    "summary": {
+        "title": "Resumen y Pago",
+        "subtitle": "Desbloquea tu resultado detallado con el precio promocional.",
+        "promoNow": "Ahora: {price}",
+        "promoOriginal": "Precio original: {price} (USD {usd})",
+        "payCta": "Pagar y ver resultado"
+    }
+}

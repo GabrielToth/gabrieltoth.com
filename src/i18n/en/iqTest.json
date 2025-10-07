@@ -1,0 +1,63 @@
+{
+    "title": "IQ Test",
+    "description": "Answer 35 quick questions to estimate your IQ score.",
+    "cta": { "start": "Start Test" },
+    "prompts": {
+        "sequence": "Complete the sequence: {series}",
+        "analogy": "{a} is to {b} as {c} is to ?",
+        "oddOneOut": "Select the odd one out:",
+        "math": "Solve: {expr}"
+    },
+    "promo": {
+        "title": "",
+        "subtitle": ""
+    },
+    "landing": {
+        "h2": "Free IQ test online – accurate cognitive ability check",
+        "p1": "Take our free IQ test with 35 fast questions that assess pattern recognition, logical reasoning, numerical series, and spatial intelligence. Optimized for smartphone and desktop.",
+        "p2": "Available worldwide for people aged 12+. 35 multiple-choice questions with progressive difficulty. At the end, you will see an estimated result."
+    },
+    "meta": {
+        "updated": "Updated in October 2025",
+        "review": "Psychological review: Marco Aurélio Virgílio — Psychologist (CRP 50.893-0)"
+    },
+    "sections": {
+        "introTitle": "Online IQ test",
+        "introBody": "To take the IQ test, study the pattern shown at the top of each question and select the alternative that completes the sequence in the most logical way.",
+        "whatEvaluatesTitle": "What does this IQ test evaluate?",
+        "whatEvaluatesBody": "This test follows the principle of progressive matrices (Raven): it measures abstract reasoning — the basis of logical problem-solving — using information perceived by the senses.",
+        "whoCanDoTitle": "Who can take the test?",
+        "whoCanDoBody": "Recommended for people aged 12 to 65, from any culture, language, or education level. It does not require advanced vocabulary and focuses on visual patterns and logic.",
+        "howWorksTitle": "How does the test work?",
+        "howWorksBody": "The test is divided into short blocks totaling 35 questions. Difficulty gradually increases, requiring attention to rules and transformations in the patterns.",
+        "influencesTitle": "What can influence the result?",
+        "influencesBody": "IQ is multifactorial. The score should not be used as the only measure of intelligence or thinking.",
+        "influencesList": [
+            "Motivation and focus at the time of testing",
+            "Chronic illnesses or other concerns",
+            "Access to quality education",
+            "Economic situation and social environment",
+            "Occupation and family background"
+        ]
+    },
+    "steps": {
+        "progress": "Step {step} of {total}",
+        "question": "Question for step {step}",
+        "options": {
+            "a": "Option A",
+            "b": "Option B",
+            "c": "Option C",
+            "d": "Option D"
+        },
+        "prev": "Previous",
+        "next": "Next",
+        "finish": "Finish"
+    },
+    "summary": {
+        "title": "Summary & Payment",
+        "subtitle": "Unlock your detailed result with the promotional price.",
+        "promoNow": "Now: {price}",
+        "promoOriginal": "Original price: {price} (USD {usd})",
+        "payCta": "Pay and view result"
+    }
+}

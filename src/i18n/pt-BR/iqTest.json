@@ -1,0 +1,182 @@
+{
+    "title": "Teste de QI",
+    "description": "Responda 35 perguntas rápidas para estimar seu QI.",
+    "cta": { "start": "Iniciar Teste" },
+    "prompts": {
+        "sequence": "Complete a sequência: {series}",
+        "analogy": "{a} está para {b} assim como {c} está para ?",
+        "oddOneOut": "Selecione o intruso:",
+        "math": "Resolva: {expr}"
+    },
+    "promo": {
+        "title": "",
+        "subtitle": ""
+    },
+    "landing": {
+        "h2": "Teste de QI grátis: seu Quociente de Inteligência em minutos",
+        "p1": [
+            "Atualizado em outubro de 2025 • Revisão psicológica: Marco Aurélio Virgílio (CRP 50.893-0) — psicólogo com ampla experiência clínica e educacional. Este teste gratuito utiliza princípios das Matrizes Progressivas (Raven) para estimar habilidades de raciocínio abstrato, reconhecimento de padrões, lógica e atenção.",
+            "Ao longo de 35 questões curtas e objetivas, você analisa séries, relações e transformações visuais. O objetivo é identificar a alternativa que completa a sequência da forma mais lógica, reduzindo ao máximo pistas linguísticas e priorizando operações mentais como comparação, analogia, simetria, rotação, contagem e combinação de elementos.",
+            "O teste foi organizado para ser acessível no celular e no computador, com carregamento rápido, alto contraste, tipografia legível e suporte a temas claro e escuro. Recomendamos um ambiente silencioso, boa iluminação e conexão estável para que você mantenha a concentração até o final."
+        ],
+        "p2": [
+            "O teste é indicado para participantes a partir de 12 anos e pode ser feito por pessoas de qualquer país, independentemente de idioma, sotaque ou escolaridade. Como as questões não exigem vocabulário avançado, as diferenças culturais tendem a interferir menos no desempenho. Ainda assim, fatores como sono, alimentação, estresse e familiaridade com testes podem influenciar seu resultado momentâneo.",
+            "Para obter a melhor estimativa possível, procure realizar a avaliação em uma única sessão de 12 a 20 minutos, evitando interrupções. Se necessário, faça uma pausa curta, mas evite alternar entre aplicativos, responder mensagens ou abrir outras abas durante a resolução das questões. Isso reduz a carga cognitiva extrínseca e preserva sua energia mental para o que realmente importa: o raciocínio lógico."
+        ]
+    },
+    "meta": {
+        "updated": "Atualizado em outubro de 2025",
+        "review": "Revisão psicológica: Marco Aurélio Virgílio — Psicólogo (CRP 50.893-0)"
+    },
+    "sections": {
+        "introTitle": "Teste de QI online",
+        "introBody": [
+            "Para fazer o teste de QI, observe cuidadosamente o padrão apresentado no topo de cada questão. Cada item traz uma sequência visual com uma regra implícita: seu papel é descobrir a regra e escolher a alternativa que melhor completa a série.",
+            "Sugerimos seguir três passos a cada pergunta: (1) varrer a figura rapidamente para ter uma visão global; (2) listar mentalmente hipóteses de transformação (deslocamento, rotação, inversão, incremento de quantidade, alternância de cores, combinação de duas regras); e (3) testar cada hipótese comparando-a com os quadros anteriores. Caso mais de uma alternativa pareça correta, escolha a que obedece à regra mais simples e consistente."
+        ],
+        "whatEvaluatesTitle": "O que avalia este teste de QI?",
+        "whatEvaluatesBody": [
+            "Este teste segue o princípio das Matrizes Progressivas (Raven), tradicionalmente utilizado para mensurar raciocínio abstrato — um componente central das habilidades cognitivas gerais. A ideia é minimizar interferências de linguagem, memorização factual ou experiência escolar, concentrando a avaliação na capacidade de identificar padrões e aplicar regras de forma flexível.",
+            "Resultados altos costumam estar associados a maior velocidade para aprender novas regras, compreender relações e alternar estratégias quando a primeira tentativa não funciona. Por outro lado, um resultado mais baixo não implica falta de potencial: frequentemente reflete cansaço, ansiedade, falta de prática com esse tipo de estímulo ou distrações no ambiente de teste."
+        ],
+        "whoCanDoTitle": "Quem pode fazer o teste?",
+        "whoCanDoBody": [
+            "Indicado para pessoas entre 12 e 65 anos, de qualquer cultura, país, idioma ou nível de escolaridade. Não há necessidade de conhecimento específico de matemática avançada — o foco recai em padrões e transformações visuais lógicas.",
+            "Pessoas com experiência prévia em quebra-cabeças, jogos de lógica ou provas de raciocínio podem sentir-se mais à vontade com o formato, mas o teste foi projetado para ser acessível mesmo a quem nunca realizou avaliações do tipo. Se você utiliza leitor de tela, aumente o zoom e o contraste conforme necessário; as figuras mantêm boa definição com alta ampliação."
+        ],
+        "howWorksTitle": "Como funciona o teste?",
+        "howWorksBody": [
+            "O teste é dividido em blocos curtos que somam 35 questões. A dificuldade aumenta gradualmente, começando por regras simples (adição de elementos, deslocamentos lineares) até combinações mais complexas (duas regras atuando simultaneamente, alternâncias condicionais).",
+            "Você pode navegar para a próxima questão quando tiver certeza de sua resposta. Não há penalidade por erro em si, mas respostas impulsivas tendem a reduzir a pontuação final. Recomendamos equilibrar velocidade e precisão — mantenha o ritmo, porém valide as hipóteses antes do clique."
+        ],
+        "influencesTitle": "O que pode influenciar o resultado?",
+        "influencesBody": [
+            "O QI é multifatorial e influenciado por fatores biológicos, emocionais, sociais e culturais. O valor estimado aqui não deve ser utilizado como única medida de inteligência ou como rótulo fixo. A inteligência é dinâmica, contextual e pode ser desenvolvida por meio de estudo, prática deliberada e hábitos de vida saudáveis.",
+            "Entre os elementos que mais afetam o desempenho imediato estão: sono insuficiente, alimentação inadequada, uso recente de álcool, ansiedade de desempenho, distrações ambientais, familiaridade reduzida com testes cronometrados e dificuldades momentâneas de atenção."
+        ],
+        "influencesList": [
+            "Vontade e concentração no momento do teste",
+            "Doenças crônicas ou outras preocupações",
+            "Acesso a educação de qualidade",
+            "Situação econômica e ambiente social",
+            "Ocupação e referências familiares"
+        ],
+        "extra": [
+            {
+                "title": "Recomendações práticas antes de começar",
+                "body": ["Antes de iniciar, siga as orientações a seguir."],
+                "list": [
+                    "Reserve 20 minutos sem interrupções e ative o 'não perturbe'.",
+                    "Prefira boa iluminação, postura confortável e tenha água por perto.",
+                    "Se estiver cansado, considere adiar por algumas horas para recuperar a atenção.",
+                    "Evite tentar memorizar padrões: foque em entender a regra da transformação."
+                ]
+            },
+            {
+                "title": "Estratégias de resolução passo a passo",
+                "body": ["Siga esta ordem quando analisar cada item:"],
+                "list": [
+                    "Identifique o que muda: quantidade, posição, orientação, cor, preenchimento ou presença de elementos.",
+                    "Teste hipóteses simples antes das complexas; prefira a regra mais parcimoniosa.",
+                    "Considere combinações de regras (ex.: rotação + incremento) e verifique ritmos diferentes.",
+                    "Se travar, releia a figura do zero: um detalhe de simetria/inversão pode ter passado batido."
+                ]
+            },
+            {
+                "title": "Interpretação responsável do resultado",
+                "body": [
+                    "O escore apresentado ao final é uma estimativa baseada em desempenho pontual em um conjunto específico de tarefas. Ele não substitui avaliação psicológica presencial, tampouco serve para diagnóstico clínico, escolar ou ocupacional.",
+                    "Pense no resultado como um retrato do seu raciocínio naquele contexto: pode variar com treino, descanso e hábitos saudáveis. Pessoas com muito interesse em problemas lógicos evoluem rapidamente quando praticam séries semelhantes por alguns dias.",
+                    "Se o resultado ficar aquém do esperado, não desanime. Use-o como ponto de partida para aprimorar concentração, planejamento e verificação de hipóteses. Se ficar acima, evite a armadilha da confiança excessiva — continue checando as evidências antes de decidir."
+                ]
+            },
+            {
+                "title": "Habilidades cognitivas mobilizadas",
+                "list": [
+                    "Raciocínio indutivo — inferir a regra geral a partir de exemplos.",
+                    "Raciocínio dedutivo — aplicar a regra encontrada para prever o próximo quadro.",
+                    "Atenção seletiva e controle inibitório — focar no relevante e inibir distrações.",
+                    "Flexibilidade cognitiva — abandonar hipóteses erradas e testar alternativas rapidamente.",
+                    "Memória de trabalho — manter a regra ativa enquanto compara quadros e opções."
+                ]
+            },
+            {
+                "title": "Boas práticas de estudo e treino",
+                "list": [
+                    "Quebra-cabeças de padrões visuais (tangram, nonogramas, dominós lógicos).",
+                    "Transformações geométricas simples: rotações, simetrias e translações.",
+                    "Estimativa e contagem por agrupamento para incrementos/decrementos sutis.",
+                    "Leitura de gráficos/matrizes usando linhas-guia imaginárias."
+                ]
+            },
+            {
+                "title": "Ética e limitações",
+                "body": ["Diretrizes essenciais para uso responsável:"],
+                "list": [
+                    "Não utilizar resultados online para decisões sensíveis em educação, emprego ou saúde.",
+                    "Instrumentos psicométricos padronizados exigem aplicação supervisionada e interpretação profissional.",
+                    "Há redução de vieses linguísticos, mas não eliminação completa — contexto e condições importam.",
+                    "Trate o escore como informação complementar para autoconhecimento e planejamento."
+                ]
+            },
+            {
+                "title": "Teste de QI",
+                "body": [
+                    "Este é um convite para se olhar com carinho. O teste não é uma competição: é um momento de curiosidade sobre como sua mente enxerga padrões, encontra caminhos e se adapta a desafios.",
+                    "Seja qual for o resultado, você continua sendo maior do que um número. O que vale é o processo: respirar, observar, tentar, ajustar. Leve o seu tempo, cuide do seu foco e permita-se descobrir algo novo sobre você hoje."
+                ]
+            },
+            {
+                "title": "Sobre a revisão psicológica",
+                "body": [
+                    "A versão atual foi revisada por Marco Aurélio Virgílio (CRP 50.893-0), psicólogo com ampla experiência clínica e atuação em saúde e educação. A revisão concentrou-se em clareza das instruções, neutralidade cultural dos itens, ordem de dificuldade e orientações responsáveis de interpretação.",
+                    "A revisão não transforma este instrumento em diagnóstico — ela assegura que o conteúdo segue boas práticas de comunicação, acessibilidade e uso ético de resultados.",
+                    "Se você estiver em acompanhamento psicológico, leve seu resultado para discutir com seu profissional de referência. Ele poderá interpretar o dado dentro do seu contexto pessoal e objetivos."
+                ]
+            },
+            {
+                "title": "Política de privacidade e dados",
+                "body": [
+                    "Este site não coleta respostas individuais para treinamento de modelos ou venda de dados. Informações técnicas de navegação podem ser registradas para segurança e melhoria de performance, seguindo nossa Política de Privacidade.",
+                    "Você pode utilizar o teste de forma anônima. Caso compartilhe seu resultado, evite publicar informações sensíveis juntamente com a pontuação (histórico médico, detalhes pessoais, etc.)."
+                ]
+            },
+            {
+                "title": "Checklist rápido antes de iniciar",
+                "list": [
+                    "20 minutos livres",
+                    "Ambiente silencioso",
+                    "Boa iluminação",
+                    "Internet estável",
+                    "Sem notificações",
+                    "Água à mão",
+                    "Respiração profunda por 30s",
+                    "Postura confortável",
+                    "Foco total",
+                    "Boa sorte!"
+                ],
+                "ordered": true
+            }
+        ]
+    },
+    "steps": {
+        "progress": "Etapa {step} de {total}",
+        "question": "Pergunta da etapa {step}",
+        "options": {
+            "a": "Opção A",
+            "b": "Opção B",
+            "c": "Opção C",
+            "d": "Opção D"
+        },
+        "prev": "Anterior",
+        "next": "Próxima",
+        "finish": "Finalizar"
+    },
+    "summary": {
+        "title": "Resumo & Pagamento",
+        "subtitle": "Desbloqueie seu resultado detalhado pelo preço promocional.",
+        "promoNow": "Agora: {price}",
+        "promoOriginal": "Preço original: {price} (USD {usd})",
+        "payCta": "Pagar e ver resultado"
+    }
+}

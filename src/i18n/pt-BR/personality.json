@@ -1,0 +1,64 @@
+{
+    "title": "Teste de Personalidade",
+    "description": "Responda 35 afirmações rápidas para avaliar seus traços de personalidade (Big Five).",
+    "cta": { "start": "Iniciar Teste" },
+    "landing": {
+        "h2": "Teste de personalidade grátis online – Big Five",
+        "p1": "Faça um teste de personalidade grátis com 35 afirmações que medem abertura, conscienciosidade, extroversão, amabilidade e neuroticismo.",
+        "p2": "Palavras-chave: teste de personalidade grátis, teste Big Five, teste online, 35 perguntas, traços, extroversão, abertura, conscienciosidade, amabilidade, neuroticismo"
+    },
+    "steps": {
+        "progress": "Etapa {step} de {total}",
+        "prev": "Anterior",
+        "next": "Próxima",
+        "finish": "Finalizar"
+    },
+    "choices": [
+        "Discordo totalmente",
+        "Discordo",
+        "Concordo",
+        "Concordo totalmente"
+    ],
+    "questions": {
+        "q1": { "text": "Sou comunicativo(a)." },
+        "q2": { "text": "Fico à vontade em grupos." },
+        "q3": { "text": "Eu inicio conversas." },
+        "q4": { "text": "Tenho muita energia." },
+        "q5": { "text": "Gosto de chamar atenção para mim." },
+        "q6": { "text": "Faço amizades com facilidade." },
+        "q7": { "text": "Gosto de liderar grupos." },
+        "q8": { "text": "Faço as pessoas se sentirem à vontade." },
+        "q9": { "text": "Reservo tempo para os outros." },
+        "q10": { "text": "Tenho pouca preocupação com os outros." },
+        "q11": { "text": "Tenho interesse em resolver problemas." },
+        "q12": { "text": "Sinto empatia pelos sentimentos dos outros." },
+        "q13": { "text": "Insulto as pessoas." },
+        "q14": { "text": "Sou atencioso(a) e gentil com quase todos." },
+        "q15": { "text": "Estou sempre preparado(a)." },
+        "q16": { "text": "Presto atenção aos detalhes." },
+        "q17": { "text": "Deixo meus pertences espalhados." },
+        "q18": { "text": "Faço as tarefas imediatamente." },
+        "q19": { "text": "Sigo um cronograma." },
+        "q20": { "text": "Bagunço as coisas." },
+        "q21": { "text": "Gosto de ordem." },
+        "q22": { "text": "Fico estressado(a) com facilidade." },
+        "q23": { "text": "Me preocupo com as coisas." },
+        "q24": { "text": "Raramente me sinto para baixo." },
+        "q25": { "text": "Sou facilmente perturbado(a)." },
+        "q26": { "text": "Fico irritado(a) com facilidade." },
+        "q27": { "text": "Permaneço calmo(a) sob pressão." },
+        "q28": { "text": "Me sinto emocionalmente estável." },
+        "q29": { "text": "Tenho um vocabulário rico." },
+        "q30": { "text": "Tenho imaginação vívida." },
+        "q31": { "text": "Entendo as coisas rapidamente." },
+        "q32": { "text": "Não tenho interesse em ideias abstratas." },
+        "q33": { "text": "Tenho ideias excelentes." },
+        "q34": { "text": "Refletio sobre as coisas." },
+        "q35": { "text": "Sou cheio(a) de ideias." }
+    },
+    "summary": {
+        "title": "Resumo",
+        "subtitle": "Finalize para ver seu resultado detalhado.",
+        "paywallText": "Concluído – desbloqueie seu resultado para ver sua análise de traços."
+    }
+}

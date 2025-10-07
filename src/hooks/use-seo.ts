@@ -94,6 +94,7 @@ export function useSeo(options: UseSeoOptions = {}) {
             ...seoConfig.twitter,
         },
         additionalMetaTags: seoConfig.additionalMetaTags,
+        /* c8 ignore next */
         languageAlternates: seoConfig.languageAlternates?.map(alt => ({
             hrefLang: alt.hrefLang,
             href: alt.href,

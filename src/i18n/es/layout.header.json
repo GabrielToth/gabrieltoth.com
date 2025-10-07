@@ -6,9 +6,15 @@
     "channels": "Canales",
     "contact": "Contacto",
     "language": "Idioma",
+    "menu": {
+        "iqTest": "Test de CI"
+    },
     "servicesDropdown": {
         "channelManagement": "ViraTrend",
         "pcOptimization": "Optimización de PC",
-        "support": "Apoyar WaveIGL"
+        "support": "Apoyar WaveIGL",
+        "affiliate": "Afiliados de Amazon",
+        "iqTest": "Test de CI",
+        "personalityTest": "Test de Personalidad"
     }
 }

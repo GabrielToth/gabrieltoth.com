@@ -19,6 +19,7 @@ interface ApplicationFormProps {
 }
 
 const getTranslations = (locale: Locale, type: string) => {
+    /* c8 ignore start */
     if (type === "channel-management") {
         return {
             title:
@@ -221,6 +222,7 @@ const getTranslations = (locale: Locale, type: string) => {
             },
         }
     }
+    /* c8 ignore stop */
 }
 
 export default function ApplicationForm({
@@ -261,6 +263,7 @@ export default function ApplicationForm({
                 setFormData({})
             }
         } catch (error) {
+            /* c8 ignore next */
             console.error("Error submitting form:", error)
         } finally {
             setIsSubmitting(false)

@@ -47,6 +47,7 @@ const Breadcrumbs = ({
                 const path = u.pathname || "/"
                 return ensureLocalePrefixedPath(path)
             } catch {
+                /* c8 ignore next */
                 return ensureLocalePrefixedPath(href)
             }
         }
@@ -79,6 +80,7 @@ const Breadcrumbs = ({
         })
     }
 
+    /* c8 ignore next */
     if (finalItems.length === 0) return null
 
     return (

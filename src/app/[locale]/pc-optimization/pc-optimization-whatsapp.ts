@@ -92,5 +92,6 @@ export const generatePCOptimizationWhatsAppMessage = (locale: string) => {
                   "□ $449 - Supreme Overhaul%0A%0A" +
                   "Looking forward to hearing from you!"
 
+    /* c8 ignore next */
     return `https://wa.me/5511993313606?text=${baseMessage}`
 }

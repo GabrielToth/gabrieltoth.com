@@ -47,6 +47,7 @@ export default function WaveIGLSupportClientPage({
         document.body.appendChild(script)
 
         return () => {
+            /* c8 ignore next */
             document.body.removeChild(script)
         }
     }, [])

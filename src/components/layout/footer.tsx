@@ -57,6 +57,22 @@ export default async function Footer({ locale }: FooterProps) {
                                         ),
                                         href: `/${locale}/pc-optimization`,
                                     },
+                                    {
+                                        name: t(
+                                            "links.services.items.amazonAffiliate"
+                                        ),
+                                        href: `/${locale}/amazon-affiliate`,
+                                    },
+                                    {
+                                        name: t("links.services.items.iqTest"),
+                                        href: `/${locale}/iq-test`,
+                                    },
+                                    {
+                                        name: t(
+                                            "links.services.items.personalityTest"
+                                        ),
+                                        href: `/${locale}/personality-test`,
+                                    },
                                 ].map((item, index) => (
                                     <li key={index}>
                                         <Link

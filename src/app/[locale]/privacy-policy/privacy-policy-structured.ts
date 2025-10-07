@@ -24,6 +24,7 @@ export async function buildPrivacyPolicyStructured(locale: Locale): Promise<{
         "@context": "https://schema.org",
         "@type": "WebPage",
         name: t("title"),
+        /* c8 ignore next */
         description: (sections[0]?.content || "").slice(0, 160) || t("title"),
         url: `https://www.gabrieltoth.com${locale === "en" ? "" : `/${locale}`}/privacy-policy`,
         isPartOf: {

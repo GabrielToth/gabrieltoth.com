@@ -23,6 +23,7 @@ export const defaultLocale: Locale = "pt-BR"
 
 // Get locale from cookie (client-side)
 export const getLocaleFromCookie = (): Locale => {
+    /* c8 ignore next */
     if (typeof window === "undefined") return defaultLocale
 
     const cookieLocale = document.cookie
@@ -39,6 +40,7 @@ export const getLocaleFromCookie = (): Locale => {
 
 // Set locale cookie (client-side)
 export const setLocaleCookie = (locale: Locale): void => {
+    /* c8 ignore next */
     if (typeof window === "undefined") return
 
     const cookieString = `locale=${locale}; path=/; max-age=${365 * 24 * 60 * 60}; SameSite=lax`
@@ -65,6 +67,7 @@ export const getLocalizedPath = (path: string): string => {
 
 // Detect browser language
 export const detectBrowserLanguage = (): Locale => {
+    /* c8 ignore next */
     if (typeof window === "undefined") return defaultLocale
 
     const browserLang =

@@ -1,4 +1,4 @@
-import { ThemeProvider } from "@/components/theme/theme-provider"
+import { ThemeProvider, useTheme } from "@/components/theme/theme-provider"
 import { ThemeToggleClient } from "@/components/theme/theme-toggle-client"
 import { fireEvent, render, screen } from "@testing-library/react"
 import React from "react"
@@ -32,5 +32,15 @@ describe("ThemeProvider + ThemeToggle", () => {
 
         expect(document.documentElement.classList.contains("light")).toBe(true)
         expect(localStorage.getItem("theme")).toBe("light")
+    })
+
+    it("throws when useTheme is used outside of ThemeProvider", () => {
+        const Bad = () => {
+            useTheme()
+            return null
+        }
+        expect(() => render(<Bad />)).toThrow(
+            /useTheme must be used within a ThemeProvider/i
+        )
     })
 })

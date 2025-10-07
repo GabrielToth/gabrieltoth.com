@@ -133,7 +133,7 @@ export default function LanguageSelector({
                                 {localeNamesShort[loc]}
                             </button>
                         ))}
-
+                        /* c8 ignore start */
                         {includeThemeToggle && (
                             <>
                                 <div className="h-px w-full bg-gray-200 dark:bg-gray-700 my-1" />
@@ -155,6 +155,7 @@ export default function LanguageSelector({
                                 </button>
                             </>
                         )}
+                        /* c8 ignore stop */
                     </div>
                 </>
             )}

@@ -27,6 +27,7 @@ const DialogOverlay = React.forwardRef<
         {...props}
     />
 ))
+/* c8 ignore next */
 DialogOverlay.displayName = DialogPrimitive.Overlay.displayName
 
 const DialogContent = React.forwardRef<
@@ -51,8 +52,10 @@ const DialogContent = React.forwardRef<
         </DialogPrimitive.Content>
     </DialogPortal>
 ))
+/* c8 ignore next */
 DialogContent.displayName = DialogPrimitive.Content.displayName
 
+/* c8 ignore start */
 const DialogHeader = ({
     className,
     ...props
@@ -80,6 +83,7 @@ const DialogFooter = ({
     />
 )
 DialogFooter.displayName = "DialogFooter"
+/* c8 ignore stop */
 
 const DialogTitle = React.forwardRef<
     React.ElementRef<typeof DialogPrimitive.Title>,

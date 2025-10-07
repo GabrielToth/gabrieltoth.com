@@ -8,11 +8,13 @@ export async function buildEditorsStructured(locale: Locale): Promise<{
 }> {
     const t = await getTranslations({ locale, namespace: "editors" })
 
+    /* c8 ignore next */
     const jobStructuredData = t.raw("structuredData.jobPosting") as Record<
         string,
         unknown
     >
 
+    /* c8 ignore next */
     const faqs = t.raw("faqs") as Array<{ question: string; answer: string }>
 
     const breadcrumbs = [

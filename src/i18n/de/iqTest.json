@@ -1,0 +1,63 @@
+{
+    "title": "IQ-Test",
+    "description": "Beantworte 35 schnelle Fragen, um deinen IQ zu schätzen.",
+    "cta": { "start": "Test starten" },
+    "prompts": {
+        "sequence": "Vervollständige die Sequenz: {series}",
+        "analogy": "{a} steht zu {b} wie {c} zu ?",
+        "oddOneOut": "Wähle das unpassende Element:",
+        "math": "Löse: {expr}"
+    },
+    "promo": {
+        "title": "",
+        "subtitle": ""
+    },
+    "landing": {
+        "h2": "Kostenloser IQ-Test online – präzise kognitive Bewertung",
+        "p1": "Mache unseren kostenlosen IQ-Test mit 35 schnellen Fragen zu Mustererkennung, logischem Denken, Zahlenreihen und räumlicher Intelligenz. Optimiert für Smartphone und Desktop.",
+        "p2": "Verfügbar für Personen ab 12 Jahren — weltweit und unabhängig von Sprache oder Bildung. 35 Multiple-Choice-Fragen mit steigender Schwierigkeit. Am Ende siehst du ein geschätztes Ergebnis."
+    },
+    "meta": {
+        "updated": "Aktualisiert im Oktober 2025",
+        "review": "Psychologische Prüfung: Marco Aurélio Virgílio — Psychologe (CRP 50.893-0)"
+    },
+    "sections": {
+        "introTitle": "IQ-Test online",
+        "introBody": "Für den IQ-Test analysiere das Muster oben bei jeder Aufgabe und wähle die Antwort, die die Sequenz am logischsten vervollständigt.",
+        "whatEvaluatesTitle": "Was bewertet dieser IQ-Test?",
+        "whatEvaluatesBody": "Der Test folgt dem Prinzip der progressiven Matrizen (Raven): Er misst abstraktes Denken — Grundlage logischer Problemlösung — anhand wahrnehmbarer Informationen.",
+        "whoCanDoTitle": "Wer kann den Test machen?",
+        "whoCanDoBody": "Empfohlen für 12–65 Jahre, unabhängig von Kultur, Sprache oder Bildungsniveau. Kein fortgeschrittener Wortschatz nötig; Fokus auf visuelle Muster und Logik.",
+        "howWorksTitle": "Wie funktioniert der Test?",
+        "howWorksBody": "Der Test ist in kurze Blöcke mit insgesamt 35 Fragen aufgeteilt. Die Schwierigkeit steigt schrittweise und erfordert Aufmerksamkeit für Regeln und Musterveränderungen.",
+        "influencesTitle": "Was kann das Ergebnis beeinflussen?",
+        "influencesBody": "Der IQ ist multifaktoriell. Der Wert sollte nicht als einzige Messgröße für Intelligenz oder Denken verwendet werden.",
+        "influencesList": [
+            "Motivation und Konzentration zum Testzeitpunkt",
+            "Chronische Erkrankungen oder andere Belastungen",
+            "Zugang zu hochwertiger Bildung",
+            "Wirtschaftliche Situation und soziales Umfeld",
+            "Beruf und familiärer Hintergrund"
+        ]
+    },
+    "steps": {
+        "progress": "Schritt {step} von {total}",
+        "question": "Frage für Schritt {step}",
+        "options": {
+            "a": "Option A",
+            "b": "Option B",
+            "c": "Option C",
+            "d": "Option D"
+        },
+        "prev": "Zurück",
+        "next": "Weiter",
+        "finish": "Fertigstellen"
+    },
+    "summary": {
+        "title": "Zusammenfassung & Zahlung",
+        "subtitle": "Schalte dein detailliertes Ergebnis zum Aktionspreis frei.",
+        "promoNow": "Jetzt: {price}",
+        "promoOriginal": "Originalpreis: {price} (USD {usd})",
+        "payCta": "Bezahlen und Ergebnis ansehen"
+    }
+}

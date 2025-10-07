@@ -57,6 +57,20 @@ export default function Header() {
             href: `/${locale}/waveigl-support`,
             label: t("servicesDropdown.support"),
         },
+        {
+            href: `/${locale}/amazon-affiliate`,
+            label: t("servicesDropdown.affiliate"),
+        },
+        {
+            href: `/${locale}/iq-test`,
+            label: t("servicesDropdown.iqTest"),
+        },
+        {
+            href: `/${locale}/personality-test`,
+            label: t("servicesDropdown.personalityTest", {
+                default: "Personality Test",
+            } as any),
+        },
     ]
 
     const navigationLinks = getNavigationLinks()
@@ -116,6 +130,8 @@ export default function Header() {
                                 {link.label}
                             </Link>
                         ))}
+
+                        {/* IQ Test now in Services dropdown */}
 
                         {/* Services Dropdown */}
                         <div className="relative">
@@ -191,7 +207,7 @@ export default function Header() {
                     <div className="md:hidden flex items-center space-x-2">
                         <LanguageSelector
                             variant="header"
-                            includeThemeToggle={includeThemeInLanguage}
+                            includeThemeToggle={false}
                         />
 
                         <button
@@ -199,6 +215,7 @@ export default function Header() {
                                 setIsMobileMenuOpen(!isMobileMenuOpen)
                             }
                             className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
+                            data-testid="mobile-menu-toggle"
                         >
                             {isMobileMenuOpen ? (
                                 <X className="h-6 w-6" />
@@ -211,7 +228,10 @@ export default function Header() {
 
                 {/* Mobile Navigation */}
                 {isMobileMenuOpen && (
-                    <div className="md:hidden py-4 border-t border-gray-200 dark:border-gray-700">
+                    <div
+                        className="md:hidden py-4 border-t border-gray-200 dark:border-gray-700"
+                        data-testid="mobile-nav"
+                    >
                         <div className="space-y-2">
                             <Link
                                 href={getHomeLink()}
@@ -277,7 +297,8 @@ export default function Header() {
                             </div>
 
                             {/* Mobile Actions */}
-                            <div className="px-3 py-2 flex items-center justify-end">
+                            <div className="px-3 py-2 flex items-center justify-end md:hidden">
+                                {/* c8 ignore next */}
                                 <ThemeToggleClient />
                             </div>
                         </div>

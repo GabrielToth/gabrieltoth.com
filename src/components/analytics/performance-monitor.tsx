@@ -40,6 +40,8 @@ const PerformanceMonitor = ({
 
         window.addEventListener("web-vital", handleWebVital)
 
+        let interval: any
+
         // Get resource count
         if (typeof window !== "undefined" && "performance" in window) {
             const updateResourceMetrics = () => {
@@ -59,12 +61,12 @@ const PerformanceMonitor = ({
             updateResourceMetrics()
 
             // Update every 5 seconds
-            const interval = setInterval(updateResourceMetrics, 5000)
-            return () => clearInterval(interval)
+            interval = setInterval(updateResourceMetrics, 5000)
         }
 
         return () => {
             window.removeEventListener("web-vital", handleWebVital)
+            if (interval) clearInterval(interval)
         }
     }, [enabled])
 

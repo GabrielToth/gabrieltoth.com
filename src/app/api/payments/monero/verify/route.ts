@@ -1,9 +1,9 @@
+import { db } from "@/lib/db"
 import {
     convertBrlToXmr,
     isValidMoneroTxHash,
     verifyMoneroTransaction,
 } from "@/lib/monero"
-import { db, supabase } from "@/lib/supabase"
 import { NextRequest, NextResponse } from "next/server"
 
 export async function POST(req: NextRequest) {
@@ -175,14 +175,8 @@ export async function GET(req: NextRequest) {
         if (trackingCode) {
             order = await db.getOrderByTrackingCode(trackingCode)
         } else if (txHash) {
-            // Find order by transaction hash
-            const { data: orders } = await supabase
-                .from("orders")
-                .select("*")
-                .eq("tx_hash", txHash)
-                .eq("payment_method", "monero")
-                .single()
-            order = orders
+            // Find order by transaction hash (in-memory)
+            order = await db.getOrderByTxHash(txHash)
         }
 
         if (!order) {

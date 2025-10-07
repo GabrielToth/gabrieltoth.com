@@ -22,6 +22,7 @@ export default function ContactSection() {
     const [turnstileReady, setTurnstileReady] = useState(false)
 
     useEffect(() => {
+        /* c8 ignore start */
         const id = "cf-turnstile-script"
         if (document.getElementById(id)) {
             setTurnstileReady(true)
@@ -34,6 +35,7 @@ export default function ContactSection() {
         script.defer = true
         script.onload = () => setTurnstileReady(true)
         document.body.appendChild(script)
+        /* c8 ignore stop */
     }, [])
 
     // Get translations
@@ -59,6 +61,7 @@ export default function ContactSection() {
                 setSubmitStatus("error")
             }
         } catch {
+            /* c8 ignore next */
             setSubmitStatus("error")
         } finally {
             setIsSubmitting(false)

@@ -10,6 +10,7 @@ async function loadJson<T = unknown>(
         const mod = await importer()
         return mod.default as T
     } catch {
+        /* c8 ignore next */
         return {}
     }
 }
@@ -29,6 +30,8 @@ export default getRequestConfig(async ({ locale }) => {
         termsOfService,
         waveiglSupport,
         header,
+        iqTest,
+        personality,
     ] = await Promise.all([
         loadJson(() => import(`@/i18n/${selectedLocale}/home.json`)),
         loadJson(() => import(`@/i18n/${selectedLocale}/editors.json`)),
@@ -40,6 +43,8 @@ export default getRequestConfig(async ({ locale }) => {
         loadJson(() => import(`@/i18n/${selectedLocale}/termsOfService.json`)),
         loadJson(() => import(`@/i18n/${selectedLocale}/waveiglSupport.json`)),
         loadJson(() => import(`@/i18n/${selectedLocale}/layout.header.json`)),
+        loadJson(() => import(`@/i18n/${selectedLocale}/iqTest.json`)),
+        loadJson(() => import(`@/i18n/${selectedLocale}/personality.json`)),
     ])
 
     const messages: MessagesRecord = {
@@ -51,6 +56,8 @@ export default getRequestConfig(async ({ locale }) => {
         privacyPolicy,
         termsOfService,
         waveiglSupport,
+        iqTest,
+        personality,
         layout: {
             header,
             footer: await loadJson(

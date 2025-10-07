@@ -55,7 +55,6 @@ whatsapp
 pix
 qrcode
 monero
-supabase
 iframe
 cypresstest
 localhost

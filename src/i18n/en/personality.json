@@ -1,0 +1,59 @@
+{
+    "title": "Personality Test",
+    "description": "Answer 35 quick statements to assess your personality traits (Big Five).",
+    "cta": { "start": "Start Test" },
+    "landing": {
+        "h2": "Free personality test online – Big Five assessment",
+        "p1": "Take a free personality test with 35 concise statements measuring openness, conscientiousness, extraversion, agreeableness and neuroticism.",
+        "p2": "Keywords: free personality test, Big Five test, online personality test, 35 questions, traits, extraversion, openness, conscientiousness, agreeableness, neuroticism"
+    },
+    "steps": {
+        "progress": "Step {step} of {total}",
+        "prev": "Previous",
+        "next": "Next",
+        "finish": "Finish"
+    },
+    "choices": ["Strongly disagree", "Disagree", "Agree", "Strongly agree"],
+    "questions": {
+        "q1": { "text": "I am talkative." },
+        "q2": { "text": "I feel at ease in groups." },
+        "q3": { "text": "I start conversations." },
+        "q4": { "text": "I am full of energy." },
+        "q5": { "text": "I like to draw attention to myself." },
+        "q6": { "text": "I make friends easily." },
+        "q7": { "text": "I enjoy leading groups." },
+        "q8": { "text": "I make people feel at ease." },
+        "q9": { "text": "I take time out for others." },
+        "q10": { "text": "I feel little concern for others." },
+        "q11": { "text": "I am interested in solving problems." },
+        "q12": { "text": "I sympathize with others' feelings." },
+        "q13": { "text": "I insult people." },
+        "q14": { "text": "I am considerate and kind to almost everyone." },
+        "q15": { "text": "I am always prepared." },
+        "q16": { "text": "I pay attention to details." },
+        "q17": { "text": "I leave my belongings around." },
+        "q18": { "text": "I get chores done right away." },
+        "q19": { "text": "I follow a schedule." },
+        "q20": { "text": "I make a mess of things." },
+        "q21": { "text": "I like order." },
+        "q22": { "text": "I get stressed out easily." },
+        "q23": { "text": "I worry about things." },
+        "q24": { "text": "I seldom feel blue." },
+        "q25": { "text": "I am easily disturbed." },
+        "q26": { "text": "I get irritated easily." },
+        "q27": { "text": "I remain calm under pressure." },
+        "q28": { "text": "I feel emotionally stable." },
+        "q29": { "text": "I have a rich vocabulary." },
+        "q30": { "text": "I have a vivid imagination." },
+        "q31": { "text": "I am quick to understand things." },
+        "q32": { "text": "I am not interested in abstract ideas." },
+        "q33": { "text": "I have excellent ideas." },
+        "q34": { "text": "I reflect on things." },
+        "q35": { "text": "I am full of ideas." }
+    },
+    "summary": {
+        "title": "Summary",
+        "subtitle": "Finish to view your detailed results.",
+        "paywallText": "Complete – unlock your results to view your personality breakdown."
+    }
+}

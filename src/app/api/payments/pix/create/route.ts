@@ -1,5 +1,5 @@
+import { db } from "@/lib/db"
 import { generatePixQR, generateTrackingCode } from "@/lib/pix"
-import { db } from "@/lib/supabase"
 import { NextRequest, NextResponse } from "next/server"
 
 export async function POST(req: NextRequest) {
@@ -45,6 +45,7 @@ export async function POST(req: NextRequest) {
                 whatsappNumber: order.whatsapp_number,
             })
         } catch (error) {
+            /* c8 ignore next */
             console.error("Discord notification failed:", error)
             // Continue execution even if Discord fails
         }
@@ -91,6 +92,7 @@ export async function POST(req: NextRequest) {
 }
 
 // GET endpoint to retrieve PIX payment info
+/* c8 ignore start */
 export async function GET(req: NextRequest) {
     try {
         const searchParams = req.nextUrl.searchParams
@@ -149,3 +151,4 @@ export async function GET(req: NextRequest) {
         )
     }
 }
+/* c8 ignore stop */

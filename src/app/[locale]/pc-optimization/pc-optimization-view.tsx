@@ -328,7 +328,7 @@ export default function PCOptimizationView({
                 </div>
             </section>
 
-            <style jsx>{`
+            <style>{`
                 @keyframes marquee {
                     0% {
                         transform: translateX(100%);
