@@ -12,6 +12,15 @@
         "title": "",
         "subtitle": ""
     },
+    "ctaEmotional": {
+        "title": "Mehr als eine Zahl — ein Moment, dir zu begegnen",
+        "subtitle": "Atme. Beobachte. Probiere. Justiere. Diese Zeit ist für dich, kein Urteil über dich.",
+        "bullets": [
+            "Beginne freundlich: Du musst nicht perfekt sein",
+            "Neugier statt Eile: Erkenne das Muster vor dem Klick",
+            "Schätze den Prozess: Jeder Versuch zeigt, wie dein Geist denkt"
+        ]
+    },
     "landing": {
         "h2": "Kostenloser IQ-Test online – präzise kognitive Bewertung",
         "p1": "Mache unseren kostenlosen IQ-Test mit 35 schnellen Fragen zu Mustererkennung, logischem Denken, Zahlenreihen und räumlicher Intelligenz. Optimiert für Smartphone und Desktop.",

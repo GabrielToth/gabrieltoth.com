@@ -12,6 +12,15 @@
         "title": "",
         "subtitle": ""
     },
+    "ctaEmotional": {
+        "title": "Más que un número — un momento para encontrarte",
+        "subtitle": "Respira. Observa. Prueba. Ajusta. Este tiempo es para ti, no un veredicto sobre ti.",
+        "bullets": [
+            "Empieza con amabilidad: no necesitas ser perfecto",
+            "Curiosidad antes de prisa: mira el patrón antes de hacer clic",
+            "Valora el proceso: cada intento muestra cómo piensa tu mente"
+        ]
+    },
     "landing": {
         "h2": "Test de CI gratis online – evaluación precisa de habilidades cognitivas",
         "p1": "Realiza nuestro test de CI gratis con 35 preguntas rápidas que evalúan reconocimiento de patrones, razonamiento lógico, series numéricas e inteligencia espacial. Optimizado para móvil y escritorio.",

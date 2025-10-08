@@ -12,6 +12,15 @@
         "title": "",
         "subtitle": ""
     },
+    "ctaEmotional": {
+        "title": "Mais do que um número — um convite para se conhecer",
+        "subtitle": "Respire. Observe. Experimente. Ajuste. O teste é um tempo para você, não uma prova de quem você é.",
+        "bullets": [
+            "Comece com gentileza: você não precisa acertar tudo",
+            "Curiosidade acima da pressa: entenda o padrão antes do clique",
+            "Valor no processo: cada tentativa revela como sua mente pensa"
+        ]
+    },
     "landing": {
         "h2": "Teste de QI grátis: seu Quociente de Inteligência em minutos",
         "p1": [

@@ -63,6 +63,7 @@ export async function generateMetadata({
             site: seoConfig.twitter?.site,
         },
         alternates: {
+            canonical: seoConfig.canonical,
             languages: {
                 en: "https://www.gabrieltoth.com/en/terms-of-service/",
                 "pt-BR": "https://www.gabrieltoth.com/pt-BR/terms-of-service/",

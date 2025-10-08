@@ -34,13 +34,7 @@ function getLocaleFromAcceptLanguage(acceptLanguage: string): string {
 export function middleware(request: NextRequest) {
     const pathname = request.nextUrl.pathname
 
-    // Normalize host: redirect apex -> www canonical
-    const host = request.nextUrl.hostname.toLowerCase()
-    if (!host.startsWith("www.")) {
-        const target = new URL(request.url)
-        target.hostname = `www.${host}`
-        return NextResponse.redirect(target, 308)
-    }
+    // Host canonicalization handled by Next.js redirects; avoid double redirects here
 
     // Skip API routes, static files, etc.
     if (

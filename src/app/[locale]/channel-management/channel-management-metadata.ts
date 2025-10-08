@@ -53,6 +53,7 @@ export async function generateMetadata({
             site: seoConfig.twitter?.site,
         },
         alternates: {
+            canonical: seoConfig.canonical,
             languages: {
                 en: "https://www.gabrieltoth.com/en/channel-management/",
                 "pt-BR":

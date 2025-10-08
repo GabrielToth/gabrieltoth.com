@@ -1,10 +1,11 @@
 import StructuredData from "@/components/seo/structured-data"
 import { type Locale } from "@/lib/i18n"
+import { generateSeoConfig } from "@/lib/seo"
+import { type Metadata } from "next"
 import { getTranslations } from "next-intl/server"
 import Image from "next/image"
 import Link from "next/link"
 import { buildIQTestStructured } from "./iq-test-structured"
-
 interface IQTestPageProps {
     params: Promise<{ locale: Locale }>
 }
@@ -113,8 +114,7 @@ export default async function IQTestPage({ params }: IQTestPageProps) {
                                         width={400}
                                         height={320}
                                         className="w-full h-auto"
-                                        priority
-                                    />
+                                    ></Image>
                                 </div>
                             </div>
                         </div>
@@ -220,8 +220,87 @@ export default async function IQTestPage({ params }: IQTestPageProps) {
                         </article>
                     </div>
                 </div>
-                {/* Bottom CTA removed as requested */}
+                {/* Emotional CTA section */}
+                <div className="bg-gradient-to-br from-rose-600 via-pink-600 to-fuchsia-600 dark:from-fuchsia-900 dark:via-rose-900 dark:to-pink-900">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+                            <div>
+                                <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight text-white mb-4">
+                                    {t("ctaEmotional.title")}
+                                </h2>
+                                <p className="text-white/90 text-base md:text-lg mb-6">
+                                    {t("ctaEmotional.subtitle")}
+                                </p>
+                                {Array.isArray(
+                                    t.raw("ctaEmotional.bullets")
+                                ) && (
+                                    <ul className="list-disc pl-6 space-y-2 text-white/90 mb-8">
+                                        {(
+                                            t.raw(
+                                                "ctaEmotional.bullets"
+                                            ) as string[]
+                                        ).map((item, idx) => (
+                                            <li key={idx}>{item}</li>
+                                        ))}
+                                    </ul>
+                                )}
+                                <Link
+                                    href={`/${locale}/iq-test/step/1`}
+                                    className="inline-flex items-center px-6 py-3 rounded-md bg-white text-gray-900 hover:bg-gray-100 shadow-lg shadow-black/10"
+                                >
+                                    {t("cta.start")}
+                                </Link>
+                            </div>
+                            <div className="relative hidden md:block">
+                                <div
+                                    className="absolute -inset-6 blur-3xl opacity-40 bg-gradient-to-tr from-white/40 to-white/0 rounded-full"
+                                    aria-hidden="true"
+                                />
+                                <div className="relative mx-auto w-full max-w-md">
+                                    <Image
+                                        src="/brain.svg"
+                                        alt="Stylized brain network illustration"
+                                        width={400}
+                                        height={320}
+                                        className="w-full h-auto"
+                                    ></Image>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </section>
         </>
     )
+}
+
+export async function generateMetadata({
+    params,
+}: IQTestPageProps): Promise<Metadata> {
+    const { locale } = await params
+    const seoConfig = generateSeoConfig({
+        locale,
+        path: "/iq-test",
+        ogType: "website",
+    })
+    return {
+        title: seoConfig.title,
+        description: seoConfig.description,
+        openGraph: {
+            ...seoConfig.openGraph,
+        },
+        twitter: {
+            ...seoConfig.twitter,
+        },
+        alternates: {
+            canonical: seoConfig.canonical,
+            languages: {
+                en: "https://www.gabrieltoth.com/en/iq-test/",
+                "pt-BR": "https://www.gabrieltoth.com/pt-BR/iq-test/",
+                es: "https://www.gabrieltoth.com/es/iq-test/",
+                de: "https://www.gabrieltoth.com/de/iq-test/",
+                "x-default": "https://www.gabrieltoth.com/pt-BR/iq-test/",
+            },
+        },
+    }
 }

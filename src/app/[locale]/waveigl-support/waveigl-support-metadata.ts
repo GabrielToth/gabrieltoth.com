@@ -55,6 +55,7 @@ export async function generateMetadata({
             site: seoConfig.twitter?.site,
         },
         alternates: {
+            canonical: seoConfig.canonical,
             languages: {
                 en: "https://www.gabrieltoth.com/en/waveigl-support/",
                 "pt-BR": "https://www.gabrieltoth.com/pt-BR/waveigl-support/",

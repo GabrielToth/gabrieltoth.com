@@ -1,14 +1,28 @@
+import QuestionsDebugPanel from "@/components/debug/questions-debug-panel"
 import { type Locale } from "@/lib/i18n"
+import { loadQuestions } from "@/lib/questions/loader"
+import { generateSeoConfig } from "@/lib/seo"
+import { type Metadata } from "next"
 import { getTranslations } from "next-intl/server"
 import Link from "next/link"
 import { notFound } from "next/navigation"
 
 interface StepPageProps {
     params: Promise<{ locale: Locale; step: string }>
+    searchParams?: Promise<Record<string, string | string[] | undefined>>
 }
 
-export default async function IQStepPage({ params }: StepPageProps) {
+export default async function IQStepPage({
+    params,
+    searchParams,
+}: StepPageProps) {
     const { locale, step } = await params
+    const sp = (await (searchParams || Promise.resolve({}))) || {}
+    const debug = sp["debug"] === "1"
+    const envDebugEnabled =
+        process.env.NEXT_PUBLIC_DEBUG === "1" ||
+        process.env.NEXT_PUBLIC_DEBUG === "true"
+    const debugOpen = envDebugEnabled && debug
     const t = await getTranslations({ locale, namespace: "iqTest" })
     const stepNum = Number(step)
     if (!Number.isInteger(stepNum) || stepNum < 1 || stepNum > 35) {
@@ -16,88 +30,185 @@ export default async function IQStepPage({ params }: StepPageProps) {
     }
 
     const isLast = stepNum === 35
+    type Question =
+        | { type: "sequence"; series: string; options: string[] }
+        | { type: "math"; expr: string; options: string[] }
+        | { type: "odd"; options: string[] }
 
-    type Q =
-        | { type: "sequence"; series: string }
-        | { type: "analogy"; a: string; b: string; c: string }
-        | { type: "math"; expr: string }
-        | { type: "odd" }
-        | { type: "text" }
-
-    const questions: Record<number, Q> = {
-        1: { type: "sequence", series: "2, 4, 8, 16, ?" },
-        2: { type: "analogy", a: "Hand", b: "Glove", c: "Foot" },
-        3: { type: "odd" },
-        4: { type: "math", expr: "(12 + 8) / 5" },
-        5: { type: "analogy", a: "Bird", b: "Wing", c: "Fish" },
-        6: { type: "odd" },
-        7: { type: "text" },
-        8: { type: "math", expr: "A has 3, adds 5, gives away 2. Total?" },
-        9: { type: "text" },
-        10: { type: "text" },
-        11: { type: "text" },
-        12: { type: "sequence", series: "3, 6, 9, 12, ?" },
-        13: { type: "math", expr: "7 × 4 + 9 = ?" },
-        14: { type: "analogy", a: "Hot", b: "Cold", c: "High" },
-        15: { type: "text" },
-        16: { type: "math", expr: "Clock: 2:45 + 50 min = ?" },
-        17: { type: "text" },
-        18: { type: "sequence", series: "1, 2, 4, 7, 11, ?" },
-        19: { type: "text" },
-        20: { type: "text" },
-        21: { type: "math", expr: "What is 25% of 240?" },
-        22: { type: "text" },
-        23: { type: "sequence", series: "A, C, F, J, O, ?" },
-        24: { type: "text" },
-        25: { type: "text" },
-        26: { type: "text" },
-        27: { type: "sequence", series: "D(4), G(7), K(11), P(16), ?" },
-        28: { type: "sequence", series: "2, 3, 5, 7, 11, ?" },
-        29: { type: "sequence", series: "1, 10, 11, 100, 101, ?" },
-        30: { type: "text" },
-        31: {
-            type: "math",
-            expr: "A completes task in 6h, B in 3h. Together?",
-        },
-        32: { type: "math", expr: "x + y = 12; x − y = 4; x = ?" },
-        33: { type: "text" },
-        34: { type: "text" },
-        35: { type: "text" },
+    const buildQuestion = (index: number): Question => {
+        const remainder = index % 7
+        if (remainder === 1) {
+            const start = 2 + (index % 3)
+            const a = start
+            const b = a * 2
+            const c = b * 2
+            const d = c * 2
+            const series = `${a}, ${b}, ${c}, ${d}, ?`
+            const correct = d * 2
+            const options = [
+                correct,
+                correct - 2,
+                Math.floor(correct / 2),
+                correct - 4,
+            ].map(String)
+            return { type: "sequence", series, options }
+        }
+        if (remainder === 2) {
+            const base = 1 + (index % 5)
+            const inc = 3
+            const s1 = base
+            const s2 = s1 + inc
+            const s3 = s2 + inc
+            const s4 = s3 + inc
+            const series = `${s1}, ${s2}, ${s3}, ${s4}, ?`
+            const correct = s4 + inc
+            const options = [
+                correct,
+                correct - 3,
+                correct + 3,
+                correct - 6,
+            ].map(String)
+            return { type: "sequence", series, options }
+        }
+        if (remainder === 3) {
+            const n = 2 + (index % 5)
+            const s1 = n ** 2
+            const s2 = (n + 1) ** 2
+            const s3 = (n + 2) ** 2
+            const s4 = (n + 3) ** 2
+            const series = `${s1}, ${s2}, ${s3}, ${s4}, ?`
+            const correct = (n + 4) ** 2
+            const options = [
+                correct,
+                correct - (2 * (n + 4) - 1),
+                correct + (2 * (n + 4) + 1),
+                s4 - 1,
+            ].map(String)
+            return { type: "sequence", series, options }
+        }
+        if (remainder === 4) {
+            // Odd one out among three even and one odd (or vice-versa)
+            const numbers = index % 2 === 0 ? [6, 8, 11, 10] : [9, 13, 15, 12]
+            const options = numbers.map(n => String(n))
+            return { type: "odd", options }
+        }
+        if (remainder === 5) {
+            const a = 4 + (index % 6)
+            const b = 6 + (index % 5)
+            const c = 2 + (index % 4)
+            const expr = `(${a} + ${b}) × ${c}`
+            const correct = (a + b) * c
+            const options = [
+                correct,
+                correct - c,
+                correct + c,
+                correct - 2,
+            ].map(String)
+            return { type: "math", expr, options }
+        }
+        if (remainder === 6) {
+            const percent = 10 + (index % 5) * 5 // 10%, 15%, 20%, 25%, 30%
+            const base = 80 + (index % 7) * 20
+            const expr = `${percent}% × ${base}`
+            const correct = Math.round((percent / 100) * base)
+            const options = [
+                correct,
+                correct - 5,
+                correct + 5,
+                correct - 10,
+            ].map(String)
+            return { type: "math", expr, options }
+        }
+        // remainder === 0 → increasing increments (+1, +2, +3, +4)
+        const start = 2 + (index % 4)
+        const s1 = start
+        const s2 = s1 + 1
+        const s3 = s2 + 2
+        const s4 = s3 + 3
+        const series = `${s1}, ${s2}, ${s3}, ${s4}, ?`
+        const correct = s4 + 4
+        const options = [correct, correct - 2, correct + 2, correct - 4].map(
+            String
+        )
+        return { type: "sequence", series, options }
     }
 
-    const q = questions[stepNum] || { type: "text" }
+    const q = buildQuestion(stepNum)
     const question =
         q.type === "sequence"
             ? t("prompts.sequence", { series: q.series })
-            : q.type === "analogy"
-              ? t("prompts.analogy", { a: q.a, b: q.b, c: q.c })
-              : q.type === "math"
-                ? t("prompts.math", { expr: q.expr })
-                : q.type === "odd"
-                  ? t("prompts.oddOneOut")
-                  : t("steps.question", { step: stepNum })
+            : q.type === "math"
+              ? t("prompts.math", { expr: q.expr })
+              : t("prompts.oddOneOut")
 
-    const options = [
-        t("steps.options.a"),
-        t("steps.options.b"),
-        t("steps.options.c"),
-        t("steps.options.d"),
-    ]
+    const options = q.options
+    const correctIndex = 0
+
+    const [
+        mathPack,
+        physPack,
+        whPack,
+        bioPack,
+        sciPack,
+        socPack,
+        philPack,
+        logicPack,
+        langPack,
+    ] = debugOpen
+        ? await Promise.all([
+              loadQuestions(locale, "math"),
+              loadQuestions(locale, "physics"),
+              loadQuestions(locale, "world_history"),
+              loadQuestions(locale, "biology"),
+              loadQuestions(locale, "science"),
+              loadQuestions(locale, "sociology"),
+              loadQuestions(locale, "philosophy"),
+              loadQuestions(locale, "logic"),
+              loadQuestions(locale, "language"),
+          ])
+        : [[], [], [], [], [], [], [], [], []]
 
     return (
-        <section className="max-w-3xl mx-auto px-4 py-16">
+        <section className="max-w-3xl mx-auto px-4 py-16 relative">
             <h1 className="text-2xl font-bold mb-6">{t("title")}</h1>
             <p className="text-muted-foreground mb-4">
                 {t("steps.progress", { step: stepNum, total: 35 })}
             </p>
 
+            {envDebugEnabled && (
+                <div className="mb-4 flex justify-end gap-2">
+                    {debug ? (
+                        <Link
+                            href={`/${locale}/iq-test/step/${stepNum}`}
+                            className="rounded-md border px-3 py-1"
+                        >
+                            Debug: off
+                        </Link>
+                    ) : (
+                        <Link
+                            href={`/${locale}/iq-test/step/${stepNum}?debug=1`}
+                            className="rounded-md border px-3 py-1"
+                        >
+                            Debug: on
+                        </Link>
+                    )}
+                </div>
+            )}
+
             <div className="rounded-lg border p-4 mb-6">
                 <div className="font-medium mb-2">{question}</div>
                 <div className="space-y-2">
-                    {options.map((opt, idx) => (
+                    {options.map((optionText, idx) => (
                         <label key={idx} className="flex items-center gap-2">
                             <input type="radio" name="answer" />
-                            <span>{opt}</span>
+                            <span>
+                                {optionText}
+                                {debugOpen && idx === correctIndex && (
+                                    <span className="ml-2 text-green-600">
+                                        (correta)
+                                    </span>
+                                )}
+                            </span>
                         </label>
                     ))}
                 </div>
@@ -131,6 +242,57 @@ export default async function IQStepPage({ params }: StepPageProps) {
                     </Link>
                 )}
             </div>
+
+            <QuestionsDebugPanel
+                open={debugOpen}
+                closeHref={`/${locale}/iq-test/step/${stepNum}`}
+                dataByCategory={[
+                    { name: "math", questions: mathPack },
+                    { name: "physics", questions: physPack },
+                    { name: "world_history", questions: whPack },
+                    { name: "biology", questions: bioPack },
+                    { name: "science", questions: sciPack },
+                    { name: "sociology", questions: socPack },
+                    { name: "philosophy", questions: philPack },
+                    { name: "logic", questions: logicPack },
+                    { name: "language", questions: langPack },
+                ]}
+            />
         </section>
     )
+}
+
+export async function generateMetadata({
+    params,
+}: StepPageProps): Promise<Metadata> {
+    const { locale, step } = await params
+    const stepNum = Number(step)
+    if (!Number.isInteger(stepNum) || stepNum < 1 || stepNum > 35) {
+        return {}
+    }
+    const seoConfig = generateSeoConfig({
+        locale,
+        path: `/iq-test/step/${stepNum}`,
+        ogType: "website",
+    })
+    return {
+        title: seoConfig.title,
+        description: seoConfig.description,
+        openGraph: {
+            ...seoConfig.openGraph,
+        },
+        twitter: {
+            ...seoConfig.twitter,
+        },
+        alternates: {
+            canonical: seoConfig.canonical,
+            languages: {
+                en: `https://www.gabrieltoth.com/en/iq-test/step/${stepNum}/`,
+                "pt-BR": `https://www.gabrieltoth.com/pt-BR/iq-test/step/${stepNum}/`,
+                es: `https://www.gabrieltoth.com/es/iq-test/step/${stepNum}/`,
+                de: `https://www.gabrieltoth.com/de/iq-test/step/${stepNum}/`,
+                "x-default": `https://www.gabrieltoth.com/pt-BR/iq-test/step/${stepNum}/`,
+            },
+        },
+    }
 }

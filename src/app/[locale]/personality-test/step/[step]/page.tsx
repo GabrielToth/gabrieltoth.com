@@ -1,4 +1,6 @@
 import { type Locale } from "@/lib/i18n"
+import { generateSeoConfig } from "@/lib/seo"
+import { type Metadata } from "next"
 import { getTranslations } from "next-intl/server"
 import Link from "next/link"
 import { notFound } from "next/navigation"
@@ -63,4 +65,39 @@ export default async function PersonalityStepPage({ params }: StepProps) {
             </div>
         </section>
     )
+}
+
+export async function generateMetadata({
+    params,
+}: StepProps): Promise<Metadata> {
+    const { locale, step } = await params
+    const n = Number(step)
+    if (!Number.isInteger(n) || n < 1 || n > 35) {
+        return {}
+    }
+    const seoConfig = generateSeoConfig({
+        locale,
+        path: `/personality-test/step/${n}`,
+        ogType: "website",
+    })
+    return {
+        title: seoConfig.title,
+        description: seoConfig.description,
+        openGraph: {
+            ...seoConfig.openGraph,
+        },
+        twitter: {
+            ...seoConfig.twitter,
+        },
+        alternates: {
+            canonical: seoConfig.canonical,
+            languages: {
+                en: `https://www.gabrieltoth.com/en/personality-test/step/${n}/`,
+                "pt-BR": `https://www.gabrieltoth.com/pt-BR/personality-test/step/${n}/`,
+                es: `https://www.gabrieltoth.com/es/personality-test/step/${n}/`,
+                de: `https://www.gabrieltoth.com/de/personality-test/step/${n}/`,
+                "x-default": `https://www.gabrieltoth.com/pt-BR/personality-test/step/${n}/`,
+            },
+        },
+    }
 }

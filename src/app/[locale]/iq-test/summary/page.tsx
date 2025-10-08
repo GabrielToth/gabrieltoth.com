@@ -1,5 +1,7 @@
 import { getCurrencyForLocale } from "@/lib/currency"
 import { type Locale } from "@/lib/i18n"
+import { generateSeoConfig } from "@/lib/seo"
+import { type Metadata } from "next"
 import { getTranslations } from "next-intl/server"
 import Link from "next/link"
 
@@ -60,4 +62,36 @@ export default async function IQSummaryPage({ params }: SummaryPageProps) {
             </Link>
         </section>
     )
+}
+
+export async function generateMetadata({
+    params,
+}: SummaryPageProps): Promise<Metadata> {
+    const { locale } = await params
+    const seoConfig = generateSeoConfig({
+        locale,
+        path: "/iq-test/summary",
+        ogType: "website",
+    })
+    return {
+        title: seoConfig.title,
+        description: seoConfig.description,
+        openGraph: {
+            ...seoConfig.openGraph,
+        },
+        twitter: {
+            ...seoConfig.twitter,
+        },
+        alternates: {
+            canonical: seoConfig.canonical,
+            languages: {
+                en: "https://www.gabrieltoth.com/en/iq-test/summary/",
+                "pt-BR": "https://www.gabrieltoth.com/pt-BR/iq-test/summary/",
+                es: "https://www.gabrieltoth.com/es/iq-test/summary/",
+                de: "https://www.gabrieltoth.com/de/iq-test/summary/",
+                "x-default":
+                    "https://www.gabrieltoth.com/pt-BR/iq-test/summary/",
+            },
+        },
+    }
 }

@@ -559,7 +559,7 @@ export function generateSeoConfig(options: SeoConfigOptions) {
             },
             {
                 hrefLang: "x-default",
-                href: `${SITE_URL}/en${path}`.replace(/(?<!\/)$/, "/"),
+                href: `${SITE_URL}/pt-BR${path}`.replace(/(?<!\/)$/, "/"),
             },
         ],
         breadcrumbs,
@@ -812,5 +812,5 @@ Sitemap: ${SITE_URL}/sitemap-es.xml
 Sitemap: ${SITE_URL}/sitemap-de.xml
 
 # Host
-Host: ${SITE_URL}`
+Host: www.gabrieltoth.com`
 }

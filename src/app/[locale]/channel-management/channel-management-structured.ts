@@ -13,13 +13,12 @@ export async function buildChannelManagementStructured(
 
     const serviceStructuredData = {
         "@context": "https://schema.org",
-        "@type": "Service",
+        "@type": "Product",
         name: "ViraTrend - Digital Growth Consulting",
         description: t("about.description"),
-        provider: {
-            "@type": "Person",
-            name: "Gabriel Toth Gonçalves",
-            url: "https://www.gabrieltoth.com",
+        brand: {
+            "@type": "Brand",
+            name: "ViraTrend",
         },
         category: "Digital Marketing Consulting",
         url: `https://www.gabrieltoth.com${locale === "en" ? "" : `/${locale}`}/channel-management`,
@@ -27,12 +26,9 @@ export async function buildChannelManagementStructured(
             "@type": "Offer",
             availability: "https://schema.org/InStock",
             priceCurrency: "BRL",
-            priceRange: "$$",
+            price: "0",
             description: t("services.subtitle"),
         },
-        areaServed: { "@type": "Country", name: "Brazil" },
-        serviceType: "Digital Marketing",
-        additionalType: "https://schema.org/ConsultingService",
         aggregateRating: {
             "@type": "AggregateRating",
             ratingValue: "5.0",

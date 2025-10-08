@@ -12,6 +12,15 @@
         "title": "",
         "subtitle": ""
     },
+    "ctaEmotional": {
+        "title": "More than a number — a moment to meet yourself",
+        "subtitle": "Breathe. Observe. Try. Adjust. This is time for you, not a verdict about you.",
+        "bullets": [
+            "Begin with kindness: you don’t need to be perfect",
+            "Curiosity over rush: see the pattern before you click",
+            "Value the process: each attempt shows how your mind thinks"
+        ]
+    },
     "landing": {
         "h2": "Free IQ test online – accurate cognitive ability check",
         "p1": "Take our free IQ test with 35 fast questions that assess pattern recognition, logical reasoning, numerical series, and spatial intelligence. Optimized for smartphone and desktop.",
