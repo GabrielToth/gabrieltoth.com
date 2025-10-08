@@ -1,6 +1,8 @@
 import { type Locale } from "@/lib/i18n"
 import { getTranslations } from "next-intl/server"
 
+import { getChannelManagementBreadcrumbs } from "./channel-management-breadcrumbs"
+
 export async function buildChannelManagementStructured(
     locale: Locale
 ): Promise<{
@@ -47,23 +49,7 @@ export async function buildChannelManagementStructured(
         answer: item.answer,
     }))
 
-    const breadcrumbs = [
-        {
-            name:
-                locale === "pt-BR"
-                    ? "Serviços"
-                    : locale === "es"
-                      ? "Servicios"
-                      : locale === "de"
-                        ? "Dienstleistungen"
-                        : "Services",
-            url: `https://www.gabrieltoth.com${locale === "en" ? "" : `/${locale}`}`,
-        },
-        {
-            name: t("hero.badge"),
-            url: `https://www.gabrieltoth.com${locale === "en" ? "" : `/${locale}`}/channel-management`,
-        },
-    ]
+    const breadcrumbs = getChannelManagementBreadcrumbs(locale)
 
     const localeToCurrency: Record<string, string> = {
         "pt-BR": "BRL",

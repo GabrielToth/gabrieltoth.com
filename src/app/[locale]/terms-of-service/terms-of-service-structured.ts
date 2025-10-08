@@ -5,6 +5,8 @@ import {
     type TermsSectionsMap,
 } from "./terms-of-service-types"
 
+import { getTermsOfServiceBreadcrumbs } from "./terms-of-service-breadcrumbs"
+
 export async function buildTermsOfServiceStructured(locale: Locale): Promise<{
     breadcrumbs: Array<{ name: string; url: string }>
     webPageStructuredData: Record<string, unknown>
@@ -12,12 +14,7 @@ export async function buildTermsOfServiceStructured(locale: Locale): Promise<{
 }> {
     const t = await getTranslations({ locale, namespace: "termsOfService" })
 
-    const breadcrumbs = (
-        t.raw("breadcrumbs") as Array<{ name: string; href: string }>
-    ).map(b => ({
-        name: b.name,
-        url: `https://www.gabrieltoth.com${locale === "en" ? "" : `/${locale}`}${b.href}`,
-    }))
+    const breadcrumbs = getTermsOfServiceBreadcrumbs(locale)
 
     const webPageStructuredData = {
         "@context": "https://schema.org",

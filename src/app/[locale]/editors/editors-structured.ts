@@ -1,6 +1,8 @@
 import { type Locale } from "@/lib/i18n"
 import { getTranslations } from "next-intl/server"
 
+import { getEditorsBreadcrumbs } from "./editors-breadcrumbs"
+
 export async function buildEditorsStructured(locale: Locale): Promise<{
     jobStructuredData: Record<string, unknown>
     faqs: Array<{ question: string; answer: string }>
@@ -17,16 +19,7 @@ export async function buildEditorsStructured(locale: Locale): Promise<{
     /* c8 ignore next */
     const faqs = t.raw("faqs") as Array<{ question: string; answer: string }>
 
-    const breadcrumbs = [
-        {
-            name: t("services.title"),
-            url: `https://www.gabrieltoth.com${locale === "en" ? "" : `/${locale}`}`,
-        },
-        {
-            name: t("hero.badge"),
-            url: `https://www.gabrieltoth.com${locale === "en" ? "" : `/${locale}`}/editors`,
-        },
-    ]
+    const breadcrumbs = getEditorsBreadcrumbs(locale)
 
     return { jobStructuredData, faqs, breadcrumbs }
 }

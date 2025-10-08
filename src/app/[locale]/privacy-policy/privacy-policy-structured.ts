@@ -1,6 +1,8 @@
 import { type Locale } from "@/lib/i18n"
 import { getTranslations } from "next-intl/server"
 
+import { getPrivacyPolicyBreadcrumbs } from "./privacy-policy-breadcrumbs"
+
 export async function buildPrivacyPolicyStructured(locale: Locale): Promise<{
     breadcrumbs: Array<{ name: string; url: string }>
     webPageStructuredData: Record<string, unknown>
@@ -8,12 +10,7 @@ export async function buildPrivacyPolicyStructured(locale: Locale): Promise<{
 }> {
     const t = await getTranslations({ locale, namespace: "privacyPolicy" })
 
-    const breadcrumbs = (
-        t.raw("breadcrumbs") as Array<{ name: string; href: string }>
-    ).map(b => ({
-        name: b.name,
-        url: `https://www.gabrieltoth.com${locale === "en" ? "" : `/${locale}`}${b.href}`,
-    }))
+    const breadcrumbs = getPrivacyPolicyBreadcrumbs(locale)
 
     const sections = t.raw("sections") as Array<{
         title: string
