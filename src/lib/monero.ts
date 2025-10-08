@@ -25,6 +25,13 @@ export async function verifyMoneroTransaction(
     verification: MoneroTransactionVerification
 ): Promise<MoneroVerificationResult> {
     try {
+        // Guard against invalid input
+        if (!verification || !verification.txHash) {
+            return {
+                isValid: false,
+                error: "Verification service temporarily unavailable",
+            }
+        }
         // First, check if transaction exists
         const txExists = await checkTransactionExists(verification.txHash)
         if (!txExists.exists) {
@@ -88,7 +95,9 @@ export async function verifyMoneroTransaction(
             confirmations: txDetails.confirmations,
         }
     } catch (error) {
-        console.error("Monero verification error:", error)
+        if (process.env.NODE_ENV !== "test") {
+            console.error("Monero verification error:", error)
+        }
         return {
             isValid: false,
             error: "Verification service temporarily unavailable",
@@ -126,7 +135,9 @@ async function checkTransactionExists(
             height: data.data?.block_height,
         }
     } catch (error) {
-        console.error("Error checking transaction existence:", error)
+        if (process.env.NODE_ENV !== "test") {
+            console.error("Error checking transaction existence:", error)
+        }
         // Fallback to alternative explorer
         return checkTransactionExistsAlternative(txHash)
     }
@@ -150,7 +161,9 @@ async function checkTransactionExistsAlternative(
             height: data.block_height,
         }
     } catch (error) {
-        console.error("Alternative API also failed:", error)
+        if (process.env.NODE_ENV !== "test") {
+            console.error("Alternative API also failed:", error)
+        }
         return { exists: false }
     }
 }
@@ -196,7 +209,9 @@ async function getTransactionDetails(txHash: string): Promise<{
             timestamp: tx.timestamp || 0,
         }
     } catch (error) {
-        console.error("Error getting transaction details:", error)
+        if (process.env.NODE_ENV !== "test") {
+            console.error("Error getting transaction details:", error)
+        }
         return null
     }
 }
@@ -213,7 +228,9 @@ async function getCurrentBlockHeight(): Promise<number | null> {
         const data = await response.json()
         return data.data?.height || null
     } catch (error) {
-        console.error("Error getting block height:", error)
+        if (process.env.NODE_ENV !== "test") {
+            console.error("Error getting block height:", error)
+        }
         return null
     }
 }
@@ -256,7 +273,9 @@ async function verifyTransactionOutputs(
             amount: totalAmount / 1e12, // Convert to XMR
         }
     } catch (error) {
-        console.error("Error verifying outputs:", error)
+        if (process.env.NODE_ENV !== "test") {
+            console.error("Error verifying outputs:", error)
+        }
         return { isValid: false }
     }
 }
@@ -308,7 +327,9 @@ export async function convertBrlToXmr(brlAmount: number): Promise<number> {
         return brlAmount / xmrPriceBrl
     } catch (error) {
         /* c8 ignore next */
-        console.error("Error converting BRL to XMR:", error)
+        if (process.env.NODE_ENV !== "test") {
+            console.error("Error converting BRL to XMR:", error)
+        }
         // Fallback rate (update regularly)
         const fallbackRate = 800 // 1 XMR = ~800 BRL (approximate)
         return brlAmount / fallbackRate
@@ -360,7 +381,9 @@ export async function getMoneroTransactionStatus(txHash: string): Promise<{
             requiredConfirmations: MIN_CONFIRMATIONS,
         }
     } catch (error) {
-        console.error("Error getting transaction status:", error)
+        if (process.env.NODE_ENV !== "test") {
+            console.error("Error getting transaction status:", error)
+        }
         return {
             status: "failed",
             confirmations: 0,

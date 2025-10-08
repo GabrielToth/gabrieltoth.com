@@ -1,5 +1,5 @@
 import ChannelManagementView from "@/app/[locale]/channel-management/channel-management-view"
-import { render } from "@testing-library/react"
+import { act, render } from "@testing-library/react"
 import React from "react"
 import { describe, it, vi } from "vitest"
 // Mock router-dependent components to avoid Next App Router invariant
@@ -140,12 +140,14 @@ vi.mock(
 )
 
 describe("channel-management-view branches", () => {
-    it("renders with extra items to exercise fallback icons", () => {
-        const { container } = render(
-            React.createElement(ChannelManagementView as any, {
-                locale: "en",
-            })
-        )
-        expect(container).toBeTruthy()
+    it("renders with extra items to exercise fallback icons", async () => {
+        await act(async () => {
+            const { container } = render(
+                React.createElement(ChannelManagementView as any, {
+                    locale: "en",
+                })
+            )
+            expect(container).toBeTruthy()
+        })
     })
 })
