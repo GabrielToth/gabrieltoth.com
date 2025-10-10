@@ -1,11 +1,11 @@
 "use client"
 import Image from "next/image"
 import { useSearchParams } from "next/navigation"
-import { useEffect, useMemo, useState } from "react"
+import { Suspense, useEffect, useMemo, useState } from "react"
 
 const PIX_ENDPOINT = "/api/payments/pix/create"
 
-export default function CheckoutPage() {
+function CheckoutInner() {
     const search = useSearchParams()
     const price = Number(search.get("price") || 1)
     const product = search.get("product") || "iqtest"
@@ -91,5 +91,19 @@ export default function CheckoutPage() {
                 </div>
             )}
         </section>
+    )
+}
+
+export default function CheckoutPage() {
+    return (
+        <Suspense
+            fallback={
+                <section className="max-w-xl mx-auto px-4 py-16">
+                    <p>Loading…</p>
+                </section>
+            }
+        >
+            <CheckoutInner />
+        </Suspense>
     )
 }

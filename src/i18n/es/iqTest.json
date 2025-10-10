@@ -47,7 +47,8 @@
             "Acceso a educación de calidad",
             "Situación económica y entorno social",
             "Ocupación y antecedentes familiares"
-        ]
+        ],
+        "extra": []
     },
     "steps": {
         "progress": "Paso {step} de {total}",
