@@ -13,9 +13,8 @@ vi.mock("@/hooks/use-monero-pricing", () => ({
 
 describe("useCalculatePrice", () => {
     it("calculates and returns price fields", async () => {
-        const mod = await import(
-            "@/app/[locale]/channel-management/channel-management-calculate-price"
-        )
+        const mod =
+            await import("@/app/[locale]/channel-management/channel-management-calculate-price")
         const { calculatePrice } = mod.useCalculatePrice("en" as any)
         const result = calculatePrice(10)
         expect(result.displayPrice).toBe("20")

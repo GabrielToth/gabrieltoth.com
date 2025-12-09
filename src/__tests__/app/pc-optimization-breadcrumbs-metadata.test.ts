@@ -9,9 +9,8 @@ vi.mock("next-intl/server", () => ({
 
 describe("pc-optimization helpers coverage", () => {
     it("getPCOptimizationBreadcrumbs returns localized crumbs", async () => {
-        const { getPCOptimizationBreadcrumbs } = await import(
-            "@/app/[locale]/pc-optimization/pc-optimization-breadcrumbs"
-        )
+        const { getPCOptimizationBreadcrumbs } =
+            await import("@/app/[locale]/pc-optimization/pc-optimization-breadcrumbs")
         const en = getPCOptimizationBreadcrumbs("en" as any)
         const pt = getPCOptimizationBreadcrumbs("pt-BR" as any)
         expect(en[0].name).toBe("Services")
@@ -19,9 +18,8 @@ describe("pc-optimization helpers coverage", () => {
     })
 
     it("pc-optimization generateMetadata produces title and og/twitter", async () => {
-        const { generateMetadata } = await import(
-            "@/app/[locale]/pc-optimization/pc-optimization-metadata"
-        )
+        const { generateMetadata } =
+            await import("@/app/[locale]/pc-optimization/pc-optimization-metadata")
         const md = await generateMetadata({
             params: Promise.resolve({ locale: "en" }),
         } as any)
@@ -30,4 +28,3 @@ describe("pc-optimization helpers coverage", () => {
         expect(md.twitter).toBeTruthy()
     })
 })
-

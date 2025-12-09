@@ -109,9 +109,8 @@ describe("pc-optimization view coverage", () => {
     })
 
     it("renders sections, features, pricing (with badges) and CTA links", async () => {
-        const Mod = await import(
-            "@/app/[locale]/pc-optimization/pc-optimization-view"
-        )
+        const Mod =
+            await import("@/app/[locale]/pc-optimization/pc-optimization-view")
         const { container } = render(<Mod.default locale="en" />)
 
         // Language selector and pricing toggle stubs

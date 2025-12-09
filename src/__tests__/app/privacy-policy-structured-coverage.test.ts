@@ -21,9 +21,8 @@ vi.mock("next-intl/server", () => ({
 
 describe("privacy-policy structured coverage", () => {
     it("builds breadcrumbs, sections and webPage data across locales", async () => {
-        const { buildPrivacyPolicyStructured } = await import(
-            "@/app/[locale]/privacy-policy/privacy-policy-structured"
-        )
+        const { buildPrivacyPolicyStructured } =
+            await import("@/app/[locale]/privacy-policy/privacy-policy-structured")
         for (const locale of ["en", "pt-BR", "es", "de"] as const) {
             const { breadcrumbs, webPageStructuredData, sections } =
                 await buildPrivacyPolicyStructured(locale as any)

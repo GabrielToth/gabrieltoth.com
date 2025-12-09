@@ -23,7 +23,6 @@ vi.mock("web-vitals", () => {
 })
 
 declare global {
-    // eslint-disable-next-line no-var
     var PerformanceObserver: any
 }
 

@@ -1,8 +1,48 @@
 import { getBreadcrumbsForStructuredData } from "@/components/ui/breadcrumbs"
 import { useLocale } from "@/hooks/use-locale"
 import { generateSeoConfig } from "@/lib/seo"
-import { type NextSeoProps } from "next-seo"
 import { usePathname } from "next/navigation"
+
+// Local type definition since next-seo v7 no longer exports NextSeoProps
+// (next-seo v7 is now focused on JSON-LD only for App Router)
+interface SeoConfig {
+    title?: string
+    description?: string
+    canonical?: string
+    openGraph?: {
+        title?: string
+        description?: string
+        url?: string
+        type?: string
+        locale?: string
+        alternateLocale?: string
+        images?: Array<{
+            url: string
+            width?: number
+            height?: number
+            alt?: string
+            type?: string
+        }>
+        siteName?: string
+    }
+    twitter?: {
+        card?: string
+        title?: string
+        description?: string
+        images?: string[]
+        creator?: string
+        site?: string
+    }
+    additionalMetaTags?: Array<{
+        name?: string
+        property?: string
+        content: string
+    }>
+    languageAlternates?: Array<{
+        hrefLang: string
+        href: string
+    }>
+}
 
 interface BreadcrumbItem {
     name: string
@@ -24,7 +64,7 @@ interface UseSeoOptions {
     ogType?: "website" | "article" | "product" | "service"
     ogImage?: string
     twitterCard?: "summary" | "summary_large_image" | "app" | "player"
-    customOpenGraph?: Partial<NextSeoProps["openGraph"]>
+    customOpenGraph?: Partial<SeoConfig["openGraph"]>
     customStructuredData?: Record<string, unknown>
     breadcrumbs?: BreadcrumbItem[]
     autoBreadcrumbs?: boolean
@@ -81,8 +121,8 @@ export function useSeo(options: UseSeoOptions = {}) {
             ? getBreadcrumbsForStructuredData(pathname, locale)
             : [])
 
-    // Convert to NextSeo format
-    const nextSeoConfig: NextSeoProps = {
+    // Convert to SEO config format
+    const nextSeoConfig: SeoConfig = {
         title: seoConfig.title,
         description: seoConfig.description,
         canonical: seoConfig.canonical,

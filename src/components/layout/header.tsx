@@ -69,7 +69,7 @@ export default function Header() {
             href: `/${locale}/personality-test`,
             label: t("servicesDropdown.personalityTest", {
                 default: "Personality Test",
-            } as any),
+            } as Record<string, string>),
         },
     ]
 
@@ -82,7 +82,7 @@ export default function Header() {
         "/pc-optimization",
         "/waveigl-support",
     ]
-    const includeThemeInLanguage = pagesWithThemeInLanguage.some(slug => {
+    const _includeThemeInLanguage = pagesWithThemeInLanguage.some(slug => {
         const base = `/${locale}${slug}`
         return pathname === base || pathname.startsWith(`${base}/`)
     })

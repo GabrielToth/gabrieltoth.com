@@ -1,104 +1,802 @@
 [
-    { "id": "math-001", "category": "math", "prompt": "1 + 1 = ?", "choices": ["2", "1", "4", "-1"], "answerIndex": 0, "difficulty": 1 },
-    { "id": "math-002", "category": "math", "prompt": "2 + 2 = ?", "choices": ["4", "3", "6", "1"], "answerIndex": 0, "difficulty": 1 },
-    { "id": "math-003", "category": "math", "prompt": "3 + 3 = ?", "choices": ["6", "5", "8", "3"], "answerIndex": 0, "difficulty": 1 },
-    { "id": "math-004", "category": "math", "prompt": "4 + 4 = ?", "choices": ["8", "7", "10", "5"], "answerIndex": 0, "difficulty": 1 },
-    { "id": "math-005", "category": "math", "prompt": "5 + 5 = ?", "choices": ["10", "9", "12", "7"], "answerIndex": 0, "difficulty": 1 },
-    { "id": "math-006", "category": "math", "prompt": "6 + 6 = ?", "choices": ["12", "11", "14", "9"], "answerIndex": 0, "difficulty": 1 },
-    { "id": "math-007", "category": "math", "prompt": "7 + 7 = ?", "choices": ["14", "13", "16", "11"], "answerIndex": 0, "difficulty": 1 },
-    { "id": "math-008", "category": "math", "prompt": "8 + 8 = ?", "choices": ["16", "15", "18", "13"], "answerIndex": 0, "difficulty": 1 },
-    { "id": "math-009", "category": "math", "prompt": "9 + 9 = ?", "choices": ["18", "17", "20", "15"], "answerIndex": 0, "difficulty": 1 },
-    { "id": "math-010", "category": "math", "prompt": "10 + 10 = ?", "choices": ["20", "19", "22", "17"], "answerIndex": 0, "difficulty": 1 },
-    { "id": "math-011", "category": "math", "prompt": "11 + 11 = ?", "choices": ["22", "21", "24", "19"], "answerIndex": 0, "difficulty": 1 },
-    { "id": "math-012", "category": "math", "prompt": "12 + 12 = ?", "choices": ["24", "23", "26", "21"], "answerIndex": 0, "difficulty": 1 },
-    { "id": "math-013", "category": "math", "prompt": "13 + 13 = ?", "choices": ["26", "25", "28", "23"], "answerIndex": 0, "difficulty": 1 },
-    { "id": "math-014", "category": "math", "prompt": "14 + 14 = ?", "choices": ["28", "27", "30", "25"], "answerIndex": 0, "difficulty": 1 },
-    { "id": "math-015", "category": "math", "prompt": "15 + 15 = ?", "choices": ["30", "29", "32", "27"], "answerIndex": 0, "difficulty": 1 },
-    { "id": "math-016", "category": "math", "prompt": "16 + 16 = ?", "choices": ["32", "31", "34", "29"], "answerIndex": 0, "difficulty": 1 },
-    { "id": "math-017", "category": "math", "prompt": "17 + 17 = ?", "choices": ["34", "33", "36", "31"], "answerIndex": 0, "difficulty": 1 },
-    { "id": "math-018", "category": "math", "prompt": "18 + 18 = ?", "choices": ["36", "35", "38", "33"], "answerIndex": 0, "difficulty": 1 },
-    { "id": "math-019", "category": "math", "prompt": "19 + 19 = ?", "choices": ["38", "37", "40", "35"], "answerIndex": 0, "difficulty": 1 },
-    { "id": "math-020", "category": "math", "prompt": "20 + 20 = ?", "choices": ["40", "39", "42", "37"], "answerIndex": 0, "difficulty": 1 },
-    { "id": "math-021", "category": "math", "prompt": "21 + 21 = ?", "choices": ["42", "41", "44", "39"], "answerIndex": 0, "difficulty": 1 },
-    { "id": "math-022", "category": "math", "prompt": "22 + 22 = ?", "choices": ["44", "43", "46", "41"], "answerIndex": 0, "difficulty": 1 },
-    { "id": "math-023", "category": "math", "prompt": "23 + 23 = ?", "choices": ["46", "45", "48", "43"], "answerIndex": 0, "difficulty": 1 },
-    { "id": "math-024", "category": "math", "prompt": "24 + 24 = ?", "choices": ["48", "47", "50", "45"], "answerIndex": 0, "difficulty": 1 },
-    { "id": "math-025", "category": "math", "prompt": "25 + 25 = ?", "choices": ["50", "49", "52", "47"], "answerIndex": 0, "difficulty": 1 },
-    { "id": "math-026", "category": "math", "prompt": "26 + 26 = ?", "choices": ["52", "51", "54", "49"], "answerIndex": 0, "difficulty": 2 },
-    { "id": "math-027", "category": "math", "prompt": "27 + 27 = ?", "choices": ["54", "53", "56", "51"], "answerIndex": 0, "difficulty": 2 },
-    { "id": "math-028", "category": "math", "prompt": "28 + 28 = ?", "choices": ["56", "55", "58", "53"], "answerIndex": 0, "difficulty": 2 },
-    { "id": "math-029", "category": "math", "prompt": "29 + 29 = ?", "choices": ["58", "57", "60", "55"], "answerIndex": 0, "difficulty": 2 },
-    { "id": "math-030", "category": "math", "prompt": "30 + 30 = ?", "choices": ["60", "59", "62", "57"], "answerIndex": 0, "difficulty": 2 },
-    { "id": "math-031", "category": "math", "prompt": "31 + 31 = ?", "choices": ["62", "61", "64", "59"], "answerIndex": 0, "difficulty": 2 },
-    { "id": "math-032", "category": "math", "prompt": "32 + 32 = ?", "choices": ["64", "63", "66", "61"], "answerIndex": 0, "difficulty": 2 },
-    { "id": "math-033", "category": "math", "prompt": "33 + 33 = ?", "choices": ["66", "65", "68", "63"], "answerIndex": 0, "difficulty": 2 },
-    { "id": "math-034", "category": "math", "prompt": "34 + 34 = ?", "choices": ["68", "67", "70", "65"], "answerIndex": 0, "difficulty": 2 },
-    { "id": "math-035", "category": "math", "prompt": "35 + 35 = ?", "choices": ["70", "69", "72", "67"], "answerIndex": 0, "difficulty": 2 },
-    { "id": "math-036", "category": "math", "prompt": "36 + 36 = ?", "choices": ["72", "71", "74", "69"], "answerIndex": 0, "difficulty": 2 },
-    { "id": "math-037", "category": "math", "prompt": "37 + 37 = ?", "choices": ["74", "73", "76", "71"], "answerIndex": 0, "difficulty": 2 },
-    { "id": "math-038", "category": "math", "prompt": "38 + 38 = ?", "choices": ["76", "75", "78", "73"], "answerIndex": 0, "difficulty": 2 },
-    { "id": "math-039", "category": "math", "prompt": "39 + 39 = ?", "choices": ["78", "77", "80", "75"], "answerIndex": 0, "difficulty": 2 },
-    { "id": "math-040", "category": "math", "prompt": "40 + 40 = ?", "choices": ["80", "79", "82", "77"], "answerIndex": 0, "difficulty": 2 },
-    { "id": "math-041", "category": "math", "prompt": "41 + 41 = ?", "choices": ["82", "81", "84", "79"], "answerIndex": 0, "difficulty": 2 },
-    { "id": "math-042", "category": "math", "prompt": "42 + 42 = ?", "choices": ["84", "83", "86", "81"], "answerIndex": 0, "difficulty": 2 },
-    { "id": "math-043", "category": "math", "prompt": "43 + 43 = ?", "choices": ["86", "85", "88", "83"], "answerIndex": 0, "difficulty": 2 },
-    { "id": "math-044", "category": "math", "prompt": "44 + 44 = ?", "choices": ["88", "87", "90", "85"], "answerIndex": 0, "difficulty": 2 },
-    { "id": "math-045", "category": "math", "prompt": "45 + 45 = ?", "choices": ["90", "89", "92", "87"], "answerIndex": 0, "difficulty": 2 },
-    { "id": "math-046", "category": "math", "prompt": "46 + 46 = ?", "choices": ["92", "91", "94", "89"], "answerIndex": 0, "difficulty": 2 },
-    { "id": "math-047", "category": "math", "prompt": "47 + 47 = ?", "choices": ["94", "93", "96", "91"], "answerIndex": 0, "difficulty": 2 },
-    { "id": "math-048", "category": "math", "prompt": "48 + 48 = ?", "choices": ["96", "95", "98", "93"], "answerIndex": 0, "difficulty": 2 },
-    { "id": "math-049", "category": "math", "prompt": "49 + 49 = ?", "choices": ["98", "97", "100", "95"], "answerIndex": 0, "difficulty": 2 },
-    { "id": "math-050", "category": "math", "prompt": "50 + 50 = ?", "choices": ["100", "99", "102", "97"], "answerIndex": 0, "difficulty": 2 },
-    { "id": "math-051", "category": "math", "prompt": "51 + 51 = ?", "choices": ["102", "101", "104", "99"], "answerIndex": 0, "difficulty": 1 },
-    { "id": "math-052", "category": "math", "prompt": "52 + 52 = ?", "choices": ["104", "103", "106", "101"], "answerIndex": 0, "difficulty": 1 },
-    { "id": "math-053", "category": "math", "prompt": "53 + 53 = ?", "choices": ["106", "105", "108", "103"], "answerIndex": 0, "difficulty": 1 },
-    { "id": "math-054", "category": "math", "prompt": "54 + 54 = ?", "choices": ["108", "107", "110", "105"], "answerIndex": 0, "difficulty": 1 },
-    { "id": "math-055", "category": "math", "prompt": "55 + 55 = ?", "choices": ["110", "109", "112", "107"], "answerIndex": 0, "difficulty": 1 },
-    { "id": "math-056", "category": "math", "prompt": "56 + 56 = ?", "choices": ["112", "111", "114", "109"], "answerIndex": 0, "difficulty": 1 },
-    { "id": "math-057", "category": "math", "prompt": "57 + 57 = ?", "choices": ["114", "113", "116", "111"], "answerIndex": 0, "difficulty": 1 },
-    { "id": "math-058", "category": "math", "prompt": "58 + 58 = ?", "choices": ["116", "115", "118", "113"], "answerIndex": 0, "difficulty": 1 },
-    { "id": "math-059", "category": "math", "prompt": "59 + 59 = ?", "choices": ["118", "117", "120", "115"], "answerIndex": 0, "difficulty": 1 },
-    { "id": "math-060", "category": "math", "prompt": "60 + 60 = ?", "choices": ["120", "119", "122", "117"], "answerIndex": 0, "difficulty": 1 },
-    { "id": "math-061", "category": "math", "prompt": "61 + 61 = ?", "choices": ["122", "121", "124", "119"], "answerIndex": 0, "difficulty": 1 },
-    { "id": "math-062", "category": "math", "prompt": "62 + 62 = ?", "choices": ["124", "123", "126", "121"], "answerIndex": 0, "difficulty": 1 },
-    { "id": "math-063", "category": "math", "prompt": "63 + 63 = ?", "choices": ["126", "125", "128", "123"], "answerIndex": 0, "difficulty": 1 },
-    { "id": "math-064", "category": "math", "prompt": "64 + 64 = ?", "choices": ["128", "127", "130", "125"], "answerIndex": 0, "difficulty": 1 },
-    { "id": "math-065", "category": "math", "prompt": "65 + 65 = ?", "choices": ["130", "129", "132", "127"], "answerIndex": 0, "difficulty": 1 },
-    { "id": "math-066", "category": "math", "prompt": "66 + 66 = ?", "choices": ["132", "131", "134", "129"], "answerIndex": 0, "difficulty": 1 },
-    { "id": "math-067", "category": "math", "prompt": "67 + 67 = ?", "choices": ["134", "133", "136", "131"], "answerIndex": 0, "difficulty": 1 },
-    { "id": "math-068", "category": "math", "prompt": "68 + 68 = ?", "choices": ["136", "135", "138", "133"], "answerIndex": 0, "difficulty": 1 },
-    { "id": "math-069", "category": "math", "prompt": "69 + 69 = ?", "choices": ["138", "137", "140", "135"], "answerIndex": 0, "difficulty": 1 },
-    { "id": "math-070", "category": "math", "prompt": "70 + 70 = ?", "choices": ["140", "139", "142", "137"], "answerIndex": 0, "difficulty": 1 },
-    { "id": "math-071", "category": "math", "prompt": "71 + 71 = ?", "choices": ["142", "141", "144", "139"], "answerIndex": 0, "difficulty": 1 },
-    { "id": "math-072", "category": "math", "prompt": "72 + 72 = ?", "choices": ["144", "143", "146", "141"], "answerIndex": 0, "difficulty": 1 },
-    { "id": "math-073", "category": "math", "prompt": "73 + 73 = ?", "choices": ["146", "145", "148", "143"], "answerIndex": 0, "difficulty": 1 },
-    { "id": "math-074", "category": "math", "prompt": "74 + 74 = ?", "choices": ["148", "147", "150", "145"], "answerIndex": 0, "difficulty": 1 },
-    { "id": "math-075", "category": "math", "prompt": "75 + 75 = ?", "choices": ["150", "149", "152", "147"], "answerIndex": 0, "difficulty": 1 },
-    { "id": "math-076", "category": "math", "prompt": "76 + 76 = ?", "choices": ["152", "151", "154", "149"], "answerIndex": 0, "difficulty": 1 },
-    { "id": "math-077", "category": "math", "prompt": "77 + 77 = ?", "choices": ["154", "153", "156", "151"], "answerIndex": 0, "difficulty": 1 },
-    { "id": "math-078", "category": "math", "prompt": "78 + 78 = ?", "choices": ["156", "155", "158", "153"], "answerIndex": 0, "difficulty": 1 },
-    { "id": "math-079", "category": "math", "prompt": "79 + 79 = ?", "choices": ["158", "157", "160", "155"], "answerIndex": 0, "difficulty": 1 },
-    { "id": "math-080", "category": "math", "prompt": "80 + 80 = ?", "choices": ["160", "159", "162", "157"], "answerIndex": 0, "difficulty": 1 },
-    { "id": "math-081", "category": "math", "prompt": "81 + 81 = ?", "choices": ["162", "161", "164", "159"], "answerIndex": 0, "difficulty": 3 },
-    { "id": "math-082", "category": "math", "prompt": "82 + 82 = ?", "choices": ["164", "163", "166", "161"], "answerIndex": 0, "difficulty": 3 },
-    { "id": "math-083", "category": "math", "prompt": "83 + 83 = ?", "choices": ["166", "165", "168", "163"], "answerIndex": 0, "difficulty": 3 },
-    { "id": "math-084", "category": "math", "prompt": "84 + 84 = ?", "choices": ["168", "167", "170", "165"], "answerIndex": 0, "difficulty": 3 },
-    { "id": "math-085", "category": "math", "prompt": "85 + 85 = ?", "choices": ["170", "169", "172", "167"], "answerIndex": 0, "difficulty": 3 },
-    { "id": "math-086", "category": "math", "prompt": "86 + 86 = ?", "choices": ["172", "171", "174", "169"], "answerIndex": 0, "difficulty": 3 },
-    { "id": "math-087", "category": "math", "prompt": "87 + 87 = ?", "choices": ["174", "173", "176", "171"], "answerIndex": 0, "difficulty": 3 },
-    { "id": "math-088", "category": "math", "prompt": "88 + 88 = ?", "choices": ["176", "175", "178", "173"], "answerIndex": 0, "difficulty": 3 },
-    { "id": "math-089", "category": "math", "prompt": "89 + 89 = ?", "choices": ["178", "177", "180", "175"], "answerIndex": 0, "difficulty": 3 },
-    { "id": "math-090", "category": "math", "prompt": "90 + 90 = ?", "choices": ["180", "179", "182", "177"], "answerIndex": 0, "difficulty": 3 },
-    { "id": "math-091", "category": "math", "prompt": "91 + 91 = ?", "choices": ["182", "181", "184", "179"], "answerIndex": 0, "difficulty": 3 },
-    { "id": "math-092", "category": "math", "prompt": "92 + 92 = ?", "choices": ["184", "183", "186", "181"], "answerIndex": 0, "difficulty": 3 },
-    { "id": "math-093", "category": "math", "prompt": "93 + 93 = ?", "choices": ["186", "185", "188", "183"], "answerIndex": 0, "difficulty": 3 },
-    { "id": "math-094", "category": "math", "prompt": "94 + 94 = ?", "choices": ["188", "187", "190", "185"], "answerIndex": 0, "difficulty": 3 },
-    { "id": "math-095", "category": "math", "prompt": "95 + 95 = ?", "choices": ["190", "189", "192", "187"], "answerIndex": 0, "difficulty": 3 },
-    { "id": "math-096", "category": "math", "prompt": "96 + 96 = ?", "choices": ["192", "191", "194", "189"], "answerIndex": 0, "difficulty": 3 },
-    { "id": "math-097", "category": "math", "prompt": "97 + 97 = ?", "choices": ["194", "193", "196", "191"], "answerIndex": 0, "difficulty": 3 },
-    { "id": "math-098", "category": "math", "prompt": "98 + 98 = ?", "choices": ["196", "195", "198", "193"], "answerIndex": 0, "difficulty": 3 },
-    { "id": "math-099", "category": "math", "prompt": "99 + 99 = ?", "choices": ["198", "197", "200", "195"], "answerIndex": 0, "difficulty": 3 },
-    { "id": "math-100", "category": "math", "prompt": "100 + 100 = ?", "choices": ["200", "199", "202", "197"], "answerIndex": 0, "difficulty": 3 }
+    {
+        "id": "math-001",
+        "category": "math",
+        "prompt": "1 + 1 = ?",
+        "choices": ["2", "1", "4", "-1"],
+        "answerIndex": 0,
+        "difficulty": 1
+    },
+    {
+        "id": "math-002",
+        "category": "math",
+        "prompt": "2 + 2 = ?",
+        "choices": ["4", "3", "6", "1"],
+        "answerIndex": 0,
+        "difficulty": 1
+    },
+    {
+        "id": "math-003",
+        "category": "math",
+        "prompt": "3 + 3 = ?",
+        "choices": ["6", "5", "8", "3"],
+        "answerIndex": 0,
+        "difficulty": 1
+    },
+    {
+        "id": "math-004",
+        "category": "math",
+        "prompt": "4 + 4 = ?",
+        "choices": ["8", "7", "10", "5"],
+        "answerIndex": 0,
+        "difficulty": 1
+    },
+    {
+        "id": "math-005",
+        "category": "math",
+        "prompt": "5 + 5 = ?",
+        "choices": ["10", "9", "12", "7"],
+        "answerIndex": 0,
+        "difficulty": 1
+    },
+    {
+        "id": "math-006",
+        "category": "math",
+        "prompt": "6 + 6 = ?",
+        "choices": ["12", "11", "14", "9"],
+        "answerIndex": 0,
+        "difficulty": 1
+    },
+    {
+        "id": "math-007",
+        "category": "math",
+        "prompt": "7 + 7 = ?",
+        "choices": ["14", "13", "16", "11"],
+        "answerIndex": 0,
+        "difficulty": 1
+    },
+    {
+        "id": "math-008",
+        "category": "math",
+        "prompt": "8 + 8 = ?",
+        "choices": ["16", "15", "18", "13"],
+        "answerIndex": 0,
+        "difficulty": 1
+    },
+    {
+        "id": "math-009",
+        "category": "math",
+        "prompt": "9 + 9 = ?",
+        "choices": ["18", "17", "20", "15"],
+        "answerIndex": 0,
+        "difficulty": 1
+    },
+    {
+        "id": "math-010",
+        "category": "math",
+        "prompt": "10 + 10 = ?",
+        "choices": ["20", "19", "22", "17"],
+        "answerIndex": 0,
+        "difficulty": 1
+    },
+    {
+        "id": "math-011",
+        "category": "math",
+        "prompt": "11 + 11 = ?",
+        "choices": ["22", "21", "24", "19"],
+        "answerIndex": 0,
+        "difficulty": 1
+    },
+    {
+        "id": "math-012",
+        "category": "math",
+        "prompt": "12 + 12 = ?",
+        "choices": ["24", "23", "26", "21"],
+        "answerIndex": 0,
+        "difficulty": 1
+    },
+    {
+        "id": "math-013",
+        "category": "math",
+        "prompt": "13 + 13 = ?",
+        "choices": ["26", "25", "28", "23"],
+        "answerIndex": 0,
+        "difficulty": 1
+    },
+    {
+        "id": "math-014",
+        "category": "math",
+        "prompt": "14 + 14 = ?",
+        "choices": ["28", "27", "30", "25"],
+        "answerIndex": 0,
+        "difficulty": 1
+    },
+    {
+        "id": "math-015",
+        "category": "math",
+        "prompt": "15 + 15 = ?",
+        "choices": ["30", "29", "32", "27"],
+        "answerIndex": 0,
+        "difficulty": 1
+    },
+    {
+        "id": "math-016",
+        "category": "math",
+        "prompt": "16 + 16 = ?",
+        "choices": ["32", "31", "34", "29"],
+        "answerIndex": 0,
+        "difficulty": 1
+    },
+    {
+        "id": "math-017",
+        "category": "math",
+        "prompt": "17 + 17 = ?",
+        "choices": ["34", "33", "36", "31"],
+        "answerIndex": 0,
+        "difficulty": 1
+    },
+    {
+        "id": "math-018",
+        "category": "math",
+        "prompt": "18 + 18 = ?",
+        "choices": ["36", "35", "38", "33"],
+        "answerIndex": 0,
+        "difficulty": 1
+    },
+    {
+        "id": "math-019",
+        "category": "math",
+        "prompt": "19 + 19 = ?",
+        "choices": ["38", "37", "40", "35"],
+        "answerIndex": 0,
+        "difficulty": 1
+    },
+    {
+        "id": "math-020",
+        "category": "math",
+        "prompt": "20 + 20 = ?",
+        "choices": ["40", "39", "42", "37"],
+        "answerIndex": 0,
+        "difficulty": 1
+    },
+    {
+        "id": "math-021",
+        "category": "math",
+        "prompt": "21 + 21 = ?",
+        "choices": ["42", "41", "44", "39"],
+        "answerIndex": 0,
+        "difficulty": 1
+    },
+    {
+        "id": "math-022",
+        "category": "math",
+        "prompt": "22 + 22 = ?",
+        "choices": ["44", "43", "46", "41"],
+        "answerIndex": 0,
+        "difficulty": 1
+    },
+    {
+        "id": "math-023",
+        "category": "math",
+        "prompt": "23 + 23 = ?",
+        "choices": ["46", "45", "48", "43"],
+        "answerIndex": 0,
+        "difficulty": 1
+    },
+    {
+        "id": "math-024",
+        "category": "math",
+        "prompt": "24 + 24 = ?",
+        "choices": ["48", "47", "50", "45"],
+        "answerIndex": 0,
+        "difficulty": 1
+    },
+    {
+        "id": "math-025",
+        "category": "math",
+        "prompt": "25 + 25 = ?",
+        "choices": ["50", "49", "52", "47"],
+        "answerIndex": 0,
+        "difficulty": 1
+    },
+    {
+        "id": "math-026",
+        "category": "math",
+        "prompt": "26 + 26 = ?",
+        "choices": ["52", "51", "54", "49"],
+        "answerIndex": 0,
+        "difficulty": 2
+    },
+    {
+        "id": "math-027",
+        "category": "math",
+        "prompt": "27 + 27 = ?",
+        "choices": ["54", "53", "56", "51"],
+        "answerIndex": 0,
+        "difficulty": 2
+    },
+    {
+        "id": "math-028",
+        "category": "math",
+        "prompt": "28 + 28 = ?",
+        "choices": ["56", "55", "58", "53"],
+        "answerIndex": 0,
+        "difficulty": 2
+    },
+    {
+        "id": "math-029",
+        "category": "math",
+        "prompt": "29 + 29 = ?",
+        "choices": ["58", "57", "60", "55"],
+        "answerIndex": 0,
+        "difficulty": 2
+    },
+    {
+        "id": "math-030",
+        "category": "math",
+        "prompt": "30 + 30 = ?",
+        "choices": ["60", "59", "62", "57"],
+        "answerIndex": 0,
+        "difficulty": 2
+    },
+    {
+        "id": "math-031",
+        "category": "math",
+        "prompt": "31 + 31 = ?",
+        "choices": ["62", "61", "64", "59"],
+        "answerIndex": 0,
+        "difficulty": 2
+    },
+    {
+        "id": "math-032",
+        "category": "math",
+        "prompt": "32 + 32 = ?",
+        "choices": ["64", "63", "66", "61"],
+        "answerIndex": 0,
+        "difficulty": 2
+    },
+    {
+        "id": "math-033",
+        "category": "math",
+        "prompt": "33 + 33 = ?",
+        "choices": ["66", "65", "68", "63"],
+        "answerIndex": 0,
+        "difficulty": 2
+    },
+    {
+        "id": "math-034",
+        "category": "math",
+        "prompt": "34 + 34 = ?",
+        "choices": ["68", "67", "70", "65"],
+        "answerIndex": 0,
+        "difficulty": 2
+    },
+    {
+        "id": "math-035",
+        "category": "math",
+        "prompt": "35 + 35 = ?",
+        "choices": ["70", "69", "72", "67"],
+        "answerIndex": 0,
+        "difficulty": 2
+    },
+    {
+        "id": "math-036",
+        "category": "math",
+        "prompt": "36 + 36 = ?",
+        "choices": ["72", "71", "74", "69"],
+        "answerIndex": 0,
+        "difficulty": 2
+    },
+    {
+        "id": "math-037",
+        "category": "math",
+        "prompt": "37 + 37 = ?",
+        "choices": ["74", "73", "76", "71"],
+        "answerIndex": 0,
+        "difficulty": 2
+    },
+    {
+        "id": "math-038",
+        "category": "math",
+        "prompt": "38 + 38 = ?",
+        "choices": ["76", "75", "78", "73"],
+        "answerIndex": 0,
+        "difficulty": 2
+    },
+    {
+        "id": "math-039",
+        "category": "math",
+        "prompt": "39 + 39 = ?",
+        "choices": ["78", "77", "80", "75"],
+        "answerIndex": 0,
+        "difficulty": 2
+    },
+    {
+        "id": "math-040",
+        "category": "math",
+        "prompt": "40 + 40 = ?",
+        "choices": ["80", "79", "82", "77"],
+        "answerIndex": 0,
+        "difficulty": 2
+    },
+    {
+        "id": "math-041",
+        "category": "math",
+        "prompt": "41 + 41 = ?",
+        "choices": ["82", "81", "84", "79"],
+        "answerIndex": 0,
+        "difficulty": 2
+    },
+    {
+        "id": "math-042",
+        "category": "math",
+        "prompt": "42 + 42 = ?",
+        "choices": ["84", "83", "86", "81"],
+        "answerIndex": 0,
+        "difficulty": 2
+    },
+    {
+        "id": "math-043",
+        "category": "math",
+        "prompt": "43 + 43 = ?",
+        "choices": ["86", "85", "88", "83"],
+        "answerIndex": 0,
+        "difficulty": 2
+    },
+    {
+        "id": "math-044",
+        "category": "math",
+        "prompt": "44 + 44 = ?",
+        "choices": ["88", "87", "90", "85"],
+        "answerIndex": 0,
+        "difficulty": 2
+    },
+    {
+        "id": "math-045",
+        "category": "math",
+        "prompt": "45 + 45 = ?",
+        "choices": ["90", "89", "92", "87"],
+        "answerIndex": 0,
+        "difficulty": 2
+    },
+    {
+        "id": "math-046",
+        "category": "math",
+        "prompt": "46 + 46 = ?",
+        "choices": ["92", "91", "94", "89"],
+        "answerIndex": 0,
+        "difficulty": 2
+    },
+    {
+        "id": "math-047",
+        "category": "math",
+        "prompt": "47 + 47 = ?",
+        "choices": ["94", "93", "96", "91"],
+        "answerIndex": 0,
+        "difficulty": 2
+    },
+    {
+        "id": "math-048",
+        "category": "math",
+        "prompt": "48 + 48 = ?",
+        "choices": ["96", "95", "98", "93"],
+        "answerIndex": 0,
+        "difficulty": 2
+    },
+    {
+        "id": "math-049",
+        "category": "math",
+        "prompt": "49 + 49 = ?",
+        "choices": ["98", "97", "100", "95"],
+        "answerIndex": 0,
+        "difficulty": 2
+    },
+    {
+        "id": "math-050",
+        "category": "math",
+        "prompt": "50 + 50 = ?",
+        "choices": ["100", "99", "102", "97"],
+        "answerIndex": 0,
+        "difficulty": 2
+    },
+    {
+        "id": "math-051",
+        "category": "math",
+        "prompt": "51 + 51 = ?",
+        "choices": ["102", "101", "104", "99"],
+        "answerIndex": 0,
+        "difficulty": 1
+    },
+    {
+        "id": "math-052",
+        "category": "math",
+        "prompt": "52 + 52 = ?",
+        "choices": ["104", "103", "106", "101"],
+        "answerIndex": 0,
+        "difficulty": 1
+    },
+    {
+        "id": "math-053",
+        "category": "math",
+        "prompt": "53 + 53 = ?",
+        "choices": ["106", "105", "108", "103"],
+        "answerIndex": 0,
+        "difficulty": 1
+    },
+    {
+        "id": "math-054",
+        "category": "math",
+        "prompt": "54 + 54 = ?",
+        "choices": ["108", "107", "110", "105"],
+        "answerIndex": 0,
+        "difficulty": 1
+    },
+    {
+        "id": "math-055",
+        "category": "math",
+        "prompt": "55 + 55 = ?",
+        "choices": ["110", "109", "112", "107"],
+        "answerIndex": 0,
+        "difficulty": 1
+    },
+    {
+        "id": "math-056",
+        "category": "math",
+        "prompt": "56 + 56 = ?",
+        "choices": ["112", "111", "114", "109"],
+        "answerIndex": 0,
+        "difficulty": 1
+    },
+    {
+        "id": "math-057",
+        "category": "math",
+        "prompt": "57 + 57 = ?",
+        "choices": ["114", "113", "116", "111"],
+        "answerIndex": 0,
+        "difficulty": 1
+    },
+    {
+        "id": "math-058",
+        "category": "math",
+        "prompt": "58 + 58 = ?",
+        "choices": ["116", "115", "118", "113"],
+        "answerIndex": 0,
+        "difficulty": 1
+    },
+    {
+        "id": "math-059",
+        "category": "math",
+        "prompt": "59 + 59 = ?",
+        "choices": ["118", "117", "120", "115"],
+        "answerIndex": 0,
+        "difficulty": 1
+    },
+    {
+        "id": "math-060",
+        "category": "math",
+        "prompt": "60 + 60 = ?",
+        "choices": ["120", "119", "122", "117"],
+        "answerIndex": 0,
+        "difficulty": 1
+    },
+    {
+        "id": "math-061",
+        "category": "math",
+        "prompt": "61 + 61 = ?",
+        "choices": ["122", "121", "124", "119"],
+        "answerIndex": 0,
+        "difficulty": 1
+    },
+    {
+        "id": "math-062",
+        "category": "math",
+        "prompt": "62 + 62 = ?",
+        "choices": ["124", "123", "126", "121"],
+        "answerIndex": 0,
+        "difficulty": 1
+    },
+    {
+        "id": "math-063",
+        "category": "math",
+        "prompt": "63 + 63 = ?",
+        "choices": ["126", "125", "128", "123"],
+        "answerIndex": 0,
+        "difficulty": 1
+    },
+    {
+        "id": "math-064",
+        "category": "math",
+        "prompt": "64 + 64 = ?",
+        "choices": ["128", "127", "130", "125"],
+        "answerIndex": 0,
+        "difficulty": 1
+    },
+    {
+        "id": "math-065",
+        "category": "math",
+        "prompt": "65 + 65 = ?",
+        "choices": ["130", "129", "132", "127"],
+        "answerIndex": 0,
+        "difficulty": 1
+    },
+    {
+        "id": "math-066",
+        "category": "math",
+        "prompt": "66 + 66 = ?",
+        "choices": ["132", "131", "134", "129"],
+        "answerIndex": 0,
+        "difficulty": 1
+    },
+    {
+        "id": "math-067",
+        "category": "math",
+        "prompt": "67 + 67 = ?",
+        "choices": ["134", "133", "136", "131"],
+        "answerIndex": 0,
+        "difficulty": 1
+    },
+    {
+        "id": "math-068",
+        "category": "math",
+        "prompt": "68 + 68 = ?",
+        "choices": ["136", "135", "138", "133"],
+        "answerIndex": 0,
+        "difficulty": 1
+    },
+    {
+        "id": "math-069",
+        "category": "math",
+        "prompt": "69 + 69 = ?",
+        "choices": ["138", "137", "140", "135"],
+        "answerIndex": 0,
+        "difficulty": 1
+    },
+    {
+        "id": "math-070",
+        "category": "math",
+        "prompt": "70 + 70 = ?",
+        "choices": ["140", "139", "142", "137"],
+        "answerIndex": 0,
+        "difficulty": 1
+    },
+    {
+        "id": "math-071",
+        "category": "math",
+        "prompt": "71 + 71 = ?",
+        "choices": ["142", "141", "144", "139"],
+        "answerIndex": 0,
+        "difficulty": 1
+    },
+    {
+        "id": "math-072",
+        "category": "math",
+        "prompt": "72 + 72 = ?",
+        "choices": ["144", "143", "146", "141"],
+        "answerIndex": 0,
+        "difficulty": 1
+    },
+    {
+        "id": "math-073",
+        "category": "math",
+        "prompt": "73 + 73 = ?",
+        "choices": ["146", "145", "148", "143"],
+        "answerIndex": 0,
+        "difficulty": 1
+    },
+    {
+        "id": "math-074",
+        "category": "math",
+        "prompt": "74 + 74 = ?",
+        "choices": ["148", "147", "150", "145"],
+        "answerIndex": 0,
+        "difficulty": 1
+    },
+    {
+        "id": "math-075",
+        "category": "math",
+        "prompt": "75 + 75 = ?",
+        "choices": ["150", "149", "152", "147"],
+        "answerIndex": 0,
+        "difficulty": 1
+    },
+    {
+        "id": "math-076",
+        "category": "math",
+        "prompt": "76 + 76 = ?",
+        "choices": ["152", "151", "154", "149"],
+        "answerIndex": 0,
+        "difficulty": 1
+    },
+    {
+        "id": "math-077",
+        "category": "math",
+        "prompt": "77 + 77 = ?",
+        "choices": ["154", "153", "156", "151"],
+        "answerIndex": 0,
+        "difficulty": 1
+    },
+    {
+        "id": "math-078",
+        "category": "math",
+        "prompt": "78 + 78 = ?",
+        "choices": ["156", "155", "158", "153"],
+        "answerIndex": 0,
+        "difficulty": 1
+    },
+    {
+        "id": "math-079",
+        "category": "math",
+        "prompt": "79 + 79 = ?",
+        "choices": ["158", "157", "160", "155"],
+        "answerIndex": 0,
+        "difficulty": 1
+    },
+    {
+        "id": "math-080",
+        "category": "math",
+        "prompt": "80 + 80 = ?",
+        "choices": ["160", "159", "162", "157"],
+        "answerIndex": 0,
+        "difficulty": 1
+    },
+    {
+        "id": "math-081",
+        "category": "math",
+        "prompt": "81 + 81 = ?",
+        "choices": ["162", "161", "164", "159"],
+        "answerIndex": 0,
+        "difficulty": 3
+    },
+    {
+        "id": "math-082",
+        "category": "math",
+        "prompt": "82 + 82 = ?",
+        "choices": ["164", "163", "166", "161"],
+        "answerIndex": 0,
+        "difficulty": 3
+    },
+    {
+        "id": "math-083",
+        "category": "math",
+        "prompt": "83 + 83 = ?",
+        "choices": ["166", "165", "168", "163"],
+        "answerIndex": 0,
+        "difficulty": 3
+    },
+    {
+        "id": "math-084",
+        "category": "math",
+        "prompt": "84 + 84 = ?",
+        "choices": ["168", "167", "170", "165"],
+        "answerIndex": 0,
+        "difficulty": 3
+    },
+    {
+        "id": "math-085",
+        "category": "math",
+        "prompt": "85 + 85 = ?",
+        "choices": ["170", "169", "172", "167"],
+        "answerIndex": 0,
+        "difficulty": 3
+    },
+    {
+        "id": "math-086",
+        "category": "math",
+        "prompt": "86 + 86 = ?",
+        "choices": ["172", "171", "174", "169"],
+        "answerIndex": 0,
+        "difficulty": 3
+    },
+    {
+        "id": "math-087",
+        "category": "math",
+        "prompt": "87 + 87 = ?",
+        "choices": ["174", "173", "176", "171"],
+        "answerIndex": 0,
+        "difficulty": 3
+    },
+    {
+        "id": "math-088",
+        "category": "math",
+        "prompt": "88 + 88 = ?",
+        "choices": ["176", "175", "178", "173"],
+        "answerIndex": 0,
+        "difficulty": 3
+    },
+    {
+        "id": "math-089",
+        "category": "math",
+        "prompt": "89 + 89 = ?",
+        "choices": ["178", "177", "180", "175"],
+        "answerIndex": 0,
+        "difficulty": 3
+    },
+    {
+        "id": "math-090",
+        "category": "math",
+        "prompt": "90 + 90 = ?",
+        "choices": ["180", "179", "182", "177"],
+        "answerIndex": 0,
+        "difficulty": 3
+    },
+    {
+        "id": "math-091",
+        "category": "math",
+        "prompt": "91 + 91 = ?",
+        "choices": ["182", "181", "184", "179"],
+        "answerIndex": 0,
+        "difficulty": 3
+    },
+    {
+        "id": "math-092",
+        "category": "math",
+        "prompt": "92 + 92 = ?",
+        "choices": ["184", "183", "186", "181"],
+        "answerIndex": 0,
+        "difficulty": 3
+    },
+    {
+        "id": "math-093",
+        "category": "math",
+        "prompt": "93 + 93 = ?",
+        "choices": ["186", "185", "188", "183"],
+        "answerIndex": 0,
+        "difficulty": 3
+    },
+    {
+        "id": "math-094",
+        "category": "math",
+        "prompt": "94 + 94 = ?",
+        "choices": ["188", "187", "190", "185"],
+        "answerIndex": 0,
+        "difficulty": 3
+    },
+    {
+        "id": "math-095",
+        "category": "math",
+        "prompt": "95 + 95 = ?",
+        "choices": ["190", "189", "192", "187"],
+        "answerIndex": 0,
+        "difficulty": 3
+    },
+    {
+        "id": "math-096",
+        "category": "math",
+        "prompt": "96 + 96 = ?",
+        "choices": ["192", "191", "194", "189"],
+        "answerIndex": 0,
+        "difficulty": 3
+    },
+    {
+        "id": "math-097",
+        "category": "math",
+        "prompt": "97 + 97 = ?",
+        "choices": ["194", "193", "196", "191"],
+        "answerIndex": 0,
+        "difficulty": 3
+    },
+    {
+        "id": "math-098",
+        "category": "math",
+        "prompt": "98 + 98 = ?",
+        "choices": ["196", "195", "198", "193"],
+        "answerIndex": 0,
+        "difficulty": 3
+    },
+    {
+        "id": "math-099",
+        "category": "math",
+        "prompt": "99 + 99 = ?",
+        "choices": ["198", "197", "200", "195"],
+        "answerIndex": 0,
+        "difficulty": 3
+    },
+    {
+        "id": "math-100",
+        "category": "math",
+        "prompt": "100 + 100 = ?",
+        "choices": ["200", "199", "202", "197"],
+        "answerIndex": 0,
+        "difficulty": 3
+    }
 ]
-
-

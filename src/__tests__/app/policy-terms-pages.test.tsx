@@ -14,9 +14,7 @@ describe("policy and terms app pages imports", () => {
         const mods = await Promise.all([
             import("@/app/[locale]/terms-of-service/page"),
             import("@/app/[locale]/terms-of-service/terms-of-service-metadata"),
-            import(
-                "@/app/[locale]/terms-of-service/terms-of-service-structured"
-            ),
+            import("@/app/[locale]/terms-of-service/terms-of-service-structured"),
             import("@/app/[locale]/terms-of-service/terms-of-service-types"),
         ])
         expect(mods.length).toBe(4)

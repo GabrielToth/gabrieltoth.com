@@ -1,5 +1,44 @@
 import { type Locale } from "@/lib/i18n"
-import { type DefaultSeoProps } from "next-seo"
+
+// Local type definition since next-seo v7 no longer exports DefaultSeoProps
+// (next-seo v7 is now focused on JSON-LD only for App Router)
+interface DefaultSeoProps {
+    titleTemplate?: string
+    defaultTitle?: string
+    description?: string
+    canonical?: string
+    openGraph?: {
+        type?: string
+        locale?: string
+        url?: string
+        siteName?: string
+        images?: Array<{
+            url: string
+            width?: number
+            height?: number
+            alt?: string
+            type?: string
+        }>
+    }
+    twitter?: {
+        handle?: string
+        site?: string
+        cardType?: string
+    }
+    additionalMetaTags?: Array<{
+        name?: string
+        property?: string
+        content: string
+    }>
+    additionalLinkTags?: Array<{
+        rel: string
+        href: string
+        type?: string
+        sizes?: string
+        color?: string
+        as?: string
+    }>
+}
 
 interface SeoConfigOptions {
     locale: Locale

@@ -2,9 +2,8 @@ import { describe, expect, it } from "vitest"
 
 describe("pc-optimization metadata coverage", () => {
     it("generates metadata for all locales and fallback", async () => {
-        const { generateMetadata } = await import(
-            "@/app/[locale]/pc-optimization/pc-optimization-metadata"
-        )
+        const { generateMetadata } =
+            await import("@/app/[locale]/pc-optimization/pc-optimization-metadata")
         const locales = ["en", "pt-BR", "es", "de"] as const
         for (const locale of locales) {
             const meta = await generateMetadata({

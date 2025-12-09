@@ -51,10 +51,10 @@ async function ensureSchemasFromStructured(modPath: string) {
             // schemas must exist in either customData/howTo/offerCatalog/webPageStructuredData/jobStructuredData
             const hasAnySchema = Boolean(
                 (res as any).howTo ||
-                    (res as any).offerCatalog ||
-                    (res as any).webPageStructuredData ||
-                    (res as any).jobStructuredData ||
-                    (res as any).serviceStructuredData
+                (res as any).offerCatalog ||
+                (res as any).webPageStructuredData ||
+                (res as any).jobStructuredData ||
+                (res as any).serviceStructuredData
             )
             expect(hasAnySchema).toBe(true)
             // breadcrumbs must exist for service pages

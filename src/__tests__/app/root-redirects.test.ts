@@ -56,4 +56,3 @@ describe("root-level redirects execute permanentRedirect", () => {
         expect(() => mod.default()).toThrowError("REDIRECT")
     })
 })
-

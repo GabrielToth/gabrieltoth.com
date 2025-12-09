@@ -7,21 +7,11 @@ describe("channel-management app pages imports", () => {
     }, 20000)
     it("imports related modules", async () => {
         const mods = await Promise.all([
-            import(
-                "@/app/[locale]/channel-management/channel-management-calculate-price"
-            ),
-            import(
-                "@/app/[locale]/channel-management/channel-management-metadata"
-            ),
-            import(
-                "@/app/[locale]/channel-management/channel-management-section-types"
-            ),
-            import(
-                "@/app/[locale]/channel-management/channel-management-structured"
-            ),
-            import(
-                "@/app/[locale]/channel-management/channel-management-types"
-            ),
+            import("@/app/[locale]/channel-management/channel-management-calculate-price"),
+            import("@/app/[locale]/channel-management/channel-management-metadata"),
+            import("@/app/[locale]/channel-management/channel-management-section-types"),
+            import("@/app/[locale]/channel-management/channel-management-structured"),
+            import("@/app/[locale]/channel-management/channel-management-types"),
             import("@/app/[locale]/channel-management/channel-management-view"),
         ])
         expect(mods.length).toBe(6)

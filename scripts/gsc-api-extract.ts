@@ -27,12 +27,11 @@ async function getAuthClient() {
         "https://www.googleapis.com/auth/webmasters",
         "https://www.googleapis.com/auth/webmasters.readonly",
     ]
-    const jwt = new google.auth.JWT(
-        key.client_email,
-        undefined,
-        key.private_key,
-        scopes
-    )
+    const jwt = new google.auth.JWT({
+        email: key.client_email,
+        key: key.private_key,
+        scopes,
+    })
     await jwt.authorize()
     return jwt
 }

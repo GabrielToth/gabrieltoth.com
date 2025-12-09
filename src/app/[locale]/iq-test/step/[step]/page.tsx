@@ -19,7 +19,10 @@ export default async function IQStepPage({
     searchParams,
 }: StepPageProps) {
     const { locale, step } = await params
-    const sp = (await (searchParams || Promise.resolve({}))) || {}
+    const sp = (await (searchParams || Promise.resolve({}))) as Record<
+        string,
+        string | string[] | undefined
+    >
     const debug = sp["debug"] === "1"
     const envDebugEnabled =
         process.env.NEXT_PUBLIC_DEBUG === "1" ||

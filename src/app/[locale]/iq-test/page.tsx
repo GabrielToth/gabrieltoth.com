@@ -15,7 +15,7 @@ interface IQTestPageProps {
 export default async function IQTestPage({ params }: IQTestPageProps) {
     const { locale } = await params
     const t = await getTranslations({ locale, namespace: "iqTest" })
-    const tHeader = await getTranslations({
+    const _tHeader = await getTranslations({
         locale,
         namespace: "layout.header",
     })

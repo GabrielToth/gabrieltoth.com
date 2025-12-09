@@ -40,7 +40,7 @@ const PerformanceMonitor = ({
 
         window.addEventListener("web-vital", handleWebVital)
 
-        let interval: any
+        let interval: ReturnType<typeof setInterval> | undefined
 
         // Get resource count
         if (typeof window !== "undefined" && "performance" in window) {

@@ -21,9 +21,8 @@ describe("components/analytics/performance-monitor branches", () => {
     }
 
     it("toggles panel and colors metrics across thresholds", async () => {
-        const { default: PerformanceMonitor } = await import(
-            "@/components/analytics/performance-monitor"
-        )
+        const { default: PerformanceMonitor } =
+            await import("@/components/analytics/performance-monitor")
         render(<PerformanceMonitor enabled={true} />)
 
         // Open panel

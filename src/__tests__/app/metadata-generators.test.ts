@@ -12,9 +12,8 @@ vi.mock("next-intl/server", () => {
 
 describe("metadata generators", () => {
     it("privacy-policy generateMetadata returns metadata", async () => {
-        const mod = await import(
-            "@/app/[locale]/privacy-policy/privacy-policy-metadata"
-        )
+        const mod =
+            await import("@/app/[locale]/privacy-policy/privacy-policy-metadata")
         const metadata = await mod.generateMetadata({
             params: Promise.resolve({ locale: "en" }),
         } as any)
@@ -23,9 +22,8 @@ describe("metadata generators", () => {
     })
 
     it("terms-of-service generateMetadata returns metadata", async () => {
-        const mod = await import(
-            "@/app/[locale]/terms-of-service/terms-of-service-metadata"
-        )
+        const mod =
+            await import("@/app/[locale]/terms-of-service/terms-of-service-metadata")
         const metadata = await mod.generateMetadata({
             params: Promise.resolve({ locale: "en" }),
         } as any)
@@ -43,9 +41,8 @@ describe("metadata generators", () => {
     })
 
     it("pc-optimization generateMetadata returns metadata", async () => {
-        const mod = await import(
-            "@/app/[locale]/pc-optimization/pc-optimization-metadata"
-        )
+        const mod =
+            await import("@/app/[locale]/pc-optimization/pc-optimization-metadata")
         const metadata = await mod.generateMetadata({
             params: Promise.resolve({ locale: "en" }),
         } as any)

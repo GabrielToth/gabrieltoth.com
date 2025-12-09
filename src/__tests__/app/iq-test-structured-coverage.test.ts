@@ -6,9 +6,8 @@ vi.mock("next-intl/server", () => ({
 
 describe("iq-test structured data builder coverage", () => {
     it("builds for en locale", async () => {
-        const { buildIQTestStructured } = await import(
-            "@/app/[locale]/iq-test/iq-test-structured"
-        )
+        const { buildIQTestStructured } =
+            await import("@/app/[locale]/iq-test/iq-test-structured")
         const data = await buildIQTestStructured("en" as any)
         expect(data.breadcrumbs.length).toBeGreaterThan(0)
         expect(data.webPageStructuredData).toBeTruthy()
@@ -16,9 +15,8 @@ describe("iq-test structured data builder coverage", () => {
     })
 
     it("builds for pt-BR locale", async () => {
-        const { buildIQTestStructured } = await import(
-            "@/app/[locale]/iq-test/iq-test-structured"
-        )
+        const { buildIQTestStructured } =
+            await import("@/app/[locale]/iq-test/iq-test-structured")
         const data = await buildIQTestStructured("pt-BR" as any)
         expect(data.breadcrumbs.length).toBeGreaterThan(0)
         expect(data.webPageStructuredData).toBeTruthy()

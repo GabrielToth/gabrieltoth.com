@@ -13,9 +13,8 @@ vi.mock("@/lib/currency", () => ({
 
 describe("[locale]/iq-test/summary page coverage", () => {
     it("renders with USD pricing", async () => {
-        const { default: SummaryPage } = await import(
-            "@/app/[locale]/iq-test/summary/page"
-        )
+        const { default: SummaryPage } =
+            await import("@/app/[locale]/iq-test/summary/page")
         const jsx = await SummaryPage({
             params: Promise.resolve({ locale: "en" }),
         } as any)
@@ -23,9 +22,8 @@ describe("[locale]/iq-test/summary page coverage", () => {
     })
 
     it("renders with BRL conversion", async () => {
-        const { default: SummaryPage } = await import(
-            "@/app/[locale]/iq-test/summary/page"
-        )
+        const { default: SummaryPage } =
+            await import("@/app/[locale]/iq-test/summary/page")
         const jsx = await SummaryPage({
             params: Promise.resolve({ locale: "pt-BR" }),
         } as any)

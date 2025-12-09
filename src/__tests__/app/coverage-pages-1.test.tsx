@@ -49,9 +49,8 @@ describe("pages server components coverage (light execution)", () => {
     })
 
     it("pc-optimization terms page executes default export", async () => {
-        const mod = await import(
-            "../../app/[locale]/pc-optimization/terms/page"
-        )
+        const mod =
+            await import("../../app/[locale]/pc-optimization/terms/page")
         const jsx = await mod.default({
             params: Promise.resolve({ locale: "en" }),
         } as any)

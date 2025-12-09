@@ -144,7 +144,7 @@ export default function LanguageSelector({
                                     }}
                                     className={`${currentVariant.option} flex items-center justify-between`}
                                     role="menuitem"
-                                    aria-label={`Toggle theme`}
+                                    aria-label={"Toggle theme"}
                                 >
                                     <span>Theme</span>
                                     {theme === "light" ? (

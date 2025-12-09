@@ -30,5 +30,3 @@ describe("useLocale branches", () => {
         expect(result.current.locale).toBe("pt-BR")
     })
 })
-
-

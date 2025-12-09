@@ -31,9 +31,8 @@ describe("WaveIGL Support Client Page coverage", () => {
     })
 
     it("exercises payment flows and scroll", async () => {
-        const mod = await import(
-            "@/app/[locale]/waveigl-support/waveigl-support-client-page"
-        )
+        const mod =
+            await import("@/app/[locale]/waveigl-support/waveigl-support-client-page")
         render(
             React.createElement(mod.default as any, {
                 translations: {
@@ -98,9 +97,8 @@ describe("WaveIGL Support Client Page coverage", () => {
     })
 
     it("injects Mercado Pago script on mount", async () => {
-        const mod = await import(
-            "@/app/[locale]/waveigl-support/waveigl-support-client-page"
-        )
+        const mod =
+            await import("@/app/[locale]/waveigl-support/waveigl-support-client-page")
         const before = document.querySelectorAll("script").length
         render(
             React.createElement(mod.default as any, {

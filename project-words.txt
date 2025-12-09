@@ -774,3 +774,30 @@ erhältst
 anweisungen
 mail
 startseite
+
+# Test-related words
+mytag
+unstub
+pixcode
+supa
+yourchannel
+navigations
+Btns
+optimizaci
+Configura
+atualizações
+Supabase
+supabase
+testuser
+testchannel
+cspell
+
+# Rate limit / Upstash
+ratelimit
+Ratelimit
+Ratelimiter
+upstash
+
+# German extended
+entwickler
+programmierer

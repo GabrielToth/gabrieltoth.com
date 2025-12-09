@@ -1,19 +1,17 @@
-// For more info, see https://github.com/storybookjs/eslint-plugin-storybook#configuration-flat-config-format
+// ESLint configuration for Next.js 16 with flat config
 import storybook from "eslint-plugin-storybook"
-
-import { FlatCompat } from "@eslint/eslintrc"
+import tseslint from "@typescript-eslint/eslint-plugin"
+import tsParser from "@typescript-eslint/parser"
+import reactPlugin from "eslint-plugin-react"
+import reactHooksPlugin from "eslint-plugin-react-hooks"
+import jsxA11yPlugin from "eslint-plugin-jsx-a11y"
 import { dirname } from "path"
 import { fileURLToPath } from "url"
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 
-const compat = new FlatCompat({
-    baseDirectory: __dirname,
-})
-
 const eslintConfig = [
-    ...compat.extends("next/core-web-vitals", "next/typescript"),
     {
         ignores: [
             "node_modules/",
@@ -30,15 +28,94 @@ const eslintConfig = [
             ".vscode/",
             ".idea/",
             ".git/",
+            "coverage/",
+            "playwright-report/",
+            "test-results/",
+            "storybook-static/",
         ],
+    },
+    {
+        files: ["**/*.ts", "**/*.tsx"],
+        languageOptions: {
+            parser: tsParser,
+            parserOptions: {
+                ecmaVersion: "latest",
+                sourceType: "module",
+                ecmaFeatures: {
+                    jsx: true,
+                },
+            },
+        },
+        plugins: {
+            "@typescript-eslint": tseslint,
+            react: reactPlugin,
+            "react-hooks": reactHooksPlugin,
+            "jsx-a11y": jsxA11yPlugin,
+        },
         rules: {
+            // TypeScript rules
+            "@typescript-eslint/no-unused-vars": [
+                "warn",
+                {
+                    argsIgnorePattern: "^_",
+                    varsIgnorePattern: "^_",
+                    caughtErrorsIgnorePattern: "^_",
+                },
+            ],
+            "@typescript-eslint/no-explicit-any": "warn",
+
+            // React rules
+            "react/react-in-jsx-scope": "off",
+            "react/prop-types": "off",
+            "react/no-unescaped-entities": ["error", { forbid: [] }],
+
+            // React Hooks rules
+            "react-hooks/rules-of-hooks": "error",
+            "react-hooks/exhaustive-deps": "warn",
+
             // Let Prettier handle formatting
             quotes: ["error", "double"],
             semi: ["error", "never"],
-            // Allow double quotes in JSX content
-            "react/no-unescaped-entities": ["error", { forbid: [] }],
-            // Disable indent rule to avoid conflicts with Prettier
             indent: "off",
+        },
+        settings: {
+            react: {
+                version: "detect",
+            },
+        },
+    },
+    {
+        files: ["**/*.js", "**/*.jsx", "**/*.mjs"],
+        languageOptions: {
+            ecmaVersion: "latest",
+            sourceType: "module",
+        },
+        rules: {
+            quotes: ["error", "double"],
+            semi: ["error", "never"],
+            indent: "off",
+        },
+    },
+    // Relaxed rules for test files
+    {
+        files: [
+            "**/__tests__/**/*.ts",
+            "**/__tests__/**/*.tsx",
+            "**/*.test.ts",
+            "**/*.test.tsx",
+            "**/*.spec.ts",
+            "**/*.spec.tsx",
+        ],
+        rules: {
+            "@typescript-eslint/no-explicit-any": "off",
+            "@typescript-eslint/no-unused-vars": "off",
+        },
+    },
+    // Relaxed rules for Storybook files
+    {
+        files: ["**/*.stories.ts", "**/*.stories.tsx"],
+        rules: {
+            "@typescript-eslint/no-explicit-any": "off",
         },
     },
     ...storybook.configs["flat/recommended"],

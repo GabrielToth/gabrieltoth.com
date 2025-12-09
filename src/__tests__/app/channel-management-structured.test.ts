@@ -20,9 +20,8 @@ vi.mock("next-intl/server", () => {
 
 describe("buildChannelManagementStructured", () => {
     it("returns structured objects", async () => {
-        const mod = await import(
-            "@/app/[locale]/channel-management/channel-management-structured"
-        )
+        const mod =
+            await import("@/app/[locale]/channel-management/channel-management-structured")
         const res = await mod.buildChannelManagementStructured("en" as any)
         expect(res.faqs[0].question).toBe("Q")
         expect(res.offerCatalog["@type"]).toBe("OfferCatalog")
@@ -30,9 +29,8 @@ describe("buildChannelManagementStructured", () => {
     })
 
     it("handles breadcrumb names for pt-BR and es", async () => {
-        const mod = await import(
-            "@/app/[locale]/channel-management/channel-management-structured"
-        )
+        const mod =
+            await import("@/app/[locale]/channel-management/channel-management-structured")
         const pt = await mod.buildChannelManagementStructured("pt-BR" as any)
         const es = await mod.buildChannelManagementStructured("es" as any)
         expect(pt.breadcrumbs[0].name).toBeDefined()

@@ -14,9 +14,8 @@ vi.mock("next/link", () => ({
 
 describe("app/[locale]/home/channel-management-section coverage", () => {
     it("renders EN content and CTA link with locale", async () => {
-        const Mod = await import(
-            "@/app/[locale]/home/channel-management-section"
-        )
+        const Mod =
+            await import("@/app/[locale]/home/channel-management-section")
         render(
             React.createElement(Mod.default as any, {
                 params: { locale: "en" },
@@ -32,9 +31,8 @@ describe("app/[locale]/home/channel-management-section coverage", () => {
     })
 
     it("renders PT content variants", async () => {
-        const Mod = await import(
-            "@/app/[locale]/home/channel-management-section"
-        )
+        const Mod =
+            await import("@/app/[locale]/home/channel-management-section")
         render(
             React.createElement(Mod.default as any, {
                 params: { locale: "pt-BR" },

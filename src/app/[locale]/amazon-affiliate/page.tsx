@@ -5,7 +5,7 @@ import { generateAmazonAffiliateLink } from "@/lib/amazon"
 import { useState } from "react"
 
 export default function AmazonAffiliatePage() {
-    const { locale } = useLocale()
+    const { locale: _locale } = useLocale()
     const [inputUrl, setInputUrl] = useState("")
     const [affiliateUrl, setAffiliateUrl] = useState("")
     const [error, setError] = useState<string | null>(null)
@@ -25,9 +25,9 @@ export default function AmazonAffiliatePage() {
             /* c8 ignore stop */
             const out = generateAmazonAffiliateLink({ url: inputUrl, tag })
             setAffiliateUrl(out)
-        } catch (e: any) {
+        } catch (e: unknown) {
             /* c8 ignore next */
-            setError(e?.message || "Invalid URL")
+            setError((e as Error)?.message || "Invalid URL")
         }
     }
 

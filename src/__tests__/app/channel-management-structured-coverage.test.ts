@@ -32,9 +32,8 @@ vi.mock("next-intl/server", () => {
 
 describe("channel-management structured coverage", () => {
     it("builds structured objects with locale-specific urls and currency", async () => {
-        const { buildChannelManagementStructured } = await import(
-            "@/app/[locale]/channel-management/channel-management-structured"
-        )
+        const { buildChannelManagementStructured } =
+            await import("@/app/[locale]/channel-management/channel-management-structured")
         const { serviceStructuredData, faqs, breadcrumbs, offerCatalog } =
             await buildChannelManagementStructured("pt-BR" as any)
         expect(String(serviceStructuredData["url"])).toContain(
@@ -48,9 +47,8 @@ describe("channel-management structured coverage", () => {
     })
 
     it("handles EN locale (no prefix) and USD currency", async () => {
-        const { buildChannelManagementStructured } = await import(
-            "@/app/[locale]/channel-management/channel-management-structured"
-        )
+        const { buildChannelManagementStructured } =
+            await import("@/app/[locale]/channel-management/channel-management-structured")
         const { serviceStructuredData, breadcrumbs, offerCatalog } =
             await buildChannelManagementStructured("en" as any)
         expect(String(serviceStructuredData["url"])).toBe(
@@ -63,9 +61,8 @@ describe("channel-management structured coverage", () => {
     })
 
     it("maps ES locale to EUR currency and prefixed urls", async () => {
-        const { buildChannelManagementStructured } = await import(
-            "@/app/[locale]/channel-management/channel-management-structured"
-        )
+        const { buildChannelManagementStructured } =
+            await import("@/app/[locale]/channel-management/channel-management-structured")
         const { serviceStructuredData, breadcrumbs, offerCatalog } =
             await buildChannelManagementStructured("es" as any)
         expect(String(serviceStructuredData["url"])).toContain(
@@ -78,9 +75,8 @@ describe("channel-management structured coverage", () => {
     })
 
     it("maps DE locale to EUR currency and prefixed urls", async () => {
-        const { buildChannelManagementStructured } = await import(
-            "@/app/[locale]/channel-management/channel-management-structured"
-        )
+        const { buildChannelManagementStructured } =
+            await import("@/app/[locale]/channel-management/channel-management-structured")
         const { serviceStructuredData, breadcrumbs, offerCatalog } =
             await buildChannelManagementStructured("de" as any)
         expect(String(serviceStructuredData["url"])).toContain(
@@ -93,9 +89,8 @@ describe("channel-management structured coverage", () => {
     })
 
     it("falls back currency to USD for unknown locale", async () => {
-        const { buildChannelManagementStructured } = await import(
-            "@/app/[locale]/channel-management/channel-management-structured"
-        )
+        const { buildChannelManagementStructured } =
+            await import("@/app/[locale]/channel-management/channel-management-structured")
         const { offerCatalog } = await buildChannelManagementStructured(
             "fr" as any
         )

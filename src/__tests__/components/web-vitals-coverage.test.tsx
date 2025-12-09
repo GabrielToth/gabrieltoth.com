@@ -16,9 +16,8 @@ describe("WebVitalsReport coverage", () => {
             va: vi.fn(),
         } as any
 
-        const { default: WebVitalsReport } = await import(
-            "@/components/analytics/web-vitals"
-        )
+        const { default: WebVitalsReport } =
+            await import("@/components/analytics/web-vitals")
         const element = React.createElement(WebVitalsReport, {
             onMetric: vi.fn(),
         })

@@ -22,9 +22,8 @@ describe("metadata generators (extended)", () => {
     })
 
     it("pc-optimization terms generateMetadata returns metadata", async () => {
-        const mod = await import(
-            "@/app/[locale]/pc-optimization/terms/terms-metadata"
-        )
+        const mod =
+            await import("@/app/[locale]/pc-optimization/terms/terms-metadata")
         const metadata = await mod.generateMetadata({
             params: Promise.resolve({ locale: "en" }),
         } as any)
@@ -36,9 +35,8 @@ describe("metadata generators (extended)", () => {
     })
 
     it("waveigl-support generateMetadata returns metadata", async () => {
-        const mod = await import(
-            "@/app/[locale]/waveigl-support/waveigl-support-metadata"
-        )
+        const mod =
+            await import("@/app/[locale]/waveigl-support/waveigl-support-metadata")
         const metadata = await mod.generateMetadata({
             params: Promise.resolve({ locale: "en" }),
         } as any)

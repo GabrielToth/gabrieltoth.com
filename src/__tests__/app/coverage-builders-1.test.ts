@@ -30,9 +30,8 @@ vi.mock("next-intl/server", () => {
 
 describe("structured builders coverage", () => {
     it("buildChannelManagementStructured returns objects", async () => {
-        const mod = await import(
-            "@/app/[locale]/channel-management/channel-management-structured"
-        )
+        const mod =
+            await import("@/app/[locale]/channel-management/channel-management-structured")
         const result = await mod.buildChannelManagementStructured("en")
         expect(result.serviceStructuredData).toBeTruthy()
         expect(result.offerCatalog).toBeTruthy()
@@ -41,9 +40,8 @@ describe("structured builders coverage", () => {
     })
 
     it("buildPrivacyPolicyStructured returns objects", async () => {
-        const mod = await import(
-            "@/app/[locale]/privacy-policy/privacy-policy-structured"
-        )
+        const mod =
+            await import("@/app/[locale]/privacy-policy/privacy-policy-structured")
         const result = await mod.buildPrivacyPolicyStructured("en")
         expect(result.webPageStructuredData).toBeTruthy()
         expect(result.sections.length).toBeGreaterThan(0)
@@ -51,9 +49,8 @@ describe("structured builders coverage", () => {
     })
 
     it("buildTermsOfServiceStructured returns objects", async () => {
-        const mod = await import(
-            "@/app/[locale]/terms-of-service/terms-of-service-structured"
-        )
+        const mod =
+            await import("@/app/[locale]/terms-of-service/terms-of-service-structured")
         const result = await mod.buildTermsOfServiceStructured("en")
         expect(result.webPageStructuredData).toBeTruthy()
         expect(result.content.title).toBeTruthy()
@@ -61,9 +58,8 @@ describe("structured builders coverage", () => {
     })
 
     it("buildPCOptimizationStructured returns objects", async () => {
-        const mod = await import(
-            "@/app/[locale]/pc-optimization/pc-optimization-structured"
-        )
+        const mod =
+            await import("@/app/[locale]/pc-optimization/pc-optimization-structured")
         const result = await mod.buildPCOptimizationStructured("en")
         expect(result.howTo).toBeTruthy()
         expect(result.offerCatalog).toBeTruthy()

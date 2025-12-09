@@ -93,9 +93,8 @@ describe("app/[locale]/editors/editors-form coverage", () => {
 
 describe("editors form coverage", () => {
     it("submits editor-application and shows success", async () => {
-        const { default: ApplicationForm } = await import(
-            "@/app/[locale]/editors/editors-form"
-        )
+        const { default: ApplicationForm } =
+            await import("@/app/[locale]/editors/editors-form")
 
         const fetchMock = vi.fn().mockResolvedValue({ ok: true })
         ;(globalThis as any).fetch = fetchMock
@@ -129,9 +128,8 @@ describe("editors form coverage", () => {
     })
 
     it("submits channel-management path", async () => {
-        const { default: ApplicationForm } = await import(
-            "@/app/[locale]/editors/editors-form"
-        )
+        const { default: ApplicationForm } =
+            await import("@/app/[locale]/editors/editors-form")
 
         ;(globalThis as any).fetch = vi.fn().mockResolvedValue({ ok: true })
 

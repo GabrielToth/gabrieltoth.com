@@ -35,5 +35,4 @@ function loadEnvFile(fileName: string): void {
 // Load environment variables for tests (supports Next.js style .env.local)
 loadEnvFile(".env.local")
 loadEnvFile(".env")
-
 ;(globalThis as any).React = React

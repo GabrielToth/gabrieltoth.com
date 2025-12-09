@@ -21,9 +21,8 @@ vi.mock("next-intl/server", () => ({
 
 describe("editors structured coverage", () => {
     it("builds breadcrumbs and returns structured data for EN and PT-BR", async () => {
-        const { buildEditorsStructured } = await import(
-            "@/app/[locale]/editors/editors-structured"
-        )
+        const { buildEditorsStructured } =
+            await import("@/app/[locale]/editors/editors-structured")
 
         const en = await buildEditorsStructured("en" as any)
         expect(en.jobStructuredData).toBeTruthy()

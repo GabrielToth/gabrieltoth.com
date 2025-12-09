@@ -34,9 +34,8 @@ vi.mock("next-intl/server", () => ({
 
 describe("terms-of-service coverage", () => {
     it("generates metadata for locales", async () => {
-        const { generateMetadata } = await import(
-            "@/app/[locale]/terms-of-service/terms-of-service-metadata"
-        )
+        const { generateMetadata } =
+            await import("@/app/[locale]/terms-of-service/terms-of-service-metadata")
         for (const locale of ["en", "pt-BR", "es", "de"] as const) {
             const meta = await generateMetadata({
                 params: Promise.resolve({ locale } as any),
@@ -57,9 +56,8 @@ describe("terms-of-service coverage", () => {
     })
 
     it("builds structured data and content across locales", async () => {
-        const { buildTermsOfServiceStructured } = await import(
-            "@/app/[locale]/terms-of-service/terms-of-service-structured"
-        )
+        const { buildTermsOfServiceStructured } =
+            await import("@/app/[locale]/terms-of-service/terms-of-service-structured")
         for (const locale of ["en", "pt-BR", "es", "de"] as const) {
             const { breadcrumbs, webPageStructuredData, content } =
                 await buildTermsOfServiceStructured(locale as any)

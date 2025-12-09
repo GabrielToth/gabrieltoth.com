@@ -17,9 +17,8 @@ vi.mock("next/navigation", () => ({
 
 describe("[locale]/iq-test/step/[step] page coverage", () => {
     it("renders a middle step and navigations", async () => {
-        const { default: StepPage } = await import(
-            "@/app/[locale]/iq-test/step/[step]/page"
-        )
+        const { default: StepPage } =
+            await import("@/app/[locale]/iq-test/step/[step]/page")
         const jsx = await StepPage({
             params: Promise.resolve({ locale: "en", step: "12" }),
         } as any)
@@ -27,9 +26,8 @@ describe("[locale]/iq-test/step/[step] page coverage", () => {
     })
 
     it("renders last step with finish CTA", async () => {
-        const { default: StepPage } = await import(
-            "@/app/[locale]/iq-test/step/[step]/page"
-        )
+        const { default: StepPage } =
+            await import("@/app/[locale]/iq-test/step/[step]/page")
         const jsx = await StepPage({
             params: Promise.resolve({ locale: "en", step: "35" }),
         } as any)
@@ -37,9 +35,8 @@ describe("[locale]/iq-test/step/[step] page coverage", () => {
     })
 
     it("calls notFound for invalid step", async () => {
-        const { default: StepPage } = await import(
-            "@/app/[locale]/iq-test/step/[step]/page"
-        )
+        const { default: StepPage } =
+            await import("@/app/[locale]/iq-test/step/[step]/page")
         await expect(
             StepPage({
                 params: Promise.resolve({ locale: "en", step: "0" }),

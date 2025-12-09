@@ -61,9 +61,8 @@ describe("canonical + hreflang for tests pages", () => {
     })
 
     it("personality step has canonical and languages", async () => {
-        const mod = await import(
-            "@/app/[locale]/personality-test/step/[step]/page"
-        )
+        const mod =
+            await import("@/app/[locale]/personality-test/step/[step]/page")
         const metadata = await mod.generateMetadata({
             params: Promise.resolve({ locale: "en", step: "7" }),
         } as any)
