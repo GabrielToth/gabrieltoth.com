@@ -23,6 +23,8 @@
     },
     "landing": {
         "h2": "Teste de QI grátis: seu Quociente de Inteligência em minutos",
+        "badge": "QI • Lógica • Padrões • Espacial",
+        "imageAlt": "Ilustração estilizada de rede cerebral",
         "p1": [
             "Atualizado em outubro de 2025 • Revisão psicológica: Marco Aurélio Virgílio (CRP 50.893-0) — psicólogo com ampla experiência clínica e educacional. Este teste gratuito utiliza princípios das Matrizes Progressivas (Raven) para estimar habilidades de raciocínio abstrato, reconhecimento de padrões, lógica e atenção.",
             "Ao longo de 35 questões curtas e objetivas, você analisa séries, relações e transformações visuais. O objetivo é identificar a alternativa que completa a sequência da forma mais lógica, reduzindo ao máximo pistas linguísticas e priorizando operações mentais como comparação, analogia, simetria, rotação, contagem e combinação de elementos.",
@@ -41,7 +43,12 @@
         "introTitle": "Teste de QI online",
         "introBody": [
             "Para fazer o teste de QI, observe cuidadosamente o padrão apresentado no topo de cada questão. Cada item traz uma sequência visual com uma regra implícita: seu papel é descobrir a regra e escolher a alternativa que melhor completa a série.",
-            "Sugerimos seguir três passos a cada pergunta: (1) varrer a figura rapidamente para ter uma visão global; (2) listar mentalmente hipóteses de transformação (deslocamento, rotação, inversão, incremento de quantidade, alternância de cores, combinação de duas regras); e (3) testar cada hipótese comparando-a com os quadros anteriores. Caso mais de uma alternativa pareça correta, escolha a que obedece à regra mais simples e consistente."
+            "Segue abaixo um método prático para cada questão."
+        ],
+        "introSteps": [
+            "Varra a figura rapidamente para ter uma visão global.",
+            "Liste hipóteses de transformação (deslocamento, rotação, inversão, incremento de quantidade, alternância de cores, combinação de duas regras).",
+            "Teste cada hipótese comparando com os quadros anteriores e escolha a regra mais simples e consistente."
         ],
         "whatEvaluatesTitle": "O que avalia este teste de QI?",
         "whatEvaluatesBody": [

@@ -117,3 +117,7 @@ tmp/
 temp/
 
 *storybook.log
+
+# Private auth/session artifacts
+/.auth/
+/.secrets/

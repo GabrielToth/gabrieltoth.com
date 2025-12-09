@@ -1,3 +1,5 @@
+import Footer from "@/components/layout/footer"
+import Header from "@/components/layout/header"
 import { getCurrencyForLocale } from "@/lib/currency"
 import { type Locale } from "@/lib/i18n"
 import { generateSeoConfig } from "@/lib/seo"
@@ -34,33 +36,39 @@ export default async function IQSummaryPage({ params }: SummaryPageProps) {
     const originalLocal = USD_ORIGINAL * rate
 
     return (
-        <section className="max-w-3xl mx-auto px-4 py-16">
-            <h1 className="text-2xl font-bold mb-4">{t("summary.title")}</h1>
-            <p className="text-muted-foreground mb-6">
-                {t("summary.subtitle")}
-            </p>
+        <>
+            <Header />
+            <section className="max-w-3xl mx-auto px-4 py-24">
+                <h1 className="text-2xl font-bold mb-4">
+                    {t("summary.title")}
+                </h1>
+                <p className="text-muted-foreground mb-6">
+                    {t("summary.subtitle")}
+                </p>
 
-            <div className="rounded-lg border p-4 mb-6 bg-emerald-50 text-emerald-900 dark:bg-emerald-900/20 dark:text-emerald-200">
-                <div className="text-lg font-bold">
-                    {t("summary.promoNow", {
-                        price: formatPrice(promoLocal, currency),
-                    })}
+                <div className="rounded-lg border p-4 mb-6 bg-emerald-50 text-emerald-900 dark:bg-emerald-900/20 dark:text-emerald-200">
+                    <div className="text-lg font-bold">
+                        {t("summary.promoNow", {
+                            price: formatPrice(promoLocal, currency),
+                        })}
+                    </div>
+                    <div className="text-sm">
+                        {t("summary.promoOriginal", {
+                            price: formatPrice(originalLocal, currency),
+                            usd: formatPrice(USD_ORIGINAL, "USD"),
+                        })}
+                    </div>
                 </div>
-                <div className="text-sm">
-                    {t("summary.promoOriginal", {
-                        price: formatPrice(originalLocal, currency),
-                        usd: formatPrice(USD_ORIGINAL, "USD"),
-                    })}
-                </div>
-            </div>
 
-            <Link
-                href={`/${locale}/payments/checkout?product=iqtest&price=${USD_PROMO}`}
-                className="inline-flex items-center px-6 py-3 rounded-md bg-blue-600 text-white hover:bg-blue-700"
-            >
-                {t("summary.payCta")}
-            </Link>
-        </section>
+                <Link
+                    href={`/${locale}/payments/checkout?product=iqtest&price=${USD_PROMO}`}
+                    className="inline-flex items-center px-6 py-3 rounded-md bg-blue-600 text-white hover:bg-blue-700"
+                >
+                    {t("summary.payCta")}
+                </Link>
+            </section>
+            <Footer locale={locale} />
+        </>
     )
 }
 

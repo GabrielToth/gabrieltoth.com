@@ -55,7 +55,7 @@ export default async function Footer({ locale }: FooterProps) {
                                         name: t(
                                             "links.services.items.pcOptimization"
                                         ),
-                                        href: `/${locale}/pc-optimization`,
+                                        href: `/${locale}/pc-optimization/`,
                                     },
                                     {
                                         name: t(
@@ -135,7 +135,7 @@ export default async function Footer({ locale }: FooterProps) {
                                         name: t(
                                             "links.contact.items.workAsEditor"
                                         ),
-                                        href: `/${locale}/editors`,
+                                        href: `/${locale}/editors/`,
                                         external: false,
                                     },
                                 ].map((item, index) => (

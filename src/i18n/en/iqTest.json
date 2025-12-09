@@ -23,6 +23,8 @@
     },
     "landing": {
         "h2": "Free IQ test online – accurate cognitive ability check",
+        "badge": "IQ • Logic • Patterns • Spatial",
+        "imageAlt": "Stylized brain network illustration",
         "p1": "Take our free IQ test with 35 fast questions that assess pattern recognition, logical reasoning, numerical series, and spatial intelligence. Optimized for smartphone and desktop.",
         "p2": "Available worldwide for people aged 12+. 35 multiple-choice questions with progressive difficulty. At the end, you will see an estimated result."
     },
@@ -33,6 +35,11 @@
     "sections": {
         "introTitle": "Online IQ test",
         "introBody": "To take the IQ test, study the pattern shown at the top of each question and select the alternative that completes the sequence in the most logical way.",
+        "introSteps": [
+            "Scan the figure quickly to get a global view.",
+            "List transformation hypotheses (shift, rotation, inversion, quantity increment, color alternation, combination of two rules).",
+            "Test each hypothesis by comparing to previous frames and choose the simplest consistent rule."
+        ],
         "whatEvaluatesTitle": "What does this IQ test evaluate?",
         "whatEvaluatesBody": "This test follows the principle of progressive matrices (Raven): it measures abstract reasoning — the basis of logical problem-solving — using information perceived by the senses.",
         "whoCanDoTitle": "Who can take the test?",

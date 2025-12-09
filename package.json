@@ -32,7 +32,9 @@
         "lighthouse:ci": "lhci collect && lhci assert",
         "perf": "npm run build && npm run analyze",
         "perf:full": "npm run build && npm run analyze && npm run lighthouse",
-        "bundle:size": "npm run build && node -e \"const fs=require('fs'); const path=require('path'); const getBundleSize=dir=>{let size=0; fs.readdirSync(dir).forEach(file=>{const filePath=path.join(dir,file); const stat=fs.statSync(filePath); if(stat.isDirectory()){size+=getBundleSize(filePath);}else{size+=stat.size;}}); return size;}; console.log('Bundle size:', (getBundleSize('.next')/1024/1024).toFixed(2) + 'MB');\""
+        "bundle:size": "npm run build && node -e \"const fs=require('fs'); const path=require('path'); const getBundleSize=dir=>{let size=0; fs.readdirSync(dir).forEach(file=>{const filePath=path.join(dir,file); const stat=fs.statSync(filePath); if(stat.isDirectory()){size+=getBundleSize(filePath);}else{size+=stat.size;}}); return size;}; console.log('Bundle size:', (getBundleSize('.next')/1024/1024).toFixed(2) + 'MB');\"",
+        "metrics:gsc": "node scripts/gsc-api-extract.js",
+        "metrics:psi": "node scripts/psi-extract.js"
     },
     "dependencies": {
         "@icons-pack/react-simple-icons": "^13.3.0",
@@ -94,8 +96,10 @@
         "eslint-plugin-react": "^7.37.5",
         "eslint-plugin-react-hooks": "^5.2.0",
         "eslint-plugin-storybook": "^9.0.9",
+        "googleapis": "^163.0.0",
         "husky": "^9.1.7",
         "lint-staged": "^16.1.0",
+        "node-fetch": "^2.7.0",
         "prettier": "^3.5.3",
         "speed-measure-webpack-plugin": "^1.5.0",
         "storybook": "^9.0.9",

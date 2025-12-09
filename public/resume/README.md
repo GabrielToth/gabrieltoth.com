@@ -3,7 +3,7 @@
 Place your resume files in this directory with the following names:
 
 ## English Resume
-- **File name**: `Gabriel Toth - Curriculum EN.pdf`
+- **File name**: `Gabriel_Toth_Curriculum_EN.pdf`
 - **Used when**: User visits any version of the site (except Portuguese)
 - **Download button**: "Download Resume" / "Descargar CV" / "Lebenslauf herunterladen"
 

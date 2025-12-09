@@ -1,3 +1,5 @@
+import Footer from "@/components/layout/footer"
+import Header from "@/components/layout/header"
 import StructuredData from "@/components/seo/structured-data"
 import { type Locale } from "@/lib/i18n"
 import { generateSeoConfig } from "@/lib/seo"
@@ -13,6 +15,10 @@ interface IQTestPageProps {
 export default async function IQTestPage({ params }: IQTestPageProps) {
     const { locale } = await params
     const t = await getTranslations({ locale, namespace: "iqTest" })
+    const tHeader = await getTranslations({
+        locale,
+        namespace: "layout.header",
+    })
 
     const { breadcrumbs, webPageStructuredData, faqs } =
         await buildIQTestStructured(locale)
@@ -45,8 +51,12 @@ export default async function IQTestPage({ params }: IQTestPageProps) {
         )
     }
 
+    const introSteps =
+        (t.raw("sections.introSteps") as string[] | undefined) || []
+
     return (
         <>
+            <Header />
             <StructuredData
                 locale={locale}
                 type="all"
@@ -59,27 +69,8 @@ export default async function IQTestPage({ params }: IQTestPageProps) {
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
                             <div>
-                                {/* Consistent header inside page for tests */}
-                                <div className="mb-8 md:mb-10">
-                                    <div className="max-w-7xl mx-auto">
-                                        <div className="flex justify-between items-center">
-                                            <Link
-                                                href={`/${locale}`}
-                                                className="text-white/90 hover:text-white font-semibold"
-                                            >
-                                                Gabriel Toth Gonçalves
-                                            </Link>
-                                            <Link
-                                                href={`/${locale}/personality-test`}
-                                                className="text-white/80 hover:text-white text-sm"
-                                            >
-                                                {"Personality Test"}
-                                            </Link>
-                                        </div>
-                                    </div>
-                                </div>
                                 <div className="inline-flex items-center px-3 py-1 rounded-full bg-white/15 text-white text-xs mb-4 ring-1 ring-white/25">
-                                    IQ • Logic • Patterns • Spatial
+                                    {t("landing.badge")}
                                 </div>
                                 <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-white mb-4">
                                     {t("title")}
@@ -110,7 +101,7 @@ export default async function IQTestPage({ params }: IQTestPageProps) {
                                 <div className="relative mx-auto w-full max-w-md">
                                     <Image
                                         src="/brain.svg"
-                                        alt="Stylized brain network illustration"
+                                        alt={t("landing.imageAlt")}
                                         width={400}
                                         height={320}
                                         className="w-full h-auto"
@@ -134,6 +125,14 @@ export default async function IQTestPage({ params }: IQTestPageProps) {
                                 </h2>
                                 <div className="space-y-4 text-gray-700 dark:text-gray-300">
                                     {renderBody(t.raw("sections.introBody"))}
+                                    {Array.isArray(introSteps) &&
+                                        introSteps.length > 0 && (
+                                            <ol className="list-decimal pl-6 space-y-2">
+                                                {introSteps.map((step, idx) => (
+                                                    <li key={idx}>{step}</li>
+                                                ))}
+                                            </ol>
+                                        )}
                                 </div>
                             </section>
 
@@ -259,7 +258,7 @@ export default async function IQTestPage({ params }: IQTestPageProps) {
                                 <div className="relative mx-auto w-full max-w-md">
                                     <Image
                                         src="/brain.svg"
-                                        alt="Stylized brain network illustration"
+                                        alt={t("landing.imageAlt")}
                                         width={400}
                                         height={320}
                                         className="w-full h-auto"
@@ -270,6 +269,7 @@ export default async function IQTestPage({ params }: IQTestPageProps) {
                     </div>
                 </div>
             </section>
+            <Footer locale={locale} />
         </>
     )
 }

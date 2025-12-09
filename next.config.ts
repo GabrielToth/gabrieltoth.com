@@ -169,6 +169,22 @@ const nextConfig: NextConfig = {
                 destination: "https://www.gabrieltoth.com/:path*",
                 permanent: true,
             },
+            // Legacy resume URLs -> unified PT-BR PDF asset
+            {
+                source: "/resume/Gabriel",
+                destination: "/resume/Gabriel_Toth_Curriculum_PT.pdf",
+                permanent: true,
+            },
+            {
+                source: "/resume/Gabriel%20Toth%20-%20Curriculum%20PT.pdf",
+                destination: "/resume/Gabriel_Toth_Curriculum_PT.pdf",
+                permanent: true,
+            },
+            {
+                source: "/resume/Gabriel%20Toth%20-%20Curriculum%20EN.pdf",
+                destination: "/resume/Gabriel_Toth_Curriculum_ENpdf",
+                permanent: true,
+            },
             // Locale-prefixed canonical routes (static known paths)
             {
                 source: "/",

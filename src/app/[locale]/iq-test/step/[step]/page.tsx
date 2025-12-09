@@ -1,4 +1,6 @@
 import QuestionsDebugPanel from "@/components/debug/questions-debug-panel"
+import Footer from "@/components/layout/footer"
+import Header from "@/components/layout/header"
 import { type Locale } from "@/lib/i18n"
 import { loadQuestions } from "@/lib/questions/loader"
 import { generateSeoConfig } from "@/lib/seo"
@@ -169,96 +171,103 @@ export default async function IQStepPage({
         : [[], [], [], [], [], [], [], [], []]
 
     return (
-        <section className="max-w-3xl mx-auto px-4 py-16 relative">
-            <h1 className="text-2xl font-bold mb-6">{t("title")}</h1>
-            <p className="text-muted-foreground mb-4">
-                {t("steps.progress", { step: stepNum, total: 35 })}
-            </p>
+        <>
+            <Header />
+            <section className="max-w-3xl mx-auto px-4 py-24 relative">
+                <h1 className="text-2xl font-bold mb-6">{t("title")}</h1>
+                <p className="text-muted-foreground mb-4">
+                    {t("steps.progress", { step: stepNum, total: 35 })}
+                </p>
 
-            {envDebugEnabled && (
-                <div className="mb-4 flex justify-end gap-2">
-                    {debug ? (
+                {envDebugEnabled && (
+                    <div className="mb-4 flex justify-end gap-2">
+                        {debug ? (
+                            <Link
+                                href={`/${locale}/iq-test/step/${stepNum}`}
+                                className="rounded-md border px-3 py-1"
+                            >
+                                Debug: off
+                            </Link>
+                        ) : (
+                            <Link
+                                href={`/${locale}/iq-test/step/${stepNum}?debug=1`}
+                                className="rounded-md border px-3 py-1"
+                            >
+                                Debug: on
+                            </Link>
+                        )}
+                    </div>
+                )}
+
+                <div className="rounded-lg border p-4 mb-6">
+                    <div className="font-medium mb-2">{question}</div>
+                    <div className="space-y-2">
+                        {options.map((optionText, idx) => (
+                            <label
+                                key={idx}
+                                className="flex items-center gap-2"
+                            >
+                                <input type="radio" name="answer" />
+                                <span>
+                                    {optionText}
+                                    {debugOpen && idx === correctIndex && (
+                                        <span className="ml-2 text-green-600">
+                                            (correta)
+                                        </span>
+                                    )}
+                                </span>
+                            </label>
+                        ))}
+                    </div>
+                </div>
+
+                <div className="flex items-center justify-between">
+                    {stepNum > 1 ? (
                         <Link
-                            href={`/${locale}/iq-test/step/${stepNum}`}
-                            className="rounded-md border px-3 py-1"
+                            href={`/${locale}/iq-test/step/${stepNum - 1}`}
+                            className="px-4 py-2 rounded-md border"
                         >
-                            Debug: off
+                            {t("steps.prev")}
+                        </Link>
+                    ) : (
+                        <span />
+                    )}
+
+                    {isLast ? (
+                        <Link
+                            href={`/${locale}/iq-test/summary`}
+                            className="px-4 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700"
+                        >
+                            {t("steps.finish")}
                         </Link>
                     ) : (
                         <Link
-                            href={`/${locale}/iq-test/step/${stepNum}?debug=1`}
-                            className="rounded-md border px-3 py-1"
+                            href={`/${locale}/iq-test/step/${stepNum + 1}`}
+                            className="px-4 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700"
                         >
-                            Debug: on
+                            {t("steps.next")}
                         </Link>
                     )}
                 </div>
-            )}
 
-            <div className="rounded-lg border p-4 mb-6">
-                <div className="font-medium mb-2">{question}</div>
-                <div className="space-y-2">
-                    {options.map((optionText, idx) => (
-                        <label key={idx} className="flex items-center gap-2">
-                            <input type="radio" name="answer" />
-                            <span>
-                                {optionText}
-                                {debugOpen && idx === correctIndex && (
-                                    <span className="ml-2 text-green-600">
-                                        (correta)
-                                    </span>
-                                )}
-                            </span>
-                        </label>
-                    ))}
-                </div>
-            </div>
-
-            <div className="flex items-center justify-between">
-                {stepNum > 1 ? (
-                    <Link
-                        href={`/${locale}/iq-test/step/${stepNum - 1}`}
-                        className="px-4 py-2 rounded-md border"
-                    >
-                        {t("steps.prev")}
-                    </Link>
-                ) : (
-                    <span />
-                )}
-
-                {isLast ? (
-                    <Link
-                        href={`/${locale}/iq-test/summary`}
-                        className="px-4 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700"
-                    >
-                        {t("steps.finish")}
-                    </Link>
-                ) : (
-                    <Link
-                        href={`/${locale}/iq-test/step/${stepNum + 1}`}
-                        className="px-4 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700"
-                    >
-                        {t("steps.next")}
-                    </Link>
-                )}
-            </div>
-
-            <QuestionsDebugPanel
-                open={debugOpen}
-                closeHref={`/${locale}/iq-test/step/${stepNum}`}
-                dataByCategory={[
-                    { name: "math", questions: mathPack },
-                    { name: "physics", questions: physPack },
-                    { name: "world_history", questions: whPack },
-                    { name: "biology", questions: bioPack },
-                    { name: "science", questions: sciPack },
-                    { name: "sociology", questions: socPack },
-                    { name: "philosophy", questions: philPack },
-                    { name: "logic", questions: logicPack },
-                    { name: "language", questions: langPack },
-                ]}
-            />
-        </section>
+                <QuestionsDebugPanel
+                    open={debugOpen}
+                    closeHref={`/${locale}/iq-test/step/${stepNum}`}
+                    dataByCategory={[
+                        { name: "math", questions: mathPack },
+                        { name: "physics", questions: physPack },
+                        { name: "world_history", questions: whPack },
+                        { name: "biology", questions: bioPack },
+                        { name: "science", questions: sciPack },
+                        { name: "sociology", questions: socPack },
+                        { name: "philosophy", questions: philPack },
+                        { name: "logic", questions: logicPack },
+                        { name: "language", questions: langPack },
+                    ]}
+                />
+            </section>
+            <Footer locale={locale} />
+        </>
     )
 }
 
