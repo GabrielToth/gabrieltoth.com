@@ -1,6 +1,7 @@
 import { type Locale } from "@/lib/i18n"
 import { generateSeoConfig } from "@/lib/seo"
 import { type Metadata } from "next"
+import { getTranslations } from "next-intl/server"
 
 interface PageProps {
     params: Promise<{ locale: Locale }>
@@ -10,13 +11,20 @@ export async function generateMetadata({
     params,
 }: PageProps): Promise<Metadata> {
     const { locale } = await params
+    const t = await getTranslations({ locale, namespace: "channelManagement" })
 
     const seoConfig = generateSeoConfig({
         locale,
         path: "/channel-management",
-        title: undefined,
-        description: undefined,
-        keywords: [],
+        title: t("seo.title"),
+        description: t("seo.description"),
+        keywords: [
+            "youtube consulting",
+            "channel management",
+            "social media manager",
+            "growth strategy",
+            "monetization",
+        ],
         ogType: "website",
         ogImage: "https://www.gabrieltoth.com/og-image-viratrend.jpg",
     })

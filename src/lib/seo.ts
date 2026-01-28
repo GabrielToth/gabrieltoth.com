@@ -718,7 +718,7 @@ export function generateOrganizationStructuredData(
         "@type": "Organization",
         name: "Gabriel Toth Tech",
         url: SITE_URL,
-        logo: `${SITE_URL}/logo.png`,
+        logo: `${SITE_URL}/logo.jpg`,
         founder: {
             "@type": "Person",
             name: AUTHOR_NAME,
