@@ -103,7 +103,16 @@ export default function Header() {
                     </div>
 
                     {/* Desktop Navigation */}
-                    <nav className="hidden md:flex items-center space-x-8">
+                    <nav className="hidden md:flex items-center space-x-8 flex-1">
+                        {/* Left side: Language and Theme */}
+                        <div className="flex items-center space-x-3">
+                            <LanguageSelector
+                                variant="header"
+                                includeThemeToggle={false}
+                            />
+                            <ThemeToggleClient />
+                        </div>
+
                         <Link
                             href={getHomeLink()}
                             className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
@@ -130,8 +139,6 @@ export default function Header() {
                                 {link.label}
                             </Link>
                         ))}
-
-                        {/* IQ Test now in Services dropdown */}
 
                         {/* Services Dropdown */}
                         <div className="relative">
@@ -193,18 +200,28 @@ export default function Header() {
                             )}
                         </div>
 
-                        {/* Theme Toggle (outside language) */}
-                        <ThemeToggleClient />
-
-                        {/* Language Selector */}
-                        <LanguageSelector
-                            variant="header"
-                            includeThemeToggle={false}
-                        />
+                        {/* Auth Buttons - Right side */}
+                        <div className="flex items-center space-x-3 pl-4 border-l border-gray-200 dark:border-gray-700 ml-auto">
+                            <Link
+                                href={`/${locale}/login`}
+                                className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors text-sm font-medium"
+                                data-testid="nav-login"
+                            >
+                                {t("login", { defaultValue: "Login" })}
+                            </Link>
+                            <Link
+                                href={`/${locale}/register`}
+                                className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md text-sm font-medium transition-colors"
+                                data-testid="nav-register"
+                            >
+                                {t("register", { defaultValue: "Register" })}
+                            </Link>
+                        </div>
                     </nav>
 
                     {/* Mobile menu button */}
                     <div className="md:hidden flex items-center space-x-2">
+                        <ThemeToggleClient />
                         <LanguageSelector
                             variant="header"
                             includeThemeToggle={false}
@@ -296,9 +313,30 @@ export default function Header() {
                                 ))}
                             </div>
 
+                            {/* Mobile Auth Buttons */}
+                            <div className="px-3 py-2 space-y-2 border-t border-gray-200 dark:border-gray-700 mt-2">
+                                <Link
+                                    href={`/${locale}/login`}
+                                    className="block px-3 py-2 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors text-sm font-medium"
+                                    onClick={() => setIsMobileMenuOpen(false)}
+                                    data-testid="nav-login-mobile"
+                                >
+                                    {t("login", { defaultValue: "Login" })}
+                                </Link>
+                                <Link
+                                    href={`/${locale}/register`}
+                                    className="block px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md text-sm font-medium transition-colors text-center"
+                                    onClick={() => setIsMobileMenuOpen(false)}
+                                    data-testid="nav-register-mobile"
+                                >
+                                    {t("register", {
+                                        defaultValue: "Register",
+                                    })}
+                                </Link>
+                            </div>
+
                             {/* Mobile Actions */}
                             <div className="px-3 py-2 flex items-center justify-end md:hidden">
-                                {/* c8 ignore next */}
                                 <ThemeToggleClient />
                             </div>
                         </div>
