@@ -1,0 +1,417 @@
+# Implementation Plan: Distributed Infrastructure with Logging
+
+## Overview
+
+This implementation plan breaks down the distributed infrastructure system into discrete, testable coding tasks. Each task builds incrementally on previous work, with property-based tests placed close to implementation to catch errors early. All tasks are required for comprehensive implementation.
+
+## Tasks
+
+- [x]   1. Setup project structure and dependencies
+    - Create directory structure: src/lib/{logger,credits,metering,discord}, docker/
+    - Install dependencies: pino, pino-pretty, pg, ioredis, fast-check, vitest
+    - Configure TypeScript with strict mode
+    - Setup .env.local with required variables
+    - _Requirements: 8.1, 8.2_
+
+- [x]   2. Implement environment configuration validation
+    - [x] 2.1 Create environment configuration interface and validation function
+        - Define EnvironmentConfig interface with all required fields
+        - Implement validateEnv() function that checks required variables
+        - Throw clear error with missing variable names
+        - _Requirements: 8.3_
+    - [x] 2.2 Write property test for environment validation
+        - **Property 31: Required environment variable validation**
+        - **Validates: Requirements 8.3**
+    - [x] 2.3 Write unit tests for environment edge cases
+        - Test missing DISCORD_WEBHOOK_URL
+        - Test missing DATABASE_URL
+        - Test DEBUG flag parsing (true/false/undefined)
+        - _Requirements: 8.3_
+
+- [x]   3. Implement centralized logger component
+    - [x] 3.1 Create logger factory with Pino
+        - Implement createLogger(context) function
+        - Configure JSON output for production
+        - Configure pino-pretty for development
+        - Set log level based on DEBUG environment variable
+        - Add base fields (pid, hostname)
+        - _Requirements: 2.1, 2.2, 2.3, 2.4, 2.5, 2.6_
+    - [x] 3.2 Write property test for JSON output in production
+        - **Property 1: Production logs are valid JSON**
+        - **Validates: Requirements 2.1**
+    - [x] 3.3 Write property test for DEBUG flag suppression
+        - **Property 2: Debug logs respect DEBUG flag (suppression)**
+        - **Validates: Requirements 2.4**
+    - [x] 3.4 Write property test for DEBUG flag emission
+        - **Property 3: Debug logs respect DEBUG flag (emission)**
+        - **Validates: Requirements 2.5**
+    - [x] 3.5 Write property test for required log fields
+        - **Property 4: Log entries contain required fields**
+        - **Validates: Requirements 2.6**
+    - [x] 3.6 Write property test for error stack traces
+        - **Property 5: Error logs include stack traces**
+        - **Validates: Requirements 2.7**
+    - [x] 3.7 Write unit tests for logger edge cases
+        - Test logging with undefined context
+        - Test logging with circular references
+        - Test logging with very long messages
+        - _Requirements: 2.1, 2.6_
+
+- [x]   4. Implement request context middleware
+    - [x] 4.1 Create request context interface and middleware
+        - Define RequestContext interface
+        - Implement contextMiddleware to generate/extract requestId
+        - Extract userId from headers when available
+        - Attach context to request object
+        - Set X-Request-ID response header
+        - _Requirements: 12.2, 12.3_
+    - [x] 4.2 Write property test for request ID propagation
+        - **Property 6: Request context propagation**
+        - **Validates: Requirements 12.2**
+    - [x] 4.3 Write property test for user context propagation
+        - **Property 7: User context propagation**
+        - **Validates: Requirements 12.3**
+    - [x] 4.4 Write unit tests for context middleware
+        - Test requestId generation when not provided
+        - Test requestId extraction from header
+        - Test userId extraction from header
+        - _Requirements: 12.2, 12.3_
+
+- [x]   5. Implement Discord alerter with rate limiting
+    - [x] 5.1 Create in-memory rate limiter
+        - Implement RateLimiter interface with shouldAllow(key) method
+        - Use Map to track last sent timestamp per key
+        - Implement 60-second window
+        - Add automatic cleanup of expired entries
+        - _Requirements: 3.2, 10.2, 10.4_
+    - [x] 5.2 Create Discord alerter component
+        - Implement DiscordAlerter interface
+        - Create sendAlert(alert) method
+        - Implement createEmbed() for Discord formatting
+        - Add color coding by severity (error=orange, fatal=red, startup=green, shutdown=blue)
+        - Include stack traces in embeds (truncated to 1000 chars)
+        - Handle webhook failures gracefully (log but don't throw)
+        - _Requirements: 3.1, 3.4, 3.5, 3.7_
+    - [x] 5.3 Write property test for alert level filtering
+        - **Property 11: Alert level filtering**
+        - **Validates: Requirements 3.1**
+    - [x] 5.4 Write property test for rate limiting enforcement
+        - **Property 12: Rate limiting enforcement**
+        - **Validates: Requirements 3.2**
+    - [x] 5.5 Write property test for Discord embed formatting
+        - **Property 13: Discord embed formatting**
+        - **Validates: Requirements 3.4**
+    - [x] 5.6 Write property test for stack traces in alerts
+        - **Property 14: Stack traces in critical alerts**
+        - **Validates: Requirements 3.5**
+    - [x] 5.7 Write property test for non-blocking failures
+        - **Property 15: Non-blocking alert failures**
+        - **Validates: Requirements 3.7**
+    - [x] 5.8 Write property test for rate limit suppression logging
+        - **Property 16: Rate limit suppression logging**
+        - **Validates: Requirements 10.3**
+    - [x] 5.9 Write property test for rate limit expiration
+        - **Property 17: Rate limit expiration**
+        - **Validates: Requirements 10.4**
+    - [x] 5.10 Write property test for independent context rate limiting
+        - **Property 18: Independent context rate limiting**
+        - **Validates: Requirements 10.5**
+    - [x] 5.11 Write unit tests for Discord alerter edge cases
+        - Test webhook URL from environment variable
+        - Test embed with missing stack trace
+        - Test embed with very long context
+        - Test rate limiter cleanup
+        - _Requirements: 3.6, 3.4_
+
+- [x]   6. Checkpoint - Ensure logging and alerting tests pass
+    - Ensure all tests pass, ask the user if questions arise.
+
+- [x]   7. Setup database schema and migrations
+    - [x] 7.1 Create database migration files
+        - Create user_accounts table with balance constraint
+        - Create transactions table with foreign key
+        - Create usage_metrics table with indexes
+        - Create daily_usage_summary table with unique constraint
+        - Create pricing_config table with default values
+        - Add indexes for performance (user_id, created_at)
+        - _Requirements: 4.4, 4.8, 5.10_
+    - [x] 7.2 Write unit tests for schema validation
+        - Test positive_balance constraint
+        - Test foreign key constraint
+        - Test unique constraint on daily_usage_summary
+        - _Requirements: 4.4_
+
+- [x]   8. Implement atomic credit system
+    - [x] 8.1 Create credit system interface and implementation
+        - Implement getBalance(userId) method
+        - Implement debit(userId, amount, reason) with row locking
+        - Implement credit(userId, amount, reason) with upsert
+        - Implement getTransactionHistory(userId, limit) method
+        - Use FOR NO KEY UPDATE for row locking
+        - Validate balance before debit
+        - Execute all operations within BEGIN/COMMIT transactions
+        - Log all transaction details
+        - _Requirements: 4.1, 4.2, 4.5, 4.6, 4.7, 4.8_
+    - [x] 8.2 Write property test for insufficient balance rejection
+        - **Property 19: Insufficient balance rejection**
+        - **Validates: Requirements 4.2**
+    - [x] 8.3 Write property test for balance non-negativity
+        - **Property 20: Balance non-negativity invariant**
+        - **Validates: Requirements 4.4**
+    - [x] 8.4 Write property test for transaction logging
+        - **Property 21: Transaction logging completeness**
+        - **Validates: Requirements 4.5**
+    - [x] 8.5 Write property test for transaction rollback
+        - **Property 22: Transaction rollback on failure**
+        - **Validates: Requirements 4.7**
+    - [x] 8.6 Write property test for transaction history
+        - **Property 23: Transaction history persistence**
+        - **Validates: Requirements 4.8**
+    - [x] 8.7 Write unit tests for credit system edge cases
+        - Test debit with exact balance
+        - Test credit to non-existent user (upsert)
+        - Test concurrent transactions (race condition)
+        - Test transaction history pagination
+        - _Requirements: 4.2, 4.8_
+
+- [x]   9. Implement metering system
+    - [x] 9.1 Create metering system interface and recording methods
+        - Implement recordBandwidth(userId, bytes) method
+        - Implement recordStorage(userId, bytes) method
+        - Implement recordCacheOp(userId, operation) method
+        - Implement recordApiCall(userId, endpoint) method
+        - Log raw usage values at debug level
+        - Insert records into usage_metrics table
+        - _Requirements: 5.1, 5.2, 5.3, 5.4, 5.5_
+    - [x] 9.2 Implement daily aggregation function
+        - Implement aggregateDaily() method
+        - Query usage_metrics for previous day
+        - Group metrics by user and type
+        - Convert bytes to GB (bytes / 1024^3)
+        - Load pricing from pricing_config table
+        - Calculate costs per metric type
+        - Insert into daily_usage_summary (upsert)
+        - Integrate with credit system for billing
+        - Handle per-user errors gracefully
+        - Return aggregation result with stats
+        - _Requirements: 5.6, 5.8, 5.9_
+    - [x] 9.3 Write property test for bandwidth recording
+        - **Property 24: Bandwidth recording persistence**
+        - **Validates: Requirements 5.1**
+    - [x] 9.4 Write property test for storage recording
+        - **Property 25: Storage recording persistence**
+        - **Validates: Requirements 5.2**
+    - [x] 9.5 Write property test for cache operation recording
+        - **Property 26: Cache operation recording**
+        - **Validates: Requirements 5.3**
+    - [x] 9.6 Write property test for API call recording
+        - **Property 27: API call recording**
+        - **Validates: Requirements 5.4**
+    - [x] 9.7 Write property test for raw usage logging
+        - **Property 28: Raw usage value logging**
+        - **Validates: Requirements 5.5**
+    - [x] 9.8 Write property test for unit conversion
+        - **Property 29: Unit conversion accuracy**
+        - **Validates: Requirements 5.6**
+    - [x] 9.9 Write property test for cost calculation
+        - **Property 30: Cost calculation and billing**
+        - **Validates: Requirements 5.8**
+    - [x] 9.10 Write unit tests for metering edge cases
+        - Test aggregation with no usage data
+        - Test aggregation with failed debit
+        - Test aggregation re-run for same date (upsert)
+        - Test pricing config updates
+        - _Requirements: 5.6, 5.8_
+
+- [x]   10. Checkpoint - Ensure credit and metering tests pass
+    - Ensure all tests pass, ask the user if questions arise.
+
+- [x]   11. Create Docker infrastructure configuration
+    - [x] 11.1 Create docker-compose.yml with all services
+        - Define app service (Next.js) with local volume mount
+        - Define backend service with local volume mount
+        - Define postgres service with named volume
+        - Define redis service with named volume
+        - Configure health checks for all services (30s interval, 3 retries)
+        - Configure restart policies (unless-stopped, max 5 attempts in 10 minutes)
+        - Create frontend and backend networks
+        - Set backend network as internal
+        - Configure depends_on with service_healthy conditions
+        - _Requirements: 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 6.1, 6.2, 6.3, 6.4, 7.1, 7.2, 9.1, 9.2, 9.3, 9.4_
+    - [x] 11.2 Write integration tests for Docker infrastructure
+        - Test all containers start successfully
+        - Test health checks pass for all services
+        - Test app can connect to backend
+        - Test backend can connect to postgres
+        - Test backend can connect to redis
+        - Test app cannot connect directly to postgres
+        - Test volume persistence after container restart
+        - _Requirements: 1.1, 1.3, 1.4, 1.6, 6.6, 6.7, 6.8, 7.4, 9.2, 9.3_
+
+- [x]   12. Implement health check endpoints
+    - [x] 12.1 Create health check endpoint for app
+        - Implement GET /api/health endpoint
+        - Return 200 with status: healthy
+        - Include uptime and timestamp
+        - _Requirements: 1.4, 6.6_
+    - [x] 12.2 Create health check endpoint for backend
+        - Implement GET /health endpoint
+        - Check database connectivity (pg_isready equivalent)
+        - Check Redis connectivity (ping)
+        - Check memory usage
+        - Return 200 if all checks pass, 503 otherwise
+        - Include individual check results
+        - _Requirements: 1.4, 6.6, 6.7, 6.8_
+    - [x] 12.3 Write unit tests for health check endpoints
+        - Test healthy state
+        - Test unhealthy state (database down)
+        - Test unhealthy state (redis down)
+        - Test response format
+        - _Requirements: 1.4_
+
+- [x]   13. Implement graceful shutdown handlers
+    - [x] 13.1 Create shutdown handler
+        - Listen for SIGTERM and SIGINT signals
+        - Log shutdown initiation
+        - Send shutdown alert to Discord
+        - Complete in-flight requests (wait for pending operations)
+        - Close database pool gracefully (pool.end())
+        - Close Redis connection gracefully (redis.quit())
+        - Flush pending logs (logger.flush())
+        - Exit with status code 0
+        - _Requirements: 11.1, 11.2, 11.3, 11.4, 11.5, 11.6, 11.7_
+    - [x] 13.2 Write unit tests for shutdown handler
+        - Test SIGTERM triggers shutdown
+        - Test SIGINT triggers shutdown
+        - Test database pool is closed
+        - Test Redis connection is closed
+        - Test Discord alert is sent
+        - Test exit code is 0
+        - _Requirements: 11.1, 11.3, 11.4, 11.6, 11.7_
+
+- [x]   14. Implement startup logging and alerts
+    - [x] 14.1 Create startup handler
+        - Log application startup with version and environment
+        - Send startup alert to Discord
+        - Log configuration (non-sensitive values only)
+        - _Requirements: 2.8, 3.1_
+    - [x] 14.2 Write property test for sensitive data exclusion
+        - **Property 10: Sensitive data exclusion**
+        - **Validates: Requirements 8.9**
+    - [x] 14.3 Write unit tests for startup handler
+        - Test startup log is emitted
+        - Test Discord alert is sent
+        - Test sensitive env vars are not logged
+        - _Requirements: 2.8, 8.9_
+
+- [x]   15. Implement observability features
+    - [x] 15.1 Create slow query logging middleware
+        - Wrap database queries with timing
+        - Log queries exceeding 1 second threshold
+        - Include query text and parameters (sanitized)
+        - _Requirements: 12.5_
+    - [x] 15.2 Create performance timing middleware
+        - Calculate request duration
+        - Include timing in debug logs
+        - Add timing to response headers (X-Response-Time)
+        - _Requirements: 12.7_
+    - [x] 15.3 Create metrics endpoint
+        - Implement GET /metrics endpoint
+        - Expose basic metrics (request count, error count, uptime)
+        - Format for Prometheus compatibility
+        - _Requirements: 12.4_
+    - [x] 15.4 Write property test for slow query logging
+        - **Property 9: Slow query logging**
+        - **Validates: Requirements 12.5**
+    - [x] 15.5 Write property test for performance timing
+        - **Property 8: Performance timing in debug logs**
+        - **Validates: Requirements 12.7**
+    - [x] 15.6 Write unit tests for observability features
+        - Test slow query detection
+        - Test performance timing calculation
+        - Test metrics endpoint format
+        - _Requirements: 12.4, 12.5, 12.7_
+
+- [x]   16. Implement error handling and retry logic
+    - [x] 16.1 Create retry utility with exponential backoff
+        - Implement withRetry<T>(operation, config) function
+        - Support configurable max attempts, delays, and backoff multiplier
+        - Log retry attempts at warn level
+        - Throw last error after max attempts
+        - _Requirements: Error handling strategy_
+    - [x] 16.2 Apply retry logic to critical operations
+        - Wrap database connection with retry
+        - Wrap Redis connection with retry
+        - Wrap Discord webhook calls with retry (optional)
+        - _Requirements: Error handling strategy_
+    - [x] 16.3 Write unit tests for retry logic
+        - Test successful operation on first attempt
+        - Test successful operation after retries
+        - Test failure after max attempts
+        - Test exponential backoff timing
+        - _Requirements: Error handling strategy_
+
+- [x]   17. Create cron job for daily aggregation
+    - [x] 17.1 Implement cron scheduler
+        - Install node-cron dependency
+        - Schedule aggregateDaily() to run at 00:00 UTC
+        - Log aggregation start and completion
+        - Send Discord alert on aggregation errors
+        - _Requirements: 5.7_
+    - [x] 17.2 Write unit tests for cron scheduler
+        - Test cron expression is correct
+        - Test aggregation is called
+        - Test error handling
+        - _Requirements: 5.7_
+
+- [x]   18. Integration and wiring
+    - [x] 18.1 Wire all components together in main application
+        - Initialize environment configuration
+        - Initialize logger
+        - Initialize database pool
+        - Initialize Redis client
+        - Initialize Discord alerter
+        - Initialize credit system
+        - Initialize metering system
+        - Setup request context middleware
+        - Setup error handling middleware
+        - Setup graceful shutdown handlers
+        - Start cron scheduler
+        - Start HTTP server
+        - _Requirements: All_
+    - [x] 18.2 Create example API endpoints using all systems
+        - Create POST /api/usage endpoint (records usage via metering)
+        - Create GET /api/balance endpoint (queries credit system)
+        - Create POST /api/credits endpoint (adds credits)
+        - Ensure all endpoints use request context
+        - Ensure all endpoints log appropriately
+        - _Requirements: Integration_
+    - [x] 18.3 Write integration tests for complete flows
+        - Test complete credit transaction flow
+        - Test complete metering and billing flow
+        - Test error logging and Discord alerts
+        - Test graceful shutdown
+        - _Requirements: All_
+
+- [x]   19. Final checkpoint - Ensure all tests pass
+    - Run full test suite (unit + property + integration)
+    - Verify Docker infrastructure starts successfully
+    - Verify all health checks pass
+    - Verify logging output in both dev and prod modes
+    - Ensure all tests pass, ask the user if questions arise.
+
+## Notes
+
+- All tasks are now required for comprehensive implementation
+- Each task references specific requirements for traceability
+- Property tests validate universal correctness properties (31 total)
+- Unit tests validate specific examples and edge cases
+- Integration tests validate end-to-end flows and Docker infrastructure
+- Checkpoints ensure incremental validation at key milestones
+- All components are designed for debuggability and maintainability
+- Docker configuration prioritizes automatic recovery and data persistence
+- Credit system ensures atomicity through database transactions and row locking
+- Metering system provides transparency through raw usage logging
+- Logging system adapts to environment (JSON in prod, pretty in dev)
+- Discord alerts are rate-limited to prevent spam
+- Graceful shutdown ensures no data loss

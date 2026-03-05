@@ -18,8 +18,6 @@ const resend = process.env.RESEND_API_KEY
     ? new Resend(process.env.RESEND_API_KEY)
     : null
 
-// In-memory fallback for dev; production uses Upstash via lib/rate-limit
-const submissions = new Map<string, number[]>()
 const RATE_LIMIT = { MAX_REQUESTS: 5, WINDOW_MS: 15 * 60 * 1000 }
 
 // Lista de palavras/padrões suspeitos de spam
@@ -41,8 +39,6 @@ const SPAM_PATTERNS = [
     /limited time/i,
     /act now/i,
 ]
-
-// getClientIP moved to lib/firewall as getClientIp
 
 async function verifyTurnstileToken(token: string | undefined, ip: string) {
     const secret = process.env.TURNSTILE_SECRET_KEY
@@ -71,27 +67,6 @@ async function verifyTurnstileToken(token: string | undefined, ip: string) {
     } catch {
         return { success: false }
     }
-}
-
-function isRateLimited(ip: string): boolean {
-    const now = Date.now()
-    const userSubmissions = submissions.get(ip) || []
-
-    // Remove submissions antigas (fora da janela de tempo)
-    const recentSubmissions = userSubmissions.filter(
-        timestamp => now - timestamp < RATE_LIMIT.WINDOW_MS
-    )
-
-    submissions.set(ip, recentSubmissions)
-
-    return recentSubmissions.length >= RATE_LIMIT.MAX_REQUESTS
-}
-
-function addSubmission(ip: string): void {
-    const now = Date.now()
-    const userSubmissions = submissions.get(ip) || []
-    userSubmissions.push(now)
-    submissions.set(ip, userSubmissions)
 }
 
 function containsSpam(text: string): boolean {
@@ -231,10 +206,10 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ message: "Forbidden" }, { status: 403 })
         }
 
-        // Persistent rate limit (Upstash) + fallback in-memory
+        // Persistent rate limit (Upstash) + Redis fallback
         const key = buildClientKey({ ip: clientIP, path, userAgent })
         const rl = await rateLimitByKey(key)
-        if (!rl.success || isRateLimited(clientIP)) {
+        if (!rl.success) {
             return NextResponse.json(
                 {
                     message: "Too many requests. Please try again later.",
@@ -355,9 +330,6 @@ export async function POST(request: NextRequest) {
                 { status: 400 }
             )
         }
-
-        // Adicionar ao rate limiting
-        addSubmission(clientIP)
 
         // Sempre enviar notificação no Discord
         try {

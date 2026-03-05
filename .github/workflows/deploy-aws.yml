@@ -1,0 +1,170 @@
+name: Deploy to AWS
+
+on:
+    push:
+        branches:
+            - main
+            - develop
+    pull_request:
+        branches:
+            - main
+
+env:
+    AWS_REGION: us-east-1
+    NODE_VERSION: "20"
+
+jobs:
+    build-and-test:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: ${{ env.NODE_VERSION }}
+                  cache: "npm"
+
+            - name: Install dependencies
+              run: npm ci
+
+            - name: Run linter
+              run: npm run lint --if-present
+
+            - name: Run tests
+              run: npm run test:run --if-present
+
+            - name: Build application
+              run: npm run build
+
+    deploy-backend:
+        needs: build-and-test
+        runs-on: ubuntu-latest
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: ${{ env.NODE_VERSION }}
+                  cache: "npm"
+
+            - name: Install dependencies
+              run: npm ci
+
+            - name: Install Serverless Framework
+              run: npm install -g serverless
+
+            - name: Configure AWS credentials
+              uses: aws-actions/configure-aws-credentials@v4
+              with:
+                  aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+                  aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+                  aws-region: ${{ env.AWS_REGION }}
+
+            - name: Build backend
+              run: npm run build
+
+            - name: Deploy to Lambda
+              run: serverless deploy --stage prod
+              env:
+                  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+                  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+            - name: Notify deployment
+              if: success()
+              run: |
+                  echo "Backend deployed successfully to Lambda"
+                  echo "API Endpoint: https://${{ secrets.AWS_API_ID }}.execute-api.${{ env.AWS_REGION }}.amazonaws.com/prod"
+
+    deploy-frontend:
+        needs: build-and-test
+        runs-on: ubuntu-latest
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: ${{ env.NODE_VERSION }}
+                  cache: "npm"
+
+            - name: Install dependencies
+              run: npm ci
+
+            - name: Install Amplify CLI
+              run: npm install -g @aws-amplify/cli
+
+            - name: Configure AWS credentials
+              uses: aws-actions/configure-aws-credentials@v4
+              with:
+                  aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+                  aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+                  aws-region: ${{ env.AWS_REGION }}
+
+            - name: Build frontend
+              run: npm run build
+              env:
+                  NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
+                  NEXT_PUBLIC_REGION: ${{ env.AWS_REGION }}
+
+            - name: Deploy to Amplify
+              run: amplify publish --yes
+              env:
+                  AMPLIFY_ENVIRONMENT: prod
+
+            - name: Notify deployment
+              if: success()
+              run: echo "Frontend deployed successfully to Amplify"
+
+    health-check:
+        needs: [deploy-backend, deploy-frontend]
+        runs-on: ubuntu-latest
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+        steps:
+            - name: Wait for deployment
+              run: sleep 30
+
+            - name: Check backend health
+              run: |
+                  curl -f https://${{ secrets.AWS_API_ID }}.execute-api.${{ env.AWS_REGION }}.amazonaws.com/prod/health || exit 1
+
+            - name: Check frontend health
+              run: |
+                  curl -f https://${{ secrets.AMPLIFY_APP_ID }}.amplifyapp.com || exit 1
+
+            - name: Deployment successful
+              run: echo "✅ All services are healthy and running"
+
+    rollback:
+        needs: [deploy-backend, deploy-frontend]
+        runs-on: ubuntu-latest
+        if: failure() && github.ref == 'refs/heads/main'
+
+        steps:
+            - name: Configure AWS credentials
+              uses: aws-actions/configure-aws-credentials@v4
+              with:
+                  aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+                  aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+                  aws-region: ${{ env.AWS_REGION }}
+
+            - name: Rollback Lambda
+              run: |
+                  echo "Rolling back Lambda deployment..."
+                  aws lambda update-function-code \
+                    --function-name seu-app-api-prod \
+                    --s3-bucket seu-app-deployments \
+                    --s3-key previous-version.zip || true
+
+            - name: Notify failure
+              run: echo "❌ Deployment failed and rolled back"

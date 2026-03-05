@@ -10,6 +10,8 @@ const withBundleAnalyzer = require("@next/bundle-analyzer")({
 })
 
 const nextConfig: NextConfig = {
+    // Docker: standalone output for minimal container size
+    output: "standalone",
     trailingSlash: true,
     generateEtags: false,
     typescript: {

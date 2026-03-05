@@ -7,6 +7,8 @@
     "contact": "Contact",
     "language": "Language",
     "editors": "Editors",
+    "login": "Login",
+    "register": "Register",
     "menu": {
         "iqTest": "IQ Test"
     },

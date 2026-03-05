@@ -82,8 +82,8 @@ Key variables:
 - NEXT_PUBLIC_TURNSTILE_SITE_KEY: Cloudflare Turnstile (client).
 - TURNSTILE_SECRET_KEY: Cloudflare Turnstile (server secret).
 - NEXT_PUBLIC_AMAZON_ASSOCIATES_TAG: Amazon affiliate tag shown in the affiliate page.
-- WHATSAPP_*: Business API (webhook and outbound messages).
-- PIX_*: PIX payment configuration.
+- WHATSAPP\_\*: Business API (webhook and outbound messages).
+- PIX\_\*: PIX payment configuration.
 - MONERO_ADDRESS / MONERO_VIEW_KEY: Monero payments.
 - RESEND_API_KEY: Email provider.
 - DISCORD_WEBHOOK_URL: Optional notifications.

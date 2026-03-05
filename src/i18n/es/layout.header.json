@@ -6,6 +6,8 @@
     "channels": "Canales",
     "contact": "Contacto",
     "language": "Idioma",
+    "login": "Iniciar sesión",
+    "register": "Registrarse",
     "menu": {
         "iqTest": "Test de CI"
     },

@@ -6,6 +6,8 @@
     "channels": "Canais",
     "contact": "Contato",
     "language": "Idioma",
+    "login": "Entrar",
+    "register": "Registrar",
     "menu": {
         "iqTest": "Teste de QI"
     },

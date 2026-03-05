@@ -1,0 +1,204 @@
+# Docker Compose - Local Development Architecture
+# Code: Local project directory
+# Containers: Local machine (processing power)
+#
+# Architecture:
+# - Frontend Network: app <-> backend
+# - Backend Network: backend <-> postgres, redis (internal only)
+# - Health checks: 30s interval, 3 retries
+# - Restart policy: max 5 attempts in 10 minutes
+
+services:
+    # ==========================================================================
+    # DATABASES (Backend Network - Internal Only)
+    # ==========================================================================
+
+    postgres:
+        image: postgres:17-alpine
+        container_name: platform-postgres
+        restart: unless-stopped
+        deploy:
+            restart_policy:
+                condition: on-failure
+                max_attempts: 5
+                window: 600s
+        environment:
+            POSTGRES_USER: platform
+            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-devpassword}
+            POSTGRES_DB: platform
+        volumes:
+            - postgres_data:/var/lib/postgresql/data
+            - log_data:/var/log/postgresql
+        networks:
+            - backend
+        healthcheck:
+            test: ["CMD-SHELL", "pg_isready -U platform"]
+            interval: 30s
+            timeout: 5s
+            retries: 3
+            start_period: 40s
+
+    redis:
+        image: redis:7-alpine
+        container_name: platform-redis
+        restart: unless-stopped
+        deploy:
+            restart_policy:
+                condition: on-failure
+                max_attempts: 5
+                window: 600s
+        command: redis-server --appendonly yes
+        volumes:
+            - redis_data:/data
+        networks:
+            - backend
+        healthcheck:
+            test: ["CMD", "redis-cli", "ping"]
+            interval: 30s
+            timeout: 3s
+            retries: 3
+            start_period: 10s
+
+    # ==========================================================================
+    # BACKEND API (Bridge between Frontend and Backend Networks)
+    # ==========================================================================
+
+    backend:
+        image: platform-backend:latest
+        container_name: platform-backend
+        restart: unless-stopped
+        deploy:
+            restart_policy:
+                condition: on-failure
+                max_attempts: 5
+                window: 600s
+        environment:
+            - NODE_ENV=production
+            - NODE_OPTIONS=--max-old-space-size=512 --expose-gc
+            - DATABASE_URL=postgresql://platform:${POSTGRES_PASSWORD:-devpassword}@postgres:5432/platform
+            - REDIS_URL=redis://redis:6379
+            - DISCORD_WEBHOOK_URL=${DISCORD_WEBHOOK_URL}
+            - DEBUG=${DEBUG:-false}
+            - PORT=4000
+        volumes:
+            - log_data:/var/log/app
+        networks:
+            - frontend
+            - backend
+        ports:
+            - "4000:4000"
+        depends_on:
+            postgres:
+                condition: service_healthy
+            redis:
+                condition: service_healthy
+
+    # ==========================================================================
+    # FRONTEND APP (Next.js - Frontend Network Only)
+    # ==========================================================================
+
+    app:
+        build:
+            context: ..
+            dockerfile: docker/Dockerfile.app
+        image: platform-app:latest
+        container_name: platform-app
+        restart: unless-stopped
+        deploy:
+            restart_policy:
+                condition: on-failure
+                max_attempts: 5
+                window: 600s
+        environment:
+            - NODE_ENV=production
+            - NEXT_PUBLIC_API_URL=http://backend:4000
+            - BASE_URL=${BASE_URL:-http://localhost:3000}
+            - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
+            - STRIPE_WEBHOOK_SECRET=${STRIPE_WEBHOOK_SECRET}
+        volumes:
+            - log_data:/var/log/app
+        networks:
+            - frontend
+        ports:
+            - "3000:3000"
+        depends_on:
+            backend:
+                condition: service_healthy
+
+    # ==========================================================================
+    # DEVELOPMENT MODE (Optional Profile)
+    # ==========================================================================
+
+    app-dev:
+        profiles: ["dev"]
+        image: node:22-alpine
+        container_name: platform-app-dev
+        environment:
+            - NODE_ENV=development
+            - DATABASE_URL=postgresql://platform:${POSTGRES_PASSWORD:-devpassword}@postgres:5432/platform
+            - REDIS_URL=redis://redis:6379
+            - DISCORD_WEBHOOK_URL=${DISCORD_WEBHOOK_URL}
+            - DEBUG=true
+        volumes:
+            # Mount from local project directory
+            - type: bind
+              source: .
+              target: /app
+              read_only: false
+            - /app/node_modules
+            - /app/.next
+        networks:
+            - frontend
+            - backend
+        ports:
+            - "3000:3000"
+        depends_on:
+            postgres:
+                condition: service_healthy
+            redis:
+                condition: service_healthy
+        command: sh -c "npm install && npm run dev"
+
+    # ==========================================================================
+    # MONITORING (Optional Profile)
+    # ==========================================================================
+
+    prometheus:
+        profiles: ["monitoring"]
+        image: prom/prometheus:latest
+        container_name: platform-prometheus
+        volumes:
+            - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+            - prometheus_data:/prometheus
+        networks:
+            - frontend
+        ports:
+            - "9090:9090"
+        command:
+            - "--config.file=/etc/prometheus/prometheus.yml"
+            - "--storage.tsdb.path=/prometheus"
+
+# ==========================================================================
+# NETWORKS
+# ==========================================================================
+networks:
+    frontend:
+        driver: bridge
+        name: platform-frontend
+    backend:
+        driver: bridge
+        internal: true # No external access - only internal container communication
+        name: platform-backend
+
+# ==========================================================================
+# VOLUMES
+# ==========================================================================
+volumes:
+    postgres_data:
+        name: platform-postgres-data
+    redis_data:
+        name: platform-redis-data
+    log_data:
+        name: platform-logs
+    prometheus_data:
+        name: platform-prometheus-data

@@ -1,5 +1,35 @@
 {
-    "installCommand": "npm ci",
     "buildCommand": "npm run build",
-    "framework": "nextjs"
+    "outputDirectory": ".next",
+    "framework": "nextjs",
+    "nodeVersion": "20.x",
+    "env": {
+        "NEXT_PUBLIC_API_URL": "@api_url"
+    },
+    "envPrefix": "NEXT_PUBLIC_",
+    "regions": ["sfo1"],
+    "functions": {
+        "src/app/api/**/*.ts": {
+            "maxDuration": 60,
+            "memory": 1024
+        }
+    },
+    "headers": [
+        {
+            "source": "/api/(.*)",
+            "headers": [
+                {
+                    "key": "Cache-Control",
+                    "value": "no-cache, no-store, must-revalidate"
+                }
+            ]
+        }
+    ],
+    "redirects": [
+        {
+            "source": "/old-path",
+            "destination": "/new-path",
+            "permanent": true
+        }
+    ]
 }

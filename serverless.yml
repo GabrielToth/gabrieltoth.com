@@ -1,0 +1,143 @@
+service: seu-app-api
+
+frameworkVersion: "3"
+
+provider:
+    name: aws
+    runtime: nodejs20.x
+    region: us-east-1
+    stage: ${opt:stage, 'dev'}
+
+    environment:
+        NODE_ENV: ${self:provider.stage}
+        DATABASE_URL: ${ssm:/seu-app/${self:provider.stage}/database-url}
+        JWT_SECRET: ${ssm:/seu-app/${self:provider.stage}/jwt-secret}
+        CORS_ORIGIN: ${ssm:/seu-app/${self:provider.stage}/cors-origin}
+        API_KEY: ${ssm:/seu-app/${self:provider.stage}/api-key}
+
+    iam:
+        role:
+            statements:
+                - Effect: Allow
+                  Action:
+                      - ssm:GetParameter
+                      - ssm:GetParameters
+                  Resource: arn:aws:ssm:${aws:region}:${aws:accountId}:parameter/seu-app/*
+
+                - Effect: Allow
+                  Action:
+                      - s3:GetObject
+                      - s3:PutObject
+                      - s3:DeleteObject
+                  Resource: arn:aws:s3:::seu-app-assets-${self:provider.stage}/*
+
+                - Effect: Allow
+                  Action:
+                      - logs:CreateLogGroup
+                      - logs:CreateLogStream
+                      - logs:PutLogEvents
+                  Resource: arn:aws:logs:${aws:region}:${aws:accountId}:log-group:/aws/lambda/*
+
+functions:
+    api:
+        handler: src/backend/lambda.handler
+        description: API Gateway handler
+        timeout: 30
+        memorySize: 512
+        ephemeralStorageSize: 512
+
+        events:
+            # Catch all routes
+            - http:
+                  path: /{proxy+}
+                  method: ANY
+                  cors:
+                      origin: "*"
+                      headers:
+                          - Content-Type
+                          - X-Amz-Date
+                          - Authorization
+                          - X-Api-Key
+                          - X-Amz-Security-Token
+                          - X-Amz-User-Agent
+                      allowCredentials: true
+
+            # Root path
+            - http:
+                  path: /
+                  method: ANY
+                  cors:
+                      origin: "*"
+                      headers:
+                          - Content-Type
+                          - X-Amz-Date
+                          - Authorization
+                          - X-Api-Key
+                          - X-Amz-Security-Token
+                          - X-Amz-User-Agent
+                      allowCredentials: true
+
+        layers:
+            - arn:aws:lambda:${aws:region}:${aws:accountId}:layer:node-modules:1
+
+    # Health check function
+    health:
+        handler: src/backend/health.handler
+        timeout: 10
+        memorySize: 128
+        events:
+            - http:
+                  path: /health
+                  method: GET
+                  cors: true
+
+plugins:
+    - serverless-plugin-typescript
+    - serverless-offline
+    - serverless-dynamodb-local
+    - serverless-plugin-warmup
+
+custom:
+    warmup:
+        default:
+            enabled: true
+            events:
+                - schedule: rate(5 minutes)
+            concurrency: 1
+            prewarm: true
+
+package:
+    individually: true
+    patterns:
+        - "!node_modules/**"
+        - "!.git/**"
+        - "!.env*"
+        - "!coverage/**"
+        - "!dist/**"
+
+resources:
+    Resources:
+        # API Gateway
+        ApiGateway:
+            Type: AWS::ApiGateway::RestApi
+            Properties:
+                Name: seu-app-api-${self:provider.stage}
+                Description: API for seu-app
+                EndpointConfiguration:
+                    Types:
+                        - REGIONAL
+
+        # CloudWatch Log Group
+        ApiLogGroup:
+            Type: AWS::Logs::LogGroup
+            Properties:
+                LogGroupName: /aws/apigateway/seu-app-${self:provider.stage}
+                RetentionInDays: 7
+
+outputs:
+    ApiEndpoint:
+        Description: API Gateway endpoint URL
+        Value:
+            Fn::Sub: https://${ApiId}.execute-api.${AWS::Region}.amazonaws.com/${self:provider.stage}
+        Export:
+            Name: seu-app-api-endpoint-${self:provider.stage}

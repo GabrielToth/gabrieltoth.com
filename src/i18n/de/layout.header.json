@@ -6,6 +6,8 @@
     "channels": "Kanäle",
     "contact": "Kontakt",
     "language": "Sprache",
+    "login": "Anmelden",
+    "register": "Registrieren",
     "menu": {
         "iqTest": "IQ-Test"
     },
