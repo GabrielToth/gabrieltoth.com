@@ -96,6 +96,10 @@
             "prettier --write"
         ]
     },
+    "engines": {
+        "node": ">=22.0.0",
+        "npm": ">=10.0.0"
+    },
     "dependencies": {
         "@icons-pack/react-simple-icons": "^13.8.0",
         "@radix-ui/react-dialog": "^1.1.15",
