@@ -19,7 +19,7 @@ const nextConfig: NextConfig = {
     },
     reactStrictMode: false,
     experimental: {
-        forceSwcTransforms: false,
+        forceSwcTransforms: true,
         // optimizeCss: true, // Disabled temporarily due to critters dependency issue
     },
     // Performance optimizations

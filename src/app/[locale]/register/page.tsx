@@ -1,6 +1,5 @@
 "use client"
 
-import Footer from "@/components/layout/footer"
 import Header from "@/components/layout/header"
 import { useLocale } from "@/hooks/use-locale"
 import { useTranslations } from "next-intl"
@@ -138,7 +137,6 @@ export default function RegisterPage() {
                         </div>
                     </div>
                 </div>
-                <Footer locale={locale} />
             </main>
         </>
     )
