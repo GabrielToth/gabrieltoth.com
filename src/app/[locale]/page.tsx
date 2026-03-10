@@ -1,7 +1,7 @@
 import Footer from "@/components/layout/footer"
 import Header from "@/components/layout/header"
 import StructuredData from "@/components/seo/structured-data"
-import { type Locale } from "@/lib/i18n"
+import { locales, type Locale } from "@/lib/i18n"
 import { getTranslations } from "next-intl/server"
 import { generateMetadata } from "./home-metadata"
 import AboutSection from "./home/about-section"
@@ -15,6 +15,10 @@ interface HomePageProps {
 }
 
 export { generateMetadata }
+
+export function generateStaticParams() {
+    return locales.map(locale => ({ locale }))
+}
 
 export default async function HomePage({ params }: HomePageProps) {
     const { locale } = await params

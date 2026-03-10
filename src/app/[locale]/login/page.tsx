@@ -2,9 +2,14 @@
 
 import Header from "@/components/layout/header"
 import { useLocale } from "@/hooks/use-locale"
+import { locales } from "@/lib/i18n"
 import { useTranslations } from "next-intl"
 import Link from "next/link"
 import { useState } from "react"
+
+export function generateStaticParams() {
+    return locales.map(locale => ({ locale }))
+}
 
 export default function LoginPage() {
     const { locale } = useLocale()

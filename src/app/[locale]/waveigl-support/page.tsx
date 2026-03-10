@@ -3,7 +3,7 @@ import Footer from "@/components/layout/footer"
 import LanguageSelectorWrapper from "@/components/layout/language-selector-wrapper"
 import StructuredData from "@/components/seo/structured-data"
 import Breadcrumbs from "@/components/ui/breadcrumbs"
-import { type Locale } from "@/lib/i18n"
+import { locales, type Locale } from "@/lib/i18n"
 import { getTranslations } from "next-intl/server"
 
 interface PageProps {
@@ -11,6 +11,10 @@ interface PageProps {
 }
 
 export { generateMetadata } from "./waveigl-support-metadata"
+
+export function generateStaticParams() {
+    return locales.map(locale => ({ locale }))
+}
 
 export default async function WaveIGLSupportPage({ params }: PageProps) {
     const { locale } = await params

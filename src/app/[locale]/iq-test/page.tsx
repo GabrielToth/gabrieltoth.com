@@ -1,15 +1,20 @@
 import Footer from "@/components/layout/footer"
 import Header from "@/components/layout/header"
 import StructuredData from "@/components/seo/structured-data"
-import { type Locale } from "@/lib/i18n"
+import { locales, type Locale } from "@/lib/i18n"
 import { generateSeoConfig } from "@/lib/seo"
 import { type Metadata } from "next"
 import { getTranslations } from "next-intl/server"
 import Image from "next/image"
 import Link from "next/link"
 import { buildIQTestStructured } from "./iq-test-structured"
+
 interface IQTestPageProps {
     params: Promise<{ locale: Locale }>
+}
+
+export function generateStaticParams() {
+    return locales.map(locale => ({ locale }))
 }
 
 export default async function IQTestPage({ params }: IQTestPageProps) {

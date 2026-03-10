@@ -2,7 +2,7 @@ import Footer from "@/components/layout/footer"
 import Header from "@/components/layout/header"
 import StructuredData from "@/components/seo/structured-data"
 import Breadcrumbs from "@/components/ui/breadcrumbs"
-import { type Locale } from "@/lib/i18n"
+import { locales, type Locale } from "@/lib/i18n"
 import { getTranslations } from "next-intl/server"
 import { buildPrivacyPolicyStructured } from "./privacy-policy-structured"
 
@@ -11,6 +11,10 @@ interface PrivacyPolicyPageProps {
 }
 
 export { generateMetadata } from "./privacy-policy-metadata"
+
+export function generateStaticParams() {
+    return locales.map(locale => ({ locale }))
+}
 
 export default async function PrivacyPolicyPage({
     params,

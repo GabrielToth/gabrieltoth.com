@@ -1,7 +1,7 @@
 import Footer from "@/components/layout/footer"
 import Header from "@/components/layout/header"
 import { getCurrencyForLocale } from "@/lib/currency"
-import { type Locale } from "@/lib/i18n"
+import { locales, type Locale } from "@/lib/i18n"
 import { generateSeoConfig } from "@/lib/seo"
 import { type Metadata } from "next"
 import { getTranslations } from "next-intl/server"
@@ -9,6 +9,10 @@ import Link from "next/link"
 
 interface SummaryPageProps {
     params: Promise<{ locale: Locale }>
+}
+
+export function generateStaticParams() {
+    return locales.map(locale => ({ locale }))
 }
 
 const USD_PROMO = 1.0

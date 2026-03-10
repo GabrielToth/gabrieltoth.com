@@ -2,7 +2,7 @@ import Footer from "@/components/layout/footer"
 import Header from "@/components/layout/header"
 import StructuredData from "@/components/seo/structured-data"
 import Breadcrumbs from "@/components/ui/breadcrumbs"
-import { type Locale } from "@/lib/i18n"
+import { locales, type Locale } from "@/lib/i18n"
 import { buildTermsOfServiceStructured } from "./terms-of-service-structured"
 import { type TermsContent } from "./terms-of-service-types"
 
@@ -11,6 +11,10 @@ interface TermsOfServicePageProps {
 }
 
 export { generateMetadata } from "./terms-of-service-metadata"
+
+export function generateStaticParams() {
+    return locales.map(locale => ({ locale }))
+}
 
 export default async function TermsOfServicePage({
     params,
