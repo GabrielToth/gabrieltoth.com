@@ -23,6 +23,7 @@ export default getRequestConfig(async ({ locale }) => {
     // Load namespaces from src/i18n/{locale}/{namespace}.json (migrating progressively)
     const [
         home,
+        landing,
         editors,
         channelManagement,
         pcOptimization,
@@ -35,6 +36,7 @@ export default getRequestConfig(async ({ locale }) => {
         auth,
     ] = await Promise.all([
         loadJson(() => import(`@/i18n/${selectedLocale}/home.json`)),
+        loadJson(() => import(`@/i18n/${selectedLocale}/landing.json`)),
         loadJson(() => import(`@/i18n/${selectedLocale}/editors.json`)),
         loadJson(
             () => import(`@/i18n/${selectedLocale}/channelManagement.json`)
@@ -52,6 +54,7 @@ export default getRequestConfig(async ({ locale }) => {
     const messages: MessagesRecord = {
         common: {},
         home,
+        landing,
         editors,
         channelManagement,
         pcOptimization,

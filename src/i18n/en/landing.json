@@ -1,0 +1,173 @@
+{
+    "hero": {
+        "title": "Unified Platform for Content Creators",
+        "subtitle": "Manage all your social networks in one place. See live streams, chats and unified data from YouTube, TikTok, Twitter and more.",
+        "cta": "Get Started Now",
+        "description": "The complete solution for content creators who want to centralize their operations"
+    },
+    "features": {
+        "title": "Key Features",
+        "items": [
+            {
+                "title": "Unified Social Networks",
+                "description": "Connect YouTube, TikTok, Twitter, Instagram and other platforms in a single dashboard"
+            },
+            {
+                "title": "Centralized Live Streams",
+                "description": "Monitor all your live broadcasts in real-time, regardless of platform"
+            },
+            {
+                "title": "Unified Chats",
+                "description": "View and respond to comments from all platforms in one place"
+            },
+            {
+                "title": "Consolidated Data",
+                "description": "Detailed analytics and unified metrics from all your social networks"
+            },
+            {
+                "title": "Video Upload",
+                "description": "Upload videos to multiple platforms simultaneously with custom metadata"
+            },
+            {
+                "title": "Content Management",
+                "description": "Organize, edit and publish content across all platforms efficiently"
+            }
+        ]
+    },
+    "platforms": {
+        "title": "Supported Platforms",
+        "description": "Integration with major social networks",
+        "items": [
+            {
+                "name": "YouTube",
+                "description": "Live streams, video uploads and detailed analytics"
+            },
+            {
+                "name": "TikTok",
+                "description": "Content management and engagement metrics"
+            },
+            {
+                "name": "Twitter/X",
+                "description": "Tweets, retweets and reach analysis"
+            },
+            {
+                "name": "Instagram",
+                "description": "Posts, stories and follower metrics"
+            },
+            {
+                "name": "Twitch",
+                "description": "Live broadcasts and real-time chat"
+            },
+            {
+                "name": "Facebook",
+                "description": "Videos, posts and audience analysis"
+            }
+        ]
+    },
+    "benefits": {
+        "title": "Why Use Our Platform",
+        "items": [
+            {
+                "title": "Save Time",
+                "description": "No more switching between multiple platforms. Manage everything in one place."
+            },
+            {
+                "title": "Increase Productivity",
+                "description": "Automate repetitive tasks and focus on what really matters: creating quality content."
+            },
+            {
+                "title": "Better Insights",
+                "description": "See consolidated data from all platforms to make more informed decisions."
+            },
+            {
+                "title": "Accelerated Growth",
+                "description": "With the right tools, you can grow faster across all platforms."
+            },
+            {
+                "title": "Dedicated Support",
+                "description": "Our team is always ready to help you maximize the platform's potential."
+            },
+            {
+                "title": "Guaranteed Security",
+                "description": "Your data is protected with industry best practices for security."
+            }
+        ]
+    },
+    "pricing": {
+        "title": "Pricing Plans",
+        "description": "Choose the perfect plan for your needs",
+        "plans": [
+            {
+                "name": "Starter",
+                "price": "Free",
+                "description": "Perfect to get started",
+                "features": [
+                    "Up to 2 connected platforms",
+                    "Basic dashboard",
+                    "Email support",
+                    "Limited analytics"
+                ]
+            },
+            {
+                "name": "Professional",
+                "price": "$29/month",
+                "description": "For growing creators",
+                "features": [
+                    "Up to 6 connected platforms",
+                    "Complete dashboard",
+                    "Priority support",
+                    "Detailed analytics",
+                    "Batch upload"
+                ],
+                "popular": true
+            },
+            {
+                "name": "Enterprise",
+                "price": "Custom",
+                "description": "For large creators",
+                "features": [
+                    "Unlimited platforms",
+                    "Custom dashboard",
+                    "24/7 support",
+                    "Advanced analytics",
+                    "API integration",
+                    "Team manager"
+                ]
+            }
+        ]
+    },
+    "cta": {
+        "title": "Ready to Revolutionize Your Content?",
+        "subtitle": "Join thousands of creators already using our platform",
+        "button": "Start Free"
+    },
+    "faq": {
+        "title": "Frequently Asked Questions",
+        "items": [
+            {
+                "question": "How do I connect my social networks?",
+                "answer": "It's simple! After creating your account, go to Settings > Connect Platforms and follow the authentication instructions for each social network."
+            },
+            {
+                "question": "Is my data safe?",
+                "answer": "Yes! We use end-to-end encryption and follow industry best practices for security. We never store your passwords."
+            },
+            {
+                "question": "Can I upload videos to multiple platforms at the same time?",
+                "answer": "Yes! With our batch upload feature, you can send videos to multiple platforms simultaneously with custom metadata."
+            },
+            {
+                "question": "What is the support response time?",
+                "answer": "Our support responds within 24 hours for Professional plans and within 1 hour for Enterprise plans."
+            },
+            {
+                "question": "Can I cancel my subscription anytime?",
+                "answer": "Yes! You can cancel your subscription anytime without penalties. Your data will remain accessible for 30 days."
+            },
+            {
+                "question": "Do you offer integration with external tools?",
+                "answer": "Yes! We offer API and integrations with popular tools like Zapier, Make and other automation platforms."
+            }
+        ]
+    }
+}

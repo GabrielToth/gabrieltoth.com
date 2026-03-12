@@ -1,0 +1,173 @@
+{
+    "hero": {
+        "title": "Einheitliche Plattform für Content Creator",
+        "subtitle": "Verwalte alle deine sozialen Netzwerke an einem Ort. Sieh Live-Streams, Chats und einheitliche Daten von YouTube, TikTok, Twitter und mehr.",
+        "cta": "Jetzt Starten",
+        "description": "Die komplette Lösung für Content Creator, die ihre Operationen zentralisieren möchten"
+    },
+    "features": {
+        "title": "Hauptmerkmale",
+        "items": [
+            {
+                "title": "Einheitliche Soziale Netzwerke",
+                "description": "Verbinde YouTube, TikTok, Twitter, Instagram und andere Plattformen in einem einzigen Dashboard"
+            },
+            {
+                "title": "Zentralisierte Live-Streams",
+                "description": "Überwache alle deine Live-Übertragungen in Echtzeit, unabhängig von der Plattform"
+            },
+            {
+                "title": "Einheitliche Chats",
+                "description": "Sieh und antworte auf Kommentare von allen Plattformen an einem Ort"
+            },
+            {
+                "title": "Konsolidierte Daten",
+                "description": "Detaillierte Analysen und einheitliche Metriken von allen deinen sozialen Netzwerken"
+            },
+            {
+                "title": "Video-Upload",
+                "description": "Lade Videos gleichzeitig auf mehrere Plattformen mit benutzerdefinierten Metadaten hoch"
+            },
+            {
+                "title": "Content-Verwaltung",
+                "description": "Organisiere, bearbeite und veröffentliche Inhalte effizient auf allen Plattformen"
+            }
+        ]
+    },
+    "platforms": {
+        "title": "Unterstützte Plattformen",
+        "description": "Integration mit großen sozialen Netzwerken",
+        "items": [
+            {
+                "name": "YouTube",
+                "description": "Live-Streams, Video-Uploads und detaillierte Analysen"
+            },
+            {
+                "name": "TikTok",
+                "description": "Content-Verwaltung und Engagement-Metriken"
+            },
+            {
+                "name": "Twitter/X",
+                "description": "Tweets, Retweets und Reichweitenanalyse"
+            },
+            {
+                "name": "Instagram",
+                "description": "Posts, Stories und Follower-Metriken"
+            },
+            {
+                "name": "Twitch",
+                "description": "Live-Übertragungen und Echtzeit-Chat"
+            },
+            {
+                "name": "Facebook",
+                "description": "Videos, Posts und Zielgruppenanalyse"
+            }
+        ]
+    },
+    "benefits": {
+        "title": "Warum Unsere Plattform Nutzen",
+        "items": [
+            {
+                "title": "Sparen Sie Zeit",
+                "description": "Kein ständiges Wechseln zwischen mehreren Plattformen. Verwalte alles an einem Ort."
+            },
+            {
+                "title": "Erhöhen Sie die Produktivität",
+                "description": "Automatisiere wiederholte Aufgaben und konzentriere dich auf das, was wirklich zählt: hochwertige Inhalte erstellen."
+            },
+            {
+                "title": "Bessere Einblicke",
+                "description": "Sieh konsolidierte Daten von allen Plattformen, um bessere Entscheidungen zu treffen."
+            },
+            {
+                "title": "Beschleunigtes Wachstum",
+                "description": "Mit den richtigen Tools kannst du schneller auf allen Plattformen wachsen."
+            },
+            {
+                "title": "Dedizierter Support",
+                "description": "Unser Team ist immer bereit, dir zu helfen, das Potenzial der Plattform zu maximieren."
+            },
+            {
+                "title": "Garantierte Sicherheit",
+                "description": "Deine Daten sind mit den besten Sicherheitspraktiken der Branche geschützt."
+            }
+        ]
+    },
+    "pricing": {
+        "title": "Preispläne",
+        "description": "Wähle den perfekten Plan für deine Anforderungen",
+        "plans": [
+            {
+                "name": "Starter",
+                "price": "Kostenlos",
+                "description": "Perfekt zum Anfangen",
+                "features": [
+                    "Bis zu 2 verbundene Plattformen",
+                    "Basis-Dashboard",
+                    "E-Mail-Support",
+                    "Begrenzte Analysen"
+                ]
+            },
+            {
+                "name": "Professionell",
+                "price": "€25/Monat",
+                "description": "Für wachsende Creator",
+                "features": [
+                    "Bis zu 6 verbundene Plattformen",
+                    "Vollständiges Dashboard",
+                    "Prioritäts-Support",
+                    "Detaillierte Analysen",
+                    "Batch-Upload"
+                ],
+                "popular": true
+            },
+            {
+                "name": "Unternehmen",
+                "price": "Benutzerdefiniert",
+                "description": "Für große Creator",
+                "features": [
+                    "Unbegrenzte Plattformen",
+                    "Benutzerdefiniertes Dashboard",
+                    "24/7 Support",
+                    "Erweiterte Analysen",
+                    "API-Integration",
+                    "Team-Manager"
+                ]
+            }
+        ]
+    },
+    "cta": {
+        "title": "Bereit, Deine Inhalte zu Revolutionieren?",
+        "subtitle": "Schließe dich Tausenden von Creatorn an, die bereits unsere Plattform nutzen",
+        "button": "Kostenlos Starten"
+    },
+    "faq": {
+        "title": "Häufig Gestellte Fragen",
+        "items": [
+            {
+                "question": "Wie verbinde ich meine sozialen Netzwerke?",
+                "answer": "Es ist einfach! Nachdem du dein Konto erstellt hast, gehe zu Einstellungen > Plattformen verbinden und folge den Authentifizierungsanweisungen für jedes soziale Netzwerk."
+            },
+            {
+                "question": "Sind meine Daten sicher?",
+                "answer": "Ja! Wir verwenden End-to-End-Verschlüsselung und befolgen die besten Sicherheitspraktiken der Branche. Wir speichern deine Passwörter nie."
+            },
+            {
+                "question": "Kann ich Videos gleichzeitig auf mehrere Plattformen hochladen?",
+                "answer": "Ja! Mit unserer Batch-Upload-Funktion kannst du Videos gleichzeitig auf mehrere Plattformen mit benutzerdefinierten Metadaten hochladen."
+            },
+            {
+                "question": "Wie lange dauert die Support-Antwort?",
+                "answer": "Unser Support antwortet innerhalb von 24 Stunden für Professional-Pläne und innerhalb von 1 Stunde für Enterprise-Pläne."
+            },
+            {
+                "question": "Kann ich mein Abonnement jederzeit kündigen?",
+                "answer": "Ja! Du kannst dein Abonnement jederzeit ohne Strafen kündigen. Deine Daten bleiben 30 Tage lang zugänglich."
+            },
+            {
+                "question": "Bietet ihr Integration mit externen Tools?",
+                "answer": "Ja! Wir bieten API und Integrationen mit beliebten Tools wie Zapier, Make und anderen Automatisierungsplattformen."
+            }
+        ]
+    }
+}

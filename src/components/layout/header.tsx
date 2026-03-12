@@ -26,14 +26,14 @@ export default function Header() {
         if (isHomepage) {
             // Homepage: anchor links
             return [
-                { href: "#about", label: t("about") },
+                { href: `/${locale}/quem-sou-eu`, label: t("about") },
                 { href: "#projects", label: t("projects") },
                 { href: "#contact", label: t("contact") },
             ]
         } else {
             // Other pages: full URLs
             return [
-                { href: `/${locale}#about`, label: t("about") },
+                { href: `/${locale}/quem-sou-eu`, label: t("about") },
                 { href: `/${locale}#projects`, label: t("projects") },
                 { href: `/${locale}#contact`, label: t("contact") },
             ]
