@@ -89,10 +89,10 @@ export default function Header() {
 
     return (
         <header className="fixed top-0 w-full bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 z-50">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="w-full px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between items-center h-16">
-                    {/* Logo/Brand */}
-                    <div className="flex-shrink-0">
+                    {/* Logo/Brand - Left */}
+                    <div className="shrink-0">
                         <Link
                             href={getHomeLink()}
                             className="text-xl font-bold text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
@@ -102,17 +102,8 @@ export default function Header() {
                         </Link>
                     </div>
 
-                    {/* Desktop Navigation */}
-                    <nav className="hidden md:flex items-center space-x-8 flex-1">
-                        {/* Left side: Language and Theme */}
-                        <div className="flex items-center space-x-3">
-                            <LanguageSelector
-                                variant="header"
-                                includeThemeToggle={false}
-                            />
-                            <ThemeToggleClient />
-                        </div>
-
+                    {/* Desktop Navigation - Center */}
+                    <nav className="hidden md:flex items-center space-x-8 flex-1 justify-center">
                         <Link
                             href={getHomeLink()}
                             className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
@@ -127,7 +118,7 @@ export default function Header() {
                                 href={link.href}
                                 className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
                                 data-testid={
-                                    link.href.includes("#about")
+                                    link.href.includes("quem-sou-eu")
                                         ? "nav-about"
                                         : link.href.includes("#projects")
                                           ? "nav-projects"
@@ -199,9 +190,24 @@ export default function Header() {
                                 </div>
                             )}
                         </div>
+                    </nav>
 
-                        {/* Auth Buttons - Right side */}
-                        <div className="flex items-center space-x-3 pl-4 border-l border-gray-200 dark:border-gray-700 ml-auto">
+                    {/* Language, Theme and Auth Buttons - Right */}
+                    <div className="hidden md:flex items-center space-x-3">
+                        {/* Language and Theme Selectors */}
+                        <div className="flex items-center space-x-2">
+                            <LanguageSelector
+                                variant="header"
+                                includeThemeToggle={false}
+                            />
+                            <ThemeToggleClient />
+                        </div>
+
+                        {/* Divider */}
+                        <div className="border-l border-gray-200 dark:border-gray-700 h-6"></div>
+
+                        {/* Auth Buttons */}
+                        <div className="flex items-center space-x-3">
                             <Link
                                 href={`/${locale}/login`}
                                 className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors text-sm font-medium"
@@ -217,7 +223,7 @@ export default function Header() {
                                 {t("register", { defaultValue: "Register" })}
                             </Link>
                         </div>
-                    </nav>
+                    </div>
 
                     {/* Mobile menu button */}
                     <div className="md:hidden flex items-center space-x-2">
