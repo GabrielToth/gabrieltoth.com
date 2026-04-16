@@ -1,5 +1,4 @@
 import Footer from "@/components/layout/footer"
-import Header from "@/components/layout/header"
 import StructuredData from "@/components/seo/structured-data"
 import { defaultLocale, type Locale } from "@/lib/i18n"
 import { generateSeoConfig } from "@/lib/seo"
@@ -90,7 +89,6 @@ export default async function AboutPage({ params }: AboutPageProps) {
             />
 
             <main className="min-h-screen bg-white dark:bg-gray-900">
-                <Header />
                 <AboutSection params={{ locale }} />
                 <ProjectsSection />
                 <ChannelManagementSection params={{ locale }} />
@@ -102,3 +100,4 @@ export default async function AboutPage({ params }: AboutPageProps) {
 }
 
 export const revalidate = 3600
+export const dynamic = "force-dynamic"

@@ -33,6 +33,7 @@ export default getRequestConfig(async ({ locale }) => {
         iqTest,
         personality,
         auth,
+        waveiglSupport,
     ] = await Promise.all([
         loadJson(() => import(`@/i18n/${selectedLocale}/home.json`)),
         loadJson(() => import(`@/i18n/${selectedLocale}/landing.json`)),
@@ -47,6 +48,7 @@ export default getRequestConfig(async ({ locale }) => {
         loadJson(() => import(`@/i18n/${selectedLocale}/iqTest.json`)),
         loadJson(() => import(`@/i18n/${selectedLocale}/personality.json`)),
         loadJson(() => import(`@/i18n/${selectedLocale}/auth.json`)),
+        loadJson(() => import(`@/i18n/${selectedLocale}/waveiglSupport.json`)),
     ])
 
     const messages: MessagesRecord = {
@@ -61,6 +63,7 @@ export default getRequestConfig(async ({ locale }) => {
         iqTest,
         personality,
         auth,
+        waveiglSupport,
         layout: {
             header,
             footer: await loadJson(
