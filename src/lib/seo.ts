@@ -800,7 +800,6 @@ export function getAllPages(): Array<{
         { path: "/editors", priority: 0.8, changefreq: "monthly" },
         { path: "/pc-optimization", priority: 0.8, changefreq: "monthly" },
         { path: "/pc-optimization/terms", priority: 0.3, changefreq: "yearly" },
-        { path: "/waveigl-support", priority: 0.7, changefreq: "monthly" },
         { path: "/amazon-affiliate", priority: 0.6, changefreq: "monthly" },
         { path: "/iq-test", priority: 0.7, changefreq: "weekly" },
         { path: "/personality-test", priority: 0.7, changefreq: "weekly" },

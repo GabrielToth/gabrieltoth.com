@@ -332,7 +332,6 @@ async function sendHelpMessage(whatsappNumber: string) {
 • 🖥️ Otimização de PC Gaming
 • 📺 Gerenciamento de Canais
 • 📊 Consultoria em Analytics
-• 🎮 Suporte WaveIGL
 
 🌐 Site: https://www.gabrieltoth.com
 📧 Email: gabriel@gabrieltoth.com

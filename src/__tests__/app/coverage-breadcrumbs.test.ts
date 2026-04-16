@@ -10,12 +10,4 @@ describe("breadcrumbs helpers coverage", () => {
         expect(pt[0].name).toBe("Serviços")
         expect(en[1].url).toContain("/pc-optimization")
     })
-
-    it("waveigl breadcrumbs returns list", async () => {
-        const { getWaveIGLSupportBreadcrumbs } =
-            await import("@/app/[locale]/waveigl-support/waveigl-support-breadcrumbs")
-        const list = await getWaveIGLSupportBreadcrumbs("en")
-        expect(list.length).toBeGreaterThan(0)
-        expect(list[list.length - 1].current).toBe(true)
-    })
 })

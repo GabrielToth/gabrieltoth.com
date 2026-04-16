@@ -78,13 +78,6 @@ describe("metadata for all core pages", () => {
         )
     })
 
-    it("waveigl-support", async () => {
-        await assertMetadata(
-            "@/app/[locale]/waveigl-support/waveigl-support-metadata",
-            "/waveigl-support/"
-        )
-    })
-
     it("iq-test landing", async () => {
         const mod: any = await import("@/app/[locale]/iq-test/page")
         const locales = ["en", "pt-BR", "es", "de"] as const

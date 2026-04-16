@@ -18,30 +18,20 @@ export default function Header() {
     // Get translations
     const t = useTranslations("layout.header")
 
-    // Determine if we're on the homepage
-    const isHomepage = pathname === `/${locale}` || pathname === "/"
-
     // Navigation links based on page type
     const getNavigationLinks = () => {
-        if (isHomepage) {
-            // Homepage: anchor links
-            return [
-                { href: `/${locale}/quem-sou-eu`, label: t("about") },
-                { href: "#projects", label: t("projects") },
-                { href: "#contact", label: t("contact") },
-            ]
-        } else {
-            // Other pages: full URLs
-            return [
-                { href: `/${locale}/quem-sou-eu`, label: t("about") },
-                { href: `/${locale}#projects`, label: t("projects") },
-                { href: `/${locale}#contact`, label: t("contact") },
-            ]
-        }
+        return [
+            { href: `/${locale}/quem-sou-eu`, label: t("about") },
+            { href: `/${locale}/channel-management`, label: "ViraTrend" },
+            {
+                href: `/${locale}/pc-optimization`,
+                label: t("servicesDropdown.pcOptimization"),
+            },
+        ]
     }
 
     const getHomeLink = () => {
-        return isHomepage ? "#hero" : `/${locale}`
+        return `/${locale}`
     }
 
     const getServicesLinks = () => [
@@ -52,10 +42,6 @@ export default function Header() {
         {
             href: `/${locale}/pc-optimization`,
             label: t("servicesDropdown.pcOptimization"),
-        },
-        {
-            href: `/${locale}/waveigl-support`,
-            label: t("servicesDropdown.support"),
         },
         {
             href: `/${locale}/amazon-affiliate`,
@@ -77,11 +63,7 @@ export default function Header() {
     const servicesLinks = getServicesLinks()
 
     // Show theme toggle inside language menu only on selected pages
-    const pagesWithThemeInLanguage = [
-        "/channel-management",
-        "/pc-optimization",
-        "/waveigl-support",
-    ]
+    const pagesWithThemeInLanguage = ["/channel-management", "/pc-optimization"]
     const _includeThemeInLanguage = pagesWithThemeInLanguage.some(slug => {
         const base = `/${locale}${slug}`
         return pathname === base || pathname.startsWith(`${base}/`)
@@ -89,7 +71,7 @@ export default function Header() {
 
     return (
         <header className="fixed top-0 w-full bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 z-50">
-            <div className="w-full px-4 sm:px-6 lg:px-8">
+            <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between items-center h-16">
                     {/* Logo/Brand - Left */}
                     <div className="shrink-0">
@@ -177,11 +159,7 @@ export default function Header() {
                                                             "/pc-optimization"
                                                         )
                                                       ? "services-link-pc-optimization"
-                                                      : link.href.endsWith(
-                                                              "/waveigl-support"
-                                                          )
-                                                        ? "services-link-support"
-                                                        : undefined
+                                                      : undefined
                                             }
                                         >
                                             {link.label}
@@ -307,11 +285,7 @@ export default function Header() {
                                                         "/pc-optimization"
                                                     )
                                                   ? "services-link-pc-optimization"
-                                                  : link.href.endsWith(
-                                                          "/waveigl-support"
-                                                      )
-                                                    ? "services-link-support"
-                                                    : undefined
+                                                  : undefined
                                         }
                                     >
                                         {link.label}
