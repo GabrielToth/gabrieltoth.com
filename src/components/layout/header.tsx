@@ -3,6 +3,7 @@
 import { ThemeToggleClient } from "@/components/theme/theme-toggle-client"
 import LanguageSelector from "@/components/ui/language-selector"
 import { useLocale } from "@/hooks/use-locale"
+import { getLocalizedPath } from "@/lib/url-mapping"
 import { Menu, X } from "lucide-react"
 import { useTranslations } from "next-intl"
 import Link from "next/link"
@@ -22,9 +23,12 @@ export default function Header() {
     const getNavigationLinks = () => {
         return [
             { href: `/gabriel-toth-goncalves`, label: t("about") },
-            { href: `/${locale}/channel-management`, label: "ViraTrend" },
             {
-                href: `/${locale}/pc-optimization`,
+                href: getLocalizedPath("channel-management", locale),
+                label: "ViraTrend",
+            },
+            {
+                href: getLocalizedPath("pc-optimization", locale),
                 label: t("servicesDropdown.pcOptimization"),
             },
         ]
@@ -39,23 +43,23 @@ export default function Header() {
 
     const getServicesLinks = () => [
         {
-            href: `/${locale}/channel-management`,
+            href: getLocalizedPath("channel-management", locale),
             label: t("servicesDropdown.channelManagement"),
         },
         {
-            href: `/${locale}/pc-optimization`,
+            href: getLocalizedPath("pc-optimization", locale),
             label: t("servicesDropdown.pcOptimization"),
         },
         {
-            href: `/${locale}/amazon-affiliate`,
+            href: getLocalizedPath("amazon-affiliate", locale),
             label: t("servicesDropdown.affiliate"),
         },
         {
-            href: `/${locale}/iq-test`,
+            href: getLocalizedPath("iq-test", locale),
             label: t("servicesDropdown.iqTest"),
         },
         {
-            href: `/${locale}/personality-test`,
+            href: getLocalizedPath("personality-test", locale),
             label: t("servicesDropdown.personalityTest", {
                 default: "Personality Test",
             } as Record<string, string>),
@@ -190,14 +194,14 @@ export default function Header() {
                         {/* Auth Buttons */}
                         <div className="flex items-center space-x-3">
                             <Link
-                                href={`/${locale}/login`}
+                                href={getLocalizedPath("login", locale)}
                                 className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors text-sm font-medium"
                                 data-testid="nav-login"
                             >
                                 {t("login", { defaultValue: "Login" })}
                             </Link>
                             <Link
-                                href={`/${locale}/register`}
+                                href={getLocalizedPath("register", locale)}
                                 className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md text-sm font-medium transition-colors"
                                 data-testid="nav-register"
                             >
@@ -301,7 +305,7 @@ export default function Header() {
                             {/* Mobile Auth Buttons */}
                             <div className="px-3 py-2 space-y-2 border-t border-gray-200 dark:border-gray-700 mt-2">
                                 <Link
-                                    href={`/${locale}/login`}
+                                    href={getLocalizedPath("login", locale)}
                                     className="block px-3 py-2 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors text-sm font-medium"
                                     onClick={() => setIsMobileMenuOpen(false)}
                                     data-testid="nav-login-mobile"
@@ -309,7 +313,7 @@ export default function Header() {
                                     {t("login", { defaultValue: "Login" })}
                                 </Link>
                                 <Link
-                                    href={`/${locale}/register`}
+                                    href={getLocalizedPath("register", locale)}
                                     className="block px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md text-sm font-medium transition-colors text-center"
                                     onClick={() => setIsMobileMenuOpen(false)}
                                     data-testid="nav-register-mobile"

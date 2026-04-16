@@ -192,27 +192,27 @@ const nextConfig: NextConfig = {
             },
             {
                 source: "/channel-management",
-                destination: "/pt-BR/channel-management/",
+                destination: "/pt-BR/gerenciamento-de-canais/",
                 permanent: true,
             },
             {
                 source: "/editors",
-                destination: "/pt-BR/editors/",
+                destination: "/pt-BR/editores/",
                 permanent: true,
             },
             {
                 source: "/pc-optimization",
-                destination: "/pt-BR/pc-optimization/",
+                destination: "/pt-BR/otimizacao-de-pc/",
                 permanent: true,
             },
             {
                 source: "/privacy-policy",
-                destination: "/pt-BR/privacy-policy/",
+                destination: "/pt-BR/politica-de-privacidade/",
                 permanent: true,
             },
             {
                 source: "/terms-of-service",
-                destination: "/pt-BR/terms-of-service/",
+                destination: "/pt-BR/termos-de-servico/",
                 permanent: true,
             },
         ]

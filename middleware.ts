@@ -49,11 +49,56 @@ export function middleware(request: NextRequest) {
     // Permanent redirects for non-locale canonical routes
     const staticRedirectMap: Record<string, string> = {
         "/": "/pt-BR",
-        "/channel-management": "/pt-BR/channel-management",
-        "/editors": "/pt-BR/editors",
-        "/pc-optimization": "/pt-BR/pc-optimization",
-        "/privacy-policy": "/pt-BR/privacy-policy",
-        "/terms-of-service": "/pt-BR/terms-of-service",
+        "/channel-management": "/pt-BR/gerenciamento-de-canais",
+        "/editors": "/pt-BR/editores",
+        "/pc-optimization": "/pt-BR/otimizacao-de-pc",
+        "/privacy-policy": "/pt-BR/politica-de-privacidade",
+        "/terms-of-service": "/pt-BR/termos-de-servico",
+    }
+
+    // Old URL redirects to new translated URLs (308 Permanent Redirect)
+    const oldUrlRedirectMap: Record<string, string> = {
+        // PT-BR old URLs
+        "/pt-BR/channel-management": "/pt-BR/gerenciamento-de-canais",
+        "/pt-BR/editors": "/pt-BR/editores",
+        "/pt-BR/pc-optimization": "/pt-BR/otimizacao-de-pc",
+        "/pt-BR/privacy-policy": "/pt-BR/politica-de-privacidade",
+        "/pt-BR/terms-of-service": "/pt-BR/termos-de-servico",
+        "/pt-BR/iq-test": "/pt-BR/teste-de-qi",
+        "/pt-BR/personality-test": "/pt-BR/teste-de-personalidade",
+        "/pt-BR/amazon-affiliate": "/pt-BR/afiliados-amazon",
+        "/pt-BR/waveigl-support": "/pt-BR/apoio-waveigl",
+        "/pt-BR/login": "/pt-BR/entrar",
+        "/pt-BR/register": "/pt-BR/registrar",
+        "/pt-BR/payments": "/pt-BR/pagamentos",
+
+        // ES old URLs
+        "/es/channel-management": "/es/gestion-de-canales",
+        "/es/editors": "/es/editores",
+        "/es/pc-optimization": "/es/optimizacion-de-pc",
+        "/es/privacy-policy": "/es/politica-de-privacidad",
+        "/es/terms-of-service": "/es/terminos-de-servicio",
+        "/es/iq-test": "/es/prueba-de-ci",
+        "/es/personality-test": "/es/prueba-de-personalidad",
+        "/es/amazon-affiliate": "/es/afiliados-amazon",
+        "/es/waveigl-support": "/es/apoyo-waveigl",
+        "/es/login": "/es/iniciar-sesion",
+        "/es/register": "/es/registrarse",
+        "/es/payments": "/es/pagos",
+
+        // DE old URLs
+        "/de/channel-management": "/de/kanalverwaltung",
+        "/de/editors": "/de/editoren",
+        "/de/pc-optimization": "/de/pc-optimierung",
+        "/de/privacy-policy": "/de/datenschutzrichtlinie",
+        "/de/terms-of-service": "/de/nutzungsbedingungen",
+        "/de/iq-test": "/de/iq-test",
+        "/de/personality-test": "/de/personlichkeitstest",
+        "/de/amazon-affiliate": "/de/amazon-partner",
+        "/de/waveigl-support": "/de/waveigl-unterstutzung",
+        "/de/login": "/de/anmelden",
+        "/de/register": "/de/registrieren",
+        "/de/payments": "/de/zahlungen",
     }
 
     // Redirect old locale-specific about page to language-independent URL
@@ -66,6 +111,16 @@ export function middleware(request: NextRequest) {
 
     if (staticRedirectMap[pathname]) {
         const to = staticRedirectMap[pathname]
+        const correctedUrl = new URL(
+            to.endsWith("/") ? to : `${to}/`,
+            request.url
+        )
+        return NextResponse.redirect(correctedUrl, 308)
+    }
+
+    // Check for old URL redirects
+    if (oldUrlRedirectMap[pathname]) {
+        const to = oldUrlRedirectMap[pathname]
         const correctedUrl = new URL(
             to.endsWith("/") ? to : `${to}/`,
             request.url
