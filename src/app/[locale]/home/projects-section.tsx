@@ -1,7 +1,7 @@
 "use client"
 
 import { useLocale } from "@/hooks/use-locale"
-import { ExternalLink, Github } from "lucide-react"
+import { Code2, ExternalLink } from "lucide-react"
 import { useTranslations } from "next-intl"
 import { useMemo, useState } from "react"
 
@@ -91,7 +91,7 @@ export default function ProjectsSection() {
                                             rel="noopener noreferrer"
                                             className="flex items-center space-x-2 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 px-4 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors text-sm font-medium"
                                         >
-                                            <Github size={16} />
+                                            <Code2 size={16} />
                                             <span>{t("sourceCode")}</span>
                                         </a>
                                     )}

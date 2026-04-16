@@ -43,10 +43,19 @@
 ## ✅ Checklist Antes de Responder
 
 - [ ] Tarefa foi completada?
+- [ ] Build testado localmente com `npm run build`?
 - [ ] Código foi testado?
 - [ ] Commit foi feito?
 - [ ] Preciso gerar .md? (Apenas se solicitado)
 - [ ] Resumo está claro e conciso?
+
+## 🔨 Build Local Obrigatório
+
+**SEMPRE** execute `npm run build` localmente antes de fazer commit/push:
+- Se falhar, corrija os erros
+- Tente novamente até passar
+- Não suba código que não compila
+- Isso evita quebrar o deploy em produção
 
 ## 📝 Exemplo de Resposta Correta
 

@@ -2,13 +2,13 @@
 
 import { useLocale } from "@/hooks/use-locale"
 import {
+    Briefcase,
     Calendar,
     Clock,
+    Code2,
     Download,
-    Github,
-    Linkedin,
     Mail,
-    Youtube,
+    Play,
 } from "lucide-react"
 import { useTranslations } from "next-intl"
 import { useEffect, useState } from "react"
@@ -188,7 +188,7 @@ export default function ContactSection() {
                                         aria-label="GitHub"
                                         title="GitHub"
                                     >
-                                        <Github className="h-6 w-6" />
+                                        <Code2 className="h-6 w-6" />
                                     </a>
                                     <a
                                         href="https://linkedin.com/in/OGabrielToth"
@@ -198,7 +198,7 @@ export default function ContactSection() {
                                         aria-label="LinkedIn"
                                         title="LinkedIn"
                                     >
-                                        <Linkedin className="h-6 w-6" />
+                                        <Briefcase className="h-6 w-6" />
                                     </a>
                                     <a
                                         href="https://youtube.com/@ogabrieltoth"
@@ -208,7 +208,7 @@ export default function ContactSection() {
                                         aria-label="YouTube"
                                         title="YouTube"
                                     >
-                                        <Youtube className="h-6 w-6" />
+                                        <Play className="h-6 w-6" />
                                     </a>
                                 </div>
                             </div>

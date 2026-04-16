@@ -1,12 +1,7 @@
 import * as LucideIcons from "lucide-react"
 import { LucideIcon } from "lucide-react"
 import { IconType } from "react-icons"
-import { FaYoutube } from "react-icons/fa"
-import {
-    SiAdobeaftereffects,
-    SiAdobephotoshop,
-    SiAdobepremierepro,
-} from "react-icons/si"
+import { FaFilm, FaImage, FaYoutube } from "react-icons/fa"
 
 export type IconName =
     | keyof typeof LucideIcons
@@ -17,9 +12,9 @@ export type IconName =
 
 export const getIconByName = (name: IconName): LucideIcon | IconType => {
     // Handle special cases first
-    if (name === "SiAdobepremierepro") return SiAdobepremierepro
-    if (name === "SiAdobeaftereffects") return SiAdobeaftereffects
-    if (name === "SiAdobephotoshop") return SiAdobephotoshop
+    if (name === "SiAdobepremierepro") return FaFilm // Video editing icon
+    if (name === "SiAdobeaftereffects") return FaFilm // Video effects icon
+    if (name === "SiAdobephotoshop") return FaImage // Image editing icon
     if (name === "Youtube") return FaYoutube
 
     // Handle Lucide icons
