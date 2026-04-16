@@ -23,6 +23,8 @@
     },
     "landing": {
         "h2": "Test de CI gratis online – evaluación precisa de habilidades cognitivas",
+        "badge": "CI • Lógica • Patrones • Espacial",
+        "imageAlt": "Ilustración estilizada de red neuronal cerebral",
         "p1": "Realiza nuestro test de CI gratis con 35 preguntas rápidas que evalúan reconocimiento de patrones, razonamiento lógico, series numéricas e inteligencia espacial. Optimizado para móvil y escritorio.",
         "p2": "Disponible para personas a partir de 12 años en cualquier país e idioma. 35 preguntas de opción múltiple con dificultad progresiva. Al final verás un resultado estimado."
     },
@@ -33,6 +35,11 @@
     "sections": {
         "introTitle": "Test de CI online",
         "introBody": "Para hacer el test de CI, observa el patrón mostrado en la parte superior de cada pregunta y selecciona la alternativa que complete la secuencia de la forma más lógica.",
+        "introSteps": [
+            "Escanea la figura rápidamente para obtener una vista global.",
+            "Lista hipótesis de transformación (desplazamiento, rotación, inversión, incremento de cantidad, alternancia de color, combinación de dos reglas).",
+            "Prueba cada hipótesis comparando con fotogramas anteriores y elige la regla más simple y consistente."
+        ],
         "whatEvaluatesTitle": "¿Qué evalúa este test de CI?",
         "whatEvaluatesBody": "Este test sigue el principio de las matrices progresivas (Raven): mide el razonamiento abstracto, base de la lógica y la resolución de problemas, a partir de la información percibida por los sentidos.",
         "whoCanDoTitle": "¿Quién puede realizarlo?",

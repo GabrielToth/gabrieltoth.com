@@ -23,6 +23,8 @@
     },
     "landing": {
         "h2": "Kostenloser IQ-Test online – präzise kognitive Bewertung",
+        "badge": "IQ • Logik • Muster • Räumlich",
+        "imageAlt": "Stilisierte Illustration eines Gehirnnetzwerks",
         "p1": "Mache unseren kostenlosen IQ-Test mit 35 schnellen Fragen zu Mustererkennung, logischem Denken, Zahlenreihen und räumlicher Intelligenz. Optimiert für Smartphone und Desktop.",
         "p2": "Verfügbar für Personen ab 12 Jahren — weltweit und unabhängig von Sprache oder Bildung. 35 Multiple-Choice-Fragen mit steigender Schwierigkeit. Am Ende siehst du ein geschätztes Ergebnis."
     },
@@ -33,6 +35,11 @@
     "sections": {
         "introTitle": "IQ-Test online",
         "introBody": "Für den IQ-Test analysiere das Muster oben bei jeder Aufgabe und wähle die Antwort, die die Sequenz am logischsten vervollständigt.",
+        "introSteps": [
+            "Scanne die Figur schnell, um einen Gesamteindruck zu bekommen.",
+            "Liste Transformationshypothesen auf (Verschiebung, Rotation, Inversion, Mengenerhöhung, Farbwechsel, Kombination zweier Regeln).",
+            "Teste jede Hypothese durch Vergleich mit vorherigen Bildern und wähle die einfachste konsistente Regel."
+        ],
         "whatEvaluatesTitle": "Was bewertet dieser IQ-Test?",
         "whatEvaluatesBody": "Der Test folgt dem Prinzip der progressiven Matrizen (Raven): Er misst abstraktes Denken — Grundlage logischer Problemlösung — anhand wahrnehmbarer Informationen.",
         "whoCanDoTitle": "Wer kann den Test machen?",
