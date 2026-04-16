@@ -71,12 +71,14 @@ describe("components/layout/header coverage", () => {
         expect(homeDesktop.getAttribute("href")).toBe("/en")
 
         const aboutLink = screen.getByTestId("nav-about") as HTMLAnchorElement
-        expect(aboutLink.getAttribute("href")).toBe("/en#about")
+        expect(aboutLink.getAttribute("href")).toBe("/gabriel-toth-goncalves")
 
         // Open mobile menu
         fireEvent.click(screen.getByTestId("mobile-menu-toggle"))
         expect(screen.getByTestId("mobile-nav")).toBeInTheDocument()
         // Services links present in mobile list
-        expect(screen.getByTestId("services-link-support")).toBeInTheDocument()
+        expect(
+            screen.getByTestId("services-link-channel-management")
+        ).toBeInTheDocument()
     })
 })

@@ -21,7 +21,7 @@ export default function Header() {
     // Navigation links based on page type
     const getNavigationLinks = () => {
         return [
-            { href: `/${locale}/quem-sou-eu`, label: t("about") },
+            { href: `/gabriel-toth-goncalves`, label: t("about") },
             { href: `/${locale}/channel-management`, label: "ViraTrend" },
             {
                 href: `/${locale}/pc-optimization`,
@@ -31,7 +31,10 @@ export default function Header() {
     }
 
     const getHomeLink = () => {
-        return `/${locale}`
+        // If on homepage, link to hero section; otherwise link to home
+        const isHomepage =
+            pathname === `/${locale}` || pathname === `/${locale}/`
+        return isHomepage ? "#hero" : `/${locale}`
     }
 
     const getServicesLinks = () => [
@@ -100,7 +103,7 @@ export default function Header() {
                                 href={link.href}
                                 className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
                                 data-testid={
-                                    link.href.includes("quem-sou-eu")
+                                    link.href.includes("gabriel-toth-goncalves")
                                         ? "nav-about"
                                         : link.href.includes("#projects")
                                           ? "nav-projects"
@@ -250,7 +253,9 @@ export default function Header() {
                                     className="block px-3 py-2 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
                                     onClick={() => setIsMobileMenuOpen(false)}
                                     data-testid={
-                                        link.href.includes("#about")
+                                        link.href.includes(
+                                            "gabriel-toth-goncalves"
+                                        )
                                             ? "nav-about-mobile"
                                             : link.href.includes("#projects")
                                               ? "nav-projects-mobile"

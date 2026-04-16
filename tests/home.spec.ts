@@ -36,9 +36,9 @@ test.describe("home page", () => {
         await expect(page).toHaveURL(/\/en(\/)?$/)
         await expect(page.getByTestId("nav-home-desktop")).toBeVisible()
 
-        // Sections: navigate via header anchors to avoid DOM detachment during hydration
+        // Sections: navigate via header to the about page
         await page.getByTestId("nav-about").click()
-        await expect(page).toHaveURL(/\/en#about$/)
+        await expect(page).toHaveURL(/\/gabriel-toth-goncalves\/?$/)
         await expect(page.locator("#about")).toBeVisible()
 
         await page.getByTestId("nav-projects").click()

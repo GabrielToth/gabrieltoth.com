@@ -56,8 +56,26 @@ export function middleware(request: NextRequest) {
         "/terms-of-service": "/pt-BR/terms-of-service",
     }
 
+    // Redirect old locale-specific about page to language-independent URL
+    const localeSpecificRedirectMap: Record<string, string> = {
+        "/pt-BR/quem-sou-eu": "/gabriel-toth-goncalves",
+        "/en/about-me": "/gabriel-toth-goncalves",
+        "/es/acerca-de-mi": "/gabriel-toth-goncalves",
+        "/de/uber-mich": "/gabriel-toth-goncalves",
+    }
+
     if (staticRedirectMap[pathname]) {
         const to = staticRedirectMap[pathname]
+        const correctedUrl = new URL(
+            to.endsWith("/") ? to : `${to}/`,
+            request.url
+        )
+        return NextResponse.redirect(correctedUrl, 308)
+    }
+
+    // Check for locale-specific redirects
+    if (localeSpecificRedirectMap[pathname]) {
+        const to = localeSpecificRedirectMap[pathname]
         const correctedUrl = new URL(
             to.endsWith("/") ? to : `${to}/`,
             request.url
