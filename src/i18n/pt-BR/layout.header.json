@@ -14,9 +14,13 @@
     "servicesDropdown": {
         "channelManagement": "ViraTrend",
         "pcOptimization": "Otimização de PC",
-        "support": "Apoiar WaveIGL",
         "affiliate": "Afiliados Amazon",
         "iqTest": "Teste de QI",
         "personalityTest": "Teste de Personalidade"
-    }
+    },
+    "minecraftDropdown": {
+        "modpacks": "Modpacks",
+        "mods": "Mods"
+    },
+    "minecraft": "Minecraft"
 }

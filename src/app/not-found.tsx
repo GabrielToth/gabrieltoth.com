@@ -37,14 +37,6 @@ export default function NotFound() {
             href: "/pt-BR/editors",
             hrefEn: "/editors",
         },
-        {
-            title: "Suporte WaveIGL",
-            titleEn: "WaveIGL Support",
-            description: "Apoie nossa comunidade gaming",
-            descriptionEn: "Support our gaming community",
-            href: "/pt-BR/waveigl-support",
-            hrefEn: "/waveigl-support",
-        },
     ]
 
     return (
@@ -122,14 +114,7 @@ export default function NotFound() {
                             className="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors"
                         >
                             <Home className="mr-2" size={20} />
-                            Página Inicial (PT)
-                        </Link>
-                        <Link
-                            href="/"
-                            className="inline-flex items-center px-6 py-3 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg font-medium hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
-                        >
-                            <Home className="mr-2" size={20} />
-                            Home Page (EN)
+                            Página Inicial
                         </Link>
                         {mounted && (
                             <button

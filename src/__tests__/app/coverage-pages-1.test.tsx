@@ -56,12 +56,4 @@ describe("pages server components coverage (light execution)", () => {
         } as any)
         expect(jsx).toBeTruthy()
     })
-
-    it("waveigl-support page executes default export", async () => {
-        const mod = await import("../../app/[locale]/waveigl-support/page")
-        const jsx = await mod.default({
-            params: Promise.resolve({ locale: "en" }),
-        } as any)
-        expect(jsx).toBeTruthy()
-    })
 })

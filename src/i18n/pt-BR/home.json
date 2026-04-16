@@ -16,7 +16,7 @@
         "role": "Cientista de Dados & Desenvolvedor Full Stack",
         "intro": "Olá! Sou Gabriel Toth Gonçalves, cientista de dados pleno e desenvolvedor Full Stack brasileiro. Formado em Ciência da Computação com especialização em Ciência de Dados, atualmente trabalho no projeto social-analytics-engine, realizando análises avançadas de campanhas digitais e métricas de conversão.",
         "experience": "Meu trabalho atualmente envolve a integração de dados do Google Analytics com métricas de redes sociais (YouTube, Instagram, X, Telegram) e análise de conversões Stripe usando Python, PostgreSQL, SQLAlchemy e Docker. Também desenvolvo soluções web, tendo criado sites como softclever.com.br (React) e sistemasatfiscal.com.br (Angular), utilizando tecnologias modernas.",
-        "passion": "Além da análise e ciência de dados, gerencio canais como o canal WaveIGL com mais de 2 milhões de visualizações mensais criando conteúdo para redes sociais. Desenvolvi o ViraTrend, um serviço especializado em consultoria de crescimento digital para criadores de conteúdo. Tenho paixão por transformar dados em insights acionáveis e usar machine learning para otimizar campanhas digitais e experiências do usuário.",
+        "passion": "Além da análise e ciência de dados, desenvolvi o ViraTrend, um serviço especializado em consultoria de crescimento digital para criadores de conteúdo. Tenho paixão por transformar dados em insights acionáveis e usar machine learning para otimizar campanhas digitais e experiências do usuário.",
         "location": "📍 Brasil",
         "interests": "Quando não estou codando, você pode me encontrar criando conteúdo educacional, explorando novas tecnologias ou jogando Minecraft (sim, tenho até um plugin próprio!).",
         "specializedIn": "Especializado em",
@@ -160,20 +160,6 @@
                 "tags": ["React", "CSS", "JavaScript", "SEO"],
                 "liveUrl": "https://softclever.com.br",
                 "githubUrl": "https://github.com/gabrieltoth/softclever"
-            },
-            {
-                "title": "WaveIGL Project",
-                "description": "Projeto educacional completo incluindo canal no YouTube com mais de 2 milhões de visualizações mensais, sistema de pagamentos integrado para investimentos e gestão de canais. Inclui criação de conteúdo sobre tecnologia, programação e desenvolvimento de games.",
-                "image": "/projects/waveigl.jpg",
-                "tags": [
-                    "YouTube",
-                    "Content Creation",
-                    "Payment Integration",
-                    "Next.js",
-                    "Stripe",
-                    "PIX"
-                ],
-                "slug": "/waveigl-support"
             },
             {
                 "title": "PC Optimization Service",

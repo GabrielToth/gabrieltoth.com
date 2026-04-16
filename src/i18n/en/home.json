@@ -16,7 +16,7 @@
         "role": "Data Scientist & Full Stack Developer",
         "intro": "Hello! I'm Gabriel Toth Gonçalves, data scientist II and Full Stack developer from Brazil. With a Computer Science degree and specialization in Data Science, I currently work on the social-analytics-engine project, performing advanced digital campaign analysis and conversion metrics.",
         "experience": "My current work involves integrating Google Analytics data with social media metrics (YouTube, Instagram, X, Telegram) and Stripe conversion analysis using Python, PostgreSQL, SQLAlchemy, and Docker. I also develop enterprise web solutions, having created sites like softclever.com.br (React) and sistemasatfiscal.com.br (Angular), using modern technologies.",
-        "passion": "Beyond data analysis and science, I manage channels like the WaveIGL channel with over 2 million monthly views and create content on social media. I developed ViraTrend, a specialized service for digital growth consulting for content creators. I'm passionate about transforming data into actionable insights and using machine learning to optimize digital campaigns and user experiences.",
+        "passion": "Beyond data analysis and science, I developed ViraTrend, a specialized service for digital growth consulting for content creators. I'm passionate about transforming data into actionable insights and using machine learning to optimize digital campaigns and user experiences.",
         "location": "📍 Brazil",
         "interests": "When I'm not coding, you can find me creating educational content, exploring new technologies, or playing Minecraft (yes, I even have my own plugin!).",
         "specializedIn": "Specialized in",
@@ -160,20 +160,6 @@
                 "tags": ["React", "CSS", "JavaScript", "SEO"],
                 "liveUrl": "https://softclever.com.br",
                 "githubUrl": "https://github.com/gabrieltoth/softclever"
-            },
-            {
-                "title": "WaveIGL Project",
-                "description": "Complete educational project including YouTube channel with over 2 million monthly views, integrated payment system for investments and channel management. Includes content creation about technology, programming and game development.",
-                "image": "/projects/waveigl.jpg",
-                "tags": [
-                    "YouTube",
-                    "Content Creation",
-                    "Payment Integration",
-                    "Next.js",
-                    "Stripe",
-                    "PIX"
-                ],
-                "slug": "/waveigl-support"
             },
             {
                 "title": "PC Optimization Service",

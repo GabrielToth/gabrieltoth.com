@@ -174,25 +174,6 @@ export default function LocaleNotFound() {
                         : "Earn 90% of AdSense editing videos",
             href: `/${locale}/editors`,
         },
-        {
-            title:
-                locale === "pt-BR"
-                    ? "Suporte WaveIGL"
-                    : locale === "es"
-                      ? "Soporte WaveIGL"
-                      : locale === "de"
-                        ? "WaveIGL Unterstützung"
-                        : "WaveIGL Support",
-            description:
-                locale === "pt-BR"
-                    ? "Apoie nossa comunidade gaming"
-                    : locale === "es"
-                      ? "Apoya nuestra comunidad gaming"
-                      : locale === "de"
-                        ? "Unterstütze unsere Gaming-Community"
-                        : "Support our gaming community",
-            href: `/${locale}/waveigl-support`,
-        },
     ]
 
     return (

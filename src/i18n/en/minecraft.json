@@ -1,0 +1,63 @@
+{
+    "navigation": {
+        "minecraft": "Minecraft",
+        "modpacks": "Modpacks",
+        "mods": "Mods"
+    },
+    "landing": {
+        "title": "Minecraft Projects",
+        "subtitle": "Modpacks, mods, and content creation",
+        "description": "Explore my Minecraft journey: from creating optimized modpacks to developing custom mods and sharing programming tutorials.",
+        "chooseCategory": "Choose a category",
+        "modpacksTitle": "Modpacks",
+        "modpacksDescription": "Curated modpack collections for enhanced gameplay",
+        "modsTitle": "Mods",
+        "modsDescription": "Custom modifications and tools",
+        "journey": {
+            "title": "My Minecraft Journey",
+            "intro": "I've been creating Minecraft content and developing mods for years, combining my passion for gaming with programming expertise.",
+            "contentCreation": "Content Creation",
+            "contentCreationText": "Creating tutorials, guides, and showcasing modpack configurations to help the community.",
+            "modDevelopment": "Mod Development",
+            "modDevelopmentText": "Building custom mods and tools to enhance the Minecraft experience.",
+            "optimization": "Performance Optimization",
+            "optimizationText": "Focusing on creating lightweight, optimized modpacks that run smoothly on various hardware."
+        }
+    },
+    "modpack": {
+        "version": "Version",
+        "compatibility": "Compatibility",
+        "platforms": "Platforms",
+        "links": "Links",
+        "tags": "Tags",
+        "creators": "Creators",
+        "details": "Details",
+        "minecraftVersion": "Minecraft Version",
+        "modLoader": "Mod Loader",
+        "environment": "Environment",
+        "clientSide": "Client-side",
+        "serverSide": "Server-side",
+        "viewOnModrinth": "View on Modrinth",
+        "viewSource": "View source",
+        "reportIssues": "Report issues",
+        "donate": "Donate",
+        "description": "Description",
+        "modList": "Mod List",
+        "changelog": "Changelog",
+        "searchMods": "Search mods...",
+        "modsCount": "{count} mods",
+        "downloadCount": "{count} downloads",
+        "lastUpdated": "Last updated",
+        "created": "Created",
+        "license": "License"
+    },
+    "changelog": {
+        "title": "Changelog",
+        "version": "Version",
+        "released": "Released",
+        "changes": "Changes",
+        "noChangelog": "No changelog available",
+        "errorLoading": "Error loading changelog",
+        "viewOnGitHub": "View on GitHub"
+    }
+}

@@ -1,0 +1,63 @@
+{
+    "navigation": {
+        "minecraft": "Minecraft",
+        "modpacks": "Modpacks",
+        "mods": "Mods"
+    },
+    "landing": {
+        "title": "Projetos Minecraft",
+        "subtitle": "Modpacks, mods e criação de conteúdo",
+        "description": "Explore minha jornada no Minecraft: desde a criação de modpacks otimizados até o desenvolvimento de mods personalizados e compartilhamento de tutoriais de programação.",
+        "chooseCategory": "Escolha uma categoria",
+        "modpacksTitle": "Modpacks",
+        "modpacksDescription": "Coleções curadas de modpacks para gameplay aprimorado",
+        "modsTitle": "Mods",
+        "modsDescription": "Modificações e ferramentas personalizadas",
+        "journey": {
+            "title": "Minha Jornada no Minecraft",
+            "intro": "Venho criando conteúdo de Minecraft e desenvolvendo mods há anos, combinando minha paixão por jogos com expertise em programação.",
+            "contentCreation": "Criação de Conteúdo",
+            "contentCreationText": "Criando tutoriais, guias e mostrando configurações de modpacks para ajudar a comunidade.",
+            "modDevelopment": "Desenvolvimento de Mods",
+            "modDevelopmentText": "Construindo mods e ferramentas personalizadas para melhorar a experiência no Minecraft.",
+            "optimization": "Otimização de Performance",
+            "optimizationText": "Focando em criar modpacks leves e otimizados que rodam suavemente em diversos hardwares."
+        }
+    },
+    "modpack": {
+        "version": "Versão",
+        "compatibility": "Compatibilidade",
+        "platforms": "Plataformas",
+        "links": "Links",
+        "tags": "Tags",
+        "creators": "Criadores",
+        "details": "Detalhes",
+        "minecraftVersion": "Versão do Minecraft",
+        "modLoader": "Mod Loader",
+        "environment": "Ambiente",
+        "clientSide": "Cliente",
+        "serverSide": "Servidor",
+        "viewOnModrinth": "Ver no Modrinth",
+        "viewSource": "Ver código-fonte",
+        "reportIssues": "Reportar problemas",
+        "donate": "Doar",
+        "description": "Descrição",
+        "modList": "Lista de Mods",
+        "changelog": "Changelog",
+        "searchMods": "Buscar mods...",
+        "modsCount": "{count} mods",
+        "downloadCount": "{count} downloads",
+        "lastUpdated": "Última atualização",
+        "created": "Criado",
+        "license": "Licença"
+    },
+    "changelog": {
+        "title": "Changelog",
+        "version": "Versão",
+        "released": "Lançado",
+        "changes": "Mudanças",
+        "noChangelog": "Nenhum changelog disponível",
+        "errorLoading": "Erro ao carregar changelog",
+        "viewOnGitHub": "Ver no GitHub"
+    }
+}
