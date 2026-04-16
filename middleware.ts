@@ -57,6 +57,7 @@ export function middleware(request: NextRequest) {
     }
 
     // Old URL redirects to new translated URLs (308 Permanent Redirect)
+    // Note: login, register, and payments are handled by rewrites in next.config.ts
     const oldUrlRedirectMap: Record<string, string> = {
         // PT-BR old URLs
         "/pt-BR/channel-management": "/pt-BR/gerenciamento-de-canais",
@@ -67,9 +68,6 @@ export function middleware(request: NextRequest) {
         "/pt-BR/iq-test": "/pt-BR/teste-de-qi",
         "/pt-BR/personality-test": "/pt-BR/teste-de-personalidade",
         "/pt-BR/amazon-affiliate": "/pt-BR/afiliados-amazon",
-        "/pt-BR/login": "/pt-BR/entrar",
-        "/pt-BR/register": "/pt-BR/registrar",
-        "/pt-BR/payments": "/pt-BR/pagamentos",
 
         // ES old URLs
         "/es/channel-management": "/es/gestion-de-canales",
@@ -80,9 +78,6 @@ export function middleware(request: NextRequest) {
         "/es/iq-test": "/es/prueba-de-ci",
         "/es/personality-test": "/es/prueba-de-personalidad",
         "/es/amazon-affiliate": "/es/afiliados-amazon",
-        "/es/login": "/es/iniciar-sesion",
-        "/es/register": "/es/registrarse",
-        "/es/payments": "/es/pagos",
 
         // DE old URLs
         "/de/channel-management": "/de/kanalverwaltung",
@@ -93,9 +88,6 @@ export function middleware(request: NextRequest) {
         "/de/iq-test": "/de/iq-test",
         "/de/personality-test": "/de/personlichkeitstest",
         "/de/amazon-affiliate": "/de/amazon-partner",
-        "/de/login": "/de/anmelden",
-        "/de/register": "/de/registrieren",
-        "/de/payments": "/de/zahlungen",
     }
 
     // Redirect old locale-specific about page to language-independent URL
