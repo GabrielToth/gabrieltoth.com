@@ -160,7 +160,7 @@ export async function shutdown(): Promise<void> {
     }
 }
 
-export default {
+const db = {
     query,
     queryOne,
     queryMany,
@@ -168,3 +168,6 @@ export default {
     healthCheck,
     shutdown,
 }
+
+export { db }
+export default db

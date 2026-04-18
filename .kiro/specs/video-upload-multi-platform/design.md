@@ -780,8 +780,8 @@ const YOUTUBE_OAUTH_CONFIG = {
     'https://www.googleapis.com/auth/youtube.upload',
     'https://www.googleapis.com/auth/youtube',
   ],
-  clientId: process.env.YOUTUBE_CLIENT_ID,
-  clientSecret: process.env.YOUTUBE_CLIENT_SECRET,
+  clientId: process.env.GOOGLE_CLIENT_ID,
+  clientSecret: process.env.GOOGLE_CLIENT_SECRET,
   redirectUri: `${process.env.APP_URL}/api/oauth/callback?platform=youtube`,
 };
 ```
@@ -797,8 +797,8 @@ const FACEBOOK_OAUTH_CONFIG = {
     'pages_read_engagement',
     'pages_show_list',
   ],
-  clientId: process.env.FACEBOOK_APP_ID,
-  clientSecret: process.env.FACEBOOK_APP_SECRET,
+  clientId: process.env.META_APP_ID,
+  clientSecret: process.env.META_APP_SECRET,
   redirectUri: `${process.env.APP_URL}/api/oauth/callback?platform=facebook`,
 };
 ```
@@ -2076,14 +2076,11 @@ TOKEN_ENCRYPTION_KEY=<256-bit-hex-key>
 FILE_ENCRYPTION_KEY=<256-bit-hex-key>
 
 # OAuth credentials
-YOUTUBE_CLIENT_ID=<youtube-client-id>
-YOUTUBE_CLIENT_SECRET=<youtube-client-secret>
+GOOGLE_CLIENT_ID=<youtube-client-id>
+GOOGLE_CLIENT_SECRET=<youtube-client-secret>
 
-FACEBOOK_APP_ID=<facebook-app-id>
-FACEBOOK_APP_SECRET=<facebook-app-secret>
-
-INSTAGRAM_APP_ID=<instagram-app-id>
-INSTAGRAM_APP_SECRET=<instagram-app-secret>
+META_APP_ID=<facebook-app-id>
+META_APP_SECRET=<facebook-app-secret>
 
 TIKTOK_CLIENT_KEY=<tiktok-client-key>
 TIKTOK_CLIENT_SECRET=<tiktok-client-secret>

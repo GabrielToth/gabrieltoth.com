@@ -1,6 +1,20 @@
 -- Database Schema for Custom Platform
 -- Designed for total metric visibility and usage-based billing
 
+-- Users (Google OAuth authentication)
+CREATE TABLE IF NOT EXISTS public.users (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  google_id VARCHAR(255) UNIQUE NOT NULL,
+  google_email VARCHAR(255) NOT NULL,
+  google_name VARCHAR(255) NOT NULL,
+  google_picture VARCHAR(255),
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_users_google_id ON public.users(google_id);
+CREATE INDEX IF NOT EXISTS idx_users_google_email ON public.users(google_email);
+
 -- Profiles (Core user data)
 CREATE TABLE IF NOT EXISTS public.profiles (
   id UUID PRIMARY KEY, -- Linked to Auth.js or external Auth
