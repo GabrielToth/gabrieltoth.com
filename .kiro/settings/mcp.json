@@ -1,29 +1,8 @@
 {
     "mcpServers": {
-        "postman": {
-            "command": "uvx",
-            "args": ["postman-mcp@latest"],
-            "env": {
-                "POSTMAN_API_KEY": "${POSTMAN_API_KEY}",
-                "FASTMCP_LOG_LEVEL": "ERROR"
-            },
-            "disabled": false,
-            "autoApprove": []
-        },
-        "supabase": {
-            "command": "uvx",
-            "args": ["supabase-mcp@latest"],
-            "env": {
-                "SUPABASE_URL": "${SUPABASE_URL}",
-                "SUPABASE_SERVICE_ROLE_KEY": "${SUPABASE_SERVICE_ROLE_KEY}",
-                "FASTMCP_LOG_LEVEL": "ERROR"
-            },
-            "disabled": false,
-            "autoApprove": []
-        },
         "aws-mcp": {
             "command": "uvx",
-            "args": ["awslabs.aws-mcp@latest"],
+            "args": ["awslabs.aws-mcp"],
             "env": {
                 "AWS_REGION": "${AWS_REGION}",
                 "AWS_ACCESS_KEY_ID": "${AWS_ACCESS_KEY_ID}",
