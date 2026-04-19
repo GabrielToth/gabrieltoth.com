@@ -9,7 +9,7 @@
                 "AWS_SECRET_ACCESS_KEY": "${AWS_SECRET_ACCESS_KEY}",
                 "FASTMCP_LOG_LEVEL": "ERROR"
             },
-            "disabled": false,
+            "disabled": true,
             "autoApprove": []
         }
     }
