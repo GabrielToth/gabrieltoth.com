@@ -37,6 +37,10 @@ async function handleGoogleCallback(
 ): Promise<NextResponse<GoogleCallbackResponse>> {
     try {
         // Get redirect URI from environment
+        // Note: Using NEXT_PUBLIC_ variable here because the redirect URI
+        // must match exactly what was sent from the client-side button.
+        // This is not a security issue - the redirect URI is public information
+        // that Google validates against the OAuth app configuration.
         const redirectUri = process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI
         if (!redirectUri) {
             logger.error("Google redirect URI not configured", {

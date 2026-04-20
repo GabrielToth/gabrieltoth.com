@@ -11,6 +11,10 @@ import { OAuth2Client } from "google-auth-library"
 /**
  * Initialize Google OAuth2 Client
  * Uses environment variables for configuration
+ *
+ * Server-side variables (never exposed to client):
+ * - GOOGLE_CLIENT_ID: Used for token validation
+ * - GOOGLE_CLIENT_SECRET: Used for code exchange
  */
 const getGoogleAuthClient = (): OAuth2Client => {
     const clientId = process.env.GOOGLE_CLIENT_ID
