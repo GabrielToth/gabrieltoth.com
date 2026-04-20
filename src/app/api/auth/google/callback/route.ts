@@ -37,7 +37,7 @@ async function handleGoogleCallback(
 ): Promise<NextResponse<GoogleCallbackResponse>> {
     try {
         // Get redirect URI from environment
-        const redirectUri = process.env.GOOGLE_REDIRECT_URI
+        const redirectUri = process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI
         if (!redirectUri) {
             logger.error("Google redirect URI not configured", {
                 context: "Auth",
@@ -256,7 +256,18 @@ export async function GET(
             )
         }
 
-        return handleGoogleCallback(code, clientIp)
+        // Redirect to dashboard after successful authentication
+        // The handleGoogleCallback will set the session cookie
+        const response = await handleGoogleCallback(code, clientIp)
+
+        // If successful, redirect to dashboard
+        if (response.status === 200) {
+            return NextResponse.redirect(new URL("/dashboard", request.url), {
+                status: 302,
+            })
+        }
+
+        return response
     } catch (err) {
         logger.error("Google callback GET error", {
             context: "Auth",
