@@ -1,5 +1,5 @@
 /**
- * POST /api/auth/google/callback
+ * GET/POST /api/auth/google/callback
  * Google OAuth callback endpoint
  *
  * Validates: Requirements 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 2.1, 2.2, 2.3, 2.4, 2.5,
@@ -20,11 +20,6 @@ import {
 } from "@/lib/middleware/security-headers"
 import { NextRequest, NextResponse } from "next/server"
 
-interface GoogleCallbackRequest {
-    code: string
-    state?: string
-}
-
 interface GoogleCallbackResponse {
     success: boolean
     message?: string
@@ -32,34 +27,15 @@ interface GoogleCallbackResponse {
     redirectUrl?: string
 }
 
-export async function POST(
-    request: NextRequest
+/**
+ * Process Google OAuth callback
+ * Handles both GET (from Google redirect) and POST (from frontend)
+ */
+async function handleGoogleCallback(
+    code: string,
+    clientIp: string
 ): Promise<NextResponse<GoogleCallbackResponse>> {
-    const clientIp = getClientIp(request)
-    const userAgent = request.headers.get("user-agent") || "unknown"
-
     try {
-        // Parse request body
-        const body = (await request
-            .json()
-            .catch(() => ({}))) as GoogleCallbackRequest
-
-        // Validate authorization code
-        if (!body.code) {
-            logger.warn("Google callback without authorization code", {
-                context: "Auth",
-                data: { ip: clientIp },
-            })
-
-            return NextResponse.json(
-                {
-                    success: false,
-                    error: "Authorization code is required",
-                },
-                { status: 400, headers: getSecurityHeaders() }
-            )
-        }
-
         // Get redirect URI from environment
         const redirectUri = process.env.GOOGLE_REDIRECT_URI
         if (!redirectUri) {
@@ -79,7 +55,7 @@ export async function POST(
         // Exchange authorization code for Google ID token
         let idToken: string
         try {
-            idToken = await exchangeCodeForToken(body.code, redirectUri)
+            idToken = await exchangeCodeForToken(code, redirectUri)
         } catch (error) {
             logger.warn("Failed to exchange authorization code", {
                 context: "Auth",
@@ -235,7 +211,103 @@ export async function POST(
 
         return response
     } catch (err) {
-        logger.error("Google callback endpoint error", {
+        logger.error("Google callback processing error", {
+            context: "Auth",
+            error: err as Error,
+            data: { ip: clientIp },
+        })
+
+        return NextResponse.json(
+            {
+                success: false,
+                error: "An error occurred. Please try again later",
+            },
+            { status: 500, headers: getSecurityHeaders() }
+        )
+    }
+}
+
+/**
+ * GET handler for Google OAuth callback
+ * Google redirects here with authorization code in query parameters
+ */
+export async function GET(
+    request: NextRequest
+): Promise<NextResponse<GoogleCallbackResponse>> {
+    const clientIp = getClientIp(request)
+
+    try {
+        // Get authorization code from query parameters
+        const code = request.nextUrl.searchParams.get("code")
+
+        // Validate authorization code
+        if (!code) {
+            logger.warn("Google callback without authorization code", {
+                context: "Auth",
+                data: { ip: clientIp },
+            })
+
+            return NextResponse.json(
+                {
+                    success: false,
+                    error: "Authorization code is required",
+                },
+                { status: 400, headers: getSecurityHeaders() }
+            )
+        }
+
+        return handleGoogleCallback(code, clientIp)
+    } catch (err) {
+        logger.error("Google callback GET error", {
+            context: "Auth",
+            error: err as Error,
+            data: { ip: clientIp },
+        })
+
+        return NextResponse.json(
+            {
+                success: false,
+                error: "An error occurred. Please try again later",
+            },
+            { status: 500, headers: getSecurityHeaders() }
+        )
+    }
+}
+
+/**
+ * POST handler for Google OAuth callback
+ * Frontend can also POST the authorization code
+ */
+export async function POST(
+    request: NextRequest
+): Promise<NextResponse<GoogleCallbackResponse>> {
+    const clientIp = getClientIp(request)
+
+    try {
+        // Parse request body
+        const body = (await request.json().catch(() => ({}))) as {
+            code?: string
+        }
+
+        // Validate authorization code
+        if (!body.code) {
+            logger.warn("Google callback POST without authorization code", {
+                context: "Auth",
+                data: { ip: clientIp },
+            })
+
+            return NextResponse.json(
+                {
+                    success: false,
+                    error: "Authorization code is required",
+                },
+                { status: 400, headers: getSecurityHeaders() }
+            )
+        }
+
+        return handleGoogleCallback(body.code, clientIp)
+    } catch (err) {
+        logger.error("Google callback POST error", {
             context: "Auth",
             error: err as Error,
             data: { ip: clientIp },

@@ -7,25 +7,11 @@
 
 import { db } from "@/lib/db"
 import { logger } from "@/lib/logger"
-import { getSecurityHeaders } from "@/lib/middleware/security-headers"
-import { NextRequest, NextResponse } from "next/server"
+import { NextRequest } from "next/server"
 
 const { queryOne } = db
 
-interface MeResponse {
-    success: boolean
-    error?: string
-    data?: {
-        id: string
-        google_email: string
-        google_name: string
-        google_picture?: string
-    }
-}
-
-export async function GET(
-    request: NextRequest
-): Promise<NextResponse<MeResponse>> {
+export async function GET(request: NextRequest) {
     try {
         // Get session token from cookie
         const sessionToken = request.cookies.get("session")?.value
@@ -34,13 +20,7 @@ export async function GET(
             logger.debug("GET /me request without session", {
                 context: "Auth",
             })
-            return NextResponse.json(
-                {
-                    success: false,
-                    error: "Unauthorized",
-                },
-                { status: 401, headers: getSecurityHeaders() }
-            )
+            return createErrorResponse(AuthErrorType.UNAUTHORIZED)
         }
 
         // Find session
@@ -53,13 +33,7 @@ export async function GET(
             logger.debug("GET /me request with invalid session token", {
                 context: "Auth",
             })
-            return NextResponse.json(
-                {
-                    success: false,
-                    error: "Unauthorized",
-                },
-                { status: 401, headers: getSecurityHeaders() }
-            )
+            return createErrorResponse(AuthErrorType.UNAUTHORIZED)
         }
 
         // Check if session is expired
@@ -68,13 +42,7 @@ export async function GET(
                 context: "Auth",
                 data: { userId: session.user_id },
             })
-            return NextResponse.json(
-                {
-                    success: false,
-                    error: "Unauthorized",
-                },
-                { status: 401, headers: getSecurityHeaders() }
-            )
+            return createErrorResponse(AuthErrorType.SESSION_EXPIRED)
         }
 
         // Get user data
@@ -93,13 +61,7 @@ export async function GET(
                 context: "Auth",
                 data: { userId: session.user_id },
             })
-            return NextResponse.json(
-                {
-                    success: false,
-                    error: "Unauthorized",
-                },
-                { status: 401, headers: getSecurityHeaders() }
-            )
+            return createErrorResponse(AuthErrorType.UNAUTHORIZED)
         }
 
         logger.debug("GET /me request successful", {
@@ -107,30 +69,13 @@ export async function GET(
             data: { userId: user.id },
         })
 
-        return NextResponse.json(
-            {
-                success: true,
-                data: {
-                    id: user.id,
-                    google_email: user.google_email,
-                    google_name: user.google_name,
-                    google_picture: user.google_picture,
-                },
-            },
-            { status: 200, headers: getSecurityHeaders() }
-        )
-    } catch (err) {
-        logger.error("GET /me endpoint error", {
-            context: "Auth",
-            error: err as Error,
+        return createSuccessResponse({
+            id: user.id,
+            google_email: user.google_email,
+            google_name: user.google_name,
+            google_picture: user.google_picture,
         })
-
-        return NextResponse.json(
-            {
-                success: false,
-                error: "An error occurred. Please try again later",
-            },
-            { status: 500, headers: getSecurityHeaders() }
-        )
+    } catch (err) {
+        return handleUnexpectedError(err, "Auth", "/api/auth/me")
     }
 }

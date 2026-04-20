@@ -14,13 +14,38 @@ export default function ForgotPasswordForm({
     const t = useTranslations("auth")
     const [email, setEmail] = useState("")
     const [error, setError] = useState<string | null>(null)
+    const [emailError, setEmailError] = useState<string | null>(null)
     const [success, setSuccess] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
+
+    // Real-time email validation
+    const validateEmail = (email: string): string | null => {
+        if (email.length === 0) return null
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+        if (!emailRegex.test(email)) {
+            return "Invalid email format"
+        }
+        return null
+    }
+
+    const handleEmailChange = (newEmail: string) => {
+        setEmail(newEmail)
+        const error = validateEmail(newEmail)
+        setEmailError(error)
+    }
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         setError(null)
         setSuccess(false)
+
+        // Validate email before submission
+        const emailValidationError = validateEmail(email)
+        if (emailValidationError) {
+            setEmailError(emailValidationError)
+            return
+        }
+
         setIsLoading(true)
 
         try {
@@ -70,12 +95,17 @@ export default function ForgotPasswordForm({
                 <input
                     type="email"
                     value={email}
-                    onChange={e => setEmail(e.target.value)}
+                    onChange={e => handleEmailChange(e.target.value)}
                     className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-600 dark:focus:ring-blue-500"
                     placeholder={t("forgotPassword.emailPlaceholder")}
                     required
                     disabled={isLoading}
                 />
+                {emailError && (
+                    <p className="mt-1 text-sm text-red-600 dark:text-red-400">
+                        {emailError}
+                    </p>
+                )}
             </div>
 
             <button

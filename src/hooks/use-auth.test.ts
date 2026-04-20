@@ -26,6 +26,7 @@ describe("useAuth Hook", () => {
     beforeEach(() => {
         vi.clearAllMocks()
         ;(global.fetch as any).mockClear()
+        ;(global.fetch as any).mockReset()
     })
 
     it("returns initial loading state", () => {
@@ -205,28 +206,41 @@ describe("useAuth Hook", () => {
             google_name: "Test User",
         }
 
-        ;(global.fetch as any)
-            .mockResolvedValueOnce({
-                ok: true,
-                json: async () => ({
-                    success: true,
-                    data: userData,
-                }),
-            })
-            .mockResolvedValueOnce({
-                ok: true,
-                json: async () => ({ success: true }),
-            })
+        let callCount = 0
+        ;(global.fetch as any).mockImplementation(async (url: string) => {
+            callCount++
+            if (callCount === 1) {
+                // First call - /api/auth/me
+                return {
+                    ok: true,
+                    json: async () => ({
+                        success: true,
+                        data: userData,
+                    }),
+                }
+            } else {
+                // Second call - /api/auth/logout
+                return {
+                    ok: true,
+                    json: async () => ({ success: true }),
+                }
+            }
+        })
 
         const { result } = renderHook(() => useAuth())
 
+        // Wait for user to be loaded
         await waitFor(() => {
-            expect(result.current.user).toBeTruthy()
+            expect(result.current.user).toEqual(userData)
         })
 
         await result.current.logout()
 
-        expect(result.current.user).toBeNull()
+        // Wait for user to be cleared
+        await waitFor(() => {
+            expect(result.current.user).toBeNull()
+        })
+
         expect(result.current.isAuthenticated).toBe(false)
     })
 
@@ -237,23 +251,32 @@ describe("useAuth Hook", () => {
             google_name: "Test User",
         }
 
-        ;(global.fetch as any)
-            .mockResolvedValueOnce({
-                ok: true,
-                json: async () => ({
-                    success: true,
-                    data: userData,
-                }),
-            })
-            .mockResolvedValueOnce({
-                ok: false,
-                json: async () => ({ error: "Logout failed" }),
-            })
+        let callCount = 0
+        ;(global.fetch as any).mockImplementation(async (url: string) => {
+            callCount++
+            if (callCount === 1) {
+                // First call - /api/auth/me
+                return {
+                    ok: true,
+                    json: async () => ({
+                        success: true,
+                        data: userData,
+                    }),
+                }
+            } else {
+                // Second call - /api/auth/logout (fails)
+                return {
+                    ok: false,
+                    json: async () => ({ error: "Logout failed" }),
+                }
+            }
+        })
 
         const { result } = renderHook(() => useAuth())
 
+        // Wait for user to be loaded
         await waitFor(() => {
-            expect(result.current.user).toBeTruthy()
+            expect(result.current.user).toEqual(userData)
         })
 
         await expect(result.current.logout()).rejects.toThrow()

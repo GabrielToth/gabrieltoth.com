@@ -9,25 +9,13 @@ import { logAuditEvent } from "@/lib/auth/audit-logging"
 import { removeSession } from "@/lib/auth/session"
 import { db } from "@/lib/db"
 import { logger } from "@/lib/logger"
-import {
-    getClientIp,
-    getSecurityHeaders,
-} from "@/lib/middleware/security-headers"
-import { NextRequest, NextResponse } from "next/server"
+import { getClientIp } from "@/lib/middleware/security-headers"
+import { NextRequest } from "next/server"
 
 const { queryOne } = db
 
-interface LogoutResponse {
-    success: boolean
-    message?: string
-    error?: string
-}
-
-export async function POST(
-    request: NextRequest
-): Promise<NextResponse<LogoutResponse>> {
+export async function POST(request: NextRequest) {
     const clientIp = getClientIp(request)
-    const userAgent = request.headers.get("user-agent") || "unknown"
 
     try {
         // Get session token from cookie
@@ -38,13 +26,7 @@ export async function POST(
                 context: "Auth",
                 data: { ip: clientIp },
             })
-            return NextResponse.json(
-                {
-                    success: false,
-                    error: "No active session",
-                },
-                { status: 401, headers: getSecurityHeaders() }
-            )
+            return createErrorResponse(AuthErrorType.UNAUTHORIZED)
         }
 
         // Find session and get user info
@@ -58,13 +40,7 @@ export async function POST(
                 context: "Auth",
                 data: { ip: clientIp },
             })
-            return NextResponse.json(
-                {
-                    success: false,
-                    error: "Invalid session",
-                },
-                { status: 401, headers: getSecurityHeaders() }
-            )
+            return createErrorResponse(AuthErrorType.INVALID_SESSION)
         }
 
         // Get user email for logging
@@ -111,13 +87,7 @@ export async function POST(
         })
 
         // Create response and clear cookie
-        const response = NextResponse.json(
-            {
-                success: true,
-                message: "Logout successful",
-            },
-            { status: 200, headers: getSecurityHeaders() }
-        )
+        const response = createSuccessResponse(undefined, "Logout successful")
 
         // Clear session cookie
         response.cookies.set("session", "", {
@@ -130,18 +100,6 @@ export async function POST(
 
         return response
     } catch (err) {
-        logger.error("Logout endpoint error", {
-            context: "Auth",
-            error: err as Error,
-            data: { ip: clientIp },
-        })
-
-        return NextResponse.json(
-            {
-                success: false,
-                error: "An error occurred. Please try again later",
-            },
-            { status: 500, headers: getSecurityHeaders() }
-        )
+        return handleUnexpectedError(err, "Auth", "/api/auth/logout")
     }
 }

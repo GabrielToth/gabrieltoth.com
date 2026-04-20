@@ -93,31 +93,27 @@ export function useAuth(): UseAuthReturn {
 
     // Logout function
     const logout = async () => {
-        try {
-            const response = await fetch("/api/auth/logout", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            })
+        const response = await fetch("/api/auth/logout", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
 
-            if (!response.ok) {
-                const data = await response.json()
-                throw new Error(data.error || "Logout failed")
-            }
-
-            setUser(null)
-            logger.info("User logged out successfully", {
-                context: "Auth",
-            })
-        } catch (err) {
-            const error = err instanceof Error ? err : new Error(String(err))
+        if (!response.ok) {
+            const data = await response.json()
+            const error = new Error(data.error || "Logout failed")
             logger.error("Logout error", {
                 context: "Auth",
                 error,
             })
             throw error
         }
+
+        setUser(null)
+        logger.info("User logged out successfully", {
+            context: "Auth",
+        })
     }
 
     return {
