@@ -201,6 +201,15 @@ const nextConfig: NextConfig = {
                 source: "/pt-BR/pagamentos/:path*",
                 destination: "/pt-BR/payments/:path*",
             },
+            // Rewrites for RSC query parameters
+            {
+                source: "/pt-BR/login/:path*",
+                destination: "/pt-BR/login/:path*",
+            },
+            {
+                source: "/pt-BR/register/:path*",
+                destination: "/pt-BR/register/:path*",
+            },
             // ES rewrites - map translated URLs to English folder names
             {
                 source: "/es/gestion-de-canales/:path*/",
