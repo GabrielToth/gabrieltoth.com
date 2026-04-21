@@ -28,9 +28,18 @@ export interface User {
     updated_at: string
 }
 
+export interface Session {
+    id: string
+    user_id: string
+    session_id: string
+    created_at: string
+    expires_at: string
+}
+
 const orders: Order[] = []
 const confirmations: PaymentConfirmation[] = []
 const users: User[] = []
+const sessions: Session[] = []
 
 /* c8 ignore start */
 function generateId(): string {
@@ -94,6 +103,30 @@ export const db = {
             }
         }
 
+        // Handle session queries
+        if (query.includes("SELECT") && query.includes("FROM sessions")) {
+            if (query.includes("WHERE session_id")) {
+                const session = sessions.find(s => s.session_id === params?.[0])
+                return (session as T) || null
+            }
+        }
+
+        if (query.includes("INSERT INTO sessions")) {
+            const newSession: Session = {
+                id: generateId(),
+                user_id: params?.[0] as string,
+                session_id: params?.[1] as string,
+                created_at: new Date().toISOString(),
+                expires_at:
+                    (params?.[2] as string) ||
+                    new Date(
+                        Date.now() + 30 * 24 * 60 * 60 * 1000
+                    ).toISOString(),
+            }
+            sessions.push(newSession)
+            return (newSession as T) || null
+        }
+
         return null
     },
 
@@ -105,6 +138,21 @@ export const db = {
         if (query.includes("SELECT") && query.includes("FROM users")) {
             return (users as T[]) || []
         }
+
+        // Handle session deletion
+        if (query.includes("DELETE FROM sessions")) {
+            if (query.includes("WHERE session_id")) {
+                const sessionIndex = sessions.findIndex(
+                    s => s.session_id === params?.[0]
+                )
+                if (sessionIndex !== -1) {
+                    sessions.splice(sessionIndex, 1)
+                    return [{ rowCount: 1 } as T]
+                }
+                return [{ rowCount: 0 } as T]
+            }
+        }
+
         return []
     },
     async createOrder(
