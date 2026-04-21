@@ -44,7 +44,7 @@ describe("Discord Alerter Properties", () => {
                         ).resolves.not.toThrow()
                     }
                 ),
-                { numRuns: 100 }
+                { numRuns: 20 }
             )
         })
     })

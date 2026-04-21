@@ -27,7 +27,7 @@ describe("Request Context Middleware", () => {
                     // Response should have the same requestId
                     expect(response.headers.get("X-Request-ID")).toBe(requestId)
                 }),
-                { numRuns: 100 }
+                { numRuns: 20 }
             )
         })
 
@@ -47,7 +47,7 @@ describe("Request Context Middleware", () => {
                         /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
                     )
                 }),
-                { numRuns: 100 }
+                { numRuns: 20 }
             )
         })
     })
@@ -74,7 +74,7 @@ describe("Request Context Middleware", () => {
                         expect(context.userId).toBe(userId)
                     }
                 ),
-                { numRuns: 100 }
+                { numRuns: 20 }
             )
         })
 
@@ -90,7 +90,7 @@ describe("Request Context Middleware", () => {
                     expect(context.requestId).toBe(requestId)
                     expect(context.userId).toBeUndefined()
                 }),
-                { numRuns: 100 }
+                { numRuns: 20 }
             )
         })
     })

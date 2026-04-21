@@ -136,21 +136,33 @@ describe("validatePassword", () => {
             const result = validatePassword("ValidPass123!")
             expect(result.isValid).toBe(true)
             expect(result.error).toBeUndefined()
+            expect(result.strength).toBe("strong")
+            expect(result.requirements).toEqual({
+                minLength: true,
+                hasUppercase: true,
+                hasLowercase: true,
+                hasNumber: true,
+                hasSpecial: true,
+                notCommon: true,
+            })
         })
 
         it("should accept password with multiple special characters", () => {
             const result = validatePassword("Pass@word#123")
             expect(result.isValid).toBe(true)
+            expect(result.strength).toBe("strong")
         })
 
         it("should accept password with 8 characters exactly", () => {
             const result = validatePassword("Pass1234!")
             expect(result.isValid).toBe(true)
+            expect(result.strength).toBe("strong")
         })
 
         it("should accept long password", () => {
             const result = validatePassword("VeryLongPassword123!@#$%")
             expect(result.isValid).toBe(true)
+            expect(result.strength).toBe("strong")
         })
 
         it("should accept password with hyphen", () => {
@@ -179,6 +191,8 @@ describe("validatePassword", () => {
             const result = validatePassword("Pass123")
             expect(result.isValid).toBe(false)
             expect(result.error).toBe("Password must be at least 8 characters")
+            expect(result.strength).toBe("medium") // Has 4/6 requirements
+            expect(result.requirements.minLength).toBe(false)
         })
 
         it("should reject password without uppercase", () => {
@@ -187,6 +201,8 @@ describe("validatePassword", () => {
             expect(result.error).toBe(
                 "Password must contain at least one uppercase letter"
             )
+            expect(result.requirements.hasUppercase).toBe(false)
+            expect(result.requirements.minLength).toBe(true)
         })
 
         it("should reject password without lowercase", () => {
@@ -195,6 +211,7 @@ describe("validatePassword", () => {
             expect(result.error).toBe(
                 "Password must contain at least one lowercase letter"
             )
+            expect(result.requirements.hasLowercase).toBe(false)
         })
 
         it("should reject password without number", () => {
@@ -203,6 +220,7 @@ describe("validatePassword", () => {
             expect(result.error).toBe(
                 "Password must contain at least one number"
             )
+            expect(result.requirements.hasNumber).toBe(false)
         })
 
         it("should reject password without special character", () => {
@@ -211,12 +229,23 @@ describe("validatePassword", () => {
             expect(result.error).toBe(
                 "Password must contain at least one special character"
             )
+            expect(result.requirements.hasSpecial).toBe(false)
+        })
+
+        it("should reject common password", () => {
+            const result = validatePassword("Password123!")
+            expect(result.isValid).toBe(false)
+            expect(result.error).toBe(
+                "Password is too common. Please choose a more unique password"
+            )
+            expect(result.requirements.notCommon).toBe(false)
         })
 
         it("should reject empty password", () => {
             const result = validatePassword("")
             expect(result.isValid).toBe(false)
             expect(result.error).toBe("Password is required")
+            expect(result.strength).toBe("weak")
         })
 
         it("should reject null password", () => {
@@ -227,6 +256,14 @@ describe("validatePassword", () => {
         it("should reject password with only numbers and special chars", () => {
             const result = validatePassword("12345678!")
             expect(result.isValid).toBe(false)
+            expect(result.requirements.hasUppercase).toBe(false)
+            expect(result.requirements.hasLowercase).toBe(false)
+        })
+
+        it("should calculate medium strength for partially met requirements", () => {
+            const result = validatePassword("Passw0rd")
+            expect(result.isValid).toBe(false)
+            expect(result.strength).toBe("medium")
         })
     })
 })

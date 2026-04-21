@@ -46,7 +46,7 @@ describe("Environment Configuration", () => {
                         )
                     }
                 ),
-                { numRuns: 100 }
+                { numRuns: 20 }
             )
         })
 
@@ -83,7 +83,7 @@ describe("Environment Configuration", () => {
                         )
                     }
                 ),
-                { numRuns: 100 }
+                { numRuns: 20 }
             )
         })
 

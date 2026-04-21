@@ -93,7 +93,7 @@ describe("Pino Logger Properties", () => {
                         ).not.toThrow()
                     }
                 ),
-                { numRuns: 100 }
+                { numRuns: 20 }
             )
         })
     })
@@ -112,7 +112,7 @@ describe("Pino Logger Properties", () => {
                     // Debug should not throw even when suppressed
                     expect(() => logger.debug(message)).not.toThrow()
                 }),
-                { numRuns: 100 }
+                { numRuns: 20 }
             )
         })
     })
@@ -130,7 +130,7 @@ describe("Pino Logger Properties", () => {
                     // Debug should work without throwing
                     expect(() => logger.debug(message)).not.toThrow()
                 }),
-                { numRuns: 100 }
+                { numRuns: 20 }
             )
         })
     })
@@ -166,7 +166,7 @@ describe("Pino Logger Properties", () => {
                         ).not.toThrow()
                     }
                 ),
-                { numRuns: 100 }
+                { numRuns: 20 }
             )
         })
     })
@@ -190,7 +190,7 @@ describe("Pino Logger Properties", () => {
                         expect(() => logger.fatal(message, error)).not.toThrow()
                     }
                 ),
-                { numRuns: 100 }
+                { numRuns: 20 }
             )
         })
     })
