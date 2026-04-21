@@ -1,9 +1,8 @@
 import Footer from "@/components/layout/footer"
-import Header from "@/components/layout/header"
 import StructuredData from "@/components/seo/structured-data"
-import { locales, type Locale } from "@/lib/i18n"
-import { getTranslations } from "next-intl/server"
-import { generateMetadata } from "../home-metadata"
+import { type Locale } from "@/lib/i18n"
+import { generateSeoConfig } from "@/lib/seo"
+import { type Metadata } from "next"
 import AboutSection from "../home/about-section"
 import ChannelManagementSection from "../home/channel-management-section"
 import ContactSection from "../home/contact-section"
@@ -13,35 +12,57 @@ interface AboutPageProps {
     params: Promise<{ locale: Locale }>
 }
 
-export { generateMetadata }
+export async function generateMetadata({
+    params,
+}: AboutPageProps): Promise<Metadata> {
+    const { locale } = await params
 
-export function generateStaticParams() {
-    return locales.map(locale => ({ locale }))
+    const seoConfig = generateSeoConfig({
+        locale,
+        path: "/quem-sou-eu",
+        title: undefined,
+        description: undefined,
+        keywords: [],
+        ogType: "website",
+        ogImage: "https://www.gabrieltoth.com/og-image-home.jpg",
+    })
+
+    return {
+        title: seoConfig.title,
+        description: seoConfig.description,
+        openGraph: {
+            title: seoConfig.openGraph?.title,
+            description: seoConfig.openGraph?.description,
+            url: seoConfig.canonical,
+            type: seoConfig.openGraph?.type as "website",
+            locale: seoConfig.openGraph?.locale,
+        },
+    }
 }
 
 export default async function AboutPage({ params }: AboutPageProps) {
     const { locale } = await params
-    const th = await getTranslations({ locale, namespace: "home" })
-    const homepageStructuredData = th.raw(
-        "structuredData.profilePage"
-    ) as Record<string, unknown>
+
+    const seoConfig = generateSeoConfig({
+        locale,
+        path: "/quem-sou-eu",
+        title: undefined,
+        description: undefined,
+        keywords: [],
+        ogType: "website",
+        ogImage: "https://www.gabrieltoth.com/og-image-home.jpg",
+    })
 
     return (
         <>
-            <StructuredData
-                locale={locale}
-                type="all"
-                customData={homepageStructuredData}
-            />
-
+            <StructuredData locale={locale} type="both" />
             <main className="min-h-screen bg-white dark:bg-gray-900">
-                <Header />
                 <AboutSection params={{ locale }} />
-                <ProjectsSection />
                 <ChannelManagementSection params={{ locale }} />
+                <ProjectsSection />
                 <ContactSection />
-                <Footer locale={locale} />
             </main>
+            <Footer locale={locale} />
         </>
     )
 }
