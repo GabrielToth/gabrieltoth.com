@@ -7,6 +7,20 @@ export default {
     ],
     theme: {
         extend: {
+            colors: {
+                primary: "#0070F3",
+                dark: "#000000",
+                white: "#FFFFFF",
+                gray: {
+                    50: "#F5F5F5",
+                    100: "#EBEBEB",
+                    600: "#666666",
+                    900: "#1A1A1A",
+                },
+                success: "#0FD66F",
+                error: "#FF4757",
+                warning: "#FFA502",
+            },
             fontFamily: {
                 sans: [
                     "var(--font-geist-sans)",
@@ -40,6 +54,7 @@ export default {
                 18: "4.5rem",
                 88: "22rem",
                 128: "32rem",
+                sidebar: "240px",
             },
             screens: {
                 xs: "475px",
