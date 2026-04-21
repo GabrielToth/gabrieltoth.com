@@ -1,21 +1,10 @@
 "use client"
 
-import React, { useMemo, useState } from "react"
-
-/**
- * Post type definition
- */
-export interface Post {
-    id: string
-    title: string
-    content: string
-    scheduledAt: Date
-    publishedAt?: Date
-    status: "scheduled" | "published" | "failed"
-    channels: string[]
-    errorMessage?: string
-    createdAt: Date
-}
+import { fetchChannels, fetchPosts } from "@/lib/api"
+import React, { useCallback, useEffect, useMemo, useState } from "react"
+import { FilterBar } from "./FilterBar"
+import { Post } from "./PostCard"
+import { PostList } from "./PostList"
 
 /**
  * SocialChannel type definition
@@ -47,84 +36,59 @@ export interface PublishContainerProps {
  * - Manages filter state for social channels
  * - Provides filtering logic
  * - Handles post actions (edit, delete)
+ * - API integration for fetching posts
+ * - Loading and error states
+ * - Data caching
  * - Responsive layout
  */
 export const PublishContainer: React.FC<PublishContainerProps> = ({
     children,
 }) => {
-    // Mock data - in production, this would come from an API
-    const [posts] = useState<Post[]>([
-        {
-            id: "1",
-            title: "First Post",
-            content: "This is the first post",
-            scheduledAt: new Date(Date.now() + 86400000),
-            status: "scheduled",
-            channels: ["facebook", "instagram"],
-            createdAt: new Date(),
-        },
-        {
-            id: "2",
-            title: "Published Post",
-            content: "This post has been published",
-            scheduledAt: new Date(Date.now() - 86400000),
-            publishedAt: new Date(Date.now() - 86400000),
-            status: "published",
-            channels: ["twitter"],
-            createdAt: new Date(Date.now() - 172800000),
-        },
-        {
-            id: "3",
-            title: "Failed Post",
-            content: "This post failed to publish",
-            scheduledAt: new Date(Date.now() - 43200000),
-            status: "failed",
-            channels: ["tiktok"],
-            errorMessage: "Failed to connect to TikTok API",
-            createdAt: new Date(Date.now() - 86400000),
-        },
-    ])
-
-    const [availableChannels] = useState<SocialChannel[]>([
-        {
-            id: "1",
-            platform: "facebook",
-            accountId: "fb123",
-            accountName: "My Facebook Page",
-            isConnected: true,
-        },
-        {
-            id: "2",
-            platform: "instagram",
-            accountId: "ig123",
-            accountName: "My Instagram",
-            isConnected: true,
-        },
-        {
-            id: "3",
-            platform: "twitter",
-            accountId: "tw123",
-            accountName: "My Twitter",
-            isConnected: true,
-        },
-        {
-            id: "4",
-            platform: "tiktok",
-            accountId: "tt123",
-            accountName: "My TikTok",
-            isConnected: false,
-        },
-        {
-            id: "5",
-            platform: "linkedin",
-            accountId: "li123",
-            accountName: "My LinkedIn",
-            isConnected: true,
-        },
-    ])
-
-    // Filter state
+    // State management
+    const [posts, setPosts] = useState<Post[]>([])
+    const [availableChannels, setAvailableChannels] = useState<SocialChannel[]>(
+        []
+    )
     const [selectedChannels, setSelectedChannels] = useState<string[]>([])
+    const [isLoading, setIsLoading] = useState(true)
+    const [error, setError] = useState<string | null>(null)
+
+    /**
+     * Fetch posts from API
+     */
+    const handleFetchPosts = useCallback(async () => {
+        try {
+            setIsLoading(true)
+            setError(null)
+
+            const data = await fetchPosts()
+            setPosts(data)
+            setIsLoading(false)
+        } catch (err) {
+            setError(
+                err instanceof Error ? err.message : "Failed to fetch posts"
+            )
+            setIsLoading(false)
+        }
+    }, [])
+
+    /**
+     * Fetch available channels from API
+     */
+    const handleFetchChannels = useCallback(async () => {
+        try {
+            const data = await fetchChannels()
+            setAvailableChannels(data)
+        } catch (err) {
+            console.error("Failed to fetch channels:", err)
+        }
+    }, [])
+
+    // Fetch data on mount
+    useEffect(() => {
+        handleFetchChannels()
+        handleFetchPosts()
+    }, [handleFetchChannels, handleFetchPosts])
 
     // Filtered posts based on selected channels
     const filteredPosts = useMemo(() => {
@@ -163,6 +127,11 @@ export const PublishContainer: React.FC<PublishContainerProps> = ({
         // TODO: Implement delete functionality
     }
 
+    // Handle retry
+    const handleRetry = () => {
+        handleFetchPosts()
+    }
+
     // If children are provided, render them
     if (children) {
         return <div className="space-y-6">{children}</div>
@@ -170,185 +139,45 @@ export const PublishContainer: React.FC<PublishContainerProps> = ({
 
     // Default render with FilterBar and PostList
     return (
-        <div className="space-y-6">
+        <div className="space-y-4 sm:space-y-6">
             {/* Header */}
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                 <div>
-                    <h1 className="text-3xl font-bold text-gray-900">
+                    <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
                         Publish
                     </h1>
-                    <p className="mt-1 text-sm text-gray-600">
+                    <p className="mt-1 text-xs sm:text-sm text-gray-600">
                         Manage and schedule your social media posts
                     </p>
                 </div>
             </div>
 
             {/* Filter Bar */}
-            <div className="rounded-lg border border-gray-200 bg-white p-4">
-                <div className="flex flex-col gap-4">
-                    <div>
-                        <label className="block text-sm font-medium text-gray-900">
-                            Filter by Channel
-                        </label>
-                        <div className="mt-3 flex flex-wrap gap-2">
-                            {availableChannels.map(channel => (
-                                <button
-                                    key={channel.id}
-                                    onClick={() => {
-                                        setSelectedChannels(prev =>
-                                            prev.includes(channel.platform)
-                                                ? prev.filter(
-                                                      c =>
-                                                          c !== channel.platform
-                                                  )
-                                                : [...prev, channel.platform]
-                                        )
-                                    }}
-                                    className={`inline-flex items-center rounded-full px-3 py-1 text-sm font-medium transition-colors ${
-                                        selectedChannels.includes(
-                                            channel.platform
-                                        )
-                                            ? "bg-blue-100 text-blue-700"
-                                            : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                                    } ${!channel.isConnected ? "opacity-50" : ""}`}
-                                    disabled={!channel.isConnected}
-                                    title={
-                                        !channel.isConnected
-                                            ? "Channel not connected"
-                                            : undefined
-                                    }
-                                >
-                                    {channel.accountName}
-                                </button>
-                            ))}
-                        </div>
-                    </div>
-
-                    {selectedChannels.length > 0 && (
-                        <button
-                            onClick={() => setSelectedChannels([])}
-                            className="w-fit text-sm text-blue-600 hover:text-blue-700"
-                        >
-                            Clear filters
-                        </button>
-                    )}
-                </div>
-            </div>
+            {!isLoading && !error && (
+                <FilterBar
+                    channels={availableChannels}
+                    selectedChannels={selectedChannels}
+                    onFilterChange={handleFilterChange}
+                />
+            )}
 
             {/* Post Count */}
-            <div className="text-sm text-gray-600">
-                Showing {sortedPosts.length} of {posts.length} posts
-            </div>
+            {!isLoading && !error && sortedPosts.length > 0 && (
+                <div className="text-xs sm:text-sm text-gray-600">
+                    Showing {sortedPosts.length} of {posts.length} post
+                    {posts.length !== 1 ? "s" : ""}
+                </div>
+            )}
 
             {/* Post List */}
-            <div className="space-y-4">
-                {sortedPosts.length === 0 ? (
-                    <div className="rounded-lg border border-gray-200 bg-white p-8 text-center">
-                        <p className="text-gray-600">No posts found</p>
-                    </div>
-                ) : (
-                    sortedPosts.map(post => (
-                        <div
-                            key={post.id}
-                            className="rounded-lg border border-gray-200 bg-white p-4 hover:shadow-md transition-shadow"
-                        >
-                            <div className="flex items-start justify-between gap-4">
-                                <div className="flex-1">
-                                    <h3 className="font-semibold text-gray-900">
-                                        {post.title}
-                                    </h3>
-                                    <p className="mt-1 text-sm text-gray-600">
-                                        {post.content}
-                                    </p>
-
-                                    <div className="mt-3 flex flex-wrap gap-2">
-                                        {/* Status Badge */}
-                                        <span
-                                            className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
-                                                post.status === "scheduled"
-                                                    ? "bg-blue-100 text-blue-800"
-                                                    : post.status ===
-                                                        "published"
-                                                      ? "bg-green-100 text-green-800"
-                                                      : "bg-red-100 text-red-800"
-                                            }`}
-                                        >
-                                            {post.status
-                                                .charAt(0)
-                                                .toUpperCase() +
-                                                post.status.slice(1)}
-                                        </span>
-
-                                        {/* Channel Badges */}
-                                        {post.channels.map(channel => (
-                                            <span
-                                                key={channel}
-                                                className="inline-flex items-center rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-800"
-                                            >
-                                                {channel
-                                                    .charAt(0)
-                                                    .toUpperCase() +
-                                                    channel.slice(1)}
-                                            </span>
-                                        ))}
-                                    </div>
-
-                                    {/* Date and Error Info */}
-                                    <div className="mt-3 text-xs text-gray-500">
-                                        {post.status === "published" &&
-                                            post.publishedAt && (
-                                                <p>
-                                                    Published:{" "}
-                                                    {post.publishedAt.toLocaleDateString()}{" "}
-                                                    {post.publishedAt.toLocaleTimeString()}
-                                                </p>
-                                            )}
-                                        {post.status === "scheduled" && (
-                                            <p>
-                                                Scheduled:{" "}
-                                                {post.scheduledAt.toLocaleDateString()}{" "}
-                                                {post.scheduledAt.toLocaleTimeString()}
-                                            </p>
-                                        )}
-                                        {post.status === "failed" &&
-                                            post.errorMessage && (
-                                                <p className="text-red-600">
-                                                    Error: {post.errorMessage}
-                                                </p>
-                                            )}
-                                    </div>
-                                </div>
-
-                                {/* Actions */}
-                                <div className="flex gap-2">
-                                    <button
-                                        onClick={() => handleEditPost(post)}
-                                        disabled={post.status === "published"}
-                                        className={`rounded-md px-3 py-2 text-sm font-medium transition-colors ${
-                                            post.status === "published"
-                                                ? "cursor-not-allowed bg-gray-100 text-gray-400"
-                                                : "bg-blue-50 text-blue-700 hover:bg-blue-100"
-                                        }`}
-                                        title={
-                                            post.status === "published"
-                                                ? "Cannot edit published posts"
-                                                : "Edit post"
-                                        }
-                                    >
-                                        Edit
-                                    </button>
-                                    <button
-                                        onClick={() => handleDeletePost(post)}
-                                        className="rounded-md bg-red-50 px-3 py-2 text-sm font-medium text-red-700 hover:bg-red-100 transition-colors"
-                                    >
-                                        Delete
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    ))
-                )}
-            </div>
+            <PostList
+                posts={sortedPosts}
+                isLoading={isLoading}
+                error={error}
+                onEdit={handleEditPost}
+                onDelete={handleDeletePost}
+                onRetry={handleRetry}
+            />
         </div>
     )
 }

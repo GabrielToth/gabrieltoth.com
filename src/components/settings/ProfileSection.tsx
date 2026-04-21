@@ -188,19 +188,19 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
                         <label className="block text-sm font-medium text-gray-700">
                             Profile Photo
                         </label>
-                        <div className="flex items-center gap-4">
+                        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
                             {formData.profilePhoto && (
                                 <img
                                     src={formData.profilePhoto}
                                     alt="Profile"
-                                    className="h-20 w-20 rounded-full object-cover"
+                                    className="h-16 w-16 sm:h-20 sm:w-20 rounded-full object-cover"
                                 />
                             )}
                             <input
                                 type="file"
                                 accept="image/*"
                                 onChange={handlePhotoUpload}
-                                className="block w-full text-sm text-gray-500 file:mr-4 file:rounded-md file:border-0 file:bg-blue-50 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-blue-700 hover:file:bg-blue-100"
+                                className="block w-full text-xs sm:text-sm text-gray-500 file:mr-4 file:rounded-md file:border-0 file:bg-blue-50 file:px-3 file:sm:px-4 file:py-2 file:text-xs file:sm:text-sm file:font-semibold file:text-blue-700 hover:file:bg-blue-100"
                             />
                         </div>
                     </div>
