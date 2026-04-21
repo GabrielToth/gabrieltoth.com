@@ -20,7 +20,7 @@
 
 ```env
 # Usado pelo botão de login no navegador
-NEXT_PUBLIC_GOOGLE_CLIENT_ID=1023018705537-055ktg86ht5oeuja585etp3bu10699n9.apps.googleusercontent.com
+NEXT_PUBLIC_GOOGLE_CLIENT_ID=your-google-client-id
 NEXT_PUBLIC_GOOGLE_REDIRECT_URI=https://www.gabrieltoth.com/api/auth/google/callback
 ```
 
@@ -36,9 +36,9 @@ NEXT_PUBLIC_GOOGLE_REDIRECT_URI=https://www.gabrieltoth.com/api/auth/google/call
 
 ```env
 # Usado pelo servidor para validar tokens
-GOOGLE_CLIENT_ID=1023018705537-055ktg86ht5oeuja585etp3bu10699n9.apps.googleusercontent.com
+GOOGLE_CLIENT_ID=your-google-client-id
 # NUNCA expor ao cliente - usado para trocar código por token
-GOOGLE_CLIENT_SECRET=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
+GOOGLE_CLIENT_SECRET=your-google-client-secret
 ```
 
 **Onde é usado:**
@@ -73,12 +73,12 @@ GOOGLE_CLIENT_SECRET=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
 
 ```
 # Client-side (podem ser "Sensitive" mas serão expostas)
-NEXT_PUBLIC_GOOGLE_CLIENT_ID=1023018705537-055ktg86ht5oeuja585etp3bu10699n9.apps.googleusercontent.com
+NEXT_PUBLIC_GOOGLE_CLIENT_ID=your-google-client-id
 NEXT_PUBLIC_GOOGLE_REDIRECT_URI=https://www.gabrieltoth.com/api/auth/google/callback
 
 # Server-side (DEVEM ser "Sensitive" e "Encrypted")
-GOOGLE_CLIENT_ID=1023018705537-055ktg86ht5oeuja585etp3bu10699n9.apps.googleusercontent.com
-GOOGLE_CLIENT_SECRET=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
+GOOGLE_CLIENT_ID=your-google-client-id
+GOOGLE_CLIENT_SECRET=your-google-client-secret
 ```
 
 ### Nota Importante sobre NEXT_PUBLIC_GOOGLE_REDIRECT_URI
