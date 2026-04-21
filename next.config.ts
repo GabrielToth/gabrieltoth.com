@@ -189,26 +189,30 @@ const nextConfig: NextConfig = {
                 source: "/pt-BR/termos-de-servico/:path*/",
                 destination: "/pt-BR/terms-of-service/:path*/",
             },
+            // PT-BR auth routes - handle both with and without trailing slash
             {
-                source: "/pt-BR/entrar/:path*",
-                destination: "/pt-BR/login/:path*",
+                source: "/pt-BR/entrar",
+                destination: "/pt-BR/login",
             },
             {
-                source: "/pt-BR/registrar/:path*",
-                destination: "/pt-BR/register/:path*",
+                source: "/pt-BR/entrar/",
+                destination: "/pt-BR/login/",
             },
             {
-                source: "/pt-BR/pagamentos/:path*",
-                destination: "/pt-BR/payments/:path*",
-            },
-            // Rewrites for RSC query parameters
-            {
-                source: "/pt-BR/login/:path*",
-                destination: "/pt-BR/login/:path*",
+                source: "/pt-BR/registrar",
+                destination: "/pt-BR/register",
             },
             {
-                source: "/pt-BR/register/:path*",
-                destination: "/pt-BR/register/:path*",
+                source: "/pt-BR/registrar/",
+                destination: "/pt-BR/register/",
+            },
+            {
+                source: "/pt-BR/pagamentos",
+                destination: "/pt-BR/payments",
+            },
+            {
+                source: "/pt-BR/pagamentos/",
+                destination: "/pt-BR/payments/",
             },
             // ES rewrites - map translated URLs to English folder names
             {
@@ -243,17 +247,30 @@ const nextConfig: NextConfig = {
                 source: "/es/terminos-de-servicio/:path*/",
                 destination: "/es/terms-of-service/:path*/",
             },
+            // ES auth routes
             {
-                source: "/es/iniciar-sesion/:path*",
-                destination: "/es/login/:path*",
+                source: "/es/iniciar-sesion",
+                destination: "/es/login",
             },
             {
-                source: "/es/registrarse/:path*",
-                destination: "/es/register/:path*",
+                source: "/es/iniciar-sesion/",
+                destination: "/es/login/",
             },
             {
-                source: "/es/pagos/:path*",
-                destination: "/es/payments/:path*",
+                source: "/es/registrarse",
+                destination: "/es/register",
+            },
+            {
+                source: "/es/registrarse/",
+                destination: "/es/register/",
+            },
+            {
+                source: "/es/pagos",
+                destination: "/es/payments",
+            },
+            {
+                source: "/es/pagos/",
+                destination: "/es/payments/",
             },
             // DE rewrites - map translated URLs to English folder names
             {
@@ -288,17 +305,30 @@ const nextConfig: NextConfig = {
                 source: "/de/nutzungsbedingungen/:path*/",
                 destination: "/de/terms-of-service/:path*/",
             },
+            // DE auth routes
             {
-                source: "/de/anmelden/:path*",
-                destination: "/de/login/:path*",
+                source: "/de/anmelden",
+                destination: "/de/login",
             },
             {
-                source: "/de/registrieren/:path*",
-                destination: "/de/register/:path*",
+                source: "/de/anmelden/",
+                destination: "/de/login/",
             },
             {
-                source: "/de/zahlungen/:path*",
-                destination: "/de/payments/:path*",
+                source: "/de/registrieren",
+                destination: "/de/register",
+            },
+            {
+                source: "/de/registrieren/",
+                destination: "/de/register/",
+            },
+            {
+                source: "/de/zahlungen",
+                destination: "/de/payments",
+            },
+            {
+                source: "/de/zahlungen/",
+                destination: "/de/payments/",
             },
         ]
     },
