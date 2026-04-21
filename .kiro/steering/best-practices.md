@@ -81,4 +81,318 @@ Status: Pronto para push
 
 ---
 
-**Última atualização:** 16 de Abril de 2026
+## 🚀 Workflow de Finalização de Implementação
+
+**OBRIGATÓRIO** seguir este ciclo após completar toda a implementação de uma feature/spec:
+
+### 1️⃣ Testes Gerais (Testar TODO o site)
+```bash
+npm run test                        # Executar todos os testes
+npm run test:coverage               # Gerar relatório de cobertura
+```
+- Verificar que todos os testes passam
+- Revisar cobertura de testes
+- Se algum teste falhar, corrigir antes de prosseguir
+
+### 2️⃣ Testes de Velocidade/Performance
+```bash
+npm run lighthouse                  # Executar Lighthouse audit
+npm run perf:full                   # Análise completa de performance
+npm run analyze                     # Analisar tamanho do bundle
+```
+- Verificar Core Web Vitals (LCP, FID, CLS)
+- Analisar tamanho do bundle
+- Documentar métricas de performance
+
+### 3️⃣ Decisão: Performance Aceitável?
+
+**SIM - Performance OK:**
+- Prosseguir para o passo 4 (Formatação de Código)
+
+**NÃO - Performance Ruim:**
+- Fazer commit com mensagem: `fix: performance improvements`
+- Criar novo commit separado para otimizações
+- Executar otimizações (code splitting, lazy loading, etc.)
+- Voltar ao passo 2 (Testes de Performance)
+- Repetir até atingir targets aceitáveis
+
+### 4️⃣ Formatação e Padronização de Código
+```bash
+npm run format                      # Formatar código com Prettier
+npm run lint:fix                    # Corrigir problemas de ESLint
+npm run type-check                  # Verificar tipos TypeScript
+```
+- Código será formatado automaticamente
+- Erros de linting serão corrigidos
+- Tipos TypeScript serão validados
+
+### 5️⃣ Verificação de Ortografia e Dicionário
+```bash
+npm run spell-check                 # Verificar ortografia
+```
+- Se houver palavras desconhecidas:
+  - Adicionar ao dicionário do projeto (`.cspell.json` ou similar)
+  - Ou corrigir a ortografia se for erro real
+  - Executar novamente até passar
+
+### 6️⃣ Documentação no Storybook
+```bash
+npm run storybook                   # Iniciar Storybook
+```
+- Criar/atualizar stories para novos componentes
+- Documentar props e comportamentos
+- Adicionar exemplos de uso
+- Verificar que stories renderizam corretamente
+
+### 7️⃣ Build Final
+```bash
+npm run build                       # Build para produção
+```
+- Verificar que build completa sem erros
+- Revisar warnings (se houver)
+- Confirmar que bundle size está aceitável
+
+### 8️⃣ Testes Finais (Ciclo Completo)
+```bash
+npm run test                        # Todos os testes novamente
+npm run test:e2e                    # E2E tests (se aplicável)
+npm run lighthouse                  # Performance final
+```
+- Garantir que tudo ainda funciona após formatação
+- Verificar performance final
+- Confirmar que nenhuma regressão foi introduzida
+
+### 9️⃣ Commit e Push
+```bash
+git add .                           # Adicionar todas as mudanças
+git commit -m "feat: complete feature X"  # Commit com mensagem descritiva
+git push -u origin feature-branch   # Push para repositório remoto
+```
+
+### Mensagens de Commit Recomendadas
+
+**Implementação inicial:**
+```
+feat: implement dashboard redesign components
+```
+
+**Performance improvements:**
+```
+perf: optimize bundle size and lazy load components
+```
+
+**Formatação e linting:**
+```
+style: format code and fix linting issues
+```
+
+**Documentação:**
+```
+docs: add Storybook stories for dashboard components
+```
+
+**Testes:**
+```
+test: add comprehensive test coverage for components
+```
+
+---
+
+## 📋 Checklist Completo de Finalização
+
+- [ ] Todos os testes passam (`npm run test`)
+- [ ] Cobertura de testes aceitável (> 80%)
+- [ ] Performance dentro dos targets (LCP < 2.5s, etc.)
+- [ ] Código formatado (`npm run format`)
+- [ ] Linting corrigido (`npm run lint:fix`)
+- [ ] Tipos TypeScript validados (`npm run type-check`)
+- [ ] Ortografia verificada (`npm run spell-check`)
+- [ ] Storybook stories criadas/atualizadas
+- [ ] Build completa sem erros (`npm run build`)
+- [ ] Testes finais passam
+- [ ] Commit feito com mensagem descritiva
+- [ ] Push realizado para repositório remoto
+
+---
+
+## 🔄 Workflow GitHub: Issues → PRs → Commits
+
+**OBRIGATÓRIO** usar este workflow para todas as implementações:
+
+### 1️⃣ Criar Issue no GitHub
+
+**Título:** Descritivo e conciso
+```
+[Feature] Add WhatsApp Integration
+[Bug] Fix dashboard performance on mobile
+[Enhancement] Improve accessibility compliance
+```
+
+**Descrição Detalhada:**
+```markdown
+## Descrição
+Explicar o que precisa ser feito e por quê.
+
+## Contexto
+- Por que isso é importante?
+- Qual problema resolve?
+- Impacto esperado?
+
+## Requisitos
+- [ ] Requisito 1
+- [ ] Requisito 2
+- [ ] Requisito 3
+
+## Critérios de Aceitação
+- [ ] Funcionalidade X implementada
+- [ ] Testes escritos e passando
+- [ ] Documentação atualizada
+- [ ] Performance dentro dos targets
+- [ ] Compatível com versão cloud e local
+
+## Notas Técnicas
+- Arquivos que serão modificados
+- Dependências necessárias
+- Possíveis impactos
+
+## Referências
+- Links para documentação
+- Issues relacionadas
+- PRs relacionadas
+```
+
+**Labels:** `feature`, `bug`, `enhancement`, `documentation`, `performance`, `accessibility`
+
+**Assignee:** Atribuir a si mesmo
+
+**Milestone:** Selecionar a milestone correspondente (ver seção de Milestones)
+
+### 2️⃣ Criar Branch e PR
+
+```bash
+# Criar branch a partir da issue
+git checkout -b feature/issue-123-whatsapp-integration
+
+# Fazer push inicial (sem commits ainda)
+git push -u origin feature/issue-123-whatsapp-integration
+```
+
+**Criar PR no GitHub:**
+- Título: `[PR #123] Add WhatsApp Integration`
+- Descrição: Referenciar a issue: `Closes #123`
+- Linked Issues: Selecionar a issue criada
+- Reviewers: Atribuir reviewers se necessário
+
+### 3️⃣ Executar Workflow de Implementação
+
+Seguir o workflow de finalização (seção anterior) fazendo commits:
+
+```bash
+# Commit 1: Implementação inicial
+git commit -m "feat(#123): implement WhatsApp integration core"
+
+# Commit 2: Testes
+git commit -m "test(#123): add comprehensive tests for WhatsApp integration"
+
+# Commit 3: Performance
+git commit -m "perf(#123): optimize WhatsApp integration performance"
+
+# Commit 4: Documentação
+git commit -m "docs(#123): add Storybook stories and API documentation"
+
+# Commit 5: Formatação
+git commit -m "style(#123): format code and fix linting issues"
+```
+
+**Formato de Commit Obrigatório:**
+```
+<type>(<issue-number>): <description>
+
+<body>
+
+Closes #<issue-number>
+```
+
+Exemplo:
+```
+feat(#123): add WhatsApp integration
+
+- Implement WhatsApp API connection
+- Add message sending functionality
+- Create WhatsApp channel management UI
+
+Closes #123
+```
+
+### 4️⃣ Push e Merge
+
+```bash
+# Push todos os commits
+git push origin feature/issue-123-whatsapp-integration
+
+# Aguardar aprovação de reviewers
+# Merge via GitHub UI (Squash or Create a merge commit)
+```
+
+**Checklist antes de Merge:**
+- [ ] Todos os testes passam
+- [ ] CI/CD pipeline passou
+- [ ] Code review aprovado
+- [ ] Sem conflitos com main
+- [ ] Performance dentro dos targets
+- [ ] Compatível com versão cloud e local
+
+---
+
+## 📌 Compatibilidade Cloud vs Local
+
+**OBRIGATÓRIO** para TODAS as implementações:
+
+### Versão Cloud
+- Hospedada em servidor (Vercel, AWS, etc.)
+- Acesso via URL pública
+- Banco de dados remoto
+- Autenticação via OAuth/JWT
+- Variáveis de ambiente em produção
+
+### Versão Local
+- Executada localmente (`npm run dev`)
+- Banco de dados local (SQLite, PostgreSQL local)
+- Autenticação simplificada para testes
+- Variáveis de ambiente em `.env.local`
+
+### Checklist de Compatibilidade
+
+- [ ] Código funciona em ambas as versões
+- [ ] Variáveis de ambiente configuradas corretamente
+- [ ] Banco de dados funciona em ambas
+- [ ] Autenticação funciona em ambas
+- [ ] APIs externas têm fallback para local
+- [ ] Testes passam em ambas as versões
+- [ ] Performance aceitável em ambas
+
+### Exemplo de Código Compatível
+
+```typescript
+// ✅ BOM - Funciona em ambas as versões
+const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api'
+
+export async function fetchData() {
+  const response = await fetch(`${apiUrl}/data`)
+  return response.json()
+}
+```
+
+```typescript
+// ❌ RUIM - Só funciona em produção
+const apiUrl = 'https://api.production.com/api'
+
+export async function fetchData() {
+  const response = await fetch(`${apiUrl}/data`)
+  return response.json()
+}
+```
+
+---
+
+**Última atualização:** 21 de Abril de 2026
