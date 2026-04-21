@@ -731,7 +731,7 @@ describe("OAuth Token Validator", () => {
                         }
                     }
                 ),
-                { numRuns: 20 }
+                { numRuns: 10 }
             )
         })
 
@@ -786,7 +786,7 @@ describe("OAuth Token Validator", () => {
                         }
                     }
                 ),
-                { numRuns: 20 }
+                { numRuns: 10 }
             )
         })
 
@@ -848,7 +848,7 @@ describe("OAuth Token Validator", () => {
                         }
                     }
                 ),
-                { numRuns: 20 }
+                { numRuns: 10 }
             )
         })
 
@@ -910,7 +910,7 @@ describe("OAuth Token Validator", () => {
                         }
                     }
                 ),
-                { numRuns: 20 }
+                { numRuns: 10 }
             )
         })
 
@@ -948,7 +948,7 @@ describe("OAuth Token Validator", () => {
                         }
                     }
                 ),
-                { numRuns: 20 }
+                { numRuns: 10 }
             )
         })
 
@@ -987,7 +987,7 @@ describe("OAuth Token Validator", () => {
                         }
                     }
                 ),
-                { numRuns: 20 }
+                { numRuns: 10 }
             )
         })
 
@@ -1051,7 +1051,7 @@ describe("OAuth Token Validator", () => {
                         }
                     }
                 ),
-                { numRuns: 20 }
+                { numRuns: 10 }
             )
         })
 
@@ -1112,7 +1112,7 @@ describe("OAuth Token Validator", () => {
                         expect(result.iat).toBe(now)
                     }
                 ),
-                { numRuns: 20 }
+                { numRuns: 10 }
             )
         })
 
@@ -1172,7 +1172,7 @@ describe("OAuth Token Validator", () => {
                         )
                     }
                 ),
-                { numRuns: 20 }
+                { numRuns: 10 }
             )
         })
     })

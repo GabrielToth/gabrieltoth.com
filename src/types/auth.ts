@@ -22,6 +22,25 @@ export interface User {
 }
 
 /**
+ * OAuth User interface representing a user with OAuth and password authentication
+ * Supports multiple OAuth providers (Google, Facebook, TikTok) with email/password fallback
+ *
+ * Validates: Requirements 2.5, 3.6, 11.3
+ */
+export interface OAuthUser {
+    id: string
+    email: string
+    password_hash: string
+    oauth_provider: "google" | "facebook" | "tiktok" | null
+    oauth_id: string | null
+    name: string
+    picture?: string | null
+    email_verified: boolean
+    created_at: Date
+    updated_at: Date
+}
+
+/**
  * Session interface representing an authenticated user session
  * Stores session information with expiration tracking
  *
