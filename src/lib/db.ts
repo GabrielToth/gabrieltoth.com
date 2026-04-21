@@ -18,8 +18,19 @@ export interface PaymentConfirmation {
     confirmed_at: string
 }
 
+export interface User {
+    id: string
+    google_id: string
+    google_email: string
+    google_name: string
+    google_picture?: string
+    created_at: string
+    updated_at: string
+}
+
 const orders: Order[] = []
 const confirmations: PaymentConfirmation[] = []
+const users: User[] = []
 
 /* c8 ignore start */
 function generateId(): string {
@@ -36,6 +47,66 @@ function generateId(): string {
 /* c8 ignore stop */
 
 export const db = {
+    // User methods
+    async queryOne<T>(
+        query: string,
+        params?: (string | number | null)[]
+    ): Promise<T | null> {
+        // Parse simple SQL queries for in-memory storage
+        if (query.includes("SELECT") && query.includes("FROM users")) {
+            if (query.includes("WHERE google_id")) {
+                const user = users.find(u => u.google_id === params?.[0])
+                return (user as T) || null
+            }
+            if (query.includes("WHERE id")) {
+                const user = users.find(u => u.id === params?.[0])
+                return (user as T) || null
+            }
+        }
+
+        if (query.includes("INSERT INTO users")) {
+            const newUser: User = {
+                id: generateId(),
+                google_id: params?.[0] as string,
+                google_email: params?.[1] as string,
+                google_name: params?.[2] as string,
+                google_picture: (params?.[3] as string) || undefined,
+                created_at: new Date().toISOString(),
+                updated_at: new Date().toISOString(),
+            }
+            users.push(newUser)
+            return (newUser as T) || null
+        }
+
+        if (query.includes("UPDATE users")) {
+            const userIndex = users.findIndex(u => u.google_id === params?.[2])
+            if (userIndex !== -1) {
+                users[userIndex] = {
+                    ...users[userIndex],
+                    google_name:
+                        (params?.[0] as string) || users[userIndex].google_name,
+                    google_picture:
+                        (params?.[1] as string) ||
+                        users[userIndex].google_picture,
+                    updated_at: new Date().toISOString(),
+                }
+                return (users[userIndex] as T) || null
+            }
+        }
+
+        return null
+    },
+
+    async query<T>(
+        query: string,
+        params?: (string | number | null)[]
+    ): Promise<T[]> {
+        // Parse simple SQL queries for in-memory storage
+        if (query.includes("SELECT") && query.includes("FROM users")) {
+            return (users as T[]) || []
+        }
+        return []
+    },
     async createOrder(
         orderData: Omit<Order, "id" | "created_at" | "expires_at">
     ): Promise<Order> {
