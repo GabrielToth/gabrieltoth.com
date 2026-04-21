@@ -1,11 +1,132 @@
 # Gabriel Toth Portfolio
 
-Personal portfolio of Gabriel Toth Gonçalves - Full Stack Developer
+Personal portfolio and platform by Gabriel Toth Gonçalves - Full Stack Developer
 
-## 🚀 Demo
+🌐 **Live**: [https://www.gabrieltoth.com](https://www.gabrieltoth.com)  
+📦 **Repository**: [GitHub](https://github.com/gabrieltoth/gabrieltoth.com)
 
-- **Production**: [https://www.gabrieltoth.com](https://www.gabrieltoth.com)
-- **Repository**: [GitHub](https://github.com/gabrieltoth)
+---
+
+## 🚀 Quick Start
+
+### Prerequisites
+
+- **Node.js** 18+ ([Download](https://nodejs.org/))
+- **npm** (comes with Node.js)
+- **Git** ([Download](https://git-scm.com/))
+
+### Step 1: Clone the Repository
+
+```bash
+git clone https://github.com/gabrieltoth/gabrieltoth.com.git
+cd gabrieltoth.com
+```
+
+### Step 2: Install Dependencies
+
+```bash
+npm install
+```
+
+### Step 3: Set Up Environment Variables
+
+1. Copy the example file:
+   ```bash
+   cp .env.local.example .env.local
+   ```
+
+2. Open `.env.local` and fill in your values (see detailed instructions in the file)
+
+3. **Minimum required** for basic development:
+   ```env
+   NODE_ENV=development
+   DEBUG=true
+   NEXT_PUBLIC_DEBUG=false
+   ```
+
+### Step 4: Run Development Server
+
+```bash
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+---
+
+## 🐳 Docker Setup (Optional)
+
+If you prefer Docker:
+
+### Step 1: Set Up Docker Environment
+
+```bash
+cp .env.docker.example .env.docker
+```
+
+### Step 2: Start Services
+
+```bash
+cd docker
+docker compose up -d
+```
+
+### Step 3: Access Application
+
+- **Frontend**: http://localhost:3000
+- **Backend**: http://localhost:4000
+- **Postgres**: localhost:5432
+- **Redis**: localhost:6379
+
+### Stop Services
+
+```bash
+docker compose down
+```
+
+---
+
+## 📝 Available Scripts
+
+### Development
+```bash
+npm run dev              # Start development server (Turbopack)
+npm run build            # Build for production
+npm run start            # Start production server
+```
+
+### Code Quality
+```bash
+npm run lint             # Check linting
+npm run lint:fix         # Auto-fix linting issues
+npm run format           # Format code with Prettier
+npm run format:check     # Check if code is formatted
+npm run type-check       # Check TypeScript types
+npm run spell-check      # Check spelling (EN + PT-BR)
+```
+
+### Testing
+```bash
+npm run test             # Run all tests
+npm run test:unit        # Run unit tests (Vitest)
+npm run test:e2e         # Run E2E tests (Playwright)
+npm run test:coverage    # Generate coverage report
+npm run test:watch       # Run tests in watch mode
+```
+
+### Performance
+```bash
+npm run analyze          # Analyze bundle size
+npm run lighthouse       # Run Lighthouse audits
+npm run perf:full        # Full performance analysis
+```
+
+### Utilities
+```bash
+npm run clean            # Clean build files
+```
+
+---
 
 ## ⚡ Tech Stack
 
@@ -14,136 +135,96 @@ Personal portfolio of Gabriel Toth Gonçalves - Full Stack Developer
 - **Styling**: Tailwind CSS
 - **Components**: shadcn/ui
 - **Icons**: Lucide React
+- **Database**: Supabase (Postgres)
+- **Authentication**: Google OAuth + Custom Auth
+- **Payments**: Stripe, Monero
 - **Deployment**: Vercel
-- **Internationalization**: EN/PT-BR support
+- **i18n**: EN/PT-BR support
 
-## 🛠️ Development Tools
+---
 
-- **Linting**: ESLint with custom rules
-- **Formatting**: Prettier
-- **Spell Check**: CSpell (EN + PT-BR)
-- **Git Hooks**: Husky + lint-staged
-- **Type Checking**: TypeScript strict mode
+## 📚 Documentation
 
-## 📦 Installation
+All documentation is in the `docs/` folder:
 
-```bash
-# Clone the repository
-git clone https://github.com/gabrieltoth/gabrieltoth.com.git
+- **[API Documentation](docs/API.md)** - All API endpoints organized by category
+- **[Architecture](docs/ARCHITECTURE.md)** - System architecture and design
+- **[Database](docs/DATABASE_CONSTRAINTS.md)** - Database schema and constraints
+- **[Deployment](docs/DEPLOYMENT_ARCHITECTURE.md)** - Deployment guide
+- **[Credit System](docs/CREDIT_SYSTEM.md)** - Platform credit system
 
-# Navigate to directory
-cd gabrieltoth.com
-
-# Install dependencies
-npm install
-
-# Run in development
-npm run dev
-```
-
-## 🔧 Available Scripts
-
-```bash
-# Development
-npm run dev              # Start development server (Turbopack)
-
-# Build and Deploy
-npm run build            # Generate production build
-npm run start            # Start production server
-
-# Code Quality
-npm run lint             # Check linting
-npm run lint:fix         # Auto fix linting issues
-npm run format           # Format code with Prettier
-npm run format:check     # Check if code is formatted
-npm run type-check       # Check TypeScript types
-npm run spell-check      # Check spelling
-npm run test             # Run Vitest (non-failing if no tests)
-npm run test:unit        # Run Vitest
-npm run test:e2e         # Run Playwright tests
-
-# Utilities
-npm run clean            # Clean build files
-```
-
-## ✅ Testing Strategy
+---
 
 ## 🔑 Environment Variables
 
-Create a `.env.local` file at the project root based on `env.example`:
+See detailed instructions in:
+- `.env.local.example` - Local development
+- `.env.production.example` - Production
+- `.env.docker.example` - Docker setup
 
+Each file contains step-by-step tutorials on how to obtain every required variable.
+
+---
+
+## 🧪 Testing
+
+- **Unit/Component**: Vitest with coverage tracking
+- **E2E**: Playwright for end-to-end testing
+- **Coverage**: HTML and LCOV reports in `coverage/`
+
+Run tests before committing:
 ```bash
-cp env.example .env.local
+npm run test
+npm run test:coverage
 ```
 
-Key variables:
+---
 
-- NEXT_PUBLIC_DEBUG: Enable debug UI (0/1 or true/false). When enabled, append `?debug=1` to IQ Test step URLs to open the panel.
-- NEXT_PUBLIC_TURNSTILE_SITE_KEY: Cloudflare Turnstile (client).
-- TURNSTILE_SECRET_KEY: Cloudflare Turnstile (server secret).
-- NEXT_PUBLIC_AMAZON_ASSOCIATES_TAG: Amazon affiliate tag shown in the affiliate page.
-- WHATSAPP\_\*: Business API (webhook and outbound messages).
-- PIX\_\*: PIX payment configuration.
-- MONERO_ADDRESS / MONERO_VIEW_KEY: Monero payments.
-- RESEND_API_KEY: Email provider.
-- DISCORD_WEBHOOK_URL: Optional notifications.
+## 🔒 Security
 
-On production (Vercel), set variables in Project Settings → Environment Variables. For debug UI, set `NEXT_PUBLIC_DEBUG=1` temporarily, then disable after use.
+- HTTPS enforced in production
+- HTTP-Only cookies for sessions
+- CSRF protection on all state-changing requests
+- Rate limiting on authentication endpoints
+- Input sanitization and validation
+- SQL injection prevention
+- Comprehensive audit logging
 
-This project uses Vitest (unit/component) and Playwright (E2E). We collect coverage and enforce quality via CI.
+---
 
-- Unit/Component (Vitest): `npm run test` or `npm run test:unit`.
-- Coverage: `npm run test:coverage` generates HTML and LCOV under `coverage/`.
-- E2E (Playwright): `npm run test:e2e` (see report with `npm run test:e2e:report`).
-- Watch mode: `npm run test:watch`.
+## 📊 Performance
 
-Coverage workflow:
+- Code splitting and dynamic imports
+- Image optimization (WebP/AVIF)
+- Compression enabled
+- Lazy loading
+- Web Vitals tracking
+- Lighthouse CI with thresholds
 
-- We batch edits across multiple files, then run a single `npm run test:coverage` pass to validate all changes.
-- LCOV is parsed in CI to list files below 100% and auto-create TODOs per file, which are then completed in batches.
-- Some browser-native branches (alerts/navigation) are covered via targeted mocks; when not feasible, `/* c8 ignore next */` is used sparingly.
+---
 
-## 🧪 Artifacts Policy
+## 🤝 Contributing
 
-- Playwright: `playwright-report/` and `test-results/` are gitignored. Use `npm run test:e2e:report` to open the report.
-- Lighthouse CI: `.lighthouseci/` and `lhci_reports/` are gitignored. Use `npm run lighthouse`
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'feat: add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-## 🔐 Security & Audits
+---
 
-- Dependency audits are run periodically. Historical outputs may be stored as `audit.json`/`audit2.json` for reference.
-- If not required for your workflow, these files can be safely removed. CI does not depend on them.
+## 📄 License
 
-## 📊 Performance Toolkit
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-This project includes a comprehensive performance toolkit integrated into development and CI/CD.
+---
 
-Tools:
+## 💬 Support
 
-- Bundle Analysis: visualize chunks and dependencies (Next.js/webpack analyzer).
-- Dev Performance Monitor: real-time Web Vitals and resources while developing.
-- Lighthouse CI: automated audits with thresholds enforced in CI.
+For issues or questions:
+- Open an issue on [GitHub](https://github.com/gabrieltoth/gabrieltoth.com/issues)
+- Contact: [your-email@example.com](mailto:your-email@example.com)
 
-Key scripts:
+---
 
-```bash
-# Bundle Analysis
-npm run analyze          # generate analysis
-npm run analyze:open     # open analysis automatically
-npm run bundle:size      # show total bundle size
-
-# Performance Testing
-npm run perf             # build + analysis
-npm run perf:full        # build + analysis + lighthouse
-
-# Lighthouse CI
-npm run lighthouse       # run audits
-npm run lighthouse:ci    # collect and validate metrics
-```
-
-Thresholds (CI):
-
-- Performance ≥ 80%, Accessibility ≥ 90%, SEO ≥ 80%, Core Web Vitals within limits.
-
-Best practices implemented:
-
-- Code splitting and dynamic imports, image optimization (WebP/AVIF), compression, optimized headers, lazy loading, and Web Vitals tracking. For deeper guidance, see inline comments and scripts above.
+**Made with ❤️ by Gabriel Toth**
