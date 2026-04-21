@@ -190,16 +190,16 @@ const nextConfig: NextConfig = {
                 destination: "/pt-BR/terms-of-service/:path*/",
             },
             {
-                source: "/pt-BR/entrar/:path*/",
-                destination: "/pt-BR/login/:path*/",
+                source: "/pt-BR/entrar/:path*",
+                destination: "/pt-BR/login/:path*",
             },
             {
-                source: "/pt-BR/registrar/:path*/",
-                destination: "/pt-BR/register/:path*/",
+                source: "/pt-BR/registrar/:path*",
+                destination: "/pt-BR/register/:path*",
             },
             {
-                source: "/pt-BR/pagamentos/:path*/",
-                destination: "/pt-BR/payments/:path*/",
+                source: "/pt-BR/pagamentos/:path*",
+                destination: "/pt-BR/payments/:path*",
             },
             // ES rewrites - map translated URLs to English folder names
             {
@@ -235,16 +235,16 @@ const nextConfig: NextConfig = {
                 destination: "/es/terms-of-service/:path*/",
             },
             {
-                source: "/es/iniciar-sesion/:path*/",
-                destination: "/es/login/:path*/",
+                source: "/es/iniciar-sesion/:path*",
+                destination: "/es/login/:path*",
             },
             {
-                source: "/es/registrarse/:path*/",
-                destination: "/es/register/:path*/",
+                source: "/es/registrarse/:path*",
+                destination: "/es/register/:path*",
             },
             {
-                source: "/es/pagos/:path*/",
-                destination: "/es/payments/:path*/",
+                source: "/es/pagos/:path*",
+                destination: "/es/payments/:path*",
             },
             // DE rewrites - map translated URLs to English folder names
             {
@@ -280,16 +280,16 @@ const nextConfig: NextConfig = {
                 destination: "/de/terms-of-service/:path*/",
             },
             {
-                source: "/de/anmelden/:path*/",
-                destination: "/de/login/:path*/",
+                source: "/de/anmelden/:path*",
+                destination: "/de/login/:path*",
             },
             {
-                source: "/de/registrieren/:path*/",
-                destination: "/de/register/:path*/",
+                source: "/de/registrieren/:path*",
+                destination: "/de/register/:path*",
             },
             {
-                source: "/de/zahlungen/:path*/",
-                destination: "/de/payments/:path*/",
+                source: "/de/zahlungen/:path*",
+                destination: "/de/payments/:path*",
             },
         ]
     },
