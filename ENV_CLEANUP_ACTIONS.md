@@ -9,9 +9,9 @@
 
 Você tem **63 variáveis** na Vercel. Vamos:
 - ✅ **Manter**: 9 variáveis ativas
-- ❌ **Remover**: 18 variáveis desnecessárias
-- ⚠️ **Revisar**: 6 variáveis com dúvidas
-- 🔄 **To-Do**: 30 variáveis para implementação futura
+- ❌ **Remover**: 21 variáveis desnecessárias
+- ⚠️ **Revisar**: 4 variáveis com dúvidas
+- 🔄 **To-Do**: 29 variáveis para implementação futura
 
 ---
 
@@ -88,9 +88,18 @@ Motivo: Google OAuth não funciona sem isso no servidor
     Quando adicionar: Quando implementar cache (To-Do futuro)
 ```
 
+### WhatsApp (3 variáveis - não implementado corretamente)
+```
+19. WHATSAPP_ACCESS_TOKEN
+20. WHATSAPP_PHONE_NUMBER_ID
+21. WHATSAPP_VERIFY_TOKEN
+    Motivo: Não implementado corretamente no código
+    Quando adicionar: Quando criar spec para corrigir integração
+```
+
 ---
 
-## ⚠️ REVISAR (6 variáveis)
+## ⚠️ REVISAR (4 variáveis)
 
 ### 1. DATABASE_URL
 **Situação**: Usada no código mas Vercel tem Postgres integrado
@@ -135,36 +144,29 @@ Motivo: Google OAuth não funciona sem isso no servidor
 
 ---
 
-### 5. DEBUG e NEXT_PUBLIC_DEBUG
-**Situação**: Apenas para debug, não obrigatório em produção
-**Ação**:
-- [ ] Desativar em Production (false ou não definir)
-- [ ] Manter ativado em Development (true)
-- [ ] Manter ativado em Preview (true)
+### Nota sobre DEBUG e NEXT_PUBLIC_DEBUG
+
+**Por que existem duas variáveis?**
+- `DEBUG`: Server-only (nunca exposto ao navegador)
+  - Controla logs do Pino no servidor
+  - Usado em: `src/lib/logger/pino-logger.ts`, `src/lib/logger/index.ts`
+- `NEXT_PUBLIC_DEBUG`: Client-side (exposto ao navegador)
+  - Controla debug UI no cliente (ex: IQ test page)
+  - Usado em: `src/app/[locale]/iq-test/step/[step]/page.tsx`
 
 **Valores recomendados**:
 ```
 Development:  DEBUG=true, NEXT_PUBLIC_DEBUG=true
 Preview:      DEBUG=true, NEXT_PUBLIC_DEBUG=true
-Production:   DEBUG=false, NEXT_PUBLIC_DEBUG=false (ou não definir)
+Production:   DEBUG=false, NEXT_PUBLIC_DEBUG=false
 ```
+
+**Ação**: Manter ambas, mas garantir que estão `false` em Production.
 
 ---
 
-### 6. WhatsApp (3 variáveis - não está funcionando)
-**Situação**: Configuradas mas não funciona
-**Ação**:
-- [ ] Investigar por que não recebe mensagens
-- [ ] Criar spec para corrigir integração
-- [ ] Depois decidir se mantém ou remove
-
-**Variáveis**:
-- `WHATSAPP_ACCESS_TOKEN`
-- `WHATSAPP_PHONE_NUMBER_ID`
-- `WHATSAPP_VERIFY_TOKEN`
-
-**Referências no código**:
-- `src/app/api/whatsapp/webhook/route.ts`
+### 5. WhatsApp (MOVIDO PARA "REMOVER")
+~~Investigar por que não funciona~~ → Não implementado corretamente, remover da Vercel por enquanto.
 
 ---
 
@@ -266,15 +268,17 @@ REDIS_URL (remover por enquanto)
 - [ ] `POSTGRES_PASSWORD`
 - [ ] `POSTGRES_USER`
 - [ ] `REDIS_URL`
+- [ ] `WHATSAPP_ACCESS_TOKEN`
+- [ ] `WHATSAPP_PHONE_NUMBER_ID`
+- [ ] `WHATSAPP_VERIFY_TOKEN`
 
 ### Passo 3: Revisar
 - [ ] `DATABASE_URL` - Vercel fornece automaticamente?
 - [ ] `SUPABASE_SERVICE_ROLE_KEY` - Precisa em produção?
 - [ ] `GITHUB_TOKEN` - Algum MCP precisa?
 - [ ] `POSTMAN_API_KEY` - Algum MCP precisa?
-- [ ] `DEBUG` - Desativar em Production
-- [ ] `NEXT_PUBLIC_DEBUG` - Desativar em Production
-- [ ] WhatsApp (3 variáveis) - Investigar por que não funciona
+- [ ] `DEBUG` - Garantir false em Production
+- [ ] `NEXT_PUBLIC_DEBUG` - Garantir false em Production
 
 ### Passo 4: Criar Specs (Futuro)
 - [ ] Spec: Investigar e Corrigir WhatsApp

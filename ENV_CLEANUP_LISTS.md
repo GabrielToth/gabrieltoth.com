@@ -36,9 +36,14 @@
 ### Não Implementado
 18. `REDIS_URL`
 
+### WhatsApp (não implementado corretamente)
+19. `WHATSAPP_ACCESS_TOKEN`
+20. `WHATSAPP_PHONE_NUMBER_ID`
+21. `WHATSAPP_VERIFY_TOKEN`
+
 ---
 
-## ⚠️ REVISAR (6 variáveis)
+## ⚠️ REVISAR (4 variáveis)
 
 ### Verificar se precisa em Vercel
 1. `DATABASE_URL` - Vercel fornece automaticamente?
@@ -46,14 +51,11 @@
 3. `GITHUB_TOKEN` - Algum MCP precisa?
 4. `POSTMAN_API_KEY` - Algum MCP precisa?
 
-### Desativar em Production
-5. `DEBUG` - Manter true em Dev/Preview, false em Production
-6. `NEXT_PUBLIC_DEBUG` - Manter true em Dev/Preview, false em Production
-
-### Investigar
-7. `WHATSAPP_ACCESS_TOKEN` - Por que não funciona?
-8. `WHATSAPP_PHONE_NUMBER_ID` - Por que não funciona?
-9. `WHATSAPP_VERIFY_TOKEN` - Por que não funciona?
+### Nota sobre DEBUG
+- `DEBUG` (server-only) e `NEXT_PUBLIC_DEBUG` (client-side) são variáveis diferentes:
+  - `DEBUG`: Controla logs do Pino no servidor (nunca exposto ao navegador)
+  - `NEXT_PUBLIC_DEBUG`: Controla debug UI no cliente (ex: IQ test page)
+  - Ambos devem estar `false` em Production, `true` em Dev/Preview
 
 ---
 
@@ -115,6 +117,6 @@
 
 **Total**: 63 variáveis
 - ✅ Manter: 12
-- ❌ Remover: 18
-- ⚠️ Revisar: 9
-- 🔄 To-Do: 24
+- ❌ Remover: 21
+- ⚠️ Revisar: 4
+- 🔄 To-Do: 26
