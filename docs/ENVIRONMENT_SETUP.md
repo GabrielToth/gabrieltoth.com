@@ -4,6 +4,44 @@
 
 This project uses environment variables for configuration. There are different setup procedures for **local development** and **Vercel production deployment**.
 
+## Quick Reference Table
+
+### Environment Variable Placement & Configuration
+
+| Variable | Type | Sensitive | `.env.local` | `.env.production` | `.env.docker` | Vercel | Environments |
+|----------|------|-----------|--------------|-------------------|---------------|--------|--------------|
+| **GOOGLE_CLIENT_ID** | Server | ✅ Yes | ✅ Dev | ✅ Prod | ❌ No | ✅ Yes | Production, Preview |
+| **GOOGLE_CLIENT_SECRET** | Server | ✅ Yes | ✅ Dev | ✅ Prod | ❌ No | ✅ Yes | Production, Preview |
+| **NEXT_PUBLIC_GOOGLE_CLIENT_ID** | Public | ❌ No | ✅ Dev | ✅ Prod | ❌ No | ✅ Yes | Production, Preview |
+| **NEXT_PUBLIC_GOOGLE_REDIRECT_URI** | Public | ❌ No | ✅ Dev | ✅ Prod | ❌ No | ✅ Yes | Production, Preview |
+| **NEXT_PUBLIC_SUPABASE_URL** | Public | ❌ No | ✅ Dev | ✅ Prod | ❌ No | ✅ Yes | Production, Preview |
+| **NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY** | Public | ❌ No | ✅ Dev | ✅ Prod | ❌ No | ✅ Yes | Production, Preview |
+| **SUPABASE_SERVICE_ROLE_KEY** | Server | ✅ Yes | ✅ Dev | ✅ Prod | ❌ No | ✅ Yes | Production, Preview |
+| **STRIPE_SECRET_KEY** | Server | ✅ Yes | ✅ Dev | ✅ Prod | ❌ No | ✅ Yes | Production, Preview |
+| **DISCORD_WEBHOOK_URL** | Server | ✅ Yes | ✅ Dev | ✅ Prod | ❌ No | ✅ Yes | Production, Preview |
+| **NEXT_PUBLIC_AMAZON_ASSOCIATES_TAG** | Public | ❌ No | ✅ Dev | ✅ Prod | ❌ No | ✅ Yes | Production, Preview |
+| **MONERO_ADDRESS** | Public | ❌ No | ✅ Dev | ✅ Prod | ❌ No | ✅ Yes | Production, Preview |
+| **MONERO_VIEW_KEY** | Server | ✅ Yes | ✅ Dev | ✅ Prod | ❌ No | ✅ Yes | Production, Preview |
+| **DEBUG** | Config | ❌ No | ✅ Dev | ❌ No | ✅ Docker | ❌ No | - |
+| **NEXT_PUBLIC_DEBUG** | Config | ❌ No | ✅ Dev | ❌ No | ✅ Docker | ❌ No | - |
+| **NODE_ENV** | Config | ❌ No | ❌ No | ❌ No | ✅ Docker | ❌ No | - |
+| **DATABASE_URL** | Server | ✅ Yes | ✅ Dev | ❌ No | ✅ Docker | ❌ No | - |
+| **POSTGRES_USER** | Server | ✅ Yes | ✅ Dev | ❌ No | ✅ Docker | ❌ No | - |
+| **POSTGRES_PASSWORD** | Server | ✅ Yes | ✅ Dev | ❌ No | ✅ Docker | ❌ No | - |
+| **POSTGRES_DB** | Server | ✅ Yes | ✅ Dev | ❌ No | ✅ Docker | ❌ No | - |
+| **REDIS_URL** | Server | ✅ Yes | ✅ Dev | ❌ No | ✅ Docker | ❌ No | - |
+| **JWT_SECRET** | Server | ✅ Yes | ✅ Dev | ✅ Prod | ❌ No | ✅ Yes | Production, Preview |
+
+### Legend
+
+- **Type**: Whether the variable is for Server-side, Public (client-side), or Config
+- **Sensitive**: Whether it should be marked as sensitive in Vercel (prevents exposure in logs)
+- **`.env.local`**: Include in local development environment file
+- **`.env.production`**: Include in production environment file (for testing locally)
+- **`.env.docker`**: Include in Docker environment file
+- **Vercel**: Whether to set in Vercel dashboard
+- **Environments**: Which Vercel environments (Production, Preview, Development)
+
 ## Local Development Setup
 
 ### 1. Copy Example Files
@@ -53,16 +91,9 @@ These files are in `.gitignore` and should **never** be committed to git. They c
 1. Go to [Vercel Dashboard](https://vercel.com/dashboard)
 2. Select your project
 3. Go to **Settings** > **Environment Variables**
-4. Add each variable:
+4. Add each variable according to the table above
 
-```
-Name: GOOGLE_CLIENT_ID
-Value: your-production-google-client-id
-Environments: Production, Preview
-Sensitive: ✅ (mark as sensitive)
-```
-
-### 2. Environment Variable Categories
+### 2. Sensitive vs Public Variables
 
 #### Sensitive Variables (Mark as Sensitive ✅)
 These should be marked as sensitive in Vercel to prevent exposure in logs:
@@ -73,6 +104,7 @@ These should be marked as sensitive in Vercel to prevent exposure in logs:
 - `DISCORD_WEBHOOK_URL`
 - `MONERO_VIEW_KEY`
 - `SUPABASE_SERVICE_ROLE_KEY` (if using)
+- `JWT_SECRET`
 
 #### Public Variables (Don't Mark as Sensitive ❌)
 These are exposed to the browser by design (prefixed with `NEXT_PUBLIC_`):
@@ -82,8 +114,24 @@ These are exposed to the browser by design (prefixed with `NEXT_PUBLIC_`):
 - `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`
 - `NEXT_PUBLIC_AMAZON_ASSOCIATES_TAG`
 - `NEXT_PUBLIC_DEBUG`
+- `NEXT_PUBLIC_GOOGLE_REDIRECT_URI`
 
-### 3. Recommended Setup
+### 3. Environment Selection in Vercel
+
+For each variable, select which Vercel environments it applies to:
+
+| Variable Type | Production | Preview | Development |
+|---------------|-----------|---------|-------------|
+| **Production Secrets** | ✅ Yes | ✅ Yes | ❌ No |
+| **Public Variables** | ✅ Yes | ✅ Yes | ✅ Yes |
+| **Debug Variables** | ❌ No | ❌ No | ✅ Yes |
+
+**Recommended setup:**
+- Most variables: **Production** + **Preview**
+- Debug variables: **Development** only
+- Public variables: All environments
+
+### 4. Recommended Setup
 
 **For each environment variable:**
 
@@ -91,10 +139,10 @@ These are exposed to the browser by design (prefixed with `NEXT_PUBLIC_`):
 2. Paste into Vercel dashboard
 3. Fill in your production value
 4. Select environments: **Production** and **Preview**
-5. Mark as sensitive if it's a secret
+5. Mark as sensitive if it's a secret (see table above)
 6. Click "Save"
 
-### 4. Verify Deployment
+### 5. Verify Deployment
 
 After setting all variables:
 
@@ -105,6 +153,25 @@ After setting all variables:
 
 2. Check deployment logs in Vercel dashboard
 3. Verify no errors about missing environment variables
+
+## Docker Setup
+
+### Environment Variables for Docker
+
+For Docker deployments, use `.env.docker`:
+
+```bash
+cp .env.docker.example .env.docker
+```
+
+**Docker-specific variables:**
+- `NODE_ENV=production`
+- `DEBUG=false`
+- `DATABASE_URL=postgres://user:password@postgres:5432/dbname`
+- `POSTGRES_USER`, `POSTGRES_PASSWORD`, `POSTGRES_DB`
+- `REDIS_URL=redis://redis:6379`
+
+**Note:** Docker doesn't need Vercel-specific variables. Use `.env.docker` for local Docker testing.
 
 ## Environment Variable Reference
 
@@ -194,6 +261,7 @@ STRIPE_SECRET_KEY=sk_live_your-live-key
 - Store backups of credentials in a password manager
 - Rotate keys if compromised
 - Use strong, randomly generated secrets
+- Follow the placement table above for each variable
 
 ❌ **DON'T:**
 - Commit `.env.local` or `.env.production` to git
@@ -201,6 +269,7 @@ STRIPE_SECRET_KEY=sk_live_your-live-key
 - Use the same credentials for dev and prod
 - Expose `SUPABASE_SERVICE_ROLE_KEY` to the browser
 - Commit production secrets to git history
+- Mark public variables as sensitive
 
 ## Additional Resources
 
@@ -209,4 +278,5 @@ STRIPE_SECRET_KEY=sk_live_your-live-key
 - [Supabase Environment Setup](https://supabase.com/docs/guides/api/environment-variables)
 - [Google OAuth Setup](https://developers.google.com/identity/protocols/oauth2)
 - [Stripe API Keys](https://stripe.com/docs/keys)
+
 

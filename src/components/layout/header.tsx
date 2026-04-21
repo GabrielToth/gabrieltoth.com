@@ -23,14 +23,9 @@ export default function Header() {
     // Navigation links based on page type
     const getNavigationLinks = () => {
         return [
-            { href: `/gabriel-toth-goncalves`, label: t("about") },
             {
-                href: getLocalizedPath("channel-management", locale),
-                label: "ViraTrend",
-            },
-            {
-                href: getLocalizedPath("pc-optimization", locale),
-                label: t("servicesDropdown.pcOptimization"),
+                href: getLocalizedPath("quem-sou-eu", locale),
+                label: t("about"),
             },
         ]
     }
@@ -133,6 +128,60 @@ export default function Header() {
                             </Link>
                         ))}
 
+                        {/* Minecraft Dropdown */}
+                        <div className="relative">
+                            <button
+                                onClick={() =>
+                                    setIsMinecraftOpen(!isMinecraftOpen)
+                                }
+                                className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors flex items-center"
+                                data-testid="minecraft-button"
+                            >
+                                {t("minecraft")}
+                                <svg
+                                    className={`ml-1 h-4 w-4 transition-transform ${
+                                        isMinecraftOpen ? "rotate-180" : ""
+                                    }`}
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="m19 9-7 7-7-7"
+                                    />
+                                </svg>
+                            </button>
+
+                            {isMinecraftOpen && (
+                                <div className="absolute top-full left-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg border border-gray-200 dark:border-gray-700">
+                                    {minecraftLinks.map(link => (
+                                        <Link
+                                            key={link.href}
+                                            href={link.href}
+                                            className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                                            onClick={() =>
+                                                setIsMinecraftOpen(false)
+                                            }
+                                            data-testid={
+                                                link.href.includes("/modpacks")
+                                                    ? "minecraft-link-modpacks"
+                                                    : link.href.includes(
+                                                            "/mods"
+                                                        )
+                                                      ? "minecraft-link-mods"
+                                                      : undefined
+                                            }
+                                        >
+                                            {link.label}
+                                        </Link>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+
                         {/* Services Dropdown */}
                         <div className="relative">
                             <button
@@ -179,60 +228,6 @@ export default function Header() {
                                                             "/pc-optimization"
                                                         )
                                                       ? "services-link-pc-optimization"
-                                                      : undefined
-                                            }
-                                        >
-                                            {link.label}
-                                        </Link>
-                                    ))}
-                                </div>
-                            )}
-                        </div>
-
-                        {/* Minecraft Dropdown */}
-                        <div className="relative">
-                            <button
-                                onClick={() =>
-                                    setIsMinecraftOpen(!isMinecraftOpen)
-                                }
-                                className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors flex items-center"
-                                data-testid="minecraft-button"
-                            >
-                                {t("minecraft")}
-                                <svg
-                                    className={`ml-1 h-4 w-4 transition-transform ${
-                                        isMinecraftOpen ? "rotate-180" : ""
-                                    }`}
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
-                                >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth={2}
-                                        d="m19 9-7 7-7-7"
-                                    />
-                                </svg>
-                            </button>
-
-                            {isMinecraftOpen && (
-                                <div className="absolute top-full left-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg border border-gray-200 dark:border-gray-700">
-                                    {minecraftLinks.map(link => (
-                                        <Link
-                                            key={link.href}
-                                            href={link.href}
-                                            className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-                                            onClick={() =>
-                                                setIsMinecraftOpen(false)
-                                            }
-                                            data-testid={
-                                                link.href.includes("/modpacks")
-                                                    ? "minecraft-link-modpacks"
-                                                    : link.href.includes(
-                                                            "/mods"
-                                                        )
-                                                      ? "minecraft-link-mods"
                                                       : undefined
                                             }
                                         >
