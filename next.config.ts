@@ -19,7 +19,7 @@ const nextConfig: NextConfig = {
     },
     reactStrictMode: false,
     experimental: {
-        forceSwcTransforms: true,
+        // forceSwcTransforms: true, // Removed: Turbopack doesn't support this option
         // optimizeCss: true, // Disabled temporarily due to critters dependency issue
     },
     // Performance optimizations
