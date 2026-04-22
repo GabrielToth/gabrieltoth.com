@@ -317,11 +317,11 @@ Each task builds incrementally on previous tasks, with no orphaned code. Propert
   - Implement session expiration (30 minutes)
   - _Requirements: 1.3-1.6, 14.1-14.6_
 
-- [~] 4.2 Write property test for step validation prevents progression
+- [x] 4.2 Write property test for step validation prevents progression
   - **Property 11: Session Data Preservation**
   - **Validates: Requirements 14.1, 14.4**
 
-- [~] 4.3 Write property test for session data cleanup
+- [x] 4.3 Write property test for session data cleanup
   - **Property 12: Session Data Cleanup**
   - **Validates: Requirements 14.4**
 
@@ -336,14 +336,14 @@ Each task builds incrementally on previous tasks, with no orphaned code. Propert
   - Hide menu during registration
   - _Requirements: 1.1-1.9, 9.1-9.6_
 
-- [~] 4.5 Implement form data management across steps
+- [x] 4.5 Implement form data management across steps
   - Store form data in component state
   - Persist form data to session storage
   - Retrieve form data from session storage on page refresh
   - Clear form data on cancel or successful account creation
   - _Requirements: 1.5-1.6, 14.1, 14.4_
 
-- [~] 4.6 Implement error state management
+- [x] 4.6 Implement error state management
   - Capture validation errors from each step
   - Capture API errors from backend
   - Convert API errors to user-friendly messages
@@ -351,7 +351,7 @@ Each task builds incrementally on previous tasks, with no orphaned code. Propert
   - Clear errors when user corrects input
   - _Requirements: 13.1-13.7_
 
-- [~] 4.7 Implement loading states and API integration
+- [x] 4.7 Implement loading states and API integration
   - Show loading state during email uniqueness check
   - Show loading state during account creation
   - Disable form inputs during API calls
@@ -359,7 +359,7 @@ Each task builds incrementally on previous tasks, with no orphaned code. Propert
   - Implement retry logic for failed API calls
   - _Requirements: 13.1-13.7, 27.1-27.5_
 
-- [~] 4.8 Implement session persistence and expiration
+- [x] 4.8 Implement session persistence and expiration
   - Store registration session in HTTP-only cookie
   - Retrieve session on page refresh
   - Expire session after 30 minutes of inactivity
@@ -367,7 +367,7 @@ Each task builds incrementally on previous tasks, with no orphaned code. Propert
   - Clear session on cancel or successful account creation
   - _Requirements: 14.1-14.6_
 
-- [~] 4.9 Implement navigation between steps
+- [x] 4.9 Implement navigation between steps
   - Implement Next button to proceed to next step
   - Implement Back button to return to previous step
   - Implement Edit button in verification step to navigate back to corresponding step
@@ -385,7 +385,7 @@ Each task builds incrementally on previous tasks, with no orphaned code. Propert
 
 ## Phase 5: Testing & Quality
 
-- [~] 5.1 Write integration tests for API endpoints
+- [x] 5.1 Write integration tests for API endpoints
   - Test POST /api/auth/register with valid data (creates user, returns user ID)
   - Test POST /api/auth/register with duplicate email (returns 409 error)
   - Test POST /api/auth/register with invalid data (returns 400 error)
@@ -395,7 +395,7 @@ Each task builds incrementally on previous tasks, with no orphaned code. Propert
   - Test POST /api/auth/send-verification-email (sends email successfully)
   - _Requirements: 8.1-8.10, 24.1-24.8, 25.1-25.5, 26.1-26.7_
 
-- [~] 5.2 Write integration tests for complete registration flow
+- [x] 5.2 Write integration tests for complete registration flow
   - Test complete email registration flow (all steps)
   - Test complete Google OAuth registration flow (all steps)
   - Test navigate back and edit data
@@ -405,7 +405,7 @@ Each task builds incrementally on previous tasks, with no orphaned code. Propert
   - Test error recovery and retry
   - _Requirements: 1.1-1.9, 14.1-14.6_
 
-- [~] 5.3 Write E2E tests for user scenarios
+- [x] 5.3 Write E2E tests for user scenarios
   - Test new user registration via email (happy path)
   - Test new user registration via Google OAuth (happy path)
   - Test email already exists error and recovery
@@ -417,7 +417,7 @@ Each task builds incrementally on previous tasks, with no orphaned code. Propert
   - Test mobile responsiveness verification
   - _Requirements: 1.1-1.9, 11.1-11.7_
 
-- [~] 5.4 Write performance tests
+- [x] 5.4 Write performance tests
   - Test initial page load time (< 2 seconds on 4G)
   - Test first step display time (< 1 second)
   - Test email uniqueness check response time (< 500ms)
@@ -425,7 +425,7 @@ Each task builds incrementally on previous tasks, with no orphaned code. Propert
   - Test code splitting effectiveness (reduce initial bundle size by 40%)
   - _Requirements: 27.1-27.5_
 
-- [~] 5.5 Write accessibility tests
+- [x] 5.5 Write accessibility tests
   - Test WCAG 2.1 AA color contrast compliance
   - Test keyboard navigation (Tab, Enter, Escape)
   - Test screen reader compatibility
@@ -433,7 +433,7 @@ Each task builds incrementally on previous tasks, with no orphaned code. Propert
   - Test semantic HTML validation
   - _Requirements: 12.1-12.8_
 
-- [~] 5.6 Checkpoint - Ensure all tests pass
+- [x] 5.6 Checkpoint - Ensure all tests pass
   - Run all unit tests and verify passing
   - Run all integration tests and verify passing
   - Run all E2E tests and verify passing
@@ -441,7 +441,7 @@ Each task builds incrementally on previous tasks, with no orphaned code. Propert
   - Review test coverage (target: > 80%)
   - Ask the user if questions arise
 
-- [~] 5.7 Write snapshot tests for component rendering
+- [x] 5.7 Write snapshot tests for component rendering
   - Test AuthenticationEntry snapshot
   - Test EmailRegistrationFlow snapshots (all steps)
   - Test GoogleOAuthFlow snapshots (all steps)
@@ -450,7 +450,7 @@ Each task builds incrementally on previous tasks, with no orphaned code. Propert
   - Test ErrorDisplay snapshot
   - Test SuccessMessage snapshot
 
-- [~] 5.8 Write visual regression tests
+- [x] 5.8 Write visual regression tests
   - Test responsive design on desktop viewport
   - Test responsive design on tablet viewport
   - Test responsive design on mobile viewport
