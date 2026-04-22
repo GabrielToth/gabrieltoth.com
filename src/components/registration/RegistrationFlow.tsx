@@ -2,8 +2,10 @@
 
 import { useRegistration } from "@/hooks/useRegistration"
 import { useEffect, useState } from "react"
+import { AuthenticationEntry } from "./AuthenticationEntry"
 import { EmailInput } from "./EmailInput"
 import { ErrorDisplay } from "./ErrorDisplay"
+import { GoogleOAuthFlow } from "./GoogleOAuthFlow"
 import { NavigationButtons } from "./NavigationButtons"
 import { PasswordSetup } from "./PasswordSetup"
 import { PersonalDataForm } from "./PersonalDataForm"
@@ -15,6 +17,9 @@ export function RegistrationFlow() {
     const registration = useRegistration()
     const [generalError, setGeneralError] = useState<string | null>(null)
     const [showSuccess, setShowSuccess] = useState(false)
+    const [authMethod, setAuthMethod] = useState<"email" | "google" | null>(
+        null
+    )
     const [stepValidation, setStepValidation] = useState({
         email: false,
         password: false,
@@ -91,25 +96,33 @@ export function RegistrationFlow() {
     }
 
     const handleNext = async () => {
-        if (registration.currentStep === 0 && !stepValidation.email) {
-            setGeneralError("Please enter a valid email address")
-            return
-        }
+        if (authMethod === "email") {
+            if (registration.currentStep === 1 && !stepValidation.email) {
+                setGeneralError("Please enter a valid email address")
+                return
+            }
 
-        if (registration.currentStep === 1 && !stepValidation.password) {
-            setGeneralError("Please enter a valid password")
-            return
-        }
+            if (registration.currentStep === 2 && !stepValidation.password) {
+                setGeneralError("Please enter a valid password")
+                return
+            }
 
-        if (registration.currentStep === 2 && !stepValidation.personal) {
-            setGeneralError("Please enter valid personal information")
-            return
-        }
+            if (registration.currentStep === 3 && !stepValidation.personal) {
+                setGeneralError("Please enter valid personal information")
+                return
+            }
 
-        if (registration.currentStep === 3) {
-            // Submit registration
-            await handleSubmit()
-            return
+            if (registration.currentStep === 4) {
+                // Submit registration
+                await handleSubmit()
+                return
+            }
+        } else if (authMethod === "google") {
+            if (registration.currentStep === 2) {
+                // Submit registration
+                await handleSubmit()
+                return
+            }
         }
 
         setGeneralError(null)
@@ -199,14 +212,58 @@ export function RegistrationFlow() {
     const handleEdit = (
         field: "email" | "password" | "name" | "birthDate" | "phone"
     ) => {
-        const stepMap = {
-            email: 0,
-            password: 1,
-            name: 2,
-            birthDate: 2,
-            phone: 2,
+        // For email auth: email=0, password=1, personal=2, verification=3
+        // For google auth: personal=0, verification=1
+        if (authMethod === "google") {
+            // Google auth only has personal info step
+            if (
+                field === "name" ||
+                field === "birthDate" ||
+                field === "phone"
+            ) {
+                registration.goToStep(0)
+            }
+        } else {
+            // Email auth has multiple steps
+            const stepMap = {
+                email: 0,
+                password: 1,
+                name: 2,
+                birthDate: 2,
+                phone: 2,
+            }
+            registration.goToStep(stepMap[field])
         }
-        registration.goToStep(stepMap[field])
+    }
+
+    const handleEmailSelected = () => {
+        setAuthMethod("email")
+        registration.nextStep()
+    }
+
+    const handleGoogleSelected = () => {
+        setAuthMethod("google")
+        registration.nextStep()
+    }
+
+    const handleGoogleComplete = (data: {
+        email: string
+        name: string
+        birthDate: string
+        phone: string
+    }) => {
+        registration.updateFormData({
+            email: data.email,
+            name: data.name,
+            birthDate: data.birthDate,
+            phone: data.phone,
+        })
+        registration.nextStep()
+    }
+
+    const handleBackFromAuth = () => {
+        setAuthMethod(null)
+        registration.previousStep()
     }
 
     if (registration.sessionExpired) {
@@ -273,7 +330,7 @@ export function RegistrationFlow() {
                     {/* Session Warning */}
                     {sessionWarning && (
                         <div className="mb-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg flex items-start gap-3">
-                            <div className="flex-shrink-0 text-yellow-600 mt-0.5">
+                            <div className="shrink-0 text-yellow-600 mt-0.5">
                                 <svg
                                     className="w-5 h-5"
                                     fill="currentColor"
@@ -296,7 +353,15 @@ export function RegistrationFlow() {
                     )}
 
                     {/* Progress Indicator */}
-                    <ProgressIndicator currentStep={registration.currentStep} />
+                    {authMethod && (
+                        <ProgressIndicator
+                            currentStep={
+                                authMethod === "google"
+                                    ? registration.currentStep
+                                    : registration.currentStep
+                            }
+                        />
+                    )}
 
                     {/* Error Display */}
                     <ErrorDisplay
@@ -306,135 +371,212 @@ export function RegistrationFlow() {
 
                     {/* Form Content */}
                     <div className="mt-8">
-                        {registration.currentStep === 0 && (
-                            <div>
-                                <h2 className="text-xl font-semibold text-gray-900 mb-4">
-                                    Email Address
-                                </h2>
-                                <EmailInput
-                                    value={registration.formData.email}
-                                    onChange={email =>
-                                        registration.updateFormData({ email })
-                                    }
-                                    onValidationChange={handleEmailValidation}
-                                    disabled={registration.isSubmitting}
-                                />
-                            </div>
+                        {/* Authentication Entry */}
+                        {!authMethod && registration.currentStep === 0 && (
+                            <AuthenticationEntry
+                                onEmailSelected={handleEmailSelected}
+                                onGoogleSelected={handleGoogleSelected}
+                                isLoading={registration.isSubmitting}
+                            />
                         )}
 
-                        {registration.currentStep === 1 && (
-                            <div>
-                                <h2 className="text-xl font-semibold text-gray-900 mb-4">
-                                    Password Setup
-                                </h2>
-                                <PasswordSetup
-                                    value={registration.formData.password}
-                                    confirmValue={
-                                        registration.formData.confirmPassword
-                                    }
-                                    onChange={password =>
-                                        registration.updateFormData({
-                                            password,
-                                        })
-                                    }
-                                    onConfirmChange={confirmPassword =>
-                                        registration.updateFormData({
-                                            confirmPassword,
-                                        })
-                                    }
-                                    onValidationChange={
-                                        handlePasswordValidation
-                                    }
-                                    disabled={registration.isSubmitting}
-                                />
-                            </div>
+                        {/* Email Registration Flow */}
+                        {authMethod === "email" && (
+                            <>
+                                {registration.currentStep === 1 && (
+                                    <div>
+                                        <h2 className="text-xl font-semibold text-gray-900 mb-4">
+                                            Email Address
+                                        </h2>
+                                        <EmailInput
+                                            value={registration.formData.email}
+                                            onChange={email =>
+                                                registration.updateFormData({
+                                                    email,
+                                                })
+                                            }
+                                            onValidationChange={
+                                                handleEmailValidation
+                                            }
+                                            disabled={registration.isSubmitting}
+                                        />
+                                    </div>
+                                )}
+
+                                {registration.currentStep === 2 && (
+                                    <div>
+                                        <h2 className="text-xl font-semibold text-gray-900 mb-4">
+                                            Password Setup
+                                        </h2>
+                                        <PasswordSetup
+                                            value={
+                                                registration.formData.password
+                                            }
+                                            confirmValue={
+                                                registration.formData
+                                                    .confirmPassword
+                                            }
+                                            onChange={password =>
+                                                registration.updateFormData({
+                                                    password,
+                                                })
+                                            }
+                                            onConfirmChange={confirmPassword =>
+                                                registration.updateFormData({
+                                                    confirmPassword,
+                                                })
+                                            }
+                                            onValidationChange={
+                                                handlePasswordValidation
+                                            }
+                                            disabled={registration.isSubmitting}
+                                        />
+                                    </div>
+                                )}
+
+                                {registration.currentStep === 3 && (
+                                    <div>
+                                        <h2 className="text-xl font-semibold text-gray-900 mb-4">
+                                            Personal Information
+                                        </h2>
+                                        <PersonalDataForm
+                                            name={registration.formData.name}
+                                            birthDate={
+                                                registration.formData.birthDate
+                                            }
+                                            phone={registration.formData.phone}
+                                            onNameChange={name =>
+                                                registration.updateFormData({
+                                                    name,
+                                                })
+                                            }
+                                            onBirthDateChange={birthDate =>
+                                                registration.updateFormData({
+                                                    birthDate,
+                                                })
+                                            }
+                                            onPhoneChange={phone =>
+                                                registration.updateFormData({
+                                                    phone,
+                                                })
+                                            }
+                                            onValidationChange={
+                                                handlePersonalValidation
+                                            }
+                                            disabled={registration.isSubmitting}
+                                        />
+                                    </div>
+                                )}
+
+                                {registration.currentStep === 4 && (
+                                    <div>
+                                        <h2 className="text-xl font-semibold text-gray-900 mb-4">
+                                            Review Information
+                                        </h2>
+                                        <VerificationReview
+                                            email={registration.formData.email}
+                                            name={registration.formData.name}
+                                            birthDate={
+                                                registration.formData.birthDate
+                                            }
+                                            phone={registration.formData.phone}
+                                            onEdit={handleEdit}
+                                            disabled={registration.isSubmitting}
+                                        />
+                                    </div>
+                                )}
+                            </>
                         )}
 
-                        {registration.currentStep === 2 && (
-                            <div>
-                                <h2 className="text-xl font-semibold text-gray-900 mb-4">
-                                    Personal Information
-                                </h2>
-                                <PersonalDataForm
-                                    name={registration.formData.name}
-                                    birthDate={registration.formData.birthDate}
-                                    phone={registration.formData.phone}
-                                    onNameChange={name =>
-                                        registration.updateFormData({ name })
-                                    }
-                                    onBirthDateChange={birthDate =>
-                                        registration.updateFormData({
-                                            birthDate,
-                                        })
-                                    }
-                                    onPhoneChange={phone =>
-                                        registration.updateFormData({ phone })
-                                    }
-                                    onValidationChange={
-                                        handlePersonalValidation
-                                    }
-                                    disabled={registration.isSubmitting}
-                                />
-                            </div>
-                        )}
+                        {/* Google OAuth Flow */}
+                        {authMethod === "google" && (
+                            <>
+                                {registration.currentStep === 1 && (
+                                    <GoogleOAuthFlow
+                                        googleClientId={
+                                            process.env
+                                                .NEXT_PUBLIC_GOOGLE_CLIENT_ID ||
+                                            ""
+                                        }
+                                        onComplete={handleGoogleComplete}
+                                        onBack={handleBackFromAuth}
+                                    />
+                                )}
 
-                        {registration.currentStep === 3 && (
-                            <div>
-                                <h2 className="text-xl font-semibold text-gray-900 mb-4">
-                                    Review Information
-                                </h2>
-                                <VerificationReview
-                                    email={registration.formData.email}
-                                    name={registration.formData.name}
-                                    birthDate={registration.formData.birthDate}
-                                    phone={registration.formData.phone}
-                                    onEdit={handleEdit}
-                                    disabled={registration.isSubmitting}
-                                />
-                            </div>
+                                {registration.currentStep === 2 && (
+                                    <div>
+                                        <h2 className="text-xl font-semibold text-gray-900 mb-4">
+                                            Review Information
+                                        </h2>
+                                        <VerificationReview
+                                            email={registration.formData.email}
+                                            name={registration.formData.name}
+                                            birthDate={
+                                                registration.formData.birthDate
+                                            }
+                                            phone={registration.formData.phone}
+                                            onEdit={handleEdit}
+                                            disabled={registration.isSubmitting}
+                                        />
+                                    </div>
+                                )}
+                            </>
                         )}
                     </div>
 
                     {/* Navigation Buttons */}
-                    <NavigationButtons
-                        onBack={
-                            registration.currentStep > 0
-                                ? registration.previousStep
-                                : undefined
-                        }
-                        onNext={handleNext}
-                        onCancel={handleCancel}
-                        nextLabel={
-                            registration.currentStep === 3
-                                ? "Create Account"
-                                : "Next"
-                        }
-                        nextDisabled={
-                            registration.currentStep === 0
-                                ? !stepValidation.email
-                                : registration.currentStep === 1
-                                  ? !stepValidation.password
-                                  : registration.currentStep === 2
-                                    ? !stepValidation.personal
+                    {authMethod && (
+                        <NavigationButtons
+                            onBack={
+                                authMethod === "email"
+                                    ? registration.currentStep > 1
+                                        ? registration.previousStep
+                                        : handleBackFromAuth
+                                    : registration.currentStep > 1
+                                      ? registration.previousStep
+                                      : handleBackFromAuth
+                            }
+                            onNext={handleNext}
+                            nextLabel={
+                                authMethod === "email"
+                                    ? registration.currentStep === 4
+                                        ? "Create Account"
+                                        : "Next"
+                                    : registration.currentStep === 2
+                                      ? "Create Account"
+                                      : "Next"
+                            }
+                            nextDisabled={
+                                authMethod === "email"
+                                    ? registration.currentStep === 1
+                                        ? !stepValidation.email
+                                        : registration.currentStep === 2
+                                          ? !stepValidation.password
+                                          : registration.currentStep === 3
+                                            ? !stepValidation.personal
+                                            : false
                                     : false
-                        }
-                        isLoading={registration.isSubmitting}
-                        showCancel={true}
-                    />
+                            }
+                            isLoading={registration.isSubmitting}
+                            showCancel={true}
+                        />
+                    )}
                 </div>
 
                 {/* Footer */}
-                <div className="mt-8 text-center">
-                    <p className="text-gray-600">
-                        Already have an account?{" "}
-                        <a
-                            href="/login"
-                            className="text-blue-600 hover:text-blue-700 font-medium"
-                        >
-                            Sign in
-                        </a>
-                    </p>
-                </div>
+                {!authMethod && (
+                    <div className="mt-8 text-center">
+                        <p className="text-gray-600">
+                            Already have an account?{" "}
+                            <a
+                                href="/login"
+                                className="text-blue-600 hover:text-blue-700 font-medium"
+                            >
+                                Sign in
+                            </a>
+                        </p>
+                    </div>
+                )}
             </div>
         </div>
     )

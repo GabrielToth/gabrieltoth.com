@@ -5,14 +5,18 @@ import React from "react"
 interface ProgressIndicatorProps {
     currentStep: number
     totalSteps?: number
+    stepLabels?: string[]
 }
 
-const steps = ["Email", "Password", "Personal", "Review"]
+const defaultSteps = ["Email", "Password", "Personal", "Review"]
 
 export function ProgressIndicator({
     currentStep,
     totalSteps = 4,
+    stepLabels = defaultSteps,
 }: ProgressIndicatorProps) {
+    const steps = stepLabels.slice(0, totalSteps)
+
     return (
         <div className="flex flex-col items-center justify-center py-8">
             {/* Desktop: Horizontal layout */}

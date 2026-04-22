@@ -43,6 +43,15 @@ export async function initializeApp(): Promise<AppComponents> {
         const app = express()
         app.use(express.json())
 
+        // Setup security middleware
+        // Requirement 20.1-20.4: HTTPS enforcement and security headers
+        app.use(httpsRedirectMiddleware)
+        app.use(securityHeadersMiddleware)
+
+        // Setup rate limiting middleware
+        // Requirement 21.1-21.6: Rate limiting for API endpoints
+        app.use(rateLimiterMiddleware)
+
         // Initialize database with retry
         logger.info("Connecting to database")
         const dbPool = await connectDatabaseWithRetry(config.DATABASE_URL)
@@ -100,6 +109,13 @@ export async function initializeApp(): Promise<AppComponents> {
         const { createRoutes } = await import("./routes")
         const apiRoutes = createRoutes(creditSystem, meteringSystem)
         app.use(apiRoutes)
+
+        // Error handler middleware (must be last)
+        // Requirement 13.1-13.7: Error handling and validation
+        app.use(errorHandler)
+
+        // Start rate limit cleanup interval
+        startCleanupInterval(5 * 60 * 1000) // Clean up every 5 minutes
 
         logger.info("Application initialized successfully")
 

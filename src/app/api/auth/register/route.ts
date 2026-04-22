@@ -6,7 +6,9 @@ import {
 } from "@/lib/auth/error-handling"
 import { buildClientKey, rateLimitByKey } from "@/lib/rate-limit"
 import {
+    validateBirthDateFormat,
     validateEmail,
+    validateMinimumAge,
     validateName,
     validatePassword,
     validatePhoneNumber,
@@ -43,7 +45,15 @@ export async function POST(request: NextRequest) {
         }
 
         const body = await request.json()
-        const { email, password, name, phone } = body
+        const {
+            email,
+            password,
+            name,
+            phone,
+            full_name,
+            birth_date,
+            auth_method,
+        } = body
 
         // Validate all parameters
         if (!email || !password || !name || !phone) {
@@ -89,6 +99,28 @@ export async function POST(request: NextRequest) {
             )
         }
 
+        // Validate birth_date if provided
+        if (birth_date) {
+            const birthDateFormatValidation =
+                validateBirthDateFormat(birth_date)
+            if (!birthDateFormatValidation.isValid) {
+                return createErrorResponse(
+                    AuthErrorType.INVALID_INPUT,
+                    "birth_date",
+                    birthDateFormatValidation.error
+                )
+            }
+
+            const ageValidation = validateMinimumAge(birth_date)
+            if (!ageValidation.isValid) {
+                return createErrorResponse(
+                    AuthErrorType.INVALID_INPUT,
+                    "birth_date",
+                    ageValidation.error
+                )
+            }
+        }
+
         // Check if email already exists
         const { data: existingUser } = await supabase
             .from("users")
@@ -108,10 +140,12 @@ export async function POST(request: NextRequest) {
             .from("users")
             .insert({
                 email: email.toLowerCase(),
-                hashed_password: hashedPassword,
+                password_hash: hashedPassword,
                 name,
                 phone: phoneValidation.normalized || phone,
+                birth_date: birth_date || null,
                 email_verified: false,
+                auth_method: "email",
             })
             .select("id")
             .single()
