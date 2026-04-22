@@ -126,42 +126,78 @@ export default async function MinecraftPage({ params }: MinecraftPageProps) {
                             <h2 className="text-3xl font-bold mb-6 text-[#10b981]">
                                 {t("landing.journey.title")}
                             </h2>
-                            <p className="text-gray-300 mb-8 text-lg">
-                                {t("landing.journey.intro")}
-                            </p>
 
+                            {/* My Story */}
+                            <div className="mb-8">
+                                <h3 className="text-2xl font-bold mb-4 text-white">
+                                    {t("landing.journey.myStory", {
+                                        defaultValue: "My Minecraft Journey",
+                                    })}
+                                </h3>
+                                <p className="text-gray-300 mb-4 text-lg leading-relaxed">
+                                    {t("landing.journey.storyIntro", {
+                                        defaultValue:
+                                            "I've been playing Minecraft since 2013, thanks to a friend's recommendation. I had prejudices against the game and didn't see the appeal at first, but when he introduced me to it, I decided to give it a try a week later. I downloaded it to test it out, and I ended up loving it. Today, Minecraft is my favorite game.",
+                                    })}
+                                </p>
+                                <p className="text-gray-300 mb-4 text-lg leading-relaxed">
+                                    {t("landing.journey.modpacksPreference", {
+                                        defaultValue:
+                                            "I generally play modpacks, and the more difficult, the better. I've played through the entire All The Mods series, both the normal version and the Skyblock version. More recently, I've been playing GregTech: New Horizon. I have aspirations to play more difficult or well-known modpacks and even create more content about them. Currently, the only thing preventing me from doing so is the lack of a graphics card.",
+                                    })}
+                                </p>
+                                <p className="text-gray-300 text-lg leading-relaxed">
+                                    {t("landing.journey.hypixelSkyblock", {
+                                        defaultValue:
+                                            "I also love Hypixel's Skyblock because they've transformed the Skyblock experience into a true RPG world with story, politics, and incentives for complex, repetitive, or luck-dependent tasks. The experience is far from a normal Skyblock.",
+                                    })}
+                                </p>
+                            </div>
+
+                            {/* Content Categories */}
                             <div className="grid md:grid-cols-3 gap-6">
-                                {/* Content Creation */}
+                                {/* Modpacks */}
                                 <div className="bg-[#2d2d2d] border border-neutral-700 rounded-lg p-6">
                                     <h3 className="text-xl font-bold mb-3 text-white">
-                                        {t("landing.journey.contentCreation")}
+                                        {t("landing.journey.modpacks", {
+                                            defaultValue: "Modpacks",
+                                        })}
                                     </h3>
                                     <p className="text-gray-400 text-sm">
-                                        {t(
-                                            "landing.journey.contentCreationText"
-                                        )}
+                                        {t("landing.journey.modpacksText", {
+                                            defaultValue:
+                                                "Explore my favorite modpacks and recommendations for challenging gameplay experiences.",
+                                        })}
                                     </p>
                                 </div>
 
-                                {/* Mod Development */}
+                                {/* Mods */}
                                 <div className="bg-[#2d2d2d] border border-neutral-700 rounded-lg p-6">
                                     <h3 className="text-xl font-bold mb-3 text-white">
-                                        {t("landing.journey.modDevelopment")}
+                                        {t("landing.journey.mods", {
+                                            defaultValue: "Mods",
+                                        })}
                                     </h3>
                                     <p className="text-gray-400 text-sm">
-                                        {t(
-                                            "landing.journey.modDevelopmentText"
-                                        )}
+                                        {t("landing.journey.modsText", {
+                                            defaultValue:
+                                                "Discover individual mods that enhance and transform the Minecraft experience.",
+                                        })}
                                     </p>
                                 </div>
 
-                                {/* Optimization */}
+                                {/* Plugins */}
                                 <div className="bg-[#2d2d2d] border border-neutral-700 rounded-lg p-6">
                                     <h3 className="text-xl font-bold mb-3 text-white">
-                                        {t("landing.journey.optimization")}
+                                        {t("landing.journey.plugins", {
+                                            defaultValue: "Plugins",
+                                        })}
                                     </h3>
                                     <p className="text-gray-400 text-sm">
-                                        {t("landing.journey.optimizationText")}
+                                        {t("landing.journey.pluginsText", {
+                                            defaultValue:
+                                                "Server plugins and modifications for enhanced multiplayer experiences.",
+                                        })}
                                     </p>
                                 </div>
                             </div>

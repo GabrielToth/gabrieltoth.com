@@ -680,3 +680,262 @@ describe("validatePasswordResetForm", () => {
         })
     })
 })
+
+describe("validatePhoneNumber", () => {
+    describe("valid phone numbers", () => {
+        it("should accept US phone number with country code", () => {
+            const result = validatePhoneNumber("+1 (555) 123-4567")
+            expect(result.isValid).toBe(true)
+            expect(result.error).toBeUndefined()
+        })
+
+        it("should accept US phone number without formatting", () => {
+            const result = validatePhoneNumber("+15551234567")
+            expect(result.isValid).toBe(true)
+        })
+
+        it("should accept US phone number with default country", () => {
+            const result = validatePhoneNumber("(555) 123-4567", "US")
+            expect(result.isValid).toBe(true)
+        })
+
+        it("should accept Brazilian phone number", () => {
+            const result = validatePhoneNumber("+55 11 98765-4321")
+            expect(result.isValid).toBe(true)
+        })
+
+        it("should accept Brazilian phone number with default country", () => {
+            const result = validatePhoneNumber("11 98765-4321", "BR")
+            expect(result.isValid).toBe(true)
+        })
+
+        it("should accept UK phone number", () => {
+            const result = validatePhoneNumber("+44 20 7946 0958")
+            expect(result.isValid).toBe(true)
+        })
+
+        it("should accept German phone number", () => {
+            const result = validatePhoneNumber("+49 30 123456")
+            expect(result.isValid).toBe(true)
+        })
+
+        it("should accept French phone number", () => {
+            const result = validatePhoneNumber("+33 1 42 68 53 00")
+            expect(result.isValid).toBe(true)
+        })
+
+        it("should accept phone number with spaces", () => {
+            const result = validatePhoneNumber("+1 555 123 4567")
+            expect(result.isValid).toBe(true)
+        })
+
+        it("should accept phone number with hyphens", () => {
+            const result = validatePhoneNumber("+1-555-123-4567")
+            expect(result.isValid).toBe(true)
+        })
+
+        it("should accept phone number with parentheses", () => {
+            const result = validatePhoneNumber("+1 (555) 123-4567")
+            expect(result.isValid).toBe(true)
+        })
+
+        it("should trim whitespace", () => {
+            const result = validatePhoneNumber("  +1 (555) 123-4567  ")
+            expect(result.isValid).toBe(true)
+        })
+
+        it("should accept phone number with extension", () => {
+            const result = validatePhoneNumber(
+                "+1 (555) 123-4567 ext. 123",
+                "US"
+            )
+            expect(result.isValid).toBe(true)
+        })
+    })
+
+    describe("invalid phone numbers", () => {
+        it("should reject phone number without country code and no default", () => {
+            const result = validatePhoneNumber("(555) 123-4567")
+            expect(result.isValid).toBe(false)
+            expect(result.error).toBe("Please enter a valid phone number")
+        })
+
+        it("should reject invalid format", () => {
+            const result = validatePhoneNumber("invalid")
+            expect(result.isValid).toBe(false)
+            expect(result.error).toBe("Please enter a valid phone number")
+        })
+
+        it("should reject too short number", () => {
+            const result = validatePhoneNumber("+1 123")
+            expect(result.isValid).toBe(false)
+        })
+
+        it("should reject empty phone number", () => {
+            const result = validatePhoneNumber("")
+            expect(result.isValid).toBe(false)
+            expect(result.error).toBe("Phone number is required")
+        })
+
+        it("should reject null phone number", () => {
+            const result = validatePhoneNumber(null as any)
+            expect(result.isValid).toBe(false)
+        })
+
+        it("should reject phone number with only spaces", () => {
+            const result = validatePhoneNumber("   ")
+            expect(result.isValid).toBe(false)
+            expect(result.error).toBe("Phone number is required")
+        })
+
+        it("should reject phone number with invalid characters", () => {
+            const result = validatePhoneNumber("+1 (555) 123-456@")
+            expect(result.isValid).toBe(false)
+        })
+
+        it("should reject phone number with letters", () => {
+            const result = validatePhoneNumber("+1 (555) 123-ABCD")
+            expect(result.isValid).toBe(false)
+        })
+    })
+})
+
+describe("normalizePhoneNumber", () => {
+    describe("valid phone numbers", () => {
+        it("should normalize US phone number to E.164", () => {
+            const result = normalizePhoneNumber("+1 (555) 123-4567")
+            expect(result.normalized).toBe("+15551234567")
+            expect(result.error).toBeUndefined()
+        })
+
+        it("should normalize US phone number without country code", () => {
+            const result = normalizePhoneNumber("(555) 123-4567", "US")
+            expect(result.normalized).toBe("+15551234567")
+        })
+
+        it("should normalize Brazilian phone number to E.164", () => {
+            const result = normalizePhoneNumber("+55 11 98765-4321")
+            expect(result.normalized).toBe("+5511987654321")
+        })
+
+        it("should normalize Brazilian phone number without country code", () => {
+            const result = normalizePhoneNumber("11 98765-4321", "BR")
+            expect(result.normalized).toBe("+5511987654321")
+        })
+
+        it("should normalize UK phone number to E.164", () => {
+            const result = normalizePhoneNumber("+44 20 7946 0958")
+            expect(result.normalized).toBe("+442079460958")
+        })
+
+        it("should normalize phone number with various formatting", () => {
+            const result = normalizePhoneNumber("+1-555-123-4567")
+            expect(result.normalized).toBe("+15551234567")
+        })
+
+        it("should normalize phone number with parentheses", () => {
+            const result = normalizePhoneNumber("+1 (555) 123-4567")
+            expect(result.normalized).toBe("+15551234567")
+        })
+
+        it("should normalize phone number already in E.164", () => {
+            const result = normalizePhoneNumber("+15551234567")
+            expect(result.normalized).toBe("+15551234567")
+        })
+
+        it("should trim whitespace before normalizing", () => {
+            const result = normalizePhoneNumber("  +1 (555) 123-4567  ")
+            expect(result.normalized).toBe("+15551234567")
+        })
+    })
+
+    describe("invalid phone numbers", () => {
+        it("should reject phone number without country code and no default", () => {
+            const result = normalizePhoneNumber("(555) 123-4567")
+            expect(result.error).toBe("Invalid phone number format")
+            expect(result.normalized).toBeUndefined()
+        })
+
+        it("should reject invalid format", () => {
+            const result = normalizePhoneNumber("invalid")
+            expect(result.error).toBe("Invalid phone number format")
+        })
+
+        it("should reject empty phone number", () => {
+            const result = normalizePhoneNumber("")
+            expect(result.error).toBe("Phone number is required")
+        })
+
+        it("should reject null phone number", () => {
+            const result = normalizePhoneNumber(null as any)
+            expect(result.error).toBe("Phone number is required")
+        })
+
+        it("should reject phone number with only spaces", () => {
+            const result = normalizePhoneNumber("   ")
+            expect(result.error).toBe("Phone number is required")
+        })
+    })
+})
+
+describe("validateAndNormalizePhoneNumber", () => {
+    describe("valid phone numbers", () => {
+        it("should validate and normalize US phone number", () => {
+            const result = validateAndNormalizePhoneNumber("+1 (555) 123-4567")
+            expect(result.isValid).toBe(true)
+            expect(result.normalized).toBe("+15551234567")
+            expect(result.error).toBeUndefined()
+        })
+
+        it("should validate and normalize US phone number with default country", () => {
+            const result = validateAndNormalizePhoneNumber(
+                "(555) 123-4567",
+                "US"
+            )
+            expect(result.isValid).toBe(true)
+            expect(result.normalized).toBe("+15551234567")
+        })
+
+        it("should validate and normalize Brazilian phone number", () => {
+            const result = validateAndNormalizePhoneNumber("+55 11 98765-4321")
+            expect(result.isValid).toBe(true)
+            expect(result.normalized).toBe("+5511987654321")
+        })
+
+        it("should validate and normalize Brazilian phone number with default country", () => {
+            const result = validateAndNormalizePhoneNumber(
+                "11 98765-4321",
+                "BR"
+            )
+            expect(result.isValid).toBe(true)
+            expect(result.normalized).toBe("+5511987654321")
+        })
+
+        it("should validate and normalize UK phone number", () => {
+            const result = validateAndNormalizePhoneNumber("+44 20 7946 0958")
+            expect(result.isValid).toBe(true)
+            expect(result.normalized).toBe("+442079460958")
+        })
+    })
+
+    describe("invalid phone numbers", () => {
+        it("should reject invalid phone number", () => {
+            const result = validateAndNormalizePhoneNumber("invalid")
+            expect(result.isValid).toBe(false)
+            expect(result.error).toBe("Please enter a valid phone number")
+            expect(result.normalized).toBeUndefined()
+        })
+
+        it("should reject empty phone number", () => {
+            const result = validateAndNormalizePhoneNumber("")
+            expect(result.isValid).toBe(false)
+            expect(result.error).toBe("Phone number is required")
+        })
+
+        it("should reject phone number without country code and no default", () => {
+            const result = validateAndNormalizePhoneNumber("(555) 123-4567")
+            expect(result.isValid).toBe(false)
+            expect(result.error).toBe("Please enter a valid phone number")
+        })
+    })
+})

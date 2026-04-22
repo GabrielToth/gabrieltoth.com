@@ -1,11 +1,10 @@
 /**
- * Property-Based Tests for Password Validation
- * Feature: oauth-password-requirement
- * Tests universal properties of password validation using fast-check
- * Validates: Requirements 2.3, 3.4, 7.1, 7.2, 7.3, 7.4, 7.5, 10.4
+ * Property-Based Tests for Validation Functions
+ * Tests universal properties of validation using fast-check
+ * Validates: Requirements 2.3, 3.4, 7.1, 7.2, 7.3, 7.4, 7.5, 10.4, 2.3, 9.1
  */
 
-import { validatePassword } from "@/lib/validation"
+import { validateEmail, validatePassword } from "@/lib/validation"
 import fc from "fast-check"
 import { describe, expect, it } from "vitest"
 
@@ -198,6 +197,345 @@ describe("Property 1: Password Validation Completeness", () => {
                     }
                 }
             ),
+            { numRuns: 50 }
+        )
+    })
+})
+
+describe("Property 2: Email Format Validation", () => {
+    /**
+     * **Validates: Requirements 2.3, 9.1**
+     *
+     * Property: For any email string, the email validator SHALL correctly
+     * validate RFC 5322 email format. Valid emails SHALL pass validation,
+     * invalid emails SHALL fail validation, and edge cases SHALL be handled
+     * consistently.
+     */
+    it("should correctly validate RFC 5322 email format for any email string", () => {
+        fc.assert(
+            fc.property(
+                fc.tuple(
+                    fc
+                        .string({ minLength: 1, maxLength: 10 })
+                        .filter(s => /^[a-zA-Z0-9]+$/.test(s)),
+                    fc
+                        .string({ minLength: 1, maxLength: 10 })
+                        .filter(s => /^[a-zA-Z0-9]+$/.test(s))
+                ),
+                ([localPart, domain]) => {
+                    // Build a valid email with alphanumeric characters
+                    const email = `${localPart}@${domain}.com`
+
+                    const result = validateEmail(email)
+
+                    // Property: emails with valid format should pass validation
+                    expect(result.isValid).toBe(true)
+                    expect(result.error).toBeUndefined()
+                }
+            ),
+            { numRuns: 50 }
+        )
+    })
+
+    it("should reject emails with invalid format", () => {
+        fc.assert(
+            fc.property(
+                fc.tuple(
+                    fc.string({ minLength: 1, maxLength: 20 }),
+                    fc.string({ minLength: 1, maxLength: 20 })
+                ),
+                ([localPart, domain]) => {
+                    // Generate invalid emails by removing @ symbol
+                    const invalidEmail = `${localPart}${domain}`
+
+                    const result = validateEmail(invalidEmail)
+
+                    // Property: emails without @ are always invalid
+                    expect(result.isValid).toBe(false)
+                    expect(result.error).toBeDefined()
+                }
+            ),
+            { numRuns: 50 }
+        )
+    })
+
+    it("should reject emails with missing domain", () => {
+        fc.assert(
+            fc.property(
+                fc.string({ minLength: 1, maxLength: 20 }),
+                localPart => {
+                    const invalidEmail = `${localPart}@`
+
+                    const result = validateEmail(invalidEmail)
+
+                    // Property: emails with @ but no domain are always invalid
+                    expect(result.isValid).toBe(false)
+                    expect(result.error).toBeDefined()
+                }
+            ),
+            { numRuns: 50 }
+        )
+    })
+
+    it("should reject emails with missing local part", () => {
+        fc.assert(
+            fc.property(fc.string({ minLength: 1, maxLength: 20 }), domain => {
+                const invalidEmail = `@${domain}`
+
+                const result = validateEmail(invalidEmail)
+
+                // Property: emails with @ but no local part are always invalid
+                expect(result.isValid).toBe(false)
+                expect(result.error).toBeDefined()
+            }),
+            { numRuns: 50 }
+        )
+    })
+
+    it("should reject emails with consecutive dots in local part", () => {
+        fc.assert(
+            fc.property(
+                fc.tuple(
+                    fc.string({ minLength: 1, maxLength: 10 }),
+                    fc.string({ minLength: 1, maxLength: 10 })
+                ),
+                ([part1, part2]) => {
+                    const invalidEmail = `${part1}..${part2}@example.com`
+
+                    const result = validateEmail(invalidEmail)
+
+                    // Property: emails with consecutive dots are always invalid
+                    expect(result.isValid).toBe(false)
+                    expect(result.error).toBeDefined()
+                }
+            ),
+            { numRuns: 50 }
+        )
+    })
+
+    it("should reject emails with leading dot in local part", () => {
+        fc.assert(
+            fc.property(
+                fc.string({ minLength: 1, maxLength: 20 }),
+                localPart => {
+                    const invalidEmail = `.${localPart}@example.com`
+
+                    const result = validateEmail(invalidEmail)
+
+                    // Property: emails with leading dot in local part are always invalid
+                    expect(result.isValid).toBe(false)
+                    expect(result.error).toBeDefined()
+                }
+            ),
+            { numRuns: 50 }
+        )
+    })
+
+    it("should reject emails with trailing dot in local part", () => {
+        fc.assert(
+            fc.property(
+                fc.string({ minLength: 1, maxLength: 20 }),
+                localPart => {
+                    const invalidEmail = `${localPart}.@example.com`
+
+                    const result = validateEmail(invalidEmail)
+
+                    // Property: emails with trailing dot in local part are always invalid
+                    expect(result.isValid).toBe(false)
+                    expect(result.error).toBeDefined()
+                }
+            ),
+            { numRuns: 50 }
+        )
+    })
+
+    it("should reject emails with leading hyphen in domain", () => {
+        fc.assert(
+            fc.property(fc.string({ minLength: 1, maxLength: 20 }), domain => {
+                const invalidEmail = `user@-${domain}.com`
+
+                const result = validateEmail(invalidEmail)
+
+                // Property: emails with leading hyphen in domain are always invalid
+                expect(result.isValid).toBe(false)
+                expect(result.error).toBeDefined()
+            }),
+            { numRuns: 50 }
+        )
+    })
+
+    it("should reject emails with trailing hyphen in domain", () => {
+        fc.assert(
+            fc.property(fc.string({ minLength: 1, maxLength: 20 }), domain => {
+                const invalidEmail = `user@${domain}-.com`
+
+                const result = validateEmail(invalidEmail)
+
+                // Property: emails with trailing hyphen in domain are always invalid
+                expect(result.isValid).toBe(false)
+                expect(result.error).toBeDefined()
+            }),
+            { numRuns: 50 }
+        )
+    })
+
+    it("should reject empty or null emails", () => {
+        fc.assert(
+            fc.property(
+                fc.oneof(fc.constant(""), fc.constant(null as any)),
+                email => {
+                    const result = validateEmail(email)
+
+                    // Property: empty or null emails are always invalid
+                    expect(result.isValid).toBe(false)
+                    expect(result.error).toBeDefined()
+                }
+            ),
+            { numRuns: 10 }
+        )
+    })
+
+    it("should reject emails with spaces", () => {
+        fc.assert(
+            fc.property(
+                fc.tuple(
+                    fc.string({ minLength: 1, maxLength: 10 }),
+                    fc.string({ minLength: 1, maxLength: 10 })
+                ),
+                ([part1, part2]) => {
+                    const invalidEmail = `${part1} ${part2}@example.com`
+
+                    const result = validateEmail(invalidEmail)
+
+                    // Property: emails with spaces are always invalid
+                    expect(result.isValid).toBe(false)
+                    expect(result.error).toBeDefined()
+                }
+            ),
+            { numRuns: 50 }
+        )
+    })
+
+    it("should trim whitespace from email before validation", () => {
+        fc.assert(
+            fc.property(
+                fc.tuple(
+                    fc
+                        .string({ minLength: 1, maxLength: 10 })
+                        .filter(s => /^[a-zA-Z0-9]+$/.test(s)),
+                    fc
+                        .string({ minLength: 1, maxLength: 10 })
+                        .filter(s => /^[a-zA-Z0-9]+$/.test(s))
+                ),
+                ([localPart, domain]) => {
+                    const email = `${localPart}@${domain}.com`
+                    const trimmedEmail = `  ${email}  `
+
+                    const result = validateEmail(trimmedEmail)
+
+                    // Property: emails with surrounding whitespace should be trimmed and validated
+                    expect(result.isValid).toBe(true)
+                    expect(result.error).toBeUndefined()
+                }
+            ),
+            { numRuns: 50 }
+        )
+    })
+
+    it("should accept emails with valid special characters in local part", () => {
+        fc.assert(
+            fc.property(
+                fc.tuple(
+                    fc
+                        .string({ minLength: 1, maxLength: 5 })
+                        .filter(s => /^[a-zA-Z0-9]+$/.test(s)),
+                    fc.constantFrom("+", "_", "-")
+                ),
+                ([localPart, specialChar]) => {
+                    // Build email with special character
+                    const email = `user${specialChar}${localPart}@example.com`
+
+                    const result = validateEmail(email)
+
+                    // Property: emails with valid special characters should be valid
+                    expect(result.isValid).toBe(true)
+                    expect(result.error).toBeUndefined()
+                }
+            ),
+            { numRuns: 50 }
+        )
+    })
+
+    it("should accept emails with multiple domain levels", () => {
+        fc.assert(
+            fc.property(
+                fc.tuple(
+                    fc
+                        .string({ minLength: 1, maxLength: 5 })
+                        .filter(s => /^[a-zA-Z0-9]+$/.test(s)),
+                    fc
+                        .string({ minLength: 1, maxLength: 5 })
+                        .filter(s => /^[a-zA-Z0-9]+$/.test(s)),
+                    fc
+                        .string({ minLength: 1, maxLength: 5 })
+                        .filter(s => /^[a-zA-Z0-9]+$/.test(s))
+                ),
+                ([subdomain, domain, tld]) => {
+                    const email = `user@${subdomain}.${domain}.${tld}`
+
+                    const result = validateEmail(email)
+
+                    // Property: emails with multiple domain levels should be valid
+                    expect(result.isValid).toBe(true)
+                    expect(result.error).toBeUndefined()
+                }
+            ),
+            { numRuns: 50 }
+        )
+    })
+
+    it("should always return a consistent result structure", () => {
+        fc.assert(
+            fc.property(fc.string(), email => {
+                const result = validateEmail(email)
+
+                // Property: result always has isValid property
+                expect(result).toHaveProperty("isValid")
+                expect(typeof result.isValid).toBe("boolean")
+
+                // Property: error is either undefined or a string
+                if (result.error !== undefined) {
+                    expect(typeof result.error).toBe("string")
+                    expect(result.error.length).toBeGreaterThan(0)
+                }
+
+                // Property: if valid, no error should be present
+                if (result.isValid) {
+                    expect(result.error).toBeUndefined()
+                }
+
+                // Property: if invalid, error should be present
+                if (!result.isValid) {
+                    expect(result.error).toBeDefined()
+                }
+            }),
+            { numRuns: 100 }
+        )
+    })
+
+    it("should validate the same email consistently across multiple calls", () => {
+        fc.assert(
+            fc.property(fc.emailAddress(), email => {
+                const result1 = validateEmail(email)
+                const result2 = validateEmail(email)
+                const result3 = validateEmail(email)
+
+                // Property: validating the same email multiple times yields identical results
+                expect(result1.isValid).toBe(result2.isValid)
+                expect(result2.isValid).toBe(result3.isValid)
+                expect(result1.error).toBe(result2.error)
+                expect(result2.error).toBe(result3.error)
+            }),
             { numRuns: 50 }
         )
     })

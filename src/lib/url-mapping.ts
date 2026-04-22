@@ -17,6 +17,8 @@ const urlMapping: Record<Locale, Record<string, string>> = {
         minecraft: "minecraft",
         "minecraft-modpacks": "minecraft/modpacks",
         "minecraft-mods": "minecraft/mods",
+        "minecraft-plugins": "minecraft/plugins",
+        "minecraft-contributions": "minecraft/contributions",
     },
     "pt-BR": {
         "channel-management": "gerenciamento-de-canais",
@@ -33,6 +35,8 @@ const urlMapping: Record<Locale, Record<string, string>> = {
         minecraft: "minecraft",
         "minecraft-modpacks": "minecraft/modpacks",
         "minecraft-mods": "minecraft/mods",
+        "minecraft-plugins": "minecraft/plugins",
+        "minecraft-contributions": "minecraft/contribuicoes",
     },
     es: {
         "channel-management": "gestion-de-canales",
@@ -49,6 +53,8 @@ const urlMapping: Record<Locale, Record<string, string>> = {
         minecraft: "minecraft",
         "minecraft-modpacks": "minecraft/modpacks",
         "minecraft-mods": "minecraft/mods",
+        "minecraft-plugins": "minecraft/plugins",
+        "minecraft-contributions": "minecraft/contribuciones",
     },
     de: {
         "channel-management": "kanalverwaltung",
@@ -65,6 +71,8 @@ const urlMapping: Record<Locale, Record<string, string>> = {
         minecraft: "minecraft",
         "minecraft-modpacks": "minecraft/modpacks",
         "minecraft-mods": "minecraft/mods",
+        "minecraft-plugins": "minecraft/plugins",
+        "minecraft-contributions": "minecraft/beitrage",
     },
 }
 

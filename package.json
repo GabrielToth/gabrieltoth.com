@@ -129,6 +129,7 @@
         "clsx": "^2.1.1",
         "ioredis": "^5.10.1",
         "jsonwebtoken": "^9.0.3",
+        "libphonenumber-js": "^1.12.41",
         "lucide-react": "^1.8.0",
         "next": "^16.2.4",
         "next-intl": "^4.9.1",

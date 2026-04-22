@@ -71,6 +71,16 @@ export default function Header() {
             href: getLocalizedPath("minecraft-mods", locale),
             label: t("minecraftDropdown.mods"),
         },
+        {
+            href: getLocalizedPath("minecraft-plugins", locale),
+            label: t("minecraftDropdown.plugins", { defaultValue: "Plugins" }),
+        },
+        {
+            href: getLocalizedPath("minecraft-contributions", locale),
+            label: t("minecraftDropdown.contributions", {
+                defaultValue: "Contributions",
+            }),
+        },
     ]
 
     const navigationLinks = getNavigationLinks()
@@ -130,30 +140,39 @@ export default function Header() {
 
                         {/* Minecraft Dropdown */}
                         <div className="relative">
-                            <button
-                                onClick={() =>
-                                    setIsMinecraftOpen(!isMinecraftOpen)
-                                }
-                                className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors flex items-center"
-                                data-testid="minecraft-button"
-                            >
-                                {t("minecraft")}
-                                <svg
-                                    className={`ml-1 h-4 w-4 transition-transform ${
-                                        isMinecraftOpen ? "rotate-180" : ""
-                                    }`}
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
+                            <div className="flex items-center">
+                                <Link
+                                    href={getLocalizedPath("minecraft", locale)}
+                                    className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
+                                    data-testid="minecraft-link"
                                 >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth={2}
-                                        d="m19 9-7 7-7-7"
-                                    />
-                                </svg>
-                            </button>
+                                    {t("minecraft")}
+                                </Link>
+                                <button
+                                    onClick={() =>
+                                        setIsMinecraftOpen(!isMinecraftOpen)
+                                    }
+                                    className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors ml-1 p-1"
+                                    data-testid="minecraft-dropdown-button"
+                                    aria-label="Toggle Minecraft submenu"
+                                >
+                                    <svg
+                                        className={`h-4 w-4 transition-transform ${
+                                            isMinecraftOpen ? "rotate-180" : ""
+                                        }`}
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke="currentColor"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            d="m19 9-7 7-7-7"
+                                        />
+                                    </svg>
+                                </button>
+                            </div>
 
                             {isMinecraftOpen && (
                                 <div className="absolute top-full left-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg border border-gray-200 dark:border-gray-700">
