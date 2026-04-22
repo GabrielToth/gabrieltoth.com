@@ -31,7 +31,7 @@ function getLocaleFromAcceptLanguage(acceptLanguage: string): string {
     return defaultLocale
 }
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
     const pathname = request.nextUrl.pathname
 
     // Host canonicalization handled by Next.js redirects; avoid double redirects here
