@@ -15,7 +15,7 @@ export function AuthenticationEntry({
     isLoading = false,
 }: AuthenticationEntryProps) {
     return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-12 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
+        <div className="min-h-screen bg-linear-to-br from-slate-900 via-slate-800 to-slate-900 py-8 sm:py-12 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
             <div className="w-full max-w-md">
                 {/* Logo/Branding */}
                 <div className="text-center mb-8">
@@ -24,6 +24,7 @@ export function AuthenticationEntry({
                             className="w-8 h-8 text-white"
                             fill="currentColor"
                             viewBox="0 0 20 20"
+                            aria-hidden="true"
                         >
                             <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
                             <path
@@ -33,27 +34,28 @@ export function AuthenticationEntry({
                             />
                         </svg>
                     </div>
-                    <h1 className="text-3xl font-bold text-white mb-2">
+                    <h1 className="text-3xl sm:text-4xl font-bold text-white mb-2">
                         Create Account
                     </h1>
-                    <p className="text-slate-400">
+                    <p className="text-slate-400 text-base sm:text-lg">
                         Join us today and get started in just a few steps
                     </p>
                 </div>
 
                 {/* Card */}
-                <Card className="bg-slate-800 border-slate-700 p-8">
+                <Card className="bg-slate-800 border-slate-700 p-6 sm:p-8">
                     {/* Email Registration Button */}
                     <button
                         onClick={onEmailSelected}
                         disabled={isLoading}
-                        className="w-full mb-4 px-6 py-3 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-600 disabled:opacity-50 text-white font-semibold rounded-lg transition-colors flex items-center justify-center gap-2"
+                        className="w-full mb-4 px-6 py-3 sm:py-3 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-600 disabled:opacity-50 text-white font-semibold rounded-lg transition-colors flex items-center justify-center gap-2 min-h-[44px] text-base sm:text-sm"
                         aria-label="Sign up with Email"
                     >
                         <svg
                             className="w-5 h-5"
                             fill="currentColor"
                             viewBox="0 0 20 20"
+                            aria-hidden="true"
                         >
                             <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
                             <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
@@ -77,13 +79,14 @@ export function AuthenticationEntry({
                     <button
                         onClick={onGoogleSelected}
                         disabled={isLoading}
-                        className="w-full px-6 py-3 bg-white hover:bg-slate-100 disabled:bg-white disabled:opacity-50 text-slate-900 font-semibold rounded-lg transition-colors flex items-center justify-center gap-2"
+                        className="w-full px-6 py-3 sm:py-3 bg-white hover:bg-slate-100 disabled:bg-white disabled:opacity-50 text-slate-900 font-semibold rounded-lg transition-colors flex items-center justify-center gap-2 min-h-[44px] text-base sm:text-sm"
                         aria-label="Sign up with Google"
                     >
                         <svg
                             className="w-5 h-5"
                             viewBox="0 0 24 24"
                             fill="currentColor"
+                            aria-hidden="true"
                         >
                             <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
                             <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
@@ -98,7 +101,7 @@ export function AuthenticationEntry({
                 <div className="mt-8 text-center">
                     <Link
                         href="/login"
-                        className="text-slate-400 hover:text-slate-300 font-medium transition-colors"
+                        className="text-slate-400 hover:text-slate-300 font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 rounded px-2 py-1"
                     >
                         Back to Login
                     </Link>
@@ -110,14 +113,14 @@ export function AuthenticationEntry({
                         By signing up, you agree to our{" "}
                         <a
                             href="/terms"
-                            className="text-blue-400 hover:text-blue-300"
+                            className="text-blue-400 hover:text-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded"
                         >
                             Terms of Service
                         </a>{" "}
                         and{" "}
                         <a
                             href="/privacy"
-                            className="text-blue-400 hover:text-blue-300"
+                            className="text-blue-400 hover:text-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded"
                         >
                             Privacy Policy
                         </a>

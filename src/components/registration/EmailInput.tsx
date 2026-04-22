@@ -71,7 +71,7 @@ export function EmailInput({
         <div className="w-full">
             <label
                 htmlFor="email"
-                className="block text-sm font-medium text-gray-900 mb-2"
+                className="block text-sm sm:text-base font-medium text-gray-100 dark:text-gray-100 mb-2"
             >
                 Email Address
             </label>
@@ -83,34 +83,47 @@ export function EmailInput({
                     onChange={e => onChange(e.target.value)}
                     disabled={disabled}
                     placeholder="you@example.com"
-                    className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 transition-all ${
+                    className={`w-full px-4 py-3 sm:py-2 text-base sm:text-sm border rounded-lg focus:outline-none focus:ring-2 transition-all min-h-[44px] sm:min-h-auto ${
                         error
-                            ? "border-red-500 focus:ring-red-200"
+                            ? "border-red-500 focus:ring-red-200 dark:border-red-400 dark:focus:ring-red-900"
                             : isAvailable
-                              ? "border-green-500 focus:ring-green-200"
-                              : "border-gray-300 focus:ring-blue-200"
-                    } ${disabled ? "bg-gray-100 cursor-not-allowed" : "bg-white"}`}
+                              ? "border-green-500 focus:ring-green-200 dark:border-green-400 dark:focus:ring-green-900"
+                              : "border-gray-300 dark:border-gray-600 focus:ring-blue-200 dark:focus:ring-blue-900"
+                    } ${disabled ? "bg-gray-100 dark:bg-gray-700 cursor-not-allowed" : "bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"}`}
                     aria-label="Email address"
-                    aria-describedby={error ? "email-error" : undefined}
+                    aria-describedby={
+                        error
+                            ? "email-error"
+                            : isAvailable
+                              ? "email-success"
+                              : undefined
+                    }
+                    required
                 />
                 {isChecking && (
-                    <div className="absolute right-3 top-3">
-                        <div className="animate-spin h-5 w-5 border-2 border-blue-500 border-t-transparent rounded-full" />
+                    <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                        <div className="animate-spin h-5 w-5 border-2 border-blue-500 dark:border-blue-400 border-t-transparent rounded-full" />
                     </div>
                 )}
                 {isAvailable && !isChecking && (
-                    <div className="absolute right-3 top-3 text-green-500">
+                    <div className="absolute right-3 top-1/2 -translate-y-1/2 text-green-500 dark:text-green-400">
                         ✓
                     </div>
                 )}
             </div>
             {error && (
-                <p id="email-error" className="mt-1 text-sm text-red-600">
+                <p
+                    id="email-error"
+                    className="mt-2 text-sm text-red-600 dark:text-red-400"
+                >
                     {error}
                 </p>
             )}
             {isAvailable && (
-                <p className="mt-1 text-sm text-green-600">
+                <p
+                    id="email-success"
+                    className="mt-2 text-sm text-green-600 dark:text-green-400"
+                >
                     Email is available
                 </p>
             )}

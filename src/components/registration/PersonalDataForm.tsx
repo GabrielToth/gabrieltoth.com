@@ -1,6 +1,11 @@
 "use client"
 
-import { validateAndNormalizePhoneNumber, validateName } from "@/lib/validation"
+import {
+    validateAndNormalizePhoneNumber,
+    validateBirthDateFormat,
+    validateMinimumAge,
+    validateName,
+} from "@/lib/validation"
 import { useEffect, useState } from "react"
 
 interface PersonalDataFormProps {
@@ -82,7 +87,7 @@ export function PersonalDataForm({
             <div>
                 <label
                     htmlFor="name"
-                    className="block text-sm font-medium text-gray-900 mb-2"
+                    className="block text-sm sm:text-base font-medium text-gray-100 dark:text-gray-100 mb-2"
                 >
                     Full Name
                 </label>
@@ -93,23 +98,30 @@ export function PersonalDataForm({
                     onChange={e => onNameChange(e.target.value)}
                     disabled={disabled}
                     placeholder="John Doe"
-                    className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 transition-all ${
+                    className={`w-full px-4 py-3 sm:py-2 text-base sm:text-sm border rounded-lg focus:outline-none focus:ring-2 transition-all min-h-[44px] sm:min-h-auto ${
                         nameError
-                            ? "border-red-500 focus:ring-red-200"
+                            ? "border-red-500 focus:ring-red-200 dark:border-red-400 dark:focus:ring-red-900"
                             : nameValidation.isValid && name
-                              ? "border-green-500 focus:ring-green-200"
-                              : "border-gray-300 focus:ring-blue-200"
-                    }`}
+                              ? "border-green-500 focus:ring-green-200 dark:border-green-400 dark:focus:ring-green-900"
+                              : "border-gray-300 dark:border-gray-600 focus:ring-blue-200 dark:focus:ring-blue-900"
+                    } bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100`}
                     aria-label="Full name"
                     aria-describedby={nameError ? "name-error" : undefined}
+                    required
                 />
                 {nameError && (
-                    <p id="name-error" className="mt-1 text-sm text-red-600">
+                    <p
+                        id="name-error"
+                        className="mt-2 text-sm text-red-600 dark:text-red-400"
+                        role="alert"
+                    >
                         {nameError}
                     </p>
                 )}
                 {nameValidation.isValid && name && (
-                    <p className="mt-1 text-sm text-green-600">✓ Valid name</p>
+                    <p className="mt-2 text-sm text-green-600 dark:text-green-400">
+                        ✓ Valid name
+                    </p>
                 )}
             </div>
 
@@ -117,7 +129,7 @@ export function PersonalDataForm({
             <div>
                 <label
                     htmlFor="birthDate"
-                    className="block text-sm font-medium text-gray-900 mb-2"
+                    className="block text-sm sm:text-base font-medium text-gray-100 dark:text-gray-100 mb-2"
                 >
                     Birth Date
                 </label>
@@ -128,24 +140,26 @@ export function PersonalDataForm({
                     onChange={e => onBirthDateChange(e.target.value)}
                     disabled={disabled}
                     placeholder="DD/MM/YYYY"
-                    className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 transition-all ${
+                    className={`w-full px-4 py-3 sm:py-2 text-base sm:text-sm border rounded-lg focus:outline-none focus:ring-2 transition-all min-h-[44px] sm:min-h-auto ${
                         birthDateError
-                            ? "border-red-500 focus:ring-red-200"
+                            ? "border-red-500 focus:ring-red-200 dark:border-red-400 dark:focus:ring-red-900"
                             : birthDateFormatValidation.isValid &&
                                 ageValidation.isValid &&
                                 birthDate
-                              ? "border-green-500 focus:ring-green-200"
-                              : "border-gray-300 focus:ring-blue-200"
-                    }`}
+                              ? "border-green-500 focus:ring-green-200 dark:border-green-400 dark:focus:ring-green-900"
+                              : "border-gray-300 dark:border-gray-600 focus:ring-blue-200 dark:focus:ring-blue-900"
+                    } bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100`}
                     aria-label="Birth date"
                     aria-describedby={
-                        birthDateError ? "birthDate-error" : undefined
+                        birthDateError ? "birthDate-error" : "birthDate-hint"
                     }
+                    required
                 />
                 {birthDateError && (
                     <p
                         id="birthDate-error"
-                        className="mt-1 text-sm text-red-600"
+                        className="mt-2 text-sm text-red-600 dark:text-red-400"
+                        role="alert"
                     >
                         {birthDateError}
                     </p>
@@ -153,11 +167,14 @@ export function PersonalDataForm({
                 {birthDateFormatValidation.isValid &&
                     ageValidation.isValid &&
                     birthDate && (
-                        <p className="mt-1 text-sm text-green-600">
+                        <p className="mt-2 text-sm text-green-600 dark:text-green-400">
                             ✓ Valid birth date
                         </p>
                     )}
-                <p className="mt-1 text-xs text-gray-500">
+                <p
+                    id="birthDate-hint"
+                    className="mt-2 text-xs text-gray-500 dark:text-gray-400"
+                >
                     Format: DD/MM/YYYY (e.g., 15/03/1990). You must be at least
                     13 years old.
                 </p>
@@ -167,7 +184,7 @@ export function PersonalDataForm({
             <div>
                 <label
                     htmlFor="phone"
-                    className="block text-sm font-medium text-gray-900 mb-2"
+                    className="block text-sm sm:text-base font-medium text-gray-100 dark:text-gray-100 mb-2"
                 >
                     Phone Number
                 </label>
@@ -178,27 +195,35 @@ export function PersonalDataForm({
                     onChange={e => onPhoneChange(e.target.value)}
                     disabled={disabled}
                     placeholder="+1 (555) 123-4567"
-                    className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 transition-all ${
+                    className={`w-full px-4 py-3 sm:py-2 text-base sm:text-sm border rounded-lg focus:outline-none focus:ring-2 transition-all min-h-[44px] sm:min-h-auto ${
                         phoneError
-                            ? "border-red-500 focus:ring-red-200"
+                            ? "border-red-500 focus:ring-red-200 dark:border-red-400 dark:focus:ring-red-900"
                             : phoneValidation.isValid && phone
-                              ? "border-green-500 focus:ring-green-200"
-                              : "border-gray-300 focus:ring-blue-200"
-                    }`}
+                              ? "border-green-500 focus:ring-green-200 dark:border-green-400 dark:focus:ring-green-900"
+                              : "border-gray-300 dark:border-gray-600 focus:ring-blue-200 dark:focus:ring-blue-900"
+                    } bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100`}
                     aria-label="Phone number"
-                    aria-describedby={phoneError ? "phone-error" : undefined}
+                    aria-describedby={phoneError ? "phone-error" : "phone-hint"}
+                    required
                 />
                 {phoneError && (
-                    <p id="phone-error" className="mt-1 text-sm text-red-600">
+                    <p
+                        id="phone-error"
+                        className="mt-2 text-sm text-red-600 dark:text-red-400"
+                        role="alert"
+                    >
                         {phoneError}
                     </p>
                 )}
                 {phoneValidation.isValid && phone && (
-                    <p className="mt-1 text-sm text-green-600">
+                    <p className="mt-2 text-sm text-green-600 dark:text-green-400">
                         ✓ Valid phone ({normalizedPhone})
                     </p>
                 )}
-                <p className="mt-1 text-xs text-gray-500">
+                <p
+                    id="phone-hint"
+                    className="mt-2 text-xs text-gray-500 dark:text-gray-400"
+                >
                     Supports international formats (e.g., +1 555 123 4567, +55
                     11 98765-4321)
                 </p>

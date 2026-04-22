@@ -69,10 +69,19 @@ export function useRegistration() {
 
     // Save form data to session storage whenever it changes
     useEffect(() => {
-        sessionStorage.setItem(
-            SESSION_STORAGE_KEY,
-            JSON.stringify(state.formData)
+        // Don't save empty form data to session storage
+        const hasData = Object.values(state.formData).some(
+            value => value !== ""
         )
+        if (hasData) {
+            sessionStorage.setItem(
+                SESSION_STORAGE_KEY,
+                JSON.stringify(state.formData)
+            )
+        } else {
+            // If all fields are empty, remove from session storage
+            sessionStorage.removeItem(SESSION_STORAGE_KEY)
+        }
     }, [state.formData])
 
     // Save session ID to session storage whenever it changes
@@ -189,6 +198,7 @@ export function useRegistration() {
             sessionExpired: false,
             sessionExpiresAt: undefined,
         })
+        // Clear session storage immediately
         sessionStorage.removeItem(SESSION_STORAGE_KEY)
         sessionStorage.removeItem(SESSION_ID_KEY)
     }, [])

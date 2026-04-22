@@ -18,7 +18,7 @@ export function ProgressIndicator({
     const steps = stepLabels.slice(0, totalSteps)
 
     return (
-        <div className="flex flex-col items-center justify-center py-8">
+        <div className="flex flex-col items-center justify-center py-6 sm:py-8">
             {/* Desktop: Horizontal layout */}
             <div className="hidden md:flex w-full max-w-2xl gap-4">
                 {steps.map((step, index) => (
@@ -29,17 +29,20 @@ export function ProgressIndicator({
                                     index < currentStep
                                         ? "bg-green-500 text-white"
                                         : index === currentStep
-                                          ? "bg-blue-500 text-white ring-4 ring-blue-200"
-                                          : "bg-gray-200 text-gray-600"
+                                          ? "bg-blue-500 text-white ring-4 ring-blue-200 dark:ring-blue-900"
+                                          : "bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-400"
                                 }`}
+                                aria-current={
+                                    index === currentStep ? "step" : undefined
+                                }
                             >
                                 {index < currentStep ? "✓" : index + 1}
                             </div>
                             <p
                                 className={`mt-2 text-sm font-medium ${
                                     index <= currentStep
-                                        ? "text-gray-900"
-                                        : "text-gray-500"
+                                        ? "text-gray-900 dark:text-gray-100"
+                                        : "text-gray-500 dark:text-gray-400"
                                 }`}
                             >
                                 {step}
@@ -50,7 +53,7 @@ export function ProgressIndicator({
                                 className={`flex-1 h-1 mt-6 ${
                                     index < currentStep
                                         ? "bg-green-500"
-                                        : "bg-gray-200"
+                                        : "bg-gray-200 dark:bg-gray-700"
                                 }`}
                             />
                         )}
@@ -61,19 +64,23 @@ export function ProgressIndicator({
             {/* Mobile: Vertical layout */}
             <div className="md:hidden w-full">
                 <div className="flex items-center justify-between mb-4">
-                    <span className="text-sm font-medium text-gray-600">
+                    <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
                         Step {currentStep + 1} of {totalSteps}
                     </span>
-                    <span className="text-sm font-medium text-gray-900">
+                    <span className="text-sm font-medium text-gray-900 dark:text-gray-100">
                         {steps[currentStep]}
                     </span>
                 </div>
-                <div className="w-full bg-gray-200 rounded-full h-2">
+                <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
                     <div
                         className="bg-blue-500 h-2 rounded-full transition-all duration-300"
                         style={{
                             width: `${((currentStep + 1) / totalSteps) * 100}%`,
                         }}
+                        role="progressbar"
+                        aria-valuenow={currentStep + 1}
+                        aria-valuemin={1}
+                        aria-valuemax={totalSteps}
                     />
                 </div>
             </div>

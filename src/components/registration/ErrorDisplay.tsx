@@ -16,8 +16,11 @@ export function ErrorDisplay({
     return (
         <>
             {error && (
-                <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg flex items-start gap-3">
-                    <div className="flex-shrink-0 text-red-600 mt-0.5">
+                <div
+                    className="mb-4 p-4 bg-red-50 dark:bg-red-900 border border-red-200 dark:border-red-700 rounded-lg flex items-start gap-3"
+                    role="alert"
+                >
+                    <div className="flex-shrink-0 text-red-600 dark:text-red-400 mt-0.5">
                         <svg
                             className="w-5 h-5"
                             fill="currentColor"
@@ -31,14 +34,14 @@ export function ErrorDisplay({
                         </svg>
                     </div>
                     <div className="flex-1">
-                        <p className="text-sm font-medium text-red-900">
+                        <p className="text-sm font-medium text-red-900 dark:text-red-100">
                             {error}
                         </p>
                     </div>
                     {onDismiss && (
                         <button
                             onClick={onDismiss}
-                            className="flex-shrink-0 text-red-600 hover:text-red-700"
+                            className="flex-shrink-0 text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 min-h-[44px] min-w-[44px] flex items-center justify-center"
                             aria-label="Dismiss error"
                         >
                             <svg
@@ -58,7 +61,10 @@ export function ErrorDisplay({
             )}
 
             {fieldError && (
-                <div className="mb-2 p-3 bg-red-50 border border-red-200 rounded text-sm text-red-700">
+                <div
+                    className="mb-2 p-3 bg-red-50 dark:bg-red-900 border border-red-200 dark:border-red-700 rounded text-sm text-red-700 dark:text-red-100"
+                    role="alert"
+                >
                     {fieldError}
                 </div>
             )}

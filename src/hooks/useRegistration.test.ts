@@ -235,12 +235,419 @@ describe("Property-Based Tests: useRegistration Hook", () => {
     })
 
     /**
-     * Property 11: Data Preservation on Navigation Back
+     * Property 11: Session Data Preservation
+     * For any registration data entered during a session, the data SHALL be retrievable from session storage
+     * without loss or corruption.
+     * Validates: Requirements 14.1, 14.4
+     */
+    describe("Property 11: Session Data Preservation", () => {
+        it("should preserve and retrieve email data from session storage without corruption", () => {
+            fc.assert(
+                fc.property(fc.emailAddress(), email => {
+                    const { result } = renderHook(() => useRegistration())
+
+                    // Enter email data
+                    act(() => {
+                        result.current.updateFormData({ email })
+                    })
+
+                    // Verify data is in memory
+                    expect(result.current.formData.email).toBe(email)
+
+                    // Verify data is persisted to session storage
+                    const savedData = sessionStorage.getItem(
+                        "registration_form_data"
+                    )
+                    expect(savedData).toBeTruthy()
+
+                    // Parse and verify data integrity
+                    const parsed = JSON.parse(savedData!)
+                    expect(parsed.email).toBe(email)
+                    expect(parsed.email).not.toBeNull()
+                    expect(parsed.email).not.toBeUndefined()
+                    expect(typeof parsed.email).toBe("string")
+                }),
+                { numRuns: 100 }
+            )
+        })
+
+        it("should preserve and retrieve password data from session storage without corruption", () => {
+            fc.assert(
+                fc.property(fc.string({ minLength: 8 }), password => {
+                    const { result } = renderHook(() => useRegistration())
+
+                    // Enter password data
+                    act(() => {
+                        result.current.updateFormData({
+                            password,
+                            confirmPassword: password,
+                        })
+                    })
+
+                    // Verify data is in memory
+                    expect(result.current.formData.password).toBe(password)
+                    expect(result.current.formData.confirmPassword).toBe(
+                        password
+                    )
+
+                    // Verify data is persisted to session storage
+                    const savedData = sessionStorage.getItem(
+                        "registration_form_data"
+                    )
+                    expect(savedData).toBeTruthy()
+
+                    // Parse and verify data integrity
+                    const parsed = JSON.parse(savedData!)
+                    expect(parsed.password).toBe(password)
+                    expect(parsed.confirmPassword).toBe(password)
+                    expect(parsed.password).not.toBeNull()
+                    expect(parsed.confirmPassword).not.toBeNull()
+                    expect(typeof parsed.password).toBe("string")
+                    expect(typeof parsed.confirmPassword).toBe("string")
+                }),
+                { numRuns: 100 }
+            )
+        })
+
+        it("should preserve and retrieve personal data from session storage without corruption", () => {
+            fc.assert(
+                fc.property(
+                    fc.tuple(
+                        fc.string({ minLength: 2, maxLength: 100 }),
+                        fc.string({ minLength: 10, maxLength: 20 })
+                    ),
+                    ([name, phone]) => {
+                        const { result } = renderHook(() => useRegistration())
+
+                        // Enter personal data
+                        act(() => {
+                            result.current.updateFormData({
+                                name,
+                                phone,
+                            })
+                        })
+
+                        // Verify data is in memory
+                        expect(result.current.formData.name).toBe(name)
+                        expect(result.current.formData.phone).toBe(phone)
+
+                        // Verify data is persisted to session storage
+                        const savedData = sessionStorage.getItem(
+                            "registration_form_data"
+                        )
+                        expect(savedData).toBeTruthy()
+
+                        // Parse and verify data integrity
+                        const parsed = JSON.parse(savedData!)
+                        expect(parsed.name).toBe(name)
+                        expect(parsed.phone).toBe(phone)
+                        expect(parsed.name).not.toBeNull()
+                        expect(parsed.phone).not.toBeNull()
+                        expect(typeof parsed.name).toBe("string")
+                        expect(typeof parsed.phone).toBe("string")
+                    }
+                ),
+                { numRuns: 100 }
+            )
+        })
+
+        it("should preserve and retrieve complete registration data from session storage without corruption", () => {
+            fc.assert(
+                fc.property(
+                    fc.tuple(
+                        fc.emailAddress(),
+                        fc.string({ minLength: 8 }),
+                        fc.string({ minLength: 2, maxLength: 100 }),
+                        fc.string({ minLength: 10, maxLength: 20 })
+                    ),
+                    ([email, password, name, phone]) => {
+                        const { result } = renderHook(() => useRegistration())
+
+                        // Enter complete registration data
+                        act(() => {
+                            result.current.updateFormData({
+                                email,
+                                password,
+                                confirmPassword: password,
+                                name,
+                                phone,
+                            })
+                        })
+
+                        // Verify all data is in memory
+                        expect(result.current.formData.email).toBe(email)
+                        expect(result.current.formData.password).toBe(password)
+                        expect(result.current.formData.confirmPassword).toBe(
+                            password
+                        )
+                        expect(result.current.formData.name).toBe(name)
+                        expect(result.current.formData.phone).toBe(phone)
+
+                        // Verify data is persisted to session storage
+                        const savedData = sessionStorage.getItem(
+                            "registration_form_data"
+                        )
+                        expect(savedData).toBeTruthy()
+
+                        // Parse and verify complete data integrity
+                        const parsed = JSON.parse(savedData!)
+                        expect(parsed.email).toBe(email)
+                        expect(parsed.password).toBe(password)
+                        expect(parsed.confirmPassword).toBe(password)
+                        expect(parsed.name).toBe(name)
+                        expect(parsed.phone).toBe(phone)
+
+                        // Verify no data corruption (all fields match exactly)
+                        expect(parsed).toEqual({
+                            email,
+                            password,
+                            confirmPassword: password,
+                            name,
+                            phone,
+                            birthDate: "",
+                        })
+                    }
+                ),
+                { numRuns: 100 }
+            )
+        })
+
+        it("should retrieve data from session storage across multiple hook instances", () => {
+            fc.assert(
+                fc.property(
+                    fc.tuple(
+                        fc.emailAddress(),
+                        fc.string({ minLength: 8 }),
+                        fc.string({ minLength: 2, maxLength: 100 }),
+                        fc.string({ minLength: 10, maxLength: 20 })
+                    ),
+                    ([email, password, name, phone]) => {
+                        // First hook instance - enter data
+                        const { result: result1 } = renderHook(() =>
+                            useRegistration()
+                        )
+
+                        act(() => {
+                            result1.current.updateFormData({
+                                email,
+                                password,
+                                confirmPassword: password,
+                                name,
+                                phone,
+                            })
+                        })
+
+                        // Verify data is in session storage
+                        const savedData = sessionStorage.getItem(
+                            "registration_form_data"
+                        )
+                        expect(savedData).toBeTruthy()
+                        const parsed1 = JSON.parse(savedData!)
+                        expect(parsed1.email).toBe(email)
+                        expect(parsed1.password).toBe(password)
+                        expect(parsed1.name).toBe(name)
+                        expect(parsed1.phone).toBe(phone)
+
+                        // Create a new hook instance (simulating page refresh)
+                        const { result: result2 } = renderHook(() =>
+                            useRegistration()
+                        )
+
+                        // Verify data is loaded from session storage in new instance
+                        expect(result2.current.formData.email).toBe(email)
+                        expect(result2.current.formData.password).toBe(password)
+                        expect(result2.current.formData.name).toBe(name)
+                        expect(result2.current.formData.phone).toBe(phone)
+
+                        // Verify session storage still contains the data
+                        const savedData2 = sessionStorage.getItem(
+                            "registration_form_data"
+                        )
+                        expect(savedData2).toBeTruthy()
+                        const parsed2 = JSON.parse(savedData2!)
+                        expect(parsed2.email).toBe(email)
+                        expect(parsed2.password).toBe(password)
+                        expect(parsed2.name).toBe(name)
+                        expect(parsed2.phone).toBe(phone)
+
+                        // Verify data integrity across instances
+                        expect(parsed1).toEqual(parsed2)
+                    }
+                ),
+                { numRuns: 100 }
+            )
+        })
+
+        it("should handle special characters in data without corruption", () => {
+            fc.assert(
+                fc.property(
+                    fc.tuple(
+                        fc.string({
+                            minLength: 2,
+                            maxLength: 100,
+                            unit16: true,
+                        }),
+                        fc.string({
+                            minLength: 10,
+                            maxLength: 20,
+                            unit16: true,
+                        })
+                    ),
+                    ([name, phone]) => {
+                        const { result } = renderHook(() => useRegistration())
+
+                        // Enter data with special characters
+                        act(() => {
+                            result.current.updateFormData({
+                                name,
+                                phone,
+                            })
+                        })
+
+                        // Verify data is in memory
+                        expect(result.current.formData.name).toBe(name)
+                        expect(result.current.formData.phone).toBe(phone)
+
+                        // Verify data is persisted correctly
+                        const savedData = sessionStorage.getItem(
+                            "registration_form_data"
+                        )
+                        expect(savedData).toBeTruthy()
+
+                        // Parse and verify no corruption
+                        const parsed = JSON.parse(savedData!)
+                        expect(parsed.name).toBe(name)
+                        expect(parsed.phone).toBe(phone)
+                    }
+                ),
+                { numRuns: 100 }
+            )
+        })
+
+        it("should preserve data integrity when updating individual fields", () => {
+            fc.assert(
+                fc.property(
+                    fc.tuple(
+                        fc.emailAddress(),
+                        fc.string({ minLength: 8 }),
+                        fc.string({ minLength: 2, maxLength: 100 }),
+                        fc.string({ minLength: 10, maxLength: 20 })
+                    ),
+                    ([email, password, name, phone]) => {
+                        const { result } = renderHook(() => useRegistration())
+
+                        // Update fields one by one
+                        act(() => {
+                            result.current.updateFormData({ email })
+                        })
+
+                        let savedData = sessionStorage.getItem(
+                            "registration_form_data"
+                        )
+                        let parsed = JSON.parse(savedData!)
+                        expect(parsed.email).toBe(email)
+
+                        act(() => {
+                            result.current.updateFormData({
+                                password,
+                                confirmPassword: password,
+                            })
+                        })
+
+                        savedData = sessionStorage.getItem(
+                            "registration_form_data"
+                        )
+                        parsed = JSON.parse(savedData!)
+                        expect(parsed.email).toBe(email) // Previous data preserved
+                        expect(parsed.password).toBe(password)
+
+                        act(() => {
+                            result.current.updateFormData({ name })
+                        })
+
+                        savedData = sessionStorage.getItem(
+                            "registration_form_data"
+                        )
+                        parsed = JSON.parse(savedData!)
+                        expect(parsed.email).toBe(email) // All previous data preserved
+                        expect(parsed.password).toBe(password)
+                        expect(parsed.name).toBe(name)
+
+                        act(() => {
+                            result.current.updateFormData({ phone })
+                        })
+
+                        savedData = sessionStorage.getItem(
+                            "registration_form_data"
+                        )
+                        parsed = JSON.parse(savedData!)
+                        expect(parsed.email).toBe(email) // All data preserved
+                        expect(parsed.password).toBe(password)
+                        expect(parsed.name).toBe(name)
+                        expect(parsed.phone).toBe(phone)
+                    }
+                ),
+                { numRuns: 100 }
+            )
+        })
+
+        it("should maintain data consistency between memory and session storage", () => {
+            fc.assert(
+                fc.property(
+                    fc.tuple(
+                        fc.emailAddress(),
+                        fc.string({ minLength: 8 }),
+                        fc.string({ minLength: 2, maxLength: 100 }),
+                        fc.string({ minLength: 10, maxLength: 20 })
+                    ),
+                    ([email, password, name, phone]) => {
+                        const { result } = renderHook(() => useRegistration())
+
+                        // Enter data
+                        act(() => {
+                            result.current.updateFormData({
+                                email,
+                                password,
+                                confirmPassword: password,
+                                name,
+                                phone,
+                            })
+                        })
+
+                        // Get data from memory
+                        const memoryData = result.current.formData
+
+                        // Get data from session storage
+                        const savedData = sessionStorage.getItem(
+                            "registration_form_data"
+                        )
+                        const storageData = JSON.parse(savedData!)
+
+                        // Verify consistency
+                        expect(memoryData.email).toBe(storageData.email)
+                        expect(memoryData.password).toBe(storageData.password)
+                        expect(memoryData.confirmPassword).toBe(
+                            storageData.confirmPassword
+                        )
+                        expect(memoryData.name).toBe(storageData.name)
+                        expect(memoryData.phone).toBe(storageData.phone)
+
+                        // Verify complete object equality
+                        expect(memoryData).toEqual(storageData)
+                    }
+                ),
+                { numRuns: 100 }
+            )
+        })
+    })
+
+    /**
+     * Property 11: Data Preservation on Navigation Back (Legacy Tests)
      * For any form data entered in a registration step, when a user navigates back to a previous step
      * and then forward again, the form data SHALL be preserved and match the originally entered data.
      * Validates: Requirements 1.6
      */
-    describe("Property 11: Data Preservation on Navigation Back", () => {
+    describe("Property 11: Data Preservation on Navigation Back (Legacy)", () => {
         it("should preserve email data when navigating back and forward", () => {
             fc.assert(
                 fc.property(fc.emailAddress(), email => {
@@ -555,6 +962,388 @@ describe("Property-Based Tests: useRegistration Hook", () => {
                         // Note: Session storage may contain empty data due to useEffect
                         // The important thing is that the state is cleared
                         // and the user cannot access the data through the hook
+                    }
+                ),
+                { numRuns: 50 }
+            )
+        })
+    })
+
+    /**
+     * Property 12: Session Data Cleanup
+     * For any completed or cancelled registration, session data SHALL be cleared and no longer retrievable.
+     * Validates: Requirements 14.4
+     */
+    describe("Property 12: Session Data Cleanup", () => {
+        it("should clear session data when reset is called", () => {
+            fc.assert(
+                fc.property(
+                    fc.tuple(
+                        fc.emailAddress(),
+                        fc.string({ minLength: 8 }),
+                        fc.string({ minLength: 2, maxLength: 100 }),
+                        fc.string({ minLength: 10, maxLength: 20 })
+                    ),
+                    ([email, password, name, phone]) => {
+                        const { result } = renderHook(() => useRegistration())
+
+                        // Enter registration data
+                        act(() => {
+                            result.current.updateFormData({
+                                email,
+                                password,
+                                confirmPassword: password,
+                                name,
+                                phone,
+                            })
+                        })
+
+                        // Verify data is in session storage
+                        let savedData = sessionStorage.getItem(
+                            "registration_form_data"
+                        )
+                        expect(savedData).toBeTruthy()
+                        let parsed = JSON.parse(savedData!)
+                        expect(parsed.email).toBe(email)
+
+                        // Reset (simulating completion or cancellation)
+                        act(() => {
+                            result.current.reset()
+                        })
+
+                        // Verify session storage is cleared
+                        savedData = sessionStorage.getItem(
+                            "registration_form_data"
+                        )
+                        expect(savedData).toBeNull()
+
+                        // Verify session ID is cleared
+                        const sessionId = sessionStorage.getItem(
+                            "registration_session_id"
+                        )
+                        expect(sessionId).toBeNull()
+                    }
+                ),
+                { numRuns: 100 }
+            )
+        })
+
+        it("should clear session data when clearSession is called", () => {
+            fc.assert(
+                fc.property(
+                    fc.tuple(
+                        fc.emailAddress(),
+                        fc.string({ minLength: 8 }),
+                        fc.string({ minLength: 2, maxLength: 100 }),
+                        fc.string({ minLength: 10, maxLength: 20 })
+                    ),
+                    ([email, password, name, phone]) => {
+                        const { result } = renderHook(() => useRegistration())
+
+                        // Enter registration data
+                        act(() => {
+                            result.current.updateFormData({
+                                email,
+                                password,
+                                confirmPassword: password,
+                                name,
+                                phone,
+                            })
+                        })
+
+                        // Set session
+                        act(() => {
+                            const expiresAt = new Date(
+                                Date.now() + 30 * 60 * 1000
+                            )
+                            result.current.setSession("session-123", expiresAt)
+                        })
+
+                        // Verify session is set
+                        expect(result.current.sessionId).toBe("session-123")
+                        expect(result.current.sessionExpiresAt).toBeTruthy()
+
+                        // Clear session
+                        act(() => {
+                            result.current.clearSession()
+                        })
+
+                        // Verify session is cleared
+                        expect(result.current.sessionId).toBeUndefined()
+                        expect(result.current.sessionExpiresAt).toBeUndefined()
+
+                        // Verify session ID is removed from session storage
+                        const sessionId = sessionStorage.getItem(
+                            "registration_session_id"
+                        )
+                        expect(sessionId).toBeNull()
+                    }
+                ),
+                { numRuns: 100 }
+            )
+        })
+
+        it("should not retrieve data after session is cleared", () => {
+            fc.assert(
+                fc.property(
+                    fc.tuple(
+                        fc.emailAddress(),
+                        fc.string({ minLength: 8 }),
+                        fc.string({ minLength: 2, maxLength: 100 }),
+                        fc.string({ minLength: 10, maxLength: 20 })
+                    ),
+                    ([email, password, name, phone]) => {
+                        // First hook instance - enter data
+                        const { result: result1 } = renderHook(() =>
+                            useRegistration()
+                        )
+
+                        act(() => {
+                            result1.current.updateFormData({
+                                email,
+                                password,
+                                confirmPassword: password,
+                                name,
+                                phone,
+                            })
+                        })
+
+                        // Verify data is in session storage
+                        let savedData = sessionStorage.getItem(
+                            "registration_form_data"
+                        )
+                        expect(savedData).toBeTruthy()
+
+                        // Reset (clear session data)
+                        act(() => {
+                            result1.current.reset()
+                        })
+
+                        // Verify data is cleared from session storage
+                        savedData = sessionStorage.getItem(
+                            "registration_form_data"
+                        )
+                        expect(savedData).toBeNull()
+
+                        // Create a new hook instance (simulating page refresh after reset)
+                        const { result: result2 } = renderHook(() =>
+                            useRegistration()
+                        )
+
+                        // Verify data is not loaded (session storage is empty)
+                        expect(result2.current.formData.email).toBe("")
+                        expect(result2.current.formData.password).toBe("")
+                        expect(result2.current.formData.name).toBe("")
+                        expect(result2.current.formData.phone).toBe("")
+                    }
+                ),
+                { numRuns: 100 }
+            )
+        })
+
+        it("should clear all form fields when reset is called", () => {
+            fc.assert(
+                fc.property(
+                    fc.tuple(
+                        fc.emailAddress(),
+                        fc.string({ minLength: 8 }),
+                        fc.string({ minLength: 2, maxLength: 100 }),
+                        fc.string({ minLength: 10, maxLength: 20 })
+                    ),
+                    ([email, password, name, phone]) => {
+                        const { result } = renderHook(() => useRegistration())
+
+                        // Enter all registration data
+                        act(() => {
+                            result.current.updateFormData({
+                                email,
+                                password,
+                                confirmPassword: password,
+                                name,
+                                phone,
+                            })
+                        })
+
+                        // Verify all fields have data
+                        expect(result.current.formData.email).toBe(email)
+                        expect(result.current.formData.password).toBe(password)
+                        expect(result.current.formData.confirmPassword).toBe(
+                            password
+                        )
+                        expect(result.current.formData.name).toBe(name)
+                        expect(result.current.formData.phone).toBe(phone)
+
+                        // Reset
+                        act(() => {
+                            result.current.reset()
+                        })
+
+                        // Verify all fields are cleared
+                        expect(result.current.formData.email).toBe("")
+                        expect(result.current.formData.password).toBe("")
+                        expect(result.current.formData.confirmPassword).toBe("")
+                        expect(result.current.formData.name).toBe("")
+                        expect(result.current.formData.phone).toBe("")
+                        expect(result.current.formData.birthDate).toBe("")
+                    }
+                ),
+                { numRuns: 100 }
+            )
+        })
+
+        it("should reset step counter when reset is called", () => {
+            fc.assert(
+                fc.property(fc.integer({ min: 0, max: 3 }), step => {
+                    const { result } = renderHook(() => useRegistration())
+
+                    // Navigate to a specific step
+                    act(() => {
+                        result.current.goToStep(step)
+                    })
+
+                    expect(result.current.currentStep).toBe(step)
+
+                    // Reset
+                    act(() => {
+                        result.current.reset()
+                    })
+
+                    // Verify step is reset to 0
+                    expect(result.current.currentStep).toBe(0)
+                }),
+                { numRuns: 50 }
+            )
+        })
+
+        it("should clear errors when reset is called", () => {
+            fc.assert(
+                fc.property(
+                    fc.tuple(
+                        fc.string({ minLength: 1 }),
+                        fc.string({ minLength: 1 })
+                    ),
+                    ([errorField, errorMessage]) => {
+                        const { result } = renderHook(() => useRegistration())
+
+                        // Set an error
+                        act(() => {
+                            result.current.setError(errorField, errorMessage)
+                        })
+
+                        // Verify error is set
+                        expect(result.current.errors[errorField]).toBe(
+                            errorMessage
+                        )
+
+                        // Reset
+                        act(() => {
+                            result.current.reset()
+                        })
+
+                        // Verify errors are cleared
+                        expect(Object.keys(result.current.errors).length).toBe(
+                            0
+                        )
+                    }
+                ),
+                { numRuns: 50 }
+            )
+        })
+
+        it("should clear loading states when reset is called", () => {
+            const { result } = renderHook(() => useRegistration())
+
+            // Set loading states
+            act(() => {
+                result.current.setLoading(true)
+                result.current.setSubmitting(true)
+            })
+
+            expect(result.current.isLoading).toBe(true)
+            expect(result.current.isSubmitting).toBe(true)
+
+            // Reset
+            act(() => {
+                result.current.reset()
+            })
+
+            // Verify loading states are cleared
+            expect(result.current.isLoading).toBe(false)
+            expect(result.current.isSubmitting).toBe(false)
+        })
+
+        it("should clear session expiration when reset is called", () => {
+            const { result } = renderHook(() => useRegistration())
+
+            // Set session with expiration
+            act(() => {
+                const expiresAt = new Date(Date.now() + 30 * 60 * 1000)
+                result.current.setSession("session-123", expiresAt)
+            })
+
+            expect(result.current.sessionId).toBe("session-123")
+            expect(result.current.sessionExpiresAt).toBeTruthy()
+            expect(result.current.sessionExpired).toBe(false)
+
+            // Reset
+            act(() => {
+                result.current.reset()
+            })
+
+            // Verify session expiration is cleared
+            expect(result.current.sessionId).toBeUndefined()
+            expect(result.current.sessionExpiresAt).toBeUndefined()
+            expect(result.current.sessionExpired).toBe(false)
+        })
+
+        it("should prevent data retrieval after multiple resets", () => {
+            fc.assert(
+                fc.property(
+                    fc.tuple(
+                        fc.emailAddress(),
+                        fc.string({ minLength: 8 }),
+                        fc.string({ minLength: 2, maxLength: 100 }),
+                        fc.string({ minLength: 10, maxLength: 20 })
+                    ),
+                    ([email, password, name, phone]) => {
+                        const { result } = renderHook(() => useRegistration())
+
+                        // First cycle: enter data and reset
+                        act(() => {
+                            result.current.updateFormData({
+                                email,
+                                password,
+                                confirmPassword: password,
+                                name,
+                                phone,
+                            })
+                        })
+
+                        act(() => {
+                            result.current.reset()
+                        })
+
+                        // Verify data is cleared
+                        expect(result.current.formData.email).toBe("")
+
+                        // Second cycle: enter different data and reset
+                        const email2 = "different@example.com"
+                        act(() => {
+                            result.current.updateFormData({ email: email2 })
+                        })
+
+                        act(() => {
+                            result.current.reset()
+                        })
+
+                        // Verify data is cleared again
+                        expect(result.current.formData.email).toBe("")
+
+                        // Verify session storage is empty
+                        const savedData = sessionStorage.getItem(
+                            "registration_form_data"
+                        )
+                        expect(savedData).toBeNull()
                     }
                 ),
                 { numRuns: 50 }

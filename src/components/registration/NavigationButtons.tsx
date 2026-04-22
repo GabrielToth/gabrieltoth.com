@@ -22,12 +22,12 @@ export function NavigationButtons({
     showCancel = true,
 }: NavigationButtonsProps) {
     return (
-        <div className="flex gap-3 mt-8">
+        <div className="flex flex-col sm:flex-row gap-3 mt-8">
             {onBack && (
                 <button
                     onClick={onBack}
                     disabled={backDisabled || isLoading}
-                    className="px-6 py-2 border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="px-4 sm:px-6 py-3 sm:py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-medium rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px] sm:min-h-auto text-base sm:text-sm"
                     aria-label="Go back to previous step"
                 >
                     Back
@@ -38,7 +38,7 @@ export function NavigationButtons({
                 <button
                     onClick={onCancel}
                     disabled={isLoading}
-                    className="px-6 py-2 border border-red-300 text-red-700 font-medium rounded-lg hover:bg-red-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="px-4 sm:px-6 py-3 sm:py-2 border border-red-300 dark:border-red-600 text-red-700 dark:text-red-400 font-medium rounded-lg hover:bg-red-50 dark:hover:bg-red-900 transition-colors disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px] sm:min-h-auto text-base sm:text-sm"
                     aria-label="Cancel registration"
                 >
                     Cancel
@@ -51,7 +51,7 @@ export function NavigationButtons({
                 <button
                     onClick={onNext}
                     disabled={nextDisabled || isLoading}
-                    className="px-6 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                    className="px-4 sm:px-6 py-3 sm:py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 min-h-[44px] sm:min-h-auto text-base sm:text-sm"
                     aria-label={nextLabel}
                 >
                     {isLoading && (

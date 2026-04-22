@@ -40,6 +40,14 @@ export function RegistrationFlow() {
                             data.data.sessionId,
                             new Date(data.data.expiresAt)
                         )
+                        // Restore form data from session if available
+                        if (data.data.email) {
+                            registration.updateFormData({
+                                email: data.data.email,
+                                name: data.data.name || "",
+                                phone: data.data.phone || "",
+                            })
+                        }
                     }
                 }
             } catch (error) {
@@ -65,6 +73,8 @@ export function RegistrationFlow() {
                 timeUntilExpiration <= 5 * 60 * 1000
             ) {
                 setSessionWarning(true)
+            } else if (timeUntilExpiration > 5 * 60 * 1000) {
+                setSessionWarning(false)
             }
 
             // Session has expired
@@ -317,8 +327,12 @@ export function RegistrationFlow() {
     // If user is in the registration process, hide the header/menu
     if (authMethod) {
         return (
-            <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-12 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
-                <div className="w-full max-w-md">
+            <div className="min-h-screen bg-linear-to-br from-slate-900 via-slate-800 to-slate-900 py-8 sm:py-12 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
+                <div
+                    className="w-full max-w-md"
+                    role="main"
+                    aria-label="Registration form"
+                >
                     {/* Progress Indicator */}
                     <ProgressIndicator
                         currentStep={
