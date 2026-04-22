@@ -15,13 +15,23 @@
         "modsDescription": "Benutzerdefinierte Modifikationen und Tools",
         "journey": {
             "title": "Meine Minecraft-Reise",
-            "intro": "Ich erstelle seit Jahren Minecraft-Inhalte und entwickle Mods, wobei ich meine Leidenschaft für Gaming mit Programmierkenntnissen verbinde.",
+            "myStory": "Meine Geschichte",
+            "storyIntro": "Ich erstelle seit Jahren Minecraft-Inhalte und entwickle Mods, wobei ich meine Leidenschaft für Gaming mit Programmierkenntnissen verbinde.",
+            "modpacksPreference": "Modpack-Präferenz",
+            "hypixelSkyblock": "Hypixel Skyblock",
+            "futureGoals": "Zukünftige Ziele",
             "contentCreation": "Content-Erstellung",
             "contentCreationText": "Erstellen von Tutorials, Anleitungen und Präsentation von Modpack-Konfigurationen, um der Community zu helfen.",
             "modDevelopment": "Mod-Entwicklung",
             "modDevelopmentText": "Entwicklung benutzerdefinierter Mods und Tools zur Verbesserung des Minecraft-Erlebnisses.",
             "optimization": "Performance-Optimierung",
-            "optimizationText": "Fokus auf die Erstellung leichtgewichtiger, optimierter Modpacks, die auf verschiedener Hardware reibungslos laufen."
+            "optimizationText": "Fokus auf die Erstellung leichtgewichtiger, optimierter Modpacks, die auf verschiedener Hardware reibungslos laufen.",
+            "modpacks": "Modpacks",
+            "modpacksText": "Erstellung leichtgewichtiger, optimierter Modpacks, die auf verschiedener Hardware reibungslos laufen.",
+            "mods": "Mods",
+            "modsText": "Entwicklung benutzerdefinierter Mods und Tools zur Verbesserung des Minecraft-Erlebnisses.",
+            "plugins": "Plugins",
+            "pluginsText": "Entwicklung von Server-Plugins für verbessertes Gameplay und Community-Funktionen."
         }
     },
     "modpack": {

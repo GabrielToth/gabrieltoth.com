@@ -15,13 +15,23 @@
         "modsDescription": "Modificações e ferramentas personalizadas",
         "journey": {
             "title": "Minha Jornada no Minecraft",
-            "intro": "Venho criando conteúdo de Minecraft e desenvolvendo mods há anos, combinando minha paixão por jogos com expertise em programação.",
+            "myStory": "Minha História",
+            "storyIntro": "Venho criando conteúdo de Minecraft e desenvolvendo mods há anos, combinando minha paixão por jogos com expertise em programação.",
+            "modpacksPreference": "Preferência de Modpacks",
+            "hypixelSkyblock": "Hypixel Skyblock",
+            "futureGoals": "Objetivos Futuros",
             "contentCreation": "Criação de Conteúdo",
             "contentCreationText": "Criando tutoriais, guias e mostrando configurações de modpacks para ajudar a comunidade.",
             "modDevelopment": "Desenvolvimento de Mods",
             "modDevelopmentText": "Construindo mods e ferramentas personalizadas para melhorar a experiência no Minecraft.",
             "optimization": "Otimização de Performance",
-            "optimizationText": "Focando em criar modpacks leves e otimizados que rodam suavemente em diversos hardwares."
+            "optimizationText": "Focando em criar modpacks leves e otimizados que rodam suavemente em diversos hardwares.",
+            "modpacks": "Modpacks",
+            "modpacksText": "Criando modpacks leves e otimizados que rodam suavemente em diversos hardwares.",
+            "mods": "Mods",
+            "modsText": "Construindo mods e ferramentas personalizadas para melhorar a experiência no Minecraft.",
+            "plugins": "Plugins",
+            "pluginsText": "Desenvolvendo plugins de servidor para gameplay aprimorado e recursos da comunidade."
         }
     },
     "modpack": {

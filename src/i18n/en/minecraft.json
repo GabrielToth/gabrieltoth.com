@@ -15,13 +15,23 @@
         "modsDescription": "Custom modifications and tools",
         "journey": {
             "title": "My Minecraft Journey",
-            "intro": "I've been creating Minecraft content and developing mods for years, combining my passion for gaming with programming expertise.",
+            "myStory": "My Story",
+            "storyIntro": "I've been creating Minecraft content and developing mods for years, combining my passion for gaming with programming expertise.",
+            "modpacksPreference": "Modpacks Preference",
+            "hypixelSkyblock": "Hypixel Skyblock",
+            "futureGoals": "Future Goals",
             "contentCreation": "Content Creation",
             "contentCreationText": "Creating tutorials, guides, and showcasing modpack configurations to help the community.",
             "modDevelopment": "Mod Development",
             "modDevelopmentText": "Building custom mods and tools to enhance the Minecraft experience.",
             "optimization": "Performance Optimization",
-            "optimizationText": "Focusing on creating lightweight, optimized modpacks that run smoothly on various hardware."
+            "optimizationText": "Focusing on creating lightweight, optimized modpacks that run smoothly on various hardware.",
+            "modpacks": "Modpacks",
+            "modpacksText": "Creating lightweight, optimized modpacks that run smoothly on various hardware.",
+            "mods": "Mods",
+            "modsText": "Building custom mods and tools to enhance the Minecraft experience.",
+            "plugins": "Plugins",
+            "pluginsText": "Developing server plugins for enhanced gameplay and community features."
         }
     },
     "modpack": {
