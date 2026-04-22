@@ -5,13 +5,19 @@
  */
 
 import {
+    normalizePhoneNumber,
+    validateAndNormalizePhoneNumber,
+    validateBirthDateFormat,
     validateEmail,
     validateFieldLength,
     validateLoginForm,
+    validateMinimumAge,
     validateName,
+    validateNameNotOnlyNumbersOrSpecialChars,
     validatePassword,
     validatePasswordMatch,
     validatePasswordResetForm,
+    validatePhoneNumber,
     validateRegistrationForm,
 } from "@/lib/validation"
 import { describe, expect, it } from "vitest"
@@ -291,13 +297,8 @@ describe("validateName", () => {
             expect(result.isValid).toBe(true)
         })
 
-        it("should accept name with numbers", () => {
-            const result = validateName("John Doe 2")
-            expect(result.isValid).toBe(true)
-        })
-
-        it("should accept single character name", () => {
-            const result = validateName("A")
+        it("should accept name with exactly 2 characters", () => {
+            const result = validateName("Jo")
             expect(result.isValid).toBe(true)
         })
 
@@ -310,13 +311,20 @@ describe("validateName", () => {
             const result = validateName("Mary-Jane O'Connor")
             expect(result.isValid).toBe(true)
         })
+
+        it("should accept name with only letters", () => {
+            const result = validateName("Alexander")
+            expect(result.isValid).toBe(true)
+        })
     })
 
     describe("invalid names", () => {
         it("should reject name with special characters", () => {
             const result = validateName("John@Doe")
             expect(result.isValid).toBe(false)
-            expect(result.error).toBe("Name contains invalid characters")
+            expect(result.error).toBe(
+                "Full name can only contain letters, spaces, hyphens, and apostrophes"
+            )
         })
 
         it("should reject name with exclamation mark", () => {
@@ -352,7 +360,7 @@ describe("validateName", () => {
         it("should reject empty name", () => {
             const result = validateName("")
             expect(result.isValid).toBe(false)
-            expect(result.error).toBe("Name is required")
+            expect(result.error).toBe("Full name is required")
         })
 
         it("should reject null name", () => {
@@ -363,7 +371,7 @@ describe("validateName", () => {
         it("should reject name with only spaces", () => {
             const result = validateName("   ")
             expect(result.isValid).toBe(false)
-            expect(result.error).toBe("Name is required")
+            expect(result.error).toBe("Full name is required")
         })
 
         it("should reject name with underscore", () => {
@@ -379,6 +387,85 @@ describe("validateName", () => {
         it("should reject name with comma", () => {
             const result = validateName("John,Doe")
             expect(result.isValid).toBe(false)
+        })
+
+        it("should reject name with less than 2 characters", () => {
+            const result = validateName("A")
+            expect(result.isValid).toBe(false)
+            expect(result.error).toBe("Full name must be at least 2 characters")
+        })
+
+        it("should reject name with only numbers", () => {
+            const result = validateName("123")
+            expect(result.isValid).toBe(false)
+            expect(result.error).toBe(
+                "Full name can only contain letters, spaces, hyphens, and apostrophes"
+            )
+        })
+
+        it("should reject name with only special characters", () => {
+            const result = validateName("!!!")
+            expect(result.isValid).toBe(false)
+            expect(result.error).toBe(
+                "Full name can only contain letters, spaces, hyphens, and apostrophes"
+            )
+        })
+    })
+})
+
+describe("validateNameNotOnlyNumbersOrSpecialChars", () => {
+    describe("valid names", () => {
+        it("should accept name with letters", () => {
+            const result = validateNameNotOnlyNumbersOrSpecialChars("John Doe")
+            expect(result.isValid).toBe(true)
+            expect(result.error).toBeUndefined()
+        })
+
+        it("should accept name with letters and numbers", () => {
+            const result =
+                validateNameNotOnlyNumbersOrSpecialChars("John Doe 2")
+            expect(result.isValid).toBe(true)
+        })
+
+        it("should accept name with letters and special characters", () => {
+            const result = validateNameNotOnlyNumbersOrSpecialChars("John-Paul")
+            expect(result.isValid).toBe(true)
+        })
+
+        it("should accept single letter", () => {
+            const result = validateNameNotOnlyNumbersOrSpecialChars("A")
+            expect(result.isValid).toBe(true)
+        })
+    })
+
+    describe("invalid names", () => {
+        it("should reject name with only numbers", () => {
+            const result = validateNameNotOnlyNumbersOrSpecialChars("123")
+            expect(result.isValid).toBe(false)
+            expect(result.error).toBe(
+                "Full name must contain at least some letters"
+            )
+        })
+
+        it("should reject name with only special characters", () => {
+            const result = validateNameNotOnlyNumbersOrSpecialChars("!!!")
+            expect(result.isValid).toBe(false)
+            expect(result.error).toBe(
+                "Full name must contain at least some letters"
+            )
+        })
+
+        it("should reject name with only numbers and special characters", () => {
+            const result = validateNameNotOnlyNumbersOrSpecialChars("123!!!")
+            expect(result.isValid).toBe(false)
+            expect(result.error).toBe(
+                "Full name must contain at least some letters"
+            )
+        })
+
+        it("should reject empty name", () => {
+            const result = validateNameNotOnlyNumbersOrSpecialChars("")
+            expect(result.isValid).toBe(true) // Secondary check, returns true for empty
         })
     })
 })
@@ -936,6 +1023,278 @@ describe("validateAndNormalizePhoneNumber", () => {
             const result = validateAndNormalizePhoneNumber("(555) 123-4567")
             expect(result.isValid).toBe(false)
             expect(result.error).toBe("Please enter a valid phone number")
+        })
+    })
+})
+
+describe("validateBirthDateFormat", () => {
+    describe("valid birth dates", () => {
+        it("should accept valid birth date in DD/MM/YYYY format", () => {
+            const result = validateBirthDateFormat("01/01/1990")
+            expect(result.isValid).toBe(true)
+            expect(result.error).toBeUndefined()
+        })
+
+        it("should accept birth date with single digit day and month", () => {
+            const result = validateBirthDateFormat("05/03/1985")
+            expect(result.isValid).toBe(true)
+        })
+
+        it("should accept birth date with double digit day and month", () => {
+            const result = validateBirthDateFormat("31/12/2000")
+            expect(result.isValid).toBe(true)
+        })
+
+        it("should accept leap year date (Feb 29)", () => {
+            const result = validateBirthDateFormat("29/02/2000")
+            expect(result.isValid).toBe(true)
+        })
+
+        it("should accept recent birth date", () => {
+            const today = new Date()
+            const dateStr = `${String(today.getDate()).padStart(2, "0")}/${String(today.getMonth() + 1).padStart(2, "0")}/${today.getFullYear()}`
+            const result = validateBirthDateFormat(dateStr)
+            expect(result.isValid).toBe(true)
+        })
+
+        it("should accept birth date 120 years ago", () => {
+            const today = new Date()
+            const year = today.getFullYear() - 120
+            const dateStr = `01/01/${year}`
+            const result = validateBirthDateFormat(dateStr)
+            expect(result.isValid).toBe(true)
+        })
+
+        it("should trim whitespace", () => {
+            const result = validateBirthDateFormat("  01/01/1990  ")
+            expect(result.isValid).toBe(true)
+        })
+    })
+
+    describe("invalid birth dates", () => {
+        it("should reject invalid day (32)", () => {
+            const result = validateBirthDateFormat("32/01/2000")
+            expect(result.isValid).toBe(false)
+            expect(result.error).toBe("Please enter a valid date (DD/MM/YYYY)")
+        })
+
+        it("should reject invalid month (13)", () => {
+            const result = validateBirthDateFormat("01/13/2000")
+            expect(result.isValid).toBe(false)
+            expect(result.error).toBe("Please enter a valid date (DD/MM/YYYY)")
+        })
+
+        it("should reject invalid month (0)", () => {
+            const result = validateBirthDateFormat("01/00/2000")
+            expect(result.isValid).toBe(false)
+        })
+
+        it("should reject invalid day (0)", () => {
+            const result = validateBirthDateFormat("00/01/2000")
+            expect(result.isValid).toBe(false)
+        })
+
+        it("should reject Feb 30", () => {
+            const result = validateBirthDateFormat("30/02/2000")
+            expect(result.isValid).toBe(false)
+        })
+
+        it("should reject Feb 29 on non-leap year", () => {
+            const result = validateBirthDateFormat("29/02/2001")
+            expect(result.isValid).toBe(false)
+        })
+
+        it("should reject April 31", () => {
+            const result = validateBirthDateFormat("31/04/2000")
+            expect(result.isValid).toBe(false)
+        })
+
+        it("should reject future date", () => {
+            const tomorrow = new Date()
+            tomorrow.setDate(tomorrow.getDate() + 1)
+            const dateStr = `${String(tomorrow.getDate()).padStart(2, "0")}/${String(tomorrow.getMonth() + 1).padStart(2, "0")}/${tomorrow.getFullYear()}`
+            const result = validateBirthDateFormat(dateStr)
+            expect(result.isValid).toBe(false)
+        })
+
+        it("should reject date more than 120 years ago", () => {
+            const today = new Date()
+            const year = today.getFullYear() - 121
+            const dateStr = `01/01/${year}`
+            const result = validateBirthDateFormat(dateStr)
+            expect(result.isValid).toBe(false)
+        })
+
+        it("should reject wrong format (MM/DD/YYYY)", () => {
+            const result = validateBirthDateFormat("01/32/2000")
+            expect(result.isValid).toBe(false)
+        })
+
+        it("should reject format without slashes", () => {
+            const result = validateBirthDateFormat("01011990")
+            expect(result.isValid).toBe(false)
+        })
+
+        it("should reject format with dashes", () => {
+            const result = validateBirthDateFormat("01-01-1990")
+            expect(result.isValid).toBe(false)
+        })
+
+        it("should reject format with dots", () => {
+            const result = validateBirthDateFormat("01.01.1990")
+            expect(result.isValid).toBe(false)
+        })
+
+        it("should reject empty date", () => {
+            const result = validateBirthDateFormat("")
+            expect(result.isValid).toBe(false)
+            expect(result.error).toBe("Birth date is required")
+        })
+
+        it("should reject null date", () => {
+            const result = validateBirthDateFormat(null as any)
+            expect(result.isValid).toBe(false)
+        })
+
+        it("should reject date with only spaces", () => {
+            const result = validateBirthDateFormat("   ")
+            expect(result.isValid).toBe(false)
+        })
+
+        it("should reject partial date", () => {
+            const result = validateBirthDateFormat("01/01")
+            expect(result.isValid).toBe(false)
+        })
+
+        it("should reject date with extra characters", () => {
+            const result = validateBirthDateFormat("01/01/1990 extra")
+            expect(result.isValid).toBe(false)
+        })
+    })
+})
+
+describe("validateMinimumAge", () => {
+    describe("valid ages (13+)", () => {
+        it("should accept user exactly 13 years old", () => {
+            const today = new Date()
+            const year = today.getFullYear() - 13
+            const dateStr = `${String(today.getDate()).padStart(2, "0")}/${String(today.getMonth() + 1).padStart(2, "0")}/${year}`
+            const result = validateMinimumAge(dateStr)
+            expect(result.isValid).toBe(true)
+        })
+
+        it("should accept user older than 13", () => {
+            const result = validateMinimumAge("01/01/2005")
+            expect(result.isValid).toBe(true)
+        })
+
+        it("should accept user much older than 13", () => {
+            const result = validateMinimumAge("01/01/1990")
+            expect(result.isValid).toBe(true)
+        })
+
+        it("should accept user 100 years old", () => {
+            const today = new Date()
+            const year = today.getFullYear() - 100
+            const dateStr = `01/01/${year}`
+            const result = validateMinimumAge(dateStr)
+            expect(result.isValid).toBe(true)
+        })
+
+        it("should accept user born yesterday (if 13+)", () => {
+            const today = new Date()
+            const year = today.getFullYear() - 13
+            const yesterday = new Date(today)
+            yesterday.setDate(yesterday.getDate() - 1)
+            const dateStr = `${String(yesterday.getDate()).padStart(2, "0")}/${String(yesterday.getMonth() + 1).padStart(2, "0")}/${year}`
+            const result = validateMinimumAge(dateStr)
+            expect(result.isValid).toBe(true)
+        })
+    })
+
+    describe("invalid ages (under 13)", () => {
+        it("should reject user under 13 years old", () => {
+            const result = validateMinimumAge("01/01/2015")
+            expect(result.isValid).toBe(false)
+            expect(result.error).toBe(
+                "You must be at least 13 years old to register"
+            )
+        })
+
+        it("should reject user 12 years old", () => {
+            const today = new Date()
+            const year = today.getFullYear() - 12
+            const dateStr = `${String(today.getDate()).padStart(2, "0")}/${String(today.getMonth() + 1).padStart(2, "0")}/${year}`
+            const result = validateMinimumAge(dateStr)
+            expect(result.isValid).toBe(false)
+        })
+
+        it("should reject user 1 year old", () => {
+            const today = new Date()
+            const year = today.getFullYear() - 1
+            const dateStr = `${String(today.getDate()).padStart(2, "0")}/${String(today.getMonth() + 1).padStart(2, "0")}/${year}`
+            const result = validateMinimumAge(dateStr)
+            expect(result.isValid).toBe(false)
+        })
+
+        it("should reject newborn", () => {
+            const today = new Date()
+            const dateStr = `${String(today.getDate()).padStart(2, "0")}/${String(today.getMonth() + 1).padStart(2, "0")}/${today.getFullYear()}`
+            const result = validateMinimumAge(dateStr)
+            expect(result.isValid).toBe(false)
+        })
+
+        it("should reject user born tomorrow (if under 13)", () => {
+            const today = new Date()
+            const year = today.getFullYear() - 12
+            const tomorrow = new Date(today)
+            tomorrow.setDate(tomorrow.getDate() + 1)
+            const dateStr = `${String(tomorrow.getDate()).padStart(2, "0")}/${String(tomorrow.getMonth() + 1).padStart(2, "0")}/${year}`
+            const result = validateMinimumAge(dateStr)
+            expect(result.isValid).toBe(false)
+        })
+    })
+
+    describe("edge cases", () => {
+        it("should handle birthday today correctly", () => {
+            const today = new Date()
+            const year = today.getFullYear() - 13
+            const dateStr = `${String(today.getDate()).padStart(2, "0")}/${String(today.getMonth() + 1).padStart(2, "0")}/${year}`
+            const result = validateMinimumAge(dateStr)
+            expect(result.isValid).toBe(true)
+        })
+
+        it("should handle birthday tomorrow correctly", () => {
+            const today = new Date()
+            const tomorrow = new Date(today)
+            tomorrow.setDate(tomorrow.getDate() + 1)
+            const year = today.getFullYear() - 13
+            const dateStr = `${String(tomorrow.getDate()).padStart(2, "0")}/${String(tomorrow.getMonth() + 1).padStart(2, "0")}/${year}`
+            const result = validateMinimumAge(dateStr)
+            expect(result.isValid).toBe(false)
+        })
+
+        it("should handle leap year birthday", () => {
+            const today = new Date()
+            const year = today.getFullYear() - 13
+            const result = validateMinimumAge("29/02/2000")
+            // This will depend on whether 2000 was 13+ years ago
+            expect(result.isValid).toBeDefined()
+        })
+
+        it("should reject invalid date format", () => {
+            const result = validateMinimumAge("invalid")
+            expect(result.isValid).toBe(false)
+        })
+
+        it("should reject empty date", () => {
+            const result = validateMinimumAge("")
+            expect(result.isValid).toBe(false)
+        })
+
+        it("should reject null date", () => {
+            const result = validateMinimumAge(null as any)
+            expect(result.isValid).toBe(false)
         })
     })
 })

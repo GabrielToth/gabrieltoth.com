@@ -496,4 +496,271 @@ describe("Database Constraints and Foreign Keys", () => {
             }
         })
     })
+
+    describe("Registration Fields - Birth Date and Auth Method", () => {
+        it("should accept valid birth_date (user 13+ years old)", async () => {
+            // Calculate a date for someone 13 years old
+            const thirteenYearsAgo = new Date()
+            thirteenYearsAgo.setFullYear(thirteenYearsAgo.getFullYear() - 13)
+
+            const { error } = await supabase
+                .from("users")
+                .insert({
+                    email: `birth-date-valid-${Date.now()}@example.com`,
+                    name: "Valid Birth Date User",
+                    password_hash: "hashed_password_123",
+                    birth_date: thirteenYearsAgo.toISOString().split("T")[0],
+                    auth_method: "email",
+                })
+                .select()
+                .single()
+
+            expect(error).toBeNull()
+
+            // Clean up
+            await supabase
+                .from("users")
+                .delete()
+                .eq("email", `birth-date-valid-${Date.now()}@example.com`)
+        })
+
+        it("should reject future birth_date", async () => {
+            // Calculate a future date
+            const futureDate = new Date()
+            futureDate.setFullYear(futureDate.getFullYear() + 1)
+
+            const { error } = await supabase
+                .from("users")
+                .insert({
+                    email: `birth-date-future-${Date.now()}@example.com`,
+                    name: "Future Birth Date User",
+                    password_hash: "hashed_password_123",
+                    birth_date: futureDate.toISOString().split("T")[0],
+                    auth_method: "email",
+                })
+                .select()
+                .single()
+
+            expect(error).toBeDefined()
+            expect(error?.code).toBe("23514") // CHECK constraint violation
+        })
+
+        it("should reject birth_date for user under 13 years old", async () => {
+            // Calculate a date for someone 12 years old
+            const twelveYearsAgo = new Date()
+            twelveYearsAgo.setFullYear(twelveYearsAgo.getFullYear() - 12)
+
+            const { error } = await supabase
+                .from("users")
+                .insert({
+                    email: `birth-date-under-13-${Date.now()}@example.com`,
+                    name: "Under 13 User",
+                    password_hash: "hashed_password_123",
+                    birth_date: twelveYearsAgo.toISOString().split("T")[0],
+                    auth_method: "email",
+                })
+                .select()
+                .single()
+
+            expect(error).toBeDefined()
+            expect(error?.code).toBe("23514") // CHECK constraint violation
+        })
+
+        it("should accept valid auth_method values", async () => {
+            const authMethods = ["email", "google", "facebook", "tiktok"]
+
+            for (const method of authMethods) {
+                const { error } = await supabase
+                    .from("users")
+                    .insert({
+                        email: `auth-method-${method}-${Date.now()}@example.com`,
+                        name: `${method} User`,
+                        password_hash: "hashed_password_123",
+                        auth_method: method,
+                    })
+                    .select()
+                    .single()
+
+                expect(error).toBeNull()
+
+                // Clean up
+                await supabase
+                    .from("users")
+                    .delete()
+                    .eq(
+                        "email",
+                        `auth-method-${method}-${Date.now()}@example.com`
+                    )
+            }
+        })
+
+        it("should reject invalid auth_method values", async () => {
+            const { error } = await supabase
+                .from("users")
+                .insert({
+                    email: `auth-method-invalid-${Date.now()}@example.com`,
+                    name: "Invalid Auth Method User",
+                    password_hash: "hashed_password_123",
+                    auth_method: "invalid_method",
+                })
+                .select()
+                .single()
+
+            expect(error).toBeDefined()
+            expect(error?.code).toBe("23514") // CHECK constraint violation
+        })
+
+        it("should allow NULL birth_date for existing users", async () => {
+            const { error } = await supabase
+                .from("users")
+                .insert({
+                    email: `birth-date-null-${Date.now()}@example.com`,
+                    name: "Null Birth Date User",
+                    password_hash: "hashed_password_123",
+                    birth_date: null,
+                    auth_method: "email",
+                })
+                .select()
+                .single()
+
+            expect(error).toBeNull()
+
+            // Clean up
+            await supabase
+                .from("users")
+                .delete()
+                .eq("email", `birth-date-null-${Date.now()}@example.com`)
+        })
+
+        it("should allow NULL auth_method for existing users", async () => {
+            const { error } = await supabase
+                .from("users")
+                .insert({
+                    email: `auth-method-null-${Date.now()}@example.com`,
+                    name: "Null Auth Method User",
+                    password_hash: "hashed_password_123",
+                    auth_method: null,
+                })
+                .select()
+                .single()
+
+            expect(error).toBeNull()
+
+            // Clean up
+            await supabase
+                .from("users")
+                .delete()
+                .eq("email", `auth-method-null-${Date.now()}@example.com`)
+        })
+    })
+
+    describe("Registration Sessions Table", () => {
+        it("should create registration session with all required fields", async () => {
+            const { data, error } = await supabase
+                .from("registration_sessions")
+                .insert({
+                    session_id: `session_${Date.now()}`,
+                    email: `session-test-${Date.now()}@example.com`,
+                    name: "Test User",
+                    phone: "+1234567890",
+                    current_step: 1,
+                    expires_at: new Date(
+                        Date.now() + 30 * 60 * 1000
+                    ).toISOString(),
+                })
+                .select()
+                .single()
+
+            expect(error).toBeNull()
+            expect(data?.session_id).toBeDefined()
+            expect(data?.email).toBe(`session-test-${Date.now()}@example.com`)
+            expect(data?.current_step).toBe(1)
+
+            // Clean up
+            if (data) {
+                await supabase
+                    .from("registration_sessions")
+                    .delete()
+                    .eq("id", data.id)
+            }
+        })
+
+        it("should reject empty session_id in registration_sessions", async () => {
+            const { error } = await supabase
+                .from("registration_sessions")
+                .insert({
+                    session_id: "",
+                    email: `session-empty-${Date.now()}@example.com`,
+                    expires_at: new Date(
+                        Date.now() + 30 * 60 * 1000
+                    ).toISOString(),
+                })
+                .select()
+                .single()
+
+            expect(error).toBeDefined()
+            expect(error?.code).toBe("23514") // CHECK constraint violation
+        })
+
+        it("should reject invalid current_step values", async () => {
+            const { error } = await supabase
+                .from("registration_sessions")
+                .insert({
+                    session_id: `session_invalid_step_${Date.now()}`,
+                    email: `session-invalid-step-${Date.now()}@example.com`,
+                    current_step: 5, // Invalid step (must be 1-4)
+                    expires_at: new Date(
+                        Date.now() + 30 * 60 * 1000
+                    ).toISOString(),
+                })
+                .select()
+                .single()
+
+            expect(error).toBeDefined()
+            expect(error?.code).toBe("23514") // CHECK constraint violation
+        })
+
+        it("should enforce unique session_id constraint", async () => {
+            const sessionId = `unique_session_${Date.now()}`
+
+            // Insert first session
+            const { data: session1, error: firstError } = await supabase
+                .from("registration_sessions")
+                .insert({
+                    session_id: sessionId,
+                    email: `session-unique-1-${Date.now()}@example.com`,
+                    expires_at: new Date(
+                        Date.now() + 30 * 60 * 1000
+                    ).toISOString(),
+                })
+                .select()
+                .single()
+
+            expect(firstError).toBeNull()
+
+            // Try to insert second session with same session_id
+            const { error: secondError } = await supabase
+                .from("registration_sessions")
+                .insert({
+                    session_id: sessionId,
+                    email: `session-unique-2-${Date.now()}@example.com`,
+                    expires_at: new Date(
+                        Date.now() + 30 * 60 * 1000
+                    ).toISOString(),
+                })
+                .select()
+                .single()
+
+            expect(secondError).toBeDefined()
+            expect(secondError?.code).toBe("23505") // Unique constraint violation
+
+            // Clean up
+            if (session1) {
+                await supabase
+                    .from("registration_sessions")
+                    .delete()
+                    .eq("id", session1.id)
+            }
+        })
+    })
 })

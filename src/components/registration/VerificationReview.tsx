@@ -3,14 +3,18 @@
 interface VerificationReviewProps {
     email: string
     name: string
+    birthDate: string
     phone: string
-    onEdit: (field: "email" | "password" | "name" | "phone") => void
+    onEdit: (
+        field: "email" | "password" | "name" | "birthDate" | "phone"
+    ) => void
     disabled?: boolean
 }
 
 export function VerificationReview({
     email,
     name,
+    birthDate,
     phone,
     onEdit,
     disabled = false,
@@ -18,6 +22,11 @@ export function VerificationReview({
     const fields = [
         { label: "Email Address", value: email, field: "email" as const },
         { label: "Full Name", value: name, field: "name" as const },
+        {
+            label: "Birth Date",
+            value: birthDate,
+            field: "birthDate" as const,
+        },
         { label: "Phone Number", value: phone, field: "phone" as const },
         {
             label: "Password",

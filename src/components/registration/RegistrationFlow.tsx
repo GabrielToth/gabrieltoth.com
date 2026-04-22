@@ -143,6 +143,7 @@ export function RegistrationFlow() {
                     email: registration.formData.email,
                     password: registration.formData.password,
                     name: registration.formData.name,
+                    birthDate: registration.formData.birthDate,
                     phone: registration.formData.phone,
                 }),
             })
@@ -195,11 +196,14 @@ export function RegistrationFlow() {
         }
     }
 
-    const handleEdit = (field: "email" | "password" | "name" | "phone") => {
+    const handleEdit = (
+        field: "email" | "password" | "name" | "birthDate" | "phone"
+    ) => {
         const stepMap = {
             email: 0,
             password: 1,
             name: 2,
+            birthDate: 2,
             phone: 2,
         }
         registration.goToStep(stepMap[field])
@@ -353,9 +357,15 @@ export function RegistrationFlow() {
                                 </h2>
                                 <PersonalDataForm
                                     name={registration.formData.name}
+                                    birthDate={registration.formData.birthDate}
                                     phone={registration.formData.phone}
                                     onNameChange={name =>
                                         registration.updateFormData({ name })
+                                    }
+                                    onBirthDateChange={birthDate =>
+                                        registration.updateFormData({
+                                            birthDate,
+                                        })
                                     }
                                     onPhoneChange={phone =>
                                         registration.updateFormData({ phone })
@@ -376,6 +386,7 @@ export function RegistrationFlow() {
                                 <VerificationReview
                                     email={registration.formData.email}
                                     name={registration.formData.name}
+                                    birthDate={registration.formData.birthDate}
                                     phone={registration.formData.phone}
                                     onEdit={handleEdit}
                                     disabled={registration.isSubmitting}

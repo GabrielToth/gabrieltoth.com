@@ -7,6 +7,7 @@ export interface RegistrationFormData {
     password: string
     confirmPassword: string
     name: string
+    birthDate: string
     phone: string
 }
 
@@ -26,6 +27,7 @@ const INITIAL_FORM_DATA: RegistrationFormData = {
     password: "",
     confirmPassword: "",
     name: "",
+    birthDate: "",
     phone: "",
 }
 
