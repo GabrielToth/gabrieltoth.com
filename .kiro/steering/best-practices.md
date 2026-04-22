@@ -12,7 +12,10 @@
 - Sempre use mensagens de commit descritivas e em inglês
 - Prefira commits atômicos (uma mudança por commit)
 - Use conventional commits: `feat:`, `fix:`, `refactor:`, `docs:`, etc.
+- **OBRIGATÓRIO**: Incluir número da issue: `fix(#123): description`
+- **NUNCA** use versão como nome de commit (❌ `1.8.22`, ❌ `1.8.23`)
 - Não faça push automaticamente - sempre confirme antes
+- Versioning é separado: use `npm version patch|minor|major` após commits
 
 ### 3. Código
 - Mantenha consistência com o estilo do projeto
@@ -33,12 +36,96 @@
 
 ## 🎯 Fluxo de Trabalho
 
-1. **Entender** a tarefa
-2. **Implementar** as mudanças
-3. **Testar** se possível
-4. **Resumir** na resposta (sem .md)
-5. **Fazer commit** com mensagem clara
-6. **Confirmar** antes de push
+1. **Abrir Issue no GitHub** (SEMPRE PRIMEIRO)
+2. **Entender** a tarefa
+3. **Implementar** as mudanças
+4. **Testar** se possível
+5. **Resumir** na resposta (sem .md)
+6. **Fazer commit** com mensagem clara referenciando a issue
+7. **Confirmar** antes de push
+
+---
+
+## 🔴 REGRA CRÍTICA: GitHub Issues ANTES de Implementar
+
+**OBRIGATÓRIO**: Abrir uma issue no GitHub ANTES de sugerir ou implementar qualquer solução.
+
+### Por Que?
+- Documenta o problema detalhadamente
+- Cria rastreabilidade
+- Permite discussão antes da implementação
+- Facilita code review
+- Mantém histórico de decisões
+
+### Quando Aplicar?
+- ✅ Toda vez que identificar um problema
+- ✅ Toda vez que receber uma tarefa
+- ✅ Toda vez que precisar fazer mudanças no código
+- ✅ Mesmo para pequenas correções
+
+### Quando NÃO Aplicar?
+- ❌ Apenas se o usuário explicitamente disser "não precisa de issue"
+- ❌ Apenas se a issue já existir (reutilizar a existente)
+
+### Processo Obrigatório
+
+**PASSO 1: Abrir Issue**
+```
+Título: [Type] Descrição clara do problema
+Descrição: Detalhar contexto, problema, impacto, requisitos
+Labels: feature, bug, enhancement, etc.
+```
+
+**PASSO 2: Aguardar Confirmação**
+- Esperar o usuário confirmar a issue
+- Ou prosseguir se o usuário autorizar
+
+**PASSO 3: Implementar com Referência**
+- Usar número da issue em todos os commits
+- Formato: `fix(#123): description`
+- Fechar issue automaticamente: `Closes #123`
+
+### Exemplo Correto
+
+```
+❌ ERRADO:
+- Usuário: "Preciso corrigir o header"
+- Kiro: [Implementa direto]
+
+✅ CORRETO:
+- Usuário: "Preciso corrigir o header"
+- Kiro: "Vou abrir uma issue no GitHub descrevendo o problema"
+- Kiro: [Abre issue #42 com detalhes]
+- Kiro: [Aguarda confirmação ou prossegue]
+- Kiro: [Implementa com commits referenciando #42]
+```
+
+### Template de Issue
+
+```markdown
+## Descrição
+[Explicar o que precisa ser feito]
+
+## Contexto
+- Por que isso é importante?
+- Qual problema resolve?
+- Impacto esperado?
+
+## Requisitos
+- [ ] Requisito 1
+- [ ] Requisito 2
+
+## Critérios de Aceitação
+- [ ] Funcionalidade X implementada
+- [ ] Testes escritos
+- [ ] Build passa
+- [ ] Compatível com cloud e local
+
+## Notas Técnicas
+- Arquivos afetados
+- Dependências necessárias
+- Possíveis impactos
+```
 
 ## ✅ Checklist Antes de Responder
 
@@ -173,27 +260,46 @@ git push -u origin feature-branch   # Push para repositório remoto
 
 **Implementação inicial:**
 ```
-feat: implement dashboard redesign components
+feat(#123): implement dashboard redesign components
 ```
 
 **Performance improvements:**
 ```
-perf: optimize bundle size and lazy load components
+perf(#123): optimize bundle size and lazy load components
 ```
 
 **Formatação e linting:**
 ```
-style: format code and fix linting issues
+style(#123): format code and fix linting issues
 ```
 
 **Documentação:**
 ```
-docs: add Storybook stories for dashboard components
+docs(#123): add Storybook stories for dashboard components
 ```
 
 **Testes:**
 ```
-test: add comprehensive test coverage for components
+test(#123): add comprehensive test coverage for components
+```
+
+**Bug fix:**
+```
+fix(#123): remove header from registration flow
+```
+
+**Refatoração:**
+```
+refactor(#123): extract validation logic to utilities
+```
+
+### ❌ Exemplos INCORRETOS
+
+```
+❌ 1.8.22 - Usar versão como nome
+❌ fix: remove header - Sem número da issue
+❌ Update code - Sem tipo de commit
+❌ WIP - Muito vago
 ```
 
 ---
@@ -402,7 +508,7 @@ export async function fetchData() {
 
 **OBRIGATÓRIO** seguir Semantic Versioning (SemVer) para todas as mudanças:
 
-### Versão Atual: 1.8.20
+### Versão Atual: 1.8.23
 
 **Formato:** `MAJOR.MINOR.PATCH`
 
@@ -418,19 +524,33 @@ export async function fetchData() {
   - Exemplo: Corrigir validação de email, otimizar performance
   - Incrementar quando: Apenas correções e melhorias sem novas features
 
-### Regra Obrigatória: Incrementar Versão em Cada Commit
+### ⚠️ IMPORTANTE: Versioning é SEPARADO de Commit Messages
 
-**TODOS** os commits devem incrementar a versão em `package.json`:
+**NUNCA** use versão como nome de commit:
+```bash
+❌ ERRADO:
+git commit -m "1.8.22"
+git commit -m "1.8.23"
+
+✅ CORRETO:
+git commit -m "fix(#42): remove header from registration flow"
+npm version patch  # Incrementa versão automaticamente
+```
+
+### Regra Obrigatória: Incrementar Versão APÓS Commits
+
+**Workflow correto:**
 
 ```bash
-# Bug fix - incrementar PATCH
-npm version patch  # 1.8.20 → 1.8.21
+# 1. Fazer mudanças no código
+# 2. Fazer commit com mensagem descritiva e número da issue
+git commit -m "fix(#42): remove header from registration flow"
 
-# Nova feature - incrementar MINOR
-npm version minor  # 1.8.20 → 1.9.0
+# 3. DEPOIS incrementar versão (separado)
+npm version patch  # 1.8.22 → 1.8.23
 
-# Breaking change - incrementar MAJOR
-npm version major  # 1.8.20 → 2.0.0
+# 4. Push com tags
+git push origin feature-branch --tags
 ```
 
 **Exemplo de Commit com Versioning:**
@@ -438,20 +558,24 @@ npm version major  # 1.8.20 → 2.0.0
 # Fazer mudanças
 git add .
 
-# Incrementar versão (escolher patch/minor/major)
-npm version patch
+# Commit com número da issue
+git commit -m "feat(#123): add new dashboard component"
 
-# Commit será criado automaticamente com tag
+# Incrementar versão (escolher patch/minor/major)
+npm version minor  # 1.8.23 → 1.9.0
+
+# Push com tags
 git push origin feature-branch --tags
 ```
 
 ### Checklist de Versioning
 
+- [ ] Commit feito com mensagem descritiva e número da issue
 - [ ] Identifiquei o tipo de mudança (bug fix, feature, breaking change)
-- [ ] Executei `npm version patch|minor|major` antes de fazer push
+- [ ] Executei `npm version patch|minor|major` APÓS o commit
 - [ ] Versão em `package.json` foi incrementada corretamente
 - [ ] Tag git foi criada automaticamente
-- [ ] Commit de versioning foi feito
+- [ ] Push realizado com `--tags`
 
 ---
 
