@@ -35,6 +35,7 @@ export function GoogleLogoutButton({
     className = "",
 }: GoogleLogoutButtonProps) {
     const router = useRouter()
+    const { locale } = useLocale()
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState<string | null>(null)
 
@@ -63,8 +64,8 @@ export function GoogleLogoutButton({
             // Call success callback
             onSuccess?.()
 
-            // Redirect to login page
-            router.push("/auth/login")
+            // Redirect to login page with locale
+            router.push(`/${locale}/login`)
         } catch (err) {
             const error = err instanceof Error ? err : new Error(String(err))
             logger.error("Logout error", {
