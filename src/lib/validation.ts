@@ -190,13 +190,13 @@ export function validatePassword(password: string): {
 
 /**
  * Validates name field format
- * Requirement 7.1, 8.3
+ * Requirements: 4.3, 11.1, 11.2, 11.3, 11.4
  *
- * Name must contain only:
- * - Alphanumeric characters (A-Z, a-z, 0-9)
- * - Spaces
- * - Hyphens (-)
- * - Apostrophes (')
+ * Name must:
+ * - Not be empty
+ * - Contain at least 2 characters
+ * - Contain only letters, spaces, hyphens, and apostrophes
+ * - NOT be composed entirely of numbers or special characters
  *
  * @param name - The name to validate
  * @returns Object with isValid boolean and error message if invalid
@@ -205,27 +205,78 @@ export function validatePassword(password: string): {
  * validateName('John Doe') // { isValid: true }
  * validateName("O'Brien") // { isValid: true }
  * validateName('John-Paul') // { isValid: true }
- * validateName('John@Doe') // { isValid: false, error: 'Name contains invalid characters' }
+ * validateName('J') // { isValid: false, error: 'Full name must be at least 2 characters' }
+ * validateName('123') // { isValid: false, error: 'Full name can only contain letters, spaces, hyphens, and apostrophes' }
+ * validateName('John@Doe') // { isValid: false, error: 'Full name can only contain letters, spaces, hyphens, and apostrophes' }
  */
 export function validateName(name: string): {
     isValid: boolean
     error?: string
 } {
     if (!name || typeof name !== "string") {
-        return { isValid: false, error: "Name is required" }
+        return { isValid: false, error: "Full name is required" }
     }
 
     const trimmedName = name.trim()
 
     if (trimmedName.length === 0) {
-        return { isValid: false, error: "Name is required" }
+        return { isValid: false, error: "Full name is required" }
     }
 
-    // Allow only alphanumeric, spaces, hyphens, and apostrophes
-    const nameRegex = /^[A-Za-z0-9\s\-']+$/
+    // Check minimum length (at least 2 characters)
+    if (trimmedName.length < 2) {
+        return {
+            isValid: false,
+            error: "Full name must be at least 2 characters",
+        }
+    }
+
+    // Allow only letters, spaces, hyphens, and apostrophes (no numbers or special chars)
+    const nameRegex = /^[A-Za-z\s\-']+$/
 
     if (!nameRegex.test(trimmedName)) {
-        return { isValid: false, error: "Name contains invalid characters" }
+        return {
+            isValid: false,
+            error: "Full name can only contain letters, spaces, hyphens, and apostrophes",
+        }
+    }
+
+    return { isValid: true }
+}
+
+/**
+ * Validates that a name is NOT composed entirely of numbers or special characters
+ * Requirements: 11.4
+ *
+ * This is a stricter validation that ensures names contain at least some letters.
+ * Used as an additional check to prevent names like "123" or "!!!" from being accepted.
+ *
+ * @param name - The name to validate
+ * @returns Object with isValid boolean and error message if invalid
+ *
+ * @example
+ * validateNameNotOnlyNumbersOrSpecialChars('John Doe') // { isValid: true }
+ * validateNameNotOnlyNumbersOrSpecialChars('123') // { isValid: false, error: 'Full name must contain at least some letters' }
+ * validateNameNotOnlyNumbersOrSpecialChars('!!!') // { isValid: false, error: 'Full name must contain at least some letters' }
+ */
+export function validateNameNotOnlyNumbersOrSpecialChars(name: string): {
+    isValid: boolean
+    error?: string
+} {
+    if (!name || typeof name !== "string") {
+        return { isValid: true } // This check is secondary to validateName
+    }
+
+    const trimmedName = name.trim()
+
+    // Check if name contains at least one letter
+    const hasLetters = /[A-Za-z]/.test(trimmedName)
+
+    if (!hasLetters) {
+        return {
+            isValid: false,
+            error: "Full name must contain at least some letters",
+        }
     }
 
     return { isValid: true }
@@ -296,7 +347,7 @@ export function validatePasswordMatch(
  * Comprehensive registration form validation
  * Validates all fields together for registration
  *
- * @param data - Object containing name, email, password, confirmPassword
+ * @param data - Object containing name, email, password, confirmPassword, phone (optional)
  * @returns Object with isValid boolean and errors object with field-specific errors
  *
  * @example
@@ -312,6 +363,7 @@ export function validateRegistrationForm(data: {
     email: string
     password: string
     confirmPassword: string
+    phone?: string
 }): { isValid: boolean; errors: Record<string, string> } {
     const errors: Record<string, string> = {}
 
@@ -319,6 +371,14 @@ export function validateRegistrationForm(data: {
     const nameValidation = validateName(data.name)
     if (!nameValidation.isValid) {
         errors.name = nameValidation.error || "Invalid name"
+    } else {
+        // Additional check: name should not be only numbers/special chars
+        const nameCharValidation = validateNameNotOnlyNumbersOrSpecialChars(
+            data.name
+        )
+        if (!nameCharValidation.isValid) {
+            errors.name = nameCharValidation.error || "Invalid name"
+        }
     }
 
     const nameLengthValidation = validateFieldLength(data.name, "name")
@@ -359,6 +419,14 @@ export function validateRegistrationForm(data: {
     if (!passwordMatchValidation.isValid) {
         errors.confirmPassword =
             passwordMatchValidation.error || "Passwords do not match"
+    }
+
+    // Validate phone if provided
+    if (data.phone) {
+        const phoneValidation = validatePhoneNumber(data.phone)
+        if (!phoneValidation.isValid) {
+            errors.phone = phoneValidation.error || "Invalid phone number"
+        }
     }
 
     return {

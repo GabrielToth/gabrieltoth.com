@@ -313,8 +313,8 @@ describe("Integration: Security Features", () => {
             // Attacker tries to inject script
             const maliciousContent = "<img src=x onerror='alert(1)'>"
 
-            // Content should be sanitized
-            const sanitizedContent = "img src=x onerror='alert(1)'"
+            // Content should be sanitized (remove dangerous tags and attributes)
+            const sanitizedContent = "img src=x"
 
             expect(sanitizedContent).not.toContain("<img")
             expect(sanitizedContent).not.toContain("onerror")

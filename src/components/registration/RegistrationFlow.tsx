@@ -1,0 +1,430 @@
+"use client"
+
+import { useRegistration } from "@/hooks/useRegistration"
+import { useEffect, useState } from "react"
+import { EmailInput } from "./EmailInput"
+import { ErrorDisplay } from "./ErrorDisplay"
+import { NavigationButtons } from "./NavigationButtons"
+import { PasswordSetup } from "./PasswordSetup"
+import { PersonalDataForm } from "./PersonalDataForm"
+import { ProgressIndicator } from "./ProgressIndicator"
+import { SuccessMessage } from "./SuccessMessage"
+import { VerificationReview } from "./VerificationReview"
+
+export function RegistrationFlow() {
+    const registration = useRegistration()
+    const [generalError, setGeneralError] = useState<string | null>(null)
+    const [showSuccess, setShowSuccess] = useState(false)
+    const [stepValidation, setStepValidation] = useState({
+        email: false,
+        password: false,
+        personal: false,
+    })
+    const [sessionWarning, setSessionWarning] = useState(false)
+
+    // Initialize registration session on mount
+    useEffect(() => {
+        const initializeSession = async () => {
+            try {
+                // Check if there's an existing session
+                const response = await fetch("/api/auth/registration-session")
+                if (response.ok) {
+                    const data = await response.json()
+                    if (data.data) {
+                        registration.setSession(
+                            data.data.sessionId,
+                            new Date(data.data.expiresAt)
+                        )
+                    }
+                }
+            } catch (error) {
+                console.error("Failed to initialize session:", error)
+            }
+        }
+
+        initializeSession()
+    }, [registration])
+
+    // Monitor session expiration and show warning
+    useEffect(() => {
+        if (!registration.sessionExpiresAt) return
+
+        const checkSessionExpiration = () => {
+            const now = new Date()
+            const expiresAt = new Date(registration.sessionExpiresAt!)
+            const timeUntilExpiration = expiresAt.getTime() - now.getTime()
+
+            // Show warning 5 minutes before expiration
+            if (
+                timeUntilExpiration > 0 &&
+                timeUntilExpiration <= 5 * 60 * 1000
+            ) {
+                setSessionWarning(true)
+            }
+
+            // Session has expired
+            if (timeUntilExpiration <= 0) {
+                registration.clearSession()
+                setGeneralError(
+                    "Your registration session has expired. Please start over."
+                )
+                registration.reset()
+            }
+        }
+
+        checkSessionExpiration()
+        const interval = setInterval(checkSessionExpiration, 30000) // Check every 30 seconds
+
+        return () => clearInterval(interval)
+    }, [registration.sessionExpiresAt, registration])
+
+    const handleEmailValidation = (isValid: boolean) => {
+        setStepValidation(prev => ({ ...prev, email: isValid }))
+    }
+
+    const handlePasswordValidation = (isValid: boolean) => {
+        setStepValidation(prev => ({ ...prev, password: isValid }))
+    }
+
+    const handlePersonalValidation = (isValid: boolean) => {
+        setStepValidation(prev => ({ ...prev, personal: isValid }))
+    }
+
+    const handleNext = async () => {
+        if (registration.currentStep === 0 && !stepValidation.email) {
+            setGeneralError("Please enter a valid email address")
+            return
+        }
+
+        if (registration.currentStep === 1 && !stepValidation.password) {
+            setGeneralError("Please enter a valid password")
+            return
+        }
+
+        if (registration.currentStep === 2 && !stepValidation.personal) {
+            setGeneralError("Please enter valid personal information")
+            return
+        }
+
+        if (registration.currentStep === 3) {
+            // Submit registration
+            await handleSubmit()
+            return
+        }
+
+        setGeneralError(null)
+        registration.nextStep()
+
+        // Update session with new step
+        if (registration.sessionId) {
+            try {
+                await fetch("/api/auth/registration-session", {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        currentStep: registration.currentStep + 1,
+                    }),
+                })
+            } catch (error) {
+                console.error("Failed to update session:", error)
+            }
+        }
+    }
+
+    const handleSubmit = async () => {
+        registration.setSubmitting(true)
+        setGeneralError(null)
+
+        try {
+            const response = await fetch("/api/auth/register", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    email: registration.formData.email,
+                    password: registration.formData.password,
+                    name: registration.formData.name,
+                    phone: registration.formData.phone,
+                }),
+            })
+
+            const data = await response.json()
+
+            if (!response.ok) {
+                setGeneralError(
+                    data.error || "Registration failed. Please try again."
+                )
+                return
+            }
+
+            // Success - clear session
+            if (registration.sessionId) {
+                try {
+                    await fetch("/api/auth/registration-session", {
+                        method: "DELETE",
+                    })
+                } catch (error) {
+                    console.error("Failed to clear session:", error)
+                }
+            }
+
+            registration.reset()
+            setShowSuccess(true)
+        } catch (error) {
+            console.error("Registration error:", error)
+            setGeneralError("An unexpected error occurred. Please try again.")
+        } finally {
+            registration.setSubmitting(false)
+        }
+    }
+
+    const handleCancel = () => {
+        if (
+            confirm("Are you sure you want to cancel? Your data will be lost.")
+        ) {
+            // Clear session
+            if (registration.sessionId) {
+                fetch("/api/auth/registration-session", {
+                    method: "DELETE",
+                }).catch(error =>
+                    console.error("Failed to clear session:", error)
+                )
+            }
+
+            registration.reset()
+            setGeneralError(null)
+        }
+    }
+
+    const handleEdit = (field: "email" | "password" | "name" | "phone") => {
+        const stepMap = {
+            email: 0,
+            password: 1,
+            name: 2,
+            phone: 2,
+        }
+        registration.goToStep(stepMap[field])
+    }
+
+    if (registration.sessionExpired) {
+        return (
+            <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-12 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
+                <div className="max-w-md w-full bg-white rounded-lg shadow-xl p-8 text-center">
+                    <div className="mb-4 flex justify-center">
+                        <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center">
+                            <svg
+                                className="w-8 h-8 text-red-600"
+                                fill="currentColor"
+                                viewBox="0 0 20 20"
+                            >
+                                <path
+                                    fillRule="evenodd"
+                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                                    clipRule="evenodd"
+                                />
+                            </svg>
+                        </div>
+                    </div>
+                    <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                        Session Expired
+                    </h2>
+                    <p className="text-gray-600 mb-6">
+                        Your registration session has expired. Please start
+                        over.
+                    </p>
+                    <a
+                        href="/register"
+                        className="inline-block px-6 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors"
+                    >
+                        Start Over
+                    </a>
+                </div>
+            </div>
+        )
+    }
+
+    if (showSuccess) {
+        return (
+            <SuccessMessage
+                message="Account created successfully! Redirecting to login..."
+                redirectUrl="/login"
+                redirectDelay={2000}
+            />
+        )
+    }
+
+    return (
+        <div className="min-h-screen bg-linear-to-br from-blue-50 to-indigo-100 py-12 px-4 sm:px-6 lg:px-8">
+            <div className="max-w-2xl mx-auto">
+                <div className="bg-white rounded-lg shadow-xl p-8">
+                    {/* Header */}
+                    <div className="mb-8">
+                        <h1 className="text-3xl font-bold text-gray-900">
+                            Create Account
+                        </h1>
+                        <p className="mt-2 text-gray-600">
+                            Join us today and get started in just a few steps
+                        </p>
+                    </div>
+
+                    {/* Session Warning */}
+                    {sessionWarning && (
+                        <div className="mb-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg flex items-start gap-3">
+                            <div className="flex-shrink-0 text-yellow-600 mt-0.5">
+                                <svg
+                                    className="w-5 h-5"
+                                    fill="currentColor"
+                                    viewBox="0 0 20 20"
+                                >
+                                    <path
+                                        fillRule="evenodd"
+                                        d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+                                        clipRule="evenodd"
+                                    />
+                                </svg>
+                            </div>
+                            <div className="flex-1">
+                                <p className="text-sm font-medium text-yellow-900">
+                                    Your session will expire soon. Please
+                                    complete your registration.
+                                </p>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Progress Indicator */}
+                    <ProgressIndicator currentStep={registration.currentStep} />
+
+                    {/* Error Display */}
+                    <ErrorDisplay
+                        error={generalError}
+                        onDismiss={() => setGeneralError(null)}
+                    />
+
+                    {/* Form Content */}
+                    <div className="mt-8">
+                        {registration.currentStep === 0 && (
+                            <div>
+                                <h2 className="text-xl font-semibold text-gray-900 mb-4">
+                                    Email Address
+                                </h2>
+                                <EmailInput
+                                    value={registration.formData.email}
+                                    onChange={email =>
+                                        registration.updateFormData({ email })
+                                    }
+                                    onValidationChange={handleEmailValidation}
+                                    disabled={registration.isSubmitting}
+                                />
+                            </div>
+                        )}
+
+                        {registration.currentStep === 1 && (
+                            <div>
+                                <h2 className="text-xl font-semibold text-gray-900 mb-4">
+                                    Password Setup
+                                </h2>
+                                <PasswordSetup
+                                    value={registration.formData.password}
+                                    confirmValue={
+                                        registration.formData.confirmPassword
+                                    }
+                                    onChange={password =>
+                                        registration.updateFormData({
+                                            password,
+                                        })
+                                    }
+                                    onConfirmChange={confirmPassword =>
+                                        registration.updateFormData({
+                                            confirmPassword,
+                                        })
+                                    }
+                                    onValidationChange={
+                                        handlePasswordValidation
+                                    }
+                                    disabled={registration.isSubmitting}
+                                />
+                            </div>
+                        )}
+
+                        {registration.currentStep === 2 && (
+                            <div>
+                                <h2 className="text-xl font-semibold text-gray-900 mb-4">
+                                    Personal Information
+                                </h2>
+                                <PersonalDataForm
+                                    name={registration.formData.name}
+                                    phone={registration.formData.phone}
+                                    onNameChange={name =>
+                                        registration.updateFormData({ name })
+                                    }
+                                    onPhoneChange={phone =>
+                                        registration.updateFormData({ phone })
+                                    }
+                                    onValidationChange={
+                                        handlePersonalValidation
+                                    }
+                                    disabled={registration.isSubmitting}
+                                />
+                            </div>
+                        )}
+
+                        {registration.currentStep === 3 && (
+                            <div>
+                                <h2 className="text-xl font-semibold text-gray-900 mb-4">
+                                    Review Information
+                                </h2>
+                                <VerificationReview
+                                    email={registration.formData.email}
+                                    name={registration.formData.name}
+                                    phone={registration.formData.phone}
+                                    onEdit={handleEdit}
+                                    disabled={registration.isSubmitting}
+                                />
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Navigation Buttons */}
+                    <NavigationButtons
+                        onBack={
+                            registration.currentStep > 0
+                                ? registration.previousStep
+                                : undefined
+                        }
+                        onNext={handleNext}
+                        onCancel={handleCancel}
+                        nextLabel={
+                            registration.currentStep === 3
+                                ? "Create Account"
+                                : "Next"
+                        }
+                        nextDisabled={
+                            registration.currentStep === 0
+                                ? !stepValidation.email
+                                : registration.currentStep === 1
+                                  ? !stepValidation.password
+                                  : registration.currentStep === 2
+                                    ? !stepValidation.personal
+                                    : false
+                        }
+                        isLoading={registration.isSubmitting}
+                        showCancel={true}
+                    />
+                </div>
+
+                {/* Footer */}
+                <div className="mt-8 text-center">
+                    <p className="text-gray-600">
+                        Already have an account?{" "}
+                        <a
+                            href="/login"
+                            className="text-blue-600 hover:text-blue-700 font-medium"
+                        >
+                            Sign in
+                        </a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    )
+}

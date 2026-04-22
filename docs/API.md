@@ -5,7 +5,8 @@ Complete API reference for gabrieltoth.com platform.
 ## 📚 Table of Contents
 
 ### Authentication
-- **[Authentication API](API_AUTH.md)** - User registration, login, password reset
+- **[Authentication API](API_AUTH.md)** - User login, password reset, session management
+- **[Registration API](API_REGISTRATION.md)** - Enhanced multi-step registration with email verification
 - **[OAuth API](API_OAUTH.md)** - Google OAuth authentication
 
 ### Platform

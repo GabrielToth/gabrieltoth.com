@@ -4,7 +4,12 @@
  * Validates: Requirements 2.3, 3.4, 7.1, 7.2, 7.3, 7.4, 7.5, 10.4, 2.3, 9.1
  */
 
-import { validateEmail, validatePassword } from "@/lib/validation"
+import {
+    validateEmail,
+    validateName,
+    validateNameNotOnlyNumbersOrSpecialChars,
+    validatePassword,
+} from "@/lib/validation"
 import fc from "fast-check"
 import { describe, expect, it } from "vitest"
 
@@ -537,6 +542,410 @@ describe("Property 2: Email Format Validation", () => {
                 expect(result2.error).toBe(result3.error)
             }),
             { numRuns: 10 }
+        )
+    })
+})
+
+describe("Property 8: Name Validation", () => {
+    /**
+     * **Validates: Requirements 4.3, 11.1, 11.2, 11.3**
+     *
+     * Property: For any name string, the name validator SHALL correctly validate
+     * that the name is not empty, contains at least 2 characters, and contains only
+     * letters, spaces, hyphens, and apostrophes. Valid names SHALL pass validation,
+     * invalid names SHALL fail validation.
+     */
+    it("should correctly validate name format for any name string", () => {
+        fc.assert(
+            fc.property(fc.string(), name => {
+                const result = validateName(name)
+
+                // Property: result always has isValid property
+                expect(result).toHaveProperty("isValid")
+                expect(typeof result.isValid).toBe("boolean")
+
+                // Property: error is either undefined or a string
+                if (result.error !== undefined) {
+                    expect(typeof result.error).toBe("string")
+                    expect(result.error.length).toBeGreaterThan(0)
+                }
+
+                // Property: if valid, no error should be present
+                if (result.isValid) {
+                    expect(result.error).toBeUndefined()
+                }
+
+                // Property: if invalid, error should be present
+                if (!result.isValid) {
+                    expect(result.error).toBeDefined()
+                }
+            }),
+            { numRuns: 50 }
+        )
+    })
+
+    it("should reject empty or null names", () => {
+        fc.assert(
+            fc.property(
+                fc.oneof(fc.constant(""), fc.constant(null as any)),
+                name => {
+                    const result = validateName(name)
+
+                    // Property: empty or null names are always invalid
+                    expect(result.isValid).toBe(false)
+                    expect(result.error).toBeDefined()
+                    expect(result.error).toContain("required")
+                }
+            ),
+            { numRuns: 10 }
+        )
+    })
+
+    it("should reject names with less than 2 characters", () => {
+        fc.assert(
+            fc.property(
+                fc
+                    .string({ minLength: 1, maxLength: 1 })
+                    .filter(s => s.trim().length > 0),
+                name => {
+                    const result = validateName(name)
+
+                    // Property: names with less than 2 characters are always invalid
+                    expect(result.isValid).toBe(false)
+                    expect(result.error).toBeDefined()
+                    expect(result.error).toContain("2 characters")
+                }
+            ),
+            { numRuns: 50 }
+        )
+    })
+
+    it("should accept names with 2 or more letters", () => {
+        fc.assert(
+            fc.property(
+                fc.tuple(
+                    fc
+                        .string({ minLength: 1, maxLength: 25 })
+                        .filter(s => /^[A-Za-z]+$/.test(s)),
+                    fc
+                        .string({ minLength: 1, maxLength: 25 })
+                        .filter(s => /^[A-Za-z]+$/.test(s))
+                ),
+                ([part1, part2]) => {
+                    const name = `${part1} ${part2}`
+
+                    const result = validateName(name)
+
+                    // Property: names with 2+ letters should be valid
+                    expect(result.isValid).toBe(true)
+                    expect(result.error).toBeUndefined()
+                }
+            ),
+            { numRuns: 50 }
+        )
+    })
+
+    it("should accept names with spaces", () => {
+        fc.assert(
+            fc.property(
+                fc.tuple(
+                    fc
+                        .string({ minLength: 1, maxLength: 10 })
+                        .filter(s => /^[A-Za-z]+$/.test(s)),
+                    fc
+                        .string({ minLength: 1, maxLength: 10 })
+                        .filter(s => /^[A-Za-z]+$/.test(s))
+                ),
+                ([firstName, lastName]) => {
+                    const name = `${firstName} ${lastName}`
+
+                    const result = validateName(name)
+
+                    // Property: names with spaces should be valid
+                    expect(result.isValid).toBe(true)
+                    expect(result.error).toBeUndefined()
+                }
+            ),
+            { numRuns: 50 }
+        )
+    })
+
+    it("should accept names with hyphens", () => {
+        fc.assert(
+            fc.property(
+                fc.tuple(
+                    fc
+                        .string({ minLength: 1, maxLength: 10 })
+                        .filter(s => /^[A-Za-z]+$/.test(s)),
+                    fc
+                        .string({ minLength: 1, maxLength: 10 })
+                        .filter(s => /^[A-Za-z]+$/.test(s))
+                ),
+                ([part1, part2]) => {
+                    const name = `${part1}-${part2}`
+
+                    const result = validateName(name)
+
+                    // Property: names with hyphens should be valid
+                    expect(result.isValid).toBe(true)
+                    expect(result.error).toBeUndefined()
+                }
+            ),
+            { numRuns: 50 }
+        )
+    })
+
+    it("should accept names with apostrophes", () => {
+        fc.assert(
+            fc.property(
+                fc.tuple(
+                    fc
+                        .string({ minLength: 1, maxLength: 10 })
+                        .filter(s => /^[A-Za-z]+$/.test(s)),
+                    fc
+                        .string({ minLength: 1, maxLength: 10 })
+                        .filter(s => /^[A-Za-z]+$/.test(s))
+                ),
+                ([part1, part2]) => {
+                    const name = `${part1}'${part2}`
+
+                    const result = validateName(name)
+
+                    // Property: names with apostrophes should be valid
+                    expect(result.isValid).toBe(true)
+                    expect(result.error).toBeUndefined()
+                }
+            ),
+            { numRuns: 50 }
+        )
+    })
+
+    it("should reject names with numbers", () => {
+        fc.assert(
+            fc.property(
+                fc.tuple(
+                    fc
+                        .string({ minLength: 1, maxLength: 10 })
+                        .filter(s => /^[A-Za-z]+$/.test(s)),
+                    fc.integer({ min: 0, max: 9 })
+                ),
+                ([name, digit]) => {
+                    const invalidName = `${name}${digit}`
+
+                    const result = validateName(invalidName)
+
+                    // Property: names with numbers are always invalid
+                    expect(result.isValid).toBe(false)
+                    expect(result.error).toBeDefined()
+                    expect(result.error).toContain(
+                        "letters, spaces, hyphens, and apostrophes"
+                    )
+                }
+            ),
+            { numRuns: 50 }
+        )
+    })
+
+    it("should reject names with special characters", () => {
+        fc.assert(
+            fc.property(
+                fc.tuple(
+                    fc
+                        .string({ minLength: 1, maxLength: 10 })
+                        .filter(s => /^[A-Za-z]+$/.test(s)),
+                    fc.constantFrom(
+                        "@",
+                        "#",
+                        "$",
+                        "%",
+                        "!",
+                        "&",
+                        "*",
+                        ".",
+                        ",",
+                        "?"
+                    )
+                ),
+                ([name, specialChar]) => {
+                    const invalidName = `${name}${specialChar}`
+
+                    const result = validateName(invalidName)
+
+                    // Property: names with special characters are always invalid
+                    expect(result.isValid).toBe(false)
+                    expect(result.error).toBeDefined()
+                    expect(result.error).toContain(
+                        "letters, spaces, hyphens, and apostrophes"
+                    )
+                }
+            ),
+            { numRuns: 50 }
+        )
+    })
+
+    it("should trim whitespace from name before validation", () => {
+        fc.assert(
+            fc.property(
+                fc.tuple(
+                    fc
+                        .string({ minLength: 1, maxLength: 25 })
+                        .filter(s => /^[A-Za-z]+$/.test(s)),
+                    fc
+                        .string({ minLength: 1, maxLength: 25 })
+                        .filter(s => /^[A-Za-z]+$/.test(s))
+                ),
+                ([part1, part2]) => {
+                    const name = `${part1} ${part2}`
+                    const trimmedName = `  ${name}  `
+
+                    const result = validateName(trimmedName)
+
+                    // Property: names with surrounding whitespace should be trimmed and validated
+                    expect(result.isValid).toBe(true)
+                    expect(result.error).toBeUndefined()
+                }
+            ),
+            { numRuns: 50 }
+        )
+    })
+
+    it("should validate the same name consistently across multiple calls", () => {
+        fc.assert(
+            fc.property(
+                fc
+                    .string({ minLength: 2, maxLength: 50 })
+                    .filter(s => /^[A-Za-z\s\-']+$/.test(s)),
+                name => {
+                    const result1 = validateName(name)
+                    const result2 = validateName(name)
+                    const result3 = validateName(name)
+
+                    // Property: validating the same name multiple times yields identical results
+                    expect(result1.isValid).toBe(result2.isValid)
+                    expect(result2.isValid).toBe(result3.isValid)
+                    expect(result1.error).toBe(result2.error)
+                    expect(result2.error).toBe(result3.error)
+                }
+            ),
+            { numRuns: 50 }
+        )
+    })
+})
+
+describe("Property 9: Name Rejection for Invalid Characters", () => {
+    /**
+     * **Validates: Requirements 11.4**
+     *
+     * Property: For any string composed entirely of numbers or special characters,
+     * the name validator SHALL reject the string as invalid. Names must contain
+     * at least some letters.
+     */
+    it("should reject names composed entirely of numbers", () => {
+        fc.assert(
+            fc.property(
+                fc
+                    .string({ minLength: 1, maxLength: 20 })
+                    .filter(s => /^[0-9]+$/.test(s)),
+                name => {
+                    const result =
+                        validateNameNotOnlyNumbersOrSpecialChars(name)
+
+                    // Property: names with only numbers are always invalid
+                    expect(result.isValid).toBe(false)
+                    expect(result.error).toBeDefined()
+                    expect(result.error).toContain("letters")
+                }
+            ),
+            { numRuns: 50 }
+        )
+    })
+
+    it("should reject names composed entirely of special characters", () => {
+        fc.assert(
+            fc.property(
+                fc
+                    .string({ minLength: 1, maxLength: 20 })
+                    .filter(s =>
+                        /^[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+$/.test(s)
+                    ),
+                name => {
+                    const result =
+                        validateNameNotOnlyNumbersOrSpecialChars(name)
+
+                    // Property: names with only special characters are always invalid
+                    expect(result.isValid).toBe(false)
+                    expect(result.error).toBeDefined()
+                    expect(result.error).toContain("letters")
+                }
+            ),
+            { numRuns: 50 }
+        )
+    })
+
+    it("should accept names with at least one letter", () => {
+        fc.assert(
+            fc.property(
+                fc.tuple(
+                    fc
+                        .string({ minLength: 1, maxLength: 10 })
+                        .filter(s => /^[A-Za-z]+$/.test(s)),
+                    fc
+                        .string({ minLength: 0, maxLength: 10 })
+                        .filter(s =>
+                            /^[0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]*$/.test(
+                                s
+                            )
+                        )
+                ),
+                ([letters, others]) => {
+                    const name = `${letters}${others}`
+
+                    const result =
+                        validateNameNotOnlyNumbersOrSpecialChars(name)
+
+                    // Property: names with at least one letter should be valid
+                    expect(result.isValid).toBe(true)
+                    expect(result.error).toBeUndefined()
+                }
+            ),
+            { numRuns: 50 }
+        )
+    })
+
+    it("should accept empty strings (secondary validation)", () => {
+        fc.assert(
+            fc.property(fc.constant(""), name => {
+                const result = validateNameNotOnlyNumbersOrSpecialChars(name)
+
+                // Property: empty strings are accepted (primary validation handles this)
+                expect(result.isValid).toBe(true)
+            }),
+            { numRuns: 10 }
+        )
+    })
+
+    it("should validate consistently across multiple calls", () => {
+        fc.assert(
+            fc.property(
+                fc
+                    .string({ minLength: 1, maxLength: 20 })
+                    .filter(s => /^[0-9]+$/.test(s)),
+                name => {
+                    const result1 =
+                        validateNameNotOnlyNumbersOrSpecialChars(name)
+                    const result2 =
+                        validateNameNotOnlyNumbersOrSpecialChars(name)
+                    const result3 =
+                        validateNameNotOnlyNumbersOrSpecialChars(name)
+
+                    // Property: validating the same name multiple times yields identical results
+                    expect(result1.isValid).toBe(result2.isValid)
+                    expect(result2.isValid).toBe(result3.isValid)
+                    expect(result1.error).toBe(result2.error)
+                    expect(result2.error).toBe(result3.error)
+                }
+            ),
+            { numRuns: 50 }
         )
     })
 })

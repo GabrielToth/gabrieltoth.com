@@ -131,34 +131,47 @@ export default async function MinecraftPage({ params }: MinecraftPageProps) {
                             <div className="mb-8">
                                 <h3 className="text-2xl font-bold mb-4 text-white">
                                     {t("landing.journey.myStory", {
-                                        defaultValue: "My Minecraft Journey",
+                                        defaultValue:
+                                            "My Minecraft Journey Since 2013",
                                     })}
                                 </h3>
                                 <p className="text-gray-300 mb-4 text-lg leading-relaxed">
                                     {t("landing.journey.storyIntro", {
                                         defaultValue:
-                                            "I've been playing Minecraft since 2013, thanks to a friend's recommendation. I had prejudices against the game and didn't see the appeal at first, but when he introduced me to it, I decided to give it a try a week later. I downloaded it to test it out, and I ended up loving it. Today, Minecraft is my favorite game.",
+                                            "I've been playing Minecraft since 2013, thanks to a friend's recommendation. Initially skeptical about the game, I decided to give it a try a week after being introduced to it. What started as a casual test became a passion—today, Minecraft is my favorite game and a significant part of my gaming identity.",
                                     })}
                                 </p>
                                 <p className="text-gray-300 mb-4 text-lg leading-relaxed">
                                     {t("landing.journey.modpacksPreference", {
                                         defaultValue:
-                                            "I generally play modpacks, and the more difficult, the better. I've played through the entire All The Mods series, both the normal version and the Skyblock version. More recently, I've been playing GregTech: New Horizon. I have aspirations to play more difficult or well-known modpacks and even create more content about them. Currently, the only thing preventing me from doing so is the lack of a graphics card.",
+                                            "My primary focus is on challenging modpacks where difficulty enhances the experience. I've extensively played the All The Mods series (both standard and Skyblock variants) and recently completed GregTech: New Horizon. I'm passionate about exploring harder modpacks and creating content around them. The main limitation is hardware—a dedicated graphics card would significantly expand my capabilities for streaming and content creation.",
+                                    })}
+                                </p>
+                                <p className="text-gray-300 mb-4 text-lg leading-relaxed">
+                                    {t("landing.journey.hypixelSkyblock", {
+                                        defaultValue:
+                                            "Hypixel's Skyblock stands out as a unique experience. They've transformed the traditional Skyblock concept into a full RPG world with narrative elements, political systems, and meaningful incentives for complex, repetitive, and luck-dependent tasks. It's a masterclass in game design that goes far beyond standard Skyblock gameplay.",
                                     })}
                                 </p>
                                 <p className="text-gray-300 text-lg leading-relaxed">
-                                    {t("landing.journey.hypixelSkyblock", {
+                                    {t("landing.journey.futureGoals", {
                                         defaultValue:
-                                            "I also love Hypixel's Skyblock because they've transformed the Skyblock experience into a true RPG world with story, politics, and incentives for complex, repetitive, or luck-dependent tasks. The experience is far from a normal Skyblock.",
+                                            "My goals include creating comprehensive content about challenging modpacks, exploring emerging modpack ecosystems, and potentially developing my own modifications. I'm committed to sharing knowledge about optimization, progression strategies, and the technical aspects of modded Minecraft with the community.",
                                     })}
                                 </p>
                             </div>
 
                             {/* Content Categories */}
-                            <div className="grid md:grid-cols-3 gap-6">
+                            <div className="grid md:grid-cols-3 gap-6 mt-8">
                                 {/* Modpacks */}
-                                <div className="bg-[#2d2d2d] border border-neutral-700 rounded-lg p-6">
-                                    <h3 className="text-xl font-bold mb-3 text-white">
+                                <Link
+                                    href={getLocalizedPath(
+                                        "minecraft-modpacks",
+                                        locale
+                                    )}
+                                    className="bg-[#2d2d2d] border border-neutral-700 rounded-lg p-6 hover:border-[#10b981] transition-all duration-200 hover:shadow-lg hover:shadow-[#10b981]/20"
+                                >
+                                    <h3 className="text-xl font-bold mb-3 text-white hover:text-[#10b981] transition-colors">
                                         {t("landing.journey.modpacks", {
                                             defaultValue: "Modpacks",
                                         })}
@@ -166,14 +179,20 @@ export default async function MinecraftPage({ params }: MinecraftPageProps) {
                                     <p className="text-gray-400 text-sm">
                                         {t("landing.journey.modpacksText", {
                                             defaultValue:
-                                                "Explore my favorite modpacks and recommendations for challenging gameplay experiences.",
+                                                "Explore curated modpack recommendations, progression guides, and difficulty rankings for challenging gameplay experiences.",
                                         })}
                                     </p>
-                                </div>
+                                </Link>
 
                                 {/* Mods */}
-                                <div className="bg-[#2d2d2d] border border-neutral-700 rounded-lg p-6">
-                                    <h3 className="text-xl font-bold mb-3 text-white">
+                                <Link
+                                    href={getLocalizedPath(
+                                        "minecraft-mods",
+                                        locale
+                                    )}
+                                    className="bg-[#2d2d2d] border border-neutral-700 rounded-lg p-6 hover:border-[#10b981] transition-all duration-200 hover:shadow-lg hover:shadow-[#10b981]/20"
+                                >
+                                    <h3 className="text-xl font-bold mb-3 text-white hover:text-[#10b981] transition-colors">
                                         {t("landing.journey.mods", {
                                             defaultValue: "Mods",
                                         })}
@@ -181,14 +200,20 @@ export default async function MinecraftPage({ params }: MinecraftPageProps) {
                                     <p className="text-gray-400 text-sm">
                                         {t("landing.journey.modsText", {
                                             defaultValue:
-                                                "Discover individual mods that enhance and transform the Minecraft experience.",
+                                                "Discover individual mods that enhance gameplay, improve performance, and transform the Minecraft experience with new mechanics and content.",
                                         })}
                                     </p>
-                                </div>
+                                </Link>
 
                                 {/* Plugins */}
-                                <div className="bg-[#2d2d2d] border border-neutral-700 rounded-lg p-6">
-                                    <h3 className="text-xl font-bold mb-3 text-white">
+                                <Link
+                                    href={getLocalizedPath(
+                                        "minecraft-plugins",
+                                        locale
+                                    )}
+                                    className="bg-[#2d2d2d] border border-neutral-700 rounded-lg p-6 hover:border-[#10b981] transition-all duration-200 hover:shadow-lg hover:shadow-[#10b981]/20"
+                                >
+                                    <h3 className="text-xl font-bold mb-3 text-white hover:text-[#10b981] transition-colors">
                                         {t("landing.journey.plugins", {
                                             defaultValue: "Plugins",
                                         })}
@@ -196,10 +221,10 @@ export default async function MinecraftPage({ params }: MinecraftPageProps) {
                                     <p className="text-gray-400 text-sm">
                                         {t("landing.journey.pluginsText", {
                                             defaultValue:
-                                                "Server plugins and modifications for enhanced multiplayer experiences.",
+                                                "Server plugins and modifications for enhanced multiplayer experiences, custom mechanics, and community-driven gameplay.",
                                         })}
                                     </p>
-                                </div>
+                                </Link>
                             </div>
                         </div>
                     </div>

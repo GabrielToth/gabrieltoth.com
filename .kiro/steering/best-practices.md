@@ -396,3 +396,166 @@ export async function fetchData() {
 ---
 
 **Última atualização:** 21 de Abril de 2026
+
+
+## 📦 Semantic Versioning Rules
+
+**OBRIGATÓRIO** seguir Semantic Versioning (SemVer) para todas as mudanças:
+
+### Versão Atual: 1.8.20
+
+**Formato:** `MAJOR.MINOR.PATCH`
+
+- **MAJOR (X.0.0)**: Breaking changes, large feature removals, major refactors
+  - Exemplo: Remover dashboard completamente, mudar estrutura de API
+  - Incrementar quando: Mudanças que quebram compatibilidade
+
+- **MINOR (0.X.0)**: New features, small removals (não categorias/páginas inteiras)
+  - Exemplo: Adicionar novo campo de formulário, novo componente
+  - Incrementar quando: Adicionar funcionalidade sem quebrar compatibilidade
+
+- **PATCH (0.0.X)**: Bug fixes only, performance improvements, documentation
+  - Exemplo: Corrigir validação de email, otimizar performance
+  - Incrementar quando: Apenas correções e melhorias sem novas features
+
+### Regra Obrigatória: Incrementar Versão em Cada Commit
+
+**TODOS** os commits devem incrementar a versão em `package.json`:
+
+```bash
+# Bug fix - incrementar PATCH
+npm version patch  # 1.8.20 → 1.8.21
+
+# Nova feature - incrementar MINOR
+npm version minor  # 1.8.20 → 1.9.0
+
+# Breaking change - incrementar MAJOR
+npm version major  # 1.8.20 → 2.0.0
+```
+
+**Exemplo de Commit com Versioning:**
+```bash
+# Fazer mudanças
+git add .
+
+# Incrementar versão (escolher patch/minor/major)
+npm version patch
+
+# Commit será criado automaticamente com tag
+git push origin feature-branch --tags
+```
+
+### Checklist de Versioning
+
+- [ ] Identifiquei o tipo de mudança (bug fix, feature, breaking change)
+- [ ] Executei `npm version patch|minor|major` antes de fazer push
+- [ ] Versão em `package.json` foi incrementada corretamente
+- [ ] Tag git foi criada automaticamente
+- [ ] Commit de versioning foi feito
+
+---
+
+## 🐳 Docker Container Requirements
+
+**CRÍTICO**: Testes e desenvolvimento local REQUEREM Docker containers rodando.
+
+### Containers Necessários
+
+Antes de executar testes ou desenvolvimento, certifique-se que os seguintes containers estão rodando:
+
+- **PostgreSQL Database**: Banco de dados principal
+- **Redis Cache**: Cache e session storage
+- **SMTP Server** (MailHog ou similar): Email testing
+- **Backend Services**: Serviços backend containerizados
+
+### Iniciar Containers
+
+```bash
+# Iniciar todos os containers (docker-compose)
+docker-compose up -d
+
+# Verificar status dos containers
+docker-compose ps
+
+# Ver logs dos containers
+docker-compose logs -f
+```
+
+### Verificação Pré-Teste
+
+**OBRIGATÓRIO** antes de executar testes:
+
+```bash
+# Verificar se containers estão rodando
+docker-compose ps
+
+# Verificar conectividade com banco de dados
+npm run db:check
+
+# Verificar conectividade com Redis
+npm run redis:check
+```
+
+### Checklist de Docker
+
+- [ ] Docker Desktop está instalado e rodando
+- [ ] `docker-compose up -d` foi executado
+- [ ] Todos os containers estão com status "Up"
+- [ ] Banco de dados está acessível
+- [ ] Redis está acessível
+- [ ] SMTP server está acessível
+
+### Troubleshooting Docker
+
+**Containers não iniciam:**
+```bash
+# Limpar containers antigos
+docker-compose down -v
+
+# Reconstruir images
+docker-compose build --no-cache
+
+# Iniciar novamente
+docker-compose up -d
+```
+
+**Banco de dados não conecta:**
+```bash
+# Verificar logs do PostgreSQL
+docker-compose logs postgres
+
+# Reiniciar container
+docker-compose restart postgres
+```
+
+**Redis não conecta:**
+```bash
+# Verificar logs do Redis
+docker-compose logs redis
+
+# Reiniciar container
+docker-compose restart redis
+```
+
+---
+
+## ✅ Checklist Completo de Finalização (Atualizado)
+
+- [ ] Versão foi incrementada em `package.json` (npm version patch/minor/major)
+- [ ] Docker containers estão rodando (`docker-compose ps`)
+- [ ] Todos os testes passam (`npm run test`)
+- [ ] Cobertura de testes aceitável (> 80%)
+- [ ] Performance dentro dos targets (LCP < 2.5s, etc.)
+- [ ] Código formatado (`npm run format`)
+- [ ] Linting corrigido (`npm run lint:fix`)
+- [ ] Tipos TypeScript validados (`npm run type-check`)
+- [ ] Ortografia verificada (`npm run spell-check`)
+- [ ] Storybook stories criadas/atualizadas
+- [ ] Build completa sem erros (`npm run build`)
+- [ ] Testes finais passam
+- [ ] Commit feito com mensagem descritiva
+- [ ] Push realizado para repositório remoto com tags
+
+---
+
+**Última atualização:** 22 de Abril de 2026

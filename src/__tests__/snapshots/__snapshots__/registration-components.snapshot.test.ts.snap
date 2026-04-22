@@ -1,0 +1,765 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Snapshot Tests: Registration Components > EmailInput Snapshots > should match snapshot for all states 1`] = `
+"
+      <div class="email-input-container">
+        <label for="email">Email Address</label>
+        <input
+          id="email"
+          type="email"
+          name="email"
+          placeholder="Enter your email"
+          value=""
+          aria-label="Email Address"
+        />
+        <div class="validation-message"></div>
+        <button class="next-button" disabled>Next</button>
+      </div>
+    "
+`;
+
+exports[`Snapshot Tests: Registration Components > EmailInput Snapshots > should match snapshot for all states 2`] = `
+"
+      <div class="email-input-container">
+        <label for="email">Email Address</label>
+        <input
+          id="email"
+          type="email"
+          name="email"
+          placeholder="Enter your email"
+          value="user@example.com"
+          aria-label="Email Address"
+          class="valid"
+        />
+        <div class="validation-message success">Email is valid and available</div>
+        <button class="next-button">Next</button>
+      </div>
+    "
+`;
+
+exports[`Snapshot Tests: Registration Components > EmailInput Snapshots > should match snapshot for all states 3`] = `
+"
+      <div class="email-input-container">
+        <label for="email">Email Address</label>
+        <input
+          id="email"
+          type="email"
+          name="email"
+          placeholder="Enter your email"
+          value="invalid-email"
+          aria-label="Email Address"
+          class="invalid"
+        />
+        <div class="validation-message error">Please enter a valid email address</div>
+        <button class="next-button" disabled>Next</button>
+      </div>
+    "
+`;
+
+exports[`Snapshot Tests: Registration Components > EmailInput Snapshots > should match snapshot for all states 4`] = `
+"
+      <div class="email-input-container">
+        <label for="email">Email Address</label>
+        <input
+          id="email"
+          type="email"
+          name="email"
+          placeholder="Enter your email"
+          value="user@example.com"
+          aria-label="Email Address"
+          disabled
+        />
+        <div class="validation-message loading">Checking availability...</div>
+        <div class="spinner"></div>
+        <button class="next-button" disabled>Next</button>
+      </div>
+    "
+`;
+
+exports[`Snapshot Tests: Registration Components > EmailInput Snapshots > should match snapshot for empty state 1`] = `
+"
+      <div class="email-input-container">
+        <label for="email">Email Address</label>
+        <input
+          id="email"
+          type="email"
+          name="email"
+          placeholder="Enter your email"
+          value=""
+          aria-label="Email Address"
+        />
+        <div class="validation-message"></div>
+        <button class="next-button" disabled>Next</button>
+      </div>
+    "
+`;
+
+exports[`Snapshot Tests: Registration Components > EmailInput Snapshots > should match snapshot for invalid state 1`] = `
+"
+      <div class="email-input-container">
+        <label for="email">Email Address</label>
+        <input
+          id="email"
+          type="email"
+          name="email"
+          placeholder="Enter your email"
+          value="invalid-email"
+          aria-label="Email Address"
+          class="invalid"
+        />
+        <div class="validation-message error">Please enter a valid email address</div>
+        <button class="next-button" disabled>Next</button>
+      </div>
+    "
+`;
+
+exports[`Snapshot Tests: Registration Components > EmailInput Snapshots > should match snapshot for loading state 1`] = `
+"
+      <div class="email-input-container">
+        <label for="email">Email Address</label>
+        <input
+          id="email"
+          type="email"
+          name="email"
+          placeholder="Enter your email"
+          value="user@example.com"
+          aria-label="Email Address"
+          disabled
+        />
+        <div class="validation-message loading">Checking availability...</div>
+        <div class="spinner"></div>
+        <button class="next-button" disabled>Next</button>
+      </div>
+    "
+`;
+
+exports[`Snapshot Tests: Registration Components > EmailInput Snapshots > should match snapshot for valid state 1`] = `
+"
+      <div class="email-input-container">
+        <label for="email">Email Address</label>
+        <input
+          id="email"
+          type="email"
+          name="email"
+          placeholder="Enter your email"
+          value="user@example.com"
+          aria-label="Email Address"
+          class="valid"
+        />
+        <div class="validation-message success">Email is valid and available</div>
+        <button class="next-button">Next</button>
+      </div>
+    "
+`;
+
+exports[`Snapshot Tests: Registration Components > ErrorDisplay Snapshots > should match snapshot for all error types 1`] = `
+"
+      <div class="error-display field-error">
+        <span class="error-icon">⚠️</span>
+        <span class="error-message">Please enter a valid email address</span>
+      </div>
+    "
+`;
+
+exports[`Snapshot Tests: Registration Components > ErrorDisplay Snapshots > should match snapshot for all error types 2`] = `
+"
+      <div class="error-display general-error" role="alert">
+        <span class="error-icon">⚠️</span>
+        <span class="error-message">An error occurred. Please try again.</span>
+        <button class="dismiss-button">✕</button>
+      </div>
+    "
+`;
+
+exports[`Snapshot Tests: Registration Components > ErrorDisplay Snapshots > should match snapshot for field error 1`] = `
+"
+      <div class="error-display field-error">
+        <span class="error-icon">⚠️</span>
+        <span class="error-message">Please enter a valid email address</span>
+      </div>
+    "
+`;
+
+exports[`Snapshot Tests: Registration Components > ErrorDisplay Snapshots > should match snapshot for general error 1`] = `
+"
+      <div class="error-display general-error" role="alert">
+        <span class="error-icon">⚠️</span>
+        <span class="error-message">An error occurred. Please try again.</span>
+        <button class="dismiss-button">✕</button>
+      </div>
+    "
+`;
+
+exports[`Snapshot Tests: Registration Components > PasswordSetup Snapshots > should match snapshot for all states 1`] = `
+"
+      <div class="password-setup-container">
+        <label for="password">Password</label>
+        <div class="password-input-wrapper">
+          <input
+            id="password"
+            type="password"
+            name="password"
+            placeholder="Enter password"
+            value=""
+            aria-label="Password"
+          />
+          <button class="toggle-password" aria-label="Show password">👁️</button>
+        </div>
+        <div class="password-requirements">
+          <div class="requirement unchecked">
+            <span class="icon">✗</span>
+            <span>At least 8 characters</span>
+          </div>
+          <div class="requirement unchecked">
+            <span class="icon">✗</span>
+            <span>At least one uppercase letter</span>
+          </div>
+          <div class="requirement unchecked">
+            <span class="icon">✗</span>
+            <span>At least one number</span>
+          </div>
+          <div class="requirement unchecked">
+            <span class="icon">✗</span>
+            <span>At least one special character</span>
+          </div>
+        </div>
+        <div class="password-strength">
+          <span class="strength-label">Strength:</span>
+          <span class="strength-value">None</span>
+        </div>
+        <label for="confirmPassword">Confirm Password</label>
+        <input
+          id="confirmPassword"
+          type="password"
+          name="confirmPassword"
+          placeholder="Confirm password"
+          value=""
+          aria-label="Confirm Password"
+        />
+        <button class="next-button" disabled>Next</button>
+      </div>
+    "
+`;
+
+exports[`Snapshot Tests: Registration Components > PasswordSetup Snapshots > should match snapshot for all states 2`] = `
+"
+      <div class="password-setup-container">
+        <label for="password">Password</label>
+        <div class="password-input-wrapper">
+          <input
+            id="password"
+            type="password"
+            name="password"
+            placeholder="Enter password"
+            value="SecurePass123!"
+            aria-label="Password"
+            class="valid"
+          />
+          <button class="toggle-password" aria-label="Hide password">👁️‍🗨️</button>
+        </div>
+        <div class="password-requirements">
+          <div class="requirement checked">
+            <span class="icon">✓</span>
+            <span>At least 8 characters</span>
+          </div>
+          <div class="requirement checked">
+            <span class="icon">✓</span>
+            <span>At least one uppercase letter</span>
+          </div>
+          <div class="requirement checked">
+            <span class="icon">✓</span>
+            <span>At least one number</span>
+          </div>
+          <div class="requirement checked">
+            <span class="icon">✓</span>
+            <span>At least one special character</span>
+          </div>
+        </div>
+        <div class="password-strength">
+          <span class="strength-label">Strength:</span>
+          <span class="strength-value strong">Strong</span>
+        </div>
+        <label for="confirmPassword">Confirm Password</label>
+        <input
+          id="confirmPassword"
+          type="password"
+          name="confirmPassword"
+          placeholder="Confirm password"
+          value="SecurePass123!"
+          aria-label="Confirm Password"
+          class="valid"
+        />
+        <button class="next-button">Next</button>
+      </div>
+    "
+`;
+
+exports[`Snapshot Tests: Registration Components > PasswordSetup Snapshots > should match snapshot for empty state 1`] = `
+"
+      <div class="password-setup-container">
+        <label for="password">Password</label>
+        <div class="password-input-wrapper">
+          <input
+            id="password"
+            type="password"
+            name="password"
+            placeholder="Enter password"
+            value=""
+            aria-label="Password"
+          />
+          <button class="toggle-password" aria-label="Show password">👁️</button>
+        </div>
+        <div class="password-requirements">
+          <div class="requirement unchecked">
+            <span class="icon">✗</span>
+            <span>At least 8 characters</span>
+          </div>
+          <div class="requirement unchecked">
+            <span class="icon">✗</span>
+            <span>At least one uppercase letter</span>
+          </div>
+          <div class="requirement unchecked">
+            <span class="icon">✗</span>
+            <span>At least one number</span>
+          </div>
+          <div class="requirement unchecked">
+            <span class="icon">✗</span>
+            <span>At least one special character</span>
+          </div>
+        </div>
+        <div class="password-strength">
+          <span class="strength-label">Strength:</span>
+          <span class="strength-value">None</span>
+        </div>
+        <label for="confirmPassword">Confirm Password</label>
+        <input
+          id="confirmPassword"
+          type="password"
+          name="confirmPassword"
+          placeholder="Confirm password"
+          value=""
+          aria-label="Confirm Password"
+        />
+        <button class="next-button" disabled>Next</button>
+      </div>
+    "
+`;
+
+exports[`Snapshot Tests: Registration Components > PasswordSetup Snapshots > should match snapshot for strong password 1`] = `
+"
+      <div class="password-setup-container">
+        <label for="password">Password</label>
+        <div class="password-input-wrapper">
+          <input
+            id="password"
+            type="password"
+            name="password"
+            placeholder="Enter password"
+            value="SecurePass123!"
+            aria-label="Password"
+            class="valid"
+          />
+          <button class="toggle-password" aria-label="Hide password">👁️‍🗨️</button>
+        </div>
+        <div class="password-requirements">
+          <div class="requirement checked">
+            <span class="icon">✓</span>
+            <span>At least 8 characters</span>
+          </div>
+          <div class="requirement checked">
+            <span class="icon">✓</span>
+            <span>At least one uppercase letter</span>
+          </div>
+          <div class="requirement checked">
+            <span class="icon">✓</span>
+            <span>At least one number</span>
+          </div>
+          <div class="requirement checked">
+            <span class="icon">✓</span>
+            <span>At least one special character</span>
+          </div>
+        </div>
+        <div class="password-strength">
+          <span class="strength-label">Strength:</span>
+          <span class="strength-value strong">Strong</span>
+        </div>
+        <label for="confirmPassword">Confirm Password</label>
+        <input
+          id="confirmPassword"
+          type="password"
+          name="confirmPassword"
+          placeholder="Confirm password"
+          value="SecurePass123!"
+          aria-label="Confirm Password"
+          class="valid"
+        />
+        <button class="next-button">Next</button>
+      </div>
+    "
+`;
+
+exports[`Snapshot Tests: Registration Components > PersonalDataForm Snapshots > should match snapshot for all states 1`] = `
+"
+      <div class="personal-data-form-container">
+        <label for="name">Full Name</label>
+        <input
+          id="name"
+          type="text"
+          name="name"
+          placeholder="Enter your full name"
+          value=""
+          aria-label="Full Name"
+        />
+        <div class="validation-message"></div>
+        <label for="phone">Phone Number</label>
+        <input
+          id="phone"
+          type="tel"
+          name="phone"
+          placeholder="Enter your phone number"
+          value=""
+          aria-label="Phone Number"
+        />
+        <div class="validation-message"></div>
+        <button class="next-button" disabled>Next</button>
+      </div>
+    "
+`;
+
+exports[`Snapshot Tests: Registration Components > PersonalDataForm Snapshots > should match snapshot for all states 2`] = `
+"
+      <div class="personal-data-form-container">
+        <label for="name">Full Name</label>
+        <input
+          id="name"
+          type="text"
+          name="name"
+          placeholder="Enter your full name"
+          value="John Doe"
+          aria-label="Full Name"
+          class="valid"
+        />
+        <div class="validation-message success">Name is valid</div>
+        <label for="phone">Phone Number</label>
+        <input
+          id="phone"
+          type="tel"
+          name="phone"
+          placeholder="Enter your phone number"
+          value="+1 (555) 123-4567"
+          aria-label="Phone Number"
+          class="valid"
+        />
+        <div class="validation-message success">Phone number is valid</div>
+        <button class="next-button">Next</button>
+      </div>
+    "
+`;
+
+exports[`Snapshot Tests: Registration Components > PersonalDataForm Snapshots > should match snapshot for empty state 1`] = `
+"
+      <div class="personal-data-form-container">
+        <label for="name">Full Name</label>
+        <input
+          id="name"
+          type="text"
+          name="name"
+          placeholder="Enter your full name"
+          value=""
+          aria-label="Full Name"
+        />
+        <div class="validation-message"></div>
+        <label for="phone">Phone Number</label>
+        <input
+          id="phone"
+          type="tel"
+          name="phone"
+          placeholder="Enter your phone number"
+          value=""
+          aria-label="Phone Number"
+        />
+        <div class="validation-message"></div>
+        <button class="next-button" disabled>Next</button>
+      </div>
+    "
+`;
+
+exports[`Snapshot Tests: Registration Components > PersonalDataForm Snapshots > should match snapshot for valid state 1`] = `
+"
+      <div class="personal-data-form-container">
+        <label for="name">Full Name</label>
+        <input
+          id="name"
+          type="text"
+          name="name"
+          placeholder="Enter your full name"
+          value="John Doe"
+          aria-label="Full Name"
+          class="valid"
+        />
+        <div class="validation-message success">Name is valid</div>
+        <label for="phone">Phone Number</label>
+        <input
+          id="phone"
+          type="tel"
+          name="phone"
+          placeholder="Enter your phone number"
+          value="+1 (555) 123-4567"
+          aria-label="Phone Number"
+          class="valid"
+        />
+        <div class="validation-message success">Phone number is valid</div>
+        <button class="next-button">Next</button>
+      </div>
+    "
+`;
+
+exports[`Snapshot Tests: Registration Components > ProgressIndicator Snapshots > should match snapshot for all steps 1`] = `
+"
+      <div class="progress-indicator">
+        <div class="step-dot active">
+          <span class="step-number">1</span>
+        </div>
+        <div class="step-line"></div>
+        <div class="step-dot">
+          <span class="step-number">2</span>
+        </div>
+        <div class="step-line"></div>
+        <div class="step-dot">
+          <span class="step-number">3</span>
+        </div>
+        <div class="step-line"></div>
+        <div class="step-dot">
+          <span class="step-number">4</span>
+        </div>
+        <div class="step-labels">
+          <span class="label active">Email</span>
+          <span class="label">Password</span>
+          <span class="label">Personal</span>
+          <span class="label">Review</span>
+        </div>
+      </div>
+    "
+`;
+
+exports[`Snapshot Tests: Registration Components > ProgressIndicator Snapshots > should match snapshot for all steps 2`] = `
+"
+      <div class="progress-indicator">
+        <div class="step-dot completed">
+          <span class="step-number">1</span>
+        </div>
+        <div class="step-line"></div>
+        <div class="step-dot active">
+          <span class="step-number">2</span>
+        </div>
+        <div class="step-line"></div>
+        <div class="step-dot">
+          <span class="step-number">3</span>
+        </div>
+        <div class="step-line"></div>
+        <div class="step-dot">
+          <span class="step-number">4</span>
+        </div>
+        <div class="step-labels">
+          <span class="label completed">Email</span>
+          <span class="label active">Password</span>
+          <span class="label">Personal</span>
+          <span class="label">Review</span>
+        </div>
+      </div>
+    "
+`;
+
+exports[`Snapshot Tests: Registration Components > ProgressIndicator Snapshots > should match snapshot for step 1 1`] = `
+"
+      <div class="progress-indicator">
+        <div class="step-dot active">
+          <span class="step-number">1</span>
+        </div>
+        <div class="step-line"></div>
+        <div class="step-dot">
+          <span class="step-number">2</span>
+        </div>
+        <div class="step-line"></div>
+        <div class="step-dot">
+          <span class="step-number">3</span>
+        </div>
+        <div class="step-line"></div>
+        <div class="step-dot">
+          <span class="step-number">4</span>
+        </div>
+        <div class="step-labels">
+          <span class="label active">Email</span>
+          <span class="label">Password</span>
+          <span class="label">Personal</span>
+          <span class="label">Review</span>
+        </div>
+      </div>
+    "
+`;
+
+exports[`Snapshot Tests: Registration Components > ProgressIndicator Snapshots > should match snapshot for step 2 1`] = `
+"
+      <div class="progress-indicator">
+        <div class="step-dot completed">
+          <span class="step-number">1</span>
+        </div>
+        <div class="step-line"></div>
+        <div class="step-dot active">
+          <span class="step-number">2</span>
+        </div>
+        <div class="step-line"></div>
+        <div class="step-dot">
+          <span class="step-number">3</span>
+        </div>
+        <div class="step-line"></div>
+        <div class="step-dot">
+          <span class="step-number">4</span>
+        </div>
+        <div class="step-labels">
+          <span class="label completed">Email</span>
+          <span class="label active">Password</span>
+          <span class="label">Personal</span>
+          <span class="label">Review</span>
+        </div>
+      </div>
+    "
+`;
+
+exports[`Snapshot Tests: Registration Components > Snapshot Updates > should detect changes in component structure 1`] = `
+"
+      <div class="email-input-container">
+        <label for="email">Email Address</label>
+        <input
+          id="email"
+          type="email"
+          name="email"
+          placeholder="Enter your email"
+          value="user@example.com"
+          aria-label="Email Address"
+          class="valid"
+        />
+        <div class="validation-message success">Email is valid and available</div>
+        <button class="next-button">Next</button>
+      </div>
+    "
+`;
+
+exports[`Snapshot Tests: Registration Components > Snapshot Updates > should detect changes in component styling 1`] = `
+"
+      <div class="password-setup-container">
+        <label for="password">Password</label>
+        <div class="password-input-wrapper">
+          <input
+            id="password"
+            type="password"
+            name="password"
+            placeholder="Enter password"
+            value="SecurePass123!"
+            aria-label="Password"
+            class="valid"
+          />
+          <button class="toggle-password" aria-label="Hide password">👁️‍🗨️</button>
+        </div>
+        <div class="password-requirements">
+          <div class="requirement checked">
+            <span class="icon">✓</span>
+            <span>At least 8 characters</span>
+          </div>
+          <div class="requirement checked">
+            <span class="icon">✓</span>
+            <span>At least one uppercase letter</span>
+          </div>
+          <div class="requirement checked">
+            <span class="icon">✓</span>
+            <span>At least one number</span>
+          </div>
+          <div class="requirement checked">
+            <span class="icon">✓</span>
+            <span>At least one special character</span>
+          </div>
+        </div>
+        <div class="password-strength">
+          <span class="strength-label">Strength:</span>
+          <span class="strength-value strong">Strong</span>
+        </div>
+        <label for="confirmPassword">Confirm Password</label>
+        <input
+          id="confirmPassword"
+          type="password"
+          name="confirmPassword"
+          placeholder="Confirm password"
+          value="SecurePass123!"
+          aria-label="Confirm Password"
+          class="valid"
+        />
+        <button class="next-button">Next</button>
+      </div>
+    "
+`;
+
+exports[`Snapshot Tests: Registration Components > Snapshot Updates > should detect changes in component text 1`] = `
+"
+      <div class="verification-review-container">
+        <div class="review-field">
+          <label>Email Address</label>
+          <div class="field-value">user@example.com</div>
+          <button class="edit-button">Edit</button>
+        </div>
+        <div class="review-field">
+          <label>Password</label>
+          <div class="field-value">Password is set and secured</div>
+        </div>
+        <div class="review-field">
+          <label>Full Name</label>
+          <div class="field-value">John Doe</div>
+          <button class="edit-button">Edit</button>
+        </div>
+        <div class="review-field">
+          <label>Phone Number</label>
+          <div class="field-value">+1 (555) 123-4567</div>
+          <button class="edit-button">Edit</button>
+        </div>
+        <button class="create-account-button">Create Account</button>
+        <button class="back-button">Back</button>
+      </div>
+    "
+`;
+
+exports[`Snapshot Tests: Registration Components > SuccessMessage Snapshots > should match snapshot for default state 1`] = `
+"
+      <div class="success-message">
+        <span class="success-icon">✓</span>
+        <span class="success-text">Account created successfully</span>
+        <div class="countdown">Redirecting in <span class="countdown-timer">2</span> seconds...</div>
+      </div>
+    "
+`;
+
+exports[`Snapshot Tests: Registration Components > VerificationReview Snapshots > should match snapshot for default state 1`] = `
+"
+      <div class="verification-review-container">
+        <div class="review-field">
+          <label>Email Address</label>
+          <div class="field-value">user@example.com</div>
+          <button class="edit-button">Edit</button>
+        </div>
+        <div class="review-field">
+          <label>Password</label>
+          <div class="field-value">Password is set and secured</div>
+        </div>
+        <div class="review-field">
+          <label>Full Name</label>
+          <div class="field-value">John Doe</div>
+          <button class="edit-button">Edit</button>
+        </div>
+        <div class="review-field">
+          <label>Phone Number</label>
+          <div class="field-value">+1 (555) 123-4567</div>
+          <button class="edit-button">Edit</button>
+        </div>
+        <button class="create-account-button">Create Account</button>
+        <button class="back-button">Back</button>
+      </div>
+    "
+`;
