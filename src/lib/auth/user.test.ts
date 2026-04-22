@@ -585,7 +585,7 @@ describe("User Management", () => {
 
             const result = await getUserByEmail("non-existent@example.com")
 
-            expect(result).toBeNull()
+            expect(result).toBeUndefined()
         })
     })
 })

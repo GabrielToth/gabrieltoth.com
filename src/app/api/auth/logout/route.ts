@@ -6,6 +6,12 @@
  */
 
 import { logAuditEvent } from "@/lib/auth/audit-logging"
+import {
+    AuthErrorType,
+    createErrorResponse,
+    createSuccessResponse,
+    handleUnexpectedError,
+} from "@/lib/auth/error-handling"
 import { removeSession } from "@/lib/auth/session"
 import { db } from "@/lib/db"
 import { logger } from "@/lib/logger"

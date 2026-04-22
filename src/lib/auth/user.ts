@@ -7,7 +7,7 @@
 
 import { db } from "@/lib/db"
 import { logger } from "@/lib/logger"
-import { GoogleUserData, User } from "@/types/auth"
+import { GoogleUserData, OAuthUser, User } from "@/types/auth"
 
 /**
  * Create or update a user based on Google OAuth data
@@ -390,4 +390,160 @@ export async function getUserByOAuthId(
         })
         throw error
     }
+}
+
+/**
+ * Update user account completion data
+ *
+ * Updates a user's account with completion data including password, phone, birth date,
+ * and account completion status.
+ *
+ * @param userId - The user ID
+ * @param data - Account completion data
+ * @returns Updated OAuthUser object
+ * @throws Error if database operation fails or user not found
+ *
+ * Validates: Requirements 1.1, 1.2, 1.3, 8.1
+ */
+export async function updateUserAccountCompletion(
+    userId: string,
+    data: {
+        email?: string
+        name?: string
+        password_hash?: string
+        phone_number?: string
+        birth_date?: string
+        account_completion_status?: "pending" | "in_progress" | "completed"
+        account_completed_at?: Date
+    }
+): Promise<OAuthUser> {
+    try {
+        // Validate required fields
+        if (!userId) {
+            throw new Error("User ID is required")
+        }
+
+        // Build dynamic UPDATE query based on provided fields
+        const updates: string[] = []
+        const values: unknown[] = []
+        let paramIndex = 1
+
+        if (data.email !== undefined) {
+            updates.push(`email = $${paramIndex}`)
+            values.push(data.email)
+            paramIndex++
+        }
+
+        if (data.name !== undefined) {
+            updates.push(`name = $${paramIndex}`)
+            values.push(data.name)
+            paramIndex++
+        }
+
+        if (data.password_hash !== undefined) {
+            updates.push(`password_hash = $${paramIndex}`)
+            values.push(data.password_hash)
+            paramIndex++
+        }
+
+        if (data.phone_number !== undefined) {
+            updates.push(`phone_number = $${paramIndex}`)
+            values.push(data.phone_number)
+            paramIndex++
+        }
+
+        if (data.birth_date !== undefined) {
+            updates.push(`birth_date = $${paramIndex}`)
+            values.push(data.birth_date)
+            paramIndex++
+        }
+
+        if (data.account_completion_status !== undefined) {
+            updates.push(`account_completion_status = $${paramIndex}`)
+            values.push(data.account_completion_status)
+            paramIndex++
+        }
+
+        if (data.account_completed_at !== undefined) {
+            updates.push(`account_completed_at = $${paramIndex}`)
+            values.push(data.account_completed_at)
+            paramIndex++
+        }
+
+        // Always update the updated_at timestamp
+        updates.push(`updated_at = NOW()`)
+
+        if (updates.length === 1) {
+            // Only updated_at was set, no actual data to update
+            throw new Error("No data provided to update")
+        }
+
+        // Add user ID as the last parameter
+        values.push(userId)
+
+        const query = `UPDATE users
+                       SET ${updates.join(", ")}
+                       WHERE id = $${paramIndex}
+                       RETURNING id, email, password_hash, oauth_provider, oauth_id, name, picture, phone_number, birth_date, account_completion_status, account_completed_at, email_verified, created_at, updated_at`
+
+        const updatedUser = await db.queryOne<OAuthUser>(query, values)
+
+        if (!updatedUser) {
+            throw new Error("User not found or failed to update account")
+        }
+
+        logger.debug("User account completion updated", {
+            context: "Auth",
+            data: {
+                userId: updatedUser.id,
+                status: updatedUser.account_completion_status,
+            },
+        })
+
+        return updatedUser
+    } catch (error) {
+        logger.error("Failed to update user account completion", {
+            context: "Auth",
+            error: error as Error,
+            data: { userId },
+        })
+        throw error
+    }
+}
+
+/**
+ * Mark account as in progress
+ *
+ * Updates the account_completion_status to 'in_progress'
+ *
+ * @param userId - The user ID
+ * @returns Updated OAuthUser object
+ * @throws Error if database operation fails
+ *
+ * Validates: Requirement 1.1
+ */
+export async function markAccountInProgress(
+    userId: string
+): Promise<OAuthUser> {
+    return updateUserAccountCompletion(userId, {
+        account_completion_status: "in_progress",
+    })
+}
+
+/**
+ * Mark account as completed
+ *
+ * Updates the account_completion_status to 'completed' and sets account_completed_at
+ *
+ * @param userId - The user ID
+ * @returns Updated OAuthUser object
+ * @throws Error if database operation fails
+ *
+ * Validates: Requirement 1.1
+ */
+export async function markAccountCompleted(userId: string): Promise<OAuthUser> {
+    return updateUserAccountCompletion(userId, {
+        account_completion_status: "completed",
+        account_completed_at: new Date(),
+    })
 }

@@ -16,6 +16,7 @@ export type AuditEventType =
     | "LOGOUT"
     | "PASSWORD_RESET_REQUEST"
     | "PASSWORD_RESET_SUCCESS"
+    | "ACCOUNT_COMPLETION"
     | "SQL_INJECTION_ATTEMPT"
     | "XSS_ATTEMPT"
     | "CSRF_VIOLATION"

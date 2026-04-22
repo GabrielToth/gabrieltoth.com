@@ -25,16 +25,20 @@ export interface User {
  * OAuth User interface representing a user with OAuth and password authentication
  * Supports multiple OAuth providers (Google, Facebook, TikTok) with email/password fallback
  *
- * Validates: Requirements 2.5, 3.6, 11.3
+ * Validates: Requirements 2.5, 3.6, 11.3, 1.1, 1.2, 1.3
  */
 export interface OAuthUser {
     id: string
     email: string
-    password_hash: string
+    password_hash: string | null
     oauth_provider: "google" | "facebook" | "tiktok" | null
     oauth_id: string | null
     name: string
     picture?: string | null
+    phone_number?: string | null
+    birth_date?: Date | null
+    account_completion_status: "pending" | "in_progress" | "completed"
+    account_completed_at?: Date | null
     email_verified: boolean
     created_at: Date
     updated_at: Date
