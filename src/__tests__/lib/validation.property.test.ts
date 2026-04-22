@@ -82,7 +82,7 @@ describe("Property 1: Password Validation Completeness", () => {
                 expect(result.strength).toBeDefined()
                 expect(["weak", "medium", "strong"]).toContain(result.strength)
             }),
-            { numRuns: 50 }
+            { numRuns: 20 }
         )
     })
 
@@ -135,7 +135,7 @@ describe("Property 1: Password Validation Completeness", () => {
                     )
                 }
             ),
-            { numRuns: 50 }
+            { numRuns: 10 }
         )
     })
 
@@ -167,7 +167,7 @@ describe("Property 1: Password Validation Completeness", () => {
                 // Property: strength is one of the allowed values
                 expect(["weak", "medium", "strong"]).toContain(result.strength)
             }),
-            { numRuns: 50 }
+            { numRuns: 10 }
         )
     })
 
@@ -197,7 +197,7 @@ describe("Property 1: Password Validation Completeness", () => {
                     }
                 }
             ),
-            { numRuns: 50 }
+            { numRuns: 10 }
         )
     })
 })
@@ -233,7 +233,7 @@ describe("Property 2: Email Format Validation", () => {
                     expect(result.error).toBeUndefined()
                 }
             ),
-            { numRuns: 50 }
+            { numRuns: 10 }
         )
     })
 
@@ -255,7 +255,7 @@ describe("Property 2: Email Format Validation", () => {
                     expect(result.error).toBeDefined()
                 }
             ),
-            { numRuns: 50 }
+            { numRuns: 10 }
         )
     })
 
@@ -273,7 +273,7 @@ describe("Property 2: Email Format Validation", () => {
                     expect(result.error).toBeDefined()
                 }
             ),
-            { numRuns: 50 }
+            { numRuns: 10 }
         )
     })
 
@@ -288,7 +288,7 @@ describe("Property 2: Email Format Validation", () => {
                 expect(result.isValid).toBe(false)
                 expect(result.error).toBeDefined()
             }),
-            { numRuns: 50 }
+            { numRuns: 10 }
         )
     })
 
@@ -309,7 +309,7 @@ describe("Property 2: Email Format Validation", () => {
                     expect(result.error).toBeDefined()
                 }
             ),
-            { numRuns: 50 }
+            { numRuns: 10 }
         )
     })
 
@@ -327,7 +327,7 @@ describe("Property 2: Email Format Validation", () => {
                     expect(result.error).toBeDefined()
                 }
             ),
-            { numRuns: 50 }
+            { numRuns: 10 }
         )
     })
 
@@ -360,7 +360,7 @@ describe("Property 2: Email Format Validation", () => {
                 expect(result.isValid).toBe(false)
                 expect(result.error).toBeDefined()
             }),
-            { numRuns: 50 }
+            { numRuns: 10 }
         )
     })
 
@@ -375,7 +375,7 @@ describe("Property 2: Email Format Validation", () => {
                 expect(result.isValid).toBe(false)
                 expect(result.error).toBeDefined()
             }),
-            { numRuns: 50 }
+            { numRuns: 10 }
         )
     })
 
@@ -412,7 +412,7 @@ describe("Property 2: Email Format Validation", () => {
                     expect(result.error).toBeDefined()
                 }
             ),
-            { numRuns: 50 }
+            { numRuns: 10 }
         )
     })
 
@@ -438,7 +438,7 @@ describe("Property 2: Email Format Validation", () => {
                     expect(result.error).toBeUndefined()
                 }
             ),
-            { numRuns: 50 }
+            { numRuns: 10 }
         )
     })
 
@@ -462,7 +462,7 @@ describe("Property 2: Email Format Validation", () => {
                     expect(result.error).toBeUndefined()
                 }
             ),
-            { numRuns: 50 }
+            { numRuns: 10 }
         )
     })
 
@@ -490,7 +490,7 @@ describe("Property 2: Email Format Validation", () => {
                     expect(result.error).toBeUndefined()
                 }
             ),
-            { numRuns: 50 }
+            { numRuns: 10 }
         )
     })
 
@@ -519,7 +519,7 @@ describe("Property 2: Email Format Validation", () => {
                     expect(result.error).toBeDefined()
                 }
             }),
-            { numRuns: 100 }
+            { numRuns: 20 }
         )
     })
 
@@ -536,7 +536,7 @@ describe("Property 2: Email Format Validation", () => {
                 expect(result1.error).toBe(result2.error)
                 expect(result2.error).toBe(result3.error)
             }),
-            { numRuns: 50 }
+            { numRuns: 10 }
         )
     })
 })

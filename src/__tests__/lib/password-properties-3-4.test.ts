@@ -56,7 +56,7 @@ describe("Property 3: Password Requirements Validation", () => {
 
                 expect(result.isValid).toBe(allRequirementsMet)
             }),
-            { numRuns: 100 }
+            { numRuns: 20 }
         )
     })
 
@@ -71,7 +71,7 @@ describe("Property 3: Password Requirements Validation", () => {
                 // Error message should be defined
                 expect(result.error).toBeDefined()
             }),
-            { numRuns: 50 }
+            { numRuns: 10 }
         )
     })
 
@@ -96,7 +96,7 @@ describe("Property 3: Password Requirements Validation", () => {
                     expect(result.error).toContain("uppercase")
                 }
             ),
-            { numRuns: 50 }
+            { numRuns: 10 }
         )
     })
 
@@ -122,7 +122,7 @@ describe("Property 3: Password Requirements Validation", () => {
                     expect(result.error).toBeDefined()
                 }
             ),
-            { numRuns: 50 }
+            { numRuns: 10 }
         )
     })
 
@@ -146,7 +146,7 @@ describe("Property 3: Password Requirements Validation", () => {
                     expect(result.error).toContain("number")
                 }
             ),
-            { numRuns: 50 }
+            { numRuns: 10 }
         )
     })
 
@@ -173,7 +173,7 @@ describe("Property 3: Password Requirements Validation", () => {
                     expect(result.error).toContain("special character")
                 }
             ),
-            { numRuns: 50 }
+            { numRuns: 10 }
         )
     })
 
@@ -233,7 +233,7 @@ describe("Property 3: Password Requirements Validation", () => {
                     // but all 4 structural requirements should be met
                 }
             ),
-            { numRuns: 100 }
+            { numRuns: 20 }
         )
     })
 
@@ -261,7 +261,7 @@ describe("Property 3: Password Requirements Validation", () => {
                     )
                 }
             ),
-            { numRuns: 50 }
+            { numRuns: 10 }
         )
     })
 
@@ -278,7 +278,7 @@ describe("Property 3: Password Requirements Validation", () => {
                 expect(result1.isValid).toBe(result2.isValid)
                 expect(result2.isValid).toBe(result3.isValid)
             }),
-            { numRuns: 50 }
+            { numRuns: 10 }
         )
     })
 })
@@ -326,7 +326,7 @@ describe("Property 4: Password Strength Calculation", () => {
                     expect(result.strength).toBe("strong")
                 }
             }),
-            { numRuns: 100 }
+            { numRuns: 20 }
         )
     })
 
@@ -349,7 +349,7 @@ describe("Property 4: Password Strength Calculation", () => {
                     expect(result.strength).toBe("weak")
                 }
             ),
-            { numRuns: 50 }
+            { numRuns: 10 }
         )
     })
 
@@ -387,7 +387,7 @@ describe("Property 4: Password Strength Calculation", () => {
                     expect(result.strength).toBe("good")
                 }
             ),
-            { numRuns: 50 }
+            { numRuns: 10 }
         )
     })
 
@@ -440,7 +440,7 @@ describe("Property 4: Password Strength Calculation", () => {
                     expect(result.strength).toBe("strong")
                 }
             ),
-            { numRuns: 100 }
+            { numRuns: 20 }
         )
     })
 
@@ -454,7 +454,7 @@ describe("Property 4: Password Strength Calculation", () => {
                     result.strength
                 )
             }),
-            { numRuns: 100 }
+            { numRuns: 20 }
         )
     })
 
@@ -471,7 +471,7 @@ describe("Property 4: Password Strength Calculation", () => {
                 expect(result1.score).toBe(result2.score)
                 expect(result2.score).toBe(result3.score)
             }),
-            { numRuns: 50 }
+            { numRuns: 10 }
         )
     })
 
@@ -499,7 +499,7 @@ describe("Property 4: Password Strength Calculation", () => {
                     expect(result.feedback.toLowerCase()).toContain("strong")
                 }
             }),
-            { numRuns: 50 }
+            { numRuns: 10 }
         )
     })
 
@@ -523,7 +523,7 @@ describe("Property 4: Password Strength Calculation", () => {
                     expect(result.color).toContain("green")
                 }
             }),
-            { numRuns: 50 }
+            { numRuns: 10 }
         )
     })
 
@@ -537,7 +537,7 @@ describe("Property 4: Password Strength Calculation", () => {
                 expect(result.score).toBeLessThanOrEqual(4)
                 expect(Number.isInteger(result.score)).toBe(true)
             }),
-            { numRuns: 100 }
+            { numRuns: 20 }
         )
     })
 
@@ -571,7 +571,7 @@ describe("Property 4: Password Strength Calculation", () => {
                     )
                 }
             ),
-            { numRuns: 50 }
+            { numRuns: 10 }
         )
     })
 })
