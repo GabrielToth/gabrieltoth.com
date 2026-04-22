@@ -59,5 +59,34 @@
         "noChangelog": "No hay changelog disponible",
         "errorLoading": "Error al cargar changelog",
         "viewOnGitHub": "Ver en GitHub"
+    },
+    "plugins": {
+        "title": "Plugins",
+        "subtitle": "Plugins y herramientas de servidor",
+        "description": "Plugins y herramientas personalizadas de servidor para una jugabilidad mejorada",
+        "comingSoon": "Plugins Próximamente",
+        "comingSoonText": "Estoy trabajando en algunos plugins de servidor interesantes. ¡Vuelve pronto!"
+    },
+    "contributions": {
+        "title": "Contribuciones",
+        "subtitle": "Contribuciones y colaboraciones de la comunidad",
+        "description": "Mis contribuciones a la comunidad de Minecraft",
+        "comingSoon": "Contribuciones Próximamente",
+        "comingSoonText": "Estoy documentando mis contribuciones a la comunidad. ¡Vuelve pronto!"
+    },
+    "landing": {
+        "journey": {
+            "myStory": "Mi Historia",
+            "storyIntro": "He estado creando contenido de Minecraft y desarrollando mods durante años, combinando mi pasión por los juegos con experiencia en programación.",
+            "modpacksPreference": "Preferencia de Modpacks",
+            "hypixelSkyblock": "Hypixel Skyblock",
+            "futureGoals": "Objetivos Futuros",
+            "modpacks": "Modpacks",
+            "modpacksText": "Creando modpacks ligeros y optimizados que funcionan sin problemas en diversos hardwares.",
+            "mods": "Mods",
+            "modsText": "Construyendo mods y herramientas personalizadas para mejorar la experiencia de Minecraft.",
+            "plugins": "Plugins",
+            "pluginsText": "Desarrollando plugins de servidor para una jugabilidad mejorada y características de la comunidad."
+        }
     }
 }

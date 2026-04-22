@@ -20,7 +20,9 @@
     },
     "minecraftDropdown": {
         "modpacks": "Modpacks",
-        "mods": "Mods"
+        "mods": "Mods",
+        "plugins": "Plugins",
+        "contributions": "Beiträge"
     },
     "minecraft": "Minecraft"
 }
