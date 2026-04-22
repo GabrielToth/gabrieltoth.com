@@ -258,6 +258,8 @@ git push -u origin feature-branch   # Push para repositório remoto
 
 ### Mensagens de Commit Recomendadas
 
+**IMPORTANTE**: Cada commit deve incluir o número da issue e descrever a mudança específica.
+
 **Implementação inicial:**
 ```
 feat(#123): implement dashboard redesign components
@@ -293,14 +295,44 @@ fix(#123): remove header from registration flow
 refactor(#123): extract validation logic to utilities
 ```
 
-### ❌ Exemplos INCORRETOS
-
+**NUNCA faça commits assim:**
 ```
-❌ 1.8.22 - Usar versão como nome
+❌ 1.8.22 - Versão como nome
+❌ 1.8.23 - Versão como nome
 ❌ fix: remove header - Sem número da issue
 ❌ Update code - Sem tipo de commit
 ❌ WIP - Muito vago
 ```
+
+### ❌ Exemplos INCORRETOS
+
+```
+❌ 1.8.22 - NUNCA use versão como nome de commit
+❌ 1.8.23 - NUNCA use versão como nome de commit
+❌ fix: remove header - Sem número da issue
+❌ Update code - Sem tipo de commit
+❌ WIP - Muito vago
+```
+
+### ✅ Formato OBRIGATÓRIO de Commit
+
+**SEMPRE** use este formato:
+```
+<type>(#<issue-number>): <description>
+```
+
+**Exemplos corretos:**
+```
+fix(#42): remove header from registration flow
+feat(#123): add WhatsApp integration
+perf(#156): optimize bundle size
+docs(#89): add Storybook stories
+test(#201): add comprehensive test coverage
+style(#45): format code and fix linting issues
+refactor(#78): extract validation logic to utilities
+```
+
+**REGRA CRÍTICA**: O nome do commit NUNCA deve ser apenas a versão (1.8.22, 1.8.23, etc.). A versão é incrementada SEPARADAMENTE após o commit usando `npm version patch|minor|major`.
 
 ---
 
@@ -508,7 +540,7 @@ export async function fetchData() {
 
 **OBRIGATÓRIO** seguir Semantic Versioning (SemVer) para todas as mudanças:
 
-### Versão Atual: 1.8.23
+### Versão Atual: 1.8.26
 
 **Formato:** `MAJOR.MINOR.PATCH`
 
@@ -528,13 +560,15 @@ export async function fetchData() {
 
 **NUNCA** use versão como nome de commit:
 ```bash
-❌ ERRADO:
+❌ ERRADO - Commit com versão como nome:
 git commit -m "1.8.22"
 git commit -m "1.8.23"
+git commit -m "1.8.26"
 
-✅ CORRETO:
+✅ CORRETO - Commit com número da issue e descrição:
 git commit -m "fix(#42): remove header from registration flow"
-npm version patch  # Incrementa versão automaticamente
+git commit -m "feat(#123): add new dashboard component"
+git commit -m "perf(#156): optimize bundle size"
 ```
 
 ### Regra Obrigatória: Incrementar Versão APÓS Commits
@@ -547,7 +581,7 @@ npm version patch  # Incrementa versão automaticamente
 git commit -m "fix(#42): remove header from registration flow"
 
 # 3. DEPOIS incrementar versão (separado)
-npm version patch  # 1.8.22 → 1.8.23
+npm version patch  # 1.8.25 → 1.8.26
 
 # 4. Push com tags
 git push origin feature-branch --tags
@@ -558,11 +592,11 @@ git push origin feature-branch --tags
 # Fazer mudanças
 git add .
 
-# Commit com número da issue
+# Commit com número da issue (NUNCA versão)
 git commit -m "feat(#123): add new dashboard component"
 
 # Incrementar versão (escolher patch/minor/major)
-npm version minor  # 1.8.23 → 1.9.0
+npm version minor  # 1.8.26 → 1.9.0
 
 # Push com tags
 git push origin feature-branch --tags
@@ -570,7 +604,7 @@ git push origin feature-branch --tags
 
 ### Checklist de Versioning
 
-- [ ] Commit feito com mensagem descritiva e número da issue
+- [ ] Commit feito com mensagem descritiva e número da issue (NÃO versão)
 - [ ] Identifiquei o tipo de mudança (bug fix, feature, breaking change)
 - [ ] Executei `npm version patch|minor|major` APÓS o commit
 - [ ] Versão em `package.json` foi incrementada corretamente
