@@ -1,3 +1,4 @@
+import { checkAccountCompletion } from "@/lib/middleware/account-completion"
 import { NextRequest, NextResponse } from "next/server"
 
 // Simple in-memory rate limiting (in production, use Redis)
@@ -68,7 +69,10 @@ export async function middleware(request: NextRequest) {
     )
 
     // Rate limiting for auth endpoints
-    const ip = request.ip || "unknown"
+    const ip =
+        request.headers.get("x-forwarded-for") ||
+        request.headers.get("x-real-ip") ||
+        "unknown"
     const pathname = request.nextUrl.pathname
 
     if (pathname === "/api/auth/register") {

@@ -133,7 +133,7 @@ export async function checkAccountCompletion(
         }
 
         // Get user from database
-        const user = await getUserById(session.user_id)
+        const user = (await getUserById(session.user_id)) as OAuthUser | null
 
         if (!user) {
             // User not found, let other middleware handle
@@ -175,7 +175,7 @@ export async function getAccountCompletionStatus(
     userId: string
 ): Promise<"pending" | "in_progress" | "completed" | null> {
     try {
-        const user = await getUserById(userId)
+        const user = (await getUserById(userId)) as OAuthUser | null
         if (!user) {
             return null
         }
@@ -194,7 +194,7 @@ export async function getAccountCompletionStatus(
  */
 export async function isAccountComplete(userId: string): Promise<boolean> {
     try {
-        const user = await getUserById(userId)
+        const user = (await getUserById(userId)) as OAuthUser | null
         if (!user) {
             return false
         }
