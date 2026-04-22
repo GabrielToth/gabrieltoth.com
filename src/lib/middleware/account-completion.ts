@@ -10,6 +10,7 @@
 
 import { getSessionFromCookie } from "@/lib/auth/session"
 import { getUserById } from "@/lib/auth/user"
+import { OAuthUser } from "@/types/auth"
 import { NextRequest, NextResponse } from "next/server"
 
 /**
