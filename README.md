@@ -147,11 +147,31 @@ npm run clean            # Clean build files
 
 All documentation is in the `docs/` folder:
 
-- **[API Documentation](docs/API.md)** - All API endpoints organized by category
+- **[API Documentation](docs/API_DOCUMENTATION.md)** - Account Completion API endpoints
+- **[Developer Guide](docs/DEVELOPER_GUIDE.md)** - Technical implementation details
+- **[User Guide](docs/USER_GUIDE.md)** - User-facing documentation
+- **[Deployment Guide](docs/DEPLOYMENT_GUIDE.md)** - Deployment and rollback procedures
 - **[Architecture](docs/ARCHITECTURE.md)** - System architecture and design
 - **[Database](docs/DATABASE_CONSTRAINTS.md)** - Database schema and constraints
-- **[Deployment](docs/DEPLOYMENT_ARCHITECTURE.md)** - Deployment guide
 - **[Credit System](docs/CREDIT_SYSTEM.md)** - Platform credit system
+
+### Account Completion Flow
+
+The Account Completion Flow enables legacy OAuth users to complete their account setup:
+
+- **OAuth Integration**: Seamless integration with Google, Facebook, and TikTok
+- **Multi-Step Form**: 3-step process (pre-filled data, new fields, verification)
+- **Validation**: Comprehensive validation for password, phone, and birth date
+- **Middleware**: Automatic redirection of incomplete accounts
+- **Multilingual**: Support for EN, PT-BR, ES, and DE
+- **Security**: Rate limiting, CSRF protection, input sanitization
+- **Testing**: 88+ integration tests covering all scenarios
+
+**Quick Links:**
+- [API Documentation](docs/API_DOCUMENTATION.md) - Complete API reference
+- [Developer Guide](docs/DEVELOPER_GUIDE.md) - Implementation details
+- [User Guide](docs/USER_GUIDE.md) - User instructions
+- [Deployment Guide](docs/DEPLOYMENT_GUIDE.md) - Deployment procedures
 
 ---
 
