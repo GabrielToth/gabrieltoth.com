@@ -1,11 +1,40 @@
+import Header from "@/components/layout/header"
 import { RegistrationFlow } from "@/components/registration/RegistrationFlow"
-import { Metadata } from "next"
+import { locales } from "@/lib/i18n"
+import { getTranslations } from "next-intl/server"
 
-export const metadata: Metadata = {
-    title: "Create Account",
-    description: "Sign up for a new account",
+export function generateStaticParams() {
+    return locales.map(locale => ({ locale }))
 }
 
-export default function RegisterPage() {
-    return <RegistrationFlow />
+export async function generateMetadata({
+    params,
+}: {
+    params: Promise<{ locale: string }>
+}) {
+    const { locale } = await params
+    const t = await getTranslations({
+        locale,
+        namespace: "auth",
+    })
+    return {
+        title: t("register.title") || "Create Account",
+    }
+}
+
+export default async function RegisterPage({
+    params,
+}: {
+    params: Promise<{ locale: string }>
+}) {
+    const { locale } = await params
+
+    return (
+        <>
+            <main className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 dark:from-gray-900 dark:to-blue-900">
+                <Header />
+                <RegistrationFlow />
+            </main>
+        </>
+    )
 }

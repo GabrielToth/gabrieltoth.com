@@ -206,6 +206,7 @@ export function RegistrationFlow() {
 
             registration.reset()
             setGeneralError(null)
+            setAuthMethod(null)
         }
     }
 
@@ -268,12 +269,12 @@ export function RegistrationFlow() {
 
     if (registration.sessionExpired) {
         return (
-            <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-12 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
-                <div className="max-w-md w-full bg-white rounded-lg shadow-xl p-8 text-center">
+            <div className="flex items-center justify-center pt-20 pb-12 px-4">
+                <div className="max-w-md w-full bg-white dark:bg-gray-800 rounded-lg shadow-xl p-8 text-center border border-gray-200 dark:border-gray-700">
                     <div className="mb-4 flex justify-center">
-                        <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center">
+                        <div className="w-16 h-16 bg-red-100 dark:bg-red-900 rounded-full flex items-center justify-center">
                             <svg
-                                className="w-8 h-8 text-red-600"
+                                className="w-8 h-8 text-red-600 dark:text-red-400"
                                 fill="currentColor"
                                 viewBox="0 0 20 20"
                             >
@@ -285,16 +286,16 @@ export function RegistrationFlow() {
                             </svg>
                         </div>
                     </div>
-                    <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                    <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
                         Session Expired
                     </h2>
-                    <p className="text-gray-600 mb-6">
+                    <p className="text-gray-600 dark:text-gray-400 mb-6">
                         Your registration session has expired. Please start
                         over.
                     </p>
                     <a
                         href="/register"
-                        className="inline-block px-6 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors"
+                        className="inline-block px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors"
                     >
                         Start Over
                     </a>
@@ -313,24 +314,30 @@ export function RegistrationFlow() {
         )
     }
 
-    return (
-        <div className="min-h-screen bg-linear-to-br from-blue-50 to-indigo-100 py-12 px-4 sm:px-6 lg:px-8">
-            <div className="max-w-2xl mx-auto">
-                <div className="bg-white rounded-lg shadow-xl p-8">
-                    {/* Header */}
-                    <div className="mb-8">
-                        <h1 className="text-3xl font-bold text-gray-900">
-                            Create Account
-                        </h1>
-                        <p className="mt-2 text-gray-600">
-                            Join us today and get started in just a few steps
-                        </p>
-                    </div>
+    // If user is in the registration process, hide the header/menu
+    if (authMethod) {
+        return (
+            <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-12 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
+                <div className="w-full max-w-md">
+                    {/* Progress Indicator */}
+                    <ProgressIndicator
+                        currentStep={
+                            authMethod === "google"
+                                ? registration.currentStep
+                                : registration.currentStep
+                        }
+                    />
+
+                    {/* Error Display */}
+                    <ErrorDisplay
+                        error={generalError}
+                        onDismiss={() => setGeneralError(null)}
+                    />
 
                     {/* Session Warning */}
                     {sessionWarning && (
-                        <div className="mb-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg flex items-start gap-3">
-                            <div className="shrink-0 text-yellow-600 mt-0.5">
+                        <div className="mb-4 p-4 bg-yellow-50 dark:bg-yellow-900 border border-yellow-200 dark:border-yellow-700 rounded-lg flex items-start gap-3">
+                            <div className="shrink-0 text-yellow-600 dark:text-yellow-400 mt-0.5">
                                 <svg
                                     className="w-5 h-5"
                                     fill="currentColor"
@@ -344,7 +351,7 @@ export function RegistrationFlow() {
                                 </svg>
                             </div>
                             <div className="flex-1">
-                                <p className="text-sm font-medium text-yellow-900">
+                                <p className="text-sm font-medium text-yellow-900 dark:text-yellow-100">
                                     Your session will expire soon. Please
                                     complete your registration.
                                 </p>
@@ -352,40 +359,14 @@ export function RegistrationFlow() {
                         </div>
                     )}
 
-                    {/* Progress Indicator */}
-                    {authMethod && (
-                        <ProgressIndicator
-                            currentStep={
-                                authMethod === "google"
-                                    ? registration.currentStep
-                                    : registration.currentStep
-                            }
-                        />
-                    )}
-
-                    {/* Error Display */}
-                    <ErrorDisplay
-                        error={generalError}
-                        onDismiss={() => setGeneralError(null)}
-                    />
-
                     {/* Form Content */}
                     <div className="mt-8">
-                        {/* Authentication Entry */}
-                        {!authMethod && registration.currentStep === 0 && (
-                            <AuthenticationEntry
-                                onEmailSelected={handleEmailSelected}
-                                onGoogleSelected={handleGoogleSelected}
-                                isLoading={registration.isSubmitting}
-                            />
-                        )}
-
                         {/* Email Registration Flow */}
                         {authMethod === "email" && (
                             <>
                                 {registration.currentStep === 1 && (
                                     <div>
-                                        <h2 className="text-xl font-semibold text-gray-900 mb-4">
+                                        <h2 className="text-xl font-semibold text-white mb-4">
                                             Email Address
                                         </h2>
                                         <EmailInput
@@ -405,7 +386,7 @@ export function RegistrationFlow() {
 
                                 {registration.currentStep === 2 && (
                                     <div>
-                                        <h2 className="text-xl font-semibold text-gray-900 mb-4">
+                                        <h2 className="text-xl font-semibold text-white mb-4">
                                             Password Setup
                                         </h2>
                                         <PasswordSetup
@@ -436,7 +417,7 @@ export function RegistrationFlow() {
 
                                 {registration.currentStep === 3 && (
                                     <div>
-                                        <h2 className="text-xl font-semibold text-gray-900 mb-4">
+                                        <h2 className="text-xl font-semibold text-white mb-4">
                                             Personal Information
                                         </h2>
                                         <PersonalDataForm
@@ -470,7 +451,7 @@ export function RegistrationFlow() {
 
                                 {registration.currentStep === 4 && (
                                     <div>
-                                        <h2 className="text-xl font-semibold text-gray-900 mb-4">
+                                        <h2 className="text-xl font-semibold text-white mb-4">
                                             Review Information
                                         </h2>
                                         <VerificationReview
@@ -505,7 +486,7 @@ export function RegistrationFlow() {
 
                                 {registration.currentStep === 2 && (
                                     <div>
-                                        <h2 className="text-xl font-semibold text-gray-900 mb-4">
+                                        <h2 className="text-xl font-semibold text-white mb-4">
                                             Review Information
                                         </h2>
                                         <VerificationReview
@@ -525,58 +506,74 @@ export function RegistrationFlow() {
                     </div>
 
                     {/* Navigation Buttons */}
-                    {authMethod && (
-                        <NavigationButtons
-                            onBack={
-                                authMethod === "email"
-                                    ? registration.currentStep > 1
-                                        ? registration.previousStep
-                                        : handleBackFromAuth
-                                    : registration.currentStep > 1
-                                      ? registration.previousStep
-                                      : handleBackFromAuth
-                            }
-                            onNext={handleNext}
-                            nextLabel={
-                                authMethod === "email"
-                                    ? registration.currentStep === 4
-                                        ? "Create Account"
-                                        : "Next"
+                    <NavigationButtons
+                        onBack={
+                            authMethod === "email"
+                                ? registration.currentStep > 1
+                                    ? registration.previousStep
+                                    : handleBackFromAuth
+                                : registration.currentStep > 1
+                                  ? registration.previousStep
+                                  : handleBackFromAuth
+                        }
+                        onNext={handleNext}
+                        nextLabel={
+                            authMethod === "email"
+                                ? registration.currentStep === 4
+                                    ? "Create Account"
+                                    : "Next"
+                                : registration.currentStep === 2
+                                  ? "Create Account"
+                                  : "Next"
+                        }
+                        nextDisabled={
+                            authMethod === "email"
+                                ? registration.currentStep === 1
+                                    ? !stepValidation.email
                                     : registration.currentStep === 2
-                                      ? "Create Account"
-                                      : "Next"
-                            }
-                            nextDisabled={
-                                authMethod === "email"
-                                    ? registration.currentStep === 1
-                                        ? !stepValidation.email
-                                        : registration.currentStep === 2
-                                          ? !stepValidation.password
-                                          : registration.currentStep === 3
-                                            ? !stepValidation.personal
-                                            : false
-                                    : false
-                            }
-                            isLoading={registration.isSubmitting}
-                            showCancel={true}
-                        />
-                    )}
+                                      ? !stepValidation.password
+                                      : registration.currentStep === 3
+                                        ? !stepValidation.personal
+                                        : false
+                                : false
+                        }
+                        isLoading={registration.isSubmitting}
+                        showCancel={true}
+                        onCancel={handleCancel}
+                    />
                 </div>
+            </div>
+        )
+    }
 
-                {/* Footer */}
-                {!authMethod && (
-                    <div className="mt-8 text-center">
-                        <p className="text-gray-600">
-                            Already have an account?{" "}
-                            <a
-                                href="/login"
-                                className="text-blue-600 hover:text-blue-700 font-medium"
-                            >
-                                Sign in
-                            </a>
-                        </p>
-                    </div>
-                )}
+    // Initial registration page with menu visible
+    return (
+        <div className="flex items-center justify-center pt-20 pb-12 px-4">
+            <div className="w-full max-w-md">
+                <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-8 border border-gray-200 dark:border-gray-700">
+                    <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2 text-center">
+                        Create Account
+                    </h1>
+                    <p className="text-gray-600 dark:text-gray-400 text-center mb-6">
+                        Join us today and get started in just a few steps
+                    </p>
+
+                    <AuthenticationEntry
+                        onEmailSelected={handleEmailSelected}
+                        onGoogleSelected={handleGoogleSelected}
+                        isLoading={registration.isSubmitting}
+                    />
+
+                    <p className="text-center text-gray-600 dark:text-gray-400 mt-6">
+                        Already have an account?{" "}
+                        <a
+                            href="/login"
+                            className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium"
+                        >
+                            Sign in
+                        </a>
+                    </p>
+                </div>
             </div>
         </div>
     )
