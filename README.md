@@ -157,12 +157,93 @@ All documentation is in the `docs/` folder:
 
 ## 🔑 Environment Variables
 
-See detailed instructions in:
-- `.env.local.example` - Local development
-- `.env.production.example` - Production
-- `.env.docker.example` - Docker setup
+### Quick Setup
 
-Each file contains step-by-step tutorials on how to obtain every required variable.
+1. Copy the example file:
+   ```bash
+   cp .env.local.example .env.local
+   ```
+
+2. Open `.env.local` and fill in your values
+
+3. See detailed instructions in:
+   - `.env.local.example` - Local development (with setup tutorials)
+   - `.env.production.example` - Production
+   - `.env.docker.example` - Docker setup
+
+### Environment Variables by Feature
+
+#### General Settings
+- `NODE_ENV` - Node environment (development/production)
+- `DEBUG` - Server-side debug logging
+- `NEXT_PUBLIC_DEBUG` - Client-side debug UI
+
+#### Database
+- `DATABASE_URL` - PostgreSQL connection string
+- `POSTGRES_USER` - Database user
+- `POSTGRES_PASSWORD` - Database password
+- `POSTGRES_DB` - Database name
+- `REDIS_URL` - Redis connection (optional, for caching)
+
+#### Authentication & Registration
+- `NEXT_PUBLIC_API_URL` - API endpoint URL (local: http://localhost:3000/api, production: https://api.production.com)
+- `JWT_SECRET` - Secret key for signing JWT tokens during OAuth registration
+- `BCRYPT_COST_FACTOR` - Password hashing cost (10-12, higher = more secure but slower)
+- `SESSION_TIMEOUT` - Registration session timeout in milliseconds (default: 1800000 = 30 minutes)
+- `VERIFICATION_TOKEN_EXPIRY` - Email verification link expiry in milliseconds (default: 86400000 = 24 hours)
+
+#### Email Service (SMTP)
+- `SMTP_HOST` - SMTP server hostname (e.g., smtp.gmail.com)
+- `SMTP_PORT` - SMTP port (587 for TLS, 465 for SSL)
+- `SMTP_USER` - SMTP username/email
+- `SMTP_PASSWORD` - SMTP password or app-specific password
+- `SMTP_FROM_EMAIL` - Sender email address
+- `SMTP_FROM_NAME` - Sender display name
+
+#### OAuth Providers
+- `GOOGLE_CLIENT_ID` - Google OAuth client ID (server-side)
+- `GOOGLE_CLIENT_SECRET` - Google OAuth client secret
+- `NEXT_PUBLIC_GOOGLE_CLIENT_ID` - Google OAuth client ID (client-side)
+- `NEXT_PUBLIC_GOOGLE_REDIRECT_URI` - Google OAuth redirect URI
+
+#### Third-Party Services
+- `NEXT_PUBLIC_SUPABASE_URL` - Supabase project URL
+- `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` - Supabase public key
+- `SUPABASE_SERVICE_ROLE_KEY` - Supabase service role key (server-only)
+- `STRIPE_SECRET_KEY` - Stripe secret key
+- `DISCORD_WEBHOOK_URL` - Discord webhook for notifications
+- `NEXT_PUBLIC_AMAZON_ASSOCIATES_TAG` - Amazon Associates tag
+- `MONERO_ADDRESS` - Monero wallet address
+- `MONERO_VIEW_KEY` - Monero view key
+
+### Cloud vs Local Configuration
+
+The application supports both cloud and local deployment:
+
+**Local Development** (npm run dev):
+- Uses `.env.local` for configuration
+- Connects to local PostgreSQL database
+- Uses local API endpoints (http://localhost:3000/api)
+- Supports simplified authentication for testing
+
+**Cloud Deployment** (Vercel, AWS, etc.):
+- Uses `.env.production` for configuration
+- Connects to remote database
+- Uses production API endpoints (https://api.production.com)
+- Enforces HTTPS and security headers
+- Uses production OAuth credentials
+
+### Important Security Notes
+
+⚠️ **Never commit `.env.local` to git** - it's in `.gitignore` for a reason!
+
+- Keep `BCRYPT_COST_FACTOR` at 10 for development (faster), 12 for production (more secure)
+- Use different `JWT_SECRET` for development and production
+- Use test OAuth credentials for development, production credentials for deployment
+- Keep `SUPABASE_SERVICE_ROLE_KEY` secret - never expose to client
+- Use app-specific passwords for SMTP (not your main password)
+- Rotate `SMTP_PASSWORD` regularly
+- Use strong, unique passwords for all services
 
 ---
 
