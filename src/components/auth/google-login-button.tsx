@@ -8,6 +8,7 @@
 "use client"
 
 import { logger } from "@/lib/logger"
+import { useTranslations } from "next-intl"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 
@@ -15,13 +16,14 @@ interface GoogleLoginButtonProps {
     onSuccess?: (response: { code: string }) => void
     onError?: (error: Error) => void
     className?: string
+    type?: "login" | "register"
 }
 
 /**
  * GoogleLoginButton Component
  *
  * This component:
- * 1. Displays a button with text "Login with Google"
+ * 1. Displays a button with text "Login via Google" or "Sign up with Google"
  * 2. Uses @react-oauth/google library for OAuth flow
  * 3. Includes client_id, redirect_uri, scope, state parameters
  * 4. Handles successful login response
@@ -35,8 +37,10 @@ export function GoogleLoginButton({
     onSuccess,
     onError,
     className = "",
+    type = "login",
 }: GoogleLoginButtonProps) {
     const router = useRouter()
+    const t = useTranslations("auth")
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState<string | null>(null)
 
@@ -87,6 +91,10 @@ export function GoogleLoginButton({
         }
     }
 
+    const buttonText =
+        type === "login" ? t("login.googleButton") : t("register.googleButton")
+    const loadingText = type === "login" ? "Logging in..." : "Signing up..."
+
     return (
         <div className="flex flex-col gap-2">
             <button
@@ -94,7 +102,7 @@ export function GoogleLoginButton({
                 disabled={isLoading}
                 className={`px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors ${className}`}
             >
-                {isLoading ? "Logging in..." : "Login with Google"}
+                {isLoading ? loadingText : buttonText}
             </button>
             {error && <div className="text-red-600 text-sm">{error}</div>}
         </div>

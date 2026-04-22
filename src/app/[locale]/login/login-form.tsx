@@ -49,7 +49,7 @@ export default function LoginForm({ locale }: LoginFormProps) {
 
     return (
         <>
-            <GoogleLoginButton className="w-full mb-6" />
+            <GoogleLoginButton className="w-full mb-6" type="login" />
 
             <div className="relative mb-6">
                 <div className="absolute inset-0 flex items-center">

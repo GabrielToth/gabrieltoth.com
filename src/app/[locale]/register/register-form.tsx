@@ -68,7 +68,7 @@ export default function RegisterForm({ locale }: RegisterFormProps) {
 
     return (
         <>
-            <GoogleLoginButton className="w-full mb-6" />
+            <GoogleLoginButton className="w-full mb-6" type="register" />
 
             <div className="relative mb-6">
                 <div className="absolute inset-0 flex items-center">
