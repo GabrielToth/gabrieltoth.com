@@ -213,3 +213,40 @@ export async function removeSession(sessionId: string): Promise<boolean> {
         throw error
     }
 }
+
+/**
+ * Get session from request cookies
+ *
+ * This function:
+ * 1. Extracts the session cookie from the request
+ * 2. Validates the session in the database
+ * 3. Returns the Session object if valid, null otherwise
+ *
+ * @param request - The NextRequest object
+ * @returns Session object if valid, null otherwise
+ *
+ * Validates: Requirements 4.5, 4.6, 4.7
+ */
+export async function getSessionFromCookie(
+    request: NextRequest
+): Promise<Session | null> {
+    try {
+        // Get session cookie from request
+        const sessionCookie = request.cookies.get("session")
+
+        if (!sessionCookie || !sessionCookie.value) {
+            return null
+        }
+
+        // Validate the session
+        const session = await validateSession(sessionCookie.value)
+
+        return session
+    } catch (error) {
+        logger.error("Failed to get session from cookie", {
+            context: "Auth",
+            error: error as Error,
+        })
+        return null
+    }
+}

@@ -30,7 +30,13 @@ function checkRateLimit(
     return false
 }
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
+    // Check account completion status and redirect if necessary
+    const completionResponse = await checkAccountCompletion(request)
+    if (completionResponse) {
+        return completionResponse
+    }
+
     // Enforce HTTPS in production
     if (
         process.env.NODE_ENV === "production" &&
