@@ -21,6 +21,7 @@ const nextConfig: NextConfig = {
     experimental: {
         // forceSwcTransforms: true, // Removed: Turbopack doesn't support this option
         // optimizeCss: true, // Disabled temporarily due to critters dependency issue
+        proxyMiddleware: true,
     },
     // Performance optimizations
     images: {
