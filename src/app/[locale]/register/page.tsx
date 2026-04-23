@@ -2,7 +2,7 @@ import Header from "@/components/layout/header"
 import { locales } from "@/lib/i18n"
 import { getTranslations } from "next-intl/server"
 import Link from "next/link"
-import RegisterForm from "./register-form"
+import RegisterFormMultistep from "./register-form-multistep"
 
 export function generateStaticParams() {
     return locales.map(locale => ({ locale }))
@@ -48,7 +48,7 @@ export default async function RegisterPage({
                                 {t("register.subtitle")}
                             </p>
 
-                            <RegisterForm locale={locale} />
+                            <RegisterFormMultistep locale={locale} />
 
                             <p className="text-center text-gray-600 dark:text-gray-400 mt-6">
                                 {t("register.haveAccount")}{" "}
