@@ -412,7 +412,7 @@ export async function updateUserAccountCompletion(
         name?: string
         password_hash?: string
         phone_number?: string
-        birth_date?: string
+        birth_date?: string | Date
         account_completion_status?: "pending" | "in_progress" | "completed"
         account_completed_at?: Date
     }

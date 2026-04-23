@@ -5,19 +5,27 @@
  * These tokens are used to securely pass OAuth user data between the callback
  * and completion endpoints during the registration flow.
  *
+ * Features:
+ * - JWT-based token generation with 30-minute expiration
+ * - Token hashing for secure storage in database
+ * - OAuth data preservation (email, oauth_provider, oauth_id, name, picture)
+ * - Comprehensive validation and error handling
+ *
  * Requirements:
- * - 2.2: Temporary tokens for OAuth registration flow
+ * - 1.1, 1.2, 1.3, 1.4: Account completion flow with temporary tokens
+ * - 2.1, 2.2, 2.3, 2.4: Middleware and token validation
  *
  * @module temp-token
  */
 
+import crypto from "crypto"
 import jwt from "jsonwebtoken"
 
 /**
  * Temporary token payload structure
  *
  * Contains OAuth user data that needs to be preserved between
- * the OAuth callback and registration completion steps.
+ * the OAuth callback and account completion steps.
  */
 export interface TempTokenPayload {
     email: string
@@ -48,14 +56,44 @@ function getJWTSecret(): string {
 }
 
 /**
- * Generate a temporary JWT token for OAuth registration
+ * Hash a token for secure storage
  *
- * Creates a signed JWT token containing OAuth user data with a 15-minute expiration.
+ * Uses SHA-256 to hash the token before storing in database.
+ * This prevents token exposure if database is compromised.
+ *
+ * @param token - Plain text JWT token
+ * @returns Hashed token (hex string)
+ */
+export function hashToken(token: string): string {
+    return crypto.createHash("sha256").update(token).digest("hex")
+}
+
+/**
+ * Verify a token hash matches the original token
+ *
+ * Compares a token against its stored hash using constant-time comparison
+ * to prevent timing attacks.
+ *
+ * @param token - Plain text JWT token
+ * @param hash - Stored token hash
+ * @returns True if token matches hash, false otherwise
+ */
+export function verifyTokenHash(token: string, hash: string): boolean {
+    const tokenHash = hashToken(token)
+    // Use constant-time comparison to prevent timing attacks
+    return crypto.timingSafeEqual(Buffer.from(tokenHash), Buffer.from(hash))
+}
+
+/**
+ * Generate a temporary JWT token for OAuth account completion
+ *
+ * Creates a signed JWT token containing OAuth user data with a 30-minute expiration.
  * The token is used to securely pass user information from the OAuth callback
- * to the registration completion endpoint.
+ * to the account completion endpoint.
  *
  * Requirements:
- * - 2.2: Generate temporary token with OAuth user data
+ * - 1.3: Generate temporary token with 30-minute expiration
+ * - 1.4: Include OAuth data in token payload
  *
  * @param payload - OAuth user data (without exp field)
  * @returns Signed JWT token string
@@ -70,6 +108,9 @@ function getJWTSecret(): string {
  *   name: 'John Doe',
  *   picture: 'https://example.com/photo.jpg'
  * })
+ *
+ * // For secure storage, hash the token:
+ * const tokenHash = hashToken(token)
  * ```
  */
 export function generateTempToken(
@@ -77,8 +118,8 @@ export function generateTempToken(
 ): string {
     const secret = getJWTSecret()
 
-    // Set expiration to 15 minutes from now
-    const expiresIn = "15m"
+    // Set expiration to 30 minutes from now
+    const expiresIn = "30m"
 
     // Sign the token with HS256 algorithm
     const token = jwt.sign(payload, secret, {
@@ -96,7 +137,8 @@ export function generateTempToken(
  * Throws descriptive errors for invalid, expired, or malformed tokens.
  *
  * Requirements:
- * - 2.2: Validate temporary token (signature, expiration)
+ * - 1.4: Verify temporary token validity
+ * - 2.3, 2.4: Token validation for middleware
  *
  * @param token - JWT token string to validate
  * @returns Decoded token payload
@@ -105,14 +147,14 @@ export function generateTempToken(
  * @example
  * ```typescript
  * try {
- *   const payload = validateTempToken(token)
+ *   const payload = verifyTempToken(token)
  *   console.log('User email:', payload.email)
  * } catch (error) {
  *   console.error('Invalid token:', error.message)
  * }
  * ```
  */
-export function validateTempToken(token: string): TempTokenPayload {
+export function verifyTempToken(token: string): TempTokenPayload {
     const secret = getJWTSecret()
 
     try {
@@ -137,7 +179,7 @@ export function validateTempToken(token: string): TempTokenPayload {
     } catch (error) {
         if (error instanceof jwt.TokenExpiredError) {
             throw new Error(
-                "Registration session expired. Please start the OAuth flow again."
+                "Account completion session expired. Please start the OAuth flow again."
             )
         }
 
@@ -154,4 +196,13 @@ export function validateTempToken(token: string): TempTokenPayload {
 
         throw new Error("Failed to validate token: Unknown error")
     }
+}
+
+/**
+ * Backward compatibility: alias for verifyTempToken
+ *
+ * @deprecated Use verifyTempToken instead
+ */
+export function validateTempToken(token: string): TempTokenPayload {
+    return verifyTempToken(token)
 }

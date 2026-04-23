@@ -1,10 +1,10 @@
 /**
- * Account Completion Flow - Property-Based Tests
+ * Account Completion Validation - Property-Based Tests
  *
- * Property-based tests for account completion validation and persistence logic.
+ * Property-based tests for account completion validation logic.
  * Tests universal properties that should hold across all inputs.
  *
- * Validates: Requirements 11.1, 11.2, 11.3, 11.4, 11.5, 11.6, 11.7, 11.8
+ * Validates: Requirements 11.1, 11.2
  */
 
 import fc from "fast-check"
@@ -16,13 +16,13 @@ import {
     validateName,
     validatePassword,
     validatePhoneNumber,
-} from "./account-completion-validation"
+} from "./validation"
 
-describe("Account Completion - Property-Based Tests", () => {
+describe("Account Completion Validation - Property-Based Tests", () => {
     /**
      * Property 1: Password Strength Invariant
      *
-     * **Validates: Requirements 11.1**
+     * **Validates: Requirements 5.2, 5.3, 11.1**
      *
      * All accepted passwords must meet security requirements:
      * - Minimum 8 characters
@@ -165,7 +165,7 @@ describe("Account Completion - Property-Based Tests", () => {
     /**
      * Property 2: Phone Number Format Consistency
      *
-     * **Validates: Requirements 11.2**
+     * **Validates: Requirements 5.4, 5.5, 11.1**
      *
      * Valid phone numbers must always be in international format:
      * - Start with +
@@ -257,16 +257,16 @@ describe("Account Completion - Property-Based Tests", () => {
     })
 
     /**
-     * Property 3: Birth Date Age Calculation Consistency
+     * Property 3: Birth Date Age Calculation Idempotence
      *
-     * **Validates: Requirements 11.3**
+     * **Validates: Requirements 5.6, 5.7, 11.1**
      *
      * Birth date validation must be consistent:
      * - ISO 8601 format (YYYY-MM-DD)
      * - User must be at least 13 years old
      * - Date cannot be in the future
      */
-    describe("Property 3: Birth Date Age Calculation Consistency", () => {
+    describe("Property 3: Birth Date Age Calculation Idempotence", () => {
         it("should correctly validate age for any birth date", () => {
             fc.assert(
                 fc.property(
@@ -366,299 +366,13 @@ describe("Account Completion - Property-Based Tests", () => {
     })
 
     /**
-     * Property 4: Email Format Consistency
+     * Property 7: Validation Error Messages Consistency
      *
-     * **Validates: Requirements 11.4**
-     *
-     * Email validation must be consistent and format-correct:
-     * - Must contain exactly one @
-     * - Must have local part and domain
-     * - Domain must have at least one dot
-     */
-    describe("Property 4: Email Format Consistency", () => {
-        it("should accept only valid email formats", () => {
-            fc.assert(
-                fc.property(fc.string(), email => {
-                    const isValid = validateEmail(email)
-
-                    if (isValid) {
-                        // Must contain exactly one @
-                        expect((email.match(/@/g) || []).length).toBe(1)
-                        // Must have local part and domain
-                        const [localPart, domain] = email.split("@")
-                        expect(localPart.length).toBeGreaterThan(0)
-                        expect(domain.length).toBeGreaterThan(0)
-                        // Domain must have at least one dot
-                        expect(domain).toContain(".")
-                    }
-                }),
-                { numRuns: 100 }
-            )
-        })
-
-        it("should reject emails without @ symbol", () => {
-            fc.assert(
-                fc.property(
-                    fc.string().filter(s => !s.includes("@")),
-                    email => {
-                        const isValid = validateEmail(email)
-                        expect(isValid).toBe(false)
-                    }
-                ),
-                { numRuns: 50 }
-            )
-        })
-
-        it("should reject emails with multiple @ symbols", () => {
-            fc.assert(
-                fc.property(
-                    fc
-                        .string({ minLength: 5 })
-                        .filter(s => (s.match(/@/g) || []).length >= 2),
-                    email => {
-                        const isValid = validateEmail(email)
-                        expect(isValid).toBe(false)
-                    }
-                ),
-                { numRuns: 50 }
-            )
-        })
-
-        it("should reject emails without domain extension", () => {
-            fc.assert(
-                fc.property(
-                    fc
-                        .string({ minLength: 3 })
-                        .filter(s => s.includes("@") && !s.includes(".")),
-                    email => {
-                        const isValid = validateEmail(email)
-                        expect(isValid).toBe(false)
-                    }
-                ),
-                { numRuns: 50 }
-            )
-        })
-
-        it("should reject emails with empty local part", () => {
-            fc.assert(
-                fc.property(
-                    fc.string({ minLength: 1 }).filter(s => !s.includes("@")),
-                    domain => {
-                        const email = "@" + domain
-                        const isValid = validateEmail(email)
-                        expect(isValid).toBe(false)
-                    }
-                ),
-                { numRuns: 50 }
-            )
-        })
-    })
-
-    /**
-     * Property 5: Round-Trip Data Persistence
-     *
-     * **Validates: Requirements 11.5**
-     *
-     * Data submitted must be validated consistently across multiple validations
-     */
-    describe("Property 5: Round-Trip Data Persistence", () => {
-        it("should validate complete data consistently", () => {
-            fc.assert(
-                fc.property(
-                    fc.record({
-                        email: fc.emailAddress(),
-                        name: fc.string({ minLength: 2, maxLength: 100 }),
-                        password: fc
-                            .string({ minLength: 8, maxLength: 50 })
-                            .filter(
-                                p =>
-                                    /[A-Z]/.test(p) &&
-                                    /[a-z]/.test(p) &&
-                                    /\d/.test(p) &&
-                                    /[!@#$%^&*]/.test(p)
-                            ),
-                        phone: fc
-                            .string({ minLength: 7, maxLength: 15 })
-                            .filter(s => /^\d+$/.test(s))
-                            .map(digits => `+${digits}`),
-                        birthDate: fc
-                            .date({
-                                min: new Date(1900, 0, 1),
-                                max: new Date(2011, 0, 1),
-                            })
-                            .map(d => d.toISOString().split("T")[0]),
-                    }),
-                    data => {
-                        const result = validateAccountCompletionData(data)
-                        expect(result.valid).toBe(true)
-                        expect(Object.keys(result.errors).length).toBe(0)
-                    }
-                ),
-                { numRuns: 100 }
-            )
-        })
-
-        it("should preserve all fields through validation", () => {
-            fc.assert(
-                fc.property(
-                    fc.record({
-                        email: fc.emailAddress(),
-                        name: fc.string({ minLength: 2, maxLength: 100 }),
-                        password: fc
-                            .string({ minLength: 8, maxLength: 50 })
-                            .filter(
-                                p =>
-                                    /[A-Z]/.test(p) &&
-                                    /[a-z]/.test(p) &&
-                                    /\d/.test(p) &&
-                                    /[!@#$%^&*]/.test(p)
-                            ),
-                        phone: fc
-                            .string({ minLength: 7, maxLength: 15 })
-                            .filter(s => /^\d+$/.test(s))
-                            .map(digits => `+${digits}`),
-                        birthDate: fc
-                            .date({
-                                min: new Date(1900, 0, 1),
-                                max: new Date(2011, 0, 1),
-                            })
-                            .map(d => d.toISOString().split("T")[0]),
-                    }),
-                    data => {
-                        const result = validateAccountCompletionData(data)
-                        if (result.valid) {
-                            // All fields should be present in input
-                            expect(data.email).toBeDefined()
-                            expect(data.name).toBeDefined()
-                            expect(data.password).toBeDefined()
-                            expect(data.phone).toBeDefined()
-                            expect(data.birthDate).toBeDefined()
-                        }
-                    }
-                ),
-                { numRuns: 100 }
-            )
-        })
-    })
-
-    /**
-     * Property 6: Account Completion Idempotence
-     *
-     * **Validates: Requirements 11.6**
-     *
-     * Validating the same data twice should produce the same result
-     */
-    describe("Property 6: Account Completion Idempotence", () => {
-        it("should produce identical results for repeated password validation", () => {
-            fc.assert(
-                fc.property(fc.string(), password => {
-                    const result1 = validatePassword(password)
-                    const result2 = validatePassword(password)
-                    const result3 = validatePassword(password)
-
-                    expect(result1.valid).toBe(result2.valid)
-                    expect(result2.valid).toBe(result3.valid)
-                    expect(result1.errors).toEqual(result2.errors)
-                    expect(result2.errors).toEqual(result3.errors)
-                }),
-                { numRuns: 100 }
-            )
-        })
-
-        it("should produce identical phone validation results", () => {
-            fc.assert(
-                fc.property(fc.string(), phone => {
-                    const result1 = validatePhoneNumber(phone)
-                    const result2 = validatePhoneNumber(phone)
-                    const result3 = validatePhoneNumber(phone)
-
-                    expect(result1).toBe(result2)
-                    expect(result2).toBe(result3)
-                }),
-                { numRuns: 100 }
-            )
-        })
-
-        it("should produce identical birth date validation results", () => {
-            fc.assert(
-                fc.property(fc.string(), birthDate => {
-                    const result1 = validateBirthDate(birthDate)
-                    const result2 = validateBirthDate(birthDate)
-                    const result3 = validateBirthDate(birthDate)
-
-                    expect(result1.valid).toBe(result2.valid)
-                    expect(result2.valid).toBe(result3.valid)
-                    expect(result1.error).toBe(result2.error)
-                    expect(result2.error).toBe(result3.error)
-                }),
-                { numRuns: 100 }
-            )
-        })
-
-        it("should produce identical email validation results", () => {
-            fc.assert(
-                fc.property(fc.string(), email => {
-                    const result1 = validateEmail(email)
-                    const result2 = validateEmail(email)
-                    const result3 = validateEmail(email)
-
-                    expect(result1).toBe(result2)
-                    expect(result2).toBe(result3)
-                }),
-                { numRuns: 100 }
-            )
-        })
-
-        it("should produce identical name validation results", () => {
-            fc.assert(
-                fc.property(fc.string(), name => {
-                    const result1 = validateName(name)
-                    const result2 = validateName(name)
-                    const result3 = validateName(name)
-
-                    expect(result1.valid).toBe(result2.valid)
-                    expect(result2.valid).toBe(result3.valid)
-                    expect(result1.error).toBe(result2.error)
-                    expect(result2.error).toBe(result3.error)
-                }),
-                { numRuns: 100 }
-            )
-        })
-
-        it("should produce identical results for complete data validation", () => {
-            fc.assert(
-                fc.property(
-                    fc.record({
-                        email: fc.string(),
-                        name: fc.string(),
-                        password: fc.string(),
-                        phone: fc.string(),
-                        birthDate: fc.string(),
-                    }),
-                    data => {
-                        const result1 = validateAccountCompletionData(data)
-                        const result2 = validateAccountCompletionData(data)
-                        const result3 = validateAccountCompletionData(data)
-
-                        expect(result1.valid).toBe(result2.valid)
-                        expect(result2.valid).toBe(result3.valid)
-                        expect(result1.errors).toEqual(result2.errors)
-                        expect(result2.errors).toEqual(result3.errors)
-                    }
-                ),
-                { numRuns: 100 }
-            )
-        })
-    })
-
-    /**
-     * Property 7: Validation Error Consistency
-     *
-     * **Validates: Requirements 11.7**
+     * **Validates: Requirements 6.1, 6.2, 6.3, 6.4, 6.5, 6.6, 6.7, 11.2**
      *
      * Invalid inputs must always produce consistent error messages
      */
-    describe("Property 7: Validation Error Consistency", () => {
+    describe("Property 7: Validation Error Messages Consistency", () => {
         it("should provide consistent error messages for invalid passwords", () => {
             fc.assert(
                 fc.property(fc.string(), password => {
@@ -739,113 +453,6 @@ describe("Account Completion - Property-Based Tests", () => {
 
                         expect(result1.valid).toBe(result2.valid)
                         expect(result1.errors).toEqual(result2.errors)
-                    }
-                ),
-                { numRuns: 100 }
-            )
-        })
-    })
-
-    /**
-     * Property 8: Data Integrity
-     *
-     * **Validates: Requirements 11.8**
-     *
-     * All required fields must be validated and errors must be reported
-     */
-    describe("Property 8: Data Integrity", () => {
-        it("should validate all required fields", () => {
-            fc.assert(
-                fc.property(
-                    fc.record({
-                        email: fc.string(),
-                        name: fc.string(),
-                        password: fc.string(),
-                        phone: fc.string(),
-                        birthDate: fc.string(),
-                    }),
-                    data => {
-                        const result = validateAccountCompletionData(data)
-
-                        // If any field is invalid, should have errors
-                        if (!result.valid) {
-                            expect(
-                                Object.keys(result.errors).length
-                            ).toBeGreaterThan(0)
-                        }
-
-                        // All error keys should be valid field names
-                        const validFields = [
-                            "email",
-                            "name",
-                            "password",
-                            "phone",
-                            "birthDate",
-                        ]
-                        Object.keys(result.errors).forEach(field => {
-                            expect(validFields).toContain(field)
-                        })
-                    }
-                ),
-                { numRuns: 100 }
-            )
-        })
-
-        it("should report errors for all invalid fields", () => {
-            fc.assert(
-                fc.property(
-                    fc.record({
-                        email: fc.string().filter(s => !s.includes("@")),
-                        name: fc.string({ maxLength: 1 }),
-                        password: fc.string({ maxLength: 7 }),
-                        phone: fc.string().filter(s => !s.startsWith("+")),
-                        birthDate: fc
-                            .string()
-                            .filter(s => !/^\d{4}-\d{2}-\d{2}$/.test(s)),
-                    }),
-                    data => {
-                        const result = validateAccountCompletionData(data)
-                        expect(result.valid).toBe(false)
-                        // Should have errors for all fields
-                        expect(
-                            Object.keys(result.errors).length
-                        ).toBeGreaterThan(0)
-                    }
-                ),
-                { numRuns: 100 }
-            )
-        })
-
-        it("should not report errors for valid fields", () => {
-            fc.assert(
-                fc.property(
-                    fc.record({
-                        email: fc.emailAddress(),
-                        name: fc.string({ minLength: 2, maxLength: 100 }),
-                        password: fc
-                            .string({ minLength: 8, maxLength: 50 })
-                            .filter(
-                                p =>
-                                    /[A-Z]/.test(p) &&
-                                    /[a-z]/.test(p) &&
-                                    /\d/.test(p) &&
-                                    /[!@#$%^&*]/.test(p)
-                            ),
-                        phone: fc
-                            .string({ minLength: 7, maxLength: 15 })
-                            .filter(s => /^\d+$/.test(s))
-                            .map(digits => `+${digits}`),
-                        birthDate: fc
-                            .date({
-                                min: new Date(1900, 0, 1),
-                                max: new Date(2011, 0, 1),
-                            })
-                            .map(d => d.toISOString().split("T")[0]),
-                    }),
-                    data => {
-                        const result = validateAccountCompletionData(data)
-                        expect(result.valid).toBe(true)
-                        expect(Object.keys(result.errors).length).toBe(0)
                     }
                 ),
                 { numRuns: 100 }

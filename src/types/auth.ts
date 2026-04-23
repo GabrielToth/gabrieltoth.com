@@ -25,22 +25,36 @@ export interface User {
  * OAuth User interface representing a user with OAuth and password authentication
  * Supports multiple OAuth providers (Google, Facebook, TikTok) with email/password fallback
  *
- * Validates: Requirements 2.5, 3.6, 11.3, 1.1, 1.2, 1.3
+ * Validates: Requirements 2.5, 3.6, 11.3, 1.1, 1.2, 1.3, 9.1
  */
 export interface OAuthUser {
+    /** Unique identifier for the user */
     id: string
+    /** User's email address */
     email: string
+    /** Hashed password for email/password authentication. Null for OAuth-only users until account completion */
     password_hash: string | null
+    /** OAuth provider used for authentication (google, facebook, tiktok, or null for email/password users) */
     oauth_provider: "google" | "facebook" | "tiktok" | null
+    /** OAuth provider's unique identifier for the user. Null for email/password users */
     oauth_id: string | null
+    /** User's full name */
     name: string
+    /** User's profile picture URL from OAuth provider */
     picture?: string | null
+    /** User's phone number in international format (e.g., +1234567890). Optional field added during account completion */
     phone_number?: string | null
+    /** User's birth date in ISO 8601 format (YYYY-MM-DD). Optional field added during account completion */
     birth_date?: Date | null
+    /** Account completion status: 'pending' (incomplete), 'in_progress' (started), 'completed' (finished) */
     account_completion_status: "pending" | "in_progress" | "completed"
+    /** Timestamp when the user completed their account setup. Null until account completion is finished */
     account_completed_at?: Date | null
+    /** Whether the user's email has been verified */
     email_verified: boolean
+    /** Timestamp when the user record was created */
     created_at: Date
+    /** Timestamp when the user record was last updated */
     updated_at: Date
 }
 

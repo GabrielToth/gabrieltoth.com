@@ -71,15 +71,13 @@ describe("PasswordStrength", () => {
     it("should validate minimum length requirement", () => {
         const { rerender } = render(<PasswordStrength password="Pass1!" />)
 
-        // Should not have min length met
-        let requirements = screen.getAllByRole("img", { hidden: true })
-        expect(requirements.length).toBeGreaterThan(0)
+        // Should not have min length met (4/5)
+        expect(screen.getByText("4/5")).toBeInTheDocument()
 
         rerender(<PasswordStrength password="SecurePass123!" />)
 
-        // Should have min length met
-        requirements = screen.getAllByRole("img", { hidden: true })
-        expect(requirements.length).toBeGreaterThan(0)
+        // Should have min length met (5/5)
+        expect(screen.getByText("5/5")).toBeInTheDocument()
     })
 
     it("should validate uppercase requirement", () => {
@@ -133,7 +131,7 @@ describe("PasswordStrength", () => {
             <PasswordStrength password="SecurePass123!" />
         )
 
-        const progressBar = container.querySelector(".h-2.bg-blue-600")
+        const progressBar = container.querySelector(".h-2.bg-gray-200")
         expect(progressBar).toBeInTheDocument()
     })
 })

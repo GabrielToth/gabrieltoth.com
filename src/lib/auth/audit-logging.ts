@@ -200,6 +200,53 @@ export async function logPasswordResetSuccess(
 }
 
 /**
+ * Log a successful account completion
+ */
+export async function logAccountCompletion(
+    userId: string,
+    email: string,
+    ipAddress: string
+): Promise<void> {
+    await logAuditEvent(
+        "ACCOUNT_COMPLETION",
+        email,
+        ipAddress,
+        {
+            action: "Account completion successful",
+            timestamp: new Date().toISOString(),
+            status: "success",
+        },
+        userId
+    )
+
+    logger.info("Account completion logged", {
+        context: "AccountCompletion",
+        data: { userId, email },
+    })
+}
+
+/**
+ * Log a failed account completion attempt
+ */
+export async function logAccountCompletionFailed(
+    email: string,
+    ipAddress: string,
+    errorDetails: string
+): Promise<void> {
+    await logAuditEvent("ACCOUNT_COMPLETION", email, ipAddress, {
+        action: "Account completion failed",
+        timestamp: new Date().toISOString(),
+        status: "failed",
+        error: errorDetails,
+    })
+
+    logger.warn("Account completion failed", {
+        context: "AccountCompletion",
+        data: { email, error: errorDetails },
+    })
+}
+
+/**
  * Log a security event (SQL injection, XSS, CSRF, etc.)
  */
 export async function logSecurityEvent(

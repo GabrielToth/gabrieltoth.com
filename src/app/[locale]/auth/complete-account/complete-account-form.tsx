@@ -85,13 +85,13 @@ export default function CompleteAccountForm({
 
         // Move to next step
         if (currentStep < 3) {
-            setCurrentStep(currentStep + 1)
+            setCurrentStep((currentStep + 1) as 1 | 2 | 3)
         }
     }, [currentStep, validateStep, setCurrentStep, t])
 
     const handleBack = useCallback(() => {
         if (currentStep > 1) {
-            setCurrentStep(currentStep - 1)
+            setCurrentStep((currentStep - 1) as 1 | 2 | 3)
         }
     }, [currentStep, setCurrentStep])
 

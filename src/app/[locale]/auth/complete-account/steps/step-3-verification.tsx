@@ -1,10 +1,10 @@
 /**
  * Step 3: Verification Component
  *
- * Displays all account information in read-only format for final review.
- * Allows users to edit sections before final submission.
+ * Displays all collected data in read-only format for final review.
+ * Allows editing of individual sections before final submission.
  *
- * Validates: Requirements 4.5, 7.1
+ * Validates: Requirements 7.1, 7.2, 7.3, 7.4, 7.5, 7.6, 7.7, 7.8
  */
 
 "use client"
@@ -48,78 +48,84 @@ export default function Step3Verification({
 
     return (
         <div className="space-y-6">
-            <p className="text-gray-600 dark:text-gray-400">
-                {t("completeAccount.step3.description")}
-            </p>
+            {/* Step Title */}
+            <div>
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                    {t("completeAccount.step3.title")}
+                </h2>
+                <p className="text-gray-600 dark:text-gray-400">
+                    {t("completeAccount.step3.description")}
+                </p>
+            </div>
+
+            {/* Profile Picture */}
+            {prefilledData.picture && (
+                <div className="flex justify-center">
+                    <img
+                        src={prefilledData.picture}
+                        alt={editedData.name}
+                        className="w-20 h-20 rounded-full border-4 border-blue-200 dark:border-blue-800 object-cover"
+                    />
+                </div>
+            )}
 
             {/* Pre-filled Data Summary */}
             <DataSummary
-                label={t("completeAccount.step3.prefilledData")}
+                title={t("completeAccount.step3.prefilledData")}
                 data={{
-                    email: editedData.email,
-                    name: editedData.name,
-                    picture: prefilledData.picture ? "✓" : undefined,
+                    [t("completeAccount.step1.email")]: editedData.email,
+                    [t("completeAccount.step1.name")]: editedData.name,
                 }}
                 onEdit={() => onEditSection("prefilled")}
             />
 
             {/* New Fields Summary */}
             <DataSummary
-                label={t("completeAccount.step3.newFields")}
+                title={t("completeAccount.step3.newFields")}
                 data={{
-                    password: newFields.password ? "••••••••" : undefined,
-                    phone: newFields.phone,
-                    birthDate: newFields.birthDate,
+                    [t("completeAccount.step2.password")]: newFields.password
+                        ? "••••••••"
+                        : "",
+                    [t("completeAccount.step2.phone")]: newFields.phone,
+                    [t("completeAccount.step2.birthDate")]: newFields.birthDate,
                 }}
                 onEdit={() => onEditSection("newFields")}
             />
 
-            {/* Errors Display */}
-            {Object.keys(errors).length > 0 && (
+            {/* Info Message */}
+            <div className="p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
+                <p className="text-sm text-blue-800 dark:text-blue-200">
+                    {t("completeAccount.step3.info")}
+                </p>
+            </div>
+
+            {/* Error Message */}
+            {errors.submit && (
                 <div className="p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
-                    <p className="text-red-800 dark:text-red-200 text-sm font-medium mb-2">
-                        {t("completeAccount.errors.validationFailed")}
+                    <p className="text-sm text-red-800 dark:text-red-200">
+                        {t(`completeAccount.errors.${errors.submit}`)}
                     </p>
-                    <ul className="list-disc list-inside space-y-1">
-                        {Object.entries(errors).map(([field, error]) => (
-                            <li
-                                key={field}
-                                className="text-red-700 dark:text-red-300 text-sm"
-                            >
-                                {error}
-                            </li>
-                        ))}
-                    </ul>
                 </div>
             )}
 
             {/* Action Buttons */}
             <div className="flex gap-3 pt-4">
                 <button
-                    type="button"
                     onClick={onBack}
                     disabled={isLoading}
-                    className="flex-1 px-4 py-3 bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
+                    className="flex-1 px-4 py-3 bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white rounded-md hover:bg-gray-300 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
                 >
                     {t("completeAccount.back")}
                 </button>
                 <button
-                    type="button"
                     onClick={onSubmit}
-                    disabled={isLoading || Object.keys(errors).length > 0}
-                    className="flex-1 px-4 py-3 bg-green-600 dark:bg-green-500 text-white rounded-lg hover:bg-green-700 dark:hover:bg-green-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
+                    disabled={isLoading}
+                    className="flex-1 px-4 py-3 bg-green-600 dark:bg-green-500 text-white rounded-md hover:bg-green-700 dark:hover:bg-green-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
                 >
                     {isLoading
                         ? t("completeAccount.loading")
                         : t("completeAccount.step3.complete")}
                 </button>
-            </div>
-
-            {/* Info Message */}
-            <div className="p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
-                <p className="text-blue-800 dark:text-blue-200 text-sm">
-                    {t("completeAccount.step3.info")}
-                </p>
             </div>
         </div>
     )

@@ -13,6 +13,9 @@ import {
     getUserByEmail,
     getUserByGoogleId,
     getUserById,
+    markAccountCompleted,
+    markAccountInProgress,
+    updateUserAccountCompletion,
     upsertUser,
 } from "./user"
 
@@ -586,6 +589,303 @@ describe("User Management", () => {
             const result = await getUserByEmail("non-existent@example.com")
 
             expect(result).toBeUndefined()
+        })
+    })
+
+    describe("updateUserAccountCompletion()", () => {
+        describe("Unit Tests", () => {
+            it("should update user with all account completion data", async () => {
+                const userId = "user-id-1"
+                const completionData = {
+                    email: "newemail@example.com",
+                    name: "Updated Name",
+                    password_hash: "hashed_password_123",
+                    phone_number: "+1234567890",
+                    birth_date: "1990-01-15",
+                    account_completion_status: "completed" as const,
+                    account_completed_at: new Date(),
+                }
+
+                const updatedUser = {
+                    id: userId,
+                    email: completionData.email,
+                    password_hash: completionData.password_hash,
+                    oauth_provider: "google",
+                    oauth_id: "google-123",
+                    name: completionData.name,
+                    picture: "https://example.com/pic.jpg",
+                    phone_number: completionData.phone_number,
+                    birth_date: new Date(completionData.birth_date),
+                    account_completion_status:
+                        completionData.account_completion_status,
+                    account_completed_at: completionData.account_completed_at,
+                    email_verified: true,
+                    created_at: new Date(),
+                    updated_at: new Date(),
+                }
+
+                vi.mocked(db.db.queryOne).mockResolvedValueOnce(updatedUser)
+
+                const result = await updateUserAccountCompletion(
+                    userId,
+                    completionData
+                )
+
+                expect(result).toEqual(updatedUser)
+                expect(result.email).toBe(completionData.email)
+                expect(result.password_hash).toBe(completionData.password_hash)
+                expect(result.phone_number).toBe(completionData.phone_number)
+                expect(result.birth_date).toEqual(
+                    new Date(completionData.birth_date)
+                )
+                expect(result.account_completion_status).toBe("completed")
+            })
+
+            it("should update only password_hash when provided", async () => {
+                const userId = "user-id-1"
+                const completionData = {
+                    password_hash: "hashed_password_123",
+                }
+
+                const updatedUser = {
+                    id: userId,
+                    email: "user@example.com",
+                    password_hash: completionData.password_hash,
+                    oauth_provider: "google",
+                    oauth_id: "google-123",
+                    name: "John Doe",
+                    picture: "https://example.com/pic.jpg",
+                    phone_number: null,
+                    birth_date: null,
+                    account_completion_status: "pending" as const,
+                    account_completed_at: null,
+                    email_verified: true,
+                    created_at: new Date(),
+                    updated_at: new Date(),
+                }
+
+                vi.mocked(db.db.queryOne).mockResolvedValueOnce(updatedUser)
+
+                const result = await updateUserAccountCompletion(
+                    userId,
+                    completionData
+                )
+
+                expect(result.password_hash).toBe(completionData.password_hash)
+            })
+
+            it("should update phone_number and birth_date", async () => {
+                const userId = "user-id-1"
+                const completionData = {
+                    phone_number: "+1234567890",
+                    birth_date: "1990-01-15",
+                }
+
+                const updatedUser = {
+                    id: userId,
+                    email: "user@example.com",
+                    password_hash: null,
+                    oauth_provider: "google",
+                    oauth_id: "google-123",
+                    name: "John Doe",
+                    picture: "https://example.com/pic.jpg",
+                    phone_number: completionData.phone_number,
+                    birth_date: new Date(completionData.birth_date),
+                    account_completion_status: "in_progress" as const,
+                    account_completed_at: null,
+                    email_verified: true,
+                    created_at: new Date(),
+                    updated_at: new Date(),
+                }
+
+                vi.mocked(db.db.queryOne).mockResolvedValueOnce(updatedUser)
+
+                const result = await updateUserAccountCompletion(
+                    userId,
+                    completionData
+                )
+
+                expect(result.phone_number).toBe(completionData.phone_number)
+                expect(result.birth_date).toEqual(
+                    new Date(completionData.birth_date)
+                )
+            })
+
+            it("should update account_completion_status to in_progress", async () => {
+                const userId = "user-id-1"
+                const completionData = {
+                    account_completion_status: "in_progress" as const,
+                }
+
+                const updatedUser = {
+                    id: userId,
+                    email: "user@example.com",
+                    password_hash: null,
+                    oauth_provider: "google",
+                    oauth_id: "google-123",
+                    name: "John Doe",
+                    picture: "https://example.com/pic.jpg",
+                    phone_number: null,
+                    birth_date: null,
+                    account_completion_status:
+                        completionData.account_completion_status,
+                    account_completed_at: null,
+                    email_verified: true,
+                    created_at: new Date(),
+                    updated_at: new Date(),
+                }
+
+                vi.mocked(db.db.queryOne).mockResolvedValueOnce(updatedUser)
+
+                const result = await updateUserAccountCompletion(
+                    userId,
+                    completionData
+                )
+
+                expect(result.account_completion_status).toBe("in_progress")
+            })
+
+            it("should throw error when userId is missing", async () => {
+                const completionData = {
+                    password_hash: "hashed_password_123",
+                }
+
+                await expect(
+                    updateUserAccountCompletion("", completionData)
+                ).rejects.toThrow("User ID is required")
+            })
+
+            it("should throw error when no data is provided to update", async () => {
+                const userId = "user-id-1"
+
+                await expect(
+                    updateUserAccountCompletion(userId, {})
+                ).rejects.toThrow("No data provided to update")
+            })
+
+            it("should throw error when user not found", async () => {
+                const userId = "non-existent-id"
+                const completionData = {
+                    password_hash: "hashed_password_123",
+                }
+
+                vi.mocked(db.db.queryOne).mockResolvedValueOnce(null)
+
+                await expect(
+                    updateUserAccountCompletion(userId, completionData)
+                ).rejects.toThrow("User not found or failed to update account")
+            })
+
+            it("should throw error when database query fails", async () => {
+                const userId = "user-id-1"
+                const completionData = {
+                    password_hash: "hashed_password_123",
+                }
+
+                vi.mocked(db.db.queryOne).mockRejectedValueOnce(
+                    new Error("Database connection failed")
+                )
+
+                await expect(
+                    updateUserAccountCompletion(userId, completionData)
+                ).rejects.toThrow("Database connection failed")
+            })
+        })
+    })
+
+    describe("markAccountInProgress()", () => {
+        describe("Unit Tests", () => {
+            it("should set account_completion_status to in_progress", async () => {
+                const userId = "user-id-1"
+
+                const updatedUser = {
+                    id: userId,
+                    email: "user@example.com",
+                    password_hash: null,
+                    oauth_provider: "google",
+                    oauth_id: "google-123",
+                    name: "John Doe",
+                    picture: "https://example.com/pic.jpg",
+                    phone_number: null,
+                    birth_date: null,
+                    account_completion_status: "in_progress" as const,
+                    account_completed_at: null,
+                    email_verified: true,
+                    created_at: new Date(),
+                    updated_at: new Date(),
+                }
+
+                vi.mocked(db.db.queryOne).mockResolvedValueOnce(updatedUser)
+
+                const result = await markAccountInProgress(userId)
+
+                expect(result.account_completion_status).toBe("in_progress")
+            })
+
+            it("should throw error when user not found", async () => {
+                const userId = "non-existent-id"
+
+                vi.mocked(db.db.queryOne).mockResolvedValueOnce(null)
+
+                await expect(markAccountInProgress(userId)).rejects.toThrow(
+                    "User not found or failed to update account"
+                )
+            })
+        })
+    })
+
+    describe("markAccountCompleted()", () => {
+        describe("Unit Tests", () => {
+            it("should set account_completion_status to completed with timestamp", async () => {
+                const userId = "user-id-1"
+                const completedAt = new Date()
+
+                const updatedUser = {
+                    id: userId,
+                    email: "user@example.com",
+                    password_hash: "hashed_password_123",
+                    oauth_provider: "google",
+                    oauth_id: "google-123",
+                    name: "John Doe",
+                    picture: "https://example.com/pic.jpg",
+                    phone_number: "+1234567890",
+                    birth_date: new Date("1990-01-15"),
+                    account_completion_status: "completed" as const,
+                    account_completed_at: completedAt,
+                    email_verified: true,
+                    created_at: new Date(),
+                    updated_at: new Date(),
+                }
+
+                vi.mocked(db.db.queryOne).mockResolvedValueOnce(updatedUser)
+
+                const result = await markAccountCompleted(userId)
+
+                expect(result.account_completion_status).toBe("completed")
+                expect(result.account_completed_at).toBeDefined()
+            })
+
+            it("should throw error when user not found", async () => {
+                const userId = "non-existent-id"
+
+                vi.mocked(db.db.queryOne).mockResolvedValueOnce(null)
+
+                await expect(markAccountCompleted(userId)).rejects.toThrow(
+                    "User not found or failed to update account"
+                )
+            })
+
+            it("should throw error when database query fails", async () => {
+                const userId = "user-id-1"
+
+                vi.mocked(db.db.queryOne).mockRejectedValueOnce(
+                    new Error("Database connection failed")
+                )
+
+                await expect(markAccountCompleted(userId)).rejects.toThrow(
+                    "Database connection failed"
+                )
+            })
         })
     })
 })

@@ -8,6 +8,8 @@ import {
     getAuditLogsByEventType,
     getRecentSecurityEvents,
     getUserAuditLogs,
+    logAccountCompletion,
+    logAccountCompletionFailed,
     logAuditEvent,
     logLoginFailure,
     logLoginSuccess,
@@ -20,15 +22,18 @@ import {
 
 // Mock the database module
 vi.mock("@/lib/db", () => ({
-    query: vi.fn(),
-    queryOne: vi.fn(),
-    queryMany: vi.fn(),
+    db: {
+        query: vi.fn(),
+        queryOne: vi.fn(),
+        queryMany: vi.fn(),
+    },
 }))
 
 // Mock the logger
 vi.mock("@/lib/logger", () => ({
     logger: {
         debug: vi.fn(),
+        info: vi.fn(),
         warn: vi.fn(),
         error: vi.fn(),
     },
@@ -41,8 +46,8 @@ describe("Audit Logging", () => {
 
     describe("logAuditEvent", () => {
         it("should log an audit event with all details", async () => {
-            const mockQuery = vi.mocked(db.query)
-            const mockQueryOne = vi.mocked(db.queryOne)
+            const mockQuery = vi.mocked(db.db.query)
+            const mockQueryOne = vi.mocked(db.db.queryOne)
 
             mockQueryOne.mockResolvedValueOnce({ id: "user-123" })
             mockQuery.mockResolvedValueOnce({ rowCount: 1 } as any)
@@ -61,7 +66,7 @@ describe("Audit Logging", () => {
         })
 
         it("should log an audit event with userId", async () => {
-            const mockQuery = vi.mocked(db.query)
+            const mockQuery = vi.mocked(db.db.query)
 
             mockQuery.mockResolvedValueOnce({ rowCount: 1 } as any)
 
@@ -80,7 +85,7 @@ describe("Audit Logging", () => {
         })
 
         it("should handle missing email and IP", async () => {
-            const mockQuery = vi.mocked(db.query)
+            const mockQuery = vi.mocked(db.db.query)
 
             mockQuery.mockResolvedValueOnce({ rowCount: 1 } as any)
 
@@ -95,8 +100,8 @@ describe("Audit Logging", () => {
 
     describe("logRegistration", () => {
         it("should log a registration event", async () => {
-            const mockQuery = vi.mocked(db.query)
-            const mockQueryOne = vi.mocked(db.queryOne)
+            const mockQuery = vi.mocked(db.db.query)
+            const mockQueryOne = vi.mocked(db.db.queryOne)
 
             mockQueryOne.mockResolvedValueOnce(null)
             mockQuery.mockResolvedValueOnce({ rowCount: 1 } as any)
@@ -116,8 +121,8 @@ describe("Audit Logging", () => {
 
     describe("logLoginSuccess", () => {
         it("should log a successful login event", async () => {
-            const mockQuery = vi.mocked(db.query)
-            const mockQueryOne = vi.mocked(db.queryOne)
+            const mockQuery = vi.mocked(db.db.query)
+            const mockQueryOne = vi.mocked(db.db.queryOne)
 
             mockQueryOne.mockResolvedValueOnce({ id: "user-123" })
             mockQuery.mockResolvedValueOnce({ rowCount: 1 } as any)
@@ -137,8 +142,8 @@ describe("Audit Logging", () => {
 
     describe("logLoginFailure", () => {
         it("should log a failed login event with reason", async () => {
-            const mockQuery = vi.mocked(db.query)
-            const mockQueryOne = vi.mocked(db.queryOne)
+            const mockQuery = vi.mocked(db.db.query)
+            const mockQueryOne = vi.mocked(db.db.queryOne)
 
             mockQueryOne.mockResolvedValueOnce(null)
             mockQuery.mockResolvedValueOnce({ rowCount: 1 } as any)
@@ -162,8 +167,8 @@ describe("Audit Logging", () => {
 
     describe("logLogout", () => {
         it("should log a logout event", async () => {
-            const mockQuery = vi.mocked(db.query)
-            const mockQueryOne = vi.mocked(db.queryOne)
+            const mockQuery = vi.mocked(db.db.query)
+            const mockQueryOne = vi.mocked(db.db.queryOne)
 
             mockQueryOne.mockResolvedValueOnce({ id: "user-123" })
             mockQuery.mockResolvedValueOnce({ rowCount: 1 } as any)
@@ -183,8 +188,8 @@ describe("Audit Logging", () => {
 
     describe("logPasswordResetRequest", () => {
         it("should log a password reset request", async () => {
-            const mockQuery = vi.mocked(db.query)
-            const mockQueryOne = vi.mocked(db.queryOne)
+            const mockQuery = vi.mocked(db.db.query)
+            const mockQueryOne = vi.mocked(db.db.queryOne)
 
             mockQueryOne.mockResolvedValueOnce(null)
             mockQuery.mockResolvedValueOnce({ rowCount: 1 } as any)
@@ -204,8 +209,8 @@ describe("Audit Logging", () => {
 
     describe("logPasswordResetSuccess", () => {
         it("should log a successful password reset", async () => {
-            const mockQuery = vi.mocked(db.query)
-            const mockQueryOne = vi.mocked(db.queryOne)
+            const mockQuery = vi.mocked(db.db.query)
+            const mockQueryOne = vi.mocked(db.db.queryOne)
 
             mockQueryOne.mockResolvedValueOnce({ id: "user-123" })
             mockQuery.mockResolvedValueOnce({ rowCount: 1 } as any)
@@ -225,8 +230,8 @@ describe("Audit Logging", () => {
 
     describe("logSecurityEvent", () => {
         it("should log a security event", async () => {
-            const mockQuery = vi.mocked(db.query)
-            const mockQueryOne = vi.mocked(db.queryOne)
+            const mockQuery = vi.mocked(db.db.query)
+            const mockQueryOne = vi.mocked(db.db.queryOne)
 
             mockQueryOne.mockResolvedValueOnce(null)
             mockQuery.mockResolvedValueOnce({ rowCount: 1 } as any)
@@ -245,9 +250,147 @@ describe("Audit Logging", () => {
         })
     })
 
+    describe("logAccountCompletion", () => {
+        it("should log a successful account completion", async () => {
+            const mockQuery = vi.mocked(db.db.query)
+
+            mockQuery.mockResolvedValueOnce({ rowCount: 1 } as any)
+
+            await logAccountCompletion(
+                "user-123",
+                "test@example.com",
+                "192.168.1.1"
+            )
+
+            expect(mockQuery).toHaveBeenCalledWith(
+                expect.stringContaining("INSERT INTO audit_logs"),
+                expect.arrayContaining([
+                    "user-123",
+                    "ACCOUNT_COMPLETION",
+                    "test@example.com",
+                    "192.168.1.1",
+                ])
+            )
+        })
+
+        it("should include timestamp and status in details", async () => {
+            const mockQuery = vi.mocked(db.db.query)
+
+            mockQuery.mockResolvedValueOnce({ rowCount: 1 } as any)
+
+            await logAccountCompletion(
+                "user-123",
+                "test@example.com",
+                "192.168.1.1"
+            )
+
+            const callArgs = mockQuery.mock.calls[0]
+            const detailsJson = callArgs[1][4]
+
+            expect(detailsJson).toContain("success")
+            expect(detailsJson).toContain("Account completion successful")
+        })
+
+        it("should handle database errors gracefully", async () => {
+            const mockQuery = vi.mocked(db.db.query)
+
+            mockQuery.mockRejectedValueOnce(new Error("Database error"))
+
+            // Should not throw
+            await expect(
+                logAccountCompletion(
+                    "user-123",
+                    "test@example.com",
+                    "192.168.1.1"
+                )
+            ).resolves.not.toThrow()
+        })
+    })
+
+    describe("logAccountCompletionFailed", () => {
+        it("should log a failed account completion attempt", async () => {
+            const mockQuery = vi.mocked(db.db.query)
+            const mockQueryOne = vi.mocked(db.db.queryOne)
+
+            mockQueryOne.mockResolvedValueOnce(null)
+            mockQuery.mockResolvedValueOnce({ rowCount: 1 } as any)
+
+            await logAccountCompletionFailed(
+                "test@example.com",
+                "192.168.1.1",
+                "Invalid password format"
+            )
+
+            expect(mockQuery).toHaveBeenCalledWith(
+                expect.stringContaining("INSERT INTO audit_logs"),
+                expect.arrayContaining([
+                    "ACCOUNT_COMPLETION",
+                    "test@example.com",
+                    "192.168.1.1",
+                ])
+            )
+        })
+
+        it("should include error details in the log", async () => {
+            const mockQuery = vi.mocked(db.db.query)
+            const mockQueryOne = vi.mocked(db.db.queryOne)
+
+            mockQueryOne.mockResolvedValueOnce(null)
+            mockQuery.mockResolvedValueOnce({ rowCount: 1 } as any)
+
+            await logAccountCompletionFailed(
+                "test@example.com",
+                "192.168.1.1",
+                "Email already registered"
+            )
+
+            const callArgs = mockQuery.mock.calls[0]
+            const detailsJson = callArgs[1][4]
+
+            expect(detailsJson).toContain("failed")
+            expect(detailsJson).toContain("Email already registered")
+        })
+
+        it("should include timestamp in failed log", async () => {
+            const mockQuery = vi.mocked(db.db.query)
+            const mockQueryOne = vi.mocked(db.db.queryOne)
+
+            mockQueryOne.mockResolvedValueOnce(null)
+            mockQuery.mockResolvedValueOnce({ rowCount: 1 } as any)
+
+            await logAccountCompletionFailed(
+                "test@example.com",
+                "192.168.1.1",
+                "Validation error"
+            )
+
+            const callArgs = mockQuery.mock.calls[0]
+            const detailsJson = callArgs[1][4]
+
+            expect(detailsJson).toContain("timestamp")
+        })
+
+        it("should handle database errors gracefully", async () => {
+            const mockQuery = vi.mocked(db.db.query)
+            const mockQueryOne = vi.mocked(db.db.queryOne)
+
+            mockQueryOne.mockResolvedValueOnce(null)
+            mockQuery.mockRejectedValueOnce(new Error("Database error"))
+
+            // Should not throw
+            await expect(
+                logAccountCompletionFailed(
+                    "test@example.com",
+                    "192.168.1.1",
+                    "Some error"
+                )
+            ).resolves.not.toThrow()
+        })
+    })
+
     describe("getUserAuditLogs", () => {
         it("should retrieve audit logs for a user", async () => {
-            const mockQuery = vi.mocked(db.query)
+            const mockQuery = vi.mocked(db.db.query)
 
             const mockLogs = [
                 {
@@ -270,7 +413,7 @@ describe("Audit Logging", () => {
         })
 
         it("should respect the limit parameter", async () => {
-            const mockQuery = vi.mocked(db.query)
+            const mockQuery = vi.mocked(db.db.query)
 
             mockQuery.mockResolvedValueOnce({ rows: [] } as any)
 
@@ -285,7 +428,7 @@ describe("Audit Logging", () => {
 
     describe("getAuditLogsByEventType", () => {
         it("should retrieve audit logs by event type", async () => {
-            const mockQuery = vi.mocked(db.query)
+            const mockQuery = vi.mocked(db.db.query)
 
             const mockLogs = [
                 {
@@ -310,7 +453,7 @@ describe("Audit Logging", () => {
 
     describe("getRecentSecurityEvents", () => {
         it("should retrieve recent security events", async () => {
-            const mockQuery = vi.mocked(db.query)
+            const mockQuery = vi.mocked(db.db.query)
 
             const mockEvents = [
                 {

@@ -1,16 +1,16 @@
 /**
  * Step 1: Pre-filled Data Component
  *
- * Displays pre-filled data from OAuth provider with edit functionality.
- * Allows users to review and modify email and name before proceeding.
+ * Displays pre-filled data from OAuth provider and allows editing.
+ * Shows email, name, and profile picture.
  *
- * Validates: Requirements 4.3, 4.4
+ * Validates: Requirements 3.3, 3.4, 4.4, 4.5
  */
 
 "use client"
 
 import { useTranslations } from "next-intl"
-import { useState } from "react"
+import { useCallback, useState } from "react"
 import FieldEditor from "../components/field-editor"
 
 interface Step1PrefilledProps {
@@ -42,86 +42,90 @@ export default function Step1Prefilled({
         null
     )
 
-    const handleEditField = (field: "email" | "name") => {
+    const handleEditField = useCallback((field: "email" | "name") => {
         setEditingField(field)
-    }
+    }, [])
 
-    const handleSaveField = (field: "email" | "name", value: string) => {
-        onUpdateField(field, value)
-        setEditingField(null)
-    }
+    const handleSaveField = useCallback(
+        (field: "email" | "name", value: string) => {
+            onUpdateField(field, value)
+            setEditingField(null)
+        },
+        [onUpdateField]
+    )
 
-    const handleCancelEdit = () => {
+    const handleCancelEdit = useCallback(() => {
         setEditingField(null)
-    }
+    }, [])
 
     return (
         <div className="space-y-6">
-            <p className="text-gray-600 dark:text-gray-400">
-                {t("completeAccount.step1.description")}
-            </p>
+            {/* Step Title */}
+            <div>
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                    {t("completeAccount.step1.title")}
+                </h2>
+                <p className="text-gray-600 dark:text-gray-400">
+                    {t("completeAccount.step1.description")}
+                </p>
+            </div>
 
             {/* Profile Picture */}
             {prefilledData.picture && (
                 <div className="flex justify-center">
-                    <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-blue-200 dark:border-blue-800">
-                        <img
-                            src={prefilledData.picture}
-                            alt={prefilledData.name}
-                            className="w-full h-full object-cover"
-                        />
-                    </div>
+                    <img
+                        src={prefilledData.picture}
+                        alt={prefilledData.name}
+                        className="w-24 h-24 rounded-full border-4 border-blue-200 dark:border-blue-800 object-cover"
+                    />
                 </div>
             )}
 
-            {/* Email Field */}
-            <div className="space-y-3">
+            {/* Form Fields */}
+            <div className="space-y-4">
+                {/* Email Field */}
                 {editingField === "email" ? (
                     <FieldEditor
                         label={t("completeAccount.step1.email")}
                         value={editedData.email}
-                        type="email"
                         placeholder={t(
                             "completeAccount.step1.emailPlaceholder"
                         )}
+                        type="email"
                         error={errors.email}
                         onSave={value => handleSaveField("email", value)}
                         onCancel={handleCancelEdit}
                         isLoading={isLoading}
                     />
                 ) : (
-                    <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 flex items-center justify-between">
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                {t("completeAccount.step1.email")}
-                            </label>
-                            <p className="text-gray-900 dark:text-white">
+                    <div className="space-y-2">
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                            {t("completeAccount.step1.email")}
+                        </label>
+                        <div className="flex items-center justify-between gap-2 p-3 bg-gray-50 dark:bg-gray-800 rounded-md border border-gray-200 dark:border-gray-700">
+                            <span className="text-gray-900 dark:text-white">
                                 {editedData.email}
-                            </p>
+                            </span>
+                            <button
+                                onClick={() => handleEditField("email")}
+                                className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 text-sm font-medium"
+                            >
+                                {t("completeAccount.step1.edit")}
+                            </button>
                         </div>
-                        <button
-                            type="button"
-                            onClick={() => handleEditField("email")}
-                            className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium text-sm"
-                        >
-                            {t("completeAccount.step1.edit")}
-                        </button>
+                        {errors.email && (
+                            <p className="text-sm text-red-600 dark:text-red-400">
+                                {t(`completeAccount.errors.${errors.email}`)}
+                            </p>
+                        )}
                     </div>
                 )}
-                {errors.email && !editingField && (
-                    <p className="text-sm text-red-600 dark:text-red-400">
-                        {errors.email}
-                    </p>
-                )}
-            </div>
 
-            {/* Name Field */}
-            <div className="space-y-3">
+                {/* Name Field */}
                 {editingField === "name" ? (
                     <FieldEditor
                         label={t("completeAccount.step1.name")}
                         value={editedData.name}
-                        type="text"
                         placeholder={t("completeAccount.step1.namePlaceholder")}
                         error={errors.name}
                         onSave={value => handleSaveField("name", value)}
@@ -129,37 +133,35 @@ export default function Step1Prefilled({
                         isLoading={isLoading}
                     />
                 ) : (
-                    <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 flex items-center justify-between">
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                {t("completeAccount.step1.name")}
-                            </label>
-                            <p className="text-gray-900 dark:text-white">
+                    <div className="space-y-2">
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                            {t("completeAccount.step1.name")}
+                        </label>
+                        <div className="flex items-center justify-between gap-2 p-3 bg-gray-50 dark:bg-gray-800 rounded-md border border-gray-200 dark:border-gray-700">
+                            <span className="text-gray-900 dark:text-white">
                                 {editedData.name}
-                            </p>
+                            </span>
+                            <button
+                                onClick={() => handleEditField("name")}
+                                className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 text-sm font-medium"
+                            >
+                                {t("completeAccount.step1.edit")}
+                            </button>
                         </div>
-                        <button
-                            type="button"
-                            onClick={() => handleEditField("name")}
-                            className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium text-sm"
-                        >
-                            {t("completeAccount.step1.edit")}
-                        </button>
+                        {errors.name && (
+                            <p className="text-sm text-red-600 dark:text-red-400">
+                                {t(`completeAccount.errors.${errors.name}`)}
+                            </p>
+                        )}
                     </div>
-                )}
-                {errors.name && !editingField && (
-                    <p className="text-sm text-red-600 dark:text-red-400">
-                        {errors.name}
-                    </p>
                 )}
             </div>
 
             {/* Continue Button */}
             <button
-                type="button"
                 onClick={onContinue}
                 disabled={isLoading}
-                className="w-full px-4 py-3 bg-blue-600 dark:bg-blue-500 text-white rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
+                className="w-full px-4 py-3 bg-blue-600 dark:bg-blue-500 text-white rounded-md hover:bg-blue-700 dark:hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
             >
                 {isLoading
                     ? t("completeAccount.loading")

@@ -159,8 +159,8 @@ describe("useAccountCompletion", () => {
 
             const isValid = act(() => result.current.validateStep(1))
 
-            expect(result.current.errors.email).toBe("")
-            expect(result.current.errors.name).toBe("")
+            expect(result.current.errors.email).toBeUndefined()
+            expect(result.current.errors.name).toBeUndefined()
         })
 
         it("should reject invalid email", () => {
@@ -260,15 +260,16 @@ describe("useAccountCompletion", () => {
 
             // Mock fetch
             global.fetch = vi.fn(() =>
-                Promise.resolve({
-                    ok: true,
-                    json: () =>
-                        Promise.resolve({
+                Promise.resolve(
+                    new Response(
+                        JSON.stringify({
                             success: true,
                             redirectUrl: "/dashboard",
                         }),
-                })
-            )
+                        { status: 200 }
+                    )
+                )
+            ) as any
 
             act(() => {
                 result.current.updatePrefilledField("email", "test@example.com")
@@ -291,15 +292,16 @@ describe("useAccountCompletion", () => {
 
             // Mock fetch to return error
             global.fetch = vi.fn(() =>
-                Promise.resolve({
-                    ok: false,
-                    json: () =>
-                        Promise.resolve({
+                Promise.resolve(
+                    new Response(
+                        JSON.stringify({
                             success: false,
                             error: "Email already registered",
                         }),
-                })
-            )
+                        { status: 400 }
+                    )
+                )
+            ) as any
 
             const submitResult = await act(async () => {
                 return await result.current.submitForm()

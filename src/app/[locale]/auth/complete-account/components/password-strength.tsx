@@ -1,10 +1,10 @@
 /**
- * Password Strength Indicator Component
+ * Password Strength Component
  *
- * Displays password requirements and their status (met/unmet).
+ * Displays password requirements and their validation status.
  * Updates in real-time as the user types.
  *
- * Validates: Requirements 4.8
+ * Validates: Requirements 5.2, 5.3
  */
 
 "use client"
@@ -17,6 +17,7 @@ interface PasswordStrengthProps {
 }
 
 interface PasswordRequirement {
+    key: string
     label: string
     met: boolean
 }
@@ -24,32 +25,37 @@ interface PasswordRequirement {
 export default function PasswordStrength({ password }: PasswordStrengthProps) {
     const t = useTranslations("auth")
 
-    const requirements = useMemo((): PasswordRequirement[] => {
+    const requirements: PasswordRequirement[] = useMemo(() => {
         return [
             {
+                key: "minLength",
                 label: t("completeAccount.passwordRequirements.minLength"),
                 met: password.length >= 8,
             },
             {
+                key: "uppercase",
                 label: t("completeAccount.passwordRequirements.uppercase"),
                 met: /[A-Z]/.test(password),
             },
             {
+                key: "lowercase",
                 label: t("completeAccount.passwordRequirements.lowercase"),
                 met: /[a-z]/.test(password),
             },
             {
+                key: "number",
                 label: t("completeAccount.passwordRequirements.number"),
                 met: /\d/.test(password),
             },
             {
+                key: "special",
                 label: t("completeAccount.passwordRequirements.special"),
                 met: /[!@#$%^&*]/.test(password),
             },
         ]
     }, [password, t])
 
-    const allMet = requirements.every(req => req.met)
+    const allRequirementsMet = requirements.every(req => req.met)
     const metCount = requirements.filter(req => req.met).length
 
     return (
@@ -69,30 +75,38 @@ export default function PasswordStrength({ password }: PasswordStrengthProps) {
                         }`}
                     />
                 </div>
-                <span className="text-xs font-medium text-gray-600 dark:text-gray-400">
+                <span
+                    className={`text-xs font-semibold ${
+                        allRequirementsMet
+                            ? "text-green-600 dark:text-green-400"
+                            : "text-gray-600 dark:text-gray-400"
+                    }`}
+                >
                     {metCount}/{requirements.length}
                 </span>
             </div>
 
             {/* Requirements List */}
             <div className="space-y-2">
-                {requirements.map((req, index) => (
+                {requirements.map(requirement => (
                     <div
-                        key={index}
+                        key={requirement.key}
                         className="flex items-center gap-2 text-sm"
                     >
+                        {/* Checkmark Icon */}
                         <div
-                            className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 transition-colors ${
-                                req.met
+                            className={`flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center transition-all duration-300 ${
+                                requirement.met
                                     ? "bg-green-100 dark:bg-green-900/30"
-                                    : "bg-gray-100 dark:bg-gray-700"
+                                    : "bg-gray-100 dark:bg-gray-800"
                             }`}
                         >
-                            {req.met ? (
+                            {requirement.met ? (
                                 <svg
                                     className="w-3 h-3 text-green-600 dark:text-green-400"
                                     fill="currentColor"
                                     viewBox="0 0 20 20"
+                                    aria-hidden="true"
                                 >
                                     <path
                                         fillRule="evenodd"
@@ -101,36 +115,23 @@ export default function PasswordStrength({ password }: PasswordStrengthProps) {
                                     />
                                 </svg>
                             ) : (
-                                <div className="w-1.5 h-1.5 bg-gray-400 dark:bg-gray-500 rounded-full" />
+                                <div className="w-1.5 h-1.5 bg-gray-400 dark:bg-gray-600 rounded-full" />
                             )}
                         </div>
+
+                        {/* Requirement Label */}
                         <span
-                            className={`${
-                                req.met
+                            className={`transition-colors duration-300 ${
+                                requirement.met
                                     ? "text-green-700 dark:text-green-300"
                                     : "text-gray-600 dark:text-gray-400"
                             }`}
                         >
-                            {req.label}
+                            {requirement.label}
                         </span>
                     </div>
                 ))}
             </div>
-
-            {/* Status Message */}
-            {password && (
-                <div
-                    className={`text-xs font-medium ${
-                        allMet
-                            ? "text-green-600 dark:text-green-400"
-                            : "text-gray-600 dark:text-gray-400"
-                    }`}
-                >
-                    {allMet
-                        ? t("completeAccount.passwordRequirements.strong")
-                        : t("completeAccount.passwordRequirements.weak")}
-                </div>
-            )}
         </div>
     )
 }

@@ -1,33 +1,34 @@
 /**
- * useAccountCompletion Hook
+ * Account Completion Hook
  *
- * Manages form state for account completion flow.
+ * Manages form state for the account completion flow.
  * Handles step navigation, field updates, validation, and form submission.
  *
- * Validates: Requirements 4.10
+ * Validates: Requirements 4.1, 4.2, 4.3, 4.4, 4.5, 4.6, 4.7, 4.8
  */
 
-import { validateAccountCompletionData } from "@/lib/auth/account-completion-validation"
-import { useCallback, useState } from "react"
+"use client"
 
-interface PrefilledData {
+import { useCallback, useEffect, useState } from "react"
+
+export interface PrefilledData {
     email: string
     name: string
     picture?: string
 }
 
-interface EditedData {
+export interface EditedData {
     email: string
     name: string
 }
 
-interface NewFields {
+export interface NewFields {
     password: string
     phone: string
     birthDate: string
 }
 
-interface AccountCompletionState {
+export interface AccountCompletionState {
     currentStep: 1 | 2 | 3
     tempToken: string
     prefilledData: PrefilledData
@@ -38,73 +39,85 @@ interface AccountCompletionState {
     isSubmitting: boolean
 }
 
-interface SubmitResult {
-    success: boolean
-    error?: string
-    redirectUrl?: string
+const INITIAL_STATE: AccountCompletionState = {
+    currentStep: 1,
+    tempToken: "",
+    prefilledData: {
+        email: "",
+        name: "",
+        picture: undefined,
+    },
+    editedData: {
+        email: "",
+        name: "",
+    },
+    newFields: {
+        password: "",
+        phone: "",
+        birthDate: "",
+    },
+    errors: {},
+    isLoading: false,
+    isSubmitting: false,
 }
 
-/**
- * Hook for managing account completion form state
- */
+const SESSION_STORAGE_KEY = "account_completion_form_data"
+const TEMP_TOKEN_KEY = "account_completion_temp_token"
+
 export function useAccountCompletion() {
-    // Get temp token from URL or session
-    const getTempToken = useCallback(() => {
-        if (typeof window === "undefined") return ""
+    const [state, setState] = useState<AccountCompletionState>(INITIAL_STATE)
 
-        const params = new URLSearchParams(window.location.search)
-        return params.get("token") || ""
-    }, [])
+    // Load form data from session storage on mount
+    useEffect(() => {
+        const savedData = sessionStorage.getItem(SESSION_STORAGE_KEY)
+        const savedToken = sessionStorage.getItem(TEMP_TOKEN_KEY)
 
-    // Get prefilled data from session or URL
-    const getPrefilled = useCallback(() => {
-        if (typeof window === "undefined") {
-            return {
-                email: "",
-                name: "",
-                picture: undefined,
-            }
-        }
-
-        // Try to get from session storage first
-        const stored = sessionStorage.getItem("accountCompletion_prefilled")
-        if (stored) {
+        if (savedData) {
             try {
-                return JSON.parse(stored)
-            } catch {
-                // Fall through to default
+                const parsed = JSON.parse(savedData)
+                setState(prev => ({
+                    ...prev,
+                    ...parsed,
+                    tempToken: savedToken || "",
+                }))
+            } catch (error) {
+                console.error("Failed to load saved form data:", error)
             }
         }
 
-        // Try to get from URL params
+        // Try to get temp token from URL params
         const params = new URLSearchParams(window.location.search)
-        return {
-            email: params.get("email") || "",
-            name: params.get("name") || "",
-            picture: params.get("picture") || undefined,
+        const tokenFromUrl = params.get("token")
+        if (tokenFromUrl) {
+            setState(prev => ({
+                ...prev,
+                tempToken: tokenFromUrl,
+            }))
+            sessionStorage.setItem(TEMP_TOKEN_KEY, tokenFromUrl)
         }
     }, [])
 
-    const [state, setState] = useState<AccountCompletionState>({
-        currentStep: 1,
-        tempToken: getTempToken(),
-        prefilledData: getPrefilled(),
-        editedData: {
-            email: getPrefilled().email,
-            name: getPrefilled().name,
-        },
-        newFields: {
-            password: "",
-            phone: "",
-            birthDate: "",
-        },
-        errors: {},
-        isLoading: false,
-        isSubmitting: false,
-    })
+    // Save form data to session storage whenever it changes
+    useEffect(() => {
+        const dataToSave = {
+            currentStep: state.currentStep,
+            prefilledData: state.prefilledData,
+            editedData: state.editedData,
+            newFields: state.newFields,
+        }
+        sessionStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(dataToSave))
+    }, [
+        state.currentStep,
+        state.prefilledData,
+        state.editedData,
+        state.newFields,
+    ])
 
     const setCurrentStep = useCallback((step: 1 | 2 | 3) => {
-        setState(prev => ({ ...prev, currentStep: step }))
+        setState(prev => ({
+            ...prev,
+            currentStep: step,
+        }))
     }, [])
 
     const updatePrefilledField = useCallback(
@@ -117,7 +130,7 @@ export function useAccountCompletion() {
                 },
                 errors: {
                     ...prev.errors,
-                    [field]: "", // Clear error for this field
+                    [field]: "",
                 },
             }))
         },
@@ -134,60 +147,153 @@ export function useAccountCompletion() {
                 },
                 errors: {
                     ...prev.errors,
-                    [field]: "", // Clear error for this field
+                    [field]: "",
                 },
             }))
         },
         []
     )
 
+    const validateEmail = useCallback((email: string): string | null => {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+        if (!emailRegex.test(email)) {
+            return "invalidEmail"
+        }
+        return null
+    }, [])
+
+    const validateName = useCallback((name: string): string | null => {
+        if (name.length < 2 || name.length > 100) {
+            return "invalidName"
+        }
+        return null
+    }, [])
+
+    const validatePassword = useCallback((password: string): string | null => {
+        const errors: string[] = []
+
+        if (password.length < 8) {
+            errors.push("minLength")
+        }
+        if (!/[A-Z]/.test(password)) {
+            errors.push("uppercase")
+        }
+        if (!/[a-z]/.test(password)) {
+            errors.push("lowercase")
+        }
+        if (!/\d/.test(password)) {
+            errors.push("number")
+        }
+        if (!/[!@#$%^&*]/.test(password)) {
+            errors.push("special")
+        }
+
+        return errors.length > 0 ? errors.join(", ") : null
+    }, [])
+
+    const validatePhoneNumber = useCallback((phone: string): string | null => {
+        const phoneRegex = /^\+\d{1,3}\d{6,14}$/
+        if (!phoneRegex.test(phone)) {
+            return "invalidPhone"
+        }
+        return null
+    }, [])
+
+    const validateBirthDate = useCallback(
+        (birthDate: string): string | null => {
+            const dateRegex = /^\d{4}-\d{2}-\d{2}$/
+
+            if (!dateRegex.test(birthDate)) {
+                return "invalidBirthDate"
+            }
+
+            const date = new Date(birthDate)
+            const today = new Date()
+
+            if (date > today) {
+                return "futureDate"
+            }
+
+            const age = today.getFullYear() - date.getFullYear()
+            const monthDiff = today.getMonth() - date.getMonth()
+
+            if (
+                monthDiff < 0 ||
+                (monthDiff === 0 && today.getDate() < date.getDate())
+            ) {
+                // Subtract 1 if birthday hasn't occurred this year
+                // age is already decremented above
+            }
+
+            if (age < 13) {
+                return "userTooYoung"
+            }
+
+            return null
+        },
+        []
+    )
+
     const validateStep = useCallback(
-        (step: number): boolean => {
+        (step: 1 | 2 | 3): boolean => {
             const newErrors: Record<string, string> = {}
 
             if (step === 1) {
                 // Validate pre-filled data
-                if (!state.editedData.email) {
-                    newErrors.email = "Email is required"
-                } else if (
-                    !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(state.editedData.email)
-                ) {
-                    newErrors.email = "Invalid email format"
+                const emailError = validateEmail(state.editedData.email)
+                if (emailError) {
+                    newErrors.email = emailError
                 }
 
-                if (!state.editedData.name) {
-                    newErrors.name = "Name is required"
-                } else if (
-                    state.editedData.name.length < 2 ||
-                    state.editedData.name.length > 100
-                ) {
-                    newErrors.name = "Name must be between 2 and 100 characters"
+                const nameError = validateName(state.editedData.name)
+                if (nameError) {
+                    newErrors.name = nameError
                 }
             } else if (step === 2) {
                 // Validate new fields
-                const validation = validateAccountCompletionData({
-                    email: state.editedData.email,
-                    name: state.editedData.name,
-                    password: state.newFields.password,
-                    phone: state.newFields.phone,
-                    birthDate: state.newFields.birthDate,
-                })
+                const passwordError = validatePassword(state.newFields.password)
+                if (passwordError) {
+                    newErrors.password = passwordError
+                }
 
-                if (!validation.valid) {
-                    Object.assign(newErrors, validation.errors)
+                const phoneError = validatePhoneNumber(state.newFields.phone)
+                if (phoneError) {
+                    newErrors.phone = phoneError
+                }
+
+                const birthDateError = validateBirthDate(
+                    state.newFields.birthDate
+                )
+                if (birthDateError) {
+                    newErrors.birthDate = birthDateError
                 }
             } else if (step === 3) {
-                // Final validation of all data
-                const validation = validateAccountCompletionData({
-                    email: state.editedData.email,
-                    name: state.editedData.name,
-                    password: state.newFields.password,
-                    phone: state.newFields.phone,
-                    birthDate: state.newFields.birthDate,
-                })
+                // Validate all data
+                const emailError = validateEmail(state.editedData.email)
+                if (emailError) {
+                    newErrors.email = emailError
+                }
 
-                if (!validation.valid) {
-                    Object.assign(newErrors, validation.errors)
+                const nameError = validateName(state.editedData.name)
+                if (nameError) {
+                    newErrors.name = nameError
+                }
+
+                const passwordError = validatePassword(state.newFields.password)
+                if (passwordError) {
+                    newErrors.password = passwordError
+                }
+
+                const phoneError = validatePhoneNumber(state.newFields.phone)
+                if (phoneError) {
+                    newErrors.phone = phoneError
+                }
+
+                const birthDateError = validateBirthDate(
+                    state.newFields.birthDate
+                )
+                if (birthDateError) {
+                    newErrors.birthDate = birthDateError
                 }
             }
 
@@ -198,11 +304,22 @@ export function useAccountCompletion() {
 
             return Object.keys(newErrors).length === 0
         },
-        [state]
+        [
+            state.editedData,
+            state.newFields,
+            validateEmail,
+            validateName,
+            validatePassword,
+            validatePhoneNumber,
+            validateBirthDate,
+        ]
     )
 
-    const submitForm = useCallback(async (): Promise<SubmitResult> => {
-        setState(prev => ({ ...prev, isSubmitting: true }))
+    const submitForm = useCallback(async () => {
+        setState(prev => ({
+            ...prev,
+            isSubmitting: true,
+        }))
 
         try {
             const response = await fetch("/api/auth/complete-account", {
@@ -223,16 +340,27 @@ export function useAccountCompletion() {
             const data = await response.json()
 
             if (!response.ok) {
+                setState(prev => ({
+                    ...prev,
+                    isSubmitting: false,
+                    errors: {
+                        submit: data.error || "serverError",
+                    },
+                }))
                 return {
                     success: false,
-                    error: data.error || "Failed to complete account setup",
+                    error: data.error || "serverError",
                 }
             }
 
-            // Clear session storage on success
-            if (typeof window !== "undefined") {
-                sessionStorage.removeItem("accountCompletion_prefilled")
-            }
+            // Clear session storage on successful submission
+            sessionStorage.removeItem(SESSION_STORAGE_KEY)
+            sessionStorage.removeItem(TEMP_TOKEN_KEY)
+
+            setState(prev => ({
+                ...prev,
+                isSubmitting: false,
+            }))
 
             return {
                 success: true,
@@ -240,49 +368,45 @@ export function useAccountCompletion() {
             }
         } catch (error) {
             console.error("Form submission error:", error)
+            setState(prev => ({
+                ...prev,
+                isSubmitting: false,
+                errors: {
+                    submit: "serverError",
+                },
+            }))
             return {
                 success: false,
-                error: "An error occurred. Please try again later.",
+                error: "serverError",
             }
-        } finally {
-            setState(prev => ({ ...prev, isSubmitting: false }))
         }
     }, [state.tempToken, state.editedData, state.newFields])
 
     const resetForm = useCallback(() => {
-        setState({
-            currentStep: 1,
-            tempToken: getTempToken(),
-            prefilledData: getPrefilled(),
+        setState(INITIAL_STATE)
+        sessionStorage.removeItem(SESSION_STORAGE_KEY)
+        sessionStorage.removeItem(TEMP_TOKEN_KEY)
+    }, [])
+
+    const setPrefilledData = useCallback((data: PrefilledData) => {
+        setState(prev => ({
+            ...prev,
+            prefilledData: data,
             editedData: {
-                email: getPrefilled().email,
-                name: getPrefilled().name,
+                email: data.email,
+                name: data.name,
             },
-            newFields: {
-                password: "",
-                phone: "",
-                birthDate: "",
-            },
-            errors: {},
-            isLoading: false,
-            isSubmitting: false,
-        })
-    }, [getTempToken, getPrefilled])
+        }))
+    }, [])
 
     return {
-        currentStep: state.currentStep,
-        tempToken: state.tempToken,
-        prefilledData: state.prefilledData,
-        editedData: state.editedData,
-        newFields: state.newFields,
-        errors: state.errors,
-        isLoading: state.isLoading,
-        isSubmitting: state.isSubmitting,
+        ...state,
         setCurrentStep,
         updatePrefilledField,
         updateNewField,
         validateStep,
         submitForm,
         resetForm,
+        setPrefilledData,
     }
 }
