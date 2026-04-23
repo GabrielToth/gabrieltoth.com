@@ -5,9 +5,9 @@
  * Validates: Requirements 16.1, 16.2, 16.6
  */
 
+import { generateRandomHex } from "@/lib/crypto-utils"
 import { db } from "@/lib/db"
 import { logger } from "@/lib/logger"
-import { randomBytes } from "crypto"
 
 const { queryOne, query } = db
 
@@ -15,7 +15,7 @@ const { queryOne, query } = db
  * Registration session configuration constants
  */
 const REGISTRATION_SESSION_EXPIRATION_MINUTES = 30
-const SESSION_ID_LENGTH = 32 // 32 bytes = 256 bits for crypto.randomBytes
+const SESSION_ID_LENGTH = 32 // 32 bytes = 256 bits
 
 /**
  * Registration Session interface
@@ -57,10 +57,9 @@ export async function createRegistrationSession(
             throw new Error("Invalid email provided")
         }
 
-        // Generate unique session_id using crypto.randomBytes
+        // Generate unique session_id using crypto.getRandomValues
         // Convert to hex string for storage in database
-        const sessionIdBuffer = randomBytes(SESSION_ID_LENGTH)
-        const sessionId = sessionIdBuffer.toString("hex")
+        const sessionId = generateRandomHex(SESSION_ID_LENGTH)
 
         // Calculate expiration date (30 minutes from now)
         const now = new Date()

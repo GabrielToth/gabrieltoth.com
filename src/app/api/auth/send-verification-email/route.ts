@@ -4,7 +4,6 @@ import {
     createSuccessResponse,
 } from "@/lib/auth/error-handling"
 import { createClient } from "@supabase/supabase-js"
-import crypto from "crypto"
 import { NextRequest, NextResponse } from "next/server"
 
 const supabase = createClient(
@@ -49,7 +48,7 @@ export async function POST(request: NextRequest) {
         }
 
         // Generate verification token
-        const token = crypto.randomBytes(32).toString("hex")
+        const token = generateRandomHex(32)
         const expiresAt = new Date(Date.now() + VERIFICATION_TOKEN_EXPIRY)
 
         // Store token in database

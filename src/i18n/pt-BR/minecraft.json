@@ -83,20 +83,5 @@
         "description": "Minhas contribuições para a comunidade Minecraft",
         "comingSoon": "Contribuições em Breve",
         "comingSoonText": "Estou documentando minhas contribuições para a comunidade. Volte em breve!"
-    },
-    "landing": {
-        "journey": {
-            "myStory": "Minha História",
-            "storyIntro": "Venho criando conteúdo de Minecraft e desenvolvendo mods há anos, combinando minha paixão por jogos com expertise em programação.",
-            "modpacksPreference": "Preferência de Modpacks",
-            "hypixelSkyblock": "Hypixel Skyblock",
-            "futureGoals": "Objetivos Futuros",
-            "modpacks": "Modpacks",
-            "modpacksText": "Criando modpacks leves e otimizados que rodam suavemente em diversos hardwares.",
-            "mods": "Mods",
-            "modsText": "Construindo mods e ferramentas personalizadas para melhorar a experiência no Minecraft.",
-            "plugins": "Plugins",
-            "pluginsText": "Desenvolvendo plugins de servidor para gameplay aprimorado e recursos da comunidade."
-        }
     }
 }

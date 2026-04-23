@@ -5,10 +5,10 @@
  * Validates: Requirements 4.1, 4.2, 4.3, 4.4, 4.5, 4.6, 4.7, 5.1, 5.2
  */
 
+import { generateRandomHex } from "@/lib/crypto-utils"
 import { db } from "@/lib/db"
 import { logger } from "@/lib/logger"
 import { Session } from "@/types/auth"
-import { randomBytes } from "crypto"
 
 const { queryOne, query } = db
 
@@ -16,7 +16,7 @@ const { queryOne, query } = db
  * Session configuration constants
  */
 const SESSION_EXPIRATION_DAYS = 30
-const SESSION_ID_LENGTH = 32 // 32 bytes = 256 bits for crypto.randomBytes
+const SESSION_ID_LENGTH = 32 // 32 bytes = 256 bits
 
 /**
  * Create a new session for an authenticated user
@@ -40,10 +40,9 @@ export async function createSession(userId: string): Promise<Session> {
             throw new Error("Invalid user ID provided")
         }
 
-        // Generate unique session_id using crypto.randomBytes
+        // Generate unique session_id using crypto.getRandomValues
         // Convert to hex string for storage in database
-        const sessionIdBuffer = randomBytes(SESSION_ID_LENGTH)
-        const sessionId = sessionIdBuffer.toString("hex")
+        const sessionId = generateRandomHex(SESSION_ID_LENGTH)
 
         // Calculate expiration date (30 days from now)
         const now = new Date()

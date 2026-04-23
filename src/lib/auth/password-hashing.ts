@@ -4,8 +4,8 @@
  * Validates: Requirements 1.6, 3.4, 5.6, 6.1
  */
 
+import { generateRandomHex } from "@/lib/crypto-utils"
 import bcrypt from "bcrypt"
-import { randomBytes } from "crypto"
 
 /**
  * Salt rounds for bcrypt hashing
@@ -92,7 +92,7 @@ export async function comparePassword(
  */
 export function generateToken(): string {
     try {
-        const token = randomBytes(TOKEN_LENGTH).toString("hex")
+        const token = generateRandomHex(TOKEN_LENGTH)
         return token
     } catch (error) {
         throw new Error(
