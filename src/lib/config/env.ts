@@ -21,6 +21,26 @@ export interface EnvironmentConfig {
 
     // Docker
     HOSTNAME: string
+
+    // YouTube OAuth
+    YOUTUBE_CLIENT_ID: string
+    YOUTUBE_CLIENT_SECRET: string
+    YOUTUBE_REDIRECT_URI: string
+
+    // Email Service
+    SMTP_HOST: string
+    SMTP_PORT: number
+    SMTP_USER: string
+    SMTP_PASSWORD: string
+    SMTP_FROM_EMAIL: string
+    SMTP_FROM_NAME: string
+
+    // Geolocation Service
+    GEOIP_SERVICE_URL: string
+    GEOIP_API_KEY?: string
+
+    // Token Encryption
+    TOKEN_ENCRYPTION_KEY: string
 }
 
 /**
@@ -28,7 +48,22 @@ export interface EnvironmentConfig {
  * Throws error with clear message if required variables are missing
  */
 export function validateEnv(): EnvironmentConfig {
-    const required = ["DATABASE_URL", "REDIS_URL", "DISCORD_WEBHOOK_URL"]
+    const required = [
+        "DATABASE_URL",
+        "REDIS_URL",
+        "DISCORD_WEBHOOK_URL",
+        "YOUTUBE_CLIENT_ID",
+        "YOUTUBE_CLIENT_SECRET",
+        "YOUTUBE_REDIRECT_URI",
+        "SMTP_HOST",
+        "SMTP_PORT",
+        "SMTP_USER",
+        "SMTP_PASSWORD",
+        "SMTP_FROM_EMAIL",
+        "SMTP_FROM_NAME",
+        "GEOIP_SERVICE_URL",
+        "TOKEN_ENCRYPTION_KEY",
+    ]
 
     const missing = required.filter(key => !process.env[key])
 
@@ -51,6 +86,18 @@ export function validateEnv(): EnvironmentConfig {
         REDIS_URL: process.env.REDIS_URL!,
         DISCORD_WEBHOOK_URL: process.env.DISCORD_WEBHOOK_URL!,
         HOSTNAME: process.env.HOSTNAME ?? "unknown",
+        YOUTUBE_CLIENT_ID: process.env.YOUTUBE_CLIENT_ID!,
+        YOUTUBE_CLIENT_SECRET: process.env.YOUTUBE_CLIENT_SECRET!,
+        YOUTUBE_REDIRECT_URI: process.env.YOUTUBE_REDIRECT_URI!,
+        SMTP_HOST: process.env.SMTP_HOST!,
+        SMTP_PORT: parseInt(process.env.SMTP_PORT ?? "587", 10),
+        SMTP_USER: process.env.SMTP_USER!,
+        SMTP_PASSWORD: process.env.SMTP_PASSWORD!,
+        SMTP_FROM_EMAIL: process.env.SMTP_FROM_EMAIL!,
+        SMTP_FROM_NAME: process.env.SMTP_FROM_NAME!,
+        GEOIP_SERVICE_URL: process.env.GEOIP_SERVICE_URL!,
+        GEOIP_API_KEY: process.env.GEOIP_API_KEY,
+        TOKEN_ENCRYPTION_KEY: process.env.TOKEN_ENCRYPTION_KEY!,
     }
 }
 
