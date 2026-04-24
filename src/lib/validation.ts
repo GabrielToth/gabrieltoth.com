@@ -204,6 +204,9 @@ export function validatePassword(password: string): {
  * @example
  * validateName('John Doe') // { isValid: true }
  * validateName("O'Brien") // { isValid: true }
+ * validateName('João Silva') // { isValid: true }
+ * validateName('José da Silva') // { isValid: true }
+ * validateName('François Müller') // { isValid: true }
  * validateName('John-Paul') // { isValid: true }
  * validateName('J') // { isValid: false, error: 'Full name must be at least 2 characters' }
  * validateName('123') // { isValid: false, error: 'Full name can only contain letters, spaces, hyphens, and apostrophes' }
@@ -231,8 +234,9 @@ export function validateName(name: string): {
         }
     }
 
-    // Allow only letters, spaces, hyphens, and apostrophes (no numbers or special chars)
-    const nameRegex = /^[A-Za-z\s\-']+$/
+    // Allow letters (including accented characters), spaces, hyphens, and apostrophes
+    // Uses Unicode letter categories to support international names (ç, ã, é, etc.)
+    const nameRegex = /^[\p{L}\s\-']+$/u
 
     if (!nameRegex.test(trimmedName)) {
         return {

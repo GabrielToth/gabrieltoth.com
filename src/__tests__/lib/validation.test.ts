@@ -316,6 +316,31 @@ describe("validateName", () => {
             const result = validateName("Alexander")
             expect(result.isValid).toBe(true)
         })
+
+        it("should accept name with accented characters (Portuguese)", () => {
+            const result = validateName("João Silva")
+            expect(result.isValid).toBe(true)
+        })
+
+        it("should accept name with cedilla (Portuguese)", () => {
+            const result = validateName("François")
+            expect(result.isValid).toBe(true)
+        })
+
+        it("should accept name with tilde (Portuguese)", () => {
+            const result = validateName("José da Silva")
+            expect(result.isValid).toBe(true)
+        })
+
+        it("should accept name with umlaut (German)", () => {
+            const result = validateName("Müller")
+            expect(result.isValid).toBe(true)
+        })
+
+        it("should accept name with acute accent (Spanish)", () => {
+            const result = validateName("María García")
+            expect(result.isValid).toBe(true)
+        })
     })
 
     describe("invalid names", () => {
