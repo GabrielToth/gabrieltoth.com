@@ -4,6 +4,7 @@ import { GoogleLoginButton } from "@/components/auth/google-login-button"
 import { useTranslations } from "next-intl"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
+import { PhoneInput } from "react-international-phone"
 import "react-international-phone/style.css"
 
 interface RegisterFormMultistepProps {

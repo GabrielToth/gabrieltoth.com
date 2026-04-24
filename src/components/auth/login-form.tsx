@@ -6,12 +6,13 @@
  * Validates: Requirements 3.1, 3.2, 3.3, 3.5, 3.6, 3.7, 3.8, 3.9, 8.1, 8.2, 8.3, 8.4, 8.5, 8.6
  */
 
+import { FieldError, ServerError } from "@/components/auth/error-display"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { validateEmail } from "@/lib/validation"
 import { useRouter } from "next/navigation"
-import { FormEvent, useState } from "react"
+import { FormEvent, useEffect, useState } from "react"
 
 interface LoginFormProps {
     locale: string
@@ -57,7 +58,7 @@ export function LoginForm({ locale }: LoginFormProps) {
     const [csrfToken, setCsrfToken] = useState<string | null>(null)
 
     // Fetch CSRF token on component mount
-    useState(() => {
+    useEffect(() => {
         const fetchCsrfToken = async () => {
             try {
                 const response = await fetch("/api/auth/csrf")
@@ -70,7 +71,7 @@ export function LoginForm({ locale }: LoginFormProps) {
             }
         }
         fetchCsrfToken()
-    })
+    }, [])
 
     // Real-time validation for email field
     // Requirement 8.1

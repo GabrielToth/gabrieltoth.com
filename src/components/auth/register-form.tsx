@@ -73,7 +73,7 @@ export function RegisterForm({ locale }: RegisterFormProps) {
     const [csrfToken, setCsrfToken] = useState<string | null>(null)
 
     // Fetch CSRF token on component mount
-    useState(() => {
+    useEffect(() => {
         const fetchCsrfToken = async () => {
             try {
                 const response = await fetch("/api/auth/csrf")
@@ -86,7 +86,7 @@ export function RegisterForm({ locale }: RegisterFormProps) {
             }
         }
         fetchCsrfToken()
-    })
+    }, [])
 
     // Real-time validation for name field
     // Requirement 8.4
