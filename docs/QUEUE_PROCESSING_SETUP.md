@@ -154,79 +154,67 @@ curl -H "Authorization: Bearer your_token" \
 - 20 cron jobs free
 - 1-minute intervals
 
-## Solution 3: Supabase Edge Functions + pg_cron (Best for Supabase Users)
+## Solution 3: Background Processor (Node.js Long-Running Process)
 
 ### How It Works
 
-Use Supabase's built-in pg_cron extension to trigger Edge Functions on a schedule.
+If you're running Next.js in a long-running Node.js process (not serverless), you can use a background interval to process the queue.
 
 ### Pros
-- ✅ Native Supabase integration
-- ✅ Reliable and scalable
 - ✅ No external dependencies
-- ✅ Runs server-side
+- ✅ Runs automatically when server starts
+- ✅ Simple implementation
+- ✅ No additional costs
 
 ### Cons
-- ❌ Requires Supabase Pro plan ($25/month)
-- ❌ More complex setup
+- ❌ Only works in long-running processes (not Vercel/serverless)
+- ❌ Requires server restart to start processing
+- ❌ Single point of failure
 
 ### Setup
 
-1. **Enable pg_cron Extension**
+1. **Start Background Processor on Server Startup**
 
-```sql
--- In Supabase SQL Editor
-CREATE EXTENSION IF NOT EXISTS pg_cron;
+```typescript
+// src/app/api/init/route.ts or server startup file
+import { startBackgroundProcessing } from '@/lib/queue/background-processor';
+
+// Call this once when server starts
+startBackgroundProcessing(60000); // 1 minute interval
 ```
 
-2. **Deploy Edge Function**
+2. **Or Use API Endpoint**
 
 ```bash
-# Install Supabase CLI
-npm install -g supabase
+# Generate secret token
+node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 
-# Login
-supabase login
+# Add to .env.local
+QUEUE_TRIGGER_SECRET=your_token_here
 
-# Link project
-supabase link --project-ref your-project-ref
-
-# Deploy function
-supabase functions deploy process-queue
+# Start processing via API
+curl -X POST \
+  -H "Authorization: Bearer your_token_here" \
+  https://yourdomain.com/api/queue/start
 ```
 
-3. **Create Cron Job**
+3. **Verify It's Running**
 
-```sql
--- Schedule to run every minute
-SELECT cron.schedule(
-  'process-publication-queue',
-  '* * * * *', -- Every minute
-  $$
-  SELECT
-    net.http_post(
-      url := 'https://your-project.supabase.co/functions/v1/process-queue',
-      headers := jsonb_build_object(
-        'Content-Type', 'application/json',
-        'Authorization', 'Bearer ' || current_setting('app.settings.service_role_key')
-      )
-    ) AS request_id;
-  $$
-);
+Check server logs for:
+```
+Starting background processor (interval: 60000ms)
+Processing X due publications
 ```
 
-4. **Verify Cron Job**
+### When to Use
 
-```sql
--- List all cron jobs
-SELECT * FROM cron.job;
-
--- View cron job history
-SELECT * FROM cron.job_run_details 
-WHERE jobid = (SELECT jobid FROM cron.job WHERE jobname = 'process-publication-queue')
-ORDER BY start_time DESC 
-LIMIT 10;
-```
+- ✅ Running on VPS (DigitalOcean, Linode, etc.)
+- ✅ Running on dedicated server
+- ✅ Running with Docker
+- ✅ Running with PM2 or similar process manager
+- ❌ NOT for Vercel (serverless)
+- ❌ NOT for AWS Lambda (serverless)
+- ❌ NOT for Netlify (serverless)
 
 ## Solution 4: Hybrid Approach (Recommended)
 
@@ -391,7 +379,6 @@ curl -X POST https://yourdomain.com/api/queue/process
 | Client Polling | Free | Medium | Low |
 | UptimeRobot | Free | High | Low |
 | Cron-job.org | Free | High | Low |
-| Supabase pg_cron | $25/mo | Very High | Medium |
 | Railway Cron | $5/mo | High | Low |
 
 ## Recommendation
@@ -403,13 +390,13 @@ curl -X POST https://yourdomain.com/api/queue/process
 - Setup: 30 minutes
 
 **For Production/Large Scale:**
-- Use **Supabase pg_cron** or **Railway Cron**
-- Cost: $5-25/month
+- Use **Railway Cron** or dedicated queue service
+- Cost: $5+/month
 - Reliability: Excellent
 - Setup: 1-2 hours
 
 **For Enterprise:**
-- Use dedicated queue service (AWS SQS, Google Cloud Tasks)
+- Use dedicated queue service (AWS SQS, Google Cloud Tasks, BullMQ)
 - Cost: Pay-per-use
 - Reliability: Excellent
 - Setup: 2-4 hours
