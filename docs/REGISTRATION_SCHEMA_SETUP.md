@@ -232,8 +232,8 @@ Stores login attempt history for rate limiting and security monitoring.
 
 ## Deployment Checklist
 
-- [ ] Run migrations: `supabase db push`
-- [ ] Verify schema: `supabase db pull`
+- [ ] Run migrations: `npx supabase db push`
+- [ ] Verify schema: `npx supabase db pull`
 - [ ] Test email validation
 - [ ] Test birth date validation
 - [ ] Test age verification
