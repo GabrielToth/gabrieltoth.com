@@ -152,8 +152,8 @@ Run the SQL validation script to verify all RLS policies are correctly configure
 
 ```bash
 # Using Supabase CLI
-supabase db push
-supabase db execute < supabase/tests/rls-policies-validation.sql
+npx supabase db push
+npx supabase db execute < supabase/tests/rls-policies-validation.sql
 
 # Or using psql directly
 psql -h localhost -U postgres -d postgres -f supabase/tests/rls-policies-validation.sql

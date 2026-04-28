@@ -292,20 +292,20 @@ To run the migrations locally:
 
 ```bash
 # Start Supabase local development
-supabase start
+npx supabase start
 
 # Run migrations
-supabase db push
+npx supabase db push
 
 # Reset database (runs migrations and seed)
-supabase db reset
+npx supabase db reset
 ```
 
 To run migrations in production:
 
 ```bash
 # Deploy migrations to production
-supabase db push --linked
+npx supabase db push --linked
 ```
 
 ## Testing

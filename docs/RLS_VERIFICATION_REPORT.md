@@ -211,7 +211,7 @@ npm run test -- supabase/tests/rls-policies.test.ts
 ### Option 1: Run SQL Validation Script
 ```bash
 # Connect to Supabase and run validation
-supabase db execute < supabase/tests/rls-policies-validation.sql
+npx supabase db execute < supabase/tests/rls-policies-validation.sql
 ```
 
 ### Option 2: Run TypeScript Tests

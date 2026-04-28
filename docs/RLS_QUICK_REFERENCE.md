@@ -154,7 +154,7 @@ npm run test:coverage -- supabase/tests/rls-policies.test.ts
 
 ```bash
 # Run SQL validation script
-supabase db execute < supabase/tests/rls-policies-validation.sql
+npx supabase db execute < supabase/tests/rls-policies-validation.sql
 ```
 
 ## Troubleshooting
