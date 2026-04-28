@@ -1,266 +1,267 @@
-# Boas Práticas - Kiro Agent
+# Best Practices - Kiro Agent
 
-## 📋 Instruções Gerais
+## 📋 General Instructions
 
-### 1. Documentação
-- **NÃO** gere arquivos `.md` de resumo após completar tasks
-- **NÃO** crie relatórios de mudanças em `.md` a menos que explicitamente solicitado
-- **APENAS** crie `.md` quando o usuário pedir especificamente um arquivo de documentação
-- Resuma mudanças diretamente na resposta em texto simples
+### 1. Documentation
+- **DO NOT** generate `.md` summary files after completing tasks
+- **DO NOT** create change reports, summaries, or lists in `.md` format unless explicitly requested
+- **ONLY** create `.md` files when the user explicitly asks for documentation
+- **EXCEPTION**: Create `.md` files for new module documentation (e.g., API docs, feature guides)
+- Summarize changes directly in the response using plain text
 
-### 2. Commits e Git
-- Sempre use mensagens de commit descritivas e em inglês
-- Prefira commits atômicos (uma mudança por commit)
+### 2. Git Commits and PRs
+- Always use descriptive commit messages in English
+- Prefer atomic commits (one change per commit)
 - Use conventional commits: `feat:`, `fix:`, `refactor:`, `docs:`, etc.
-- **OBRIGATÓRIO**: Incluir número da issue: `fix(#123): description`
-- **NUNCA** use versão como nome de commit (❌ `1.8.22`, ❌ `1.8.23`)
-- Não faça push automaticamente - sempre confirme antes
-- Versioning é separado: use `npm version patch|minor|major` após commits
+- **MANDATORY**: Include issue number: `fix(#123): description`
+- **NEVER** use version as commit message (❌ `1.8.22`, ❌ `1.8.23`)
+- Do not push automatically - always confirm before pushing
+- Versioning is separate: use `npm version patch|minor|major` after commits
 
-### 3. Código
-- Mantenha consistência com o estilo do projeto
-- Siga as convenções de nomenclatura existentes
-- Não adicione dependências sem confirmar
-- Sempre teste antes de fazer commit
+### 3. Code
+- Maintain consistency with project style
+- Follow existing naming conventions
+- Do not add dependencies without confirming
+- Always test before committing
 
-### 4. Respostas
-- Seja conciso e direto
-- Use listas e tabelas para organizar informações
-- Mostre apenas o essencial
-- Se precisar de detalhes, o usuário pedirá
+### 4. Responses
+- Be concise and direct
+- Use lists and tables to organize information
+- Show only what's essential
+- If details are needed, the user will ask
 
-### 5. Arquivos Descartáveis
-- Não envie para git: relatórios de mudanças, sumários, listas de tarefas
-- Esses arquivos devem ser criados APENAS se o usuário pedir explicitamente
-- Exemplo: "crie um relatório.md" ou "documente as mudanças"
+### 5. Disposable Files
+- Do not commit to git: change reports, summaries, task lists
+- These files should be created ONLY if the user explicitly requests them
+- Example: "create a report.md" or "document the changes"
 
-## 🎯 Fluxo de Trabalho
+## 🎯 Workflow
 
-1. **Abrir Issue no GitHub** (SEMPRE PRIMEIRO)
-2. **Entender** a tarefa
-3. **Implementar** as mudanças
-4. **Testar** se possível
-5. **Resumir** na resposta (sem .md)
-6. **Fazer commit** com mensagem clara referenciando a issue
-7. **Confirmar** antes de push
+1. **Open GitHub Issue** (ALWAYS FIRST)
+2. **Understand** the task
+3. **Implement** the changes
+4. **Test** if possible
+5. **Summarize** in response (no .md)
+6. **Make commit** with clear message referencing the issue
+7. **Confirm** before push
 
 ---
 
-## 🔴 REGRA CRÍTICA: GitHub Issues ANTES de Implementar
+## 🔴 CRITICAL RULE: GitHub Issues BEFORE Implementation
 
-**OBRIGATÓRIO**: Abrir uma issue no GitHub ANTES de sugerir ou implementar qualquer solução.
+**MANDATORY**: Open a GitHub issue BEFORE suggesting or implementing any solution.
 
-### Por Que?
-- Documenta o problema detalhadamente
-- Cria rastreabilidade
-- Permite discussão antes da implementação
-- Facilita code review
-- Mantém histórico de decisões
+### Why?
+- Documents the problem in detail
+- Creates traceability
+- Allows discussion before implementation
+- Facilitates code review
+- Maintains decision history
 
-### Quando Aplicar?
-- ✅ Toda vez que identificar um problema
-- ✅ Toda vez que receber uma tarefa
-- ✅ Toda vez que precisar fazer mudanças no código
-- ✅ Mesmo para pequenas correções
+### When to Apply?
+- ✅ Every time you identify a problem
+- ✅ Every time you receive a task
+- ✅ Every time you need to make code changes
+- ✅ Even for small fixes
 
-### Quando NÃO Aplicar?
-- ❌ Apenas se o usuário explicitamente disser "não precisa de issue"
-- ❌ Apenas se a issue já existir (reutilizar a existente)
+### When NOT to Apply?
+- ❌ Only if the user explicitly says "no issue needed"
+- ❌ Only if the issue already exists (reuse it)
 
-### Processo Obrigatório
+### Mandatory Process
 
-**PASSO 1: Abrir Issue**
+**STEP 1: Open Issue**
 ```
-Título: [Type] Descrição clara do problema
-Descrição: Detalhar contexto, problema, impacto, requisitos
+Title: [Type] Clear description of the problem
+Description: Detail context, problem, impact, requirements
 Labels: feature, bug, enhancement, etc.
 ```
 
-**PASSO 2: Aguardar Confirmação**
-- Esperar o usuário confirmar a issue
-- Ou prosseguir se o usuário autorizar
+**STEP 2: Wait for Confirmation**
+- Wait for user to confirm the issue
+- Or proceed if user authorizes
 
-**PASSO 3: Implementar com Referência**
-- Usar número da issue em todos os commits
-- Formato: `fix(#123): description`
-- Fechar issue automaticamente: `Closes #123`
+**STEP 3: Implement with Reference**
+- Use issue number in all commits
+- Format: `fix(#123): description`
+- Close issue automatically: `Closes #123`
 
-### Exemplo Correto
+### Correct Example
 
 ```
-❌ ERRADO:
-- Usuário: "Preciso corrigir o header"
-- Kiro: [Implementa direto]
+❌ WRONG:
+- User: "I need to fix the header"
+- Kiro: [Implements directly]
 
-✅ CORRETO:
-- Usuário: "Preciso corrigir o header"
-- Kiro: "Vou abrir uma issue no GitHub descrevendo o problema"
-- Kiro: [Abre issue #42 com detalhes]
-- Kiro: [Aguarda confirmação ou prossegue]
-- Kiro: [Implementa com commits referenciando #42]
+✅ CORRECT:
+- User: "I need to fix the header"
+- Kiro: "I'll open a GitHub issue describing the problem"
+- Kiro: [Opens issue #42 with details]
+- Kiro: [Waits for confirmation or proceeds]
+- Kiro: [Implements with commits referencing #42]
 ```
 
-### Template de Issue
+### Issue Template
 
 ```markdown
-## Descrição
-[Explicar o que precisa ser feito]
+## Description
+[Explain what needs to be done]
 
-## Contexto
-- Por que isso é importante?
-- Qual problema resolve?
-- Impacto esperado?
+## Context
+- Why is this important?
+- What problem does it solve?
+- Expected impact?
 
-## Requisitos
-- [ ] Requisito 1
-- [ ] Requisito 2
+## Requirements
+- [ ] Requirement 1
+- [ ] Requirement 2
 
-## Critérios de Aceitação
-- [ ] Funcionalidade X implementada
-- [ ] Testes escritos
-- [ ] Build passa
-- [ ] Compatível com cloud e local
+## Acceptance Criteria
+- [ ] Feature X implemented
+- [ ] Tests written
+- [ ] Build passes
+- [ ] Compatible with cloud and local
 
-## Notas Técnicas
-- Arquivos afetados
-- Dependências necessárias
-- Possíveis impactos
+## Technical Notes
+- Files affected
+- Dependencies needed
+- Possible impacts
 ```
 
-## ✅ Checklist Antes de Responder
+## ✅ Checklist Before Responding
 
-- [ ] Tarefa foi completada?
-- [ ] Build testado localmente com `npm run build`?
-- [ ] Código foi testado?
-- [ ] Commit foi feito?
-- [ ] Preciso gerar .md? (Apenas se solicitado)
-- [ ] Resumo está claro e conciso?
+- [ ] Task completed?
+- [ ] Build tested locally with `npm run build`?
+- [ ] Code tested?
+- [ ] Commit made?
+- [ ] Do I need to generate .md? (Only if explicitly requested)
+- [ ] Summary is clear and concise?
 
-## 🔨 Build Local Obrigatório
+## 🔨 Mandatory Local Build
 
-**SEMPRE** execute `npm run build` localmente antes de fazer commit/push:
-- Se falhar, corrija os erros
-- Tente novamente até passar
-- Não suba código que não compila
-- Isso evita quebrar o deploy em produção
+**ALWAYS** execute `npm run build` locally before commit/push:
+- If it fails, fix the errors
+- Try again until it passes
+- Do not push code that doesn't compile
+- This prevents breaking production deployment
 
-## 📝 Exemplo de Resposta Correta
+## 📝 Correct Response Example
 
 ```
-✅ Implementado com sucesso
+✅ Implemented successfully
 
-Mudanças:
-- Arquivo A: adicionado função X
-- Arquivo B: atualizado import Y
-- Arquivo C: removido código Z
+Changes:
+- File A: added function X
+- File B: updated import Y
+- File C: removed code Z
 
 Commit: abc1234 - feat: implement feature X
-Status: Pronto para push
+Status: Ready for push
 ```
 
-## ❌ Exemplo de Resposta Incorreta
+## ❌ Incorrect Response Example
 
 ```
-[Gera arquivo MUDANCAS.md]
-[Gera arquivo RELATORIO.md]
-[Gera arquivo SUMARIO.md]
+[Generates CHANGES.md]
+[Generates REPORT.md]
+[Generates SUMMARY.md]
 ```
 
 ---
 
-## 🚀 Workflow de Finalização de Implementação
+## 🚀 Implementation Finalization Workflow
 
-**OBRIGATÓRIO** seguir este ciclo após completar toda a implementação de uma feature/spec:
+**MANDATORY** to follow this cycle after completing any feature/spec implementation:
 
-### 1️⃣ Testes Gerais (Testar TODO o site)
+### 1️⃣ General Tests (Test ENTIRE site)
 ```bash
-npm run test                        # Executar todos os testes
-npm run test:coverage               # Gerar relatório de cobertura
+npm run test                        # Run all tests
+npm run test:coverage               # Generate coverage report
 ```
-- Verificar que todos os testes passam
-- Revisar cobertura de testes
-- Se algum teste falhar, corrigir antes de prosseguir
+- Verify all tests pass
+- Review test coverage
+- Fix any failing tests before proceeding
 
-### 2️⃣ Testes de Velocidade/Performance
+### 2️⃣ Performance/Speed Tests
 ```bash
-npm run lighthouse                  # Executar Lighthouse audit
-npm run perf:full                   # Análise completa de performance
-npm run analyze                     # Analisar tamanho do bundle
+npm run lighthouse                  # Run Lighthouse audit
+npm run perf:full                   # Complete performance analysis
+npm run analyze                     # Analyze bundle size
 ```
-- Verificar Core Web Vitals (LCP, FID, CLS)
-- Analisar tamanho do bundle
-- Documentar métricas de performance
+- Check Core Web Vitals (LCP, FID, CLS)
+- Analyze bundle size
+- Document performance metrics
 
-### 3️⃣ Decisão: Performance Aceitável?
+### 3️⃣ Decision: Performance Acceptable?
 
-**SIM - Performance OK:**
-- Prosseguir para o passo 4 (Formatação de Código)
+**YES - Performance OK:**
+- Proceed to step 4 (Code Formatting)
 
-**NÃO - Performance Ruim:**
-- Fazer commit com mensagem: `fix: performance improvements`
-- Criar novo commit separado para otimizações
-- Executar otimizações (code splitting, lazy loading, etc.)
-- Voltar ao passo 2 (Testes de Performance)
-- Repetir até atingir targets aceitáveis
+**NO - Performance Poor:**
+- Make commit: `fix: performance improvements`
+- Create separate commit for optimizations
+- Execute optimizations (code splitting, lazy loading, etc.)
+- Return to step 2 (Performance Tests)
+- Repeat until targets are met
 
-### 4️⃣ Formatação e Padronização de Código
+### 4️⃣ Code Formatting and Standardization
 ```bash
-npm run format                      # Formatar código com Prettier
-npm run lint:fix                    # Corrigir problemas de ESLint
-npm run type-check                  # Verificar tipos TypeScript
+npm run format                      # Format code with Prettier
+npm run lint:fix                    # Fix ESLint issues
+npm run type-check                  # Verify TypeScript types
 ```
-- Código será formatado automaticamente
-- Erros de linting serão corrigidos
-- Tipos TypeScript serão validados
+- Code will be formatted automatically
+- Linting errors will be fixed
+- TypeScript types will be validated
 
-### 5️⃣ Verificação de Ortografia e Dicionário
+### 5️⃣ Spelling and Dictionary Verification
 ```bash
-npm run spell-check                 # Verificar ortografia
+npm run spell-check                 # Check spelling
 ```
-- Se houver palavras desconhecidas:
-  - Adicionar ao dicionário do projeto (`.cspell.json` ou similar)
-  - Ou corrigir a ortografia se for erro real
-  - Executar novamente até passar
+- If unknown words found:
+  - Add to project dictionary (`.cspell.json` or similar)
+  - Or fix the spelling if it's a real error
+  - Run again until it passes
 
-### 6️⃣ Documentação no Storybook
+### 6️⃣ Storybook Documentation
 ```bash
-npm run storybook                   # Iniciar Storybook
+npm run storybook                   # Start Storybook
 ```
-- Criar/atualizar stories para novos componentes
-- Documentar props e comportamentos
-- Adicionar exemplos de uso
-- Verificar que stories renderizam corretamente
+- Create/update stories for new components
+- Document props and behaviors
+- Add usage examples
+- Verify stories render correctly
 
-### 7️⃣ Build Final
+### 7️⃣ Final Build
 ```bash
-npm run build                       # Build para produção
+npm run build                       # Build for production
 ```
-- Verificar que build completa sem erros
-- Revisar warnings (se houver)
-- Confirmar que bundle size está aceitável
+- Verify build completes without errors
+- Review warnings (if any)
+- Confirm bundle size is acceptable
 
-### 8️⃣ Testes Finais (Ciclo Completo)
+### 8️⃣ Final Tests (Complete Cycle)
 ```bash
-npm run test                        # Todos os testes novamente
-npm run test:e2e                    # E2E tests (se aplicável)
-npm run lighthouse                  # Performance final
+npm run test                        # All tests again
+npm run test:e2e                    # E2E tests (if applicable)
+npm run lighthouse                  # Final performance
 ```
-- Garantir que tudo ainda funciona após formatação
-- Verificar performance final
-- Confirmar que nenhuma regressão foi introduzida
+- Ensure everything still works after formatting
+- Verify final performance
+- Confirm no regressions were introduced
 
-### 9️⃣ Commit e Push
+### 9️⃣ Commit and Push
 ```bash
-git add .                           # Adicionar todas as mudanças
-git commit -m "feat: complete feature X"  # Commit com mensagem descritiva
-git push -u origin feature-branch   # Push para repositório remoto
+git add .                           # Add all changes
+git commit -m "feat: complete feature X"  # Descriptive message
+git push -u origin feature-branch   # Push to repository
 ```
 
-### Mensagens de Commit Recomendadas
+### Recommended Commit Messages
 
-**IMPORTANTE**: Cada commit deve incluir o número da issue e descrever a mudança específica.
+**IMPORTANT**: Each commit must include the issue number and describe the specific change.
 
-**Implementação inicial:**
+**Initial implementation:**
 ```
 feat(#123): implement dashboard redesign components
 ```
@@ -270,17 +271,17 @@ feat(#123): implement dashboard redesign components
 perf(#123): optimize bundle size and lazy load components
 ```
 
-**Formatação e linting:**
+**Formatting and linting:**
 ```
 style(#123): format code and fix linting issues
 ```
 
-**Documentação:**
+**Documentation:**
 ```
 docs(#123): add Storybook stories for dashboard components
 ```
 
-**Testes:**
+**Tests:**
 ```
 test(#123): add comprehensive test coverage for components
 ```
@@ -290,38 +291,38 @@ test(#123): add comprehensive test coverage for components
 fix(#123): remove header from registration flow
 ```
 
-**Refatoração:**
+**Refactoring:**
 ```
 refactor(#123): extract validation logic to utilities
 ```
 
-**NUNCA faça commits assim:**
+**NEVER commit like this:**
 ```
-❌ 1.8.22 - Versão como nome
-❌ 1.8.23 - Versão como nome
-❌ fix: remove header - Sem número da issue
-❌ Update code - Sem tipo de commit
-❌ WIP - Muito vago
-```
-
-### ❌ Exemplos INCORRETOS
-
-```
-❌ 1.8.22 - NUNCA use versão como nome de commit
-❌ 1.8.23 - NUNCA use versão como nome de commit
-❌ fix: remove header - Sem número da issue
-❌ Update code - Sem tipo de commit
-❌ WIP - Muito vago
+❌ 1.8.22 - Version as name
+❌ 1.8.23 - Version as name
+❌ fix: remove header - Missing issue number
+❌ Update code - Missing commit type
+❌ WIP - Too vague
 ```
 
-### ✅ Formato OBRIGATÓRIO de Commit
+### ❌ INCORRECT Examples
 
-**SEMPRE** use este formato:
+```
+❌ 1.8.22 - NEVER use version as commit name
+❌ 1.8.23 - NEVER use version as commit name
+❌ fix: remove header - Missing issue number
+❌ Update code - Missing commit type
+❌ WIP - Too vague
+```
+
+### ✅ MANDATORY Commit Format
+
+**ALWAYS** use this format:
 ```
 <type>(#<issue-number>): <description>
 ```
 
-**Exemplos corretos:**
+**Correct examples:**
 ```
 fix(#42): remove header from registration flow
 feat(#123): add WhatsApp integration
@@ -332,126 +333,126 @@ style(#45): format code and fix linting issues
 refactor(#78): extract validation logic to utilities
 ```
 
-**REGRA CRÍTICA**: O nome do commit NUNCA deve ser apenas a versão (1.8.22, 1.8.23, etc.). A versão é incrementada SEPARADAMENTE após o commit usando `npm version patch|minor|major`.
+**CRITICAL RULE**: Commit name MUST NEVER be just the version (1.8.22, 1.8.23, etc.). Version is incremented SEPARATELY after commit using `npm version patch|minor|major`.
 
 ---
 
-## 📋 Checklist Completo de Finalização
+## 📋 Complete Finalization Checklist
 
-- [ ] Todos os testes passam (`npm run test`)
-- [ ] Cobertura de testes aceitável (> 80%)
-- [ ] Performance dentro dos targets (LCP < 2.5s, etc.)
-- [ ] Código formatado (`npm run format`)
-- [ ] Linting corrigido (`npm run lint:fix`)
-- [ ] Tipos TypeScript validados (`npm run type-check`)
-- [ ] Ortografia verificada (`npm run spell-check`)
-- [ ] Storybook stories criadas/atualizadas
-- [ ] Build completa sem erros (`npm run build`)
-- [ ] Testes finais passam
-- [ ] Commit feito com mensagem descritiva
-- [ ] Push realizado para repositório remoto
+- [ ] All tests pass (`npm run test`)
+- [ ] Test coverage acceptable (> 80%)
+- [ ] Performance within targets (LCP < 2.5s, etc.)
+- [ ] Code formatted (`npm run format`)
+- [ ] Linting fixed (`npm run lint:fix`)
+- [ ] TypeScript types validated (`npm run type-check`)
+- [ ] Spelling verified (`npm run spell-check`)
+- [ ] Storybook stories created/updated
+- [ ] Build completes without errors (`npm run build`)
+- [ ] Final tests pass
+- [ ] Commit made with descriptive message
+- [ ] Push completed to repository
 
 ---
 
-## 🔄 Workflow GitHub: Issues → PRs → Commits
+## 🔄 GitHub Workflow: Issues → PRs → Commits
 
-**OBRIGATÓRIO** usar este workflow para todas as implementações:
+**MANDATORY** for all implementations:
 
-### 1️⃣ Criar Issue no GitHub
+### 1️⃣ Create GitHub Issue
 
-**Título:** Descritivo e conciso
+**Title:** Descriptive and concise
 ```
 [Feature] Add WhatsApp Integration
 [Bug] Fix dashboard performance on mobile
 [Enhancement] Improve accessibility compliance
 ```
 
-**Descrição Detalhada:**
+**Detailed Description:**
 ```markdown
-## Descrição
-Explicar o que precisa ser feito e por quê.
+## Description
+Explain what needs to be done and why.
 
-## Contexto
-- Por que isso é importante?
-- Qual problema resolve?
-- Impacto esperado?
+## Context
+- Why is this important?
+- What problem does it solve?
+- Expected impact?
 
-## Requisitos
-- [ ] Requisito 1
-- [ ] Requisito 2
-- [ ] Requisito 3
+## Requirements
+- [ ] Requirement 1
+- [ ] Requirement 2
+- [ ] Requirement 3
 
-## Critérios de Aceitação
-- [ ] Funcionalidade X implementada
-- [ ] Testes escritos e passando
-- [ ] Documentação atualizada
-- [ ] Performance dentro dos targets
-- [ ] Compatível com versão cloud e local
+## Acceptance Criteria
+- [ ] Feature X implemented
+- [ ] Tests written and passing
+- [ ] Documentation updated
+- [ ] Performance within targets
+- [ ] Compatible with cloud and local versions
 
-## Notas Técnicas
-- Arquivos que serão modificados
-- Dependências necessárias
-- Possíveis impactos
+## Technical Notes
+- Files to be modified
+- Dependencies needed
+- Possible impacts
 
-## Referências
-- Links para documentação
-- Issues relacionadas
-- PRs relacionadas
+## References
+- Links to documentation
+- Related issues
+- Related PRs
 ```
 
 **Labels:** `feature`, `bug`, `enhancement`, `documentation`, `performance`, `accessibility`
 
-**Assignee:** Atribuir a si mesmo
+**Assignee:** Assign to yourself
 
-**Milestone:** Selecionar a milestone correspondente (ver seção de Milestones)
+**Milestone:** Select corresponding milestone
 
-### 2️⃣ Criar Branch e PR
+### 2️⃣ Create Branch and PR
 
 ```bash
-# Criar branch a partir da issue
+# Create branch from issue
 git checkout -b feature/issue-123-whatsapp-integration
 
-# Fazer push inicial (sem commits ainda)
+# Push initial branch (no commits yet)
 git push -u origin feature/issue-123-whatsapp-integration
 ```
 
-**Criar PR no GitHub:**
-- Título: `[PR #123] Add WhatsApp Integration`
-- Descrição: Referenciar a issue: `Closes #123`
-- Linked Issues: Selecionar a issue criada
-- Reviewers: Atribuir reviewers se necessário
+**Create PR on GitHub:**
+- Title: `[PR #123] Add WhatsApp Integration`
+- Description: Reference the issue: `Closes #123`
+- Linked Issues: Select the created issue
+- Reviewers: Assign reviewers if needed
 
-### 3️⃣ Executar Workflow de Implementação
+### 3️⃣ Execute Implementation Workflow
 
-Seguir o workflow de finalização (seção anterior) fazendo commits:
+Follow the finalization workflow (previous section) making commits:
 
 ```bash
-# Commit 1: Implementação inicial
+# Commit 1: Initial implementation
 git commit -m "feat(#123): implement WhatsApp integration core"
 
-# Commit 2: Testes
+# Commit 2: Tests
 git commit -m "test(#123): add comprehensive tests for WhatsApp integration"
 
 # Commit 3: Performance
 git commit -m "perf(#123): optimize WhatsApp integration performance"
 
-# Commit 4: Documentação
+# Commit 4: Documentation
 git commit -m "docs(#123): add Storybook stories and API documentation"
 
-# Commit 5: Formatação
+# Commit 5: Formatting
 git commit -m "style(#123): format code and fix linting issues"
 ```
 
-**Formato de Commit Obrigatório:**
+**Mandatory Commit Format:**
 ```
-<type>(<issue-number>): <description>
+<type>(#<issue-number>): <description>
 
 <body>
 
 Closes #<issue-number>
 ```
 
-Exemplo:
+Example:
 ```
 feat(#123): add WhatsApp integration
 
@@ -462,57 +463,57 @@ feat(#123): add WhatsApp integration
 Closes #123
 ```
 
-### 4️⃣ Push e Merge
+### 4️⃣ Push and Merge
 
 ```bash
-# Push todos os commits
+# Push all commits
 git push origin feature/issue-123-whatsapp-integration
 
-# Aguardar aprovação de reviewers
+# Wait for reviewer approval
 # Merge via GitHub UI (Squash or Create a merge commit)
 ```
 
-**Checklist antes de Merge:**
-- [ ] Todos os testes passam
-- [ ] CI/CD pipeline passou
-- [ ] Code review aprovado
-- [ ] Sem conflitos com main
-- [ ] Performance dentro dos targets
-- [ ] Compatível com versão cloud e local
+**Checklist before Merge:**
+- [ ] All tests pass
+- [ ] CI/CD pipeline passed
+- [ ] Code review approved
+- [ ] No conflicts with main
+- [ ] Performance within targets
+- [ ] Compatible with cloud and local versions
 
 ---
 
-## 📌 Compatibilidade Cloud vs Local
+## 📌 Cloud vs Local Compatibility
 
-**OBRIGATÓRIO** para TODAS as implementações:
+**MANDATORY** for ALL implementations:
 
-### Versão Cloud
-- Hospedada em servidor (Vercel, AWS, etc.)
-- Acesso via URL pública
-- Banco de dados remoto
-- Autenticação via OAuth/JWT
-- Variáveis de ambiente em produção
+### Cloud Version
+- Hosted on server (Vercel, AWS, etc.)
+- Access via public URL
+- Remote database
+- OAuth/JWT authentication
+- Production environment variables
 
-### Versão Local
-- Executada localmente (`npm run dev`)
-- Banco de dados local (SQLite, PostgreSQL local)
-- Autenticação simplificada para testes
-- Variáveis de ambiente em `.env.local`
+### Local Version
+- Run locally (`npm run dev`)
+- Local database (SQLite, PostgreSQL local)
+- Simplified authentication for testing
+- Environment variables in `.env.local`
 
-### Checklist de Compatibilidade
+### Compatibility Checklist
 
-- [ ] Código funciona em ambas as versões
-- [ ] Variáveis de ambiente configuradas corretamente
-- [ ] Banco de dados funciona em ambas
-- [ ] Autenticação funciona em ambas
-- [ ] APIs externas têm fallback para local
-- [ ] Testes passam em ambas as versões
-- [ ] Performance aceitável em ambas
+- [ ] Code works in both versions
+- [ ] Environment variables configured correctly
+- [ ] Database works in both
+- [ ] Authentication works in both
+- [ ] External APIs have fallback for local
+- [ ] Tests pass in both versions
+- [ ] Performance acceptable in both
 
-### Exemplo de Código Compatível
+### Compatible Code Example
 
 ```typescript
-// ✅ BOM - Funciona em ambas as versões
+// ✅ GOOD - Works in both versions
 const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api'
 
 export async function fetchData() {
@@ -522,7 +523,7 @@ export async function fetchData() {
 ```
 
 ```typescript
-// ❌ RUIM - Só funciona em produção
+// ❌ BAD - Only works in production
 const apiUrl = 'https://api.production.com/api'
 
 export async function fetchData() {
@@ -533,289 +534,267 @@ export async function fetchData() {
 
 ---
 
-**Última atualização:** 21 de Abril de 2026
-
-
 ## 📦 Semantic Versioning Rules
 
-**OBRIGATÓRIO** seguir Semantic Versioning (SemVer) para todas as mudanças:
+**MANDATORY** for all changes:
 
-### Versão Atual: 1.8.26
+### Current Version: 1.10.7
 
-**Formato:** `MAJOR.MINOR.PATCH`
+**Format:** `MAJOR.MINOR.PATCH`
 
 - **MAJOR (X.0.0)**: Breaking changes, large feature removals, major refactors
-  - Exemplo: Remover dashboard completamente, mudar estrutura de API
-  - Incrementar quando: Mudanças que quebram compatibilidade
+  - Example: Remove dashboard completely, change API structure
+  - Increment when: Changes break compatibility
 
-- **MINOR (0.X.0)**: New features, small removals (não categorias/páginas inteiras)
-  - Exemplo: Adicionar novo campo de formulário, novo componente
-  - Incrementar quando: Adicionar funcionalidade sem quebrar compatibilidade
+- **MINOR (0.X.0)**: New features, small removals (not entire categories/pages)
+  - Example: Add new form field, new component
+  - Increment when: Add functionality without breaking compatibility
 
 - **PATCH (0.0.X)**: Bug fixes only, performance improvements, documentation
-  - Exemplo: Corrigir validação de email, otimizar performance
-  - Incrementar quando: Apenas correções e melhorias sem novas features
+  - Example: Fix email validation, optimize performance
+  - Increment when: Only fixes and improvements without new features
 
-### ⚠️ IMPORTANTE: Versioning é SEPARADO de Commit Messages
+### ⚠️ IMPORTANT: Versioning is SEPARATE from Commit Messages
 
-**NUNCA** use versão como nome de commit:
+**NEVER** use version as commit name:
 ```bash
-❌ ERRADO - Commit com versão como nome:
+❌ WRONG - Commit with version as name:
 git commit -m "1.8.22"
 git commit -m "1.8.23"
 git commit -m "1.8.26"
 
-✅ CORRETO - Commit com número da issue e descrição:
+✅ CORRECT - Commit with issue number and description:
 git commit -m "fix(#42): remove header from registration flow"
 git commit -m "feat(#123): add new dashboard component"
 git commit -m "perf(#156): optimize bundle size"
 ```
 
-### Regra Obrigatória: Incrementar Versão APÓS Commits
+### Mandatory Rule: Increment Version AFTER Commits
 
-**Workflow correto:**
+**Correct workflow:**
 
 ```bash
-# 1. Fazer mudanças no código
-# 2. Fazer commit com mensagem descritiva e número da issue
+# 1. Make code changes
+# 2. Make commit with descriptive message and issue number
 git commit -m "fix(#42): remove header from registration flow"
 
-# 3. DEPOIS incrementar versão (separado)
+# 3. THEN increment version (separate)
 npm version patch  # 1.8.25 → 1.8.26
 
-# 4. Push com tags
+# 4. Push with tags
 git push origin feature-branch --tags
 ```
 
-**Exemplo de Commit com Versioning:**
+**Example with Versioning:**
 ```bash
-# Fazer mudanças
+# Make changes
 git add .
 
-# Commit com número da issue (NUNCA versão)
+# Commit with issue number (NEVER version)
 git commit -m "feat(#123): add new dashboard component"
 
-# Incrementar versão (escolher patch/minor/major)
+# Increment version (choose patch/minor/major)
 npm version minor  # 1.8.26 → 1.9.0
 
-# Push com tags
+# Push with tags
 git push origin feature-branch --tags
 ```
 
-### Checklist de Versioning
+### Versioning Checklist
 
-- [ ] Commit feito com mensagem descritiva e número da issue (NÃO versão)
-- [ ] Identifiquei o tipo de mudança (bug fix, feature, breaking change)
-- [ ] Executei `npm version patch|minor|major` APÓS o commit
-- [ ] Versão em `package.json` foi incrementada corretamente
-- [ ] Tag git foi criada automaticamente
-- [ ] Push realizado com `--tags`
+- [ ] Commit made with descriptive message and issue number (NOT version)
+- [ ] Identified type of change (bug fix, feature, breaking change)
+- [ ] Executed `npm version patch|minor|major` AFTER commit
+- [ ] Version in `package.json` incremented correctly
+- [ ] Git tag created automatically
+- [ ] Push completed with `--tags`
 
 ---
 
 ## 🐳 Docker Container Requirements
 
-**CRÍTICO**: Testes e desenvolvimento local REQUEREM Docker containers rodando.
+**CRITICAL**: Local tests and development REQUIRE Docker containers running.
 
-### Containers Necessários
+### Required Containers
 
-Antes de executar testes ou desenvolvimento, certifique-se que os seguintes containers estão rodando:
+Before running tests or development, ensure these containers are running:
 
-- **PostgreSQL Database**: Banco de dados principal
-- **Redis Cache**: Cache e session storage
-- **SMTP Server** (MailHog ou similar): Email testing
-- **Backend Services**: Serviços backend containerizados
+- **PostgreSQL Database**: Main database
+- **Redis Cache**: Cache and session storage
+- **SMTP Server** (MailHog or similar): Email testing
+- **Backend Services**: Containerized backend services
 
-### Iniciar Containers
+### Start Containers
 
 ```bash
-# Iniciar todos os containers (docker-compose)
+# Start all containers (docker-compose)
 docker-compose up -d
 
-# Verificar status dos containers
+# Check container status
 docker-compose ps
 
-# Ver logs dos containers
+# View container logs
 docker-compose logs -f
 ```
 
-### Verificação Pré-Teste
+### Pre-Test Verification
 
-**OBRIGATÓRIO** antes de executar testes:
+**MANDATORY** before running tests:
 
 ```bash
-# Verificar se containers estão rodando
+# Check if containers are running
 docker-compose ps
 
-# Verificar conectividade com banco de dados
+# Check database connectivity
 npm run db:check
 
-# Verificar conectividade com Redis
+# Check Redis connectivity
 npm run redis:check
 ```
 
-### Checklist de Docker
+### Docker Checklist
 
-- [ ] Docker Desktop está instalado e rodando
-- [ ] `docker-compose up -d` foi executado
-- [ ] Todos os containers estão com status "Up"
-- [ ] Banco de dados está acessível
-- [ ] Redis está acessível
-- [ ] SMTP server está acessível
+- [ ] Docker Desktop installed and running
+- [ ] `docker-compose up -d` executed
+- [ ] All containers have status "Up"
+- [ ] Database is accessible
+- [ ] Redis is accessible
+- [ ] SMTP server is accessible
 
-### Troubleshooting Docker
+### Docker Troubleshooting
 
-**Containers não iniciam:**
+**Containers won't start:**
 ```bash
-# Limpar containers antigos
+# Clean up old containers
 docker-compose down -v
 
-# Reconstruir images
+# Rebuild images
 docker-compose build --no-cache
 
-# Iniciar novamente
+# Start again
 docker-compose up -d
 ```
 
-**Banco de dados não conecta:**
+**Database won't connect:**
 ```bash
-# Verificar logs do PostgreSQL
+# Check PostgreSQL logs
 docker-compose logs postgres
 
-# Reiniciar container
+# Restart container
 docker-compose restart postgres
 ```
 
-**Redis não conecta:**
+**Redis won't connect:**
 ```bash
-# Verificar logs do Redis
+# Check Redis logs
 docker-compose logs redis
 
-# Reiniciar container
+# Restart container
 docker-compose restart redis
 ```
 
 ---
 
-## ✅ Checklist Completo de Finalização (Atualizado)
-
-- [ ] Versão foi incrementada em `package.json` (npm version patch/minor/major)
-- [ ] Docker containers estão rodando (`docker-compose ps`)
-- [ ] Todos os testes passam (`npm run test`)
-- [ ] Cobertura de testes aceitável (> 80%)
-- [ ] Performance dentro dos targets (LCP < 2.5s, etc.)
-- [ ] Código formatado (`npm run format`)
-- [ ] Linting corrigido (`npm run lint:fix`)
-- [ ] Tipos TypeScript validados (`npm run type-check`)
-- [ ] Ortografia verificada (`npm run spell-check`)
-- [ ] Storybook stories criadas/atualizadas
-- [ ] Build completa sem erros (`npm run build`)
-- [ ] Testes finais passam
-- [ ] Commit feito com mensagem descritiva
-- [ ] Push realizado para repositório remoto com tags
-
----
-
 ## 🗄️ Database Migration Workflow (Supabase)
 
-**CRÍTICO**: Workflow correto para modificações de banco de dados.
+**CRITICAL**: Correct workflow for database modifications.
 
-### Filosofia: Schema Dump ao invés de Migrations Acumuladas
+### Philosophy: Schema Dump Instead of Accumulated Migrations
 
-Ao invés de manter múltiplas migrations incrementais, usamos um **schema dump único** que representa o estado completo do banco de dados.
+Instead of maintaining multiple incremental migrations, use a **single schema dump** that represents the complete database state.
 
-### Workflow Obrigatório
+### Mandatory Workflow
 
-#### 1️⃣ Criar Migration Temporária
+#### 1️⃣ Create Temporary Migration
 
 ```bash
-# Criar migration para suas mudanças
+# Create migration for your changes
 npx supabase migration new add_my_feature
 
-# Editar o arquivo SQL criado
+# Edit the created SQL file
 # supabase/migrations/TIMESTAMP_add_my_feature.sql
 ```
 
-#### 2️⃣ Aplicar Migration Localmente
+#### 2️⃣ Apply Migration Locally
 
 ```bash
-# Aplicar a migration no banco local
+# Apply migration to local database
 npx supabase db push
 ```
 
-#### 3️⃣ Gerar TypeScript Types (OBRIGATÓRIO)
+#### 3️⃣ Generate TypeScript Types (MANDATORY)
 
 ```bash
-# Gerar types do schema atual
+# Generate types from current schema
 npx supabase gen types typescript --local > src/types/supabase.ts
 
-# Verificar que o arquivo foi criado
+# Verify file was created
 cat src/types/supabase.ts
 ```
 
-**Por que isso é CRÍTICO?**
-- ✅ Mantém TypeScript sincronizado com o banco
-- ✅ Previne erros de tipo em queries
-- ✅ Melhora autocomplete no IDE
-- ✅ Detecta problemas em tempo de compilação
+**Why this is CRITICAL?**
+- ✅ Keeps TypeScript synchronized with database
+- ✅ Prevents type errors in queries
+- ✅ Improves IDE autocomplete
+- ✅ Detects problems at compile time
 
-#### 4️⃣ Testar as Mudanças
+#### 4️⃣ Test Changes
 
 ```bash
-# Rodar todos os testes
+# Run all tests
 npm run test
 
-# Verificar tipos TypeScript
+# Verify TypeScript types
 npm run type-check
 
-# Build para garantir que compila
+# Build to ensure it compiles
 npm run build
 ```
 
-#### 5️⃣ Criar Schema Dump Completo
+#### 5️⃣ Create Complete Schema Dump (CRITICAL)
 
 ```bash
-# Fazer dump do schema completo (substitui migrations)
+# Dump complete schema (replaces migrations)
 npx supabase db dump --schema public --schema auth > supabase/schema.sql
 
-# OU se quiser incluir dados de seed
-npx supabase db dump --schema public --schema auth --data-only=false > supabase/schema.sql
+# Verify file was created
+cat supabase/schema.sql
 ```
 
-**O que isso faz?**
-- Cria um arquivo SQL único com TODO o schema atual
-- Inclui todas as tabelas, indexes, RLS policies, functions, triggers
-- Representa o estado completo do banco de dados
-- Substitui a necessidade de múltiplas migrations
+**What this does?**
+- Creates single SQL file with ENTIRE current schema
+- Includes all tables, indexes, RLS policies, functions, triggers
+- Represents complete database state
+- **Replaces need for multiple migrations**
 
-#### 6️⃣ Deletar Migrations Antigas (IMPORTANTE)
+#### 6️⃣ Delete Old Migrations (MANDATORY)
 
 ```bash
-# Deletar TODAS as migrations antigas
+# Delete ALL old migrations
 rm supabase/migrations/*.sql
 
-# OU mover para backup se quiser manter histórico
+# OR move to backup if you want to keep history
 mkdir -p supabase/migrations_backup
 mv supabase/migrations/*.sql supabase/migrations_backup/
 ```
 
-**Por que deletar?**
-- ✅ Evita confusão sobre qual é o estado real do banco
-- ✅ O schema.sql é a fonte única de verdade
-- ✅ Migrations antigas podem ter conflitos ou estar desatualizadas
-- ✅ Simplifica o processo de setup para novos desenvolvedores
+**Why delete?**
+- ✅ Avoids confusion about actual database state
+- ✅ `schema.sql` is single source of truth
+- ✅ Old migrations may have conflicts or be outdated
+- ✅ Simplifies setup for new developers
 
-#### 7️⃣ Commit das Mudanças
+#### 7️⃣ Commit Changes
 
 ```bash
-# Adicionar schema dump e types
+# Add schema dump and types
 git add supabase/schema.sql
 git add src/types/supabase.ts
 
-# Remover migrations antigas do git
+# Remove old migrations from git
 git rm supabase/migrations/*.sql
 
-# Commit com mensagem descritiva
+# Commit with descriptive message
 git commit -m "feat(#123): add my_feature to database schema
 
 - Added new tables: table_a, table_b
@@ -823,74 +802,74 @@ git commit -m "feat(#123): add my_feature to database schema
 - Generated TypeScript types
 - Replaced migrations with schema dump"
 
-# Incrementar versão
-npm version minor  # ou patch/major dependendo da mudança
+# Increment version
+npm version minor  # or patch/major depending on change
 
-# Push com tags
+# Push with tags
 git push origin feature-branch --tags
 ```
 
-#### 8️⃣ Aplicar em Produção
+#### 8️⃣ Apply to Production
 
 ```bash
-# Opção 1: Via Supabase CLI
+# Option 1: Via Supabase CLI
 npx supabase db push --project-ref your-project-ref
 
-# Opção 2: Via Supabase Dashboard
+# Option 2: Via Supabase Dashboard
 # Settings > Database > SQL Editor
-# Copiar e colar o conteúdo de supabase/schema.sql
-# Executar o SQL
+# Copy and paste content of supabase/schema.sql
+# Execute the SQL
 ```
 
-### Checklist de Database Migration
+### Database Migration Checklist
 
-- [ ] Docker containers estão rodando (`docker-compose ps`)
-- [ ] Migration temporária criada e aplicada localmente
-- [ ] TypeScript types gerados (`src/types/supabase.ts` existe)
-- [ ] Testes passam (`npm run test`)
-- [ ] Build passa (`npm run build`)
-- [ ] Schema dump criado (`supabase/schema.sql`)
-- [ ] Migrations antigas deletadas (`supabase/migrations/*.sql` removidos)
-- [ ] Commit feito com schema.sql e types
-- [ ] Versão incrementada
-- [ ] Aplicado em produção
+- [ ] Docker containers running (`docker-compose ps`)
+- [ ] Temporary migration created and applied locally
+- [ ] TypeScript types generated (`src/types/supabase.ts` exists)
+- [ ] Tests pass (`npm run test`)
+- [ ] Build passes (`npm run build`)
+- [ ] Schema dump created (`supabase/schema.sql`)
+- [ ] Old migrations deleted (`supabase/migrations/*.sql` removed)
+- [ ] Commit made with schema.sql and types
+- [ ] Version incremented
+- [ ] Applied to production
 
-### Setup de Novo Desenvolvedor
+### New Developer Setup
 
-Com esse workflow, um novo desenvolvedor só precisa:
+With schema dump workflow, new developers only need:
 
 ```bash
-# 1. Clonar o repositório
+# 1. Clone repository
 git clone repo-url
 
-# 2. Instalar dependências
+# 2. Install dependencies
 npm install
 
-# 3. Iniciar Supabase local
+# 3. Start Supabase local
 npx supabase start
 
-# 4. Aplicar schema completo (arquivo único)
+# 4. Apply complete schema (single file)
 npx supabase db reset
 
-# 5. Pronto! O banco está no estado correto
+# 5. Done! Database is in correct state
 ```
 
-### Vantagens desse Workflow
+### Schema Dump Workflow Advantages
 
-✅ **Simplicidade**: Um arquivo SQL ao invés de dezenas de migrations
-✅ **Clareza**: O schema.sql mostra exatamente o estado atual do banco
-✅ **Menos erros**: Não há risco de migrations conflitantes ou fora de ordem
-✅ **Setup rápido**: Novos desenvolvedores aplicam um arquivo só
-✅ **Manutenção fácil**: Não precisa gerenciar histórico de migrations
-✅ **Types sempre atualizados**: Workflow força geração de types
+✅ **Simplicity**: One SQL file instead of dozens of migrations  
+✅ **Clarity**: `schema.sql` shows exact current state  
+✅ **Fewer Errors**: No risk of conflicting migrations  
+✅ **Fast Setup**: New devs apply one file only  
+✅ **Easy Maintenance**: No need to manage migration history  
+✅ **Types Always Updated**: Workflow forces type generation  
 
-### Exemplo Completo
+### Complete Example
 
 ```bash
-# 1. Criar migration temporária
+# 1. Create temporary migration
 npx supabase migration new add_posts_table
 
-# 2. Editar SQL
+# 2. Edit SQL
 # supabase/migrations/20260428120000_add_posts_table.sql
 CREATE TABLE posts (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -899,20 +878,20 @@ CREATE TABLE posts (
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
-# 3. Aplicar localmente
+# 3. Apply locally
 npx supabase db push
 
-# 4. Gerar types (OBRIGATÓRIO)
+# 4. Generate types (MANDATORY)
 npx supabase gen types typescript --local > src/types/supabase.ts
 
-# 5. Testar
+# 5. Test
 npm run test
 npm run build
 
-# 6. Criar schema dump
+# 6. Create schema dump
 npx supabase db dump --schema public > supabase/schema.sql
 
-# 7. Deletar migrations
+# 7. Delete migrations
 rm supabase/migrations/*.sql
 
 # 8. Commit
@@ -927,4 +906,4 @@ git push origin feature-branch --tags
 
 ---
 
-**Última atualização:** 28 de Abril de 2026
+**Last updated:** April 28, 2026
