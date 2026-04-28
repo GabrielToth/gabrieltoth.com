@@ -17,13 +17,13 @@ echo "🚀 Applying database changes ($ENV)..."
 
 if [ "$ENV" = "local" ]; then
     echo "📦 Step 1: Applying migrations to local database..."
-    supabase db push
+    npx supabase db push
     
     echo "🔧 Step 2: Generating TypeScript types from local database..."
-    supabase gen types typescript --local > src/types/supabase.ts
+    npx supabase gen types typescript --local > src/types/supabase.ts
     
     echo "📸 Step 3: Creating schema dump..."
-    supabase db dump --schema public --schema auth > supabase/schema.sql
+    npx supabase db dump --schema public --schema auth > supabase/schema.sql
     
     echo "🗑️  Step 4: Cleaning up old migrations..."
     MIGRATION_COUNT=$(find supabase/migrations -name "*.sql" 2>/dev/null | wc -l)
@@ -57,13 +57,13 @@ elif [ "$ENV" = "remote" ]; then
     fi
     
     echo "📦 Step 1: Applying migrations to remote database..."
-    supabase db push --project-ref "$SUPABASE_PROJECT_REF"
+    npx supabase db push --project-ref "$SUPABASE_PROJECT_REF"
     
     echo "🔧 Step 2: Generating TypeScript types from remote database..."
-    supabase gen types typescript --project-ref "$SUPABASE_PROJECT_REF" > src/types/supabase.ts
+    npx supabase gen types typescript --project-ref "$SUPABASE_PROJECT_REF" > src/types/supabase.ts
     
     echo "📸 Step 3: Creating schema dump from remote..."
-    supabase db dump --project-ref "$SUPABASE_PROJECT_REF" --schema public --schema auth > supabase/schema.sql
+    npx supabase db dump --project-ref "$SUPABASE_PROJECT_REF" --schema public --schema auth > supabase/schema.sql
     
     echo "🗑️  Step 4: Cleaning up old migrations..."
     MIGRATION_COUNT=$(find supabase/migrations -name "*.sql" 2>/dev/null | wc -l)

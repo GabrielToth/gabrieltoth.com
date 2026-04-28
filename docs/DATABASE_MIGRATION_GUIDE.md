@@ -14,7 +14,7 @@ Sempre que criar ou modificar o banco de dados, siga estes passos:
 
 ```bash
 # Criar migration para suas mudanças
-supabase migration new add_my_feature
+npx supabase migration new add_my_feature
 
 # Editar o arquivo SQL criado
 # supabase/migrations/TIMESTAMP_add_my_feature.sql
@@ -24,20 +24,20 @@ supabase migration new add_my_feature
 
 ```bash
 # Aplicar a migration no banco local
-supabase db push
+npx supabase db push
 
 # OU aplicar uma migração específica
-supabase migration up
+npx supabase migration up
 ```
 
 ### ✅ 3. Gerar TypeScript Types (OBRIGATÓRIO)
 
 ```bash
 # Gerar types do schema local
-supabase gen types typescript --local > src/types/supabase.ts
+npx supabase gen types typescript --local > src/types/supabase.ts
 
 # OU do schema remoto (produção)
-supabase gen types typescript --project-ref your-project-ref > src/types/supabase.ts
+npx supabase gen types typescript --project-ref your-project-ref > src/types/supabase.ts
 ```
 
 **Por que isso é importante?**
@@ -62,7 +62,7 @@ npm run build
 
 ```bash
 # Fazer dump do schema completo
-supabase db dump --schema public --schema auth > supabase/schema.sql
+npx supabase db dump --schema public --schema auth > supabase/schema.sql
 
 # Verificar que o arquivo foi criado
 cat supabase/schema.sql
@@ -119,9 +119,9 @@ npm version major  # Para breaking changes
 
 ```bash
 # Via CLI
-supabase db push --project-ref your-project-ref
+npx supabase db push --project-ref your-project-ref
 
-# OU via Supabase Dashboard
+# OU via npx supabase Dashboard
 # Settings > Database > SQL Editor
 # Copiar e colar o conteúdo de supabase/schema.sql
 # Executar o SQL
@@ -154,8 +154,8 @@ supabase db push --project-ref your-project-ref
 ### 1. Criar arquivo de migração
 
 ```bash
-# Supabase CLI cria automaticamente com timestamp
-supabase migration new create_my_table
+# npx supabase CLI cria automaticamente com timestamp
+npx supabase migration new create_my_table
 
 # Isso cria: supabase/migrations/20250427120000_create_my_table.sql
 ```
@@ -212,10 +212,10 @@ COMMENT ON COLUMN public.my_table.user_id IS 'Reference to auth.users';
 
 ```bash
 # Aplicar localmente
-supabase db push
+npx supabase db push
 
 # Gerar types
-supabase gen types typescript --local > src/types/supabase.ts
+npx supabase gen types typescript --local > src/types/supabase.ts
 
 # Testar
 npm run test
@@ -227,7 +227,7 @@ npm run test
 
 ```bash
 # Criar nova migração que desfaz a anterior
-supabase migration new rollback_my_table
+npx supabase migration new rollback_my_table
 
 # Escrever SQL reverso
 DROP TABLE IF EXISTS public.my_table;
@@ -237,7 +237,7 @@ DROP TABLE IF EXISTS public.my_table;
 
 ```bash
 # Reset completo do banco local
-supabase db reset
+npx supabase db reset
 
 # Isso vai:
 # 1. Dropar o banco
@@ -249,7 +249,7 @@ supabase db reset
 ### Opção 3: Restaurar backup (Produção)
 
 ```bash
-# Via Supabase Dashboard
+# Via npx supabase Dashboard
 # Settings > Database > Backups > Restore
 ```
 
@@ -284,7 +284,7 @@ import { createClient } from '@supabase/supabase-js';
 
 describe('my_table migration', () => {
   it('should create table with correct schema', async () => {
-    const supabase = createClient(
+    const npx supabase = createClient(
       process.env.SUPABASE_URL!,
       process.env.SUPABASE_ANON_KEY!
     );
@@ -314,20 +314,20 @@ describe('my_table migration', () => {
 
 ```bash
 # Listar todas as migrações
-supabase migration list
+npx supabase migration list
 
 # Ver status
-supabase db status
+npx supabase db status
 ```
 
 ### Ver schema atual
 
 ```bash
 # Dump schema completo
-supabase db dump --schema public > schema.sql
+npx supabase db dump --schema public > schema.sql
 
 # Ver apenas estrutura de tabelas
-supabase db dump --schema public --data-only=false
+npx supabase db dump --schema public --data-only=false
 ```
 
 ## ⚠️ Boas Práticas
@@ -336,7 +336,7 @@ supabase db dump --schema public --data-only=false
 
 1. **Sempre testar localmente primeiro**
    ```bash
-   supabase db push  # Local
+   npx supabase db push  # Local
    npm run test      # Testar
    npm run build     # Garantir que compila
    ```
@@ -344,13 +344,13 @@ supabase db dump --schema public --data-only=false
 2. **Sempre gerar TypeScript types**
    ```bash
    # OBRIGATÓRIO após qualquer mudança no banco
-   supabase gen types typescript --local > src/types/supabase.ts
+   npx supabase gen types typescript --local > src/types/supabase.ts
    ```
 
 3. **Sempre criar schema dump**
    ```bash
    # Após aplicar mudanças, criar dump completo
-   supabase db dump --schema public --schema auth > supabase/schema.sql
+   npx supabase db dump --schema public --schema auth > supabase/schema.sql
    ```
 
 4. **Sempre deletar migrations antigas**
@@ -395,13 +395,13 @@ supabase db dump --schema public --data-only=false
 2. **Nunca commitar sem gerar types**
    ```bash
    # SEMPRE gerar types após mudanças no banco
-   supabase gen types typescript --local > src/types/supabase.ts
+   npx supabase gen types typescript --local > src/types/supabase.ts
    ```
 
 3. **Nunca aplicar em produção sem testar localmente**
    ```bash
    # SEMPRE testar local primeiro
-   supabase db push  # Local
+   npx supabase db push  # Local
    npm run test      # Testar
    npm run build     # Build
    # Só depois aplicar em produção
@@ -419,7 +419,7 @@ supabase db dump --schema public --data-only=false
    ```
 
 6. **Nunca fazer DROP TABLE em produção sem backup**
-   - Sempre faça backup primeiro via Supabase Dashboard
+   - Sempre faça backup primeiro via npx supabase Dashboard
    - Settings > Database > Backups
 
 ## 🔍 Troubleshooting
@@ -428,7 +428,7 @@ supabase db dump --schema public --data-only=false
 
 ```bash
 # Ver histórico de migrações
-supabase migration list
+npx supabase migration list
 
 # Se necessário, marcar como aplicada manualmente
 # (Cuidado! Só faça se tiver certeza)
@@ -438,7 +438,7 @@ supabase migration list
 
 ```bash
 # Verificar se está usando o usuário correto
-# Supabase usa 'postgres' como superuser
+# npx supabase usa 'postgres' como superuser
 
 # Conectar como superuser
 psql postgresql://postgres:postgres@localhost:54322/postgres
@@ -448,7 +448,7 @@ psql postgresql://postgres:postgres@localhost:54322/postgres
 
 ```bash
 # Regenerar types
-supabase gen types typescript --local > src/types/supabase.ts
+npx supabase gen types typescript --local > src/types/supabase.ts
 
 # Verificar se o arquivo foi criado
 cat src/types/supabase.ts
@@ -458,18 +458,18 @@ cat src/types/supabase.ts
 
 ```bash
 # Parar tudo
-supabase stop
+npx supabase stop
 
 # Limpar volumes
-supabase db reset
+npx supabase db reset
 
 # Iniciar novamente
-supabase start
+npx supabase start
 ```
 
 ## 📚 Recursos
 
-- [Supabase Migrations Docs](https://supabase.com/docs/guides/cli/local-development#database-migrations)
+- [npx supabase Migrations Docs](https://supabase.com/docs/guides/cli/local-development#database-migrations)
 - [PostgreSQL Documentation](https://www.postgresql.org/docs/)
 - [Row Level Security Guide](https://supabase.com/docs/guides/auth/row-level-security)
 
@@ -477,23 +477,23 @@ supabase start
 
 ```bash
 # 1. Criar migration temporária (se necessário)
-supabase migration new my_feature
+npx supabase migration new my_feature
 
 # 2. Escrever SQL
 # Editar: supabase/migrations/TIMESTAMP_my_feature.sql
 
 # 3. Aplicar localmente
-supabase db push
+npx supabase db push
 
 # 4. Gerar types (OBRIGATÓRIO)
-supabase gen types typescript --local > src/types/supabase.ts
+npx supabase gen types typescript --local > src/types/supabase.ts
 
 # 5. Testar
 npm run test
 npm run build
 
 # 6. Criar schema dump (CRÍTICO)
-supabase db dump --schema public --schema auth > supabase/schema.sql
+npx supabase db dump --schema public --schema auth > supabase/schema.sql
 
 # 7. Deletar migrations antigas (OBRIGATÓRIO)
 rm supabase/migrations/*.sql
@@ -505,7 +505,7 @@ git commit -m "feat(#123): add my_feature to database schema"
 npm version minor
 
 # 9. Aplicar em produção
-supabase db push --project-ref your-project-ref
+npx supabase db push --project-ref your-project-ref
 ```
 
 **Sempre nessa ordem! ✅**
@@ -521,11 +521,11 @@ git clone repo-url
 # 2. Instalar dependências
 npm install
 
-# 3. Iniciar Supabase local
-supabase start
+# 3. Iniciar npx supabase local
+npx supabase start
 
 # 4. Aplicar schema completo (arquivo único)
-supabase db reset
+npx supabase db reset
 
 # 5. Pronto! O banco está no estado correto
 ```

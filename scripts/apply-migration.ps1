@@ -19,13 +19,13 @@ Write-Host "🚀 Applying database changes ($Environment)..." -ForegroundColor C
 
 if ($Environment -eq 'local') {
     Write-Host "📦 Step 1: Applying migrations to local database..." -ForegroundColor Yellow
-    supabase db push
+    npx supabase db push
     
     Write-Host "🔧 Step 2: Generating TypeScript types from local database..." -ForegroundColor Yellow
-    supabase gen types typescript --local | Out-File -FilePath "src/types/supabase.ts" -Encoding utf8
+    npx supabase gen types typescript --local | Out-File -FilePath "src/types/supabase.ts" -Encoding utf8
     
     Write-Host "📸 Step 3: Creating schema dump..." -ForegroundColor Yellow
-    supabase db dump --schema public --schema auth | Out-File -FilePath "supabase/schema.sql" -Encoding utf8
+    npx supabase db dump --schema public --schema auth | Out-File -FilePath "supabase/schema.sql" -Encoding utf8
     
     Write-Host "🗑️  Step 4: Cleaning up old migrations..." -ForegroundColor Yellow
     $migrationCount = (Get-ChildItem -Path "supabase/migrations" -Filter "*.sql" -ErrorAction SilentlyContinue).Count
@@ -54,13 +54,13 @@ if ($Environment -eq 'local') {
     }
     
     Write-Host "📦 Step 1: Applying migrations to remote database..." -ForegroundColor Yellow
-    supabase db push --project-ref $env:SUPABASE_PROJECT_REF
+    npx supabase db push --project-ref $env:SUPABASE_PROJECT_REF
     
     Write-Host "🔧 Step 2: Generating TypeScript types from remote database..." -ForegroundColor Yellow
-    supabase gen types typescript --project-ref $env:SUPABASE_PROJECT_REF | Out-File -FilePath "src/types/supabase.ts" -Encoding utf8
+    npx supabase gen types typescript --project-ref $env:SUPABASE_PROJECT_REF | Out-File -FilePath "src/types/supabase.ts" -Encoding utf8
     
     Write-Host "📸 Step 3: Creating schema dump from remote..." -ForegroundColor Yellow
-    supabase db dump --project-ref $env:SUPABASE_PROJECT_REF --schema public --schema auth | Out-File -FilePath "supabase/schema.sql" -Encoding utf8
+    npx supabase db dump --project-ref $env:SUPABASE_PROJECT_REF --schema public --schema auth | Out-File -FilePath "supabase/schema.sql" -Encoding utf8
     
     Write-Host "🗑️  Step 4: Cleaning up old migrations..." -ForegroundColor Yellow
     $migrationCount = (Get-ChildItem -Path "supabase/migrations" -Filter "*.sql" -ErrorAction SilentlyContinue).Count
