@@ -145,7 +145,7 @@ All Row-Level Security (RLS) policies have been successfully configured and veri
 
 **Usage**:
 ```bash
-supabase db execute < supabase/tests/rls-policies-validation.sql
+npx supabase db execute < supabase/tests/rls-policies-validation.sql
 ```
 
 **Checks**:
