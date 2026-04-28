@@ -716,4 +716,215 @@ docker-compose restart redis
 
 ---
 
-**Última atualização:** 22 de Abril de 2026
+## 🗄️ Database Migration Workflow (Supabase)
+
+**CRÍTICO**: Workflow correto para modificações de banco de dados.
+
+### Filosofia: Schema Dump ao invés de Migrations Acumuladas
+
+Ao invés de manter múltiplas migrations incrementais, usamos um **schema dump único** que representa o estado completo do banco de dados.
+
+### Workflow Obrigatório
+
+#### 1️⃣ Criar Migration Temporária
+
+```bash
+# Criar migration para suas mudanças
+npx supabase migration new add_my_feature
+
+# Editar o arquivo SQL criado
+# supabase/migrations/TIMESTAMP_add_my_feature.sql
+```
+
+#### 2️⃣ Aplicar Migration Localmente
+
+```bash
+# Aplicar a migration no banco local
+npx supabase db push
+```
+
+#### 3️⃣ Gerar TypeScript Types (OBRIGATÓRIO)
+
+```bash
+# Gerar types do schema atual
+npx supabase gen types typescript --local > src/types/supabase.ts
+
+# Verificar que o arquivo foi criado
+cat src/types/supabase.ts
+```
+
+**Por que isso é CRÍTICO?**
+- ✅ Mantém TypeScript sincronizado com o banco
+- ✅ Previne erros de tipo em queries
+- ✅ Melhora autocomplete no IDE
+- ✅ Detecta problemas em tempo de compilação
+
+#### 4️⃣ Testar as Mudanças
+
+```bash
+# Rodar todos os testes
+npm run test
+
+# Verificar tipos TypeScript
+npm run type-check
+
+# Build para garantir que compila
+npm run build
+```
+
+#### 5️⃣ Criar Schema Dump Completo
+
+```bash
+# Fazer dump do schema completo (substitui migrations)
+npx supabase db dump --schema public --schema auth > supabase/schema.sql
+
+# OU se quiser incluir dados de seed
+npx supabase db dump --schema public --schema auth --data-only=false > supabase/schema.sql
+```
+
+**O que isso faz?**
+- Cria um arquivo SQL único com TODO o schema atual
+- Inclui todas as tabelas, indexes, RLS policies, functions, triggers
+- Representa o estado completo do banco de dados
+- Substitui a necessidade de múltiplas migrations
+
+#### 6️⃣ Deletar Migrations Antigas (IMPORTANTE)
+
+```bash
+# Deletar TODAS as migrations antigas
+rm supabase/migrations/*.sql
+
+# OU mover para backup se quiser manter histórico
+mkdir -p supabase/migrations_backup
+mv supabase/migrations/*.sql supabase/migrations_backup/
+```
+
+**Por que deletar?**
+- ✅ Evita confusão sobre qual é o estado real do banco
+- ✅ O schema.sql é a fonte única de verdade
+- ✅ Migrations antigas podem ter conflitos ou estar desatualizadas
+- ✅ Simplifica o processo de setup para novos desenvolvedores
+
+#### 7️⃣ Commit das Mudanças
+
+```bash
+# Adicionar schema dump e types
+git add supabase/schema.sql
+git add src/types/supabase.ts
+
+# Remover migrations antigas do git
+git rm supabase/migrations/*.sql
+
+# Commit com mensagem descritiva
+git commit -m "feat(#123): add my_feature to database schema
+
+- Added new tables: table_a, table_b
+- Updated RLS policies for table_x
+- Generated TypeScript types
+- Replaced migrations with schema dump"
+
+# Incrementar versão
+npm version minor  # ou patch/major dependendo da mudança
+
+# Push com tags
+git push origin feature-branch --tags
+```
+
+#### 8️⃣ Aplicar em Produção
+
+```bash
+# Opção 1: Via Supabase CLI
+npx supabase db push --project-ref your-project-ref
+
+# Opção 2: Via Supabase Dashboard
+# Settings > Database > SQL Editor
+# Copiar e colar o conteúdo de supabase/schema.sql
+# Executar o SQL
+```
+
+### Checklist de Database Migration
+
+- [ ] Docker containers estão rodando (`docker-compose ps`)
+- [ ] Migration temporária criada e aplicada localmente
+- [ ] TypeScript types gerados (`src/types/supabase.ts` existe)
+- [ ] Testes passam (`npm run test`)
+- [ ] Build passa (`npm run build`)
+- [ ] Schema dump criado (`supabase/schema.sql`)
+- [ ] Migrations antigas deletadas (`supabase/migrations/*.sql` removidos)
+- [ ] Commit feito com schema.sql e types
+- [ ] Versão incrementada
+- [ ] Aplicado em produção
+
+### Setup de Novo Desenvolvedor
+
+Com esse workflow, um novo desenvolvedor só precisa:
+
+```bash
+# 1. Clonar o repositório
+git clone repo-url
+
+# 2. Instalar dependências
+npm install
+
+# 3. Iniciar Supabase local
+npx supabase start
+
+# 4. Aplicar schema completo (arquivo único)
+npx supabase db reset
+
+# 5. Pronto! O banco está no estado correto
+```
+
+### Vantagens desse Workflow
+
+✅ **Simplicidade**: Um arquivo SQL ao invés de dezenas de migrations
+✅ **Clareza**: O schema.sql mostra exatamente o estado atual do banco
+✅ **Menos erros**: Não há risco de migrations conflitantes ou fora de ordem
+✅ **Setup rápido**: Novos desenvolvedores aplicam um arquivo só
+✅ **Manutenção fácil**: Não precisa gerenciar histórico de migrations
+✅ **Types sempre atualizados**: Workflow força geração de types
+
+### Exemplo Completo
+
+```bash
+# 1. Criar migration temporária
+npx supabase migration new add_posts_table
+
+# 2. Editar SQL
+# supabase/migrations/20260428120000_add_posts_table.sql
+CREATE TABLE posts (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  title TEXT NOT NULL,
+  content TEXT,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+# 3. Aplicar localmente
+npx supabase db push
+
+# 4. Gerar types (OBRIGATÓRIO)
+npx supabase gen types typescript --local > src/types/supabase.ts
+
+# 5. Testar
+npm run test
+npm run build
+
+# 6. Criar schema dump
+npx supabase db dump --schema public > supabase/schema.sql
+
+# 7. Deletar migrations
+rm supabase/migrations/*.sql
+
+# 8. Commit
+git add supabase/schema.sql src/types/supabase.ts
+git rm supabase/migrations/*.sql
+git commit -m "feat(#123): add posts table to schema"
+npm version minor
+
+# 9. Push
+git push origin feature-branch --tags
+```
+
+---
+
+**Última atualização:** 28 de Abril de 2026
