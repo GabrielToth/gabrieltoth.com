@@ -9,10 +9,6 @@
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import {
-    calculatePasswordStrength,
-    getMissingRequirements,
-} from "@/lib/auth/password-strength"
 import { sanitizeRegistrationForm } from "@/lib/auth/sanitization"
 import {
     validateEmail,
@@ -22,7 +18,7 @@ import {
     validatePasswordMatch,
 } from "@/lib/validation"
 import { useRouter } from "next/navigation"
-import { FormEvent, useState } from "react"
+import { FormEvent, useEffect, useState } from "react"
 
 interface RegisterFormProps {
     locale: string
@@ -87,6 +83,22 @@ export function RegisterForm({ locale }: RegisterFormProps) {
         }
         fetchCsrfToken()
     }, [])
+
+    // Calculate if form is valid (all fields without errors)
+    // Requirement 1.1
+    const isFormValid = useMemo(() => {
+        return (
+            formData.name.trim() !== "" &&
+            formData.email.trim() !== "" &&
+            formData.password.trim() !== "" &&
+            formData.confirmPassword.trim() !== "" &&
+            !errors.name &&
+            !errors.email &&
+            !errors.password &&
+            !errors.confirmPassword &&
+            csrfToken !== null
+        )
+    }, [formData, errors, csrfToken])
 
     // Real-time validation for name field
     // Requirement 8.4
@@ -390,44 +402,13 @@ export function RegisterForm({ locale }: RegisterFormProps) {
                     </p>
                 )}
 
-                {/* Password Strength Indicator */}
-                {formData.password && !errors.password && (
-                    <div id="password-strength" className="space-y-2">
-                        <div className="flex items-center gap-2">
-                            <div className="flex-1 h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
-                                <div
-                                    className={`h-full transition-all duration-300 ${
-                                        passwordStrength.strength === "weak"
-                                            ? "bg-red-500 w-1/4"
-                                            : passwordStrength.strength ===
-                                                "fair"
-                                              ? "bg-orange-500 w-2/4"
-                                              : passwordStrength.strength ===
-                                                  "good"
-                                                ? "bg-yellow-500 w-3/4"
-                                                : "bg-green-500 w-full"
-                                    }`}
-                                />
-                            </div>
-                            <span
-                                className={`text-sm font-medium ${passwordStrength.color}`}
-                            >
-                                {passwordStrength.feedback}
-                            </span>
-                        </div>
-
-                        {missingRequirements.length > 0 && (
-                            <div className="text-xs text-gray-600 dark:text-gray-400">
-                                <p className="font-medium mb-1">
-                                    Missing requirements:
-                                </p>
-                                <ul className="list-disc list-inside space-y-0.5">
-                                    {missingRequirements.map(req => (
-                                        <li key={req}>{req}</li>
-                                    ))}
-                                </ul>
-                            </div>
-                        )}
+                {/* Password Strength Indicator with Criteria */}
+                {formData.password && (
+                    <div id="password-strength">
+                        <PasswordStrengthIndicator
+                            password={formData.password}
+                            showCriteria={true}
+                        />
                     </div>
                 )}
             </div>
@@ -469,7 +450,7 @@ export function RegisterForm({ locale }: RegisterFormProps) {
             <Button
                 type="submit"
                 className="w-full"
-                disabled={isLoading || !csrfToken}
+                disabled={!isFormValid || isLoading}
             >
                 {isLoading ? "Creating account..." : "Create account"}
             </Button>
