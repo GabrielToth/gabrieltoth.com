@@ -43,12 +43,12 @@ export function AuthenticationEntry({
                 </div>
 
                 {/* Card */}
-                <Card className="bg-slate-800 border-slate-700 p-6 sm:p-8">
+                <Card className="bg-slate-800 border-slate-700 p-6 sm:p-8 space-y-6">
                     {/* Email Registration Button */}
                     <button
                         onClick={onEmailSelected}
                         disabled={isLoading}
-                        className="w-full mb-4 px-6 py-3 sm:py-3 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-600 disabled:opacity-50 text-white font-semibold rounded-lg transition-colors flex items-center justify-center gap-2 min-h-[44px] text-base sm:text-sm"
+                        className="w-full px-6 py-3 sm:py-3 bg-slate-600 hover:bg-slate-700 disabled:bg-slate-600 disabled:opacity-50 text-white font-semibold rounded-lg transition-colors flex items-center justify-center gap-2 min-h-[44px] text-base sm:text-sm"
                         aria-label="Sign up with Email"
                     >
                         <svg
@@ -62,18 +62,6 @@ export function AuthenticationEntry({
                         </svg>
                         Sign up with Email
                     </button>
-
-                    {/* Divider */}
-                    <div className="relative mb-4">
-                        <div className="absolute inset-0 flex items-center">
-                            <div className="w-full border-t border-slate-600" />
-                        </div>
-                        <div className="relative flex justify-center text-sm">
-                            <span className="px-2 bg-slate-800 text-slate-400">
-                                or
-                            </span>
-                        </div>
-                    </div>
 
                     {/* Google OAuth Button */}
                     <button
