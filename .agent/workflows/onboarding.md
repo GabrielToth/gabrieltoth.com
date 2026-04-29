@@ -1,49 +1,49 @@
 ---
-description: Leitura obrigatória antes de qualquer implementação neste projeto
+description: Mandatory reading before any implementation in this project
 ---
 
-# Onboarding de IA - Leitura Obrigatória
+# AI Onboarding - Mandatory Reading
 
-Antes de começar QUALQUER tarefa neste projeto, a IA DEVE ler os seguintes arquivos na ordem especificada:
+Before starting ANY task in this project, the AI MUST read the following files in the specified order:
 
-## 1. Contexto Geral do Projeto
-
-```
-Ler: README.md
-Ler: .cursorrules (se existir)
-Ler: .agent/AI_CONTEXT.md
-```
-
-## 2. Arquitetura e Padrões
+## 1. General Project Context
 
 ```
-Ler: docs/ARCHITECTURE.md
-Ler: docs/ENDPOINTS.md
-Ler: docs/CREDIT_SYSTEM.md
+Read: README.md
+Read: .cursorrules (if exists)
+Read: .agent/AI_CONTEXT.md
 ```
 
-## 3. Contexto da Tarefa Específica (se aplicável)
-
-- Se for trabalhar em **Autenticação**: `docs/modules/AUTH.md`
-- Se for trabalhar em **Créditos**: `docs/modules/CREDITS.md`
-- Se for trabalhar em **Chat Unificado**: `docs/modules/CHAT.md`
-- Se for trabalhar em **YouTube Tools**: `docs/modules/YOUTUBE.md`
-- Se for trabalhar em **Analytics**: `docs/modules/ANALYTICS.md`
-- Se for trabalhar em **Streaming**: `docs/modules/STREAMING.md`
-
-## 4. Antes de Commitar
+## 2. Architecture and Patterns
 
 ```
-Ler: .agent/workflows/testing.md
-Ler: .agent/workflows/deploy.md
+Read: docs/ARCHITECTURE.md
+Read: docs/ENDPOINTS.md
+Read: docs/CREDIT_SYSTEM.md
 ```
 
-## 5. Em Caso de Problemas
+## 3. Specific Task Context (if applicable)
+
+- If working on **Authentication**: `docs/modules/AUTH.md`
+- If working on **Credits**: `docs/modules/CREDITS.md`
+- If working on **Unified Chat**: `docs/modules/CHAT.md`
+- If working on **YouTube Tools**: `docs/modules/YOUTUBE.md`
+- If working on **Analytics**: `docs/modules/ANALYTICS.md`
+- If working on **Streaming**: `docs/modules/STREAMING.md`
+
+## 4. Before Committing
 
 ```
-Ler: .agent/EMERGENCY_ROLLBACK.md
+Read: .agent/workflows/testing.md
+Read: .agent/workflows/deploy.md
+```
+
+## 5. In Case of Problems
+
+```
+Read: .agent/EMERGENCY_ROLLBACK.md
 ```
 
 ---
 
-**IMPORTANTE**: Após ler estes arquivos, a IA deve confirmar que entendeu o contexto antes de prosseguir.
+**IMPORTANT**: After reading these files, the AI should confirm that it understood the context before proceeding.

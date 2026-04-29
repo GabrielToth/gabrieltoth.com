@@ -1,48 +1,48 @@
 ---
-description: Workflow de testes antes de qualquer commit
+description: Testing workflow before any commit
 ---
 
-# Workflow de Testes
+# Testing Workflow
 
-## Ordem de Execução
+## Execution Order
 
-### 1. Verificar se Builda
+### 1. Check if it Builds
 
 ```bash
 // turbo
 npm run build
 ```
 
-Se falhar, corrigir erros antes de prosseguir.
+If it fails, fix errors before proceeding.
 
-### 2. Verificar Tipos TypeScript
+### 2. Check TypeScript Types
 
 ```bash
 // turbo
 npm run type-check
 ```
 
-### 3. Rodar Linter
+### 3. Run Linter
 
 ```bash
 // turbo
 npm run lint
 ```
 
-### 4. Rodar Testes Unitários Existentes
+### 4. Run Existing Unit Tests
 
 ```bash
 // turbo
 npm run test
 ```
 
-### 5. Se Criou Novas Funcionalidades, Criar Testes Unitários
+### 5. If You Created New Features, Create Unit Tests
 
-- Testes devem ficar em `src/__tests__/`
-- Seguir padrão: `[nome-do-arquivo].test.ts`
-- Cobrir casos de sucesso e falha
+- Tests should be in `src/__tests__/`
+- Follow pattern: `[file-name].test.ts`
+- Cover success and failure cases
 
-### 6. Rodar Testes E2E (se alterou UI)
+### 6. Run E2E Tests (if you changed UI)
 
 ```bash
 npm run test:e2e
@@ -50,10 +50,10 @@ npm run test:e2e
 
 ---
 
-## Critérios de Aprovação
+## Approval Criteria
 
-- ✅ Build passa sem erros
-- ✅ Sem erros de TypeScript
-- ✅ Sem warnings de ESLint críticos
-- ✅ Todos os testes passam
-- ✅ Cobertura de testes >= 80% para novos arquivos
+- ✅ Build passes without errors
+- ✅ No TypeScript errors
+- ✅ No critical ESLint warnings
+- ✅ All tests pass
+- ✅ Test coverage >= 80% for new files

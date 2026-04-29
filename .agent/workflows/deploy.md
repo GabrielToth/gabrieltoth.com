@@ -1,62 +1,62 @@
 ---
-description: Workflow de deploy para produção
+description: Production deployment workflow
 ---
 
-# Workflow de Deploy
+# Deployment Workflow
 
-## Pré-Requisitos
+## Prerequisites
 
-1. Todos os testes devem passar (ver `/testing`)
-2. Código revisado e aprovado
-3. Branch atualizada com `main`
+1. All tests must pass (see `/testing`)
+2. Code reviewed and approved
+3. Branch updated with `main`
 
-## Passos para Deploy
+## Deployment Steps
 
-### 1. Atualizar Versão
+### 1. Update Version
 
 ```bash
-npm version patch  # ou minor/major conforme semver
+npm version patch  # or minor/major according to semver
 ```
 
-### 2. Criar Commit Semântico
+### 2. Create Semantic Commit
 
-Formato: `<tipo>(<escopo>): <descrição>`
+Format: `<type>(<scope>): <description>`
 
-Tipos:
+Types:
 
-- `feat`: Nova funcionalidade
-- `fix`: Correção de bug
-- `docs`: Documentação
-- `refactor`: Refatoração
-- `test`: Testes
-- `chore`: Manutenção
+- `feat`: New feature
+- `fix`: Bug fix
+- `docs`: Documentation
+- `refactor`: Refactoring
+- `test`: Tests
+- `chore`: Maintenance
 
-Exemplo:
+Example:
 
 ```bash
 git add .
-git commit -m "feat(credits): implementar dedução por uso de banda"
+git commit -m "feat(credits): implement bandwidth usage deduction"
 ```
 
-### 3. Push para Repositório
+### 3. Push to Repository
 
 ```bash
 git push origin main
 ```
 
-### 4. Verificar Deploy Automático
+### 4. Check Automatic Deployment
 
-- Vercel fará deploy automático
-- Acompanhar em: https://vercel.com/gabrieltoth
+- Vercel will deploy automatically
+- Monitor at: https://vercel.com/gabrieltoth
 
-### 5. Validar em Produção
+### 5. Validate in Production
 
-- Acessar https://gabrieltoth.com
-- Testar funcionalidade implementada
-- Verificar logs de erro
+- Access https://gabrieltoth.com
+- Test implemented functionality
+- Check error logs
 
 ---
 
-## Em Caso de Falha
+## In Case of Failure
 
-Seguir: `.agent/EMERGENCY_ROLLBACK.md`
+Follow: `.agent/EMERGENCY_ROLLBACK.md`
