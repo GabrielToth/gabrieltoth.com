@@ -1,34 +1,34 @@
-# Módulo: YouTube Tools
+# Module: YouTube Tools
 
-## Descrição
+## Description
 
-Ferramentas para download, metadados e agendamento de conteúdo do YouTube.
+Tools for downloading, extracting metadata, and scheduling content from YouTube.
 
-## Funcionalidades
+## Features
 
-- Download de vídeos (múltiplas qualidades)
-- Download de playlists/canais completos
-- Extração de metadados (thumb, descrição, tags)
-- Agendamento de publicação multi-plataforma
-- Reescrita com IA
+- Video download (multiple qualities)
+- Playlist/channel complete download
+- Metadata extraction (thumb, description, tags)
+- Multi-platform publication scheduling
+- AI rewriting
 
-## Arquivos
+## Files
 
 - `src/app/api/platform/youtube/route.ts` - API endpoints
-- `src/lib/youtube/` - Lógica de download (wrapper yt-dlp)
+- `src/lib/youtube/` - Download logic (yt-dlp wrapper)
 
-## Custo
+## Cost
 
-- Download: 100 créditos/minuto de vídeo
-- Metadados: Grátis (com download)
-- Agendar post: 50 créditos
-- Rewrite IA: 500 créditos/1k tokens
+- Download: 100 credits/minute of video
+- Metadata: Free (with download)
+- Schedule post: 50 credits
+- AI rewrite: 500 credits/1k tokens
 
-## Limitações
+## Limitations
 
-- Downloads processados via queue (Cloudflare Workers ou QStash)
-- Armazenamento temporário em R2/S3
+- Downloads processed via queue (Cloudflare Workers or QStash)
+- Temporary storage in R2/S3
 
-## Status: 🔴 NÃO IMPLEMENTADO
+## Status: 🔴 NOT IMPLEMENTED
 
-Próximo passo: v0.4.0
+Next step: v0.4.0

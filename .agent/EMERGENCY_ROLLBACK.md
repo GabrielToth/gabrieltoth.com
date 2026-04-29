@@ -1,96 +1,96 @@
-# 🚨 EMERGENCY ROLLBACK - LEIA PRIMEIRO
+# 🚨 EMERGENCY ROLLBACK - READ FIRST
 
-Este arquivo contém procedimentos de emergência para reverter problemas em produção.
+This file contains emergency procedures to revert issues in production.
 
 ---
 
-## Níveis de Severidade
+## Severity Levels
 
-### 🔴 CRÍTICO (Site fora do ar)
+### 🔴 CRITICAL (Site down)
 
-1. **Rollback imediato via Vercel**
-    - Acessar: https://vercel.com/gabrieltoth/gabrieltoth.com/deployments
-    - Clicar nos "..." do deploy anterior funcional
-    - Selecionar "Promote to Production"
+1. **Immediate rollback via Vercel**
+    - Access: https://vercel.com/gabrieltoth/gabrieltoth.com/deployments
+    - Click "..." on the previous working deployment
+    - Select "Promote to Production"
 
-2. **Se Vercel não estiver acessível**
+2. **If Vercel is not accessible**
     ```bash
     git revert HEAD
     git push origin main --force
     ```
 
-### 🟠 ALTO (Funcionalidade quebrada)
+### 🟠 HIGH (Broken functionality)
 
-1. Identificar o commit problemático:
+1. Identify the problematic commit:
     ```bash
     git log --oneline -10
     ```
-2. Reverter o commit específico:
+2. Revert the specific commit:
     ```bash
-    git revert <hash-do-commit>
+    git revert <commit-hash>
     git push origin main
     ```
 
-### 🟡 MÉDIO (Bug afetando usuários)
+### 🟡 MEDIUM (Bug affecting users)
 
-1. Criar hotfix:
+1. Create hotfix:
     ```bash
-    git checkout -b hotfix/nome-do-problema
-    # Fazer correção
-    git commit -m "fix: descrição do problema"
+    git checkout -b hotfix/problem-name
+    # Make fix
+    git commit -m "fix: problem description"
     git checkout main
-    git merge hotfix/nome-do-problema
+    git merge hotfix/problem-name
     git push origin main
     ```
 
 ---
 
-## Rollback de Banco de Dados
+## Database Rollback
 
-### Se a migration causou problema:
+### If migration caused an issue:
 
 ```sql
--- Conectar no banco de produção
--- Verificar o estado atual
+-- Connect to production database
+-- Check current state
 SELECT * FROM schema_migrations ORDER BY version DESC LIMIT 5;
 
--- Reverter última migration manualmente se necessário
-DROP TABLE IF EXISTS <tabela_problemática>;
+-- Revert last migration manually if necessary
+DROP TABLE IF EXISTS <problematic_table>;
 ```
 
-### Restore de Backup:
+### Backup Restore:
 
 ```bash
-# Listar backups disponíveis (depende do provider)
-# Restaurar o mais recente antes do problema
+# List available backups (depends on provider)
+# Restore the most recent one before the issue
 ```
 
 ---
 
-## Rollback de Docker (Self-Hosted)
+## Docker Rollback (Self-Hosted)
 
 ```bash
-# Ver imagens disponíveis
+# View available images
 docker images gabrieltoth/platform-api
 
-# Reverter para versão anterior
+# Revert to previous version
 docker-compose down
 docker-compose up -d --pull=never gabrieltoth/platform-api:previous-tag
 ```
 
 ---
 
-## Checklist Pós-Rollback
+## Post-Rollback Checklist
 
-- [ ] Site está acessível?
-- [ ] Funcionalidades principais funcionando?
-- [ ] Logs de erro pararam?
-- [ ] Notificar equipe sobre o problema
-- [ ] Documentar causa raiz em `docs/postmortems/`
+- [ ] Is the site accessible?
+- [ ] Are main functionalities working?
+- [ ] Have error logs stopped?
+- [ ] Notify team about the issue
+- [ ] Document root cause in `docs/postmortems/`
 
 ---
 
-## Contatos de Emergência
+## Emergency Contacts
 
 - **Vercel Status**: https://www.vercel-status.com/
 - **GitHub Status**: https://www.githubstatus.com/

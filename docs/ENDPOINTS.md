@@ -1,63 +1,63 @@
-# Endpoints da Plataforma
+# Platform Endpoints
 
-## Saúde e Status
+## Health and Status
 
-| Método | Endpoint      | Descrição    | Auth |
-| ------ | ------------- | ------------ | ---- |
+| Method | Endpoint      | Description | Auth |
+| ------ | ------------- | ----------- | ---- |
 | GET    | `/api/health` | Health check | ❌   |
 
-## Créditos (`/api/platform/credits`)
+## Credits (`/api/platform/credits`)
 
-| Método | Endpoint   | Descrição                  | Auth     |
-| ------ | ---------- | -------------------------- | -------- |
-| GET    | `/balance` | Saldo atual                | ✅       |
-| POST   | `/deduct`  | Deduzir créditos           | ✅       |
-| POST   | `/add`     | Adicionar créditos (admin) | ✅ Admin |
+| Method | Endpoint   | Description              | Auth     |
+| ------ | ---------- | ------------------------ | -------- |
+| GET    | `/balance` | Current balance          | ✅       |
+| POST   | `/deduct`  | Deduct credits           | ✅       |
+| POST   | `/add`     | Add credits (admin)      | ✅ Admin |
 
 ## Analytics (`/api/platform/analytics`)
 
-| Método | Endpoint | Descrição            | Auth     |
+| Method | Endpoint | Description          | Auth     |
 | ------ | -------- | -------------------- | -------- |
-| GET    | `/`      | Dashboard de consumo | ✅       |
-| GET    | `/admin` | Visão geral (admin)  | ✅ Admin |
+| GET    | `/`      | Consumption dashboard | ✅       |
+| GET    | `/admin` | Overview (admin)     | ✅ Admin |
 
 ## YouTube (`/api/platform/youtube`)
 
-| Método | Endpoint         | Descrição          | Auth |
-| ------ | ---------------- | ------------------ | ---- |
-| POST   | `/download`      | Iniciar download   | ✅   |
-| GET    | `/status/:jobId` | Status do download | ✅   |
-| POST   | `/schedule`      | Agendar publicação | ✅   |
+| Method | Endpoint         | Description       | Auth |
+| ------ | ---------------- | ----------------- | ---- |
+| POST   | `/download`      | Start download    | ✅   |
+| GET    | `/status/:jobId` | Download status   | ✅   |
+| POST   | `/schedule`      | Schedule publish  | ✅   |
 
 ## Chat (`/api/platform/chat`)
 
-| Método | Endpoint   | Descrição                | Auth   |
-| ------ | ---------- | ------------------------ | ------ |
-| WS     | `/unified` | WebSocket chat unificado | ✅     |
-| POST   | `/timeout` | Aplicar timeout          | ✅ Mod |
-| POST   | `/ban`     | Aplicar ban              | ✅ Mod |
+| Method | Endpoint   | Description           | Auth   |
+| ------ | ---------- | --------------------- | ------ |
+| WS     | `/unified` | Unified chat WebSocket | ✅     |
+| POST   | `/timeout` | Apply timeout         | ✅ Mod |
+| POST   | `/ban`     | Apply ban             | ✅ Mod |
 
 ## Stream (`/api/platform/stream`)
 
-| Método | Endpoint | Descrição      | Auth |
-| ------ | -------- | -------------- | ---- |
-| POST   | `/start` | Iniciar stream | ✅   |
-| POST   | `/stop`  | Parar stream   | ✅   |
-| GET    | `/usage` | Consumo atual  | ✅   |
+| Method | Endpoint | Description    | Auth |
+| ------ | -------- | --------------- | ---- |
+| POST   | `/start` | Start stream    | ✅   |
+| POST   | `/stop`  | Stop stream     | ✅   |
+| GET    | `/usage` | Current usage   | ✅   |
 
 ## Webhooks (`/api/platform/webhooks`)
 
-| Método | Endpoint  | Descrição      | Auth      |
-| ------ | --------- | -------------- | --------- |
-| POST   | `/stripe` | Eventos Stripe | Signature |
-| POST   | `/twitch` | Eventos Twitch | Secret    |
+| Method | Endpoint  | Description    | Auth      |
+| ------ | --------- | --------------- | --------- |
+| POST   | `/stripe` | Stripe events   | Signature |
+| POST   | `/twitch` | Twitch events   | Secret    |
 
 ---
 
-**Legenda Auth:**
+**Auth Legend:**
 
-- ❌ = Público
-- ✅ = Usuário autenticado
-- ✅ Mod = Moderador
-- ✅ Admin = Administrador
-- Signature/Secret = Validação de webhook
+- ❌ = Public
+- ✅ = Authenticated user
+- ✅ Mod = Moderator
+- ✅ Admin = Administrator
+- Signature/Secret = Webhook validation

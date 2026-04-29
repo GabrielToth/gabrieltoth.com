@@ -1,39 +1,39 @@
-# Módulo: Autenticação
+# Module: Authentication
 
-## Descrição
+## Description
 
-Sistema de autenticação usando Auth.js (NextAuth) com PostgreSQL como banco de sessões.
+Authentication system using Auth.js (NextAuth) with PostgreSQL as session database.
 
-## Funcionalidades
+## Features
 
 - Login via Google OAuth
-- Vinculação de múltiplas plataformas (Twitch, YouTube, Kick, TikTok, etc.)
-- Identificador único cross-platform
+- Multiple platform linking (Twitch, YouTube, Kick, TikTok, etc.)
+- Cross-platform unique identifier
 
-## Arquivos
+## Files
 
-- `src/lib/auth/` - Configuração Auth.js
-- `src/app/api/auth/[...nextauth]/route.ts` - Rotas de auth
+- `src/lib/auth/` - Auth.js configuration
+- `src/app/api/auth/[...nextauth]/route.ts` - Auth routes
 
-## Fluxo
+## Flow
 
-1. Usuário clica "Login com Google"
-2. Redireciona para Google OAuth
-3. Callback cria/atualiza perfil no banco
-4. Sessão criada no Redis/DB
+1. User clicks "Login with Google"
+2. Redirects to Google OAuth
+3. Callback creates/updates profile in database
+4. Session created in Redis/DB
 
-## Vinculação de Plataformas
+## Platform Linking
 
-Após login, usuário pode vincular:
+After login, user can link:
 
 - Twitch, YouTube, Kick, TikTok, Facebook, Trovo, Kwai
 
-Cada vinculação armazena:
+Each link stores:
 
 - `platform_user_id`
 - `platform_username`
 - `access_token` / `refresh_token`
 
-## Status: 🔴 NÃO IMPLEMENTADO
+## Status: 🔴 NOT IMPLEMENTED
 
-Próximo passo: v0.2.0
+Next step: v0.2.0

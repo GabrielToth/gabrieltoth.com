@@ -1,45 +1,45 @@
-# Módulo: Streaming
+# Module: Streaming
 
-## Descrição
+## Description
 
-Sistema de restream com validação de qualidade e billing por uso real.
+Restream system with quality validation and billing based on actual usage.
 
-## Funcionalidades
+## Features
 
-- Ingest RTMP
-- Restream para múltiplas plataformas
-- Validação de specs (resolução, bitrate, fps)
-- Billing por minuto de stream
+- RTMP ingest
+- Restream to multiple platforms
+- Specs validation (resolution, bitrate, fps)
+- Billing per minute of stream
 
-## Arquivos
+## Files
 
 - `src/app/api/platform/stream/route.ts` - API endpoints
 
-## Custo Base
+## Base Cost
 
-- 1080p30: 1.000 créditos/minuto
+- 1080p30: 1,000 credits/minute
 
-## Multiplicadores
+## Multipliers
 
-| Qualidade | Multiplicador |
-| --------- | ------------- |
-| 720p30    | 0.5x          |
-| 1080p30   | 1.0x          |
-| 1080p60   | 1.5x          |
-| 1440p60   | 2.5x          |
-| 4K60      | 5.0x          |
+| Quality | Multiplier |
+| ------- | ---------- |
+| 720p30  | 0.5x       |
+| 1080p30 | 1.0x       |
+| 1080p60 | 1.5x       |
+| 1440p60 | 2.5x       |
+| 4K60    | 5.0x       |
 
-## Validação de Specs
+## Specs Validation
 
-Se o usuário enviar qualidade maior que configurada:
+If user sends higher quality than configured:
 
-- Stream é cancelado
-- Multa de 20% aplicada
+- Stream is cancelled
+- 20% penalty applied
 
-## Backend Sugerido
+## Suggested Backend
 
-- Cloudflare Stream ou AWS IVS
+- Cloudflare Stream or AWS IVS
 
-## Status: 🔴 NÃO IMPLEMENTADO
+## Status: 🔴 NOT IMPLEMENTED
 
-Próximo passo: v0.7.0
+Next step: v0.7.0

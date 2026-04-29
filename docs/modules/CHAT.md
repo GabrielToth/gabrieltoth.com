@@ -1,23 +1,23 @@
-# Módulo: Chat Unificado
+# Module: Unified Chat
 
-## Descrição
+## Description
 
-Agregador de chats de múltiplas plataformas com sistema de moderação cross-platform.
+Chat aggregator from multiple platforms with cross-platform moderation system.
 
-## Funcionalidades
+## Features
 
-- Ver chats de streamers ao vivo (grátis)
-- Chat unificado para streamers (pago)
-- Moderação cross-platform
-- Timeouts persistentes/renováveis
-- Notificações de subs/gifts
+- View chats from live streamers (free)
+- Unified chat for streamers (paid)
+- Cross-platform moderation
+- Persistent/renewable timeouts
+- Sub/gift notifications
 
-## Arquivos
+## Files
 
-- `src/app/api/platform/chat/route.ts` - API e WebSocket
-- `src/lib/platforms/` - Adaptadores de cada plataforma
+- `src/app/api/platform/chat/route.ts` - API and WebSocket
+- `src/lib/platforms/` - Adapters for each platform
 
-## Plataformas Suportadas
+## Supported Platforms
 
 - Twitch (IRC)
 - YouTube Live
@@ -26,12 +26,12 @@ Agregador de chats de múltiplas plataformas com sistema de moderação cross-pl
 - Facebook Gaming
 - Trovo
 
-## Custo
+## Cost
 
-- Mensagem recebida: 1 crédito
-- Timeout: 10 créditos
-- Ban: 25 créditos
+- Message received: 1 credit
+- Timeout: 10 credits
+- Ban: 25 credits
 
-## Status: 🔴 NÃO IMPLEMENTADO
+## Status: 🔴 NOT IMPLEMENTED
 
-Próximo passo: v0.5.0
+Next step: v0.5.0

@@ -1,471 +1,471 @@
-# 🗺️ Roadmap do Projeto - Milestones e TO-DOs
+# 🗺️ Project Roadmap - Milestones and TO-DOs
 
-## 📋 Visão Geral
+## 📋 Overview
 
-Este documento detalha todas as milestones e features planejadas para o projeto. Cada milestone deve ser criada no GitHub com seus respectivos TO-DOs.
+This document details all planned milestones and features for the project. Each milestone should be created on GitHub with its respective TO-DOs.
 
 ---
 
 ## 🎯 Milestones
 
-### Milestone 1: Dashboard Base (CONCLUÍDO ✅)
-**Status:** Completo
-**Descrição:** Implementação do dashboard base com layout responsivo e navegação
+### Milestone 1: Base Dashboard (COMPLETED ✅)
+**Status:** Complete
+**Description:** Implementation of base dashboard with responsive layout and navigation
 
-- [x] Layout responsivo (mobile, tablet, desktop)
-- [x] Sidebar com navegação
-- [x] Componentes UI base
+- [x] Responsive layout (mobile, tablet, desktop)
+- [x] Sidebar with navigation
+- [x] Base UI components
 - [x] Routing structure
-- [x] Testes e documentação
+- [x] Tests and documentation
 
 ---
 
-### Milestone 2: Integração WhatsApp
-**Status:** Planejado
-**Prioridade:** Alta
-**Descrição:** Adicionar suporte completo para WhatsApp
+### Milestone 2: WhatsApp Integration
+**Status:** Planned
+**Priority:** High
+**Description:** Add complete WhatsApp support
 
 #### TO-DOs:
-- [ ] **Issue #201:** Implementar autenticação WhatsApp Business API
-  - [ ] Configurar credenciais WhatsApp
-  - [ ] Implementar OAuth flow
-  - [ ] Testes de autenticação
-  - [ ] Documentação
+- [ ] **Issue #201:** Implement WhatsApp Business API authentication
+  - [ ] Configure WhatsApp credentials
+  - [ ] Implement OAuth flow
+  - [ ] Authentication tests
+  - [ ] Documentation
 
-- [ ] **Issue #202:** Criar interface de gerenciamento de contas WhatsApp
-  - [ ] Componente de conexão
-  - [ ] Lista de contas conectadas
-  - [ ] Opções de desconexão
-  - [ ] Testes
+- [ ] **Issue #202:** Create WhatsApp account management interface
+  - [ ] Connection component
+  - [ ] List of connected accounts
+  - [ ] Disconnection options
+  - [ ] Tests
 
-- [ ] **Issue #203:** Implementar envio de mensagens WhatsApp
-  - [ ] API de envio
-  - [ ] Fila de mensagens
-  - [ ] Tratamento de erros
-  - [ ] Testes
+- [ ] **Issue #203:** Implement WhatsApp message sending
+  - [ ] Sending API
+  - [ ] Message queue
+  - [ ] Error handling
+  - [ ] Tests
 
-- [ ] **Issue #204:** Adicionar recebimento de mensagens WhatsApp
+- [ ] **Issue #204:** Add WhatsApp message receiving
   - [ ] Webhook setup
-  - [ ] Processamento de mensagens
-  - [ ] Armazenamento em banco
-  - [ ] Testes
+  - [ ] Message processing
+  - [ ] Database storage
+  - [ ] Tests
 
-- [ ] **Issue #205:** Criar dashboard de WhatsApp
-  - [ ] Visualização de conversas
-  - [ ] Histórico de mensagens
-  - [ ] Estatísticas
-  - [ ] Testes
+- [ ] **Issue #205:** Create WhatsApp dashboard
+  - [ ] Conversation view
+  - [ ] Message history
+  - [ ] Statistics
+  - [ ] Tests
 
 ---
 
-### Milestone 3: Compatibilidade Multi-Plataforma (Fase 1)
-**Status:** Planejado
-**Prioridade:** Alta
-**Descrição:** Adicionar suporte para múltiplas plataformas de social media
+### Milestone 3: Multi-Platform Compatibility (Phase 1)
+**Status:** Planned
+**Priority:** High
+**Description:** Add support for multiple social media platforms
 
 #### YouTube
-- [ ] **Issue #301:** Integração YouTube
-  - [ ] Autenticação YouTube API
-  - [ ] Gerenciamento de canais
-  - [ ] Upload de vídeos
-  - [ ] Insights de vídeos
-  - [ ] Testes
+- [ ] **Issue #301:** YouTube Integration
+  - [ ] YouTube API authentication
+  - [ ] Channel management
+  - [ ] Video upload
+  - [ ] Video insights
+  - [ ] Tests
 
 #### TikTok
-- [ ] **Issue #302:** Integração TikTok
-  - [ ] Autenticação TikTok API
-  - [ ] Gerenciamento de contas
-  - [ ] Upload de vídeos
+- [ ] **Issue #302:** TikTok Integration
+  - [ ] TikTok API authentication
+  - [ ] Account management
+  - [ ] Video upload
   - [ ] Analytics
-  - [ ] Testes
+  - [ ] Tests
 
 #### Instagram
-- [ ] **Issue #303:** Integração Instagram (melhorada)
-  - [ ] Autenticação Graph API
-  - [ ] Gerenciamento de contas
-  - [ ] Upload de posts/stories
-  - [ ] Insights detalhados
-  - [ ] Testes
+- [ ] **Issue #303:** Instagram Integration (improved)
+  - [ ] Graph API authentication
+  - [ ] Account management
+  - [ ] Post/story upload
+  - [ ] Detailed insights
+  - [ ] Tests
 
 #### Facebook
-- [ ] **Issue #304:** Integração Facebook (melhorada)
-  - [ ] Autenticação Graph API
-  - [ ] Gerenciamento de páginas
-  - [ ] Publicação de posts
-  - [ ] Insights de página
-  - [ ] Testes
+- [ ] **Issue #304:** Facebook Integration (improved)
+  - [ ] Graph API authentication
+  - [ ] Page management
+  - [ ] Post publishing
+  - [ ] Page insights
+  - [ ] Tests
 
 #### Threads
-- [ ] **Issue #305:** Integração Threads
-  - [ ] Autenticação Threads API
-  - [ ] Gerenciamento de contas
-  - [ ] Publicação de posts
+- [ ] **Issue #305:** Threads Integration
+  - [ ] Threads API authentication
+  - [ ] Account management
+  - [ ] Post publishing
   - [ ] Insights
-  - [ ] Testes
+  - [ ] Tests
 
 #### Mastodon
-- [ ] **Issue #306:** Integração Mastodon
-  - [ ] Autenticação OAuth
-  - [ ] Gerenciamento de instâncias
-  - [ ] Publicação de toots
+- [ ] **Issue #306:** Mastodon Integration
+  - [ ] OAuth authentication
+  - [ ] Instance management
+  - [ ] Toot publishing
   - [ ] Timeline
-  - [ ] Testes
+  - [ ] Tests
 
 #### Twitter/X
-- [ ] **Issue #307:** Integração Twitter/X (melhorada)
-  - [ ] Autenticação API v2
-  - [ ] Gerenciamento de contas
-  - [ ] Publicação de tweets
+- [ ] **Issue #307:** Twitter/X Integration (improved)
+  - [ ] API v2 authentication
+  - [ ] Account management
+  - [ ] Tweet publishing
   - [ ] Analytics
-  - [ ] Testes
+  - [ ] Tests
 
 #### Kwai
-- [ ] **Issue #308:** Integração Kwai
-  - [ ] Autenticação Kwai API
-  - [ ] Gerenciamento de contas
-  - [ ] Upload de vídeos
+- [ ] **Issue #308:** Kwai Integration
+  - [ ] Kwai API authentication
+  - [ ] Account management
+  - [ ] Video upload
   - [ ] Insights
-  - [ ] Testes
+  - [ ] Tests
 
 #### Twitch
-- [ ] **Issue #309:** Integração Twitch
-  - [ ] Autenticação OAuth
-  - [ ] Gerenciamento de canais
-  - [ ] Configuração de streams
+- [ ] **Issue #309:** Twitch Integration
+  - [ ] OAuth authentication
+  - [ ] Channel management
+  - [ ] Stream configuration
   - [ ] Chat integration
   - [ ] Analytics
-  - [ ] Testes
+  - [ ] Tests
 
 #### Kick
-- [ ] **Issue #310:** Integração Kick
-  - [ ] Autenticação Kick API
-  - [ ] Gerenciamento de canais
+- [ ] **Issue #310:** Kick Integration
+  - [ ] Kick API authentication
+  - [ ] Channel management
   - [ ] Stream setup
   - [ ] Analytics
-  - [ ] Testes
+  - [ ] Tests
 
 #### Trovo
-- [ ] **Issue #311:** Integração Trovo
-  - [ ] Autenticação Trovo API
-  - [ ] Gerenciamento de canais
+- [ ] **Issue #311:** Trovo Integration
+  - [ ] Trovo API authentication
+  - [ ] Channel management
   - [ ] Stream configuration
   - [ ] Analytics
-  - [ ] Testes
+  - [ ] Tests
 
 ---
 
-### Milestone 4: Chat Multiplataformas
-**Status:** Planejado
-**Prioridade:** Alta
-**Descrição:** Implementar sistema de chat unificado para todas as plataformas de live
+### Milestone 4: Multi-Platform Chat
+**Status:** Planned
+**Priority:** High
+**Description:** Implement unified chat system for all live platforms
 
 #### TO-DOs:
-- [ ] **Issue #401:** Criar interface de chat unificado
-  - [ ] Componente de chat
-  - [ ] Suporte para múltiplas plataformas
-  - [ ] Sincronização de mensagens
-  - [ ] Testes
+- [ ] **Issue #401:** Create unified chat interface
+  - [ ] Chat component
+  - [ ] Multi-platform support
+  - [ ] Message synchronization
+  - [ ] Tests
 
-- [ ] **Issue #402:** Implementar sincronização de chat
-  - [ ] Webhook para cada plataforma
-  - [ ] Processamento de mensagens
-  - [ ] Armazenamento centralizado
-  - [ ] Testes
+- [ ] **Issue #402:** Implement chat synchronization
+  - [ ] Webhook for each platform
+  - [ ] Message processing
+  - [ ] Centralized storage
+  - [ ] Tests
 
-- [ ] **Issue #403:** Adicionar moderação de chat
-  - [ ] Filtros de palavras
-  - [ ] Ban de usuários
-  - [ ] Logs de moderação
-  - [ ] Testes
+- [ ] **Issue #403:** Add chat moderation
+  - [ ] Word filters
+  - [ ] User bans
+  - [ ] Moderation logs
+  - [ ] Tests
 
-- [ ] **Issue #404:** Criar dashboard de chat
-  - [ ] Visualização de conversas
-  - [ ] Estatísticas
-  - [ ] Histórico
-  - [ ] Testes
+- [ ] **Issue #404:** Create chat dashboard
+  - [ ] Conversation view
+  - [ ] Statistics
+  - [ ] History
+  - [ ] Tests
 
 ---
 
-### Milestone 5: Players Multiplataformas
-**Status:** Planejado
-**Prioridade:** Média
-**Descrição:** Implementar players de vídeo/stream para todas as plataformas
+### Milestone 5: Multi-Platform Players
+**Status:** Planned
+**Priority:** Medium
+**Description:** Implement video/stream players for all platforms
 
 #### TO-DOs:
-- [ ] **Issue #501:** Criar player unificado
-  - [ ] Suporte para múltiplos formatos
-  - [ ] Controles customizados
-  - [ ] Responsivo
-  - [ ] Testes
+- [ ] **Issue #501:** Create unified player
+  - [ ] Support for multiple formats
+  - [ ] Custom controls
+  - [ ] Responsive
+  - [ ] Tests
 
-- [ ] **Issue #502:** Integrar players de cada plataforma
+- [ ] **Issue #502:** Integrate platform-specific players
   - [ ] YouTube player
   - [ ] TikTok player
   - [ ] Twitch player
   - [ ] Kick player
   - [ ] Trovo player
-  - [ ] Testes
+  - [ ] Tests
 
-- [ ] **Issue #503:** Adicionar funcionalidades de player
-  - [ ] Qualidade de vídeo
-  - [ ] Legendas
+- [ ] **Issue #503:** Add player features
+  - [ ] Video quality
+  - [ ] Subtitles
   - [ ] Fullscreen
-  - [ ] Testes
+  - [ ] Tests
 
 ---
 
-### Milestone 6: Sistema de Identificação Usuário vs Criador
-**Status:** Planejado
-**Prioridade:** Alta
-**Descrição:** Implementar sistema de identificação e redirecionamento baseado em tipo de conta
+### Milestone 6: User vs Creator Identification System
+**Status:** Planned
+**Priority:** High
+**Description:** Implement identification and redirection system based on account type
 
 #### TO-DOs:
-- [ ] **Issue #601:** Criar sistema de identificação de tipo de conta
-  - [ ] Detecção automática
-  - [ ] Seleção manual
-  - [ ] Armazenamento de preferência
-  - [ ] Testes
+- [ ] **Issue #601:** Create account type identification system
+  - [ ] Automatic detection
+  - [ ] Manual selection
+  - [ ] Preference storage
+  - [ ] Tests
 
-- [ ] **Issue #602:** Implementar tela de usuário (tipo YouTube)
-  - [ ] Descoberta de lives
-  - [ ] Recomendações
-  - [ ] Histórico de visualizações
-  - [ ] Testes
+- [ ] **Issue #602:** Implement user screen (YouTube-like)
+  - [ ] Live discovery
+  - [ ] Recommendations
+  - [ ] View history
+  - [ ] Tests
 
-- [ ] **Issue #603:** Implementar tela de criador
-  - [ ] Dashboard de criador
-  - [ ] Gerenciamento de contas
-  - [ ] Publicação de conteúdo
-  - [ ] Testes
+- [ ] **Issue #603:** Implement creator screen
+  - [ ] Creator dashboard
+  - [ ] Account management
+  - [ ] Content publishing
+  - [ ] Tests
 
-- [ ] **Issue #604:** Criar redirecionamento automático
-  - [ ] Verificar tipo de conta
-  - [ ] Redirecionar para tela correta
-  - [ ] Permitir mudança de tipo
-  - [ ] Testes
+- [ ] **Issue #604:** Create automatic redirection
+  - [ ] Check account type
+  - [ ] Redirect to correct screen
+  - [ ] Allow type change
+  - [ ] Tests
 
 ---
 
-### Milestone 7: Vinculação de Múltiplas Contas
-**Status:** Planejado
-**Prioridade:** Alta
-**Descrição:** Permitir vinculação de múltiplas contas para aumentar confiabilidade
+### Milestone 7: Multiple Account Linking
+**Status:** Planned
+**Priority:** High
+**Description:** Allow multiple account linking to increase reliability
 
 #### TO-DOs:
-- [ ] **Issue #701:** Implementar sistema de vinculação múltipla
-  - [ ] Interface de vinculação
-  - [ ] Validação de contas
-  - [ ] Armazenamento seguro
-  - [ ] Testes
+- [ ] **Issue #701:** Implement multiple linking system
+  - [ ] Linking interface
+  - [ ] Account validation
+  - [ ] Secure storage
+  - [ ] Tests
 
-- [ ] **Issue #702:** Criar limite de contas por tipo
-  - [ ] Configuração de limites
-  - [ ] Validação de limites
-  - [ ] Mensagens de erro
-  - [ ] Testes
+- [ ] **Issue #702:** Create account limit per type
+  - [ ] Limit configuration
+  - [ ] Limit validation
+  - [ ] Error messages
+  - [ ] Tests
 
-- [ ] **Issue #703:** Adicionar verificação de confiabilidade
-  - [ ] Score de confiabilidade
-  - [ ] Cálculo baseado em contas vinculadas
-  - [ ] Exibição de score
-  - [ ] Testes
+- [ ] **Issue #703:** Add reliability verification
+  - [ ] Reliability score
+  - [ ] Calculation based on linked accounts
+  - [ ] Score display
+  - [ ] Tests
 
-- [ ] **Issue #704:** Implementar restrições por confiabilidade
-  - [ ] Limites de funcionalidades
-  - [ ] Upgrade de limites
-  - [ ] Notificações
-  - [ ] Testes
+- [ ] **Issue #704:** Implement reliability-based restrictions
+  - [ ] Feature limits
+  - [ ] Limit upgrades
+  - [ ] Notifications
+  - [ ] Tests
 
 ---
 
-### Milestone 8: Limitações de Criadores
-**Status:** Planejado
-**Prioridade:** Média
-**Descrição:** Permitir que criadores selecionem limitações baseadas em quantidade de redes vinculadas
+### Milestone 8: Creator Limitations
+**Status:** Planned
+**Priority:** Medium
+**Description:** Allow creators to select limitations based on number of linked networks
 
 #### TO-DOs:
-- [ ] **Issue #801:** Criar sistema de limitações
-  - [ ] Interface de seleção
-  - [ ] Armazenamento de preferências
-  - [ ] Aplicação de limitações
-  - [ ] Testes
+- [ ] **Issue #801:** Create limitations system
+  - [ ] Selection interface
+  - [ ] Preference storage
+  - [ ] Limitation application
+  - [ ] Tests
 
-- [ ] **Issue #802:** Implementar limitações por funcionalidade
-  - [ ] Limite de publicações
-  - [ ] Limite de contas
-  - [ ] Limite de armazenamento
-  - [ ] Testes
+- [ ] **Issue #802:** Implement feature-based limitations
+  - [ ] Publication limit
+  - [ ] Account limit
+  - [ ] Storage limit
+  - [ ] Tests
 
-- [ ] **Issue #803:** Criar dashboard de limitações
-  - [ ] Visualização de limites
-  - [ ] Uso atual
+- [ ] **Issue #803:** Create limitations dashboard
+  - [ ] Limit visualization
+  - [ ] Current usage
   - [ ] Upgrade options
-  - [ ] Testes
+  - [ ] Tests
 
 ---
 
-### Milestone 9: Dashboard de Insights Unificado
-**Status:** Planejado
-**Prioridade:** Alta
-**Descrição:** Criar dashboard com insights de todas as redes vinculadas em um único lugar
+### Milestone 9: Unified Insights Dashboard
+**Status:** Planned
+**Priority:** High
+**Description:** Create dashboard with insights from all linked networks in one place
 
 #### TO-DOs:
-- [ ] **Issue #901:** Implementar agregação de dados
-  - [ ] Coleta de dados de cada plataforma
-  - [ ] Normalização de dados
-  - [ ] Armazenamento em cache
-  - [ ] Testes
+- [ ] **Issue #901:** Implement data aggregation
+  - [ ] Data collection from each platform
+  - [ ] Data normalization
+  - [ ] Cache storage
+  - [ ] Tests
 
-- [ ] **Issue #902:** Criar visualizações de insights
-  - [ ] Gráficos de crescimento
-  - [ ] Estatísticas de engajamento
-  - [ ] Comparação entre plataformas
-  - [ ] Testes
+- [ ] **Issue #902:** Create insights visualizations
+  - [ ] Growth charts
+  - [ ] Engagement statistics
+  - [ ] Platform comparison
+  - [ ] Tests
 
-- [ ] **Issue #903:** Adicionar filtros e períodos
-  - [ ] Seleção de período
-  - [ ] Filtro por plataforma
-  - [ ] Filtro por métrica
-  - [ ] Testes
+- [ ] **Issue #903:** Add filters and periods
+  - [ ] Period selection
+  - [ ] Platform filter
+  - [ ] Metric filter
+  - [ ] Tests
 
-- [ ] **Issue #904:** Implementar exportação de dados
-  - [ ] Export para CSV
-  - [ ] Export para PDF
-  - [ ] Agendamento de relatórios
-  - [ ] Testes
+- [ ] **Issue #904:** Implement data export
+  - [ ] CSV export
+  - [ ] PDF export
+  - [ ] Report scheduling
+  - [ ] Tests
 
 ---
 
-### Milestone 10: Otimizações e Performance
-**Status:** Planejado
-**Prioridade:** Alta
-**Descrição:** Otimizações gerais de performance e escalabilidade
+### Milestone 10: Optimizations and Performance
+**Status:** Planned
+**Priority:** High
+**Description:** General performance and scalability optimizations
 
 #### TO-DOs:
-- [ ] **Issue #1001:** Otimizar queries de banco de dados
-  - [ ] Análise de queries lentas
-  - [ ] Criação de índices
-  - [ ] Caching de dados
-  - [ ] Testes
+- [ ] **Issue #1001:** Optimize database queries
+  - [ ] Slow query analysis
+  - [ ] Index creation
+  - [ ] Data caching
+  - [ ] Tests
 
-- [ ] **Issue #1002:** Implementar cache distribuído
+- [ ] **Issue #1002:** Implement distributed cache
   - [ ] Redis setup
-  - [ ] Cache de APIs
-  - [ ] Invalidação de cache
-  - [ ] Testes
+  - [ ] API caching
+  - [ ] Cache invalidation
+  - [ ] Tests
 
-- [ ] **Issue #1003:** Otimizar frontend
+- [ ] **Issue #1003:** Optimize frontend
   - [ ] Code splitting
   - [ ] Lazy loading
   - [ ] Image optimization
-  - [ ] Testes
+  - [ ] Tests
 
-- [ ] **Issue #1004:** Implementar CDN
-  - [ ] Configuração de CDN
+- [ ] **Issue #1004:** Implement CDN
+  - [ ] CDN configuration
   - [ ] Cache headers
-  - [ ] Purge de cache
-  - [ ] Testes
+  - [ ] Cache purge
+  - [ ] Tests
 
 ---
 
-## 📊 Status Geral
+## 📊 Overall Status
 
-| Milestone | Status | Progresso | Prioridade |
-|-----------|--------|-----------|-----------|
-| Dashboard Base | ✅ Completo | 100% | Alta |
-| WhatsApp | 📋 Planejado | 0% | Alta |
-| Multi-Plataforma | 📋 Planejado | 0% | Alta |
-| Chat Multiplataformas | 📋 Planejado | 0% | Alta |
-| Players Multiplataformas | 📋 Planejado | 0% | Média |
-| Identificação Usuário/Criador | 📋 Planejado | 0% | Alta |
-| Múltiplas Contas | 📋 Planejado | 0% | Alta |
-| Limitações de Criadores | 📋 Planejado | 0% | Média |
-| Dashboard Insights | 📋 Planejado | 0% | Alta |
-| Otimizações | 📋 Planejado | 0% | Alta |
+| Milestone | Status | Progress | Priority |
+|-----------|--------|----------|----------|
+| Base Dashboard | ✅ Complete | 100% | High |
+| WhatsApp | 📋 Planned | 0% | High |
+| Multi-Platform | 📋 Planned | 0% | High |
+| Multi-Platform Chat | 📋 Planned | 0% | High |
+| Multi-Platform Players | 📋 Planned | 0% | Medium |
+| User/Creator Identification | 📋 Planned | 0% | High |
+| Multiple Accounts | 📋 Planned | 0% | High |
+| Creator Limitations | 📋 Planned | 0% | Medium |
+| Insights Dashboard | 📋 Planned | 0% | High |
+| Optimizations | 📋 Planned | 0% | High |
 
 ---
 
-## 🔄 Workflow para Criar Milestones no GitHub
+## 🔄 Workflow to Create Milestones on GitHub
 
-### 1. Criar Milestone
+### 1. Create Milestone
 ```
 Settings → Milestones → New Milestone
 ```
 
-**Exemplo:**
+**Example:**
 - Title: `Milestone 2: WhatsApp Integration`
-- Description: `Adicionar suporte completo para WhatsApp`
-- Due date: Data estimada
+- Description: `Add complete WhatsApp support`
+- Due date: Estimated date
 
-### 2. Criar Issues para cada TO-DO
+### 2. Create Issues for each TO-DO
 ```
 Issues → New Issue
 ```
 
-**Exemplo:**
+**Example:**
 - Title: `[Feature] Implement WhatsApp Business API authentication`
-- Description: (usar template detalhado)
+- Description: (use detailed template)
 - Labels: `feature`, `whatsapp`, `integration`
-- Milestone: Selecionar a milestone
-- Assignee: Atribuir a si mesmo
+- Milestone: Select the milestone
+- Assignee: Assign to yourself
 
-### 3. Criar PR para cada Issue
+### 3. Create PR for each Issue
 ```
-Criar branch → Fazer commits → Criar PR
+Create branch → Make commits → Create PR
 ```
 
-**Exemplo:**
+**Example:**
 - Title: `[PR #201] Implement WhatsApp Business API authentication`
 - Description: `Closes #201`
-- Linked Issues: Selecionar issue #201
+- Linked Issues: Select issue #201
 
 ---
 
-## 📝 Template de Issue
+## 📝 Issue Template
 
 ```markdown
-## Descrição
-[Descrever o que precisa ser feito]
+## Description
+[Describe what needs to be done]
 
-## Contexto
-- Por que isso é importante?
-- Qual problema resolve?
-- Impacto esperado?
+## Context
+- Why is this important?
+- What problem does it solve?
+- Expected impact?
 
-## Requisitos
-- [ ] Requisito 1
-- [ ] Requisito 2
-- [ ] Requisito 3
+## Requirements
+- [ ] Requirement 1
+- [ ] Requirement 2
+- [ ] Requirement 3
 
-## Critérios de Aceitação
-- [ ] Funcionalidade implementada
-- [ ] Testes escritos e passando
-- [ ] Documentação atualizada
-- [ ] Performance dentro dos targets
-- [ ] Compatível com versão cloud e local
+## Acceptance Criteria
+- [ ] Functionality implemented
+- [ ] Tests written and passing
+- [ ] Documentation updated
+- [ ] Performance within targets
+- [ ] Compatible with cloud and local versions
 
-## Notas Técnicas
-- Arquivos que serão modificados
-- Dependências necessárias
-- Possíveis impactos
+## Technical Notes
+- Files that will be modified
+- Required dependencies
+- Possible impacts
 
-## Referências
-- Links para documentação
-- Issues relacionadas
-- PRs relacionadas
+## References
+- Links to documentation
+- Related issues
+- Related PRs
 ```
 
 ---
 
-## 🚀 Próximos Passos
+## 🚀 Next Steps
 
-1. **Criar Milestones no GitHub** - Seguir a estrutura acima
-2. **Criar Issues para cada TO-DO** - Usar template detalhado
-3. **Começar com Milestone 2** - WhatsApp Integration
-4. **Seguir o workflow** - Issues → PRs → Commits → Push
-5. **Manter roadmap atualizado** - Atualizar status conforme progride
+1. **Create Milestones on GitHub** - Follow the structure above
+2. **Create Issues for each TO-DO** - Use detailed template
+3. **Start with Milestone 2** - WhatsApp Integration
+4. **Follow the workflow** - Issues → PRs → Commits → Push
+5. **Keep roadmap updated** - Update status as progress is made
 
 ---
 
-**Última atualização:** 21 de Abril de 2026
-**Versão:** 1.0.0
+**Last updated:** April 21, 2026
+**Version:** 1.0.0
