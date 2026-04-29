@@ -1,45 +1,45 @@
 # 🐳 Docker Quick Start
 
-## ✅ Tudo Pronto!
+## ✅ All Set!
 
-Seu projeto está configurado para rodar com Docker localmente.
+Your project is configured to run with Docker locally.
 
 ---
 
-## 🚀 Como Usar
+## 🚀 How to Use
 
-### 1. Navegar até o diretório docker
+### 1. Navigate to the docker directory
 
 ```bash
 cd docker
 ```
 
-### 2. Iniciar todos os serviços
+### 2. Start all services
 
 ```bash
 docker compose up -d
 ```
 
-### 3. Ver logs
+### 3. View logs
 
 ```bash
-# Ver todos os logs
+# View all logs
 docker compose logs -f
 
-# Ver logs do app
+# View app logs
 docker compose logs -f app
 
-# Ver logs do backend
+# View backend logs
 docker compose logs -f backend
 ```
 
-### 4. Verificar status
+### 4. Check status
 
 ```bash
 docker compose ps
 ```
 
-### 5. Acessar aplicação
+### 5. Access application
 
 - **Frontend**: http://localhost:3000
 - **Backend Health**: http://localhost:4000/health
@@ -47,35 +47,35 @@ docker compose ps
 
 ---
 
-## 🛠️ Comandos Úteis
+## 🛠️ Useful Commands
 
-### Parar tudo
+### Stop everything
 
 ```bash
 docker compose down
 ```
 
-### Parar e remover volumes (CUIDADO: apaga dados)
+### Stop and remove volumes (WARNING: deletes data)
 
 ```bash
 docker compose down -v
 ```
 
-### Rebuild após mudanças
+### Rebuild after changes
 
 ```bash
 docker compose build --no-cache
 docker compose up -d
 ```
 
-### Reiniciar um serviço específico
+### Restart a specific service
 
 ```bash
 docker compose restart app
 docker compose restart backend
 ```
 
-### Ver logs de um serviço
+### View logs for a service
 
 ```bash
 docker compose logs -f app
@@ -88,64 +88,64 @@ docker compose logs -f redis
 
 ## 🔧 Troubleshooting
 
-### ❌ Backend não inicia
+### ❌ Backend won't start
 
 ```bash
-# Ver logs do backend
+# View backend logs
 docker compose logs backend
 
-# Verificar se postgres está healthy
+# Check if postgres is healthy
 docker compose ps
 
-# Reiniciar backend
+# Restart backend
 docker compose restart backend
 ```
 
-### ❌ App não conecta ao backend
+### ❌ App can't connect to backend
 
 ```bash
-# Verificar se backend está rodando
+# Check if backend is running
 curl http://localhost:4000/health
 
-# Ver logs do app
+# View app logs
 docker compose logs -f app
 ```
 
-### ❌ Postgres não inicia
+### ❌ Postgres won't start
 
 ```bash
-# Ver logs do postgres
+# View postgres logs
 docker compose logs postgres
 
-# Verificar se a porta 5432 está livre
+# Check if port 5432 is free
 netstat -an | findstr 5432
 
-# Remover volumes e recriar
+# Remove volumes and recreate
 docker compose down -v
 docker compose up -d postgres
 ```
 
-### ❌ Redis não inicia
+### ❌ Redis won't start
 
 ```bash
-# Ver logs do redis
+# View redis logs
 docker compose logs redis
 
-# Verificar se a porta 6379 está livre
+# Check if port 6379 is free
 netstat -an | findstr 6379
 
-# Remover volumes e recriar
+# Remove volumes and recreate
 docker compose down -v
 docker compose up -d redis
 ```
 
 ---
 
-## 📊 Arquitetura
+## 📊 Architecture
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                    SEU PC LOCAL                             │
+│                    YOUR LOCAL PC                            │
 │  ┌─────────────┐ ┌─────────────┐ ┌─────────────────────────┐│
 │  │  Postgres   │ │    Redis    │ │   Backend API           ││
 │  │  :5432      │ │    :6379    │ │   :4000                 ││
@@ -160,10 +160,10 @@ docker compose up -d redis
 
 ---
 
-## 🎯 Serviços
+## 🎯 Services
 
-| Serviço | Porta | URL |
-|---------|-------|-----|
+| Service | Port | URL |
+|---------|------|-----|
 | Frontend | 3000 | http://localhost:3000 |
 | Backend | 4000 | http://localhost:4000 |
 | Postgres | 5432 | localhost:5432 |
@@ -171,28 +171,28 @@ docker compose up -d redis
 
 ---
 
-## 📝 Variáveis de Ambiente
+## 📝 Environment Variables
 
-Edite `docker/.env` para configurar:
+Edit `docker/.env` to configure:
 
 ```env
 POSTGRES_PASSWORD=devpassword
-DISCORD_WEBHOOK_URL=sua_url_aqui
+DISCORD_WEBHOOK_URL=your_url_here
 DEBUG=true
 BASE_URL=http://localhost:3000
 ```
 
 ---
 
-## 🔄 Desenvolvimento
+## 🔄 Development
 
-### Modo Desenvolvimento (Hot Reload)
+### Development Mode (Hot Reload)
 
 ```bash
 docker compose --profile dev up app-dev
 ```
 
-### Modo Produção
+### Production Mode
 
 ```bash
 docker compose up -d app
@@ -202,13 +202,13 @@ docker compose up -d app
 
 ## 📦 Volumes
 
-Os dados são persistidos em volumes Docker:
+Data is persisted in Docker volumes:
 
-- `platform-postgres-data` - Dados do PostgreSQL
-- `platform-redis-data` - Dados do Redis
-- `platform-logs` - Logs da aplicação
+- `platform-postgres-data` - PostgreSQL data
+- `platform-redis-data` - Redis data
+- `platform-logs` - Application logs
 
-Para remover todos os volumes:
+To remove all volumes:
 
 ```bash
 docker compose down -v
@@ -216,14 +216,14 @@ docker compose down -v
 
 ---
 
-## 🎉 Pronto!
+## 🎉 Ready!
 
-Seu ambiente Docker está configurado e pronto para uso.
+Your Docker environment is configured and ready to use.
 
-**Próximos passos:**
+**Next steps:**
 
 1. `cd docker`
 2. `docker compose up -d`
-3. Abrir http://localhost:3000
+3. Open http://localhost:3000
 
-🚀 **Divirta-se desenvolvendo!**
+🚀 **Happy coding!**

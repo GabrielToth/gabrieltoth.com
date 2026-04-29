@@ -1,41 +1,41 @@
-# Guia de Deploy na Cloud com Custo Mínimo
+# Cloud Deployment Guide with Minimal Cost
 
-## Resumo Executivo
+## Executive Summary
 
-Para uma aplicação com **baixo volume de usuários** (praticamente nenhum), recomendamos:
+For an application with **low user volume** (practically none), we recommend:
 
-- **Frontend**: Vercel (gratuito com plano Free)
-- **Backend**: Railway ou Render (free tier com sleep automático)
-- **Banco de Dados**: PostgreSQL gerenciado (Railway/Render free tier)
-- **Cache**: Redis (opcional, apenas se necessário)
-- **Custo Mensal Estimado**: **$0 - $5 USD**
+- **Frontend**: Vercel (free with Free plan)
+- **Backend**: Railway or Render (free tier with automatic sleep)
+- **Database**: Managed PostgreSQL (Railway/Render free tier)
+- **Cache**: Redis (optional, only if necessary)
+- **Estimated Monthly Cost**: **$0 - $5 USD**
 
 ---
 
-## Opção 1: Vercel + Railway (RECOMENDADO)
+## Option 1: Vercel + Railway (RECOMMENDED)
 
-### Por que essa stack?
+### Why this stack?
 
-- **Vercel**: Melhor para Next.js, deploy automático via Git, free tier generoso
-- **Railway**: Banco de dados gratuito, backend simples, pay-as-you-go
-- **Custo**: Praticamente zero com free tier
+- **Vercel**: Best for Next.js, automatic Git deployment, generous free tier
+- **Railway**: Free database, simple backend, pay-as-you-go
+- **Cost**: Practically zero with free tier
 
-### Passo 1: Deploy Frontend no Vercel
+### Step 1: Deploy Frontend on Vercel
 
 ```bash
-# 1. Criar conta em https://vercel.com
-# 2. Conectar repositório GitHub
-# 3. Configurar variáveis de ambiente
+# 1. Create account at https://vercel.com
+# 2. Connect GitHub repository
+# 3. Configure environment variables
 ```
 
-**Variáveis de Ambiente no Vercel:**
+**Environment Variables on Vercel:**
 
 ```env
-NEXT_PUBLIC_API_URL=https://seu-backend.railway.app
-NEXT_PUBLIC_ANALYTICS_ID=seu_id
+NEXT_PUBLIC_API_URL=https://your-backend.railway.app
+NEXT_PUBLIC_ANALYTICS_ID=your_id
 ```
 
-**Arquivo `vercel.json` (criar na raiz):**
+**File `vercel.json` (create at root):**
 
 ```json
 {
@@ -47,16 +47,16 @@ NEXT_PUBLIC_ANALYTICS_ID=seu_id
 }
 ```
 
-### Passo 2: Deploy Backend no Railway
+### Step 2: Deploy Backend on Railway
 
 ```bash
-# 1. Criar conta em https://railway.app
-# 2. Conectar repositório GitHub
-# 3. Criar novo projeto
-# 4. Selecionar "Deploy from GitHub"
+# 1. Create account at https://railway.app
+# 2. Connect GitHub repository
+# 3. Create new project
+# 4. Select "Deploy from GitHub"
 ```
 
-**Arquivo `railway.json` (criar na raiz):**
+**File `railway.json` (create at root):**
 
 ```json
 {
@@ -70,7 +70,7 @@ NEXT_PUBLIC_ANALYTICS_ID=seu_id
 }
 ```
 
-**Arquivo `Dockerfile` (se necessário):**
+**File `Dockerfile` (if necessary):**
 
 ```dockerfile
 FROM node:20-alpine
@@ -87,15 +87,15 @@ EXPOSE 3001
 CMD ["npm", "run", "start:prod"]
 ```
 
-### Passo 3: Banco de Dados PostgreSQL no Railway
+### Step 3: PostgreSQL Database on Railway
 
 ```bash
-# 1. No dashboard Railway, criar novo serviço
-# 2. Selecionar "PostgreSQL"
-# 3. Railway gera automaticamente DATABASE_URL
+# 1. In Railway dashboard, create new service
+# 2. Select "PostgreSQL"
+# 3. Railway automatically generates DATABASE_URL
 ```
 
-**Variáveis de Ambiente no Railway:**
+**Environment Variables on Railway:**
 
 ```env
 DATABASE_URL=postgresql://user:password@host:5432/dbname
@@ -103,53 +103,53 @@ NODE_ENV=production
 PORT=3001
 ```
 
-### Passo 4: Configurar Variáveis de Ambiente
+### Step 4: Configure Environment Variables
 
-**No Vercel:**
+**On Vercel:**
 ```
-NEXT_PUBLIC_API_URL=https://seu-backend-railway.railway.app
+NEXT_PUBLIC_API_URL=https://your-backend-railway.railway.app
 ```
 
-**No Railway (Backend):**
+**On Railway (Backend):**
 ```
 DATABASE_URL=postgresql://...
 NODE_ENV=production
 PORT=3001
-CORS_ORIGIN=https://seu-dominio.vercel.app
+CORS_ORIGIN=https://your-domain.vercel.app
 ```
 
 ---
 
-## Opção 2: Render + Render (Alternativa)
+## Option 2: Render + Render (Alternative)
 
-### Por que Render?
+### Why Render?
 
-- Suporta Node.js, Python, Go
-- Free tier com 750 horas/mês
-- Banco de dados PostgreSQL gratuito
-- Melhor para aplicações mais complexas
+- Supports Node.js, Python, Go
+- Free tier with 750 hours/month
+- Free PostgreSQL database
+- Better for more complex applications
 
-### Passo 1: Deploy Frontend no Render
+### Step 1: Deploy Frontend on Render
 
 ```bash
-# 1. Criar conta em https://render.com
-# 2. Conectar GitHub
-# 3. Criar novo "Static Site"
+# 1. Create account at https://render.com
+# 2. Connect GitHub
+# 3. Create new "Static Site"
 # 4. Build command: npm run build
 # 5. Publish directory: .next
 ```
 
-### Passo 2: Deploy Backend no Render
+### Step 2: Deploy Backend on Render
 
 ```bash
-# 1. Criar novo "Web Service"
-# 2. Conectar repositório
+# 1. Create new "Web Service"
+# 2. Connect repository
 # 3. Runtime: Node
 # 4. Build command: npm install
 # 5. Start command: npm run start:prod
 ```
 
-**Arquivo `render.yaml` (criar na raiz):**
+**File `render.yaml` (create at root):**
 
 ```yaml
 services:
@@ -174,24 +174,24 @@ databases:
 
 ---
 
-## Opção 3: Netlify + Supabase (Mais Simples)
+## Option 3: Netlify + Supabase (Simplest)
 
-### Por que essa combinação?
+### Why this combination?
 
-- **Netlify**: Excelente para Next.js, deploy automático
+- **Netlify**: Excellent for Next.js, automatic deployment
 - **Supabase**: PostgreSQL + Auth + Realtime (free tier)
-- **Custo**: Totalmente gratuito
+- **Cost**: Completely free
 
-### Passo 1: Deploy Frontend no Netlify
+### Step 1: Deploy Frontend on Netlify
 
 ```bash
-# 1. Criar conta em https://netlify.com
-# 2. Conectar GitHub
+# 1. Create account at https://netlify.com
+# 2. Connect GitHub
 # 3. Build command: npm run build
 # 4. Publish directory: .next
 ```
 
-**Arquivo `netlify.toml` (criar na raiz):**
+**File `netlify.toml` (create at root):**
 
 ```toml
 [build]
@@ -203,7 +203,7 @@ databases:
 
 [[redirects]]
   from = "/api/*"
-  to = "https://seu-backend.railway.app/api/:splat"
+  to = "https://your-backend.railway.app/api/:splat"
   status = 200
   force = true
 
@@ -213,53 +213,53 @@ databases:
   status = 200
 ```
 
-### Passo 2: Banco de Dados no Supabase
+### Step 2: Database on Supabase
 
 ```bash
-# 1. Criar conta em https://supabase.com
-# 2. Criar novo projeto
-# 3. Copiar DATABASE_URL
-# 4. Usar Supabase Auth para login/register
+# 1. Create account at https://supabase.com
+# 2. Create new project
+# 3. Copy DATABASE_URL
+# 4. Use Supabase Auth for login/register
 ```
 
-**Variáveis de Ambiente:**
+**Environment Variables:**
 
 ```env
-NEXT_PUBLIC_SUPABASE_URL=https://seu-projeto.supabase.co
+NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
 ```
 
 ---
 
-## Configuração de Domínio Customizado
+## Custom Domain Configuration
 
 ### Vercel
 
 ```bash
-# 1. Ir para Settings > Domains
-# 2. Adicionar domínio
-# 3. Seguir instruções de DNS
-# 4. Apontar CNAME para vercel.com
+# 1. Go to Settings > Domains
+# 2. Add domain
+# 3. Follow DNS instructions
+# 4. Point CNAME to vercel.com
 ```
 
 ### Railway/Render
 
 ```bash
-# 1. Gerar URL pública automática
-# 2. Ou configurar domínio customizado
-# 3. Apontar CNAME para o serviço
+# 1. Generate automatic public URL
+# 2. Or configure custom domain
+# 3. Point CNAME to the service
 ```
 
 ---
 
-## Monitoramento e Logs
+## Monitoring and Logs
 
 ### Vercel
 
 ```bash
-# Logs em tempo real
+# Real-time logs
 vercel logs --follow
 
-# Ou via dashboard
+# Or via dashboard
 # https://vercel.com/dashboard
 ```
 
@@ -269,7 +269,7 @@ vercel logs --follow
 # Logs via CLI
 railway logs
 
-# Ou via dashboard
+# Or via dashboard
 # https://railway.app/dashboard
 ```
 
@@ -282,104 +282,104 @@ railway logs
 
 ---
 
-## Escalabilidade Futura
+## Future Scalability
 
-Se a aplicação crescer:
+If the application grows:
 
 ### Upgrade Vercel
-- Plano Pro: $20/mês
-- Suporta mais builds e bandwidth
+- Pro plan: $20/month
+- Supports more builds and bandwidth
 
 ### Upgrade Railway
-- Pay-as-you-go: $5-50/mês
-- Escala automaticamente
+- Pay-as-you-go: $5-50/month
+- Scales automatically
 
 ### Upgrade Render
-- Plano Starter: $7/mês
-- Mais recursos de CPU/RAM
+- Starter plan: $7/month
+- More CPU/RAM resources
 
 ---
 
-## Checklist de Deploy
+## Deployment Checklist
 
-- [ ] Variáveis de ambiente configuradas
-- [ ] Banco de dados criado e migrado
-- [ ] CORS configurado corretamente
-- [ ] Domínio apontando para o servidor
-- [ ] SSL/TLS ativado (automático em todos)
-- [ ] Backups do banco de dados configurados
-- [ ] Monitoramento de erros ativado
-- [ ] Rate limiting configurado
-- [ ] Logs centralizados
+- [ ] Environment variables configured
+- [ ] Database created and migrated
+- [ ] CORS configured correctly
+- [ ] Domain pointing to server
+- [ ] SSL/TLS enabled (automatic on all)
+- [ ] Database backups configured
+- [ ] Error monitoring enabled
+- [ ] Rate limiting configured
+- [ ] Centralized logs
 
 ---
 
 ## Troubleshooting
 
-### Erro: "Cannot find module"
+### Error: "Cannot find module"
 
 ```bash
-# Solução
+# Solution
 npm ci --only=production
 npm run build
 ```
 
-### Erro: "Connection refused"
+### Error: "Connection refused"
 
 ```bash
-# Verificar se DATABASE_URL está correto
+# Check if DATABASE_URL is correct
 echo $DATABASE_URL
 
-# Testar conexão
+# Test connection
 psql $DATABASE_URL -c "SELECT 1"
 ```
 
-### Erro: "CORS error"
+### Error: "CORS error"
 
 ```bash
-# Adicionar no backend
+# Add to backend
 app.use(cors({
   origin: process.env.CORS_ORIGIN,
   credentials: true
 }))
 ```
 
-### Aplicação muito lenta
+### Application very slow
 
 ```bash
-# Verificar logs
+# Check logs
 railway logs
-# ou
+# or
 render logs
 
-# Aumentar recursos se necessário
+# Increase resources if necessary
 ```
 
 ---
 
-## Estimativa de Custos
+## Cost Estimate
 
-| Serviço | Free Tier | Pago |
+| Service | Free Tier | Paid |
 |---------|-----------|------|
-| Vercel | Ilimitado | $20/mês |
-| Railway | $5 crédito/mês | Pay-as-you-go |
-| Render | 750h/mês | $7/mês |
-| Supabase | 500MB DB | $25/mês |
-| Netlify | Ilimitado | $19/mês |
+| Vercel | Unlimited | $20/month |
+| Railway | $5 credit/month | Pay-as-you-go |
+| Render | 750h/month | $7/month |
+| Supabase | 500MB DB | $25/month |
+| Netlify | Unlimited | $19/month |
 
-**Total Estimado (Free)**: $0 USD
-**Total Estimado (Pago)**: $5-50 USD/mês
+**Total Estimated (Free)**: $0 USD
+**Total Estimated (Paid)**: $5-50 USD/month
 
 ---
 
-## Próximos Passos
+## Next Steps
 
-1. Escolher stack (recomendado: Vercel + Railway)
-2. Criar contas nos serviços
-3. Conectar repositório GitHub
-4. Configurar variáveis de ambiente
-5. Fazer primeiro deploy
-6. Testar fluxo completo
-7. Configurar domínio customizado
-8. Ativar monitoramento
+1. Choose stack (recommended: Vercel + Railway)
+2. Create accounts on services
+3. Connect GitHub repository
+4. Configure environment variables
+5. Make first deployment
+6. Test complete flow
+7. Configure custom domain
+8. Enable monitoring
 

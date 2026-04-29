@@ -2,106 +2,107 @@
 
 ## Overview
 
-Este guia explica o processo completo de criação e aplicação de migrações de banco de dados no projeto.
+This guide explains the complete process of creating and applying database migrations in the project.
 
-**IMPORTANTE**: Este projeto usa **Schema Dump** ao invés de migrations acumuladas. Após aplicar mudanças, você deve criar um dump do schema completo e deletar as migrations antigas.
+**IMPORTANT**: This project uses **Schema Dump** instead of accumulated migrations. After applying changes, you must create a dump of the complete schema and delete old migrations.
 
-## 📋 Checklist Pós-Migração (Workflow Correto)
+## 📋 Post-Migration Checklist (Correct Workflow)
 
-Sempre que criar ou modificar o banco de dados, siga estes passos:
+Whenever you create or modify the database, follow these steps:
 
-### ✅ 1. Criar Migration Temporária (se necessário)
+### ✅ 1. Create Temporary Migration (if necessary)
 
 ```bash
-# Criar migration para suas mudanças
+# Create migration for your changes
 npx supabase migration new add_my_feature
 
-# Editar o arquivo SQL criado
+# Edit the created SQL file
 # supabase/migrations/TIMESTAMP_add_my_feature.sql
 ```
 
-### ✅ 2. Aplicar Mudanças Localmente
+### ✅ 2. Apply Changes Locally
 
 ```bash
-# Aplicar a migration no banco local
+# Apply the migration to local database
 npx supabase db push
 
-# OU aplicar uma migração específica
+# OR apply a specific migration
 npx supabase migration up
 ```
 
-### ✅ 3. Gerar TypeScript Types (OBRIGATÓRIO)
+### ✅ 3. Generate TypeScript Types (MANDATORY)
 
 ```bash
-# Gerar types do schema local
+# Generate types from local schema
 npx supabase gen types typescript --local > src/types/supabase.ts
 
-# OU do schema remoto (produção)
+# OR from remote schema (production)
 npx supabase gen types typescript --project-ref your-project-ref > src/types/supabase.ts
 ```
 
-**Por que isso é importante?**
-- Mantém types TypeScript sincronizados com o banco
-- Previne erros de tipo em queries
-- Melhora autocomplete no IDE
+**Why is this important?**
+- Keeps TypeScript types synchronized with database
+- Prevents type errors in queries
+- Improves IDE autocomplete
+- Detects problems at compile time
 
-### ✅ 4. Testar Mudanças
+### ✅ 4. Test Changes
 
 ```bash
-# Rodar todos os testes
+# Run all tests
 npm run test
 
-# Verificar tipos TypeScript
+# Verify TypeScript types
 npm run type-check
 
-# Build para garantir que compila
+# Build to ensure it compiles
 npm run build
 ```
 
-### ✅ 5. Criar Schema Dump Completo (CRÍTICO)
+### ✅ 5. Create Complete Schema Dump (CRITICAL)
 
 ```bash
-# Fazer dump do schema completo
+# Dump complete schema
 npx supabase db dump --schema public --schema auth > supabase/schema.sql
 
-# Verificar que o arquivo foi criado
+# Verify that the file was created
 cat supabase/schema.sql
 ```
 
-**O que isso faz?**
-- Cria um arquivo SQL único com TODO o schema atual
-- Inclui todas as tabelas, indexes, RLS policies, functions, triggers
-- Representa o estado completo do banco de dados
-- **Substitui a necessidade de múltiplas migrations**
+**What does this do?**
+- Creates a single SQL file with the ENTIRE current schema
+- Includes all tables, indexes, RLS policies, functions, triggers
+- Represents the complete database state
+- **Replaces the need for multiple migrations**
 
-### ✅ 6. Deletar Migrations Antigas (OBRIGATÓRIO)
+### ✅ 6. Delete Old Migrations (MANDATORY)
 
 ```bash
-# Deletar TODAS as migrations antigas
+# Delete ALL old migrations
 rm supabase/migrations/*.sql
 
-# OU mover para backup se quiser manter histórico
+# OR move to backup if you want to keep history
 mkdir -p supabase/migrations_backup
 mv supabase/migrations/*.sql supabase/migrations_backup/
 ```
 
-**Por que deletar?**
-- ✅ Evita confusão sobre qual é o estado real do banco
-- ✅ O schema.sql é a fonte única de verdade
-- ✅ Migrations antigas podem ter conflitos ou estar desatualizadas
-- ✅ Simplifica o processo de setup para novos desenvolvedores
+**Why delete?**
+- ✅ Avoids confusion about the actual database state
+- ✅ The schema.sql is the single source of truth
+- ✅ Old migrations may have conflicts or be outdated
+- ✅ Simplifies setup for new developers
 
-### ✅ 7. Commit e Versionar
+### ✅ 7. Commit and Version
 
 ```bash
-# Adicionar schema dump e types
+# Add schema dump and types
 git add supabase/schema.sql
 git add src/types/supabase.ts
 
-# Remover migrations antigas do git
+# Remove old migrations from git
 git rm supabase/migrations/*.sql
 
-# Commit com mensagem descritiva
+# Commit with descriptive message
 git commit -m "feat(#123): add my_feature to database schema
 
 - Added new tables: table_a, table_b
@@ -109,58 +110,58 @@ git commit -m "feat(#123): add my_feature to database schema
 - Generated TypeScript types
 - Replaced migrations with schema dump"
 
-# Incrementar versão
-npm version minor  # Para novas features
-npm version patch  # Para mudanças pequenas
-npm version major  # Para breaking changes
+# Increment version
+npm version minor  # For new features
+npm version patch  # For small changes
+npm version major  # For breaking changes
 ```
 
-### ✅ 8. Aplicar em Produção
+### ✅ 8. Apply to Production
 
 ```bash
 # Via CLI
 npx supabase db push --project-ref your-project-ref
 
-# OU via npx supabase Dashboard
+# OR via Supabase Dashboard
 # Settings > Database > SQL Editor
-# Copiar e colar o conteúdo de supabase/schema.sql
-# Executar o SQL
+# Copy and paste content of supabase/schema.sql
+# Execute the SQL
 ```
 
-## 🚀 Scripts Automatizados
+## 🚀 Automated Scripts
 
 ### PowerShell (Windows)
 
 ```powershell
-# Aplicar localmente
+# Apply locally
 .\scripts\apply-migration.ps1 local
 
-# Aplicar em produção
+# Apply to production
 .\scripts\apply-migration.ps1 remote
 ```
 
 ### Bash (Linux/Mac)
 
 ```bash
-# Aplicar localmente
+# Apply locally
 ./scripts/apply-migration.sh local
 
-# Aplicar em produção
+# Apply to production
 ./scripts/apply-migration.sh remote
 ```
 
-## 📝 Criando Nova Migração
+## 📝 Creating New Migration
 
-### 1. Criar arquivo de migração
+### 1. Create migration file
 
 ```bash
-# npx supabase CLI cria automaticamente com timestamp
+# npx supabase CLI automatically creates with timestamp
 npx supabase migration new create_my_table
 
-# Isso cria: supabase/migrations/20250427120000_create_my_table.sql
+# This creates: supabase/migrations/20250427120000_create_my_table.sql
 ```
 
-### 2. Escrever SQL
+### 2. Write SQL
 
 ```sql
 -- supabase/migrations/20250427120000_create_my_table.sql
@@ -208,74 +209,74 @@ COMMENT ON TABLE public.my_table IS 'Stores user-specific data';
 COMMENT ON COLUMN public.my_table.user_id IS 'Reference to auth.users';
 ```
 
-### 3. Aplicar e testar
+### 3. Apply and test
 
 ```bash
-# Aplicar localmente
+# Apply locally
 npx supabase db push
 
-# Gerar types
+# Generate types
 npx supabase gen types typescript --local > src/types/supabase.ts
 
-# Testar
+# Test
 npm run test
 ```
 
-## 🔄 Rollback de Migração
+## 🔄 Migration Rollback
 
-### Opção 1: Criar migração reversa
+### Option 1: Create reverse migration
 
 ```bash
-# Criar nova migração que desfaz a anterior
+# Create new migration that undoes the previous one
 npx supabase migration new rollback_my_table
 
-# Escrever SQL reverso
+# Write reverse SQL
 DROP TABLE IF EXISTS public.my_table;
 ```
 
-### Opção 2: Reset local (CUIDADO!)
+### Option 2: Reset local (CAUTION!)
 
 ```bash
-# Reset completo do banco local
+# Complete reset of local database
 npx supabase db reset
 
-# Isso vai:
-# 1. Dropar o banco
-# 2. Recriar do zero
-# 3. Aplicar todas as migrações
-# 4. Rodar seeds
+# This will:
+# 1. Drop the database
+# 2. Recreate from scratch
+# 3. Apply all migrations
+# 4. Run seeds
 ```
 
-### Opção 3: Restaurar backup (Produção)
+### Option 3: Restore backup (Production)
 
 ```bash
-# Via npx supabase Dashboard
+# Via Supabase Dashboard
 # Settings > Database > Backups > Restore
 ```
 
-## 🧪 Testando Migrações
+## 🧪 Testing Migrations
 
-### Teste Manual
+### Manual Test
 
 ```sql
--- Conectar ao banco local
+-- Connect to local database
 psql postgresql://postgres:postgres@localhost:54322/postgres
 
--- Verificar tabela foi criada
+-- Verify table was created
 \dt public.my_table
 
--- Verificar RLS está ativo
+-- Verify RLS is active
 SELECT tablename, rowsecurity 
 FROM pg_tables 
 WHERE schemaname = 'public' 
 AND tablename = 'my_table';
 
--- Verificar policies
+-- Verify policies
 SELECT * FROM pg_policies 
 WHERE tablename = 'my_table';
 ```
 
-### Teste Automatizado
+### Automated Test
 
 ```typescript
 // tests/db/my-table.test.ts
@@ -284,7 +285,7 @@ import { createClient } from '@supabase/supabase-js';
 
 describe('my_table migration', () => {
   it('should create table with correct schema', async () => {
-    const npx supabase = createClient(
+    const supabase = createClient(
       process.env.SUPABASE_URL!,
       process.env.SUPABASE_ANON_KEY!
     );
@@ -308,70 +309,70 @@ describe('my_table migration', () => {
 });
 ```
 
-## 📊 Verificando Status
+## 📊 Checking Status
 
-### Ver migrações aplicadas
+### See applied migrations
 
 ```bash
-# Listar todas as migrações
+# List all migrations
 npx supabase migration list
 
-# Ver status
+# See status
 npx supabase db status
 ```
 
-### Ver schema atual
+### See current schema
 
 ```bash
-# Dump schema completo
+# Dump complete schema
 npx supabase db dump --schema public > schema.sql
 
-# Ver apenas estrutura de tabelas
+# See only table structure
 npx supabase db dump --schema public --data-only=false
 ```
 
-## ⚠️ Boas Práticas
+## ⚠️ Best Practices
 
 ### ✅ DO
 
-1. **Sempre testar localmente primeiro**
+1. **Always test locally first**
    ```bash
    npx supabase db push  # Local
-   npm run test      # Testar
-   npm run build     # Garantir que compila
+   npm run test      # Test
+   npm run build     # Ensure it compiles
    ```
 
-2. **Sempre gerar TypeScript types**
+2. **Always generate TypeScript types**
    ```bash
-   # OBRIGATÓRIO após qualquer mudança no banco
+   # MANDATORY after any database change
    npx supabase gen types typescript --local > src/types/supabase.ts
    ```
 
-3. **Sempre criar schema dump**
+3. **Always create schema dump**
    ```bash
-   # Após aplicar mudanças, criar dump completo
+   # After applying changes, create complete dump
    npx supabase db dump --schema public --schema auth > supabase/schema.sql
    ```
 
-4. **Sempre deletar migrations antigas**
+4. **Always delete old migrations**
    ```bash
-   # Manter apenas o schema.sql como fonte de verdade
+   # Keep only schema.sql as source of truth
    rm supabase/migrations/*.sql
    ```
 
-5. **Adicionar comentários no SQL**
+5. **Add comments in SQL**
    ```sql
    COMMENT ON TABLE my_table IS 'Purpose of this table';
    COMMENT ON COLUMN my_table.user_id IS 'Reference to auth.users';
    ```
 
-6. **Criar indexes para queries frequentes**
+6. **Create indexes for frequent queries**
    ```sql
    CREATE INDEX idx_user_id ON my_table(user_id);
    CREATE INDEX idx_created_at ON my_table(created_at DESC);
    ```
 
-7. **Sempre habilitar RLS**
+7. **Always enable RLS**
    ```sql
    ALTER TABLE my_table ENABLE ROW LEVEL SECURITY;
    
@@ -380,7 +381,7 @@ npx supabase db dump --schema public --data-only=false
      USING (auth.uid() = user_id);
    ```
 
-8. **Versionar schema.sql e types**
+8. **Version schema.sql and types**
    ```bash
    git add supabase/schema.sql src/types/supabase.ts
    git commit -m "feat(#123): add my_table to schema"
@@ -388,114 +389,114 @@ npx supabase db dump --schema public --data-only=false
 
 ### ❌ DON'T
 
-1. **Nunca commitar migrations antigas**
-   - Sempre delete após criar schema dump
-   - O schema.sql é a fonte única de verdade
+1. **Never commit old migrations**
+   - Always delete after creating schema dump
+   - The schema.sql is the single source of truth
 
-2. **Nunca commitar sem gerar types**
+2. **Never commit without generating types**
    ```bash
-   # SEMPRE gerar types após mudanças no banco
+   # ALWAYS generate types after database changes
    npx supabase gen types typescript --local > src/types/supabase.ts
    ```
 
-3. **Nunca aplicar em produção sem testar localmente**
+3. **Never apply to production without testing locally**
    ```bash
-   # SEMPRE testar local primeiro
+   # ALWAYS test local first
    npx supabase db push  # Local
-   npm run test      # Testar
+   npm run test      # Test
    npm run build     # Build
-   # Só depois aplicar em produção
+   # Only then apply to production
    ```
 
-4. **Nunca manter múltiplas migrations**
-   - Use schema dump único
-   - Delete migrations após criar dump
-   - Evita confusão e conflitos
+4. **Never keep multiple migrations**
+   - Use single schema dump
+   - Delete migrations after creating dump
+   - Avoids confusion and conflicts
 
-5. **Nunca usar `CASCADE` sem entender o impacto**
+5. **Never use `CASCADE` without understanding the impact**
    ```sql
-   -- Cuidado com isso:
-   DROP TABLE my_table CASCADE;  -- Pode dropar outras tabelas!
+   -- Be careful with this:
+   DROP TABLE my_table CASCADE;  -- May drop other tables!
    ```
 
-6. **Nunca fazer DROP TABLE em produção sem backup**
-   - Sempre faça backup primeiro via npx supabase Dashboard
+6. **Never drop tables in production without backup**
+   - Always backup first via Supabase Dashboard
    - Settings > Database > Backups
 
 ## 🔍 Troubleshooting
 
-### Erro: "Migration already applied"
+### Error: "Migration already applied"
 
 ```bash
-# Ver histórico de migrações
+# See migration history
 npx supabase migration list
 
-# Se necessário, marcar como aplicada manualmente
-# (Cuidado! Só faça se tiver certeza)
+# If necessary, mark as applied manually
+# (Be careful! Only do this if you're sure)
 ```
 
-### Erro: "Permission denied"
+### Error: "Permission denied"
 
 ```bash
-# Verificar se está usando o usuário correto
-# npx supabase usa 'postgres' como superuser
+# Check if you're using the correct user
+# npx supabase uses 'postgres' as superuser
 
-# Conectar como superuser
+# Connect as superuser
 psql postgresql://postgres:postgres@localhost:54322/postgres
 ```
 
-### Erro: "Types out of sync"
+### Error: "Types out of sync"
 
 ```bash
-# Regenerar types
+# Regenerate types
 npx supabase gen types typescript --local > src/types/supabase.ts
 
-# Verificar se o arquivo foi criado
+# Verify file was created
 cat src/types/supabase.ts
 ```
 
-### Banco local não inicia
+### Local database won't start
 
 ```bash
-# Parar tudo
+# Stop everything
 npx supabase stop
 
-# Limpar volumes
+# Clean volumes
 npx supabase db reset
 
-# Iniciar novamente
+# Start again
 npx supabase start
 ```
 
-## 📚 Recursos
+## 📚 Resources
 
-- [npx supabase Migrations Docs](https://supabase.com/docs/guides/cli/local-development#database-migrations)
+- [Supabase Migrations Docs](https://supabase.com/docs/guides/cli/local-development#database-migrations)
 - [PostgreSQL Documentation](https://www.postgresql.org/docs/)
 - [Row Level Security Guide](https://supabase.com/docs/guides/auth/row-level-security)
 
-## 🎯 Resumo Rápido
+## 🎯 Quick Summary
 
 ```bash
-# 1. Criar migration temporária (se necessário)
+# 1. Create temporary migration (if necessary)
 npx supabase migration new my_feature
 
-# 2. Escrever SQL
-# Editar: supabase/migrations/TIMESTAMP_my_feature.sql
+# 2. Write SQL
+# Edit: supabase/migrations/TIMESTAMP_my_feature.sql
 
-# 3. Aplicar localmente
+# 3. Apply locally
 npx supabase db push
 
-# 4. Gerar types (OBRIGATÓRIO)
+# 4. Generate types (MANDATORY)
 npx supabase gen types typescript --local > src/types/supabase.ts
 
-# 5. Testar
+# 5. Test
 npm run test
 npm run build
 
-# 6. Criar schema dump (CRÍTICO)
+# 6. Create schema dump (CRITICAL)
 npx supabase db dump --schema public --schema auth > supabase/schema.sql
 
-# 7. Deletar migrations antigas (OBRIGATÓRIO)
+# 7. Delete old migrations (MANDATORY)
 rm supabase/migrations/*.sql
 
 # 8. Commit
@@ -504,63 +505,63 @@ git rm supabase/migrations/*.sql
 git commit -m "feat(#123): add my_feature to database schema"
 npm version minor
 
-# 9. Aplicar em produção
+# 9. Apply to production
 npx supabase db push --project-ref your-project-ref
 ```
 
-**Sempre nessa ordem! ✅**
+Always in this order! ✅
 
-## 🆕 Setup de Novo Desenvolvedor
+## 🆕 New Developer Setup
 
-Com o workflow de schema dump, um novo desenvolvedor só precisa:
+With the schema dump workflow, a new developer only needs:
 
 ```bash
-# 1. Clonar o repositório
+# 1. Clone the repository
 git clone repo-url
 
-# 2. Instalar dependências
+# 2. Install dependencies
 npm install
 
-# 3. Iniciar npx supabase local
+# 3. Start Supabase local
 npx supabase start
 
-# 4. Aplicar schema completo (arquivo único)
+# 4. Apply complete schema (single file)
 npx supabase db reset
 
-# 5. Pronto! O banco está no estado correto
+# 5. Done! Database is in correct state
 ```
 
-## 💡 Filosofia: Schema Dump vs Migrations
+## 💡 Philosophy: Schema Dump vs Migrations
 
-### ❌ Problema com Migrations Acumuladas
+### ❌ Problem with Accumulated Migrations
 
-- Dezenas de arquivos de migration
-- Difícil saber o estado atual do banco
-- Migrations podem conflitar ou estar fora de ordem
-- Setup lento para novos desenvolvedores
-- Histórico confuso e difícil de manter
+- Dozens of migration files
+- Hard to know the actual database state
+- Migrations may conflict or be out of order
+- Slow setup for new developers
+- Confusing and hard to maintain history
 
-### ✅ Solução: Schema Dump Único
+### ✅ Solution: Single Schema Dump
 
-- **Um arquivo SQL** com o estado completo do banco
-- **Clareza total** sobre o schema atual
-- **Setup rápido** para novos desenvolvedores
-- **Menos erros** de migrations conflitantes
-- **Manutenção fácil** do schema
+- **One SQL file** with the complete database state
+- **Total clarity** about current schema
+- **Fast setup** for new developers
+- **Fewer errors** from conflicting migrations
+- **Easy maintenance** of schema
 
-### Como Funciona
+### How It Works
 
-1. Você cria uma migration temporária para suas mudanças
-2. Aplica localmente e testa
-3. Faz um dump do schema completo
-4. **Deleta todas as migrations antigas**
-5. O `schema.sql` se torna a fonte única de verdade
+1. You create a temporary migration for your changes
+2. Apply locally and test
+3. Make a dump of the complete schema
+4. **Delete all old migrations**
+5. The `schema.sql` becomes the single source of truth
 
-### Vantagens
+### Advantages
 
-✅ **Simplicidade**: Um arquivo ao invés de dezenas
-✅ **Clareza**: Vê exatamente o estado atual do banco
-✅ **Menos erros**: Não há risco de migrations conflitantes
-✅ **Setup rápido**: Novos devs aplicam um arquivo só
-✅ **Manutenção fácil**: Não precisa gerenciar histórico
-✅ **Types sempre atualizados**: Workflow força geração de types
+✅ **Simplicity**: One file instead of dozens
+✅ **Clarity**: See exactly the current database state
+✅ **Fewer errors**: No risk of conflicting migrations
+✅ **Fast setup**: New devs apply one file only
+✅ **Easy maintenance**: No need to manage migration history
+✅ **Types always updated**: Workflow forces type generation

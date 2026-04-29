@@ -1,6 +1,6 @@
-# Arquitetura do Sistema
+# System Architecture
 
-## Visão Geral
+## Overview
 
 ```
 ┌─────────────────────────────────────────────────────────┐
@@ -20,7 +20,7 @@
 
 ## Stack
 
-| Camada   | Tecnologia                         |
+| Layer    | Technology                         |
 | -------- | ---------------------------------- |
 | Frontend | Next.js 16, React 19, Tailwind CSS |
 | API      | Next.js API Routes                 |
@@ -30,25 +30,25 @@
 | Storage  | S3-compatible (MinIO/R2)           |
 | Payments | Stripe                             |
 
-## Princípios
+## Principles
 
-1. **Metrificação Total**: Todo recurso (banda, disco, cache) é medido e cobrado
-2. **Self-Hosted First**: Docker Compose funcional para produção
-3. **Transparência**: Usuários veem exatamente onde gastam créditos
-4. **Modularidade**: Cada módulo é independente
+1. **Total Metering**: Every resource (bandwidth, disk, cache) is measured and charged
+2. **Self-Hosted First**: Functional Docker Compose for production
+3. **Transparency**: Users see exactly where they spend credits
+4. **Modularity**: Each module is independent
 
-## Fluxo de Dados Típico
+## Typical Data Flow
 
 ```
-Usuário → API Route → Validação → Lógica de Negócio
+User → API Route → Validation → Business Logic
                                         ↓
-                               Verificar Créditos
+                               Check Credits
                                         ↓
-                               Executar Ação
+                               Execute Action
                                         ↓
-                               Logar Metering
+                               Log Metering
                                         ↓
-                               Deduzir Créditos
+                               Deduct Credits
                                         ↓
-                               Retornar Resposta
+                               Return Response
 ```
