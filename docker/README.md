@@ -1,10 +1,10 @@
 # Docker Setup Guide - Distributed Architecture
 
-## Arquitetura
+## Architecture
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                    SEU PC LOCAL                             │
+│                    YOUR LOCAL PC                            │
 │  ┌─────────────┐ ┌─────────────┐ ┌─────────────────────────┐│
 │  │  Postgres   │ │    Redis    │ │   App (Next.js)         ││
 │  │  :5432      │ │    :6379    │ │   :3000                 ││
@@ -19,77 +19,77 @@
 └─────────────────────────────────────────────────────────────┘
 ```
 
-## Pré-requisitos
+## Prerequisites
 
-- Docker Desktop instalado no seu PC local
-- Projeto clonado localmente
+- Docker Desktop installed on your local PC
+- Project cloned locally
 
 ## Quick Start
 
-### 1. Navegar até o diretório do projeto
+### 1. Navigate to the project directory
 
 ```bash
-cd /caminho/para/gabrieltoth.com
+cd /path/to/gabrieltoth.com
 ```
 
-### 2. Configurar variáveis de ambiente
+### 2. Configure environment variables
 
 ```bash
 cd docker
 cp .env.example .env
-# Editar .env com suas credenciais
+# Edit .env with your credentials
 ```
 
-### 3. Iniciar apenas bancos (recomendado primeiro)
+### 3. Start only databases (recommended first)
 
 ```bash
 docker-compose up -d postgres redis
 ```
 
-### 4. Verificar saúde dos bancos
+### 4. Check database health
 
 ```bash
 docker-compose ps
-# Ambos devem mostrar (healthy)
+# Both should show (healthy)
 ```
 
-### 5. Aplicar schema do banco
+### 5. Apply database schema
 
 ```bash
 docker exec -i platform-postgres psql -U platform -d platform < ../src/lib/db/schema.sql
 ```
 
-### 6. Iniciar aplicação
+### 6. Start application
 
 ```bash
-# Produção
+# Production
 docker-compose up -d app
 
-# Desenvolvimento (hot reload)
+# Development (hot reload)
 docker-compose --profile dev up app-dev
 ```
 
-## Comandos Úteis
+## Useful Commands
 
 ```bash
-# Ver logs
+# View logs
 docker-compose logs -f app
 
-# Reiniciar app
+# Restart app
 docker-compose restart app
 
-# Parar tudo
+# Stop everything
 docker-compose down
 
-# Parar e remover volumes (CUIDADO: apaga dados)
+# Stop and remove volumes (WARNING: deletes data)
 docker-compose down -v
 
-# Rebuild após mudanças
+# Rebuild after changes
 docker-compose build --no-cache app
 docker-compose up -d app
 ```
 
-## Acessar
+## Access
 
 - **App**: http://localhost:3000
 - **Health**: http://localhost:3000/api/health

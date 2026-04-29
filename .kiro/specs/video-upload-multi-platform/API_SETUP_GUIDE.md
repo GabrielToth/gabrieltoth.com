@@ -1,176 +1,174 @@
-# Guia Completo de Configuração de APIs
+# Complete API Configuration Guide
 
-Este guia fornece instruções passo a passo detalhadas para ativar e configurar as APIs necessárias para o módulo de upload de vídeos multi-plataforma.
+This guide provides detailed step-by-step instructions to enable and configure the necessary APIs for the multi-platform video upload module.
 
-## Índice
+## Table of Contents
 
 1. [YouTube API (Google Cloud)](#1-youtube-api-google-cloud)
 2. [Facebook API (Meta for Developers)](#2-facebook-api-meta-for-developers)
 3. [Instagram API (Meta for Developers)](#3-instagram-api-meta-for-developers)
 4. [TikTok API (TikTok for Developers)](#4-tiktok-api-tiktok-for-developers)
-5. [Configuração de Variáveis de Ambiente](#5-configuração-de-variáveis-de-ambiente)
-6. [Testando as Configurações](#6-testando-as-configurações)
+5. [Environment Variables Configuration](#5-environment-variables-configuration)
+6. [Testing the Configuration](#6-testing-the-configuration)
 
 ---
 
 ## 1. YouTube API (Google Cloud)
 
-### Passo 1.1: Criar Projeto no Google Cloud Console
+### Step 1.1: Create Project in Google Cloud Console
 
-1. Acesse [Google Cloud Console](https://console.cloud.google.com/)
-2. Faça login com sua conta Google
-3. No topo da página, clique em **"Select a project"** (Selecionar um projeto)
-4. Clique em **"NEW PROJECT"** (NOVO PROJETO)
-5. Preencha:
-   - **Project name**: `video-upload-platform` (ou nome de sua preferência)
-   - **Organization**: Deixe como está (opcional)
-6. Clique em **"CREATE"** (CRIAR)
-7. Aguarde alguns segundos até o projeto ser criado
+1. Visit [Google Cloud Console](https://console.cloud.google.com/)
+2. Sign in with your Google account
+3. At the top of the page, click **"Select a project"**
+4. Click **"NEW PROJECT"**
+5. Fill in:
+   - **Project name**: `video-upload-platform` (or your preferred name)
+   - **Organization**: Leave as is (optional)
+6. Click **"CREATE"**
+7. Wait a few seconds for the project to be created
 
-### Passo 1.2: Ativar YouTube Data API v3
+### Step 1.2: Enable YouTube Data API v3
 
-1. Com o projeto selecionado, vá para o menu lateral esquerdo
-2. Clique em **"APIs & Services"** > **"Library"** (Biblioteca)
-3. Na barra de pesquisa, digite: `YouTube Data API v3`
-4. Clique no resultado **"YouTube Data API v3"**
-5. Clique no botão azul **"ENABLE"** (ATIVAR)
-6. Aguarde a ativação (alguns segundos)
+1. With the project selected, go to the left sidebar menu
+2. Click **"APIs & Services"** > **"Library"**
+3. In the search bar, type: `YouTube Data API v3`
+4. Click on the **"YouTube Data API v3"** result
+5. Click the blue **"ENABLE"** button
+6. Wait for activation (a few seconds)
 
-### Passo 1.3: Configurar OAuth Consent Screen
+### Step 1.3: Configure OAuth Consent Screen
 
-1. No menu lateral, clique em **"OAuth consent screen"**
-2. Selecione **"External"** (para permitir qualquer usuário com conta Google)
-3. Clique em **"CREATE"** (CRIAR)
-4. Preencha as informações obrigatórias:
+1. In the left sidebar, click **"OAuth consent screen"**
+2. Select **"External"** (to allow any user with a Google account)
+3. Click **"CREATE"**
+4. Fill in the required information:
    - **App name**: `Video Upload Platform`
-   - **User support email**: Seu email
-   - **Developer contact information**: Seu email
-5. Clique em **"SAVE AND CONTINUE"** (SALVAR E CONTINUAR)
+   - **User support email**: Your email
+   - **Developer contact information**: Your email
+5. Click **"SAVE AND CONTINUE"**
 
-### Passo 1.4: Adicionar Scopes (Permissões)
+### Step 1.4: Add Scopes (Permissions)
 
-1. Na seção **"Scopes"**, clique em **"ADD OR REMOVE SCOPES"**
-2. Na lista, procure e marque os seguintes scopes:
+1. In the **"Scopes"** section, click **"ADD OR REMOVE SCOPES"**
+2. In the list, search for and check the following scopes:
    - `https://www.googleapis.com/auth/youtube.upload`
    - `https://www.googleapis.com/auth/youtube`
-3. Clique em **"UPDATE"** (ATUALIZAR)
-4. Clique em **"SAVE AND CONTINUE"** (SALVAR E CONTINUAR)
+3. Click **"UPDATE"**
+4. Click **"SAVE AND CONTINUE"**
 
-### Passo 1.5: Adicionar Test Users (Modo de Teste)
+### Step 1.5: Add Test Users (Test Mode)
 
-1. Na seção **"Test users"**, clique em **"ADD USERS"**
-2. Adicione os emails das contas Google que você usará para testar
-3. Clique em **"SAVE"** (SALVAR)
-4. Clique em **"SAVE AND CONTINUE"** (SALVAR E CONTINUAR)
-5. Revise as informações e clique em **"BACK TO DASHBOARD"**
+1. In the **"Test users"** section, click **"ADD USERS"**
+2. Add the emails of Google accounts you'll use for testing
+3. Click **"SAVE"**
+4. Click **"SAVE AND CONTINUE"**
+5. Review the information and click **"BACK TO DASHBOARD"**
 
-### Passo 1.6: Criar Credenciais OAuth 2.0
+### Step 1.6: Create OAuth 2.0 Credentials
 
-1. No menu lateral, clique em **"Credentials"** (Credenciais)
-2. Clique em **"+ CREATE CREDENTIALS"** (CRIAR CREDENCIAIS)
-3. Selecione **"OAuth client ID"**
-4. Em **"Application type"**, selecione **"Web application"**
-5. Preencha:
+1. In the left sidebar, click **"Credentials"**
+2. Click **"+ CREATE CREDENTIALS"**
+3. Select **"OAuth client ID"**
+4. In **"Application type"**, select **"Web application"**
+5. Fill in:
    - **Name**: `Video Upload Web Client`
    - **Authorized JavaScript origins**: 
-     - `http://localhost:3000` (para desenvolvimento)
-     - `https://seu-dominio.com` (para produção)
+     - `http://localhost:3000` (for development)
+     - `https://your-domain.com` (for production)
    - **Authorized redirect URIs**:
      - `http://localhost:3000/api/oauth/callback?platform=youtube`
-     - `https://seu-dominio.com/api/oauth/callback?platform=youtube`
-6. Clique em **"CREATE"** (CRIAR)
-7. **IMPORTANTE**: Copie e salve:
-   - **Client ID** (algo como: `123456789-abc.apps.googleusercontent.com`)
-   - **Client Secret** (algo como: `GOCSPX-abc123xyz`)
+     - `https://your-domain.com/api/oauth/callback?platform=youtube`
+6. Click **"CREATE"**
+7. **IMPORTANT**: Copy and save:
+   - **Client ID** (something like: `123456789-abc.apps.googleusercontent.com`)
+   - **Client Secret** (something like: `GOCSPX-abc123xyz`)
 
-### Resumo YouTube
+### YouTube Summary
 
-✅ **Scopes necessários**:
+✅ **Required scopes**:
 - `https://www.googleapis.com/auth/youtube.upload`
 - `https://www.googleapis.com/auth/youtube`
 
-✅ **Credenciais obtidas**:
+✅ **Credentials obtained**:
 - Client ID
 - Client Secret
 
 ✅ **Redirect URI**:
 - `http://localhost:3000/api/oauth/callback?platform=youtube`
 
-
-
 ---
 
 ## 2. Facebook API (Meta for Developers)
 
-### Passo 2.1: Criar Conta no Meta for Developers
+### Step 2.1: Create Account on Meta for Developers
 
-1. Acesse [Meta for Developers](https://developers.facebook.com/)
-2. Clique em **"Get Started"** (Começar) no canto superior direito
-3. Faça login com sua conta Facebook
-4. Complete o registro como desenvolvedor (aceite os termos)
+1. Visit [Meta for Developers](https://developers.facebook.com/)
+2. Click **"Get Started"** in the top right corner
+3. Sign in with your Facebook account
+4. Complete developer registration (accept terms)
 
-### Passo 2.2: Criar um App
+### Step 2.2: Create an App
 
-1. No painel, clique em **"My Apps"** (Meus Apps) no topo
-2. Clique em **"Create App"** (Criar App)
-3. Selecione o tipo: **"Business"** (Negócios)
-4. Clique em **"Next"** (Próximo)
-5. Preencha:
+1. In the dashboard, click **"My Apps"** at the top
+2. Click **"Create App"**
+3. Select type: **"Business"**
+4. Click **"Next"**
+5. Fill in:
    - **App name**: `Video Upload Platform`
-   - **App contact email**: Seu email
-6. Clique em **"Create app"** (Criar app)
-7. Complete a verificação de segurança (CAPTCHA)
+   - **App contact email**: Your email
+6. Click **"Create app"**
+7. Complete the security verification (CAPTCHA)
 
-### Passo 2.3: Configurar Facebook Login
+### Step 2.3: Configure Facebook Login
 
-1. No painel do app, procure por **"Facebook Login"** nos produtos
-2. Clique em **"Set Up"** (Configurar)
-3. Selecione **"Web"** como plataforma
-4. Em **"Site URL"**, adicione:
-   - `http://localhost:3000` (desenvolvimento)
-   - `https://seu-dominio.com` (produção)
-5. Clique em **"Save"** (Salvar)
+1. In the app dashboard, look for **"Facebook Login"** in the products
+2. Click **"Set Up"**
+3. Select **"Web"** as the platform
+4. In **"Site URL"**, add:
+   - `http://localhost:3000` (development)
+   - `https://your-domain.com` (production)
+5. Click **"Save"**
 
-### Passo 2.4: Configurar OAuth Redirect URIs
+### Step 2.4: Configure OAuth Redirect URIs
 
-1. No menu lateral, vá para **"Facebook Login"** > **"Settings"** (Configurações)
-2. Em **"Valid OAuth Redirect URIs"**, adicione:
+1. In the left sidebar, go to **"Facebook Login"** > **"Settings"**
+2. In **"Valid OAuth Redirect URIs"**, add:
    - `http://localhost:3000/api/oauth/callback?platform=facebook`
-   - `https://seu-dominio.com/api/oauth/callback?platform=facebook`
-3. Clique em **"Save Changes"** (Salvar Alterações)
+   - `https://your-domain.com/api/oauth/callback?platform=facebook`
+3. Click **"Save Changes"**
 
-### Passo 2.5: Adicionar Permissões (Permissions)
+### Step 2.5: Add Permissions
 
-1. No menu lateral, vá para **"App Review"** > **"Permissions and Features"**
-2. Procure e solicite as seguintes permissões:
-   - `pages_manage_posts` - Para publicar vídeos em páginas
-   - `pages_read_engagement` - Para ler engajamento
-   - `pages_show_list` - Para listar páginas do usuário
-3. Para cada permissão, clique em **"Request"** (Solicitar)
-4. **NOTA**: Algumas permissões requerem revisão do Facebook (pode levar dias)
+1. In the left sidebar, go to **"App Review"** > **"Permissions and Features"**
+2. Search for and request the following permissions:
+   - `pages_manage_posts` - To post videos on pages
+   - `pages_read_engagement` - To read engagement
+   - `pages_show_list` - To list user pages
+3. For each permission, click **"Request"**
+4. **NOTE**: Some permissions require Facebook review (may take days)
 
-### Passo 2.6: Obter Credenciais
+### Step 2.6: Get Credentials
 
-1. No menu lateral, vá para **"Settings"** > **"Basic"** (Configurações Básicas)
-2. **IMPORTANTE**: Copie e salve:
-   - **App ID** (algo como: `123456789012345`)
-   - **App Secret** (clique em "Show" para ver, algo como: `abc123def456ghi789`)
+1. In the left sidebar, go to **"Settings"** > **"Basic"**
+2. **IMPORTANT**: Copy and save:
+   - **App ID** (something like: `123456789012345`)
+   - **App Secret** (click "Show" to see, something like: `abc123def456ghi789`)
 
-### Passo 2.7: Mudar para Modo de Desenvolvimento
+### Step 2.7: Switch to Development Mode
 
-1. No topo do painel, você verá o status do app
-2. Se estiver em **"Development"** (Desenvolvimento), está correto
-3. Para testes, mantenha em modo de desenvolvimento
-4. Para produção, você precisará enviar o app para revisão
+1. At the top of the dashboard, you'll see the app status
+2. If it's in **"Development"**, that's correct
+3. For testing, keep it in development mode
+4. For production, you'll need to submit the app for review
 
-### Resumo Facebook
+### Facebook Summary
 
-✅ **Permissões necessárias**:
+✅ **Required permissions**:
 - `pages_manage_posts`
 - `pages_read_engagement`
 - `pages_show_list`
 
-✅ **Credenciais obtidas**:
+✅ **Credentials obtained**:
 - App ID
 - App Secret
 
@@ -181,160 +179,158 @@ Este guia fornece instruções passo a passo detalhadas para ativar e configurar
 
 ## 3. Instagram API (Meta for Developers)
 
-**IMPORTANTE**: Instagram API usa o mesmo app do Facebook. Você NÃO precisa criar um novo app.
+**IMPORTANT**: Instagram API uses the same app as Facebook. You do NOT need to create a new app.
 
-### Passo 3.1: Adicionar Instagram ao App Existente
+### Step 3.1: Add Instagram to Existing App
 
-1. No mesmo app criado para Facebook, vá para o painel
-2. Procure por **"Instagram"** nos produtos disponíveis
-3. Clique em **"Set Up"** (Configurar) no produto **"Instagram Graph API"**
+1. In the same app created for Facebook, go to the dashboard
+2. Look for **"Instagram"** in the available products
+3. Click **"Set Up"** on the **"Instagram Graph API"** product
 
-### Passo 3.2: Configurar Instagram Basic Display
+### Step 3.2: Configure Instagram Basic Display
 
-1. No menu lateral, vá para **"Instagram"** > **"Basic Display"**
-2. Clique em **"Create New App"** (Criar Novo App)
-3. Preencha:
+1. In the left sidebar, go to **"Instagram"** > **"Basic Display"**
+2. Click **"Create New App"**
+3. Fill in:
    - **Display Name**: `Video Upload Platform`
-4. Em **"Valid OAuth Redirect URIs"**, adicione:
+4. In **"Valid OAuth Redirect URIs"**, add:
    - `http://localhost:3000/api/oauth/callback?platform=instagram`
-   - `https://seu-dominio.com/api/oauth/callback?platform=instagram`
-5. Em **"Deauthorize Callback URL"**, adicione:
+   - `https://your-domain.com/api/oauth/callback?platform=instagram`
+5. In **"Deauthorize Callback URL"**, add:
    - `http://localhost:3000/api/oauth/deauthorize`
-6. Em **"Data Deletion Request URL"**, adicione:
+6. In **"Data Deletion Request URL"**, add:
    - `http://localhost:3000/api/oauth/data-deletion`
-7. Clique em **"Save Changes"** (Salvar Alterações)
+7. Click **"Save Changes"**
 
-### Passo 3.3: Adicionar Permissões Instagram
+### Step 3.3: Add Instagram Permissions
 
-1. Vá para **"App Review"** > **"Permissions and Features"**
-2. Procure e solicite:
-   - `instagram_basic` - Acesso básico ao perfil
-   - `instagram_content_publish` - Para publicar conteúdo
-3. Clique em **"Request"** para cada permissão
+1. Go to **"App Review"** > **"Permissions and Features"**
+2. Search for and request:
+   - `instagram_basic` - Basic profile access
+   - `instagram_content_publish` - To publish content
+3. Click **"Request"** for each permission
 
-### Passo 3.4: Conectar Conta Instagram Business
+### Step 3.4: Connect Instagram Business Account
 
-**IMPORTANTE**: Para publicar vídeos, você precisa de uma conta Instagram Business conectada a uma página Facebook.
+**IMPORTANT**: To post videos, you need an Instagram Business account connected to a Facebook page.
 
-1. Converta sua conta Instagram para Business:
-   - Abra o app Instagram no celular
-   - Vá para **Configurações** > **Conta**
-   - Toque em **Mudar para conta profissional**
-   - Selecione **Empresa**
-   - Conecte a uma página Facebook
-2. Anote o **Instagram Business Account ID** (você precisará dele)
+1. Convert your Instagram account to Business:
+   - Open the Instagram app on your phone
+   - Go to **Settings** > **Account**
+   - Tap **Switch to professional account**
+   - Select **Business**
+   - Connect to a Facebook page
+2. Note the **Instagram Business Account ID** (you'll need it)
 
-### Passo 3.5: Obter Instagram App ID e Secret
+### Step 3.5: Get Instagram App ID and Secret
 
-1. No menu lateral, vá para **"Instagram"** > **"Basic Display"**
-2. **IMPORTANTE**: Copie e salve:
+1. In the left sidebar, go to **"Instagram"** > **"Basic Display"**
+2. **IMPORTANT**: Copy and save:
    - **Instagram App ID**
-   - **Instagram App Secret** (clique em "Show")
+   - **Instagram App Secret** (click "Show")
 
-### Resumo Instagram
+### Instagram Summary
 
-✅ **Permissões necessárias**:
+✅ **Required permissions**:
 - `instagram_basic`
 - `instagram_content_publish`
 
-✅ **Credenciais obtidas**:
-- Instagram App ID (mesmo que Facebook App ID)
-- Instagram App Secret (mesmo que Facebook App Secret)
+✅ **Credentials obtained**:
+- Instagram App ID (same as Facebook App ID)
+- Instagram App Secret (same as Facebook App Secret)
 
 ✅ **Redirect URI**:
 - `http://localhost:3000/api/oauth/callback?platform=instagram`
 
-✅ **Requisitos adicionais**:
-- Conta Instagram Business
-- Página Facebook conectada
-
-
+✅ **Additional requirements**:
+- Instagram Business account
+- Connected Facebook page
 
 ---
 
 ## 4. TikTok API (TikTok for Developers)
 
-### Passo 4.1: Criar Conta no TikTok for Developers
+### Step 4.1: Create Account on TikTok for Developers
 
-1. Acesse [TikTok for Developers](https://developers.tiktok.com/)
-2. Clique em **"Register"** (Registrar) no canto superior direito
-3. Faça login com sua conta TikTok (ou crie uma)
-4. Complete o registro como desenvolvedor
+1. Visit [TikTok for Developers](https://developers.tiktok.com/)
+2. Click **"Register"** in the top right corner
+3. Sign in with your TikTok account (or create one)
+4. Complete developer registration
 
-### Passo 4.2: Criar um App
+### Step 4.2: Create an App
 
-1. No painel, clique em **"Manage apps"** (Gerenciar apps)
-2. Clique em **"Connect an app"** (Conectar um app)
-3. Selecione **"Create a new app"** (Criar um novo app)
-4. Preencha:
+1. In the dashboard, click **"Manage apps"**
+2. Click **"Connect an app"**
+3. Select **"Create a new app"**
+4. Fill in:
    - **App name**: `Video Upload Platform`
    - **App description**: `Platform for uploading videos to multiple social media`
-5. Clique em **"Submit"** (Enviar)
+5. Click **"Submit"**
 
-### Passo 4.3: Configurar App Settings
+### Step 4.3: Configure App Settings
 
-1. Após criar o app, clique nele para abrir as configurações
-2. Vá para **"Basic information"** (Informações básicas)
-3. Em **"Redirect domain"**, adicione:
-   - `localhost:3000` (desenvolvimento)
-   - `seu-dominio.com` (produção)
-4. Clique em **"Save"** (Salvar)
+1. After creating the app, click on it to open settings
+2. Go to **"Basic information"**
+3. In **"Redirect domain"**, add:
+   - `localhost:3000` (development)
+   - `your-domain.com` (production)
+4. Click **"Save"**
 
-### Passo 4.4: Adicionar Scopes (Permissões)
+### Step 4.4: Add Scopes (Permissions)
 
-1. Vá para a aba **"Add products"** (Adicionar produtos)
-2. Procure por **"Login Kit"** e clique em **"Apply"** (Solicitar)
-3. Procure por **"Content Posting API"** e clique em **"Apply"** (Solicitar)
-4. Selecione os seguintes scopes:
-   - `user.info.basic` - Informações básicas do usuário
-   - `video.upload` - Upload de vídeos
-   - `video.publish` - Publicação de vídeos
-5. Preencha o formulário de solicitação explicando o uso
-6. Clique em **"Submit"** (Enviar)
-7. **NOTA**: A aprovação pode levar de 1 a 7 dias úteis
+1. Go to the **"Add products"** tab
+2. Search for **"Login Kit"** and click **"Apply"**
+3. Search for **"Content Posting API"** and click **"Apply"**
+4. Select the following scopes:
+   - `user.info.basic` - Basic user information
+   - `video.upload` - Video upload
+   - `video.publish` - Video publishing
+5. Fill out the request form explaining the use
+6. Click **"Submit"**
+7. **NOTE**: Approval may take 1-7 business days
 
-### Passo 4.5: Configurar Redirect URIs
+### Step 4.5: Configure Redirect URIs
 
-1. Vá para **"Login Kit"** > **"Settings"**
-2. Em **"Redirect URI"**, adicione:
+1. Go to **"Login Kit"** > **"Settings"**
+2. In **"Redirect URI"**, add:
    - `http://localhost:3000/api/oauth/callback?platform=tiktok`
-   - `https://seu-dominio.com/api/oauth/callback?platform=tiktok`
-3. Clique em **"Save"** (Salvar)
+   - `https://your-domain.com/api/oauth/callback?platform=tiktok`
+3. Click **"Save"**
 
-### Passo 4.6: Obter Credenciais
+### Step 4.6: Get Credentials
 
-1. Vá para **"Basic information"**
-2. **IMPORTANTE**: Copie e salve:
-   - **Client Key** (algo como: `aw123abc456def`)
-   - **Client Secret** (clique em "Show", algo como: `xyz789ghi012jkl`)
+1. Go to **"Basic information"**
+2. **IMPORTANT**: Copy and save:
+   - **Client Key** (something like: `aw123abc456def`)
+   - **Client Secret** (click "Show", something like: `xyz789ghi012jkl`)
 
-### Passo 4.7: Aguardar Aprovação
+### Step 4.7: Wait for Approval
 
-1. Após solicitar os scopes, aguarde a aprovação do TikTok
-2. Você receberá um email quando for aprovado
-3. Enquanto aguarda, você pode desenvolver usando dados mockados
+1. After requesting scopes, wait for TikTok approval
+2. You'll receive an email when approved
+3. While waiting, you can develop using mocked data
 
-### Resumo TikTok
+### TikTok Summary
 
-✅ **Scopes necessários**:
+✅ **Required scopes**:
 - `user.info.basic`
 - `video.upload`
 - `video.publish`
 
-✅ **Credenciais obtidas**:
+✅ **Credentials obtained**:
 - Client Key
 - Client Secret
 
 ✅ **Redirect URI**:
 - `http://localhost:3000/api/oauth/callback?platform=tiktok`
 
-⚠️ **IMPORTANTE**: Requer aprovação (1-7 dias úteis)
+⚠️ **IMPORTANT**: Requires approval (1-7 business days)
 
 ---
 
-## 5. Configuração de Variáveis de Ambiente
+## 5. Environment Variables Configuration
 
-Após obter todas as credenciais, configure o arquivo `.env.local` na raiz do projeto:
+After obtaining all credentials, configure the `.env.local` file in the project root:
 
 ```bash
 # App Configuration
@@ -344,10 +340,10 @@ NODE_ENV=development
 # Database
 DATABASE_URL=postgresql://user:password@localhost:5432/video_upload_db
 
-# Redis (para fila e rate limiting)
+# Redis (for queue and rate limiting)
 REDIS_URL=redis://localhost:6379
 
-# Encryption Key (gere uma chave aleatória de 32 bytes)
+# Encryption Key (generate a random 32-byte key)
 ENCRYPTION_KEY=your-32-byte-encryption-key-here-change-this
 
 # YouTube API (Google Cloud)
@@ -358,7 +354,7 @@ GOOGLE_CLIENT_SECRET=GOCSPX-abc123xyz
 META_APP_ID=123456789012345
 META_APP_SECRET=abc123def456ghi789
 
-# Instagram API (usa as mesmas credenciais do Facebook)
+# Instagram API (uses same credentials as Facebook)
 INSTAGRAM_APP_ID=123456789012345
 INSTAGRAM_APP_SECRET=abc123def456ghi789
 
@@ -366,35 +362,33 @@ INSTAGRAM_APP_SECRET=abc123def456ghi789
 TIKTOK_CLIENT_KEY=aw123abc456def
 TIKTOK_CLIENT_SECRET=xyz789ghi012jkl
 
-# File Storage (opcional, para produção)
+# File Storage (optional, for production)
 # AWS_ACCESS_KEY_ID=your-aws-access-key
 # AWS_SECRET_ACCESS_KEY=your-aws-secret-key
 # AWS_S3_BUCKET=your-bucket-name
 # AWS_REGION=us-east-1
 ```
 
-### Como Gerar a ENCRYPTION_KEY
+### How to Generate ENCRYPTION_KEY
 
-Execute no terminal:
+Run in terminal:
 
 ```bash
 node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 ```
 
-Copie o resultado e cole em `ENCRYPTION_KEY`.
-
-
+Copy the result and paste it in `ENCRYPTION_KEY`.
 
 ---
 
-## 6. Testando as Configurações
+## 6. Testing the Configuration
 
-### Passo 6.1: Verificar Variáveis de Ambiente
+### Step 6.1: Verify Environment Variables
 
-Crie um script de teste `scripts/test-env.ts`:
+Create a test script `scripts/test-env.ts`:
 
 ```typescript
-// Verifica se todas as variáveis estão configuradas
+// Checks if all variables are configured
 const requiredEnvVars = [
   'APP_URL',
   'DATABASE_URL',
@@ -413,57 +407,57 @@ const requiredEnvVars = [
 const missing = requiredEnvVars.filter(key => !process.env[key]);
 
 if (missing.length > 0) {
-  console.error('❌ Variáveis de ambiente faltando:');
+  console.error('❌ Missing environment variables:');
   missing.forEach(key => console.error(`  - ${key}`));
   process.exit(1);
 } else {
-  console.log('✅ Todas as variáveis de ambiente estão configuradas!');
+  console.log('✅ All environment variables are configured!');
 }
 ```
 
-Execute:
+Run:
 
 ```bash
 npx tsx scripts/test-env.ts
 ```
 
-### Passo 6.2: Testar Conexão com Banco de Dados
+### Step 6.2: Test Database Connection
 
 ```bash
-# Instale o PostgreSQL localmente ou use Docker
+# Install PostgreSQL locally or use Docker
 docker run --name postgres-video-upload -e POSTGRES_PASSWORD=password -p 5432:5432 -d postgres
 
-# Teste a conexão
+# Test the connection
 psql postgresql://user:password@localhost:5432/video_upload_db
 ```
 
-### Passo 6.3: Testar Conexão com Redis
+### Step 6.3: Test Redis Connection
 
 ```bash
-# Instale o Redis localmente ou use Docker
+# Install Redis locally or use Docker
 docker run --name redis-video-upload -p 6379:6379 -d redis
 
-# Teste a conexão
+# Test the connection
 redis-cli ping
-# Deve retornar: PONG
+# Should return: PONG
 ```
 
-### Passo 6.4: Testar OAuth Flow
+### Step 6.4: Test OAuth Flow
 
-1. Inicie o servidor de desenvolvimento:
+1. Start the development server:
 ```bash
 npm run dev
 ```
 
-2. Acesse no navegador:
+2. Access in your browser:
 ```
 http://localhost:3000/api/oauth/authorize?platform=youtube
 ```
 
-3. Você deve ser redirecionado para a tela de consentimento do Google
-4. Após autorizar, você deve ser redirecionado de volta para sua aplicação
+3. You should be redirected to Google's consent screen
+4. After authorizing, you should be redirected back to your application
 
-5. Repita para outras plataformas:
+5. Repeat for other platforms:
 ```
 http://localhost:3000/api/oauth/authorize?platform=facebook
 http://localhost:3000/api/oauth/authorize?platform=instagram
@@ -472,58 +466,58 @@ http://localhost:3000/api/oauth/authorize?platform=tiktok
 
 ---
 
-## Troubleshooting (Resolução de Problemas)
+## Troubleshooting
 
-### Erro: "redirect_uri_mismatch"
+### Error: "redirect_uri_mismatch"
 
-**Causa**: A URI de redirecionamento não está configurada corretamente.
+**Cause**: The redirect URI is not configured correctly.
 
-**Solução**:
-1. Verifique se a URI no código corresponde EXATAMENTE à configurada no console da plataforma
-2. Inclua o protocolo (`http://` ou `https://`)
-3. Inclua a porta se estiver em desenvolvimento (`localhost:3000`)
-4. Não adicione barra final (`/`)
+**Solution**:
+1. Verify that the URI in the code matches EXACTLY the one configured in the platform console
+2. Include the protocol (`http://` or `https://`)
+3. Include the port if in development (`localhost:3000`)
+4. Don't add a trailing slash (`/`)
 
-### Erro: "invalid_client"
+### Error: "invalid_client"
 
-**Causa**: Client ID ou Client Secret incorretos.
+**Cause**: Incorrect Client ID or Client Secret.
 
-**Solução**:
-1. Verifique se copiou as credenciais corretamente
-2. Verifique se não há espaços extras no `.env.local`
-3. Reinicie o servidor após alterar `.env.local`
+**Solution**:
+1. Verify that you copied the credentials correctly
+2. Check that there are no extra spaces in `.env.local`
+3. Restart the server after changing `.env.local`
 
-### Erro: "insufficient_permissions"
+### Error: "insufficient_permissions"
 
-**Causa**: Scopes/permissões não foram aprovados.
+**Cause**: Scopes/permissions have not been approved.
 
-**Solução**:
-1. Verifique se solicitou todas as permissões necessárias
-2. Para Facebook/Instagram, aguarde aprovação da revisão
-3. Para TikTok, aguarde aprovação do app (1-7 dias)
+**Solution**:
+1. Verify that you requested all necessary permissions
+2. For Facebook/Instagram, wait for review approval
+3. For TikTok, wait for app approval (1-7 days)
 
-### Erro: "access_denied"
+### Error: "access_denied"
 
-**Causa**: Usuário negou permissões ou app não está em modo de teste.
+**Cause**: User denied permissions or app is not in test mode.
 
-**Solução**:
-1. Para Google: Adicione o usuário como "Test user" no OAuth consent screen
-2. Para Facebook: Mantenha o app em modo "Development" durante testes
-3. Para TikTok: Aguarde aprovação do app
+**Solution**:
+1. For Google: Add the user as a "Test user" in the OAuth consent screen
+2. For Facebook: Keep the app in "Development" mode during testing
+3. For TikTok: Wait for app approval
 
 ---
 
-## Próximos Passos
+## Next Steps
 
-Após configurar todas as APIs:
+After configuring all APIs:
 
-1. ✅ Execute as migrations do banco de dados
-2. ✅ Inicie o servidor de desenvolvimento
-3. ✅ Teste o fluxo OAuth para cada plataforma
-4. ✅ Teste o upload de um vídeo de teste
-5. ✅ Verifique os logs de auditoria no banco de dados
+1. ✅ Run database migrations
+2. ✅ Start the development server
+3. ✅ Test the OAuth flow for each platform
+4. ✅ Test uploading a test video
+5. ✅ Check audit logs in the database
 
-## Recursos Adicionais
+## Additional Resources
 
 - [YouTube Data API Documentation](https://developers.google.com/youtube/v3)
 - [Facebook Graph API Documentation](https://developers.facebook.com/docs/graph-api)
@@ -532,4 +526,4 @@ Após configurar todas as APIs:
 
 ---
 
-**Última atualização**: 2026-03-05
+**Last updated**: 2026-03-05

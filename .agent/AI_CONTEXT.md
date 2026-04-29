@@ -1,94 +1,94 @@
-# 🤖 Contexto para IAs - Gabriel Toth Platform
+# 🤖 AI Context - Gabriel Toth Platform
 
-Este arquivo contém o contexto essencial para qualquer IA que for trabalhar neste projeto.
-
----
-
-## Sobre o Projeto
-
-**gabrieltoth.com** é uma plataforma multi-propósito que inclui:
-
-1. **Portfólio pessoal** (frontend existente)
-2. **Plataforma de criadores de conteúdo** (em desenvolvimento)
-    - Sistema de créditos para uso
-    - Chat unificado multi-plataforma
-    - Download/agendamento de vídeos
-    - Dashboard de analytics
-    - Streaming com metrificação
+This file contains essential context for any AI working on this project.
 
 ---
 
-## Estrutura de Pastas Relevante
+## About the Project
+
+**gabrieltoth.com** is a multi-purpose platform that includes:
+
+1. **Personal Portfolio** (existing frontend)
+2. **Content Creator Platform** (in development)
+    - Credit system for usage
+    - Unified multi-platform chat
+    - Video download/scheduling
+    - Analytics dashboard
+    - Streaming with metering
+
+---
+
+## Relevant Folder Structure
 
 ```
 src/
 ├── app/
 │   ├── [locale]/         # Frontend (Next.js i18n)
 │   └── api/
-│       ├── platform/     # ⭐ APIs da plataforma de criadores
+│       ├── platform/     # ⭐ Content creator platform APIs
 │       │   ├── credits/
 │       │   ├── youtube/
 │       │   ├── chat/
 │       │   ├── analytics/
 │       │   ├── stream/
 │       │   └── webhooks/
-│       └── ...           # APIs existentes (contact, payments)
+│       └── ...           # Existing APIs (contact, payments)
 ├── lib/
-│   ├── db/               # ⭐ Cliente PostgreSQL
-│   ├── credits/          # ⭐ Sistema de créditos
-│   ├── metering/         # ⭐ Metrificação de infra
-│   ├── stripe/           # Pagamentos
-│   └── ...               # Libs existentes
+│   ├── db/               # ⭐ PostgreSQL client
+│   ├── credits/          # ⭐ Credit system
+│   ├── metering/         # ⭐ Infrastructure metering
+│   ├── stripe/           # Payments
+│   └── ...               # Existing libraries
 └── components/           # UI components
 ```
 
 ---
 
-## Padrões de Código
+## Code Patterns
 
-### Nomenclatura
+### Naming Conventions
 
-- **Arquivos**: `kebab-case.ts`
-- **Componentes React**: `PascalCase.tsx`
-- **Funções/Variáveis**: `camelCase`
-- **Constantes**: `UPPER_SNAKE_CASE`
+- **Files**: `kebab-case.ts`
+- **React Components**: `PascalCase.tsx`
+- **Functions/Variables**: `camelCase`
+- **Constants**: `UPPER_SNAKE_CASE`
 
 ### API Routes
 
-- Usar `NextResponse.json()` para respostas
-- Sempre validar input do usuário
-- Sempre verificar autenticação onde necessário
-- Logar erros com `console.error`
+- Use `NextResponse.json()` for responses
+- Always validate user input
+- Always verify authentication where necessary
+- Log errors with `console.error`
 
-### Banco de Dados
+### Database
 
-- Usar `query()` de `@/lib/db`
-- Transações com `BEGIN`, `COMMIT`, `ROLLBACK`
-- Parametrizar queries (prevenir SQL injection)
-
----
-
-## Sistema de Créditos
-
-- 1 Crédito ≈ R$ 0.0001
-- Cada ação tem um custo em `CREDIT_COSTS` (ver `src/lib/credits/index.ts`)
-- Infraestrutura é cobrada: banda, disco, cache
+- Use `query()` from `@/lib/db`
+- Transactions with `BEGIN`, `COMMIT`, `ROLLBACK`
+- Parameterize queries (prevent SQL injection)
 
 ---
 
-## Endpoints Principais
+## Credit System
 
-| Método | Path                           | Descrição                       |
-| ------ | ------------------------------ | ------------------------------- |
-| GET    | `/api/platform/analytics`      | Dashboard de consumo do usuário |
-| POST   | `/api/platform/credits/deduct` | Deduzir créditos                |
-| GET    | `/api/health`                  | Health check                    |
+- 1 Credit ≈ $0.0001 USD
+- Each action has a cost in `CREDIT_COSTS` (see `src/lib/credits/index.ts`)
+- Infrastructure is charged: bandwidth, disk, cache
 
 ---
 
-## Antes de Começar
+## Main Endpoints
 
-1. Ler `/onboarding` workflow
-2. Entender o módulo específico em `docs/modules/`
-3. Seguir `/testing` antes de commitar
-4. Em problemas, usar `EMERGENCY_ROLLBACK.md`
+| Method | Path                           | Description                    |
+| ------ | ------------------------------ | ------------------------------ |
+| GET    | `/api/platform/analytics`      | User consumption dashboard     |
+| POST   | `/api/platform/credits/deduct` | Deduct credits                 |
+| GET    | `/api/health`                  | Health check                   |
+
+---
+
+## Before Starting
+
+1. Read `/onboarding` workflow
+2. Understand the specific module in `docs/modules/`
+3. Follow `/testing` before committing
+4. In case of problems, use `EMERGENCY_ROLLBACK.md`
