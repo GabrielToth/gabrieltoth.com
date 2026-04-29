@@ -1,3 +1,4 @@
+import { logLoginFailure, logLoginSuccess } from "@/lib/auth/audit-logging"
 import {
     AuthErrorType,
     createErrorResponse,
@@ -17,6 +18,14 @@ const supabase = createClient(
 /**
  * POST /api/auth/login
  * Authenticate user with email and password
+ *
+ * Security Features:
+ * - Type validation (prevent script modifications)
+ * - Field validation (prevent injection)
+ * - Length validation (prevent buffer overflow)
+ * - Rate limiting (prevent brute force)
+ * - Bcrypt comparison (prevent timing attacks)
+ * - Generic error messages (prevent user enumeration)
  *
  * Request body:
  * {
@@ -56,14 +65,82 @@ export async function POST(request: NextRequest) {
             return createErrorResponse(AuthErrorType.TOO_MANY_ATTEMPTS)
         }
 
-        // Parse request body
-        const body = await request.json()
-        const { email, password, rememberMe, csrfToken } = body
-
-        // Validate required fields
-        if (!email || !password) {
-            return createErrorResponse(AuthErrorType.REQUIRED_FIELD_EMPTY)
+        // Parse request body with error handling
+        let body: unknown
+        try {
+            body = await request.json()
+        } catch {
+            return createErrorResponse(AuthErrorType.INVALID_INPUT)
         }
+
+        // Validate body is an object (prevent script modifications)
+        if (typeof body !== "object" || body === null || Array.isArray(body)) {
+            return createErrorResponse(AuthErrorType.INVALID_INPUT)
+        }
+
+        const bodyObj = body as Record<string, unknown>
+        const { email, password, rememberMe, csrfToken } = bodyObj
+
+        // ============================================================================
+        // TYPE VALIDATION (Prevent script modifications)
+        // ============================================================================
+
+        // Validate email type
+        if (typeof email !== "string") {
+            return createErrorResponse(AuthErrorType.INVALID_INPUT)
+        }
+
+        // Validate password type
+        if (typeof password !== "string") {
+            return createErrorResponse(AuthErrorType.INVALID_INPUT)
+        }
+
+        // Validate rememberMe type (optional, but if present must be boolean)
+        if (rememberMe !== undefined && typeof rememberMe !== "boolean") {
+            return createErrorResponse(AuthErrorType.INVALID_INPUT)
+        }
+
+        // Validate csrfToken type (optional, but if present must be string)
+        if (csrfToken !== undefined && typeof csrfToken !== "string") {
+            return createErrorResponse(AuthErrorType.INVALID_INPUT)
+        }
+
+        // ============================================================================
+        // FIELD VALIDATION (Prevent injection attacks)
+        // ============================================================================
+
+        // Validate no extra fields (prevent injection)
+        const allowedFields = new Set([
+            "email",
+            "password",
+            "rememberMe",
+            "csrfToken",
+        ])
+        const providedFields = Object.keys(bodyObj)
+        const hasExtraFields = providedFields.some(
+            field => !allowedFields.has(field)
+        )
+        if (hasExtraFields) {
+            return createErrorResponse(AuthErrorType.INVALID_INPUT)
+        }
+
+        // ============================================================================
+        // LENGTH VALIDATION (Prevent buffer overflow)
+        // ============================================================================
+
+        // Validate email length
+        if (email.length === 0 || email.length > 255) {
+            return createErrorResponse(AuthErrorType.INVALID_INPUT)
+        }
+
+        // Validate password length
+        if (password.length === 0 || password.length > 1024) {
+            return createErrorResponse(AuthErrorType.INVALID_INPUT)
+        }
+
+        // ============================================================================
+        // FORMAT VALIDATION
+        // ============================================================================
 
         // Validate email format
         const emailValidation = validateEmail(email)
@@ -75,11 +152,14 @@ export async function POST(request: NextRequest) {
             )
         }
 
-        // Validate password is not empty
-        if (!password || password.trim().length === 0) {
-            // Return generic error for security
+        // Validate password is not just whitespace
+        if (password.trim().length === 0) {
             return createErrorResponse(AuthErrorType.INVALID_CREDENTIALS)
         }
+
+        // ============================================================================
+        // DATABASE LOOKUP
+        // ============================================================================
 
         // Find user by email
         const { data: user, error: userError } = await supabase
@@ -97,12 +177,20 @@ export async function POST(request: NextRequest) {
             return createErrorResponse(AuthErrorType.INVALID_CREDENTIALS)
         }
 
+        // ============================================================================
+        // EMAIL VERIFICATION CHECK
+        // ============================================================================
+
         // Check if email is verified
         if (!user.email_verified) {
             return createErrorResponse(AuthErrorType.EMAIL_NOT_VERIFIED)
         }
 
-        // Compare password with hash
+        // ============================================================================
+        // PASSWORD COMPARISON (Constant-time)
+        // ============================================================================
+
+        // Compare password with hash using bcrypt (constant-time comparison)
         const passwordMatch = await bcrypt.compare(password, user.password_hash)
 
         if (!passwordMatch) {
@@ -112,6 +200,10 @@ export async function POST(request: NextRequest) {
             // Return generic error for security
             return createErrorResponse(AuthErrorType.INVALID_CREDENTIALS)
         }
+
+        // ============================================================================
+        // SESSION CREATION
+        // ============================================================================
 
         // Create session token
         const sessionToken = Buffer.from(
@@ -136,6 +228,10 @@ export async function POST(request: NextRequest) {
             console.error("Session creation error:", sessionError)
             return createErrorResponse(AuthErrorType.DATABASE_ERROR)
         }
+
+        // ============================================================================
+        // RESPONSE CREATION
+        // ============================================================================
 
         // Create secure cookie
         const response = createSuccessResponse(

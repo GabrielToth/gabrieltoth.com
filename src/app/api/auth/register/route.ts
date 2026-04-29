@@ -44,7 +44,20 @@ export async function POST(request: NextRequest) {
             return createErrorResponse(AuthErrorType.TOO_MANY_ATTEMPTS)
         }
 
-        const body = await request.json()
+        // Parse request body with error handling
+        let body: unknown
+        try {
+            body = await request.json()
+        } catch {
+            return createErrorResponse(AuthErrorType.INVALID_INPUT)
+        }
+
+        // Validate body is an object (prevent script modifications)
+        if (typeof body !== "object" || body === null || Array.isArray(body)) {
+            return createErrorResponse(AuthErrorType.INVALID_INPUT)
+        }
+
+        const bodyObj = body as Record<string, unknown>
         const {
             email,
             password,
@@ -53,7 +66,82 @@ export async function POST(request: NextRequest) {
             full_name,
             birth_date,
             auth_method,
-        } = body
+        } = bodyObj
+
+        // ============================================================================
+        // TYPE VALIDATION (Prevent script modifications)
+        // ============================================================================
+
+        // Validate required field types
+        if (
+            typeof email !== "string" ||
+            typeof password !== "string" ||
+            typeof name !== "string" ||
+            typeof phone !== "string"
+        ) {
+            return createErrorResponse(AuthErrorType.INVALID_INPUT)
+        }
+
+        // Validate optional field types
+        if (full_name !== undefined && typeof full_name !== "string") {
+            return createErrorResponse(AuthErrorType.INVALID_INPUT)
+        }
+
+        if (birth_date !== undefined && typeof birth_date !== "string") {
+            return createErrorResponse(AuthErrorType.INVALID_INPUT)
+        }
+
+        if (auth_method !== undefined && typeof auth_method !== "string") {
+            return createErrorResponse(AuthErrorType.INVALID_INPUT)
+        }
+
+        // ============================================================================
+        // FIELD VALIDATION (Prevent injection attacks)
+        // ============================================================================
+
+        // Validate no extra fields (prevent injection)
+        const allowedFields = new Set([
+            "email",
+            "password",
+            "name",
+            "phone",
+            "full_name",
+            "birth_date",
+            "auth_method",
+            "csrfToken",
+        ])
+        const providedFields = Object.keys(bodyObj)
+        const hasExtraFields = providedFields.some(
+            field => !allowedFields.has(field)
+        )
+        if (hasExtraFields) {
+            return createErrorResponse(AuthErrorType.INVALID_INPUT)
+        }
+
+        // ============================================================================
+        // LENGTH VALIDATION (Prevent buffer overflow)
+        // ============================================================================
+
+        // Validate field lengths
+        if (email.length === 0 || email.length > 255) {
+            return createErrorResponse(AuthErrorType.INVALID_INPUT)
+        }
+
+        if (password.length === 0 || password.length > 1024) {
+            return createErrorResponse(AuthErrorType.INVALID_INPUT)
+        }
+
+        if (name.length === 0 || name.length > 255) {
+            return createErrorResponse(AuthErrorType.INVALID_INPUT)
+        }
+
+        if (phone.length === 0 || phone.length > 20) {
+            return createErrorResponse(AuthErrorType.INVALID_INPUT)
+        }
+
+        if (birth_date && birth_date.length > 10) {
+            return createErrorResponse(AuthErrorType.INVALID_INPUT)
+        }
 
         // Validate all parameters
         if (!email || !password || !name || !phone) {
