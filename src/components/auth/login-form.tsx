@@ -207,6 +207,14 @@ export function LoginForm({ locale }: LoginFormProps) {
                         data.error ||
                             "Too many login attempts. Please try again later."
                     )
+                } else if (response.status === 401) {
+                    // Invalid credentials or email not verified
+                    setServerError(data.error || "Invalid email or password")
+                } else if (response.status >= 500) {
+                    // Server error
+                    setServerError(
+                        "Server error. Please try again later or contact support."
+                    )
                 } else {
                     // Generic error for invalid credentials
                     // Requirement 3.2
@@ -221,7 +229,15 @@ export function LoginForm({ locale }: LoginFormProps) {
             router.refresh()
         } catch (error) {
             console.error("Login error:", error)
-            setServerError("An error occurred. Please try again later.")
+
+            // Check if it's a network error
+            if (error instanceof TypeError) {
+                setServerError(
+                    "Network error. Please check your connection and try again."
+                )
+            } else {
+                setServerError("An error occurred. Please try again later.")
+            }
         } finally {
             setIsLoading(false)
         }
@@ -260,6 +276,7 @@ export function LoginForm({ locale }: LoginFormProps) {
                     type="password"
                     autoComplete="current-password"
                     required
+                    showPasswordToggle
                     value={formData.password}
                     onChange={e =>
                         handleFieldChange("password", e.target.value)
