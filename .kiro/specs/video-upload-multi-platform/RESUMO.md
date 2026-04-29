@@ -1,88 +1,88 @@
-# Resumo do Módulo de Upload de Vídeos Multi-Plataforma
+# Summary of Multi-Platform Video Upload Module
 
-## Status do Projeto
+## Project Status
 
-✅ **Especificação Completa** - Todos os documentos foram criados com sucesso!
+✅ **Specification Complete** - All documents have been successfully created!
 
-## Documentos Criados
+## Documents Created
 
 ### 1. Requirements Document (requirements.md)
-- 15 requisitos detalhados cobrindo todas as funcionalidades
-- 120+ critérios de aceitação
-- Suporte para YouTube, Facebook, Instagram e TikTok
-- Funcionalidades: upload, edição de metadados, OAuth, fila, progresso em tempo real, histórico
+- 15 detailed requirements covering all functionalities
+- 120+ acceptance criteria
+- Support for YouTube, Facebook, Instagram, and TikTok
+- Features: upload, metadata editing, OAuth, queue, real-time progress, history
 
 ### 2. Design Document (design.md)
-- Arquitetura completa do sistema (Frontend, API, Services, Data, External APIs)
-- 7 componentes React (DragDropUploader, MetadataEditor, PlatformSelector, etc.)
-- 9 rotas de API (upload, OAuth, status, retry, history)
-- 8 serviços backend (VideoService, OAuthService, QueueService, etc.)
-- 6 tabelas PostgreSQL + estruturas Redis
-- Configuração OAuth 2.0 para todas as 4 plataformas
-- 58 propriedades de correção para testes baseados em propriedades
-- Implementação de segurança (AES-256-GCM, CSRF, validação de assinaturas)
+- Complete system architecture (Frontend, API, Services, Data, External APIs)
+- 7 React components (DragDropUploader, MetadataEditor, PlatformSelector, etc.)
+- 9 API routes (upload, OAuth, status, retry, history)
+- 8 backend services (VideoService, OAuthService, QueueService, etc.)
+- 6 PostgreSQL tables + Redis structures
+- OAuth 2.0 configuration for all 4 platforms
+- 58 correctness properties for property-based testing
+- Security implementation (AES-256-GCM, CSRF, signature validation)
 
 ### 3. Implementation Tasks (tasks.md)
-- 31 tarefas principais organizadas em fases
-- Tarefas opcionais marcadas com `*` para MVP mais rápido
-- Checkpoints de validação incremental
-- Referências aos requisitos para rastreabilidade
+- 31 main tasks organized in phases
+- Optional tasks marked with `*` for faster MVP
+- Incremental validation checkpoints
+- References to requirements for traceability
 
-### 4. API Setup Guide (API_SETUP_GUIDE.md) ⭐ NOVO!
-- **Guia passo a passo completo para ativar todas as APIs**
-- Instruções detalhadas para YouTube API (Google Cloud Console)
-- Instruções detalhadas para Facebook API (Meta for Developers)
-- Instruções detalhadas para Instagram API (Meta for Developers)
-- Instruções detalhadas para TikTok API (TikTok for Developers)
-- Template de variáveis de ambiente (.env.local)
-- Scripts de teste para validar configurações
-- Seção de troubleshooting com soluções para erros comuns
+### 4. API Setup Guide (API_SETUP_GUIDE.md) ⭐ NEW!
+- **Complete step-by-step guide to activate all APIs**
+- Detailed instructions for YouTube API (Google Cloud Console)
+- Detailed instructions for Facebook API (Meta for Developers)
+- Detailed instructions for Instagram API (Meta for Developers)
+- Detailed instructions for TikTok API (TikTok for Developers)
+- Environment variables template (.env.local)
+- Test scripts to validate configurations
+- Troubleshooting section with solutions for common errors
 
-## O Que Você Precisa Fazer Agora
+## What You Need to Do Now
 
-### Passo 1: Configurar as APIs (MAIS IMPORTANTE!)
+### Step 1: Configure the APIs (MOST IMPORTANT!)
 
-📖 **Abra o arquivo**: `.kiro/specs/video-upload-multi-platform/API_SETUP_GUIDE.md`
+📖 **Open the file**: `.kiro/specs/video-upload-multi-platform/API_SETUP_GUIDE.md`
 
-Este guia contém TUDO que você precisa saber:
+This guide contains EVERYTHING you need to know:
 
-1. **YouTube API**: Como criar projeto no Google Cloud, ativar API, configurar OAuth, obter credenciais
-2. **Facebook API**: Como criar app no Meta for Developers, configurar permissões, obter App ID e Secret
-3. **Instagram API**: Como adicionar Instagram ao app do Facebook, configurar conta Business
-4. **TikTok API**: Como criar app no TikTok for Developers, solicitar aprovação (1-7 dias)
+1. **YouTube API**: How to create project in Google Cloud, activate API, configure OAuth, get credentials
+2. **Facebook API**: How to create app in Meta for Developers, configure permissions, get App ID and Secret
+3. **Instagram API**: How to add Instagram to Facebook app, configure Business account
+4. **TikTok API**: How to create app in TikTok for Developers, request approval (1-7 days)
 
-Cada seção tem:
-- ✅ Links diretos para os consoles
-- ✅ Screenshots mentais (descrições detalhadas de onde clicar)
-- ✅ Lista exata de scopes/permissões necessários
-- ✅ O que copiar e onde colar
+Each section has:
+- ✅ Direct links to consoles
+- ✅ Mental screenshots (detailed descriptions of where to click)
+- ✅ Exact list of required scopes/permissions
+- ✅ What to copy and where to paste
 
-### Passo 2: Configurar Ambiente Local
+### Step 2: Configure Local Environment
 
-Após obter as credenciais das APIs:
+After obtaining API credentials:
 
-1. Crie o arquivo `.env.local` na raiz do projeto
-2. Copie o template do guia de APIs
-3. Cole suas credenciais obtidas
-4. Gere a chave de criptografia (comando fornecido no guia)
+1. Create `.env.local` file in project root
+2. Copy template from API guide
+3. Paste your obtained credentials
+4. Generate encryption key (command provided in guide)
 
-### Passo 3: Iniciar Implementação
+### Step 3: Start Implementation
 
-Quando estiver pronto para começar a implementar:
-
-```bash
-# Diga para mim:
-"Executar todas as tarefas do spec video-upload-multi-platform"
-```
-
-Ou execute tarefas individuais:
+When ready to start implementing:
 
 ```bash
-# Diga para mim:
-"Executar tarefa 1 do spec video-upload-multi-platform"
+# Tell me:
+"Run all tasks for video-upload-multi-platform spec"
 ```
 
-## Estrutura do Sistema
+Or run individual tasks:
+
+```bash
+# Tell me:
+"Run task 1 for video-upload-multi-platform spec"
+```
+
+## System Structure
 
 ```
 Frontend (React 19 + Next.js 16)
@@ -96,7 +96,7 @@ Data Layer (PostgreSQL + Redis)
 External APIs (YouTube, Facebook, Instagram, TikTok)
 ```
 
-## Tecnologias Utilizadas
+## Technologies Used
 
 - **Frontend**: React 19, Next.js 16, TypeScript, Tailwind CSS
 - **Backend**: Next.js API Routes, Node.js
@@ -106,60 +106,60 @@ External APIs (YouTube, Facebook, Instagram, TikTok)
 - **Encryption**: AES-256-GCM
 - **Testing**: Vitest, Testing Library, Playwright
 
-## Funcionalidades Principais
+## Main Features
 
-1. ✅ Upload de vídeos via drag & drop
-2. ✅ Edição de metadados (título, descrição, tags)
-3. ✅ Seleção de múltiplas plataformas
-4. ✅ Autenticação OAuth 2.0 para cada plataforma
-5. ✅ Validação específica por plataforma
-6. ✅ Fila de processamento assíncrono
-7. ✅ Feedback de progresso em tempo real
-8. ✅ Gerenciamento de rate limits
-9. ✅ Retry logic com exponential backoff
-10. ✅ Armazenamento seguro de tokens (criptografados)
-11. ✅ Histórico de publicações com filtros
-12. ✅ Logs de auditoria
-13. ✅ Interface multi-idioma (pt-BR, en, es, de)
+1. ✅ Video upload via drag & drop
+2. ✅ Metadata editing (title, description, tags)
+3. ✅ Multiple platform selection
+4. ✅ OAuth 2.0 authentication for each platform
+5. ✅ Platform-specific validation
+6. ✅ Asynchronous processing queue
+7. ✅ Real-time progress feedback
+8. ✅ Rate limit management
+9. ✅ Retry logic with exponential backoff
+10. ✅ Secure token storage (encrypted)
+11. ✅ Publication history with filters
+12. ✅ Audit logs
+13. ✅ Multi-language interface (pt-BR, en, es, de)
 
-## Próximos Passos Recomendados
+## Recommended Next Steps
 
-### Opção 1: Configurar APIs Primeiro (RECOMENDADO)
-1. Leia o API_SETUP_GUIDE.md
-2. Configure YouTube API (30 minutos)
-3. Configure Facebook/Instagram API (30 minutos)
-4. Configure TikTok API e aguarde aprovação (1-7 dias)
-5. Configure .env.local com todas as credenciais
-6. Volte aqui e peça para executar as tarefas
+### Option 1: Configure APIs First (RECOMMENDED)
+1. Read API_SETUP_GUIDE.md
+2. Configure YouTube API (30 minutes)
+3. Configure Facebook/Instagram API (30 minutes)
+4. Configure TikTok API and wait for approval (1-7 days)
+5. Configure .env.local with all credentials
+6. Come back here and ask to run tasks
 
-### Opção 2: Começar Implementação Paralela
-1. Execute as tarefas de setup inicial (Tasks 1-2)
-2. Implemente serviços base enquanto aguarda aprovações de APIs
-3. Configure APIs quando estiverem prontas
-4. Continue com tarefas de integração
+### Option 2: Start Parallel Implementation
+1. Run initial setup tasks (Tasks 1-2)
+2. Implement base services while waiting for API approvals
+3. Configure APIs when ready
+4. Continue with integration tasks
 
-## Perguntas Frequentes
+## Frequently Asked Questions
 
-**Q: Preciso de todas as 4 plataformas para começar?**
-A: Não! Você pode começar com YouTube (mais fácil de configurar) e adicionar as outras depois.
+**Q: Do I need all 4 platforms to start?**
+A: No! You can start with YouTube (easier to configure) and add others later.
 
-**Q: Quanto tempo leva para configurar as APIs?**
-A: YouTube e Facebook: ~1 hora. TikTok: 1-7 dias para aprovação.
+**Q: How long does it take to configure the APIs?**
+A: YouTube and Facebook: ~1 hour. TikTok: 1-7 days for approval.
 
-**Q: Posso testar sem configurar as APIs?**
-A: Sim! Você pode desenvolver com dados mockados e configurar as APIs depois.
+**Q: Can I test without configuring the APIs?**
+A: Yes! You can develop with mocked data and configure APIs later.
 
-**Q: O que fazer se tiver dúvidas durante a configuração?**
-A: Consulte a seção "Troubleshooting" no API_SETUP_GUIDE.md ou me pergunte!
+**Q: What if I have questions during configuration?**
+A: Check the "Troubleshooting" section in API_SETUP_GUIDE.md or ask me!
 
-## Arquivos Importantes
+## Important Files
 
-- 📄 `requirements.md` - O que o sistema deve fazer
-- 📄 `design.md` - Como o sistema funciona
-- 📄 `tasks.md` - Tarefas de implementação
-- 📄 `API_SETUP_GUIDE.md` - **COMECE AQUI!** Guia de configuração de APIs
-- 📄 `RESUMO.md` - Este arquivo
+- 📄 `requirements.md` - What the system should do
+- 📄 `design.md` - How the system works
+- 📄 `tasks.md` - Implementation tasks
+- 📄 `API_SETUP_GUIDE.md` - **START HERE!** API configuration guide
+- 📄 `RESUMO.md` - This file
 
 ---
 
-**Pronto para começar?** Abra o `API_SETUP_GUIDE.md` e siga as instruções! 🚀
+**Ready to start?** Open `API_SETUP_GUIDE.md` and follow the instructions! 🚀
