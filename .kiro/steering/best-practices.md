@@ -9,6 +9,48 @@
 - **EXCEPTION**: Create `.md` files for new module documentation (e.g., API docs, feature guides)
 - Summarize changes directly in the response using plain text
 
+### 1.1 Language Requirements (MANDATORY)
+- **ALL Issues**: Must be written in English
+- **ALL Pull Requests**: Title, description, and comments must be in English
+- **ALL Commit Messages**: Must be in English (format: `type(#issue): description`)
+- **ALL Code Comments**: Must be in English
+- **ALL Variable Names**: Must be in English
+- **ALL Function Names**: Must be in English
+- **ALL Documentation**: Must be in English
+- **ALL Error Messages**: Must be in English (use i18n for user-facing translations)
+- **ALL Code Reviews**: Comments must be in English
+- **NO EXCEPTIONS**: Even if the user writes in Portuguese, all project artifacts must be in English
+- **RATIONALE**: 
+  - Ensures consistency across the codebase
+  - Enables international team collaboration
+  - Maintains professional standards
+  - Improves code maintainability
+  - Facilitates open-source contributions
+
+### Example: Correct vs Incorrect
+
+❌ **WRONG - Portuguese**:
+```
+git commit -m "feat: implementar login com validação segura"
+```
+
+✅ **CORRECT - English**:
+```
+git commit -m "feat(#42): implement secure login with password visibility toggle"
+```
+
+❌ **WRONG - Portuguese in issue**:
+```
+Title: [Feature] Implementar Login
+Description: Preciso de um formulário de login com validação...
+```
+
+✅ **CORRECT - English in issue**:
+```
+Title: [Feature] Implement Secure Login with Password Visibility
+Description: Need to implement a login form with validation...
+```
+
 ### 2. Git Commits and PRs
 - Always use descriptive commit messages in English
 - Prefer atomic commits (one change per commit)
@@ -611,7 +653,281 @@ git push origin feature-branch --tags
 
 ---
 
-## 🐳 Docker Container Requirements
+## � Security Testing Requirements
+
+**MANDATORY** for all new routes and security-sensitive features:
+
+### 1️⃣ Test All Attack Vectors
+
+After implementing a new route or feature, create comprehensive security tests covering:
+
+#### Authentication & Authorization
+- [ ] Unauthenticated access attempts
+- [ ] Invalid/expired tokens
+- [ ] Token tampering
+- [ ] Session hijacking attempts
+- [ ] Privilege escalation attempts
+- [ ] Cross-user access attempts
+
+#### Input Validation
+- [ ] SQL Injection attempts
+- [ ] NoSQL Injection attempts
+- [ ] Command Injection attempts
+- [ ] Path Traversal attempts
+- [ ] XXE (XML External Entity) attacks
+- [ ] LDAP Injection attempts
+- [ ] Buffer Overflow attempts
+- [ ] Format String attacks
+
+#### XSS (Cross-Site Scripting)
+- [ ] Stored XSS payloads
+- [ ] Reflected XSS payloads
+- [ ] DOM-based XSS
+- [ ] Event handler XSS
+- [ ] JavaScript protocol XSS
+- [ ] Data URI XSS
+- [ ] SVG-based XSS
+
+#### CSRF (Cross-Site Request Forgery)
+- [ ] Missing CSRF token validation
+- [ ] CSRF token reuse
+- [ ] CSRF token bypass attempts
+- [ ] SameSite cookie bypass
+
+#### Rate Limiting & DoS
+- [ ] Brute force attacks
+- [ ] Distributed attacks
+- [ ] Slowloris attacks
+- [ ] Resource exhaustion
+- [ ] Memory exhaustion
+
+#### Data Security
+- [ ] Sensitive data in logs
+- [ ] Sensitive data in error messages
+- [ ] Sensitive data in responses
+- [ ] Information disclosure
+- [ ] Timing attacks
+- [ ] Side-channel attacks
+
+#### API Security
+- [ ] Missing authentication
+- [ ] Broken object level authorization
+- [ ] Excessive data exposure
+- [ ] Lack of resource & rate limiting
+- [ ] Broken function level authorization
+- [ ] Mass assignment
+- [ ] Insecure deserialization
+
+#### Cryptography
+- [ ] Weak encryption algorithms
+- [ ] Hardcoded secrets
+- [ ] Exposed API keys
+- [ ] Weak random number generation
+- [ ] Insecure password storage
+
+### 2️⃣ Security Test File Structure
+
+Create security tests in `src/__tests__/security/` directory:
+
+```
+src/__tests__/security/
+├── auth-security.test.ts          # Authentication tests
+├── injection-attacks.test.ts       # SQL, NoSQL, Command injection
+├── xss-attacks.test.ts             # XSS vulnerability tests
+├── csrf-protection.test.ts         # CSRF token validation
+├── rate-limiting.test.ts           # Rate limit enforcement
+├── data-exposure.test.ts           # Sensitive data leaks
+├── api-security.test.ts            # API endpoint security
+└── cryptography.test.ts            # Encryption & hashing
+```
+
+### 3️⃣ Example Security Test Pattern
+
+```typescript
+describe("POST /api/auth/login - Security Tests", () => {
+    // SQL Injection
+    it("should prevent SQL injection in email field", async () => {
+        const payload = {
+            email: "' OR '1'='1",
+            password: "test",
+        }
+        const response = await POST(request)
+        expect(response.status).toBe(400)
+        expect(response.body).not.toContain("SQL")
+    })
+
+    // XSS
+    it("should sanitize XSS payloads in email", async () => {
+        const payload = {
+            email: "<script>alert('xss')</script>",
+            password: "test",
+        }
+        const response = await POST(request)
+        expect(response.status).toBe(400)
+    })
+
+    // Brute Force
+    it("should block after 5 failed attempts", async () => {
+        for (let i = 0; i < 6; i++) {
+            const response = await POST(request)
+            if (i < 5) {
+                expect(response.status).toBe(401)
+            } else {
+                expect(response.status).toBe(429)
+            }
+        }
+    })
+
+    // Information Disclosure
+    it("should not reveal if email exists", async () => {
+        const response1 = await POST({ email: "exists@test.com", password: "wrong" })
+        const response2 = await POST({ email: "notexists@test.com", password: "wrong" })
+        expect(response1.body.error).toBe(response2.body.error)
+    })
+
+    // CSRF
+    it("should reject requests without CSRF token", async () => {
+        const response = await POST(request)
+        expect(response.status).toBe(403)
+    })
+
+    // Token Tampering
+    it("should reject tampered CSRF tokens", async () => {
+        const tamperedToken = csrfToken.slice(0, -5) + "xxxxx"
+        const response = await POST({ ...payload, csrfToken: tamperedToken })
+        expect(response.status).toBe(403)
+    })
+
+    // Timing Attack
+    it("should use constant-time comparison for passwords", async () => {
+        const start1 = Date.now()
+        await POST({ email: "test@test.com", password: "a" })
+        const time1 = Date.now() - start1
+
+        const start2 = Date.now()
+        await POST({ email: "test@test.com", password: "correctpassword" })
+        const time2 = Date.now() - start2
+
+        // Times should be similar (constant-time comparison)
+        expect(Math.abs(time1 - time2)).toBeLessThan(50)
+    })
+})
+```
+
+### 4️⃣ Security Test Checklist
+
+Before marking a feature as complete:
+
+- [ ] All input validation tests pass
+- [ ] All injection attack tests pass
+- [ ] All XSS tests pass
+- [ ] All CSRF tests pass
+- [ ] All rate limiting tests pass
+- [ ] All authentication tests pass
+- [ ] All authorization tests pass
+- [ ] No sensitive data in logs
+- [ ] No sensitive data in error messages
+- [ ] No hardcoded secrets
+- [ ] Cryptography tests pass
+- [ ] API security tests pass
+- [ ] Performance under attack is acceptable
+- [ ] Security headers are present
+- [ ] HTTPS is enforced in production
+
+### 5️⃣ Run Security Tests
+
+```bash
+# Run all security tests
+npm run test -- src/__tests__/security/
+
+# Run specific security test file
+npm run test -- src/__tests__/security/auth-security.test.ts
+
+# Run with coverage
+npm run test:coverage -- src/__tests__/security/
+
+# Run security linter
+npm run lint:security
+
+# Run OWASP dependency check
+npm run audit
+```
+
+### 6️⃣ Security Test Naming Convention
+
+```typescript
+// ✅ GOOD - Clear attack vector
+it("should prevent SQL injection in email parameter", async () => {})
+it("should reject XSS payload in user input", async () => {})
+it("should block brute force after 5 attempts", async () => {})
+
+// ❌ BAD - Vague
+it("should handle bad input", async () => {})
+it("should be secure", async () => {})
+it("should work correctly", async () => {})
+```
+
+### 7️⃣ OWASP Top 10 Coverage
+
+Ensure tests cover OWASP Top 10:
+
+1. **Broken Access Control** - Authorization tests
+2. **Cryptographic Failures** - Encryption tests
+3. **Injection** - SQL, NoSQL, Command injection tests
+4. **Insecure Design** - Threat modeling tests
+5. **Security Misconfiguration** - Configuration tests
+6. **Vulnerable Components** - Dependency audit
+7. **Authentication Failures** - Auth tests
+8. **Data Integrity Failures** - Data validation tests
+9. **Logging & Monitoring Failures** - Audit log tests
+10. **SSRF** - Server-side request forgery tests
+
+### 8️⃣ Continuous Security Testing
+
+- [ ] Run security tests on every commit (pre-commit hook)
+- [ ] Run security tests on every PR (CI/CD pipeline)
+- [ ] Run security tests before deployment
+- [ ] Run security audit weekly
+- [ ] Run penetration testing monthly
+- [ ] Update security tests when new vulnerabilities are discovered
+
+### 9️⃣ Security Test Documentation
+
+Document security tests with:
+
+```typescript
+/**
+ * Security Test: SQL Injection Prevention
+ * 
+ * Attack Vector: SQL Injection in email parameter
+ * Severity: CRITICAL
+ * OWASP: A03:2021 - Injection
+ * 
+ * Payload: ' OR '1'='1
+ * Expected: 400 Bad Request
+ * 
+ * Reference: https://owasp.org/www-community/attacks/SQL_Injection
+ */
+it("should prevent SQL injection in email field", async () => {
+    // Test implementation
+})
+```
+
+### 🔟 Security Test Tools
+
+Recommended tools for security testing:
+
+- **OWASP ZAP**: Automated security scanning
+- **Burp Suite**: Manual penetration testing
+- **npm audit**: Dependency vulnerability scanning
+- **Snyk**: Continuous vulnerability monitoring
+- **SonarQube**: Code quality & security analysis
+- **ESLint Security Plugin**: Static code analysis
+- **Helmet.js**: HTTP security headers
+
+---
+
+## 🔐 Security Testing Requirements
 
 **CRITICAL**: Local tests and development REQUIRE Docker containers running.
 
