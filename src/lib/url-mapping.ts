@@ -3,6 +3,7 @@ import { type Locale } from "@/lib/i18n"
 // URL mapping for each locale
 const urlMapping: Record<Locale, Record<string, string>> = {
     en: {
+        "about-me": "about-me",
         "channel-management": "channel-management",
         editors: "editors",
         "pc-optimization": "pc-optimization",
@@ -21,6 +22,7 @@ const urlMapping: Record<Locale, Record<string, string>> = {
         "minecraft-contributions": "minecraft/contributions",
     },
     "pt-BR": {
+        "about-me": "quem-sou-eu",
         "channel-management": "gerenciamento-de-canais",
         editors: "editores",
         "pc-optimization": "otimizacao-de-pc",
@@ -39,6 +41,7 @@ const urlMapping: Record<Locale, Record<string, string>> = {
         "minecraft-contributions": "minecraft/contribuicoes",
     },
     es: {
+        "about-me": "acerca-de-mi",
         "channel-management": "gestion-de-canales",
         editors: "editores",
         "pc-optimization": "optimizacion-de-pc",
@@ -57,6 +60,7 @@ const urlMapping: Record<Locale, Record<string, string>> = {
         "minecraft-contributions": "minecraft/contribuciones",
     },
     de: {
+        "about-me": "uber-mich",
         "channel-management": "kanalverwaltung",
         editors: "editoren",
         "pc-optimization": "pc-optimierung",

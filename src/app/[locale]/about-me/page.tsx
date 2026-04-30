@@ -19,7 +19,7 @@ export async function generateMetadata({
 
     const seoConfig = generateSeoConfig({
         locale,
-        path: "/quem-sou-eu",
+        path: "/about-me",
         title: undefined,
         description: undefined,
         keywords: [],
@@ -45,7 +45,7 @@ export default async function AboutPage({ params }: AboutPageProps) {
 
     const seoConfig = generateSeoConfig({
         locale,
-        path: "/quem-sou-eu",
+        path: "/about-me",
         title: undefined,
         description: undefined,
         keywords: [],

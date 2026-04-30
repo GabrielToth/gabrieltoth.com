@@ -24,7 +24,7 @@ export default function Header() {
     const getNavigationLinks = () => {
         return [
             {
-                href: getLocalizedPath("quem-sou-eu", locale),
+                href: getLocalizedPath("about-me", locale),
                 label: t("about"),
             },
         ]
