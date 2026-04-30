@@ -90,10 +90,10 @@ test.describe("home page", () => {
             .catch(() => {})
 
         // Fill invalid email and assert it doesn't show success
-        await nameInput.fill("Teste Usuario")
+        await nameInput.fill("Test User")
         await emailInput.fill("invalid-email")
-        await subjectInput.fill("Assunto de Teste")
-        await messageInput.fill("Mensagem de teste com conteúdo suficiente.")
+        await subjectInput.fill("Test Subject")
+        await messageInput.fill("Test message with sufficient content.")
         await submitBtn.click()
         await expect(page.getByTestId("contact-success"))
             .not.toBeVisible({ timeout: 1000 })

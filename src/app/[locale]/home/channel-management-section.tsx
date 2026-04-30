@@ -6,7 +6,7 @@ const getTranslations = (locale: Locale) => {
     return {
         title:
             locale === "pt-BR"
-                ? "Gestão de Canais"
+                ? "Channel Management"
                 : locale === "es"
                   ? "Gestión de Canales"
                   : locale === "de"
@@ -14,7 +14,7 @@ const getTranslations = (locale: Locale) => {
                     : "Channel Management",
         subtitle:
             locale === "pt-BR"
-                ? "Transforme Seu Canal em uma Máquina de Crescimento"
+                ? "Transform Your Channel into a Growth Machine"
                 : locale === "es"
                   ? "Transforma tu canal en una máquina de crecimiento"
                   : locale === "de"
@@ -22,7 +22,7 @@ const getTranslations = (locale: Locale) => {
                     : "Transform Your Channel into a Growth Machine",
         description:
             locale === "pt-BR"
-                ? "Especializado em analytics, otimização de conteúdo e estratégias de monetização para YouTube. + de 2M de visualizações mensais gerenciadas com resultados comprovados."
+                ? "Specialized in analytics, content optimization and monetization strategies for YouTube. + 2M monthly views managed with proven results."
                 : locale === "es"
                   ? "Especializado en analítica, optimización de contenido y estrategias de monetización para YouTube. Más de 2M de visualizaciones mensuales gestionadas con resultados comprobados."
                   : locale === "de"
@@ -31,7 +31,7 @@ const getTranslations = (locale: Locale) => {
         features: {
             title:
                 locale === "pt-BR"
-                    ? "Como Posso Ajudar Seu Canal"
+                    ? "How I Can Help Your Channel"
                     : locale === "es"
                       ? "Cómo puedo ayudar a tu canal"
                       : locale === "de"
@@ -40,7 +40,7 @@ const getTranslations = (locale: Locale) => {
             analytics: {
                 title:
                     locale === "pt-BR"
-                        ? "Análise Completa de Performance"
+                        ? "Complete Performance Analysis"
                         : locale === "es"
                           ? "Análisis Completo de Rendimiento"
                           : locale === "de"
@@ -48,7 +48,7 @@ const getTranslations = (locale: Locale) => {
                             : "Complete Performance Analysis",
                 description:
                     locale === "pt-BR"
-                        ? "Auditoria profunda dos seus analytics com insights acionáveis para otimização imediata"
+                        ? "Deep audit of your analytics with actionable insights for immediate optimization"
                         : locale === "es"
                           ? "Auditoría profunda de tus analíticas con insights accionables para optimización inmediata"
                           : locale === "de"
@@ -58,7 +58,7 @@ const getTranslations = (locale: Locale) => {
             optimization: {
                 title:
                     locale === "pt-BR"
-                        ? "Estratégia de Conteúdo"
+                        ? "Content Strategy"
                         : locale === "es"
                           ? "Estrategia de Contenido"
                           : locale === "de"
@@ -66,7 +66,7 @@ const getTranslations = (locale: Locale) => {
                             : "Content Strategy",
                 description:
                     locale === "pt-BR"
-                        ? "Desenvolvimento de estratégia de conteúdo baseada em dados para maximizar alcance e engajamento"
+                        ? "Data-driven content strategy development to maximize reach and engagement"
                         : locale === "es"
                           ? "Desarrollo de estrategia de contenido basada en datos para maximizar alcance y engagement"
                           : locale === "de"
@@ -76,7 +76,7 @@ const getTranslations = (locale: Locale) => {
             growth: {
                 title:
                     locale === "pt-BR"
-                        ? "Estratégias de Crescimento"
+                        ? "Growth Strategies"
                         : locale === "es"
                           ? "Estrategias de Crecimiento"
                           : locale === "de"
@@ -84,7 +84,7 @@ const getTranslations = (locale: Locale) => {
                             : "Growth Strategies",
                 description:
                     locale === "pt-BR"
-                        ? "Planos personalizados para crescimento sustentável e engajamento com foco em resultados"
+                        ? "Custom plans for sustainable growth and engagement with focus on results"
                         : locale === "es"
                           ? "Planes personalizados para un crecimiento sostenible y engagement con foco en resultados"
                           : locale === "de"
@@ -94,7 +94,7 @@ const getTranslations = (locale: Locale) => {
             monetization: {
                 title:
                     locale === "pt-BR"
-                        ? "Otimização de Monetização"
+                        ? "Monetization Optimization"
                         : locale === "es"
                           ? "Optimización de Monetización"
                           : locale === "de"
@@ -102,7 +102,7 @@ const getTranslations = (locale: Locale) => {
                             : "Monetization Optimization",
                 description:
                     locale === "pt-BR"
-                        ? "Estratégias para maximizar revenue através de múltiplos canais de monetização"
+                        ? "Strategies to maximize revenue through multiple monetization channels"
                         : locale === "es"
                           ? "Estrategias para maximizar ingresos a través de múltiples canales de monetización"
                           : locale === "de"
@@ -113,7 +113,7 @@ const getTranslations = (locale: Locale) => {
         results: {
             title:
                 locale === "pt-BR"
-                    ? "Resultados Comprovados"
+                    ? "Proven Results"
                     : locale === "es"
                       ? "Resultados Comprobados"
                       : locale === "de"
@@ -121,7 +121,7 @@ const getTranslations = (locale: Locale) => {
                         : "Proven Results",
             subtitle:
                 locale === "pt-BR"
-                    ? "Cases reais de crescimento"
+                    ? "Real growth cases"
                     : locale === "es"
                       ? "Casos reales de crecimiento"
                       : locale === "de"
@@ -132,7 +132,7 @@ const getTranslations = (locale: Locale) => {
                     channel: "WaveIGL",
                     description:
                         locale === "pt-BR"
-                            ? "Canal Gaming gerenciado por mim"
+                            ? "Gaming channel managed by me"
                             : locale === "es"
                               ? "Canal de Gaming gestionado por mí"
                               : locale === "de"
@@ -142,7 +142,7 @@ const getTranslations = (locale: Locale) => {
                         {
                             label:
                                 locale === "pt-BR"
-                                    ? "Views mensais"
+                                    ? "Monthly views"
                                     : locale === "es"
                                       ? "Vistas mensuales"
                                       : locale === "de"
@@ -153,7 +153,7 @@ const getTranslations = (locale: Locale) => {
                         {
                             label:
                                 locale === "pt-BR"
-                                    ? "Crescimento"
+                                    ? "Growth"
                                     : locale === "es"
                                       ? "Crecimiento"
                                       : locale === "de"
@@ -168,10 +168,10 @@ const getTranslations = (locale: Locale) => {
                     ],
                 },
                 {
-                    channel: "Gabriel Toth (desativado)",
+                    channel: "Gabriel Toth (inactive)",
                     description:
                         locale === "pt-BR"
-                            ? "Meu canal pessoal - Case histórico"
+                            ? "My personal channel - Historical case"
                             : locale === "es"
                               ? "Mi canal personal - Caso histórico"
                               : locale === "de"
@@ -181,7 +181,7 @@ const getTranslations = (locale: Locale) => {
                         {
                             label:
                                 locale === "pt-BR"
-                                    ? "Views totais"
+                                    ? "Total views"
                                     : locale === "es"
                                       ? "Vistas totales"
                                       : locale === "de"
@@ -192,7 +192,7 @@ const getTranslations = (locale: Locale) => {
                         {
                             label:
                                 locale === "pt-BR"
-                                    ? "Inscritos atuais"
+                                    ? "Current subscribers"
                                     : locale === "es"
                                       ? "Suscriptores actuales"
                                       : locale === "de"
@@ -203,7 +203,7 @@ const getTranslations = (locale: Locale) => {
                         {
                             label:
                                 locale === "pt-BR"
-                                    ? "Views com <1K subs"
+                                    ? "Views with <1K subs"
                                     : locale === "es"
                                       ? "Vistas con <1K subs"
                                       : locale === "de"
@@ -218,7 +218,7 @@ const getTranslations = (locale: Locale) => {
         cta: {
             title:
                 locale === "pt-BR"
-                    ? "Pronto para acelerar seu crescimento?"
+                    ? "Ready to accelerate your growth?"
                     : locale === "es"
                       ? "¿Listo para acelerar tu crecimiento?"
                       : locale === "de"
@@ -226,7 +226,7 @@ const getTranslations = (locale: Locale) => {
                         : "Ready to accelerate your growth?",
             description:
                 locale === "pt-BR"
-                    ? "Solicite uma consultoria personalizada e descubra como transformar seu canal"
+                    ? "Request a personalized consultation and discover how to transform your channel"
                     : locale === "es"
                       ? "Solicita una consultoría personalizada y descubre cómo transformar tu canal"
                       : locale === "de"
@@ -234,7 +234,7 @@ const getTranslations = (locale: Locale) => {
                         : "Request a personalized consultation and discover how to transform your channel",
             button:
                 locale === "pt-BR"
-                    ? "Solicitar Consultoria"
+                    ? "Request Consultation"
                     : locale === "es"
                       ? "Solicitar Consultoría"
                       : locale === "de"
@@ -246,7 +246,7 @@ const getTranslations = (locale: Locale) => {
                 value: "2M+",
                 label:
                     locale === "pt-BR"
-                        ? "Visualizações mensais gerenciadas"
+                        ? "Monthly views managed"
                         : locale === "es"
                           ? "Vistas mensuales gestionadas"
                           : locale === "de"
@@ -257,7 +257,7 @@ const getTranslations = (locale: Locale) => {
                 value: "300%",
                 label:
                     locale === "pt-BR"
-                        ? "Crescimento médio dos clientes"
+                        ? "Average client growth"
                         : locale === "es"
                           ? "Crecimiento medio de clientes"
                           : locale === "de"
@@ -268,7 +268,7 @@ const getTranslations = (locale: Locale) => {
                 value: "5+",
                 label:
                     locale === "pt-BR"
-                        ? "Anos de experiência"
+                        ? "Years of experience"
                         : locale === "es"
                           ? "Años de experiencia"
                           : locale === "de"
@@ -279,7 +279,7 @@ const getTranslations = (locale: Locale) => {
         pricing: {
             title:
                 locale === "pt-BR"
-                    ? "Planos de Consultoria"
+                    ? "Consulting Plans"
                     : locale === "es"
                       ? "Planes de Consultoría"
                       : locale === "de"
@@ -288,7 +288,7 @@ const getTranslations = (locale: Locale) => {
             express: {
                 name:
                     locale === "pt-BR"
-                        ? "Análise Express"
+                        ? "Express Analysis"
                         : locale === "es"
                           ? "Análisis Express"
                           : locale === "de"
@@ -297,7 +297,7 @@ const getTranslations = (locale: Locale) => {
                 price: "R$ 497",
                 description:
                     locale === "pt-BR"
-                        ? "Auditoria completa com relatório detalhado"
+                        ? "Complete audit with detailed report"
                         : locale === "es"
                           ? "Auditoría completa con informe detallado"
                           : locale === "de"

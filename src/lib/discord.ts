@@ -68,28 +68,28 @@ export async function notifyNewOrder(orderData: {
     whatsappNumber?: string
 }) {
     await sendDiscordNotification({
-        title: "💰 Novo Pedido Criado",
-        description: `Pedido **${orderData.trackingCode}** criado com sucesso!`,
+        title: "💰 New Order Created",
+        description: `Order **${orderData.trackingCode}** created successfully!`,
         color: 0x0099ff, // Blue
         fields: [
             {
-                name: "🔧 Serviço",
+                name: "🔧 Service",
                 value: orderData.serviceType,
                 inline: true,
             },
             {
-                name: "💰 Valor",
-                value: `R$ ${orderData.amount}`,
+                name: "💰 Amount",
+                value: `$${orderData.amount}`,
                 inline: true,
             },
             {
-                name: "💳 Método",
+                name: "💳 Method",
                 value: orderData.paymentMethod.toUpperCase(),
                 inline: true,
             },
             {
                 name: "📱 WhatsApp",
-                value: orderData.whatsappNumber || "Não informado",
+                value: orderData.whatsappNumber || "Not provided",
                 inline: true,
             },
         ],
@@ -104,22 +104,22 @@ export async function notifyPaymentConfirmed(orderData: {
     txHash?: string
 }) {
     await sendDiscordNotification({
-        title: "✅ Pagamento Confirmado!",
-        description: `Pedido **${orderData.trackingCode}** foi pago com sucesso!`,
+        title: "✅ Payment Confirmed!",
+        description: `Order **${orderData.trackingCode}** was paid successfully!`,
         color: 0x00ff00, // Green
         fields: [
             {
-                name: "🔧 Serviço",
+                name: "🔧 Service",
                 value: orderData.serviceType,
                 inline: true,
             },
             {
-                name: "💰 Valor",
-                value: `R$ ${orderData.amount}`,
+                name: "💰 Amount",
+                value: `$${orderData.amount}`,
                 inline: true,
             },
             {
-                name: "💳 Método",
+                name: "💳 Method",
                 value: orderData.paymentMethod.toUpperCase(),
                 inline: true,
             },
@@ -142,24 +142,24 @@ export async function notifyWhatsAppMessage(data: {
     action: string
 }) {
     await sendDiscordNotification({
-        title: "💬 Mensagem WhatsApp",
-        description: "Nova mensagem do WhatsApp",
+        title: "💬 WhatsApp Message",
+        description: "New message from WhatsApp",
         color: 0x25d366, // WhatsApp green
         fields: [
             {
-                name: "📱 Número",
+                name: "📱 Number",
                 value: data.from,
                 inline: true,
             },
             {
-                name: "💬 Mensagem",
+                name: "💬 Message",
                 value:
                     data.message.substring(0, 100) +
                     (data.message.length > 100 ? "..." : ""),
                 inline: false,
             },
             {
-                name: "⚡ Ação",
+                name: "⚡ Action",
                 value: data.action,
                 inline: true,
             },
@@ -173,19 +173,19 @@ export async function notifyError(error: {
     details?: string
 }) {
     await sendDiscordNotification({
-        title: "❌ Erro no Sistema",
-        description: `Erro detectado: **${error.type}**`,
+        title: "❌ System Error",
+        description: `Error detected: **${error.type}**`,
         color: 0xff0000, // Red
         fields: [
             {
-                name: "🚨 Erro",
+                name: "🚨 Error",
                 value: error.message,
                 inline: false,
             },
             ...(error.details
                 ? [
                       {
-                          name: "📋 Detalhes",
+                          name: "📋 Details",
                           value: error.details.substring(0, 500),
                           inline: false,
                       },

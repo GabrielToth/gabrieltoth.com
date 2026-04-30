@@ -23,22 +23,22 @@ export const CREDIT_PACKAGES = {
 // Subscription tiers
 export const SUBSCRIPTION_TIERS = {
     basic: {
-        name: "Básico",
+        name: "Basic",
         creditsPerMonth: 100_000,
         priceId: "price_sub_basic",
-        priceMonthly: 1000, // R$ 10.00 in cents
+        priceMonthly: 1000, // $10.00 in cents
     },
     pro: {
         name: "Pro",
         creditsPerMonth: 500_000,
         priceId: "price_sub_pro",
-        priceMonthly: 5000, // R$ 50.00 in cents
+        priceMonthly: 5000, // $50.00 in cents
     },
     enterprise: {
         name: "Enterprise",
         creditsPerMonth: 2_000_000,
         priceId: "price_sub_enterprise",
-        priceMonthly: 20000, // R$ 200.00 in cents
+        priceMonthly: 20000, // $200.00 in cents
     },
 } as const
 

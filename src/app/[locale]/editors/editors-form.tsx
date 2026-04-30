@@ -24,194 +24,186 @@ const getTranslations = (locale: Locale, type: string) => {
         return {
             title:
                 locale === "pt-BR"
-                    ? "Solicitar Consultoria de Canal"
+                    ? "Request Channel Consulting"
                     : "Request Channel Consulting",
             subtitle:
                 locale === "pt-BR"
-                    ? "Preencha as informações do seu canal para uma análise personalizada"
+                    ? "Fill in your channel information for a personalized analysis"
                     : "Fill in your channel information for a personalized analysis",
             form: {
                 personalInfo:
                     locale === "pt-BR"
-                        ? "Informações Pessoais"
+                        ? "Personal Information"
                         : "Personal Information",
-                name: locale === "pt-BR" ? "Nome completo" : "Full name",
+                name: locale === "pt-BR" ? "Full name" : "Full name",
                 email: locale === "pt-BR" ? "Email" : "Email",
                 channelInfo:
                     locale === "pt-BR"
-                        ? "Informações do Canal"
+                        ? "Channel Information"
                         : "Channel Information",
                 channelName:
-                    locale === "pt-BR" ? "Nome do canal" : "Channel name",
+                    locale === "pt-BR" ? "Channel name" : "Channel name",
                 channelUrl:
                     locale === "pt-BR"
-                        ? "URL do canal (YouTube)"
+                        ? "Channel URL (YouTube)"
                         : "Channel URL (YouTube)",
                 subscribers:
                     locale === "pt-BR"
-                        ? "Número de inscritos"
+                        ? "Number of subscribers"
                         : "Number of subscribers",
                 monthlyViews:
-                    locale === "pt-BR"
-                        ? "Visualizações mensais"
-                        : "Monthly views",
+                    locale === "pt-BR" ? "Monthly views" : "Monthly views",
                 currentRevenue:
                     locale === "pt-BR"
-                        ? "Receita mensal atual (R$)"
+                        ? "Current monthly revenue (R$)"
                         : "Current monthly revenue (R$)",
                 goals:
                     locale === "pt-BR"
-                        ? "Objetivos e Desafios"
+                        ? "Goals and Challenges"
                         : "Goals and Challenges",
-                mainGoal:
-                    locale === "pt-BR" ? "Principal objetivo" : "Main goal",
+                mainGoal: locale === "pt-BR" ? "Main goal" : "Main goal",
                 biggestChallenge:
                     locale === "pt-BR"
-                        ? "Maior desafio atual"
+                        ? "Biggest current challenge"
                         : "Biggest current challenge",
                 expectedGrowth:
                     locale === "pt-BR"
-                        ? "Crescimento esperado (%)"
+                        ? "Expected growth (%)"
                         : "Expected growth (%)",
                 budget:
                     locale === "pt-BR"
-                        ? "Orçamento para consultoria (R$)"
+                        ? "Consulting budget (R$)"
                         : "Consulting budget (R$)",
                 additionalInfo:
                     locale === "pt-BR"
-                        ? "Informações adicionais"
+                        ? "Additional information"
                         : "Additional information",
                 submit:
                     locale === "pt-BR"
-                        ? "Solicitar Consultoria"
+                        ? "Request Consulting"
                         : "Request Consulting",
             },
             placeholders: {
-                name:
-                    locale === "pt-BR" ? "Seu nome completo" : "Your full name",
-                email: locale === "pt-BR" ? "seu@email.com" : "your@email.com",
+                name: locale === "pt-BR" ? "Your full name" : "Your full name",
+                email: locale === "pt-BR" ? "your@email.com" : "your@email.com",
                 channelName:
                     locale === "pt-BR"
-                        ? "Nome do seu canal"
+                        ? "Your channel name"
                         : "Your channel name",
                 channelUrl:
                     locale === "pt-BR"
-                        ? "https://youtube.com/@seucanal"
+                        ? "https://youtube.com/@yourchannel"
                         : "https://youtube.com/@yourchannel",
                 subscribers: locale === "pt-BR" ? "Ex: 10000" : "Ex: 10000",
                 monthlyViews: locale === "pt-BR" ? "Ex: 100000" : "Ex: 100000",
                 currentRevenue: locale === "pt-BR" ? "Ex: 5000" : "Ex: 5000",
                 mainGoal:
                     locale === "pt-BR"
-                        ? "Ex: Aumentar monetização, crescer audiência..."
+                        ? "Ex: Increase monetization, grow audience..."
                         : "Ex: Increase monetization, grow audience...",
                 biggestChallenge:
                     locale === "pt-BR"
-                        ? "Ex: Baixo engajamento, views estagnadas..."
+                        ? "Ex: Low engagement, stagnant views..."
                         : "Ex: Low engagement, stagnant views...",
                 expectedGrowth:
                     locale === "pt-BR"
-                        ? "Ex: 200% em 6 meses"
+                        ? "Ex: 200% in 6 months"
                         : "Ex: 200% in 6 months",
                 budget: locale === "pt-BR" ? "Ex: 1500" : "Ex: 1500",
                 additionalInfo:
                     locale === "pt-BR"
-                        ? "Conte mais sobre seu canal e necessidades..."
+                        ? "Tell us more about your channel and needs..."
                         : "Tell us more about your channel and needs...",
             },
         }
     } else {
         return {
-            title:
-                locale === "pt-BR" ? "Aplicar como Editor" : "Apply as Editor",
+            title: locale === "pt-BR" ? "Apply as Editor" : "Apply as Editor",
             subtitle:
                 locale === "pt-BR"
-                    ? "Junte-se à nossa equipe de editores talentosos"
+                    ? "Join our team of talented editors"
                     : "Join our team of talented editors",
             form: {
                 personalInfo:
                     locale === "pt-BR"
-                        ? "Informações Pessoais"
+                        ? "Personal Information"
                         : "Personal Information",
-                name: locale === "pt-BR" ? "Nome completo" : "Full name",
+                name: locale === "pt-BR" ? "Full name" : "Full name",
                 email: locale === "pt-BR" ? "Email" : "Email",
-                age: locale === "pt-BR" ? "Idade" : "Age",
-                location: locale === "pt-BR" ? "Localização" : "Location",
-                experience: locale === "pt-BR" ? "Experiência" : "Experience",
+                age: locale === "pt-BR" ? "Age" : "Age",
+                location: locale === "pt-BR" ? "Location" : "Location",
+                experience: locale === "pt-BR" ? "Experience" : "Experience",
                 experienceLevel:
                     locale === "pt-BR"
-                        ? "Nível de experiência"
+                        ? "Experience level"
                         : "Experience level",
                 software:
                     locale === "pt-BR"
-                        ? "Softwares de edição"
+                        ? "Editing software"
                         : "Editing software",
-                portfolio: locale === "pt-BR" ? "Portfólio" : "Portfolio",
+                portfolio: locale === "pt-BR" ? "Portfolio" : "Portfolio",
                 portfolioUrl:
-                    locale === "pt-BR" ? "Link do portfólio" : "Portfolio link",
-                sampleWork:
-                    locale === "pt-BR" ? "Trabalho de amostra" : "Sample work",
-                workStyle:
-                    locale === "pt-BR" ? "Estilo de trabalho" : "Work style",
+                    locale === "pt-BR" ? "Portfolio link" : "Portfolio link",
+                sampleWork: locale === "pt-BR" ? "Sample work" : "Sample work",
+                workStyle: locale === "pt-BR" ? "Work style" : "Work style",
                 availability:
-                    locale === "pt-BR" ? "Disponibilidade" : "Availability",
+                    locale === "pt-BR" ? "Availability" : "Availability",
                 hoursPerWeek:
-                    locale === "pt-BR" ? "Horas por semana" : "Hours per week",
+                    locale === "pt-BR" ? "Hours per week" : "Hours per week",
                 preferredContent:
                     locale === "pt-BR"
-                        ? "Tipo de conteúdo preferido"
+                        ? "Preferred content type"
                         : "Preferred content type",
                 expectedRate:
                     locale === "pt-BR"
-                        ? "Taxa esperada (R$/hora)"
+                        ? "Expected rate (R$/hour)"
                         : "Expected rate (R$/hour)",
-                motivation: locale === "pt-BR" ? "Motivação" : "Motivation",
+                motivation: locale === "pt-BR" ? "Motivation" : "Motivation",
                 whyJoin:
                     locale === "pt-BR"
-                        ? "Por que quer se juntar?"
+                        ? "Why do you want to join?"
                         : "Why do you want to join?",
                 submit:
                     locale === "pt-BR"
-                        ? "Enviar Aplicação"
+                        ? "Submit Application"
                         : "Submit Application",
             },
             placeholders: {
-                name:
-                    locale === "pt-BR" ? "Seu nome completo" : "Your full name",
-                email: locale === "pt-BR" ? "seu@email.com" : "your@email.com",
+                name: locale === "pt-BR" ? "Your full name" : "Your full name",
+                email: locale === "pt-BR" ? "your@email.com" : "your@email.com",
                 age: locale === "pt-BR" ? "Ex: 25" : "Ex: 25",
-                location: locale === "pt-BR" ? "Cidade, Estado" : "City, State",
+                location: locale === "pt-BR" ? "City, State" : "City, State",
                 software:
                     locale === "pt-BR"
                         ? "Ex: Adobe Premiere, After Effects, DaVinci..."
                         : "Ex: Adobe Premiere, After Effects, DaVinci...",
                 portfolioUrl:
                     locale === "pt-BR"
-                        ? "https://seu-portfolio.com"
+                        ? "https://your-portfolio.com"
                         : "https://your-portfolio.com",
                 sampleWork:
                     locale === "pt-BR"
-                        ? "Link para vídeo editado por você"
+                        ? "Link to video edited by you"
                         : "Link to video edited by you",
                 hoursPerWeek: locale === "pt-BR" ? "Ex: 20" : "Ex: 20",
                 preferredContent:
                     locale === "pt-BR"
-                        ? "Gaming, vlogs, educacional..."
+                        ? "Gaming, vlogs, educational..."
                         : "Gaming, vlogs, educational...",
                 expectedRate: locale === "pt-BR" ? "Ex: 50" : "Ex: 50",
                 whyJoin:
                     locale === "pt-BR"
-                        ? "Conte sobre sua paixão por edição e objetivos..."
+                        ? "Tell us about your passion for editing and goals..."
                         : "Tell us about your passion for editing and goals...",
             },
             options: {
                 experienceLevel:
                     locale === "pt-BR"
                         ? [
-                              "Iniciante",
-                              "Intermediário",
-                              "Avançado",
-                              "Profissional",
+                              "Beginner",
+                              "Intermediate",
+                              "Advanced",
+                              "Professional",
                           ]
                         : [
                               "Beginner",
@@ -251,8 +243,8 @@ export default function ApplicationForm({
                     email: formData.email,
                     subject:
                         type === "channel-management"
-                            ? "Solicitação de Consultoria de Canal"
-                            : "Aplicação para Editor",
+                            ? "Channel Consulting Request"
+                            : "Editor Application",
                     message: JSON.stringify(formData, null, 2),
                     type: type,
                 }),
@@ -278,12 +270,12 @@ export default function ApplicationForm({
                 </div>
                 <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
                     {locale === "pt-BR"
-                        ? "Aplicação Enviada!"
+                        ? "Application Submitted!"
                         : "Application Submitted!"}
                 </h3>
                 <p className="text-gray-600 dark:text-gray-300">
                     {locale === "pt-BR"
-                        ? "Obrigado! Analisaremos sua aplicação e entraremos em contato em breve."
+                        ? "Thank you! We'll review your application and get back to you soon."
                         : "Thank you! We'll review your application and get back to you soon."}
                 </p>
             </Card>
@@ -500,7 +492,7 @@ export default function ApplicationForm({
                                     aria-label={t.form.experienceLevel}
                                     className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-800 dark:text-white"
                                 >
-                                    <option value="">Selecione...</option>
+                                    <option value="">Select...</option>
                                     {t.options?.experienceLevel.map(level => (
                                         <option key={level} value={level}>
                                             {level}

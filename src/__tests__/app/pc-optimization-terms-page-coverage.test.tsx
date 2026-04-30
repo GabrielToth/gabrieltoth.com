@@ -59,7 +59,7 @@ describe("pc-optimization terms page coverage", () => {
             render(element)
         })
         const back = await screen.findByRole("link", {
-            name: /zurück zur pc-optimierung/i,
+            name: /back to pc optimization/i,
         })
         expect((back as HTMLAnchorElement).getAttribute("href")).toBe(
             "/de/pc-optimization"

@@ -1,13 +1,13 @@
 import { type MultipleChoiceQuestion } from "./schema"
 
 export const editorialChecklist: ReadonlyArray<string> = [
-    "Prompt claro, objetivo e sem ambiguidade",
-    "Alternativas plausíveis e uma única correta",
-    "Sem pistas óbvias (comprimento, padrões de letras, etc.)",
-    "Conteúdo coerente com a categoria e nível de dificuldade",
-    "Sem dependência de idioma para categorias não linguísticas",
-    "Fonte indicada quando houver imagem/hotlink",
-    "Evitar conteúdo sensível ou enviesado",
+    "Clear, objective, and unambiguous prompt",
+    "Plausible alternatives with a single correct answer",
+    "No obvious hints (length, letter patterns, etc.)",
+    "Content coherent with category and difficulty level",
+    "No language dependency for non-linguistic categories",
+    "Source indicated when there is an image/hotlink",
+    "Avoid sensitive or biased content",
 ]
 
 export interface EditorialResult {
@@ -21,13 +21,13 @@ export const runEditorialChecklist = (
 ): EditorialResult => {
     const notes: string[] = []
     if (q.prompt.length < 8) {
-        notes.push("Prompt muito curto")
+        notes.push("Prompt too short")
     }
     if (q.choices.some(c => c.trim().length === 0)) {
-        notes.push("Alguma alternativa está vazia")
+        notes.push("Some alternative is empty")
     }
     if (new Set(q.choices.map(c => c.trim())).size !== 4) {
-        notes.push("Alternativas duplicadas (após trim)")
+        notes.push("Duplicate alternatives (after trim)")
     }
     const passed = notes.length === 0
     return { questionId: q.id, passed, notes }

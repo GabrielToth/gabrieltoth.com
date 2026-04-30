@@ -80,7 +80,7 @@ describe("app/[locale]/editors/editors-form coverage", () => {
         )
 
         fireEvent.click(
-            screen.getByRole("button", { name: /solicitar consultoria/i })
+            screen.getByRole("button", { name: /request consulting/i })
         )
 
         expect(fetchSpy).toHaveBeenCalledWith(

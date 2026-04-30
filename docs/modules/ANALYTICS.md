@@ -1,37 +1,37 @@
-# Módulo: Analytics
+# Module: Analytics
 
-## Descrição
+## Description
 
-Dashboard de métricas agregadas de todas as plataformas vinculadas.
+Aggregated metrics dashboard from all linked platforms.
 
-## Funcionalidades
+## Features
 
-- Visão unificada de todas plataformas
-- Gráficos por dia (últimos 30 dias)
-- Filtros por plataforma/canal
-- Visão de consumo de créditos/infra
+- Unified view of all platforms
+- Daily charts (last 30 days)
+- Filters by platform/channel
+- Credit/infrastructure consumption view
 
-## Arquivos
+## Files
 
 - `src/app/api/platform/analytics/route.ts` - API endpoints
 
-## Métricas Coletadas
+## Collected Metrics
 
-| Plataforma | Métricas                 |
-| ---------- | ------------------------ |
-| YouTube    | Views, subs, watch time  |
-| Twitch     | Viewers, followers, subs |
-| TikTok     | Views, likes, shares     |
+| Platform | Metrics                  |
+| -------- | ------------------------ |
+| YouTube  | Views, subs, watch time  |
+| Twitch   | Viewers, followers, subs |
+| TikTok   | Views, likes, shares     |
 
-## Custo
+## Cost
 
-- Acesso diário ao dashboard: 1.000 créditos
+- Daily dashboard access: 1,000 credits
 
-## Visões
+## Views
 
-1. **Criador**: Vê seu próprio consumo e métricas
-2. **Admin**: Vê lucro/custo por usuário
+1. **Creator**: Sees their own consumption and metrics
+2. **Admin**: Sees profit/cost per user
 
-## Status: 🟡 PARCIALMENTE IMPLEMENTADO
+## Status: 🟡 PARTIALLY IMPLEMENTED
 
-Endpoint básico criado. Falta: coleta de métricas externas.
+Basic endpoint created. Missing: external metrics collection.
