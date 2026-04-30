@@ -1,6 +1,6 @@
 import UnifiedSignInForm from "@/components/auth/unified-signin-form"
 import { Metadata } from "next"
-import { useTranslations } from "next-intl"
+import { getTranslations } from "next-intl/server"
 
 interface SignInPageProps {
     params: Promise<{
@@ -12,7 +12,7 @@ export async function generateMetadata({
     params,
 }: SignInPageProps): Promise<Metadata> {
     const { locale } = await params
-    const t = useTranslations("auth")
+    const t = await getTranslations({ locale, namespace: "auth" })
 
     return {
         title: t("signin.title"),
@@ -22,7 +22,7 @@ export async function generateMetadata({
 
 export default async function SignInPage({ params }: SignInPageProps) {
     const { locale } = await params
-    const t = useTranslations("auth")
+    const t = await getTranslations({ locale, namespace: "auth" })
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center px-4 py-12">
