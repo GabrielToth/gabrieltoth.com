@@ -1,4 +1,5 @@
 import { logEmailVerification } from "@/lib/auth/audit-logging"
+import { sendVerificationEmail } from "@/lib/auth/email-service"
 import {
     createErrorResponse,
     createSuccessResponse,
@@ -18,7 +19,7 @@ const VERIFICATION_TOKEN_EXPIRY = parseInt(
 export async function POST(request: NextRequest) {
     try {
         const body = await request.json()
-        const { email, userId } = body
+        const { email, userId, locale = "en" } = body
 
         if (!email || !userId) {
             return NextResponse.json(
@@ -71,9 +72,24 @@ export async function POST(request: NextRequest) {
             )
         }
 
-        // TODO: Send email with verification link
-        // const verificationLink = `${process.env.NEXT_PUBLIC_API_URL}/verify-email?token=${token}`
-        // await sendVerificationEmail(email, verificationLink)
+        // Send verification email
+        const verificationLink = `${process.env.NEXT_PUBLIC_APP_URL}/${locale}/auth/verify-email?token=${token}`
+        const emailSent = await sendVerificationEmail(
+            email,
+            verificationLink,
+            locale
+        )
+
+        if (!emailSent) {
+            console.error("Failed to send verification email to:", email)
+            return NextResponse.json(
+                createErrorResponse(
+                    "EMAIL_SEND_FAILED",
+                    "Failed to send verification email"
+                ),
+                { status: 500 }
+            )
+        }
 
         // Log email verification event
         await logEmailVerification(email, "", userId)
@@ -95,4 +111,10 @@ export async function POST(request: NextRequest) {
             { status: 500 }
         )
     }
+}
+
+function generateRandomHex(length: number): string {
+    return Array.from(crypto.getRandomValues(new Uint8Array(length)))
+        .map(b => b.toString(16).padStart(2, "0"))
+        .join("")
 }
