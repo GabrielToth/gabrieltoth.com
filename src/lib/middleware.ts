@@ -6,30 +6,37 @@ export async function updateSession(request: NextRequest) {
         request,
     })
 
+    const url = process.env.NEXT_PUBLIC_SUPABASE_URL
+    const key = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
+
+    if (!url || !key) {
+        console.error(
+            "Missing Supabase environment variables in middleware. " +
+                "Please ensure NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY are set."
+        )
+        return supabaseResponse
+    }
+
     // With Fluid compute, don't put this client in a global environment
     // variable. Always create a new one on each request.
-    const supabase = createServerClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
-        {
-            cookies: {
-                getAll() {
-                    return request.cookies.getAll()
-                },
-                setAll(cookiesToSet) {
-                    cookiesToSet.forEach(({ name, value }) =>
-                        request.cookies.set(name, value)
-                    )
-                    supabaseResponse = NextResponse.next({
-                        request,
-                    })
-                    cookiesToSet.forEach(({ name, value, options }) =>
-                        supabaseResponse.cookies.set(name, value, options)
-                    )
-                },
+    const supabase = createServerClient(url, key, {
+        cookies: {
+            getAll() {
+                return request.cookies.getAll()
             },
-        }
-    )
+            setAll(cookiesToSet) {
+                cookiesToSet.forEach(({ name, value }) =>
+                    request.cookies.set(name, value)
+                )
+                supabaseResponse = NextResponse.next({
+                    request,
+                })
+                cookiesToSet.forEach(({ name, value, options }) =>
+                    supabaseResponse.cookies.set(name, value, options)
+                )
+            },
+        },
+    })
 
     // Do not run code between createServerClient and
     // supabase.auth.getClaims(). A simple mistake could make it very hard to debug
