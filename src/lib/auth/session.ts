@@ -1,8 +1,9 @@
 /**
  * Session Management Module
  * Handles session creation, validation, and removal for authenticated users
+ * Includes Remember Me token functionality and secure cookie storage
  *
- * Validates: Requirements 4.1, 4.2, 4.3, 4.4, 4.5, 4.6, 4.7, 5.1, 5.2
+ * Validates: Requirements 4.1, 4.2, 4.3, 4.4, 4.5, 4.6, 4.7, 5.1, 5.2, 5.3, 5.4, 5.5, 5.6, 5.7, 5.8
  */
 
 import { generateRandomHex } from "@/lib/crypto-utils"
@@ -17,6 +18,31 @@ const { queryOne, query } = db
  */
 const SESSION_EXPIRATION_DAYS = 30
 const SESSION_ID_LENGTH = 32 // 32 bytes = 256 bits
+const SESSION_TOKEN_EXPIRATION_HOURS = 1
+const REMEMBER_ME_TOKEN_EXPIRATION_DAYS = 30
+const TOKEN_LENGTH = 32 // 32 bytes = 256 bits
+
+/**
+ * Secure cookie options for session tokens (1 hour expiration)
+ */
+const SESSION_COOKIE_OPTIONS = {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "strict" as const,
+    maxAge: SESSION_TOKEN_EXPIRATION_HOURS * 60 * 60, // 1 hour in seconds
+    path: "/",
+}
+
+/**
+ * Secure cookie options for Remember Me tokens (30 days expiration)
+ */
+const REMEMBER_ME_COOKIE_OPTIONS = {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "strict" as const,
+    maxAge: REMEMBER_ME_TOKEN_EXPIRATION_DAYS * 24 * 60 * 60, // 30 days in seconds
+    path: "/",
+}
 
 /**
  * Create a new session for an authenticated user
@@ -247,5 +273,418 @@ export async function getSessionFromCookie(
             error: error as Error,
         })
         return null
+    }
+}
+
+/**
+ * Generate a cryptographically secure session token
+ *
+ * This function:
+ * 1. Generates a cryptographically secure random token (32 bytes)
+ * 2. Returns the token as a hex string
+ *
+ * @returns Cryptographically secure session token (64-character hex string)
+ *
+ * Validates: Requirements 5.1
+ */
+export function generateSessionToken(): string {
+    try {
+        const token = generateRandomHex(TOKEN_LENGTH)
+
+        logger.debug("Session token generated", {
+            context: "Auth",
+            data: {
+                tokenLength: token.length,
+                tokenPreview: token.substring(0, 8) + "...",
+            },
+        })
+
+        return token
+    } catch (error) {
+        logger.error("Failed to generate session token", {
+            context: "Auth",
+            error: error as Error,
+        })
+        throw error
+    }
+}
+
+/**
+ * Generate a cryptographically secure Remember Me token
+ *
+ * This function:
+ * 1. Generates a cryptographically secure random token (32 bytes)
+ * 2. Returns the token as a hex string
+ *
+ * @returns Cryptographically secure Remember Me token (64-character hex string)
+ *
+ * Validates: Requirements 5.2
+ */
+export function generateRememberMeToken(): string {
+    try {
+        const token = generateRandomHex(TOKEN_LENGTH)
+
+        logger.debug("Remember Me token generated", {
+            context: "Auth",
+            data: {
+                tokenLength: token.length,
+                tokenPreview: token.substring(0, 8) + "...",
+            },
+        })
+
+        return token
+    } catch (error) {
+        logger.error("Failed to generate Remember Me token", {
+            context: "Auth",
+            error: error as Error,
+        })
+        throw error
+    }
+}
+
+/**
+ * Store session token in a secure HTTP-Only cookie
+ *
+ * This function:
+ * 1. Validates the token
+ * 2. Sets a secure HTTP-Only cookie with 1-hour expiration
+ * 3. Includes Secure and SameSite=Strict flags
+ *
+ * @param token - The session token to store
+ * @throws Error if token is invalid or cookie setting fails
+ *
+ * Validates: Requirements 5.3
+ */
+export async function storeSessionToken(token: string): Promise<void> {
+    try {
+        // Validate token
+        if (!token || typeof token !== "string" || token.length === 0) {
+            throw new Error("Invalid session token provided")
+        }
+
+        // Get cookies from Next.js
+        const cookieStore = await cookies()
+
+        // Set secure cookie
+        cookieStore.set("session_token", token, SESSION_COOKIE_OPTIONS)
+
+        logger.debug("Session token stored in cookie", {
+            context: "Auth",
+            data: {
+                tokenPreview: token.substring(0, 8) + "...",
+                expirationHours: SESSION_TOKEN_EXPIRATION_HOURS,
+            },
+        })
+    } catch (error) {
+        logger.error("Failed to store session token", {
+            context: "Auth",
+            error: error as Error,
+        })
+        throw error
+    }
+}
+
+/**
+ * Store Remember Me token in a secure HTTP-Only cookie
+ *
+ * This function:
+ * 1. Validates the token
+ * 2. Sets a secure HTTP-Only cookie with 30-day expiration
+ * 3. Includes Secure and SameSite=Strict flags
+ *
+ * @param token - The Remember Me token to store
+ * @throws Error if token is invalid or cookie setting fails
+ *
+ * Validates: Requirements 5.4
+ */
+export async function storeRememberMeToken(token: string): Promise<void> {
+    try {
+        // Validate token
+        if (!token || typeof token !== "string" || token.length === 0) {
+            throw new Error("Invalid Remember Me token provided")
+        }
+
+        // Get cookies from Next.js
+        const cookieStore = await cookies()
+
+        // Set secure cookie
+        cookieStore.set("remember_me_token", token, REMEMBER_ME_COOKIE_OPTIONS)
+
+        logger.debug("Remember Me token stored in cookie", {
+            context: "Auth",
+            data: {
+                tokenPreview: token.substring(0, 8) + "...",
+                expirationDays: REMEMBER_ME_TOKEN_EXPIRATION_DAYS,
+            },
+        })
+    } catch (error) {
+        logger.error("Failed to store Remember Me token", {
+            context: "Auth",
+            error: error as Error,
+        })
+        throw error
+    }
+}
+
+/**
+ * Validate a session token
+ *
+ * This function:
+ * 1. Validates the token format
+ * 2. Checks if token exists and is not expired
+ * 3. Returns true if valid, false otherwise
+ *
+ * @param token - The session token to validate
+ * @returns true if token is valid and not expired, false otherwise
+ *
+ * Validates: Requirements 5.5
+ */
+export async function validateSessionToken(token: string): Promise<boolean> {
+    try {
+        // Validate token format
+        if (!token || typeof token !== "string" || token.length === 0) {
+            logger.warn(
+                "Invalid session token format provided for validation",
+                {
+                    context: "Auth",
+                }
+            )
+            return false
+        }
+
+        // Check if token exists in database
+        const sessionToken = await queryOne<{
+            id: string
+            user_id: string
+            token_hash: string
+            expires_at: Date
+        }>(
+            `SELECT id, user_id, token_hash, expires_at
+             FROM session_tokens
+             WHERE token_hash = $1`,
+            [token]
+        )
+
+        // Token not found
+        if (!sessionToken) {
+            logger.debug("Session token not found", {
+                context: "Auth",
+                data: { tokenPreview: token.substring(0, 8) + "..." },
+            })
+            return false
+        }
+
+        // Check if token is expired
+        const now = new Date()
+        const expiresAt = new Date(sessionToken.expires_at)
+
+        if (expiresAt < now) {
+            logger.debug("Session token expired", {
+                context: "Auth",
+                data: {
+                    userId: sessionToken.user_id,
+                    expiresAt: expiresAt.toISOString(),
+                },
+            })
+            return false
+        }
+
+        // Token is valid
+        logger.debug("Session token validated successfully", {
+            context: "Auth",
+            data: {
+                userId: sessionToken.user_id,
+                expiresAt: expiresAt.toISOString(),
+            },
+        })
+
+        return true
+    } catch (error) {
+        logger.error("Failed to validate session token", {
+            context: "Auth",
+            error: error as Error,
+            data: { tokenPreview: token?.substring(0, 8) + "..." },
+        })
+        throw error
+    }
+}
+
+/**
+ * Validate a Remember Me token
+ *
+ * This function:
+ * 1. Validates the token format
+ * 2. Checks if token exists and is not expired
+ * 3. Returns true if valid, false otherwise
+ *
+ * @param token - The Remember Me token to validate
+ * @returns true if token is valid and not expired, false otherwise
+ *
+ * Validates: Requirements 5.6
+ */
+export async function validateRememberMeToken(token: string): Promise<boolean> {
+    try {
+        // Validate token format
+        if (!token || typeof token !== "string" || token.length === 0) {
+            logger.warn(
+                "Invalid Remember Me token format provided for validation",
+                {
+                    context: "Auth",
+                }
+            )
+            return false
+        }
+
+        // Check if token exists in database
+        const rememberMeToken = await queryOne<{
+            id: string
+            user_id: string
+            token_hash: string
+            expires_at: Date
+        }>(
+            `SELECT id, user_id, token_hash, expires_at
+             FROM remember_me_tokens
+             WHERE token_hash = $1`,
+            [token]
+        )
+
+        // Token not found
+        if (!rememberMeToken) {
+            logger.debug("Remember Me token not found", {
+                context: "Auth",
+                data: { tokenPreview: token.substring(0, 8) + "..." },
+            })
+            return false
+        }
+
+        // Check if token is expired
+        const now = new Date()
+        const expiresAt = new Date(rememberMeToken.expires_at)
+
+        if (expiresAt < now) {
+            logger.debug("Remember Me token expired", {
+                context: "Auth",
+                data: {
+                    userId: rememberMeToken.user_id,
+                    expiresAt: expiresAt.toISOString(),
+                },
+            })
+            return false
+        }
+
+        // Token is valid
+        logger.debug("Remember Me token validated successfully", {
+            context: "Auth",
+            data: {
+                userId: rememberMeToken.user_id,
+                expiresAt: expiresAt.toISOString(),
+            },
+        })
+
+        return true
+    } catch (error) {
+        logger.error("Failed to validate Remember Me token", {
+            context: "Auth",
+            error: error as Error,
+            data: { tokenPreview: token?.substring(0, 8) + "..." },
+        })
+        throw error
+    }
+}
+
+/**
+ * Refresh a session token by extending its expiration
+ *
+ * This function:
+ * 1. Validates the token exists and is not expired
+ * 2. Updates the token's expiration to 1 hour from now
+ * 3. Returns the new expiration date
+ *
+ * @param token - The session token to refresh
+ * @returns New expiration date if successful, null if token invalid or expired
+ * @throws Error if database operation fails
+ *
+ * Validates: Requirements 5.7
+ */
+export async function refreshSessionToken(token: string): Promise<Date | null> {
+    try {
+        // Validate token format
+        if (!token || typeof token !== "string" || token.length === 0) {
+            logger.warn("Invalid session token format provided for refresh", {
+                context: "Auth",
+            })
+            return null
+        }
+
+        // Check if token exists and is not expired
+        const sessionToken = await queryOne<{
+            id: string
+            user_id: string
+            expires_at: Date
+        }>(
+            `SELECT id, user_id, expires_at
+             FROM session_tokens
+             WHERE token_hash = $1`,
+            [token]
+        )
+
+        // Token not found
+        if (!sessionToken) {
+            logger.debug("Session token not found for refresh", {
+                context: "Auth",
+                data: { tokenPreview: token.substring(0, 8) + "..." },
+            })
+            return null
+        }
+
+        // Check if token is expired
+        const now = new Date()
+        const expiresAt = new Date(sessionToken.expires_at)
+
+        if (expiresAt < now) {
+            logger.debug("Session token expired, cannot refresh", {
+                context: "Auth",
+                data: {
+                    userId: sessionToken.user_id,
+                    expiresAt: expiresAt.toISOString(),
+                },
+            })
+            return null
+        }
+
+        // Calculate new expiration (1 hour from now)
+        const newExpiresAt = new Date(
+            now.getTime() + SESSION_TOKEN_EXPIRATION_HOURS * 60 * 60 * 1000
+        )
+
+        // Update token expiration in database
+        const updated = await queryOne<{ expires_at: Date }>(
+            `UPDATE session_tokens
+             SET expires_at = $1
+             WHERE token_hash = $2
+             RETURNING expires_at`,
+            [newExpiresAt, token]
+        )
+
+        if (!updated) {
+            throw new Error("Failed to update session token expiration")
+        }
+
+        logger.debug("Session token refreshed successfully", {
+            context: "Auth",
+            data: {
+                userId: sessionToken.user_id,
+                newExpiresAt: newExpiresAt.toISOString(),
+            },
+        })
+
+        return newExpiresAt
+    } catch (error) {
+        logger.error("Failed to refresh session token", {
+            context: "Auth",
+            error: error as Error,
+            data: { tokenPreview: token?.substring(0, 8) + "..." },
+        })
+        throw error
     }
 }

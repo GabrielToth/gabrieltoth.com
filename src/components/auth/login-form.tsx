@@ -2,8 +2,8 @@
 
 /**
  * LoginForm Component
- * Provides user login with real-time validation
- * Validates: Requirements 3.1, 3.2, 3.3, 3.5, 3.6, 3.7, 3.8, 3.9, 8.1, 8.2, 8.3, 8.4, 8.5, 8.6
+ * Provides user login with real-time validation, CSRF protection, and accessibility
+ * Validates: Requirements 2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 2.7, 3.1, 3.2, 3.3, 3.5, 3.6, 3.7, 3.8, 3.9, 8.1, 8.2, 8.3, 8.4, 8.5, 8.6, 14.1, 14.2, 14.3, 14.4, 14.5, 14.6, 14.7, 15.1, 15.2, 15.3, 15.4, 15.5, 15.6, 15.7, 15.8
  */
 
 import { FieldError, ServerError } from "@/components/auth/error-display"
@@ -12,7 +12,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { validateEmail } from "@/lib/validation"
 import { useRouter } from "next/navigation"
-import { FormEvent, useEffect, useState } from "react"
+import { FormEvent, useEffect, useRef, useState } from "react"
 
 interface LoginFormProps {
     locale: string
@@ -31,7 +31,7 @@ interface ValidationErrors {
 
 /**
  * LoginForm Component
- * Requirement 3.1, 3.2, 3.3, 3.5, 3.6, 3.7, 3.8, 3.9, 8.1, 8.2, 8.3, 8.4, 8.5, 8.6
+ * Requirement 2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 2.7, 3.1, 3.2, 3.3, 3.5, 3.6, 3.7, 3.8, 3.9, 8.1, 8.2, 8.3, 8.4, 8.5, 8.6, 14.1, 14.2, 14.3, 14.4, 14.5, 14.6, 14.7, 15.1, 15.2, 15.3, 15.4, 15.5, 15.6, 15.7, 15.8
  *
  * Features:
  * - Real-time email validation
@@ -40,9 +40,18 @@ interface ValidationErrors {
  * - Loading and error states
  * - Rate limiting error display
  * - Redirect to dashboard on success
+ * - WCAG 2.1 Level AA compliance
+ * - Keyboard navigation support
+ * - Screen reader support
+ * - Focus management
+ * - Responsive design
+ * - Password manager support
+ * - Loading state visual feedback
  */
 export function LoginForm({ locale }: LoginFormProps) {
     const router = useRouter()
+    const formRef = useRef<HTMLFormElement>(null)
+    const errorRef = useRef<HTMLDivElement>(null)
     const [formData, setFormData] = useState<LoginFormData>({
         email: "",
         password: "",
@@ -72,6 +81,21 @@ export function LoginForm({ locale }: LoginFormProps) {
         }
         fetchCsrfToken()
     }, [])
+
+    // Focus management for error messages (Requirement 15.4)
+    useEffect(() => {
+        if (serverError && errorRef.current) {
+            // Announce error to screen readers
+            errorRef.current.focus()
+            // Only scroll if scrollIntoView is available (not in test environment)
+            if (errorRef.current.scrollIntoView) {
+                errorRef.current.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start",
+                })
+            }
+        }
+    }, [serverError])
 
     // Real-time validation for email field
     // Requirement 8.1
@@ -244,9 +268,11 @@ export function LoginForm({ locale }: LoginFormProps) {
     }
 
     return (
-        <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Server Error Display */}
-            <ServerError error={serverError} />
+        <form onSubmit={handleSubmit} className="space-y-6" ref={formRef}>
+            {/* Server Error Display with focus management */}
+            <div ref={errorRef} tabIndex={-1}>
+                <ServerError error={serverError} />
+            </div>
 
             {/* Email Field */}
             <div className="space-y-2">
@@ -263,6 +289,7 @@ export function LoginForm({ locale }: LoginFormProps) {
                     aria-invalid={!!errors.email}
                     aria-describedby={errors.email ? "email-error" : undefined}
                     disabled={isLoading}
+                    placeholder="Enter your email address"
                 />
                 <FieldError error={errors.email} fieldName="email" />
             </div>
@@ -287,6 +314,7 @@ export function LoginForm({ locale }: LoginFormProps) {
                         errors.password ? "password-error" : undefined
                     }
                     disabled={isLoading}
+                    placeholder="Enter your password"
                 />
                 <FieldError error={errors.password} fieldName="password" />
             </div>
@@ -300,7 +328,8 @@ export function LoginForm({ locale }: LoginFormProps) {
                     checked={formData.rememberMe}
                     onChange={e => handleRememberMeChange(e.target.checked)}
                     disabled={isLoading}
-                    className="h-4 w-4 rounded border-gray-300 dark:border-gray-600 text-blue-600 focus:ring-blue-500 focus:ring-offset-0"
+                    className="h-4 w-4 rounded border-gray-300 dark:border-gray-600 text-blue-600 focus:ring-blue-500 focus:ring-offset-0 cursor-pointer"
+                    aria-describedby="rememberMe-description"
                 />
                 <Label
                     htmlFor="rememberMe"
@@ -308,6 +337,9 @@ export function LoginForm({ locale }: LoginFormProps) {
                 >
                     Remember me for 30 days
                 </Label>
+                <span id="rememberMe-description" className="sr-only">
+                    Keep me logged in on this device for 30 days
+                </span>
             </div>
 
             {/* Submit Button */}
@@ -315,8 +347,18 @@ export function LoginForm({ locale }: LoginFormProps) {
                 type="submit"
                 className="w-full"
                 disabled={isLoading || !csrfToken}
+                aria-busy={isLoading}
             >
-                {isLoading ? "Signing in..." : "Sign in"}
+                {isLoading ? (
+                    <>
+                        <span className="inline-block animate-spin mr-2">
+                            ⏳
+                        </span>
+                        Signing in...
+                    </>
+                ) : (
+                    "Sign in"
+                )}
             </Button>
         </form>
     )

@@ -7,6 +7,7 @@
 
 "use client"
 
+import { useLocale } from "@/hooks/use-locale"
 import { logger } from "@/lib/logger"
 import { useRouter } from "next/navigation"
 import { useState } from "react"

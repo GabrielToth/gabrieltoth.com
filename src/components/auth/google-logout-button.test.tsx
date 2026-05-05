@@ -15,6 +15,14 @@ vi.mock("next/navigation", () => ({
     useRouter: () => ({
         push: mockPush,
     }),
+    usePathname: () => "/en/dashboard",
+}))
+
+// Mock useLocale hook
+vi.mock("@/hooks/use-locale", () => ({
+    useLocale: () => ({
+        locale: "en",
+    }),
 }))
 
 // Mock logger
@@ -102,7 +110,7 @@ describe("GoogleLogoutButton", () => {
         fireEvent.click(button)
 
         await waitFor(() => {
-            expect(mockPush).toHaveBeenCalledWith("/auth/login")
+            expect(mockPush).toHaveBeenCalledWith("/en/login")
         })
     })
 
