@@ -1,16 +1,29 @@
-import { type Locale } from "@/lib/i18n"
+import { defaultLocale, locales, type Locale } from "@/lib/i18n"
 import { generateSeoConfig } from "@/lib/seo"
 import { type Metadata } from "next"
 import { getTranslations } from "next-intl/server"
 
 interface TermsOfServicePageProps {
-    params: Promise<{ locale: Locale }>
+    params: Promise<{ locale: string }>
 }
 
 export async function generateMetadata({
     params,
 }: TermsOfServicePageProps): Promise<Metadata> {
-    const { locale } = await params
+    const { locale: localeParam } = await params
+
+    // Validate locale parameter
+    let locale: Locale = defaultLocale
+
+    // Check if locale is valid
+    if (
+        localeParam &&
+        typeof localeParam === "string" &&
+        locales.includes(localeParam as Locale)
+    ) {
+        locale = localeParam as Locale
+    }
+
     const t = await getTranslations({ locale, namespace: "termsOfService" })
 
     const seoConfig = generateSeoConfig({

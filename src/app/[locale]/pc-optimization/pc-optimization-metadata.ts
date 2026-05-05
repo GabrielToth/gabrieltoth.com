@@ -1,14 +1,26 @@
-import { type Locale } from "@/lib/i18n"
+import { defaultLocale, locales, type Locale } from "@/lib/i18n"
 import { type Metadata } from "next"
 
 interface PageProps {
-    params: Promise<{ locale: Locale }>
+    params: Promise<{ locale: string }>
 }
 
 export async function generateMetadata({
     params,
 }: PageProps): Promise<Metadata> {
-    const { locale } = await params
+    const { locale: localeParam } = await params
+
+    // Validate locale parameter
+    let locale: Locale = defaultLocale
+
+    // Check if locale is valid
+    if (
+        localeParam &&
+        typeof localeParam === "string" &&
+        locales.includes(localeParam as Locale)
+    ) {
+        locale = localeParam as Locale
+    }
 
     const titles = {
         "pt-BR": "Otimização de PC Gaming - Máxima Performance - Gabriel Toth",

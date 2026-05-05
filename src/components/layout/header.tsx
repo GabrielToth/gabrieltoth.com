@@ -272,23 +272,16 @@ export default function Header() {
                         {/* Divider */}
                         <div className="border-l border-gray-200 dark:border-gray-700 h-6"></div>
 
-                        {/* Auth Buttons */}
-                        <div className="flex items-center space-x-3">
-                            <Link
-                                href={getLocalizedPath("login", locale)}
-                                className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors text-sm font-medium"
-                                data-testid="nav-login"
-                            >
-                                {t("login", { defaultValue: "Login" })}
-                            </Link>
-                            <Link
-                                href={getLocalizedPath("register", locale)}
-                                className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md text-sm font-medium transition-colors"
-                                data-testid="nav-register"
-                            >
-                                {t("register", { defaultValue: "Register" })}
-                            </Link>
-                        </div>
+                        {/* Auth Button */}
+                        <Link
+                            href={getLocalizedPath("login", locale)}
+                            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md text-sm font-medium transition-colors"
+                            data-testid="nav-dashboard"
+                        >
+                            {t("dashboard", {
+                                defaultValue: "Go to Dashboard",
+                            })}
+                        </Link>
                     </div>
 
                     {/* Mobile menu button */}
@@ -409,24 +402,16 @@ export default function Header() {
                                 ))}
                             </div>
 
-                            {/* Mobile Auth Buttons */}
-                            <div className="px-3 py-2 space-y-2 border-t border-gray-200 dark:border-gray-700 mt-2">
+                            {/* Mobile Auth Button */}
+                            <div className="px-3 py-2 border-t border-gray-200 dark:border-gray-700 mt-2">
                                 <Link
                                     href={getLocalizedPath("login", locale)}
-                                    className="block px-3 py-2 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors text-sm font-medium"
-                                    onClick={() => setIsMobileMenuOpen(false)}
-                                    data-testid="nav-login-mobile"
-                                >
-                                    {t("login", { defaultValue: "Login" })}
-                                </Link>
-                                <Link
-                                    href={getLocalizedPath("register", locale)}
                                     className="block px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md text-sm font-medium transition-colors text-center"
                                     onClick={() => setIsMobileMenuOpen(false)}
-                                    data-testid="nav-register-mobile"
+                                    data-testid="nav-dashboard-mobile"
                                 >
-                                    {t("register", {
-                                        defaultValue: "Register",
+                                    {t("dashboard", {
+                                        defaultValue: "Go to Dashboard",
                                     })}
                                 </Link>
                             </div>

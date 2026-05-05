@@ -1,13 +1,25 @@
-import { type Locale } from "@/lib/i18n"
+import { defaultLocale, locales, type Locale } from "@/lib/i18n"
 import { generateSeoConfig } from "@/lib/seo"
 import { type Metadata } from "next"
 
 export async function generateMetadata({
     params,
 }: {
-    params: Promise<{ locale: Locale }>
+    params: Promise<{ locale: string }>
 }): Promise<Metadata> {
-    const { locale } = await params
+    const { locale: localeParam } = await params
+
+    // Validate locale parameter
+    let locale: Locale = defaultLocale
+
+    // Check if locale is valid
+    if (
+        localeParam &&
+        typeof localeParam === "string" &&
+        locales.includes(localeParam as Locale)
+    ) {
+        locale = localeParam as Locale
+    }
 
     const seoConfig = generateSeoConfig({
         locale,
@@ -49,6 +61,7 @@ export async function generateMetadata({
             description: seoConfig.description,
         },
         alternates: {
+            canonical: seoConfig.canonical,
             languages: {
                 en: "https://www.gabrieltoth.com/en/",
                 "pt-BR": "https://www.gabrieltoth.com/pt-BR/",
