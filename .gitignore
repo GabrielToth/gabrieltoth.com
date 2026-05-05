@@ -124,3 +124,16 @@ temp/
 # Private auth/session artifacts
 /.auth/
 /.secrets/
+
+# Agent context files (local development only)
+/.agent/
+
+# Kiro settings (local development only, may contain sensitive config)
+/.kiro/settings/
+
+# Audit reports (generated automatically)
+audit.json
+audit2.json
+
+# Test output files
+test-output.txt
