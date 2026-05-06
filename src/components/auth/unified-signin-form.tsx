@@ -10,7 +10,7 @@ import {
 import { useTranslations } from "next-intl"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 interface UnifiedSignInFormProps {
     locale: string
