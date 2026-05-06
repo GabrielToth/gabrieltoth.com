@@ -31,7 +31,9 @@
             "mods": "Mods",
             "modsText": "Entwicklung benutzerdefinierter Mods und Tools zur Verbesserung des Minecraft-Erlebnisses.",
             "plugins": "Plugins",
-            "pluginsText": "Entwicklung von Server-Plugins für verbessertes Gameplay und Community-Funktionen."
+            "pluginsText": "Entwicklung von Server-Plugins für verbessertes Gameplay und Community-Funktionen.",
+            "contributions": "Beiträge",
+            "contributionsText": "Meine Beiträge zur Minecraft-Modding-Community"
         }
     },
     "modpack": {

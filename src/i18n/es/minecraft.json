@@ -31,7 +31,9 @@
             "mods": "Mods",
             "modsText": "Construyendo mods y herramientas personalizadas para mejorar la experiencia de Minecraft.",
             "plugins": "Plugins",
-            "pluginsText": "Desarrollando plugins de servidor para una jugabilidad mejorada y características de la comunidad."
+            "pluginsText": "Desarrollando plugins de servidor para una jugabilidad mejorada y características de la comunidad.",
+            "contributions": "Contribuciones",
+            "contributionsText": "Mis contribuciones a la comunidad de modding de Minecraft"
         }
     },
     "modpack": {
