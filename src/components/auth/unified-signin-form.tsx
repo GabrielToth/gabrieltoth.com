@@ -28,6 +28,7 @@ export default function UnifiedSignInForm({
 
     const [step, setStep] = useState<FormStep>("email")
     const [email, setEmail] = useState(initialEmail)
+    const [fullName, setFullName] = useState("")
     const [password, setPassword] = useState("")
     const [confirmPassword, setConfirmPassword] = useState("")
     const [error, setError] = useState<string | null>(null)
@@ -118,6 +119,12 @@ export default function UnifiedSignInForm({
         e.preventDefault()
         setError(null)
 
+        // Validate full name
+        if (!fullName || fullName.trim().length < 2) {
+            setError("Please enter your full name")
+            return
+        }
+
         if (password !== confirmPassword) {
             setError("Passwords do not match")
             return
@@ -133,6 +140,7 @@ export default function UnifiedSignInForm({
         try {
             const result = await signUpWithEmail(email, password, {
                 email_verified: false,
+                full_name: fullName.trim(),
             })
 
             if (!result.success) {
@@ -301,8 +309,23 @@ export default function UnifiedSignInForm({
 
                     <div>
                         <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-                            {t("signin.createAccount")} <strong>{email}</strong>
+                            {t("signin.welcome")} <strong>{email}</strong>
                         </p>
+                    </div>
+
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            {t("register.name")}
+                        </label>
+                        <input
+                            type="text"
+                            value={fullName}
+                            onChange={e => setFullName(e.target.value)}
+                            className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-600 dark:focus:ring-blue-500"
+                            placeholder={t("register.namePlaceholder")}
+                            required
+                            disabled={isLoading}
+                        />
                     </div>
 
                     <div>
@@ -364,6 +387,7 @@ export default function UnifiedSignInForm({
                         type="button"
                         onClick={() => {
                             setStep("email")
+                            setFullName("")
                             setPassword("")
                             setConfirmPassword("")
                             setError(null)
