@@ -1,18 +1,13 @@
-# Secure Authentication System - API Documentation
+# Authentication API Documentation
 
-## Overview
-
-This document describes all authentication API endpoints for the Secure Authentication System. All endpoints use JSON for request/response bodies and include comprehensive security measures.
+Complete API reference for all authentication endpoints including login, registration, OAuth, email verification, and password reset.
 
 ## Base URL
 
 ```
-https://gabrieltoth.com/api/auth
+Production: https://gabrieltoth.com/api/auth
+Development: http://localhost:3000/api/auth
 ```
-
-## Authentication
-
-Most endpoints require a valid session token stored in an HTTP-only cookie named `session`. Some endpoints also require a CSRF token for additional protection against cross-site request forgery attacks.
 
 ## Response Format
 
@@ -38,54 +33,59 @@ All responses follow a consistent format:
 }
 ```
 
-## Endpoints
+---
 
-### 1. POST /register
+## Authentication Methods
 
-Register a new user account.
+### 1. Email/Password Authentication
+
+#### POST /register
+
+Register a new user account with email and password.
 
 **Request:**
 ```json
 {
-  "name": "John Doe",
   "email": "john@example.com",
   "password": "SecurePass123!",
-  "confirmPassword": "SecurePass123!",
-  "csrfToken": "token_value"
+  "name": "John Doe",
+  "phone": "+1-555-123-4567"
 }
 ```
 
 **Validation Rules:**
-- Name: alphanumeric, spaces, hyphens, apostrophes only (max 255 chars)
-- Email: valid RFC 5322 format (max 255 chars)
+- Email: valid RFC 5322 format, max 255 chars, must be unique
 - Password: min 8 chars, uppercase, lowercase, number, special char
-- Confirm Password: must match password field
+- Name: min 2 chars, letters/spaces/hyphens/apostrophes only, max 255 chars
+- Phone: valid international format (E.164)
 
 **Response (201):**
 ```json
 {
   "success": true,
-  "message": "Registration successful. Please verify your email.",
+  "message": "Account created successfully. Please verify your email.",
   "data": {
     "userId": "550e8400-e29b-41d4-a716-446655440000",
-    "email": "john@example.com"
+    "email": "john@example.com",
+    "name": "John Doe",
+    "emailVerified": false
   }
 }
 ```
 
 **Error Responses:**
-- 400: Invalid input format or validation failed
+- 400: Invalid input or validation failed
 - 409: Email already registered
 
 **Security:**
-- Password hashed with bcrypt (salt: 12)
+- Password hashed with bcrypt (cost: 12)
 - Input sanitized to prevent XSS
 - SQL injection prevention
-- CSRF token validation
+- Rate limiting: 5 requests per hour per IP
 
 ---
 
-### 2. POST /login
+#### POST /login
 
 Authenticate user and create session.
 
@@ -125,11 +125,11 @@ Authenticate user and create session.
 - Rate limiting: max 5 failed attempts in 15 minutes
 - Email verification required
 - Password compared with bcrypt
-- Login attempts logged for audit trail
+- Login attempts logged
 
 ---
 
-### 3. POST /logout
+#### POST /logout
 
 Invalidate session and log out user.
 
@@ -155,43 +155,9 @@ Invalidate session and log out user.
 - 401: No active session
 - 403: Invalid CSRF token
 
-**Security:**
-- Session invalidated in database
-- CSRF token validation
-- Logout event logged
-
 ---
 
-### 4. POST /verify-email
-
-Verify user's email address using token from email link.
-
-**Request:**
-```json
-{
-  "token": "email_verification_token"
-}
-```
-
-**Response (200):**
-```json
-{
-  "success": true,
-  "message": "Email verified successfully"
-}
-```
-
-**Error Responses:**
-- 400: Invalid or expired token
-
-**Security:**
-- Token validation
-- Token expiration check (24 hours)
-- Email verification logged
-
----
-
-### 5. POST /forgot-password
+#### POST /forgot-password
 
 Request password reset email.
 
@@ -221,7 +187,7 @@ Request password reset email.
 
 ---
 
-### 6. POST /reset-password
+#### POST /reset-password
 
 Reset password using token from reset email.
 
@@ -249,15 +215,179 @@ Reset password using token from reset email.
 
 **Security:**
 - Token validation and expiration check
-- Password hashed with bcrypt (salt: 12)
+- Password hashed with bcrypt (cost: 12)
 - All existing sessions invalidated
 - Password reset logged
 
 ---
 
-### 7. GET /me
+### 2. Email Verification
 
-Get current authenticated user information.
+#### GET /check-email
+
+Check if an email address is available for registration.
+
+**Request:**
+```
+GET /api/auth/check-email?email=john@example.com
+```
+
+**Response (200):**
+```json
+{
+  "success": true,
+  "data": {
+    "available": true,
+    "email": "john@example.com"
+  }
+}
+```
+
+**Performance:**
+- Response time: < 500ms
+- Debounced on client-side (500ms)
+- Cached results for 60 seconds per email
+
+**Security:**
+- Rate limiting: 10 requests per minute per IP
+- No sensitive information exposed
+
+---
+
+#### POST /send-verification-email
+
+Send a verification email to the user's email address.
+
+**Request:**
+```json
+{
+  "email": "john@example.com",
+  "userId": "550e8400-e29b-41d4-a716-446655440000"
+}
+```
+
+**Response (200):**
+```json
+{
+  "success": true,
+  "message": "Verification email sent successfully. Please check your inbox.",
+  "data": {
+    "email": "john@example.com",
+    "expiresAt": "2026-04-21T12:00:00.000Z"
+  }
+}
+```
+
+**Email Content:**
+- User's name (personalized greeting)
+- Verification link with token
+- Link expiration time (24 hours)
+- Support contact information
+
+**Security:**
+- Rate limiting: 3 requests per hour per email
+- Email service (Resend) used for delivery
+- Verification tokens stored securely
+- Tokens never logged or exposed
+
+---
+
+#### GET /verify-email/:token
+
+Verify user's email address using verification token from email link.
+
+**Request:**
+```
+GET /api/auth/verify-email/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+```
+
+**Response (200):**
+```json
+{
+  "success": true,
+  "message": "Email verified successfully. You can now log in.",
+  "data": {
+    "email": "john@example.com",
+    "verified": true,
+    "userId": "550e8400-e29b-41d4-a716-446655440000"
+  }
+}
+```
+
+**Error Responses:**
+- 400: Invalid or expired token
+- 400: Already verified
+- 404: Token not found
+
+**Token Validation:**
+- Token must exist in database
+- Token must not be expired (24-hour expiration)
+- Token must not have been used already (single-use)
+- Token must be linked to a valid user
+
+**Security:**
+- Single-use tokens (cannot be reused)
+- Tokens expire after 24 hours
+- Verification logged for audit trail
+- Rate limiting: 10 requests per minute per IP
+
+---
+
+### 3. OAuth Authentication
+
+#### POST /google/callback
+
+Handles the Google OAuth callback after user authorization.
+
+**Request:**
+```json
+{
+  "code": "authorization_code_from_google"
+}
+```
+
+**Response (200):**
+```json
+{
+  "success": true,
+  "message": "Login successful",
+  "redirectUrl": "/dashboard"
+}
+```
+
+**Cookies Set:**
+- `session`: HTTP-only, secure, SameSite=Strict, Max-Age=2592000 (30 days)
+
+**Error Responses:**
+- 400: Authorization code is required
+- 401: Failed to authenticate with Google
+- 401: Invalid or expired Google token
+- 500: Failed to create or update user
+- 500: Failed to create session
+
+**Process Flow:**
+1. Frontend sends authorization code to this endpoint
+2. Backend exchanges code for Google ID token
+3. Backend validates token with Google servers
+4. Backend extracts user information (email, name, picture, google_id)
+5. Backend creates or updates user in database
+6. Backend creates session
+7. Backend sets HTTP-Only cookie with session_id
+8. Backend logs login event to audit_logs
+9. Backend returns redirect URL to dashboard
+
+**Security:**
+- Google token validation with Google's servers
+- Token signature verified using Google's public keys
+- Token expiration checked
+- Token audience (aud) verified to match client ID
+- Token issuer (iss) verified to be Google
+
+---
+
+#### GET /me
+
+Returns the current authenticated user's information.
 
 **Request:**
 ```
@@ -287,90 +417,125 @@ GET /api/auth/me
 
 ---
 
-## Security Headers
+## Security Features
 
-All responses include the following security headers:
+### Password Security
+- Minimum 8 characters with uppercase, number, and special character
+- Hashed using bcrypt with cost factor 12
+- Never transmitted in plain text
+- Never logged or stored in plain text
+- Validated on both client and server
 
+### Email Security
+- RFC 5322 format validation
+- Uniqueness check before account creation
+- Verification required before login
+- Verification tokens expire after 24 hours
+- Single-use verification tokens
+
+### Session Management
+- HTTP-only cookies for session storage
+- Session expiration after 24 hours (or 30 days with Remember Me)
+- Secure, SameSite=Strict cookie attributes
+- Session validation on each request
+
+### Rate Limiting
+- Login attempts: 5 failed attempts per 15 minutes per email/IP
+- Account lockout: 15 minutes after exceeding limit
+- Password reset: No limit (generic response prevents abuse)
+- Email check: 10 requests per minute per IP
+- Verification email: 3 requests per hour per email
+
+### Audit Logging
+- All login/logout events logged
+- Failed login attempts logged
+- Email verification events logged
+- Password reset events logged
+- IP address and user agent recorded
+- Logs retained for 90 days
+
+### Security Headers
+All responses include:
 ```
-Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'
+Content-Security-Policy: default-src 'self'
 X-Frame-Options: DENY
 X-Content-Type-Options: nosniff
 Strict-Transport-Security: max-age=31536000; includeSubDomains
 Referrer-Policy: strict-origin-when-cross-origin
 ```
 
-## Rate Limiting
-
-- **Login attempts**: 5 failed attempts per 15 minutes per email/IP
-- **Account lockout**: 15 minutes after exceeding limit
-- **Password reset**: No limit (generic response prevents abuse)
+---
 
 ## Error Codes
 
 | Code | Meaning |
 |------|---------|
+| 200 | OK - Request successful |
+| 201 | Created - Account created successfully |
 | 400 | Bad Request - Invalid input or validation failed |
 | 401 | Unauthorized - Invalid credentials or expired session |
 | 403 | Forbidden - Invalid CSRF token |
+| 404 | Not Found - User or token not found |
 | 409 | Conflict - Email already registered |
 | 429 | Too Many Requests - Rate limit exceeded |
 | 500 | Internal Server Error - Unexpected error |
 
-## Input Validation
+---
 
-### Email
-- Must be valid RFC 5322 format
-- Maximum 255 characters
-- Normalized to lowercase
+## Environment Variables
 
-### Password
-- Minimum 8 characters
-- Must contain uppercase letter
-- Must contain lowercase letter
-- Must contain number
-- Must contain special character
-- Maximum 255 characters
+Required environment variables:
 
-### Name
-- Alphanumeric characters, spaces, hyphens, apostrophes only
-- Maximum 255 characters
+```bash
+# Database
+DATABASE_URL=postgresql://user:password@localhost:5432/dbname
 
-## Security Best Practices
+# Email Service (Resend)
+RESEND_API_KEY=re_xxxxxxxxxxxxx
 
-1. **Always use HTTPS** - All endpoints require HTTPS in production
-2. **Store session securely** - Session tokens stored in HTTP-only cookies
-3. **Validate CSRF tokens** - All state-changing requests require CSRF token
-4. **Check email verification** - Login requires verified email
-5. **Monitor login attempts** - Rate limiting prevents brute force attacks
-6. **Log all events** - Comprehensive audit trail for security monitoring
-7. **Sanitize input** - All user input sanitized to prevent XSS
-8. **Use parameterized queries** - SQL injection prevention
-9. **Hash passwords** - bcrypt with 12 salt rounds
-10. **Expire sessions** - Sessions expire after 24 hours (or 30 days with Remember Me)
+# Google OAuth
+GOOGLE_CLIENT_ID=your_client_id
+GOOGLE_CLIENT_SECRET=your_client_secret
+NEXT_PUBLIC_GOOGLE_CLIENT_ID=your_client_id
+
+# Security
+BCRYPT_COST_FACTOR=12
+SESSION_TIMEOUT=1800000  # 30 minutes in milliseconds
+VERIFICATION_TOKEN_EXPIRY=86400000  # 24 hours in milliseconds
+JWT_SECRET=your_jwt_secret_key
+TOKEN_ENCRYPTION_KEY=your_encryption_key
+
+# URLs
+NEXT_PUBLIC_API_URL=http://localhost:3000/api
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+VERIFICATION_EMAIL_FROM=noreply@gabrieltoth.com
+```
+
+---
 
 ## Examples
 
-### Register and Verify Email
+### Complete Registration Flow
 
 ```bash
-# 1. Register
+# 1. Check email availability
+curl -X GET "https://gabrieltoth.com/api/auth/check-email?email=john@example.com"
+
+# 2. Register
 curl -X POST https://gabrieltoth.com/api/auth/register \
   -H "Content-Type: application/json" \
   -d '{
-    "name": "John Doe",
     "email": "john@example.com",
     "password": "SecurePass123!",
-    "confirmPassword": "SecurePass123!"
+    "name": "John Doe",
+    "phone": "+1-555-123-4567"
   }'
 
-# 2. Check email for verification link
-# 3. Verify email
-curl -X POST https://gabrieltoth.com/api/auth/verify-email \
-  -H "Content-Type: application/json" \
-  -d '{"token": "verification_token_from_email"}'
+# 3. Verify email (click link in email)
+curl -X GET "https://gabrieltoth.com/api/auth/verify-email/token_from_email"
 ```
 
-### Login and Access Protected Resource
+### Complete Login Flow
 
 ```bash
 # 1. Login
@@ -383,7 +548,7 @@ curl -X POST https://gabrieltoth.com/api/auth/login \
   }' \
   -c cookies.txt
 
-# 2. Access protected resource with session cookie
+# 2. Access protected resource
 curl -X GET https://gabrieltoth.com/api/auth/me \
   -b cookies.txt
 ```
@@ -396,8 +561,7 @@ curl -X POST https://gabrieltoth.com/api/auth/forgot-password \
   -H "Content-Type: application/json" \
   -d '{"email": "john@example.com"}'
 
-# 2. Check email for reset link
-# 3. Reset password
+# 2. Reset password (click link in email)
 curl -X POST https://gabrieltoth.com/api/auth/reset-password \
   -H "Content-Type: application/json" \
   -d '{
@@ -406,7 +570,7 @@ curl -X POST https://gabrieltoth.com/api/auth/reset-password \
     "confirmPassword": "NewSecurePass123!"
   }'
 
-# 4. Login with new password
+# 3. Login with new password
 curl -X POST https://gabrieltoth.com/api/auth/login \
   -H "Content-Type: application/json" \
   -d '{
@@ -415,6 +579,11 @@ curl -X POST https://gabrieltoth.com/api/auth/login \
   }'
 ```
 
+---
+
 ## Support
 
-For issues or questions about the API, please contact support or open an issue on GitHub.
+For API issues or questions:
+- Open an issue on [GitHub](https://github.com/gabrieltoth/gabrieltoth.com/issues)
+- Contact: support@gabrieltoth.com
+

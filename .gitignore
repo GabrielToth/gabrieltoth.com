@@ -125,9 +125,6 @@ temp/
 /.auth/
 /.secrets/
 
-# Agent context files (local development only)
-/.agent/
-
 # Kiro settings (local development only, may contain sensitive config)
 /.kiro/settings/
 
