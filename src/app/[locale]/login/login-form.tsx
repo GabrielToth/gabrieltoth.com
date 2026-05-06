@@ -135,6 +135,24 @@ export default function LoginForm({ locale }: LoginFormProps) {
                 >
                     {isLoading ? t("login.loading") : t("login.button")}
                 </button>
+
+                <div className="relative my-6">
+                    <div className="absolute inset-0 flex items-center">
+                        <div className="w-full border-t border-gray-300 dark:border-gray-600"></div>
+                    </div>
+                    <div className="relative flex justify-center text-sm">
+                        <span className="px-2 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400">
+                            {t("login.noAccount")}
+                        </span>
+                    </div>
+                </div>
+
+                <Link
+                    href={`/${locale}/register`}
+                    className="w-full px-4 py-3 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-900 dark:text-white rounded-lg font-medium transition-colors text-center block"
+                >
+                    {t("login.registerLink")}
+                </Link>
             </form>
         </>
     )
