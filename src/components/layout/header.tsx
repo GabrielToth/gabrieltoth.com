@@ -274,7 +274,7 @@ export default function Header() {
 
                         {/* Auth Button */}
                         <Link
-                            href={getLocalizedPath("login", locale)}
+                            href={getLocalizedPath("dashboard", locale)}
                             className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md text-sm font-medium transition-colors"
                             data-testid="nav-dashboard"
                         >
@@ -405,7 +405,7 @@ export default function Header() {
                             {/* Mobile Auth Button */}
                             <div className="px-3 py-2 border-t border-gray-200 dark:border-gray-700 mt-2">
                                 <Link
-                                    href={getLocalizedPath("login", locale)}
+                                    href={getLocalizedPath("dashboard", locale)}
                                     className="block px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md text-sm font-medium transition-colors text-center"
                                     onClick={() => setIsMobileMenuOpen(false)}
                                     data-testid="nav-dashboard-mobile"
