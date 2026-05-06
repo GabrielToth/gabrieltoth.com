@@ -1,6 +1,5 @@
 "use client"
 
-import { createClient } from "@/lib/supabase/client"
 import { useTranslations } from "next-intl"
 import { useState } from "react"
 
@@ -49,19 +48,29 @@ export default function ForgotPasswordForm({
         setIsLoading(true)
 
         try {
-            const supabase = createClient()
-            const { error } = await supabase.auth.resetPasswordForEmail(email, {
-                redirectTo: `${window.location.origin}/reset-password`,
+            // Call our custom API endpoint
+            const response = await fetch("/api/auth/forgot-password", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    email,
+                    locale: _locale,
+                }),
             })
 
-            if (error) {
-                setError(error.message)
+            const data = await response.json()
+
+            if (!response.ok) {
+                setError(data.error || "Failed to send reset email")
                 return
             }
 
             setSuccess(true)
         } catch (err) {
-            setError("An unexpected error occurred")
+            console.error("Forgot password error:", err)
+            setError("An unexpected error occurred. Please try again.")
         } finally {
             setIsLoading(false)
         }
