@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
 
         // Find session and get user info
         const session = await queryOne<{ user_id: string }>(
-            "SELECT user_id FROM sessions WHERE token_hash = $1",
+            "SELECT user_id FROM sessions WHERE session_id = $1",
             [sessionToken]
         )
 
