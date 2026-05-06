@@ -37,9 +37,13 @@ export default function UnifiedSignInForm({
     // Auto-check email if provided as initial parameter
     useEffect(() => {
         if (initialEmail && initialEmail.trim()) {
-            handleEmailSubmitInternal(initialEmail)
+            // Add a small delay to ensure component is fully mounted
+            const timer = setTimeout(() => {
+                handleEmailSubmitInternal(initialEmail)
+            }, 100)
+            return () => clearTimeout(timer)
         }
-    }, [])
+    }, [initialEmail])
 
     // Internal function to handle email submission
     const handleEmailSubmitInternal = async (emailToCheck: string) => {

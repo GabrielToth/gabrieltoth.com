@@ -22,34 +22,79 @@ export async function checkUserExists(
     try {
         const supabase = createClient()
 
-        // Try to sign in with a dummy password to check if user exists
-        // This will fail with "Invalid login credentials" if user doesn't exist
-        const { error } = await supabase.auth.signInWithPassword({
-            email,
-            password: "dummy-password-for-check",
-        })
+        // Use the REST API to check if user exists
+        // This is more reliable than trying to sign in
+        const response = await fetch(
+            `${process.env.NEXT_PUBLIC_SUPABASE_URL}/rest/v1/users?email=eq.${encodeURIComponent(email)}&select=id`,
+            {
+                headers: {
+                    Authorization: `Bearer ${process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY}`,
+                    "Content-Type": "application/json",
+                },
+            }
+        )
 
-        // If error is "Invalid login credentials", user exists but password is wrong
-        // If error is something else, user might not exist
-        if (error?.message.includes("Invalid login credentials")) {
+        if (!response.ok) {
+            // Fallback: try to sign in with dummy password
+            const { error } = await supabase.auth.signInWithPassword({
+                email,
+                password: "dummy-password-for-check",
+            })
+
+            if (error?.message.includes("Invalid login credentials")) {
+                return {
+                    success: true,
+                    userExists: true,
+                    email,
+                }
+            }
+
             return {
                 success: true,
-                userExists: true,
+                userExists: false,
                 email,
             }
         }
 
-        // User doesn't exist
+        const data = await response.json()
+        const userExists = Array.isArray(data) && data.length > 0
+
         return {
             success: true,
-            userExists: false,
+            userExists,
             email,
         }
     } catch (err) {
-        return {
-            success: false,
-            userExists: false,
-            error: err instanceof Error ? err.message : "Unknown error",
+        // Fallback: try to sign in with dummy password
+        try {
+            const supabase = createClient()
+            const { error } = await supabase.auth.signInWithPassword({
+                email,
+                password: "dummy-password-for-check",
+            })
+
+            if (error?.message.includes("Invalid login credentials")) {
+                return {
+                    success: true,
+                    userExists: true,
+                    email,
+                }
+            }
+
+            return {
+                success: true,
+                userExists: false,
+                email,
+            }
+        } catch (fallbackErr) {
+            return {
+                success: false,
+                userExists: false,
+                error:
+                    fallbackErr instanceof Error
+                        ? fallbackErr.message
+                        : "Unknown error",
+            }
         }
     }
 }
