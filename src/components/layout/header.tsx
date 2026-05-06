@@ -274,12 +274,12 @@ export default function Header() {
 
                         {/* Auth Button */}
                         <Link
-                            href={getLocalizedPath("dashboard", locale)}
+                            href={getLocalizedPath("login", locale)}
                             className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md text-sm font-medium transition-colors"
-                            data-testid="nav-dashboard"
+                            data-testid="nav-login"
                         >
-                            {t("dashboard", {
-                                defaultValue: "Go to Dashboard",
+                            {t("login", {
+                                defaultValue: "Sign In",
                             })}
                         </Link>
                     </div>
@@ -405,13 +405,13 @@ export default function Header() {
                             {/* Mobile Auth Button */}
                             <div className="px-3 py-2 border-t border-gray-200 dark:border-gray-700 mt-2">
                                 <Link
-                                    href={getLocalizedPath("dashboard", locale)}
+                                    href={getLocalizedPath("login", locale)}
                                     className="block px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md text-sm font-medium transition-colors text-center"
                                     onClick={() => setIsMobileMenuOpen(false)}
-                                    data-testid="nav-dashboard-mobile"
+                                    data-testid="nav-login-mobile"
                                 >
-                                    {t("dashboard", {
-                                        defaultValue: "Go to Dashboard",
+                                    {t("login", {
+                                        defaultValue: "Sign In",
                                     })}
                                 </Link>
                             </div>
