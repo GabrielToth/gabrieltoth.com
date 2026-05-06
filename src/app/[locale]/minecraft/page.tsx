@@ -1,3 +1,4 @@
+import MinecraftSubmenu from "@/app/[locale]/minecraft/minecraft-submenu"
 import Footer from "@/components/layout/footer"
 import { type Locale } from "@/lib/i18n"
 import { getLocalizedPath } from "@/lib/url-mapping"

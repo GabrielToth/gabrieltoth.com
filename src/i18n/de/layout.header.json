@@ -8,6 +8,7 @@
     "language": "Sprache",
     "login": "Anmelden",
     "register": "Registrieren",
+    "dashboard": "Dashboard",
     "menu": {
         "iqTest": "IQ-Test"
     },

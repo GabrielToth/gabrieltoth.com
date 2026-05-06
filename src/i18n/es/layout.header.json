@@ -8,6 +8,7 @@
     "language": "Idioma",
     "login": "Iniciar sesión",
     "register": "Registrarse",
+    "dashboard": "Panel",
     "menu": {
         "iqTest": "Test de CI"
     },
