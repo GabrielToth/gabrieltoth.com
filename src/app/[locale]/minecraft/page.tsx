@@ -56,6 +56,11 @@ export default async function MinecraftPage({ params }: MinecraftPageProps) {
                             </p>
                         </div>
 
+                        {/* Submenu */}
+                        <div className="mb-16">
+                            <MinecraftSubmenu locale={locale} />
+                        </div>
+
                         {/* Category Cards */}
                         <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto mb-16">
                             {/* Modpacks Card */}
