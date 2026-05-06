@@ -363,8 +363,12 @@ export async function POST(request: NextRequest) {
                 // Increment rate limit counter
                 await incrementAttempt(clientIp)
 
-                // Return generic error (never indicate if email exists)
-                return createErrorResponse(AuthErrorType.INVALID_CREDENTIALS)
+                // Return error indicating user should register
+                return createErrorResponse(
+                    AuthErrorType.INVALID_CREDENTIALS,
+                    undefined,
+                    "Email not found. Please register first or check your email."
+                )
             }
 
             user = userData

@@ -5,8 +5,14 @@
 ### 1. Documentation
 - **DO NOT** generate `.md` summary files after completing tasks
 - **DO NOT** create change reports, summaries, or lists in `.md` format unless explicitly requested
+- **DO NOT** create guides, tutorials, or how-to documents in `.agent/` folder
 - **ONLY** create `.md` files when the user explicitly asks for documentation
-- **EXCEPTION**: Create `.md` files for new module documentation (e.g., API docs, feature guides)
+- **EXCEPTION**: Create `.md` files for:
+  - New module documentation (e.g., API docs, feature guides)
+  - Official project documentation (in `docs/` folder)
+  - Implementation guides for complex features (in `docs/` folder)
+- **`.agent/` folder purpose**: Store deployment guides, checklists, and implementation notes ONLY
+- **Guides belong in**: `docs/` folder or project README, NOT in `.agent/`
 - Summarize changes directly in the response using plain text
 
 ### 1.1 Language Requirements (MANDATORY)

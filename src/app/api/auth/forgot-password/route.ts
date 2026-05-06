@@ -51,14 +51,18 @@ export async function POST(request: NextRequest) {
         if (userError || !user) {
             // Don't reveal if user exists or not - return success anyway
             console.log(
-                `Password reset requested for non-existent email: ${email}`
+                `[FORGOT PASSWORD] Password reset requested for non-existent email: ${email}`
             )
             return NextResponse.json({
                 success: true,
                 message:
-                    "If an account exists with this email, you will receive a password reset link.",
+                    "Se uma conta estiver vinculada a este email, você receberá um link para redefinir sua senha.",
             })
         }
+
+        console.log(
+            `[FORGOT PASSWORD] User found for email: ${email}, user_id: ${user.id}`
+        )
 
         // Generate password reset token using Supabase Auth
         const { error: resetError } = await supabase.auth.resetPasswordForEmail(
@@ -69,13 +73,20 @@ export async function POST(request: NextRequest) {
         )
 
         if (resetError) {
-            console.error("Supabase password reset error:", resetError)
+            console.error(
+                `[FORGOT PASSWORD] Supabase password reset error for ${email}:`,
+                resetError
+            )
 
             // Fallback: Try sending email directly with Resend
             const resetToken = crypto.randomUUID()
             const resetLink = `${request.nextUrl.origin}/${locale}/reset-password?token=${resetToken}`
 
-            // Store token in database (you'll need to create this table)
+            console.log(
+                `[FORGOT PASSWORD] Using Resend fallback for ${email}, token: ${resetToken.substring(0, 8)}...`
+            )
+
+            // Store token in database
             const expiresAt = new Date(Date.now() + 60 * 60 * 1000) // 1 hour
 
             const { error: tokenError } = await supabase
@@ -87,12 +98,19 @@ export async function POST(request: NextRequest) {
                 })
 
             if (tokenError) {
-                console.error("Failed to store reset token:", tokenError)
+                console.error(
+                    `[FORGOT PASSWORD] Failed to store reset token for ${email}:`,
+                    tokenError
+                )
                 return NextResponse.json(
                     { error: "Failed to process password reset request" },
                     { status: 500 }
                 )
             }
+
+            console.log(
+                `[FORGOT PASSWORD] Reset token stored for ${email}, expires at: ${expiresAt.toISOString()}`
+            )
 
             // Send email with Resend
             const emailSent = await sendPasswordResetEmail(
@@ -102,26 +120,32 @@ export async function POST(request: NextRequest) {
             )
 
             if (!emailSent) {
-                console.error("Failed to send password reset email")
+                console.error(
+                    `[FORGOT PASSWORD] Failed to send password reset email to ${email}`
+                )
                 return NextResponse.json(
                     { error: "Failed to send password reset email" },
                     { status: 500 }
                 )
             }
 
-            console.log(`Password reset email sent successfully to: ${email}`)
+            console.log(
+                `[FORGOT PASSWORD] Password reset email sent successfully to: ${email}`
+            )
         } else {
-            console.log(`Supabase password reset initiated for: ${email}`)
+            console.log(
+                `[FORGOT PASSWORD] Supabase password reset initiated for: ${email}`
+            )
         }
 
         // Always return success (don't reveal if email exists)
         return NextResponse.json({
             success: true,
             message:
-                "If an account exists with this email, you will receive a password reset link.",
+                "Se uma conta estiver vinculada a este email, você receberá um link para redefinir sua senha.",
         })
     } catch (error) {
-        console.error("Forgot password error:", error)
+        console.error("[FORGOT PASSWORD] Unexpected error:", error)
         return NextResponse.json(
             { error: "An unexpected error occurred" },
             { status: 500 }
