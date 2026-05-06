@@ -24,8 +24,10 @@ export async function POST(request: NextRequest) {
     const clientIp = getClientIp(request)
 
     try {
-        // Get session token from cookie
-        const sessionToken = request.cookies.get("session")?.value
+        // Get session token from cookie (check both possible names for compatibility)
+        const sessionToken =
+            request.cookies.get("auth_session")?.value ||
+            request.cookies.get("session")?.value
 
         if (!sessionToken) {
             logger.warn("Logout attempt without session", {
@@ -37,7 +39,7 @@ export async function POST(request: NextRequest) {
 
         // Find session and get user info
         const session = await queryOne<{ user_id: string }>(
-            "SELECT user_id FROM sessions WHERE session_id = $1",
+            "SELECT user_id FROM sessions WHERE token_hash = $1",
             [sessionToken]
         )
 
@@ -50,8 +52,8 @@ export async function POST(request: NextRequest) {
         }
 
         // Get user email for logging
-        const user = await queryOne<{ google_email: string }>(
-            "SELECT google_email FROM users WHERE id = $1",
+        const user = await queryOne<{ email: string }>(
+            "SELECT email FROM users WHERE id = $1",
             [session.user_id]
         )
 
@@ -72,7 +74,7 @@ export async function POST(request: NextRequest) {
             try {
                 await logAuditEvent(
                     "LOGOUT",
-                    user.google_email,
+                    user.email,
                     clientIp,
                     { action: "User logged out" },
                     session.user_id
@@ -92,11 +94,28 @@ export async function POST(request: NextRequest) {
             data: { userId: session.user_id },
         })
 
-        // Create response and clear cookie
+        // Create response and clear cookies
         const response = createSuccessResponse(undefined, "Logout successful")
 
-        // Clear session cookie
+        // Clear session cookies (both possible names for compatibility)
+        response.cookies.set("auth_session", "", {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "strict",
+            maxAge: 0,
+            path: "/",
+        })
+
         response.cookies.set("session", "", {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "strict",
+            maxAge: 0,
+            path: "/",
+        })
+
+        // Also clear remember me token if it exists
+        response.cookies.set("remember_me_token", "", {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
             sameSite: "strict",

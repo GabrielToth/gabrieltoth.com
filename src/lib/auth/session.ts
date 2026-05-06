@@ -207,9 +207,9 @@ export async function removeSession(sessionId: string): Promise<boolean> {
             throw new Error("Invalid session ID provided")
         }
 
-        // Delete session from database
+        // Delete session from database (use token_hash column)
         const result = await query(
-            `DELETE FROM sessions WHERE session_id = $1`,
+            `DELETE FROM sessions WHERE token_hash = $1`,
             [sessionId]
         )
 
