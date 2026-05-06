@@ -14,21 +14,54 @@ import { useState } from "react"
 
 interface UnifiedSignInFormProps {
     locale: string
+    initialEmail?: string
 }
 
 type FormStep = "email" | "password" | "register"
 
-export default function UnifiedSignInForm({ locale }: UnifiedSignInFormProps) {
+export default function UnifiedSignInForm({
+    locale,
+    initialEmail = "",
+}: UnifiedSignInFormProps) {
     const t = useTranslations("auth")
     const router = useRouter()
 
     const [step, setStep] = useState<FormStep>("email")
-    const [email, setEmail] = useState("")
+    const [email, setEmail] = useState(initialEmail)
     const [password, setPassword] = useState("")
     const [confirmPassword, setConfirmPassword] = useState("")
     const [error, setError] = useState<string | null>(null)
     const [isLoading, setIsLoading] = useState(false)
     const [userExists, setUserExists] = useState(false)
+
+    // Auto-check email if provided as initial parameter
+    useEffect(() => {
+        if (initialEmail && initialEmail.trim()) {
+            handleEmailSubmitInternal(initialEmail)
+        }
+    }, [])
+
+    // Internal function to handle email submission
+    const handleEmailSubmitInternal = async (emailToCheck: string) => {
+        setError(null)
+        setIsLoading(true)
+
+        try {
+            const result = await checkUserExists(emailToCheck)
+
+            if (!result.success) {
+                setError(result.error || "Failed to verify email")
+                setIsLoading(false)
+                return
+            }
+
+            setUserExists(result.userExists)
+            setStep(result.userExists ? "password" : "register")
+        } catch (err) {
+            setError(err instanceof Error ? err.message : "An error occurred")
+            setIsLoading(false)
+        }
+    }
 
     // Step 1: Email verification
     const handleEmailSubmit = async (e: React.FormEvent) => {

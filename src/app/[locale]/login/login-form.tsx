@@ -34,6 +34,17 @@ export default function LoginForm({ locale }: LoginFormProps) {
             })
 
             if (error) {
+                // If user not found, redirect to unified signin flow with email pre-filled
+                if (
+                    error.message.includes("Invalid login credentials") ||
+                    error.message.includes("User not found")
+                ) {
+                    // Redirect to signin page (unified flow) with email as query parameter
+                    const signinUrl = `/${locale}/signin?email=${encodeURIComponent(formData.email)}`
+                    router.push(signinUrl)
+                    return
+                }
+
                 setError(error.message)
                 return
             }

@@ -6,6 +6,9 @@ interface SignInPageProps {
     params: Promise<{
         locale: string
     }>
+    searchParams: Promise<{
+        email?: string
+    }>
 }
 
 export async function generateMetadata({
@@ -20,8 +23,12 @@ export async function generateMetadata({
     }
 }
 
-export default async function SignInPage({ params }: SignInPageProps) {
+export default async function SignInPage({
+    params,
+    searchParams,
+}: SignInPageProps) {
     const { locale } = await params
+    const { email } = await searchParams
     const t = await getTranslations({ locale, namespace: "auth" })
 
     return (
@@ -39,7 +46,7 @@ export default async function SignInPage({ params }: SignInPageProps) {
                     </div>
 
                     {/* Form */}
-                    <UnifiedSignInForm locale={locale} />
+                    <UnifiedSignInForm locale={locale} initialEmail={email} />
 
                     {/* Footer */}
                     <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700 text-center text-sm text-gray-600 dark:text-gray-400">
