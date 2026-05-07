@@ -2,7 +2,6 @@
 
 import { GoogleLoginButton } from "@/components/auth/google-login-button"
 import {
-    checkUserExists,
     signInWithEmail,
     signInWithSSO,
     signUpWithEmail,
@@ -10,7 +9,7 @@ import {
 import { useTranslations } from "next-intl"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 
 interface UnifiedSignInFormProps {
     locale: string
@@ -18,6 +17,7 @@ interface UnifiedSignInFormProps {
 }
 
 type FormStep = "email" | "password" | "register"
+type FormMode = "signin" | "signup"
 
 export default function UnifiedSignInForm({
     locale,
@@ -27,46 +27,13 @@ export default function UnifiedSignInForm({
     const router = useRouter()
 
     const [step, setStep] = useState<FormStep>("email")
+    const [mode, setMode] = useState<FormMode>("signin")
     const [email, setEmail] = useState(initialEmail)
     const [fullName, setFullName] = useState("")
     const [password, setPassword] = useState("")
     const [confirmPassword, setConfirmPassword] = useState("")
     const [error, setError] = useState<string | null>(null)
     const [isLoading, setIsLoading] = useState(false)
-    const [userExists, setUserExists] = useState(false)
-
-    // Auto-check email if provided as initial parameter
-    useEffect(() => {
-        if (initialEmail && initialEmail.trim()) {
-            // Add a small delay to ensure component is fully mounted
-            const timer = setTimeout(() => {
-                handleEmailSubmitInternal(initialEmail)
-            }, 100)
-            return () => clearTimeout(timer)
-        }
-    }, [initialEmail])
-
-    // Internal function to handle email submission
-    const handleEmailSubmitInternal = async (emailToCheck: string) => {
-        setError(null)
-        setIsLoading(true)
-
-        try {
-            const result = await checkUserExists(emailToCheck)
-
-            if (!result.success) {
-                setError(result.error || "Failed to verify email")
-                setIsLoading(false)
-                return
-            }
-
-            setUserExists(result.userExists)
-            setStep(result.userExists ? "password" : "register")
-        } catch (err) {
-            setError(err instanceof Error ? err.message : "An error occurred")
-            setIsLoading(false)
-        }
-    }
 
     // Step 1: Email verification
     const handleEmailSubmit = async (e: React.FormEvent) => {
@@ -75,15 +42,9 @@ export default function UnifiedSignInForm({
         setIsLoading(true)
 
         try {
-            const result = await checkUserExists(email)
-
-            if (!result.success) {
-                setError(result.error || "Failed to verify email")
-                return
-            }
-
-            setUserExists(result.userExists)
-            setStep(result.userExists ? "password" : "register")
+            // Always proceed to password step regardless of whether email exists
+            // This prevents user enumeration attacks
+            setStep("password")
         } catch (err) {
             setError(err instanceof Error ? err.message : "An error occurred")
         } finally {
@@ -91,7 +52,7 @@ export default function UnifiedSignInForm({
         }
     }
 
-    // Step 2: Password entry (for existing users)
+    // Step 2: Password entry (for existing users) or registration
     const handlePasswordSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         setError(null)
@@ -101,14 +62,15 @@ export default function UnifiedSignInForm({
             const result = await signInWithEmail(email, password)
 
             if (!result.success) {
-                setError(result.error || "Sign in failed")
+                // Always return generic error message to prevent user enumeration
+                setError("Invalid email or password")
                 return
             }
 
             router.push(`/${locale}/dashboard`)
             router.refresh()
         } catch (err) {
-            setError(err instanceof Error ? err.message : "An error occurred")
+            setError("Invalid email or password")
         } finally {
             setIsLoading(false)
         }
@@ -176,18 +138,43 @@ export default function UnifiedSignInForm({
             {/* Step 1: Email */}
             {step === "email" && (
                 <>
-                    <GoogleLoginButton className="w-full mb-6" type="login" />
+                    {mode === "signin" ? (
+                        <>
+                            <GoogleLoginButton
+                                className="w-full mb-6"
+                                type="login"
+                            />
 
-                    <div className="relative mb-6">
-                        <div className="absolute inset-0 flex items-center">
-                            <div className="w-full border-t border-gray-300 dark:border-gray-600"></div>
-                        </div>
-                        <div className="relative flex justify-center text-sm">
-                            <span className="px-2 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400">
-                                {t("signin.orContinueWith")}
-                            </span>
-                        </div>
-                    </div>
+                            <div className="relative mb-6">
+                                <div className="absolute inset-0 flex items-center">
+                                    <div className="w-full border-t border-gray-300 dark:border-gray-600"></div>
+                                </div>
+                                <div className="relative flex justify-center text-sm">
+                                    <span className="px-2 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400">
+                                        {t("signin.orContinueWith")}
+                                    </span>
+                                </div>
+                            </div>
+                        </>
+                    ) : (
+                        <>
+                            <GoogleLoginButton
+                                className="w-full mb-6"
+                                type="signup"
+                            />
+
+                            <div className="relative mb-6">
+                                <div className="absolute inset-0 flex items-center">
+                                    <div className="w-full border-t border-gray-300 dark:border-gray-600"></div>
+                                </div>
+                                <div className="relative flex justify-center text-sm">
+                                    <span className="px-2 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400">
+                                        {t("signin.orSignUpWith")}
+                                    </span>
+                                </div>
+                            </div>
+                        </>
+                    )}
 
                     <form onSubmit={handleEmailSubmit} className="space-y-4">
                         {error && (
@@ -222,6 +209,39 @@ export default function UnifiedSignInForm({
                         </button>
                     </form>
 
+                    {/* Toggle between Sign In and Sign Up */}
+                    <div className="mt-6 pt-6 border-t border-gray-300 dark:border-gray-600 text-center">
+                        {mode === "signin" ? (
+                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                                {t("signin.noAccount")}{" "}
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        setMode("signup")
+                                        setError(null)
+                                    }}
+                                    className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium"
+                                >
+                                    {t("signin.createAccount")}
+                                </button>
+                            </p>
+                        ) : (
+                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                                {t("signin.haveAccount")}{" "}
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        setMode("signin")
+                                        setError(null)
+                                    }}
+                                    className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium"
+                                >
+                                    {t("signin.signIn")}
+                                </button>
+                            </p>
+                        )}
+                    </div>
+
                     {/* SSO Option */}
                     <div className="mt-6 pt-6 border-t border-gray-300 dark:border-gray-600">
                         <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
@@ -232,26 +252,22 @@ export default function UnifiedSignInForm({
                             disabled={isLoading || !email}
                             className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium"
                         >
-                            {t("signin.sso")}
+                            {mode === "signin"
+                                ? t("signin.sso")
+                                : t("signin.ssoSignUp")}
                         </button>
                     </div>
                 </>
             )}
 
             {/* Step 2: Password (existing user) */}
-            {step === "password" && (
+            {step === "password" && mode === "signin" && (
                 <form onSubmit={handlePasswordSubmit} className="space-y-4">
                     {error && (
                         <div className="p-3 bg-red-100 dark:bg-red-900/20 border border-red-400 dark:border-red-800 text-red-700 dark:text-red-400 rounded-lg text-sm">
                             {error}
                         </div>
                     )}
-
-                    <div>
-                        <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-                            {t("signin.welcomeBack")} <strong>{email}</strong>
-                        </p>
-                    </div>
 
                     <div>
                         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -295,11 +311,25 @@ export default function UnifiedSignInForm({
                     >
                         {isLoading ? t("signin.loading") : t("signin.signIn")}
                     </button>
+
+                    {/* Create Account Button */}
+                    <button
+                        type="button"
+                        onClick={() => {
+                            setStep("email")
+                            setPassword("")
+                            setMode("signup")
+                            setError(null)
+                        }}
+                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors text-sm font-medium"
+                    >
+                        {t("signin.createAccount")}
+                    </button>
                 </form>
             )}
 
             {/* Step 3: Register (new user) */}
-            {step === "register" && (
+            {step === "password" && mode === "signup" && (
                 <form onSubmit={handleRegisterSubmit} className="space-y-4">
                     {error && (
                         <div className="p-3 bg-red-100 dark:bg-red-900/20 border border-red-400 dark:border-red-800 text-red-700 dark:text-red-400 rounded-lg text-sm">

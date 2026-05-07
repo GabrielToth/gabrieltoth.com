@@ -16,7 +16,7 @@ interface GoogleLoginButtonProps {
     onSuccess?: (response: { code: string }) => void
     onError?: (error: Error) => void
     className?: string
-    type?: "login" | "register"
+    type?: "login" | "register" | "signup"
 }
 
 /**
@@ -92,8 +92,17 @@ export function GoogleLoginButton({
     }
 
     const buttonText =
-        type === "login" ? t("login.googleButton") : t("register.googleButton")
-    const loadingText = type === "login" ? "Logging in..." : "Signing up..."
+        type === "login"
+            ? t("login.googleButton")
+            : type === "signup"
+              ? t("signin.googleSignUpButton")
+              : t("register.googleButton")
+    const loadingText =
+        type === "login"
+            ? "Logging in..."
+            : type === "signup"
+              ? "Signing up..."
+              : "Signing up..."
 
     return (
         <div className="flex flex-col gap-2">
