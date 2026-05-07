@@ -308,12 +308,6 @@ export default function UnifiedSignInForm({
                     )}
 
                     <div>
-                        <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-                            {t("signin.welcome")} <strong>{email}</strong>
-                        </p>
-                    </div>
-
-                    <div>
                         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                             {t("register.name")}
                         </label>
