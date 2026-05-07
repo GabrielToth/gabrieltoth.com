@@ -3,8 +3,9 @@
  *
  * POST /api/auth/complete-account
  *
- * Processes and persists account completion data for legacy OAuth users.
- * Validates all submitted data, updates user record, and creates a session.
+ * Processes and persists account completion data for:
+ * 1. Email registration flow (creates new user account)
+ * 2. Legacy OAuth users (updates existing user record)
  *
  * Validates: Requirements 8.1, 8.2, 8.3, 8.4, 8.5, 8.6, 8.7, 8.8
  */
@@ -21,8 +22,14 @@ import { validateTempToken } from "@/lib/auth/temp-token"
 import { getUserByEmail, updateUserAccountCompletion } from "@/lib/auth/user"
 import { logger } from "@/lib/logger"
 import { buildClientKey, rateLimitByKey } from "@/lib/rate-limit"
+import { createClient } from "@supabase/supabase-js"
 import bcrypt from "bcrypt"
 import { NextRequest, NextResponse } from "next/server"
+
+const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+)
 
 const BCRYPT_COST_FACTOR = parseInt(process.env.BCRYPT_COST_FACTOR || "12")
 
@@ -185,28 +192,113 @@ export async function POST(
             return createErrorResponse(AuthErrorType.INTERNAL_ERROR)
         }
 
-        // Update user record with account completion data
+        // Determine if this is email registration or OAuth flow
+        const isEmailRegistration = tokenPayload.oauth_provider === "email"
+
         let updatedUser
-        try {
-            updatedUser = await updateUserAccountCompletion(
-                tokenPayload.oauth_id,
-                {
-                    email: body.email,
-                    name: body.name,
-                    password_hash: passwordHash,
-                    phone_number: body.phone,
-                    birth_date: new Date(body.birthDate),
-                    account_completion_status: "completed",
-                    account_completed_at: new Date(),
+        if (isEmailRegistration) {
+            // EMAIL REGISTRATION FLOW: Create new user account
+            try {
+                // Check if email already exists
+                const { data: existingUser } = await supabase
+                    .from("users")
+                    .select("id")
+                    .eq("email", body.email.toLowerCase())
+                    .single()
+
+                if (existingUser) {
+                    logAuthError(
+                        AuthErrorType.EMAIL_ALREADY_REGISTERED,
+                        body.email,
+                        clientIp,
+                        "CompleteAccount"
+                    )
+                    return createErrorResponse(
+                        AuthErrorType.EMAIL_ALREADY_REGISTERED,
+                        "email",
+                        "This email is already in use"
+                    )
                 }
-            )
-        } catch (error) {
-            logger.error("Failed to update user account completion", {
-                context: "CompleteAccount",
-                error: error as Error,
-                data: { email: body.email },
-            })
-            return createErrorResponse(AuthErrorType.DATABASE_ERROR)
+
+                // Create new user account
+                const { data: newUser, error: createError } = await supabase
+                    .from("users")
+                    .insert({
+                        email: body.email.toLowerCase(),
+                        password_hash: passwordHash,
+                        name: body.name,
+                        phone: body.phone,
+                        birth_date: body.birthDate || null,
+                        email_verified: false,
+                        auth_method: "email",
+                        account_status: "active",
+                        account_completed_at: new Date(),
+                    })
+                    .select("id")
+                    .single()
+
+                if (createError || !newUser) {
+                    logger.error("User creation error:", {
+                        context: "CompleteAccount",
+                        error: createError,
+                    })
+                    return createErrorResponse(AuthErrorType.DATABASE_ERROR)
+                }
+
+                updatedUser = newUser
+
+                // Log registration completion
+                await logRegistration(body.email, clientIp, newUser.id)
+            } catch (error) {
+                logger.error("Failed to create user account", {
+                    context: "CompleteAccount",
+                    error: error as Error,
+                    data: { email: body.email },
+                })
+                return createErrorResponse(AuthErrorType.DATABASE_ERROR)
+            }
+        } else {
+            // OAUTH FLOW: Update existing user account
+            try {
+                // Check if email is already registered (and not the same as OAuth email)
+                if (body.email !== tokenPayload.email) {
+                    const existingUser = await getUserByEmail(body.email)
+                    if (existingUser) {
+                        logAuthError(
+                            AuthErrorType.EMAIL_ALREADY_REGISTERED,
+                            body.email,
+                            clientIp,
+                            "CompleteAccount"
+                        )
+                        return createErrorResponse(
+                            AuthErrorType.EMAIL_ALREADY_REGISTERED,
+                            "email",
+                            "This email is already in use"
+                        )
+                    }
+                }
+
+                // Update user record with account completion data
+                updatedUser = await updateUserAccountCompletion(
+                    tokenPayload.oauth_id,
+                    {
+                        email: body.email,
+                        name: body.name,
+                        password_hash: passwordHash,
+                        phone_number: body.phone,
+                        birth_date: new Date(body.birthDate),
+                        account_completion_status: "completed",
+                        account_completed_at: new Date(),
+                    }
+                )
+            } catch (error) {
+                logger.error("Failed to update user account completion", {
+                    context: "CompleteAccount",
+                    error: error as Error,
+                    data: { email: body.email },
+                })
+                return createErrorResponse(AuthErrorType.DATABASE_ERROR)
+            }
         }
 
         // Create session
@@ -228,8 +320,10 @@ export async function POST(
             body.email,
             clientIp,
             {
-                action: "Account completed",
-                oauth_provider: tokenPayload.oauth_provider,
+                action: isEmailRegistration
+                    ? "Email registration completed"
+                    : "Account completed",
+                auth_method: tokenPayload.oauth_provider,
             },
             updatedUser.id
         )
@@ -239,6 +333,7 @@ export async function POST(
             data: {
                 userId: updatedUser.id,
                 email: body.email,
+                authMethod: tokenPayload.oauth_provider,
             },
         })
 
