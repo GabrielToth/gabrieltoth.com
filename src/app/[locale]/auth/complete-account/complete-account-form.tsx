@@ -42,36 +42,15 @@ export default function CompleteAccountForm({
         validateStep,
         submitForm,
         resetForm,
+        loadRegistrationData,
     } = useAccountCompletion()
 
-    // Load temp token from URL or session on mount
+    // Load registration data from temp token on mount
     useEffect(() => {
-        const loadTempToken = async () => {
-            try {
-                // Try to get temp token from URL params or session
-                const params = new URLSearchParams(window.location.search)
-                const tokenFromUrl = params.get("token")
-
-                if (tokenFromUrl) {
-                    // Token is in URL, form will use it
-                    return
-                }
-
-                // If no token in URL, check if we have one in session
-                // This would be set by the middleware
-                const response = await fetch("/api/auth/me")
-                if (!response.ok) {
-                    setError(t("completeAccount.errors.invalidToken"))
-                    return
-                }
-            } catch (err) {
-                console.error("Failed to load temp token:", err)
-                setError(t("completeAccount.errors.serverError"))
-            }
+        if (tempToken) {
+            loadRegistrationData(tempToken)
         }
-
-        loadTempToken()
-    }, [t])
+    }, [tempToken, loadRegistrationData])
 
     const handleContinue = useCallback(async () => {
         setError(null)

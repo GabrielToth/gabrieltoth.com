@@ -399,6 +399,44 @@ export function useAccountCompletion() {
         }))
     }, [])
 
+    /**
+     * Load registration data from temp token
+     * Decodes JWT token to extract email, name, and other data
+     */
+    const loadRegistrationData = useCallback(
+        async (token: string) => {
+            try {
+                // Decode JWT token (without verification, since we trust the server)
+                // JWT format: header.payload.signature
+                const parts = token.split(".")
+                if (parts.length !== 3) {
+                    console.error("Invalid token format")
+                    return
+                }
+
+                // Decode payload (base64url)
+                const payload = JSON.parse(
+                    Buffer.from(
+                        parts[1].replace(/-/g, "+").replace(/_/g, "/"),
+                        "base64"
+                    ).toString()
+                )
+
+                // Set pre-filled data from token
+                if (payload.email && payload.name) {
+                    setPrefilledData({
+                        email: payload.email,
+                        name: payload.name,
+                        picture: payload.picture,
+                    })
+                }
+            } catch (error) {
+                console.error("Failed to decode temp token:", error)
+            }
+        },
+        [setPrefilledData]
+    )
+
     return {
         ...state,
         setCurrentStep,
@@ -408,5 +446,6 @@ export function useAccountCompletion() {
         submitForm,
         resetForm,
         setPrefilledData,
+        loadRegistrationData,
     }
 }
