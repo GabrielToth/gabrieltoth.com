@@ -220,41 +220,54 @@ export async function POST(request: NextRequest) {
             return createErrorResponse(AuthErrorType.EMAIL_ALREADY_REGISTERED)
         }
 
-        // Hash password
+        // Hash password for storage in registration session
         const hashedPassword = await bcrypt.hash(password, BCRYPT_COST_FACTOR)
 
-        // Create user
-        const { data: newUser, error: createError } = await supabase
-            .from("users")
+        // Generate temporary token with registration data
+        const tempToken = generateTempToken({
+            email: email.toLowerCase(),
+            oauth_provider: "email",
+            oauth_id: email.toLowerCase(),
+            name,
+            picture: undefined,
+        })
+
+        const tokenHash = hashToken(tempToken)
+
+        // Store registration data in session for later account creation
+        // This will be used in the complete-account flow
+        const { data: session, error: sessionError } = await supabase
+            .from("registration_sessions")
             .insert({
                 email: email.toLowerCase(),
-                password_hash: hashedPassword,
                 name,
                 phone: phoneValidation.normalized || phone,
                 birth_date: birth_date || null,
-                email_verified: false,
-                auth_method: "email",
+                password_hash: hashedPassword,
+                temp_token_hash: tokenHash,
+                current_step: 4, // User completed all registration steps
+                expires_at: new Date(Date.now() + 30 * 60 * 1000), // 30 minutes
             })
             .select("id")
             .single()
 
-        if (createError || !newUser) {
-            console.error("User creation error:", createError)
+        if (sessionError || !session) {
+            console.error("Session creation error:", sessionError)
             return createErrorResponse(AuthErrorType.DATABASE_ERROR)
         }
 
-        // Log registration event
-        await logRegistration(email, clientIp, newUser.id)
+        // Log registration initiation (account not yet created)
+        await logRegistration(email, clientIp, null)
 
         const response = createSuccessResponse(
             {
-                userId: newUser.id,
-                email: email.toLowerCase(),
+                tempToken,
+                redirectUrl: `/auth/complete-account?token=${encodeURIComponent(tempToken)}`,
             },
-            "User registered successfully. Please verify your email."
+            "Registration data saved. Proceeding to account completion."
         )
-        // Override status to 201 Created
-        response.status = 201
+        // Override status to 200 OK (not 201 Created, since account not created yet)
+        response.status = 200
         return response
     } catch (error) {
         console.error("Registration error:", error)

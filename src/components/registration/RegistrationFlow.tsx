@@ -10,13 +10,11 @@ import { NavigationButtons } from "./NavigationButtons"
 import { PasswordSetup } from "./PasswordSetup"
 import { PersonalDataForm } from "./PersonalDataForm"
 import { ProgressIndicator } from "./ProgressIndicator"
-import { SuccessMessage } from "./SuccessMessage"
 import { VerificationReview } from "./VerificationReview"
 
 export function RegistrationFlow() {
     const registration = useRegistration()
     const [generalError, setGeneralError] = useState<string | null>(null)
-    const [showSuccess, setShowSuccess] = useState(false)
     const [authMethod, setAuthMethod] = useState<"email" | "google" | null>(
         null
     )
@@ -203,7 +201,7 @@ export function RegistrationFlow() {
                 return
             }
 
-            // Success - clear session
+            // Success - clear session and redirect to complete-account
             if (registration.sessionId) {
                 try {
                     await fetch("/api/auth/registration-session", {
@@ -215,7 +213,13 @@ export function RegistrationFlow() {
             }
 
             registration.reset()
-            setShowSuccess(true)
+
+            // Redirect to complete-account with temp token
+            if (data.data?.redirectUrl) {
+                window.location.href = data.data.redirectUrl
+            } else {
+                setGeneralError("Failed to get redirect URL. Please try again.")
+            }
         } catch (error) {
             console.error("Registration error:", error)
             setGeneralError("An unexpected error occurred. Please try again.")
@@ -334,16 +338,6 @@ export function RegistrationFlow() {
                     </a>
                 </div>
             </div>
-        )
-    }
-
-    if (showSuccess) {
-        return (
-            <SuccessMessage
-                message="Account created successfully! Redirecting to login..."
-                redirectUrl="/login"
-                redirectDelay={2000}
-            />
         )
     }
 
