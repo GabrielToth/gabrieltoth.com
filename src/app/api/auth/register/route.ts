@@ -4,6 +4,7 @@ import {
     createErrorResponse,
     createSuccessResponse,
 } from "@/lib/auth/error-handling"
+import { generateTempToken } from "@/lib/auth/temp-token"
 import { buildClientKey, rateLimitByKey } from "@/lib/rate-limit"
 import {
     validateBirthDateFormat,
@@ -220,10 +221,35 @@ export async function POST(request: NextRequest) {
             return createErrorResponse(AuthErrorType.EMAIL_ALREADY_REGISTERED)
         }
 
-        // Hash password for storage in registration session
+        // Hash password
         const hashedPassword = await bcrypt.hash(password, BCRYPT_COST_FACTOR)
 
-        // Generate temporary token with registration data
+        // CREATE ACCOUNT IMMEDIATELY (email registration)
+        const { data: newUser, error: createError } = await supabase
+            .from("users")
+            .insert({
+                email: email.toLowerCase(),
+                password_hash: hashedPassword,
+                name,
+                phone: phoneValidation.normalized || phone,
+                birth_date: birth_date || null,
+                email_verified: false,
+                auth_method: "email",
+                account_status: "active",
+                account_completed_at: new Date(),
+            })
+            .select("id")
+            .single()
+
+        if (createError || !newUser) {
+            console.error("User creation error:", createError)
+            return createErrorResponse(AuthErrorType.DATABASE_ERROR)
+        }
+
+        // Log registration completion (account created)
+        await logRegistration(email, clientIp, newUser.id)
+
+        // Generate temporary token for session creation
         const tempToken = generateTempToken({
             email: email.toLowerCase(),
             oauth_provider: "email",
@@ -232,42 +258,14 @@ export async function POST(request: NextRequest) {
             picture: undefined,
         })
 
-        const tokenHash = hashToken(tempToken)
-
-        // Store registration data in session for later account creation
-        // This will be used in the complete-account flow
-        const { data: session, error: sessionError } = await supabase
-            .from("registration_sessions")
-            .insert({
-                email: email.toLowerCase(),
-                name,
-                phone: phoneValidation.normalized || phone,
-                birth_date: birth_date || null,
-                password_hash: hashedPassword,
-                temp_token_hash: tokenHash,
-                current_step: 4, // User completed all registration steps
-                expires_at: new Date(Date.now() + 30 * 60 * 1000), // 30 minutes
-            })
-            .select("id")
-            .single()
-
-        if (sessionError || !session) {
-            console.error("Session creation error:", sessionError)
-            return createErrorResponse(AuthErrorType.DATABASE_ERROR)
-        }
-
-        // Log registration initiation (account not yet created)
-        await logRegistration(email, clientIp, null)
-
         const response = createSuccessResponse(
             {
                 tempToken,
                 redirectUrl: `/auth/complete-account?token=${encodeURIComponent(tempToken)}`,
             },
-            "Registration data saved. Proceeding to account completion."
+            "Account created successfully. Proceeding to dashboard."
         )
-        // Override status to 200 OK (not 201 Created, since account not created yet)
-        response.status = 200
+        response.status = 201 // 201 Created - account was created
         return response
     } catch (error) {
         console.error("Registration error:", error)
