@@ -118,12 +118,51 @@ export function useRegistration() {
             }
         }
 
-        // Check expiration immediately and then every minute
+        // Check expiration immediately and then every 30 seconds
         checkExpiration()
-        const interval = setInterval(checkExpiration, 60000)
+        const interval = setInterval(checkExpiration, 30000)
 
         return () => clearInterval(interval)
     }, [state.sessionExpiresAt])
+
+    // Track user activity to extend session
+    useEffect(() => {
+        if (!state.sessionId) return
+
+        const handleActivity = () => {
+            // Extend session by 30 minutes on user activity
+            const newExpiresAt = new Date()
+            newExpiresAt.setTime(newExpiresAt.getTime() + SESSION_TIMEOUT)
+            extendSession(newExpiresAt)
+        }
+
+        // Throttle activity tracking to avoid excessive updates
+        let lastActivityTime = Date.now()
+        const throttledHandleActivity = () => {
+            const now = Date.now()
+            if (now - lastActivityTime > 60000) {
+                // Only update every 60 seconds
+                lastActivityTime = now
+                handleActivity()
+            }
+        }
+
+        // Listen for user activity
+        const events = ["mousedown", "keydown", "scroll", "touchstart", "click"]
+        events.forEach(event => {
+            document.addEventListener(event, throttledHandleActivity, true)
+        })
+
+        return () => {
+            events.forEach(event => {
+                document.removeEventListener(
+                    event,
+                    throttledHandleActivity,
+                    true
+                )
+            })
+        }
+    }, [state.sessionId, extendSession])
 
     const updateFormData = useCallback(
         (updates: Partial<RegistrationFormData>) => {

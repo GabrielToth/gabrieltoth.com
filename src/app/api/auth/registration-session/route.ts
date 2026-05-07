@@ -28,7 +28,7 @@ const SESSION_COOKIE_MAX_AGE = 30 * 60 // 30 minutes in seconds
  *
  * Request body:
  * {
- *   email: string
+ *   email?: string (optional)
  * }
  *
  * Response:
@@ -45,27 +45,23 @@ export async function POST(request: NextRequest) {
         const body = await request.json()
         const { email } = body
 
-        // Validate email
-        if (!email) {
-            return NextResponse.json(
-                createErrorResponse(
-                    "MISSING_EMAIL",
-                    "Email is required to create a registration session"
-                ),
-                { status: 400 }
-            )
+        // Email is optional for initial session creation
+        // If provided, validate it
+        if (email) {
+            const emailValidation = validateEmail(email)
+            if (!emailValidation.isValid) {
+                return NextResponse.json(
+                    createErrorResponse(
+                        "INVALID_EMAIL",
+                        "Invalid email format"
+                    ),
+                    { status: 400 }
+                )
+            }
         }
 
-        const emailValidation = validateEmail(email)
-        if (!emailValidation.isValid) {
-            return NextResponse.json(
-                createErrorResponse("INVALID_EMAIL", "Invalid email format"),
-                { status: 400 }
-            )
-        }
-
-        // Create registration session
-        const session = await createRegistrationSession(email)
+        // Create registration session (email can be empty initially)
+        const session = await createRegistrationSession(email || "")
 
         // Set HTTP-only cookie with session ID
         const cookieStore = await cookies()

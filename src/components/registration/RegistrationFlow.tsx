@@ -46,7 +46,26 @@ export function RegistrationFlow() {
                                 email: data.data.email,
                                 name: data.data.name || "",
                                 phone: data.data.phone || "",
+                                birthDate: data.data.birthDate || "",
                             })
+                        }
+                    }
+                } else if (response.status === 404) {
+                    // No existing session, create a new one
+                    const createResponse = await fetch(
+                        "/api/auth/registration-session",
+                        {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                        }
+                    )
+                    if (createResponse.ok) {
+                        const data = await createResponse.json()
+                        if (data.data) {
+                            registration.setSession(
+                                data.data.sessionId,
+                                new Date(data.data.expiresAt)
+                            )
                         }
                     }
                 }
@@ -138,7 +157,7 @@ export function RegistrationFlow() {
         setGeneralError(null)
         registration.nextStep()
 
-        // Update session with new step
+        // Update session with new step and form data
         if (registration.sessionId) {
             try {
                 await fetch("/api/auth/registration-session", {
@@ -146,6 +165,10 @@ export function RegistrationFlow() {
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({
                         currentStep: registration.currentStep + 1,
+                        email: registration.formData.email,
+                        name: registration.formData.name,
+                        birthDate: registration.formData.birthDate,
+                        phone: registration.formData.phone,
                     }),
                 })
             } catch (error) {
