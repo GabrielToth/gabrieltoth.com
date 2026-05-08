@@ -141,3 +141,105 @@ export interface GoogleCallbackResponse {
     redirectUrl: string
     userId: string
 }
+
+/**
+ * Authentication Provider Type
+ * Represents the different authentication methods available
+ *
+ * Validates: Requirements 1.0, 2.0
+ */
+export type AuthProvider = "google" | "email" | "sso" | "apple" | "facebook"
+
+/**
+ * Authentication Provider Configuration
+ * Defines configuration for each authentication provider
+ *
+ * Validates: Requirements 1.0, 2.0, 4.0
+ */
+export interface AuthProviderConfig {
+    provider: AuthProvider
+    enabled: boolean
+    icon: React.ReactNode
+    label: string
+    ariaLabel: string
+    onClick: () => void
+}
+
+/**
+ * Authentication Button Props
+ * Props for the AuthButton component
+ *
+ * Validates: Requirements 1.0, 4.0
+ */
+export interface AuthButtonProps {
+    provider: AuthProvider
+    isDisabled: boolean
+    isLoading?: boolean
+    onClick: () => void
+    ariaLabel: string
+    icon: React.ReactNode
+}
+
+/**
+ * Authentication Button State
+ * Internal state for the AuthButton component
+ *
+ * Validates: Requirements 1.0, 4.0
+ */
+export interface AuthButtonState {
+    isHovered: boolean
+    isFocused: boolean
+    isActive: boolean
+}
+
+/**
+ * Authentication Button Row Props
+ * Props for the AuthButtonRow component
+ *
+ * Validates: Requirements 1.0, 1.1, 4.0
+ */
+export interface AuthButtonRowProps {
+    onGoogleClick: () => void
+    onEmailClick: () => void
+    onSSOClick: () => void
+    loadingProvider?: AuthProvider | null
+    error?: string | null
+}
+
+/**
+ * Authentication Screen Props
+ * Props for the AuthenticationScreen component
+ *
+ * Validates: Requirements 1.0, 2.0, 3.0, 5.0
+ */
+export interface AuthenticationScreenProps {
+    onAuthSuccess: (user: OAuthUser) => void
+    onAuthError: (error: Error) => void
+    redirectTo?: string
+}
+
+/**
+ * Authentication Screen State
+ * Internal state for the AuthenticationScreen component
+ *
+ * Validates: Requirements 1.0, 2.0, 3.0
+ */
+export interface AuthenticationScreenState {
+    showEmailForm: boolean
+    loadingProvider: AuthProvider | null
+    error: string | null
+}
+
+/**
+ * Authentication State
+ * Global authentication state
+ *
+ * Validates: Requirements 1.0, 5.0
+ */
+export interface AuthState {
+    isAuthenticated: boolean
+    user: OAuthUser | null
+    loadingProvider: AuthProvider | null
+    error: Error | null
+    redirectTo: string | null
+}

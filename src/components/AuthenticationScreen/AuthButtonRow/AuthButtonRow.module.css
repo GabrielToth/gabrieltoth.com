@@ -1,0 +1,56 @@
+/**
+ * AuthButtonRow Component Styles
+ * Manages the layout and spacing of authentication buttons
+ *
+ * Validates: Requirements 1.0, 1.1, 4.0
+ */
+
+/* Button Row Container */
+.buttonRow {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--spacing-lg, 16px);
+    width: 100%;
+    padding: var(--spacing-xl, 24px) 0;
+}
+
+/* Desktop Layout (1024px+) */
+@media (min-width: 1024px) {
+    .buttonRow {
+        gap: var(--spacing-lg, 16px);
+    }
+}
+
+/* Tablet Layout (768px - 1023px) */
+@media (max-width: 1023px) and (min-width: 768px) {
+    .buttonRow {
+        gap: var(--spacing-md, 12px);
+    }
+}
+
+/* Mobile Layout (< 768px) */
+@media (max-width: 767px) {
+    .buttonRow {
+        gap: var(--spacing-sm, 8px);
+    }
+}
+
+/* Button Container */
+.buttonContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Loading State */
+.loading {
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+/* Error State */
+.error {
+    opacity: 0.5;
+}
