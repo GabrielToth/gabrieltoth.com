@@ -6,17 +6,19 @@ import {
     signInWithSSO,
     signUpWithEmail,
 } from "@/lib/auth/unified-auth"
+import { LockKeyhole } from "lucide-react"
 import { useTranslations } from "next-intl"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
+import { FaEnvelope } from "react-icons/fa"
 
 interface UnifiedSignInFormProps {
     locale: string
     initialEmail?: string
 }
 
-type FormStep = "email" | "password" | "register"
+type FormStep = "buttons" | "email" | "password" | "register"
 type FormMode = "signin" | "signup"
 
 export default function UnifiedSignInForm({
@@ -26,7 +28,7 @@ export default function UnifiedSignInForm({
     const t = useTranslations("auth")
     const router = useRouter()
 
-    const [step, setStep] = useState<FormStep>("email")
+    const [step, setStep] = useState<FormStep>("buttons")
     const [mode, setMode] = useState<FormMode>("signin")
     const [email, setEmail] = useState(initialEmail)
     const [fullName, setFullName] = useState("")
@@ -126,7 +128,7 @@ export default function UnifiedSignInForm({
         setIsLoading(true)
 
         try {
-            await signInWithSSO(email)
+            await signInWithSSO(email || "")
         } catch (err) {
             setError(err instanceof Error ? err.message : "SSO sign-in failed")
             setIsLoading(false)
@@ -135,9 +137,104 @@ export default function UnifiedSignInForm({
 
     return (
         <div className="w-full max-w-md mx-auto">
-            {/* Step 1: Email */}
+            {/* Step 1: Button Selection */}
+            {step === "buttons" && (
+                <div className="space-y-4">
+                    {error && (
+                        <div className="p-3 bg-red-100 dark:bg-red-900/20 border border-red-400 dark:border-red-800 text-red-700 dark:text-red-400 rounded-lg text-sm">
+                            {error}
+                        </div>
+                    )}
+
+                    {/* Google Button */}
+                    <GoogleLoginButton
+                        className="w-full"
+                        type={mode === "signin" ? "login" : "signup"}
+                    />
+
+                    {/* SSO Button */}
+                    <button
+                        onClick={handleSSO}
+                        disabled={isLoading}
+                        className="w-full px-4 py-3 border-2 border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-medium flex items-center justify-center gap-2"
+                    >
+                        <LockKeyhole size={20} />
+                        {t("signin.sso")}
+                    </button>
+
+                    {/* Email Button */}
+                    <button
+                        onClick={() => setStep("email")}
+                        disabled={isLoading}
+                        className="w-full px-4 py-3 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                    >
+                        <FaEnvelope size={20} />
+                        {t("signin.emailButton")}
+                    </button>
+
+                    {/* Create Account Link */}
+                    <div className="mt-6 pt-6 border-t border-gray-300 dark:border-gray-600 text-center">
+                        {mode === "signin" ? (
+                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                                {t("signin.noAccount")}{" "}
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        setMode("signup")
+                                        setError(null)
+                                    }}
+                                    className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium"
+                                >
+                                    {t("signin.createAccount")}
+                                </button>
+                            </p>
+                        ) : (
+                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                                {t("signin.haveAccount")}{" "}
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        setMode("signin")
+                                        setError(null)
+                                    }}
+                                    className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium"
+                                >
+                                    {t("signin.signIn")}
+                                </button>
+                            </p>
+                        )}
+                    </div>
+
+                    {/* Privacy Policy */}
+                    <div className="mt-6 text-center">
+                        <p className="text-xs text-gray-500 dark:text-gray-400">
+                            {t("signin.agreeTerms")}{" "}
+                            <Link
+                                href={`/${locale}/privacy-policy`}
+                                className="text-blue-600 dark:text-blue-400 hover:underline"
+                            >
+                                {t("signin.privacyPolicy")}
+                            </Link>
+                        </p>
+                    </div>
+                </div>
+            )}
+
+            {/* Step 2: Email */}
             {step === "email" && (
                 <>
+                    {/* Back Button */}
+                    <button
+                        onClick={() => {
+                            setStep("buttons")
+                            setEmail("")
+                            setError(null)
+                        }}
+                        className="mb-4 text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 flex items-center gap-1"
+                    >
+                        ← {t("register.back")}
+                    </button>
+
                     {mode === "signin" ? (
                         <>
                             <GoogleLoginButton
@@ -263,6 +360,20 @@ export default function UnifiedSignInForm({
             {/* Step 2: Password (existing user) */}
             {step === "password" && mode === "signin" && (
                 <form onSubmit={handlePasswordSubmit} className="space-y-4">
+                    {/* Back Button */}
+                    <button
+                        type="button"
+                        onClick={() => {
+                            setStep("buttons")
+                            setEmail("")
+                            setPassword("")
+                            setError(null)
+                        }}
+                        className="mb-4 text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 flex items-center gap-1"
+                    >
+                        ← {t("register.back")}
+                    </button>
+
                     {error && (
                         <div className="p-3 bg-red-100 dark:bg-red-900/20 border border-red-400 dark:border-red-800 text-red-700 dark:text-red-400 rounded-lg text-sm">
                             {error}
@@ -331,6 +442,22 @@ export default function UnifiedSignInForm({
             {/* Step 3: Register (new user) */}
             {step === "password" && mode === "signup" && (
                 <form onSubmit={handleRegisterSubmit} className="space-y-4">
+                    {/* Back Button */}
+                    <button
+                        type="button"
+                        onClick={() => {
+                            setStep("buttons")
+                            setEmail("")
+                            setFullName("")
+                            setPassword("")
+                            setConfirmPassword("")
+                            setError(null)
+                        }}
+                        className="mb-4 text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 flex items-center gap-1"
+                    >
+                        ← {t("register.back")}
+                    </button>
+
                     {error && (
                         <div className="p-3 bg-red-100 dark:bg-red-900/20 border border-red-400 dark:border-red-800 text-red-700 dark:text-red-400 rounded-lg text-sm">
                             {error}
