@@ -10,7 +10,7 @@ import { useTranslations } from "next-intl"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
-import { FaEnvelope } from "react-icons/fa"
+import { FaEnvelope, FaGoogle } from "react-icons/fa"
 
 interface UnifiedSignInFormProps {
     locale: string
@@ -134,6 +134,52 @@ export default function UnifiedSignInForm({
         }
     }
 
+    // Handle Google Login
+    const handleGoogleLogin = async () => {
+        try {
+            setError(null)
+            setIsLoading(true)
+
+            // Get Google Client ID from environment
+            const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID
+            if (!clientId) {
+                throw new Error("Google Client ID not configured")
+            }
+
+            // Get redirect URI from environment
+            const redirectUri = process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI
+            if (!redirectUri) {
+                throw new Error("Google redirect URI not configured")
+            }
+
+            // Generate state parameter for CSRF protection
+            const state = Math.random().toString(36).substring(7)
+            sessionStorage.setItem("oauth_state", state)
+
+            // Build Google OAuth authorization URL
+            const params = new URLSearchParams({
+                client_id: clientId,
+                redirect_uri: redirectUri,
+                response_type: "code",
+                scope: "openid email profile",
+                state,
+            })
+
+            const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}`
+
+            // Redirect to Google OAuth
+            window.location.href = authUrl
+        } catch (err) {
+            const error = err instanceof Error ? err : new Error(String(err))
+            logger.error("Google login error", {
+                context: "Auth",
+                error,
+            })
+            setError(error.message)
+            setIsLoading(false)
+        }
+    }
+
     return (
         <div className="w-full max-w-md mx-auto">
             {/* Step 1: Button Selection */}
@@ -147,10 +193,7 @@ export default function UnifiedSignInForm({
 
                     {/* Google Button - White background */}
                     <button
-                        onClick={() => {
-                            setMode("signin")
-                            setStep("buttons")
-                        }}
+                        onClick={handleGoogleLogin}
                         disabled={isLoading}
                         className="w-full px-4 py-3 bg-white dark:bg-gray-100 hover:bg-gray-50 dark:hover:bg-gray-200 text-gray-900 dark:text-gray-900 rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 border border-gray-200 dark:border-gray-300"
                     >
