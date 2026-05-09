@@ -230,6 +230,7 @@ export default function UnifiedSignInForm({
                                     type="button"
                                     onClick={() => {
                                         setMode("signup")
+                                        setStep("email")
                                         setError(null)
                                     }}
                                     className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium"
@@ -244,6 +245,7 @@ export default function UnifiedSignInForm({
                                     type="button"
                                     onClick={() => {
                                         setMode("signin")
+                                        setStep("buttons")
                                         setError(null)
                                     }}
                                     className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium"
@@ -257,7 +259,7 @@ export default function UnifiedSignInForm({
                     {/* Privacy Policy */}
                     <div className="mt-6 text-center">
                         <p className="text-xs text-gray-500 dark:text-gray-400">
-                            {t("signin.agreeTerms")}{" "}
+                            {t("signin.footer")}{" "}
                             <Link
                                 href={`/${locale}/privacy-policy`}
                                 className="text-blue-600 dark:text-blue-400 hover:underline"
