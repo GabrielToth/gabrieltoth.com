@@ -288,39 +288,15 @@ export default function UnifiedSignInForm({
 
                     {mode === "signin" ? (
                         <>
-                            <GoogleLoginButton
-                                className="w-full mb-6"
-                                type="login"
-                            />
-
-                            <div className="relative mb-6">
-                                <div className="absolute inset-0 flex items-center">
-                                    <div className="w-full border-t border-gray-300 dark:border-gray-600"></div>
-                                </div>
-                                <div className="relative flex justify-center text-sm">
-                                    <span className="px-2 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400">
-                                        {t("signin.orContinueWith")}
-                                    </span>
-                                </div>
-                            </div>
+                            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
+                                {t("signin.email")}
+                            </h3>
                         </>
                     ) : (
                         <>
-                            <GoogleLoginButton
-                                className="w-full mb-6"
-                                type="signup"
-                            />
-
-                            <div className="relative mb-6">
-                                <div className="absolute inset-0 flex items-center">
-                                    <div className="w-full border-t border-gray-300 dark:border-gray-600"></div>
-                                </div>
-                                <div className="relative flex justify-center text-sm">
-                                    <span className="px-2 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400">
-                                        {t("signin.orSignUpWith")}
-                                    </span>
-                                </div>
-                            </div>
+                            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
+                                {t("register.email")}
+                            </h3>
                         </>
                     )}
 
