@@ -125,6 +125,17 @@ export function useRegistration() {
         return () => clearInterval(interval)
     }, [state.sessionExpiresAt])
 
+    /**
+     * Extend session expiration (called on user activity)
+     * @param newExpiresAt - The new session expiration time
+     */
+    const extendSession = useCallback((newExpiresAt: Date) => {
+        setState(prev => ({
+            ...prev,
+            sessionExpiresAt: newExpiresAt,
+        }))
+    }, [])
+
     // Track user activity to extend session
     useEffect(() => {
         if (!state.sessionId) return
@@ -267,17 +278,6 @@ export function useRegistration() {
             sessionExpired: false,
         }))
         sessionStorage.removeItem(SESSION_ID_KEY)
-    }, [])
-
-    /**
-     * Extend session expiration (called on user activity)
-     * @param newExpiresAt - The new session expiration time
-     */
-    const extendSession = useCallback((newExpiresAt: Date) => {
-        setState(prev => ({
-            ...prev,
-            sessionExpiresAt: newExpiresAt,
-        }))
     }, [])
 
     return {
