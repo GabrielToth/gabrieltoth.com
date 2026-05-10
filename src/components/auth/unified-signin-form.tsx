@@ -260,19 +260,6 @@ export default function UnifiedSignInForm({
                             </p>
                         )}
                     </div>
-
-                    {/* Privacy Policy */}
-                    <div className="mt-6 text-center">
-                        <p className="text-xs text-gray-500 dark:text-gray-400">
-                            {t("signin.footer")}{" "}
-                            <Link
-                                href={`/${locale}/privacy-policy`}
-                                className="text-blue-600 dark:text-blue-400 hover:underline"
-                            >
-                                {t("signin.privacyPolicy")}
-                            </Link>
-                        </p>
-                    </div>
                 </div>
             )}
 
