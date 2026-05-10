@@ -198,7 +198,9 @@ export default function UnifiedSignInForm({
                         className="w-full h-12 px-4 bg-white dark:bg-gray-100 hover:bg-gray-50 dark:hover:bg-gray-200 text-gray-900 dark:text-gray-900 rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 border border-gray-200 dark:border-gray-300"
                     >
                         <FaGoogle size={20} />
-                        {t("signin.googleButton")}
+                        {mode === "signin"
+                            ? t("signin.googleButton")
+                            : t("signin.googleSignUpButton")}
                     </button>
 
                     {/* SSO Button - Dark background */}
@@ -208,7 +210,9 @@ export default function UnifiedSignInForm({
                         className="w-full h-12 px-4 bg-gray-800 dark:bg-gray-700 hover:bg-gray-900 dark:hover:bg-gray-600 text-white rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                     >
                         <LockKeyhole size={20} />
-                        {t("signin.sso")}
+                        {mode === "signin"
+                            ? t("signin.sso")
+                            : t("signin.ssoSignUp")}
                     </button>
 
                     {/* Email Button - Border only */}
@@ -218,7 +222,9 @@ export default function UnifiedSignInForm({
                         className="w-full h-12 px-4 border-2 border-blue-600 dark:border-blue-500 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                     >
                         <FaEnvelope size={20} />
-                        {t("signin.emailButton")}
+                        {mode === "signin"
+                            ? t("signin.emailButton")
+                            : t("signin.emailSignUpButton")}
                     </button>
 
                     {/* Create Account Link */}
@@ -230,7 +236,6 @@ export default function UnifiedSignInForm({
                                     type="button"
                                     onClick={() => {
                                         setMode("signup")
-                                        setStep("email")
                                         setError(null)
                                     }}
                                     className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium"
