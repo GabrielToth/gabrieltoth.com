@@ -47,19 +47,6 @@ export default async function SignInPage({
 
                     {/* Form */}
                     <UnifiedSignInForm locale={locale} initialEmail={email} />
-
-                    {/* Footer */}
-                    <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700 text-center text-sm text-gray-600 dark:text-gray-400">
-                        <p>
-                            {t("signin.footer")}{" "}
-                            <a
-                                href={`/${locale}/privacy-policy`}
-                                className="text-blue-600 dark:text-blue-400 hover:underline"
-                            >
-                                {t("signin.privacyPolicy")}
-                            </a>
-                        </p>
-                    </div>
                 </div>
             </div>
         </div>
