@@ -89,7 +89,7 @@ describe("RegisterForm", () => {
             await user.type(passwordInput, "weak")
 
             await waitFor(() => {
-                expect(screen.getByText(/too weak/i)).toBeInTheDocument()
+                expect(screen.getByText(/very weak/i)).toBeInTheDocument()
             })
 
             // Type strong password
@@ -97,7 +97,7 @@ describe("RegisterForm", () => {
             await user.type(passwordInput, "StrongPass123!")
 
             await waitFor(() => {
-                expect(screen.getByText(/strong password/i)).toBeInTheDocument()
+                expect(screen.getByText(/strong/i)).toBeInTheDocument()
             })
         })
 
@@ -111,7 +111,7 @@ describe("RegisterForm", () => {
 
             await waitFor(() => {
                 expect(
-                    screen.getByText(/missing requirements/i)
+                    screen.getByText(/password requirements/i)
                 ).toBeInTheDocument()
                 expect(
                     screen.getByText(/at least 8 characters/i)
@@ -183,7 +183,9 @@ describe("RegisterForm", () => {
 
             await waitFor(() => {
                 expect(
-                    screen.getByText(/name contains invalid characters/i)
+                    screen.getByText(
+                        /can only contain letters, spaces, hyphens, and apostrophes/i
+                    )
                 ).toBeInTheDocument()
             })
 
@@ -193,7 +195,9 @@ describe("RegisterForm", () => {
 
             await waitFor(() => {
                 expect(
-                    screen.queryByText(/name contains invalid characters/i)
+                    screen.queryByText(
+                        /can only contain letters, spaces, hyphens, and apostrophes/i
+                    )
                 ).not.toBeInTheDocument()
             })
         })
@@ -209,7 +213,9 @@ describe("RegisterForm", () => {
 
             await waitFor(() => {
                 expect(
-                    screen.queryByText(/name contains invalid characters/i)
+                    screen.queryByText(
+                        /can only contain letters, spaces, hyphens, and apostrophes/i
+                    )
                 ).not.toBeInTheDocument()
             })
         })
@@ -343,7 +349,9 @@ describe("RegisterForm", () => {
             // Should show validation errors
             await waitFor(() => {
                 expect(
-                    screen.getByText(/name contains invalid characters/i)
+                    screen.getByText(
+                        /can only contain letters, spaces, hyphens, and apostrophes/i
+                    )
                 ).toBeInTheDocument()
                 expect(
                     screen.getByText(/invalid email format/i)

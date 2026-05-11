@@ -15,6 +15,16 @@ export default defineConfig({
         globals: true,
         reporters: "default",
         setupFiles: ["./vitest.setup.ts"],
+        // Add UTF-8 encoding support
+        environmentOptions: {
+            jsdom: {
+                resources: "usable",
+                url: "http://localhost:3000",
+            },
+        },
+        // Increase timeout for property-based tests
+        testTimeout: 10000,
+        hookTimeout: 10000,
         coverage: {
             provider: "v8",
             reportsDirectory: "./coverage",

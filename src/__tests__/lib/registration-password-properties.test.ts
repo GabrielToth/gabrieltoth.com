@@ -115,9 +115,7 @@ describe("Property 2: Password Strength Validation Correctness", () => {
         fc.assert(
             fc.property(
                 fc.tuple(
-                    fc
-                        .string({ minLength: 8, maxLength: 20 })
-                        .filter(s => !/[A-Z]/.test(s)),
+                    fc.stringMatching(/^[a-z0-9!@#$%^&*]{8,20}$/),
                     fc.integer({ min: 0, max: 9 }),
                     fc.constantFrom("!", "@", "#", "$", "%", "^", "&", "*")
                 ),
@@ -142,9 +140,7 @@ describe("Property 2: Password Strength Validation Correctness", () => {
         fc.assert(
             fc.property(
                 fc.tuple(
-                    fc
-                        .string({ minLength: 8, maxLength: 20 })
-                        .filter(s => !/[0-9]/.test(s)),
+                    fc.stringMatching(/^[a-zA-Z!@#$%^&*]{8,20}$/),
                     fc.constantFrom("!", "@", "#", "$", "%", "^", "&", "*")
                 ),
                 ([base, special]) => {
@@ -168,12 +164,7 @@ describe("Property 2: Password Strength Validation Correctness", () => {
         fc.assert(
             fc.property(
                 fc.tuple(
-                    fc
-                        .string({ minLength: 8, maxLength: 20 })
-                        .filter(
-                            s =>
-                                !/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(s)
-                        ),
+                    fc.stringMatching(/^[a-zA-Z0-9]{8,20}$/),
                     fc.integer({ min: 0, max: 9 })
                 ),
                 ([base, num]) => {

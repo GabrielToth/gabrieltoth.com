@@ -87,17 +87,17 @@ describe("SecuritySection", () => {
 
         await waitFor(() => {
             expect(
-                screen.getByText("At least 8 characters")
+                screen.getByText(/at least 8 characters/i)
             ).toBeInTheDocument()
             expect(
-                screen.getByText("At least one uppercase letter")
+                screen.getByText(/at least one uppercase letter/i)
             ).toBeInTheDocument()
             expect(
-                screen.getByText("At least one lowercase letter")
+                screen.getByText(/at least one lowercase letter/i)
             ).toBeInTheDocument()
-            expect(screen.getByText("At least one number")).toBeInTheDocument()
+            expect(screen.getByText(/at least one number/i)).toBeInTheDocument()
             expect(
-                screen.getByText("At least one special character")
+                screen.getByText(/at least one special character/i)
             ).toBeInTheDocument()
         })
     })

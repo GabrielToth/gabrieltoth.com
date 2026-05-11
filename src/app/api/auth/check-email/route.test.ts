@@ -54,6 +54,12 @@ vi.mock("@/lib/config/env", () => ({
     }),
 }))
 
+// Mock rate limiting
+vi.mock("@/lib/rate-limit", () => ({
+    buildClientKey: vi.fn(() => "test-key"),
+    rateLimitByKey: vi.fn(() => Promise.resolve({ success: true })),
+}))
+
 describe("GET /api/auth/check-email", () => {
     beforeEach(() => {
         vi.clearAllMocks()

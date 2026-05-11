@@ -26,6 +26,20 @@ vi.mock("next-intl", () => ({
             "completeAccount.save": "Save",
             "completeAccount.cancel": "Cancel",
             "completeAccount.loading": "Processing...",
+            "completeAccount.errors.invalidEmail": "Invalid email format",
+            "completeAccount.errors.emailAlreadyRegistered":
+                "Email already registered",
+            "completeAccount.errors.invalidPassword": "Password is too weak",
+            "completeAccount.errors.invalidPhone": "Invalid phone format",
+            "completeAccount.errors.invalidBirthDate": "Invalid birth date",
+            "completeAccount.errors.userTooYoung":
+                "You must be at least 13 years old",
+            "completeAccount.errors.futureDate":
+                "Birth date cannot be in the future",
+            "completeAccount.errors.invalidToken": "Invalid token",
+            "completeAccount.errors.serverError": "Server error",
+            "completeAccount.errors.validationFailed":
+                "Please fix the errors below",
         }
         return translations[key] || key
     },

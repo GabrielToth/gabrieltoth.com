@@ -61,7 +61,7 @@ const youtubeChannelIdArb = fc
 // Generator for valid access tokens
 const accessTokenArb = fc
     .string({ minLength: 20, maxLength: 200 })
-    .filter(s => s.length > 0)
+    .map(s => s || "a") // Ensure non-empty
 
 // Generator for OAuth responses
 const oauthResponseArb = fc.record({

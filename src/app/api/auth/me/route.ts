@@ -5,6 +5,12 @@
  * Validates: Requirements 6.1, 6.2, 6.3
  */
 
+import {
+    AuthErrorType,
+    createErrorResponse,
+    createSuccessResponse,
+    handleUnexpectedError,
+} from "@/lib/auth/error-handling"
 import { db } from "@/lib/db"
 import { logger } from "@/lib/logger"
 import { NextRequest } from "next/server"

@@ -1,11 +1,18 @@
-import { createClient } from "@supabase/supabase-js"
 import bcrypt from "bcrypt"
 import { NextRequest } from "next/server"
 import { beforeEach, describe, expect, it, vi } from "vitest"
-import { POST } from "./route"
 
-// Mock Supabase and dependencies
-vi.mock("@supabase/supabase-js")
+// Mock Supabase and dependencies - MUST be before route import
+vi.mock("@supabase/supabase-js", () => {
+    const mockFrom = vi.fn()
+    const mockSupabase = {
+        from: mockFrom,
+    }
+    return {
+        createClient: vi.fn(() => mockSupabase),
+    }
+})
+
 vi.mock("@/lib/rate-limit")
 vi.mock("@/lib/auth/audit-logging", () => ({
     logLoginFailure: vi.fn(),
@@ -21,14 +28,18 @@ vi.mock("@/lib/auth/rate-limiter", () => ({
     resetAttempt: vi.fn(),
 }))
 
-const mockSupabase = {
-    from: vi.fn(),
-}
+// Import route AFTER mocks
+import { POST } from "./route"
+
+// Get the mocked Supabase instance for test manipulation
+const { createClient } = await import("@supabase/supabase-js")
+const mockSupabase = (createClient as any)()
 
 describe("POST /api/auth/login - Task 8-11: Login Route Handler", () => {
     beforeEach(() => {
         vi.clearAllMocks()
-        ;(createClient as any).mockReturnValue(mockSupabase)
+        // Reset the mock implementation
+        mockSupabase.from.mockReset()
     })
 
     // ============================================================================
@@ -230,7 +241,7 @@ describe("POST /api/auth/login - Task 8-11: Login Route Handler", () => {
 
         expect(response.status).toBe(401)
         expect(data.success).toBe(false)
-        expect(data.error).toContain("Invalid email or password")
+        expect(data.error).toContain("Email not found")
     })
 
     // ============================================================================

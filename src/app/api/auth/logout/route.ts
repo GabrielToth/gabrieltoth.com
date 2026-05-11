@@ -16,7 +16,7 @@ import { removeSession } from "@/lib/auth/session"
 import { db } from "@/lib/db"
 import { logger } from "@/lib/logger"
 import { getClientIp } from "@/lib/middleware/security-headers"
-import { NextRequest } from "next/server"
+import { NextRequest, NextResponse } from "next/server"
 
 const { queryOne } = db
 
@@ -34,7 +34,13 @@ export async function POST(request: NextRequest) {
                 context: "Auth",
                 data: { ip: clientIp },
             })
-            return createErrorResponse(AuthErrorType.UNAUTHORIZED)
+            return NextResponse.json(
+                {
+                    success: false,
+                    error: "No active session",
+                },
+                { status: 401 }
+            )
         }
 
         // Find session and get user info
@@ -52,8 +58,8 @@ export async function POST(request: NextRequest) {
         }
 
         // Get user email for logging
-        const user = await queryOne<{ email: string }>(
-            "SELECT email FROM users WHERE id = $1",
+        const user = await queryOne<{ google_email: string }>(
+            "SELECT google_email FROM users WHERE id = $1",
             [session.user_id]
         )
 
@@ -74,7 +80,7 @@ export async function POST(request: NextRequest) {
             try {
                 await logAuditEvent(
                     "LOGOUT",
-                    user.email,
+                    user.google_email,
                     clientIp,
                     { action: "User logged out" },
                     session.user_id

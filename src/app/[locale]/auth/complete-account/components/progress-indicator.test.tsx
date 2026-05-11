@@ -17,6 +17,8 @@ vi.mock("next-intl", () => ({
             "completeAccount.step1.title": "Review Your Information",
             "completeAccount.step2.title": "Add Required Information",
             "completeAccount.step3.title": "Verify Your Information",
+            "completeAccount.step": "Step",
+            "completeAccount.of": "of",
         }
         return translations[key] || key
     },
@@ -24,24 +26,48 @@ vi.mock("next-intl", () => ({
 
 describe("ProgressIndicator", () => {
     it("should render progress indicator for step 1", () => {
-        render(<ProgressIndicator currentStep={1} totalSteps={3} />)
+        const { container } = render(
+            <ProgressIndicator currentStep={1} totalSteps={3} />
+        )
 
         expect(screen.getByText("Review Your Information")).toBeInTheDocument()
-        expect(screen.getByText("1 of 3")).toBeInTheDocument()
+        // Check for step counter text (broken up by whitespace)
+        const stepCounter = container.querySelector(
+            ".text-center.text-sm"
+        ) as HTMLElement
+        expect(stepCounter?.textContent?.replace(/\s+/g, " ").trim()).toBe(
+            "Step 1 of 3"
+        )
     })
 
     it("should render progress indicator for step 2", () => {
-        render(<ProgressIndicator currentStep={2} totalSteps={3} />)
+        const { container } = render(
+            <ProgressIndicator currentStep={2} totalSteps={3} />
+        )
 
         expect(screen.getByText("Add Required Information")).toBeInTheDocument()
-        expect(screen.getByText("2 of 3")).toBeInTheDocument()
+        // Check for step counter text (broken up by whitespace)
+        const stepCounter = container.querySelector(
+            ".text-center.text-sm"
+        ) as HTMLElement
+        expect(stepCounter?.textContent?.replace(/\s+/g, " ").trim()).toBe(
+            "Step 2 of 3"
+        )
     })
 
     it("should render progress indicator for step 3", () => {
-        render(<ProgressIndicator currentStep={3} totalSteps={3} />)
+        const { container } = render(
+            <ProgressIndicator currentStep={3} totalSteps={3} />
+        )
 
         expect(screen.getByText("Verify Your Information")).toBeInTheDocument()
-        expect(screen.getByText("3 of 3")).toBeInTheDocument()
+        // Check for step counter text (broken up by whitespace)
+        const stepCounter = container.querySelector(
+            ".text-center.text-sm"
+        ) as HTMLElement
+        expect(stepCounter?.textContent?.replace(/\s+/g, " ").trim()).toBe(
+            "Step 3 of 3"
+        )
     })
 
     it("should display correct progress bar width", () => {
@@ -61,7 +87,7 @@ describe("ProgressIndicator", () => {
         )
 
         const stepIndicators = container.querySelectorAll(
-            ".flex-1.h-10.rounded-lg"
+            ".w-10.h-10.rounded-full"
         )
         expect(stepIndicators).toHaveLength(3)
     })

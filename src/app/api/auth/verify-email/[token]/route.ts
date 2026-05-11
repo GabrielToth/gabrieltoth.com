@@ -1,8 +1,4 @@
 import { logEmailVerification } from "@/lib/auth/audit-logging"
-import {
-    createErrorResponse,
-    createSuccessResponse,
-} from "@/lib/auth/error-handling"
 import { createClient } from "@supabase/supabase-js"
 import { NextRequest, NextResponse } from "next/server"
 
@@ -20,10 +16,10 @@ export async function GET(
 
         if (!token) {
             return NextResponse.json(
-                createErrorResponse(
-                    "MISSING_TOKEN",
-                    "Verification token is required"
-                ),
+                {
+                    success: false,
+                    error: "Verification token is required",
+                },
                 { status: 400 }
             )
         }
@@ -31,17 +27,28 @@ export async function GET(
         // Find token in database
         const { data: tokenRecord, error: tokenError } = await supabase
             .from("email_verification_tokens")
-            .select("user_id, expires_at")
+            .select("user_id, email, expires_at, verified_at")
             .eq("token", token)
             .single()
 
         if (tokenError || !tokenRecord) {
             return NextResponse.json(
-                createErrorResponse(
-                    "INVALID_TOKEN",
-                    "Verification token not found or invalid"
-                ),
-                { status: 404 }
+                {
+                    success: false,
+                    error: "Invalid or expired verification token",
+                },
+                { status: 400 }
+            )
+        }
+
+        // Check if token has already been used
+        if (tokenRecord.verified_at) {
+            return NextResponse.json(
+                {
+                    success: false,
+                    error: "This verification token has already been used",
+                },
+                { status: 400 }
             )
         }
 
@@ -49,11 +56,11 @@ export async function GET(
         const expiresAt = new Date(tokenRecord.expires_at)
         if (expiresAt < new Date()) {
             return NextResponse.json(
-                createErrorResponse(
-                    "TOKEN_EXPIRED",
-                    "Verification token has expired"
-                ),
-                { status: 410 }
+                {
+                    success: false,
+                    error: "Verification token has expired",
+                },
+                { status: 400 }
             )
         }
 
@@ -66,37 +73,38 @@ export async function GET(
         if (updateError) {
             console.error("Email verification error:", updateError)
             return NextResponse.json(
-                createErrorResponse(
-                    "VERIFICATION_FAILED",
-                    "Failed to verify email"
-                ),
+                {
+                    success: false,
+                    error: "Failed to verify email",
+                },
                 { status: 500 }
             )
         }
 
-        // Delete used token
+        // Mark token as used
         await supabase
             .from("email_verification_tokens")
-            .delete()
+            .update({ verified_at: new Date().toISOString() })
             .eq("token", token)
 
         // Log email verification event
-        await logEmailVerification(email, "", tokenRecord.user_id)
+        await logEmailVerification(tokenRecord.email, "", tokenRecord.user_id)
 
         return NextResponse.json(
-            createSuccessResponse({
+            {
+                success: true,
                 message: "Email verified successfully",
-                userId: tokenRecord.user_id,
-            }),
+                email: tokenRecord.email,
+            },
             { status: 200 }
         )
     } catch (error) {
         console.error("Verify email error:", error)
         return NextResponse.json(
-            createErrorResponse(
-                "INTERNAL_ERROR",
-                "An unexpected error occurred"
-            ),
+            {
+                success: false,
+                error: "An unexpected error occurred",
+            },
             { status: 500 }
         )
     }

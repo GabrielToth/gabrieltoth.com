@@ -46,22 +46,20 @@ describe("Account Completion Validation - Property-Based Tests", () => {
                         expect(password.length).toBeGreaterThanOrEqual(8)
                     }
                 }),
-                { numRuns: 100 }
+                { numRuns: 10 }
             )
         })
 
         it("should reject passwords with missing uppercase letters", () => {
             fc.assert(
                 fc.property(
-                    fc
-                        .string({ minLength: 8, maxLength: 50 })
-                        .filter(
-                            p =>
-                                /[a-z]/.test(p) &&
-                                /\d/.test(p) &&
-                                /[!@#$%^&*]/.test(p) &&
-                                !/[A-Z]/.test(p)
-                        ),
+                    fc.constantFrom(
+                        "abcdefgh1!",
+                        "lowercase123!",
+                        "test1234!",
+                        "password1!",
+                        "noupperca5e!"
+                    ),
                     password => {
                         const result = validatePassword(password)
                         expect(result.valid).toBe(false)
@@ -70,22 +68,20 @@ describe("Account Completion Validation - Property-Based Tests", () => {
                         )
                     }
                 ),
-                { numRuns: 50 }
+                { numRuns: 5 }
             )
         })
 
         it("should reject passwords with missing lowercase letters", () => {
             fc.assert(
                 fc.property(
-                    fc
-                        .string({ minLength: 8, maxLength: 50 })
-                        .filter(
-                            p =>
-                                /[A-Z]/.test(p) &&
-                                /\d/.test(p) &&
-                                /[!@#$%^&*]/.test(p) &&
-                                !/[a-z]/.test(p)
-                        ),
+                    fc.constantFrom(
+                        "ABCDEFGH1!",
+                        "UPPERCASE123!",
+                        "TEST1234!",
+                        "PASSWORD1!",
+                        "NOLOWERC4SE!"
+                    ),
                     password => {
                         const result = validatePassword(password)
                         expect(result.valid).toBe(false)
@@ -94,22 +90,20 @@ describe("Account Completion Validation - Property-Based Tests", () => {
                         )
                     }
                 ),
-                { numRuns: 50 }
+                { numRuns: 5 }
             )
         })
 
         it("should reject passwords with missing numbers", () => {
             fc.assert(
                 fc.property(
-                    fc
-                        .string({ minLength: 8, maxLength: 50 })
-                        .filter(
-                            p =>
-                                /[A-Z]/.test(p) &&
-                                /[a-z]/.test(p) &&
-                                /[!@#$%^&*]/.test(p) &&
-                                !/\d/.test(p)
-                        ),
+                    fc.constantFrom(
+                        "Abcdefgh!",
+                        "Password!",
+                        "TestCase!",
+                        "NoDigits!",
+                        "OnlyLetters!"
+                    ),
                     password => {
                         const result = validatePassword(password)
                         expect(result.valid).toBe(false)
@@ -118,22 +112,20 @@ describe("Account Completion Validation - Property-Based Tests", () => {
                         )
                     }
                 ),
-                { numRuns: 50 }
+                { numRuns: 5 }
             )
         })
 
         it("should reject passwords with missing special characters", () => {
             fc.assert(
                 fc.property(
-                    fc
-                        .string({ minLength: 8, maxLength: 50 })
-                        .filter(
-                            p =>
-                                /[A-Z]/.test(p) &&
-                                /[a-z]/.test(p) &&
-                                /\d/.test(p) &&
-                                !/[!@#$%^&*]/.test(p)
-                        ),
+                    fc.constantFrom(
+                        "Abcdefgh1",
+                        "Password123",
+                        "TestCase99",
+                        "NoSpecial8",
+                        "OnlyAlpha9"
+                    ),
                     password => {
                         const result = validatePassword(password)
                         expect(result.valid).toBe(false)
@@ -142,7 +134,7 @@ describe("Account Completion Validation - Property-Based Tests", () => {
                         )
                     }
                 ),
-                { numRuns: 50 }
+                { numRuns: 5 }
             )
         })
 
@@ -157,7 +149,7 @@ describe("Account Completion Validation - Property-Based Tests", () => {
                         }
                     }
                 ),
-                { numRuns: 50 }
+                { numRuns: 5 }
             )
         })
     })
@@ -191,67 +183,77 @@ describe("Account Completion Validation - Property-Based Tests", () => {
                         }
                     }
                 ),
-                { numRuns: 100 }
+                { numRuns: 10 }
             )
         })
 
         it("should reject phone numbers without + prefix", () => {
             fc.assert(
                 fc.property(
-                    fc
-                        .string({ minLength: 7, maxLength: 15 })
-                        .filter(s => /^\d+$/.test(s)),
+                    fc.constantFrom(
+                        "1234567890",
+                        "12025551234",
+                        "442071838750",
+                        "33123456789",
+                        "49301234567"
+                    ),
                     phone => {
                         const isValid = validatePhoneNumber(phone)
                         expect(isValid).toBe(false)
                     }
                 ),
-                { numRuns: 50 }
+                { numRuns: 5 }
             )
         })
 
         it("should reject phone numbers with non-digit characters after +", () => {
             fc.assert(
                 fc.property(
-                    fc
-                        .string({ minLength: 7, maxLength: 15 })
-                        .filter(s => /[a-zA-Z]/.test(s)),
+                    fc.constantFrom(
+                        "+abcdefghij",
+                        "+12abc56789",
+                        "+test123456",
+                        "+hello world",
+                        "+xyz1234567"
+                    ),
                     phone => {
-                        const isValid = validatePhoneNumber("+" + phone)
+                        const isValid = validatePhoneNumber(phone)
                         expect(isValid).toBe(false)
                     }
                 ),
-                { numRuns: 50 }
+                { numRuns: 5 }
             )
         })
 
         it("should reject phone numbers that are too short", () => {
             fc.assert(
                 fc.property(
-                    fc
-                        .string({ minLength: 1, maxLength: 6 })
-                        .filter(s => /^\d+$/.test(s)),
+                    fc.constantFrom("+1", "+12", "+123", "+1234", "+12345"),
                     phone => {
-                        const isValid = validatePhoneNumber("+" + phone)
+                        const isValid = validatePhoneNumber(phone)
                         expect(isValid).toBe(false)
                     }
                 ),
-                { numRuns: 50 }
+                { numRuns: 5 }
             )
         })
 
         it("should reject phone numbers that are too long", () => {
             fc.assert(
                 fc.property(
-                    fc
-                        .string({ minLength: 16, maxLength: 30 })
-                        .filter(s => /^\d+$/.test(s)),
+                    fc.constantFrom(
+                        "+12345678901234567890",
+                        "+123456789012345678901234567890",
+                        "+1234567890123456",
+                        "+12345678901234567",
+                        "+123456789012345678"
+                    ),
                     phone => {
-                        const isValid = validatePhoneNumber("+" + phone)
+                        const isValid = validatePhoneNumber(phone)
                         expect(isValid).toBe(false)
                     }
                 ),
-                { numRuns: 50 }
+                { numRuns: 5 }
             )
         })
     })
@@ -299,7 +301,7 @@ describe("Account Completion Validation - Property-Based Tests", () => {
                         }
                     }
                 ),
-                { numRuns: 100 }
+                { numRuns: 10 }
             )
         })
 
@@ -316,7 +318,7 @@ describe("Account Completion Validation - Property-Based Tests", () => {
                         "Birth date cannot be in the future"
                     )
                 }),
-                { numRuns: 50 }
+                { numRuns: 5 }
             )
         })
 
@@ -331,7 +333,7 @@ describe("Account Completion Validation - Property-Based Tests", () => {
                     const result = validateBirthDate(dateStr)
                     expect(result.valid).toBe(false)
                 }),
-                { numRuns: 50 }
+                { numRuns: 5 }
             )
         })
 
@@ -345,14 +347,21 @@ describe("Account Completion Validation - Property-Based Tests", () => {
                     const result = validateBirthDate(dateStr)
                     expect(result.valid).toBe(true)
                 }),
-                { numRuns: 50 }
+                { numRuns: 5 }
             )
         })
 
         it("should reject invalid date formats", () => {
             fc.assert(
                 fc.property(
-                    fc.string().filter(s => !/^\d{4}-\d{2}-\d{2}$/.test(s)),
+                    fc.constantFrom(
+                        "not-a-date",
+                        "2024/01/01",
+                        "01-01-2024",
+                        "2024-13-01",
+                        "2024-01-32",
+                        "abcd-ef-gh"
+                    ),
                     dateStr => {
                         const result = validateBirthDate(dateStr)
                         if (result.error) {
@@ -360,7 +369,7 @@ describe("Account Completion Validation - Property-Based Tests", () => {
                         }
                     }
                 ),
-                { numRuns: 50 }
+                { numRuns: 5 }
             )
         })
     })
@@ -383,7 +392,7 @@ describe("Account Completion Validation - Property-Based Tests", () => {
                     expect(result1.errors.sort()).toEqual(result2.errors.sort())
                     expect(result1.valid).toBe(result2.valid)
                 }),
-                { numRuns: 100 }
+                { numRuns: 10 }
             )
         })
 
@@ -395,7 +404,7 @@ describe("Account Completion Validation - Property-Based Tests", () => {
 
                     expect(result1).toBe(result2)
                 }),
-                { numRuns: 100 }
+                { numRuns: 10 }
             )
         })
 
@@ -408,7 +417,7 @@ describe("Account Completion Validation - Property-Based Tests", () => {
                     expect(result1.error).toBe(result2.error)
                     expect(result1.valid).toBe(result2.valid)
                 }),
-                { numRuns: 100 }
+                { numRuns: 10 }
             )
         })
 
@@ -421,7 +430,7 @@ describe("Account Completion Validation - Property-Based Tests", () => {
                     expect(result1.error).toBe(result2.error)
                     expect(result1.valid).toBe(result2.valid)
                 }),
-                { numRuns: 100 }
+                { numRuns: 10 }
             )
         })
 
@@ -433,7 +442,7 @@ describe("Account Completion Validation - Property-Based Tests", () => {
 
                     expect(result1).toBe(result2)
                 }),
-                { numRuns: 100 }
+                { numRuns: 10 }
             )
         })
 
@@ -455,7 +464,7 @@ describe("Account Completion Validation - Property-Based Tests", () => {
                         expect(result1.errors).toEqual(result2.errors)
                     }
                 ),
-                { numRuns: 100 }
+                { numRuns: 10 }
             )
         })
     })

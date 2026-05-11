@@ -46,7 +46,9 @@ describe("BillingSection", () => {
         )
 
         expect(screen.getByText("Pro Plan")).toBeInTheDocument()
-        expect(screen.getByText("$29.99")).toBeInTheDocument()
+        // Use getAllByText since price appears multiple times (plan card + invoice table)
+        const priceElements = screen.getAllByText("$29.99")
+        expect(priceElements.length).toBeGreaterThan(0)
         expect(screen.getByText("/month")).toBeInTheDocument()
     })
 
@@ -55,10 +57,10 @@ describe("BillingSection", () => {
             <BillingSection billing={mockBilling} onUpgrade={mockOnUpgrade} />
         )
 
-        expect(screen.getByText("Unlimited posts")).toBeInTheDocument()
-        expect(screen.getByText("5 connected channels")).toBeInTheDocument()
-        expect(screen.getByText("Basic analytics")).toBeInTheDocument()
-        expect(screen.getByText("Email support")).toBeInTheDocument()
+        expect(screen.getByText(/unlimited posts/i)).toBeInTheDocument()
+        expect(screen.getByText(/5 connected channels/i)).toBeInTheDocument()
+        expect(screen.getByText(/basic analytics/i)).toBeInTheDocument()
+        expect(screen.getByText(/email support/i)).toBeInTheDocument()
     })
 
     it("displays next billing date", () => {

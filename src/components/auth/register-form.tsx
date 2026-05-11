@@ -18,7 +18,8 @@ import {
     validatePasswordMatch,
 } from "@/lib/validation"
 import { useRouter } from "next/navigation"
-import { FormEvent, useEffect, useState } from "react"
+import { FormEvent, useEffect, useMemo, useState } from "react"
+import { PasswordStrengthIndicator } from "./password-strength-indicator"
 
 interface RegisterFormProps {
     locale: string
@@ -298,11 +299,6 @@ export function RegisterForm({ locale }: RegisterFormProps) {
             setIsLoading(false)
         }
     }
-
-    // Calculate password strength for indicator
-    // Requirement 8.2
-    const passwordStrength = calculatePasswordStrength(formData.password)
-    const missingRequirements = getMissingRequirements(formData.password)
 
     return (
         <form onSubmit={handleSubmit} className="space-y-6">

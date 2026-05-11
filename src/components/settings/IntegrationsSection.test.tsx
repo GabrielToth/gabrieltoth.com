@@ -4,6 +4,13 @@ import { describe, expect, it, vi } from "vitest"
 import { IntegrationsSection } from "./IntegrationsSection"
 import { Integration } from "./SettingsContainer"
 
+// Mock Icon component
+vi.mock("@/components/ui/icon", () => ({
+    Icon: ({ name }: { name: string }) => (
+        <div data-testid={`icon-${name}`}>{name}</div>
+    ),
+}))
+
 describe("IntegrationsSection", () => {
     const mockIntegrations: Integration[] = [
         {

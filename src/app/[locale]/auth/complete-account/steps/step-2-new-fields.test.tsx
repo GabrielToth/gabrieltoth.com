@@ -43,6 +43,20 @@ vi.mock("next-intl", () => ({
             "completeAccount.passwordRequirements.strong": "Password is strong",
             "completeAccount.passwordRequirements.weak":
                 "Password needs more requirements",
+            "completeAccount.errors.invalidEmail": "Invalid email format",
+            "completeAccount.errors.emailAlreadyRegistered":
+                "Email already registered",
+            "completeAccount.errors.invalidPassword": "Password is too weak",
+            "completeAccount.errors.invalidPhone": "Invalid phone format",
+            "completeAccount.errors.invalidBirthDate": "Invalid birth date",
+            "completeAccount.errors.userTooYoung":
+                "You must be at least 13 years old",
+            "completeAccount.errors.futureDate":
+                "Birth date cannot be in the future",
+            "completeAccount.errors.invalidToken": "Invalid token",
+            "completeAccount.errors.serverError": "Server error",
+            "completeAccount.errors.validationFailed":
+                "Please fix the errors below",
         }
         return translations[key] || key
     },
@@ -163,7 +177,16 @@ describe("Step2NewFields", () => {
 
     it("should call onContinue when continue button is clicked", () => {
         const onContinue = vi.fn()
-        render(<Step2NewFields {...defaultProps} onContinue={onContinue} />)
+        const props = {
+            ...defaultProps,
+            newFields: {
+                password: "SecurePass123!",
+                phone: "+1234567890",
+                birthDate: "1990-01-01",
+            },
+            onContinue,
+        }
+        render(<Step2NewFields {...props} />)
 
         const continueButton = screen.getByText("Continue to Verification")
         fireEvent.click(continueButton)

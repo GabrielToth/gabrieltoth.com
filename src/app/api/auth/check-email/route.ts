@@ -1,7 +1,3 @@
-import {
-    createErrorResponse,
-    createSuccessResponse,
-} from "@/lib/auth/error-handling"
 import { buildClientKey, rateLimitByKey } from "@/lib/rate-limit"
 import { validateEmail } from "@/lib/validation"
 import { createClient } from "@supabase/supabase-js"
@@ -13,6 +9,8 @@ const supabase = createClient(
 )
 
 export async function GET(request: NextRequest) {
+    const startTime = Date.now()
+
     try {
         // Get client IP for rate limiting
         const clientIp =
@@ -30,10 +28,10 @@ export async function GET(request: NextRequest) {
         const rateLimit = await rateLimitByKey(rateLimitKey)
         if (!rateLimit.success) {
             return NextResponse.json(
-                createErrorResponse(
-                    "RATE_LIMIT_EXCEEDED",
-                    "Too many requests. Please try again later."
-                ),
+                {
+                    available: false,
+                    error: "Too many requests. Please try again later.",
+                },
                 { status: 429 }
             )
         }
@@ -43,10 +41,10 @@ export async function GET(request: NextRequest) {
 
         if (!email) {
             return NextResponse.json(
-                createErrorResponse(
-                    "MISSING_EMAIL",
-                    "Email parameter is required"
-                ),
+                {
+                    available: false,
+                    error: "Email parameter is required",
+                },
                 { status: 400 }
             )
         }
@@ -55,15 +53,17 @@ export async function GET(request: NextRequest) {
         const emailValidation = validateEmail(email)
         if (!emailValidation.isValid) {
             return NextResponse.json(
-                createErrorResponse("INVALID_EMAIL", "Invalid email format"),
+                {
+                    available: false,
+                    error: "Invalid email format",
+                },
                 { status: 400 }
             )
         }
 
         // Check if email exists
-        const startTime = Date.now()
         const { data: existingUser, error } = await supabase
-            .from("users")
+            .from("auth_users")
             .select("id")
             .eq("email", email.toLowerCase())
             .single()
@@ -73,10 +73,10 @@ export async function GET(request: NextRequest) {
         if (error && error.code !== "PGRST116") {
             console.error("Database error:", error)
             return NextResponse.json(
-                createErrorResponse(
-                    "DATABASE_ERROR",
-                    "Failed to check email availability"
-                ),
+                {
+                    available: false,
+                    error: "Failed to check email availability",
+                },
                 { status: 500 }
             )
         }
@@ -84,21 +84,31 @@ export async function GET(request: NextRequest) {
         const available = !existingUser
 
         return NextResponse.json(
-            createSuccessResponse({
+            {
                 email: email.toLowerCase(),
                 available,
-                responseTime,
-            }),
-            { status: 200 }
+            },
+            {
+                status: 200,
+                headers: {
+                    "X-Response-Time": `${responseTime}ms`,
+                },
+            }
         )
     } catch (error) {
         console.error("Check email error:", error)
+        const responseTime = Date.now() - startTime
         return NextResponse.json(
-            createErrorResponse(
-                "INTERNAL_ERROR",
-                "An unexpected error occurred"
-            ),
-            { status: 500 }
+            {
+                available: false,
+                error: "An unexpected error occurred",
+            },
+            {
+                status: 500,
+                headers: {
+                    "X-Response-Time": `${responseTime}ms`,
+                },
+            }
         )
     }
 }

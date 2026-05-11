@@ -1,9 +1,5 @@
 import { logRegistration } from "@/lib/auth/audit-logging"
-import {
-    AuthErrorType,
-    createErrorResponse,
-    createSuccessResponse,
-} from "@/lib/auth/error-handling"
+import { AuthErrorType, createErrorResponse } from "@/lib/auth/error-handling"
 import { generateTempToken } from "@/lib/auth/temp-token"
 import { buildClientKey, rateLimitByKey } from "@/lib/rate-limit"
 import {
@@ -16,7 +12,7 @@ import {
 } from "@/lib/validation"
 import { createClient } from "@supabase/supabase-js"
 import bcrypt from "bcrypt"
-import { NextRequest } from "next/server"
+import { NextRequest, NextResponse } from "next/server"
 
 const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -258,15 +254,20 @@ export async function POST(request: NextRequest) {
             picture: undefined,
         })
 
-        const response = createSuccessResponse(
+        return NextResponse.json(
             {
-                tempToken,
-                redirectUrl: `/auth/complete-account?token=${encodeURIComponent(tempToken)}`,
+                success: true,
+                message:
+                    "Account created successfully. Proceeding to dashboard.",
+                data: {
+                    userId: newUser.id,
+                    email: email.toLowerCase(),
+                    tempToken,
+                    redirectUrl: `/auth/complete-account?token=${encodeURIComponent(tempToken)}`,
+                },
             },
-            "Account created successfully. Proceeding to dashboard."
+            { status: 201 }
         )
-        response.status = 201 // 201 Created - account was created
-        return response
     } catch (error) {
         console.error("Registration error:", error)
         return createErrorResponse(AuthErrorType.INTERNAL_ERROR)

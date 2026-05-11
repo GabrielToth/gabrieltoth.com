@@ -83,9 +83,10 @@ vi.mock("@supabase/supabase-js", () => ({
             update: vi.fn(function () {
                 return {
                     eq: vi.fn(function () {
-                        return {
+                        return Promise.resolve({
+                            data: null,
                             error: null,
-                        }
+                        })
                     }),
                 }
             }),
@@ -102,6 +103,11 @@ vi.mock("@/lib/config/env", () => ({
         }
         return envMap[key]
     }),
+}))
+
+// Mock audit logging
+vi.mock("@/lib/auth/audit-logging", () => ({
+    logEmailVerification: vi.fn(() => Promise.resolve()),
 }))
 
 describe("GET /api/auth/verify-email/:token", () => {

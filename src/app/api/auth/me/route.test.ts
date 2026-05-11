@@ -7,7 +7,6 @@
 
 import { NextRequest } from "next/server"
 import { beforeEach, describe, expect, it, vi } from "vitest"
-import { GET } from "./route"
 
 // Mock dependencies
 vi.mock("@/lib/db", () => ({
@@ -29,7 +28,58 @@ vi.mock("@/lib/middleware/security-headers", () => ({
     getSecurityHeaders: vi.fn(() => ({})),
 }))
 
+vi.mock("@/lib/auth/error-handling", () => ({
+    AuthErrorType: {
+        UNAUTHORIZED: "UNAUTHORIZED",
+        SESSION_EXPIRED: "SESSION_EXPIRED",
+    },
+    createErrorResponse: vi.fn((errorType: string) => {
+        const statusMap: Record<string, number> = {
+            UNAUTHORIZED: 401,
+            SESSION_EXPIRED: 401,
+        }
+        return new Response(
+            JSON.stringify({
+                success: false,
+                error:
+                    errorType === "UNAUTHORIZED"
+                        ? "Unauthorized"
+                        : "Session expired",
+            }),
+            {
+                status: statusMap[errorType] || 500,
+                headers: { "Content-Type": "application/json" },
+            }
+        )
+    }),
+    createSuccessResponse: vi.fn((data: any) => {
+        return new Response(
+            JSON.stringify({
+                success: true,
+                data,
+            }),
+            {
+                status: 200,
+                headers: { "Content-Type": "application/json" },
+            }
+        )
+    }),
+    handleUnexpectedError: vi.fn((err: any) => {
+        return new Response(
+            JSON.stringify({
+                success: false,
+                error: "An error occurred while processing your request",
+            }),
+            {
+                status: 500,
+                headers: { "Content-Type": "application/json" },
+            }
+        )
+    }),
+}))
+
 import { db } from "@/lib/db"
+import { GET } from "./route"
 
 describe("GET /api/auth/me", () => {
     beforeEach(() => {
@@ -85,7 +135,7 @@ describe("GET /api/auth/me", () => {
 
         expect(response.status).toBe(401)
         expect(data.success).toBe(false)
-        expect(data.error).toBe("Unauthorized")
+        expect(data.error).toBe("Session expired")
     })
 
     it("returns 401 when user is not found", async () => {
@@ -169,7 +219,7 @@ describe("GET /api/auth/me", () => {
 
         expect(response.status).toBe(200)
         expect(data.success).toBe(true)
-        expect(data.data.google_picture).toBeUndefined()
+        expect(data.data.google_picture).toBeNull()
     })
 
     it("handles database errors", async () => {

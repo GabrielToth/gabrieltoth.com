@@ -58,10 +58,6 @@ export class TokenStore {
                 tokenData.accessToken
             )
 
-            if (!encryptionResult.success) {
-                throw new Error(`Encryption failed: ${encryptionResult.error}`)
-            }
-
             const now = Date.now()
             const linkedAt = now
 
@@ -80,7 +76,7 @@ export class TokenStore {
                 result = await this.supabase
                     .from("oauth_tokens")
                     .update({
-                        encrypted_token: encryptionResult.encryptedData,
+                        encrypted_token: encryptionResult.encryptedToken,
                         refresh_token: tokenData.refreshToken || null,
                         expires_at: tokenData.expiresAt
                             ? new Date(tokenData.expiresAt)
@@ -98,7 +94,7 @@ export class TokenStore {
                     .insert({
                         user_id: tokenData.userId,
                         platform: tokenData.platform,
-                        encrypted_token: encryptionResult.encryptedData,
+                        encrypted_token: encryptionResult.encryptedToken,
                         refresh_token: tokenData.refreshToken || null,
                         expires_at: tokenData.expiresAt
                             ? new Date(tokenData.expiresAt)

@@ -1,9 +1,5 @@
 import { logEmailVerification } from "@/lib/auth/audit-logging"
 import { sendVerificationEmail } from "@/lib/auth/email-service"
-import {
-    createErrorResponse,
-    createSuccessResponse,
-} from "@/lib/auth/error-handling"
 import { createClient } from "@supabase/supabase-js"
 import { NextRequest, NextResponse } from "next/server"
 
@@ -18,15 +14,27 @@ const VERIFICATION_TOKEN_EXPIRY = parseInt(
 
 export async function POST(request: NextRequest) {
     try {
-        const body = await request.json()
+        let body
+        try {
+            body = await request.json()
+        } catch (error) {
+            return NextResponse.json(
+                {
+                    success: false,
+                    error: "Invalid request body",
+                },
+                { status: 400 }
+            )
+        }
+
         const { email, userId, locale = "en" } = body
 
         if (!email || !userId) {
             return NextResponse.json(
-                createErrorResponse(
-                    "MISSING_FIELDS",
-                    "Email and userId are required"
-                ),
+                {
+                    success: false,
+                    error: "Email and userId are required",
+                },
                 { status: 400 }
             )
         }
@@ -40,10 +48,10 @@ export async function POST(request: NextRequest) {
 
         if (userError || !user || user.email !== email.toLowerCase()) {
             return NextResponse.json(
-                createErrorResponse(
-                    "USER_NOT_FOUND",
-                    "User not found or email mismatch"
-                ),
+                {
+                    success: false,
+                    error: "User not found or email mismatch",
+                },
                 { status: 404 }
             )
         }
@@ -58,16 +66,17 @@ export async function POST(request: NextRequest) {
             .insert({
                 token,
                 user_id: userId,
+                email,
                 expires_at: expiresAt.toISOString(),
             })
 
         if (tokenError) {
             console.error("Token creation error:", tokenError)
             return NextResponse.json(
-                createErrorResponse(
-                    "TOKEN_CREATION_FAILED",
-                    "Failed to create verification token"
-                ),
+                {
+                    success: false,
+                    error: "Failed to create verification token",
+                },
                 { status: 500 }
             )
         }
@@ -83,10 +92,10 @@ export async function POST(request: NextRequest) {
         if (!emailSent) {
             console.error("Failed to send verification email to:", email)
             return NextResponse.json(
-                createErrorResponse(
-                    "EMAIL_SEND_FAILED",
-                    "Failed to send verification email"
-                ),
+                {
+                    success: false,
+                    error: "Failed to send verification email",
+                },
                 { status: 500 }
             )
         }
@@ -95,19 +104,20 @@ export async function POST(request: NextRequest) {
         await logEmailVerification(email, "", userId)
 
         return NextResponse.json(
-            createSuccessResponse({
+            {
+                success: true,
                 message: "Verification email sent successfully",
                 expiresAt: expiresAt.toISOString(),
-            }),
+            },
             { status: 200 }
         )
     } catch (error) {
         console.error("Send verification email error:", error)
         return NextResponse.json(
-            createErrorResponse(
-                "INTERNAL_ERROR",
-                "An unexpected error occurred"
-            ),
+            {
+                success: false,
+                error: "An unexpected error occurred",
+            },
             { status: 500 }
         )
     }

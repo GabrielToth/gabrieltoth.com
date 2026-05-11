@@ -11,10 +11,31 @@ import { POST } from "./route"
 vi.mock("@supabase/supabase-js", () => ({
     createClient: vi.fn(() => ({
         from: vi.fn((table: string) => ({
-            insert: vi.fn(function () {
+            select: vi.fn(function () {
                 return {
-                    error: null,
+                    eq: vi.fn(function (field: string, value: string) {
+                        return {
+                            single: vi.fn(async () => {
+                                if (table === "users" && field === "id") {
+                                    return {
+                                        data: {
+                                            id: value,
+                                            email: "user@example.com",
+                                        },
+                                        error: null,
+                                    }
+                                }
+                                return { data: null, error: null }
+                            }),
+                        }
+                    }),
                 }
+            }),
+            insert: vi.fn(function () {
+                return Promise.resolve({
+                    data: null,
+                    error: null,
+                })
             }),
         })),
     })),
@@ -29,6 +50,16 @@ vi.mock("@/lib/config/env", () => ({
         }
         return envMap[key]
     }),
+}))
+
+// Mock email service
+vi.mock("@/lib/auth/email-service", () => ({
+    sendVerificationEmail: vi.fn(() => Promise.resolve(true)),
+}))
+
+// Mock audit logging
+vi.mock("@/lib/auth/audit-logging", () => ({
+    logEmailVerification: vi.fn(() => Promise.resolve()),
 }))
 
 describe("POST /api/auth/send-verification-email", () => {

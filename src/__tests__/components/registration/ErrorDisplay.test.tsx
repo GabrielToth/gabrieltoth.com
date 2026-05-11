@@ -9,7 +9,8 @@ describe("ErrorDisplay Component", () => {
                 <ErrorDisplay error={null} fieldError={null} />
             )
 
-            expect(container.firstChild).toBeEmptyDOMElement()
+            // Component returns null when no errors
+            expect(container.firstChild).toBeNull()
         })
 
         it("should render general error message", () => {
@@ -299,7 +300,8 @@ describe("ErrorDisplay Component", () => {
                 <ErrorDisplay error="" fieldError={null} />
             )
 
-            expect(container.firstChild).toBeEmptyDOMElement()
+            // Component returns null for empty string errors
+            expect(container.firstChild).toBeNull()
         })
 
         it("should handle very long error messages", () => {

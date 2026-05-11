@@ -4,6 +4,13 @@ import { describe, expect, it, vi } from "vitest"
 import { ChannelsSection } from "./ChannelsSection"
 import { SocialChannel } from "./SettingsContainer"
 
+// Mock Icon component
+vi.mock("@/components/ui/icon", () => ({
+    Icon: ({ name }: { name: string }) => (
+        <div data-testid={`icon-${name}`}>{name}</div>
+    ),
+}))
+
 describe("ChannelsSection", () => {
     const mockChannels: SocialChannel[] = [
         {

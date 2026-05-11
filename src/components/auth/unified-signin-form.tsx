@@ -5,6 +5,7 @@ import {
     signInWithSSO,
     signUpWithEmail,
 } from "@/lib/auth/unified-auth"
+import { logger } from "@/lib/logger"
 import { LockKeyhole } from "lucide-react"
 import { useTranslations } from "next-intl"
 import Link from "next/link"

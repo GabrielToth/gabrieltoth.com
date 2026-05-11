@@ -59,15 +59,9 @@ describe("Property 1: Email Format Validation Consistency", () => {
         fc.assert(
             fc.property(
                 fc.tuple(
-                    fc
-                        .string({ minLength: 1, maxLength: 20 })
-                        .filter(s => /^[a-zA-Z0-9]+$/.test(s)),
-                    fc
-                        .string({ minLength: 1, maxLength: 20 })
-                        .filter(s => /^[a-zA-Z0-9]+$/.test(s)),
-                    fc
-                        .string({ minLength: 1, maxLength: 10 })
-                        .filter(s => /^[a-zA-Z]+$/.test(s))
+                    fc.stringMatching(/^[a-zA-Z0-9]{1,20}$/),
+                    fc.stringMatching(/^[a-zA-Z0-9]{1,20}$/),
+                    fc.stringMatching(/^[a-zA-Z]{1,10}$/)
                 ),
                 ([localPart, domain, tld]) => {
                     // Build a valid RFC 5322 email
@@ -88,13 +82,9 @@ describe("Property 1: Email Format Validation Consistency", () => {
         fc.assert(
             fc.property(
                 fc.tuple(
-                    fc
-                        .string({ minLength: 1, maxLength: 10 })
-                        .filter(s => /^[a-zA-Z0-9]+$/.test(s)),
+                    fc.stringMatching(/^[a-zA-Z0-9]{1,10}$/),
                     fc.constantFrom("+", "_", "-", "."),
-                    fc
-                        .string({ minLength: 1, maxLength: 10 })
-                        .filter(s => /^[a-zA-Z0-9]+$/.test(s))
+                    fc.stringMatching(/^[a-zA-Z0-9]{1,10}$/)
                 ),
                 ([part1, specialChar, part2]) => {
                     // Build email with special character (avoiding leading/trailing dots)
@@ -115,18 +105,10 @@ describe("Property 1: Email Format Validation Consistency", () => {
         fc.assert(
             fc.property(
                 fc.tuple(
-                    fc
-                        .string({ minLength: 1, maxLength: 10 })
-                        .filter(s => /^[a-zA-Z0-9]+$/.test(s)),
-                    fc
-                        .string({ minLength: 1, maxLength: 10 })
-                        .filter(s => /^[a-zA-Z0-9]+$/.test(s)),
-                    fc
-                        .string({ minLength: 1, maxLength: 10 })
-                        .filter(s => /^[a-zA-Z0-9]+$/.test(s)),
-                    fc
-                        .string({ minLength: 1, maxLength: 5 })
-                        .filter(s => /^[a-zA-Z]+$/.test(s))
+                    fc.stringMatching(/^[a-zA-Z0-9]{1,10}$/),
+                    fc.stringMatching(/^[a-zA-Z0-9]{1,10}$/),
+                    fc.stringMatching(/^[a-zA-Z0-9]{1,10}$/),
+                    fc.stringMatching(/^[a-zA-Z]{1,5}$/)
                 ),
                 ([localPart, subdomain, domain, tld]) => {
                     const email = `${localPart}@${subdomain}.${domain}.${tld}`
@@ -166,20 +148,15 @@ describe("Property 1: Email Format Validation Consistency", () => {
 
     it("should reject emails with missing local part", () => {
         fc.assert(
-            fc.property(
-                fc
-                    .string({ minLength: 1, maxLength: 20 })
-                    .filter(s => /^[a-zA-Z0-9.]+$/.test(s)),
-                domain => {
-                    const invalidEmail = `@${domain}.com`
+            fc.property(fc.stringMatching(/^[a-zA-Z0-9.]{1,20}$/), domain => {
+                const invalidEmail = `@${domain}.com`
 
-                    const result = validateEmail(invalidEmail)
+                const result = validateEmail(invalidEmail)
 
-                    // Property: emails with @ but no local part are always invalid
-                    expect(result.isValid).toBe(false)
-                    expect(result.error).toBeDefined()
-                }
-            ),
+                // Property: emails with @ but no local part are always invalid
+                expect(result.isValid).toBe(false)
+                expect(result.error).toBeDefined()
+            }),
             { numRuns: 100 }
         )
     })
@@ -187,9 +164,7 @@ describe("Property 1: Email Format Validation Consistency", () => {
     it("should reject emails with missing domain", () => {
         fc.assert(
             fc.property(
-                fc
-                    .string({ minLength: 1, maxLength: 20 })
-                    .filter(s => /^[a-zA-Z0-9.]+$/.test(s)),
+                fc.stringMatching(/^[a-zA-Z0-9.]{1,20}$/),
                 localPart => {
                     const invalidEmail = `${localPart}@`
 
@@ -208,12 +183,8 @@ describe("Property 1: Email Format Validation Consistency", () => {
         fc.assert(
             fc.property(
                 fc.tuple(
-                    fc
-                        .string({ minLength: 1, maxLength: 10 })
-                        .filter(s => /^[a-zA-Z0-9]+$/.test(s)),
-                    fc
-                        .string({ minLength: 1, maxLength: 10 })
-                        .filter(s => /^[a-zA-Z0-9]+$/.test(s))
+                    fc.stringMatching(/^[a-zA-Z0-9]{1,10}$/),
+                    fc.stringMatching(/^[a-zA-Z0-9]{1,10}$/)
                 ),
                 ([part1, part2]) => {
                     const invalidEmail = `${part1}..${part2}@example.com`
@@ -231,80 +202,60 @@ describe("Property 1: Email Format Validation Consistency", () => {
 
     it("should reject emails with leading dot in local part", () => {
         fc.assert(
-            fc.property(
-                fc
-                    .string({ minLength: 1, maxLength: 20 })
-                    .filter(s => /^[a-zA-Z0-9]+$/.test(s)),
-                localPart => {
-                    const invalidEmail = `.${localPart}@example.com`
+            fc.property(fc.stringMatching(/^[a-zA-Z0-9]{1,20}$/), localPart => {
+                const invalidEmail = `.${localPart}@example.com`
 
-                    const result = validateEmail(invalidEmail)
+                const result = validateEmail(invalidEmail)
 
-                    // Property: emails with leading dot in local part are always invalid
-                    expect(result.isValid).toBe(false)
-                    expect(result.error).toBeDefined()
-                }
-            ),
+                // Property: emails with leading dot in local part are always invalid
+                expect(result.isValid).toBe(false)
+                expect(result.error).toBeDefined()
+            }),
             { numRuns: 100 }
         )
     })
 
     it("should reject emails with trailing dot in local part", () => {
         fc.assert(
-            fc.property(
-                fc
-                    .string({ minLength: 1, maxLength: 20 })
-                    .filter(s => /^[a-zA-Z0-9]+$/.test(s)),
-                localPart => {
-                    const invalidEmail = `${localPart}.@example.com`
+            fc.property(fc.stringMatching(/^[a-zA-Z0-9]{1,20}$/), localPart => {
+                const invalidEmail = `${localPart}.@example.com`
 
-                    const result = validateEmail(invalidEmail)
+                const result = validateEmail(invalidEmail)
 
-                    // Property: emails with trailing dot in local part are always invalid
-                    expect(result.isValid).toBe(false)
-                    expect(result.error).toBeDefined()
-                }
-            ),
+                // Property: emails with trailing dot in local part are always invalid
+                expect(result.isValid).toBe(false)
+                expect(result.error).toBeDefined()
+            }),
             { numRuns: 100 }
         )
     })
 
     it("should reject emails with leading hyphen in domain", () => {
         fc.assert(
-            fc.property(
-                fc
-                    .string({ minLength: 1, maxLength: 20 })
-                    .filter(s => /^[a-zA-Z0-9]+$/.test(s)),
-                domain => {
-                    const invalidEmail = `user@-${domain}.com`
+            fc.property(fc.stringMatching(/^[a-zA-Z0-9]{1,20}$/), domain => {
+                const invalidEmail = `user@-${domain}.com`
 
-                    const result = validateEmail(invalidEmail)
+                const result = validateEmail(invalidEmail)
 
-                    // Property: emails with leading hyphen in domain are always invalid
-                    expect(result.isValid).toBe(false)
-                    expect(result.error).toBeDefined()
-                }
-            ),
+                // Property: emails with leading hyphen in domain are always invalid
+                expect(result.isValid).toBe(false)
+                expect(result.error).toBeDefined()
+            }),
             { numRuns: 100 }
         )
     })
 
     it("should reject emails with trailing hyphen in domain", () => {
         fc.assert(
-            fc.property(
-                fc
-                    .string({ minLength: 1, maxLength: 20 })
-                    .filter(s => /^[a-zA-Z0-9]+$/.test(s)),
-                domain => {
-                    const invalidEmail = `user@${domain}-.com`
+            fc.property(fc.stringMatching(/^[a-zA-Z0-9]{1,20}$/), domain => {
+                const invalidEmail = `user@${domain}-.com`
 
-                    const result = validateEmail(invalidEmail)
+                const result = validateEmail(invalidEmail)
 
-                    // Property: emails with trailing hyphen in domain are always invalid
-                    expect(result.isValid).toBe(false)
-                    expect(result.error).toBeDefined()
-                }
-            ),
+                // Property: emails with trailing hyphen in domain are always invalid
+                expect(result.isValid).toBe(false)
+                expect(result.error).toBeDefined()
+            }),
             { numRuns: 100 }
         )
     })
@@ -329,12 +280,8 @@ describe("Property 1: Email Format Validation Consistency", () => {
         fc.assert(
             fc.property(
                 fc.tuple(
-                    fc
-                        .string({ minLength: 1, maxLength: 10 })
-                        .filter(s => /^[a-zA-Z0-9]+$/.test(s)),
-                    fc
-                        .string({ minLength: 1, maxLength: 10 })
-                        .filter(s => /^[a-zA-Z0-9]+$/.test(s))
+                    fc.stringMatching(/^[a-zA-Z0-9]{1,10}$/),
+                    fc.stringMatching(/^[a-zA-Z0-9]{1,10}$/)
                 ),
                 ([part1, part2]) => {
                     const invalidEmail = `${part1} ${part2}@example.com`
@@ -354,15 +301,9 @@ describe("Property 1: Email Format Validation Consistency", () => {
         fc.assert(
             fc.property(
                 fc.tuple(
-                    fc
-                        .string({ minLength: 1, maxLength: 10 })
-                        .filter(s => /^[a-zA-Z0-9]+$/.test(s)),
-                    fc
-                        .string({ minLength: 1, maxLength: 10 })
-                        .filter(s => /^[a-zA-Z0-9]+$/.test(s)),
-                    fc
-                        .string({ minLength: 1, maxLength: 5 })
-                        .filter(s => /^[a-zA-Z]+$/.test(s))
+                    fc.stringMatching(/^[a-zA-Z0-9]{1,10}$/),
+                    fc.stringMatching(/^[a-zA-Z0-9]{1,10}$/),
+                    fc.stringMatching(/^[a-zA-Z]{1,5}$/)
                 ),
                 ([localPart, domain, tld]) => {
                     const email = `${localPart}@${domain}.${tld}`
@@ -412,12 +353,8 @@ describe("Property 1: Email Format Validation Consistency", () => {
         fc.assert(
             fc.property(
                 fc.tuple(
-                    fc
-                        .string({ minLength: 1, maxLength: 10 })
-                        .filter(s => /^[a-zA-Z0-9]+$/.test(s)),
-                    fc
-                        .string({ minLength: 1, maxLength: 10 })
-                        .filter(s => /^[a-zA-Z0-9]+$/.test(s))
+                    fc.stringMatching(/^[a-zA-Z0-9]{1,10}$/),
+                    fc.stringMatching(/^[a-zA-Z0-9]{1,10}$/)
                 ),
                 ([localPart, domain]) => {
                     const invalidEmail = `${localPart}@${domain}`
@@ -437,15 +374,9 @@ describe("Property 1: Email Format Validation Consistency", () => {
         fc.assert(
             fc.property(
                 fc.tuple(
-                    fc
-                        .string({ minLength: 1, maxLength: 10 })
-                        .filter(s => /^[a-zA-Z0-9]+$/.test(s)),
-                    fc
-                        .string({ minLength: 1, maxLength: 5 })
-                        .filter(s => /^[a-zA-Z0-9]+$/.test(s)),
-                    fc
-                        .string({ minLength: 1, maxLength: 5 })
-                        .filter(s => /^[a-zA-Z0-9]+$/.test(s))
+                    fc.stringMatching(/^[a-zA-Z0-9]{1,10}$/),
+                    fc.stringMatching(/^[a-zA-Z0-9]{1,5}$/),
+                    fc.stringMatching(/^[a-zA-Z0-9]{1,5}$/)
                 ),
                 ([localPart, domain1, domain2]) => {
                     const email = `${localPart}@${domain1}-${domain2}.com`
@@ -465,9 +396,7 @@ describe("Property 1: Email Format Validation Consistency", () => {
         fc.assert(
             fc.property(
                 fc.tuple(
-                    fc
-                        .string({ minLength: 1, maxLength: 10 })
-                        .filter(s => /^[a-zA-Z0-9]+$/.test(s)),
+                    fc.stringMatching(/^[a-zA-Z0-9]{1,10}$/),
                     fc.integer({ min: 0, max: 999 })
                 ),
                 ([localPart, number]) => {
@@ -488,12 +417,8 @@ describe("Property 1: Email Format Validation Consistency", () => {
         fc.assert(
             fc.property(
                 fc.tuple(
-                    fc
-                        .string({ minLength: 1, maxLength: 10 })
-                        .filter(s => /^[a-zA-Z0-9]+$/.test(s)),
-                    fc
-                        .string({ minLength: 1, maxLength: 10 })
-                        .filter(s => /^[a-zA-Z0-9]+$/.test(s))
+                    fc.stringMatching(/^[a-zA-Z0-9]{1,10}$/),
+                    fc.stringMatching(/^[a-zA-Z0-9]{1,10}$/)
                 ),
                 ([part1, part2]) => {
                     const email = `${part1}+${part2}@example.com`
@@ -513,12 +438,8 @@ describe("Property 1: Email Format Validation Consistency", () => {
         fc.assert(
             fc.property(
                 fc.tuple(
-                    fc
-                        .string({ minLength: 1, maxLength: 10 })
-                        .filter(s => /^[a-zA-Z0-9]+$/.test(s)),
-                    fc
-                        .string({ minLength: 1, maxLength: 10 })
-                        .filter(s => /^[a-zA-Z0-9]+$/.test(s))
+                    fc.stringMatching(/^[a-zA-Z0-9]{1,10}$/),
+                    fc.stringMatching(/^[a-zA-Z0-9]{1,10}$/)
                 ),
                 ([part1, part2]) => {
                     const email = `${part1}_${part2}@example.com`
@@ -538,12 +459,8 @@ describe("Property 1: Email Format Validation Consistency", () => {
         fc.assert(
             fc.property(
                 fc.tuple(
-                    fc
-                        .string({ minLength: 1, maxLength: 10 })
-                        .filter(s => /^[a-zA-Z0-9]+$/.test(s)),
-                    fc
-                        .string({ minLength: 1, maxLength: 10 })
-                        .filter(s => /^[a-zA-Z0-9]+$/.test(s))
+                    fc.stringMatching(/^[a-zA-Z0-9]{1,10}$/),
+                    fc.stringMatching(/^[a-zA-Z0-9]{1,10}$/)
                 ),
                 ([part1, part2]) => {
                     const email = `${part1}.${part2}@example.com`

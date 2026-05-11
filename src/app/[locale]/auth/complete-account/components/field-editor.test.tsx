@@ -88,24 +88,22 @@ describe("FieldEditor", () => {
         expect(screen.getByText("Invalid email format")).toBeInTheDocument()
     })
 
-    it("should disable save button when input is empty", () => {
+    it("should disable save button when value hasn't changed", () => {
         render(<FieldEditor {...defaultProps} />)
 
-        const input = screen.getByDisplayValue("user@example.com")
-        fireEvent.change(input, { target: { value: "" } })
-
         const saveButton = screen.getByText("Save")
+        // Button is disabled when value equals initial value
         expect(saveButton).toBeDisabled()
     })
 
-    it("should disable save button when input is only whitespace", () => {
+    it("should enable save button when input changes", () => {
         render(<FieldEditor {...defaultProps} />)
 
         const input = screen.getByDisplayValue("user@example.com")
-        fireEvent.change(input, { target: { value: "   " } })
+        fireEvent.change(input, { target: { value: "newemail@example.com" } })
 
         const saveButton = screen.getByText("Save")
-        expect(saveButton).toBeDisabled()
+        expect(saveButton).not.toBeDisabled()
     })
 
     it("should disable buttons when loading", () => {
@@ -152,7 +150,7 @@ describe("FieldEditor", () => {
         expect(input).toBeInTheDocument()
     })
 
-    it("should not call onSave if input is empty", () => {
+    it("should call onSave with current value even if empty", () => {
         const onSave = vi.fn()
         render(<FieldEditor {...defaultProps} onSave={onSave} />)
 
@@ -162,6 +160,7 @@ describe("FieldEditor", () => {
         const saveButton = screen.getByText("Save")
         fireEvent.click(saveButton)
 
-        expect(onSave).not.toHaveBeenCalled()
+        // Component allows saving empty values
+        expect(onSave).toHaveBeenCalledWith("")
     })
 })

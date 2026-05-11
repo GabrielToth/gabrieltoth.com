@@ -351,9 +351,7 @@ describe("PasswordSetup Component", () => {
             )
 
             await waitFor(() => {
-                expect(
-                    screen.getByText(/✓ Passwords match/)
-                ).toBeInTheDocument()
+                expect(screen.getByText("Passwords match")).toBeInTheDocument()
             })
         })
 
@@ -405,9 +403,7 @@ describe("PasswordSetup Component", () => {
                 expect(
                     screen.queryByText("Passwords do not match")
                 ).not.toBeInTheDocument()
-                expect(
-                    screen.getByText(/✓ Passwords match/)
-                ).toBeInTheDocument()
+                expect(screen.getByText("Passwords match")).toBeInTheDocument()
             })
         })
 
@@ -744,9 +740,7 @@ describe("PasswordSetup Component", () => {
             )
 
             await waitFor(() => {
-                expect(
-                    screen.getByText(/✓ Passwords match/)
-                ).toBeInTheDocument()
+                expect(screen.getByText("Passwords match")).toBeInTheDocument()
             })
         })
 
@@ -936,9 +930,7 @@ describe("PasswordSetup Component", () => {
             )
 
             await waitFor(() => {
-                expect(
-                    screen.getByText(/✓ Passwords match/)
-                ).toBeInTheDocument()
+                expect(screen.getByText("Passwords match")).toBeInTheDocument()
             })
         })
 
