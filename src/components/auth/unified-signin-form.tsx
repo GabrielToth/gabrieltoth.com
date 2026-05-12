@@ -16,6 +16,7 @@ import { FaEnvelope, FaGoogle } from "react-icons/fa"
 interface UnifiedSignInFormProps {
     locale: string
     initialEmail?: string
+    onModeChange?: (mode: "signin" | "signup") => void
 }
 
 type FormStep = "buttons" | "email" | "password" | "register"
@@ -24,12 +25,19 @@ type FormMode = "signin" | "signup"
 export default function UnifiedSignInForm({
     locale,
     initialEmail = "",
+    onModeChange,
 }: UnifiedSignInFormProps) {
     const t = useTranslations("auth")
     const router = useRouter()
 
     const [step, setStep] = useState<FormStep>("buttons")
     const [mode, setMode] = useState<FormMode>("signin")
+
+    // Notify parent when mode changes
+    const handleModeChange = (newMode: FormMode) => {
+        setMode(newMode)
+        onModeChange?.(newMode)
+    }
     const [email, setEmail] = useState(initialEmail)
     const [fullName, setFullName] = useState("")
     const [password, setPassword] = useState("")
@@ -236,7 +244,7 @@ export default function UnifiedSignInForm({
                                 <button
                                     type="button"
                                     onClick={() => {
-                                        setMode("signup")
+                                        handleModeChange("signup")
                                         setError(null)
                                     }}
                                     className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium"
@@ -250,7 +258,7 @@ export default function UnifiedSignInForm({
                                 <button
                                     type="button"
                                     onClick={() => {
-                                        setMode("signin")
+                                        handleModeChange("signin")
                                         setStep("buttons")
                                         setError(null)
                                     }}
@@ -334,7 +342,7 @@ export default function UnifiedSignInForm({
                                 <button
                                     type="button"
                                     onClick={() => {
-                                        setMode("signup")
+                                        handleModeChange("signup")
                                         setError(null)
                                     }}
                                     className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium"
@@ -348,7 +356,7 @@ export default function UnifiedSignInForm({
                                 <button
                                     type="button"
                                     onClick={() => {
-                                        setMode("signin")
+                                        handleModeChange("signin")
                                         setError(null)
                                     }}
                                     className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium"
@@ -449,7 +457,7 @@ export default function UnifiedSignInForm({
                         onClick={() => {
                             setStep("email")
                             setPassword("")
-                            setMode("signup")
+                            handleModeChange("signup")
                             setError(null)
                         }}
                         className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors text-sm font-medium"
