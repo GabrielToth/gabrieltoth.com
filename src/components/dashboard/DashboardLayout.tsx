@@ -1,5 +1,7 @@
 "use client"
 
+import { logger } from "@/lib/logger"
+import { useRouter } from "next/navigation"
 import React, { useState } from "react"
 import { Sidebar } from "./Sidebar"
 
@@ -20,11 +22,45 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
     activeTab,
     onTabChange,
 }) => {
+    const router = useRouter()
     const [sidebarOpen, setSidebarOpen] = useState(false)
+    const [isLoggingOut, setIsLoggingOut] = useState(false)
 
     const handleTabChange = (tab: "publish" | "insights" | "settings") => {
         setSidebarOpen(false)
         onTabChange?.(tab)
+    }
+
+    const handleLogout = async () => {
+        try {
+            setIsLoggingOut(true)
+
+            const response = await fetch("/api/auth/logout", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            })
+
+            if (!response.ok) {
+                const data = await response.json()
+                throw new Error(data.error || "Logout failed")
+            }
+
+            logger.info("User logged out successfully", {
+                context: "Dashboard",
+            })
+
+            router.push("/login")
+        } catch (err) {
+            const error = err instanceof Error ? err : new Error(String(err))
+            logger.error("Logout error", {
+                context: "Dashboard",
+                error,
+            })
+        } finally {
+            setIsLoggingOut(false)
+        }
     }
 
     return (
@@ -35,6 +71,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                 onTabChange={handleTabChange}
                 isOpen={sidebarOpen}
                 onClose={() => setSidebarOpen(false)}
+                onLogout={handleLogout}
             />
 
             {/* Mobile overlay */}
