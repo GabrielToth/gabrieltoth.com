@@ -63,12 +63,18 @@ export function PasswordSetup({
         <div className="w-full space-y-4">
             {/* Password Input */}
             <div>
-                <label
-                    htmlFor="password"
-                    className="block text-sm sm:text-base font-medium text-gray-100 dark:text-gray-100 mb-2"
-                >
-                    Password
-                </label>
+                <div className="mb-3 space-y-1">
+                    <label
+                        htmlFor="password"
+                        className="block text-sm sm:text-base font-medium text-gray-100 dark:text-gray-100"
+                    >
+                        Password
+                    </label>
+                    <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 font-medium">
+                        Required: 8+ characters, uppercase, lowercase, number,
+                        special character (!@#$%^&*)
+                    </p>
+                </div>
                 <div className="relative">
                     <input
                         id="password"
