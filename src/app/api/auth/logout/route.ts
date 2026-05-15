@@ -2,19 +2,30 @@
  * POST /api/auth/logout
  * User logout endpoint
  *
- * Validates: Requirements 5.1, 5.2, 5.3, 5.4, 5.5, 13.1, 13.2, 13.3, 13.4
+ * Validates: Requirements 2.1, 2.2, 2.3, 2.5, 3.1, 7.1, 7.2, 7.3, 7.4, 7.5,
+ *            8.1, 8.2, 8.3, 8.4, 8.5, 9.1, 9.2, 9.3, 9.4, 9.5
+ *
+ * This endpoint:
+ * 1. Extracts session token from cookie
+ * 2. Validates CSRF token
+ * 3. Validates session exists and not expired
+ * 4. Deletes session from database
+ * 5. Clears session cookie with maxAge=0 and empty value
+ * 6. Creates audit log entry (non-blocking)
+ * 7. Returns success response with redirect instruction
+ * 8. Implements comprehensive error handling
  */
 
 import { logAuditEvent } from "@/lib/auth/audit-logging"
 import {
     AuthErrorType,
     createErrorResponse,
-    createSuccessResponse,
     handleUnexpectedError,
 } from "@/lib/auth/error-handling"
-import { removeSession } from "@/lib/auth/session"
+import { removeSession, validateSession } from "@/lib/auth/session"
 import { db } from "@/lib/db"
 import { logger } from "@/lib/logger"
+import { validateCsrfToken } from "@/lib/middleware/csrf-protection"
 import { getClientIp } from "@/lib/middleware/security-headers"
 import { NextRequest, NextResponse } from "next/server"
 
@@ -24,7 +35,7 @@ export async function POST(request: NextRequest) {
     const clientIp = getClientIp(request)
 
     try {
-        // Get session token from cookie (check both possible names for compatibility)
+        // 1. Extract session token from cookie (check both possible names for compatibility)
         const sessionToken =
             request.cookies.get("auth_session")?.value ||
             request.cookies.get("session")?.value
@@ -43,11 +54,24 @@ export async function POST(request: NextRequest) {
             )
         }
 
-        // Find session and get user info
-        const session = await queryOne<{ user_id: string }>(
-            "SELECT user_id FROM sessions WHERE session_id = $1",
-            [sessionToken]
-        )
+        // 2. Validate CSRF token
+        const csrfToken = request.headers.get("X-CSRF-Token")
+        if (!csrfToken || !validateCsrfToken(sessionToken, csrfToken)) {
+            logger.warn("Logout attempt with invalid CSRF token", {
+                context: "Auth",
+                data: { ip: clientIp, hasCsrfToken: !!csrfToken },
+            })
+            return NextResponse.json(
+                {
+                    success: false,
+                    error: "Invalid CSRF token",
+                },
+                { status: 403 }
+            )
+        }
+
+        // 3. Validate session exists and not expired
+        const session = await validateSession(sessionToken)
 
         if (!session) {
             logger.warn("Logout attempt with invalid session token", {
@@ -58,12 +82,14 @@ export async function POST(request: NextRequest) {
         }
 
         // Get user email for logging
-        const user = await queryOne<{ google_email: string }>(
-            "SELECT google_email FROM users WHERE id = $1",
+        const user = await queryOne<{ google_email: string; email: string }>(
+            "SELECT google_email, email FROM users WHERE id = $1",
             [session.user_id]
         )
 
-        // Delete session
+        const userEmail = user?.google_email || user?.email
+
+        // 4. Delete session from database
         try {
             await removeSession(sessionToken)
         } catch (error) {
@@ -75,12 +101,12 @@ export async function POST(request: NextRequest) {
             // Continue with logout even if session removal fails
         }
 
-        // Log logout event
-        if (user) {
+        // 6. Create audit log entry (non-blocking)
+        if (userEmail) {
             try {
                 await logAuditEvent(
                     "LOGOUT",
-                    user.google_email,
+                    userEmail,
                     clientIp,
                     { action: "User logged out" },
                     session.user_id
@@ -100,10 +126,17 @@ export async function POST(request: NextRequest) {
             data: { userId: session.user_id },
         })
 
-        // Create response and clear cookies
-        const response = createSuccessResponse(undefined, "Logout successful")
+        // 7. Return success response with redirect instruction
+        const response = NextResponse.json(
+            {
+                success: true,
+                redirect: "/auth/login",
+            },
+            { status: 200 }
+        )
 
-        // Clear session cookies (both possible names for compatibility)
+        // 5. Clear session cookies with maxAge=0 and empty value (both possible names for compatibility)
+        // Maintains security attributes: httpOnly, secure, sameSite, path
         response.cookies.set("auth_session", "", {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",

@@ -1,4 +1,5 @@
 import { checkAccountCompletion } from "@/lib/middleware/account-completion"
+import { validateSession } from "@/lib/middleware/auth-middleware"
 import { NextRequest, NextResponse } from "next/server"
 
 // Simple in-memory rate limiting (in production, use Redis)
@@ -92,6 +93,34 @@ export async function proxy(request: NextRequest) {
         if (!checkRateLimit(ip, "check-email", 10, 60000)) {
             return NextResponse.json(
                 { error: "Too many email checks. Please try again later." },
+                { status: 429 }
+            )
+        }
+    }
+
+    if (pathname === "/api/auth/logout") {
+        // 5 requests per 60 seconds per user or IP
+        // Use user ID from session if authenticated, otherwise use IP
+        let identifier = ip
+
+        try {
+            const sessionToken = request.cookies.get("session")?.value
+            if (sessionToken) {
+                const session = await validateSession(sessionToken)
+                if (session) {
+                    identifier = session.user_id
+                }
+            }
+        } catch (error) {
+            // If session validation fails, fall back to IP-based rate limiting
+            // This ensures rate limiting still works even if session validation has issues
+        }
+
+        if (!checkRateLimit(identifier, "logout", 5, 60000)) {
+            return NextResponse.json(
+                {
+                    error: "Too many logout attempts. Please try again later.",
+                },
                 { status: 429 }
             )
         }

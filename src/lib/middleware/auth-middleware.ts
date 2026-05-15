@@ -3,45 +3,51 @@
  * Protects routes and validates sessions
  */
 
-import { db } from "@/lib/db"
+import { validateSession as validateSessionFromLib } from "@/lib/auth/session"
 import { logger } from "@/lib/logger"
 import { NextRequest, NextResponse } from "next/server"
 
-const { queryOne } = db
-
-interface Session {
-    user_id: string
-    expires_at: Date
-}
-
 /**
  * Validate session token
+ * Queries the sessions database table for the session token and verifies
+ * that the expires_at timestamp is in the future.
+ *
  * @param sessionId - The session ID
- * @returns Session data if valid, null otherwise
+ * @returns Session data if valid and not expired, null otherwise
+ *
+ * Validates: Requirements 10.2, 10.3
  */
 export async function validateSession(
     sessionId: string
-): Promise<Session | null> {
+): Promise<{ user_id: string; expires_at: Date } | null> {
     try {
-        const session = await queryOne<Session>(
-            "SELECT user_id, expires_at FROM sessions WHERE session_id = $1",
-            [sessionId]
-        )
+        const session = await validateSessionFromLib(sessionId)
 
         if (!session) {
             return null
         }
 
-        // Check if session is expired
-        if (new Date(session.expires_at) < new Date()) {
-            logger.warn("Session expired", {
+        // Verify expires_at timestamp is in the future
+        const now = new Date()
+        const expiresAt = new Date(session.expires_at)
+
+        if (expiresAt <= now) {
+            logger.warn("Session validation failed: session expired", {
                 context: "Auth",
-                data: { userId: session.user_id },
+                data: {
+                    sessionId: sessionId.substring(0, 8) + "...",
+                    expiresAt: expiresAt.toISOString(),
+                    now: now.toISOString(),
+                },
             })
             return null
         }
 
-        return session
+        // Return only the fields needed by middleware
+        return {
+            user_id: session.user_id,
+            expires_at: session.expires_at,
+        }
     } catch (error) {
         logger.error("Session validation error", {
             context: "Auth",
@@ -53,8 +59,14 @@ export async function validateSession(
 
 /**
  * Middleware to protect routes
+ * Validates sessions before allowing access to protected routes.
+ * Queries the sessions database table for the session token and verifies
+ * that the expires_at timestamp is in the future.
+ *
  * @param request - The incoming request
- * @returns NextResponse with redirect if not authenticated, null if authenticated
+ * @returns NextResponse with redirect to /auth/login (302) if not authenticated, null if authenticated
+ *
+ * Validates: Requirements 10.1, 10.2, 10.3, 10.4
  */
 export async function authMiddleware(
     request: NextRequest
@@ -67,10 +79,13 @@ export async function authMiddleware(
             context: "Auth",
             data: { path: request.nextUrl.pathname },
         })
-        return NextResponse.redirect(new URL("/login", request.url))
+        // Redirect to /auth/login with 302 status for invalid sessions
+        return NextResponse.redirect(new URL("/auth/login", request.url), {
+            status: 302,
+        })
     }
 
-    // Validate session
+    // Validate session and verify expires_at is in the future
     const session = await validateSession(sessionToken)
 
     if (!session) {
@@ -78,9 +93,13 @@ export async function authMiddleware(
             context: "Auth",
             data: { path: request.nextUrl.pathname },
         })
-        return NextResponse.redirect(new URL("/login", request.url))
+        // Redirect to /auth/login with 302 status for invalid sessions
+        return NextResponse.redirect(new URL("/auth/login", request.url), {
+            status: 302,
+        })
     }
 
+    // Return null for valid sessions to allow request to proceed
     return null
 }
 

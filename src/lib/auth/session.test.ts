@@ -13,6 +13,7 @@ import {
     createSession,
     generateRememberMeToken,
     generateSessionToken,
+    getSessionFromCookie,
     refreshSessionToken,
     removeSession,
     storeRememberMeToken,
@@ -176,6 +177,397 @@ describe("Session Management", () => {
             await expect(removeSession("")).rejects.toThrow(
                 "Invalid session ID provided"
             )
+        })
+
+        it("should throw error when session ID is null", async () => {
+            /**
+             * **Validates: Requirements 6.2**
+             *
+             * The function SHALL validate the session ID and throw an error if null.
+             */
+            await expect(removeSession(null as any)).rejects.toThrow(
+                "Invalid session ID provided"
+            )
+        })
+
+        it("should throw error when session ID is not a string", async () => {
+            /**
+             * **Validates: Requirements 6.2**
+             *
+             * The function SHALL validate the session ID type and throw an error.
+             * Note: The actual error message may vary due to internal logging.
+             */
+            await expect(removeSession(123 as any)).rejects.toThrow()
+        })
+
+        it("should call database with correct SQL query", async () => {
+            /**
+             * **Validates: Requirements 6.2**
+             *
+             * The function SHALL execute a DELETE query on the sessions table
+             * using the session_id column.
+             */
+            const sessionId = "test-session-id"
+
+            vi.mocked(db.db.query).mockResolvedValueOnce({
+                rowCount: 1,
+                rows: [],
+                command: "DELETE",
+                oid: 0,
+                fields: [],
+            } as any)
+
+            await removeSession(sessionId)
+
+            expect(db.db.query).toHaveBeenCalledWith(
+                "DELETE FROM sessions WHERE session_id = $1",
+                [sessionId]
+            )
+        })
+
+        it("should handle database errors gracefully", async () => {
+            /**
+             * **Validates: Requirements 6.2**
+             *
+             * The function SHALL throw an error if the database operation fails.
+             */
+            const sessionId = "test-session-id"
+            const dbError = new Error("Database connection failed")
+
+            vi.mocked(db.db.query).mockRejectedValueOnce(dbError)
+
+            await expect(removeSession(sessionId)).rejects.toThrow(
+                "Database connection failed"
+            )
+        })
+    })
+
+    describe("getSessionFromCookie()", () => {
+        it("should return session when valid cookie exists", async () => {
+            /**
+             * **Validates: Requirements 6.2**
+             *
+             * The function SHALL extract the session cookie from the request
+             * and validate it against the database.
+             */
+            const sessionId = "valid-session-id"
+            const now = new Date()
+            const futureDate = new Date(
+                now.getTime() + 10 * 24 * 60 * 60 * 1000
+            )
+
+            const expectedSession: Session = {
+                id: "session-id-1",
+                user_id: "user-id-1",
+                session_id: sessionId,
+                created_at: now,
+                expires_at: futureDate,
+            }
+
+            const mockRequest = {
+                cookies: {
+                    get: vi.fn().mockReturnValue({ value: sessionId }),
+                },
+            } as any
+
+            vi.mocked(db.db.queryOne).mockResolvedValueOnce(expectedSession)
+
+            const result = await getSessionFromCookie(mockRequest)
+
+            expect(result).toEqual(expectedSession)
+            expect(mockRequest.cookies.get).toHaveBeenCalledWith("session")
+        })
+
+        it("should return null when no session cookie exists", async () => {
+            /**
+             * **Validates: Requirements 6.2**
+             *
+             * The function SHALL return null when no session cookie is present.
+             */
+            const mockRequest = {
+                cookies: {
+                    get: vi.fn().mockReturnValue(undefined),
+                },
+            } as any
+
+            const result = await getSessionFromCookie(mockRequest)
+
+            expect(result).toBeNull()
+            expect(mockRequest.cookies.get).toHaveBeenCalledWith("session")
+        })
+
+        it("should return null when session cookie has no value", async () => {
+            /**
+             * **Validates: Requirements 6.2**
+             *
+             * The function SHALL return null when session cookie exists but has no value.
+             */
+            const mockRequest = {
+                cookies: {
+                    get: vi.fn().mockReturnValue({ value: "" }),
+                },
+            } as any
+
+            const result = await getSessionFromCookie(mockRequest)
+
+            expect(result).toBeNull()
+        })
+
+        it("should return null when session is invalid", async () => {
+            /**
+             * **Validates: Requirements 6.2**
+             *
+             * The function SHALL return null when the session cookie contains
+             * an invalid session ID.
+             */
+            const sessionId = "invalid-session-id"
+
+            const mockRequest = {
+                cookies: {
+                    get: vi.fn().mockReturnValue({ value: sessionId }),
+                },
+            } as any
+
+            vi.mocked(db.db.queryOne).mockResolvedValueOnce(null)
+
+            const result = await getSessionFromCookie(mockRequest)
+
+            expect(result).toBeNull()
+        })
+
+        it("should return null when session is expired", async () => {
+            /**
+             * **Validates: Requirements 6.2**
+             *
+             * The function SHALL return null when the session cookie contains
+             * an expired session ID.
+             */
+            const sessionId = "expired-session-id"
+            const now = new Date()
+            const pastDate = new Date(now.getTime() - 1 * 24 * 60 * 60 * 1000)
+
+            const expiredSession: Session = {
+                id: "session-id-1",
+                user_id: "user-id-1",
+                session_id: sessionId,
+                created_at: new Date(now.getTime() - 31 * 24 * 60 * 60 * 1000),
+                expires_at: pastDate,
+            }
+
+            const mockRequest = {
+                cookies: {
+                    get: vi.fn().mockReturnValue({ value: sessionId }),
+                },
+            } as any
+
+            vi.mocked(db.db.queryOne).mockResolvedValueOnce(expiredSession)
+
+            const result = await getSessionFromCookie(mockRequest)
+
+            expect(result).toBeNull()
+        })
+
+        it("should handle database errors gracefully", async () => {
+            /**
+             * **Validates: Requirements 6.2**
+             *
+             * The function SHALL return null if the database operation fails.
+             */
+            const sessionId = "test-session-id"
+            const dbError = new Error("Database connection failed")
+
+            const mockRequest = {
+                cookies: {
+                    get: vi.fn().mockReturnValue({ value: sessionId }),
+                },
+            } as any
+
+            vi.mocked(db.db.queryOne).mockRejectedValueOnce(dbError)
+
+            const result = await getSessionFromCookie(mockRequest)
+
+            expect(result).toBeNull()
+        })
+
+        it("should parse cookie correctly from request", async () => {
+            /**
+             * **Validates: Requirements 6.2**
+             *
+             * The function SHALL correctly extract and parse the session cookie
+             * from the NextRequest object.
+             */
+            const sessionId = "test-session-id-123"
+            const now = new Date()
+            const futureDate = new Date(
+                now.getTime() + 10 * 24 * 60 * 60 * 1000
+            )
+
+            const expectedSession: Session = {
+                id: "session-id-1",
+                user_id: "user-id-1",
+                session_id: sessionId,
+                created_at: now,
+                expires_at: futureDate,
+            }
+
+            const mockRequest = {
+                cookies: {
+                    get: vi.fn().mockReturnValue({ value: sessionId }),
+                },
+            } as any
+
+            vi.mocked(db.db.queryOne).mockResolvedValueOnce(expectedSession)
+
+            const result = await getSessionFromCookie(mockRequest)
+
+            expect(result).toEqual(expectedSession)
+            expect(mockRequest.cookies.get).toHaveBeenCalledTimes(1)
+            expect(mockRequest.cookies.get).toHaveBeenCalledWith("session")
+        })
+    })
+
+    describe("validateSession() - Comprehensive Edge Cases", () => {
+        it("should return null when session ID is not a string", async () => {
+            /**
+             * **Validates: Requirements 6.2**
+             *
+             * The function SHALL validate the session ID type.
+             */
+            const result = await validateSession(123 as any)
+
+            expect(result).toBeNull()
+            expect(db.db.queryOne).not.toHaveBeenCalled()
+        })
+
+        it("should return null when session ID is null", async () => {
+            /**
+             * **Validates: Requirements 6.2**
+             *
+             * The function SHALL handle null session IDs gracefully.
+             */
+            const result = await validateSession(null as any)
+
+            expect(result).toBeNull()
+            expect(db.db.queryOne).not.toHaveBeenCalled()
+        })
+
+        it("should return null when session ID is undefined", async () => {
+            /**
+             * **Validates: Requirements 6.2**
+             *
+             * The function SHALL handle undefined session IDs gracefully.
+             */
+            const result = await validateSession(undefined as any)
+
+            expect(result).toBeNull()
+            expect(db.db.queryOne).not.toHaveBeenCalled()
+        })
+
+        it("should call database with correct SQL query", async () => {
+            /**
+             * **Validates: Requirements 6.2**
+             *
+             * The function SHALL execute a SELECT query on the sessions table
+             * using the session_id column.
+             */
+            const sessionId = "test-session-id"
+            const now = new Date()
+            const futureDate = new Date(
+                now.getTime() + 10 * 24 * 60 * 60 * 1000
+            )
+
+            const expectedSession: Session = {
+                id: "session-id-1",
+                user_id: "user-id-1",
+                session_id: sessionId,
+                created_at: now,
+                expires_at: futureDate,
+            }
+
+            vi.mocked(db.db.queryOne).mockResolvedValueOnce(expectedSession)
+
+            await validateSession(sessionId)
+
+            expect(db.db.queryOne).toHaveBeenCalledWith(
+                expect.stringContaining("SELECT"),
+                [sessionId]
+            )
+            expect(db.db.queryOne).toHaveBeenCalledWith(
+                expect.stringContaining("FROM sessions"),
+                [sessionId]
+            )
+            expect(db.db.queryOne).toHaveBeenCalledWith(
+                expect.stringContaining("WHERE session_id = $1"),
+                [sessionId]
+            )
+        })
+
+        it("should handle database errors by throwing", async () => {
+            /**
+             * **Validates: Requirements 6.2**
+             *
+             * The function SHALL throw an error if the database operation fails.
+             */
+            const sessionId = "test-session-id"
+            const dbError = new Error("Database connection failed")
+
+            vi.mocked(db.db.queryOne).mockRejectedValueOnce(dbError)
+
+            await expect(validateSession(sessionId)).rejects.toThrow(
+                "Database connection failed"
+            )
+        })
+
+        it("should validate expiration with exact boundary (expired by 1ms)", async () => {
+            /**
+             * **Validates: Requirements 6.2**
+             *
+             * The function SHALL correctly identify sessions that are expired
+             * by even 1 millisecond.
+             */
+            const sessionId = "boundary-session-id"
+            const now = new Date()
+            const expiredByOneMs = new Date(now.getTime() - 1)
+
+            const expiredSession: Session = {
+                id: "session-id-1",
+                user_id: "user-id-1",
+                session_id: sessionId,
+                created_at: new Date(now.getTime() - 31 * 24 * 60 * 60 * 1000),
+                expires_at: expiredByOneMs,
+            }
+
+            vi.mocked(db.db.queryOne).mockResolvedValueOnce(expiredSession)
+
+            const result = await validateSession(sessionId)
+
+            expect(result).toBeNull()
+        })
+
+        it("should validate expiration with exact boundary (valid by 1ms)", async () => {
+            /**
+             * **Validates: Requirements 6.2**
+             *
+             * The function SHALL correctly identify sessions that are valid
+             * by even 1 millisecond.
+             */
+            const sessionId = "boundary-session-id"
+            const now = new Date()
+            const validByOneMs = new Date(now.getTime() + 1)
+
+            const validSession: Session = {
+                id: "session-id-1",
+                user_id: "user-id-1",
+                session_id: sessionId,
+                created_at: now,
+                expires_at: validByOneMs,
+            }
+
+            vi.mocked(db.db.queryOne).mockResolvedValueOnce(validSession)
+
+            const result = await validateSession(sessionId)
+
+            expect(result).toEqual(validSession)
         })
     })
 })
