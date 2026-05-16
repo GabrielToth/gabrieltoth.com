@@ -99,7 +99,7 @@ Implementation language: **TypeScript** (as specified in design document)
     - Log malformed hashes as errors
     - _Requirements: 5.1, 5.2, 6.4, 8.4, 8.5_
 
-  - [~] 3.2 Implement constant-time comparison for validation
+  - [x] 3.2 Implement constant-time comparison for validation
     - Use argon2-lib and bcryptjs built-in constant-time functions
     - Add response time normalization to prevent timing attacks
     - Ensure validation time is consistent regardless of password/hash difference
@@ -173,7 +173,7 @@ Implementation language: **TypeScript** (as specified in design document)
     - Ensure schema supports efficient queries
     - _Requirements: 7.1, 7.2, 7.3, 7.4, 7.5, 7.6, 7.7_
 
-  - [ ] 5.2 Implement rate limiter service with Supabase backing
+  - [x] 5.2 Implement rate limiter service with Supabase backing
     - Create RateLimiter class using Supabase table storage
     - Implement checkAndUpdateRateLimit function
     - Implement recordFailure function
@@ -218,7 +218,7 @@ Implementation language: **TypeScript** (as specified in design document)
     - _Requirements: 7.1, 7.2, 7.3, 7.4, 7.5, 7.6, 7.7_
 
 - [ ] 6. CAPTCHA Integration
-  - [-] 6.1 Integrate Cloudflare Turnstile frontend widget
+  - [x] 6.1 Integrate Cloudflare Turnstile frontend widget
     - Create React component for CAPTCHA widget
     - Load Cloudflare Turnstile script
     - Render widget on registration and login forms
@@ -253,21 +253,21 @@ Implementation language: **TypeScript** (as specified in design document)
     - _Requirements: 20.1, 20.2, 20.3, 20.4, 20.6, 20.7_
 
 - [ ] 7. Input Validation & Error Handling
-  - [-] 7.1 Implement password input validation
+  - [x] 7.1 Implement password input validation
     - Validate input is string type
     - Validate length between 8 and 128 characters
     - Reject null bytes and control characters
     - Return validation errors with generic messages
     - _Requirements: 8.1, 8.2, 8.3, 8.7_
 
-  - [-] 7.2 Implement hash format validation
+  - [x] 7.2 Implement hash format validation
     - Validate hash is in expected algorithm format
     - Detect malformed hashes
     - Log malformed attempts without exposing details
     - Return generic error messages
     - _Requirements: 8.4, 8.5, 8.8_
 
-  - [-] 7.3 Implement user identifier sanitization
+  - [x] 7.3 Implement user identifier sanitization
     - Sanitize email/username to prevent injection attacks
     - Reject suspicious input patterns
     - _Requirements: 8.6_
