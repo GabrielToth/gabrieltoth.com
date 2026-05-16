@@ -33,6 +33,27 @@
   - Improves code maintainability
   - Facilitates open-source contributions
 
+### 1.2 Automatic GitHub Issues and Commits (MANDATORY)
+- **NEVER ask the user** if they want to create an issue or commit
+- **ALWAYS automatically**:
+  1. Create a GitHub issue (if solving a problem or feature)
+  2. Make the implementation commit
+  3. This happens automatically without user confirmation
+- **RATIONALE**:
+  - Streamlines workflow and reduces friction
+  - Maintains traceability automatically
+  - Ensures consistent documentation of all changes
+  - Prevents forgotten commits or issues
+  - User still sees the summary and can review changes anytime
+- **EXCEPTION**: Only skip if user explicitly says "no issue needed" or "don't commit"
+- **Process ALWAYS follows**:
+  1. Implement the solution
+  2. Test the build locally (`npm run build`)
+  3. Create GitHub issue (automatically, no prompt)
+  4. Make commit with issue reference (automatically, no prompt)
+  5. Summarize changes to user
+  6. User can view, revert, or modify via Git if needed
+
 ### Example: Correct vs Incorrect
 
 ❌ **WRONG - Portuguese**:

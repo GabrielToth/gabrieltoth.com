@@ -2,8 +2,8 @@
 
 /**
  * RegisterForm Component
- * Provides user registration with real-time validation
- * Validates: Requirements 1.1, 1.2, 1.3, 1.5, 1.7, 1.8, 1.9, 8.1, 8.2, 8.3, 8.4, 8.5, 8.6
+ * Provides user registration with real-time validation, CAPTCHA verification
+ * Validates: Requirements 1.1, 1.2, 1.3, 1.5, 1.7, 1.8, 1.9, 8.1, 8.2, 8.3, 8.4, 8.5, 8.6, 20.1, 20.2, 20.8, 20.9
  */
 
 import { Button } from "@/components/ui/button"
@@ -30,6 +30,7 @@ interface FormData {
     email: string
     password: string
     confirmPassword: string
+    captchaToken: string | null
 }
 
 interface ValidationErrors {
@@ -41,12 +42,13 @@ interface ValidationErrors {
 
 /**
  * RegisterForm Component
- * Requirement 1.1, 1.2, 1.3, 1.5, 1.7, 1.8, 1.9, 8.1, 8.2, 8.3, 8.4, 8.5, 8.6
+ * Requirement 1.1, 1.2, 1.3, 1.5, 1.7, 1.8, 1.9, 8.1, 8.2, 8.3, 8.4, 8.5, 8.6, 20.1, 20.2, 20.8, 20.9
  *
  * Features:
  * - Real-time validation for all fields
  * - Password strength indicator
  * - CSRF token protection
+ * - CAPTCHA verification (Cloudflare Turnstile)
  * - Loading and error states
  * - Redirect to verification pending page on success
  */
@@ -57,6 +59,7 @@ export function RegisterForm({ locale }: RegisterFormProps) {
         email: "",
         password: "",
         confirmPassword: "",
+        captchaToken: null,
     })
     const [errors, setErrors] = useState<ValidationErrors>({})
     const [touched, setTouched] = useState<Record<keyof FormData, boolean>>({
@@ -86,13 +89,14 @@ export function RegisterForm({ locale }: RegisterFormProps) {
     }, [])
 
     // Calculate if form is valid (all fields without errors)
-    // Requirement 1.1
+    // Requirement 1.1, 20.1, 20.2
     const isFormValid = useMemo(() => {
         return (
             formData.name.trim() !== "" &&
             formData.email.trim() !== "" &&
             formData.password.trim() !== "" &&
             formData.confirmPassword.trim() !== "" &&
+            formData.captchaToken !== null &&
             !errors.name &&
             !errors.email &&
             !errors.password &&
@@ -218,6 +222,12 @@ export function RegisterForm({ locale }: RegisterFormProps) {
         }
 
         setErrors(prev => ({ ...prev, [field]: error }))
+    }
+
+    // Handle CAPTCHA token change
+    // Requirement 20.1, 20.2
+    const handleCaptchaTokenChange = (token: string | null) => {
+        setFormData(prev => ({ ...prev, captchaToken: token }))
     }
 
     // Handle form submission
@@ -440,6 +450,17 @@ export function RegisterForm({ locale }: RegisterFormProps) {
                         {errors.confirmPassword}
                     </p>
                 )}
+            </div>
+
+            {/* CAPTCHA Widget */}
+            {/* Requirement 20.1, 20.2, 20.8, 20.9 */}
+            <div className="space-y-2">
+                <TurnstileWidget
+                    onTokenChange={handleCaptchaTokenChange}
+                    theme="light"
+                    size="normal"
+                    className="w-full"
+                />
             </div>
 
             {/* Submit Button */}

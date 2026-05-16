@@ -2,11 +2,12 @@
 
 /**
  * LoginForm Component
- * Provides user login with real-time validation, CSRF protection, and accessibility
- * Validates: Requirements 2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 2.7, 3.1, 3.2, 3.3, 3.5, 3.6, 3.7, 3.8, 3.9, 8.1, 8.2, 8.3, 8.4, 8.5, 8.6, 14.1, 14.2, 14.3, 14.4, 14.5, 14.6, 14.7, 15.1, 15.2, 15.3, 15.4, 15.5, 15.6, 15.7, 15.8
+ * Provides user login with real-time validation, CSRF protection, CAPTCHA verification, and accessibility
+ * Validates: Requirements 2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 2.7, 3.1, 3.2, 3.3, 3.5, 3.6, 3.7, 3.8, 3.9, 8.1, 8.2, 8.3, 8.4, 8.5, 8.6, 14.1, 14.2, 14.3, 14.4, 14.5, 14.6, 14.7, 15.1, 15.2, 15.3, 15.4, 15.5, 15.6, 15.7, 15.8, 20.1, 20.2, 20.8, 20.9
  */
 
 import { FieldError, ServerError } from "@/components/auth/error-display"
+import TurnstileWidget from "@/components/auth/turnstile-widget"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -22,6 +23,7 @@ interface LoginFormData {
     email: string
     password: string
     rememberMe: boolean
+    captchaToken: string | null
 }
 
 interface ValidationErrors {
@@ -31,12 +33,13 @@ interface ValidationErrors {
 
 /**
  * LoginForm Component
- * Requirement 2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 2.7, 3.1, 3.2, 3.3, 3.5, 3.6, 3.7, 3.8, 3.9, 8.1, 8.2, 8.3, 8.4, 8.5, 8.6, 14.1, 14.2, 14.3, 14.4, 14.5, 14.6, 14.7, 15.1, 15.2, 15.3, 15.4, 15.5, 15.6, 15.7, 15.8
+ * Requirement 2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 2.7, 3.1, 3.2, 3.3, 3.5, 3.6, 3.7, 3.8, 3.9, 8.1, 8.2, 8.3, 8.4, 8.5, 8.6, 14.1, 14.2, 14.3, 14.4, 14.5, 14.6, 14.7, 15.1, 15.2, 15.3, 15.4, 15.5, 15.6, 15.7, 15.8, 20.1, 20.2, 20.8, 20.9
  *
  * Features:
  * - Real-time email validation
  * - "Remember Me" checkbox for extended session
  * - CSRF token protection
+ * - CAPTCHA verification (Cloudflare Turnstile)
  * - Loading and error states
  * - Rate limiting error display
  * - Redirect to dashboard on success
@@ -56,6 +59,7 @@ export function LoginForm({ locale }: LoginFormProps) {
         email: "",
         password: "",
         rememberMe: false,
+        captchaToken: null,
     })
     const [errors, setErrors] = useState<ValidationErrors>({})
     const [touched, setTouched] = useState<Record<string, boolean>>({
@@ -148,6 +152,12 @@ export function LoginForm({ locale }: LoginFormProps) {
         setFormData(prev => ({ ...prev, rememberMe: checked }))
     }
 
+    // Handle CAPTCHA token change
+    // Requirement 20.1, 20.2
+    const handleCaptchaTokenChange = (token: string | null) => {
+        setFormData(prev => ({ ...prev, captchaToken: token }))
+    }
+
     // Handle field blur to mark as touched
     const handleFieldBlur = (
         field: keyof Omit<LoginFormData, "rememberMe">
@@ -170,7 +180,7 @@ export function LoginForm({ locale }: LoginFormProps) {
     }
 
     // Handle form submission
-    // Requirement 3.1, 3.5, 3.6, 3.7, 3.8
+    // Requirement 3.1, 3.5, 3.6, 3.7, 3.8, 20.1, 20.2
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         setServerError(null)
@@ -180,6 +190,12 @@ export function LoginForm({ locale }: LoginFormProps) {
             email: true,
             password: true,
         })
+
+        // Validate CAPTCHA token first (Requirement 20.1, 20.2)
+        if (!formData.captchaToken) {
+            setServerError("Please complete the security verification")
+            return
+        }
 
         // Validate all fields
         const emailError = validateEmailField(formData.email)
@@ -206,7 +222,7 @@ export function LoginForm({ locale }: LoginFormProps) {
         setIsLoading(true)
 
         try {
-            // Submit login
+            // Submit login with CAPTCHA token (Requirement 20.8, 20.9)
             const response = await fetch("/api/auth/login", {
                 method: "POST",
                 headers: {
@@ -217,6 +233,7 @@ export function LoginForm({ locale }: LoginFormProps) {
                     email: formData.email,
                     password: formData.password,
                     rememberMe: formData.rememberMe,
+                    captchaToken: formData.captchaToken,
                     csrfToken,
                 }),
             })
@@ -342,11 +359,22 @@ export function LoginForm({ locale }: LoginFormProps) {
                 </span>
             </div>
 
+            {/* CAPTCHA Widget */}
+            {/* Requirement 20.1, 20.2, 20.8, 20.9 */}
+            <div className="space-y-2">
+                <TurnstileWidget
+                    onTokenChange={handleCaptchaTokenChange}
+                    theme="light"
+                    size="normal"
+                    className="w-full"
+                />
+            </div>
+
             {/* Submit Button */}
             <Button
                 type="submit"
                 className="w-full"
-                disabled={isLoading || !csrfToken}
+                disabled={isLoading || !csrfToken || !formData.captchaToken}
                 aria-busy={isLoading}
             >
                 {isLoading ? (

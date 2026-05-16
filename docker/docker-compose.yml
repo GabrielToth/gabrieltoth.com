@@ -29,6 +29,7 @@ services:
         volumes:
             - postgres_data:/var/lib/postgresql/data
             - log_data:/var/log/postgresql
+            - ./init-schema.sql:/docker-entrypoint-initdb.d/init.sql
         networks:
             - backend
         healthcheck:
@@ -37,6 +38,36 @@ services:
             timeout: 5s
             retries: 3
             start_period: 40s
+
+    # ==========================================================================
+    # SUPABASE (Local Development - In-Memory Database)
+    # ==========================================================================
+
+    supabase:
+        image: postgres:17-alpine
+        container_name: platform-supabase
+        restart: unless-stopped
+        deploy:
+            restart_policy:
+                condition: on-failure
+                max_attempts: 5
+                window: 600s
+        environment:
+            POSTGRES_USER: supabase_admin
+            POSTGRES_PASSWORD: ${SUPABASE_DB_PASSWORD:-supabasepassword}
+            POSTGRES_DB: postgres
+        volumes:
+            - supabase_data:/var/lib/postgresql/data
+        networks:
+            - backend
+        healthcheck:
+            test: ["CMD-SHELL", "pg_isready -U supabase_admin"]
+            interval: 30s
+            timeout: 5s
+            retries: 3
+            start_period: 40s
+        ports:
+            - "5432:5432"
 
     redis:
         image: redis:7-alpine
@@ -73,13 +104,39 @@ services:
                 max_attempts: 5
                 window: 600s
         environment:
-            - NODE_ENV=production
+            - NODE_ENV=development
             - NODE_OPTIONS=--max-old-space-size=512 --expose-gc
             - DATABASE_URL=postgresql://platform:${POSTGRES_PASSWORD:-devpassword}@postgres:5432/platform
             - REDIS_URL=redis://redis:6379
             - DISCORD_WEBHOOK_URL=${DISCORD_WEBHOOK_URL}
-            - DEBUG=${DEBUG:-false}
+            - DEBUG=${DEBUG:-true}
             - PORT=4000
+            # ========================================================================
+            # Supabase Configuration (Local Development)
+            # ========================================================================
+            - SUPABASE_URL=http://supabase:5432
+            - SUPABASE_SERVICE_KEY=${SUPABASE_SERVICE_KEY:-eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRldmVsb3BtZW50Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTYxNTc5MjAwMDAwMDAwLCJleHAiOjk5OTk5OTk5OTk5OTk5OTksImlkIjoiZGV2In0.nTnuCaWMrZ4ZXXkh2f5F0PFhZZL5PgDg5qC5QhQ0Z3U}
+            - SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY:-eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRldmVsb3BtZW50Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2MTU3OTIwMDAwMDAwMDAsImV4cCI6OTk5OTk5OTk5OTk5OTk5OX0.5QdBGG3_WPjG5tBOi_HQMi8NJ4JQnlQ9TXnKZKZ_mE4}
+            # ========================================================================
+            # Secure Password Storage - Argon2id Configuration
+            # ========================================================================
+            - ARGON2_MEMORY_COST=${ARGON2_MEMORY_COST:-64}
+            - ARGON2_TIME_COST=${ARGON2_TIME_COST:-3}
+            - ARGON2_PARALLELISM=${ARGON2_PARALLELISM:-2}
+            - PEPPER_SECRET=${PEPPER_SECRET:-test-pepper-key-must-be-at-least-32-characters-long}
+            # ========================================================================
+            # CAPTCHA Configuration
+            # ========================================================================
+            - CAPTCHA_PROVIDER=${CAPTCHA_PROVIDER:-cloudflare}
+            - CAPTCHA_SECRET_KEY=${CAPTCHA_SECRET_KEY:-0x4AAAAAAAHjFXaZ_J_EhZ4uHc}
+            - NEXT_PUBLIC_CAPTCHA_SITE_KEY=${NEXT_PUBLIC_CAPTCHA_SITE_KEY:-1x00000000000000000000AA}
+            # ========================================================================
+            # Rate Limiting Configuration
+            # ========================================================================
+            - RATE_LIMIT_FAILURE_THRESHOLD=${RATE_LIMIT_FAILURE_THRESHOLD:-5}
+            - RATE_LIMIT_WINDOW_MINUTES=${RATE_LIMIT_WINDOW_MINUTES:-15}
+            - RATE_LIMIT_LOCKOUT_MINUTES=${RATE_LIMIT_LOCKOUT_MINUTES:-15}
+            - RATE_LIMIT_CAPTCHA_ESCALATION_THRESHOLD=${RATE_LIMIT_CAPTCHA_ESCALATION_THRESHOLD:-3}
         volumes:
             - log_data:/var/log/app
         networks:
@@ -91,6 +148,8 @@ services:
             postgres:
                 condition: service_healthy
             redis:
+                condition: service_healthy
+            supabase:
                 condition: service_healthy
 
     # ==========================================================================
@@ -110,11 +169,21 @@ services:
                 max_attempts: 5
                 window: 600s
         environment:
-            - NODE_ENV=production
+            - NODE_ENV=development
             - NEXT_PUBLIC_API_URL=http://backend:4000
             - BASE_URL=${BASE_URL:-http://localhost:3000}
             - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
             - STRIPE_WEBHOOK_SECRET=${STRIPE_WEBHOOK_SECRET}
+            # ========================================================================
+            # Supabase Configuration (Local Development)
+            # ========================================================================
+            - NEXT_PUBLIC_SUPABASE_URL=http://localhost:5432
+            - NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=${NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY:-eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRldmVsb3BtZW50Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2MTU3OTIwMDAwMDAwMDAsImV4cCI6OTk5OTk5OTk5OTk5OTk5OX0.5QdBGG3_WPjG5tBOi_HQMi8NJ4JQnlQ9TXnKZKZ_mE4}
+            # ========================================================================
+            # Secure Password Storage - Public Configuration (Frontend)
+            # ========================================================================
+            - NEXT_PUBLIC_CAPTCHA_SITE_KEY=${NEXT_PUBLIC_CAPTCHA_SITE_KEY:-1x00000000000000000000AA}
+            - CAPTCHA_PROVIDER=${CAPTCHA_PROVIDER:-cloudflare}
         volumes:
             - log_data:/var/log/app
         networks:
@@ -139,6 +208,32 @@ services:
             - REDIS_URL=redis://redis:6379
             - DISCORD_WEBHOOK_URL=${DISCORD_WEBHOOK_URL}
             - DEBUG=true
+            # ========================================================================
+            # Supabase Configuration (Local Development)
+            # ========================================================================
+            - NEXT_PUBLIC_SUPABASE_URL=http://localhost:5432
+            - NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=${NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY:-eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRldmVsb3BtZW50Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2MTU3OTIwMDAwMDAwMDAsImV4cCI6OTk5OTk5OTk5OTk5OTk5OX0.5QdBGG3_WPjG5tBOi_HQMi8NJ4JQnlQ9TXnKZKZ_mE4}
+            - SUPABASE_SERVICE_KEY=${SUPABASE_SERVICE_KEY:-eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRldmVsb3BtZW50Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTYxNTc5MjAwMDAwMDAwLCJleHAiOjk5OTk5OTk5OTk5OTk5OTksImlkIjoiZGV2In0.nTnuCaWMrZ4ZXXkh2f5F0PFhZZL5PgDg5qC5QhQ0Z3U}
+            # ========================================================================
+            # Secure Password Storage - Argon2id Configuration
+            # ========================================================================
+            - ARGON2_MEMORY_COST=${ARGON2_MEMORY_COST:-64}
+            - ARGON2_TIME_COST=${ARGON2_TIME_COST:-3}
+            - ARGON2_PARALLELISM=${ARGON2_PARALLELISM:-2}
+            - PEPPER_SECRET=${PEPPER_SECRET:-test-pepper-key-must-be-at-least-32-characters-long}
+            # ========================================================================
+            # CAPTCHA Configuration
+            # ========================================================================
+            - CAPTCHA_PROVIDER=${CAPTCHA_PROVIDER:-cloudflare}
+            - CAPTCHA_SECRET_KEY=${CAPTCHA_SECRET_KEY:-0x4AAAAAAAHjFXaZ_J_EhZ4uHc}
+            - NEXT_PUBLIC_CAPTCHA_SITE_KEY=${NEXT_PUBLIC_CAPTCHA_SITE_KEY:-1x00000000000000000000AA}
+            # ========================================================================
+            # Rate Limiting Configuration
+            # ========================================================================
+            - RATE_LIMIT_FAILURE_THRESHOLD=${RATE_LIMIT_FAILURE_THRESHOLD:-5}
+            - RATE_LIMIT_WINDOW_MINUTES=${RATE_LIMIT_WINDOW_MINUTES:-15}
+            - RATE_LIMIT_LOCKOUT_MINUTES=${RATE_LIMIT_LOCKOUT_MINUTES:-15}
+            - RATE_LIMIT_CAPTCHA_ESCALATION_THRESHOLD=${RATE_LIMIT_CAPTCHA_ESCALATION_THRESHOLD:-3}
         volumes:
             # Mount from local project directory
             - type: bind
@@ -156,6 +251,8 @@ services:
             postgres:
                 condition: service_healthy
             redis:
+                condition: service_healthy
+            supabase:
                 condition: service_healthy
         command: sh -c "npm install && npm run dev"
 
@@ -196,6 +293,8 @@ networks:
 volumes:
     postgres_data:
         name: platform-postgres-data
+    supabase_data:
+        name: platform-supabase-data
     redis_data:
         name: platform-redis-data
     log_data:
