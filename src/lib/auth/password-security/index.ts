@@ -101,3 +101,14 @@ export type {
     ConstantTimeComparisonResult,
     ValidationTimingMetrics,
 } from "./constant-time-comparison"
+
+export {
+    AuthenticationService,
+    getAuthenticationService,
+} from "./authentication-service"
+
+export type {
+    AuthenticationResult,
+    LoginRequest,
+    RegistrationRequest,
+} from "./authentication-service"

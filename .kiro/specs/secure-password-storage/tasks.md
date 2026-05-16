@@ -252,7 +252,7 @@ Implementation language: **TypeScript** (as specified in design document)
     - Test generic error messages
     - _Requirements: 20.1, 20.2, 20.3, 20.4, 20.6, 20.7_
 
-- [ ] 7. Input Validation & Error Handling
+- [x] 7. Input Validation & Error Handling
   - [x] 7.1 Implement password input validation
     - Validate input is string type
     - Validate length between 8 and 128 characters
@@ -272,7 +272,7 @@ Implementation language: **TypeScript** (as specified in design document)
     - Reject suspicious input patterns
     - _Requirements: 8.6_
 
-  - [-] 7.4 Implement generic error messages (no user enumeration)
+  - [x] 7.4 Implement generic error messages (no user enumeration)
     - Same error for missing user vs wrong password
     - Same error for rate limited vs locked
     - Don't indicate algorithm type in errors
@@ -285,14 +285,14 @@ Implementation language: **TypeScript** (as specified in design document)
     - Test hash format validation
     - _Requirements: 8.1, 8.2, 8.3, 8.4, 8.5, 8.6, 8.7, 8.8_
 
-- [ ] 8. Authentication Service Integration
-  - [~] 8.1 Create Authentication Service main controller
+- [x] 8. Authentication Service Integration
+  - [x] 8.1 Create Authentication Service main controller
     - Orchestrate CAPTCHA validation, rate limiting, password validation
     - Coordinate between Rate_Limiter, Password_Validator, Configuration_Manager
     - Implement login and registration flows
     - _Requirements: 14.1, 14.2, 14.3, 14.4, 14.5, 14.6, 14.7_
 
-  - [~] 8.2 Implement login endpoint (POST /api/auth/login)
+  - [x] 8.2 Implement login endpoint (POST /api/auth/login)
     - Accept email, password, captchaToken
     - Check CAPTCHA first (before revealing user status)
     - Check rate limits
@@ -301,7 +301,7 @@ Implementation language: **TypeScript** (as specified in design document)
     - Return authentication token or error
     - _Requirements: 6.1, 6.4, 6.5, 6.6, 6.7, 11.1, 15.3_
 
-  - [~] 8.3 Implement registration endpoint (POST /api/auth/register)
+  - [x] 8.3 Implement registration endpoint (POST /api/auth/register)
     - Accept email, password, captchaToken
     - Validate CAPTCHA first
     - Validate input (length, format)
@@ -310,7 +310,7 @@ Implementation language: **TypeScript** (as specified in design document)
     - Return success or error (generic messages)
     - _Requirements: 1.1, 5.5, 6.1, 8.1, 8.2, 8.3_
 
-  - [~] 8.4 Implement response time normalization for timing attack prevention
+  - [x] 8.4 Implement response time normalization for timing attack prevention
     - Normalize response times for both success and failure paths
     - Target consistent response time across scenarios
     - _Requirements: 10.4, 10.5_
@@ -331,7 +331,7 @@ Implementation language: **TypeScript** (as specified in design document)
     - Add indexes on email, timestamp, event_type
     - _Requirements: 14.1, 14.2, 14.3, 14.4_
 
-  - [~] 9.2 Implement authentication failure logging
+  - [ ] 9.2 Implement authentication failure logging
     - Log failed login attempts with timestamp and user
     - Log rate limit triggers with attempt count
     - Include generic failure reason (no password details)

@@ -16,13 +16,13 @@ import {
     createSuccessResponse,
     logAuthError,
 } from "@/lib/auth/error-handling"
+import { getAuthenticationService } from "@/lib/auth/password-security"
 import {
     checkRateLimitWithDegradation,
     resetAttempt,
 } from "@/lib/auth/rate-limiter"
 import { validateEmail } from "@/lib/validation"
 import { createClient } from "@supabase/supabase-js"
-import bcrypt from "bcrypt"
 import { NextRequest } from "next/server"
 import { v4 as uuidv4 } from "uuid"
 
@@ -30,6 +30,8 @@ const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.SUPABASE_SERVICE_ROLE_KEY!
 )
+
+const authService = getAuthenticationService()
 
 /**
  * POST /api/auth/login
@@ -440,79 +442,41 @@ export async function POST(request: NextRequest) {
         }
 
         // ============================================================================
-        // DATABASE LOOKUP (Task 8.6)
+        // AUTHENTICATION SERVICE HANDLES:
+        // - Database lookup
+        // - Email verification check
+        // - Password validation (Argon2id + Bcrypt)
+        // - Algorithm migration trigger
         // ============================================================================
 
-        let user: any
+        // ============================================================================
+        // PASSWORD VERIFICATION & AUTHENTICATION (Task 8.2, Requirement 3, 6)
+        // ============================================================================
+        // Use AuthenticationService for password validation with:
+        // - Argon2id hashing with pepper
+        // - Bcrypt legacy hash support with automatic migration
+        // - Constant-time comparison
+        // - Algorithm migration trigger
+
+        let authResult
         try {
-            // Find user by email
-            const { data: userData, error: userError } = await supabase
-                .from("users")
-                .select("id, email, password_hash, email_verified")
-                .eq("email", email.toLowerCase())
-                .single()
-
-            // User not found or database error - return generic error for security
-            if (userError || !userData) {
-                // Log failed login attempt (Task 10.2)
-                await logLoginFailure(email, clientIp, "User not found")
-
-                // Increment rate limit counter by email (Requirement 7.1: track by email)
-                await incrementAttemptWithDegradation(email, degradedMode)
-
-                // Return generic error - don't reveal whether user exists
-                // Requirement 7.4: Generic error messages (no user enumeration)
-                return createErrorResponse(AuthErrorType.INVALID_CREDENTIALS)
-            }
-
-            user = userData
+            // Use AuthenticationService to validate password
+            // This handles:
+            // 1. Argon2id validation with pepper
+            // 2. Bcrypt legacy hash detection and validation
+            // 3. Automatic migration trigger on successful Bcrypt validation
+            // 4. Constant-time comparison
+            authResult = await authService.login({
+                email: email.toLowerCase(),
+                password,
+            })
         } catch (error) {
-            // Log database error (Task 9.2)
-            logAuthError(
-                AuthErrorType.DATABASE_ERROR,
-                email,
-                clientIp,
-                `Database connection error (requestId: ${requestId}): ${error instanceof Error ? error.message : "Unknown error"}`
-            )
-
-            // Increment rate limit counter by email (Requirement 7.1: track by email)
-            await incrementAttemptWithDegradation(email, degradedMode)
-
-            return createErrorResponse(AuthErrorType.DATABASE_ERROR)
-        }
-
-        // ============================================================================
-        // EMAIL VERIFICATION CHECK
-        // ============================================================================
-
-        // Check if email is verified
-        if (!user.email_verified) {
-            // Log failed login attempt
-            await logLoginFailure(email, clientIp, "Email not verified")
-
-            // Increment rate limit counter by email (Requirement 7.1: track by email)
-            await incrementAttemptWithDegradation(email, degradedMode)
-
-            // Return generic error - don't reveal email verification status
-            // Requirement 7.4: Generic error messages (no user enumeration)
-            return createErrorResponse(AuthErrorType.INVALID_CREDENTIALS)
-        }
-
-        // ============================================================================
-        // PASSWORD VERIFICATION (Task 8.7, Requirement 3)
-        // ============================================================================
-
-        let passwordMatch = false
-        try {
-            // Compare password with hash using bcrypt (constant-time comparison)
-            passwordMatch = await bcrypt.compare(password, user.password_hash)
-        } catch (error) {
-            // Log password comparison error
+            // Log password validation error
             logAuthError(
                 AuthErrorType.INTERNAL_ERROR,
                 email,
                 clientIp,
-                `Password comparison error (requestId: ${requestId}): ${error instanceof Error ? error.message : "Unknown error"}`
+                `Password validation error (requestId: ${requestId}): ${error instanceof Error ? error.message : "Unknown error"}`
             )
 
             // Increment rate limit counter by email (Requirement 7.1: track by email)
@@ -521,16 +485,25 @@ export async function POST(request: NextRequest) {
             return createErrorResponse(AuthErrorType.INTERNAL_ERROR)
         }
 
-        if (!passwordMatch) {
+        // Check if authentication was successful
+        if (!authResult.success) {
             // Log failed login attempt (Task 10.2)
-            await logLoginFailure(email, clientIp, "Invalid password")
+            await logLoginFailure(
+                email,
+                clientIp,
+                authResult.error || "Invalid credentials"
+            )
 
             // Increment rate limit counter by email (Requirement 7.1: track by email)
             await incrementAttemptWithDegradation(email, degradedMode)
 
             // Return generic error for security
+            // Requirement 7.4: Generic error messages (no user enumeration)
             return createErrorResponse(AuthErrorType.INVALID_CREDENTIALS)
         }
+
+        // Authentication successful
+        const user = authResult.user
 
         // ============================================================================
         // SESSION TOKEN CREATION (Task 8.8)

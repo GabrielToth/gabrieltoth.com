@@ -251,7 +251,14 @@ export class ConfigurationManager {
             pepper ===
             "dev-pepper-test-very-long-string-32chars-minimum-required!"
         ) {
-            if (process.env.NODE_ENV === "production") {
+            // Check if this is actually a Vercel production deployment
+            // (not just a local build with NODE_ENV=production)
+            const isVercelProduction =
+                process.env.VERCEL_ENV === "production" ||
+                (process.env.NODE_ENV === "production" &&
+                    process.env.VERCEL === "1")
+
+            if (isVercelProduction) {
                 throw new Error(
                     "PEPPER_SECRET is using development value in production!\n\n" +
                         "This is a CRITICAL SECURITY ISSUE.\n\n" +
