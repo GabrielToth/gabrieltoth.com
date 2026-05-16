@@ -568,6 +568,102 @@ export class RateLimiter {
     }
 
     /**
+     * Get time remaining until account unlock (in seconds)
+     *
+     * This helper function calculates how many seconds remain until a locked account
+     * is automatically unlocked. Returns 0 if the account is not locked.
+     *
+     * Usage:
+     *   const secondsRemaining = await limiter.getUnlockTimeRemaining(email)
+     *   if (secondsRemaining > 0) {
+     *     console.log(`Account locked for ${secondsRemaining} more seconds`)
+     *   }
+     *
+     * @param email User email address
+     * @returns Seconds until unlock (0 if not locked)
+     */
+    async getUnlockTimeRemaining(email: string): Promise<number> {
+        try {
+            const { data: records, error } = await this.supabase
+                .from("rate_limit_records")
+                .select("locked_until")
+                .eq("email", email)
+                .single()
+
+            if (error && error.code !== "PGRST116") {
+                logger.error("Failed to get unlock time remaining", {
+                    email,
+                    error: error.message,
+                })
+                throw error
+            }
+
+            if (!records || !records.locked_until) {
+                return 0
+            }
+
+            const now = new Date()
+            const lockedUntil = new Date(records.locked_until)
+
+            if (now >= lockedUntil) {
+                // Account should be unlocked
+                return 0
+            }
+
+            const timeRemaining = lockedUntil.getTime() - now.getTime()
+            return Math.ceil(timeRemaining / 1000)
+        } catch (error) {
+            logger.error("Error getting unlock time remaining", {
+                email,
+                error: error instanceof Error ? error.message : String(error),
+            })
+            throw error
+        }
+    }
+
+    /**
+     * Manually unlock an account and reset failure counter
+     *
+     * This helper function immediately unlocks a locked account and resets the
+     * failure counter to 0. This is useful for admin operations or when an account
+     * needs to be unlocked before the automatic 15-minute timeout.
+     *
+     * Usage:
+     *   await limiter.unlockAccount(email)
+     *   // Account is now unlocked and can attempt login again
+     *
+     * @param email User email address
+     */
+    async unlockAccount(email: string): Promise<void> {
+        try {
+            const { error } = await this.supabase
+                .from("rate_limit_records")
+                .update({
+                    failed_attempts: 0,
+                    locked_until: null,
+                    last_attempt: new Date().toISOString(),
+                })
+                .eq("email", email)
+
+            if (error) {
+                logger.error("Failed to unlock account", {
+                    email,
+                    error: error.message,
+                })
+                throw error
+            }
+
+            logger.info("Account manually unlocked", { email })
+        } catch (error) {
+            logger.error("Error unlocking account", {
+                email,
+                error: error instanceof Error ? error.message : String(error),
+            })
+            throw error
+        }
+    }
+
+    /**
      * Clear all rate limit records (for testing/admin purposes)
      *
      * WARNING: This deletes all rate limit data. Use with caution.

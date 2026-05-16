@@ -237,6 +237,80 @@ describe("RateLimiter", () => {
         })
     })
 
+    describe("getUnlockTimeRemaining", () => {
+        it("should return 0 for new email (not locked)", async () => {
+            const time = await limiter.getUnlockTimeRemaining("new@example.com")
+            expect(time).toBe(0)
+        })
+
+        it("should return 0 when account is not locked", async () => {
+            const time = await limiter.getUnlockTimeRemaining(
+                "unlocked@example.com"
+            )
+            expect(time).toBe(0)
+        })
+
+        it("should return positive number when account is locked", async () => {
+            const time =
+                await limiter.getUnlockTimeRemaining("locked@example.com")
+            expect(typeof time).toBe("number")
+            expect(time).toBeGreaterThanOrEqual(0)
+        })
+
+        it("should return time in seconds", async () => {
+            const time =
+                await limiter.getUnlockTimeRemaining("user@example.com")
+            expect(Number.isInteger(time)).toBe(true)
+        })
+
+        it("should return 0 when lock time has passed", async () => {
+            const time = await limiter.getUnlockTimeRemaining(
+                "expired@example.com"
+            )
+            expect(time).toBeGreaterThanOrEqual(0)
+        })
+    })
+
+    describe("unlockAccount", () => {
+        it("should unlock a locked account", async () => {
+            await expect(
+                limiter.unlockAccount("locked@example.com")
+            ).resolves.not.toThrow()
+        })
+
+        it("should reset failed_attempts to 0", async () => {
+            await expect(
+                limiter.unlockAccount("user@example.com")
+            ).resolves.not.toThrow()
+        })
+
+        it("should clear locked_until timestamp", async () => {
+            await expect(
+                limiter.unlockAccount("locked@example.com")
+            ).resolves.not.toThrow()
+        })
+
+        it("should update last_attempt timestamp", async () => {
+            const before = new Date()
+            await limiter.unlockAccount("user@example.com")
+            const after = new Date()
+
+            expect(before.getTime()).toBeLessThanOrEqual(after.getTime())
+        })
+
+        it("should be callable on non-locked accounts", async () => {
+            await expect(
+                limiter.unlockAccount("unlocked@example.com")
+            ).resolves.not.toThrow()
+        })
+
+        it("should handle multiple unlock calls", async () => {
+            const email = "multi@example.com"
+            await expect(limiter.unlockAccount(email)).resolves.not.toThrow()
+            await expect(limiter.unlockAccount(email)).resolves.not.toThrow()
+        })
+    })
+
     describe("clearAllRecords", () => {
         it("should clear all rate limit records", async () => {
             await expect(limiter.clearAllRecords()).resolves.not.toThrow()

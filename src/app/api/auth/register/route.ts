@@ -1,4 +1,9 @@
 import { logRegistration } from "@/lib/auth/audit-logging"
+import {
+    createCAPTCHAErrorDetails,
+    handleCAPTCHAError,
+} from "@/lib/auth/captcha-error-handler"
+import { verifyCAPTCHAWithFallback } from "@/lib/auth/captcha-verifier"
 import { AuthErrorType, createErrorResponse } from "@/lib/auth/error-handling"
 import { generateTempToken } from "@/lib/auth/temp-token"
 import { buildClientKey, rateLimitByKey } from "@/lib/rate-limit"
@@ -41,6 +46,10 @@ export async function POST(request: NextRequest) {
             return createErrorResponse(AuthErrorType.TOO_MANY_ATTEMPTS)
         }
 
+        // ============================================================================
+        // REQUEST BODY PARSING (Task 8.3)
+        // ============================================================================
+
         // Parse request body with error handling
         let body: unknown
         try {
@@ -63,6 +72,7 @@ export async function POST(request: NextRequest) {
             full_name,
             birth_date,
             auth_method,
+            captchaToken,
         } = bodyObj
 
         // ============================================================================
@@ -92,6 +102,10 @@ export async function POST(request: NextRequest) {
             return createErrorResponse(AuthErrorType.INVALID_INPUT)
         }
 
+        if (captchaToken !== undefined && typeof captchaToken !== "string") {
+            return createErrorResponse(AuthErrorType.INVALID_INPUT)
+        }
+
         // ============================================================================
         // FIELD VALIDATION (Prevent injection attacks)
         // ============================================================================
@@ -106,6 +120,7 @@ export async function POST(request: NextRequest) {
             "birth_date",
             "auth_method",
             "csrfToken",
+            "captchaToken",
         ])
         const providedFields = Object.keys(bodyObj)
         const hasExtraFields = providedFields.some(
@@ -206,7 +221,72 @@ export async function POST(request: NextRequest) {
             }
         }
 
-        // Check if email already exists
+        // ============================================================================
+        // CAPTCHA TOKEN VALIDATION (Task 6.4, Requirement 20.3, 20.4, 20.10, 20.12)
+        // ============================================================================
+
+        // Validate CAPTCHA token before processing credentials
+        // This prevents automated attacks and bot abuse
+        // Requirement 20.1, 20.2: CAPTCHA required for registration
+        // Requirement 20.3: Return 400 for invalid/missing tokens
+        // Requirement 20.4: Don't reveal whether email exists or password is correct
+        // Requirement 20.10: If CAPTCHA unavailable, log warning
+        // Requirement 20.12: Continue with fallback behavior (enhanced rate limiting)
+
+        if (!captchaToken) {
+            // Missing CAPTCHA token - return generic error
+            // Requirement 20.3: Return 400 Bad Request
+            // Requirement 20.4: Don't indicate CAPTCHA failure vs other failures
+            return getCAPTCHAErrorResponse()
+        }
+
+        // Verify CAPTCHA token with graceful degradation
+        // If CAPTCHA service is unavailable, returns degradedMode: true
+        // and allows authentication to continue with enhanced rate limiting
+        const captchaResult = await verifyCAPTCHAWithFallback(
+            captchaToken as string
+        )
+
+        // Determine if we're in degraded mode for rate limiting
+        let degradedMode = false
+
+        // Check if CAPTCHA verification succeeded
+        if (!captchaResult.success) {
+            // CAPTCHA verification failed
+            // Requirement 20.3: Return 400 Bad Request
+            // Requirement 20.4: Don't indicate CAPTCHA failure vs other failures
+
+            if (captchaResult.degradedMode) {
+                // CAPTCHA service unavailable - log degraded mode activation
+                // Requirement 20.10: Log warning
+                // Requirement 20.12: Continue with enhanced rate limiting
+                degradedMode = true
+                console.warn(
+                    "CAPTCHA degraded mode: continuing with enhanced rate limiting",
+                    {
+                        clientIp,
+                        timestamp: new Date().toISOString(),
+                        event_type: "captcha_degraded_mode",
+                        reason: captchaResult.failureReason,
+                    }
+                )
+            } else {
+                // CAPTCHA verification failed (not degraded mode)
+                const errorDetails = createCAPTCHAErrorDetails(
+                    captchaResult.failureReason || "invalid_token",
+                    captchaResult.errorCodes
+                )
+                return handleCAPTCHAError(
+                    errorDetails,
+                    email as string | undefined,
+                    clientIp
+                )
+            }
+        }
+
+        // ============================================================================
+        // EMAIL EXISTENCE CHECK
+        // ============================================================================
         const { data: existingUser } = await supabase
             .from("users")
             .select("id")

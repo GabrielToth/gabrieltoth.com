@@ -8,7 +8,7 @@ Implementation language: **TypeScript** (as specified in design document)
 
 ## Tasks
 
-- [ ] 1. Infrastructure & Database Setup
+- [x] 1. Infrastructure & Database Setup
   - [x] 1.1 Clean Supabase database (delete all users and auth records)
     - Delete all rows from users table
     - Delete all rows from rate_limit_records table
@@ -38,7 +38,7 @@ Implementation language: **TypeScript** (as specified in design document)
     - Verify all required variables are present
     - _Requirements: 16.4, 16.6_
 
-  - [~] 1.5 Test environment parity (Docker vs Vercel behavior)
+  - [x] 1.5 Test environment parity (Docker vs Vercel behavior)
     - Run test suite in both Docker and Vercel environments
     - Verify identical security levels and behavior
     - Test database connection from both environments
@@ -90,7 +90,7 @@ Implementation language: **TypeScript** (as specified in design document)
     - Test same password produces different hash on retry
     - _Requirements: 1.1, 1.5, 1.6, 2.1_
 
-- [ ] 3. Password Validation & Algorithm Detection
+- [x] 3. Password Validation & Algorithm Detection
   - [x] 3.1 Implement hash algorithm detection (Argon2id vs Bcrypt)
     - Create detectHashAlgorithm function
     - Detect Argon2id format ($ prefix)
@@ -106,7 +106,7 @@ Implementation language: **TypeScript** (as specified in design document)
     - Target response time variance < 10ms on same infrastructure
     - _Requirements: 10.1, 10.2, 10.3, 10.4, 10.5_
 
-  - [~] 3.3 Implement password validation function (pepper + hash comparison)
+  - [x] 3.3 Implement password validation function (pepper + hash comparison)
     - Create validatePassword function accepting plaintext and stored hash
     - Append pepper to plaintext password before validation
     - Detect algorithm and use appropriate validation method
@@ -129,7 +129,7 @@ Implementation language: **TypeScript** (as specified in design document)
     - Test error messages don't reveal algorithm
     - _Requirements: 6.4, 6.5, 6.6, 6.7, 8.1, 8.2, 8.3_
 
-- [ ] 4. Legacy Bcrypt Support & Migration
+- [x] 4. Legacy Bcrypt Support & Migration
   - [x] 4.1 Implement Bcrypt detection and validation
     - Create validateBcrypt function using bcryptjs library
     - Detect Bcrypt hash format correctly
@@ -137,14 +137,14 @@ Implementation language: **TypeScript** (as specified in design document)
     - Return validation result with algorithm type
     - _Requirements: 5.1, 5.2, 10.2_
 
-  - [~] 4.2 Implement automatic algorithm migration trigger
+  - [x] 4.2 Implement automatic algorithm migration trigger
     - Create migrationRequired flag when Bcrypt detected in successful validation
     - Trigger async password rehashing with Argon2id
     - Update database with new Argon2id hash
     - Continue accepting Bcrypt hashes indefinitely (no deadline)
     - _Requirements: 5.3, 11.1, 11.2, 11.3, 11.4_
 
-  - [~] 4.3 Implement audit logging for algorithm migrations
+  - [x] 4.3 Implement audit logging for algorithm migrations
     - Create audit log entry when migration occurs
     - Record old algorithm (Bcrypt) and new algorithm (Argon2id)
     - Include timestamp and user identifier
@@ -166,7 +166,7 @@ Implementation language: **TypeScript** (as specified in design document)
     - Test audit log creation
     - _Requirements: 5.1, 5.2, 5.3, 5.4, 11.1_
 
-- [ ] 5. Rate Limiting Implementation
+- [x] 5. Rate Limiting Implementation
   - [x] 5.1 Create rate_limit_records table schema
     - Create table with id, email, failed_attempts, last_attempt, locked_until fields
     - Add indexes on email and locked_until for fast lookups
@@ -181,19 +181,19 @@ Implementation language: **TypeScript** (as specified in design document)
     - Use Supabase for persistent state (not in-memory)
     - _Requirements: 7.1, 7.2, 7.3, 7.4, 7.5, 7.6, 15.4_
 
-  - [~] 5.3 Implement automatic account unlock after 15 minutes
+  - [x] 5.3 Implement automatic account unlock after 15 minutes
     - Check locked_until timestamp on rate limit check
     - Automatically unlock when 15 minutes have passed
     - Reset failure counter on unlock
     - _Requirements: 7.4, 7.5_
 
-  - [~] 5.4 Implement rate limit check in login endpoint
+  - [x] 5.4 Implement rate limit check in login endpoint
     - Check rate limits before validating credentials
     - Return 429 Too Many Requests if locked
     - Record failures and successes appropriately
     - _Requirements: 7.1, 7.2, 7.3, 7.7_
 
-  - [~] 5.5 Implement rate limit reset on successful authentication
+  - [x] 5.5 Implement rate limit reset on successful authentication
     - Reset failure counter to 0 on successful login
     - Clear locked_until timestamp
     - Record success in audit logs
@@ -225,14 +225,14 @@ Implementation language: **TypeScript** (as specified in design document)
     - Extract CAPTCHA token and include in requests
     - _Requirements: 20.1, 20.2, 20.8, 20.9_
 
-  - [~] 6.2 Implement backend CAPTCHA token verification
+  - [x] 6.2 Implement backend CAPTCHA token verification
     - Create verifyCAPTCHA function
     - Verify tokens with Cloudflare API
     - Check token expiration (5 minute window)
     - Return success/failure
     - _Requirements: 20.3, 20.6, 20.7, 20.11_
 
-  - [~] 6.3 Implement CAPTCHA error handling and generic responses
+  - [-] 6.3 Implement CAPTCHA error handling and generic responses
     - Return 400 Bad Request for invalid/missing tokens
     - Don't reveal whether user exists or password is correct
     - Log CAPTCHA failures without sensitive data

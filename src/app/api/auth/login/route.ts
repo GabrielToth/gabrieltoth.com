@@ -3,6 +3,11 @@ import {
     logLoginSuccess,
     logSecurityEvent,
 } from "@/lib/auth/audit-logging"
+import {
+    createCAPTCHAErrorDetails,
+    handleCAPTCHAError,
+} from "@/lib/auth/captcha-error-handler"
+import { verifyCAPTCHAWithFallback } from "@/lib/auth/captcha-verifier"
 import { validateCSRFToken } from "@/lib/auth/csrf-validator"
 import {
     AuthErrorType,
@@ -11,8 +16,7 @@ import {
     logAuthError,
 } from "@/lib/auth/error-handling"
 import {
-    checkRateLimit,
-    incrementAttempt,
+    checkRateLimitWithDegradation,
     resetAttempt,
 } from "@/lib/auth/rate-limiter"
 import { validateEmail } from "@/lib/validation"
@@ -121,28 +125,6 @@ export async function POST(request: NextRequest) {
         const userAgent = request.headers.get("user-agent") || "unknown"
 
         // ============================================================================
-        // RATE LIMITING CHECK (Task 8.5, Requirement 5)
-        // ============================================================================
-
-        // Check if IP has exceeded rate limit
-        const isRateLimited = await checkRateLimit(clientIp)
-        if (isRateLimited) {
-            // Log rate limiting event
-            await logSecurityEvent(
-                "RATE_LIMIT_EXCEEDED",
-                undefined,
-                clientIp,
-                {
-                    requestId,
-                    action: "Rate limit exceeded for login attempt",
-                },
-                undefined
-            )
-
-            return createErrorResponse(AuthErrorType.TOO_MANY_ATTEMPTS)
-        }
-
-        // ============================================================================
         // REQUEST BODY PARSING (Task 8.3)
         // ============================================================================
 
@@ -172,7 +154,7 @@ export async function POST(request: NextRequest) {
         }
 
         const bodyObj = body as Record<string, unknown>
-        const { email, password, rememberMe, csrfToken } = bodyObj
+        const { email, password, rememberMe, csrfToken, captchaToken } = bodyObj
 
         // ============================================================================
         // TYPE VALIDATION (Task 8.3, Prevent script modifications)
@@ -222,6 +204,17 @@ export async function POST(request: NextRequest) {
             return createErrorResponse(AuthErrorType.INVALID_INPUT)
         }
 
+        // Validate captchaToken type (optional, but if present must be string)
+        if (captchaToken !== undefined && typeof captchaToken !== "string") {
+            logAuthError(
+                AuthErrorType.INVALID_INPUT,
+                email,
+                clientIp,
+                `Invalid captchaToken type in login request (requestId: ${requestId})`
+            )
+            return createErrorResponse(AuthErrorType.INVALID_INPUT)
+        }
+
         // ============================================================================
         // FIELD VALIDATION (Task 8.3, Prevent injection attacks)
         // ============================================================================
@@ -232,6 +225,7 @@ export async function POST(request: NextRequest) {
             "password",
             "rememberMe",
             "csrfToken",
+            "captchaToken",
         ])
         const providedFields = Object.keys(bodyObj)
         const hasExtraFields = providedFields.some(
@@ -305,6 +299,108 @@ export async function POST(request: NextRequest) {
         }
 
         // ============================================================================
+        // RATE LIMITING CHECK (Task 5.4, Requirement 7.1, 7.2, 7.3, 7.7)
+        // ============================================================================
+        // Check rate limits BEFORE validating credentials to prevent timing attacks
+        // Requirement 7.1: Track failures by user identifier (email)
+        // Requirement 7.2: Lock after 5 failures in 15 minutes
+        // Requirement 7.3: Return 429 Too Many Requests if locked
+        // Requirement 7.7: Log rate limit triggers with timestamp, user identifier, attempt count
+
+        // Determine if we're in degraded mode for rate limiting
+        let degradedMode = false
+
+        // Check if email has exceeded rate limit
+        // In degraded mode (CAPTCHA unavailable):
+        // - Stricter failure threshold (3 instead of 5)
+        // - Shorter lockout window (10 minutes instead of 15)
+        // - More aggressive logging
+        const rateLimitCheck = await checkRateLimitWithDegradation(
+            email,
+            degradedMode
+        )
+
+        if (!rateLimitCheck.allowed) {
+            // Log rate limiting event
+            // Requirement 7.7: Log with timestamp, user identifier, attempt count
+            await logSecurityEvent(
+                "RATE_LIMIT_EXCEEDED",
+                email,
+                clientIp,
+                {
+                    requestId,
+                    action: "Rate limit exceeded for login attempt",
+                    degradedMode,
+                    reason: rateLimitCheck.reason,
+                },
+                undefined
+            )
+
+            // Requirement 7.3: Return 429 Too Many Requests
+            return createErrorResponse(AuthErrorType.TOO_MANY_ATTEMPTS)
+        }
+
+        // ============================================================================
+        // CAPTCHA TOKEN VALIDATION (Task 6.4, Requirement 20.3, 20.4, 20.10, 20.12)
+        // ============================================================================
+
+        // Validate CAPTCHA token before processing credentials
+        // This prevents automated attacks and bot abuse
+        // Requirement 20.1, 20.2: CAPTCHA required for login
+        // Requirement 20.3: Return 400 for invalid/missing tokens
+        // Requirement 20.4: Don't reveal whether user exists or password is correct
+        // Requirement 20.10: If CAPTCHA unavailable, log warning
+        // Requirement 20.12: Continue with fallback behavior (enhanced rate limiting)
+
+        if (!captchaToken) {
+            // Missing CAPTCHA token - return generic error
+            // Requirement 20.3: Return 400 Bad Request
+            // Requirement 20.4: Don't indicate CAPTCHA failure vs other failures
+            return getCAPTCHAErrorResponse()
+        }
+
+        // Verify CAPTCHA token with graceful degradation
+        // If CAPTCHA service is unavailable, returns degradedMode: true
+        // and allows authentication to continue with enhanced rate limiting
+        const captchaResult = await verifyCAPTCHAWithFallback(
+            captchaToken as string
+        )
+
+        // Check if CAPTCHA verification succeeded
+        if (!captchaResult.success) {
+            // CAPTCHA verification failed
+            // Requirement 20.3: Return 400 Bad Request
+            // Requirement 20.4: Don't indicate CAPTCHA failure vs other failures
+
+            if (captchaResult.degradedMode) {
+                // CAPTCHA service unavailable - log degraded mode activation
+                // Requirement 20.10: Log warning
+                // Requirement 20.12: Continue with enhanced rate limiting
+                degradedMode = true
+                console.warn(
+                    "CAPTCHA degraded mode: continuing with enhanced rate limiting",
+                    {
+                        clientIp,
+                        timestamp: new Date().toISOString(),
+                        event_type: "captcha_degraded_mode",
+                        reason: captchaResult.failureReason,
+                    }
+                )
+            } else {
+                // CAPTCHA verification failed (not degraded mode)
+                const errorDetails = createCAPTCHAErrorDetails(
+                    captchaResult.failureReason || "invalid_token",
+                    captchaResult.errorCodes
+                )
+                return handleCAPTCHAError(
+                    errorDetails,
+                    email as string | undefined,
+                    clientIp
+                )
+            }
+        }
+
+        // ============================================================================
         // CSRF TOKEN VALIDATION (Task 8.4, Requirement 4)
         // ============================================================================
 
@@ -360,8 +456,8 @@ export async function POST(request: NextRequest) {
                 // Log failed login attempt (Task 10.2)
                 await logLoginFailure(email, clientIp, "User not found")
 
-                // Increment rate limit counter
-                await incrementAttempt(clientIp)
+                // Increment rate limit counter by email (Requirement 7.1: track by email)
+                await incrementAttemptWithDegradation(email, degradedMode)
 
                 // Return error indicating user should register
                 return createErrorResponse(
@@ -381,8 +477,8 @@ export async function POST(request: NextRequest) {
                 `Database connection error (requestId: ${requestId}): ${error instanceof Error ? error.message : "Unknown error"}`
             )
 
-            // Increment rate limit counter
-            await incrementAttempt(clientIp)
+            // Increment rate limit counter by email (Requirement 7.1: track by email)
+            await incrementAttemptWithDegradation(email, degradedMode)
 
             return createErrorResponse(AuthErrorType.DATABASE_ERROR)
         }
@@ -396,8 +492,8 @@ export async function POST(request: NextRequest) {
             // Log failed login attempt
             await logLoginFailure(email, clientIp, "Email not verified")
 
-            // Increment rate limit counter
-            await incrementAttempt(clientIp)
+            // Increment rate limit counter by email (Requirement 7.1: track by email)
+            await incrementAttemptWithDegradation(email, degradedMode)
 
             return createErrorResponse(AuthErrorType.EMAIL_NOT_VERIFIED)
         }
@@ -419,8 +515,8 @@ export async function POST(request: NextRequest) {
                 `Password comparison error (requestId: ${requestId}): ${error instanceof Error ? error.message : "Unknown error"}`
             )
 
-            // Increment rate limit counter
-            await incrementAttempt(clientIp)
+            // Increment rate limit counter by email (Requirement 7.1: track by email)
+            await incrementAttemptWithDegradation(email, degradedMode)
 
             return createErrorResponse(AuthErrorType.INTERNAL_ERROR)
         }
@@ -429,8 +525,8 @@ export async function POST(request: NextRequest) {
             // Log failed login attempt (Task 10.2)
             await logLoginFailure(email, clientIp, "Invalid password")
 
-            // Increment rate limit counter
-            await incrementAttempt(clientIp)
+            // Increment rate limit counter by email (Requirement 7.1: track by email)
+            await incrementAttemptWithDegradation(email, degradedMode)
 
             // Return generic error for security
             return createErrorResponse(AuthErrorType.INVALID_CREDENTIALS)
@@ -475,8 +571,8 @@ export async function POST(request: NextRequest) {
                     `Session creation error (requestId: ${requestId}): ${sessionError.message}`
                 )
 
-                // Increment rate limit counter
-                await incrementAttempt(clientIp)
+                // Increment rate limit counter (with degraded mode support)
+                await incrementAttemptWithDegradation(clientIp, degradedMode)
 
                 return createErrorResponse(AuthErrorType.DATABASE_ERROR)
             }
@@ -488,8 +584,8 @@ export async function POST(request: NextRequest) {
                 `Session storage error (requestId: ${requestId}): ${error instanceof Error ? error.message : "Unknown error"}`
             )
 
-            // Increment rate limit counter
-            await incrementAttempt(clientIp)
+            // Increment rate limit counter (with degraded mode support)
+            await incrementAttemptWithDegradation(clientIp, degradedMode)
 
             return createErrorResponse(AuthErrorType.DATABASE_ERROR)
         }
@@ -588,8 +684,9 @@ export async function POST(request: NextRequest) {
         // Log successful login
         await logLoginSuccess(email, clientIp, user.id)
 
-        // Reset rate limit counter on successful login
-        await resetAttempt(clientIp)
+        // Reset rate limit counter on successful login (Requirement 7.5)
+        // Track by email (Requirement 7.1)
+        await resetAttempt(email)
 
         return response
     } catch (error) {

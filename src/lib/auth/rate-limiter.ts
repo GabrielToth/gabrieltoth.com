@@ -15,6 +15,11 @@ const MAX_ATTEMPTS = 5
 const WINDOW_DURATION_HOURS = 1
 const WINDOW_DURATION_MS = WINDOW_DURATION_HOURS * 60 * 60 * 1000
 
+// Enhanced rate limiting for degraded mode (CAPTCHA unavailable)
+const DEGRADED_MODE_MAX_ATTEMPTS = 3
+const DEGRADED_MODE_WINDOW_MINUTES = 10
+const DEGRADED_MODE_WINDOW_MS = DEGRADED_MODE_WINDOW_MINUTES * 60 * 1000
+
 /**
  * In-memory store for rate limiting (local development fallback)
  * Structure: { [key: string]: { count: number; resetTime: number } }
@@ -365,5 +370,177 @@ export async function getRateLimiterStats(): Promise<{
             error: error instanceof Error ? error.message : String(error),
         })
         return { backend: "in-memory", entriesCount: 0 }
+    }
+}
+
+/**
+ * Check rate limit with degraded mode support
+ *
+ * In degraded mode (CAPTCHA unavailable):
+ * - Stricter failure threshold (3 instead of 5)
+ * - Shorter lockout window (10 minutes instead of 15)
+ * - More aggressive logging
+ *
+ * @param ipAddress Client IP address
+ * @param degradedMode Whether CAPTCHA service is unavailable
+ * @returns Object with rate limit status and details
+ */
+export async function checkRateLimitWithDegradation(
+    ipAddress: string,
+    degradedMode: boolean = false
+): Promise<{
+    allowed: boolean
+    remainingAttempts: number
+    degradedMode: boolean
+    reason?: string
+}> {
+    const key = generateKey(ipAddress)
+    const maxAttempts = degradedMode ? DEGRADED_MODE_MAX_ATTEMPTS : MAX_ATTEMPTS
+    const windowMs = degradedMode ? DEGRADED_MODE_WINDOW_MS : WINDOW_DURATION_MS
+
+    try {
+        let attemptCount: number
+
+        if (isRedisConnected()) {
+            attemptCount = await getRedisAttemptCount(key)
+        } else {
+            attemptCount = getInMemoryAttemptCount(key)
+        }
+
+        const isLimited = attemptCount >= maxAttempts
+
+        if (isLimited) {
+            const logLevel = degradedMode ? "error" : "warn"
+            logger[logLevel as "warn" | "error"](
+                "Rate limit exceeded" +
+                    (degradedMode ? " (degraded mode)" : ""),
+                {
+                    ipAddress,
+                    attemptCount,
+                    maxAttempts,
+                    degradedMode,
+                    windowMinutes: degradedMode
+                        ? DEGRADED_MODE_WINDOW_MINUTES
+                        : WINDOW_DURATION_HOURS * 60,
+                }
+            )
+
+            // Log degraded mode rate limiting for audit trail
+            if (degradedMode) {
+                logger.info("Degraded mode rate limiting applied", {
+                    event_type: "rate_limit_degraded_mode",
+                    ipAddress,
+                    attemptCount,
+                    maxAttempts: DEGRADED_MODE_MAX_ATTEMPTS,
+                    lockout_window_minutes: DEGRADED_MODE_WINDOW_MINUTES,
+                    timestamp: new Date().toISOString(),
+                })
+            }
+        }
+
+        return {
+            allowed: !isLimited,
+            remainingAttempts: Math.max(0, maxAttempts - attemptCount),
+            degradedMode,
+            reason: isLimited
+                ? degradedMode
+                    ? `Too many attempts (degraded mode: ${maxAttempts} attempts in ${DEGRADED_MODE_WINDOW_MINUTES} minutes)`
+                    : `Too many attempts (${maxAttempts} attempts in ${WINDOW_DURATION_HOURS} hour)`
+                : undefined,
+        }
+    } catch (error) {
+        logger.error("Error checking rate limit with degradation", {
+            ipAddress,
+            degradedMode,
+            error: error instanceof Error ? error.message : String(error),
+        })
+        // Fail open: allow request if rate limiter fails
+        return {
+            allowed: true,
+            remainingAttempts: maxAttempts,
+            degradedMode,
+        }
+    }
+}
+
+/**
+ * Increment attempt counter with degraded mode support
+ *
+ * In degraded mode, uses shorter window (10 minutes instead of 15)
+ * and logs more aggressively for audit trail.
+ *
+ * @param ipAddress Client IP address
+ * @param degradedMode Whether CAPTCHA service is unavailable
+ * @returns New attempt count
+ */
+export async function incrementAttemptWithDegradation(
+    ipAddress: string,
+    degradedMode: boolean = false
+): Promise<number> {
+    const key = generateKey(ipAddress)
+    const windowMs = degradedMode ? DEGRADED_MODE_WINDOW_MS : WINDOW_DURATION_MS
+
+    try {
+        let newCount: number
+
+        if (isRedisConnected()) {
+            const client = await getRedisClient()
+            if (!client) {
+                return 0
+            }
+
+            // Increment and set expiration
+            newCount = await client.incr(key)
+
+            // Set expiration on first increment
+            if (newCount === 1) {
+                const expirationSeconds = degradedMode
+                    ? DEGRADED_MODE_WINDOW_MINUTES * 60
+                    : WINDOW_DURATION_HOURS * 60 * 60
+                await client.expire(key, expirationSeconds)
+            }
+        } else {
+            cleanupInMemoryStore()
+            const entry = inMemoryStore.get(key)
+            const now = Date.now()
+
+            if (!entry || entry.resetTime < now) {
+                // Create new entry
+                const newEntry = {
+                    count: 1,
+                    resetTime: now + windowMs,
+                }
+                inMemoryStore.set(key, newEntry)
+                newCount = 1
+            } else {
+                // Increment existing entry
+                entry.count++
+                newCount = entry.count
+            }
+        }
+
+        // Log with degraded mode indicator
+        if (degradedMode) {
+            logger.warn("Login attempt incremented (degraded mode)", {
+                ipAddress,
+                attemptCount: newCount,
+                maxAttempts: DEGRADED_MODE_MAX_ATTEMPTS,
+                windowMinutes: DEGRADED_MODE_WINDOW_MINUTES,
+            })
+        } else {
+            logger.debug("Login attempt incremented", {
+                ipAddress,
+                attemptCount: newCount,
+            })
+        }
+
+        return newCount
+    } catch (error) {
+        logger.error("Error incrementing attempt count with degradation", {
+            ipAddress,
+            degradedMode,
+            error: error instanceof Error ? error.message : String(error),
+        })
+        return 0
     }
 }

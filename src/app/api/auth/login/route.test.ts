@@ -26,6 +26,24 @@ vi.mock("@/lib/auth/rate-limiter", () => ({
     checkRateLimit: vi.fn(),
     incrementAttempt: vi.fn(),
     resetAttempt: vi.fn(),
+    checkRateLimitWithDegradation: vi.fn(() => ({
+        allowed: true,
+        remainingAttempts: 5,
+        degradedMode: false,
+    })),
+    incrementAttemptWithDegradation: vi.fn(),
+}))
+vi.mock("@/lib/auth/captcha-verifier", () => ({
+    verifyCAPTCHAWithFallback: vi.fn(() =>
+        Promise.resolve({
+            success: true,
+            degradedMode: false,
+        })
+    ),
+}))
+vi.mock("@/lib/auth/captcha-error-handler", () => ({
+    handleCAPTCHAError: vi.fn(),
+    createCAPTCHAErrorDetails: vi.fn(),
 }))
 
 // Import route AFTER mocks
@@ -630,5 +648,86 @@ describe("POST /api/auth/login - Task 8-11: Login Route Handler", () => {
             expect.any(String),
             expect.any(String)
         )
+    })
+
+    // ============================================================================
+    // Task 5.5: Rate Limit Reset on Successful Authentication
+    // ============================================================================
+
+    it("should reset rate limit counter on successful login", async () => {
+        const { checkRateLimit, resetAttempt } =
+            await import("@/lib/auth/rate-limiter")
+        const { validateCSRFToken } = await import("@/lib/auth/csrf-validator")
+        vi.mocked(checkRateLimit).mockResolvedValue(false)
+        vi.mocked(validateCSRFToken).mockResolvedValue(true)
+
+        const hashedPassword = await bcrypt.hash("Test@1234", 10)
+
+        mockSupabase.from.mockReturnValue({
+            select: vi.fn().mockReturnValue({
+                eq: vi.fn().mockReturnValue({
+                    single: vi.fn().mockResolvedValue({
+                        data: {
+                            id: "user-123",
+                            email: "test@example.com",
+                            password_hash: hashedPassword,
+                            email_verified: true,
+                        },
+                        error: null,
+                    }),
+                }),
+            }),
+            insert: vi.fn().mockResolvedValue({
+                data: { id: "session-123" },
+                error: null,
+            }),
+        })
+
+        const request = new NextRequest("http://localhost/api/auth/login", {
+            method: "POST",
+            body: JSON.stringify({
+                email: "test@example.com",
+                password: "Test@1234",
+                csrfToken: "token",
+            }),
+        })
+
+        await POST(request)
+
+        // Verify resetAttempt was called with the email (Requirement 7.5)
+        expect(vi.mocked(resetAttempt)).toHaveBeenCalledWith("test@example.com")
+    })
+
+    it("should not reset rate limit counter on failed login", async () => {
+        const { checkRateLimit, resetAttempt } =
+            await import("@/lib/auth/rate-limiter")
+        const { validateCSRFToken } = await import("@/lib/auth/csrf-validator")
+        vi.mocked(checkRateLimit).mockResolvedValue(false)
+        vi.mocked(validateCSRFToken).mockResolvedValue(true)
+
+        mockSupabase.from.mockReturnValue({
+            select: vi.fn().mockReturnValue({
+                eq: vi.fn().mockReturnValue({
+                    single: vi.fn().mockResolvedValue({
+                        data: null,
+                        error: new Error("No user found"),
+                    }),
+                }),
+            }),
+        })
+
+        const request = new NextRequest("http://localhost/api/auth/login", {
+            method: "POST",
+            body: JSON.stringify({
+                email: "test@example.com",
+                password: "WrongPassword",
+                csrfToken: "token",
+            }),
+        })
+
+        await POST(request)
+
+        // Verify resetAttempt was NOT called on failed login
+        expect(vi.mocked(resetAttempt)).not.toHaveBeenCalled()
     })
 })
