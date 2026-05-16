@@ -42,6 +42,11 @@ export {
 
 export { RateLimiter, getRateLimiter } from "./rate-limiter"
 
+export {
+    assertPasswordInputValid,
+    validatePasswordInput,
+} from "./password-input-validation"
+
 export type {
     Argon2Params,
     ConfigurationLoadResult,
@@ -56,3 +61,5 @@ export type { HashAlgorithmDetectionResult } from "./hash-algorithm-detection"
 export type { BcryptValidationResult } from "./bcrypt-validator"
 
 export type { RateLimitCheckResult } from "./rate-limiter"
+
+export type { PasswordValidationResult } from "./password-input-validation"
