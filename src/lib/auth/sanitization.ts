@@ -236,3 +236,144 @@ export function sanitizePasswordResetForm(data: {
         confirmPassword: sanitizePassword(data.confirmPassword),
     }
 }
+
+/**
+ * Sanitizes user identifier (email/username) to prevent injection attacks
+ * Requirement 8.6
+ *
+ * Performs comprehensive validation and sanitization:
+ * - Validates RFC 5322 compliant email format
+ * - Trims whitespace
+ * - Converts to lowercase for consistency
+ * - Rejects suspicious patterns (SQL injection, XSS, etc.)
+ * - Rejects emails with control characters
+ * - Returns sanitized email or null if invalid
+ *
+ * @param identifier - The email or username to sanitize
+ * @returns Sanitized identifier or null if invalid
+ *
+ * @example
+ * sanitizeUserIdentifier('  User@Example.COM  ') // 'user@example.com'
+ * sanitizeUserIdentifier("' OR '1'='1") // null (SQL injection pattern)
+ * sanitizeUserIdentifier('<script>alert("xss")</script>') // null (XSS pattern)
+ * sanitizeUserIdentifier('user@example.com\x00') // null (control character)
+ */
+export function sanitizeUserIdentifier(identifier: string): string | null {
+    // Validate input type and basic checks
+    if (!identifier || typeof identifier !== "string") {
+        return null
+    }
+
+    // Trim whitespace
+    let sanitized = identifier.trim()
+
+    // Check for empty after trimming
+    if (sanitized.length === 0) {
+        return null
+    }
+
+    // Check length constraints (email max 254 characters per RFC 5321)
+    if (sanitized.length > 254) {
+        return null
+    }
+
+    // Check for control characters (0x00-0x1F, 0x7F)
+    if (/[\x00-\x1F\x7F]/.test(sanitized)) {
+        return null
+    }
+
+    // Check for null bytes explicitly
+    if (sanitized.includes("\x00")) {
+        return null
+    }
+
+    // Reject SQL injection patterns
+    const sqlInjectionPatterns = [
+        /(\b(UNION|SELECT|INSERT|UPDATE|DELETE|DROP|CREATE|ALTER|EXEC|EXECUTE|SCRIPT)\b)/i,
+        /(-{2}|\/\*|\*\/|;)/,
+        /('|")\s*(OR|AND)\s*('|")/i,
+        /(xp_|sp_)/i,
+        /'\s*OR\s*'/i,
+        /"\s*OR\s*"/i,
+    ]
+
+    if (sqlInjectionPatterns.some(pattern => pattern.test(sanitized))) {
+        return null
+    }
+
+    // Reject XSS patterns
+    const xssPatterns = [
+        /<script[^>]*>.*?<\/script>/gi,
+        /on\w+\s*=/gi,
+        /javascript:/gi,
+        /<iframe[^>]*>/gi,
+        /<object[^>]*>/gi,
+        /<embed[^>]*>/gi,
+        /<img[^>]*on/gi,
+        /<svg[^>]*on/gi,
+        /<body[^>]*on/gi,
+        /<input[^>]*on/gi,
+        /<form[^>]*on/gi,
+        /<a[^>]*on/gi,
+        /<div[^>]*on/gi,
+        /<span[^>]*on/gi,
+        /<button[^>]*on/gi,
+    ]
+
+    if (xssPatterns.some(pattern => pattern.test(sanitized))) {
+        return null
+    }
+
+    // Reject LDAP injection patterns
+    const ldapInjectionPatterns = [/[*()\\]/, /\|\s*\(/i, /&\s*\(/i]
+
+    if (ldapInjectionPatterns.some(pattern => pattern.test(sanitized))) {
+        return null
+    }
+
+    // Reject command injection patterns
+    const commandInjectionPatterns = [/[;&|`$()]/, /\$\{/, /\$\(/, /`/]
+
+    if (commandInjectionPatterns.some(pattern => pattern.test(sanitized))) {
+        return null
+    }
+
+    // Validate email format (RFC 5322 simplified)
+    // Local part: alphanumeric, dots, hyphens, underscores, plus signs
+    // Domain: alphanumeric, dots, hyphens
+    const emailRegex = /^[a-zA-Z0-9._+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/
+
+    if (!emailRegex.test(sanitized)) {
+        return null
+    }
+
+    // Additional email validation checks
+    // Check for consecutive dots
+    if (sanitized.includes("..")) {
+        return null
+    }
+
+    // Check for leading/trailing dots in local part
+    const [localPart, domain] = sanitized.split("@")
+    if (localPart.startsWith(".") || localPart.endsWith(".")) {
+        return null
+    }
+
+    // Check for leading/trailing dots in domain
+    if (domain.startsWith(".") || domain.endsWith(".")) {
+        return null
+    }
+
+    // Check for leading/trailing hyphens in domain labels
+    const domainLabels = domain.split(".")
+    if (
+        domainLabels.some(label => label.startsWith("-") || label.endsWith("-"))
+    ) {
+        return null
+    }
+
+    // Convert to lowercase for consistency
+    sanitized = sanitized.toLowerCase()
+
+    return sanitized
+}
