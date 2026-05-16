@@ -26,6 +26,22 @@ export {
     verifyPasswordArgon2id,
 } from "./argon2id-hasher"
 
+export {
+    detectHashAlgorithm,
+    getAlgorithmDescription,
+    isArgon2idHashFormat,
+    isBcryptHashFormat,
+} from "./hash-algorithm-detection"
+
+export {
+    describeBcryptHash,
+    extractBcryptInfo,
+    isBcryptHashValid,
+    validatePasswordBcrypt,
+} from "./bcrypt-validator"
+
+export { RateLimiter, getRateLimiter } from "./rate-limiter"
+
 export type {
     Argon2Params,
     ConfigurationLoadResult,
@@ -34,3 +50,9 @@ export type {
     SecurityConfig,
     ValidationError,
 } from "./types"
+
+export type { HashAlgorithmDetectionResult } from "./hash-algorithm-detection"
+
+export type { BcryptValidationResult } from "./bcrypt-validator"
+
+export type { RateLimitCheckResult } from "./rate-limiter"
