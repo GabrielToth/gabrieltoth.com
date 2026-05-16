@@ -54,7 +54,7 @@ Implementation language: **TypeScript** (as specified in design document)
     - Load pepper once at startup and cache in memory
     - _Requirements: 4.1, 4.2, 4.3, 4.4, 4.5, 4.6, 3.2, 3.3_
 
-  - [ ]* 2.2 Write unit tests for Configuration Manager
+  - [x]* 2.2 Write unit tests for Configuration Manager
     - Test valid configuration loading
     - Test invalid parameter rejection
     - Test fail-secure on missing pepper
@@ -76,14 +76,14 @@ Implementation language: **TypeScript** (as specified in design document)
     - Return hash with algorithm metadata
     - _Requirements: 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 15.1_
 
-  - [ ]* 2.5 Write property test for unique hashes
+  - [x]* 2.5 Write property test for unique hashes
     - **Property 1: Unique Hashes - Identical passwords produce different hashes**
     - **Validates: Requirement 2.1**
     - Generate 100+ identical passwords, verify all hashes differ due to unique salt
     - Run with minimum 100 iterations
     - _Requirements: 2.1, 2.2, 2.3, 2.4_
 
-  - [ ]* 2.6 Write unit tests for Argon2id hashing
+  - [x]* 2.6 Write unit tests for Argon2id hashing
     - Test hash generation completes within time limit
     - Test salt is included in output
     - Test different passwords produce different hashes
@@ -114,7 +114,7 @@ Implementation language: **TypeScript** (as specified in design document)
     - Implement error handling without revealing algorithm
     - _Requirements: 6.1, 6.4, 6.5, 6.6, 6.7_
 
-  - [ ]* 3.4 Write property test for pepper application
+  - [x]* 3.4 Write property test for pepper application
     - **Property 2: Pepper Application - Pepper consistently applied before validation**
     - **Validates: Requirement 3.1**
     - Test that passwords validate correctly with proper pepper
@@ -122,7 +122,7 @@ Implementation language: **TypeScript** (as specified in design document)
     - Test with 50+ password/pepper combinations
     - _Requirements: 3.1, 3.2, 3.3, 3.4, 3.5_
 
-  - [ ]* 3.5 Write unit tests for password validation
+  - [x]* 3.5 Write unit tests for password validation
     - Test Argon2id validation with correct password
     - Test Argon2id validation with incorrect password
     - Test validation returns algorithm type
@@ -151,7 +151,7 @@ Implementation language: **TypeScript** (as specified in design document)
     - Ensure logs don't contain sensitive data
     - _Requirements: 5.4, 11.5, 14.3, 14.5, 14.6_
 
-  - [ ]* 4.4 Write property test for algorithm migration
+  - [x]* 4.4 Write property test for algorithm migration
     - **Property 3: Algorithm Migration - Bcrypt automatically upgraded on successful login**
     - **Validates: Requirement 11.1**
     - Test that successful Bcrypt validation triggers migration
@@ -159,7 +159,7 @@ Implementation language: **TypeScript** (as specified in design document)
     - Test migration doesn't affect authentication success
     - _Requirements: 5.3, 5.4, 11.1, 11.2, 11.3, 11.4_
 
-  - [ ]* 4.5 Write unit tests for Bcrypt validation and migration
+  - [x]* 4.5 Write unit tests for Bcrypt validation and migration
     - Test Bcrypt detection works correctly
     - Test Bcrypt password validation
     - Test migration to Argon2id on success
@@ -199,7 +199,7 @@ Implementation language: **TypeScript** (as specified in design document)
     - Record success in audit logs
     - _Requirements: 7.5, 14.6_
 
-  - [ ]* 5.6 Write property test for rate limiting
+  - [x]* 5.6 Write property test for rate limiting
     - **Property 5: Rate Limiting - After 5 failures in 15 minutes, requests rejected with 429**
     - **Validates: Requirement 7.1**
     - Test that 5 failed attempts trigger lockout
@@ -209,7 +209,7 @@ Implementation language: **TypeScript** (as specified in design document)
     - Run with minimum 50 iterations of failure scenarios
     - _Requirements: 7.1, 7.2, 7.3, 7.4, 7.5, 7.6, 7.7_
 
-  - [ ]* 5.7 Write unit tests for rate limiting
+  - [x]* 5.7 Write unit tests for rate limiting
     - Test rate limit record creation
     - Test failure counter increment
     - Test lockout after 5 failures
@@ -217,7 +217,7 @@ Implementation language: **TypeScript** (as specified in design document)
     - Test success resets counter
     - _Requirements: 7.1, 7.2, 7.3, 7.4, 7.5, 7.6, 7.7_
 
-- [ ] 6. CAPTCHA Integration
+- [x] 6. CAPTCHA Integration
   - [x] 6.1 Integrate Cloudflare Turnstile frontend widget
     - Create React component for CAPTCHA widget
     - Load Cloudflare Turnstile script
@@ -244,7 +244,7 @@ Implementation language: **TypeScript** (as specified in design document)
     - Continue authentication with fallback behavior
     - _Requirements: 20.10, 20.12_
 
-  - [ ]* 6.5 Write unit tests for CAPTCHA validation
+  - [x]* 6.5 Write unit tests for CAPTCHA validation
     - Test valid token verification
     - Test invalid token rejection
     - Test token expiration
@@ -278,7 +278,7 @@ Implementation language: **TypeScript** (as specified in design document)
     - Don't indicate algorithm type in errors
     - _Requirements: 9.6, 14.1, 14.7_
 
-  - [ ]* 7.5 Write unit tests for input validation and error handling
+  - [x]* 7.5 Write unit tests for input validation and error handling
     - Test password length validation
     - Test null byte rejection
     - Test generic error messages
@@ -315,7 +315,7 @@ Implementation language: **TypeScript** (as specified in design document)
     - Target consistent response time across scenarios
     - _Requirements: 10.4, 10.5_
 
-  - [ ]* 8.5 Write integration tests for authentication flows
+  - [x]* 8.5 Write integration tests for authentication flows
     - Test complete registration flow with CAPTCHA
     - Test complete login flow with CAPTCHA
     - Test rate limiting triggers on multiple failures
@@ -323,7 +323,7 @@ Implementation language: **TypeScript** (as specified in design document)
     - Test generic error messages throughout
     - _Requirements: 1.1, 5.1, 6.1, 6.4, 11.1_
 
-- [ ] 9. Audit Logging and Security Monitoring
+- [x] 9. Audit Logging and Security Monitoring
   - [x] 9.1 Create audit_logs table schema
     - Create table with id, event_type, email, user_id, timestamp fields
     - Add fields for attempt_count, old_algorithm, new_algorithm
@@ -331,157 +331,157 @@ Implementation language: **TypeScript** (as specified in design document)
     - Add indexes on email, timestamp, event_type
     - _Requirements: 14.1, 14.2, 14.3, 14.4_
 
-  - [ ] 9.2 Implement authentication failure logging
+  - [x] 9.2 Implement authentication failure logging
     - Log failed login attempts with timestamp and user
     - Log rate limit triggers with attempt count
     - Include generic failure reason (no password details)
     - _Requirements: 14.1, 14.2, 14.5_
 
-  - [~] 9.3 Implement password migration audit logging
+  - [x] 9.3 Implement password migration audit logging
     - Log algorithm migration events
     - Record old and new algorithms
     - Include user identifier and timestamp
     - _Requirements: 5.4, 11.5, 14.3_
 
-  - [~] 9.4 Implement configuration and parameter logging
+  - [x] 9.4 Implement configuration and parameter logging
     - Log Argon2id parameters on startup
     - Log pepper presence (not value)
     - Exclude sensitive data from logs
     - _Requirements: 14.3, 14.5_
 
-  - [ ]* 9.5 Write unit tests for audit logging
+  - [x]* 9.5 Write unit tests for audit logging
     - Test failure events are logged
     - Test migration events are logged
     - Test sensitive data is excluded
     - _Requirements: 14.1, 14.2, 14.3, 14.4, 14.5_
 
-- [ ] 10. Security Testing & Validation
-  - [~] 10.1 Test Argon2id memory-hardness
+- [x] 10. Security Testing & Validation
+  - [x] 10.1 Test Argon2id memory-hardness
     - Verify hashing fails or completes slowly under memory constraints
     - Confirm GPU/ASIC resistance through configuration
     - _Requirements: 1.1, 9.2, 9.3_
 
-  - [~] 10.2 Test salt uniqueness (identical passwords → different hashes)
+  - [x] 10.2 Test salt uniqueness (identical passwords → different hashes)
     - Generate 100+ identical passwords
     - Verify all hashes differ
     - Confirm rainbow table resistance
     - _Requirements: 2.1, 2.2, 2.3, 2.4_
 
-  - [~] 10.3 Test pepper application validation
+  - [x] 10.3 Test pepper application validation
     - Test correct pepper allows validation
     - Test incorrect pepper denies access
     - Test pepper is required (fail-secure without it)
     - _Requirements: 3.1, 3.2, 3.3, 3.4, 3.5_
 
-  - [~] 10.4 Test rate limiting (5 failures → 429)
+  - [x] 10.4 Test rate limiting (5 failures → 429)
     - Perform 5 sequential failures
     - Verify 429 status on 5th attempt
     - Verify automatic unlock after 15 minutes
     - _Requirements: 7.1, 7.2, 7.3, 7.4_
 
-  - [~] 10.5 Test timing attack prevention (constant-time comparison)
+  - [x] 10.5 Test timing attack prevention (constant-time comparison)
     - Measure response times for success and failure
     - Verify variance < 10ms per attempt
     - Confirm timing doesn't reveal password/hash differences
     - _Requirements: 10.1, 10.2, 10.3_
 
-  - [~] 10.6 Test generic error messages (no algorithm revelation)
+  - [x] 10.6 Test generic error messages (no algorithm revelation)
     - Verify errors don't indicate Argon2id vs Bcrypt
     - Verify errors don't reveal user existence
     - Verify errors don't reveal password validity
     - _Requirements: 6.6, 9.1, 9.2, 9.3_
 
-  - [~] 10.7 Test CAPTCHA bypass attempts (rejected)
+  - [x] 10.7 Test CAPTCHA bypass attempts (rejected)
     - Test missing CAPTCHA token rejected with 400
     - Test invalid token rejected with 400
     - Test expired token rejected
     - Verify no credentials revealed in CAPTCHA errors
     - _Requirements: 20.1, 20.3, 20.4, 20.5_
 
-  - [~] 10.8 Test performance on Vercel (hash generation < 3 seconds)
+  - [x] 10.8 Test performance on Vercel (hash generation < 3 seconds)
     - Deploy to Vercel Free
     - Measure hash generation time
     - Confirm < 3 seconds on average
     - Verify no timeout errors occur
     - _Requirements: 15.1, 15.2, 15.3_
 
-  - [~] 10.9 Test password validation against Bcrypt (legacy support)
+  - [x] 10.9 Test password validation against Bcrypt (legacy support)
     - Test validation of existing Bcrypt hashes
     - Verify constant-time comparison works
     - Confirm algorithm detection works correctly
     - _Requirements: 5.1, 5.2, 10.2_
 
-  - [~] 10.10 Test algorithm migration after successful Bcrypt login
+  - [x] 10.10 Test algorithm migration after successful Bcrypt login
     - Login with Bcrypt password
     - Verify migration to Argon2id occurs
     - Confirm next login uses new hash
     - Verify audit log documents migration
     - _Requirements: 5.3, 5.4, 11.1, 11.5_
 
-- [ ] 11. Configuration & Deployment Testing
-  - [~] 11.1 Test configuration loading and validation
+- [x] 11. Configuration & Deployment Testing
+  - [x] 11.1 Test configuration loading and validation
     - Test Docker environment variable loading
     - Test Vercel environment variable loading
     - Test fail-secure on missing pepper
     - Test invalid parameters rejected
     - _Requirements: 4.1, 4.2, 4.3, 4.4, 4.5, 4.6, 3.2, 3.3_
 
-  - [~] 11.2 Test environment parity (Docker vs Vercel behavior)
+  - [x] 11.2 Test environment parity (Docker vs Vercel behavior)
     - Run identical test suite in both environments
     - Verify same security levels and behavior
     - Confirm database operations identical
     - _Requirements: 16.2, 16.5_
 
-  - [~] 11.3 Test Vercel Free Plan compatibility
+  - [x] 11.3 Test Vercel Free Plan compatibility
     - Verify hash generation completes within 10 second timeout
     - Confirm memory usage within 1GB limit
     - Test serverless function cold start performance
     - _Requirements: 15.1, 15.2, 15.3_
 
 - [ ] 12. Documentation & Cleanup
-  - [~] 12.1 Document Argon2id parameters and security tradeoffs
+  - [-] 12.1 Document Argon2id parameters and security tradeoffs
     - Explain memory cost, iterations, parallelism settings
     - Document why values are tuned for Vercel
     - Include security vs performance tradeoff reasoning
     - _Requirements: 17.1, 17.2, 17.3, 17.4_
 
-  - [~] 12.2 Document pepper configuration and rotation
+  - [-] 12.2 Document pepper configuration and rotation
     - Explain pepper requirement (minimum 32 characters)
     - Document how to set in Docker and Vercel
     - Explain pepper rotation process
     - _Requirements: 3.2, 3.3, 3.4, 3.5, 13.1, 13.2, 13.3, 13.4_
 
-  - [~] 12.3 Document CAPTCHA setup (Cloudflare Turnstile)
+  - [-] 12.3 Document CAPTCHA setup (Cloudflare Turnstile)
     - Explain Turnstile vs reCAPTCHA options
     - Document setup steps for both providers
     - Include frontend and backend integration points
     - _Requirements: 20.1, 20.2, 20.5, 20.6, 20.7, 20.8_
 
-  - [~] 12.4 Document rate limiting strategy
+  - [-] 12.4 Document rate limiting strategy
     - Explain 5 failures in 15 minutes rule
     - Document automatic unlock process
     - Include troubleshooting for locked accounts
     - _Requirements: 7.1, 7.2, 7.3, 7.4, 7.5, 7.6_
 
-  - [~] 12.5 Document local development setup (Docker)
+  - [-] 12.5 Document local development setup (Docker)
     - Step-by-step docker-compose setup
     - Environment variable configuration
     - Database initialization and testing
     - _Requirements: 16.1, 16.3_
 
-  - [~] 12.6 Document production deployment (Vercel)
+  - [-] 12.6 Document production deployment (Vercel)
     - Step-by-step Vercel deployment
     - Environment variables in Vercel dashboard
     - Database connection and testing
     - _Requirements: 16.4, 16.6_
 
-  - [~] 12.7 Create troubleshooting guide
+  - [-] 12.7 Create troubleshooting guide
     - Common issues and solutions
     - Configuration validation checklist
     - Performance troubleshooting
     - _Requirements: 17.1, 17.2, 17.3, 17.4_
 
-  - [~] 12.8 Set up database cleanup utilities
+  - [-] 12.8 Set up database cleanup utilities
     - Implement deleteAllUsers() function
     - Implement deleteAllAuthRecords() function
     - Implement resetDatabase() function with confirmation

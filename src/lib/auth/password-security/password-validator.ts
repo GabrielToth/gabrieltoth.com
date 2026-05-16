@@ -207,10 +207,13 @@ export async function validatePassword(
         const pepperedPassword = validatedPassword + pepper
 
         // 6. Call appropriate validator based on algorithm
+        // Note: The validators (verifyPasswordArgon2id and validatePasswordBcrypt) apply pepper internally
+        // So we pass the plain password, not the peppered password
         let validationResult: { valid: boolean; timeTakenMs: number }
 
         if (detection.algorithm === "argon2id") {
             // Validate against Argon2id hash
+            // verifyPasswordArgon2id applies pepper internally
             const isValid = await verifyPasswordArgon2id(
                 validatedPassword,
                 hash
@@ -222,6 +225,7 @@ export async function validatePassword(
             }
         } else if (detection.algorithm === "bcrypt") {
             // Validate against Bcrypt hash
+            // validatePasswordBcrypt applies pepper internally
             const bcryptResult = await validatePasswordBcrypt(
                 validatedPassword,
                 hash

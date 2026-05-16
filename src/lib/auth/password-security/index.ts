@@ -112,3 +112,11 @@ export type {
     LoginRequest,
     RegistrationRequest,
 } from "./authentication-service"
+
+export {
+    getConfigurationSummary,
+    logConfigurationOnStartup,
+    verifyConfiguration,
+} from "./configuration-logging"
+
+export type { ConfigurationLogEntry } from "./configuration-logging"

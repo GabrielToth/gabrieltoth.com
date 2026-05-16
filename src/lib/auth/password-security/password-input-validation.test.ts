@@ -15,7 +15,6 @@
 import {
     assertPasswordInputValid,
     validatePasswordInput,
-    type PasswordValidationResult,
 } from "./password-input-validation"
 
 describe("Password Input Validation", () => {
@@ -174,25 +173,25 @@ describe("Password Input Validation", () => {
 
     describe("validatePasswordInput - Null Byte Rejection", () => {
         it("should reject password with null byte at start", () => {
-            const result = validatePasswordInput("\0Password123")
+            const result = validatePasswordInput("\x00Password123")
             expect(result.valid).toBe(false)
             expect(result.error).toBe("Invalid password")
         })
 
         it("should reject password with null byte in middle", () => {
-            const result = validatePasswordInput("Password\0123")
+            const result = validatePasswordInput("Password\x00123")
             expect(result.valid).toBe(false)
             expect(result.error).toBe("Invalid password")
         })
 
         it("should reject password with null byte at end", () => {
-            const result = validatePasswordInput("Password123\0")
+            const result = validatePasswordInput("Password123\x00")
             expect(result.valid).toBe(false)
             expect(result.error).toBe("Invalid password")
         })
 
         it("should reject password with multiple null bytes", () => {
-            const result = validatePasswordInput("Pass\0word\0123")
+            const result = validatePasswordInput("Pass\x00word\x00123")
             expect(result.valid).toBe(false)
             expect(result.error).toBe("Invalid password")
         })

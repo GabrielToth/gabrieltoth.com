@@ -797,11 +797,7 @@ export class AuthenticationService {
                 })
 
                 try {
-                    await triggerPasswordMigration(
-                        user.id,
-                        request.email,
-                        request.password
-                    )
+                    await triggerPasswordMigration(user.id, request.password)
                 } catch (error) {
                     logger.error("Password migration failed", {
                         email: request.email,

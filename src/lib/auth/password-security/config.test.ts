@@ -338,7 +338,7 @@ describe("ConfigurationManager", () => {
             expect(config.pepper.length).toBe(64)
         })
 
-        it("should throw error if development pepper is used in production", () => {
+        it("should throw error if development pepper is used in Vercel production", () => {
             // Arrange
             process.env.ARGON2_MEMORY_COST = "64"
             process.env.ARGON2_TIME_COST = "3"
@@ -346,6 +346,8 @@ describe("ConfigurationManager", () => {
             process.env.PEPPER_SECRET =
                 "dev-pepper-test-very-long-string-32chars-minimum-required!"
             process.env.NODE_ENV = "production"
+            process.env.VERCEL = "1"
+            process.env.VERCEL_ENV = "production"
 
             // Act & Assert
             expect(() => {
