@@ -18,9 +18,18 @@ export {
     verifySaltEntropy,
 } from "./salt-generator"
 
+export {
+    ARGON2_CONFIG,
+    getArgon2Config,
+    hashPasswordArgon2id,
+    isArgon2idHash,
+    verifyPasswordArgon2id,
+} from "./argon2id-hasher"
+
 export type {
     Argon2Params,
     ConfigurationLoadResult,
+    HashResult,
     RateLimitingConfig,
     SecurityConfig,
     ValidationError,
