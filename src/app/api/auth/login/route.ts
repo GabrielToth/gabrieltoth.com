@@ -460,12 +460,9 @@ export async function POST(request: NextRequest) {
                 // Increment rate limit counter by email (Requirement 7.1: track by email)
                 await incrementAttemptWithDegradation(email, degradedMode)
 
-                // Return error indicating user should register
-                return createErrorResponse(
-                    AuthErrorType.INVALID_CREDENTIALS,
-                    undefined,
-                    "Email not found. Please register first or check your email."
-                )
+                // Return generic error - don't reveal whether user exists
+                // Requirement 7.4: Generic error messages (no user enumeration)
+                return createErrorResponse(AuthErrorType.INVALID_CREDENTIALS)
             }
 
             user = userData
@@ -496,7 +493,9 @@ export async function POST(request: NextRequest) {
             // Increment rate limit counter by email (Requirement 7.1: track by email)
             await incrementAttemptWithDegradation(email, degradedMode)
 
-            return createErrorResponse(AuthErrorType.EMAIL_NOT_VERIFIED)
+            // Return generic error - don't reveal email verification status
+            // Requirement 7.4: Generic error messages (no user enumeration)
+            return createErrorResponse(AuthErrorType.INVALID_CREDENTIALS)
         }
 
         // ============================================================================

@@ -90,23 +90,26 @@ const ERROR_MESSAGES: Record<AuthErrorType, string> = {
     [AuthErrorType.INVALID_INPUT]: "Invalid input provided",
 
     // Authentication errors
+    // Requirement 7.4: Generic error messages (no user enumeration)
+    // Don't reveal whether user exists or password is correct
     [AuthErrorType.INVALID_CREDENTIALS]: "Invalid email or password",
-    [AuthErrorType.EMAIL_NOT_VERIFIED]:
-        "Please verify your email before logging in",
+    [AuthErrorType.EMAIL_NOT_VERIFIED]: "Invalid email or password",
     [AuthErrorType.SESSION_EXPIRED]:
         "Your session has expired. Please log in again",
     [AuthErrorType.INVALID_SESSION]: "Invalid session",
     [AuthErrorType.UNAUTHORIZED]: "Unauthorized",
 
     // Rate limiting errors
-    [AuthErrorType.TOO_MANY_ATTEMPTS]:
-        "Too many login attempts. Please try again later",
-    [AuthErrorType.ACCOUNT_LOCKED]:
-        "Too many login attempts. Please try again in 15 minutes",
+    // Requirement 7.4: Generic error messages (no user enumeration)
+    // Don't reveal whether account is locked or rate limited
+    [AuthErrorType.TOO_MANY_ATTEMPTS]: "Invalid email or password",
+    [AuthErrorType.ACCOUNT_LOCKED]: "Invalid email or password",
 
     // Conflict errors
-    [AuthErrorType.EMAIL_ALREADY_REGISTERED]: "Email already registered",
-    [AuthErrorType.USER_ALREADY_EXISTS]: "User already exists",
+    // Requirement 7.4: Generic error messages (no user enumeration)
+    // Don't reveal whether email already exists
+    [AuthErrorType.EMAIL_ALREADY_REGISTERED]: "Invalid email or password",
+    [AuthErrorType.USER_ALREADY_EXISTS]: "Invalid email or password",
 
     // Token errors
     [AuthErrorType.INVALID_TOKEN]: "Invalid verification token",

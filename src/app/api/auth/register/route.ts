@@ -295,7 +295,9 @@ export async function POST(request: NextRequest) {
             .single()
 
         if (existingUser) {
-            return createErrorResponse(AuthErrorType.EMAIL_ALREADY_REGISTERED)
+            // Return generic error - don't reveal whether email exists
+            // Requirement 7.4: Generic error messages (no user enumeration)
+            return createErrorResponse(AuthErrorType.INVALID_INPUT)
         }
 
         // Hash password

@@ -272,7 +272,7 @@ Implementation language: **TypeScript** (as specified in design document)
     - Reject suspicious input patterns
     - _Requirements: 8.6_
 
-  - [~] 7.4 Implement generic error messages (no user enumeration)
+  - [-] 7.4 Implement generic error messages (no user enumeration)
     - Same error for missing user vs wrong password
     - Same error for rate limited vs locked
     - Don't indicate algorithm type in errors
