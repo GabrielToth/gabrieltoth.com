@@ -232,7 +232,7 @@ Implementation language: **TypeScript** (as specified in design document)
     - Return success/failure
     - _Requirements: 20.3, 20.6, 20.7, 20.11_
 
-  - [-] 6.3 Implement CAPTCHA error handling and generic responses
+  - [x] 6.3 Implement CAPTCHA error handling and generic responses
     - Return 400 Bad Request for invalid/missing tokens
     - Don't reveal whether user exists or password is correct
     - Log CAPTCHA failures without sensitive data
