@@ -34,6 +34,12 @@ export {
 } from "./hash-algorithm-detection"
 
 export {
+    getGenericHashValidationError,
+    isValidHashFormat,
+    validateHashFormat,
+} from "./hash-format-validator"
+
+export {
     describeBcryptHash,
     extractBcryptInfo,
     isBcryptHashValid,
@@ -47,6 +53,15 @@ export {
     validatePasswordInput,
 } from "./password-input-validation"
 
+export {
+    CONSTANT_TIME_CONFIG,
+    constantTimeStringCompare,
+    createTimingSafeValidator,
+    getConstantTimeConfig,
+    normalizeResponseTime,
+    performConstantTimeComparison,
+} from "./constant-time-comparison"
+
 export type {
     Argon2Params,
     ConfigurationLoadResult,
@@ -58,8 +73,15 @@ export type {
 
 export type { HashAlgorithmDetectionResult } from "./hash-algorithm-detection"
 
+export type { HashFormatValidationResult } from "./hash-format-validator"
+
 export type { BcryptValidationResult } from "./bcrypt-validator"
 
 export type { RateLimitCheckResult } from "./rate-limiter"
 
 export type { PasswordValidationResult } from "./password-input-validation"
+
+export type {
+    ConstantTimeComparisonResult,
+    ValidationTimingMetrics,
+} from "./constant-time-comparison"
