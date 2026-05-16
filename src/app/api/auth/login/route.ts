@@ -5,6 +5,7 @@ import {
 } from "@/lib/auth/audit-logging"
 import {
     createCAPTCHAErrorDetails,
+    getCAPTCHAErrorResponse,
     handleCAPTCHAError,
 } from "@/lib/auth/captcha-error-handler"
 import { verifyCAPTCHAWithFallback } from "@/lib/auth/captcha-verifier"

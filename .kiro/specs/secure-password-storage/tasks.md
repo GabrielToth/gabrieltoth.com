@@ -238,7 +238,7 @@ Implementation language: **TypeScript** (as specified in design document)
     - Log CAPTCHA failures without sensitive data
     - _Requirements: 20.3, 20.4, 20.11_
 
-  - [~] 6.4 Implement CAPTCHA graceful degradation
+  - [x] 6.4 Implement CAPTCHA graceful degradation
     - If CAPTCHA service unavailable, log warning
     - Optionally allow degraded mode with enhanced rate limiting
     - Continue authentication with fallback behavior
