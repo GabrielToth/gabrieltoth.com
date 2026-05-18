@@ -33,6 +33,10 @@
  */
 
 import argon2 from "argon2"
+import {
+    logPasswordHashingError,
+    logPepperConfigurationError,
+} from "./auth-security-log"
 import { ConfigurationManager } from "./config"
 import { generateSalt } from "./salt-generator"
 
@@ -180,7 +184,7 @@ export async function hashPasswordArgon2id(
 
         // Check if timeout exceeded
         if (timeTakenMs > ARGON2_CONFIG.MAX_HASH_TIME_SECONDS * 1000) {
-            console.error(
+            logPasswordHashingError(
                 `❌ Password hashing exceeded maximum time (${(timeTakenMs / 1000).toFixed(2)}s > ${ARGON2_CONFIG.MAX_HASH_TIME_SECONDS}s)`,
                 { timeTakenMs }
             )
@@ -194,12 +198,11 @@ export async function hashPasswordArgon2id(
         // Handle other errors
         if (error instanceof Error) {
             if (error.message.includes("PEPPER_SECRET")) {
-                // Pepper error - fail-secure
-                console.error("❌ Pepper configuration error:", error.message)
+                logPepperConfigurationError(error.message)
                 throw error
             }
 
-            console.error("❌ Password hashing failed:", error.message, {
+            logPasswordHashingError("❌ Password hashing failed: " + error.message, {
                 timeTakenMs,
             })
             throw new Error(`Failed to hash password: ${error.message}`)

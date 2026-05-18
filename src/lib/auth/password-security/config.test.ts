@@ -556,6 +556,7 @@ describe("ConfigurationManager", () => {
             const consoleErrorSpy = vi
                 .spyOn(console, "error")
                 .mockImplementation()
+            delete process.env.SUPPRESS_AUTH_SECURITY_STDERR
 
             // Act & Assert
             expect(() => {

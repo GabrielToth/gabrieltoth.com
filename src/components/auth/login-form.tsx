@@ -79,8 +79,8 @@ export function LoginForm({ locale }: LoginFormProps) {
                 if (data.success && data.data?.csrfToken) {
                     setCsrfToken(data.data.csrfToken)
                 }
-            } catch (error) {
-                console.error("Failed to fetch CSRF token:", error)
+            } catch {
+                // CSRF optional in tests / offline; form still validates client-side
             }
         }
         fetchCsrfToken()

@@ -10,6 +10,7 @@ process.env.VITEST = "true"
 process.env.DEBUG = "false"
 process.env.NEXT_PUBLIC_DEBUG = "false"
 process.env.SUPPRESS_SECURITY_CONFIG_LOGS = "true"
+process.env.SUPPRESS_AUTH_SECURITY_STDERR = "true"
 
 const noop = () => {}
 

@@ -16,6 +16,7 @@
  * - Requirement 16: Compatibility with multiple environments (16.1-16.9)
  */
 
+import { logAuthConfigLoadError } from "./auth-security-log"
 import type {
     Argon2Params,
     RateLimitingConfig,
@@ -120,7 +121,7 @@ export class ConfigurationManager {
                 })
             }
         } catch (error) {
-            console.error("❌ Failed to load security configuration:", error)
+            logAuthConfigLoadError(error)
             throw error
         }
     }

@@ -13,24 +13,20 @@ describe("Property 2: Password Hashing Consistency", () => {
     /**
      * **Validates: Requirements 2.4, 3.5, 7.6**
      *
-     * For any valid password string, hashing the password SHALL produce a bcrypt
-     * hash with 12 salt rounds in the format `$2b$12$...`, and comparing the
-     * original password with the hash SHALL return true, while comparing any
-     * different password with the hash SHALL return false.
+     * For any valid password string, hashing SHALL produce Argon2id (`$argon2id$...`).
      */
-    it("should produce consistent bcrypt hashes with 12 salt rounds", async () => {
+    it("should produce consistent Argon2id hashes", async () => {
         await fc.assert(
             fc.asyncProperty(
-                validPasswordArb, // bcrypt max length is 72
+                validPasswordArb,
                 async password => {
                     const hash = await hashPassword(password)
 
-                    // Property: hash format is bcrypt with 12 rounds
                     expect(hash).toBeDefined()
                     expect(typeof hash).toBe("string")
                     expect(hash).toMatch(/^\$argon2id\$/)
 
-                    // Property: hash should be at least 60 characters (bcrypt standard)
+                    expect(hash.length).toBeGreaterThanOrEqual(60)
                     expect(hash.length).toBeGreaterThanOrEqual(60)
                 }
             ),
@@ -108,15 +104,12 @@ describe("Property 2: Password Hashing Consistency", () => {
                 async password => {
                     const hash = await hashPassword(password)
 
-                    // Property: hash format is always bcrypt with 12 rounds
                     expect(hash).toMatch(/^\$argon2id\$/)
 
-                    // Property: original password always matches
                     const matches = await comparePassword(password, hash)
                     expect(matches).toBe(true)
 
-                    // Property: modified password never matches (only if under 72 char limit)
-                    // bcrypt truncates at 72 bytes, so we need to ensure modification is visible
+                    // Argon2id does not truncate like bcrypt; keep modification visible
                     if (password.length < 70) {
                         const modifiedPassword = password + "XY"
                         const doesNotMatch = await comparePassword(
@@ -218,7 +211,7 @@ describe("Property 6: Password Comparison Correctness", () => {
     /**
      * **Validates: Requirements 4.2**
      *
-     * For any password and bcrypt hash pair:
+     * For any password and Argon2id hash pair:
      * - If the password was used to generate the hash, then `comparePassword(password, hash)` SHALL return true
      * - If a different password is compared with the hash, it SHALL return false
      * - Comparing with an invalid hash format SHALL return false without throwing an error
