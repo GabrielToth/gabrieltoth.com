@@ -12,17 +12,12 @@ vi.mock("next/navigation", () => ({
 }))
 
 // Mock TurnstileWidget
-vi.mock("./turnstile-widget", async () => {
-    const { useEffect } = await import("react")
-    return {
+vi.mock("./turnstile-widget", () => ({
         default: ({
             onTokenChange,
         }: {
             onTokenChange: (token: string | null) => void
         }) => {
-            useEffect(() => {
-                onTokenChange("test-captcha-token")
-            }, [])
             return (
                 <div
                     data-testid="turnstile-widget"
@@ -32,8 +27,36 @@ vi.mock("./turnstile-widget", async () => {
                 </div>
             )
         },
+}))
+
+async function fillRegistrationFields(
+    user: ReturnType<typeof userEvent.setup>,
+    options?: { withCaptcha?: boolean }
+) {
+    await waitFor(() => {
+        expect(global.fetch).toHaveBeenCalled()
+    })
+
+    await user.type(screen.getByLabelText(/^name$/i), "John Doe")
+    await user.type(screen.getByLabelText(/^email$/i), "test@example.com")
+    await user.type(screen.getByLabelText(/^password$/i), "SecurePass123!")
+    await user.type(
+        screen.getByLabelText(/confirm password/i),
+        "SecurePass123!"
+    )
+
+    if (options?.withCaptcha) {
+        fireEvent.click(screen.getByTestId("turnstile-widget"))
     }
-})
+
+    if (options?.withCaptcha) {
+        await waitFor(() => {
+            expect(
+                screen.getByRole("button", { name: /create account/i })
+            ).not.toBeDisabled()
+        })
+    }
+}
 
 describe("RegisterForm with CAPTCHA Integration", () => {
     beforeEach(() => {
@@ -69,52 +92,20 @@ describe("RegisterForm with CAPTCHA Integration", () => {
         const user = userEvent.setup()
         render(<RegisterForm locale="en" />)
 
-        // Fill in all fields except CAPTCHA
-        const nameInput = screen.getByDisplayValue("")
-        const inputs = screen.getAllByRole("textbox")
-        const emailInput = inputs.find(
-            input => (input as HTMLInputElement).type === "email"
-        ) as HTMLInputElement
-        const passwordInputs = screen.getAllByDisplayValue("")
+        await fillRegistrationFields(user)
 
-        // Find password inputs
-        const allInputs = screen.getAllByRole("textbox")
-        const passwordInput = allInputs[2] // Assuming password is 3rd input
-
-        await user.type(nameInput, "John Doe")
-        await user.type(emailInput, "test@example.com")
-
-        // Try to submit without CAPTCHA
         const submitButton = screen.getByRole("button", {
             name: /create account/i,
         })
-        expect(submitButton).toBeDisabled() // Should be disabled without CAPTCHA token
+        expect(submitButton).toBeDisabled()
     })
 
     it("should enable submit button after CAPTCHA is solved", async () => {
         const user = userEvent.setup()
         render(<RegisterForm locale="en" />)
 
-        // Get all inputs
-        const inputs = screen.getAllByRole("textbox")
+        await fillRegistrationFields(user, { withCaptcha: true })
 
-        // Fill in name
-        await user.type(inputs[0], "John Doe")
-
-        // Fill in email
-        await user.type(inputs[1], "test@example.com")
-
-        // Fill in password (assuming it's a password input)
-        const passwordInputs = screen.getAllByDisplayValue("")
-        if (passwordInputs.length > 0) {
-            await user.type(passwordInputs[0], "Password123!")
-        }
-
-        // Solve CAPTCHA
-        const captchaWidget = screen.getByTestId("turnstile-widget")
-        fireEvent.click(captchaWidget)
-
-        // Submit button should now be enabled
         await waitFor(() => {
             const submitButton = screen.getByRole("button", {
                 name: /create account/i,
@@ -151,24 +142,7 @@ describe("RegisterForm with CAPTCHA Integration", () => {
 
         render(<RegisterForm locale="en" />)
 
-        // Get all inputs
-        const inputs = screen.getAllByRole("textbox")
-
-        // Fill in name
-        await user.type(inputs[0], "John Doe")
-
-        // Fill in email
-        await user.type(inputs[1], "test@example.com")
-
-        // Fill in password
-        const passwordInputs = screen.getAllByDisplayValue("")
-        if (passwordInputs.length > 0) {
-            await user.type(passwordInputs[0], "Password123!")
-        }
-
-        // Solve CAPTCHA
-        const captchaWidget = screen.getByTestId("turnstile-widget")
-        fireEvent.click(captchaWidget)
+        await fillRegistrationFields(user, { withCaptcha: true })
 
         // Submit form
         const submitButton = screen.getByRole("button", {
@@ -217,24 +191,7 @@ describe("RegisterForm with CAPTCHA Integration", () => {
 
         render(<RegisterForm locale="en" />)
 
-        // Get all inputs
-        const inputs = screen.getAllByRole("textbox")
-
-        // Fill in name
-        await user.type(inputs[0], "John Doe")
-
-        // Fill in email
-        await user.type(inputs[1], "test@example.com")
-
-        // Fill in password
-        const passwordInputs = screen.getAllByDisplayValue("")
-        if (passwordInputs.length > 0) {
-            await user.type(passwordInputs[0], "Password123!")
-        }
-
-        // Solve CAPTCHA
-        const captchaWidget = screen.getByTestId("turnstile-widget")
-        fireEvent.click(captchaWidget)
+        await fillRegistrationFields(user, { withCaptcha: true })
 
         // Submit form
         const submitButton = screen.getByRole("button", {
@@ -256,14 +213,7 @@ describe("RegisterForm with CAPTCHA Integration", () => {
 
         render(<RegisterForm locale="en" />)
 
-        // Get all inputs
-        const inputs = screen.getAllByRole("textbox")
-
-        // Fill in name
-        await user.type(inputs[0], "John Doe")
-
-        // Fill in email
-        await user.type(inputs[1], "test@example.com")
+        await fillRegistrationFields(user)
 
         // Try to submit without CAPTCHA
         const submitButton = screen.getByRole("button", {
@@ -288,12 +238,9 @@ describe("RegisterForm with CAPTCHA Integration", () => {
         })
         expect(submitButton).toBeDisabled() // Should be disabled due to missing CAPTCHA
 
-        // Fill in invalid email
-        const inputs = screen.getAllByRole("textbox")
-        await user.type(inputs[1], "invalid-email")
-
-        // Blur to trigger validation
-        fireEvent.blur(inputs[1])
+        const emailInput = screen.getByLabelText(/^email$/i)
+        await user.type(emailInput, "invalid-email")
+        fireEvent.blur(emailInput)
 
         // Verify email error is shown
         await waitFor(() => {
@@ -336,24 +283,7 @@ describe("RegisterForm with CAPTCHA Integration", () => {
 
         render(<RegisterForm locale="en" />)
 
-        // Get all inputs
-        const inputs = screen.getAllByRole("textbox")
-
-        // Fill in name
-        await user.type(inputs[0], "John Doe")
-
-        // Fill in email
-        await user.type(inputs[1], "test@example.com")
-
-        // Fill in password
-        const passwordInputs = screen.getAllByDisplayValue("")
-        if (passwordInputs.length > 0) {
-            await user.type(passwordInputs[0], "Password123!")
-        }
-
-        // Solve CAPTCHA
-        const captchaWidget = screen.getByTestId("turnstile-widget")
-        fireEvent.click(captchaWidget)
+        await fillRegistrationFields(user, { withCaptcha: true })
 
         // Submit form
         const submitButton = screen.getByRole("button", {
@@ -371,18 +301,7 @@ describe("RegisterForm with CAPTCHA Integration", () => {
         const user = userEvent.setup()
         render(<RegisterForm locale="en" />)
 
-        // Get all inputs
-        const inputs = screen.getAllByRole("textbox")
-
-        // Fill in name
-        await user.type(inputs[0], "John Doe")
-
-        // Fill in email
-        await user.type(inputs[1], "test@example.com")
-
-        // Solve CAPTCHA
-        const captchaWidget = screen.getByTestId("turnstile-widget")
-        fireEvent.click(captchaWidget)
+        await fillRegistrationFields(user, { withCaptcha: true })
 
         // Verify submit button is enabled
         await waitFor(() => {

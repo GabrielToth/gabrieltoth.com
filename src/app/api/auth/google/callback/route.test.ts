@@ -287,6 +287,6 @@ describe("POST /api/auth/google/callback", () => {
         const setCookieHeader = response.headers.get("set-cookie")
         expect(setCookieHeader).toContain("session=session-token-123")
         expect(setCookieHeader).toContain("HttpOnly")
-        expect(setCookieHeader).toContain("SameSite=Strict")
+        expect(setCookieHeader?.toLowerCase()).toContain("samesite=strict")
     })
 })

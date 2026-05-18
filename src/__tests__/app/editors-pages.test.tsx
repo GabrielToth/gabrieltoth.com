@@ -1,4 +1,7 @@
-import { describe, expect, it } from "vitest"
+import { describe, expect, it, vi } from "vitest"
+
+vi.mock("@/components/layout/footer", () => ({ default: () => null }))
+vi.mock("@/components/seo/structured-data", () => ({ default: () => null }))
 
 describe("editors app pages imports", () => {
     it("imports page and modules", async () => {
@@ -13,5 +16,5 @@ describe("editors app pages imports", () => {
             import("@/app/[locale]/editors/editors-whatsapp"),
         ])
         expect(mods.length).toBe(8)
-    })
+    }, 60_000)
 })

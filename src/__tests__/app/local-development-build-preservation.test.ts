@@ -1,6 +1,19 @@
+import { execSync } from "child_process"
 import * as fs from "fs"
 import * as path from "path"
-import { describe, expect, it } from "vitest"
+import { beforeAll, describe, expect, it } from "vitest"
+
+const nextDir = path.join(process.cwd(), ".next")
+
+beforeAll(() => {
+    if (!fs.existsSync(nextDir)) {
+        execSync("npm run build", {
+            stdio: "inherit",
+            cwd: process.cwd(),
+            env: { ...process.env, NODE_ENV: "production" },
+        })
+    }
+}, 600_000)
 
 /**
  * Preservation Property Test: Local Development Build Success

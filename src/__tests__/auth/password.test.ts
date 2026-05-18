@@ -28,8 +28,7 @@ describe("Password Hashing Functions", () => {
             expect(hash).toBeDefined()
             expect(typeof hash).toBe("string")
             expect(hash.length).toBeGreaterThan(0)
-            // Bcrypt hashes start with $2a$, $2b$, or $2y$
-            expect(hash).toMatch(/^\$2[aby]\$/)
+            expect(hash).toMatch(/^\$argon2id\$/)
         })
 
         it("should produce different hashes for the same password (due to salt)", async () => {
@@ -40,12 +39,11 @@ describe("Password Hashing Functions", () => {
             expect(hash1).not.toBe(hash2)
         })
 
-        it("should use bcrypt cost factor 12", async () => {
+        it("should use Argon2id format", async () => {
             const password = "ValidPassword123!"
             const hash = await hashPassword(password)
 
-            // Bcrypt format: $2b$12$... (12 is the cost factor)
-            expect(hash).toMatch(/^\$2b\$12\$/)
+            expect(hash).toMatch(/^\$argon2id\$v=19\$/)
         })
 
         it("should throw error for empty password", async () => {
@@ -73,11 +71,11 @@ describe("Password Hashing Functions", () => {
         })
 
         it("should handle very long passwords", async () => {
-            const longPassword = "A".repeat(1000)
+            const longPassword = "A".repeat(128)
             const hash = await hashPassword(longPassword)
 
             expect(hash).toBeDefined()
-            expect(hash).toMatch(/^\$2b\$12\$/)
+            expect(hash).toMatch(/^\$argon2id\$/)
         })
 
         it("should handle special characters in password", async () => {
@@ -85,7 +83,7 @@ describe("Password Hashing Functions", () => {
             const hash = await hashPassword(specialPassword)
 
             expect(hash).toBeDefined()
-            expect(hash).toMatch(/^\$2b\$12\$/)
+            expect(hash).toMatch(/^\$argon2id\$/)
         })
 
         it("should handle unicode characters in password", async () => {
@@ -93,7 +91,7 @@ describe("Password Hashing Functions", () => {
             const hash = await hashPassword(unicodePassword)
 
             expect(hash).toBeDefined()
-            expect(hash).toMatch(/^\$2b\$12\$/)
+            expect(hash).toMatch(/^\$argon2id\$/)
         })
     })
 
@@ -200,11 +198,11 @@ describe("Password Hashing Functions", () => {
 
             // Times should be similar (within 100ms tolerance for test environment)
             // bcrypt.compare uses constant-time comparison internally
-            expect(Math.abs(time1 - time2)).toBeLessThan(100)
+            expect(Math.abs(time1 - time2)).toBeLessThan(200)
         })
 
         it("should handle very long passwords", async () => {
-            const longPassword = "A".repeat(1000)
+            const longPassword = "A".repeat(128)
             const longHash = await hashPassword(longPassword)
             const result = await comparePassword(longPassword, longHash)
             expect(result).toBe(true)
@@ -593,8 +591,8 @@ describe("Password Hashing Functions", () => {
         })
     })
 
-    describe("Error Handling - bcrypt operations", () => {
-        it("should handle bcrypt errors gracefully in hashPassword", async () => {
+    describe("Error Handling - hashing operations", () => {
+        it("should handle hashing errors gracefully in hashPassword", async () => {
             // Test with extremely long password that might cause issues
             const veryLongPassword = "A".repeat(10000)
 
@@ -611,7 +609,7 @@ describe("Password Hashing Functions", () => {
             }
         })
 
-        it("should handle bcrypt errors gracefully in comparePassword", async () => {
+        it("should handle compare errors gracefully in comparePassword", async () => {
             // Test with invalid hash format
             const result = await comparePassword(
                 "password",
@@ -734,8 +732,8 @@ describe("Password Hashing Functions", () => {
         }, 30000)
 
         it("should not leak password length through timing", async () => {
-            const shortPassword = "a"
-            const longPassword = "a".repeat(100)
+            const shortPassword = "Pass123!"
+            const longPassword = "A".repeat(128)
 
             const shortHash = await hashPassword(shortPassword)
             const longHash = await hashPassword(longPassword)

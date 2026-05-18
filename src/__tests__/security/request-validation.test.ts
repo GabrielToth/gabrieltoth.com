@@ -11,10 +11,11 @@
 import { POST as loginPOST } from "@/app/api/auth/login/route"
 import { POST as registerPOST } from "@/app/api/auth/register/route"
 import { NextRequest } from "next/server"
+import { describe, expect, it, vi } from "vitest"
 
-jest.mock("@supabase/supabase-js")
-jest.mock("@/lib/rate-limit")
-jest.mock("@/lib/auth/audit-logging")
+vi.mock("@supabase/supabase-js")
+vi.mock("@/lib/rate-limit")
+vi.mock("@/lib/auth/audit-logging")
 
 describe("Request Validation - Protection Against Script Modifications", () => {
     // ============================================================================

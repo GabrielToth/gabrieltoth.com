@@ -18,8 +18,15 @@ import { NextRequest } from "next/server"
 import { beforeEach, describe, expect, it, vi } from "vitest"
 import { GET, POST } from "./route"
 
-// Mock dependencies
-vi.mock("@/lib/auth/oauth-validator")
+// Mock dependencies (preserve OAuthValidationError for instanceof checks)
+vi.mock("@/lib/auth/oauth-validator", async importOriginal => {
+    const actual =
+        await importOriginal<typeof import("@/lib/auth/oauth-validator")>()
+    return {
+        ...actual,
+        validateOAuthToken: vi.fn(),
+    }
+})
 vi.mock("@/lib/auth/user")
 vi.mock("@/lib/auth/session")
 vi.mock("@/lib/auth/temp-token")

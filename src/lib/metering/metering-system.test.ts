@@ -407,7 +407,7 @@ describe.skipIf(!postgresAvailable)("Metering System Properties", () => {
 })
 
 // Unit Tests for Edge Cases
-describe("Metering System Edge Cases", () => {
+describe.skipIf(!postgresAvailable)("Metering System Edge Cases", () => {
     let pool: Pool
     let meteringSystem: MeteringSystemImpl
     let creditSystem: CreditSystemImpl
@@ -416,16 +416,24 @@ describe("Metering System Edge Cases", () => {
         "postgres://platform:devpassword@localhost:5432/platform_test"
 
     beforeAll(async () => {
+        if (!(await isPostgresAvailable())) {
+            return
+        }
         pool = new Pool({ connectionString: testDbUrl })
         creditSystem = new CreditSystemImpl(pool)
         meteringSystem = new MeteringSystemImpl(pool, creditSystem)
     })
 
     afterAll(async () => {
-        await pool.end()
+        if (pool) {
+            await pool.end()
+        }
     })
 
     beforeEach(async () => {
+        if (!pool) {
+            return
+        }
         await pool.query(
             "DELETE FROM usage_metrics WHERE user_id LIKE \"test-%\""
         )

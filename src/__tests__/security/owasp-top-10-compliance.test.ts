@@ -96,7 +96,7 @@ describe("Security Tests - OWASP Top 10 Compliance (Task 21)", () => {
             const password = "TestPassword123!"
             const hash = await hashPassword(password)
 
-            expect(hash).toMatch(/^\$2[aby]\$12\$/)
+            expect(hash).toMatch(/^\$argon2id\$/)
         })
 
         it("should not store plain-text passwords", async () => {
@@ -392,7 +392,7 @@ describe("Security Tests - OWASP Top 10 Compliance (Task 21)", () => {
             const password = "TestPassword123!"
             const hash = await hashPassword(password)
 
-            expect(hash).toMatch(/^\$2[aby]\$12\$/)
+            expect(hash).toMatch(/^\$argon2id\$/)
         })
 
         it("should prevent authentication bypass", () => {

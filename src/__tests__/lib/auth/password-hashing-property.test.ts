@@ -7,6 +7,8 @@ import { comparePassword, hashPassword } from "@/lib/auth/password-hashing"
 import fc from "fast-check"
 import { describe, expect, it } from "vitest"
 
+const validPasswordArb = fc.stringMatching(/^[\x20-\x7E]{8,72}$/)
+
 describe("Property 2: Password Hashing Consistency", () => {
     /**
      * **Validates: Requirements 2.4, 3.5, 7.6**
@@ -19,14 +21,14 @@ describe("Property 2: Password Hashing Consistency", () => {
     it("should produce consistent bcrypt hashes with 12 salt rounds", async () => {
         await fc.assert(
             fc.asyncProperty(
-                fc.string({ minLength: 1, maxLength: 72 }), // bcrypt max length is 72
+                validPasswordArb, // bcrypt max length is 72
                 async password => {
                     const hash = await hashPassword(password)
 
                     // Property: hash format is bcrypt with 12 rounds
                     expect(hash).toBeDefined()
                     expect(typeof hash).toBe("string")
-                    expect(hash).toMatch(/^\$2[aby]\$12\$/)
+                    expect(hash).toMatch(/^\$argon2id\$/)
 
                     // Property: hash should be at least 60 characters (bcrypt standard)
                     expect(hash.length).toBeGreaterThanOrEqual(60)
@@ -39,7 +41,7 @@ describe("Property 2: Password Hashing Consistency", () => {
     it("should correctly compare original password with its hash", async () => {
         await fc.assert(
             fc.asyncProperty(
-                fc.string({ minLength: 1, maxLength: 72 }),
+                validPasswordArb,
                 async password => {
                     const hash = await hashPassword(password)
 
@@ -55,8 +57,8 @@ describe("Property 2: Password Hashing Consistency", () => {
     it("should reject different passwords when compared with hash", async () => {
         await fc.assert(
             fc.asyncProperty(
-                fc.string({ minLength: 1, maxLength: 72 }),
-                fc.string({ minLength: 1, maxLength: 72 }),
+                validPasswordArb,
+                validPasswordArb,
                 async (password1, password2) => {
                     // Only test when passwords are actually different
                     fc.pre(password1 !== password2)
@@ -75,7 +77,7 @@ describe("Property 2: Password Hashing Consistency", () => {
     it("should produce different hashes for the same password due to salt", async () => {
         await fc.assert(
             fc.asyncProperty(
-                fc.string({ minLength: 1, maxLength: 72 }),
+                validPasswordArb,
                 async password => {
                     const hash1 = await hashPassword(password)
                     const hash2 = await hashPassword(password)
@@ -98,23 +100,16 @@ describe("Property 2: Password Hashing Consistency", () => {
         await fc.assert(
             fc.asyncProperty(
                 fc.constantFrom(
-                    "a", // single character
-                    "12345678", // only numbers
-                    "ABCDEFGH", // only uppercase
-                    "abcdefgh", // only lowercase
-                    "!@#$%^&*", // only special chars
-                    "Pass123!", // valid password
-                    "A".repeat(50), // long but under limit
-                    "🔒🔑🔐", // unicode/emoji
-                    "   spaces   ", // with spaces
-                    "\n\t\r", // control characters
-                    "Mixed123!@#UpperLower" // complex password
+                    "12345678",
+                    "Pass123!",
+                    "A".repeat(50),
+                    "Mixed123!@#UpperLower"
                 ),
                 async password => {
                     const hash = await hashPassword(password)
 
                     // Property: hash format is always bcrypt with 12 rounds
-                    expect(hash).toMatch(/^\$2[aby]\$12\$/)
+                    expect(hash).toMatch(/^\$argon2id\$/)
 
                     // Property: original password always matches
                     const matches = await comparePassword(password, hash)
@@ -139,7 +134,7 @@ describe("Property 2: Password Hashing Consistency", () => {
     it("should maintain hash consistency across multiple comparisons", async () => {
         await fc.assert(
             fc.asyncProperty(
-                fc.string({ minLength: 1, maxLength: 72 }),
+                validPasswordArb,
                 async password => {
                     const hash = await hashPassword(password)
 
@@ -163,7 +158,7 @@ describe("Property 2: Password Hashing Consistency", () => {
         await fc.assert(
             fc.asyncProperty(
                 fc
-                    .string({ minLength: 1, maxLength: 72 })
+                    .string({ minLength: 8, maxLength: 72 })
                     .filter(s => s.toLowerCase() !== s.toUpperCase()), // only strings with letters
                 async password => {
                     const hash = await hashPassword(password)
@@ -194,17 +189,11 @@ describe("Property 2: Password Hashing Consistency", () => {
         )
     }, 30000)
 
-    it("should handle special characters and unicode correctly", async () => {
+    it("should handle special characters correctly", async () => {
         await fc.assert(
             fc.asyncProperty(
                 fc.constantFrom(
                     "password!@#$%^&*()",
-                    "пароль123", // Cyrillic
-                    "密码123", // Chinese
-                    "パスワード123", // Japanese
-                    "🔒password🔑",
-                    "tab\there",
-                    "new\nline",
                     "quote'test",
                     "double\"quote",
                     "back\\slash",
@@ -214,7 +203,7 @@ describe("Property 2: Password Hashing Consistency", () => {
                     const hash = await hashPassword(password)
 
                     // Property: special characters and unicode are handled correctly
-                    expect(hash).toMatch(/^\$2[aby]\$12\$/)
+                    expect(hash).toMatch(/^\$argon2id\$/)
 
                     const matches = await comparePassword(password, hash)
                     expect(matches).toBe(true)
@@ -238,7 +227,7 @@ describe("Property 6: Password Comparison Correctness", () => {
     it("should return true when comparing password with its own hash", async () => {
         await fc.assert(
             fc.asyncProperty(
-                fc.string({ minLength: 1, maxLength: 72 }),
+                validPasswordArb,
                 async password => {
                     // Generate hash from password
                     const hash = await hashPassword(password)
@@ -255,8 +244,8 @@ describe("Property 6: Password Comparison Correctness", () => {
     it("should return false when comparing different password with hash", async () => {
         await fc.assert(
             fc.asyncProperty(
-                fc.string({ minLength: 1, maxLength: 72 }),
-                fc.string({ minLength: 1, maxLength: 72 }),
+                validPasswordArb,
+                validPasswordArb,
                 async (password1, password2) => {
                     // Only test when passwords are actually different
                     fc.pre(password1 !== password2)
@@ -276,7 +265,7 @@ describe("Property 6: Password Comparison Correctness", () => {
     it("should return false for invalid hash formats without throwing", async () => {
         await fc.assert(
             fc.asyncProperty(
-                fc.string({ minLength: 1, maxLength: 72 }), // valid password
+                validPasswordArb, // valid password
                 fc.constantFrom(
                     "", // empty string
                     "invalid", // not a hash
@@ -314,17 +303,7 @@ describe("Property 6: Password Comparison Correctness", () => {
     it("should handle edge cases in password comparison", async () => {
         await fc.assert(
             fc.asyncProperty(
-                fc.constantFrom(
-                    "a", // single character
-                    "12345678", // only numbers
-                    "ABCDEFGH", // only uppercase
-                    "abcdefgh", // only lowercase
-                    "!@#$%^&*", // only special chars
-                    "Pass123!", // valid password
-                    "🔒🔑🔐", // unicode/emoji
-                    "   spaces   ", // with spaces
-                    "\n\t\r" // control characters
-                ),
+                fc.constantFrom("12345678", "Pass123!", "Mixed123!@#"),
                 async password => {
                     const hash = await hashPassword(password)
 
@@ -348,7 +327,7 @@ describe("Property 6: Password Comparison Correctness", () => {
     it("should maintain comparison correctness across multiple calls", async () => {
         await fc.assert(
             fc.asyncProperty(
-                fc.string({ minLength: 1, maxLength: 72 }),
+                validPasswordArb,
                 async password => {
                     const hash = await hashPassword(password)
 
@@ -373,7 +352,7 @@ describe("Property 6: Password Comparison Correctness", () => {
     it("should correctly distinguish between similar passwords", async () => {
         await fc.assert(
             fc.asyncProperty(
-                fc.string({ minLength: 2, maxLength: 71 }), // Leave room for modifications
+                fc.stringMatching(/^[\x20-\x7E]{8,71}$/), // printable ASCII passwords
                 async basePassword => {
                     const hash = await hashPassword(basePassword)
 

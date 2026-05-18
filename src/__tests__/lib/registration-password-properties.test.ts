@@ -291,7 +291,7 @@ describe("Property 3: Password Hashing Security", () => {
      * For any password, hashing the same password multiple times SHALL produce
      * different hashes (due to salt), but verification SHALL succeed for all hashes.
      *
-     * Property: Password hashing must use bcrypt with salt to ensure:
+     * Property: Password hashing must use Argon2id with salt to ensure:
      * 1. Same password produces different hashes each time (due to random salt)
      * 2. Verification succeeds for all hashes of the same password
      * 3. Verification fails for different passwords
@@ -349,11 +349,9 @@ describe("Property 3: Password Hashing Security", () => {
                     expect(hash2).not.toBe(hash3)
                     expect(hash1).not.toBe(hash3)
 
-                    // Property: All hashes should be valid bcrypt hashes
-                    // Bcrypt hashes start with $2a$, $2b$, or $2y$ and are 60 characters
-                    expect(hash1).toMatch(/^\$2[aby]\$\d{2}\$.{53}$/)
-                    expect(hash2).toMatch(/^\$2[aby]\$\d{2}\$.{53}$/)
-                    expect(hash3).toMatch(/^\$2[aby]\$\d{2}\$.{53}$/)
+                    expect(hash1).toMatch(/^\$argon2id\$/)
+                    expect(hash2).toMatch(/^\$argon2id\$/)
+                    expect(hash3).toMatch(/^\$argon2id\$/)
                 }
             ),
             { numRuns: 10 }
@@ -524,7 +522,7 @@ describe("Property 3: Password Hashing Security", () => {
         )
     }, 30000)
 
-    it("should use bcrypt with cost factor of at least 10", async () => {
+    it("should use Argon2id with version 19", async () => {
         await fc.assert(
             fc.asyncProperty(
                 fc.tuple(
@@ -570,17 +568,7 @@ describe("Property 3: Password Hashing Security", () => {
                     // Hash the password
                     const hash = await hashPassword(password)
 
-                    // Property: Hash should be in bcrypt format with cost factor
-                    // Bcrypt format: $2a$12$... or $2b$12$... (12 is the cost factor)
-                    // Cost factor should be at least 10
-                    const costFactorMatch = hash.match(/^\$2[aby]\$(\d{2})\$/)
-                    expect(costFactorMatch).not.toBeNull()
-
-                    if (costFactorMatch) {
-                        const costFactor = parseInt(costFactorMatch[1], 10)
-                        // Property: Cost factor should be at least 10
-                        expect(costFactor).toBeGreaterThanOrEqual(10)
-                    }
+                    expect(hash).toContain("$argon2id$v=19$")
                 }
             ),
             { numRuns: 10 }
@@ -604,8 +592,7 @@ describe("Property 3: Password Hashing Security", () => {
 
                     expect(isMatch).toBe(true)
 
-                    // Property: Hash should be a valid bcrypt hash
-                    expect(hash).toMatch(/^\$2[aby]\$\d{2}\$.{53}$/)
+                    expect(hash).toMatch(/^\$argon2id\$/)
                 }
             ),
             { numRuns: 10 }

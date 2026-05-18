@@ -36,7 +36,9 @@ describe("app/[locale]/editors/editors-form coverage", () => {
         fetchSpy.mockReset()
     })
 
-    it("submits editor application in EN and shows success", async () => {
+    it(
+        "submits editor application in EN and shows success",
+        async () => {
         const mod = await import("@/app/[locale]/editors/editors-form")
         fetchSpy.mockResolvedValueOnce({ ok: true } as any)
 
@@ -72,7 +74,9 @@ describe("app/[locale]/editors/editors-form coverage", () => {
 
         // Success screen in EN
         expect(await screen.findByText(/application submitted!/i)).toBeTruthy()
-    })
+    },
+        60_000
+    )
 
     it("submits channel management request in PT-BR and shows success", async () => {
         const mod = await import("@/app/[locale]/editors/editors-form")

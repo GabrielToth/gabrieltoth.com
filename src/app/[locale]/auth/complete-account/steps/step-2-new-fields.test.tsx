@@ -143,9 +143,9 @@ describe("Step2NewFields", () => {
         const props = {
             ...defaultProps,
             errors: {
-                password: "Password is too weak",
-                phone: "Invalid phone format",
-                birthDate: "You must be at least 13 years old",
+                password: "invalidPassword",
+                phone: "invalidPhone",
+                birthDate: "userTooYoung",
             },
         }
 

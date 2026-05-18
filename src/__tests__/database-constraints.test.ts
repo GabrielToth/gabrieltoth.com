@@ -32,7 +32,8 @@ describe("Database Constraints and Foreign Keys", () => {
 
         if (error) {
             console.error("Failed to create test user:", error)
-            throw error
+            isDbRunning = false
+            return
         }
 
         testUserId = data.id

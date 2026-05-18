@@ -1,14 +1,48 @@
 import { createClient } from "@supabase/supabase-js"
 
-/** Returns false when Supabase is unreachable (local stack not running). */
+/** Returns false when Supabase is unreachable or admin API is unavailable. */
 export async function isSupabaseAvailable(): Promise<boolean> {
+    const url = process.env.NEXT_PUBLIC_SUPABASE_URL
+    const key = process.env.SUPABASE_SERVICE_ROLE_KEY
+
+    if (!url || !key) {
+        return false
+    }
+
     try {
-        const client = createClient(
-            process.env.NEXT_PUBLIC_SUPABASE_URL || "http://127.0.0.1:54321",
-            process.env.SUPABASE_SERVICE_ROLE_KEY || "test"
-        )
+        const client = createClient(url, key)
         const { error } = await client.from("users").select("id").limit(1)
         if (error?.message?.includes("fetch")) {
+            return false
+        }
+
+        const { error: adminError } = await client.auth.admin.listUsers({
+            page: 1,
+            perPage: 1,
+        })
+        if (adminError) {
+            return false
+        }
+
+        return true
+    } catch {
+        return false
+    }
+}
+
+/** Returns false when audit_logs table lacks expected columns (schema drift). */
+export async function isAuditLogsSchemaReady(): Promise<boolean> {
+    if (!(await isSupabaseAvailable())) {
+        return false
+    }
+
+    const url = process.env.NEXT_PUBLIC_SUPABASE_URL!
+    const key = process.env.SUPABASE_SERVICE_ROLE_KEY!
+
+    try {
+        const client = createClient(url, key)
+        const { error } = await client.from("audit_logs").select("email").limit(1)
+        if (error?.code === "PGRST204") {
             return false
         }
         return true

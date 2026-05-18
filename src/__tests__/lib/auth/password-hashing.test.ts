@@ -45,12 +45,11 @@ describe("hashPassword", () => {
         await expect(hashPassword(null as any)).rejects.toThrow()
     })
 
-    it("should produce bcrypt hash format", async () => {
+    it("should produce Argon2id hash format", async () => {
         const password = "ValidPass123!"
         const hash = await hashPassword(password)
 
-        // Bcrypt hashes start with $2a$, $2b$, or $2y$
-        expect(hash).toMatch(/^\$2[aby]\$/)
+        expect(hash).toMatch(/^\$argon2id\$/)
     })
 })
 

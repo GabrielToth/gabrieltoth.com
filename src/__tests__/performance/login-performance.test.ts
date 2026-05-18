@@ -120,13 +120,11 @@ describe("Performance: Login Endpoint", () => {
             )
         })
 
-        it("should use bcrypt cost factor 12 for security", async () => {
-            // Verify bcrypt cost factor is appropriate
+        it("should use Argon2id for password hashing", async () => {
             const password = "ValidPassword123!"
             const hash = await hashPassword(password)
 
-            // Bcrypt hash format: $2b$12$... (12 is the cost factor)
-            expect(hash).toMatch(/^\$2[aby]\$12\$/)
+            expect(hash).toMatch(/^\$argon2id\$v=19\$/)
         })
 
         it("should handle concurrent password operations", async () => {

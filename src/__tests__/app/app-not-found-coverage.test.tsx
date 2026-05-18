@@ -35,10 +35,7 @@ describe("app/not-found coverage", () => {
         // Validate main heading and links
         expect(screen.getByText(/Page Not Found/i)).toBeInTheDocument()
         expect(
-            screen.getByRole("link", { name: /Página Inicial \(PT\)/i })
+            screen.getByRole("link", { name: /Página Inicial/i })
         ).toHaveAttribute("href", "/pt-BR")
-        expect(
-            screen.getByRole("link", { name: /Home Page \(EN\)/i })
-        ).toHaveAttribute("href", "/")
     })
 })

@@ -9,28 +9,29 @@ import { comparePassword, hashPassword } from "@/lib/auth/password-hashing"
 import fc from "fast-check"
 import { describe, expect, it } from "vitest"
 
+const validPasswordArb = fc.stringMatching(/^[\x20-\x7E]{8,72}$/)
+
 describe("Property 2: Password Hashing Consistency", () => {
     /**
      * **Validates: Requirements 2.4, 3.5, 7.6**
      *
      * Property: For any valid password string, hashing the password SHALL produce
-     * a bcrypt hash with 12 salt rounds in the format `$2b$12$...`, and comparing
-     * the original password with the hash SHALL return true, while comparing any
-     * different password with the hash SHALL return false.
+     * an Argon2id hash (`$argon2id$...`), and comparing the original password with
+     * the hash SHALL return true, while comparing any different password SHALL return false.
      */
-    it("should produce consistent bcrypt hashes with 12 salt rounds", async () => {
+    it("should produce consistent Argon2id hashes", async () => {
         await fc.assert(
             fc.asyncProperty(
-                fc.string({ minLength: 1, maxLength: 72 }), // bcrypt max length is 72
+                validPasswordArb,
                 async password => {
                     const hash = await hashPassword(password)
 
-                    // Property: hash format is bcrypt with 12 rounds
+                    // Property: hash format is Argon2id
                     expect(hash).toBeDefined()
                     expect(typeof hash).toBe("string")
-                    expect(hash).toMatch(/^\$2b\$12\$/)
+                    expect(hash).toMatch(/^\$argon2id\$/)
 
-                    // Property: hash should be at least 60 characters (bcrypt standard)
+                    // Property: encoded hash is non-trivial length
                     expect(hash.length).toBeGreaterThanOrEqual(60)
 
                     // Property: original password matches hash
@@ -40,12 +41,12 @@ describe("Property 2: Password Hashing Consistency", () => {
             ),
             { numRuns: 50 }
         )
-    }, 60000) // 60 second timeout for bcrypt operations
+    }, 60000) // Argon2id is CPU-heavy
 
     it("should produce different hashes for the same password (salt uniqueness)", async () => {
         await fc.assert(
             fc.asyncProperty(
-                fc.string({ minLength: 8, maxLength: 50 }),
+                validPasswordArb,
                 async password => {
                     // Hash the same password twice
                     const hash1 = await hashPassword(password)
@@ -66,8 +67,8 @@ describe("Property 2: Password Hashing Consistency", () => {
     it("should reject different passwords when compared with hash", async () => {
         await fc.assert(
             fc.asyncProperty(
-                fc.string({ minLength: 8, maxLength: 50 }),
-                fc.string({ minLength: 1, maxLength: 50 }),
+                validPasswordArb,
+                validPasswordArb,
                 async (password, differentPassword) => {
                     // Skip if passwords are the same
                     fc.pre(password !== differentPassword)
@@ -89,7 +90,7 @@ describe("Property 2: Password Hashing Consistency", () => {
     it("should handle edge cases in password comparison", async () => {
         await fc.assert(
             fc.asyncProperty(
-                fc.string({ minLength: 1, maxLength: 50 }),
+                validPasswordArb,
                 async password => {
                     const hash = await hashPassword(password)
 
@@ -129,7 +130,7 @@ describe("Property 2: Password Hashing Consistency", () => {
     it("should handle special characters in passwords", async () => {
         await fc.assert(
             fc.asyncProperty(
-                fc.string({ minLength: 8, maxLength: 50 }),
+                validPasswordArb,
                 async password => {
                     // Skip empty passwords
                     fc.pre(password.length > 0)
@@ -137,7 +138,7 @@ describe("Property 2: Password Hashing Consistency", () => {
                     const hash = await hashPassword(password)
 
                     // Property: hash format is correct
-                    expect(hash).toMatch(/^\$2b\$12\$/)
+                    expect(hash).toMatch(/^\$argon2id\$/)
 
                     // Property: original password matches
                     expect(await comparePassword(password, hash)).toBe(true)
@@ -150,7 +151,7 @@ describe("Property 2: Password Hashing Consistency", () => {
     it("should handle invalid inputs gracefully", async () => {
         await fc.assert(
             fc.asyncProperty(
-                fc.string({ minLength: 1, maxLength: 50 }),
+                validPasswordArb,
                 async password => {
                     const hash = await hashPassword(password)
 
@@ -188,7 +189,7 @@ describe("Property 2: Password Hashing Consistency", () => {
     it("should maintain consistency across multiple hash-compare cycles", async () => {
         await fc.assert(
             fc.asyncProperty(
-                fc.string({ minLength: 8, maxLength: 50 }),
+                validPasswordArb,
                 async password => {
                     // Property: multiple hash-compare cycles should be consistent
                     for (let i = 0; i < 3; i++) {

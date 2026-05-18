@@ -52,6 +52,9 @@ function isPublicRoute(pathname: string): boolean {
     }
 
     return PUBLIC_ROUTES.some(route => {
+        if (route === "/") {
+            return pathWithoutLocale === "/"
+        }
         if (route.endsWith("/")) {
             return pathWithoutLocale.startsWith(route)
         }
@@ -128,8 +131,11 @@ export async function checkAccountCompletion(
         // Get session from cookie
         const session = await getSessionFromCookie(request)
 
-        if (!session) {
-            // No session, let other middleware handle (likely redirect to login)
+        if (
+            !session ||
+            new Date(session.expires_at).getTime() <= Date.now()
+        ) {
+            // No valid session, let other middleware handle (likely redirect to login)
             return null
         }
 

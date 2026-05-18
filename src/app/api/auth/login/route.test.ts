@@ -1,4 +1,4 @@
-import bcrypt from "bcrypt"
+import { hashPassword } from "@/lib/auth/password-hashing"
 import { NextRequest } from "next/server"
 import { beforeEach, describe, expect, it, vi } from "vitest"
 
@@ -295,7 +295,7 @@ describe("POST /api/auth/login - Task 8-11: Login Route Handler", () => {
                         data: {
                             id: "user-123",
                             email: "test@example.com",
-                            password_hash: await bcrypt.hash("Test@1234" + (await import("@/lib/auth/password-security")).getSecurityConfig().pepper, 10),
+                            password_hash: await hashPassword("Test@1234"),
                             email_verified: true,
                         },
                         error: null,
@@ -332,9 +332,7 @@ describe("POST /api/auth/login - Task 8-11: Login Route Handler", () => {
         vi.mocked(checkRateLimit).mockResolvedValue(false)
         vi.mocked(validateCSRFToken).mockResolvedValue(true)
 
-        const { getSecurityConfig } = await import("@/lib/auth/password-security")
-        const pepper = getSecurityConfig().pepper
-        const hashedPassword = await bcrypt.hash("Test@1234" + pepper, 10)
+        const hashedPassword = await hashPassword("Test@1234")
 
         mockSupabase.from.mockReturnValue({
             select: vi.fn().mockReturnValue({
@@ -381,9 +379,7 @@ describe("POST /api/auth/login - Task 8-11: Login Route Handler", () => {
         vi.mocked(checkRateLimit).mockResolvedValue(false)
         vi.mocked(validateCSRFToken).mockResolvedValue(true)
 
-        const { getSecurityConfig } = await import("@/lib/auth/password-security")
-        const pepper = getSecurityConfig().pepper
-        const hashedPassword = await bcrypt.hash("Test@1234" + pepper, 10)
+        const hashedPassword = await hashPassword("Test@1234")
 
         mockSupabase.from.mockReturnValue({
             select: vi.fn().mockReturnValue({
@@ -428,9 +424,7 @@ describe("POST /api/auth/login - Task 8-11: Login Route Handler", () => {
         vi.mocked(checkRateLimit).mockResolvedValue(false)
         vi.mocked(validateCSRFToken).mockResolvedValue(true)
 
-        const { getSecurityConfig } = await import("@/lib/auth/password-security")
-        const pepper = getSecurityConfig().pepper
-        const hashedPassword = await bcrypt.hash("Test@1234" + pepper, 10)
+        const hashedPassword = await hashPassword("Test@1234")
 
         mockSupabase.from.mockReturnValue({
             select: vi.fn().mockReturnValue({
@@ -558,9 +552,7 @@ describe("POST /api/auth/login - Task 8-11: Login Route Handler", () => {
         vi.mocked(checkRateLimit).mockResolvedValue(false)
         vi.mocked(validateCSRFToken).mockResolvedValue(true)
 
-        const { getSecurityConfig } = await import("@/lib/auth/password-security")
-        const pepper = getSecurityConfig().pepper
-        const hashedPassword = await bcrypt.hash("Test@1234" + pepper, 10)
+        const hashedPassword = await hashPassword("Test@1234")
 
         mockSupabase.from.mockReturnValue({
             select: vi.fn().mockReturnValue({
@@ -607,9 +599,7 @@ describe("POST /api/auth/login - Task 8-11: Login Route Handler", () => {
         vi.mocked(checkRateLimit).mockResolvedValue(false)
         vi.mocked(validateCSRFToken).mockResolvedValue(true)
 
-        const { getSecurityConfig } = await import("@/lib/auth/password-security")
-        const pepper = getSecurityConfig().pepper
-        const hashedPassword = await bcrypt.hash("Test@1234" + pepper, 10)
+        const hashedPassword = await hashPassword("Test@1234")
 
         mockSupabase.from.mockReturnValue({
             select: vi.fn().mockReturnValue({
@@ -699,9 +689,7 @@ describe("POST /api/auth/login - Task 8-11: Login Route Handler", () => {
         vi.mocked(checkRateLimit).mockResolvedValue(false)
         vi.mocked(validateCSRFToken).mockResolvedValue(true)
 
-        const { getSecurityConfig } = await import("@/lib/auth/password-security")
-        const pepper = getSecurityConfig().pepper
-        const hashedPassword = await bcrypt.hash("Test@1234" + pepper, 10)
+        const hashedPassword = await hashPassword("Test@1234")
 
         mockSupabase.from.mockReturnValue({
             select: vi.fn().mockReturnValue({

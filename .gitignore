@@ -12,6 +12,11 @@
 
 # testing
 /coverage
+test_results*.txt
+test_run_output*.txt
+vitest-results.json
+fix_tests*.js
+update-test*.js
 /test-results/
 /playwright-report/
 /playwright/.cache/

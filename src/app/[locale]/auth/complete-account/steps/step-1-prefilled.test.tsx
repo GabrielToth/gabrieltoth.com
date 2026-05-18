@@ -40,6 +40,7 @@ vi.mock("next-intl", () => ({
             "completeAccount.errors.serverError": "Server error",
             "completeAccount.errors.validationFailed":
                 "Please fix the errors below",
+            "completeAccount.errors.nameRequired": "Name is required",
         }
         return translations[key] || key
     },
@@ -119,8 +120,8 @@ describe("Step1Prefilled", () => {
         const props = {
             ...defaultProps,
             errors: {
-                email: "Invalid email format",
-                name: "Name is required",
+                email: "invalidEmail",
+                name: "nameRequired",
             },
         }
 

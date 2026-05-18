@@ -1,11 +1,15 @@
-import { isSupabaseAvailable } from "@/test-utils/skip-without-supabase"
+import {
+    isAuditLogsSchemaReady,
+    isSupabaseAvailable,
+} from "@/test-utils/skip-without-supabase"
 import { createClient } from "@supabase/supabase-js"
 import { afterAll, beforeAll, describe, expect, it, vi } from "vitest"
 
 vi.unmock("@supabase/supabase-js")
 
 const supabaseAvailable = await isSupabaseAvailable()
-let isDbRunning = supabaseAvailable
+const auditSchemaReady = await isAuditLogsSchemaReady()
+let isDbRunning = supabaseAvailable && auditSchemaReady
 
 /**
  * Test Suite: Audit Logs Table Schema Verification
@@ -23,7 +27,7 @@ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || ""
 const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || ""
 const supabase = createClient(supabaseUrl, supabaseKey)
 
-describe.skipIf(!supabaseAvailable)("Audit Logs Table Schema", () => {
+describe.skipIf(!auditSchemaReady)("Audit Logs Table Schema", () => {
     let testUserId: string
 
     beforeAll(async () => {

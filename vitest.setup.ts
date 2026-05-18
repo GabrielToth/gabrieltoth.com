@@ -6,6 +6,50 @@ import React from "react"
 import { createDbModuleMock } from "./src/test-utils/db-mock"
 import { afterEach, vi } from "vitest"
 
+process.env.VITEST = "true"
+process.env.DEBUG = "false"
+process.env.NEXT_PUBLIC_DEBUG = "false"
+process.env.SUPPRESS_SECURITY_CONFIG_LOGS = "true"
+
+const noop = () => {}
+
+const allowedStderrPatterns = [
+    /GoTrueClient@.*Multiple GoTrueClient instances/,
+    /It is not an error, but this should be avoided/,
+]
+
+const originalConsoleError = console.error
+const originalConsoleWarn = console.warn
+
+console.error = (...args: unknown[]) => {
+    const msg = args.map(a => String(a)).join(" ")
+    if (allowedStderrPatterns.some(p => p.test(msg))) return
+    originalConsoleError(...args)
+}
+
+console.warn = (...args: unknown[]) => {
+    const msg = args.map(a => String(a)).join(" ")
+    if (allowedStderrPatterns.some(p => p.test(msg))) return
+    originalConsoleWarn(...args)
+}
+
+vi.mock("@/lib/logger", () => ({
+    logger: {
+        debug: noop,
+        info: noop,
+        warn: noop,
+        error: noop,
+        fatal: noop,
+    },
+    createLogger: () => ({
+        debug: noop,
+        info: noop,
+        warn: noop,
+        error: noop,
+        fatal: noop,
+    }),
+}))
+
 // Default DB mock so unit tests never hit a real PostgreSQL instance.
 // Per-file vi.mock("@/lib/db", ...) overrides this when needed.
 vi.mock("@/lib/db", () => createDbModuleMock())

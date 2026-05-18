@@ -84,9 +84,7 @@ describe("Error Handling Utilities", () => {
 
             const json = (await response.json()) as ApiErrorResponse
             expect(json.success).toBe(false)
-            expect(json.error).toBe(
-                "Too many login attempts. Please try again later"
-            )
+            expect(json.error).toBe("Invalid email or password")
         })
 
         it("should create conflict error response with 409 status", async () => {
@@ -98,7 +96,7 @@ describe("Error Handling Utilities", () => {
 
             const json = (await response.json()) as ApiErrorResponse
             expect(json.success).toBe(false)
-            expect(json.error).toBe("Email already registered")
+            expect(json.error).toBe("Invalid email or password")
         })
 
         it("should create server error response with 500 status", async () => {
@@ -165,9 +163,7 @@ describe("Error Handling Utilities", () => {
 
             const json = (await response.json()) as ApiErrorResponse
             expect(json.success).toBe(false)
-            expect(json.error).toBe(
-                "Too many login attempts. Please try again in 15 minutes"
-            )
+            expect(json.error).toBe("Invalid email or password")
         })
     })
 

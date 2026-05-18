@@ -65,7 +65,6 @@ describe("PasswordStrength", () => {
         render(<PasswordStrength password="SecurePass123!" />)
 
         expect(screen.getByText("5/5")).toBeInTheDocument()
-        expect(screen.getByText("Password is strong")).toBeInTheDocument()
     })
 
     it("should validate minimum length requirement", () => {

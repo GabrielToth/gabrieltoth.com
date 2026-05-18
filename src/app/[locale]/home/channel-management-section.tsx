@@ -14,7 +14,7 @@ const getTranslations = (locale: Locale) => {
                     : "Channel Management",
         subtitle:
             locale === "pt-BR"
-                ? "Transform Your Channel into a Growth Machine"
+                ? "Transforme Seu Canal em uma Máquina de Crescimento"
                 : locale === "es"
                   ? "Transforma tu canal en una máquina de crecimiento"
                   : locale === "de"

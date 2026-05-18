@@ -51,7 +51,8 @@ vi.mock("@supabase/supabase-js", () => {
                             eq: vi.fn((field: string, val: string) => {
                                 return {
                                     eq: vi.fn((field2: string, val2: string) => {
-                                        let updated = null
+                                        let updated: Record<string, unknown> | null =
+                                            null
                                         mockDb = mockDb.map(r => {
                                             if (r[field] === val && r[field2] === val2) {
                                                 updated = { ...r, ...data }

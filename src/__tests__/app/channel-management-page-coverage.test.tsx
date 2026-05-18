@@ -1,5 +1,9 @@
 import { describe, expect, it, vi } from "vitest"
 
+vi.mock("@/components/layout/footer", () => ({ default: () => null }))
+vi.mock("@/components/seo/structured-data", () => ({ default: () => null }))
+vi.mock("@/components/ui/breadcrumbs", () => ({ default: () => null }))
+
 vi.mock("next-intl/server", () => {
     const t: any = (k: string) => k
     t.raw = (key: string) => {
@@ -38,5 +42,5 @@ describe("channel-management page coverage", () => {
             params: Promise.resolve({ locale: "en" }),
         } as any)
         expect(jsx).toBeTruthy()
-    }, 20000)
+    }, 60_000)
 })

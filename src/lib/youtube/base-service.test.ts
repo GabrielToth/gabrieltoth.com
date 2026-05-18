@@ -98,13 +98,17 @@ describe("BaseService", () => {
 
     describe("error handling", () => {
         it("should throw ServiceError when not ready", () => {
-            expect(() => service.assertReady()).toThrow(ServiceError)
+            const assertReady = (service as unknown as { assertReady(): void })
+                .assertReady
+            expect(() => assertReady.call(service)).toThrow(ServiceError)
         })
 
         it("should not throw when ready", async () => {
             await service.initialize()
 
-            expect(() => service.assertReady()).not.toThrow()
+            const assertReady = (service as unknown as { assertReady(): void })
+                .assertReady
+            expect(() => assertReady.call(service)).not.toThrow()
         })
 
         it("should handle errors with context", () => {

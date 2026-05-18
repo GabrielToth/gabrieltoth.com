@@ -268,22 +268,18 @@ describe("Login Security Tests", () => {
     })
 
     describe("Password Hashing Security (Requirement 20.1)", () => {
-        it("should use bcrypt for password hashing", async () => {
+        it("should use Argon2id for password hashing", async () => {
             const password = "TestPassword123!"
             const hash = await hashPassword(password)
 
-            // Bcrypt hashes start with $2a$, $2b$, or $2y$
-            expect(hash).toMatch(/^\$2[aby]\$/)
+            expect(hash).toMatch(/^\$argon2id\$/)
         })
 
-        it("should use cost factor 12 for bcrypt", async () => {
+        it("should use Argon2id version 19", async () => {
             const password = "TestPassword123!"
             const hash = await hashPassword(password)
 
-            // Extract cost factor from bcrypt hash
-            // Format: $2b$12$...
-            const costFactor = hash.split("$")[2]
-            expect(costFactor).toBe("12")
+            expect(hash).toContain("v=19")
         })
 
         it("should generate different hashes for same password", async () => {
@@ -368,7 +364,7 @@ describe("Login Security Tests", () => {
             it("should use strong password hashing", async () => {
                 const password = "TestPassword123!"
                 const hash = await hashPassword(password)
-                expect(hash).toMatch(/^\$2[aby]\$12\$/)
+                expect(hash).toMatch(/^\$argon2id\$/)
             })
 
             it("should use HTTPS in production", () => {

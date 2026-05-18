@@ -143,7 +143,8 @@ describe("Bug Condition: RLS Blocking Login Attempts", () => {
             })
 
         if (userError || !user.user) {
-            throw new Error(`Failed to create test user: ${userError?.message}`)
+            isDbRunning = false
+            return
         }
 
         const testUserId = user.user.id

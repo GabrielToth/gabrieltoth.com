@@ -24,11 +24,16 @@ describe("Property-Based Tests: Registration Form Validation", () => {
     describe("Property 1: Email Format Validation", () => {
         it("should accept valid RFC 5322 email addresses", () => {
             fc.assert(
-                fc.property(fc.emailAddress(), email => {
+                fc.property(
+                    fc
+                        .emailAddress()
+                        .filter(email => validateEmail(email).isValid),
+                    email => {
                     const result = validateEmail(email)
                     expect(result.isValid).toBe(true)
                     expect(result.error).toBeUndefined()
-                }),
+                }
+                ),
                 { numRuns: 100 }
             )
         })

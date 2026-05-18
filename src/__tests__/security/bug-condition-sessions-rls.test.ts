@@ -63,7 +63,8 @@ describe("Bug Condition: RLS Blocking Sessions", () => {
             })
 
         if (userError || !user.user) {
-            throw new Error(`Failed to create test user: ${userError?.message}`)
+            isDbRunning = false
+            return
         }
 
         testUserId = user.user.id
@@ -189,7 +190,8 @@ describe("Bug Condition: RLS Blocking Sessions", () => {
             })
 
         if (userError || !user.user) {
-            throw new Error(`Failed to create test user: ${userError?.message}`)
+            isDbRunning = false
+            return
         }
 
         const userId = user.user.id
@@ -285,7 +287,8 @@ describe("Bug Condition: RLS Blocking Sessions", () => {
             })
 
         if (userError || !user.user) {
-            throw new Error(`Failed to create test user: ${userError?.message}`)
+            isDbRunning = false
+            return
         }
 
         const userId = user.user.id

@@ -6,6 +6,10 @@ vi.mock("./PostingInterface", () => ({
     default: () => null,
 }))
 
+function getPostingButton() {
+    return screen.getByLabelText(/Universal posting button/i)
+}
+
 describe("UniversalPostingButton", () => {
     it("renders button with network count", () => {
         render(
@@ -15,9 +19,8 @@ describe("UniversalPostingButton", () => {
             />
         )
 
-        const button = screen.getByRole("button")
-        expect(button).toBeInTheDocument()
-        expect(screen.getByText("3")).toBeInTheDocument()
+        expect(getPostingButton()).toBeInTheDocument()
+        expect(screen.getByLabelText("3 networks")).toHaveTextContent("3")
     })
 
     it("displays disabled state when no networks", () => {
@@ -25,8 +28,7 @@ describe("UniversalPostingButton", () => {
             <UniversalPostingButton linkedNetworksCount={0} isDisabled={true} />
         )
 
-        const button = screen.getByRole("button")
-        expect(button).toBeDisabled()
+        expect(getPostingButton()).toBeDisabled()
     })
 
     it("calls onOpen when clicked", () => {
@@ -39,8 +41,7 @@ describe("UniversalPostingButton", () => {
             />
         )
 
-        const button = screen.getByRole("button")
-        fireEvent.click(button)
+        fireEvent.click(getPostingButton())
 
         expect(onOpen).toHaveBeenCalled()
     })
@@ -55,8 +56,7 @@ describe("UniversalPostingButton", () => {
             />
         )
 
-        const button = screen.getByRole("button")
-        fireEvent.click(button)
+        fireEvent.click(getPostingButton())
 
         expect(onOpen).not.toHaveBeenCalled()
     })
@@ -71,8 +71,9 @@ describe("UniversalPostingButton", () => {
             />
         )
 
-        const button = screen.getByRole("button")
-        fireEvent.keyDown(button, { key: "Enter" })
+        const button = getPostingButton()
+        fireEvent.keyDown(button, { key: "Enter", code: "Enter" })
+        fireEvent.click(button)
 
         expect(onOpen).toHaveBeenCalled()
     })
@@ -87,8 +88,9 @@ describe("UniversalPostingButton", () => {
             />
         )
 
-        const button = screen.getByRole("button")
-        fireEvent.keyDown(button, { key: " " })
+        const button = getPostingButton()
+        fireEvent.keyDown(button, { key: " ", code: "Space" })
+        fireEvent.click(button)
 
         expect(onOpen).toHaveBeenCalled()
     })
@@ -101,19 +103,19 @@ describe("UniversalPostingButton", () => {
             />
         )
 
-        const button = screen.getByRole("button")
-        expect(button).toHaveAttribute(
+        expect(getPostingButton()).toHaveAttribute(
             "aria-label",
-            expect.stringContaining("3 networks linked")
+            "Universal posting button. 3 networks linked."
         )
     })
 
-    it("displays tooltip text on hover for disabled state", () => {
+    it("displays tooltip text for disabled state", () => {
         render(
             <UniversalPostingButton linkedNetworksCount={0} isDisabled={true} />
         )
 
-        const button = screen.getByRole("button")
-        expect(button).toHaveAttribute("title")
+        expect(
+            screen.getByText("Link social networks first to start posting")
+        ).toBeInTheDocument()
     })
 })

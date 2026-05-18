@@ -63,20 +63,14 @@ describe("Pepper Application Validation - Security Tests", () => {
             expect(result2.valid).toBe(true)
         })
 
-        it("should apply pepper consistently to Bcrypt hashes", async () => {
-            // Create two hashes with same password and pepper
-            const pepperedPassword1 = TEST_PASSWORD + CORRECT_PEPPER
-            const pepperedPassword2 = TEST_PASSWORD + CORRECT_PEPPER
+        it("rejects legacy Bcrypt hashes even with correct pepper", async () => {
+            const pepperedPassword = TEST_PASSWORD + CORRECT_PEPPER
+            const hash = await bcrypt.hash(pepperedPassword, 10)
 
-            const hash1 = await bcrypt.hash(pepperedPassword1, 10)
-            const hash2 = await bcrypt.hash(pepperedPassword2, 10)
+            const result = await validatePassword(TEST_PASSWORD, hash)
 
-            // Both should validate with same password
-            const result1 = await validatePassword(TEST_PASSWORD, hash1)
-            const result2 = await validatePassword(TEST_PASSWORD, hash2)
-
-            expect(result1.valid).toBe(true)
-            expect(result2.valid).toBe(true)
+            expect(result.valid).toBe(false)
+            expect(result.algorithmType).toBe("unknown")
         })
 
         it("should append pepper to password before hashing (not prepend)", async () => {
@@ -161,15 +155,14 @@ describe("Pepper Application Validation - Security Tests", () => {
             expect(result.error).toBeUndefined()
         })
 
-        it("should validate Bcrypt password with correct pepper", async () => {
+        it("rejects Bcrypt password hashes (Argon2id only)", async () => {
             const pepperedPassword = TEST_PASSWORD + CORRECT_PEPPER
             const hash = await bcrypt.hash(pepperedPassword, 10)
 
             const result = await validatePassword(TEST_PASSWORD, hash)
 
-            expect(result.valid).toBe(true)
-            expect(result.algorithmType).toBe("bcrypt")
-            expect(result.error).toBeUndefined()
+            expect(result.valid).toBe(false)
+            expect(result.algorithmType).toBe("unknown")
         })
 
         it("should validate multiple passwords with correct pepper", async () => {
@@ -356,8 +349,7 @@ describe("Pepper Application Validation - Security Tests", () => {
     })
 
     describe("Pepper application consistency across algorithms", () => {
-        it("should apply pepper consistently to both Argon2id and Bcrypt", async () => {
-            // Create Argon2id hash with pepper
+        it("should apply pepper consistently for Argon2id", async () => {
             const pepperedPassword = TEST_PASSWORD + CORRECT_PEPPER
             const argon2Hash = await argon2.hash(pepperedPassword, {
                 memoryCost: 64 * 1024,
@@ -367,23 +359,12 @@ describe("Pepper Application Validation - Security Tests", () => {
                 version: 19,
             })
 
-            // Create Bcrypt hash with same pepper
-            const bcryptHash = await bcrypt.hash(pepperedPassword, 10)
-
-            // Both should validate with same password
             const argon2Result = await validatePassword(
                 TEST_PASSWORD,
                 argon2Hash
             )
-            const bcryptResult = await validatePassword(
-                TEST_PASSWORD,
-                bcryptHash
-            )
-
             expect(argon2Result.valid).toBe(true)
-            expect(bcryptResult.valid).toBe(true)
 
-            // Create hashes with wrong pepper
             const wrongPepperedPassword = TEST_PASSWORD + WRONG_PEPPER
             const argon2WrongHash = await argon2.hash(wrongPepperedPassword, {
                 memoryCost: 64 * 1024,
@@ -393,20 +374,11 @@ describe("Pepper Application Validation - Security Tests", () => {
                 version: 19,
             })
 
-            const bcryptWrongHash = await bcrypt.hash(wrongPepperedPassword, 10)
-
-            // Both should fail with wrong pepper
             const argon2WrongResult = await validatePassword(
                 TEST_PASSWORD,
                 argon2WrongHash
             )
-            const bcryptWrongResult = await validatePassword(
-                TEST_PASSWORD,
-                bcryptWrongHash
-            )
-
             expect(argon2WrongResult.valid).toBe(false)
-            expect(bcryptWrongResult.valid).toBe(false)
         })
     })
 

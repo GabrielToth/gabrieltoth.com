@@ -4,7 +4,7 @@
  * Validates: Requirements 5.1, 5.2
  */
 
-import { describe, expect, it } from "vitest"
+import { beforeEach, describe, expect, it } from "vitest"
 import { DeviceDetectionService } from "./device-detection"
 
 describe("DeviceDetectionService", () => {
