@@ -1,7 +1,7 @@
 // Credit System - Enhanced with Logging and Validation
 // Focus: Atomicity, Debugability, Reliability
 
-import { queryOne, transaction } from "@/lib/db/index"
+import { queryOne, transaction } from "@/lib/db"
 import { logger } from "@/lib/logger"
 import type { PoolClient } from "pg"
 

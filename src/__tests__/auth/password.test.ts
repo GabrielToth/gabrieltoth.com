@@ -167,7 +167,7 @@ describe("Password Hashing Functions", () => {
         })
 
         it("should be case-sensitive", async () => {
-            const result = await comparePassword("validpassword123!", hash)
+            const result = await comparePassword("valid_password123!", hash)
             expect(result).toBe(false)
         })
 

@@ -1,13 +1,16 @@
 // Property-Based Tests for Metering System
 // Feature: distributed-infrastructure-logging
 
+import { isPostgresAvailable } from "@/test-utils/requires-postgres"
 import fc from "fast-check"
 import { Pool } from "pg"
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from "vitest"
 import { CreditSystemImpl } from "../credits/credit-system"
 import { MeteringSystemImpl } from "./index"
 
-describe("Metering System Properties", () => {
+const postgresAvailable = await isPostgresAvailable()
+
+describe.skipIf(!postgresAvailable)("Metering System Properties", () => {
     let pool: Pool
     let meteringSystem: MeteringSystemImpl
     let creditSystem: CreditSystemImpl
@@ -16,34 +19,41 @@ describe("Metering System Properties", () => {
         "postgres://platform:devpassword@localhost:5432/platform_test"
 
     beforeAll(async () => {
+        if (!(await isPostgresAvailable())) {
+            return
+        }
         pool = new Pool({ connectionString: testDbUrl })
         creditSystem = new CreditSystemImpl(pool)
         meteringSystem = new MeteringSystemImpl(pool, creditSystem)
     })
 
     afterAll(async () => {
-        await pool.end()
+        if (pool) {
+            await pool.end()
+        }
     })
 
     beforeEach(async () => {
-        // Clean up test data
+        if (!pool) {
+            return
+        }
         await pool.query(
-            "DELETE FROM usage_metrics WHERE user_id LIKE \"test-%\""
+            "DELETE FROM usage_metrics WHERE user_id LIKE 'test-%'"
         )
         await pool.query(
-            "DELETE FROM daily_usage_summary WHERE user_id LIKE \"test-%\""
+            "DELETE FROM daily_usage_summary WHERE user_id LIKE 'test-%'"
         )
-        await pool.query("DELETE FROM transactions WHERE user_id LIKE \"test-%\"")
+        await pool.query("DELETE FROM transactions WHERE user_id LIKE 'test-%'")
         await pool.query(
-            "DELETE FROM user_accounts WHERE user_id LIKE \"test-%\""
+            "DELETE FROM user_accounts WHERE user_id LIKE 'test-%'"
         )
     })
 
     // Feature: distributed-infrastructure-logging, Property 24: Bandwidth recording persistence
     // **Validates: Requirements 5.1**
     describe("Property 24: Bandwidth recording persistence", () => {
-        it("should persist bandwidth recordings to usage_metrics table", () => {
-            fc.assert(
+        it("should persist bandwidth recordings to usage_metrics table", async () => {
+            await fc.assert(
                 fc.asyncProperty(
                     fc.uuid(),
                     fc.integer({ min: 1, max: 1000000000 }), // bytes
@@ -81,8 +91,8 @@ describe("Metering System Properties", () => {
     // Feature: distributed-infrastructure-logging, Property 25: Storage recording persistence
     // **Validates: Requirements 5.2**
     describe("Property 25: Storage recording persistence", () => {
-        it("should persist storage recordings to usage_metrics table", () => {
-            fc.assert(
+        it("should persist storage recordings to usage_metrics table", async () => {
+            await fc.assert(
                 fc.asyncProperty(
                     fc.uuid(),
                     fc.integer({ min: 1, max: 1000000000 }), // bytes
@@ -117,8 +127,8 @@ describe("Metering System Properties", () => {
     // Feature: distributed-infrastructure-logging, Property 26: Cache operation recording
     // **Validates: Requirements 5.3**
     describe("Property 26: Cache operation recording", () => {
-        it("should persist cache operations to usage_metrics table", () => {
-            fc.assert(
+        it("should persist cache operations to usage_metrics table", async () => {
+            await fc.assert(
                 fc.asyncProperty(
                     fc.uuid(),
                     fc.constantFrom("hit", "miss", "set"),
@@ -156,8 +166,8 @@ describe("Metering System Properties", () => {
     // Feature: distributed-infrastructure-logging, Property 27: API call recording
     // **Validates: Requirements 5.4**
     describe("Property 27: API call recording", () => {
-        it("should persist API calls to usage_metrics table", () => {
-            fc.assert(
+        it("should persist API calls to usage_metrics table", async () => {
+            await fc.assert(
                 fc.asyncProperty(
                     fc.uuid(),
                     fc.string({ maxLength: 100 }), // endpoint
@@ -192,8 +202,8 @@ describe("Metering System Properties", () => {
     // Feature: distributed-infrastructure-logging, Property 28: Raw usage value logging
     // **Validates: Requirements 5.5**
     describe("Property 28: Raw usage value logging", () => {
-        it("should store raw usage values without conversion", () => {
-            fc.assert(
+        it("should store raw usage values without conversion", async () => {
+            await fc.assert(
                 fc.asyncProperty(
                     fc.uuid(),
                     fc.integer({ min: 1, max: 1000000000 }),
@@ -226,8 +236,8 @@ describe("Metering System Properties", () => {
     // Feature: distributed-infrastructure-logging, Property 29: Unit conversion accuracy
     // **Validates: Requirements 5.6**
     describe("Property 29: Unit conversion accuracy", () => {
-        it("should convert bytes to GB accurately during aggregation", () => {
-            fc.assert(
+        it("should convert bytes to GB accurately during aggregation", async () => {
+            await fc.assert(
                 fc.asyncProperty(
                     fc.uuid(),
                     fc.integer({ min: 1073741824, max: 10737418240 }), // 1GB to 10GB in bytes
@@ -279,8 +289,8 @@ describe("Metering System Properties", () => {
     // Feature: distributed-infrastructure-logging, Property 30: Cost calculation and billing
     // **Validates: Requirements 5.8**
     describe("Property 30: Cost calculation and billing", () => {
-        it("should calculate costs correctly and debit from credit balance", () => {
-            fc.assert(
+        it("should calculate costs correctly and debit from credit balance", async () => {
+            await fc.assert(
                 fc.asyncProperty(
                     fc.uuid(),
                     fc.record({

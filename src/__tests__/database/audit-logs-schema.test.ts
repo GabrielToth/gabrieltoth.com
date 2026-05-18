@@ -1,23 +1,11 @@
-
+import { isSupabaseAvailable } from "@/test-utils/skip-without-supabase"
 import { createClient } from "@supabase/supabase-js"
+import { afterAll, beforeAll, describe, expect, it, vi } from "vitest"
 
-// Added by automated fix script to prevent CI crashes when DB is down
-let isDbRunning = true
-beforeAll(async () => {
-    try {
-        const client = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL || "http://127.0.0.1:54321", process.env.SUPABASE_SERVICE_ROLE_KEY || "test")
-        const { error } = await client.from("users").select("id").limit(1)
-        if (error && error.message && error.message.includes("fetch")) {
-            isDbRunning = false
-        }
-    } catch {
-        isDbRunning = false
-    }
-})
-import { vi } from "vitest"
 vi.unmock("@supabase/supabase-js")
-import { createClient } from "@supabase/supabase-js"
-import { afterAll, beforeAll, describe, expect, it } from "vitest"
+
+const supabaseAvailable = await isSupabaseAvailable()
+let isDbRunning = supabaseAvailable
 
 /**
  * Test Suite: Audit Logs Table Schema Verification
@@ -35,7 +23,7 @@ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || ""
 const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || ""
 const supabase = createClient(supabaseUrl, supabaseKey)
 
-describe("Audit Logs Table Schema", () => {
+describe.skipIf(!supabaseAvailable)("Audit Logs Table Schema", () => {
     let testUserId: string
 
     beforeAll(async () => {
@@ -71,9 +59,9 @@ describe("Audit Logs Table Schema", () => {
      * Test: Table exists
      * Validates that the audit_logs table is created in the public schema
      */
-    it("should have audit_logs table in public schema", async (ctx) => {
-    if (!isDbRunning) return ctx.skip()
-    if (!isDbRunning) return ctx.skip()
+    it("should have audit_logs table in public schema", async ({ skip }) => {
+    if (!isDbRunning) return skip()
+    if (!isDbRunning) return skip()
         const { data, error } = await supabase.from("audit_logs").select("*")
 
         expect(error).toBeNull()
@@ -85,9 +73,9 @@ describe("Audit Logs Table Schema", () => {
      * Test: Primary key is UUID
      * Validates that id column is UUID primary key with auto-generation
      */
-    it("should have id as UUID primary key with auto-generation", async (ctx) => {
-    if (!isDbRunning) return ctx.skip()
-    if (!isDbRunning) return ctx.skip()
+    it("should have id as UUID primary key with auto-generation", async ({ skip }) => {
+    if (!isDbRunning) return skip()
+    if (!isDbRunning) return skip()
         const { data: record, error } = await supabase
             .from("audit_logs")
             .insert({
@@ -116,9 +104,9 @@ describe("Audit Logs Table Schema", () => {
      * Test: event_type column accepts required values
      * Validates enum-like behavior for event types
      */
-    it("should accept all required event_type values", async (ctx) => {
-    if (!isDbRunning) return ctx.skip()
-    if (!isDbRunning) return ctx.skip()
+    it("should accept all required event_type values", async ({ skip }) => {
+    if (!isDbRunning) return skip()
+    if (!isDbRunning) return skip()
         const eventTypes = [
             "auth_success",
             "auth_failure",
@@ -158,9 +146,9 @@ describe("Audit Logs Table Schema", () => {
      * Test: Nullable columns are properly configured
      * Validates that optional columns can be NULL
      */
-    it("should allow NULL values for optional columns", async (ctx) => {
-    if (!isDbRunning) return ctx.skip()
-    if (!isDbRunning) return ctx.skip()
+    it("should allow NULL values for optional columns", async ({ skip }) => {
+    if (!isDbRunning) return skip()
+    if (!isDbRunning) return skip()
         const { data, error } = await supabase
             .from("audit_logs")
             .insert({
@@ -188,9 +176,9 @@ describe("Audit Logs Table Schema", () => {
      * Test: JSONB details column works correctly
      * Validates that details column can store complex JSON
      */
-    it("should support JSONB details column for flexible metadata", async (ctx) => {
-    if (!isDbRunning) return ctx.skip()
-    if (!isDbRunning) return ctx.skip()
+    it("should support JSONB details column for flexible metadata", async ({ skip }) => {
+    if (!isDbRunning) return skip()
+    if (!isDbRunning) return skip()
         const testDetails = {
             country: "US",
             city: "New York",
@@ -222,9 +210,9 @@ describe("Audit Logs Table Schema", () => {
      * Test: Timestamp column defaults to NOW()
      * Validates that timestamp is auto-set if not provided
      */
-    it("should auto-set timestamp to NOW() if not provided", async (ctx) => {
-    if (!isDbRunning) return ctx.skip()
-    if (!isDbRunning) return ctx.skip()
+    it("should auto-set timestamp to NOW() if not provided", async ({ skip }) => {
+    if (!isDbRunning) return skip()
+    if (!isDbRunning) return skip()
         const beforeInsert = new Date()
 
         const { data, error } = await supabase
@@ -260,9 +248,9 @@ describe("Audit Logs Table Schema", () => {
      * Test: Foreign key relationship with users table
      * Validates that user_id references users(id)
      */
-    it("should have foreign key relationship with users table", async (ctx) => {
-    if (!isDbRunning) return ctx.skip()
-    if (!isDbRunning) return ctx.skip()
+    it("should have foreign key relationship with users table", async ({ skip }) => {
+    if (!isDbRunning) return skip()
+    if (!isDbRunning) return skip()
         if (!testUserId) {
             console.warn("Skipping foreign key test - no test user created")
             return
@@ -293,9 +281,9 @@ describe("Audit Logs Table Schema", () => {
      * Test: Algorithm migration tracking columns
      * Validates that old_algorithm and new_algorithm columns work
      */
-    it("should support algorithm migration tracking", async (ctx) => {
-    if (!isDbRunning) return ctx.skip()
-    if (!isDbRunning) return ctx.skip()
+    it("should support algorithm migration tracking", async ({ skip }) => {
+    if (!isDbRunning) return skip()
+    if (!isDbRunning) return skip()
         const { data, error } = await supabase
             .from("audit_logs")
             .insert({
@@ -322,9 +310,9 @@ describe("Audit Logs Table Schema", () => {
      * Test: CAPTCHA tracking columns
      * Validates that CAPTCHA-related columns work
      */
-    it("should support CAPTCHA verification tracking", async (ctx) => {
-    if (!isDbRunning) return ctx.skip()
-    if (!isDbRunning) return ctx.skip()
+    it("should support CAPTCHA verification tracking", async ({ skip }) => {
+    if (!isDbRunning) return skip()
+    if (!isDbRunning) return skip()
         const { data, error } = await supabase
             .from("audit_logs")
             .insert({
@@ -351,9 +339,9 @@ describe("Audit Logs Table Schema", () => {
      * Test: Error tracking columns
      * Validates that error_code and error_message columns work
      */
-    it("should support error tracking for failed attempts", async (ctx) => {
-    if (!isDbRunning) return ctx.skip()
-    if (!isDbRunning) return ctx.skip()
+    it("should support error tracking for failed attempts", async ({ skip }) => {
+    if (!isDbRunning) return skip()
+    if (!isDbRunning) return skip()
         const { data, error } = await supabase
             .from("audit_logs")
             .insert({
@@ -380,9 +368,9 @@ describe("Audit Logs Table Schema", () => {
      * Test: Request metadata columns
      * Validates that ip_address and user_agent columns work
      */
-    it("should support request metadata tracking", async (ctx) => {
-    if (!isDbRunning) return ctx.skip()
-    if (!isDbRunning) return ctx.skip()
+    it("should support request metadata tracking", async ({ skip }) => {
+    if (!isDbRunning) return skip()
+    if (!isDbRunning) return skip()
         const { data, error } = await supabase
             .from("audit_logs")
             .insert({
@@ -409,9 +397,9 @@ describe("Audit Logs Table Schema", () => {
      * Test: Attempt count tracking
      * Validates that attempt_count column works for rate limiting events
      */
-    it("should support attempt count tracking for rate limiting", async (ctx) => {
-    if (!isDbRunning) return ctx.skip()
-    if (!isDbRunning) return ctx.skip()
+    it("should support attempt count tracking for rate limiting", async ({ skip }) => {
+    if (!isDbRunning) return skip()
+    if (!isDbRunning) return skip()
         const { data, error } = await supabase
             .from("audit_logs")
             .insert({
@@ -436,9 +424,9 @@ describe("Audit Logs Table Schema", () => {
      * Test: Comprehensive audit log entry
      * Validates that all columns can be populated together
      */
-    it("should support comprehensive audit log entries with all fields", async (ctx) => {
-    if (!isDbRunning) return ctx.skip()
-    if (!isDbRunning) return ctx.skip()
+    it("should support comprehensive audit log entries with all fields", async ({ skip }) => {
+    if (!isDbRunning) return skip()
+    if (!isDbRunning) return skip()
         if (!testUserId) {
             console.warn("Skipping comprehensive test - no test user created")
             return
@@ -486,9 +474,9 @@ describe("Audit Logs Table Schema", () => {
      * Test: RLS policy - Users can view their own audit logs
      * Validates that RLS policy restricts access to own logs
      */
-    it("should have RLS policy allowing users to view own audit logs", async (ctx) => {
-    if (!isDbRunning) return ctx.skip()
-    if (!isDbRunning) return ctx.skip()
+    it("should have RLS policy allowing users to view own audit logs", async ({ skip }) => {
+    if (!isDbRunning) return skip()
+    if (!isDbRunning) return skip()
         // This test verifies the policy exists by checking table structure
         // Full RLS testing requires authenticated user context
         const { data, error } = await supabase.from("audit_logs").select("*")
@@ -501,9 +489,9 @@ describe("Audit Logs Table Schema", () => {
      * Test: Indexes exist for fast queries
      * Validates that required indexes are created for common queries
      */
-    it("should support efficient queries by email, user_id, timestamp, and event_type", async (ctx) => {
-    if (!isDbRunning) return ctx.skip()
-    if (!isDbRunning) return ctx.skip()
+    it("should support efficient queries by email, user_id, timestamp, and event_type", async ({ skip }) => {
+    if (!isDbRunning) return skip()
+    if (!isDbRunning) return skip()
         // Insert test data
         const { data: inserted } = await supabase
             .from("audit_logs")

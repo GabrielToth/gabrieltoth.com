@@ -2,8 +2,8 @@
 import { describe, expect, it, vi } from "vitest"
 
 // Mock db module (in-memory) for imports
-vi.mock("@/lib/db", () => ({
-    db: {
+vi.mock("@/lib/orders-store", () => ({
+    ordersDb: {
         createOrder: async () => ({}),
         getOrderByTrackingCode: async () => ({}),
         getOrdersByWhatsApp: async () => [],

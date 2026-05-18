@@ -21,6 +21,7 @@ vi.mock("@/lib/discord", () => ({
 
 describe("api/contact route branches", () => {
     beforeEach(() => {
+        rateLimitCalls = 0
         vi.unstubAllEnvs()
         vi.restoreAllMocks()
     })
@@ -164,6 +165,7 @@ describe("api/contact route branches", () => {
     })
 
     it("returns 200 with Resend configured (mocked)", async () => {
+        rateLimitCalls = 0
         vi.resetModules()
         vi.stubEnv("RESEND_API_KEY", "x")
         vi.doMock("resend", () => ({

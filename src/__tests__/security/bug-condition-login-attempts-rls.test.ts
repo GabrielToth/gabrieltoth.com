@@ -1,20 +1,7 @@
-
+import { isSupabaseAvailable } from "@/test-utils/skip-without-supabase"
 import { createClient } from "@supabase/supabase-js"
+import { afterAll, beforeAll, describe, expect, it, vi } from "vitest"
 
-// Added by automated fix script to prevent CI crashes when DB is down
-let isDbRunning = true
-beforeAll(async () => {
-    try {
-        const client = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL || "http://127.0.0.1:54321", process.env.SUPABASE_SERVICE_ROLE_KEY || "test")
-        const { error } = await client.from("users").select("id").limit(1)
-        if (error && error.message && error.message.includes("fetch")) {
-            isDbRunning = false
-        }
-    } catch {
-        isDbRunning = false
-    }
-})
-import { vi } from "vitest"
 vi.unmock("@supabase/supabase-js")
 /**
  * Bug Condition Exploration Test: RLS Blocking Login Attempts
@@ -41,9 +28,13 @@ vi.unmock("@supabase/supabase-js")
  * EXPECTED OUTCOME: Test FAILS (insert is blocked by RLS) - this confirms rate limiting is broken
  */
 
-import { createClient } from "@supabase/supabase-js"
-
 describe("Bug Condition: RLS Blocking Login Attempts", () => {
+    let isDbRunning = true
+
+    beforeAll(async () => {
+        isDbRunning = await isSupabaseAvailable()
+    })
+
     const supabaseUrl =
         process.env.NEXT_PUBLIC_SUPABASE_URL || "http://127.0.0.1:54321"
     const supabaseAnonKey =
@@ -67,9 +58,8 @@ describe("Bug Condition: RLS Blocking Login Attempts", () => {
         }
     })
 
-    it("should allow system to insert login attempts for rate limiting", async (ctx) => {
-    if (!isDbRunning) return ctx.skip()
-    if (!isDbRunning) return ctx.skip()
+    it("should allow system to insert login attempts for rate limiting", async ({ skip }) => {
+    if (!isDbRunning) return skip()
         // Attempt to insert login attempt as anon user (simulating system operation)
         const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
@@ -138,9 +128,8 @@ describe("Bug Condition: RLS Blocking Login Attempts", () => {
         console.log(`   Created login attempt: ${testLoginAttemptId}`)
     })
 
-    it("should allow authenticated user to view their own login attempts", async (ctx) => {
-    if (!isDbRunning) return ctx.skip()
-    if (!isDbRunning) return ctx.skip()
+    it("should allow authenticated user to view their own login attempts", async ({ skip }) => {
+    if (!isDbRunning) return skip()
         // Create a test user and login attempt
         const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey)
 
@@ -247,9 +236,8 @@ describe("Bug Condition: RLS Blocking Login Attempts", () => {
         console.log(`   Found ${attempts.length} login attempt(s)`)
     })
 
-    it("should verify RLS policies exist for login_attempts table", async (ctx) => {
-    if (!isDbRunning) return ctx.skip()
-    if (!isDbRunning) return ctx.skip()
+    it("should verify RLS policies exist for login_attempts table", async ({ skip }) => {
+    if (!isDbRunning) return skip()
         // Query to check if RLS is enabled and policies exist
         const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey)
 

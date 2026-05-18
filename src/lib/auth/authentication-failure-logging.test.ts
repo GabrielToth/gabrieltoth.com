@@ -21,11 +21,13 @@ import {
 } from "./authentication-failure-logging"
 
 // Mock the database module
-vi.mock("@/lib/db", () => ({
-    db: {
-        query: vi.fn(),
-    },
-}))
+vi.mock("@/lib/db", () => {
+    const query = vi.fn()
+    const queryOne = vi.fn()
+    const queryMany = vi.fn()
+    const db = { query, queryOne, queryMany }
+    return { db, default: db, query, queryOne, queryMany }
+})
 
 // Mock the logger module
 vi.mock("@/lib/logger", () => ({
@@ -326,24 +328,24 @@ describe("Authentication Failure Logging", () => {
                     timestamp: "2024-01-15T10:30:00Z",
                 },
             ]
-            const mockQuery = vi.fn().mockResolvedValue({ rows: mockRows })
-            vi.mocked(db.db.query).mockImplementation(mockQuery)
+            const mockQueryMany = vi.fn().mockResolvedValue(mockRows)
+            vi.mocked(db.db.queryMany).mockImplementation(mockQueryMany)
 
             const results =
                 await getRecentAuthFailuresForEmail("user@example.com")
 
             expect(results).toEqual(mockRows)
-            expect(mockQuery).toHaveBeenCalledWith(
+            expect(mockQueryMany).toHaveBeenCalledWith(
                 expect.stringContaining("SELECT id, event_type"),
                 expect.arrayContaining(["user@example.com"])
             )
         })
 
         it("should return empty array on error", async () => {
-            const mockQuery = vi
+            const mockQueryMany = vi
                 .fn()
                 .mockRejectedValue(new Error("Database error"))
-            vi.mocked(db.db.query).mockImplementation(mockQuery)
+            vi.mocked(db.db.queryMany).mockImplementation(mockQueryMany)
 
             const results =
                 await getRecentAuthFailuresForEmail("user@example.com")
@@ -366,13 +368,13 @@ describe("Authentication Failure Logging", () => {
                     timestamp: "2024-01-15T10:30:00Z",
                 },
             ]
-            const mockQuery = vi.fn().mockResolvedValue({ rows: mockRows })
-            vi.mocked(db.db.query).mockImplementation(mockQuery)
+            const mockQueryMany = vi.fn().mockResolvedValue(mockRows)
+            vi.mocked(db.db.queryMany).mockImplementation(mockQueryMany)
 
             const results = await getRecentAuthFailuresForIP("192.168.1.1")
 
             expect(results).toEqual(mockRows)
-            expect(mockQuery).toHaveBeenCalledWith(
+            expect(mockQueryMany).toHaveBeenCalledWith(
                 expect.stringContaining("SELECT id, event_type"),
                 expect.arrayContaining(["192.168.1.1"])
             )
@@ -381,27 +383,26 @@ describe("Authentication Failure Logging", () => {
 
     describe("getAuthFailureStatistics", () => {
         it("should retrieve authentication failure statistics", async () => {
-            const mockQuery = vi.fn()
+            const mockQueryOne = vi
+                .fn()
+                .mockResolvedValueOnce({ count: "100" })
+                .mockResolvedValueOnce({ count: "50" })
+                .mockResolvedValueOnce({ count: "10" })
+            const mockQueryMany = vi
+                .fn()
+                .mockResolvedValueOnce([
+                    { error_code: "invalid_credentials", count: "80" },
+                    { error_code: "rate_limit_exceeded", count: "20" },
+                ])
+                .mockResolvedValueOnce([
+                    { email: "attacker@example.com", count: "50" },
+                ])
+                .mockResolvedValueOnce([
+                    { ip_address: "192.168.1.1", count: "30" },
+                ])
 
-            // Mock responses for each query
-            mockQuery
-                .mockResolvedValueOnce({ rows: [{ count: 100 }] }) // total failures
-                .mockResolvedValueOnce({ rows: [{ count: 50 }] }) // unique emails
-                .mockResolvedValueOnce({ rows: [{ count: 10 }] }) // unique IPs
-                .mockResolvedValueOnce({
-                    rows: [
-                        { error_code: "invalid_credentials", count: 80 },
-                        { error_code: "rate_limit_exceeded", count: 20 },
-                    ],
-                }) // failures by type
-                .mockResolvedValueOnce({
-                    rows: [{ email: "attacker@example.com", count: 50 }],
-                }) // top emails
-                .mockResolvedValueOnce({
-                    rows: [{ ip_address: "192.168.1.1", count: 30 }],
-                }) // top IPs
-
-            vi.mocked(db.db.query).mockImplementation(mockQuery)
+            vi.mocked(db.db.queryOne).mockImplementation(mockQueryOne)
+            vi.mocked(db.db.queryMany).mockImplementation(mockQueryMany)
 
             const stats = await getAuthFailureStatistics(24)
 
@@ -415,10 +416,10 @@ describe("Authentication Failure Logging", () => {
         })
 
         it("should return empty statistics on error", async () => {
-            const mockQuery = vi
+            const mockQueryOne = vi
                 .fn()
                 .mockRejectedValue(new Error("Database error"))
-            vi.mocked(db.db.query).mockImplementation(mockQuery)
+            vi.mocked(db.db.queryOne).mockImplementation(mockQueryOne)
 
             const stats = await getAuthFailureStatistics(24)
 

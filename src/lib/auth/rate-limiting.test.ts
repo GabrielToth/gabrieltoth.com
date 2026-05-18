@@ -13,11 +13,13 @@ import {
 } from "./rate-limiting"
 
 // Mock the database module
-vi.mock("@/lib/db", () => ({
-    query: vi.fn(),
-    queryOne: vi.fn(),
-    queryMany: vi.fn(),
-}))
+vi.mock("@/lib/db", () => {
+    const query = vi.fn()
+    const queryOne = vi.fn()
+    const queryMany = vi.fn()
+    const db = { query, queryOne, queryMany }
+    return { db, default: db, query, queryOne, queryMany }
+})
 
 // Mock the logger
 vi.mock("@/lib/logger", () => ({

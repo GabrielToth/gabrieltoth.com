@@ -3,7 +3,7 @@
  * Maintains a complete audit trail of all authentication-related events
  */
 
-import { db } from "@/lib/db/index"
+import { db } from "@/lib/db"
 import { logger } from "@/lib/logger"
 
 const { query, queryOne } = db

@@ -8,8 +8,11 @@ import { CreditSystemImpl } from "../lib/credits/credit-system"
 import { createDiscordAlerter } from "../lib/discord/alerter"
 import { MeteringSystemImpl } from "../lib/metering"
 import { createShutdownHandler } from "../lib/shutdown"
+import { isPostgresAvailable } from "@/test-utils/requires-postgres"
 
-describe("Integration Tests", () => {
+const postgresAvailable = await isPostgresAvailable()
+
+describe.skipIf(!postgresAvailable)("Integration Tests", () => {
     let pool: Pool
     let redis: Redis
     let creditSystem: CreditSystemImpl

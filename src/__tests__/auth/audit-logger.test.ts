@@ -20,12 +20,13 @@ import * as db from "@/lib/db"
 import { beforeEach, describe, expect, it, vi } from "vitest"
 
 // Mock the database module
-vi.mock("@/lib/db", () => ({
-    db: {
-        query: vi.fn(),
-        queryOne: vi.fn(),
-    },
-}))
+vi.mock("@/lib/db", () => {
+    const query = vi.fn()
+    const queryOne = vi.fn()
+    const queryMany = vi.fn()
+    const db = { query, queryOne, queryMany }
+    return { db, default: db, query, queryOne, queryMany }
+})
 
 // Mock the logger
 vi.mock("@/lib/logger", () => ({
@@ -376,7 +377,7 @@ describe("Audit Logger", () => {
 
     describe("exportAuditLogs", () => {
         it("should export all audit logs without filters", async () => {
-            const mockQuery = vi.mocked(db.db.query)
+            const mockQueryMany = vi.mocked(db.db.queryMany)
             const mockLogs = [
                 {
                     id: "log-1",
@@ -390,7 +391,7 @@ describe("Audit Logger", () => {
                 },
             ]
 
-            mockQuery.mockResolvedValueOnce({ rows: mockLogs } as any)
+            mockQueryMany.mockResolvedValueOnce(mockLogs)
 
             const logs = await exportAuditLogs()
 
@@ -399,71 +400,71 @@ describe("Audit Logger", () => {
         })
 
         it("should export logs filtered by date range", async () => {
-            const mockQuery = vi.mocked(db.db.query)
-            mockQuery.mockResolvedValueOnce({ rows: [] } as any)
+            const mockQueryMany = vi.mocked(db.db.queryMany)
+            mockQueryMany.mockResolvedValueOnce([])
 
             const startDate = new Date("2025-01-01")
             const endDate = new Date("2025-01-31")
 
             await exportAuditLogs({ startDate, endDate })
 
-            expect(mockQuery).toHaveBeenCalledWith(
+            expect(mockQueryMany).toHaveBeenCalledWith(
                 expect.stringContaining("created_at >= $1"),
                 expect.arrayContaining([startDate, endDate])
             )
         })
 
         it("should export logs filtered by event type", async () => {
-            const mockQuery = vi.mocked(db.db.query)
-            mockQuery.mockResolvedValueOnce({ rows: [] } as any)
+            const mockQueryMany = vi.mocked(db.db.queryMany)
+            mockQueryMany.mockResolvedValueOnce([])
 
             await exportAuditLogs({ eventType: "LOGIN_FAILED" })
 
-            expect(mockQuery).toHaveBeenCalledWith(
+            expect(mockQueryMany).toHaveBeenCalledWith(
                 expect.stringContaining("event_type = $"),
                 expect.arrayContaining(["LOGIN_FAILED"])
             )
         })
 
         it("should export logs filtered by userId", async () => {
-            const mockQuery = vi.mocked(db.db.query)
-            mockQuery.mockResolvedValueOnce({ rows: [] } as any)
+            const mockQueryMany = vi.mocked(db.db.queryMany)
+            mockQueryMany.mockResolvedValueOnce([])
 
             await exportAuditLogs({ userId: "user-123" })
 
-            expect(mockQuery).toHaveBeenCalledWith(
+            expect(mockQueryMany).toHaveBeenCalledWith(
                 expect.stringContaining("user_id = $"),
                 expect.arrayContaining(["user-123"])
             )
         })
 
         it("should export logs filtered by email", async () => {
-            const mockQuery = vi.mocked(db.db.query)
-            mockQuery.mockResolvedValueOnce({ rows: [] } as any)
+            const mockQueryMany = vi.mocked(db.db.queryMany)
+            mockQueryMany.mockResolvedValueOnce([])
 
             await exportAuditLogs({ email: "user@example.com" })
 
-            expect(mockQuery).toHaveBeenCalledWith(
+            expect(mockQueryMany).toHaveBeenCalledWith(
                 expect.stringContaining("email = $"),
                 expect.arrayContaining(["user@example.com"])
             )
         })
 
         it("should respect limit parameter", async () => {
-            const mockQuery = vi.mocked(db.db.query)
-            mockQuery.mockResolvedValueOnce({ rows: [] } as any)
+            const mockQueryMany = vi.mocked(db.db.queryMany)
+            mockQueryMany.mockResolvedValueOnce([])
 
             await exportAuditLogs({ limit: 50 })
 
-            expect(mockQuery).toHaveBeenCalledWith(
+            expect(mockQueryMany).toHaveBeenCalledWith(
                 expect.stringContaining("LIMIT"),
                 expect.arrayContaining([50])
             )
         })
 
         it("should combine multiple filters", async () => {
-            const mockQuery = vi.mocked(db.db.query)
-            mockQuery.mockResolvedValueOnce({ rows: [] } as any)
+            const mockQueryMany = vi.mocked(db.db.queryMany)
+            mockQueryMany.mockResolvedValueOnce([])
 
             const startDate = new Date("2025-01-01")
 
@@ -474,7 +475,7 @@ describe("Audit Logger", () => {
                 limit: 100,
             })
 
-            const callArgs = mockQuery.mock.calls[0]
+            const callArgs = mockQueryMany.mock.calls[0]
             const sql = callArgs[0] as string
             const params = callArgs[1]
 
@@ -489,8 +490,8 @@ describe("Audit Logger", () => {
         })
 
         it("should handle database errors", async () => {
-            const mockQuery = vi.mocked(db.db.query)
-            mockQuery.mockRejectedValueOnce(new Error("Database error"))
+            const mockQueryMany = vi.mocked(db.db.queryMany)
+            mockQueryMany.mockRejectedValueOnce(new Error("Database error"))
 
             await expect(exportAuditLogs()).rejects.toThrow("Database error")
         })
@@ -541,7 +542,7 @@ describe("Audit Logger", () => {
 
     describe("getUserAuditLogs", () => {
         it("should retrieve audit logs for a user", async () => {
-            const mockQuery = vi.mocked(db.db.query)
+            const mockQueryMany = vi.mocked(db.db.queryMany)
             const mockLogs = [
                 {
                     id: "log-1",
@@ -555,7 +556,7 @@ describe("Audit Logger", () => {
                 },
             ]
 
-            mockQuery.mockResolvedValueOnce({ rows: mockLogs } as any)
+            mockQueryMany.mockResolvedValueOnce(mockLogs)
 
             const logs = await getUserAuditLogs("user-123")
 
@@ -564,20 +565,20 @@ describe("Audit Logger", () => {
         })
 
         it("should respect the limit parameter", async () => {
-            const mockQuery = vi.mocked(db.db.query)
-            mockQuery.mockResolvedValueOnce({ rows: [] } as any)
+            const mockQueryMany = vi.mocked(db.db.queryMany)
+            mockQueryMany.mockResolvedValueOnce([])
 
             await getUserAuditLogs("user-123", 50)
 
-            expect(mockQuery).toHaveBeenCalledWith(
+            expect(mockQueryMany).toHaveBeenCalledWith(
                 expect.stringContaining("LIMIT"),
                 expect.arrayContaining(["user-123", 50])
             )
         })
 
         it("should handle database errors", async () => {
-            const mockQuery = vi.mocked(db.db.query)
-            mockQuery.mockRejectedValueOnce(new Error("Database error"))
+            const mockQueryMany = vi.mocked(db.db.queryMany)
+            mockQueryMany.mockRejectedValueOnce(new Error("Database error"))
 
             await expect(getUserAuditLogs("user-123")).rejects.toThrow(
                 "Database error"
@@ -587,7 +588,7 @@ describe("Audit Logger", () => {
 
     describe("getAuditLogsByEventType", () => {
         it("should retrieve audit logs by event type", async () => {
-            const mockQuery = vi.mocked(db.db.query)
+            const mockQueryMany = vi.mocked(db.db.queryMany)
             const mockLogs = [
                 {
                     id: "log-1",
@@ -601,7 +602,7 @@ describe("Audit Logger", () => {
                 },
             ]
 
-            mockQuery.mockResolvedValueOnce({ rows: mockLogs } as any)
+            mockQueryMany.mockResolvedValueOnce(mockLogs)
 
             const logs = await getAuditLogsByEventType("LOGIN_FAILED")
 
@@ -610,8 +611,8 @@ describe("Audit Logger", () => {
         })
 
         it("should handle database errors", async () => {
-            const mockQuery = vi.mocked(db.db.query)
-            mockQuery.mockRejectedValueOnce(new Error("Database error"))
+            const mockQueryMany = vi.mocked(db.db.queryMany)
+            mockQueryMany.mockRejectedValueOnce(new Error("Database error"))
 
             await expect(
                 getAuditLogsByEventType("LOGIN_FAILED")
@@ -621,7 +622,7 @@ describe("Audit Logger", () => {
 
     describe("getRecentSecurityEvents", () => {
         it("should retrieve recent security events", async () => {
-            const mockQuery = vi.mocked(db.db.query)
+            const mockQueryMany = vi.mocked(db.db.queryMany)
             const mockEvents = [
                 {
                     id: "log-1",
@@ -635,7 +636,7 @@ describe("Audit Logger", () => {
                 },
             ]
 
-            mockQuery.mockResolvedValueOnce({ rows: mockEvents } as any)
+            mockQueryMany.mockResolvedValueOnce(mockEvents)
 
             const events = await getRecentSecurityEvents()
 
@@ -644,20 +645,20 @@ describe("Audit Logger", () => {
         })
 
         it("should filter by time window", async () => {
-            const mockQuery = vi.mocked(db.db.query)
-            mockQuery.mockResolvedValueOnce({ rows: [] } as any)
+            const mockQueryMany = vi.mocked(db.db.queryMany)
+            mockQueryMany.mockResolvedValueOnce([])
 
             await getRecentSecurityEvents(48)
 
-            expect(mockQuery).toHaveBeenCalledWith(
+            expect(mockQueryMany).toHaveBeenCalledWith(
                 expect.stringContaining("created_at > $1"),
                 expect.any(Array)
             )
         })
 
         it("should handle database errors", async () => {
-            const mockQuery = vi.mocked(db.db.query)
-            mockQuery.mockRejectedValueOnce(new Error("Database error"))
+            const mockQueryMany = vi.mocked(db.db.queryMany)
+            mockQueryMany.mockRejectedValueOnce(new Error("Database error"))
 
             await expect(getRecentSecurityEvents()).rejects.toThrow(
                 "Database error"
@@ -667,7 +668,7 @@ describe("Audit Logger", () => {
 
     describe("getFailedLoginsByIP", () => {
         it("should retrieve failed login attempts for an IP", async () => {
-            const mockQuery = vi.mocked(db.db.query)
+            const mockQueryMany = vi.mocked(db.db.queryMany)
             const mockLogs = [
                 {
                     id: "log-1",
@@ -681,7 +682,7 @@ describe("Audit Logger", () => {
                 },
             ]
 
-            mockQuery.mockResolvedValueOnce({ rows: mockLogs } as any)
+            mockQueryMany.mockResolvedValueOnce(mockLogs)
 
             const logs = await getFailedLoginsByIP("192.168.1.1")
 
@@ -690,20 +691,20 @@ describe("Audit Logger", () => {
         })
 
         it("should filter by time window", async () => {
-            const mockQuery = vi.mocked(db.db.query)
-            mockQuery.mockResolvedValueOnce({ rows: [] } as any)
+            const mockQueryMany = vi.mocked(db.db.queryMany)
+            mockQueryMany.mockResolvedValueOnce([])
 
             await getFailedLoginsByIP("192.168.1.1", 2)
 
-            expect(mockQuery).toHaveBeenCalledWith(
+            expect(mockQueryMany).toHaveBeenCalledWith(
                 expect.stringContaining("created_at > $2"),
                 expect.any(Array)
             )
         })
 
         it("should handle database errors", async () => {
-            const mockQuery = vi.mocked(db.db.query)
-            mockQuery.mockRejectedValueOnce(new Error("Database error"))
+            const mockQueryMany = vi.mocked(db.db.queryMany)
+            mockQueryMany.mockRejectedValueOnce(new Error("Database error"))
 
             await expect(getFailedLoginsByIP("192.168.1.1")).rejects.toThrow(
                 "Database error"

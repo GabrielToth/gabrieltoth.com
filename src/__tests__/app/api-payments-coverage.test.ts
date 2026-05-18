@@ -36,8 +36,8 @@ vi.mock("@/lib/pix", () => ({
     generateTrackingCode: vi.fn(() => "TRACK-TEST"),
 }))
 
-vi.mock("@/lib/db", () => ({
-    db: {
+vi.mock("@/lib/orders-store", () => ({
+    ordersDb: {
         createOrder: vi.fn(async (o: any) => ({
             id: "1",
             tracking_code: o.tracking_code,

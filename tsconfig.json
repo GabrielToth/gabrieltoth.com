@@ -31,9 +31,6 @@
     ],
     "exclude": [
         "node_modules",
-        "src/**/__tests__/**",
-        "src/**/*.test.ts",
-        "src/**/*.test.tsx",
         "src/**/*.spec.ts",
         "src/**/*.spec.tsx",
         "src/**/*.stories.ts",
@@ -48,6 +45,7 @@
         "scripts/**",
         "src/lib/logger/pino-logger.ts",
         "src/lib/logger/pino-logger.test.ts",
+        "src/test-utils/**",
         "tests/**"
     ]
 }

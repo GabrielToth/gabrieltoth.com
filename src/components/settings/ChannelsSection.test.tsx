@@ -11,6 +11,12 @@ vi.mock("@/components/ui/icon", () => ({
     ),
 }))
 
+vi.mock("@/components/ui/dynamic-icon", () => ({
+    DynamicIcon: ({ name }: { name: string }) => (
+        <div data-testid={`dynamic-icon-${name}`}>{name}</div>
+    ),
+}))
+
 describe("ChannelsSection", () => {
     const mockChannels: SocialChannel[] = [
         {

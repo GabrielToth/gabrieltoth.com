@@ -21,9 +21,9 @@ describe("Discord Alerter Properties", () => {
     // Feature: distributed-infrastructure-logging, Property 11: Alert level filtering
     // **Validates: Requirements 3.1**
     describe("Property 11: Alert level filtering", () => {
-        it("should only accept valid alert levels", () => {
-            fc.assert(
-                fc.property(
+        it("should only accept valid alert levels", async () => {
+            await fc.assert(
+                fc.asyncProperty(
                     fc.constantFrom<AlertLevel>(
                         "error",
                         "fatal",
@@ -104,9 +104,9 @@ describe("Discord Alerter Properties", () => {
     // Feature: distributed-infrastructure-logging, Property 13: Discord embed formatting
     // **Validates: Requirements 3.4**
     describe("Property 13: Discord embed formatting", () => {
-        it("should format alerts as Discord embeds with correct color coding", () => {
-            fc.assert(
-                fc.property(
+        it("should format alerts as Discord embeds with correct color coding", async () => {
+            await fc.assert(
+                fc.asyncProperty(
                     fc.record({
                         level: fc.constantFrom<AlertLevel>(
                             "error",
@@ -118,6 +118,7 @@ describe("Discord Alerter Properties", () => {
                         message: fc.string(),
                     }),
                     async ({ level, title, message }) => {
+                        mockFetch.mockClear()
                         const alerter = new DiscordAlerterImpl(
                             "https://discord.com/api/webhooks/test"
                         )
@@ -126,11 +127,8 @@ describe("Discord Alerter Properties", () => {
                         await alerter.sendAlert(alert)
 
                         // Verify fetch was called with correct structure
-                        expect(mockFetch).toHaveBeenCalled()
-                        const callArgs =
-                            mockFetch.mock.calls[
-                                mockFetch.mock.calls.length - 1
-                            ]
+                        expect(mockFetch).toHaveBeenCalledTimes(1)
+                        const callArgs = mockFetch.mock.calls[0]
                         const body = JSON.parse(callArgs[1].body)
 
                         expect(body.embeds).toBeDefined()
@@ -157,14 +155,15 @@ describe("Discord Alerter Properties", () => {
     // Feature: distributed-infrastructure-logging, Property 14: Stack traces in critical alerts
     // **Validates: Requirements 3.5**
     describe("Property 14: Stack traces in critical alerts", () => {
-        it("should include stack traces in embeds when provided", () => {
-            fc.assert(
-                fc.property(
+        it("should include stack traces in embeds when provided", async () => {
+            await fc.assert(
+                fc.asyncProperty(
                     fc.constantFrom<AlertLevel>("error", "fatal"),
-                    fc.string(),
-                    fc.string(),
-                    fc.string(),
+                    fc.string({ minLength: 1 }),
+                    fc.string({ minLength: 1 }),
+                    fc.string({ minLength: 1 }),
                     async (level, title, message, stack) => {
+                        mockFetch.mockClear()
                         const alerter = new DiscordAlerterImpl(
                             "https://discord.com/api/webhooks/test"
                         )
@@ -172,10 +171,8 @@ describe("Discord Alerter Properties", () => {
 
                         await alerter.sendAlert(alert)
 
-                        const callArgs =
-                            mockFetch.mock.calls[
-                                mockFetch.mock.calls.length - 1
-                            ]
+                        expect(mockFetch).toHaveBeenCalledTimes(1)
+                        const callArgs = mockFetch.mock.calls[0]
                         const body = JSON.parse(callArgs[1].body)
 
                         // Should have a field for stack trace
@@ -197,7 +194,7 @@ describe("Discord Alerter Properties", () => {
     // **Validates: Requirements 3.7**
     describe("Property 15: Non-blocking alert failures", () => {
         it("should not throw when webhook fails", async () => {
-            mockFetch.mockRejectedValue(new Error("Network error"))
+            mockFetch.mockRejectedValueOnce(new Error("Network error"))
 
             const alerter = new DiscordAlerterImpl(
                 "https://discord.com/api/webhooks/test"
@@ -213,7 +210,7 @@ describe("Discord Alerter Properties", () => {
         })
 
         it("should not throw when webhook returns error status", async () => {
-            mockFetch.mockResolvedValue({
+            mockFetch.mockResolvedValueOnce({
                 ok: false,
                 status: 500,
             })
@@ -395,11 +392,16 @@ describe("Discord Alerter Properties", () => {
                 })
             }
 
-            // Wait for cleanup
+            // Wait for entries to expire, then trigger cleanup via a new alert
             await new Promise(resolve => setTimeout(resolve, 150))
+            await alerter.sendAlert({
+                level: "error",
+                title: "Cleanup trigger",
+                message: "Message",
+            })
 
-            // Rate limiter should have cleaned up old entries
-            expect(rateLimiter.size()).toBeLessThan(10)
+            // Expired entries should be removed; only the latest key remains
+            expect(rateLimiter.size()).toBe(1)
         })
     })
 })

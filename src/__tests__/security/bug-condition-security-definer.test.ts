@@ -1,20 +1,7 @@
-
+import { isSupabaseAvailable } from "@/test-utils/skip-without-supabase"
 import { createClient } from "@supabase/supabase-js"
+import { afterAll, beforeAll, describe, expect, it, vi } from "vitest"
 
-// Added by automated fix script to prevent CI crashes when DB is down
-let isDbRunning = true
-beforeAll(async () => {
-    try {
-        const client = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL || "http://127.0.0.1:54321", process.env.SUPABASE_SERVICE_ROLE_KEY || "test")
-        const { error } = await client.from("users").select("id").limit(1)
-        if (error && error.message && error.message.includes("fetch")) {
-            isDbRunning = false
-        }
-    } catch {
-        isDbRunning = false
-    }
-})
-import { vi } from "vitest"
 vi.unmock("@supabase/supabase-js")
 /**
  * Bug Condition Exploration Test: SECURITY DEFINER Function Exposure
@@ -44,18 +31,21 @@ vi.unmock("@supabase/supabase-js")
  *                   OR test PASSES if function doesn't exist (no bug)
  */
 
-import { createClient } from "@supabase/supabase-js"
-
 describe("Bug Condition: SECURITY DEFINER Function Exposure", () => {
+    let isDbRunning = true
+
+    beforeAll(async () => {
+        isDbRunning = await isSupabaseAvailable()
+    })
+
     const supabaseUrl =
         process.env.NEXT_PUBLIC_SUPABASE_URL || "http://127.0.0.1:54321"
     const supabaseAnonKey =
         process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0"
 
-    it("should verify rls_auto_enable() function does not exist or is not accessible to anon role", async (ctx) => {
-    if (!isDbRunning) return ctx.skip()
-    if (!isDbRunning) return ctx.skip()
+    it("should verify rls_auto_enable() function does not exist or is not accessible to anon role", async ({ skip }) => {
+    if (!isDbRunning) return skip()
         // Create Supabase client with anon key (unauthenticated user)
         const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
@@ -94,9 +84,8 @@ describe("Bug Condition: SECURITY DEFINER Function Exposure", () => {
         }
     })
 
-    it("should verify rls_auto_enable() function is not accessible via REST API endpoint", async (ctx) => {
-    if (!isDbRunning) return ctx.skip()
-    if (!isDbRunning) return ctx.skip()
+    it("should verify rls_auto_enable() function is not accessible via REST API endpoint", async ({ skip }) => {
+    if (!isDbRunning) return skip()
         // Attempt to call the function via REST API as unauthenticated user
         const response = await fetch(
             `${supabaseUrl}/rest/v1/rpc/rls_auto_enable`,
@@ -137,9 +126,8 @@ describe("Bug Condition: SECURITY DEFINER Function Exposure", () => {
         )
     })
 
-    it("should document the bug condition if function exists", async (ctx) => {
-    if (!isDbRunning) return ctx.skip()
-    if (!isDbRunning) return ctx.skip()
+    it("should document the bug condition if function exists", async ({ skip }) => {
+    if (!isDbRunning) return skip()
         // This test documents the bug condition for reference
         const supabase = createClient(supabaseUrl, supabaseAnonKey)
 

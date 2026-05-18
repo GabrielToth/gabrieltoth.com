@@ -1,13 +1,16 @@
 // Credit System Property-Based Tests
 // Feature: distributed-infrastructure-logging
 
+import { isPostgresAvailable } from "@/test-utils/requires-postgres"
 import fc from "fast-check"
 import { Pool } from "pg"
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from "vitest"
 import { CreditSystemImpl } from "./credit-system"
 
+const postgresAvailable = await isPostgresAvailable()
+
 // Note: These are integration tests that require a running PostgreSQL instance
-describe("Credit System Properties", () => {
+describe.skipIf(!postgresAvailable)("Credit System Properties", () => {
     let pool: Pool
     let creditSystem: CreditSystemImpl
     const testDbUrl =
@@ -15,16 +18,23 @@ describe("Credit System Properties", () => {
         "postgres://platform:devpassword@localhost:5432/platform_test"
 
     beforeAll(async () => {
+        if (!(await isPostgresAvailable())) {
+            return
+        }
         pool = new Pool({ connectionString: testDbUrl })
         creditSystem = new CreditSystemImpl(pool)
     })
 
     afterAll(async () => {
-        await pool.end()
+        if (pool) {
+            await pool.end()
+        }
     })
 
     beforeEach(async () => {
-        // Clean up test data
+        if (!pool) {
+            return
+        }
         await pool.query("DELETE FROM transactions WHERE user_id LIKE 'test-%'")
         await pool.query(
             "DELETE FROM user_accounts WHERE user_id LIKE 'test-%'"
@@ -34,8 +44,8 @@ describe("Credit System Properties", () => {
     // Feature: distributed-infrastructure-logging, Property 19: Insufficient balance rejection
     // **Validates: Requirements 4.2**
     describe("Property 19: Insufficient balance rejection", () => {
-        it("should reject debit when amount exceeds balance", () => {
-            fc.assert(
+        it("should reject debit when amount exceeds balance", async () => {
+            await fc.assert(
                 fc.asyncProperty(
                     fc.uuid(),
                     fc.integer({ min: 1, max: 100 }),
@@ -74,8 +84,8 @@ describe("Credit System Properties", () => {
     // Feature: distributed-infrastructure-logging, Property 20: Balance non-negativity invariant
     // **Validates: Requirements 4.4**
     describe("Property 20: Balance non-negativity invariant", () => {
-        it("should never allow negative balance", () => {
-            fc.assert(
+        it("should never allow negative balance", async () => {
+            await fc.assert(
                 fc.asyncProperty(
                     fc.uuid(),
                     fc.array(
@@ -119,8 +129,8 @@ describe("Credit System Properties", () => {
     // Feature: distributed-infrastructure-logging, Property 21: Transaction logging completeness
     // **Validates: Requirements 4.5**
     describe("Property 21: Transaction logging completeness", () => {
-        it("should log all transaction details", () => {
-            fc.assert(
+        it("should log all transaction details", async () => {
+            await fc.assert(
                 fc.asyncProperty(
                     fc.uuid(),
                     fc.integer({ min: 1, max: 100 }),
@@ -192,8 +202,8 @@ describe("Credit System Properties", () => {
     // Feature: distributed-infrastructure-logging, Property 23: Transaction history persistence
     // **Validates: Requirements 4.8**
     describe("Property 23: Transaction history persistence", () => {
-        it("should persist all transaction details", () => {
-            fc.assert(
+        it("should persist all transaction details", async () => {
+            await fc.assert(
                 fc.asyncProperty(
                     fc.uuid(),
                     fc.array(fc.integer({ min: 1, max: 50 }), {

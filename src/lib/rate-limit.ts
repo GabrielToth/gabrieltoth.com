@@ -10,6 +10,11 @@ export interface RateLimitResult {
 
 let ratelimit: Ratelimit | null = null
 
+/** @internal Test-only reset for module singleton */
+export function resetRateLimiterForTests(): void {
+    ratelimit = null
+}
+
 function getRatelimiter(): Ratelimit | null {
     try {
         if (ratelimit) return ratelimit

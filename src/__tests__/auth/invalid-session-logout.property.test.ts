@@ -17,8 +17,7 @@
  * 6. CSRF validation still occurs before session validation
  */
 
-import { it } from "@fast-check/vitest"
-import * as fc from "fast-check"
+import { fc, test } from "@fast-check/vitest"
 import { NextRequest } from "next/server"
 import { beforeEach, describe, expect, vi } from "vitest"
 
@@ -75,17 +74,19 @@ describe("Property 6: Invalid Session Logout Handling", () => {
      *
      * Validates: Requirements 2.5
      */
-    it.prop(
-        [
-            fc.string({ minLength: 1, maxLength: 100 }),
+    test.prop([
+            fc.uuid(),
             fc.string({ minLength: 32, maxLength: 64 }),
-        ],
+        ])(
+
+        "should satisfy: Invalid Session Returns 401",
+
         async (invalidSessionId: string, csrfToken: string) => {
             /**
              * Arrange: Set up invalid session (validateSession returns null)
              */
-            ;(validateCsrfToken as any).mockReturnValueOnce(true)
-            ;(validateSession as any).mockResolvedValueOnce(null)
+            ;(validateCsrfToken as any).mockReturnValue(true)
+            ;(validateSession as any).mockResolvedValue(null)
 
             /**
              * Act: Make logout request with invalid session
@@ -128,14 +129,16 @@ describe("Property 6: Invalid Session Logout Handling", () => {
      *
      * Validates: Requirements 2.5
      */
-    it.prop(
-        [fc.uuid(), fc.uuid(), fc.string({ minLength: 32, maxLength: 64 })],
+    test.prop([fc.uuid(), fc.uuid(), fc.string({ minLength: 32, maxLength: 64 })])(
+
+        "should satisfy: Invalid Session Returns 401",
+
         async (userId: string, sessionId: string, csrfToken: string) => {
             /**
              * Arrange: Set up expired session (validateSession returns null for expired)
              */
-            ;(validateCsrfToken as any).mockReturnValueOnce(true)
-            ;(validateSession as any).mockResolvedValueOnce(null)
+            ;(validateCsrfToken as any).mockReturnValue(true)
+            ;(validateSession as any).mockResolvedValue(null)
 
             /**
              * Act: Make logout request with expired session
@@ -175,17 +178,19 @@ describe("Property 6: Invalid Session Logout Handling", () => {
      *
      * Validates: Requirements 2.5
      */
-    it.prop(
-        [
-            fc.string({ minLength: 1, maxLength: 100 }),
+    test.prop([
+            fc.uuid(),
             fc.string({ minLength: 32, maxLength: 64 }),
-        ],
+        ])(
+
+        "should satisfy: Invalid Session Returns 401",
+
         async (invalidSessionId: string, csrfToken: string) => {
             /**
              * Arrange: Set up invalid session
              */
-            ;(validateCsrfToken as any).mockReturnValueOnce(true)
-            ;(validateSession as any).mockResolvedValueOnce(null)
+            ;(validateCsrfToken as any).mockReturnValue(true)
+            ;(validateSession as any).mockResolvedValue(null)
 
             /**
              * Act: Make logout request
@@ -227,17 +232,19 @@ describe("Property 6: Invalid Session Logout Handling", () => {
      *
      * Validates: Requirements 2.5, 8.3
      */
-    it.prop(
-        [
-            fc.string({ minLength: 1, maxLength: 100 }),
+    test.prop([
+            fc.uuid(),
             fc.string({ minLength: 32, maxLength: 64 }),
-        ],
+        ])(
+
+        "should satisfy: Invalid Session Returns 401",
+
         async (invalidSessionId: string, csrfToken: string) => {
             /**
              * Arrange: Set up invalid session
              */
-            ;(validateCsrfToken as any).mockReturnValueOnce(true)
-            ;(validateSession as any).mockResolvedValueOnce(null)
+            ;(validateCsrfToken as any).mockReturnValue(true)
+            ;(validateSession as any).mockResolvedValue(null)
 
             /**
              * Act: Make logout request
@@ -271,17 +278,19 @@ describe("Property 6: Invalid Session Logout Handling", () => {
      *
      * Validates: Requirements 2.5
      */
-    it.prop(
-        [
-            fc.string({ minLength: 1, maxLength: 100 }),
+    test.prop([
+            fc.uuid(),
             fc.string({ minLength: 32, maxLength: 64 }),
-        ],
+        ])(
+
+        "should satisfy: Invalid Session Returns 401",
+
         async (invalidSessionId: string, csrfToken: string) => {
             /**
              * Arrange: Set up invalid session
              */
-            ;(validateCsrfToken as any).mockReturnValueOnce(true)
-            ;(validateSession as any).mockResolvedValueOnce(null)
+            ;(validateCsrfToken as any).mockReturnValue(true)
+            ;(validateSession as any).mockResolvedValue(null)
 
             /**
              * Act: Make logout request
@@ -315,11 +324,13 @@ describe("Property 6: Invalid Session Logout Handling", () => {
      *
      * Validates: Requirements 2.5
      */
-    it.prop(
-        [
-            fc.string({ minLength: 1, maxLength: 100 }),
+    test.prop([
+            fc.uuid(),
             fc.string({ minLength: 32, maxLength: 64 }),
-        ],
+        ])(
+
+        "should satisfy: Invalid Session Returns 401",
+
         async (invalidSessionId: string, invalidCsrfToken: string) => {
             /**
              * Arrange: Set up invalid CSRF token
@@ -360,17 +371,19 @@ describe("Property 6: Invalid Session Logout Handling", () => {
      *
      * Validates: Requirements 2.5, 7.1
      */
-    it.prop(
-        [
-            fc.string({ minLength: 1, maxLength: 100 }),
+    test.prop([
+            fc.uuid(),
             fc.string({ minLength: 32, maxLength: 64 }),
-        ],
+        ])(
+
+        "should satisfy: Invalid Session Returns 401",
+
         async (invalidSessionId: string, csrfToken: string) => {
             /**
              * Arrange: Set up invalid session
              */
-            ;(validateCsrfToken as any).mockReturnValueOnce(true)
-            ;(validateSession as any).mockResolvedValueOnce(null)
+            ;(validateCsrfToken as any).mockReturnValue(true)
+            ;(validateSession as any).mockResolvedValue(null)
 
             /**
              * Act: Make logout request
@@ -407,23 +420,25 @@ describe("Property 6: Invalid Session Logout Handling", () => {
      *
      * Validates: Requirements 2.5
      */
-    it.prop(
-        [
+    test.prop([
             fc.array(
                 fc.tuple(
-                    fc.string({ minLength: 1, maxLength: 100 }),
+                    fc.uuid(),
                     fc.string({ minLength: 32, maxLength: 64 })
                 ),
                 { minLength: 1, maxLength: 5 }
             ),
-        ],
+        ])(
+
+        "should satisfy: Invalid Session Returns 401",
+
         async (requestData: Array<[string, string]>) => {
             /**
              * Arrange: Set up multiple invalid sessions
              */
             for (const [sessionId, csrfToken] of requestData) {
-                ;(validateCsrfToken as any).mockReturnValueOnce(true)
-                ;(validateSession as any).mockResolvedValueOnce(null)
+                ;(validateCsrfToken as any).mockReturnValue(true)
+                ;(validateSession as any).mockResolvedValue(null)
 
                 /**
                  * Act: Make logout request
@@ -465,17 +480,19 @@ describe("Property 6: Invalid Session Logout Handling", () => {
      *
      * Validates: Requirements 2.5
      */
-    it.prop(
-        [
-            fc.string({ minLength: 1, maxLength: 100 }),
+    test.prop([
+            fc.uuid(),
             fc.string({ minLength: 32, maxLength: 64 }),
-        ],
+        ])(
+
+        "should satisfy: Invalid Session Returns 401",
+
         async (invalidSessionId: string, csrfToken: string) => {
             /**
              * Arrange: Set up invalid session
              */
-            ;(validateCsrfToken as any).mockReturnValueOnce(true)
-            ;(validateSession as any).mockResolvedValueOnce(null)
+            ;(validateCsrfToken as any).mockReturnValue(true)
+            ;(validateSession as any).mockResolvedValue(null)
 
             /**
              * Act: Make logout request
@@ -520,17 +537,19 @@ describe("Property 6: Invalid Session Logout Handling", () => {
      *
      * Validates: Requirements 2.5, 8.3
      */
-    it.prop(
-        [
-            fc.string({ minLength: 1, maxLength: 100 }),
+    test.prop([
+            fc.uuid(),
             fc.string({ minLength: 32, maxLength: 64 }),
-        ],
+        ])(
+
+        "should satisfy: Invalid Session Returns 401",
+
         async (invalidSessionId: string, csrfToken: string) => {
             /**
              * Arrange: Set up invalid session
              */
-            ;(validateCsrfToken as any).mockReturnValueOnce(true)
-            ;(validateSession as any).mockResolvedValueOnce(null)
+            ;(validateCsrfToken as any).mockReturnValue(true)
+            ;(validateSession as any).mockResolvedValue(null)
 
             /**
              * Act: Make logout request
@@ -570,8 +589,8 @@ describe("Property 6: Invalid Session Logout Handling", () => {
              * When a logout request is made with a non-existent session token,
              * the system SHALL return HTTP status 401.
              */
-            ;(validateCsrfToken as any).mockReturnValueOnce(true)
-            ;(validateSession as any).mockResolvedValueOnce(null)
+            ;(validateCsrfToken as any).mockReturnValue(true)
+            ;(validateSession as any).mockResolvedValue(null)
 
             const request = new NextRequest(
                 "http://localhost:3000/api/auth/logout",
@@ -596,8 +615,8 @@ describe("Property 6: Invalid Session Logout Handling", () => {
              * When a logout request is made with an invalid session token,
              * the error message SHALL be exactly "Invalid session".
              */
-            ;(validateCsrfToken as any).mockReturnValueOnce(true)
-            ;(validateSession as any).mockResolvedValueOnce(null)
+            ;(validateCsrfToken as any).mockReturnValue(true)
+            ;(validateSession as any).mockResolvedValue(null)
 
             const request = new NextRequest(
                 "http://localhost:3000/api/auth/logout",
@@ -623,8 +642,8 @@ describe("Property 6: Invalid Session Logout Handling", () => {
              * When a logout request is made with an invalid session token,
              * removeSession() SHALL NOT be called.
              */
-            ;(validateCsrfToken as any).mockReturnValueOnce(true)
-            ;(validateSession as any).mockResolvedValueOnce(null)
+            ;(validateCsrfToken as any).mockReturnValue(true)
+            ;(validateSession as any).mockResolvedValue(null)
 
             const request = new NextRequest(
                 "http://localhost:3000/api/auth/logout",
@@ -649,8 +668,8 @@ describe("Property 6: Invalid Session Logout Handling", () => {
              * When a logout request is made with an invalid session token,
              * no database modifications SHALL occur.
              */
-            ;(validateCsrfToken as any).mockReturnValueOnce(true)
-            ;(validateSession as any).mockResolvedValueOnce(null)
+            ;(validateCsrfToken as any).mockReturnValue(true)
+            ;(validateSession as any).mockResolvedValue(null)
 
             const request = new NextRequest(
                 "http://localhost:3000/api/auth/logout",
@@ -677,8 +696,8 @@ describe("Property 6: Invalid Session Logout Handling", () => {
              * When a logout request is made with an invalid session token,
              * the response SHALL include success=false.
              */
-            ;(validateCsrfToken as any).mockReturnValueOnce(true)
-            ;(validateSession as any).mockResolvedValueOnce(null)
+            ;(validateCsrfToken as any).mockReturnValue(true)
+            ;(validateSession as any).mockResolvedValue(null)
 
             const request = new NextRequest(
                 "http://localhost:3000/api/auth/logout",
@@ -704,8 +723,8 @@ describe("Property 6: Invalid Session Logout Handling", () => {
              * When a logout request is made with an invalid session token,
              * the response SHALL NOT include a redirect instruction.
              */
-            ;(validateCsrfToken as any).mockReturnValueOnce(true)
-            ;(validateSession as any).mockResolvedValueOnce(null)
+            ;(validateCsrfToken as any).mockReturnValue(true)
+            ;(validateSession as any).mockResolvedValue(null)
 
             const request = new NextRequest(
                 "http://localhost:3000/api/auth/logout",

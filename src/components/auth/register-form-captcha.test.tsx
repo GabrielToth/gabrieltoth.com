@@ -12,16 +12,28 @@ vi.mock("next/navigation", () => ({
 }))
 
 // Mock TurnstileWidget
-vi.mock("./turnstile-widget", () => ({
-    default: ({ onTokenChange }: any) => (
-        <div
-            data-testid="turnstile-widget"
-            onClick={() => onTokenChange("test-captcha-token")}
-        >
-            Mock CAPTCHA Widget
-        </div>
-    ),
-}))
+vi.mock("./turnstile-widget", async () => {
+    const { useEffect } = await import("react")
+    return {
+        default: ({
+            onTokenChange,
+        }: {
+            onTokenChange: (token: string | null) => void
+        }) => {
+            useEffect(() => {
+                onTokenChange("test-captcha-token")
+            }, [])
+            return (
+                <div
+                    data-testid="turnstile-widget"
+                    onClick={() => onTokenChange("test-captcha-token")}
+                >
+                    Mock CAPTCHA Widget
+                </div>
+            )
+        },
+    }
+})
 
 describe("RegisterForm with CAPTCHA Integration", () => {
     beforeEach(() => {

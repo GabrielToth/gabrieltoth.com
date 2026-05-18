@@ -27,9 +27,9 @@ import { cleanupTestData, createTestUser, setupTestDatabase } from "./database"
 
 describe("Test Database Helper", () => {
     describe("setupTestDatabase()", () => {
-        it("should create Supabase client without errors", async (ctx) => {
-    if (!isDbRunning) return ctx.skip()
-    if (!isDbRunning) return ctx.skip()
+        it("should create Supabase client without errors", async ({ skip }) => {
+    if (!isDbRunning) return skip()
+    if (!isDbRunning) return skip()
             const supabase = await setupTestDatabase()
 
             expect(supabase).toBeDefined()
@@ -37,9 +37,9 @@ describe("Test Database Helper", () => {
             expect(supabase.from).toBeDefined()
         })
 
-        it("should throw error if environment variables are missing", async (ctx) => {
-    if (!isDbRunning) return ctx.skip()
-    if (!isDbRunning) return ctx.skip()
+        it("should throw error if environment variables are missing", async ({ skip }) => {
+    if (!isDbRunning) return skip()
+    if (!isDbRunning) return skip()
             const originalUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
             const originalKey = process.env.SUPABASE_SERVICE_ROLE_KEY
 
@@ -58,9 +58,9 @@ describe("Test Database Helper", () => {
     })
 
     describe("createTestUser()", () => {
-        it("should create test user with confirmed email", async (ctx) => {
-    if (!isDbRunning) return ctx.skip()
-    if (!isDbRunning) return ctx.skip()
+        it("should create test user with confirmed email", async ({ skip }) => {
+    if (!isDbRunning) return skip()
+    if (!isDbRunning) return skip()
             const testEmail = `test-${Date.now()}@example.com`
 
             try {
@@ -89,9 +89,9 @@ describe("Test Database Helper", () => {
             }
         })
 
-        it("should throw error if user creation fails", async (ctx) => {
-    if (!isDbRunning) return ctx.skip()
-    if (!isDbRunning) return ctx.skip()
+        it("should throw error if user creation fails", async ({ skip }) => {
+    if (!isDbRunning) return skip()
+    if (!isDbRunning) return skip()
             try {
                 // Try to create user with invalid email
                 await expect(createTestUser("invalid-email")).rejects.toThrow(
@@ -114,23 +114,23 @@ describe("Test Database Helper", () => {
     })
 
     describe("cleanupTestData()", () => {
-        it("should execute without errors", async (ctx) => {
-    if (!isDbRunning) return ctx.skip()
-    if (!isDbRunning) return ctx.skip()
+        it("should execute without errors", async ({ skip }) => {
+    if (!isDbRunning) return skip()
+    if (!isDbRunning) return skip()
             await expect(cleanupTestData()).resolves.not.toThrow()
         })
 
-        it("should accept optional Supabase client", async (ctx) => {
-    if (!isDbRunning) return ctx.skip()
-    if (!isDbRunning) return ctx.skip()
+        it("should accept optional Supabase client", async ({ skip }) => {
+    if (!isDbRunning) return skip()
+    if (!isDbRunning) return skip()
             const supabase = await setupTestDatabase()
 
             await expect(cleanupTestData(supabase)).resolves.not.toThrow()
         })
 
-        it("should delete test users but preserve system user", async (ctx) => {
-    if (!isDbRunning) return ctx.skip()
-    if (!isDbRunning) return ctx.skip()
+        it("should delete test users but preserve system user", async ({ skip }) => {
+    if (!isDbRunning) return skip()
+    if (!isDbRunning) return skip()
             try {
                 const supabase = await setupTestDatabase()
 

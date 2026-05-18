@@ -5,6 +5,11 @@ import { NextRequest, NextResponse } from "next/server"
 // Simple in-memory rate limiting (in production, use Redis)
 const rateLimitStore = new Map<string, { count: number; resetTime: number }>()
 
+/** @internal Clears in-memory rate limit state between tests */
+export function resetRateLimitStoreForTests(): void {
+    rateLimitStore.clear()
+}
+
 function getRateLimitKey(ip: string, endpoint: string): string {
     return `${ip}:${endpoint}`
 }

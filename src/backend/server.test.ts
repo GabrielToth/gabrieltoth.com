@@ -37,23 +37,30 @@ vi.mock("../lib/config/env", () => ({
 }))
 
 // Mock pg Pool
-const mockQuery = vi.fn()
+const { mockQuery } = vi.hoisted(() => ({
+    mockQuery: vi.fn(),
+}))
 vi.mock("pg", () => ({
-    Pool: vi.fn(() => ({
-        query: mockQuery,
-        end: vi.fn(),
-    })),
+    Pool: class MockPool {
+        query = mockQuery
+        end = vi.fn()
+        constructor(_config?: unknown) {}
+    },
 }))
 
 // Mock ioredis
-const mockPing = vi.fn()
-const mockQuit = vi.fn()
+const { mockPing, mockQuit } = vi.hoisted(() => ({
+    mockPing: vi.fn(),
+    mockQuit: vi.fn(),
+}))
 vi.mock("ioredis", () => {
-    return vi.fn(() => ({
-        ping: mockPing,
-        quit: mockQuit,
-        on: vi.fn(),
-    }))
+    class MockRedis {
+        ping = mockPing
+        quit = mockQuit
+        on = vi.fn()
+        constructor(_url?: string, _opts?: unknown) {}
+    }
+    return { default: MockRedis }
 })
 
 describe("Backend Health Check Endpoint", () => {

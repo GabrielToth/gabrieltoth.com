@@ -200,7 +200,7 @@ describe("Unified Sign-In System", () => {
         })
 
         it("should accept 8+ character passwords", () => {
-            const password = "validpassword123"
+            const password = "valid_password123"
             expect(password.length).toBeGreaterThanOrEqual(8)
         })
     })
@@ -248,10 +248,10 @@ describe("Unified Sign-In System", () => {
 
         it("should handle unknown errors gracefully", async () => {
             const result = await signInWithEmail(
-                "user@example.com",
+                "unknown@example.com",
                 "password123"
             )
-            expect(result.success).toBeDefined()
+            expect(result.success).toBe(false)
             expect(result.error).toBeDefined()
         })
     })

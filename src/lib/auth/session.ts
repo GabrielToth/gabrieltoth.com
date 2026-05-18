@@ -7,7 +7,7 @@
  */
 
 import { generateRandomHex } from "@/lib/crypto-utils"
-import { db } from "@/lib/db/index"
+import { db } from "@/lib/db"
 import { logger } from "@/lib/logger"
 import { Session } from "@/types/auth"
 import { cookies } from "next/headers"

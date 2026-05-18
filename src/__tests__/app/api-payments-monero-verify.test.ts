@@ -19,8 +19,8 @@ vi.mock("@/lib/monero", async () => {
     }
 })
 
-vi.mock("@/lib/db", () => ({
-    db: {
+vi.mock("@/lib/orders-store", () => ({
+    ordersDb: {
         getOrderByTrackingCode: vi.fn(async () => null),
         getOrdersByWhatsApp: vi.fn(async () => []),
         updateOrderStatus: vi.fn(async () => ({})),
@@ -57,8 +57,8 @@ describe("api payments monero verify route", () => {
     })
 
     it("POST returns 404 when order not found by trackingCode", async () => {
-        const supa = await import("@/lib/db")
-        ;(supa.db.getOrderByTrackingCode as any).mockResolvedValueOnce(null)
+        const supa = await import("@/lib/orders-store")
+        ;(supa.ordersDb.getOrderByTrackingCode as any).mockResolvedValueOnce(null)
         const { POST } = await import("@/app/api/payments/monero/verify/route")
         const req = new Request("http://localhost", {
             method: "POST",
@@ -73,8 +73,8 @@ describe("api payments monero verify route", () => {
     })
 
     it("POST returns 404 when order not found by whatsappNumber", async () => {
-        const supa = await import("@/lib/db")
-        ;(supa.db.getOrdersByWhatsApp as any).mockResolvedValueOnce([])
+        const supa = await import("@/lib/orders-store")
+        ;(supa.ordersDb.getOrdersByWhatsApp as any).mockResolvedValueOnce([])
         const { POST } = await import("@/app/api/payments/monero/verify/route")
         const req = new Request("http://localhost", {
             method: "POST",
@@ -89,8 +89,8 @@ describe("api payments monero verify route", () => {
     })
 
     it("POST returns 400 when payment method is not monero", async () => {
-        const supa = await import("@/lib/db")
-        ;(supa.db.getOrderByTrackingCode as any).mockResolvedValueOnce({
+        const supa = await import("@/lib/orders-store")
+        ;(supa.ordersDb.getOrderByTrackingCode as any).mockResolvedValueOnce({
             id: "1",
             tracking_code: "TRACK-2",
             service_type: "svc",
@@ -109,8 +109,8 @@ describe("api payments monero verify route", () => {
     })
 
     it("POST returns 400 when order status is not pending", async () => {
-        const supa = await import("@/lib/db")
-        ;(supa.db.getOrderByTrackingCode as any).mockResolvedValueOnce({
+        const supa = await import("@/lib/orders-store")
+        ;(supa.ordersDb.getOrderByTrackingCode as any).mockResolvedValueOnce({
             id: "2",
             tracking_code: "TRACK-3",
             service_type: "svc",
@@ -129,8 +129,8 @@ describe("api payments monero verify route", () => {
     })
 
     it("POST success confirms payment and returns details", async () => {
-        const supa = await import("@/lib/db")
-        ;(supa.db.getOrderByTrackingCode as any).mockResolvedValueOnce({
+        const supa = await import("@/lib/orders-store")
+        ;(supa.ordersDb.getOrderByTrackingCode as any).mockResolvedValueOnce({
             id: "3",
             tracking_code: "TRACK-4",
             service_type: "svc",
@@ -157,9 +157,9 @@ describe("api payments monero verify route", () => {
     })
 
     it("POST verification failed resets to pending with confirmations", async () => {
-        const supa = await import("@/lib/db")
+        const supa = await import("@/lib/orders-store")
         const monero = await import("@/lib/monero")
-        ;(supa.db.getOrderByTrackingCode as any).mockResolvedValueOnce({
+        ;(supa.ordersDb.getOrderByTrackingCode as any).mockResolvedValueOnce({
             id: "4",
             tracking_code: "TRACK-5",
             service_type: "svc",
@@ -191,9 +191,9 @@ describe("api payments monero verify route", () => {
     })
 
     it("POST verification failed resets to pending without confirmations", async () => {
-        const supa = await import("@/lib/db")
+        const supa = await import("@/lib/orders-store")
         const monero = await import("@/lib/monero")
-        ;(supa.db.getOrderByTrackingCode as any).mockResolvedValueOnce({
+        ;(supa.ordersDb.getOrderByTrackingCode as any).mockResolvedValueOnce({
             id: "5",
             tracking_code: "TRACK-6",
             service_type: "svc",
@@ -240,8 +240,8 @@ describe("api payments monero verify route", () => {
     })
 
     it("GET returns 404 when order not found by trackingCode", async () => {
-        const supa = await import("@/lib/db")
-        ;(supa.db.getOrderByTrackingCode as any).mockResolvedValueOnce(null)
+        const supa = await import("@/lib/orders-store")
+        ;(supa.ordersDb.getOrderByTrackingCode as any).mockResolvedValueOnce(null)
         const { GET } = await import("@/app/api/payments/monero/verify/route")
         const url = new URL("http://localhost?trackingCode=NOPE")
         const res = await GET({ nextUrl: url } as any)
@@ -249,8 +249,8 @@ describe("api payments monero verify route", () => {
     })
 
     it("GET returns success by trackingCode without transaction details", async () => {
-        const supa = await import("@/lib/db")
-        ;(supa.db.getOrderByTrackingCode as any).mockResolvedValueOnce({
+        const supa = await import("@/lib/orders-store")
+        ;(supa.ordersDb.getOrderByTrackingCode as any).mockResolvedValueOnce({
             id: "6",
             tracking_code: "TRACK-7",
             service_type: "svc",
@@ -271,8 +271,8 @@ describe("api payments monero verify route", () => {
     })
 
     it("GET returns success by txHash with transaction details", async () => {
-        const supa = await import("@/lib/db")
-        ;(supa.db.getOrderByTxHash as any).mockResolvedValueOnce({
+        const supa = await import("@/lib/orders-store")
+        ;(supa.ordersDb.getOrderByTxHash as any).mockResolvedValueOnce({
             id: "7",
             tracking_code: "TRACK-8",
             service_type: "svc",

@@ -1,8 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from "vitest"
 
 // Mock db module used by webhook
-vi.mock("@/lib/db", () => ({
-    db: {
+vi.mock("@/lib/orders-store", () => ({
+    ordersDb: {
         getOrdersByWhatsApp: vi.fn(async () => []),
         updateOrderStatus: vi.fn(async () => {}),
         addPaymentConfirmation: vi.fn(async () => {}),
@@ -73,8 +73,8 @@ describe("api/whatsapp/webhook coverage", () => {
     })
 })
 
-vi.mock("@/lib/db", () => ({
-    db: {
+vi.mock("@/lib/orders-store", () => ({
+    ordersDb: {
         getOrdersByWhatsApp: vi.fn(async () => []),
         getOrderByTrackingCode: vi.fn(async () => null),
         updateOrderStatus: vi.fn(async () => ({})),
@@ -127,9 +127,9 @@ describe("api whatsapp webhook coverage", () => {
     })
 
     it("POST processes monero tx hash (verification true)", async () => {
-        const supa = await import("@/lib/db")
+        const supa = await import("@/lib/orders-store")
         const monero = await import("@/lib/monero")
-        ;(supa.db.getOrdersByWhatsApp as any).mockResolvedValueOnce([
+        ;(supa.ordersDb.getOrdersByWhatsApp as any).mockResolvedValueOnce([
             {
                 id: "1",
                 tracking_code: "TRACK-1",
@@ -171,9 +171,9 @@ describe("api whatsapp webhook coverage", () => {
     })
 
     it("POST processes monero tx hash (verification false)", async () => {
-        const supa = await import("@/lib/db")
+        const supa = await import("@/lib/orders-store")
         const monero = await import("@/lib/monero")
-        ;(supa.db.getOrdersByWhatsApp as any).mockResolvedValueOnce([
+        ;(supa.ordersDb.getOrdersByWhatsApp as any).mockResolvedValueOnce([
             {
                 id: "1",
                 tracking_code: "TRACK-2",
@@ -215,8 +215,8 @@ describe("api whatsapp webhook coverage", () => {
     })
 
     it("POST tracking code not found and found branches", async () => {
-        const supa = await import("@/lib/db")
-        ;(supa.db.getOrderByTrackingCode as any).mockResolvedValueOnce(null)
+        const supa = await import("@/lib/orders-store")
+        ;(supa.ordersDb.getOrderByTrackingCode as any).mockResolvedValueOnce(null)
         const { POST } = await import("@/app/api/whatsapp/webhook/route")
         // Not found
         let req = new Request("http://localhost", {
@@ -245,7 +245,7 @@ describe("api whatsapp webhook coverage", () => {
         expect(res.status).toBe(200)
 
         // Found
-        ;(supa.db.getOrderByTrackingCode as any).mockResolvedValueOnce({
+        ;(supa.ordersDb.getOrderByTrackingCode as any).mockResolvedValueOnce({
             tracking_code: "TRACK-ABC",
             service_type: "svc",
             amount: 100,
@@ -335,10 +335,10 @@ describe("api whatsapp webhook coverage", () => {
     })
 
     it("POST status branches: empty and with orders", async () => {
-        const supa = await import("@/lib/db")
+        const supa = await import("@/lib/orders-store")
         const { POST } = await import("@/app/api/whatsapp/webhook/route")
         // empty list
-        ;(supa.db.getOrdersByWhatsApp as any).mockResolvedValueOnce([])
+        ;(supa.ordersDb.getOrdersByWhatsApp as any).mockResolvedValueOnce([])
         let req = new Request("http://localhost", {
             method: "POST",
             headers: { "content-type": "application/json" },
@@ -365,7 +365,7 @@ describe("api whatsapp webhook coverage", () => {
         expect(res.status).toBe(200)
 
         // with orders
-        ;(supa.db.getOrdersByWhatsApp as any).mockResolvedValueOnce([
+        ;(supa.ordersDb.getOrdersByWhatsApp as any).mockResolvedValueOnce([
             {
                 tracking_code: "T-1",
                 service_type: "svc",
@@ -401,8 +401,8 @@ describe("api whatsapp webhook coverage", () => {
     })
 
     it("POST handles internal error in processing with 200 response", async () => {
-        const supa = await import("@/lib/db")
-        ;(supa.db.getOrdersByWhatsApp as any).mockRejectedValueOnce(
+        const supa = await import("@/lib/orders-store")
+        ;(supa.ordersDb.getOrdersByWhatsApp as any).mockRejectedValueOnce(
             new Error("boom")
         )
         const { POST } = await import("@/app/api/whatsapp/webhook/route")

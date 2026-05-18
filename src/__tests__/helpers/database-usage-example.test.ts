@@ -27,9 +27,9 @@ import { describe, expect, it } from "vitest"
 import { cleanupTestData, createTestUser, setupTestDatabase } from "./database"
 
 describe("Database Helper Usage Examples", () => {
-    it("Example 1: Setup database and perform queries", async (ctx) => {
-    if (!isDbRunning) return ctx.skip()
-    if (!isDbRunning) return ctx.skip()
+    it("Example 1: Setup database and perform queries", async ({ skip }) => {
+    if (!isDbRunning) return skip()
+    if (!isDbRunning) return skip()
         // Setup test database
         const supabase = await setupTestDatabase()
 
@@ -40,9 +40,9 @@ describe("Database Helper Usage Examples", () => {
         expect(data).toBeDefined()
     })
 
-    it("Example 2: Create a test user for authentication tests", async (ctx) => {
-    if (!isDbRunning) return ctx.skip()
-    if (!isDbRunning) return ctx.skip()
+    it("Example 2: Create a test user for authentication tests", async ({ skip }) => {
+    if (!isDbRunning) return skip()
+    if (!isDbRunning) return skip()
         try {
             // Create a test user with confirmed email
             const testEmail = `example-${Date.now()}@test.com`
@@ -69,9 +69,9 @@ describe("Database Helper Usage Examples", () => {
         }
     })
 
-    it("Example 3: Clean up test data after tests", async (ctx) => {
-    if (!isDbRunning) return ctx.skip()
-    if (!isDbRunning) return ctx.skip()
+    it("Example 3: Clean up test data after tests", async ({ skip }) => {
+    if (!isDbRunning) return skip()
+    if (!isDbRunning) return skip()
         // Clean up all test data
         await cleanupTestData()
 
@@ -83,9 +83,9 @@ describe("Database Helper Usage Examples", () => {
         expect(data).toBeDefined()
     })
 
-    it("Example 4: Use in beforeEach/afterEach hooks", async (ctx) => {
-    if (!isDbRunning) return ctx.skip()
-    if (!isDbRunning) return ctx.skip()
+    it("Example 4: Use in beforeEach/afterEach hooks", async ({ skip }) => {
+    if (!isDbRunning) return skip()
+    if (!isDbRunning) return skip()
         // In your test file, you can use these in hooks:
         //
         // beforeEach(async () => {

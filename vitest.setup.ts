@@ -3,7 +3,12 @@ import { cleanup } from "@testing-library/react"
 import fs from "fs"
 import path from "path"
 import React from "react"
+import { createDbModuleMock } from "./src/test-utils/db-mock"
 import { afterEach, vi } from "vitest"
+
+// Default DB mock so unit tests never hit a real PostgreSQL instance.
+// Per-file vi.mock("@/lib/db", ...) overrides this when needed.
+vi.mock("@/lib/db", () => createDbModuleMock())
 
 // Set UTF-8 encoding for test environment
 process.env.LANG = "en_US.UTF-8"
@@ -106,20 +111,22 @@ vi.mock("next-intl", () => ({
         children,
 }))
 
-// Mock window.matchMedia
-Object.defineProperty(window, "matchMedia", {
-    writable: true,
-    value: vi.fn().mockImplementation(query => ({
-        matches: false,
-        media: query,
-        onchange: null,
-        addListener: vi.fn(),
-        removeListener: vi.fn(),
-        addEventListener: vi.fn(),
-        removeEventListener: vi.fn(),
-        dispatchEvent: vi.fn(),
-    })),
-})
+// Mock window.matchMedia (jsdom only)
+if (typeof window !== "undefined") {
+    Object.defineProperty(window, "matchMedia", {
+        writable: true,
+        value: vi.fn().mockImplementation(query => ({
+            matches: false,
+            media: query,
+            onchange: null,
+            addListener: vi.fn(),
+            removeListener: vi.fn(),
+            addEventListener: vi.fn(),
+            removeEventListener: vi.fn(),
+            dispatchEvent: vi.fn(),
+        })),
+    })
+}
 
 // Mock IntersectionObserver
 global.IntersectionObserver = class IntersectionObserver {
@@ -229,19 +236,23 @@ vi.mock("@supabase/supabase-js", () => ({
     })),
 }))
 
-// Mock Cloudflare Turnstile
-Object.defineProperty(window, "turnstile", {
-    writable: true,
-    value: {
-        render: vi.fn().mockImplementation((containerId, options) => {
-            // Immediately invoke the callback if provided to simulate a successful CAPTCHA
-            if (options && options.callback) {
-                setTimeout(() => options.callback("test-turnstile-token"), 0)
-            }
-            return "test-widget-id"
-        }),
-        reset: vi.fn(),
-        remove: vi.fn(),
-        getResponse: vi.fn().mockReturnValue("test-turnstile-token"),
-    },
-})
+// Mock Cloudflare Turnstile (jsdom only)
+if (typeof window !== "undefined") {
+    Object.defineProperty(window, "turnstile", {
+        writable: true,
+        value: {
+            render: vi.fn().mockImplementation((_containerId, options) => {
+                if (options && options.callback) {
+                    setTimeout(
+                        () => options.callback("test-turnstile-token"),
+                        0
+                    )
+                }
+                return "test-widget-id"
+            }),
+            reset: vi.fn(),
+            remove: vi.fn(),
+            getResponse: vi.fn().mockReturnValue("test-turnstile-token"),
+        },
+    })
+}

@@ -1,24 +1,7 @@
+import { isSupabaseAvailable } from "@/test-utils/skip-without-supabase"
 import { createClient } from "@supabase/supabase-js"
-import { afterAll, beforeAll, describe, expect, it } from "vitest"
+import { afterAll, beforeAll, describe, expect, it, vi } from "vitest"
 
-// Added by automated fix script to prevent CI crashes when DB is down
-let isDbRunning = true
-beforeAll(async () => {
-    try {
-        const client = createClient(
-            process.env.NEXT_PUBLIC_SUPABASE_URL || "http://127.0.0.1:54321",
-            process.env.SUPABASE_SERVICE_ROLE_KEY || "test"
-        )
-        const { error } = await client.from("users").select("id").limit(1)
-        if (error && error.message && error.message.includes("fetch")) {
-            isDbRunning = false
-        }
-    } catch {
-        isDbRunning = false
-    }
-})
-
-import { vi } from "vitest"
 vi.unmock("@supabase/supabase-js")
 
 /**
@@ -48,6 +31,12 @@ vi.unmock("@supabase/supabase-js")
  */
 
 describe("Bug Condition: RLS Blocking Audit Logs", () => {
+    let isDbRunning = true
+
+    beforeAll(async () => {
+        isDbRunning = await isSupabaseAvailable()
+    })
+
     const supabaseUrl =
         process.env.NEXT_PUBLIC_SUPABASE_URL || "http://127.0.0.1:54321"
     const supabaseAnonKey =
@@ -117,9 +106,9 @@ describe("Bug Condition: RLS Blocking Audit Logs", () => {
         console.log("✓ Cleaned up test user and audit log")
     })
 
-    it("should allow authenticated user to view their own audit logs", async ctx => {
-        if (!isDbRunning) return ctx.skip()
-        if (!isDbRunning) return ctx.skip()
+    it("should allow authenticated user to view their own audit logs", async ({ skip }) => {
+        if (!isDbRunning) return skip()
+        if (!isDbRunning) return skip()
         // Sign in as the test user
         const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
@@ -189,9 +178,9 @@ describe("Bug Condition: RLS Blocking Audit Logs", () => {
         console.log(`   Found ${auditLogs.length} audit log(s)`)
     })
 
-    it("should verify RLS policies exist for audit_logs table", async ctx => {
-        if (!isDbRunning) return ctx.skip()
-        if (!isDbRunning) return ctx.skip()
+    it("should verify RLS policies exist for audit_logs table", async ({ skip }) => {
+        if (!isDbRunning) return skip()
+        if (!isDbRunning) return skip()
         // Query to check if RLS is enabled and policies exist
         const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey)
 

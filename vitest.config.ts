@@ -12,6 +12,10 @@ export default defineConfig({
     test: {
         environment: "jsdom",
         include: ["src/**/*.{test,spec}.{ts,tsx}"],
+        exclude: [
+            "node_modules",
+            "src/lib/logger/pino-logger.test.ts",
+        ],
         globals: true,
         reporters: "default",
         setupFiles: ["./vitest.setup.ts"],

@@ -1,6 +1,7 @@
 // Database Schema Validation Tests
 // Feature: distributed-infrastructure-logging
 
+import { isPostgresAvailable } from "@/test-utils/requires-postgres"
 import { readFileSync } from "fs"
 import { join } from "path"
 import { Pool } from "pg"
@@ -9,9 +10,10 @@ import { afterAll, beforeAll, describe, expect, it } from "vitest"
 // Note: These tests require a running PostgreSQL instance
 // They are integration tests that verify schema constraints
 
-describe("Database Schema Validation", () => {
+const postgresAvailable = await isPostgresAvailable()
+
+describe.skipIf(!postgresAvailable)("Database Schema Validation", () => {
     let pool: Pool
-    let dbIsRunning = true
     const testDbUrl =
         process.env.DATABASE_URL ||
         "postgres://platform:devpassword@localhost:5432/platform_test"
@@ -21,23 +23,25 @@ describe("Database Schema Validation", () => {
 
         try {
             await pool.query(schema)
-        } catch (error: any) {
-            if (error.code === "ECONNREFUSED") {
-                console.warn("⚠️ Postgres is not running. Skipping schema tests.")
-                dbIsRunning = false
-            } else {
+        } catch (error: unknown) {
+            const code =
+                error && typeof error === "object" && "code" in error
+                    ? String((error as { code: string }).code)
+                    : ""
+            if (code !== "ECONNREFUSED") {
                 console.error("Schema application failed (may already exist):", error)
             }
         }
     })
 
     afterAll(async () => {
-        await pool.end()
+        if (pool) {
+            await pool.end()
+        }
     })
 
     describe("Unit Tests: Schema Constraints", () => {
-        it("should enforce positive_balance constraint on user_accounts", async (ctx) => {
-        if (!dbIsRunning) return ctx.skip()
+        it("should enforce positive_balance constraint on user_accounts", async ({ skip }) => {
             const testUserId = "00000000-0000-0000-0000-000000000001"
 
             // First create a profile
@@ -64,8 +68,7 @@ describe("Database Schema Validation", () => {
             }
         })
 
-        it("should enforce foreign key constraint on transactions", async (ctx) => {
-        if (!dbIsRunning) return ctx.skip()
+        it("should enforce foreign key constraint on transactions", async ({ skip }) => {
             const nonExistentUserId = "99999999-9999-9999-9999-999999999999"
 
             // Try to insert transaction for non-existent user - should fail
@@ -80,8 +83,7 @@ describe("Database Schema Validation", () => {
             }
         })
 
-        it("should enforce unique constraint on daily_usage_summary", async (ctx) => {
-        if (!dbIsRunning) return ctx.skip()
+        it("should enforce unique constraint on daily_usage_summary", async ({ skip }) => {
             const testUserId = "00000000-0000-0000-0000-000000000002"
             const testDate = "2024-01-01"
 
@@ -109,8 +111,7 @@ describe("Database Schema Validation", () => {
             }
         })
 
-        it("should have correct indexes for performance", async (ctx) => {
-        if (!dbIsRunning) return ctx.skip()
+        it("should have correct indexes for performance", async ({ skip }) => {
             // Check that indexes exist
             const result = await pool.query(`
         SELECT indexname 
@@ -135,8 +136,7 @@ describe("Database Schema Validation", () => {
             )
         })
 
-        it("should have pricing_config table with default values", async (ctx) => {
-        if (!dbIsRunning) return ctx.skip()
+        it("should have pricing_config table with default values", async ({ skip }) => {
             const result = await pool.query("SELECT * FROM pricing_config")
 
             expect(result.rows.length).toBeGreaterThan(0)
@@ -148,8 +148,7 @@ describe("Database Schema Validation", () => {
             expect(metricTypes).toContain("api_calls")
         })
 
-        it("should enforce type constraint on transactions", async (ctx) => {
-        if (!dbIsRunning) return ctx.skip()
+        it("should enforce type constraint on transactions", async ({ skip }) => {
             const testUserId = "00000000-0000-0000-0000-000000000003"
 
             // First create a profile and account

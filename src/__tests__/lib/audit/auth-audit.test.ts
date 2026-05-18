@@ -15,9 +15,11 @@ import * as db from "@/lib/db"
 import { beforeEach, describe, expect, it, vi } from "vitest"
 
 // Mock the database module
-vi.mock("@/lib/db", () => ({
-    query: vi.fn(),
-}))
+vi.mock("@/lib/db", () => {
+    const query = vi.fn()
+    const db = { query, queryOne: vi.fn(), queryMany: vi.fn() }
+    return { db, default: db, query }
+})
 
 // Mock the logger
 vi.mock("@/lib/logger", () => ({

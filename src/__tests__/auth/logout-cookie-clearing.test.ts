@@ -15,8 +15,7 @@
  * 4. All authentication cookies are cleared (auth_session, session, remember_me_token)
  */
 
-import { it } from "@fast-check/vitest"
-import * as fc from "fast-check"
+import { fc, test } from "@fast-check/vitest"
 import { NextRequest } from "next/server"
 import { beforeEach, describe, expect, vi } from "vitest"
 
@@ -73,13 +72,15 @@ describe("Property 4: Cookie Clearing on Logout", () => {
      *
      * Validates: Requirements 2.2, 2.3
      */
-    it.prop(
-        [
+    test.prop([
             fc.uuid(),
             fc.uuid(),
             fc.emailAddress(),
             fc.string({ minLength: 32, maxLength: 64 }),
-        ],
+        ])(
+
+        "should satisfy: Session Cookie Clearing",
+
         async (
             userId: string,
             sessionId: string,
@@ -89,19 +90,21 @@ describe("Property 4: Cookie Clearing on Logout", () => {
             /**
              * Arrange: Set up valid session and CSRF token
              */
-            ;(validateCsrfToken as any).mockReturnValueOnce(true)
-            ;(validateSession as any).mockResolvedValueOnce({
-                id: sessionId,
-                user_id: userId,
-                session_id: sessionId,
-                created_at: new Date(),
-                expires_at: new Date(Date.now() + 86400000),
-            })
-            ;(db.queryOne as any).mockResolvedValueOnce({
+            ;(validateCsrfToken as any).mockReturnValue(true)
+            ;(validateSession as any).mockImplementation(
+                async (token: string) => ({
+                    id: token,
+                    user_id: userId,
+                    session_id: token,
+                    created_at: new Date(),
+                    expires_at: new Date(Date.now() + 86400000),
+                })
+            )
+            ;(db.queryOne as any).mockResolvedValue({
                 google_email: userEmail,
                 email: userEmail,
             })
-            ;(removeSession as any).mockResolvedValueOnce(true)
+            ;(removeSession as any).mockResolvedValue(true)
 
             /**
              * Act: Make logout request
@@ -168,13 +171,15 @@ describe("Property 4: Cookie Clearing on Logout", () => {
      *
      * Validates: Requirements 2.2, 2.3
      */
-    it.prop(
-        [
+    test.prop([
             fc.uuid(),
             fc.uuid(),
             fc.emailAddress(),
             fc.string({ minLength: 32, maxLength: 64 }),
-        ],
+        ])(
+
+        "should satisfy: Session Cookie Clearing",
+
         async (
             userId: string,
             sessionId: string,
@@ -184,19 +189,21 @@ describe("Property 4: Cookie Clearing on Logout", () => {
             /**
              * Arrange: Set up valid session
              */
-            ;(validateCsrfToken as any).mockReturnValueOnce(true)
-            ;(validateSession as any).mockResolvedValueOnce({
-                id: sessionId,
-                user_id: userId,
-                session_id: sessionId,
-                created_at: new Date(),
-                expires_at: new Date(Date.now() + 86400000),
-            })
-            ;(db.queryOne as any).mockResolvedValueOnce({
+            ;(validateCsrfToken as any).mockReturnValue(true)
+            ;(validateSession as any).mockImplementation(
+                async (token: string) => ({
+                    id: token,
+                    user_id: userId,
+                    session_id: token,
+                    created_at: new Date(),
+                    expires_at: new Date(Date.now() + 86400000),
+                })
+            )
+            ;(db.queryOne as any).mockResolvedValue({
                 google_email: userEmail,
                 email: userEmail,
             })
-            ;(removeSession as any).mockResolvedValueOnce(true)
+            ;(removeSession as any).mockResolvedValue(true)
 
             /**
              * Act: Make logout request
@@ -258,13 +265,15 @@ describe("Property 4: Cookie Clearing on Logout", () => {
      *
      * Validates: Requirements 2.2, 2.3, 9.1, 9.3, 9.4, 9.5
      */
-    it.prop(
-        [
+    test.prop([
             fc.uuid(),
             fc.uuid(),
             fc.emailAddress(),
             fc.string({ minLength: 32, maxLength: 64 }),
-        ],
+        ])(
+
+        "should satisfy: Session Cookie Clearing",
+
         async (
             userId: string,
             sessionId: string,
@@ -274,19 +283,21 @@ describe("Property 4: Cookie Clearing on Logout", () => {
             /**
              * Arrange: Set up valid session
              */
-            ;(validateCsrfToken as any).mockReturnValueOnce(true)
-            ;(validateSession as any).mockResolvedValueOnce({
-                id: sessionId,
-                user_id: userId,
-                session_id: sessionId,
-                created_at: new Date(),
-                expires_at: new Date(Date.now() + 86400000),
-            })
-            ;(db.queryOne as any).mockResolvedValueOnce({
+            ;(validateCsrfToken as any).mockReturnValue(true)
+            ;(validateSession as any).mockImplementation(
+                async (token: string) => ({
+                    id: token,
+                    user_id: userId,
+                    session_id: token,
+                    created_at: new Date(),
+                    expires_at: new Date(Date.now() + 86400000),
+                })
+            )
+            ;(db.queryOne as any).mockResolvedValue({
                 google_email: userEmail,
                 email: userEmail,
             })
-            ;(removeSession as any).mockResolvedValueOnce(true)
+            ;(removeSession as any).mockResolvedValue(true)
 
             /**
              * Act: Make logout request
@@ -341,13 +352,15 @@ describe("Property 4: Cookie Clearing on Logout", () => {
      *
      * Validates: Requirements 2.3
      */
-    it.prop(
-        [
+    test.prop([
             fc.uuid(),
             fc.uuid(),
             fc.emailAddress(),
             fc.string({ minLength: 32, maxLength: 64 }),
-        ],
+        ])(
+
+        "should satisfy: Session Cookie Clearing",
+
         async (
             userId: string,
             sessionId: string,
@@ -357,19 +370,21 @@ describe("Property 4: Cookie Clearing on Logout", () => {
             /**
              * Arrange: Set up valid session
              */
-            ;(validateCsrfToken as any).mockReturnValueOnce(true)
-            ;(validateSession as any).mockResolvedValueOnce({
-                id: sessionId,
-                user_id: userId,
-                session_id: sessionId,
-                created_at: new Date(),
-                expires_at: new Date(Date.now() + 86400000),
-            })
-            ;(db.queryOne as any).mockResolvedValueOnce({
+            ;(validateCsrfToken as any).mockReturnValue(true)
+            ;(validateSession as any).mockImplementation(
+                async (token: string) => ({
+                    id: token,
+                    user_id: userId,
+                    session_id: token,
+                    created_at: new Date(),
+                    expires_at: new Date(Date.now() + 86400000),
+                })
+            )
+            ;(db.queryOne as any).mockResolvedValue({
                 google_email: userEmail,
                 email: userEmail,
             })
-            ;(removeSession as any).mockResolvedValueOnce(true)
+            ;(removeSession as any).mockResolvedValue(true)
 
             /**
              * Act: Make logout request
@@ -421,13 +436,15 @@ describe("Property 4: Cookie Clearing on Logout", () => {
      *
      * Validates: Requirements 2.2
      */
-    it.prop(
-        [
+    test.prop([
             fc.uuid(),
             fc.uuid(),
             fc.emailAddress(),
             fc.string({ minLength: 32, maxLength: 64 }),
-        ],
+        ])(
+
+        "should satisfy: Session Cookie Clearing",
+
         async (
             userId: string,
             sessionId: string,
@@ -437,19 +454,21 @@ describe("Property 4: Cookie Clearing on Logout", () => {
             /**
              * Arrange: Set up valid session
              */
-            ;(validateCsrfToken as any).mockReturnValueOnce(true)
-            ;(validateSession as any).mockResolvedValueOnce({
-                id: sessionId,
-                user_id: userId,
-                session_id: sessionId,
-                created_at: new Date(),
-                expires_at: new Date(Date.now() + 86400000),
-            })
-            ;(db.queryOne as any).mockResolvedValueOnce({
+            ;(validateCsrfToken as any).mockReturnValue(true)
+            ;(validateSession as any).mockImplementation(
+                async (token: string) => ({
+                    id: token,
+                    user_id: userId,
+                    session_id: token,
+                    created_at: new Date(),
+                    expires_at: new Date(Date.now() + 86400000),
+                })
+            )
+            ;(db.queryOne as any).mockResolvedValue({
                 google_email: userEmail,
                 email: userEmail,
             })
-            ;(removeSession as any).mockResolvedValueOnce(true)
+            ;(removeSession as any).mockResolvedValue(true)
 
             /**
              * Act: Make logout request
@@ -503,13 +522,15 @@ describe("Property 4: Cookie Clearing on Logout", () => {
      *
      * Validates: Requirements 2.2, 2.3, 3.1
      */
-    it.prop(
-        [
+    test.prop([
             fc.uuid(),
             fc.uuid(),
             fc.emailAddress(),
             fc.string({ minLength: 32, maxLength: 64 }),
-        ],
+        ])(
+
+        "should satisfy: Session Cookie Clearing",
+
         async (
             userId: string,
             sessionId: string,
@@ -519,19 +540,21 @@ describe("Property 4: Cookie Clearing on Logout", () => {
             /**
              * Arrange: Set up valid session
              */
-            ;(validateCsrfToken as any).mockReturnValueOnce(true)
-            ;(validateSession as any).mockResolvedValueOnce({
-                id: sessionId,
-                user_id: userId,
-                session_id: sessionId,
-                created_at: new Date(),
-                expires_at: new Date(Date.now() + 86400000),
-            })
-            ;(db.queryOne as any).mockResolvedValueOnce({
+            ;(validateCsrfToken as any).mockReturnValue(true)
+            ;(validateSession as any).mockImplementation(
+                async (token: string) => ({
+                    id: token,
+                    user_id: userId,
+                    session_id: token,
+                    created_at: new Date(),
+                    expires_at: new Date(Date.now() + 86400000),
+                })
+            )
+            ;(db.queryOne as any).mockResolvedValue({
                 google_email: userEmail,
                 email: userEmail,
             })
-            ;(removeSession as any).mockResolvedValueOnce(true)
+            ;(removeSession as any).mockResolvedValue(true)
 
             /**
              * Act: Make logout request

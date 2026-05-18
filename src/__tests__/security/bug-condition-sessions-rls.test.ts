@@ -1,21 +1,3 @@
-
-import { createClient } from "@supabase/supabase-js"
-
-// Added by automated fix script to prevent CI crashes when DB is down
-let isDbRunning = true
-beforeAll(async () => {
-    try {
-        const client = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL || "http://127.0.0.1:54321", process.env.SUPABASE_SERVICE_ROLE_KEY || "test")
-        const { error } = await client.from("users").select("id").limit(1)
-        if (error && error.message && error.message.includes("fetch")) {
-            isDbRunning = false
-        }
-    } catch {
-        isDbRunning = false
-    }
-})
-import { vi } from "vitest"
-vi.unmock("@supabase/supabase-js")
 /**
  * Bug Condition Exploration Test: RLS Blocking Sessions
  *
@@ -42,9 +24,18 @@ vi.unmock("@supabase/supabase-js")
  * EXPECTED OUTCOME: Test FAILS (query returns no rows) - this confirms session management is broken
  */
 
+import { isSupabaseAvailable } from "@/test-utils/skip-without-supabase"
 import { createClient } from "@supabase/supabase-js"
+import { afterAll, beforeAll, describe, expect, it, vi } from "vitest"
+
+vi.unmock("@supabase/supabase-js")
 
 describe("Bug Condition: RLS Blocking Sessions", () => {
+    let isDbRunning = true
+
+    beforeAll(async () => {
+        isDbRunning = await isSupabaseAvailable()
+    })
     const supabaseUrl =
         process.env.NEXT_PUBLIC_SUPABASE_URL || "http://127.0.0.1:54321"
     const supabaseAnonKey =
@@ -58,6 +49,9 @@ describe("Bug Condition: RLS Blocking Sessions", () => {
     let testSessionId: string
 
     beforeAll(async () => {
+        if (!isDbRunning) {
+            return
+        }
         // Create a test user using service role
         const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey)
 
@@ -102,18 +96,18 @@ describe("Bug Condition: RLS Blocking Sessions", () => {
     })
 
     afterAll(async () => {
-        // Cleanup: Delete test data using service role
+        if (!isDbRunning || !testSessionId || !testUserId) {
+            return
+        }
         const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey)
 
         await supabaseAdmin.from("sessions").delete().eq("id", testSessionId)
         await supabaseAdmin.auth.admin.deleteUser(testUserId)
-
-        console.log("✓ Cleaned up test user and session")
     })
 
-    it("should allow authenticated user to view their own sessions", async (ctx) => {
-    if (!isDbRunning) return ctx.skip()
-    if (!isDbRunning) return ctx.skip()
+    it("should allow authenticated user to view their own sessions", async ({ skip }) => {
+    if (!isDbRunning) return skip()
+    if (!isDbRunning) return skip()
         // Sign in as the test user
         const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
@@ -179,9 +173,9 @@ describe("Bug Condition: RLS Blocking Sessions", () => {
         console.log(`   Found ${sessions.length} session(s)`)
     })
 
-    it("should allow authenticated user to insert their own sessions", async (ctx) => {
-    if (!isDbRunning) return ctx.skip()
-    if (!isDbRunning) return ctx.skip()
+    it("should allow authenticated user to insert their own sessions", async ({ skip }) => {
+    if (!isDbRunning) return skip()
+    if (!isDbRunning) return skip()
         // Create a test user
         const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey)
 
@@ -275,9 +269,9 @@ describe("Bug Condition: RLS Blocking Sessions", () => {
         console.log("✅ PASS: Authenticated user can insert their own sessions")
     })
 
-    it("should allow authenticated user to delete their own sessions", async (ctx) => {
-    if (!isDbRunning) return ctx.skip()
-    if (!isDbRunning) return ctx.skip()
+    it("should allow authenticated user to delete their own sessions", async ({ skip }) => {
+    if (!isDbRunning) return skip()
+    if (!isDbRunning) return skip()
         // Create a test user and session
         const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey)
 
@@ -365,9 +359,9 @@ describe("Bug Condition: RLS Blocking Sessions", () => {
         console.log("✅ PASS: Authenticated user can delete their own sessions")
     })
 
-    it("should verify RLS policies exist for sessions table", async (ctx) => {
-    if (!isDbRunning) return ctx.skip()
-    if (!isDbRunning) return ctx.skip()
+    it("should verify RLS policies exist for sessions table", async ({ skip }) => {
+    if (!isDbRunning) return skip()
+    if (!isDbRunning) return skip()
         // Query to check if RLS is enabled and policies exist
         const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey)
 

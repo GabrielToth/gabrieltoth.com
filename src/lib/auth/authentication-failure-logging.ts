@@ -13,7 +13,7 @@
  * Validates: Requirements 14.1, 14.2, 14.5
  */
 
-import { db } from "@/lib/db/index"
+import { db } from "@/lib/db"
 import { logger } from "@/lib/logger"
 
 const { query, queryMany, queryOne } = db

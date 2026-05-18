@@ -1,27 +1,42 @@
-import { render } from "@testing-library/react"
+import { render, waitFor } from "@testing-library/react"
+import type React from "react"
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 import TurnstileWidget from "./turnstile-widget"
 
 describe("TurnstileWidget Component", () => {
+    async function renderWidget(
+        props: React.ComponentProps<typeof TurnstileWidget>
+    ) {
+        const result = render(<TurnstileWidget {...props} />)
+        await waitFor(() => {
+            expect(window.turnstile.render).toHaveBeenCalled()
+        })
+        return result
+    }
+
     beforeEach(() => {
-        // Mock the Turnstile API
-        global.window.turnstile = {
+        document.getElementById("turnstile-script")?.remove()
+        const script = document.createElement("script")
+        script.id = "turnstile-script"
+        document.head.appendChild(script)
+
+        window.turnstile = {
             render: vi.fn(() => "widget-id-123"),
             reset: vi.fn(),
             remove: vi.fn(),
             getResponse: vi.fn(() => "token-123"),
         }
 
-        // Mock environment variable
         process.env.NEXT_PUBLIC_CAPTCHA_SITE_KEY = "test-site-key"
     })
 
     afterEach(() => {
         vi.clearAllMocks()
-        delete (global.window as any).turnstile
+        document.getElementById("turnstile-script")?.remove()
+        ;(window as Window & { turnstile?: unknown }).turnstile = undefined
     })
 
-    it("should render the widget container", () => {
+    it("should render the widget container", async () => {
         const mockOnTokenChange = vi.fn()
         render(
             <TurnstileWidget
@@ -31,11 +46,12 @@ describe("TurnstileWidget Component", () => {
             />
         )
 
-        const container = document.getElementById("turnstile-widget")
-        expect(container).toBeInTheDocument()
+        await waitFor(() => {
+            expect(document.getElementById("turnstile-widget")).toBeInTheDocument()
+        })
     })
 
-    it("should render widget with correct configuration", () => {
+    it("should render widget with correct configuration", async () => {
         const mockOnTokenChange = vi.fn()
         render(
             <TurnstileWidget
@@ -46,18 +62,20 @@ describe("TurnstileWidget Component", () => {
             />
         )
 
-        expect(window.turnstile.render).toHaveBeenCalledWith(
-            "#turnstile-widget",
-            expect.objectContaining({
-                sitekey: "test-site-key",
-                theme: "dark",
-                size: "compact",
-                language: "pt",
-            })
-        )
+        await waitFor(() => {
+            expect(window.turnstile.render).toHaveBeenCalledWith(
+                "#turnstile-widget",
+                expect.objectContaining({
+                    sitekey: "test-site-key",
+                    theme: "dark",
+                    size: "compact",
+                    language: "pt",
+                })
+            )
+        })
     })
 
-    it("should call onTokenChange when CAPTCHA is solved", () => {
+    it("should call onTokenChange when CAPTCHA is solved", async () => {
         const mockOnTokenChange = vi.fn()
         render(
             <TurnstileWidget
@@ -67,21 +85,22 @@ describe("TurnstileWidget Component", () => {
             />
         )
 
+        await waitFor(() => {
+            expect(window.turnstile.render).toHaveBeenCalled()
+        })
         const renderCall = (window.turnstile.render as any).mock.calls[0]
         const callback = renderCall[1].callback
         callback("test-token-123")
         expect(mockOnTokenChange).toHaveBeenCalledWith("test-token-123")
     })
 
-    it("should call onTokenChange with null on error", () => {
+    it("should call onTokenChange with null on error", async () => {
         const mockOnTokenChange = vi.fn()
-        render(
-            <TurnstileWidget
-                onTokenChange={mockOnTokenChange}
-                theme="light"
-                size="normal"
-            />
-        )
+        await renderWidget({
+            onTokenChange: mockOnTokenChange,
+            theme: "light",
+            size: "normal",
+        })
 
         const renderCall = (window.turnstile.render as any).mock.calls[0]
         const errorCallback = renderCall[1]["error-callback"]
@@ -89,15 +108,13 @@ describe("TurnstileWidget Component", () => {
         expect(mockOnTokenChange).toHaveBeenCalledWith(null)
     })
 
-    it("should call onTokenChange with null on expiration", () => {
+    it("should call onTokenChange with null on expiration", async () => {
         const mockOnTokenChange = vi.fn()
-        render(
-            <TurnstileWidget
-                onTokenChange={mockOnTokenChange}
-                theme="light"
-                size="normal"
-            />
-        )
+        await renderWidget({
+            onTokenChange: mockOnTokenChange,
+            theme: "light",
+            size: "normal",
+        })
 
         const renderCall = (window.turnstile.render as any).mock.calls[0]
         const expiredCallback = renderCall[1]["expired-callback"]
@@ -120,15 +137,13 @@ describe("TurnstileWidget Component", () => {
         expect(wrapper).toBeInTheDocument()
     })
 
-    it("should support light theme", () => {
+    it("should support light theme", async () => {
         const mockOnTokenChange = vi.fn()
-        render(
-            <TurnstileWidget
-                onTokenChange={mockOnTokenChange}
-                theme="light"
-                size="normal"
-            />
-        )
+        await renderWidget({
+            onTokenChange: mockOnTokenChange,
+            theme: "light",
+            size: "normal",
+        })
 
         expect(window.turnstile.render).toHaveBeenCalledWith(
             "#turnstile-widget",
@@ -138,15 +153,13 @@ describe("TurnstileWidget Component", () => {
         )
     })
 
-    it("should support dark theme", () => {
+    it("should support dark theme", async () => {
         const mockOnTokenChange = vi.fn()
-        render(
-            <TurnstileWidget
-                onTokenChange={mockOnTokenChange}
-                theme="dark"
-                size="normal"
-            />
-        )
+        await renderWidget({
+            onTokenChange: mockOnTokenChange,
+            theme: "dark",
+            size: "normal",
+        })
 
         expect(window.turnstile.render).toHaveBeenCalledWith(
             "#turnstile-widget",
@@ -156,15 +169,13 @@ describe("TurnstileWidget Component", () => {
         )
     })
 
-    it("should support normal size", () => {
+    it("should support normal size", async () => {
         const mockOnTokenChange = vi.fn()
-        render(
-            <TurnstileWidget
-                onTokenChange={mockOnTokenChange}
-                theme="light"
-                size="normal"
-            />
-        )
+        await renderWidget({
+            onTokenChange: mockOnTokenChange,
+            theme: "light",
+            size: "normal",
+        })
 
         expect(window.turnstile.render).toHaveBeenCalledWith(
             "#turnstile-widget",
@@ -174,15 +185,13 @@ describe("TurnstileWidget Component", () => {
         )
     })
 
-    it("should support compact size", () => {
+    it("should support compact size", async () => {
         const mockOnTokenChange = vi.fn()
-        render(
-            <TurnstileWidget
-                onTokenChange={mockOnTokenChange}
-                theme="light"
-                size="compact"
-            />
-        )
+        await renderWidget({
+            onTokenChange: mockOnTokenChange,
+            theme: "light",
+            size: "compact",
+        })
 
         expect(window.turnstile.render).toHaveBeenCalledWith(
             "#turnstile-widget",
@@ -192,15 +201,13 @@ describe("TurnstileWidget Component", () => {
         )
     })
 
-    it("should handle timeout callback", () => {
+    it("should handle timeout callback", async () => {
         const mockOnTokenChange = vi.fn()
-        render(
-            <TurnstileWidget
-                onTokenChange={mockOnTokenChange}
-                theme="light"
-                size="normal"
-            />
-        )
+        await renderWidget({
+            onTokenChange: mockOnTokenChange,
+            theme: "light",
+            size: "normal",
+        })
 
         const renderCall = (window.turnstile.render as any).mock.calls[0]
         const timeoutCallback = renderCall[1]["timeout-callback"]

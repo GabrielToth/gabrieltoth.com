@@ -5,6 +5,7 @@
  */
 
 import { render, screen, waitFor } from "@testing-library/react"
+import React, { useEffect } from "react"
 import userEvent from "@testing-library/user-event"
 import { beforeEach, describe, expect, it, vi } from "vitest"
 import { LoginForm } from "./login-form"
@@ -19,19 +20,52 @@ vi.mock("next/navigation", () => ({
     }),
 }))
 
+// Mock Turnstile (avoid loading Cloudflare script in jsdom)
+vi.mock("@/components/auth/turnstile-widget", () => ({
+    default: ({
+        onTokenChange,
+    }: {
+        onTokenChange: (token: string | null) => void
+    }) => {
+        useEffect(() => {
+            onTokenChange("test-turnstile-token")
+        }, [])
+        return <div data-testid="turnstile-mock" />
+    },
+}))
+
 // Mock fetch
 global.fetch = vi.fn()
+
+const csrfFetchResponse = {
+    ok: true,
+    json: async () => ({
+        success: true,
+        data: { csrfToken: "test-csrf-token" },
+    }),
+}
+
+async function renderReadyLoginForm() {
+    render(<LoginForm locale="en" />)
+    await waitFor(() =>
+        expect(screen.getByTestId("turnstile-mock")).toBeInTheDocument()
+    )
+}
 
 describe("LoginForm", () => {
     beforeEach(() => {
         vi.clearAllMocks()
-        // Mock CSRF token fetch
-        ;(global.fetch as any).mockResolvedValueOnce({
-            ok: true,
-            json: async () => ({
-                success: true,
-                data: { csrfToken: "test-csrf-token" },
-            }),
+        ;(global.fetch as any).mockImplementation(async (url: string) => {
+            if (String(url).includes("/api/auth/csrf")) {
+                return csrfFetchResponse
+            }
+            return {
+                ok: false,
+                json: async () => ({
+                    success: false,
+                    error: "Unmocked fetch",
+                }),
+            }
         })
     })
 
@@ -39,20 +73,24 @@ describe("LoginForm", () => {
         it("should submit form with valid credentials", async () => {
             const user = userEvent.setup()
 
-            // Mock successful login
-            ;(global.fetch as any).mockResolvedValueOnce({
-                ok: true,
-                json: async () => ({
-                    success: true,
-                    data: {
-                        userId: "123",
-                        email: "john@example.com",
-                        name: "John Doe",
-                    },
-                }),
+            ;(global.fetch as any).mockImplementation(async (url: string) => {
+                if (String(url).includes("/api/auth/csrf")) {
+                    return csrfFetchResponse
+                }
+                return {
+                    ok: true,
+                    json: async () => ({
+                        success: true,
+                        data: {
+                            userId: "123",
+                            email: "john@example.com",
+                            name: "John Doe",
+                        },
+                    }),
+                }
             })
 
-            render(<LoginForm locale="en" />)
+            await renderReadyLoginForm()
 
             // Fill in valid credentials
             await user.type(
@@ -89,7 +127,7 @@ describe("LoginForm", () => {
 
         it("should not submit form with invalid email", async () => {
             const user = userEvent.setup()
-            render(<LoginForm locale="en" />)
+            await renderReadyLoginForm()
 
             // Fill in invalid email
             await user.type(
@@ -120,17 +158,21 @@ describe("LoginForm", () => {
         it("should display generic error for invalid credentials", async () => {
             const user = userEvent.setup()
 
-            // Mock failed login
-            ;(global.fetch as any).mockResolvedValueOnce({
-                ok: false,
-                status: 401,
-                json: async () => ({
-                    success: false,
-                    error: "Invalid email or password",
-                }),
+            ;(global.fetch as any).mockImplementation(async (url: string) => {
+                if (String(url).includes("/api/auth/csrf")) {
+                    return csrfFetchResponse
+                }
+                return {
+                    ok: false,
+                    status: 401,
+                    json: async () => ({
+                        success: false,
+                        error: "Invalid email or password",
+                    }),
+                }
             })
 
-            render(<LoginForm locale="en" />)
+            await renderReadyLoginForm()
 
             // Fill in credentials
             await user.type(
@@ -155,17 +197,21 @@ describe("LoginForm", () => {
         it("should display rate limiting error", async () => {
             const user = userEvent.setup()
 
-            // Mock rate limiting response
-            ;(global.fetch as any).mockResolvedValueOnce({
-                ok: false,
-                status: 429,
-                json: async () => ({
-                    success: false,
-                    error: "Too many login attempts. Please try again later.",
-                }),
+            ;(global.fetch as any).mockImplementation(async (url: string) => {
+                if (String(url).includes("/api/auth/csrf")) {
+                    return csrfFetchResponse
+                }
+                return {
+                    ok: false,
+                    status: 429,
+                    json: async () => ({
+                        success: false,
+                        error: "Too many login attempts. Please try again later.",
+                    }),
+                }
             })
 
-            render(<LoginForm locale="en" />)
+            await renderReadyLoginForm()
 
             // Fill in credentials
             await user.type(
@@ -214,20 +260,24 @@ describe("LoginForm", () => {
         it("should include rememberMe in form submission", async () => {
             const user = userEvent.setup()
 
-            // Mock successful login
-            ;(global.fetch as any).mockResolvedValueOnce({
-                ok: true,
-                json: async () => ({
-                    success: true,
-                    data: {
-                        userId: "123",
-                        email: "john@example.com",
-                        name: "John Doe",
-                    },
-                }),
+            ;(global.fetch as any).mockImplementation(async (url: string) => {
+                if (String(url).includes("/api/auth/csrf")) {
+                    return csrfFetchResponse
+                }
+                return {
+                    ok: true,
+                    json: async () => ({
+                        success: true,
+                        data: {
+                            userId: "123",
+                            email: "john@example.com",
+                            name: "John Doe",
+                        },
+                    }),
+                }
             })
 
-            render(<LoginForm locale="en" />)
+            await renderReadyLoginForm()
 
             // Fill in credentials
             await user.type(
@@ -262,29 +312,27 @@ describe("LoginForm", () => {
         it("should disable form during submission", async () => {
             const user = userEvent.setup()
 
-            // Mock slow login
-            ;(global.fetch as any).mockImplementationOnce(
-                () =>
-                    new Promise(resolve =>
-                        setTimeout(
-                            () =>
-                                resolve({
-                                    ok: true,
-                                    json: async () => ({
-                                        success: true,
-                                        data: {
-                                            userId: "123",
-                                            email: "john@example.com",
-                                            name: "John Doe",
-                                        },
-                                    }),
-                                }),
-                            100
-                        )
-                    )
+            ;(global.fetch as any).mockImplementation(
+                async (url: string) => {
+                    if (String(url).includes("/api/auth/csrf")) {
+                        return csrfFetchResponse
+                    }
+                    await new Promise(resolve => setTimeout(resolve, 100))
+                    return {
+                        ok: true,
+                        json: async () => ({
+                            success: true,
+                            data: {
+                                userId: "123",
+                                email: "john@example.com",
+                                name: "John Doe",
+                            },
+                        }),
+                    }
+                }
             )
 
-            render(<LoginForm locale="en" />)
+            await renderReadyLoginForm()
 
             // Fill in credentials
             await user.type(
@@ -320,20 +368,24 @@ describe("LoginForm", () => {
         it("should include CSRF token in form submission", async () => {
             const user = userEvent.setup()
 
-            // Mock successful login
-            ;(global.fetch as any).mockResolvedValueOnce({
-                ok: true,
-                json: async () => ({
-                    success: true,
-                    data: {
-                        userId: "123",
-                        email: "john@example.com",
-                        name: "John Doe",
-                    },
-                }),
+            ;(global.fetch as any).mockImplementation(async (url: string) => {
+                if (String(url).includes("/api/auth/csrf")) {
+                    return csrfFetchResponse
+                }
+                return {
+                    ok: true,
+                    json: async () => ({
+                        success: true,
+                        data: {
+                            userId: "123",
+                            email: "john@example.com",
+                            name: "John Doe",
+                        },
+                    }),
+                }
             })
 
-            render(<LoginForm locale="en" />)
+            await renderReadyLoginForm()
 
             // Fill in credentials
             await user.type(

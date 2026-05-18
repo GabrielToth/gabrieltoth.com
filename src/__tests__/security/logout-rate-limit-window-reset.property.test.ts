@@ -21,11 +21,13 @@ vi.mock("@/lib/middleware/account-completion", () => ({
 }))
 
 // Import proxy after mocks
-const { proxy } = await import("../../../proxy")
+const { proxy, resetRateLimitStoreForTests } = await import("../../../proxy")
 
 describe("Property 2: Rate Limit Window Reset", () => {
     beforeEach(() => {
         vi.clearAllMocks()
+        vi.useRealTimers()
+        resetRateLimitStoreForTests()
     })
 
     /**
@@ -35,6 +37,8 @@ describe("Property 2: Rate Limit Window Reset", () => {
      * the request count SHALL reset to zero and new requests SHALL be allowed.
      */
     it("should reset request count after 60-second window expires", async () => {
+        vi.useFakeTimers()
+        try {
         await fc.assert(
             fc.asyncProperty(
                 fc.ipV4(), // Generate random IP addresses
@@ -86,7 +90,7 @@ describe("Property 2: Rate Limit Window Reset", () => {
 
                     // Phase 3: Wait for the 60-second window to expire
                     // Add a small buffer to ensure the window has definitely expired
-                    await new Promise(resolve => setTimeout(resolve, 60100))
+                    await vi.advanceTimersByTimeAsync(60100)
 
                     // Phase 4: Make a new request after window expiration
                     const afterResetRequest = createLogoutRequest()
@@ -115,11 +119,16 @@ describe("Property 2: Rate Limit Window Reset", () => {
                     expect(newWindowSixthResponse.status).toBe(429)
                 }
             ),
-            { numRuns: 3 } // Reduced runs due to 60-second wait time
+            { numRuns: 3 }
         )
-    }, 200000) // 200 second timeout (3+ minutes for multiple runs)
+        } finally {
+            vi.useRealTimers()
+        }
+    }, 60000)
 
     it("should reset count independently for different user identifiers", async () => {
+        vi.useFakeTimers()
+        try {
         await fc.assert(
             fc.asyncProperty(fc.ipV4(), fc.ipV4(), async (ip1, ip2) => {
                 // Skip if IPs are the same
@@ -157,7 +166,7 @@ describe("Property 2: Rate Limit Window Reset", () => {
                 expect(ip2FirstResponse.status).not.toBe(429)
 
                 // Phase 3: Wait for IP1's window to expire
-                await new Promise(resolve => setTimeout(resolve, 60100))
+                await vi.advanceTimersByTimeAsync(60100)
 
                 // Phase 4: Verify IP1 can make requests again after reset
                 const ip1AfterResetRequest = createLogoutRequest(ip1)
@@ -171,11 +180,16 @@ describe("Property 2: Rate Limit Window Reset", () => {
                 const ip2SecondResponse = await proxy(ip2SecondRequest)
                 expect(ip2SecondResponse.status).not.toBe(429)
             }),
-            { numRuns: 2 } // Very reduced runs due to 60-second wait time
+            { numRuns: 2 }
         )
-    }, 200000) // 200 second timeout
+        } finally {
+            vi.useRealTimers()
+        }
+    }, 60000)
 
     it("should reset count to exactly zero (not accumulate)", async () => {
+        vi.useFakeTimers()
+        try {
         await fc.assert(
             fc.asyncProperty(fc.ipV4(), async ip => {
                 // Helper function to create a logout request
@@ -199,7 +213,7 @@ describe("Property 2: Rate Limit Window Reset", () => {
                 }
 
                 // Phase 2: Wait for window to expire
-                await new Promise(resolve => setTimeout(resolve, 60100))
+                await vi.advanceTimersByTimeAsync(60100)
 
                 // Phase 3: After reset, we should be able to make 5 requests again
                 // (not 2 remaining from previous window)
@@ -216,11 +230,16 @@ describe("Property 2: Rate Limit Window Reset", () => {
                 const sixthResponse = await proxy(sixthRequest)
                 expect(sixthResponse.status).toBe(429)
             }),
-            { numRuns: 2 } // Reduced runs due to 60-second wait time
+            { numRuns: 2 }
         )
-    }, 200000) // 200 second timeout
+        } finally {
+            vi.useRealTimers()
+        }
+    }, 60000)
 
     it("should handle multiple window resets correctly", async () => {
+        vi.useFakeTimers()
+        try {
         await fc.assert(
             fc.asyncProperty(fc.ipV4(), async ip => {
                 // Helper function to create a logout request
@@ -243,7 +262,7 @@ describe("Property 2: Rate Limit Window Reset", () => {
                 const cycle1RateLimited = await proxy(createLogoutRequest())
                 expect(cycle1RateLimited.status).toBe(429)
 
-                await new Promise(resolve => setTimeout(resolve, 60100))
+                await vi.advanceTimersByTimeAsync(60100)
 
                 // Cycle 2: After first reset
                 for (let i = 0; i < 5; i++) {
@@ -253,7 +272,7 @@ describe("Property 2: Rate Limit Window Reset", () => {
                 const cycle2RateLimited = await proxy(createLogoutRequest())
                 expect(cycle2RateLimited.status).toBe(429)
 
-                await new Promise(resolve => setTimeout(resolve, 60100))
+                await vi.advanceTimersByTimeAsync(60100)
 
                 // Cycle 3: After second reset
                 const cycle3FirstRequest = await proxy(createLogoutRequest())
@@ -261,7 +280,10 @@ describe("Property 2: Rate Limit Window Reset", () => {
                 // Property: Multiple resets MUST work consistently
                 expect(cycle3FirstRequest.status).not.toBe(429)
             }),
-            { numRuns: 1 } // Single run due to 120+ second wait time
+            { numRuns: 1 }
         )
-    }, 300000) // 300 second timeout (5 minutes)
+        } finally {
+            vi.useRealTimers()
+        }
+    }, 60000)
 })

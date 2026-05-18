@@ -10,7 +10,7 @@ describe("Authentication Security Tests", () => {
         it("should enforce minimum password length", () => {
             const minLength = 8
             const shortPassword = "short"
-            const validPassword = "validpassword123"
+            const validPassword = "valid_password123"
 
             expect(shortPassword.length).toBeLessThan(minLength)
             expect(validPassword.length).toBeGreaterThanOrEqual(minLength)

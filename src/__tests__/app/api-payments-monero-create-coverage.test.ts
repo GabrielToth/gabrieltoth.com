@@ -11,8 +11,8 @@ vi.mock("@/lib/monero", () => ({
     })),
 }))
 
-vi.mock("@/lib/db", () => ({
-    db: {
+vi.mock("@/lib/orders-store", () => ({
+    ordersDb: {
         createOrder: vi.fn(async (o: any) => ({
             id: "1",
             tracking_code: o.tracking_code,
@@ -75,8 +75,8 @@ describe("api payments monero/create coverage", () => {
     })
 
     it("GET returns 404 when order not found", async () => {
-        const supa = await import("@/lib/db")
-        ;(supa.db.getOrderByTrackingCode as any).mockResolvedValueOnce(null)
+        const supa = await import("@/lib/orders-store")
+        ;(supa.ordersDb.getOrderByTrackingCode as any).mockResolvedValueOnce(null)
         const { GET } = await import("@/app/api/payments/monero/create/route")
         const url = new URL("http://localhost?trackingCode=NOPE")
         const res = await GET({ nextUrl: url } as any)
@@ -84,8 +84,8 @@ describe("api payments monero/create coverage", () => {
     })
 
     it("GET returns 400 when order is not monero", async () => {
-        const supa = await import("@/lib/db")
-        ;(supa.db.getOrderByTrackingCode as any).mockResolvedValueOnce({
+        const supa = await import("@/lib/orders-store")
+        ;(supa.ordersDb.getOrderByTrackingCode as any).mockResolvedValueOnce({
             tracking_code: "TRACK-PIX",
             service_type: "svc",
             amount: 100,

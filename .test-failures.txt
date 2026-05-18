@@ -1,0 +1,53 @@
+﻿src/__tests__/app/api-routes-import.test.ts [ src/__tests__/app/api-routes-import.test.ts ]
+src/__tests__/app/app-not-found-coverage.test.tsx
+src/__tests__/app/channel-management-metadata-coverage.test.ts
+src/__tests__/app/channel-management-section-coverage.test.tsx
+src/__tests__/app/robots-sitemap.test.ts [ src/__tests__/app/robots-sitemap.test.ts ]
+src/__tests__/app/sitemaps-locales.test.ts [ src/__tests__/app/sitemaps-locales.test.ts ]
+src/__tests__/auth/logout-cookie-clearing.test.ts
+src/__tests__/auth/logout-cookie-clearing.test.ts [ src/__tests__/auth/logout-cookie-clearing.test.ts ]
+src/__tests__/auth/unified-signin.test.ts
+src/__tests__/coverage/low-files-smoke.test.tsx [ src/__tests__/coverage/low-files-smoke.test.tsx ]
+src/__tests__/database/audit-logs-schema.test.ts [ src/__tests__/database/audit-logs-schema.test.ts ]
+src/__tests__/database-constraints.test.ts [ src/__tests__/database-constraints.test.ts ]
+src/__tests__/integration/environment-parity.test.ts [ src/__tests__/integration/environment-parity.test.ts ]
+src/__tests__/lib/auth/user.property.test.ts
+src/__tests__/lib/db-coverage.test.ts
+src/__tests__/lib/rate-limit.test.ts
+src/__tests__/lib/validation/registration-form.test.ts
+src/__tests__/security/bug-condition-login-attempts-rls.test.ts [ src/__tests__/security/bug-condition-login-attempts-rls.test.ts ]
+src/__tests__/security/bug-condition-security-definer.test.ts [ src/__tests__/security/bug-condition-security-definer.test.ts ]
+src/__tests__/security/bug-condition-sessions-rls.test.ts [ src/__tests__/security/bug-condition-sessions-rls.test.ts ]
+src/__tests__/security/preservation-database-functions.test.ts
+src/__tests__/security/preservation-rls-policies.test.ts [ src/__tests__/security/preservation-rls-policies.test.ts ]
+src/__tests__/security/request-validation.test.ts [ src/__tests__/security/request-validation.test.ts ]
+src/app/[locale]/auth/complete-account/components/password-strength.test.tsx
+src/app/[locale]/auth/complete-account/steps/step-1-prefilled.test.tsx
+src/app/[locale]/auth/complete-account/steps/step-2-new-fields.test.tsx
+src/app/api/auth/google/callback/route.test.ts
+src/app/api/auth/oauth/callback/route.test.ts
+src/app/api/health/route.test.ts
+src/app/api/youtube/link/start/route.test.ts
+src/backend/integration.test.ts
+src/backend/server.test.ts
+src/components/auth/login-form.test.tsx
+src/components/auth/register-form-captcha.test.tsx
+src/components/auth/turnstile-widget.test.tsx
+src/components/publish/UniversalPostingButton.test.tsx
+src/components/settings/ChannelsSection.test.tsx
+src/components/settings/IntegrationsSection.test.tsx
+src/lib/auth/authentication-failure-logging.test.ts
+src/lib/auth/error-handling.test.ts
+src/lib/auth/google-auth.test.ts [ src/lib/auth/google-auth.test.ts ]
+src/lib/auth/password-security/algorithm-migration.properties.test.ts
+src/lib/auth/password-security/authentication-service.test.ts
+src/lib/auth/password-security/config.test.ts
+src/lib/auth/password-security/salt-generator.test.ts
+src/lib/auth/validation.property.test.ts
+src/lib/credits/credit-system.test.ts
+src/lib/db/migrations/002_add_account_completion_fields.test.ts
+src/lib/db/schema.test.ts
+src/lib/logger/pino-logger.test.ts [ src/lib/logger/pino-logger.test.ts ]
+src/lib/metering/metering-system.test.ts
+src/lib/middleware/account-completion.e2e.test.ts
+src/lib/observability/observability.test.ts

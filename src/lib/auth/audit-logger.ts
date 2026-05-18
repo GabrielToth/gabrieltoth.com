@@ -4,7 +4,7 @@
  * Implements 90+ day retention policy for compliance
  */
 
-import { db } from "@/lib/db/index"
+import { db } from "@/lib/db"
 import { logger } from "@/lib/logger"
 
 const { query, queryOne, queryMany } = db

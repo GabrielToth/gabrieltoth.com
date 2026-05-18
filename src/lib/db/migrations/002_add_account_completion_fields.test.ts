@@ -2,12 +2,15 @@
 // Feature: account-completion-flow
 // This test verifies that the migration applies successfully and can be rolled back
 
+import { isPostgresAvailable } from "@/test-utils/requires-postgres"
 import { readFileSync } from "fs"
 import { join } from "path"
 import { Pool, PoolClient } from "pg"
 import { afterAll, beforeAll, describe, expect, it } from "vitest"
 
-describe("Migration: Add Account Completion Fields", () => {
+const postgresAvailable = await isPostgresAvailable()
+
+describe.skipIf(!postgresAvailable)("Migration: Add Account Completion Fields", () => {
     let pool: Pool
     let client: PoolClient
     const testDbUrl =

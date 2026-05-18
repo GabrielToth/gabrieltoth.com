@@ -1,4 +1,4 @@
-import { db } from "@/lib/db"
+import { ordersDb as db } from "@/lib/orders-store"
 import { convertBrlToXmr, generateMoneroPayment } from "@/lib/monero"
 import { generateTrackingCode } from "@/lib/pix"
 import { NextRequest, NextResponse } from "next/server"

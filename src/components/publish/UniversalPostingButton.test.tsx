@@ -1,6 +1,10 @@
 import { fireEvent, render, screen } from "@testing-library/react"
 import { describe, expect, it, vi } from "vitest"
-import { UniversalPostingButton } from "./UniversalPostingButton"
+import UniversalPostingButton from "./UniversalPostingButton"
+
+vi.mock("./PostingInterface", () => ({
+    default: () => null,
+}))
 
 describe("UniversalPostingButton", () => {
     it("renders button with network count", () => {

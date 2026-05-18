@@ -1,4 +1,4 @@
-import { db } from "@/lib/db"
+import { ordersDb as db } from "@/lib/orders-store"
 import { beforeEach, describe, expect, it, vi } from "vitest"
 
 describe("lib/db in-memory store", () => {

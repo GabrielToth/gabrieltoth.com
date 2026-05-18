@@ -21,8 +21,8 @@ describe("Startup Handler", () => {
     // Feature: distributed-infrastructure-logging, Property 10: Sensitive data exclusion
     // **Validates: Requirements 8.9**
     describe("Property 10: Sensitive data exclusion", () => {
-        it("should never log sensitive environment variables", () => {
-            fc.assert(
+        it("should never log sensitive environment variables", async () => {
+            await fc.assert(
                 fc.asyncProperty(
                     fc.record({
                         PASSWORD: fc.string(),
@@ -62,8 +62,8 @@ describe("Startup Handler", () => {
             )
         })
 
-        it("should allow non-sensitive environment variables", () => {
-            fc.assert(
+        it("should allow non-sensitive environment variables", async () => {
+            await fc.assert(
                 fc.asyncProperty(
                     fc.record({
                         NODE_ENV: fc.constantFrom(

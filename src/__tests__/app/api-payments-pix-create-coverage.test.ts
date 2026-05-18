@@ -10,8 +10,8 @@ vi.mock("@/lib/pix", () => ({
     generateTrackingCode: vi.fn(() => "TRACK-PX"),
 }))
 
-vi.mock("@/lib/db", () => ({
-    db: {
+vi.mock("@/lib/orders-store", () => ({
+    ordersDb: {
         createOrder: vi.fn(async (o: any) => ({
             id: "1",
             tracking_code: o.tracking_code,
@@ -52,8 +52,10 @@ describe("api payments pix/create coverage", () => {
     })
 
     it("POST returns 500 when createOrder throws", async () => {
-        const supa = await import("@/lib/db")
-        ;(supa.db.createOrder as any).mockRejectedValueOnce(new Error("boom"))
+        const supa = await import("@/lib/orders-store")
+        ;(supa.ordersDb.createOrder as any).mockRejectedValueOnce(
+            new Error("boom")
+        )
         const { POST } = await import("@/app/api/payments/pix/create/route")
         const req = new Request("http://localhost", {
             method: "POST",
@@ -72,8 +74,10 @@ describe("api payments pix/create coverage", () => {
     })
 
     it("GET returns 404 when order not found", async () => {
-        const supa = await import("@/lib/db")
-        ;(supa.db.getOrderByTrackingCode as any).mockResolvedValueOnce(null)
+        const supa = await import("@/lib/orders-store")
+        ;(supa.ordersDb.getOrderByTrackingCode as any).mockResolvedValueOnce(
+            null
+        )
         const { GET } = await import("@/app/api/payments/pix/create/route")
         const url = new URL("http://localhost?trackingCode=NOPE")
         const res = await GET({ nextUrl: url } as any)
@@ -81,8 +85,8 @@ describe("api payments pix/create coverage", () => {
     })
 
     it("GET returns 400 when order is not pix", async () => {
-        const supa = await import("@/lib/db")
-        ;(supa.db.getOrderByTrackingCode as any).mockResolvedValueOnce({
+        const supa = await import("@/lib/orders-store")
+        ;(supa.ordersDb.getOrderByTrackingCode as any).mockResolvedValueOnce({
             tracking_code: "TRACK-MNR",
             service_type: "svc",
             amount: 100,

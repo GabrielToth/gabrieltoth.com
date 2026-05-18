@@ -1,4 +1,4 @@
-import { db } from "@/lib/db"
+import { ordersDb as db } from "@/lib/orders-store"
 import { generatePixQR, generateTrackingCode } from "@/lib/pix"
 import { NextRequest, NextResponse } from "next/server"
 

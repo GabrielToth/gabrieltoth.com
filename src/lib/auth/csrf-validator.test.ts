@@ -4,8 +4,20 @@
  * Validates: Requirements 4.1, 4.2, 4.3, 4.4, 4.5, 4.6, 4.7
  */
 
+import { createCsrfDbModuleMock } from "@/test-utils/csrf-db-mock"
 import { db } from "@/lib/db"
 import { createHash } from "crypto"
+import { vi } from "vitest"
+
+vi.mock("@/lib/db", () => createCsrfDbModuleMock())
+
+vi.mock("@/lib/logger", () => ({
+    logger: {
+        debug: vi.fn(),
+        warn: vi.fn(),
+        error: vi.fn(),
+    },
+}))
 import {
     cleanupExpiredCSRFTokens,
     generateCSRFToken,

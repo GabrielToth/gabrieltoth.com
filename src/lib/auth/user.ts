@@ -5,7 +5,7 @@
  * Validates: Requirements 2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 3.6, 11.3
  */
 
-import { db } from "@/lib/db/index"
+import { db } from "@/lib/db"
 import { logger } from "@/lib/logger"
 import { GoogleUserData, OAuthUser, User } from "@/types/auth"
 

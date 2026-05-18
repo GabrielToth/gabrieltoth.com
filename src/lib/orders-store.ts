@@ -55,7 +55,7 @@ function generateId(): string {
 }
 /* c8 ignore stop */
 
-export const db = {
+export const ordersDb = {
     // User methods
     async queryOne<T>(
         query: string,
@@ -226,3 +226,7 @@ export const db = {
         }
     },
 }
+
+/** @deprecated Use ordersDb */
+export const db = ordersDb
+export default ordersDb
