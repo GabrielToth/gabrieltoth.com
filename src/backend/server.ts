@@ -12,6 +12,7 @@
 
 import express, { Request, Response } from "express"
 import Redis from "ioredis"
+import v8 from "node:v8"
 import { Pool } from "pg"
 import { validateEnv } from "../lib/config/env"
 import { createLogger } from "../lib/logger"

@@ -32,7 +32,7 @@ describe("E2E: Registration User Scenarios", () => {
     describe("Happy Path: New User Registration", () => {
         it("should complete full registration flow successfully", async () => {
             // Step 1: Enter email
-            await mockBrowser.fill('input[name="email"]', "newuser@example.com")
+            await mockBrowser.fill("input[name=\"email\"]", "newuser@example.com")
             await mockBrowser.waitForSelector("button:has-text('Next')")
             expect(true).toBe(true) // Email validation passed
 
@@ -40,9 +40,9 @@ describe("E2E: Registration User Scenarios", () => {
             await mockBrowser.click("button:has-text('Next')")
 
             // Step 2: Enter password
-            await mockBrowser.fill('input[name="password"]', "SecurePass123!")
+            await mockBrowser.fill("input[name=\"password\"]", "SecurePass123!")
             await mockBrowser.fill(
-                'input[name="confirmPassword"]',
+                "input[name=\"confirmPassword\"]",
                 "SecurePass123!"
             )
             await mockBrowser.waitForSelector("button:has-text('Next')")
@@ -52,8 +52,8 @@ describe("E2E: Registration User Scenarios", () => {
             await mockBrowser.click("button:has-text('Next')")
 
             // Step 3: Enter personal information
-            await mockBrowser.fill('input[name="name"]', "John Doe")
-            await mockBrowser.fill('input[name="phone"]', "+1 (555) 123-4567")
+            await mockBrowser.fill("input[name=\"name\"]", "John Doe")
+            await mockBrowser.fill("input[name=\"phone\"]", "+1 (555) 123-4567")
             await mockBrowser.waitForSelector("button:has-text('Next')")
             expect(true).toBe(true) // Personal data validation passed
 
@@ -86,7 +86,7 @@ describe("E2E: Registration User Scenarios", () => {
             expect(true).toBe(true)
 
             // Enter email and proceed
-            await mockBrowser.fill('input[name="email"]', "user@example.com")
+            await mockBrowser.fill("input[name=\"email\"]", "user@example.com")
             await mockBrowser.click("button:has-text('Next')")
 
             // Step 2: Verify progress indicator shows step 2
@@ -94,9 +94,9 @@ describe("E2E: Registration User Scenarios", () => {
             expect(true).toBe(true)
 
             // Enter password and proceed
-            await mockBrowser.fill('input[name="password"]', "SecurePass123!")
+            await mockBrowser.fill("input[name=\"password\"]", "SecurePass123!")
             await mockBrowser.fill(
-                'input[name="confirmPassword"]',
+                "input[name=\"confirmPassword\"]",
                 "SecurePass123!"
             )
             await mockBrowser.click("button:has-text('Next')")
@@ -106,8 +106,8 @@ describe("E2E: Registration User Scenarios", () => {
             expect(true).toBe(true)
 
             // Enter personal data and proceed
-            await mockBrowser.fill('input[name="name"]', "John Doe")
-            await mockBrowser.fill('input[name="phone"]', "+1 (555) 123-4567")
+            await mockBrowser.fill("input[name=\"name\"]", "John Doe")
+            await mockBrowser.fill("input[name=\"phone\"]", "+1 (555) 123-4567")
             await mockBrowser.click("button:has-text('Next')")
 
             // Step 4: Verify progress indicator shows step 4
@@ -117,41 +117,41 @@ describe("E2E: Registration User Scenarios", () => {
 
         it("should show password strength indicator", async () => {
             // Navigate to password step
-            await mockBrowser.fill('input[name="email"]', "user@example.com")
+            await mockBrowser.fill("input[name=\"email\"]", "user@example.com")
             await mockBrowser.click("button:has-text('Next')")
 
             // Enter weak password
-            await mockBrowser.fill('input[name="password"]', "weak")
+            await mockBrowser.fill("input[name=\"password\"]", "weak")
             await mockBrowser.waitForSelector("[data-testid='strength-weak']")
             expect(true).toBe(true) // Weak strength shown
 
             // Enter fair password
-            await mockBrowser.fill('input[name="password"]', "Pass123")
+            await mockBrowser.fill("input[name=\"password\"]", "Pass123")
             await mockBrowser.waitForSelector("[data-testid='strength-fair']")
             expect(true).toBe(true) // Fair strength shown
 
             // Enter good password
-            await mockBrowser.fill('input[name="password"]', "Pass123!")
+            await mockBrowser.fill("input[name=\"password\"]", "Pass123!")
             await mockBrowser.waitForSelector("[data-testid='strength-good']")
             expect(true).toBe(true) // Good strength shown
 
             // Enter strong password
-            await mockBrowser.fill('input[name="password"]', "SecurePass123!")
+            await mockBrowser.fill("input[name=\"password\"]", "SecurePass123!")
             await mockBrowser.waitForSelector("[data-testid='strength-strong']")
             expect(true).toBe(true) // Strong strength shown
         })
 
         it("should show/hide password toggle", async () => {
             // Navigate to password step
-            await mockBrowser.fill('input[name="email"]', "user@example.com")
+            await mockBrowser.fill("input[name=\"email\"]", "user@example.com")
             await mockBrowser.click("button:has-text('Next')")
 
             // Enter password
-            await mockBrowser.fill('input[name="password"]', "SecurePass123!")
+            await mockBrowser.fill("input[name=\"password\"]", "SecurePass123!")
 
             // Verify password is hidden by default
             const passwordInput = await mockBrowser.waitForSelector(
-                'input[name="password"]'
+                "input[name=\"password\"]"
             )
             expect(true).toBe(true) // Password field exists
 
@@ -169,7 +169,7 @@ describe("E2E: Registration User Scenarios", () => {
         it("should display error when email already exists", async () => {
             // Enter existing email
             await mockBrowser.fill(
-                'input[name="email"]',
+                "input[name=\"email\"]",
                 "existing@example.com"
             )
 
@@ -197,7 +197,7 @@ describe("E2E: Registration User Scenarios", () => {
         it("should allow user to correct email and retry", async () => {
             // Enter existing email
             await mockBrowser.fill(
-                'input[name="email"]',
+                "input[name=\"email\"]",
                 "existing@example.com"
             )
             await mockBrowser.waitForSelector(
@@ -205,7 +205,7 @@ describe("E2E: Registration User Scenarios", () => {
             )
 
             // Clear and enter new email
-            await mockBrowser.fill('input[name="email"]', "newuser@example.com")
+            await mockBrowser.fill("input[name=\"email\"]", "newuser@example.com")
 
             // Wait for email check
             await mockBrowser.waitForSelector(
@@ -231,32 +231,32 @@ describe("E2E: Registration User Scenarios", () => {
     describe("Error Scenario: Password Validation", () => {
         it("should display password requirement errors", async () => {
             // Navigate to password step
-            await mockBrowser.fill('input[name="email"]', "user@example.com")
+            await mockBrowser.fill("input[name=\"email\"]", "user@example.com")
             await mockBrowser.click("button:has-text('Next')")
 
             // Enter password without uppercase
-            await mockBrowser.fill('input[name="password"]', "password123!")
+            await mockBrowser.fill("input[name=\"password\"]", "password123!")
             await mockBrowser.waitForSelector(
                 "text=Password must contain at least one uppercase letter"
             )
             expect(true).toBe(true)
 
             // Enter password without number
-            await mockBrowser.fill('input[name="password"]', "Password!")
+            await mockBrowser.fill("input[name=\"password\"]", "Password!")
             await mockBrowser.waitForSelector(
                 "text=Password must contain at least one number"
             )
             expect(true).toBe(true)
 
             // Enter password without special character
-            await mockBrowser.fill('input[name="password"]', "Password123")
+            await mockBrowser.fill("input[name=\"password\"]", "Password123")
             await mockBrowser.waitForSelector(
                 "text=Password must contain at least one special character"
             )
             expect(true).toBe(true)
 
             // Enter password too short
-            await mockBrowser.fill('input[name="password"]', "Pass1!")
+            await mockBrowser.fill("input[name=\"password\"]", "Pass1!")
             await mockBrowser.waitForSelector(
                 "text=Password must be at least 8 characters"
             )
@@ -265,15 +265,15 @@ describe("E2E: Registration User Scenarios", () => {
 
         it("should display error when passwords don't match", async () => {
             // Navigate to password step
-            await mockBrowser.fill('input[name="email"]', "user@example.com")
+            await mockBrowser.fill("input[name=\"email\"]", "user@example.com")
             await mockBrowser.click("button:has-text('Next')")
 
             // Enter password
-            await mockBrowser.fill('input[name="password"]', "SecurePass123!")
+            await mockBrowser.fill("input[name=\"password\"]", "SecurePass123!")
 
             // Enter different confirmation password
             await mockBrowser.fill(
-                'input[name="confirmPassword"]',
+                "input[name=\"confirmPassword\"]",
                 "DifferentPass123!"
             )
 
@@ -290,19 +290,19 @@ describe("E2E: Registration User Scenarios", () => {
 
         it("should allow user to correct password and proceed", async () => {
             // Navigate to password step
-            await mockBrowser.fill('input[name="email"]', "user@example.com")
+            await mockBrowser.fill("input[name=\"email\"]", "user@example.com")
             await mockBrowser.click("button:has-text('Next')")
 
             // Enter weak password
-            await mockBrowser.fill('input[name="password"]', "weak")
+            await mockBrowser.fill("input[name=\"password\"]", "weak")
             await mockBrowser.waitForSelector(
                 "text=Password must be at least 8 characters"
             )
 
             // Correct password
-            await mockBrowser.fill('input[name="password"]', "SecurePass123!")
+            await mockBrowser.fill("input[name=\"password\"]", "SecurePass123!")
             await mockBrowser.fill(
-                'input[name="confirmPassword"]',
+                "input[name=\"confirmPassword\"]",
                 "SecurePass123!"
             )
 
@@ -322,17 +322,17 @@ describe("E2E: Registration User Scenarios", () => {
     describe("Error Scenario: Invalid Phone Number", () => {
         it("should display error for invalid phone format", async () => {
             // Navigate to personal data step
-            await mockBrowser.fill('input[name="email"]', "user@example.com")
+            await mockBrowser.fill("input[name=\"email\"]", "user@example.com")
             await mockBrowser.click("button:has-text('Next')")
-            await mockBrowser.fill('input[name="password"]', "SecurePass123!")
+            await mockBrowser.fill("input[name=\"password\"]", "SecurePass123!")
             await mockBrowser.fill(
-                'input[name="confirmPassword"]',
+                "input[name=\"confirmPassword\"]",
                 "SecurePass123!"
             )
             await mockBrowser.click("button:has-text('Next')")
 
             // Enter invalid phone
-            await mockBrowser.fill('input[name="phone"]', "invalid")
+            await mockBrowser.fill("input[name=\"phone\"]", "invalid")
 
             // Verify error message
             await mockBrowser.waitForSelector(
@@ -349,50 +349,50 @@ describe("E2E: Registration User Scenarios", () => {
 
         it("should accept international phone formats", async () => {
             // Navigate to personal data step
-            await mockBrowser.fill('input[name="email"]', "user@example.com")
+            await mockBrowser.fill("input[name=\"email\"]", "user@example.com")
             await mockBrowser.click("button:has-text('Next')")
-            await mockBrowser.fill('input[name="password"]', "SecurePass123!")
+            await mockBrowser.fill("input[name=\"password\"]", "SecurePass123!")
             await mockBrowser.fill(
-                'input[name="confirmPassword"]',
+                "input[name=\"confirmPassword\"]",
                 "SecurePass123!"
             )
             await mockBrowser.click("button:has-text('Next')")
 
             // Test US format
-            await mockBrowser.fill('input[name="phone"]', "+1 (555) 123-4567")
+            await mockBrowser.fill("input[name=\"phone\"]", "+1 (555) 123-4567")
             await mockBrowser.waitForSelector("[data-testid='phone-valid']")
             expect(true).toBe(true)
 
             // Test UK format
-            await mockBrowser.fill('input[name="phone"]', "+44 20 7946 0958")
+            await mockBrowser.fill("input[name=\"phone\"]", "+44 20 7946 0958")
             await mockBrowser.waitForSelector("[data-testid='phone-valid']")
             expect(true).toBe(true)
 
             // Test Brazil format
-            await mockBrowser.fill('input[name="phone"]', "+55 11 98765-4321")
+            await mockBrowser.fill("input[name=\"phone\"]", "+55 11 98765-4321")
             await mockBrowser.waitForSelector("[data-testid='phone-valid']")
             expect(true).toBe(true)
         })
 
         it("should allow user to correct phone and proceed", async () => {
             // Navigate to personal data step
-            await mockBrowser.fill('input[name="email"]', "user@example.com")
+            await mockBrowser.fill("input[name=\"email\"]", "user@example.com")
             await mockBrowser.click("button:has-text('Next')")
-            await mockBrowser.fill('input[name="password"]', "SecurePass123!")
+            await mockBrowser.fill("input[name=\"password\"]", "SecurePass123!")
             await mockBrowser.fill(
-                'input[name="confirmPassword"]',
+                "input[name=\"confirmPassword\"]",
                 "SecurePass123!"
             )
             await mockBrowser.click("button:has-text('Next')")
 
             // Enter invalid phone
-            await mockBrowser.fill('input[name="phone"]', "invalid")
+            await mockBrowser.fill("input[name=\"phone\"]", "invalid")
             await mockBrowser.waitForSelector(
                 "text=Please enter a valid phone number"
             )
 
             // Correct phone
-            await mockBrowser.fill('input[name="phone"]', "+1 (555) 123-4567")
+            await mockBrowser.fill("input[name=\"phone\"]", "+1 (555) 123-4567")
 
             // Verify error is cleared by attempting to proceed
             // In a real test, we would verify the error message is gone
@@ -464,7 +464,7 @@ describe("E2E: Registration User Scenarios", () => {
             // This would be done by mocking fetch or using a test utility
 
             // Enter email
-            await mockBrowser.fill('input[name="email"]', "user@example.com")
+            await mockBrowser.fill("input[name=\"email\"]", "user@example.com")
 
             // Wait for network error
             await mockBrowser.waitForSelector(
@@ -481,7 +481,7 @@ describe("E2E: Registration User Scenarios", () => {
 
         it("should allow user to retry after network error", async () => {
             // Simulate network error
-            await mockBrowser.fill('input[name="email"]', "user@example.com")
+            await mockBrowser.fill("input[name=\"email\"]", "user@example.com")
             await mockBrowser.waitForSelector(
                 "text=Connection failed. Please check your internet connection"
             )
@@ -504,16 +504,16 @@ describe("E2E: Registration User Scenarios", () => {
 
         it("should handle network error during registration submission", async () => {
             // Complete registration flow
-            await mockBrowser.fill('input[name="email"]', "user@example.com")
+            await mockBrowser.fill("input[name=\"email\"]", "user@example.com")
             await mockBrowser.click("button:has-text('Next')")
-            await mockBrowser.fill('input[name="password"]', "SecurePass123!")
+            await mockBrowser.fill("input[name=\"password\"]", "SecurePass123!")
             await mockBrowser.fill(
-                'input[name="confirmPassword"]',
+                "input[name=\"confirmPassword\"]",
                 "SecurePass123!"
             )
             await mockBrowser.click("button:has-text('Next')")
-            await mockBrowser.fill('input[name="name"]', "John Doe")
-            await mockBrowser.fill('input[name="phone"]', "+1 (555) 123-4567")
+            await mockBrowser.fill("input[name=\"name\"]", "John Doe")
+            await mockBrowser.fill("input[name=\"phone\"]", "+1 (555) 123-4567")
             await mockBrowser.click("button:has-text('Next')")
 
             // Simulate network error on submission
@@ -531,7 +531,7 @@ describe("E2E: Registration User Scenarios", () => {
 
             // Verify form data is preserved
             const emailInput = await mockBrowser.waitForSelector(
-                'input[name="email"]'
+                "input[name=\"email\"]"
             )
             expect(true).toBe(true)
         })
@@ -637,32 +637,32 @@ describe("E2E: Registration User Scenarios", () => {
         it("should have proper ARIA labels", async () => {
             // Verify email input has ARIA label
             const emailInput = await mockBrowser.waitForSelector(
-                'input[aria-label="Email Address"]'
+                "input[aria-label=\"Email Address\"]"
             )
             expect(true).toBe(true)
 
             // Verify password input has ARIA label
             const passwordInput = await mockBrowser.waitForSelector(
-                'input[aria-label="Password"]'
+                "input[aria-label=\"Password\"]"
             )
             expect(true).toBe(true)
 
             // Verify name input has ARIA label
             const nameInput = await mockBrowser.waitForSelector(
-                'input[aria-label="Full Name"]'
+                "input[aria-label=\"Full Name\"]"
             )
             expect(true).toBe(true)
 
             // Verify phone input has ARIA label
             const phoneInput = await mockBrowser.waitForSelector(
-                'input[aria-label="Phone Number"]'
+                "input[aria-label=\"Phone Number\"]"
             )
             expect(true).toBe(true)
         })
 
         it("should support keyboard navigation", async () => {
             // Tab through form fields
-            await mockBrowser.click('input[name="email"]')
+            await mockBrowser.click("input[name=\"email\"]")
             // Press Tab
             expect(true).toBe(true)
 
@@ -675,11 +675,11 @@ describe("E2E: Registration User Scenarios", () => {
 
         it("should have visible focus indicators", async () => {
             // Click on email input
-            await mockBrowser.click('input[name="email"]')
+            await mockBrowser.click("input[name=\"email\"]")
 
             // Verify focus indicator is visible
             const focusedInput = await mockBrowser.waitForSelector(
-                'input[name="email"]:focus'
+                "input[name=\"email\"]:focus"
             )
             expect(true).toBe(true)
         })
@@ -702,13 +702,13 @@ describe("E2E: Registration User Scenarios", () => {
     describe("Back Button Navigation", () => {
         it("should allow navigating back to previous steps", async () => {
             // Complete step 1
-            await mockBrowser.fill('input[name="email"]', "user@example.com")
+            await mockBrowser.fill("input[name=\"email\"]", "user@example.com")
             await mockBrowser.click("button:has-text('Next')")
 
             // Complete step 2
-            await mockBrowser.fill('input[name="password"]', "SecurePass123!")
+            await mockBrowser.fill("input[name=\"password\"]", "SecurePass123!")
             await mockBrowser.fill(
-                'input[name="confirmPassword"]',
+                "input[name=\"confirmPassword\"]",
                 "SecurePass123!"
             )
             await mockBrowser.click("button:has-text('Next')")
@@ -717,12 +717,12 @@ describe("E2E: Registration User Scenarios", () => {
             await mockBrowser.click("button:has-text('Back')")
 
             // Verify we're back on step 2
-            await mockBrowser.waitForSelector('input[name="password"]')
+            await mockBrowser.waitForSelector("input[name=\"password\"]")
             expect(true).toBe(true)
 
             // Verify data is preserved
             const passwordInput = await mockBrowser.waitForSelector(
-                'input[name="password"]'
+                "input[name=\"password\"]"
             )
             expect(true).toBe(true)
         })
@@ -768,7 +768,7 @@ describe("E2E: Registration User Scenarios", () => {
             await mockBrowser.click("button:has-text('Cancel')")
 
             // Verify we're still on registration
-            await mockBrowser.waitForSelector('input[name="email"]')
+            await mockBrowser.waitForSelector("input[name=\"email\"]")
             expect(true).toBe(true)
         })
     })

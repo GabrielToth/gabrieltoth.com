@@ -85,7 +85,7 @@ describe("ui/breadcrumbs branches", () => {
         }) as HTMLAnchorElement
         expect(extLink.getAttribute("href") || "").toContain("/en/abc/def")
 
-        const current = container.querySelector('[aria-current="page"]')
+        const current = container.querySelector("[aria-current=\"page\"]")
         expect(current?.textContent || "").toMatch(/Last/)
     })
 
@@ -102,7 +102,7 @@ describe("ui/breadcrumbs branches", () => {
                 ],
             })
         )
-        const current = container.querySelector('[aria-current="page"]')
+        const current = container.querySelector("[aria-current=\"page\"]")
         expect(current).toBeTruthy()
         // Should include an inline SVG icon (Home)
         expect(current?.querySelector("svg")).toBeTruthy()

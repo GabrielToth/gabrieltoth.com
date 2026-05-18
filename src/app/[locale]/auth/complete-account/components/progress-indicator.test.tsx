@@ -76,7 +76,7 @@ describe("ProgressIndicator", () => {
         )
 
         const progressBar = container.querySelector(
-            '[role="progressbar"]'
+            "[role=\"progressbar\"]"
         ) as HTMLElement
         expect(progressBar).toHaveStyle("width: 66.66666666666666%")
     })
@@ -108,7 +108,7 @@ describe("ProgressIndicator", () => {
         )
 
         const progressBar = container.querySelector(
-            '[role="progressbar"]'
+            "[role=\"progressbar\"]"
         ) as HTMLElement
         expect(progressBar).toHaveAttribute("aria-valuenow", "2")
         expect(progressBar).toHaveAttribute("aria-valuemin", "1")

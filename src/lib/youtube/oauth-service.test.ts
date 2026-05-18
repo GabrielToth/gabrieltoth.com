@@ -28,11 +28,7 @@ const mockConfig: YouTubeChannelLinkingConfig = {
         fromName: "Test",
         tls: true,
     },
-    geolocation: {
-        serviceUrl: "https://geoip.example.com",
-        timeout: 5000,
-        retries: 3,
-    },
+
     encryption: {
         encryptionKey: "a".repeat(64),
         algorithm: "aes-256-gcm",

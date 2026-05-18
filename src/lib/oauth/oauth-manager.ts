@@ -265,9 +265,8 @@ export class OAuthManager {
             }
         } catch (error) {
             logger.error("Failed to generate authorization URL", {
-                platform,
-                userId,
-                error: error instanceof Error ? error.message : String(error),
+                data: { platform, userId },
+                error: error instanceof Error ? error : new Error(String(error)),
             })
             throw error
         }
@@ -435,9 +434,8 @@ export class OAuthManager {
             return tokenResponse
         } catch (error) {
             logger.error("Failed to refresh access token", {
-                platform,
-                userId,
-                error: error instanceof Error ? error.message : String(error),
+                data: { platform, userId },
+                error: error instanceof Error ? error : new Error(String(error)),
             })
             throw error
         }

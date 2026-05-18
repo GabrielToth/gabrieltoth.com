@@ -96,7 +96,7 @@ describe("Authentication Security Tests", () => {
 
     describe("XSS Prevention", () => {
         it("should not execute script in email field", () => {
-            const xssPayload = '<script>alert("xss")</script>'
+            const xssPayload = "<script>alert(\"xss\")</script>"
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
             expect(xssPayload).not.toMatch(emailRegex)
         })

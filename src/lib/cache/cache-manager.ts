@@ -378,7 +378,7 @@ export class CacheInvalidation {
     static async invalidateQueueCache(userId: string): Promise<void> {
         const patterns = [
             `queue:${userId}`,
-            `post:scheduled:*`,
+            "post:scheduled:*",
             `history:${userId}`,
         ]
 

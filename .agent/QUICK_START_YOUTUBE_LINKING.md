@@ -24,7 +24,6 @@ cp .env.local.example .env.local
 # - NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
 # - SUPABASE_SERVICE_ROLE_KEY
 # - YOUTUBE_CLIENT_ID / YOUTUBE_CLIENT_SECRET
-# - GEOIP_API_KEY
 # - TOKEN_ENCRYPTION_KEY
 # - STRIPE_SECRET_KEY
 # - SMTP_* (email configuration)
@@ -94,7 +93,6 @@ cp .env.local.example .env.local
 YOUTUBE_CLIENT_ID=your-youtube-client-id
 YOUTUBE_CLIENT_SECRET=your-youtube-client-secret
 YOUTUBE_REDIRECT_URI=http://localhost:3000/api/youtube/link/callback
-GEOIP_API_KEY=your-maxmind-key
 TOKEN_ENCRYPTION_KEY=your-64-char-hex-key
 ```
 
@@ -108,11 +106,8 @@ TOKEN_ENCRYPTION_KEY=your-64-char-hex-key
    - Redirect URIs: `http://localhost:3000/api/youtube/link/callback`
 5. Copy Client ID and Client Secret
 
-**How to get GeoIP key:**
-1. Go to https://www.maxmind.com/
 2. Sign up for free account
 3. Generate license key
-4. Copy to `GEOIP_API_KEY`
 
 **How to generate encryption key:**
 ```bash
@@ -160,7 +155,6 @@ git push origin main
 - `JWT_SECRET`
 - `STRIPE_SECRET_KEY`
 - `YOUTUBE_CLIENT_SECRET`
-- `GEOIP_API_KEY`
 - `TOKEN_ENCRYPTION_KEY`
 - `SMTP_PASSWORD`
 

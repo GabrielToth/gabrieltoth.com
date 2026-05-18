@@ -24,7 +24,7 @@ describe("stories/Header component coverage", () => {
         expect(
             screen.getByText(
                 (_, el) =>
-                    el?.classList.contains("welcome") &&
+                    !!el?.classList.contains("welcome") &&
                     /jane/i.test(el.textContent || "")
             )
         ).toBeTruthy()

@@ -50,6 +50,7 @@ export enum AuthErrorType {
     INVALID_CREDENTIALS = "INVALID_CREDENTIALS",
     EMAIL_NOT_VERIFIED = "EMAIL_NOT_VERIFIED",
     SESSION_EXPIRED = "SESSION_EXPIRED",
+    SESSION_NOT_FOUND = "SESSION_NOT_FOUND",
     INVALID_SESSION = "INVALID_SESSION",
     UNAUTHORIZED = "UNAUTHORIZED",
 
@@ -96,6 +97,8 @@ const ERROR_MESSAGES: Record<AuthErrorType, string> = {
     [AuthErrorType.EMAIL_NOT_VERIFIED]: "Invalid email or password",
     [AuthErrorType.SESSION_EXPIRED]:
         "Your session has expired. Please log in again",
+    [AuthErrorType.SESSION_NOT_FOUND]:
+        "No active session found. Please start again",
     [AuthErrorType.INVALID_SESSION]: "Invalid session",
     [AuthErrorType.UNAUTHORIZED]: "Unauthorized",
 
@@ -143,6 +146,7 @@ const ERROR_STATUS_CODES: Record<AuthErrorType, number> = {
     [AuthErrorType.INVALID_CREDENTIALS]: 401,
     [AuthErrorType.EMAIL_NOT_VERIFIED]: 401,
     [AuthErrorType.SESSION_EXPIRED]: 401,
+    [AuthErrorType.SESSION_NOT_FOUND]: 404,
     [AuthErrorType.INVALID_SESSION]: 401,
     [AuthErrorType.UNAUTHORIZED]: 401,
 

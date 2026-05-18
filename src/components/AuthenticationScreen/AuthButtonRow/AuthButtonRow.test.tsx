@@ -71,7 +71,7 @@ describe("AuthButtonRow Component", () => {
             />
         )
 
-        const buttonRow = container.querySelector('[role="group"]')
+        const buttonRow = container.querySelector("[role=\"group\"]")
         expect(buttonRow).toHaveAttribute(
             "aria-label",
             "Authentication methods"
@@ -140,7 +140,7 @@ describe("AuthButtonRow Component", () => {
             />
         )
 
-        const buttonRow = container.querySelector('[role="group"]')
+        const buttonRow = container.querySelector("[role=\"group\"]")
         expect(buttonRow).toBeInTheDocument()
         expect(buttonRow).toHaveAttribute(
             "aria-label",

@@ -184,22 +184,75 @@ function log(
 /**
  * Create a context-aware logger
  */
+function toError(value: unknown): Error | undefined {
+    if (value instanceof Error) {
+        return value
+    }
+    if (typeof value === "string" && value.length > 0) {
+        return new Error(value)
+    }
+    return undefined
+}
+
+function parseErrorArgs(
+    errorOrData?: Error | Record<string, unknown>,
+    data?: Record<string, unknown>
+): { error?: Error; data?: Record<string, unknown> } {
+    if (errorOrData instanceof Error) {
+        return { error: errorOrData, data }
+    }
+
+    if (errorOrData && typeof errorOrData === "object") {
+        const { error, ...rest } = errorOrData
+        return {
+            error: toError(error),
+            data: { ...rest, ...(data ?? {}) },
+        }
+    }
+
+    return { data }
+}
+
 export function createLogger(context: string) {
     return {
-        debug: (msg: string, data?: Record<string, unknown>) =>
-            log("debug", msg, { context, data }),
+        debug: (
+            msg: string,
+            errorOrData?: Error | Record<string, unknown>,
+            data?: Record<string, unknown>
+        ) => {
+            const parsed = parseErrorArgs(errorOrData, data)
+            log("debug", msg, { context, ...parsed })
+        },
 
         info: (msg: string, data?: Record<string, unknown>) =>
             log("info", msg, { context, data }),
 
-        warn: (msg: string, data?: Record<string, unknown>) =>
-            log("warn", msg, { context, data }),
+        warn: (
+            msg: string,
+            errorOrData?: Error | Record<string, unknown>,
+            data?: Record<string, unknown>
+        ) => {
+            const parsed = parseErrorArgs(errorOrData, data)
+            log("warn", msg, { context, ...parsed })
+        },
 
-        error: (msg: string, error?: Error, data?: Record<string, unknown>) =>
-            log("error", msg, { context, data, error }),
+        error: (
+            msg: string,
+            errorOrData?: Error | Record<string, unknown>,
+            data?: Record<string, unknown>
+        ) => {
+            const parsed = parseErrorArgs(errorOrData, data)
+            log("error", msg, { context, ...parsed })
+        },
 
-        fatal: (msg: string, error?: Error, data?: Record<string, unknown>) =>
-            log("fatal", msg, { context, data, error }),
+        fatal: (
+            msg: string,
+            errorOrData?: Error | Record<string, unknown>,
+            data?: Record<string, unknown>
+        ) => {
+            const parsed = parseErrorArgs(errorOrData, data)
+            log("fatal", msg, { context, ...parsed })
+        },
     }
 }
 
@@ -207,36 +260,106 @@ export function createLogger(context: string) {
 export const logger = {
     debug: (
         msg: string,
-        opts?: { context?: string; data?: Record<string, unknown> }
-    ) => log("debug", msg, opts),
+        opts?: {
+            context?: string
+            data?: Record<string, unknown>
+            error?: unknown
+            [key: string]: unknown
+        }
+    ) => {
+        if (!opts) {
+            log("debug", msg)
+            return
+        }
+        const { context, data, error, ...rest } = opts
+        log("debug", msg, {
+            context,
+            data: { ...(data ?? {}), ...rest },
+            error: toError(error),
+        })
+    },
 
     info: (
         msg: string,
-        opts?: { context?: string; data?: Record<string, unknown> }
-    ) => log("info", msg, opts),
+        opts?: {
+            context?: string
+            data?: Record<string, unknown>
+            [key: string]: unknown
+        }
+    ) => {
+        if (!opts) {
+            log("info", msg)
+            return
+        }
+        const { context, data, ...rest } = opts
+        log("info", msg, {
+            context,
+            data: { ...(data ?? {}), ...rest },
+        })
+    },
 
     warn: (
         msg: string,
-        opts?: { context?: string; data?: Record<string, unknown> }
-    ) => log("warn", msg, opts),
+        opts?: {
+            context?: string
+            data?: Record<string, unknown>
+            error?: unknown
+            [key: string]: unknown
+        }
+    ) => {
+        if (!opts) {
+            log("warn", msg)
+            return
+        }
+        const { context, data, error, ...rest } = opts
+        log("warn", msg, {
+            context,
+            data: { ...(data ?? {}), ...rest },
+            error: toError(error),
+        })
+    },
 
     error: (
         msg: string,
         opts?: {
             context?: string
             data?: Record<string, unknown>
-            error?: Error
+            error?: unknown
+            [key: string]: unknown
         }
-    ) => log("error", msg, opts),
+    ) => {
+        if (!opts) {
+            log("error", msg)
+            return
+        }
+        const { context, data, error, ...rest } = opts
+        log("error", msg, {
+            context,
+            data: { ...(data ?? {}), ...rest },
+            error: toError(error),
+        })
+    },
 
     fatal: (
         msg: string,
         opts?: {
             context?: string
             data?: Record<string, unknown>
-            error?: Error
+            error?: unknown
+            [key: string]: unknown
         }
-    ) => log("fatal", msg, opts),
+    ) => {
+        if (!opts) {
+            log("fatal", msg)
+            return
+        }
+        const { context, data, error, ...rest } = opts
+        log("fatal", msg, {
+            context,
+            data: { ...(data ?? {}), ...rest },
+            error: toError(error),
+        })
+    },
 
     // Special: startup/shutdown events always go to Discord
     startup: (module: string, version?: string) => {

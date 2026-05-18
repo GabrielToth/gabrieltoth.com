@@ -1,7 +1,7 @@
 // In-Memory Rate Limiter
 // Focus: Simple, efficient, automatic cleanup
 
-import { createLogger } from "../logger/pino-logger"
+import { createLogger } from "@/lib/logger"
 
 const logger = createLogger("RateLimiter")
 

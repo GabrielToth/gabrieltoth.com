@@ -13,10 +13,10 @@
  * Validates: Requirements 14.1, 14.2, 14.5
  */
 
-import { db } from "@/lib/db"
+import { db } from "@/lib/db/index"
 import { logger } from "@/lib/logger"
 
-const { query } = db
+const { query, queryMany, queryOne } = db
 
 /**
  * Types of authentication failures
@@ -357,7 +357,16 @@ export async function getRecentAuthFailuresForEmail(
     try {
         const cutoffTime = new Date(Date.now() - hoursBack * 60 * 60 * 1000)
 
-        const results = await query(
+        return queryMany<{
+            id: string
+            event_type: string
+            email: string
+            ip_address: string
+            error_code: string
+            error_message: string
+            attempt_count: number | null
+            timestamp: string
+        }>(
             `SELECT id, event_type, email, ip_address, error_code, error_message, attempt_count, timestamp
              FROM audit_logs
              WHERE email = $1
@@ -367,8 +376,6 @@ export async function getRecentAuthFailuresForEmail(
              LIMIT $3`,
             [email, cutoffTime, limit]
         )
-
-        return results.rows
     } catch (error) {
         logger.error("Failed to get recent auth failures for email", {
             context: "AuthFailureLogging",
@@ -408,7 +415,16 @@ export async function getRecentAuthFailuresForIP(
     try {
         const cutoffTime = new Date(Date.now() - hoursBack * 60 * 60 * 1000)
 
-        const results = await query(
+        return queryMany<{
+            id: string
+            event_type: string
+            email: string
+            ip_address: string
+            error_code: string
+            error_message: string
+            attempt_count: number | null
+            timestamp: string
+        }>(
             `SELECT id, event_type, email, ip_address, error_code, error_message, attempt_count, timestamp
              FROM audit_logs
              WHERE ip_address = $1
@@ -418,8 +434,6 @@ export async function getRecentAuthFailuresForIP(
              LIMIT $3`,
             [ipAddress, cutoffTime, limit]
         )
-
-        return results.rows
     } catch (error) {
         logger.error("Failed to get recent auth failures for IP", {
             context: "AuthFailureLogging",
@@ -449,44 +463,42 @@ export async function getAuthFailureStatistics(
     try {
         const cutoffTime = new Date(Date.now() - hoursBack * 60 * 60 * 1000)
 
-        // Get total failures
-        const totalResult = await query(
-            `SELECT COUNT(*) as count FROM audit_logs
+        const totalFailures = Number(
+            (await queryOne<{ count: string }>(
+                `SELECT COUNT(*) as count FROM audit_logs
              WHERE event_type = 'auth_failure' AND timestamp > $1`,
-            [cutoffTime]
+                [cutoffTime]
+            ))?.count || 0
         )
-        const totalFailures = totalResult.rows[0]?.count || 0
 
-        // Get unique emails
-        const emailsResult = await query(
-            `SELECT COUNT(DISTINCT email) as count FROM audit_logs
+        const uniqueEmails = Number(
+            (await queryOne<{ count: string }>(
+                `SELECT COUNT(DISTINCT email) as count FROM audit_logs
              WHERE event_type = 'auth_failure' AND timestamp > $1`,
-            [cutoffTime]
+                [cutoffTime]
+            ))?.count || 0
         )
-        const uniqueEmails = emailsResult.rows[0]?.count || 0
 
-        // Get unique IPs
-        const ipsResult = await query(
-            `SELECT COUNT(DISTINCT ip_address) as count FROM audit_logs
+        const uniqueIPs = Number(
+            (await queryOne<{ count: string }>(
+                `SELECT COUNT(DISTINCT ip_address) as count FROM audit_logs
              WHERE event_type = 'auth_failure' AND timestamp > $1`,
-            [cutoffTime]
+                [cutoffTime]
+            ))?.count || 0
         )
-        const uniqueIPs = ipsResult.rows[0]?.count || 0
 
-        // Get failures by type
-        const typeResult = await query(
+        const typeRows = await queryMany<{ error_code: string; count: string }>(
             `SELECT error_code, COUNT(*) as count FROM audit_logs
              WHERE event_type = 'auth_failure' AND timestamp > $1
              GROUP BY error_code`,
             [cutoffTime]
         )
         const failuresByType: Record<string, number> = {}
-        typeResult.rows.forEach(row => {
-            failuresByType[row.error_code] = row.count
+        typeRows.forEach(row => {
+            failuresByType[row.error_code] = Number(row.count)
         })
 
-        // Get top failing emails
-        const topEmailsResult = await query(
+        const topFailingEmails = await queryMany<{ email: string; count: string }>(
             `SELECT email, COUNT(*) as count FROM audit_logs
              WHERE event_type = 'auth_failure' AND timestamp > $1
              GROUP BY email
@@ -494,10 +506,8 @@ export async function getAuthFailureStatistics(
              LIMIT 10`,
             [cutoffTime]
         )
-        const topFailingEmails = topEmailsResult.rows
 
-        // Get top failing IPs
-        const topIPsResult = await query(
+        const topFailingIPs = await queryMany<{ ip_address: string; count: string }>(
             `SELECT ip_address, COUNT(*) as count FROM audit_logs
              WHERE event_type = 'auth_failure' AND timestamp > $1
              GROUP BY ip_address
@@ -505,15 +515,20 @@ export async function getAuthFailureStatistics(
              LIMIT 10`,
             [cutoffTime]
         )
-        const topFailingIPs = topIPsResult.rows
 
         return {
             totalFailures,
             uniqueEmails,
             uniqueIPs,
             failuresByType,
-            topFailingEmails,
-            topFailingIPs,
+            topFailingEmails: topFailingEmails.map(row => ({
+                email: row.email,
+                count: Number(row.count),
+            })),
+            topFailingIPs: topFailingIPs.map(row => ({
+                ip_address: row.ip_address,
+                count: Number(row.count),
+            })),
         }
     } catch (error) {
         logger.error("Failed to get auth failure statistics", {

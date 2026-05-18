@@ -96,8 +96,6 @@ YOUTUBE_CLIENT_ID=your-client-id
 YOUTUBE_CLIENT_SECRET=your-client-secret
 YOUTUBE_REDIRECT_URI=http://localhost:3000/api/youtube/link/callback
 
-# GeoIP (from MaxMind)
-GEOIP_API_KEY=your-maxmind-key
 
 # Token Encryption (generated above)
 TOKEN_ENCRYPTION_KEY=your-64-char-hex-key
@@ -218,7 +216,6 @@ STRIPE_SECRET_KEY=your-stripe-live-key
 YOUTUBE_CLIENT_ID=your-youtube-client-id
 YOUTUBE_CLIENT_SECRET=your-youtube-client-secret
 YOUTUBE_REDIRECT_URI=https://gabrieltoth.com/api/youtube/link/callback
-GEOIP_API_KEY=your-maxmind-key
 TOKEN_ENCRYPTION_KEY=your-64-char-hex-key
 TOKEN_ENCRYPTION_STRATEGY=environment
 SMTP_HOST=smtp.gmail.com
@@ -376,7 +373,6 @@ npm run lint
 | Supabase Dashboard | https://supabase.com/dashboard |
 | Vercel Dashboard | https://vercel.com/dashboard |
 | Google Cloud Console | https://console.cloud.google.com/ |
-| MaxMind GeoIP | https://www.maxmind.com/ |
 | GitHub Repository | https://github.com/GabrielToth/gabrieltoth.com |
 
 ---
@@ -393,8 +389,6 @@ npm run lint
 - [ ] `YOUTUBE_CLIENT_SECRET` - Set (Sensitive)
 - [ ] `YOUTUBE_REDIRECT_URI` - Set
 
-### GeoIP Variables
-- [ ] `GEOIP_API_KEY` - Set (Sensitive)
 
 ### Token Encryption Variables
 - [ ] `TOKEN_ENCRYPTION_KEY` - Set (Sensitive)

@@ -70,8 +70,8 @@ describe("components/layout/header coverage", () => {
         ) as HTMLAnchorElement
         expect(homeDesktop.getAttribute("href")).toBe("/en")
 
-        const aboutLink = screen.getByTestId("nav-about") as HTMLAnchorElement
-        expect(aboutLink.getAttribute("href")).toBe("/gabriel-toth-goncalves")
+        const aboutLink = screen.getByRole("link", { name: /about/i }) as HTMLAnchorElement
+        expect(aboutLink.getAttribute("href")).toBe("/en/about-me")
 
         // Open mobile menu
         fireEvent.click(screen.getByTestId("mobile-menu-toggle"))

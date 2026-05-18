@@ -18,8 +18,11 @@ const logger = createLogger("OAuthCallbackEndpoint")
  */
 export async function GET(
     request: NextRequest,
-    { params }: { params: { platform: string } }
+    context: { params: Promise<{ platform: string }> }
 ): Promise<NextResponse> {
+    const { platform } = await context.params
+    const normalizedPlatform = platform.toLowerCase()
+
     try {
         const searchParams = request.nextUrl.searchParams
         const code = searchParams.get("code")
@@ -27,12 +30,10 @@ export async function GET(
         const error = searchParams.get("error")
         const errorDescription = searchParams.get("error_description")
 
-        const platform = params.platform.toLowerCase()
-
         // Handle OAuth errors
         if (error) {
             logger.warn("OAuth error from provider", {
-                platform,
+                platform: normalizedPlatform,
                 error,
                 errorDescription,
             })
@@ -49,7 +50,7 @@ export async function GET(
         // Validate required parameters
         if (!code || !state) {
             logger.warn("Missing OAuth parameters", {
-                platform,
+                platform: normalizedPlatform,
                 hasCode: !!code,
                 hasState: !!state,
             })
@@ -62,7 +63,9 @@ export async function GET(
         // Get user ID from session
         const userId = request.headers.get("x-user-id")
         if (!userId) {
-            logger.warn("Unauthorized OAuth callback", { platform })
+            logger.warn("Unauthorized OAuth callback", {
+                platform: normalizedPlatform,
+            })
 
             const redirectUrl = new URL("/auth/login", request.nextUrl.origin)
             redirectUrl.searchParams.set("oauth_error", "unauthorized")
@@ -78,7 +81,10 @@ export async function GET(
         )
 
         if (!isStateValid) {
-            logger.warn("Invalid state parameter", { platform, userId })
+            logger.warn("Invalid state parameter", {
+                platform: normalizedPlatform,
+                userId,
+            })
 
             const redirectUrl = new URL("/dashboard", request.nextUrl.origin)
             redirectUrl.searchParams.set("oauth_error", "invalid_state")
@@ -109,11 +115,11 @@ export async function GET(
 
         // Redirect to dashboard with success
         const redirectUrl = new URL("/dashboard", request.nextUrl.origin)
-        redirectUrl.searchParams.set("oauth_success", platform)
+        redirectUrl.searchParams.set("oauth_success", normalizedPlatform)
         return NextResponse.redirect(redirectUrl)
     } catch (error) {
         logger.error("OAuth callback failed", {
-            platform: params.platform,
+            platform: normalizedPlatform,
             error: error instanceof Error ? error.message : String(error),
         })
 

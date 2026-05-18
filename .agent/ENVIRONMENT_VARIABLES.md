@@ -238,8 +238,6 @@ Environment variables are used to configure the application for different enviro
 | `YOUTUBE_CLIENT_ID` | String | Local, Vercel | No (server-side) |
 | `YOUTUBE_CLIENT_SECRET` | String | Local, Vercel | **YES** |
 | `YOUTUBE_REDIRECT_URI` | String | Local, Vercel | No |
-| `GEOIP_SERVICE_URL` | String | Local, Vercel | No |
-| `GEOIP_API_KEY` | String | Local, Vercel | **YES** |
 | `TOKEN_ENCRYPTION_KEY` | String | Local, Vercel | **YES** |
 | `TOKEN_ENCRYPTION_STRATEGY` | String | Local, Vercel | No |
 
@@ -266,14 +264,10 @@ Environment variables are used to configure the application for different enviro
      - Click "Create"
    - Copy "Client ID" and "Client secret"
 
-2. **GeoIP Service (MaxMind):**
-   - Go to https://www.maxmind.com/en/geoip2-services
    - Sign up for a free account
    - Go to "Account" > "My License Key"
    - Generate a new license key
    - Copy Account ID and License Key
-   - `GEOIP_SERVICE_URL=https://geoip.maxmind.com/geoip/v2.1/city`
-   - `GEOIP_API_KEY=your-maxmind-license-key`
 
 3. **Token Encryption Key:**
    ```bash
@@ -286,12 +280,10 @@ Environment variables are used to configure the application for different enviro
 4. **Local Setup:**
    ```bash
    cp .env.local.example .env.local
-   # Edit .env.local and fill in YouTube, GeoIP, and encryption variables
    ```
 
 5. **Vercel Setup:**
    - Add all variables to Project Settings > Environment Variables
-   - Mark `YOUTUBE_CLIENT_SECRET`, `GEOIP_API_KEY`, and `TOKEN_ENCRYPTION_KEY` as "Sensitive"
 
 **Important:**
 - Use DIFFERENT YouTube OAuth credentials for development and production
@@ -422,7 +414,6 @@ Edit `.env.local` and fill in:
 
 **For YouTube Channel Linking:**
 - `YOUTUBE_CLIENT_ID` and `YOUTUBE_CLIENT_SECRET`
-- `GEOIP_API_KEY`
 - `TOKEN_ENCRYPTION_KEY`
 
 **For Email Notifications:**
@@ -495,7 +486,6 @@ npm run test
 - `JWT_SECRET`
 - `STRIPE_SECRET_KEY`
 - `YOUTUBE_CLIENT_SECRET`
-- `GEOIP_API_KEY`
 - `TOKEN_ENCRYPTION_KEY`
 - `SMTP_PASSWORD`
 - `DISCORD_WEBHOOK_URL`
@@ -546,8 +536,6 @@ GitHub Secrets are used for CI/CD workflows. Add these if you have automated tes
 
 1. **Create YouTube OAuth Credentials** (see section 6 above)
 
-2. **Set Up GeoIP Service:**
-   - Sign up at https://www.maxmind.com/
    - Generate license key
    - Add to environment variables
 
@@ -561,8 +549,6 @@ GitHub Secrets are used for CI/CD workflows. Add these if you have automated tes
    YOUTUBE_CLIENT_ID=your-client-id
    YOUTUBE_CLIENT_SECRET=your-client-secret
    YOUTUBE_REDIRECT_URI=http://localhost:3000/api/youtube/link/callback
-   GEOIP_SERVICE_URL=https://geoip.maxmind.com/geoip/v2.1/city
-   GEOIP_API_KEY=your-maxmind-key
    TOKEN_ENCRYPTION_KEY=your-64-char-hex-key
    TOKEN_ENCRYPTION_STRATEGY=environment
    ```

@@ -86,7 +86,7 @@ describe("Observability Features", () => {
                             method,
                             path,
                             headers: { "x-request-id": "test-123" },
-                        } as Request
+                        } as unknown as Request
 
                         const mockRes = {
                             setHeader: vi.fn(),
@@ -113,14 +113,14 @@ describe("Observability Features", () => {
 
         it("should track request duration", () => {
             fc.assert(
-                fc.property(
+                fc.asyncProperty(
                     fc.integer({ min: 0, max: 1000 }), // delay in ms
                     async delay => {
                         const mockReq = {
                             method: "GET",
                             path: "/test",
                             headers: {},
-                        } as Request
+                        } as unknown as Request
 
                         const mockRes = {
                             setHeader: vi.fn(),

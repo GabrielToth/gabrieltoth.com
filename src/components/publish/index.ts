@@ -1,9 +1,10 @@
 export {
-    PublishContainer,
-    type Post,
+    default as PublishContainer,
     type PublishContainerProps,
-    type SocialChannel,
+    type SocialChannel
 } from "./PublishContainer"
+
+export { type Post } from "./PostCard"
 
 export { FilterBar, type FilterBarProps } from "./FilterBar"
 
@@ -12,31 +13,20 @@ export { PostCard, type PostCardProps } from "./PostCard"
 export { PostList, type PostListProps } from "./PostList"
 
 export {
-    UniversalPostingButton,
-    type UniversalPostingButtonProps,
+    default as UniversalPostingButton,
+    type UniversalPostingButtonProps
 } from "./UniversalPostingButton"
 
 export {
-    NetworkSelector,
+    default as NetworkSelector,
     type Network,
     type NetworkGroup,
-    type NetworkSelectorProps,
+    type NetworkSelectorProps
 } from "./NetworkSelector"
 
-export {
-    PostingScheduler,
-    type PostingSchedulerProps,
-    type ScheduleConfig,
-} from "./PostingScheduler"
+export { default as PostingScheduler } from "./PostingScheduler"
 
-export {
-    ContentCreator,
-    type ContentConfig,
-    type ContentCreatorProps,
-} from "./ContentCreator"
+export { default as ContentCreator } from "./ContentCreator"
 
-export {
-    PostingInterface,
-    type PostingInterfaceProps,
-    type PublishConfig,
-} from "./PostingInterface"
+export { default as PostingInterface } from "./PostingInterface"
+

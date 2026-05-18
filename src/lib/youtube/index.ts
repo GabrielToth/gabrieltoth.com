@@ -28,7 +28,6 @@ export {
     resetYouTubeChannelLinkingConfig,
     validateYouTubeChannelLinkingConfig,
     type EmailServiceConfig,
-    type GeolocationServiceConfig,
     type TokenEncryptionConfig,
     type YouTubeChannelLinkingConfig,
     type YouTubeOAuthConfig,
@@ -85,7 +84,6 @@ export {
     getGeolocationService,
     resetGeolocationService,
     type GeolocationInfo,
-    type GeolocationServiceConfig,
 } from "./geolocation"
 
 // Activity Detection

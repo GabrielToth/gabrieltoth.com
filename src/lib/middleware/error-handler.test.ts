@@ -23,7 +23,7 @@ describe("Error Handler Middleware", () => {
                 name: "John Doe",
             }
 
-            const sanitized = sanitizeRequestBody(body)
+            const sanitized = sanitizeRequestBody(body) as any
 
             expect(sanitized).toEqual({
                 email: "test@example.com",
@@ -41,7 +41,7 @@ describe("Error Handler Middleware", () => {
                 name: "John Doe",
             }
 
-            const sanitized = sanitizeRequestBody(body)
+            const sanitized = sanitizeRequestBody(body) as any
 
             expect(sanitized.password).toBe("[REDACTED]")
             expect(sanitized.token).toBe("[REDACTED]")
@@ -327,7 +327,7 @@ describe("Error Handler Middleware", () => {
                 body: JSON.stringify(body),
             })
 
-            const sanitized = await getSanitizedBody(req)
+            const sanitized = await getSanitizedBody(req) as any
 
             expect(sanitized).toEqual({
                 email: "test@example.com",
@@ -341,7 +341,7 @@ describe("Error Handler Middleware", () => {
                 body: "invalid json",
             })
 
-            const sanitized = await getSanitizedBody(req)
+            const sanitized = await getSanitizedBody(req) as any
 
             expect(sanitized).toBeNull()
         })
@@ -351,7 +351,7 @@ describe("Error Handler Middleware", () => {
                 method: "GET",
             })
 
-            const sanitized = await getSanitizedBody(req)
+            const sanitized = await getSanitizedBody(req) as any
 
             expect(sanitized).toBeNull()
         })
@@ -374,7 +374,7 @@ describe("Error Handler Middleware", () => {
                 confirmPassword: "MyPassword123!@#",
             }
 
-            const sanitized = sanitizeRequestBody(body)
+            const sanitized = sanitizeRequestBody(body) as any
 
             expect(sanitized.password).toBe("[REDACTED]")
             expect(sanitized.confirmPassword).toBe("[REDACTED]")
@@ -387,7 +387,7 @@ describe("Error Handler Middleware", () => {
                 pass: "secret3",
             }
 
-            const sanitized = sanitizeRequestBody(body)
+            const sanitized = sanitizeRequestBody(body) as any
 
             expect(sanitized.password).toBe("[REDACTED]")
             // Note: pwd and pass are not in SENSITIVE_FIELDS, so they won't be redacted

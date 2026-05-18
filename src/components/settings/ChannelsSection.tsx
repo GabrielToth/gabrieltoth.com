@@ -8,7 +8,7 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
-import { Icon } from "@/components/ui/icon"
+import { DynamicIcon } from "@/components/ui/dynamic-icon"
 import React, { useState } from "react"
 import { SocialChannel } from "./SettingsContainer"
 
@@ -119,11 +119,11 @@ export const ChannelsSection: React.FC<ChannelsSectionProps> = ({
                                     className="flex items-center justify-between rounded-lg border border-gray-200 p-4"
                                 >
                                     <div className="flex items-center gap-3">
-                                        <Icon
+                                        <DynamicIcon
                                             name={getPlatformIcon(
                                                 channel.platform
-                                            )}
-                                            size="md"
+                                            ) as import("@/lib/icons").IconName}
+                                            size={24}
                                         />
                                         <div>
                                             <p className="font-medium text-gray-900">
@@ -215,11 +215,11 @@ export const ChannelsSection: React.FC<ChannelsSectionProps> = ({
                                     className="flex items-center justify-between rounded-lg border border-gray-200 p-4 opacity-60"
                                 >
                                     <div className="flex items-center gap-3">
-                                        <Icon
+                                        <DynamicIcon
                                             name={getPlatformIcon(
                                                 channel.platform
-                                            )}
-                                            size="md"
+                                            ) as import("@/lib/icons").IconName}
+                                            size={24}
                                         />
                                         <div>
                                             <p className="font-medium text-gray-900">

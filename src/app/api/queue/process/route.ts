@@ -78,7 +78,9 @@ export async function POST(request: NextRequest) {
                     action: "publication_processed",
                     resource: "publication",
                     resourceId: publication.id,
-                    metadata: {
+                    timestamp: new Date(),
+                    status: allFailed ? "failure" : "success",
+                    changes: {
                         networks: publication.networks,
                         status: allSucceeded
                             ? "success"

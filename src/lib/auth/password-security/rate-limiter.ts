@@ -22,7 +22,7 @@
  */
 
 import { createLogger } from "@/lib/logger"
-import { createClient } from "@supabase/supabase-js"
+import { createClient, type SupabaseClient } from "@supabase/supabase-js"
 import type { RateLimitingConfig } from "./types"
 
 const logger = createLogger("RateLimiter")
@@ -70,7 +70,7 @@ export interface RateLimitCheckResult {
  *   }
  */
 export class RateLimiter {
-    private supabase: ReturnType<typeof createClient>
+    private supabase: SupabaseClient<any>
     private config: RateLimitingConfig
 
     constructor(config: RateLimitingConfig) {
@@ -87,7 +87,7 @@ export class RateLimiter {
             )
         }
 
-        this.supabase = createClient(url, serviceKey, {
+        this.supabase = createClient<any>(url, serviceKey, {
             auth: {
                 autoRefreshToken: false,
                 persistSession: false,

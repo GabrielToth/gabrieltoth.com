@@ -159,17 +159,13 @@ export class TokenStore {
                 data.encrypted_token
             )
 
-            if (!decryptionResult.success) {
-                throw new Error(`Decryption failed: ${decryptionResult.error}`)
-            }
-
             logger.info("Token retrieved successfully", {
                 userId,
                 platform,
             })
 
             return {
-                accessToken: decryptionResult.decryptedData,
+                accessToken: decryptionResult.token,
                 refreshToken: data.refresh_token || undefined,
                 expiresAt: data.expires_at
                     ? new Date(data.expires_at).getTime()
@@ -229,16 +225,12 @@ export class TokenStore {
                 newTokenData.accessToken
             )
 
-            if (!encryptionResult.success) {
-                throw new Error(`Encryption failed: ${encryptionResult.error}`)
-            }
-
             const now = Date.now()
 
             const { data, error } = await this.supabase
                 .from("oauth_tokens")
                 .update({
-                    encrypted_token: encryptionResult.encryptedData,
+                    encrypted_token: encryptionResult.encryptedToken,
                     refresh_token: newTokenData.refreshToken || null,
                     expires_at: newTokenData.expiresAt
                         ? new Date(newTokenData.expiresAt)

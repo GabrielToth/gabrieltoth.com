@@ -362,8 +362,11 @@ export class TokenEncryptionService {
             decipher.setAuthTag(authTag)
 
             // Decrypt the token
-            let token = decipher.update(encryptedData, "hex", "utf-8")
-            token += decipher.final("utf-8")
+            const decrypted = Buffer.concat([
+                decipher.update(encryptedData),
+                decipher.final(),
+            ])
+            const token = decrypted.toString("utf8")
 
             return {
                 token,

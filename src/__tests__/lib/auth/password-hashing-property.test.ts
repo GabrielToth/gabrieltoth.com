@@ -206,7 +206,7 @@ describe("Property 2: Password Hashing Consistency", () => {
                     "tab\there",
                     "new\nline",
                     "quote'test",
-                    'double"quote',
+                    "double\"quote",
                     "back\\slash",
                     "forward/slash"
                 ),

@@ -1,7 +1,7 @@
 // Credit System - Enhanced with Logging and Validation
 // Focus: Atomicity, Debugability, Reliability
 
-import { queryOne, transaction } from "@/lib/db"
+import { queryOne, transaction } from "@/lib/db/index"
 import { logger } from "@/lib/logger"
 import type { PoolClient } from "pg"
 
@@ -105,7 +105,7 @@ export async function deductCredits(
             const newBalance = current - bigCost
 
             // Sanity check - should never be negative
-            if (newBalance < 0n) {
+            if (newBalance < BigInt(0)) {
                 logger.fatal("NEGATIVE BALANCE DETECTED - BUG", {
                     context: "CREDITS",
                     data: { userId, newBalance: newBalance.toString() },

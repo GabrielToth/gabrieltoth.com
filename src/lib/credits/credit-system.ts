@@ -1,8 +1,8 @@
 // Atomic Credit System
 // Focus: Atomicity, Row Locking, Audit Trail
 
+import { createLogger } from "@/lib/logger"
 import { Pool } from "pg"
-import { createLogger } from "../logger/pino-logger"
 
 const logger = createLogger("CreditSystem")
 
@@ -94,8 +94,7 @@ export class CreditSystemImpl implements CreditSystem {
             if (balanceAfter < 0) {
                 await client.query("ROLLBACK")
                 logger.fatal("NEGATIVE BALANCE DETECTED - BUG", {
-                    userId,
-                    balanceAfter,
+                    data: { userId, balanceAfter },
                 })
                 return { success: false, error: "Internal error" }
             }

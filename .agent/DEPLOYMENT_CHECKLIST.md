@@ -133,15 +133,12 @@ For each table, add the recommended policies from `.agent/SUPABASE_DEPLOYMENT_GU
 
 - [ ] YouTube OAuth credentials obtained
 
-### Step 2.3: Get GeoIP API Key
 
-1. Go to https://www.maxmind.com/
 2. Sign up for a free account
 3. Go to "Account" > "My License Key"
 4. Generate a new license key
 5. Copy Account ID and License Key
 
-- [ ] GeoIP API key obtained
 
 ### Step 2.4: Generate Token Encryption Key
 
@@ -173,7 +170,6 @@ node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 - [ ] `YOUTUBE_CLIENT_ID` = (your YouTube client ID)
 - [ ] `YOUTUBE_CLIENT_SECRET` = (your YouTube client secret) - Mark as Sensitive
 - [ ] `YOUTUBE_REDIRECT_URI` = `https://gabrieltoth.com/api/youtube/link/callback`
-- [ ] `GEOIP_API_KEY` = (your MaxMind API key) - Mark as Sensitive
 - [ ] `TOKEN_ENCRYPTION_KEY` = (your encryption key) - Mark as Sensitive
 - [ ] `TOKEN_ENCRYPTION_STRATEGY` = `environment`
 

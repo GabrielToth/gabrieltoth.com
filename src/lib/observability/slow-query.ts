@@ -18,7 +18,7 @@ export interface QueryWithTiming extends QueryConfig {
 export class SlowQueryPool {
     constructor(private pool: Pool) {}
 
-    async query<T = any>(
+    async query<T extends import("pg").QueryResultRow = any>(
         queryTextOrConfig: string | QueryConfig,
         values?: any[]
     ): Promise<QueryResult<T>> {
@@ -79,7 +79,7 @@ export class SlowQueryPool {
     }
 
     on(event: string, listener: (...args: any[]) => void) {
-        return this.pool.on(event, listener)
+        return this.pool.on(event as any, listener)
     }
 }
 

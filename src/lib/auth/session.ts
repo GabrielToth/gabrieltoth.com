@@ -7,7 +7,7 @@
  */
 
 import { generateRandomHex } from "@/lib/crypto-utils"
-import { db } from "@/lib/db"
+import { db } from "@/lib/db/index"
 import { logger } from "@/lib/logger"
 import { Session } from "@/types/auth"
 import { cookies } from "next/headers"
@@ -211,7 +211,7 @@ export async function removeSession(sessionId: string): Promise<boolean> {
 
         // Delete session from database (use session_id column)
         const result = await query(
-            `DELETE FROM sessions WHERE session_id = $1`,
+            "DELETE FROM sessions WHERE session_id = $1",
             [sessionId]
         )
 

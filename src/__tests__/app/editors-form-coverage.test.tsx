@@ -98,7 +98,7 @@ describe("app/[locale]/editors/editors-form coverage", () => {
         // Fill channel URL (look for URL input)
         const urlInput =
             screen.queryByRole("textbox", { name: /url/i }) ||
-            document.querySelector('input[type="url"]')
+            document.querySelector("input[type=\"url\"]")
         if (urlInput) {
             fireEvent.change(urlInput, {
                 target: { value: "https://youtube.com/@canalx" },

@@ -18,8 +18,10 @@ const logger = createLogger("OAuthAuthorizeEndpoint")
  */
 export async function POST(
     request: NextRequest,
-    { params }: { params: { platform: string } }
+    context: { params: Promise<{ platform: string }> }
 ): Promise<NextResponse> {
+    const { platform } = await context.params
+
     try {
         // Rate limiting
         const clientIp =
@@ -33,7 +35,7 @@ export async function POST(
 
         if (!rateLimitResult.success) {
             logger.warn("Rate limit exceeded for OAuth authorization", {
-                platform: params.platform,
+                platform: platform,
                 clientIp,
             })
             return NextResponse.json(
@@ -46,14 +48,14 @@ export async function POST(
         const userId = request.headers.get("x-user-id")
         if (!userId) {
             logger.warn("Unauthorized OAuth authorization attempt", {
-                platform: params.platform,
+                platform: platform,
             })
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
         }
 
         // Validate platform
         const oauthManager = getOAuthManager()
-        const platform = params.platform.toLowerCase()
+        
 
         if (!oauthManager.isPlatformConfigured(platform as any)) {
             logger.warn("Unsupported platform for OAuth", {
@@ -80,7 +82,7 @@ export async function POST(
         return NextResponse.json(authResponse, { status: 200 })
     } catch (error) {
         logger.error("OAuth authorization failed", {
-            platform: params.platform,
+            platform: platform,
             error: error instanceof Error ? error.message : String(error),
         })
 

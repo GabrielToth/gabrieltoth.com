@@ -34,7 +34,7 @@ interface GoogleCallbackResponse {
 async function handleGoogleCallback(
     code: string,
     clientIp: string
-): Promise<NextResponse<GoogleCallbackResponse>> {
+): Promise<NextResponse> {
     try {
         // Get redirect URI from environment
         // Note: Using NEXT_PUBLIC_ variable here because the redirect URI
@@ -237,7 +237,7 @@ async function handleGoogleCallback(
  */
 export async function GET(
     request: NextRequest
-): Promise<NextResponse<GoogleCallbackResponse>> {
+): Promise<NextResponse> {
     const clientIp = getClientIp(request)
 
     try {
@@ -295,7 +295,7 @@ export async function GET(
  */
 export async function POST(
     request: NextRequest
-): Promise<NextResponse<GoogleCallbackResponse>> {
+): Promise<NextResponse> {
     const clientIp = getClientIp(request)
 
     try {

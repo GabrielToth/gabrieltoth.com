@@ -186,13 +186,18 @@ export function useRegistration() {
     )
 
     const setError = useCallback((field: string, error: string | null) => {
-        setState(prev => ({
-            ...prev,
-            errors: {
-                ...prev.errors,
-                [field]: error || undefined,
-            },
-        }))
+        setState(prev => {
+            const nextErrors = { ...prev.errors }
+            if (error) {
+                nextErrors[field] = error
+            } else {
+                delete nextErrors[field]
+            }
+            return {
+                ...prev,
+                errors: nextErrors,
+            }
+        })
     }, [])
 
     const clearErrors = useCallback(() => {

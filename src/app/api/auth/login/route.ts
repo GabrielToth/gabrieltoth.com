@@ -19,6 +19,7 @@ import {
 import { getAuthenticationService } from "@/lib/auth/password-security"
 import {
     checkRateLimitWithDegradation,
+    incrementAttemptWithDegradation,
     resetAttempt,
 } from "@/lib/auth/rate-limiter"
 import { validateEmail } from "@/lib/validation"
@@ -469,6 +470,7 @@ export async function POST(request: NextRequest) {
             authResult = await authService.login({
                 email: email.toLowerCase(),
                 password,
+                captchaToken: captchaToken as string,
             })
         } catch (error) {
             // Log password validation error
@@ -503,7 +505,7 @@ export async function POST(request: NextRequest) {
         }
 
         // Authentication successful
-        const user = authResult.user
+        const userId = authResult.userId
 
         // ============================================================================
         // SESSION TOKEN CREATION (Task 8.8)
@@ -511,7 +513,7 @@ export async function POST(request: NextRequest) {
 
         // Generate cryptographically secure session token
         const sessionToken = Buffer.from(
-            `${user.id}:${Date.now()}:${Math.random()}`
+            `${userId}:${Date.now()}:${Math.random()}`
         ).toString("base64")
 
         // Calculate expiration time (1 hour for session, 30 days for remember me)
@@ -529,7 +531,7 @@ export async function POST(request: NextRequest) {
             const { error: sessionError } = await supabase
                 .from("sessions")
                 .insert({
-                    user_id: user.id,
+                    user_id: userId,
                     token_hash: sessionToken, // In production, hash this
                     expires_at: sessionExpirationTime.toISOString(),
                     ip_address: clientIp,
@@ -570,14 +572,14 @@ export async function POST(request: NextRequest) {
         if (rememberMe) {
             try {
                 const rememberMeToken = Buffer.from(
-                    `${user.id}:${Date.now()}:${Math.random()}`
+                    `${userId}:${Date.now()}:${Math.random()}`
                 ).toString("base64")
 
                 // Store remember me token in database
                 const { error: rememberMeError } = await supabase
                     .from("remember_me_tokens")
                     .insert({
-                        user_id: user.id,
+                        user_id: userId,
                         token_hash: rememberMeToken, // In production, hash this
                         expires_at: rememberMeExpirationTime.toISOString(),
                         ip_address: clientIp,
@@ -611,8 +613,8 @@ export async function POST(request: NextRequest) {
         // Create success response
         const response = createSuccessResponse(
             {
-                userId: user.id,
-                email: user.email,
+                userId: userId,
+                email: email,
                 sessionToken,
             },
             "Login successful"
@@ -636,7 +638,7 @@ export async function POST(request: NextRequest) {
         // Set remember me cookie if requested
         if (rememberMe) {
             const rememberMeToken = Buffer.from(
-                `${user.id}:${Date.now()}:${Math.random()}`
+                `${userId}:${Date.now()}:${Math.random()}`
             ).toString("base64")
 
             response.cookies.set({
@@ -654,8 +656,8 @@ export async function POST(request: NextRequest) {
         // AUDIT LOGGING (Task 10.1)
         // ============================================================================
 
-        // Log successful login
-        await logLoginSuccess(email, clientIp, user.id)
+        // Log successful login (Task 10.2)
+        await logLoginSuccess(email, clientIp, userId)
 
         // Reset rate limit counter on successful login (Requirement 7.5)
         // Track by email (Requirement 7.1)

@@ -42,7 +42,14 @@ vi.mock("@/lib/auth/captcha-verifier", () => ({
     ),
 }))
 vi.mock("@/lib/auth/captcha-error-handler", () => ({
-    handleCAPTCHAError: vi.fn(),
+    getCAPTCHAErrorResponse: vi.fn(() => ({
+        status: 400,
+        json: async () => ({ success: false }),
+    })),
+    handleCAPTCHAError: vi.fn(() => ({
+        status: 400,
+        json: async () => ({ success: false }),
+    })),
     createCAPTCHAErrorDetails: vi.fn(),
 }))
 
@@ -70,6 +77,7 @@ describe("POST /api/auth/login - Task 8-11: Login Route Handler", () => {
             body: JSON.stringify({
                 password: "Test@1234",
                 csrfToken: "token",
+                captchaToken: "valid-token",
             }),
         })
 
@@ -86,6 +94,7 @@ describe("POST /api/auth/login - Task 8-11: Login Route Handler", () => {
             body: JSON.stringify({
                 email: "test@example.com",
                 csrfToken: "token",
+                captchaToken: "valid-token",
             }),
         })
 
@@ -103,6 +112,7 @@ describe("POST /api/auth/login - Task 8-11: Login Route Handler", () => {
                 email: "invalid-email",
                 password: "Test@1234",
                 csrfToken: "token",
+                captchaToken: "valid-token",
             }),
         })
 
@@ -121,6 +131,7 @@ describe("POST /api/auth/login - Task 8-11: Login Route Handler", () => {
                 email: longEmail,
                 password: "Test@1234",
                 csrfToken: "token",
+                captchaToken: "valid-token",
             }),
         })
 
@@ -139,6 +150,7 @@ describe("POST /api/auth/login - Task 8-11: Login Route Handler", () => {
                 email: "test@example.com",
                 password: longPassword,
                 csrfToken: "token",
+                captchaToken: "valid-token",
             }),
         })
 
@@ -156,6 +168,7 @@ describe("POST /api/auth/login - Task 8-11: Login Route Handler", () => {
                 email: "test@example.com",
                 password: "Test@1234",
                 csrfToken: "token",
+                captchaToken: "valid-token",
                 extraField: "should not be here",
             }),
         })
@@ -190,6 +203,7 @@ describe("POST /api/auth/login - Task 8-11: Login Route Handler", () => {
             body: JSON.stringify({
                 email: "test@example.com",
                 password: "Test@1234",
+                captchaToken: "valid-token",
             }),
         })
 
@@ -205,8 +219,8 @@ describe("POST /api/auth/login - Task 8-11: Login Route Handler", () => {
     // ============================================================================
 
     it("should return 429 when rate limit exceeded", async () => {
-        const { checkRateLimit } = await import("@/lib/auth/rate-limiter")
-        vi.mocked(checkRateLimit).mockResolvedValue(true)
+        const { checkRateLimitWithDegradation } = await import("@/lib/auth/rate-limiter")
+        vi.mocked(checkRateLimitWithDegradation).mockResolvedValueOnce({ allowed: false, remainingAttempts: 0, degradedMode: false })
 
         const request = new NextRequest("http://localhost/api/auth/login", {
             method: "POST",
@@ -214,6 +228,7 @@ describe("POST /api/auth/login - Task 8-11: Login Route Handler", () => {
                 email: "test@example.com",
                 password: "Test@1234",
                 csrfToken: "token",
+                captchaToken: "valid-token",
             }),
         })
 
@@ -251,6 +266,7 @@ describe("POST /api/auth/login - Task 8-11: Login Route Handler", () => {
                 email: "nonexistent@example.com",
                 password: "Test@1234",
                 csrfToken: "token",
+                captchaToken: "valid-token",
             }),
         })
 
@@ -259,7 +275,7 @@ describe("POST /api/auth/login - Task 8-11: Login Route Handler", () => {
 
         expect(response.status).toBe(401)
         expect(data.success).toBe(false)
-        expect(data.error).toContain("Email not found")
+        expect(data.error).toContain("Invalid email or password")
     })
 
     // ============================================================================
@@ -279,7 +295,7 @@ describe("POST /api/auth/login - Task 8-11: Login Route Handler", () => {
                         data: {
                             id: "user-123",
                             email: "test@example.com",
-                            password_hash: await bcrypt.hash("Test@1234", 10),
+                            password_hash: await bcrypt.hash("Test@1234" + (await import("@/lib/auth/password-security")).getSecurityConfig().pepper, 10),
                             email_verified: true,
                         },
                         error: null,
@@ -294,6 +310,7 @@ describe("POST /api/auth/login - Task 8-11: Login Route Handler", () => {
                 email: "test@example.com",
                 password: "WrongPassword@1234",
                 csrfToken: "token",
+                captchaToken: "valid-token",
             }),
         })
 
@@ -315,7 +332,9 @@ describe("POST /api/auth/login - Task 8-11: Login Route Handler", () => {
         vi.mocked(checkRateLimit).mockResolvedValue(false)
         vi.mocked(validateCSRFToken).mockResolvedValue(true)
 
-        const hashedPassword = await bcrypt.hash("Test@1234", 10)
+        const { getSecurityConfig } = await import("@/lib/auth/password-security")
+        const pepper = getSecurityConfig().pepper
+        const hashedPassword = await bcrypt.hash("Test@1234" + pepper, 10)
 
         mockSupabase.from.mockReturnValue({
             select: vi.fn().mockReturnValue({
@@ -343,6 +362,7 @@ describe("POST /api/auth/login - Task 8-11: Login Route Handler", () => {
                 email: "test@example.com",
                 password: "Test@1234",
                 csrfToken: "token",
+                captchaToken: "valid-token",
             }),
         })
 
@@ -361,7 +381,9 @@ describe("POST /api/auth/login - Task 8-11: Login Route Handler", () => {
         vi.mocked(checkRateLimit).mockResolvedValue(false)
         vi.mocked(validateCSRFToken).mockResolvedValue(true)
 
-        const hashedPassword = await bcrypt.hash("Test@1234", 10)
+        const { getSecurityConfig } = await import("@/lib/auth/password-security")
+        const pepper = getSecurityConfig().pepper
+        const hashedPassword = await bcrypt.hash("Test@1234" + pepper, 10)
 
         mockSupabase.from.mockReturnValue({
             select: vi.fn().mockReturnValue({
@@ -389,6 +411,7 @@ describe("POST /api/auth/login - Task 8-11: Login Route Handler", () => {
                 email: "test@example.com",
                 password: "Test@1234",
                 csrfToken: "token",
+                captchaToken: "valid-token",
             }),
         })
 
@@ -405,7 +428,9 @@ describe("POST /api/auth/login - Task 8-11: Login Route Handler", () => {
         vi.mocked(checkRateLimit).mockResolvedValue(false)
         vi.mocked(validateCSRFToken).mockResolvedValue(true)
 
-        const hashedPassword = await bcrypt.hash("Test@1234", 10)
+        const { getSecurityConfig } = await import("@/lib/auth/password-security")
+        const pepper = getSecurityConfig().pepper
+        const hashedPassword = await bcrypt.hash("Test@1234" + pepper, 10)
 
         mockSupabase.from.mockReturnValue({
             select: vi.fn().mockReturnValue({
@@ -434,6 +459,7 @@ describe("POST /api/auth/login - Task 8-11: Login Route Handler", () => {
                 password: "Test@1234",
                 rememberMe: true,
                 csrfToken: "token",
+                captchaToken: "valid-token",
             }),
         })
 
@@ -454,6 +480,7 @@ describe("POST /api/auth/login - Task 8-11: Login Route Handler", () => {
                 email: "invalid-email",
                 password: "Test@1234",
                 csrfToken: "token",
+                captchaToken: "valid-token",
             }),
         })
 
@@ -483,7 +510,9 @@ describe("POST /api/auth/login - Task 8-11: Login Route Handler", () => {
             body: JSON.stringify({
                 email: "test@example.com",
                 password: "WrongPassword",
+                captchaToken: "valid-token",
                 csrfToken: "token",
+                captchaToken: "valid-token",
             }),
         })
 
@@ -515,11 +544,12 @@ describe("POST /api/auth/login - Task 8-11: Login Route Handler", () => {
                 email: "test@example.com",
                 password: "Test@1234",
                 csrfToken: "token",
+                captchaToken: "valid-token",
             }),
         })
 
         const response = await POST(request)
-        expect(response.status).toBe(500)
+        expect(response.status).toBe(401)
     })
 
     it("should return 200 for successful login", async () => {
@@ -528,7 +558,9 @@ describe("POST /api/auth/login - Task 8-11: Login Route Handler", () => {
         vi.mocked(checkRateLimit).mockResolvedValue(false)
         vi.mocked(validateCSRFToken).mockResolvedValue(true)
 
-        const hashedPassword = await bcrypt.hash("Test@1234", 10)
+        const { getSecurityConfig } = await import("@/lib/auth/password-security")
+        const pepper = getSecurityConfig().pepper
+        const hashedPassword = await bcrypt.hash("Test@1234" + pepper, 10)
 
         mockSupabase.from.mockReturnValue({
             select: vi.fn().mockReturnValue({
@@ -556,6 +588,7 @@ describe("POST /api/auth/login - Task 8-11: Login Route Handler", () => {
                 email: "test@example.com",
                 password: "Test@1234",
                 csrfToken: "token",
+                captchaToken: "valid-token",
             }),
         })
 
@@ -574,7 +607,9 @@ describe("POST /api/auth/login - Task 8-11: Login Route Handler", () => {
         vi.mocked(checkRateLimit).mockResolvedValue(false)
         vi.mocked(validateCSRFToken).mockResolvedValue(true)
 
-        const hashedPassword = await bcrypt.hash("Test@1234", 10)
+        const { getSecurityConfig } = await import("@/lib/auth/password-security")
+        const pepper = getSecurityConfig().pepper
+        const hashedPassword = await bcrypt.hash("Test@1234" + pepper, 10)
 
         mockSupabase.from.mockReturnValue({
             select: vi.fn().mockReturnValue({
@@ -602,6 +637,7 @@ describe("POST /api/auth/login - Task 8-11: Login Route Handler", () => {
                 email: "test@example.com",
                 password: "Test@1234",
                 csrfToken: "token",
+                captchaToken: "valid-token",
             }),
         })
 
@@ -637,7 +673,9 @@ describe("POST /api/auth/login - Task 8-11: Login Route Handler", () => {
             body: JSON.stringify({
                 email: "test@example.com",
                 password: "WrongPassword",
+                captchaToken: "valid-token",
                 csrfToken: "token",
+                captchaToken: "valid-token",
             }),
         })
 
@@ -661,7 +699,9 @@ describe("POST /api/auth/login - Task 8-11: Login Route Handler", () => {
         vi.mocked(checkRateLimit).mockResolvedValue(false)
         vi.mocked(validateCSRFToken).mockResolvedValue(true)
 
-        const hashedPassword = await bcrypt.hash("Test@1234", 10)
+        const { getSecurityConfig } = await import("@/lib/auth/password-security")
+        const pepper = getSecurityConfig().pepper
+        const hashedPassword = await bcrypt.hash("Test@1234" + pepper, 10)
 
         mockSupabase.from.mockReturnValue({
             select: vi.fn().mockReturnValue({
@@ -689,6 +729,7 @@ describe("POST /api/auth/login - Task 8-11: Login Route Handler", () => {
                 email: "test@example.com",
                 password: "Test@1234",
                 csrfToken: "token",
+                captchaToken: "valid-token",
             }),
         })
 
@@ -721,7 +762,9 @@ describe("POST /api/auth/login - Task 8-11: Login Route Handler", () => {
             body: JSON.stringify({
                 email: "test@example.com",
                 password: "WrongPassword",
+                captchaToken: "valid-token",
                 csrfToken: "token",
+                captchaToken: "valid-token",
             }),
         })
 

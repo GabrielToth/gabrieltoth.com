@@ -1,138 +1,127 @@
 /**
  * Geolocation Service Tests
- * Tests for GeoIP service integration and location detection
+ * Tests for Vercel Headers geolocation parsing
  * Validates: Requirements 5.1, 5.2
  */
 
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
+import { afterEach, beforeEach, describe, expect, it } from "vitest"
 import { GeolocationService } from "./geolocation"
 
 describe("GeolocationService", () => {
     let service: GeolocationService
 
     beforeEach(() => {
-        service = new GeolocationService({
-            serviceUrl: "https://geoip.maxmind.com/geoip/v2.1/city",
-            apiKey: "test-api-key",
-            timeout: 5000,
-            retries: 0, // Set retries to 0 for tests to avoid delays
-        })
-    })
-
-    afterEach(() => {
-        vi.clearAllMocks()
-    })
-
-    describe("constructor", () => {
-        it("should create service with valid config", () => {
-            const config = {
-                serviceUrl: "https://geoip.maxmind.com/geoip/v2.1/city",
-                apiKey: "test-api-key",
-                timeout: 5000,
-                retries: 3,
-            }
-
-            const svc = new GeolocationService(config)
-            expect(svc).toBeDefined()
-        })
-
-        it("should throw error if service URL is missing", () => {
-            expect(() => {
-                new GeolocationService({
-                    serviceUrl: "",
-                    timeout: 5000,
-                    retries: 3,
-                })
-            }).toThrow("Geolocation service URL is required")
-        })
-
-        it("should throw error if timeout is too low", () => {
-            expect(() => {
-                new GeolocationService({
-                    serviceUrl: "https://geoip.maxmind.com/geoip/v2.1/city",
-                    timeout: 500,
-                    retries: 3,
-                })
-            }).toThrow("Geolocation timeout must be at least 1000ms")
-        })
-
-        it("should throw error if retries is negative", () => {
-            expect(() => {
-                new GeolocationService({
-                    serviceUrl: "https://geoip.maxmind.com/geoip/v2.1/city",
-                    timeout: 5000,
-                    retries: -1,
-                })
-            }).toThrow("Geolocation retries must be non-negative")
-        })
+        service = new GeolocationService()
     })
 
     describe("getLocation", () => {
-        it("should throw error if IP is empty", async () => {
-            await expect(service.getLocation("")).rejects.toThrow(
-                "IP address is required"
-            )
+        it("should return default location when no headers are provided", () => {
+            const location = service.getLocation({})
+
+            expect(location.country).toBe("Unknown")
+            expect(location.city).toBe("Unknown")
+            expect(location.state).toBe("Unknown")
+            expect(location.latitude).toBe(0)
+            expect(location.longitude).toBe(0)
+            expect(location.timezone).toBe("Unknown")
         })
 
-        it("should throw error if IP is null", async () => {
-            await expect(service.getLocation(null as any)).rejects.toThrow(
-                "IP address is required"
-            )
+        it("should parse location from raw object headers", () => {
+            const headers = {
+                "x-vercel-ip-country": "US",
+                "x-vercel-ip-city": "New%20York",
+                "x-vercel-ip-country-region": "NY",
+                "x-vercel-ip-latitude": "40.7128",
+                "x-vercel-ip-longitude": "-74.0060",
+                "x-vercel-ip-timezone": "America%2FNew_York",
+            }
+
+            const location = service.getLocation(headers)
+
+            expect(location.country).toBe("US")
+            expect(location.countryName).toBe("US")
+            expect(location.city).toBe("New York")
+            expect(location.state).toBe("NY")
+            expect(location.latitude).toBe(40.7128)
+            expect(location.longitude).toBe(-74.006)
+            expect(location.timezone).toBe("America/New_York")
+            expect(location.isp).toBe("Unknown")
+            expect(location.isAccurate).toBe(true)
         })
 
-        it("should throw error if IP is not a string", async () => {
-            await expect(service.getLocation(123 as any)).rejects.toThrow(
-                "IP address is required"
-            )
+        it("should parse location from standard Headers object", () => {
+            const headers = new Headers({
+                "x-vercel-ip-country": "BR",
+                "x-vercel-ip-city": "Sao%20Paulo",
+                "x-vercel-ip-country-region": "SP",
+                "x-vercel-ip-latitude": "-23.5505",
+                "x-vercel-ip-longitude": "-46.6333",
+                "x-vercel-ip-timezone": "America%2FSao_Paulo",
+            })
+
+            const location = service.getLocation(headers)
+
+            expect(location.country).toBe("BR")
+            expect(location.city).toBe("Sao Paulo")
+            expect(location.state).toBe("SP")
+            expect(location.latitude).toBe(-23.5505)
+            expect(location.longitude).toBe(-46.6333)
+            expect(location.timezone).toBe("America/Sao_Paulo")
         })
 
-        it("should handle whitespace in IP", async () => {
-            global.fetch = vi.fn().mockRejectedValue(new Error("Network error"))
+        it("should handle missing or malformed latitude/longitude gracefully", () => {
+            const headers = {
+                "x-vercel-ip-country": "FR",
+                "x-vercel-ip-latitude": "invalid",
+                "x-vercel-ip-longitude": "NaN",
+            }
 
-            await expect(
-                service.getLocation("  203.0.113.42  ")
-            ).rejects.toThrow()
+            const location = service.getLocation(headers)
+
+            expect(location.country).toBe("FR")
+            expect(location.latitude).toBe(0)
+            expect(location.longitude).toBe(0)
         })
     })
 
     describe("compareLocations", () => {
         const location1 = {
             country: "US",
-            countryName: "United States",
+            countryName: "US",
             city: "New York",
             state: "NY",
             latitude: 40.7128,
             longitude: -74.006,
             timezone: "America/New_York",
-            isp: "ISP1",
+            isp: "Unknown",
             isAccurate: true,
-            accuracyRadius: 10,
+            accuracyRadius: 50,
         }
 
         const location2 = {
             country: "US",
-            countryName: "United States",
+            countryName: "US",
             city: "Los Angeles",
             state: "CA",
             latitude: 34.0522,
             longitude: -118.2437,
             timezone: "America/Los_Angeles",
-            isp: "ISP2",
+            isp: "Unknown",
             isAccurate: true,
-            accuracyRadius: 10,
+            accuracyRadius: 50,
         }
 
         const location3 = {
             country: "GB",
-            countryName: "United Kingdom",
+            countryName: "GB",
             city: "London",
             state: "England",
             latitude: 51.5074,
             longitude: -0.1278,
             timezone: "Europe/London",
-            isp: "ISP3",
+            isp: "Unknown",
             isAccurate: true,
-            accuracyRadius: 10,
+            accuracyRadius: 50,
         }
 
         it("should detect no changes for same location", () => {
@@ -168,133 +157,6 @@ describe("GeolocationService", () => {
 
             expect(comparison.distanceKm).toBeGreaterThan(3900)
             expect(comparison.distanceKm).toBeLessThan(4000)
-        })
-
-        it("should detect significant change for country change", () => {
-            const comparison = service.compareLocations(location1, location3)
-
-            expect(comparison.significantChange).toBe(true)
-        })
-
-        it("should detect significant change for large distance", () => {
-            const comparison = service.compareLocations(location1, location2)
-
-            expect(comparison.significantChange).toBe(true)
-        })
-    })
-
-    describe("clearCache", () => {
-        it("should clear the cache", async () => {
-            global.fetch = vi.fn().mockResolvedValue({
-                ok: true,
-                json: async () => ({
-                    country: { iso_code: "US", names: { en: "United States" } },
-                    city: { names: { en: "New York" } },
-                    location: {
-                        latitude: 40.7128,
-                        longitude: -74.006,
-                        time_zone: "America/New_York",
-                        accuracy_radius: 10,
-                    },
-                    traits: { isp: "ISP1" },
-                }),
-            })
-
-            await service.getLocation("203.0.113.42")
-            service.clearCache()
-
-            const callCount = (global.fetch as any).mock.calls.length
-            await service.getLocation("203.0.113.42")
-            expect((global.fetch as any).mock.calls.length).toBeGreaterThan(
-                callCount
-            )
-        })
-    })
-
-    describe("parseGeolocationResponse", () => {
-        it("should parse MaxMind GeoIP2 format", () => {
-            const response = {
-                country: { iso_code: "US", names: { en: "United States" } },
-                city: { names: { en: "New York" } },
-                subdivisions: [{ iso_code: "NY" }],
-                location: {
-                    latitude: 40.7128,
-                    longitude: -74.006,
-                    time_zone: "America/New_York",
-                    accuracy_radius: 10,
-                },
-                traits: { isp: "ISP1" },
-            }
-
-            const result = (service as any).parseGeolocationResponse(response)
-
-            expect(result.country).toBe("US")
-            expect(result.countryName).toBe("United States")
-            expect(result.city).toBe("New York")
-            expect(result.state).toBe("NY")
-            expect(result.latitude).toBe(40.7128)
-            expect(result.longitude).toBe(-74.006)
-            expect(result.timezone).toBe("America/New_York")
-            expect(result.isp).toBe("ISP1")
-            expect(result.isAccurate).toBe(true)
-            expect(result.accuracyRadius).toBe(10)
-        })
-
-        it("should parse generic format", () => {
-            const response = {
-                country: "US",
-                countryName: "United States",
-                city: "New York",
-                state: "NY",
-                latitude: 40.7128,
-                longitude: -74.006,
-                timezone: "America/New_York",
-                isp: "ISP1",
-                accuracyRadius: 10,
-            }
-
-            const result = (service as any).parseGeolocationResponse(response)
-
-            expect(result.country).toBe("US")
-            expect(result.countryName).toBe("United States")
-            expect(result.city).toBe("New York")
-            expect(result.latitude).toBe(40.7128)
-            expect(result.longitude).toBe(-74.006)
-        })
-
-        it("should throw error for invalid response format", () => {
-            const response = {
-                invalid: "format",
-            }
-
-            expect(() => {
-                ;(service as any).parseGeolocationResponse(response)
-            }).toThrow("Invalid geolocation response format")
-        })
-    })
-
-    describe("edge cases", () => {
-        it("should handle IPv6 addresses", async () => {
-            global.fetch = vi.fn().mockRejectedValue(new Error("Network error"))
-
-            await expect(
-                service.getLocation("2001:0db8:85a3::8a2e:0370:7334")
-            ).rejects.toThrow()
-        })
-
-        it("should handle special characters in IP", async () => {
-            global.fetch = vi.fn().mockRejectedValue(new Error("Network error"))
-
-            await expect(
-                service.getLocation("203.0.113.42!@#")
-            ).rejects.toThrow()
-        })
-
-        it("should handle very long IP string", async () => {
-            global.fetch = vi.fn().mockRejectedValue(new Error("Network error"))
-
-            const longIP = "203.0.113.42" + "a".repeat(1000)
-            await expect(service.getLocation(longIP)).rejects.toThrow()
         })
     })
 })

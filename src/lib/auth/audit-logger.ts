@@ -4,10 +4,10 @@
  * Implements 90+ day retention policy for compliance
  */
 
-import { db } from "@/lib/db"
+import { db } from "@/lib/db/index"
 import { logger } from "@/lib/logger"
 
-const { query, queryOne } = db
+const { query, queryOne, queryMany } = db
 
 export type AuditEventType =
     | "LOGIN_ATTEMPT"
@@ -248,7 +248,7 @@ export async function exportAuditLogs(options?: {
                           ip_address as "ipAddress", user_agent as "userAgent", 
                           details, created_at as "createdAt"
                    FROM audit_logs WHERE 1=1`
-        const params: unknown[] = []
+        const params: Array<string | number | boolean | null | Date> = []
         let paramCount = 1
 
         if (options?.startDate) {
@@ -281,21 +281,21 @@ export async function exportAuditLogs(options?: {
             paramCount++
         }
 
-        sql += ` ORDER BY created_at DESC`
+        sql += " ORDER BY created_at DESC"
 
         if (options?.limit) {
             sql += ` LIMIT $${paramCount}`
             params.push(options.limit)
         }
 
-        const result = await query<ExportedAuditLog>(sql, params)
+        const rows = await queryMany<ExportedAuditLog>(sql, params)
 
         logger.debug("Audit logs exported", {
             context: "AuditLogger",
-            data: { count: result.rows.length },
+            data: { count: rows.length },
         })
 
-        return result.rows
+        return rows
     } catch (err) {
         logger.error("Failed to export audit logs", {
             context: "AuditLogger",
@@ -319,7 +319,7 @@ export async function cleanupOldAuditLogs(
         )
 
         const result = await query(
-            `DELETE FROM audit_logs WHERE created_at < $1`,
+            "DELETE FROM audit_logs WHERE created_at < $1",
             [cutoffTime]
         )
 
@@ -351,7 +351,7 @@ export async function getUserAuditLogs(
     limit: number = 100
 ): Promise<AuditLogEntry[]> {
     try {
-        const result = await query<AuditLogEntry>(
+        return queryMany<AuditLogEntry>(
             `SELECT id, event_type as "eventType", user_id as "userId", email, 
                     ip_address as "ipAddress", user_agent as "userAgent", 
                     details, created_at as "createdAt"
@@ -361,8 +361,6 @@ export async function getUserAuditLogs(
              LIMIT $2`,
             [userId, limit]
         )
-
-        return result.rows
     } catch (err) {
         logger.error("Failed to get user audit logs", {
             context: "AuditLogger",
@@ -381,7 +379,7 @@ export async function getAuditLogsByEventType(
     limit: number = 100
 ): Promise<AuditLogEntry[]> {
     try {
-        const result = await query<AuditLogEntry>(
+        return queryMany<AuditLogEntry>(
             `SELECT id, event_type as "eventType", user_id as "userId", email, 
                     ip_address as "ipAddress", user_agent as "userAgent", 
                     details, created_at as "createdAt"
@@ -391,8 +389,6 @@ export async function getAuditLogsByEventType(
              LIMIT $2`,
             [eventType, limit]
         )
-
-        return result.rows
     } catch (err) {
         logger.error("Failed to get audit logs by event type", {
             context: "AuditLogger",
@@ -413,7 +409,7 @@ export async function getRecentSecurityEvents(
     try {
         const cutoffTime = new Date(Date.now() - hoursBack * 60 * 60 * 1000)
 
-        const result = await query<AuditLogEntry>(
+        return queryMany<AuditLogEntry>(
             `SELECT id, event_type as "eventType", user_id as "userId", email, 
                     ip_address as "ipAddress", user_agent as "userAgent", 
                     details, created_at as "createdAt"
@@ -424,8 +420,6 @@ export async function getRecentSecurityEvents(
              LIMIT $2`,
             [cutoffTime, limit]
         )
-
-        return result.rows
     } catch (err) {
         logger.error("Failed to get recent security events", {
             context: "AuditLogger",
@@ -446,7 +440,7 @@ export async function getFailedLoginsByIP(
     try {
         const cutoffTime = new Date(Date.now() - hoursBack * 60 * 60 * 1000)
 
-        const result = await query<AuditLogEntry>(
+        return queryMany<AuditLogEntry>(
             `SELECT id, event_type as "eventType", user_id as "userId", email, 
                     ip_address as "ipAddress", user_agent as "userAgent", 
                     details, created_at as "createdAt"
@@ -458,8 +452,6 @@ export async function getFailedLoginsByIP(
              LIMIT $3`,
             [ipAddress, cutoffTime, limit]
         )
-
-        return result.rows
     } catch (err) {
         logger.error("Failed to get failed logins by IP", {
             context: "AuditLogger",

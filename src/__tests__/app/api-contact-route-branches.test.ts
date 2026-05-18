@@ -1,8 +1,12 @@
 import { beforeEach, describe, expect, it, vi } from "vitest"
 
+let rateLimitCalls = 0
 vi.mock("@/lib/rate-limit", () => ({
     buildClientKey: vi.fn(() => "key"),
-    rateLimitByKey: vi.fn(async () => ({ success: true })),
+    rateLimitByKey: vi.fn(async () => {
+        rateLimitCalls++
+        return { success: rateLimitCalls <= 5 }
+    }),
 }))
 
 vi.mock("@/lib/firewall", () => ({
@@ -138,6 +142,7 @@ describe("api/contact route branches", () => {
             getClientIp: vi.fn(() => "127.0.0.1"),
         }))
         const mod = await import("@/app/api/contact/route")
+        rateLimitCalls = 0 // reset for this test
         const factory = () =>
             new Request("http://localhost/api/contact", {
                 method: "POST",

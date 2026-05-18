@@ -31,9 +31,23 @@
     ],
     "exclude": [
         "node_modules",
+        "src/**/__tests__/**",
+        "src/**/*.test.ts",
+        "src/**/*.test.tsx",
+        "src/**/*.spec.ts",
+        "src/**/*.spec.tsx",
         "src/**/*.stories.ts",
         "src/**/*.stories.tsx",
         "src/stories/**",
-        "src/__tests__/**"
+        "stories/**",
+        "src/backend/lambda.ts",
+        "src/backend/health.ts",
+        "src/lib/cron",
+        "src/lib/cron/**",
+        "src/lib/logger/pino-logger.*",
+        "scripts/**",
+        "src/lib/logger/pino-logger.ts",
+        "src/lib/logger/pino-logger.test.ts",
+        "tests/**"
     ]
 }

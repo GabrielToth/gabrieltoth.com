@@ -34,8 +34,6 @@ npx supabase db push
 - Get `YOUTUBE_CLIENT_ID` and `YOUTUBE_CLIENT_SECRET`
 - Set redirect URI: `https://gabrieltoth.com/api/youtube/link/callback`
 
-**From MaxMind:**
-- Get `GEOIP_API_KEY`
 
 **Generate:**
 ```bash
@@ -54,7 +52,6 @@ SUPABASE_SERVICE_ROLE_KEY=... (mark as Sensitive)
 YOUTUBE_CLIENT_ID=...
 YOUTUBE_CLIENT_SECRET=... (mark as Sensitive)
 YOUTUBE_REDIRECT_URI=https://gabrieltoth.com/api/youtube/link/callback
-GEOIP_API_KEY=... (mark as Sensitive)
 TOKEN_ENCRYPTION_KEY=... (mark as Sensitive)
 TOKEN_ENCRYPTION_STRATEGY=environment
 ```
@@ -104,7 +101,6 @@ npm run build
 ✅ **Security Features**
 - Channel validation
 - Duplicate detection
-- Suspicious activity detection (GeoIP)
 - Email notifications
 - Audit logging
 

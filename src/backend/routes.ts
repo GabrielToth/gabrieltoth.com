@@ -5,6 +5,11 @@ import { Request, Response, Router } from "express"
 import { CreditSystemImpl } from "../lib/credits/credit-system"
 import { createLogger } from "../lib/logger"
 import { MeteringSystemImpl } from "../lib/metering"
+import {
+    ApiError,
+    asyncHandler,
+    validateRequiredFields,
+} from "./middleware/error-handler"
 
 const logger = createLogger("APIRoutes")
 
@@ -74,7 +79,10 @@ export function createRoutes(
     router.get(
         "/api/balance/:userId",
         asyncHandler(async (req: Request, res: Response) => {
-            const { userId } = req.params
+            const userIdParam = req.params.userId
+            const userId = Array.isArray(userIdParam)
+                ? userIdParam[0]
+                : userIdParam
 
             if (!userId) {
                 throw new ApiError(
@@ -193,7 +201,10 @@ export function createRoutes(
     router.get(
         "/api/transactions/:userId",
         asyncHandler(async (req: Request, res: Response) => {
-            const { userId } = req.params
+            const userIdParam = req.params.userId
+            const userId = Array.isArray(userIdParam)
+                ? userIdParam[0]
+                : userIdParam
             const limit = parseInt(req.query.limit as string) || 100
 
             if (!userId) {

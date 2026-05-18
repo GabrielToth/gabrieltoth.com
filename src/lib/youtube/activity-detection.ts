@@ -4,7 +4,6 @@
  * Validates: Requirements 5.1, 5.2
  */
 
-import { IncomingMessage } from "http"
 import { createLogger } from "../logger"
 import { DeviceDetectionService, DeviceInfo } from "./device-detection"
 import { GeolocationInfo, GeolocationService } from "./geolocation"
@@ -121,20 +120,26 @@ export class ActivityDetectionService {
      * const activity = await service.collectActivity(req)
      * // Returns: { ip: '203.0.113.42', device: {...}, location: {...}, ... }
      */
-    async collectActivity(request: IncomingMessage): Promise<ActivityInfo> {
+    async collectActivity(request: any): Promise<ActivityInfo> {
         try {
             // Extract IP address
             const ip = this.ipValidationService.extractIPFromRequest(request)
             const ipInfo = this.ipValidationService.validateIP(ip)
 
             // Extract device information
-            const userAgent = request.headers["user-agent"] || ""
+            let userAgent = ""
+            if (request.headers && typeof request.headers.get === "function") {
+                userAgent = request.headers.get("user-agent") || ""
+            } else if (request.headers) {
+                userAgent = request.headers["user-agent"] || ""
+            }
+            
             const device = this.deviceDetectionService.detectDevice(userAgent)
 
             // Get geolocation information
             let location: GeolocationInfo
             try {
-                location = await this.geolocationService.getLocation(ip)
+                location = this.geolocationService.getLocation(request.headers || {})
             } catch (error) {
                 this.logger.warn(
                     `Failed to get geolocation for ${ip}`,

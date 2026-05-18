@@ -36,7 +36,7 @@ function loadEnvFile(filePath) {
 
             // Remove quotes if present
             if (
-                (value.startsWith('"') && value.endsWith('"')) ||
+                (value.startsWith("\"") && value.endsWith("\"")) ||
                 (value.startsWith("'") && value.endsWith("'"))
             ) {
                 value = value.slice(1, -1)
@@ -144,7 +144,7 @@ async function cleanupDatabase() {
                 .select("id", { count: "exact", head: true })
             usersVerify = usersRes.count
         } catch (e) {
-            console.log(`   - Users table: not accessible`)
+            console.log("   - Users table: not accessible")
         }
 
         try {
@@ -153,7 +153,7 @@ async function cleanupDatabase() {
                 .select("id", { count: "exact", head: true })
             rateLimitVerify = rateLimitRes.count
         } catch (e) {
-            console.log(`   - Rate limit records table: not accessible`)
+            console.log("   - Rate limit records table: not accessible")
         }
 
         try {
@@ -162,10 +162,10 @@ async function cleanupDatabase() {
                 .select("id", { count: "exact", head: true })
             auditVerify = auditRes.count
         } catch (e) {
-            console.log(`   - Audit logs table: not accessible`)
+            console.log("   - Audit logs table: not accessible")
         }
 
-        console.log(`\n✅ Verification complete:`)
+        console.log("\n✅ Verification complete:")
         console.log(
             `   - Users remaining: ${usersVerify !== null ? usersVerify : "N/A (table may not exist)"}`
         )

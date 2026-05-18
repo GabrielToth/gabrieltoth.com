@@ -172,7 +172,7 @@ describe("Account Completion End-to-End Flow", () => {
             expect(isIncomplete).toBe(true)
 
             // Should redirect to completion flow
-            const redirectUrl = `/en/auth/complete-account`
+            const redirectUrl = "/en/auth/complete-account"
             expect(redirectUrl).toContain("complete-account")
         })
 

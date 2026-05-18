@@ -11,29 +11,29 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import {
-    AlertCircle,
-    Facebook,
-    Instagram,
-    Linkedin,
-    Twitter,
-    Youtube,
-} from "lucide-react"
+    SiFacebook,
+    SiInstagram,
+    SiX,
+    SiYoutube,
+} from "@icons-pack/react-simple-icons"
+import { AlertCircle } from "lucide-react"
 import React, { useMemo, useState } from "react"
+import { FaLinkedin } from "react-icons/fa6"
 
-interface Network {
+export interface Network {
     id: string
     platform: string
     status: "connected" | "disconnected" | "expired"
     metadata?: Record<string, any>
 }
 
-interface NetworkGroup {
+export interface NetworkGroup {
     id: string
     name: string
     networkIds: string[]
 }
 
-interface NetworkSelectorProps {
+export interface NetworkSelectorProps {
     networks: Network[]
     groups: NetworkGroup[]
     selectedNetworkIds: string[]
@@ -44,11 +44,11 @@ interface NetworkSelectorProps {
 }
 
 const platformIcons: Record<string, React.ReactNode> = {
-    youtube: <Youtube className="h-4 w-4" />,
-    facebook: <Facebook className="h-4 w-4" />,
-    instagram: <Instagram className="h-4 w-4" />,
-    twitter: <Twitter className="h-4 w-4" />,
-    linkedin: <Linkedin className="h-4 w-4" />,
+    youtube: <SiYoutube className="h-4 w-4" />,
+    facebook: <SiFacebook className="h-4 w-4" />,
+    instagram: <SiInstagram className="h-4 w-4" />,
+    twitter: <SiX className="h-4 w-4" />,
+    linkedin: <FaLinkedin className="h-4 w-4" />,
 }
 
 export default function NetworkSelector({
@@ -180,8 +180,14 @@ export default function NetworkSelector({
                                     id={`group-${group.id}`}
                                     checked={state === "checked"}
                                     ref={el => {
-                                        if (el && state === "indeterminate") {
-                                            el.indeterminate = true
+                                        if (
+                                            el &&
+                                            state === "indeterminate" &&
+                                            "indeterminate" in el
+                                        ) {
+                                            ;(
+                                                el as unknown as HTMLInputElement
+                                            ).indeterminate = true
                                         }
                                     }}
                                     onCheckedChange={() =>

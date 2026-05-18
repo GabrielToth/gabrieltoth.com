@@ -5,7 +5,7 @@
  * Implements Requirements 7.1, 7.2, 7.3, 7.4, 7.5
  */
 
-import { query } from "@/lib/db"
+import { query } from "@/lib/db/index"
 import { logger } from "@/lib/logger"
 
 /**

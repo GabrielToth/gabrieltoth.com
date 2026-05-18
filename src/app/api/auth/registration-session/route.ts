@@ -6,6 +6,7 @@
  */
 
 import {
+    AuthErrorType,
     createErrorResponse,
     createSuccessResponse,
 } from "@/lib/auth/error-handling"
@@ -52,7 +53,7 @@ export async function POST(request: NextRequest) {
             if (!emailValidation.isValid) {
                 return NextResponse.json(
                     createErrorResponse(
-                        "INVALID_EMAIL",
+                        AuthErrorType.INVALID_EMAIL,
                         "Invalid email format"
                     ),
                     { status: 400 }
@@ -84,7 +85,7 @@ export async function POST(request: NextRequest) {
         console.error("Registration session creation error:", error)
         return NextResponse.json(
             createErrorResponse(
-                "INTERNAL_ERROR",
+                AuthErrorType.INTERNAL_ERROR,
                 "Failed to create registration session"
             ),
             { status: 500 }
@@ -123,7 +124,7 @@ export async function GET(request: NextRequest) {
         if (!sessionId) {
             return NextResponse.json(
                 createErrorResponse(
-                    "SESSION_NOT_FOUND",
+                    AuthErrorType.SESSION_NOT_FOUND,
                     "No active registration session"
                 ),
                 { status: 404 }
@@ -140,7 +141,7 @@ export async function GET(request: NextRequest) {
 
             return NextResponse.json(
                 createErrorResponse(
-                    "SESSION_EXPIRED",
+                    AuthErrorType.SESSION_EXPIRED,
                     "Registration session has expired"
                 ),
                 { status: 401 }
@@ -162,7 +163,7 @@ export async function GET(request: NextRequest) {
         console.error("Registration session validation error:", error)
         return NextResponse.json(
             createErrorResponse(
-                "INTERNAL_ERROR",
+                AuthErrorType.INTERNAL_ERROR,
                 "Failed to validate registration session"
             ),
             { status: 500 }
@@ -200,7 +201,7 @@ export async function PUT(request: NextRequest) {
         if (!sessionId) {
             return NextResponse.json(
                 createErrorResponse(
-                    "SESSION_NOT_FOUND",
+                    AuthErrorType.SESSION_NOT_FOUND,
                     "No active registration session"
                 ),
                 { status: 404 }
@@ -215,7 +216,7 @@ export async function PUT(request: NextRequest) {
 
             return NextResponse.json(
                 createErrorResponse(
-                    "SESSION_EXPIRED",
+                    AuthErrorType.SESSION_EXPIRED,
                     "Registration session has expired"
                 ),
                 { status: 401 }
@@ -255,7 +256,7 @@ export async function PUT(request: NextRequest) {
         console.error("Registration session update error:", error)
         return NextResponse.json(
             createErrorResponse(
-                "INTERNAL_ERROR",
+                AuthErrorType.INTERNAL_ERROR,
                 "Failed to update registration session"
             ),
             { status: 500 }
@@ -299,7 +300,7 @@ export async function DELETE(request: NextRequest) {
         console.error("Registration session removal error:", error)
         return NextResponse.json(
             createErrorResponse(
-                "INTERNAL_ERROR",
+                AuthErrorType.INTERNAL_ERROR,
                 "Failed to remove registration session"
             ),
             { status: 500 }

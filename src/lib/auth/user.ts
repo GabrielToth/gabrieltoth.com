@@ -5,7 +5,7 @@
  * Validates: Requirements 2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 3.6, 11.3
  */
 
-import { db } from "@/lib/db"
+import { db } from "@/lib/db/index"
 import { logger } from "@/lib/logger"
 import { GoogleUserData, OAuthUser, User } from "@/types/auth"
 
@@ -425,7 +425,7 @@ export async function updateUserAccountCompletion(
 
         // Build dynamic UPDATE query based on provided fields
         const updates: string[] = []
-        const values: unknown[] = []
+        const values: Array<string | number | boolean | null | Date> = []
         let paramIndex = 1
 
         if (data.email !== undefined) {
@@ -471,7 +471,7 @@ export async function updateUserAccountCompletion(
         }
 
         // Always update the updated_at timestamp
-        updates.push(`updated_at = NOW()`)
+        updates.push("updated_at = NOW()")
 
         if (updates.length === 1) {
             // Only updated_at was set, no actual data to update

@@ -3,7 +3,7 @@
  * Maintains a complete audit trail of all authentication-related events
  */
 
-import { db } from "@/lib/db"
+import { db } from "@/lib/db/index"
 import { logger } from "@/lib/logger"
 
 const { query, queryOne } = db
@@ -21,6 +21,7 @@ export type AuditEventType =
     | "XSS_ATTEMPT"
     | "CSRF_VIOLATION"
     | "RATE_LIMIT_EXCEEDED"
+    | "UNAUTHENTICATED_ACCESS_ATTEMPT"
 
 export interface AuditLogEntry {
     id: string
@@ -254,7 +255,8 @@ export async function logSecurityEvent(
         | "SQL_INJECTION_ATTEMPT"
         | "XSS_ATTEMPT"
         | "CSRF_VIOLATION"
-        | "RATE_LIMIT_EXCEEDED",
+        | "RATE_LIMIT_EXCEEDED"
+        | "UNAUTHENTICATED_ACCESS_ATTEMPT",
     email: string | undefined,
     ipAddress: string,
     details: Record<string, unknown>,
@@ -367,7 +369,7 @@ export async function cleanupOldAuditLogs(): Promise<number> {
         const cutoffTime = new Date(Date.now() - 90 * 24 * 60 * 60 * 1000) // 90 days ago
 
         const result = await query(
-            `DELETE FROM audit_logs WHERE created_at < $1`,
+            "DELETE FROM audit_logs WHERE created_at < $1",
             [cutoffTime]
         )
 

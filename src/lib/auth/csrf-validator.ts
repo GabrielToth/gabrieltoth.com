@@ -6,7 +6,7 @@
  */
 
 import { generateRandomHex } from "@/lib/crypto-utils"
-import { db } from "@/lib/db"
+import { db } from "@/lib/db/index"
 import { logger } from "@/lib/logger"
 
 const { query, queryOne } = db
@@ -116,7 +116,7 @@ export async function validateCSRFToken(token: string): Promise<boolean> {
 
         // Query for the token
         const result = await queryOne<{ id: string; expires_at: Date }>(
-            `SELECT id, expires_at FROM csrf_tokens WHERE token_hash = $1`,
+            "SELECT id, expires_at FROM csrf_tokens WHERE token_hash = $1",
             [tokenHash]
         )
 
@@ -138,13 +138,13 @@ export async function validateCSRFToken(token: string): Promise<boolean> {
             })
 
             // Delete expired token
-            await query(`DELETE FROM csrf_tokens WHERE id = $1`, [result.id])
+            await query("DELETE FROM csrf_tokens WHERE id = $1", [result.id])
 
             return false
         }
 
         // Delete token after validation (one-time use)
-        await query(`DELETE FROM csrf_tokens WHERE id = $1`, [result.id])
+        await query("DELETE FROM csrf_tokens WHERE id = $1", [result.id])
 
         logger.debug("CSRF token validated successfully", {
             context: "CSRF",
@@ -200,7 +200,7 @@ export function getCSRFTokenFromCookie(request: NextRequest): string | null {
 export async function cleanupExpiredCSRFTokens(): Promise<number> {
     try {
         const result = await query(
-            `DELETE FROM csrf_tokens WHERE expires_at < NOW()`
+            "DELETE FROM csrf_tokens WHERE expires_at < NOW()"
         )
 
         const deletedCount = result.rowCount || 0

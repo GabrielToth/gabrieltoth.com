@@ -49,7 +49,7 @@ describe("Property 5: Deleted Session Authentication Failure", () => {
         fc.integer({ min: 60 * 60 * 1000, max: 30 * 24 * 60 * 60 * 1000 }),
     ])(
         "should reject authentication with deleted session token",
-        async (sessionId, userId, futureTimeMs) => {
+        async (sessionId: string, userId: string, futureTimeMs: number) => {
             const futureDate = new Date(Date.now() + futureTimeMs)
             /**
              * **Validates: Requirements 2.4**
@@ -109,7 +109,7 @@ describe("Property 5: Deleted Session Authentication Failure", () => {
         fc.integer({ min: 60 * 60 * 1000, max: 30 * 24 * 60 * 60 * 1000 }),
     ])(
         "should consistently reject deleted sessions across multiple validation attempts",
-        async (sessionId, userId, futureTimeMs) => {
+        async (sessionId: string, userId: string, futureTimeMs: number) => {
             const futureDate = new Date(Date.now() + futureTimeMs)
             /**
              * **Validates: Requirements 2.4**
@@ -167,7 +167,7 @@ describe("Property 5: Deleted Session Authentication Failure", () => {
         fc.integer({ min: 60 * 60 * 1000, max: 30 * 24 * 60 * 60 * 1000 }),
     ])(
         "should prevent access to protected resources with deleted session token",
-        async (sessionId, userId, futureTimeMs) => {
+        async (sessionId: string, userId: string, futureTimeMs: number) => {
             const futureDate = new Date(Date.now() + futureTimeMs)
             /**
              * **Validates: Requirements 2.4**
@@ -217,7 +217,7 @@ describe("Property 5: Deleted Session Authentication Failure", () => {
         fc.uuid(),
     ])(
         "should not confuse deleted sessions with other sessions",
-        async (sessionId1, sessionId2, futureTimeMs, userId) => {
+        async (sessionId1: string, sessionId2: string, futureTimeMs: number, userId: string) => {
             const futureDate = new Date(Date.now() + futureTimeMs)
             /**
              * **Validates: Requirements 2.4**
@@ -288,7 +288,7 @@ describe("Property 5: Deleted Session Authentication Failure", () => {
         fc.integer({ min: 60 * 60 * 1000, max: 30 * 24 * 60 * 60 * 1000 }),
     ])(
         "should handle deletion of non-existent sessions gracefully",
-        async (sessionId, userId, futureTimeMs) => {
+        async (sessionId: string, userId: string, futureTimeMs: number) => {
             const futureDate = new Date(Date.now() + futureTimeMs)
             /**
              * **Validates: Requirements 2.4**

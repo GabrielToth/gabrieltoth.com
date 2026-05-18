@@ -19,6 +19,15 @@ import {
 } from "../lib/retry/wrappers"
 import { createShutdownHandler } from "../lib/shutdown"
 import { createStartupHandler } from "../lib/startup"
+import { errorHandler } from "./middleware/error-handler"
+import {
+    rateLimiterMiddleware,
+    startCleanupInterval,
+} from "./middleware/rate-limiter"
+import {
+    httpsRedirectMiddleware,
+    securityHeadersMiddleware,
+} from "./middleware/security-headers"
 
 const logger = createLogger("Application")
 

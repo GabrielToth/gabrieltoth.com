@@ -1,7 +1,7 @@
 // Discord Alerter with Rate Limiting
 // Focus: Critical alerts only, non-blocking, rate-limited
 
-import { createLogger } from "../logger/pino-logger"
+import { createLogger } from "@/lib/logger"
 import { InMemoryRateLimiter, type RateLimiter } from "./rate-limiter"
 
 const logger = createLogger("DiscordAlerter")

@@ -843,7 +843,7 @@ describe("PasswordSetup Component", () => {
 
             await waitFor(() => {
                 const confirmInput = container.querySelector(
-                    'input[placeholder="Confirm your password"]'
+                    "input[placeholder=\"Confirm your password\"]"
                 )
                 expect(confirmInput).toHaveClass("border-red-500")
             })
@@ -862,7 +862,7 @@ describe("PasswordSetup Component", () => {
 
             await waitFor(() => {
                 const confirmInput = container.querySelector(
-                    'input[placeholder="Confirm your password"]'
+                    "input[placeholder=\"Confirm your password\"]"
                 )
                 expect(confirmInput).toHaveClass("border-green-500")
             })
@@ -880,7 +880,7 @@ describe("PasswordSetup Component", () => {
             )
 
             const confirmInput = container.querySelector(
-                'input[placeholder="Confirm your password"]'
+                "input[placeholder=\"Confirm your password\"]"
             )
             expect(confirmInput).toHaveClass("border-gray-300")
         })

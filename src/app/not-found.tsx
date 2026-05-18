@@ -40,7 +40,7 @@ export default function NotFound() {
     ]
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 dark:from-gray-900 dark:to-blue-900">
+        <div className="min-h-screen bg-linear-to-br from-gray-50 to-blue-50 dark:from-gray-900 dark:to-blue-900">
             <div className="flex items-center justify-center px-4 pt-24 pb-12">
                 <div className="max-w-4xl mx-auto text-center">
                     {/* Error Section */}

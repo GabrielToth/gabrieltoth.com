@@ -108,7 +108,7 @@ describe("AuthenticationScreen - Accessibility", () => {
             // Email form container should be visible
             await waitFor(() => {
                 const emailFormContainer = container.querySelector(
-                    '[class*="emailFormContainer"]'
+                    "[class*=\"emailFormContainer\"]"
                 )
                 expect(emailFormContainer).toBeInTheDocument()
             })
@@ -131,7 +131,7 @@ describe("AuthenticationScreen - Accessibility", () => {
             // Email form container should be visible
             await waitFor(() => {
                 const emailFormContainer = container.querySelector(
-                    '[class*="emailFormContainer"]'
+                    "[class*=\"emailFormContainer\"]"
                 )
                 expect(emailFormContainer).toBeInTheDocument()
             })
@@ -196,7 +196,7 @@ describe("AuthenticationScreen - Accessibility", () => {
                 />
             )
 
-            const buttonRow = container.querySelector('[role="group"]')
+            const buttonRow = container.querySelector("[role=\"group\"]")
             expect(buttonRow).toBeInTheDocument()
             expect(buttonRow).toHaveAttribute(
                 "aria-label",
@@ -287,7 +287,7 @@ describe("AuthenticationScreen - Accessibility", () => {
             // Email form container should be visible
             await waitFor(() => {
                 const emailFormContainer = container.querySelector(
-                    '[class*="emailFormContainer"]'
+                    "[class*=\"emailFormContainer\"]"
                 )
                 expect(emailFormContainer).toBeInTheDocument()
             })
@@ -338,7 +338,7 @@ describe("AuthenticationScreen - Accessibility", () => {
             )
 
             // Simulate error display
-            const errorAlert = container.querySelector('[role="alert"]')
+            const errorAlert = container.querySelector("[role=\"alert\"]")
             // Error alert should be present when error occurs
             // This is verified through integration testing
         })

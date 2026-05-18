@@ -1,14 +1,13 @@
 // Request Context Middleware
 // Focus: Request tracing, User context propagation
 
-import { generateUUID } from "@/lib/crypto-utils"
 import { NextRequest, NextResponse } from "next/server"
 
 /**
  * Generate a UUID v4 that works in Edge Runtime
  * Uses crypto.getRandomValues() which is available in Edge Runtime
  */
-function generateUUID(): string {
+function generateRequestId(): string {
     // Generate 16 random bytes
     const bytes = new Uint8Array(16)
     crypto.getRandomValues(bytes)
@@ -40,7 +39,7 @@ export interface RequestContext {
  * Generates or extracts requestId, extracts userId from headers
  */
 export function contextMiddleware(request: NextRequest): NextResponse {
-    const requestId = request.headers.get("x-request-id") || generateUUID()
+    const requestId = request.headers.get("x-request-id") || generateRequestId()
     const userId = request.headers.get("x-user-id") || undefined
 
     const context: RequestContext = {

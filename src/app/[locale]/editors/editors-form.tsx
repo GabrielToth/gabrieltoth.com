@@ -3,13 +3,13 @@
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { type Locale } from "@/lib/i18n"
+import { SiYoutube } from "@icons-pack/react-simple-icons"
 import {
     Edit3,
     MessageSquare,
     TrendingUp,
     User,
     Users,
-    Youtube,
 } from "lucide-react"
 import { useState } from "react"
 
@@ -376,7 +376,7 @@ export default function ApplicationForm({
                 {type === "channel-management" ? (
                     <div>
                         <h4 className="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
-                            <Youtube className="mr-2" size={20} />
+                            <SiYoutube className="mr-2" size={20} />
                             {t.form.channelInfo}
                         </h4>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

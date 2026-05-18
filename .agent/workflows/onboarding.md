@@ -1,6 +1,7 @@
 ---
 description: Mandatory reading before any implementation in this project
 ---
+// turbo-all
 
 # AI Onboarding - Mandatory Reading
 

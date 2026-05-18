@@ -26,25 +26,26 @@ interface UpdateGroupRequest {
  */
 export async function GET(
     request: NextRequest,
-    { params }: { params: { groupId: string } }
+    context: { params: Promise<{ groupId: string }> }
 ): Promise<NextResponse> {
+    const { groupId } = await context.params
     try {
         // Get user ID from session
         const userId = request.headers.get("x-user-id")
         if (!userId) {
             logger.warn("Unauthorized group detail request", {
-                groupId: params.groupId,
+                groupId,
             })
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
         }
 
         const groupManager = getNetworkGroupManager()
-        const group = await groupManager.getGroup(userId, params.groupId)
+        const group = await groupManager.getGroup(userId, groupId)
 
         if (!group) {
             logger.warn("Group not found", {
                 userId,
-                groupId: params.groupId,
+                groupId: groupId,
             })
             return NextResponse.json(
                 { error: "Group not found" },
@@ -54,13 +55,13 @@ export async function GET(
 
         logger.info("Group detail retrieved", {
             userId,
-            groupId: params.groupId,
+            groupId: groupId,
         })
 
         return NextResponse.json(group, { status: 200 })
     } catch (error) {
         logger.error("Failed to retrieve group detail", {
-            groupId: params.groupId,
+            groupId: groupId,
             error: error instanceof Error ? error.message : String(error),
         })
 
@@ -80,14 +81,15 @@ export async function GET(
  */
 export async function PUT(
     request: NextRequest,
-    { params }: { params: { groupId: string } }
+    context: { params: Promise<{ groupId: string }> }
 ): Promise<NextResponse> {
+    const { groupId } = await context.params
     try {
         // Get user ID from session
         const userId = request.headers.get("x-user-id")
         if (!userId) {
             logger.warn("Unauthorized group update attempt", {
-                groupId: params.groupId,
+                groupId: groupId,
             })
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
         }
@@ -97,7 +99,7 @@ export async function PUT(
         if (!body.name) {
             logger.warn("Missing required field: name", {
                 userId,
-                groupId: params.groupId,
+                groupId: groupId,
             })
             return NextResponse.json(
                 { error: "Missing required field: name" },
@@ -108,13 +110,13 @@ export async function PUT(
         const groupManager = getNetworkGroupManager()
         const group = await groupManager.renameGroup(
             userId,
-            params.groupId,
+            groupId,
             body.name
         )
 
         logger.info("Group updated successfully", {
             userId,
-            groupId: params.groupId,
+            groupId: groupId,
             newName: body.name,
         })
 
@@ -128,7 +130,7 @@ export async function PUT(
         )
     } catch (error) {
         logger.error("Failed to update group", {
-            groupId: params.groupId,
+            groupId: groupId,
             error: error instanceof Error ? error.message : String(error),
         })
 
@@ -148,25 +150,26 @@ export async function PUT(
  */
 export async function DELETE(
     request: NextRequest,
-    { params }: { params: { groupId: string } }
+    context: { params: Promise<{ groupId: string }> }
 ): Promise<NextResponse> {
+    const { groupId } = await context.params
     try {
         // Get user ID from session
         const userId = request.headers.get("x-user-id")
         if (!userId) {
             logger.warn("Unauthorized group delete attempt", {
-                groupId: params.groupId,
+                groupId: groupId,
             })
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
         }
 
         const groupManager = getNetworkGroupManager()
-        const deleted = await groupManager.deleteGroup(userId, params.groupId)
+        const deleted = await groupManager.deleteGroup(userId, groupId)
 
         if (!deleted) {
             logger.warn("Group not found for deletion", {
                 userId,
-                groupId: params.groupId,
+                groupId: groupId,
             })
             return NextResponse.json(
                 { error: "Group not found" },
@@ -176,7 +179,7 @@ export async function DELETE(
 
         logger.info("Group deleted successfully", {
             userId,
-            groupId: params.groupId,
+            groupId: groupId,
         })
 
         return NextResponse.json(
@@ -188,7 +191,7 @@ export async function DELETE(
         )
     } catch (error) {
         logger.error("Failed to delete group", {
-            groupId: params.groupId,
+            groupId: groupId,
             error: error instanceof Error ? error.message : String(error),
         })
 

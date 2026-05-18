@@ -11,7 +11,7 @@ import { Share2 } from "lucide-react"
 import { useState } from "react"
 import PostingInterface from "./PostingInterface"
 
-interface UniversalPostingButtonProps {
+export interface UniversalPostingButtonProps {
     linkedNetworksCount?: number
     isDisabled?: boolean
     onOpen?: () => void

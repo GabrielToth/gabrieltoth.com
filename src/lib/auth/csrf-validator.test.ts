@@ -19,7 +19,7 @@ describe("CSRF Validator Module", () => {
     // Clean up test data after each test
     afterEach(async () => {
         try {
-            await query(`DELETE FROM csrf_tokens`)
+            await query("DELETE FROM csrf_tokens")
         } catch (error) {
             // Ignore cleanup errors
         }
@@ -61,7 +61,7 @@ describe("CSRF Validator Module", () => {
             // Verify token was stored
             const tokenHash = createHash("sha256").update(token).digest("hex")
             const result = await queryOne(
-                `SELECT id FROM csrf_tokens WHERE token_hash = $1`,
+                "SELECT id FROM csrf_tokens WHERE token_hash = $1",
                 [tokenHash]
             )
             expect(result).toBeDefined()
@@ -75,7 +75,7 @@ describe("CSRF Validator Module", () => {
 
             const tokenHash = createHash("sha256").update(token).digest("hex")
             const result = await queryOne<{ expires_at: Date }>(
-                `SELECT expires_at FROM csrf_tokens WHERE token_hash = $1`,
+                "SELECT expires_at FROM csrf_tokens WHERE token_hash = $1",
                 [tokenHash]
             )
 
@@ -144,7 +144,7 @@ describe("CSRF Validator Module", () => {
             // Store token with past expiration
             const pastExpiration = new Date(Date.now() - 1000)
             await query(
-                `INSERT INTO csrf_tokens (token_hash, expires_at) VALUES ($1, $2)`,
+                "INSERT INTO csrf_tokens (token_hash, expires_at) VALUES ($1, $2)",
                 [tokenHash, pastExpiration]
             )
 
@@ -180,7 +180,7 @@ describe("CSRF Validator Module", () => {
             const pastExpiration = new Date(Date.now() - 1000)
 
             await query(
-                `UPDATE csrf_tokens SET expires_at = $1 WHERE token_hash IN ($2, $3)`,
+                "UPDATE csrf_tokens SET expires_at = $1 WHERE token_hash IN ($2, $3)",
                 [pastExpiration, tokenHash1, tokenHash2]
             )
 
@@ -190,7 +190,7 @@ describe("CSRF Validator Module", () => {
 
             // Verify only non-expired token remains
             const remaining = await query(
-                `SELECT COUNT(*) as count FROM csrf_tokens`
+                "SELECT COUNT(*) as count FROM csrf_tokens"
             )
             expect(remaining.rows[0].count).toBe(1)
         })
@@ -204,7 +204,7 @@ describe("CSRF Validator Module", () => {
 
             // Verify token still exists
             const result = await query(
-                `SELECT COUNT(*) as count FROM csrf_tokens`
+                "SELECT COUNT(*) as count FROM csrf_tokens"
             )
             expect(result.rows[0].count).toBe(1)
         })
@@ -238,7 +238,7 @@ describe("CSRF Validator Module", () => {
 
             // Query for plain token (should not exist)
             const result = await queryOne(
-                `SELECT id FROM csrf_tokens WHERE token_hash = $1`,
+                "SELECT id FROM csrf_tokens WHERE token_hash = $1",
                 [token]
             )
             expect(result).toBeNull()
@@ -246,7 +246,7 @@ describe("CSRF Validator Module", () => {
             // Query for hashed token (should exist)
             const tokenHash = createHash("sha256").update(token).digest("hex")
             const hashedResult = await queryOne(
-                `SELECT id FROM csrf_tokens WHERE token_hash = $1`,
+                "SELECT id FROM csrf_tokens WHERE token_hash = $1",
                 [tokenHash]
             )
             expect(hashedResult).toBeDefined()

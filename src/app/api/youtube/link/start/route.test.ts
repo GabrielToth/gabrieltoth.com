@@ -29,7 +29,7 @@ vi.mock("@/lib/config/env", () => ({
         SMTP_PASSWORD: "password",
         SMTP_FROM_EMAIL: "noreply@example.com",
         SMTP_FROM_NAME: "Test",
-        GEOIP_SERVICE_URL: "https://geoip.example.com",
+
         TOKEN_ENCRYPTION_KEY: "a".repeat(64),
     }),
 }))
@@ -54,11 +54,7 @@ vi.mock("@/lib/youtube/config", () => ({
             fromName: "Test",
             tls: true,
         },
-        geolocation: {
-            serviceUrl: "https://geoip.example.com",
-            timeout: 5000,
-            retries: 3,
-        },
+
         encryption: {
             encryptionKey: "a".repeat(64),
             algorithm: "aes-256-gcm",

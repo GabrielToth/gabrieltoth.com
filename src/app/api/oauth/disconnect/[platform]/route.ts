@@ -19,8 +19,10 @@ const logger = createLogger("OAuthDisconnectEndpoint")
  */
 export async function POST(
     request: NextRequest,
-    { params }: { params: { platform: string } }
+    context: { params: Promise<{ platform: string }> }
 ): Promise<NextResponse> {
+    const { platform } = await context.params
+
     try {
         // Rate limiting
         const clientIp =
@@ -34,7 +36,7 @@ export async function POST(
 
         if (!rateLimitResult.success) {
             logger.warn("Rate limit exceeded for OAuth disconnect", {
-                platform: params.platform,
+                platform: platform,
                 clientIp,
             })
             return NextResponse.json(
@@ -47,12 +49,12 @@ export async function POST(
         const userId = request.headers.get("x-user-id")
         if (!userId) {
             logger.warn("Unauthorized OAuth disconnect attempt", {
-                platform: params.platform,
+                platform: platform,
             })
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
         }
 
-        const platform = params.platform.toLowerCase()
+        
 
         // Get the token to revoke
         const tokenStore = getTokenStore()
@@ -102,7 +104,7 @@ export async function POST(
         )
     } catch (error) {
         logger.error("OAuth disconnect failed", {
-            platform: params.platform,
+            platform: platform,
             error: error instanceof Error ? error.message : String(error),
         })
 

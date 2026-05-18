@@ -38,7 +38,7 @@ export function PasswordSetup({
         const isValid = validation.isValid && confirmValue && passwordsMatch
 
         // Call validation callback immediately
-        onValidationChange?.(isValid)
+        onValidationChange?.(Boolean(isValid))
 
         // Update error message based on current state
         if (!value) {
@@ -92,7 +92,7 @@ export function PasswordSetup({
                         } bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100`}
                         aria-label="Password"
                         aria-describedby="password-requirements"
-                        aria-invalid={value && !validation.isValid}
+                        aria-invalid={Boolean(value && !validation.isValid)}
                     />
                     <button
                         type="button"
@@ -251,7 +251,7 @@ export function PasswordSetup({
                                   : "border-gray-300 dark:border-gray-600 focus:ring-blue-200 dark:focus:ring-blue-900"
                         } bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100`}
                         aria-label="Confirm password"
-                        aria-invalid={confirmValue && !passwordsMatch}
+                        aria-invalid={Boolean(confirmValue && !passwordsMatch)}
                     />
                     <button
                         type="button"

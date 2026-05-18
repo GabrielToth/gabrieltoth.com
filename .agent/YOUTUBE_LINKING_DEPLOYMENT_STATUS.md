@@ -7,7 +7,6 @@
 - ✅ OAuth 2.0 service with PKCE support
 - ✅ Channel validation and duplicate detection
 - ✅ Recovery flows and token management
-- ✅ Suspicious activity detection with GeoIP
 - ✅ Audit logging and compliance
 - ✅ Email notifications
 - ✅ Unlinking and revocation flows
@@ -81,7 +80,6 @@
    - Google OAuth credentials
    - Supabase credentials
    - YouTube OAuth credentials
-   - GeoIP API key
    - Token encryption key
    - SMTP configuration
    - Stripe key
@@ -173,7 +171,6 @@ STRIPE_SECRET_KEY=your-stripe-key
 YOUTUBE_CLIENT_ID=your-youtube-client-id
 YOUTUBE_CLIENT_SECRET=your-youtube-client-secret
 YOUTUBE_REDIRECT_URI=http://localhost:3000/api/youtube/link/callback
-GEOIP_API_KEY=your-maxmind-key
 TOKEN_ENCRYPTION_KEY=your-64-char-hex-key
 TOKEN_ENCRYPTION_STRATEGY=environment
 ```
@@ -248,7 +245,6 @@ Same as above, but with production credentials:
 - **Vercel Dashboard**: https://vercel.com/dashboard
 - **Google Cloud Console**: https://console.cloud.google.com/
 - **Stripe Dashboard**: https://dashboard.stripe.com/
-- **MaxMind GeoIP**: https://www.maxmind.com/
 - **GitHub Repository**: https://github.com/GabrielToth/gabrieltoth.com
 
 ---

@@ -35,10 +35,6 @@ export interface EnvironmentConfig {
     SMTP_FROM_EMAIL: string
     SMTP_FROM_NAME: string
 
-    // Geolocation Service
-    GEOIP_SERVICE_URL: string
-    GEOIP_API_KEY?: string
-
     // Token Encryption
     TOKEN_ENCRYPTION_KEY: string
 }
@@ -61,7 +57,6 @@ export function validateEnv(): EnvironmentConfig {
         "SMTP_PASSWORD",
         "SMTP_FROM_EMAIL",
         "SMTP_FROM_NAME",
-        "GEOIP_SERVICE_URL",
         "TOKEN_ENCRYPTION_KEY",
     ]
 
@@ -95,8 +90,6 @@ export function validateEnv(): EnvironmentConfig {
         SMTP_PASSWORD: process.env.SMTP_PASSWORD!,
         SMTP_FROM_EMAIL: process.env.SMTP_FROM_EMAIL!,
         SMTP_FROM_NAME: process.env.SMTP_FROM_NAME!,
-        GEOIP_SERVICE_URL: process.env.GEOIP_SERVICE_URL!,
-        GEOIP_API_KEY: process.env.GEOIP_API_KEY,
         TOKEN_ENCRYPTION_KEY: process.env.TOKEN_ENCRYPTION_KEY!,
     }
 }

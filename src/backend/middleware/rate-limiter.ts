@@ -52,10 +52,15 @@ function getClientIp(req: Request): string {
         const ips = Array.isArray(forwarded)
             ? forwarded[0]
             : forwarded.split(",")[0]
-        return ips.trim()
+        return String(ips).trim()
     }
 
-    return req.headers["x-real-ip"] || req.ip || "unknown"
+    const realIp = req.headers["x-real-ip"]
+    if (realIp) {
+        return String(Array.isArray(realIp) ? realIp[0] : realIp)
+    }
+
+    return req.ip || "unknown"
 }
 
 /**

@@ -5,7 +5,6 @@
  */
 
 import crypto from "crypto"
-import { createLogger } from "../logger"
 import { BaseService, ServiceError } from "./base-service"
 import { YouTubeChannelLinkingConfig } from "./config"
 
@@ -33,8 +32,6 @@ export interface AuthorizationUrlResponse {
  * Handles OAuth 2.0 flow for YouTube channel linking
  */
 export class YouTubeOAuthService extends BaseService {
-    private logger = createLogger("YouTubeOAuthService")
-
     constructor(private config: YouTubeChannelLinkingConfig) {
         super()
     }

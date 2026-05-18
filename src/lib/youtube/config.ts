@@ -29,15 +29,7 @@ export interface EmailServiceConfig {
     tls: boolean
 }
 
-/**
- * Geolocation service configuration
- */
-export interface GeolocationServiceConfig {
-    serviceUrl: string
-    apiKey?: string
-    timeout: number
-    retries: number
-}
+
 
 /**
  * Token encryption configuration
@@ -53,7 +45,6 @@ export interface TokenEncryptionConfig {
 export interface YouTubeChannelLinkingConfig {
     oauth: YouTubeOAuthConfig
     email: EmailServiceConfig
-    geolocation: GeolocationServiceConfig
     encryption: TokenEncryptionConfig
     rateLimit: {
         linkingAttemptsPerHour: number
@@ -94,12 +85,6 @@ export function createYouTubeChannelLinkingConfig(
             fromEmail: env.SMTP_FROM_EMAIL,
             fromName: env.SMTP_FROM_NAME,
             tls: env.SMTP_PORT === 587,
-        },
-        geolocation: {
-            serviceUrl: env.GEOIP_SERVICE_URL,
-            apiKey: env.GEOIP_API_KEY,
-            timeout: 5000, // 5 seconds
-            retries: 3,
         },
         encryption: {
             encryptionKey: env.TOKEN_ENCRYPTION_KEY,
@@ -154,17 +139,6 @@ export function validateYouTubeChannelLinkingConfig(
     }
     if (!config.email.fromEmail) {
         errors.push("Email from address is required")
-    }
-
-    // Validate geolocation config
-    if (!config.geolocation.serviceUrl) {
-        errors.push("Geolocation service URL is required")
-    }
-    if (config.geolocation.timeout < 1000) {
-        errors.push("Geolocation timeout must be at least 1000ms")
-    }
-    if (config.geolocation.retries < 0) {
-        errors.push("Geolocation retries must be non-negative")
     }
 
     // Validate encryption config

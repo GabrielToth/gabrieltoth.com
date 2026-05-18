@@ -16,7 +16,7 @@ export async function generateMetadata({
     const t = await getTranslations({ locale, namespace: "minecraft" })
 
     return {
-        title: `Hypixel QoL Modpack - Gabriel Toth`,
+        title: "Hypixel QoL Modpack - Gabriel Toth",
         description:
             "Explore the Hypixel QoL modpack with quality of life improvements for Minecraft",
         keywords: ["minecraft", "modpack", "hypixel", "qol", "quality of life"],

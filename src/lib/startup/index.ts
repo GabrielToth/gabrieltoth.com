@@ -50,7 +50,7 @@ export class StartupHandlerImpl implements StartupHandler {
         await this.discordAlerter.sendAlert({
             level: "startup",
             title: "Application Started",
-            message: `Application has started successfully`,
+            message: "Application has started successfully",
             context: {
                 version: appVersion,
                 environment,

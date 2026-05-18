@@ -11,7 +11,7 @@
  */
 
 import { validateAccountCompletionData } from "@/lib/auth/account-completion-validation"
-import { logAuditEvent } from "@/lib/auth/audit-logging"
+import { logAuditEvent, logRegistration } from "@/lib/auth/audit-logging"
 import {
     AuthErrorType,
     createErrorResponse,

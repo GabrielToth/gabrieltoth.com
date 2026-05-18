@@ -100,7 +100,7 @@ describe("Missing 500 Error Page - Bug Condition Exploration", () => {
             const content = fs.readFileSync(errorPagePath, "utf-8")
 
             // Verify it's a React component (has 'use client' or exports default)
-            const hasUseClient = content.includes('"use client"')
+            const hasUseClient = content.includes("\"use client\"")
             const hasDefaultExport =
                 content.includes("export default") ||
                 content.includes("export { default }")
@@ -147,7 +147,7 @@ describe("Missing 500 Error Page - Bug Condition Exploration", () => {
             const content = fs.readFileSync(errorPagePath, "utf-8")
 
             // Verify it's a React component (has 'use client' or exports default)
-            const hasUseClient = content.includes('"use client"')
+            const hasUseClient = content.includes("\"use client\"")
             const hasDefaultExport =
                 content.includes("export default") ||
                 content.includes("export { default }")
@@ -205,7 +205,7 @@ describe("Missing 500 Error Page - Bug Condition Exploration", () => {
                 // (e.g., importing from non-existent files)
                 const hasInvalidImports =
                     content.includes("from './nonexistent") ||
-                    content.includes('from "./nonexistent')
+                    content.includes("from \"./nonexistent")
 
                 // Expected behavior: No invalid imports that would cause ENOENT
                 expect(hasInvalidImports).toBe(false)
@@ -271,7 +271,7 @@ describe("Missing 500 Error Page - Bug Condition Exploration", () => {
                 const hasReactImport =
                     content.includes("import React") ||
                     content.includes("from 'react'") ||
-                    content.includes('from "react"')
+                    content.includes("from \"react\"")
                 const hasJSXReturn =
                     content.includes("return (") ||
                     content.includes("return <") ||

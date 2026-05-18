@@ -111,7 +111,9 @@ export async function GET(request: NextRequest) {
     }
 }
 
-async function processPublication(publication: any) {
+async function processPublication(
+    _publication: unknown
+): Promise<Array<{ success: boolean }>> {
     // Implementation similar to the POST endpoint above
     // This is a placeholder
     return []

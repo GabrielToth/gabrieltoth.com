@@ -4,7 +4,7 @@
  * Max 5 failed attempts in 15 minutes
  */
 
-import { db } from "@/lib/db"
+import { db } from "@/lib/db/index"
 import { logger } from "@/lib/logger"
 
 const { query, queryOne } = db
@@ -187,7 +187,7 @@ export async function cleanupOldLoginAttempts(): Promise<number> {
         const cutoffTime = new Date(Date.now() - 24 * 60 * 60 * 1000) // 24 hours ago
 
         const result = await query(
-            `DELETE FROM login_attempts WHERE attempted_at < $1`,
+            "DELETE FROM login_attempts WHERE attempted_at < $1",
             [cutoffTime]
         )
 

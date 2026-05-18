@@ -251,7 +251,7 @@ describe("LoginForm", () => {
                 expect(global.fetch).toHaveBeenCalledWith(
                     "/api/auth/login",
                     expect.objectContaining({
-                        body: expect.stringContaining('"rememberMe":true'),
+                        body: expect.stringContaining("\"rememberMe\":true"),
                     })
                 )
             })

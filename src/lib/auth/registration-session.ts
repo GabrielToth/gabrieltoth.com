@@ -6,7 +6,7 @@
  */
 
 import { generateRandomHex } from "@/lib/crypto-utils"
-import { db } from "@/lib/db"
+import { db } from "@/lib/db/index"
 import { logger } from "@/lib/logger"
 
 const { queryOne, query } = db
@@ -314,7 +314,7 @@ export async function updateRegistrationSession(
         }
 
         // Always update last_activity_at
-        updateFields.push(`last_activity_at = NOW()`)
+        updateFields.push("last_activity_at = NOW()")
 
         if (updateFields.length === 1) {
             // Only last_activity_at is being updated
@@ -378,7 +378,7 @@ export async function removeRegistrationSession(
 
         // Delete session from database
         const result = await query(
-            `DELETE FROM registration_sessions WHERE session_id = $1`,
+            "DELETE FROM registration_sessions WHERE session_id = $1",
             [sessionId]
         )
 
@@ -423,7 +423,7 @@ export async function removeRegistrationSession(
 export async function cleanupExpiredRegistrationSessions(): Promise<number> {
     try {
         const result = await query(
-            `DELETE FROM registration_sessions WHERE expires_at < NOW()`
+            "DELETE FROM registration_sessions WHERE expires_at < NOW()"
         )
 
         const deletedCount = result.rowCount || 0

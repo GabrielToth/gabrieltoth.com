@@ -30,11 +30,7 @@ const mockConfig: YouTubeChannelLinkingConfig = {
         fromName: "Test",
         tls: true,
     },
-    geolocation: {
-        serviceUrl: "https://geoip.example.com",
-        timeout: 5000,
-        retries: 3,
-    },
+
     encryption: {
         encryptionKey: "a".repeat(64),
         algorithm: "aes-256-gcm",
@@ -55,7 +51,7 @@ const mockConfig: YouTubeChannelLinkingConfig = {
 
 // Generator for valid YouTube channel IDs
 const youtubeChannelIdArb = fc
-    .tuple(fc.constant("UC"), fc.hexaString({ minLength: 22, maxLength: 22 }))
+    .tuple(fc.constant("UC"), fc.array(fc.constantFrom(..."ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_".split("")), { minLength: 22, maxLength: 22 }).map(arr => arr.join("")))
     .map(([prefix, hex]) => prefix + hex)
 
 // Generator for valid access tokens
@@ -125,9 +121,7 @@ describe("Channel Validation Service - Property-Based Tests", () => {
                         expect(result.channelInfo?.channelId).toBe(channelId)
                     })
                 )
-            },
-            { timeout: 30000 }
-        )
+        })
 
         it(
             "should reject mismatched channel IDs",
@@ -171,9 +165,7 @@ describe("Channel Validation Service - Property-Based Tests", () => {
                         }
                     )
                 )
-            },
-            { timeout: 30000 }
-        )
+        })
     })
 
     describe("Property 2: Channel Info Extraction", () => {
@@ -236,9 +228,7 @@ describe("Channel Validation Service - Property-Based Tests", () => {
                         }
                     )
                 )
-            },
-            { timeout: 30000 }
-        )
+        })
     })
 
     describe("Property 3: Error Handling", () => {
@@ -259,17 +249,15 @@ describe("Channel Validation Service - Property-Based Tests", () => {
                         })
 
                         // Property: Invalid tokens should always fail
-                        await expect(
-                            service.validateChannelOwnership(
-                                oauthResponse,
-                                "UCtest123"
-                            )
-                        ).rejects.toThrow()
+                        const result = await service.validateChannelOwnership(
+                            oauthResponse,
+                            "UCtest123"
+                        )
+                        expect(result.valid).toBe(false)
+                        expect(result.error).toBeDefined()
                     })
                 )
-            },
-            { timeout: 30000 }
-        )
+        })
     })
 
     describe("Property 4: Rate Limiting", () => {
@@ -304,9 +292,7 @@ describe("Channel Validation Service - Property-Based Tests", () => {
                         }
                     )
                 )
-            },
-            { timeout: 30000 }
-        )
+        })
     })
 
     describe("Property 5: Validation Result Consistency", () => {
@@ -348,9 +334,7 @@ describe("Channel Validation Service - Property-Based Tests", () => {
                         )
                     })
                 )
-            },
-            { timeout: 30000 }
-        )
+        })
     })
 
     describe("Property 6: Empty/Null Input Handling", () => {

@@ -118,7 +118,7 @@ export function withErrorHandler(
             }
 
             // Apply security headers
-            response = applySecurityHeaders(response)
+            const nextResponse = applySecurityHeaders(response as NextResponse)
 
             // Log successful request (non-sensitive data only)
             logger.debug(`API request successful: ${req.nextUrl.pathname}`, {
@@ -126,11 +126,11 @@ export function withErrorHandler(
                 data: {
                     method: req.method,
                     pathname: req.nextUrl.pathname,
-                    status: response.status,
+                    status: nextResponse.status,
                 },
             })
 
-            return response
+            return nextResponse
         } catch (error) {
             // Get client IP for audit logging
             const clientIp = getClientIp(req)

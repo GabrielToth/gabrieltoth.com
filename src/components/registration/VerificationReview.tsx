@@ -8,7 +8,7 @@ interface VerificationReviewProps {
     onEdit: (
         field: "email" | "password" | "name" | "birthDate" | "phone"
     ) => void
-    onCreateAccount: () => void
+    onCreateAccount?: () => void
     disabled?: boolean
 }
 
@@ -83,7 +83,7 @@ export function VerificationReview({
             </div>
 
             <button
-                onClick={onCreateAccount}
+                onClick={onCreateAccount ?? (() => {})}
                 disabled={disabled}
                 className="w-full mt-6 px-4 py-3 text-base font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px]"
                 aria-label="Create Account"

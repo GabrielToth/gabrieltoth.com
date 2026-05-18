@@ -9,7 +9,7 @@ import { afterEach, vi } from "vitest"
 process.env.LANG = "en_US.UTF-8"
 process.env.LC_ALL = "en_US.UTF-8"
 
-function loadEnvFile(fileName: string): void {
+function loadEnvFile(fileName: string, overwrite: boolean = false): void {
     const filePath = path.resolve(process.cwd(), fileName)
     if (!fs.existsSync(filePath)) {
         return
@@ -27,22 +27,23 @@ function loadEnvFile(fileName: string): void {
         const key = line.slice(0, eqIndex).trim()
         let value = line.slice(eqIndex + 1).trim()
         if (
-            (value.startsWith('"') && value.endsWith('"')) ||
+            (value.startsWith("\"") && value.endsWith("\"")) ||
             (value.startsWith("'") && value.endsWith("'"))
         ) {
             value = value.slice(1, -1)
         }
-        if (process.env[key] === undefined) {
+        if (overwrite || process.env[key] === undefined) {
             process.env[key] = value
         }
     }
 }
 
-// Load environment variables for tests (supports Next.js style .env.local)
-// Load .env.test first (highest priority for test environment)
-loadEnvFile(".env.test")
-loadEnvFile(".env.local")
-loadEnvFile(".env")
+// Load environment variables for tests
+// Vitest auto-loads .env.local, so we must OVERWRITE with test variables
+loadEnvFile(".env.test.local", true)
+loadEnvFile(".env.test", true)
+loadEnvFile(".env.local", false)
+loadEnvFile(".env", false)
 
 // Set test environment variables
 process.env.NEXT_PUBLIC_SITE_URL =
@@ -227,3 +228,20 @@ vi.mock("@supabase/supabase-js", () => ({
         },
     })),
 }))
+
+// Mock Cloudflare Turnstile
+Object.defineProperty(window, "turnstile", {
+    writable: true,
+    value: {
+        render: vi.fn().mockImplementation((containerId, options) => {
+            // Immediately invoke the callback if provided to simulate a successful CAPTCHA
+            if (options && options.callback) {
+                setTimeout(() => options.callback("test-turnstile-token"), 0)
+            }
+            return "test-widget-id"
+        }),
+        reset: vi.fn(),
+        remove: vi.fn(),
+        getResponse: vi.fn().mockReturnValue("test-turnstile-token"),
+    },
+})

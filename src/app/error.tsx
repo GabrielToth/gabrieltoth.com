@@ -21,7 +21,7 @@ export default function Error({
 
     if (!mounted) {
         return (
-            <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 dark:from-gray-900 dark:to-blue-900 flex items-center justify-center px-4">
+            <div className="min-h-screen bg-linear-to-br from-gray-50 to-blue-50 dark:from-gray-900 dark:to-blue-900 flex items-center justify-center px-4">
                 <div className="max-w-2xl mx-auto text-center">
                     <h1 className="text-8xl font-bold text-red-600 dark:text-red-400 mb-4">
                         Error
@@ -35,7 +35,7 @@ export default function Error({
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 dark:from-gray-900 dark:to-blue-900 flex items-center justify-center px-4">
+        <div className="min-h-screen bg-linear-to-br from-gray-50 to-blue-50 dark:from-gray-900 dark:to-blue-900 flex items-center justify-center px-4">
             <div className="max-w-2xl mx-auto text-center">
                 {/* Error Section */}
                 <div className="mb-12">

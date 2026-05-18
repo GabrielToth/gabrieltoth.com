@@ -6,7 +6,6 @@
  * Validates: Requirements 2.1, 2.2
  */
 
-import { createLogger } from "../logger"
 import { BaseService, ServiceError } from "./base-service"
 import { YouTubeChannelLinkingConfig } from "./config"
 
@@ -54,7 +53,6 @@ interface RateLimitState {
  * Handles YouTube API integration and channel ownership validation
  */
 export class ChannelValidationService extends BaseService {
-    private logger = createLogger("ChannelValidationService")
     private config: YouTubeChannelLinkingConfig
     private rateLimitMap: Map<string, RateLimitState> = new Map()
     private readonly RATE_LIMIT_WINDOW = 60000 // 1 minute
@@ -262,7 +260,7 @@ export class ChannelValidationService extends BaseService {
                     Authorization: `Bearer ${accessToken}`,
                     Accept: "application/json",
                 },
-                timeout: 10000, // 10 second timeout
+                signal: AbortSignal.timeout(10000),
             })
 
             if (!response.ok) {

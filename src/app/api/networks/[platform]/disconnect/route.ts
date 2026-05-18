@@ -17,19 +17,21 @@ const logger = createLogger("NetworkDisconnectEndpoint")
  */
 export async function DELETE(
     request: NextRequest,
-    { params }: { params: { platform: string } }
+    context: { params: Promise<{ platform: string }> }
 ): Promise<NextResponse> {
+    const { platform } = await context.params
+
     try {
         // Get user ID from session
         const userId = request.headers.get("x-user-id")
         if (!userId) {
             logger.warn("Unauthorized network disconnect attempt", {
-                platform: params.platform,
+                platform: platform,
             })
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
         }
 
-        const platform = params.platform.toLowerCase()
+        
 
         const networkManager = getNetworkManager()
         const disconnected = await networkManager.unlinkNetwork(
@@ -62,7 +64,7 @@ export async function DELETE(
         )
     } catch (error) {
         logger.error("Failed to disconnect network", {
-            platform: params.platform,
+            platform: platform,
             error: error instanceof Error ? error.message : String(error),
         })
 

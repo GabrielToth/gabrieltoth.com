@@ -2,7 +2,7 @@
 // Focus: Debugability, Performance, Reliability
 
 import { logger } from "@/lib/logger"
-import { Pool, PoolClient, QueryResult } from "pg"
+import { Pool, PoolClient, QueryResult, QueryResultRow } from "pg"
 
 // Singleton pool
 let pool: Pool | null = null
@@ -48,9 +48,9 @@ function getPool(): Pool {
 /**
  * Execute a query with timing and logging
  */
-export async function query<T = unknown>(
+export async function query<T extends QueryResultRow = QueryResultRow>(
     text: string,
-    params?: unknown[]
+    params?: Array<string | number | boolean | null | Date>
 ): Promise<QueryResult<T>> {
     const start = Date.now()
 
@@ -82,9 +82,9 @@ export async function query<T = unknown>(
 /**
  * Get a single row or null
  */
-export async function queryOne<T = unknown>(
+export async function queryOne<T extends QueryResultRow = QueryResultRow>(
     text: string,
-    params?: unknown[]
+    params?: Array<string | number | boolean | null | Date>
 ): Promise<T | null> {
     const result = await query<T>(text, params)
     return result.rows[0] || null
@@ -93,9 +93,9 @@ export async function queryOne<T = unknown>(
 /**
  * Get multiple rows
  */
-export async function queryMany<T = unknown>(
+export async function queryMany<T extends QueryResultRow = QueryResultRow>(
     text: string,
-    params?: unknown[]
+    params?: Array<string | number | boolean | null | Date>
 ): Promise<T[]> {
     const result = await query<T>(text, params)
     return result.rows

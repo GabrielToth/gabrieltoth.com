@@ -20,7 +20,7 @@ describe("StructuredData component coverage", () => {
             })
         )
         const scripts = container.querySelectorAll(
-            'script[type="application/ld+json"]'
+            "script[type=\"application/ld+json\"]"
         )
         expect(scripts.length).toBeGreaterThan(1)
     })

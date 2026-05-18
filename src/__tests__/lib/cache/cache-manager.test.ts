@@ -78,7 +78,7 @@ describe("Cache Configuration", () => {
 
         it("should generate general cache key", () => {
             const key = CACHE_KEYS.GENERAL("my-key")
-            expect(key).toBe(`cache:my-key`)
+            expect(key).toBe("cache:my-key")
         })
     })
 

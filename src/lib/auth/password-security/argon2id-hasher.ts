@@ -147,9 +147,7 @@ export async function hashPasswordArgon2id(
             parallelism: argon2Params.parallelism,
             type: 2, // Argon2id type
             version: 19, // Argon2 version 19
-            raw: false, // Return encoded hash string
             hashLength: 32, // 256-bit hash
-            saltLength: salt.length,
             salt: salt, // Use our generated salt
         })
 
@@ -189,7 +187,7 @@ export async function hashPasswordArgon2id(
             throw new Error(
                 `Password hashing operation timed out (${(timeTakenMs / 1000).toFixed(2)}s). ` +
                     `Maximum allowed: ${ARGON2_CONFIG.MAX_HASH_TIME_SECONDS}s. ` +
-                    `Consider reducing Argon2id parameters.`
+                    "Consider reducing Argon2id parameters."
             )
         }
 

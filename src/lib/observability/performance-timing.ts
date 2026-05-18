@@ -46,7 +46,7 @@ export const performanceTimingMiddleware = (
         })
 
         // Call original end
-        return originalEnd.apply(this, args)
+        return originalEnd.apply(this, args as any)
     }
 
     next()

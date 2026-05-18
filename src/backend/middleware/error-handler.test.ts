@@ -38,7 +38,7 @@ describe("Error Handler Middleware", () => {
                 apiKey: "secret-key",
             }
 
-            const sanitized = sanitizeRequestBody(body)
+            const sanitized = sanitizeRequestBody(body) as Record<string, any>
 
             expect(sanitized.password).toBe("[REDACTED]")
             expect(sanitized.token).toBe("[REDACTED]")

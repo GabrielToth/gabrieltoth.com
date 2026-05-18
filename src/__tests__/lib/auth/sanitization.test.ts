@@ -96,7 +96,7 @@ describe("sanitizeEmail", () => {
 
 describe("escapeHtml", () => {
     it("should escape HTML special characters", () => {
-        const result = escapeHtml('<script>alert("XSS")</script>')
+        const result = escapeHtml("<script>alert(\"XSS\")</script>")
         expect(result).toContain("&lt;")
         expect(result).toContain("&gt;")
         expect(result).toContain("&quot;")
@@ -110,7 +110,7 @@ describe("escapeHtml", () => {
     })
 
     it("should escape double quotes", () => {
-        const result = escapeHtml('He said "Hello"')
+        const result = escapeHtml("He said \"Hello\"")
         expect(result).toContain("&quot;")
     })
 

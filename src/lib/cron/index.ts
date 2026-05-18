@@ -1,7 +1,7 @@
 // Cron Scheduler for Daily Aggregation
 // Implements Requirement 5.7 from distributed-infrastructure-logging spec
 
-import cron from "node-cron"
+import cron, { type ScheduledTask } from "node-cron"
 import { DiscordAlerter } from "../discord/alerter"
 import { createLogger } from "../logger"
 import { MeteringSystem } from "../metering"
@@ -14,7 +14,7 @@ export interface CronScheduler {
 }
 
 export class CronSchedulerImpl implements CronScheduler {
-    private task: cron.ScheduledTask | null = null
+    private task: ScheduledTask | null = null
 
     constructor(
         private meteringSystem: MeteringSystem,

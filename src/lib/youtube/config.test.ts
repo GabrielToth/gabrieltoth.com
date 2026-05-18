@@ -35,8 +35,6 @@ function createValidEnv(): EnvironmentConfig {
         SMTP_PASSWORD: "test-password",
         SMTP_FROM_EMAIL: "noreply@example.com",
         SMTP_FROM_NAME: "Test App",
-        GEOIP_SERVICE_URL: "https://geoip.maxmind.com/geoip/v2.1/city",
-        GEOIP_API_KEY: "test-api-key",
         TOKEN_ENCRYPTION_KEY: "a".repeat(64), // 64 character hex string
     }
 }
@@ -74,19 +72,6 @@ describe("YouTube Channel Linking Configuration", () => {
             expect(config.email.fromEmail).toBe("noreply@example.com")
             expect(config.email.fromName).toBe("Test App")
             expect(config.email.tls).toBe(true)
-        })
-
-        it("should set correct geolocation configuration", () => {
-            const env = createValidEnv()
-
-            const config = createYouTubeChannelLinkingConfig(env)
-
-            expect(config.geolocation.serviceUrl).toBe(
-                "https://geoip.maxmind.com/geoip/v2.1/city"
-            )
-            expect(config.geolocation.apiKey).toBe("test-api-key")
-            expect(config.geolocation.timeout).toBe(5000)
-            expect(config.geolocation.retries).toBe(3)
         })
 
         it("should set correct encryption configuration", () => {

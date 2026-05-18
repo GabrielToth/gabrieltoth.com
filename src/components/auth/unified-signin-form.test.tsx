@@ -560,7 +560,7 @@ describe("UnifiedSignInForm - Preservation Property Tests", () => {
          * Preservation: "Já tem uma conta?" link should switch to signin mode
          * This behavior should remain unchanged after the fix
          */
-        it('should switch to signin mode when "Já tem uma conta?" is clicked', async () => {
+        it("should switch to signin mode when \"Já tem uma conta?\" is clicked", async () => {
             const user = userEvent.setup()
             render(<UnifiedSignInForm locale="pt-BR" />)
 

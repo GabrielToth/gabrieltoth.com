@@ -92,7 +92,6 @@ Steps:
 Steps:
 1. Get Supabase credentials
 2. Get YouTube OAuth credentials
-3. Get GeoIP API key
 4. Generate encryption key
 5. Set Vercel environment variables
 
@@ -143,7 +142,6 @@ Steps:
 ### Required Credentials
 - **Supabase**: Project URL, anon key, service role key
 - **YouTube OAuth**: Client ID, client secret
-- **GeoIP**: MaxMind API key
 - **Token Encryption**: 64-character hex key
 - **Email**: SMTP credentials (optional)
 - **Stripe**: Live API key

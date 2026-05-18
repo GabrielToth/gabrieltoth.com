@@ -2,7 +2,7 @@
 // Implements Requirements 5.1-5.10 from distributed-infrastructure-logging spec
 
 import { Pool } from "pg"
-import { CreditSystem } from "../credits"
+import type { CreditSystem } from "../credits/credit-system"
 import { createLogger } from "../logger"
 
 const logger = createLogger("MeteringSystem")

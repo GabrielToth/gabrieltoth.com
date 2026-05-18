@@ -31,6 +31,11 @@ export function validateEmail(email: string): {
         return { isValid: false, error: "Email must not exceed 255 characters" }
     }
 
+    // Check for control characters or null bytes
+    if (/[\x00-\x1F\x7F]/.test(email)) {
+        return { isValid: false, error: "Email contains invalid characters" }
+    }
+
     // Basic email validation regex (RFC 5322 simplified)
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 

@@ -8,7 +8,7 @@ interface ForgotPasswordFormProps {
 }
 
 export default function ForgotPasswordForm({
-    _locale,
+    locale: _locale,
 }: ForgotPasswordFormProps) {
     const t = useTranslations("auth")
     const [email, setEmail] = useState("")

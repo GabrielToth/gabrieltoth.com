@@ -21,7 +21,7 @@ test.describe("registration flow", () => {
 
         // Step 1: Email Input
         // Fill in valid email
-        const emailInput = page.locator('input[type="email"]')
+        const emailInput = page.locator("input[type=\"email\"]")
         await emailInput.fill("newuser@example.com")
 
         // Wait for email validation to complete (debounced 500ms)
@@ -39,7 +39,7 @@ test.describe("registration flow", () => {
         await expect(page.locator("h2")).toContainText("Password Setup")
 
         // Fill in valid password
-        const passwordInput = page.locator('input[type="password"]').first()
+        const passwordInput = page.locator("input[type=\"password\"]").first()
         await passwordInput.fill("SecurePass123!")
 
         // Verify password strength indicator shows "Strong"
@@ -60,7 +60,7 @@ test.describe("registration flow", () => {
         )
 
         // Fill in confirm password
-        const confirmInput = page.locator('input[type="password"]').nth(1)
+        const confirmInput = page.locator("input[type=\"password\"]").nth(1)
         await confirmInput.fill("SecurePass123!")
 
         // Verify passwords match message
@@ -74,14 +74,14 @@ test.describe("registration flow", () => {
         await expect(page.locator("h2")).toContainText("Personal Information")
 
         // Fill in name
-        const nameInput = page.locator('input[type="text"]')
+        const nameInput = page.locator("input[type=\"text\"]")
         await nameInput.fill("John Doe")
 
         // Verify name is valid
         await expect(page.locator("text=Valid name")).toBeVisible()
 
         // Fill in phone number
-        const phoneInput = page.locator('input[type="tel"]')
+        const phoneInput = page.locator("input[type=\"tel\"]")
         await phoneInput.fill("+1 (555) 123-4567")
 
         // Verify phone is valid
@@ -127,7 +127,7 @@ test.describe("registration flow", () => {
 
         // Step 1: Email Input
         // Fill in email that already exists
-        const emailInput = page.locator('input[type="email"]')
+        const emailInput = page.locator("input[type=\"email\"]")
         await emailInput.fill("existing@example.com")
 
         // Wait for email validation to complete
@@ -170,7 +170,7 @@ test.describe("registration flow", () => {
         await page.goto("/en/register")
 
         // Step 1: Email Input
-        const emailInput = page.locator('input[type="email"]')
+        const emailInput = page.locator("input[type=\"email\"]")
         await emailInput.fill("testuser@example.com")
         await page.waitForTimeout(600)
 
@@ -180,7 +180,7 @@ test.describe("registration flow", () => {
 
         // Step 2: Password Setup
         // Try password that's too short
-        const passwordInput = page.locator('input[type="password"]').first()
+        const passwordInput = page.locator("input[type=\"password\"]").first()
         await passwordInput.fill("Short1!")
 
         // Verify error for minimum length
@@ -216,7 +216,7 @@ test.describe("registration flow", () => {
         await expect(page.locator("text=Strong")).toBeVisible()
 
         // Fill confirm password
-        const confirmInput = page.locator('input[type="password"]').nth(1)
+        const confirmInput = page.locator("input[type=\"password\"]").nth(1)
         await confirmInput.fill("SecurePass123!")
 
         // Verify passwords match
@@ -237,7 +237,7 @@ test.describe("registration flow", () => {
         await page.goto("/en/register")
 
         // Step 1: Email Input
-        const emailInput = page.locator('input[type="email"]')
+        const emailInput = page.locator("input[type=\"email\"]")
         await emailInput.fill("testuser3@example.com")
         await page.waitForTimeout(600)
 
@@ -246,8 +246,8 @@ test.describe("registration flow", () => {
         await nextButton.click()
 
         // Step 2: Password Setup
-        const passwordInput = page.locator('input[type="password"]').first()
-        const confirmInput = page.locator('input[type="password"]').nth(1)
+        const passwordInput = page.locator("input[type=\"password\"]").first()
+        const confirmInput = page.locator("input[type=\"password\"]").nth(1)
 
         // Fill password
         await passwordInput.fill("SecurePass123!")
@@ -279,7 +279,7 @@ test.describe("registration flow", () => {
         await page.goto("/en/register")
 
         // Step 1: Email Input
-        const emailInput = page.locator('input[type="email"]')
+        const emailInput = page.locator("input[type=\"email\"]")
         await emailInput.fill("phonetest@example.com")
         await page.waitForTimeout(600)
 
@@ -288,8 +288,8 @@ test.describe("registration flow", () => {
         await nextButton.click()
 
         // Step 2: Password Setup
-        const passwordInput = page.locator('input[type="password"]').first()
-        const confirmInput = page.locator('input[type="password"]').nth(1)
+        const passwordInput = page.locator("input[type=\"password\"]").first()
+        const confirmInput = page.locator("input[type=\"password\"]").nth(1)
         await passwordInput.fill("SecurePass123!")
         await confirmInput.fill("SecurePass123!")
 
@@ -298,11 +298,11 @@ test.describe("registration flow", () => {
 
         // Step 3: Personal Information
         // Fill name
-        const nameInput = page.locator('input[type="text"]')
+        const nameInput = page.locator("input[type=\"text\"]")
         await nameInput.fill("Jane Doe")
 
         // Try invalid phone number
-        const phoneInput = page.locator('input[type="tel"]')
+        const phoneInput = page.locator("input[type=\"tel\"]")
         await phoneInput.fill("invalid-phone")
 
         // Verify error message
@@ -338,21 +338,21 @@ test.describe("registration flow", () => {
         await page.goto("/en/register")
 
         // Complete steps 1-3 quickly
-        const emailInput = page.locator('input[type="email"]')
+        const emailInput = page.locator("input[type=\"email\"]")
         await emailInput.fill("edituser@example.com")
         await page.waitForTimeout(600)
 
         const nextButton = page.locator("button:has-text('Next')")
         await nextButton.click()
 
-        const passwordInput = page.locator('input[type="password"]').first()
-        const confirmInput = page.locator('input[type="password"]').nth(1)
+        const passwordInput = page.locator("input[type=\"password\"]").first()
+        const confirmInput = page.locator("input[type=\"password\"]").nth(1)
         await passwordInput.fill("SecurePass123!")
         await confirmInput.fill("SecurePass123!")
         await nextButton.click()
 
-        const nameInput = page.locator('input[type="text"]')
-        const phoneInput = page.locator('input[type="tel"]')
+        const nameInput = page.locator("input[type=\"text\"]")
+        const phoneInput = page.locator("input[type=\"tel\"]")
         await nameInput.fill("Edit User")
         await phoneInput.fill("+1 (555) 123-4567")
         await nextButton.click()
@@ -392,7 +392,7 @@ test.describe("registration flow", () => {
         await page.goto("/en/register")
 
         // Fill in some data
-        const emailInput = page.locator('input[type="email"]')
+        const emailInput = page.locator("input[type=\"email\"]")
         await emailInput.fill("canceluser@example.com")
         await page.waitForTimeout(600)
 
@@ -418,7 +418,7 @@ test.describe("registration flow", () => {
         await page.goto("/en/register")
 
         // Fill in email
-        const emailInput = page.locator('input[type="email"]')
+        const emailInput = page.locator("input[type=\"email\"]")
         await emailInput.fill("sessionuser@example.com")
         await page.waitForTimeout(600)
 
@@ -463,7 +463,7 @@ test.describe("registration flow", () => {
         expect(boundingBox?.width).toBeLessThanOrEqual(375)
 
         // Fill email
-        const emailInput = page.locator('input[type="email"]')
+        const emailInput = page.locator("input[type=\"email\"]")
         await emailInput.fill("mobileuser@example.com")
         await page.waitForTimeout(600)
 
@@ -483,8 +483,8 @@ test.describe("registration flow", () => {
         await expect(page.locator("text=Password Requirements:")).toBeVisible()
 
         // Fill password
-        const passwordInput = page.locator('input[type="password"]').first()
-        const confirmInput = page.locator('input[type="password"]').nth(1)
+        const passwordInput = page.locator("input[type=\"password\"]").first()
+        const confirmInput = page.locator("input[type=\"password\"]").nth(1)
         await passwordInput.fill("SecurePass123!")
         await confirmInput.fill("SecurePass123!")
 
@@ -495,8 +495,8 @@ test.describe("registration flow", () => {
         await expect(page.locator("h2")).toContainText("Personal Information")
 
         // Fill name and phone
-        const nameInput = page.locator('input[type="text"]')
-        const phoneInput = page.locator('input[type="tel"]')
+        const nameInput = page.locator("input[type=\"text\"]")
+        const phoneInput = page.locator("input[type=\"tel\"]")
         await nameInput.fill("Mobile User")
         await phoneInput.fill("+1 (555) 123-4567")
 
@@ -533,7 +533,7 @@ test.describe("registration flow", () => {
         await expect(progressIndicator).toBeVisible()
 
         // Fill email
-        const emailInput = page.locator('input[type="email"]')
+        const emailInput = page.locator("input[type=\"email\"]")
         await emailInput.fill("tabletuser@example.com")
         await page.waitForTimeout(600)
 
@@ -545,8 +545,8 @@ test.describe("registration flow", () => {
         await expect(page.locator("h2")).toContainText("Password Setup")
 
         // Fill password
-        const passwordInput = page.locator('input[type="password"]').first()
-        const confirmInput = page.locator('input[type="password"]').nth(1)
+        const passwordInput = page.locator("input[type=\"password\"]").first()
+        const confirmInput = page.locator("input[type=\"password\"]").nth(1)
         await passwordInput.fill("SecurePass123!")
         await confirmInput.fill("SecurePass123!")
 
@@ -557,8 +557,8 @@ test.describe("registration flow", () => {
         await expect(page.locator("h2")).toContainText("Personal Information")
 
         // Fill name and phone
-        const nameInput = page.locator('input[type="text"]')
-        const phoneInput = page.locator('input[type="tel"]')
+        const nameInput = page.locator("input[type=\"text\"]")
+        const phoneInput = page.locator("input[type=\"tel\"]")
         await nameInput.fill("Tablet User")
         await phoneInput.fill("+1 (555) 123-4567")
 
@@ -588,7 +588,7 @@ test.describe("registration flow", () => {
         await expect(progressIndicator).toBeVisible()
 
         // Fill email
-        const emailInput = page.locator('input[type="email"]')
+        const emailInput = page.locator("input[type=\"email\"]")
         await emailInput.fill("desktopuser@example.com")
         await page.waitForTimeout(600)
 
@@ -600,8 +600,8 @@ test.describe("registration flow", () => {
         await expect(page.locator("h2")).toContainText("Password Setup")
 
         // Fill password
-        const passwordInput = page.locator('input[type="password"]').first()
-        const confirmInput = page.locator('input[type="password"]').nth(1)
+        const passwordInput = page.locator("input[type=\"password\"]").first()
+        const confirmInput = page.locator("input[type=\"password\"]").nth(1)
         await passwordInput.fill("SecurePass123!")
         await confirmInput.fill("SecurePass123!")
 
@@ -612,8 +612,8 @@ test.describe("registration flow", () => {
         await expect(page.locator("h2")).toContainText("Personal Information")
 
         // Fill name and phone
-        const nameInput = page.locator('input[type="text"]')
-        const phoneInput = page.locator('input[type="tel"]')
+        const nameInput = page.locator("input[type=\"text\"]")
+        const phoneInput = page.locator("input[type=\"tel\"]")
         await nameInput.fill("Desktop User")
         await phoneInput.fill("+1 (555) 123-4567")
 
@@ -633,7 +633,7 @@ test.describe("registration flow", () => {
         await page.goto("/en/register")
 
         // Step 1: Email Input
-        const emailInput = page.locator('input[type="email"]')
+        const emailInput = page.locator("input[type=\"email\"]")
         await emailInput.fill("toggleuser@example.com")
         await page.waitForTimeout(600)
 
@@ -642,7 +642,7 @@ test.describe("registration flow", () => {
         await nextButton.click()
 
         // Step 2: Password Setup
-        const passwordInput = page.locator('input[type="password"]').first()
+        const passwordInput = page.locator("input[type=\"password\"]").first()
         await passwordInput.fill("SecurePass123!")
 
         // Verify password is hidden (type="password")
@@ -668,7 +668,7 @@ test.describe("registration flow", () => {
         await page.goto("/en/register")
 
         // Step 1: Email Input
-        const emailInput = page.locator('input[type="email"]')
+        const emailInput = page.locator("input[type=\"email\"]")
         await emailInput.fill("backuser@example.com")
         await page.waitForTimeout(600)
 
@@ -677,8 +677,8 @@ test.describe("registration flow", () => {
         await nextButton.click()
 
         // Step 2: Password Setup
-        const passwordInput = page.locator('input[type="password"]').first()
-        const confirmInput = page.locator('input[type="password"]').nth(1)
+        const passwordInput = page.locator("input[type=\"password\"]").first()
+        const confirmInput = page.locator("input[type=\"password\"]").nth(1)
         await passwordInput.fill("SecurePass123!")
         await confirmInput.fill("SecurePass123!")
 
@@ -686,8 +686,8 @@ test.describe("registration flow", () => {
         await nextButton.click()
 
         // Step 3: Personal Information
-        const nameInput = page.locator('input[type="text"]')
-        const phoneInput = page.locator('input[type="tel"]')
+        const nameInput = page.locator("input[type=\"text\"]")
+        const phoneInput = page.locator("input[type=\"tel\"]")
         await nameInput.fill("Back User")
         await phoneInput.fill("+1 (555) 123-4567")
 
@@ -717,22 +717,22 @@ test.describe("registration flow", () => {
         await page.goto("/en/register")
 
         // Complete steps 1-2
-        const emailInput = page.locator('input[type="email"]')
+        const emailInput = page.locator("input[type=\"email\"]")
         await emailInput.fill("intlphone@example.com")
         await page.waitForTimeout(600)
 
         const nextButton = page.locator("button:has-text('Next')")
         await nextButton.click()
 
-        const passwordInput = page.locator('input[type="password"]').first()
-        const confirmInput = page.locator('input[type="password"]').nth(1)
+        const passwordInput = page.locator("input[type=\"password\"]").first()
+        const confirmInput = page.locator("input[type=\"password\"]").nth(1)
         await passwordInput.fill("SecurePass123!")
         await confirmInput.fill("SecurePass123!")
         await nextButton.click()
 
         // Step 3: Personal Information
-        const nameInput = page.locator('input[type="text"]')
-        const phoneInput = page.locator('input[type="tel"]')
+        const nameInput = page.locator("input[type=\"text\"]")
+        const phoneInput = page.locator("input[type=\"tel\"]")
         await nameInput.fill("Intl User")
 
         // Test US format
@@ -760,22 +760,22 @@ test.describe("registration flow", () => {
         await page.goto("/en/register")
 
         // Complete steps 1-2
-        const emailInput = page.locator('input[type="email"]')
+        const emailInput = page.locator("input[type=\"email\"]")
         await emailInput.fill("nametest@example.com")
         await page.waitForTimeout(600)
 
         const nextButton = page.locator("button:has-text('Next')")
         await nextButton.click()
 
-        const passwordInput = page.locator('input[type="password"]').first()
-        const confirmInput = page.locator('input[type="password"]').nth(1)
+        const passwordInput = page.locator("input[type=\"password\"]").first()
+        const confirmInput = page.locator("input[type=\"password\"]").nth(1)
         await passwordInput.fill("SecurePass123!")
         await confirmInput.fill("SecurePass123!")
         await nextButton.click()
 
         // Step 3: Personal Information
-        const nameInput = page.locator('input[type="text"]')
-        const phoneInput = page.locator('input[type="tel"]')
+        const nameInput = page.locator("input[type=\"text\"]")
+        const phoneInput = page.locator("input[type=\"tel\"]")
 
         // Try single character name
         await nameInput.fill("A")
@@ -809,22 +809,22 @@ test.describe("registration flow", () => {
         await page.goto("/en/register")
 
         // Complete steps 1-2
-        const emailInput = page.locator('input[type="email"]')
+        const emailInput = page.locator("input[type=\"email\"]")
         await emailInput.fill("emptyname@example.com")
         await page.waitForTimeout(600)
 
         const nextButton = page.locator("button:has-text('Next')")
         await nextButton.click()
 
-        const passwordInput = page.locator('input[type="password"]').first()
-        const confirmInput = page.locator('input[type="password"]').nth(1)
+        const passwordInput = page.locator("input[type=\"password\"]").first()
+        const confirmInput = page.locator("input[type=\"password\"]").nth(1)
         await passwordInput.fill("SecurePass123!")
         await confirmInput.fill("SecurePass123!")
         await nextButton.click()
 
         // Step 3: Personal Information
-        const nameInput = page.locator('input[type="text"]')
-        const phoneInput = page.locator('input[type="tel"]')
+        const nameInput = page.locator("input[type=\"text\"]")
+        const phoneInput = page.locator("input[type=\"tel\"]")
 
         // Leave name empty and fill phone
         await phoneInput.fill("+1 (555) 123-4567")

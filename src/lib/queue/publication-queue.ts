@@ -446,6 +446,49 @@ export class PublicationQueue {
         }
     }
 
+    async getDuePublications(userId: string): Promise<ScheduledPost[]> {
+        const posts = await this.getPostsReadyForPublication()
+        return posts.filter(post => post.userId === userId)
+    }
+
+    async getAllDuePublications(): Promise<ScheduledPost[]> {
+        return this.getPostsReadyForPublication()
+    }
+
+    async markAsProcessing(postId: string): Promise<void> {
+        await this.updatePostStatus(postId, "processing")
+    }
+
+    async markAsPublished(postId: string): Promise<void> {
+        await this.updatePostStatus(postId, "published")
+    }
+
+    async markAsFailed(postId: string, errorMessage: string): Promise<void> {
+        const { error } = await this.supabase
+            .from("scheduled_posts")
+            .update({
+                status: "failed",
+                error_message: errorMessage,
+                updated_at: new Date(),
+            })
+            .eq("id", postId)
+
+        if (error) {
+            throw new Error(`Database error: ${error.message}`)
+        }
+    }
+
+    async markAsPartiallyPublished(
+        postId: string,
+        _results: Array<{ success: boolean }>
+    ): Promise<void> {
+        await this.updatePostStatus(postId, "published")
+    }
+
+    async handleFailure(postId: string, errorMessage: string): Promise<void> {
+        await this.markAsFailed(postId, errorMessage)
+    }
+
     /**
      * Map database record to ScheduledPost
      */

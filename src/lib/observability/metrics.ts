@@ -74,7 +74,7 @@ export const metricsMiddleware = (
         if (res.statusCode >= 400) {
             metricsCollector.incrementErrors()
         }
-        return originalEnd.apply(this, args)
+        return originalEnd.apply(this, args as any)
     }
 
     next()

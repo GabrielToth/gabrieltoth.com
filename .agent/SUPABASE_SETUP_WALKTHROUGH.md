@@ -287,7 +287,6 @@ You've successfully:
 
 1. **Get Other Credentials**
    - YouTube OAuth credentials
-   - GeoIP API key
    - Token encryption key
    - See: `.agent/DEPLOYMENT_CHECKLIST.md` Phase 2
 

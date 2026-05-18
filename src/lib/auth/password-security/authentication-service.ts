@@ -26,12 +26,13 @@
 
 import { verifyCAPTCHAWithFallback } from "@/lib/auth/captcha-verifier"
 import { logger } from "@/lib/logger"
-import { createClient } from "@supabase/supabase-js"
+import { createClient, type SupabaseClient } from "@supabase/supabase-js"
 import {
     RateLimiter,
     getRateLimiter,
     getSecurityConfig,
     hashPasswordArgon2id,
+    normalizeResponseTime,
     triggerPasswordMigration,
     validatePassword,
     validatePasswordInput,
@@ -95,7 +96,7 @@ export interface LoginRequest {
  * Main controller orchestrating all password security components
  */
 export class AuthenticationService {
-    private supabase: ReturnType<typeof createClient>
+    private supabase: SupabaseClient<any>
     private rateLimiter: RateLimiter
     private config: ReturnType<typeof getSecurityConfig>
 
@@ -111,7 +112,7 @@ export class AuthenticationService {
             )
         }
 
-        this.supabase = createClient(url, serviceKey, {
+        this.supabase = createClient<any>(url, serviceKey, {
             auth: {
                 autoRefreshToken: false,
                 persistSession: false,

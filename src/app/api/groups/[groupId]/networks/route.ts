@@ -24,14 +24,16 @@ interface AddNetworkRequest {
  */
 export async function POST(
     request: NextRequest,
-    { params }: { params: { groupId: string } }
+    context: { params: Promise<{ groupId: string }> }
 ): Promise<NextResponse> {
+    const { groupId } = await context.params
+
     try {
         // Get user ID from session
         const userId = request.headers.get("x-user-id")
         if (!userId) {
             logger.warn("Unauthorized add network to group attempt", {
-                groupId: params.groupId,
+                groupId: groupId,
             })
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
         }
@@ -41,7 +43,7 @@ export async function POST(
         if (!body.platform) {
             logger.warn("Missing required field: platform", {
                 userId,
-                groupId: params.groupId,
+                groupId: groupId,
             })
             return NextResponse.json(
                 { error: "Missing required field: platform" },
@@ -52,13 +54,13 @@ export async function POST(
         const groupManager = getNetworkGroupManager()
         const group = await groupManager.addNetworkToGroup(
             userId,
-            params.groupId,
+            groupId,
             body.platform as any
         )
 
         logger.info("Network added to group", {
             userId,
-            groupId: params.groupId,
+            groupId: groupId,
             platform: body.platform,
         })
 
@@ -72,7 +74,7 @@ export async function POST(
         )
     } catch (error) {
         logger.error("Failed to add network to group", {
-            groupId: params.groupId,
+            groupId: groupId,
             error: error instanceof Error ? error.message : String(error),
         })
 

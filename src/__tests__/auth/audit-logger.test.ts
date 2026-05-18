@@ -385,7 +385,7 @@ describe("Audit Logger", () => {
                     email: "user@example.com",
                     ipAddress: "192.168.1.1",
                     userAgent: "Mozilla/5.0",
-                    details: '{"action":"User logged in"}',
+                    details: "{\"action\":\"User logged in\"}",
                     createdAt: new Date(),
                 },
             ]
@@ -550,7 +550,7 @@ describe("Audit Logger", () => {
                     email: "user@example.com",
                     ipAddress: "192.168.1.1",
                     userAgent: "Mozilla/5.0",
-                    details: '{"action":"User logged in"}',
+                    details: "{\"action\":\"User logged in\"}",
                     createdAt: new Date(),
                 },
             ]
@@ -596,7 +596,7 @@ describe("Audit Logger", () => {
                     email: "user@example.com",
                     ipAddress: "192.168.1.1",
                     userAgent: "Mozilla/5.0",
-                    details: '{"reason":"Invalid password"}',
+                    details: "{\"reason\":\"Invalid password\"}",
                     createdAt: new Date(),
                 },
             ]
@@ -630,7 +630,7 @@ describe("Audit Logger", () => {
                     email: "user@example.com",
                     ipAddress: "192.168.1.1",
                     userAgent: "Mozilla/5.0",
-                    details: '{"reason":"Token mismatch"}',
+                    details: "{\"reason\":\"Token mismatch\"}",
                     createdAt: new Date(),
                 },
             ]
@@ -676,7 +676,7 @@ describe("Audit Logger", () => {
                     email: "user@example.com",
                     ipAddress: "192.168.1.1",
                     userAgent: "Mozilla/5.0",
-                    details: '{"reason":"Invalid password"}',
+                    details: "{\"reason\":\"Invalid password\"}",
                     createdAt: new Date(),
                 },
             ]

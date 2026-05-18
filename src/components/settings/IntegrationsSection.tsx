@@ -8,7 +8,7 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
-import { Icon } from "@/components/ui/icon"
+import { DynamicIcon } from "@/components/ui/dynamic-icon"
 import React, { useState } from "react"
 import { Integration } from "./SettingsContainer"
 
@@ -92,9 +92,11 @@ export const IntegrationsSection: React.FC<IntegrationsSectionProps> = ({
                                 >
                                     <div className="flex items-start justify-between">
                                         <div className="flex items-center gap-3">
-                                            <Icon
-                                                name={integration.icon}
-                                                size="md"
+                                            <DynamicIcon
+                                                name={
+                                                    integration.icon as import("@/lib/icons").IconName
+                                                }
+                                                size={24}
                                             />
                                             <div>
                                                 <p className="font-medium text-gray-900">
@@ -184,9 +186,11 @@ export const IntegrationsSection: React.FC<IntegrationsSectionProps> = ({
                                 >
                                     <div className="flex items-start justify-between">
                                         <div className="flex items-center gap-3">
-                                            <Icon
-                                                name={integration.icon}
-                                                size="md"
+                                            <DynamicIcon
+                                                name={
+                                                    integration.icon as import("@/lib/icons").IconName
+                                                }
+                                                size={24}
                                             />
                                             <div>
                                                 <p className="font-medium text-gray-900">

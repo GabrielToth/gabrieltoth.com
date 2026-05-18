@@ -20,6 +20,7 @@ import {
 import { useRouter } from "next/navigation"
 import { FormEvent, useEffect, useMemo, useState } from "react"
 import { PasswordStrengthIndicator } from "./password-strength-indicator"
+import TurnstileWidget from "./turnstile-widget"
 
 interface RegisterFormProps {
     locale: string
@@ -62,7 +63,9 @@ export function RegisterForm({ locale }: RegisterFormProps) {
         captchaToken: null,
     })
     const [errors, setErrors] = useState<ValidationErrors>({})
-    const [touched, setTouched] = useState<Record<keyof FormData, boolean>>({
+    const [touched, setTouched] = useState<
+        Record<Exclude<keyof FormData, "captchaToken">, boolean>
+    >({
         name: false,
         email: false,
         password: false,
@@ -167,7 +170,7 @@ export function RegisterForm({ locale }: RegisterFormProps) {
         setFormData(prev => ({ ...prev, [field]: value }))
 
         // Only validate if field has been touched
-        if (touched[field]) {
+        if (field !== "captchaToken" && touched[field]) {
             let error: string | undefined
 
             switch (field) {

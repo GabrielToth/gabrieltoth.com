@@ -83,7 +83,7 @@ export default function TurnstileWidget({
         }
 
         try {
-            widgetIdRef.current = window.turnstile.render(`#turnstile-widget`, {
+            widgetIdRef.current = window.turnstile.render("#turnstile-widget", {
                 sitekey: siteKey,
                 theme,
                 size,

@@ -75,7 +75,12 @@ export class ConfigurationManager {
     public static getInstance(): ConfigurationManager {
         if (!ConfigurationManager.instance) {
             ConfigurationManager.instance = new ConfigurationManager()
-            ConfigurationManager.instance.loadConfiguration()
+            try {
+                ConfigurationManager.instance.loadConfiguration()
+            } catch (error) {
+                ConfigurationManager.instance = null
+                throw error
+            }
         }
         return ConfigurationManager.instance
     }
