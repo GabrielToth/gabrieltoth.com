@@ -8,7 +8,24 @@ import { NextRequest } from "next/server"
 import { beforeEach, describe, expect, it, vi } from "vitest"
 import { POST } from "./route"
 
-// Mock dependencies
+const mockRedisInstance = vi.hoisted(() => ({
+    setex: vi.fn().mockResolvedValue("OK"),
+    quit: vi.fn().mockResolvedValue("OK"),
+}))
+
+const mockValidateEnv = vi.hoisted(() =>
+    vi.fn(() => ({
+        REDIS_URL: "redis://localhost:6379",
+        YOUTUBE_CLIENT_ID: "test-client-id",
+        YOUTUBE_CLIENT_SECRET: "test-client-secret",
+        YOUTUBE_REDIRECT_URI: "http://localhost:3000/api/youtube/link/callback",
+        RESEND_API_KEY: "re_test",
+        RESEND_FROM_EMAIL: "noreply@example.com",
+        RESEND_FROM_NAME: "Test",
+        TOKEN_ENCRYPTION_KEY: "a".repeat(64),
+    }))
+)
+
 vi.mock("@/lib/logger", () => ({
     createLogger: () => ({
         info: vi.fn(),
@@ -18,20 +35,7 @@ vi.mock("@/lib/logger", () => ({
 }))
 
 vi.mock("@/lib/config/env", () => ({
-    validateEnv: () => ({
-        REDIS_URL: "redis://localhost:6379",
-        YOUTUBE_CLIENT_ID: "test-client-id",
-        YOUTUBE_CLIENT_SECRET: "test-client-secret",
-        YOUTUBE_REDIRECT_URI: "http://localhost:3000/api/youtube/link/callback",
-        SMTP_HOST: "smtp.example.com",
-        SMTP_PORT: 587,
-        SMTP_USER: "test@example.com",
-        SMTP_PASSWORD: "password",
-        SMTP_FROM_EMAIL: "noreply@example.com",
-        SMTP_FROM_NAME: "Test",
-
-        TOKEN_ENCRYPTION_KEY: "a".repeat(64),
-    }),
+    validateYouTubeEnv: mockValidateEnv,
 }))
 
 vi.mock("@/lib/youtube/config", () => ({
@@ -46,15 +50,10 @@ vi.mock("@/lib/youtube/config", () => ({
             ],
         },
         email: {
-            host: "smtp.example.com",
-            port: 587,
-            user: "test@example.com",
-            password: "password",
+            apiKey: "re_test",
             fromEmail: "noreply@example.com",
             fromName: "Test",
-            tls: true,
         },
-
         encryption: {
             encryptionKey: "a".repeat(64),
             algorithm: "aes-256-gcm",
@@ -88,21 +87,29 @@ vi.mock("@/lib/youtube/oauth-service", () => ({
 }))
 
 vi.mock("ioredis", () => ({
-    Redis: class MockRedis {
-        async setex(key: string, ttl: number, value: string) {
-            return "OK"
-        }
-
-        async quit() {
-            return "OK"
-        }
-    },
+    Redis: vi.fn(function MockRedis() {
+        return mockRedisInstance
+    }),
 }))
 
 describe("POST /api/youtube/link/start", () => {
     let mockRequest: Partial<NextRequest>
 
     beforeEach(() => {
+        vi.clearAllMocks()
+        mockValidateEnv.mockImplementation(() => ({
+            REDIS_URL: "redis://localhost:6379",
+            YOUTUBE_CLIENT_ID: "test-client-id",
+            YOUTUBE_CLIENT_SECRET: "test-client-secret",
+            YOUTUBE_REDIRECT_URI:
+                "http://localhost:3000/api/youtube/link/callback",
+            RESEND_API_KEY: "re_test",
+            RESEND_FROM_EMAIL: "noreply@example.com",
+            RESEND_FROM_NAME: "Test",
+            TOKEN_ENCRYPTION_KEY: "a".repeat(64),
+        }))
+        mockRedisInstance.setex.mockResolvedValue("OK")
+        mockRedisInstance.quit.mockResolvedValue("OK")
         mockRequest = {
             headers: new Map([["x-user-id", "test-user-123"]]),
         }
@@ -135,31 +142,21 @@ describe("POST /api/youtube/link/start", () => {
     })
 
     it("should store state parameter in Redis with expiration", async () => {
-        const mockRedis = {
-            setex: vi.fn().mockResolvedValue("OK"),
-            quit: vi.fn().mockResolvedValue("OK"),
-        }
-
-        vi.mocked(require("ioredis").Redis).mockImplementation(() => mockRedis)
-
         const response = await POST(mockRequest as NextRequest)
 
         expect(response.status).toBe(200)
-        expect(mockRedis.setex).toHaveBeenCalled()
+        expect(mockRedisInstance.setex).toHaveBeenCalled()
 
-        // Verify setex was called with correct parameters
-        const [key, ttl, value] = mockRedis.setex.mock.calls[0]
+        const [key, ttl, value] = mockRedisInstance.setex.mock.calls[0]
         expect(key).toMatch(/^youtube:oauth:state:/)
-        expect(ttl).toBe(600) // 10 minutes
+        expect(ttl).toBe(600)
         expect(value).toContain("test-user-123")
     })
 
     it("should handle errors gracefully", async () => {
-        vi.mocked(require("@/lib/config/env").validateEnv).mockImplementation(
-            () => {
-                throw new Error("Invalid environment")
-            }
-        )
+        mockValidateEnv.mockImplementation(() => {
+            throw new Error("Invalid environment")
+        })
 
         const response = await POST(mockRequest as NextRequest)
         const data = await response.json()
@@ -170,16 +167,9 @@ describe("POST /api/youtube/link/start", () => {
     })
 
     it("should close Redis connection after use", async () => {
-        const mockRedis = {
-            setex: vi.fn().mockResolvedValue("OK"),
-            quit: vi.fn().mockResolvedValue("OK"),
-        }
-
-        vi.mocked(require("ioredis").Redis).mockImplementation(() => mockRedis)
-
         const response = await POST(mockRequest as NextRequest)
 
         expect(response.status).toBe(200)
-        expect(mockRedis.quit).toHaveBeenCalled()
+        expect(mockRedisInstance.quit).toHaveBeenCalled()
     })
 })

@@ -5,7 +5,7 @@
  * Validates: Requirements 1.1, 1.2
  */
 
-import { validateEnv } from "@/lib/config/env"
+import { validateYouTubeEnv } from "@/lib/config/env"
 import { createLogger } from "@/lib/logger"
 import { getYouTubeChannelLinkingConfig } from "@/lib/youtube/config"
 import { getYouTubeOAuthService } from "@/lib/youtube/oauth-service"
@@ -55,7 +55,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         logger.info("Linking initiation requested", { userId })
 
         // Initialize configuration
-        const env = validateEnv()
+        const env = validateYouTubeEnv()
         const config = getYouTubeChannelLinkingConfig(env)
 
         // Initialize OAuth service

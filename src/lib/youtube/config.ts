@@ -1,14 +1,10 @@
 /**
  * YouTube Channel Linking Service Configuration
- * Centralizes all configuration for YouTube OAuth, email, and geolocation services
- * Validates: Requirements 1.1
+ * Centralizes all configuration for YouTube OAuth, email (Resend), and geolocation services
  */
 
 import { EnvironmentConfig } from "../config/env"
 
-/**
- * YouTube OAuth configuration
- */
 export interface YouTubeOAuthConfig {
     clientId: string
     clientSecret: string
@@ -16,35 +12,21 @@ export interface YouTubeOAuthConfig {
     scopes: string[]
 }
 
-/**
- * Email service configuration
- */
-export interface EmailServiceConfig {
-    host: string
-    port: number
-    user: string
-    password: string
+/** Resend transactional email (free tier) */
+export interface ResendEmailConfig {
+    apiKey: string
     fromEmail: string
     fromName: string
-    tls: boolean
 }
 
-
-
-/**
- * Token encryption configuration
- */
 export interface TokenEncryptionConfig {
     encryptionKey: string
     algorithm: string
 }
 
-/**
- * Complete YouTube Channel Linking service configuration
- */
 export interface YouTubeChannelLinkingConfig {
     oauth: YouTubeOAuthConfig
-    email: EmailServiceConfig
+    email: ResendEmailConfig
     encryption: TokenEncryptionConfig
     rateLimit: {
         linkingAttemptsPerHour: number
@@ -53,16 +35,13 @@ export interface YouTubeChannelLinkingConfig {
         unlinkAttemptsPerHour: number
     }
     security: {
-        verificationCodeExpiry: number // milliseconds
-        recoveryTokenExpiry: number // milliseconds
-        unlinkRevocationWindow: number // milliseconds
-        suspiciousActivityThreshold: number // percentage difference
+        verificationCodeExpiry: number
+        recoveryTokenExpiry: number
+        unlinkRevocationWindow: number
+        suspiciousActivityThreshold: number
     }
 }
 
-/**
- * Create YouTube Channel Linking configuration from environment variables
- */
 export function createYouTubeChannelLinkingConfig(
     env: EnvironmentConfig
 ): YouTubeChannelLinkingConfig {
@@ -78,13 +57,9 @@ export function createYouTubeChannelLinkingConfig(
             ],
         },
         email: {
-            host: env.SMTP_HOST,
-            port: env.SMTP_PORT,
-            user: env.SMTP_USER,
-            password: env.SMTP_PASSWORD,
-            fromEmail: env.SMTP_FROM_EMAIL,
-            fromName: env.SMTP_FROM_NAME,
-            tls: env.SMTP_PORT === 587,
+            apiKey: env.RESEND_API_KEY,
+            fromEmail: env.RESEND_FROM_EMAIL,
+            fromName: env.RESEND_FROM_NAME,
         },
         encryption: {
             encryptionKey: env.TOKEN_ENCRYPTION_KEY,
@@ -97,23 +72,19 @@ export function createYouTubeChannelLinkingConfig(
             unlinkAttemptsPerHour: 5,
         },
         security: {
-            verificationCodeExpiry: 15 * 60 * 1000, // 15 minutes
-            recoveryTokenExpiry: 24 * 60 * 60 * 1000, // 24 hours
-            unlinkRevocationWindow: 24 * 60 * 60 * 1000, // 24 hours
-            suspiciousActivityThreshold: 50, // 50% difference in IP/location/device
+            verificationCodeExpiry: 15 * 60 * 1000,
+            recoveryTokenExpiry: 24 * 60 * 60 * 1000,
+            unlinkRevocationWindow: 24 * 60 * 60 * 1000,
+            suspiciousActivityThreshold: 50,
         },
     }
 }
 
-/**
- * Validate YouTube Channel Linking configuration
- */
 export function validateYouTubeChannelLinkingConfig(
     config: YouTubeChannelLinkingConfig
 ): { isValid: boolean; errors: string[] } {
     const errors: string[] = []
 
-    // Validate OAuth config
     if (!config.oauth.clientId) {
         errors.push("YouTube OAuth client ID is required")
     }
@@ -124,24 +95,13 @@ export function validateYouTubeChannelLinkingConfig(
         errors.push("YouTube OAuth redirect URI is required")
     }
 
-    // Validate email config
-    if (!config.email.host) {
-        errors.push("Email service host is required")
-    }
-    if (config.email.port < 1 || config.email.port > 65535) {
-        errors.push("Email service port must be between 1 and 65535")
-    }
-    if (!config.email.user) {
-        errors.push("Email service user is required")
-    }
-    if (!config.email.password) {
-        errors.push("Email service password is required")
+    if (!config.email.apiKey) {
+        errors.push("Resend API key is required")
     }
     if (!config.email.fromEmail) {
-        errors.push("Email from address is required")
+        errors.push("Resend from email is required")
     }
 
-    // Validate encryption config
     if (!config.encryption.encryptionKey) {
         errors.push("Encryption key is required")
     }
@@ -151,7 +111,6 @@ export function validateYouTubeChannelLinkingConfig(
         )
     }
 
-    // Validate rate limiting config
     if (config.rateLimit.linkingAttemptsPerHour < 1) {
         errors.push("Linking attempts per hour must be at least 1")
     }
@@ -165,7 +124,6 @@ export function validateYouTubeChannelLinkingConfig(
         errors.push("Unlink attempts per hour must be at least 1")
     }
 
-    // Validate security config
     if (config.security.verificationCodeExpiry < 60000) {
         errors.push("Verification code expiry must be at least 60000ms")
     }
@@ -188,14 +146,8 @@ export function validateYouTubeChannelLinkingConfig(
     }
 }
 
-/**
- * Create a singleton configuration instance
- */
 let configInstance: YouTubeChannelLinkingConfig | null = null
 
-/**
- * Get or create the YouTube Channel Linking configuration
- */
 export function getYouTubeChannelLinkingConfig(
     env?: EnvironmentConfig
 ): YouTubeChannelLinkingConfig {
@@ -208,7 +160,6 @@ export function getYouTubeChannelLinkingConfig(
 
         configInstance = createYouTubeChannelLinkingConfig(env)
 
-        // Validate configuration
         const validation = validateYouTubeChannelLinkingConfig(configInstance)
         if (!validation.isValid) {
             throw new Error(
@@ -220,9 +171,6 @@ export function getYouTubeChannelLinkingConfig(
     return configInstance
 }
 
-/**
- * Reset the configuration (useful for testing)
- */
 export function resetYouTubeChannelLinkingConfig(): void {
     configInstance = null
 }

@@ -13,61 +13,46 @@ export interface EnvironmentConfig {
     POSTGRES_PASSWORD: string
     POSTGRES_DB: string
 
-    // Redis
+    // Redis (Docker backend only; Vercel app does not require)
     REDIS_URL: string
 
-    // Discord
+    // Discord (optional alerts; backend)
     DISCORD_WEBHOOK_URL: string
 
     // Docker
     HOSTNAME: string
 
-    // YouTube OAuth
+    // YouTube OAuth (YouTube linking feature)
     YOUTUBE_CLIENT_ID: string
     YOUTUBE_CLIENT_SECRET: string
     YOUTUBE_REDIRECT_URI: string
 
-    // Email Service
-    SMTP_HOST: string
-    SMTP_PORT: number
-    SMTP_USER: string
-    SMTP_PASSWORD: string
-    SMTP_FROM_EMAIL: string
-    SMTP_FROM_NAME: string
+    // Email via Resend (contact, auth, YouTube linking)
+    RESEND_API_KEY: string
+    RESEND_FROM_EMAIL: string
+    RESEND_FROM_NAME: string
 
     // Token Encryption
     TOKEN_ENCRYPTION_KEY: string
 }
 
-/**
- * Validate and parse environment variables
- * Throws error with clear message if required variables are missing
- */
-export function validateEnv(): EnvironmentConfig {
-    const required = [
-        "DATABASE_URL",
-        "REDIS_URL",
-        "DISCORD_WEBHOOK_URL",
-        "YOUTUBE_CLIENT_ID",
-        "YOUTUBE_CLIENT_SECRET",
-        "YOUTUBE_REDIRECT_URI",
-        "SMTP_HOST",
-        "SMTP_PORT",
-        "SMTP_USER",
-        "SMTP_PASSWORD",
-        "SMTP_FROM_EMAIL",
-        "SMTP_FROM_NAME",
-        "TOKEN_ENCRYPTION_KEY",
-    ]
+const BASE_REQUIRED = [
+    "DATABASE_URL",
+    "REDIS_URL",
+    "DISCORD_WEBHOOK_URL",
+] as const
 
-    const missing = required.filter(key => !process.env[key])
+const YOUTUBE_REQUIRED = [
+    ...BASE_REQUIRED,
+    "YOUTUBE_CLIENT_ID",
+    "YOUTUBE_CLIENT_SECRET",
+    "YOUTUBE_REDIRECT_URI",
+    "RESEND_API_KEY",
+    "RESEND_FROM_EMAIL",
+    "TOKEN_ENCRYPTION_KEY",
+] as const
 
-    if (missing.length > 0) {
-        throw new Error(
-            `Missing required environment variables: ${missing.join(", ")}`
-        )
-    }
-
+function parseConfig(): EnvironmentConfig {
     return {
         NODE_ENV:
             (process.env.NODE_ENV as "development" | "production" | "test") ??
@@ -81,17 +66,48 @@ export function validateEnv(): EnvironmentConfig {
         REDIS_URL: process.env.REDIS_URL!,
         DISCORD_WEBHOOK_URL: process.env.DISCORD_WEBHOOK_URL!,
         HOSTNAME: process.env.HOSTNAME ?? "unknown",
-        YOUTUBE_CLIENT_ID: process.env.YOUTUBE_CLIENT_ID!,
-        YOUTUBE_CLIENT_SECRET: process.env.YOUTUBE_CLIENT_SECRET!,
-        YOUTUBE_REDIRECT_URI: process.env.YOUTUBE_REDIRECT_URI!,
-        SMTP_HOST: process.env.SMTP_HOST!,
-        SMTP_PORT: parseInt(process.env.SMTP_PORT ?? "587", 10),
-        SMTP_USER: process.env.SMTP_USER!,
-        SMTP_PASSWORD: process.env.SMTP_PASSWORD!,
-        SMTP_FROM_EMAIL: process.env.SMTP_FROM_EMAIL!,
-        SMTP_FROM_NAME: process.env.SMTP_FROM_NAME!,
-        TOKEN_ENCRYPTION_KEY: process.env.TOKEN_ENCRYPTION_KEY!,
+        YOUTUBE_CLIENT_ID: process.env.YOUTUBE_CLIENT_ID ?? "",
+        YOUTUBE_CLIENT_SECRET: process.env.YOUTUBE_CLIENT_SECRET ?? "",
+        YOUTUBE_REDIRECT_URI: process.env.YOUTUBE_REDIRECT_URI ?? "",
+        RESEND_API_KEY: process.env.RESEND_API_KEY ?? "",
+        RESEND_FROM_EMAIL:
+            process.env.RESEND_FROM_EMAIL ??
+            process.env.EMAIL_FROM ??
+            "",
+        RESEND_FROM_NAME:
+            process.env.RESEND_FROM_NAME ?? "Gabriel Toth",
+        TOKEN_ENCRYPTION_KEY: process.env.TOKEN_ENCRYPTION_KEY ?? "",
     }
+}
+
+/**
+ * Validate minimal backend / Docker environment variables.
+ */
+export function validateEnv(): EnvironmentConfig {
+    const missing = BASE_REQUIRED.filter(key => !process.env[key])
+
+    if (missing.length > 0) {
+        throw new Error(
+            `Missing required environment variables: ${missing.join(", ")}`
+        )
+    }
+
+    return parseConfig()
+}
+
+/**
+ * Validate environment for YouTube channel linking (includes Resend email).
+ */
+export function validateYouTubeEnv(): EnvironmentConfig {
+    const missing = YOUTUBE_REQUIRED.filter(key => !process.env[key])
+
+    if (missing.length > 0) {
+        throw new Error(
+            `Missing required environment variables: ${missing.join(", ")}`
+        )
+    }
+
+    return parseConfig()
 }
 
 export default validateEnv

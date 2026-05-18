@@ -29,12 +29,9 @@ function createValidEnv(): EnvironmentConfig {
         YOUTUBE_CLIENT_ID: "test-client-id",
         YOUTUBE_CLIENT_SECRET: "test-client-secret",
         YOUTUBE_REDIRECT_URI: "http://localhost:3000/api/youtube/link/callback",
-        SMTP_HOST: "smtp.gmail.com",
-        SMTP_PORT: 587,
-        SMTP_USER: "test@gmail.com",
-        SMTP_PASSWORD: "test-password",
-        SMTP_FROM_EMAIL: "noreply@example.com",
-        SMTP_FROM_NAME: "Test App",
+        RESEND_API_KEY: "re_test_key",
+        RESEND_FROM_EMAIL: "noreply@example.com",
+        RESEND_FROM_NAME: "Test App",
         TOKEN_ENCRYPTION_KEY: "a".repeat(64), // 64 character hex string
     }
 }
@@ -60,18 +57,14 @@ describe("YouTube Channel Linking Configuration", () => {
             )
         })
 
-        it("should set correct email configuration", () => {
+        it("should set correct Resend email configuration", () => {
             const env = createValidEnv()
 
             const config = createYouTubeChannelLinkingConfig(env)
 
-            expect(config.email.host).toBe("smtp.gmail.com")
-            expect(config.email.port).toBe(587)
-            expect(config.email.user).toBe("test@gmail.com")
-            expect(config.email.password).toBe("test-password")
+            expect(config.email.apiKey).toBe("re_test_key")
             expect(config.email.fromEmail).toBe("noreply@example.com")
             expect(config.email.fromName).toBe("Test App")
-            expect(config.email.tls).toBe(true)
         })
 
         it("should set correct encryption configuration", () => {
@@ -147,17 +140,15 @@ describe("YouTube Channel Linking Configuration", () => {
             )
         })
 
-        it("should detect invalid email port", () => {
+        it("should detect missing Resend API key", () => {
             const env = createValidEnv()
             const config = createYouTubeChannelLinkingConfig(env)
-            config.email.port = 99999
+            config.email.apiKey = ""
 
             const result = validateYouTubeChannelLinkingConfig(config)
 
             expect(result.isValid).toBe(false)
-            expect(result.errors).toContain(
-                "Email service port must be between 1 and 65535"
-            )
+            expect(result.errors).toContain("Resend API key is required")
         })
 
         it("should detect invalid encryption key length", () => {
@@ -203,7 +194,7 @@ describe("YouTube Channel Linking Configuration", () => {
             const env = createValidEnv()
             const config = createYouTubeChannelLinkingConfig(env)
             config.oauth.clientId = ""
-            config.email.port = 99999
+            config.email.apiKey = ""
             config.encryption.encryptionKey = "invalid"
 
             const result = validateYouTubeChannelLinkingConfig(config)
@@ -240,7 +231,7 @@ describe("YouTube Channel Linking Configuration", () => {
 
         it("should validate configuration on creation", () => {
             const env = createValidEnv()
-            env.SMTP_PORT = 99999
+            env.RESEND_API_KEY = ""
 
             expect(() => getYouTubeChannelLinkingConfig(env)).toThrow(
                 "Invalid YouTube Channel Linking configuration"
