@@ -16,8 +16,6 @@
 import { db } from "@/lib/db"
 import { logger } from "@/lib/logger"
 
-const { query, queryMany, queryOne } = db
-
 /**
  * Types of authentication failures
  */
@@ -83,7 +81,7 @@ export async function logAuthenticationFailure(
         // Requirement 14.1: Log with timestamp and user identifier
         // Requirement 14.2: Include attempt count for rate limiting context
         // Requirement 14.5: Exclude sensitive data (passwords, pepper, etc.)
-        await query(
+        await db.query(
             `INSERT INTO audit_logs (
                 event_type,
                 email,
@@ -357,7 +355,7 @@ export async function getRecentAuthFailuresForEmail(
     try {
         const cutoffTime = new Date(Date.now() - hoursBack * 60 * 60 * 1000)
 
-        return queryMany<{
+        return await db.queryMany<{
             id: string
             event_type: string
             email: string
@@ -415,7 +413,7 @@ export async function getRecentAuthFailuresForIP(
     try {
         const cutoffTime = new Date(Date.now() - hoursBack * 60 * 60 * 1000)
 
-        return queryMany<{
+        return await db.queryMany<{
             id: string
             event_type: string
             email: string
@@ -464,7 +462,7 @@ export async function getAuthFailureStatistics(
         const cutoffTime = new Date(Date.now() - hoursBack * 60 * 60 * 1000)
 
         const totalFailures = Number(
-            (await queryOne<{ count: string }>(
+            (await db.queryOne<{ count: string }>(
                 `SELECT COUNT(*) as count FROM audit_logs
              WHERE event_type = 'auth_failure' AND timestamp > $1`,
                 [cutoffTime]
@@ -472,7 +470,7 @@ export async function getAuthFailureStatistics(
         )
 
         const uniqueEmails = Number(
-            (await queryOne<{ count: string }>(
+            (await db.queryOne<{ count: string }>(
                 `SELECT COUNT(DISTINCT email) as count FROM audit_logs
              WHERE event_type = 'auth_failure' AND timestamp > $1`,
                 [cutoffTime]
@@ -480,14 +478,14 @@ export async function getAuthFailureStatistics(
         )
 
         const uniqueIPs = Number(
-            (await queryOne<{ count: string }>(
+            (await db.queryOne<{ count: string }>(
                 `SELECT COUNT(DISTINCT ip_address) as count FROM audit_logs
              WHERE event_type = 'auth_failure' AND timestamp > $1`,
                 [cutoffTime]
             ))?.count || 0
         )
 
-        const typeRows = await queryMany<{ error_code: string; count: string }>(
+        const typeRows = await db.queryMany<{ error_code: string; count: string }>(
             `SELECT error_code, COUNT(*) as count FROM audit_logs
              WHERE event_type = 'auth_failure' AND timestamp > $1
              GROUP BY error_code`,
@@ -498,7 +496,7 @@ export async function getAuthFailureStatistics(
             failuresByType[row.error_code] = Number(row.count)
         })
 
-        const topFailingEmails = await queryMany<{ email: string; count: string }>(
+        const topFailingEmails = await db.queryMany<{ email: string; count: string }>(
             `SELECT email, COUNT(*) as count FROM audit_logs
              WHERE event_type = 'auth_failure' AND timestamp > $1
              GROUP BY email
@@ -507,7 +505,7 @@ export async function getAuthFailureStatistics(
             [cutoffTime]
         )
 
-        const topFailingIPs = await queryMany<{ ip_address: string; count: string }>(
+        const topFailingIPs = await db.queryMany<{ ip_address: string; count: string }>(
             `SELECT ip_address, COUNT(*) as count FROM audit_logs
              WHERE event_type = 'auth_failure' AND timestamp > $1
              GROUP BY ip_address

@@ -10,7 +10,6 @@ import {
     detectHashAlgorithm,
     getAlgorithmDescription,
     isArgon2idHashFormat,
-    isBcryptHashFormat,
 } from "./hash-algorithm-detection"
 
 describe("Hash Algorithm Detection", () => {
@@ -102,102 +101,20 @@ describe("Hash Algorithm Detection", () => {
         })
     })
 
-    describe("detectHashAlgorithm - Bcrypt Detection", () => {
-        it("should detect valid Bcrypt $2a$ hash", () => {
-            const hash =
-                "$2a$12$abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRST"
-            const result = detectHashAlgorithm(hash)
-
-            expect(result.algorithm).toBe("bcrypt")
-            expect(result.version).toBe(2)
-            expect(result.isValid).toBe(true)
-            expect(result.reason).toContain("Valid Bcrypt")
-        })
-
-        it("should detect valid Bcrypt $2b$ hash", () => {
-            const hash =
-                "$2b$12$abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRST"
-            const result = detectHashAlgorithm(hash)
-
-            expect(result.algorithm).toBe("bcrypt")
-            expect(result.version).toBe(2)
-            expect(result.isValid).toBe(true)
-        })
-
-        it("should detect valid Bcrypt $2y$ hash", () => {
-            const hash =
-                "$2y$12$abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRST"
-            const result = detectHashAlgorithm(hash)
-
-            expect(result.algorithm).toBe("bcrypt")
-            expect(result.version).toBe(2)
-            expect(result.isValid).toBe(true)
-        })
-
-        it("should detect valid Bcrypt $2x$ hash", () => {
-            const hash =
-                "$2x$12$abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRST"
-            const result = detectHashAlgorithm(hash)
-
-            expect(result.algorithm).toBe("bcrypt")
-            expect(result.version).toBe(2)
-            expect(result.isValid).toBe(true)
-        })
-
-        it("should detect Bcrypt with different cost factors", () => {
-            const costs = ["04", "06", "10", "12", "14"]
-
-            costs.forEach(cost => {
-                const hash = `$2b$${cost}$abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRST`
-                const result = detectHashAlgorithm(hash)
-
-                expect(result.algorithm).toBe("bcrypt")
-                expect(result.version).toBe(2)
-                expect(result.isValid).toBe(true)
-            })
-        })
-
-        it("should be case-insensitive for Bcrypt detection", () => {
+    describe("detectHashAlgorithm - Legacy Bcrypt Rejected", () => {
+        it("rejects bcrypt hashes (Argon2id only)", () => {
             const hashes = [
-                "$2A$12$abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRST",
-                "$2B$12$abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRST",
+                "$2a$12$abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRST",
                 "$2b$12$abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRST",
+                "$2y$12$abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRST",
             ]
 
-            hashes.forEach(hash => {
+            for (const hash of hashes) {
                 const result = detectHashAlgorithm(hash)
-                expect(result.algorithm).toBe("bcrypt")
-                expect(result.version).toBe(2)
-            })
-        })
-
-        it("should detect incomplete Bcrypt (too short)", () => {
-            const hash = "$2b$12$abcdefghijklmnopqrstuvwxyz"
-            const result = detectHashAlgorithm(hash)
-
-            expect(result.algorithm).toBe("bcrypt")
-            expect(result.version).toBe(2)
-            expect(result.isValid).toBe(false)
-            expect(result.reason).toContain("incomplete")
-        })
-
-        it("should detect standard Bcrypt length (60 characters)", () => {
-            // Standard bcrypt hash is exactly 60 characters
-            const hash = "$2b$12$" + "a".repeat(53) // 7 + 53 = 60
-            const result = detectHashAlgorithm(hash)
-
-            expect(result.algorithm).toBe("bcrypt")
-            expect(result.version).toBe(2)
-            expect(result.isValid).toBe(true)
-        })
-
-        it("should detect Bcrypt with longer hash", () => {
-            const hash = "$2b$12$" + "a".repeat(100)
-            const result = detectHashAlgorithm(hash)
-
-            expect(result.algorithm).toBe("bcrypt")
-            expect(result.version).toBe(2)
-            expect(result.isValid).toBe(true)
+                expect(result.algorithm).toBe("unknown")
+                expect(result.isValid).toBe(false)
+                expect(result.reason).toContain("Legacy bcrypt")
+            }
         })
     })
 
@@ -263,9 +180,7 @@ describe("Hash Algorithm Detection", () => {
 
             expect(result.algorithm).toBe("unknown")
             expect(result.isValid).toBe(false)
-            expect(result.reason).toContain(
-                "does not match any known algorithm"
-            )
+            expect(result.reason).toContain("Argon2id")
         })
 
         it("should handle hash starting with $ but wrong format", () => {
@@ -347,7 +262,9 @@ describe("Hash Algorithm Detection", () => {
             expect(result).toHaveProperty("algorithm")
             expect(result).toHaveProperty("isValid")
             expect(result).toHaveProperty("reason")
-            expect(result).toHaveProperty("version")
+            if (result.algorithm !== "unknown") {
+                expect(result).toHaveProperty("version")
+            }
         })
 
         it("should have algorithm as one of the expected values", () => {
@@ -360,7 +277,7 @@ describe("Hash Algorithm Detection", () => {
 
             testCases.forEach(hash => {
                 const result = detectHashAlgorithm(hash)
-                expect(["argon2id", "bcrypt", "unknown"]).toContain(
+                expect(["argon2id", "unknown"]).toContain(
                     result.algorithm
                 )
             })
@@ -399,10 +316,10 @@ describe("Hash Algorithm Detection", () => {
             )
             expect(argon2Result.version).toBe(19)
 
-            const bcryptResult = detectHashAlgorithm(
+            const legacyResult = detectHashAlgorithm(
                 "$2b$12$abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRST"
             )
-            expect(bcryptResult.version).toBe(2)
+            expect(legacyResult.algorithm).toBe("unknown")
 
             const unknownResult = detectHashAlgorithm("unknown_hash")
             expect(unknownResult.version).toBeUndefined()
@@ -444,59 +361,6 @@ describe("Hash Algorithm Detection", () => {
         })
     })
 
-    describe("isBcryptHashFormat - Convenience Function", () => {
-        it("should return true for valid Bcrypt $2a$ hash", () => {
-            const hash =
-                "$2a$12$abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRST"
-            expect(isBcryptHashFormat(hash)).toBe(true)
-        })
-
-        it("should return true for valid Bcrypt $2b$ hash", () => {
-            const hash =
-                "$2b$12$abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRST"
-            expect(isBcryptHashFormat(hash)).toBe(true)
-        })
-
-        it("should return true for valid Bcrypt $2y$ hash", () => {
-            const hash =
-                "$2y$12$abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRST"
-            expect(isBcryptHashFormat(hash)).toBe(true)
-        })
-
-        it("should return true for valid Bcrypt $2x$ hash", () => {
-            const hash =
-                "$2x$12$abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRST"
-            expect(isBcryptHashFormat(hash)).toBe(true)
-        })
-
-        it("should return false for invalid Bcrypt hash (too short)", () => {
-            const hash = "$2b$12$abc"
-            expect(isBcryptHashFormat(hash)).toBe(false)
-        })
-
-        it("should return false for Argon2id hash", () => {
-            const hash =
-                "$argon2id$v=19$m=64000,t=3,p=2$salt$hash1234567890abcdef1234567890ab"
-            expect(isBcryptHashFormat(hash)).toBe(false)
-        })
-
-        it("should return false for unknown format", () => {
-            expect(isBcryptHashFormat("unknown_hash")).toBe(false)
-        })
-
-        it("should return false for null", () => {
-            expect(isBcryptHashFormat(null)).toBe(false)
-        })
-
-        it("should return false for undefined", () => {
-            expect(isBcryptHashFormat(undefined)).toBe(false)
-        })
-
-        it("should return false for empty string", () => {
-            expect(isBcryptHashFormat("")).toBe(false)
-        })
-    })
-
     describe("getAlgorithmDescription - Human-Readable Output", () => {
         it("should return description for Argon2id", () => {
             const hash =
@@ -507,13 +371,12 @@ describe("Hash Algorithm Detection", () => {
             expect(description).toContain("19")
         })
 
-        it("should return description for Bcrypt", () => {
+        it("should return unknown for legacy bcrypt", () => {
             const hash =
                 "$2b$12$abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRST"
             const description = getAlgorithmDescription(hash)
 
-            expect(description).toContain("Bcrypt")
-            expect(description).toContain("2")
+            expect(description).toContain("Unknown")
         })
 
         it("should return description for unknown", () => {
@@ -547,35 +410,13 @@ describe("Hash Algorithm Detection", () => {
             expect(result.isValid).toBe(true)
         })
 
-        it("should detect real Bcrypt hash from bcryptjs", () => {
-            // Real hash generated by bcryptjs
+        it("rejects real bcryptjs hash", () => {
             const hash =
                 "$2b$10$nOUIs5kJ7naTuTFkBy1Be.PRZQl/qxWXInGA4aBUW3CjjF3XGm2Oi"
             const result = detectHashAlgorithm(hash)
 
-            expect(result.algorithm).toBe("bcrypt")
-            expect(result.version).toBe(2)
-            expect(result.isValid).toBe(true)
-        })
-
-        it("should detect real Bcrypt hash with $2a$ variant", () => {
-            const hash =
-                "$2a$10$nOUIs5kJ7naTuTFkBy1Be.PRZQl/qxWXInGA4aBUW3CjjF3XGm2Oi"
-            const result = detectHashAlgorithm(hash)
-
-            expect(result.algorithm).toBe("bcrypt")
-            expect(result.version).toBe(2)
-            expect(result.isValid).toBe(true)
-        })
-
-        it("should detect real Bcrypt hash with $2y$ variant", () => {
-            const hash =
-                "$2y$10$nOUIs5kJ7naTuTFkBy1Be.PRZQl/qxWXInGA4aBUW3CjjF3XGm2Oi"
-            const result = detectHashAlgorithm(hash)
-
-            expect(result.algorithm).toBe("bcrypt")
-            expect(result.version).toBe(2)
-            expect(result.isValid).toBe(true)
+            expect(result.algorithm).toBe("unknown")
+            expect(result.isValid).toBe(false)
         })
     })
 })

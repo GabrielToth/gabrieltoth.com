@@ -7,7 +7,6 @@
  * - Rate limiting (brute force protection)
  * - Password hashing (Argon2id with salt and pepper)
  * - Password validation (with algorithm detection)
- * - Algorithm migration (Bcrypt → Argon2id)
  * - Audit logging (security events)
  * - Error handling (generic messages, no user enumeration)
  *
@@ -19,7 +18,6 @@
  * - Requirement 8: Input Validation
  * - Requirement 9: Security Against Attack Vectors
  * - Requirement 10: Constant-Time Comparison
- * - Requirement 11: Algorithm Migration on Successful Login
  * - Requirement 14: Error Handling and Logging
  * - Requirement 20: CAPTCHA Protection Against Automated Attacks
  */
@@ -33,7 +31,6 @@ import {
     getSecurityConfig,
     hashPasswordArgon2id,
     normalizeResponseTime,
-    triggerPasswordMigration,
     validatePassword,
     validatePasswordInput,
 } from "./index"
@@ -65,9 +62,6 @@ export interface AuthenticationResult {
 
     /** Time until account unlock in seconds (if locked) */
     unlockTimeSeconds?: number
-
-    /** Whether password requires migration (Bcrypt → Argon2id) */
-    requiresMigration?: boolean
 
     /** Whether degraded mode is active (CAPTCHA unavailable) */
     degradedMode?: boolean
@@ -787,33 +781,7 @@ export class AuthenticationService {
             }
 
             // ================================================================
-            // STEP 6: TRIGGER ALGORITHM MIGRATION IF NEEDED (Requirement 11.1)
-            // ================================================================
-
-            if (validationResult.requiresMigration) {
-                logger.info("Triggering password migration", {
-                    email: request.email,
-                    oldAlgorithm: validationResult.algorithmType,
-                    newAlgorithm: "argon2id",
-                })
-
-                try {
-                    await triggerPasswordMigration(user.id, request.password)
-                } catch (error) {
-                    logger.error("Password migration failed", {
-                        email: request.email,
-                        error:
-                            error instanceof Error
-                                ? error.message
-                                : String(error),
-                    })
-                    // Don't fail authentication if migration fails
-                    // User can still log in with old hash
-                }
-            }
-
-            // ================================================================
-            // STEP 7: RESET RATE LIMIT COUNTER (Requirement 7.5)
+            // STEP 6: RESET RATE LIMIT COUNTER (Requirement 7.5)
             // ================================================================
 
             try {
@@ -828,7 +796,7 @@ export class AuthenticationService {
             }
 
             // ================================================================
-            // STEP 8: LOG AUTHENTICATION EVENT (Requirement 14.1, 14.6)
+            // STEP 7: LOG AUTHENTICATION EVENT (Requirement 14.1, 14.6)
             // ================================================================
 
             try {
@@ -839,7 +807,6 @@ export class AuthenticationService {
                     timestamp: new Date().toISOString(),
                     details: {
                         algorithm: validationResult.algorithmType,
-                        migrationTriggered: validationResult.requiresMigration,
                         degradedMode,
                     },
                 })
@@ -860,7 +827,6 @@ export class AuthenticationService {
                 userId: user.id,
                 email: request.email,
                 algorithmType: validationResult.algorithmType,
-                migrationTriggered: validationResult.requiresMigration,
             })
 
             // ================================================================
@@ -874,7 +840,6 @@ export class AuthenticationService {
                     userId: user.id,
                     email: user.email,
                     statusCode: 200,
-                    requiresMigration: validationResult.requiresMigration,
                     degradedMode,
                 },
                 operationStartTime

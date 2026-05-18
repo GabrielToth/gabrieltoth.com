@@ -15,7 +15,6 @@ import * as captchaVerifier from "@/lib/auth/captcha-verifier"
 import { beforeEach, describe, expect, it, vi } from "vitest"
 import * as passwordHasher from "./argon2id-hasher"
 import { AuthenticationService } from "./authentication-service"
-import * as migrationTrigger from "./migration-trigger"
 import * as passwordInputValidation from "./password-input-validation"
 import * as passwordValidator from "./password-validator"
 
@@ -28,7 +27,6 @@ vi.mock("./password-input-validation", () => ({
     assertPasswordInputValid: vi.fn(),
 }))
 vi.mock("./argon2id-hasher")
-vi.mock("./migration-trigger")
 vi.mock("./constant-time-comparison", () => ({
     normalizeResponseTime: vi.fn().mockResolvedValue(0),
     constantTimeStringCompare: vi.fn(),
@@ -63,11 +61,21 @@ describe("AuthenticationService", () => {
     let service: AuthenticationService
 
     beforeEach(() => {
-        // Reset mocks before each test
         vi.clearAllMocks()
 
-        // Create service instance
+        vi.mocked(passwordInputValidation.validatePasswordInput).mockImplementation(
+            () => undefined
+        )
+
         service = new AuthenticationService()
+        ;(service as any).rateLimiter = {
+            checkAndUpdateRateLimit: vi.fn().mockResolvedValue({
+                allowed: true,
+                isLocked: false,
+            }),
+            recordFailure: vi.fn().mockResolvedValue(undefined),
+            recordSuccess: vi.fn().mockResolvedValue(undefined),
+        }
     })
 
     describe("register", () => {
@@ -388,71 +396,6 @@ describe("AuthenticationService", () => {
             expect(result.statusCode).toBe(401)
         })
 
-        it("should trigger algorithm migration for Bcrypt passwords", async () => {
-            vi.mocked(
-                captchaVerifier.verifyCAPTCHAWithFallback
-            ).mockResolvedValue({
-                success: true,
-                degradedMode: false,
-            })
-
-            vi.mocked(passwordValidator.validatePassword).mockResolvedValue({
-                valid: true,
-                algorithmType: "bcrypt",
-                hashValid: true,
-                requiresMigration: true,
-                timeTakenMs: 1500,
-            })
-
-            vi.mocked(
-                migrationTrigger.triggerPasswordMigration
-            ).mockResolvedValue({
-                success: true,
-                oldAlgorithm: "bcrypt",
-                newAlgorithm: "argon2id",
-                migrationTime: new Date(),
-            })
-
-            const mockSupabase = {
-                from: vi.fn().mockReturnValue({
-                    select: vi.fn().mockReturnValue({
-                        eq: vi.fn().mockReturnValue({
-                            single: vi.fn().mockResolvedValue({
-                                data: {
-                                    id: "user-123",
-                                    email: "user@example.com",
-                                    password_hash: "$2b$...",
-                                    password_algorithm: "bcrypt",
-                                },
-                                error: null,
-                            }),
-                        }),
-                    }),
-                    insert: vi.fn().mockResolvedValue({
-                        error: null,
-                    }),
-                }),
-            }
-
-            ;(service as any).supabase = mockSupabase
-
-            const result = await service.login({
-                email: "user@example.com",
-                password: "SecurePassword123!",
-                captchaToken: "valid_token",
-            })
-
-            expect(result.success).toBe(true)
-            expect(result.requiresMigration).toBe(true)
-            expect(
-                migrationTrigger.triggerPasswordMigration
-            ).toHaveBeenCalledWith(
-                "user-123",
-                "user@example.com",
-                "SecurePassword123!"
-            )
-        })
-
         it("should return generic error messages (no user enumeration)", async () => {
             vi.mocked(
                 captchaVerifier.verifyCAPTCHAWithFallback
@@ -500,13 +443,44 @@ describe("AuthenticationService", () => {
                 failureReason: "CAPTCHA service unavailable",
             })
 
+            vi.mocked(passwordValidator.validatePassword).mockResolvedValue({
+                valid: true,
+                algorithmType: "argon2id",
+                hashValid: true,
+                requiresMigration: false,
+                timeTakenMs: 2500,
+            })
+
+            const mockSupabase = {
+                from: vi.fn().mockReturnValue({
+                    select: vi.fn().mockReturnValue({
+                        eq: vi.fn().mockReturnValue({
+                            single: vi.fn().mockResolvedValue({
+                                data: {
+                                    id: "user-123",
+                                    email: "user@example.com",
+                                    password_hash: "$argon2id$...",
+                                    password_algorithm: "argon2id",
+                                },
+                                error: null,
+                            }),
+                        }),
+                    }),
+                    insert: vi.fn().mockResolvedValue({
+                        error: null,
+                    }),
+                }),
+            }
+
+            ;(service as any).supabase = mockSupabase
+
             const result = await service.login({
                 email: "user@example.com",
                 password: "SecurePassword123!",
                 captchaToken: "valid_token",
             })
 
-            // Should indicate degraded mode is active
+            expect(result.success).toBe(true)
             expect(result.degradedMode).toBe(true)
         })
     })

@@ -90,11 +90,16 @@ export function validatePhoneNumber(phone: string): boolean {
         return false
     }
 
-    // International format: +1234567890
-    // Must start with +, followed by 1-3 digit country code, then 6-13 digits (total 7-15 digits after +)
-    const phoneRegex = /^\+\d{1,3}\d{6,13}$/
+    if (!phone.startsWith("+")) {
+        return false
+    }
 
-    return phoneRegex.test(phone)
+    const digits = phone.slice(1)
+    if (!/^\d+$/.test(digits)) {
+        return false
+    }
+
+    return digits.length >= 10 && digits.length <= 15
 }
 
 /**

@@ -291,6 +291,7 @@ export function RegisterForm({ locale }: RegisterFormProps) {
                 body: JSON.stringify({
                     ...sanitizedData,
                     csrfToken,
+                    captchaToken: formData.captchaToken,
                 }),
             })
 

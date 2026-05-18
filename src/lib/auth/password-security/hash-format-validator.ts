@@ -31,7 +31,6 @@ import { logger } from "@/lib/logger"
 import {
     detectHashAlgorithm,
     isArgon2idHashFormat,
-    isBcryptHashFormat,
 } from "./hash-algorithm-detection"
 
 /**
@@ -42,7 +41,7 @@ export interface HashFormatValidationResult {
     isValid: boolean
 
     /** The detected algorithm type (for internal use, not exposed to user) */
-    algorithm: "argon2id" | "bcrypt" | "unknown"
+    algorithm: "argon2id" | "unknown"
 
     /** Generic error message for user (no algorithm details) */
     userMessage: string
@@ -112,9 +111,7 @@ export function validateHashFormat(
     const detection = detectHashAlgorithm(hash)
 
     // Check if hash is valid and in a supported format
-    const isValidArgon2id = isArgon2idHashFormat(hash)
-    const isValidBcrypt = isBcryptHashFormat(hash)
-    const isValid = isValidArgon2id || isValidBcrypt
+    const isValid = isArgon2idHashFormat(hash)
 
     // Determine if hash is malformed (detected but invalid)
     const isMalformed = detection.algorithm !== "unknown" && !detection.isValid
@@ -200,7 +197,7 @@ function logMalformedHashAttempt(
  * // isValid === true
  */
 export function isValidHashFormat(hash: unknown): boolean {
-    return isArgon2idHashFormat(hash) || isBcryptHashFormat(hash)
+    return isArgon2idHashFormat(hash)
 }
 
 /**

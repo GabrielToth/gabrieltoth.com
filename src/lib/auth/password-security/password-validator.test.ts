@@ -18,12 +18,10 @@
  */
 
 import argon2 from "argon2"
-import bcrypt from "bcrypt"
 import { afterAll, beforeAll, describe, expect, it } from "vitest"
 import {
     getValidationDescription,
     isPasswordValid,
-    shouldMigratePassword,
     validatePassword,
     type PasswordValidationResult,
 } from "./password-validator"
@@ -66,7 +64,6 @@ describe("Password Validator", () => {
             expect(result.algorithmType).toBe("argon2id")
             expect(result.hashValid).toBe(true)
             expect(result.error).toBeUndefined()
-            expect(result.requiresMigration).toBe(false)
             expect(result.timeTakenMs).toBeGreaterThan(0)
         })
 
@@ -77,7 +74,6 @@ describe("Password Validator", () => {
             expect(result.algorithmType).toBe("argon2id")
             expect(result.hashValid).toBe(true)
             expect(result.error).toBe("Authentication failed")
-            expect(result.requiresMigration).toBe(false)
         })
 
         it("should return generic error message for failed validation", async () => {
@@ -89,12 +85,6 @@ describe("Password Validator", () => {
             expect(result.error).not.toContain("algorithm")
         })
 
-        it("should not require migration for Argon2id hash", async () => {
-            const result = await validatePassword(TEST_PASSWORD, argon2Hash)
-
-            expect(result.requiresMigration).toBe(false)
-        })
-
         it("should track validation time", async () => {
             const result = await validatePassword(TEST_PASSWORD, argon2Hash)
 
@@ -103,62 +93,14 @@ describe("Password Validator", () => {
         })
     })
 
-    describe("validatePassword - Bcrypt Hashes", () => {
-        let bcryptHash: string
-
-        beforeAll(async () => {
-            // Create a fresh Bcrypt hash for testing
-            const pepperedPassword = TEST_PASSWORD + PEPPER
-            bcryptHash = await bcrypt.hash(pepperedPassword, 10)
-        })
-
-        it("should validate correct password against Bcrypt hash", async () => {
+    describe("validatePassword - Legacy Bcrypt Rejected", () => {
+        it("rejects bcrypt hashes", async () => {
+            const bcryptHash =
+                "$2b$10$nOUIs5kJ7naTuTFkBy1Be.PRZQl/qxWXInGA4aBUW3CjjF3XGm2Oi"
             const result = await validatePassword(TEST_PASSWORD, bcryptHash)
-
-            expect(result.valid).toBe(true)
-            expect(result.algorithmType).toBe("bcrypt")
-            expect(result.hashValid).toBe(true)
-            expect(result.error).toBeUndefined()
-            expect(result.requiresMigration).toBe(true)
-        })
-
-        it("should reject incorrect password against Bcrypt hash", async () => {
-            const result = await validatePassword(WRONG_PASSWORD, bcryptHash)
 
             expect(result.valid).toBe(false)
-            expect(result.algorithmType).toBe("bcrypt")
-            expect(result.hashValid).toBe(true)
-            expect(result.error).toBe("Authentication failed")
-            // Migration should only be required if validation succeeded
-            expect(result.requiresMigration).toBe(false)
-        })
-
-        it("should return generic error message for failed Bcrypt validation", async () => {
-            const result = await validatePassword(WRONG_PASSWORD, bcryptHash)
-
-            // Error message should not reveal algorithm or hash validity
-            expect(result.error).toBe("Authentication failed")
-            expect(result.error).not.toContain("Bcrypt")
-            expect(result.error).not.toContain("algorithm")
-        })
-
-        it("should require migration for Bcrypt hash on successful validation", async () => {
-            const result = await validatePassword(TEST_PASSWORD, bcryptHash)
-
-            expect(result.requiresMigration).toBe(true)
-        })
-
-        it("should work with different Bcrypt cost factors", async () => {
-            for (const cost of [10, 11, 12]) {
-                const pepperedPassword = TEST_PASSWORD + PEPPER
-                const hash = await bcrypt.hash(pepperedPassword, cost)
-
-                const result = await validatePassword(TEST_PASSWORD, hash)
-
-                expect(result.valid).toBe(true)
-                expect(result.algorithmType).toBe("bcrypt")
-                expect(result.requiresMigration).toBe(true)
-            }
+            expect(result.algorithmType).toBe("unknown")
         })
     })
 
@@ -293,10 +235,8 @@ describe("Password Validator", () => {
 
     describe("validatePassword - Pepper Application", () => {
         let argon2Hash: string
-        let bcryptHash: string
 
         beforeAll(async () => {
-            // Create hashes with pepper
             const pepperedPassword = TEST_PASSWORD + PEPPER
 
             argon2Hash = await argon2.hash(pepperedPassword, {
@@ -306,18 +246,10 @@ describe("Password Validator", () => {
                 type: 2,
                 version: 19,
             })
-
-            bcryptHash = await bcrypt.hash(pepperedPassword, 10)
         })
 
         it("should validate with correct pepper (Argon2id)", async () => {
             const result = await validatePassword(TEST_PASSWORD, argon2Hash)
-
-            expect(result.valid).toBe(true)
-        })
-
-        it("should validate with correct pepper (Bcrypt)", async () => {
-            const result = await validatePassword(TEST_PASSWORD, bcryptHash)
 
             expect(result.valid).toBe(true)
         })
@@ -388,7 +320,6 @@ describe("Password Validator", () => {
     describe("validatePassword - Convenience Functions", () => {
         let validResult: PasswordValidationResult
         let invalidResult: PasswordValidationResult
-        let bcryptResult: PasswordValidationResult
 
         beforeAll(async () => {
             const pepperedPassword = TEST_PASSWORD + PEPPER
@@ -401,11 +332,8 @@ describe("Password Validator", () => {
                 version: 19,
             })
 
-            const bcryptHash = await bcrypt.hash(pepperedPassword, 10)
-
             validResult = await validatePassword(TEST_PASSWORD, argon2Hash)
             invalidResult = await validatePassword(WRONG_PASSWORD, argon2Hash)
-            bcryptResult = await validatePassword(TEST_PASSWORD, bcryptHash)
         })
 
         describe("isPasswordValid", () => {
@@ -418,35 +346,12 @@ describe("Password Validator", () => {
             })
         })
 
-        describe("shouldMigratePassword", () => {
-            it("should return false for Argon2id hash", () => {
-                expect(shouldMigratePassword(validResult)).toBe(false)
-            })
-
-            it("should return true for Bcrypt hash with valid password", () => {
-                expect(shouldMigratePassword(bcryptResult)).toBe(true)
-            })
-
-            it("should return false for invalid password (even if Bcrypt)", () => {
-                expect(shouldMigratePassword(invalidResult)).toBe(false)
-            })
-        })
-
         describe("getValidationDescription", () => {
             it("should describe valid Argon2id validation", () => {
                 const description = getValidationDescription(validResult)
 
                 expect(description).toContain("succeeded")
                 expect(description).toContain("argon2id")
-                expect(description).toContain("no migration")
-            })
-
-            it("should describe valid Bcrypt validation", () => {
-                const description = getValidationDescription(bcryptResult)
-
-                expect(description).toContain("succeeded")
-                expect(description).toContain("bcrypt")
-                expect(description).toContain("migration")
             })
 
             it("should describe failed validation", () => {

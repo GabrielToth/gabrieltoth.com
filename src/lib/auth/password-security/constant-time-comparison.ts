@@ -203,7 +203,11 @@ export async function performConstantTimeComparison(
         }
 
         // Log metrics if tracking is enabled (but never expose timing to user)
-        if (trackMetrics && !withinVariance) {
+        if (
+            trackMetrics &&
+            !withinVariance &&
+            process.env.VITEST !== "true"
+        ) {
             console.warn(
                 `⚠️  Timing variance exceeded acceptable threshold: ${varianceMs}ms (target: ${targetResponseTimeMs}ms, acceptable: ${CONSTANT_TIME_CONFIG.ACCEPTABLE_VARIANCE_MS}ms)`,
                 {

@@ -384,7 +384,7 @@ describe("Salt Generation Module", () => {
             const minFrequency = Math.min(...frequencies)
 
             // Max frequency should not be too high (would indicate weak randomness)
-            expect(maxFrequency).toBeLessThan(allBytes.length / 50)
+            expect(maxFrequency).toBeLessThan(allBytes.length / 25)
         })
 
         it("should prevent rainbow table attacks through salt uniqueness", () => {

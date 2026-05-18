@@ -15,6 +15,7 @@ describe("ConfigurationManager", () => {
         originalEnv = { ...process.env }
         // Reset singleton for each test
         ;(ConfigurationManager as any).instance = null
+        ;(ConfigurationManager as any).devPepperWarned = false
     })
 
     afterEach(() => {
@@ -22,6 +23,7 @@ describe("ConfigurationManager", () => {
         process.env = originalEnv
         // Reset singleton after each test
         ;(ConfigurationManager as any).instance = null
+        ;(ConfigurationManager as any).devPepperWarned = false
     })
 
     describe("Configuration Loading", () => {
@@ -101,6 +103,7 @@ describe("ConfigurationManager", () => {
             process.env.NODE_ENV = "development"
 
             const consoleSpy = vi.spyOn(console, "log").mockImplementation()
+            delete process.env.SUPPRESS_SECURITY_CONFIG_LOGS
 
             // Act
             ConfigurationManager.getInstance()
@@ -367,6 +370,7 @@ describe("ConfigurationManager", () => {
             const consoleWarnSpy = vi
                 .spyOn(console, "warn")
                 .mockImplementation()
+            delete process.env.SUPPRESS_SECURITY_CONFIG_LOGS
 
             // Act
             const manager = ConfigurationManager.getInstance()
@@ -422,6 +426,8 @@ describe("ConfigurationManager", () => {
         it("should provide getRateLimitingConfig() method", () => {
             // Arrange
             process.env.RATE_LIMIT_FAILURE_THRESHOLD = "3"
+            process.env.RATE_LIMIT_WINDOW_MINUTES = "15"
+            process.env.RATE_LIMIT_LOCKOUT_MINUTES = "15"
             ;(ConfigurationManager as any).instance = null
 
             const manager = ConfigurationManager.getInstance()

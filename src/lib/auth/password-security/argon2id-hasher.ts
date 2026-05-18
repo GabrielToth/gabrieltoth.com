@@ -156,7 +156,7 @@ export async function hashPasswordArgon2id(
         const performanceWarning =
             timeTakenMs > ARGON2_CONFIG.HASH_TIME_WARNING_SECONDS * 1000
 
-        if (performanceWarning) {
+        if (performanceWarning && process.env.VITEST !== "true") {
             console.warn(
                 `⚠️  Password hashing took ${(timeTakenMs / 1000).toFixed(2)}s (warning threshold: ${ARGON2_CONFIG.HASH_TIME_WARNING_SECONDS}s)`,
                 {
@@ -321,9 +321,6 @@ export async function verifyPasswordArgon2id(
         return isValid
     } catch (error) {
         if (error instanceof Error) {
-            // Log error but don't expose details to caller
-            console.error("Password verification error:", error.message)
-
             // If it's a validation error, re-throw it
             if (
                 error.message.includes("Password must be") ||
@@ -332,8 +329,7 @@ export async function verifyPasswordArgon2id(
                 throw error
             }
 
-            // For other errors (invalid hash format, etc.), return false
-            // This prevents information disclosure about hash validity
+            // Invalid hash / malformed input: return false without logging (no leak)
             return false
         }
 

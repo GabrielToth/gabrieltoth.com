@@ -61,6 +61,7 @@ const RATE_LIMITING_DEFAULTS = {
  */
 export class ConfigurationManager {
     private static instance: ConfigurationManager | null = null
+    private static devPepperWarned = false
 
     private config: SecurityConfig | null = null
 
@@ -110,13 +111,14 @@ export class ConfigurationManager {
                 captchaProvider,
             }
 
-            // Log configuration (excluding secrets)
-            console.log("✅ Security configuration loaded successfully:", {
-                argon2id,
-                pepper: "<secret>",
-                rateLimiting,
-                captchaProvider,
-            })
+            if (process.env.SUPPRESS_SECURITY_CONFIG_LOGS !== "true") {
+                console.log("✅ Security configuration loaded successfully:", {
+                    argon2id,
+                    pepper: "<secret>",
+                    rateLimiting,
+                    captchaProvider,
+                })
+            }
         } catch (error) {
             console.error("❌ Failed to load security configuration:", error)
             throw error
@@ -274,9 +276,15 @@ export class ConfigurationManager {
                         "Using development pepper in production undermines security."
                 )
             }
-            console.warn(
-                "⚠️  WARNING: Using development pepper. Change this in production!"
-            )
+            if (
+                process.env.SUPPRESS_SECURITY_CONFIG_LOGS !== "true" &&
+                !ConfigurationManager.devPepperWarned
+            ) {
+                ConfigurationManager.devPepperWarned = true
+                console.warn(
+                    "⚠️  WARNING: Using development pepper. Change this in production!"
+                )
+            }
         }
 
         return pepper

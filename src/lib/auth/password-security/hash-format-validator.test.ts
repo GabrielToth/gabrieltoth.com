@@ -39,49 +39,14 @@ describe("Hash Format Validation", () => {
             expect(logger.warn).not.toHaveBeenCalled()
         })
 
-        it("should validate valid Bcrypt $2a$ hash", () => {
-            const hash =
-                "$2a$12$abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRST"
-            const result = validateHashFormat(hash)
-
-            expect(result.isValid).toBe(true)
-            expect(result.algorithm).toBe("bcrypt")
-            expect(result.isMalformed).toBe(false)
-            expect(result.userMessage).toBe("Authentication failed")
-            expect(logger.warn).not.toHaveBeenCalled()
-        })
-
-        it("should validate valid Bcrypt $2b$ hash", () => {
+        it("should reject legacy Bcrypt hashes", () => {
             const hash =
                 "$2b$12$abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRST"
             const result = validateHashFormat(hash)
 
-            expect(result.isValid).toBe(true)
-            expect(result.algorithm).toBe("bcrypt")
-            expect(result.isMalformed).toBe(false)
-            expect(logger.warn).not.toHaveBeenCalled()
-        })
-
-        it("should validate valid Bcrypt $2y$ hash", () => {
-            const hash =
-                "$2y$12$abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRST"
-            const result = validateHashFormat(hash)
-
-            expect(result.isValid).toBe(true)
-            expect(result.algorithm).toBe("bcrypt")
-            expect(result.isMalformed).toBe(false)
-            expect(logger.warn).not.toHaveBeenCalled()
-        })
-
-        it("should validate valid Bcrypt $2x$ hash", () => {
-            const hash =
-                "$2x$12$abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRST"
-            const result = validateHashFormat(hash)
-
-            expect(result.isValid).toBe(true)
-            expect(result.algorithm).toBe("bcrypt")
-            expect(result.isMalformed).toBe(false)
-            expect(logger.warn).not.toHaveBeenCalled()
+            expect(result.isValid).toBe(false)
+            expect(result.algorithm).toBe("unknown")
+            expect(logger.warn).toHaveBeenCalled()
         })
 
         it("should validate Argon2id with different parameters", () => {
@@ -149,13 +114,12 @@ describe("Hash Format Validation", () => {
             expect(logger.warn).toHaveBeenCalled()
         })
 
-        it("should reject incomplete Bcrypt (too short)", () => {
+        it("should reject incomplete legacy Bcrypt (too short)", () => {
             const hash = "$2b$12$abcdefghijklmnopqrstuvwxyz"
             const result = validateHashFormat(hash)
 
             expect(result.isValid).toBe(false)
-            expect(result.algorithm).toBe("bcrypt")
-            expect(result.isMalformed).toBe(true)
+            expect(result.algorithm).toBe("unknown")
             expect(logger.warn).toHaveBeenCalled()
         })
 
@@ -427,7 +391,7 @@ describe("Hash Format Validation", () => {
 
             testCases.forEach(hash => {
                 const result = validateHashFormat(hash)
-                expect(["argon2id", "bcrypt", "unknown"]).toContain(
+                expect(["argon2id", "unknown"]).toContain(
                     result.algorithm
                 )
             })
@@ -513,10 +477,10 @@ describe("Hash Format Validation", () => {
             expect(isValidHashFormat(hash)).toBe(true)
         })
 
-        it("should return true for valid Bcrypt hash", () => {
+        it("should return false for legacy Bcrypt hash", () => {
             const hash =
                 "$2b$12$abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRST"
-            expect(isValidHashFormat(hash)).toBe(true)
+            expect(isValidHashFormat(hash)).toBe(false)
         })
 
         it("should return false for invalid Argon2id hash", () => {
@@ -590,37 +554,13 @@ describe("Hash Format Validation", () => {
             expect(logger.warn).not.toHaveBeenCalled()
         })
 
-        it("should validate real Bcrypt hash from bcryptjs", () => {
+        it("rejects real bcryptjs hashes", () => {
             const hash =
                 "$2b$10$nOUIs5kJ7naTuTFkBy1Be.PRZQl/qxWXInGA4aBUW3CjjF3XGm2Oi"
             const result = validateHashFormat(hash)
 
-            expect(result.isValid).toBe(true)
-            expect(result.algorithm).toBe("bcrypt")
-            expect(result.isMalformed).toBe(false)
-            expect(logger.warn).not.toHaveBeenCalled()
-        })
-
-        it("should validate real Bcrypt hash with $2a$ variant", () => {
-            const hash =
-                "$2a$10$nOUIs5kJ7naTuTFkBy1Be.PRZQl/qxWXInGA4aBUW3CjjF3XGm2Oi"
-            const result = validateHashFormat(hash)
-
-            expect(result.isValid).toBe(true)
-            expect(result.algorithm).toBe("bcrypt")
-            expect(result.isMalformed).toBe(false)
-            expect(logger.warn).not.toHaveBeenCalled()
-        })
-
-        it("should validate real Bcrypt hash with $2y$ variant", () => {
-            const hash =
-                "$2y$10$nOUIs5kJ7naTuTFkBy1Be.PRZQl/qxWXInGA4aBUW3CjjF3XGm2Oi"
-            const result = validateHashFormat(hash)
-
-            expect(result.isValid).toBe(true)
-            expect(result.algorithm).toBe("bcrypt")
-            expect(result.isMalformed).toBe(false)
-            expect(logger.warn).not.toHaveBeenCalled()
+            expect(result.isValid).toBe(false)
+            expect(result.algorithm).toBe("unknown")
         })
     })
 

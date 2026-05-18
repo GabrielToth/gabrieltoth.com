@@ -1,6 +1,5 @@
 /**
  * Password Security Module Index
- * Exports all password security components
  */
 
 export {
@@ -30,7 +29,6 @@ export {
     detectHashAlgorithm,
     getAlgorithmDescription,
     isArgon2idHashFormat,
-    isBcryptHashFormat,
 } from "./hash-algorithm-detection"
 
 export {
@@ -38,13 +36,6 @@ export {
     isValidHashFormat,
     validateHashFormat,
 } from "./hash-format-validator"
-
-export {
-    describeBcryptHash,
-    extractBcryptInfo,
-    isBcryptHashValid,
-    validatePasswordBcrypt,
-} from "./bcrypt-validator"
 
 export { RateLimiter, getRateLimiter } from "./rate-limiter"
 
@@ -65,14 +56,8 @@ export {
 export {
     getValidationDescription,
     isPasswordValid,
-    shouldMigratePassword,
     validatePassword,
 } from "./password-validator"
-
-export {
-    getPasswordMigrationStats,
-    triggerPasswordMigration,
-} from "./migration-trigger"
 
 export type {
     Argon2Params,
@@ -87,15 +72,11 @@ export type { HashAlgorithmDetectionResult } from "./hash-algorithm-detection"
 
 export type { HashFormatValidationResult } from "./hash-format-validator"
 
-export type { BcryptValidationResult } from "./bcrypt-validator"
-
 export type { RateLimitCheckResult } from "./rate-limiter"
 
 export type { PasswordValidationResult as PasswordInputValidationResult } from "./password-input-validation"
 
 export type { PasswordValidationResult } from "./password-validator"
-
-export type { PasswordMigrationResult } from "./migration-trigger"
 
 export type {
     ConstantTimeComparisonResult,

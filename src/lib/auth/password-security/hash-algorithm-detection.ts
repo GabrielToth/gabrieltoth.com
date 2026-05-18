@@ -34,7 +34,7 @@
  */
 export interface HashAlgorithmDetectionResult {
     /** The detected algorithm: 'argon2id', 'bcrypt', or 'unknown' */
-    algorithm: "argon2id" | "bcrypt" | "unknown"
+    algorithm: "argon2id" | "unknown"
 
     /** Version number if detected (e.g., 19 for Argon2id, 2 for Bcrypt) */
     version?: number
@@ -181,11 +181,6 @@ export function detectHashAlgorithm(
         }
     }
 
-    // Check for Bcrypt format: $2a$, $2b$, $2x$, $2y$
-    // Bcrypt hashes have format: $2[aby]$COST$SALT+HASH
-    // where COST is 2 digits (e.g., 12)
-
-    // First check for invalid characters (whitespace, newlines, etc.)
     if (/\s/.test(hash)) {
         return {
             algorithm: "unknown",
@@ -194,59 +189,19 @@ export function detectHashAlgorithm(
         }
     }
 
-    const bcryptMatch = lowerHash.match(/^\$2[aby]\$\d{2}\$/)
-
-    if (bcryptMatch) {
-        // Extract version from the hash
-        // $2a$, $2b$, $2x$, $2y$ all have version 2
-        const versionChar = hash[2] // Get original case version char
-
-        // Validate basic structure
-        // Format: $2[aby]$COST$SALT+HASH
-        // Total length should be at least 60 characters (standard bcrypt)
-        if (hash.length >= 60) {
-            return {
-                algorithm: "bcrypt",
-                version: 2,
-                isValid: true,
-                reason: `Valid Bcrypt hash format detected (variant: $2${versionChar}$)`,
-            }
-        } else {
-            return {
-                algorithm: "bcrypt",
-                version: 2,
-                isValid: false,
-                reason: "Bcrypt format detected but hash is incomplete or too short",
-            }
+    // Legacy bcrypt hashes are no longer accepted (Argon2id only)
+    if (/^\$2[abxy]\$\d{2}\$/.test(lowerHash)) {
+        return {
+            algorithm: "unknown",
+            isValid: false,
+            reason: "Legacy bcrypt hash format is no longer supported; re-register required",
         }
     }
 
-    // Check for Bcrypt $2x$ variant (rare, but valid)
-    if (lowerHash.startsWith("$2x$")) {
-        const versionChar = hash[2]
-
-        if (hash.length >= 60) {
-            return {
-                algorithm: "bcrypt",
-                version: 2,
-                isValid: true,
-                reason: `Valid Bcrypt hash format detected (variant: $2${versionChar}$)`,
-            }
-        } else {
-            return {
-                algorithm: "bcrypt",
-                version: 2,
-                isValid: false,
-                reason: "Bcrypt format detected but hash is incomplete or too short",
-            }
-        }
-    }
-
-    // Unknown format
     return {
         algorithm: "unknown",
         isValid: false,
-        reason: "Hash does not match any known algorithm format (expected $argon2id$ or $2[aby]$)",
+        reason: "Hash does not match Argon2id format (expected $argon2id$v=19$...)",
     }
 }
 
@@ -279,11 +234,6 @@ export function isArgon2idHashFormat(hash: unknown): boolean {
  * const isBcrypt = isBcryptHashFormat('$2b$12$...')
  * // isBcrypt === true
  */
-export function isBcryptHashFormat(hash: unknown): boolean {
-    const result = detectHashAlgorithm(hash)
-    return result.algorithm === "bcrypt" && result.isValid
-}
-
 /**
  * Get a human-readable description of the detected algorithm
  *
@@ -302,8 +252,6 @@ export function getAlgorithmDescription(hash: unknown): string {
     switch (result.algorithm) {
         case "argon2id":
             return `Argon2id (version ${result.version})`
-        case "bcrypt":
-            return `Bcrypt (version ${result.version})`
         case "unknown":
             return "Unknown algorithm"
         default:
