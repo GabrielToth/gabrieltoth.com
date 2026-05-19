@@ -34,6 +34,7 @@ export default getRequestConfig(async ({ locale }) => {
         personality,
         auth,
         minecraft,
+        dashboard,
     ] = await Promise.all([
         loadJson(() => import(`@/i18n/${selectedLocale}/home.json`)),
         loadJson(() => import(`@/i18n/${selectedLocale}/landing.json`)),
@@ -49,6 +50,7 @@ export default getRequestConfig(async ({ locale }) => {
         loadJson(() => import(`@/i18n/${selectedLocale}/personality.json`)),
         loadJson(() => import(`@/i18n/${selectedLocale}/auth.json`)),
         loadJson(() => import(`@/i18n/${selectedLocale}/minecraft.json`)),
+        loadJson(() => import(`@/i18n/${selectedLocale}/dashboard.json`)),
     ])
 
     const messages: MessagesRecord = {
@@ -64,6 +66,7 @@ export default getRequestConfig(async ({ locale }) => {
         personality,
         auth,
         minecraft,
+        dashboard,
         layout: {
             header,
             footer: await loadJson(

@@ -1,4 +1,8 @@
 import {
+    getAuditEnvironment,
+    notifyUserAuditDiscord,
+} from "@/lib/audit/discord-user-audit"
+import {
     logLoginFailure,
     logLoginSuccess,
     logSecurityEvent,
@@ -658,6 +662,14 @@ export async function POST(request: NextRequest) {
 
         // Log successful login (Task 10.2)
         await logLoginSuccess(email, clientIp, userId)
+
+        void notifyUserAuditDiscord("user_login", {
+            email,
+            userId,
+            provider: "email",
+            ip: clientIp,
+            environment: getAuditEnvironment(),
+        })
 
         // Reset rate limit counter on successful login (Requirement 7.5)
         // Track by email (Requirement 7.1)

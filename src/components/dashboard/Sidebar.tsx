@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
+import { useTranslations } from "next-intl"
 import React from "react"
 
 export interface SidebarProps {
@@ -40,10 +41,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
     },
     onLogout,
 }) => {
+    const t = useTranslations("dashboard.sidebar")
+
     const navItems = [
-        { id: "publish", label: "Publish", icon: "📝" },
-        { id: "insights", label: "Insights", icon: "📊" },
-        { id: "settings", label: "Settings", icon: "⚙️" },
+        { id: "publish", label: t("publish"), icon: "📝" },
+        { id: "insights", label: t("insights"), icon: "📊" },
+        { id: "settings", label: t("settings"), icon: "⚙️" },
     ] as const
 
     const channels = [
@@ -98,7 +101,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 {/* Connect Channels Section */}
                 <div className="border-t border-gray-200 px-6 py-4">
                     <h3 className="mb-3 text-xs font-semibold uppercase tracking-wide text-gray-500">
-                        Connect Channels
+                        {t("connectChannels")}
                     </h3>
                     <div className="grid grid-cols-3 gap-2">
                         {channels.map(channel => (
@@ -137,7 +140,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                         className="w-full justify-start text-gray-700 hover:bg-gray-100 hover:text-gray-900 min-h-11"
                     >
                         <span className="mr-2">🚪</span>
-                        Logout
+                        {t("logout")}
                     </Button>
                 </div>
             </aside>
@@ -205,7 +208,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 {/* Connect Channels Section */}
                 <div className="border-t border-gray-200 px-6 py-4">
                     <h3 className="mb-3 text-xs font-semibold uppercase tracking-wide text-gray-500">
-                        Connect Channels
+                        {t("connectChannels")}
                     </h3>
                     <div className="grid grid-cols-3 gap-2">
                         {channels.map(channel => (
@@ -244,7 +247,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                         className="w-full justify-start text-gray-700 hover:bg-gray-100 hover:text-gray-900 min-h-11"
                     >
                         <span className="mr-2">🚪</span>
-                        Logout
+                        {t("logout")}
                     </Button>
                 </div>
             </aside>

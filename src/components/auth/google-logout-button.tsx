@@ -9,6 +9,7 @@
 
 import { useLocale } from "@/hooks/use-locale"
 import { logger } from "@/lib/logger"
+import { useTranslations } from "next-intl"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 
@@ -37,6 +38,7 @@ export function GoogleLogoutButton({
 }: GoogleLogoutButtonProps) {
     const router = useRouter()
     const { locale } = useLocale()
+    const t = useTranslations("auth.logout")
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState<string | null>(null)
 
@@ -55,7 +57,7 @@ export function GoogleLogoutButton({
 
             if (!response.ok) {
                 const data = await response.json()
-                throw new Error(data.error || "Logout failed")
+                throw new Error(data.error || t("error"))
             }
 
             logger.info("User logged out successfully", {
@@ -87,7 +89,7 @@ export function GoogleLogoutButton({
                 disabled={isLoading}
                 className={`px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors ${className}`}
             >
-                {isLoading ? "Logging out..." : "Logout"}
+                {isLoading ? t("loading") : t("button")}
             </button>
             {error && <div className="text-red-600 text-sm">{error}</div>}
         </div>

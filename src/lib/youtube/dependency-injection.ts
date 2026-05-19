@@ -33,6 +33,7 @@ export class DIContainer {
     private serviceRegistry: ServiceRegistry
     private isInitialized = false
     private isShuttingDown = false
+    private resolutionStack: string[] = []
 
     constructor() {
         this.serviceRegistry = new ServiceRegistry()
@@ -111,6 +112,14 @@ export class DIContainer {
             throw new Error(`Service ${name} not found in container`)
         }
 
+        if (this.resolutionStack.includes(name)) {
+            throw new Error(
+                `Circular dependency detected: ${this.resolutionStack.join(" -> ")} -> ${name}`
+            )
+        }
+
+        this.resolutionStack.push(name)
+
         try {
             // Instantiate the service
             const instance = await definition.factory(this)
@@ -132,6 +141,8 @@ export class DIContainer {
                 error instanceof Error ? error : new Error(String(error))
             )
             throw error
+        } finally {
+            this.resolutionStack.pop()
         }
     }
 

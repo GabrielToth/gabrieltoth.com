@@ -34,21 +34,18 @@ console.warn = (...args: unknown[]) => {
     originalConsoleWarn(...args)
 }
 
+const mockLogger = {
+    debug: noop,
+    info: noop,
+    warn: noop,
+    error: noop,
+    fatal: noop,
+}
+
 vi.mock("@/lib/logger", () => ({
-    logger: {
-        debug: noop,
-        info: noop,
-        warn: noop,
-        error: noop,
-        fatal: noop,
-    },
-    createLogger: () => ({
-        debug: noop,
-        info: noop,
-        warn: noop,
-        error: noop,
-        fatal: noop,
-    }),
+    logger: mockLogger,
+    createLogger: () => mockLogger,
+    default: mockLogger,
 }))
 
 // Default DB mock so unit tests never hit a real PostgreSQL instance.

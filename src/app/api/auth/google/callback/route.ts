@@ -6,6 +6,10 @@
  *            4.1, 4.2, 4.3, 4.4, 11.1, 11.2, 11.3, 13.1, 13.2, 13.3, 13.4, 14.2, 14.3, 14.4
  */
 
+import {
+    getAuditEnvironment,
+    notifyUserAuditDiscord,
+} from "@/lib/audit/discord-user-audit"
 import { logAuditEvent } from "@/lib/auth/audit-logging"
 import {
     exchangeCodeForToken,
@@ -192,6 +196,14 @@ async function handleGoogleCallback(
         logger.info("User logged in successfully via Google OAuth", {
             context: "Auth",
             data: { userId: user.id, email: user.google_email },
+        })
+
+        void notifyUserAuditDiscord("user_login", {
+            email: user.google_email,
+            userId: user.id,
+            provider: "google",
+            ip: clientIp,
+            environment: getAuditEnvironment(),
         })
 
         // Create response with session cookie

@@ -12,17 +12,33 @@ export default defineConfig({
     test: {
         environment: "jsdom",
         include: ["src/**/*.{test,spec}.{ts,tsx}"],
+        globals: true,
+        reporters: [["default", { summary: true }]],
+        silent: true,
+        setupFiles: ["./vitest.setup.ts"],
         exclude: [
             "node_modules",
             "src/lib/logger/pino-logger.test.ts",
+            // Live Supabase / DB — run manually with infra up (not part of default CI)
+            "src/__tests__/database/**",
+            "src/__tests__/database-constraints.test.ts",
+            "src/__tests__/helpers/database.test.ts",
+            "src/__tests__/helpers/database-usage-example.test.ts",
+            "src/__tests__/integration/youtube-channel-linking-schema.test.ts",
+            "src/__tests__/integration/environment-parity.test.ts",
+            "src/__tests__/security/bug-condition-*.test.ts",
+            "src/__tests__/security/preservation-*.test.ts",
+            "src/lib/db/migrations/**/*.test.ts",
+            "src/lib/db/schema.test.ts",
+            "src/backend/integration.test.ts",
+            "src/lib/credits/credit-system.test.ts",
+            "src/lib/metering/metering-system.test.ts",
         ],
-        globals: true,
-        reporters: "default",
-        setupFiles: ["./vitest.setup.ts"],
         // Add UTF-8 encoding support
         environmentOptions: {
             jsdom: {
                 resources: "usable",
+                runScripts: "outside-only",
                 url: "http://localhost:3000",
             },
         },

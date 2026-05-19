@@ -1,0 +1,16 @@
+{
+    "sidebar": {
+        "publish": "Publicar",
+        "insights": "Insights",
+        "settings": "Configurações",
+        "logout": "Sair",
+        "loggingOut": "Saindo...",
+        "connectChannels": "Conectar canais",
+        "organization": "Organização",
+        "plan": {
+            "free": "Grátis",
+            "pro": "Pro",
+            "enterprise": "Enterprise"
+        }
+    }
+}

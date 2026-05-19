@@ -287,9 +287,9 @@ describe("DIContainer", () => {
                 return new TestService()
             })
 
-            // This will cause infinite recursion, but we're testing that it doesn't crash
-            // In a real implementation, you'd want to detect this
-            await expect(container.get("service1")).rejects.toThrow()
+            await expect(container.get("service1")).rejects.toThrow(
+                /Circular dependency detected/
+            )
         })
     })
 })

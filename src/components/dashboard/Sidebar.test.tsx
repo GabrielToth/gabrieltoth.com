@@ -2,6 +2,19 @@ import { fireEvent, render, screen } from "@testing-library/react"
 import { describe, expect, it, vi } from "vitest"
 import { Sidebar } from "./Sidebar"
 
+vi.mock("next-intl", () => ({
+    useTranslations: (ns: string) => (key: string) => {
+        const map: Record<string, string> = {
+            "dashboard.sidebar.publish": "Publish",
+            "dashboard.sidebar.insights": "Insights",
+            "dashboard.sidebar.settings": "Settings",
+            "dashboard.sidebar.logout": "Logout",
+            "dashboard.sidebar.connectChannels": "Connect Channels",
+        }
+        return map[`${ns}.${key}`] ?? key
+    },
+}))
+
 describe("Sidebar", () => {
     it("renders sidebar with logo", () => {
         render(<Sidebar activeTab="publish" onTabChange={vi.fn()} />)

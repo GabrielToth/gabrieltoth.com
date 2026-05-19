@@ -1,0 +1,16 @@
+{
+    "sidebar": {
+        "publish": "Publish",
+        "insights": "Insights",
+        "settings": "Settings",
+        "logout": "Logout",
+        "loggingOut": "Logging out...",
+        "connectChannels": "Connect Channels",
+        "organization": "Organization",
+        "plan": {
+            "free": "Free",
+            "pro": "Pro",
+            "enterprise": "Enterprise"
+        }
+    }
+}

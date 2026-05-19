@@ -20,7 +20,6 @@ import {
 // Mock modules
 vi.mock("@/lib/auth/user")
 vi.mock("@/lib/auth/session")
-vi.mock("@/lib/logger")
 
 describe("Account Completion Middleware - Integration Tests", () => {
     beforeEach(() => {

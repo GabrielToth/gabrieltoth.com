@@ -10,6 +10,7 @@
 
 import { getSessionFromCookie } from "@/lib/auth/session"
 import { getUserById } from "@/lib/auth/user"
+import { createLogger } from "@/lib/logger"
 import { OAuthUser } from "@/types/auth"
 import { NextRequest, NextResponse } from "next/server"
 
@@ -27,6 +28,8 @@ const COMPLETION_FLOW_ROUTES = [
  * Routes that should NOT be protected by account completion middleware
  * These routes are public and don't require authentication
  */
+const log = createLogger("AccountCompletion")
+
 const PUBLIC_ROUTES = [
     "/auth/login",
     "/auth/register",
@@ -167,7 +170,7 @@ export async function checkAccountCompletion(
         return NextResponse.redirect(redirectUrl)
     } catch (error) {
         // Log error but don't block the request
-        console.error("Account completion middleware error:", error)
+        log.error("Account completion middleware error", { error })
         return null
     }
 }
@@ -188,7 +191,7 @@ export async function getAccountCompletionStatus(
         }
         return user.account_completion_status
     } catch (error) {
-        console.error("Error getting account completion status:", error)
+        log.debug("Error getting account completion status", { error })
         return null
     }
 }
@@ -210,7 +213,7 @@ export async function isAccountComplete(userId: string): Promise<boolean> {
             user.account_completion_status === "completed"
         )
     } catch (error) {
-        console.error("Error checking account completion:", error)
+        log.debug("Error checking account completion", { error })
         return false
     }
 }

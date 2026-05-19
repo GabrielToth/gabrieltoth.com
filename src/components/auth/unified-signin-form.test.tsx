@@ -600,22 +600,6 @@ describe("UnifiedSignInForm - Preservation Property Tests", () => {
          * Preservation: Privacy policy link should navigate correctly
          * This behavior should remain unchanged after the fix
          *
-         * NOTE: Component doesn't render privacy policy, so this test is skipped
-         */
-        it.skip("should navigate to privacy policy when link is clicked", async () => {
-            render(<UnifiedSignInForm locale="pt-BR" />)
-
-            // Find privacy policy link using regex for Portuguese text
-            const privacyLink = screen.getByText(/política de privacidade/i)
-            expect(privacyLink).toBeInTheDocument()
-
-            // Verify it has correct href
-            expect(privacyLink.closest("a")).toHaveAttribute(
-                "href",
-                "/pt-BR/privacy-policy"
-            )
-        })
-
         /**
          * Combined preservation test: Multiple interactions in sequence
          *

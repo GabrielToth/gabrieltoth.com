@@ -25,6 +25,17 @@ vi.mock("@/hooks/use-locale", () => ({
     }),
 }))
 
+vi.mock("next-intl", () => ({
+    useTranslations: () => (key: string) => {
+        const map: Record<string, string> = {
+            button: "Logout",
+            loading: "Logging out...",
+            error: "Logout failed",
+        }
+        return map[key] ?? key
+    },
+}))
+
 // Mock logger
 vi.mock("@/lib/logger", () => ({
     logger: {

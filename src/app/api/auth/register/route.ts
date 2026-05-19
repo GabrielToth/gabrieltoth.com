@@ -1,3 +1,7 @@
+import {
+    getAuditEnvironment,
+    notifyUserAuditDiscord,
+} from "@/lib/audit/discord-user-audit"
 import { logRegistration } from "@/lib/auth/audit-logging"
 import { AuthErrorType, createErrorResponse } from "@/lib/auth/error-handling"
 import { AuthenticationService } from "@/lib/auth/password-security"
@@ -249,6 +253,14 @@ export async function POST(request: NextRequest) {
 
         // Log registration completion
         await logRegistration(email, clientIp, authResult.userId!)
+
+        void notifyUserAuditDiscord("user_registered", {
+            email: email.toLowerCase(),
+            userId: authResult.userId,
+            provider: "email",
+            ip: clientIp,
+            environment: getAuditEnvironment(),
+        })
 
         return NextResponse.json(
             {

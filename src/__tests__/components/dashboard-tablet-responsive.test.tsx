@@ -4,7 +4,20 @@ import { ChannelComparison } from "@/components/insights/ChannelComparison"
 import { ChannelGraphs } from "@/components/insights/ChannelGraphs"
 import { MetricsGrid } from "@/components/insights/MetricsGrid"
 import { render, screen } from "@testing-library/react"
-import { describe, expect, it } from "vitest"
+import { describe, expect, it, vi } from "vitest"
+
+vi.mock("next-intl", () => ({
+    useTranslations: (ns: string) => (key: string) => {
+        const map: Record<string, string> = {
+            "dashboard.sidebar.publish": "Publish",
+            "dashboard.sidebar.insights": "Insights",
+            "dashboard.sidebar.settings": "Settings",
+            "dashboard.sidebar.logout": "Logout",
+            "dashboard.sidebar.connectChannels": "Connect Channels",
+        }
+        return map[`${ns}.${key}`] ?? key
+    },
+}))
 
 /**
  * Tablet Responsive Design Tests (Task 30)

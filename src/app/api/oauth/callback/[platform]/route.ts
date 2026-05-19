@@ -5,6 +5,11 @@
  * Requirements: 10.1, 10.2, 10.3, 10.5, 10.6, 10.7
  */
 
+import {
+    getAuditEnvironment,
+    notifyUserAuditDiscord,
+} from "@/lib/audit/discord-user-audit"
+import { getUserById } from "@/lib/auth/user"
 import { createLogger } from "@/lib/logger"
 import { getOAuthManager } from "@/lib/oauth"
 import { getTokenStore } from "@/lib/token-store"
@@ -111,6 +116,14 @@ export async function GET(
         logger.info("OAuth token stored successfully", {
             platform,
             userId,
+        })
+
+        const user = await getUserById(userId)
+        void notifyUserAuditDiscord("platform_linked", {
+            email: user?.email,
+            userId,
+            platform: normalizedPlatform,
+            environment: getAuditEnvironment(),
         })
 
         // Redirect to dashboard with success

@@ -143,25 +143,6 @@ describe("Performance: Login Endpoint", () => {
             expect(duration).toBeLessThan(1000)
         })
 
-        it.skip("not degrade performance with repeated hashing", async () => {
-            const password = "ValidPassword123!"
-            const durations: number[] = []
-
-            for (let i = 0; i < 3; i++) {
-                const { duration } = await measureAsync(async () => {
-                    return await hashPassword(password)
-                })
-
-                durations.push(duration)
-            }
-
-            // Performance should be consistent
-            const avgDuration =
-                durations.reduce((a, b) => a + b, 0) / durations.length
-            durations.forEach(duration => {
-                expect(Math.abs(duration - avgDuration)).toBeLessThan(5000)
-            })
-        })
     })
 
     describe("25.3 Rate Limiting Optimization", () => {
