@@ -8,7 +8,7 @@
  * - Email and password validation
  * - CSRF token validation
  * - Rate limiting enforcement
- * - Password verification with bcrypt
+ * - Password verification with Argon2id
  * - Session token creation
  * - Remember Me token creation
  * - Secure cookie setting
@@ -46,7 +46,7 @@ describe("Integration: Complete Login Flow", () => {
             const user = {
                 id: "user-123",
                 email: "user@example.com",
-                password_hash: "$2b$12$abcdefghijklmnopqrstuvwxyz1234567890", // bcrypt hash
+                password_hash: "$argon2id$v=19$m=64000,t=3,p=2$salt$hash1234567890abcdef",
                 email_verified: true,
                 created_at: new Date(),
             }
@@ -54,7 +54,7 @@ describe("Integration: Complete Login Flow", () => {
             expect(user.email).toBe(loginRequest.email)
             expect(user.email_verified).toBe(true)
 
-            // Step 5: Backend verifies password with bcrypt
+            // Step 5: Backend verifies password with Argon2id
             const passwordMatch = true
             expect(passwordMatch).toBe(true)
 
@@ -329,7 +329,7 @@ describe("Integration: Complete Login Flow", () => {
             const user = {
                 id: "user-123",
                 email: "user@example.com",
-                password_hash: "$2b$12$abcdefghijklmnopqrstuvwxyz1234567890",
+                password_hash: "$argon2id$v=19$m=64000,t=3,p=2$abcdefghijklmnopqrst$0123456789abcdef0123456789abcdef",
                 email_verified: true,
             }
 
@@ -376,7 +376,7 @@ describe("Integration: Complete Login Flow", () => {
             const user = {
                 id: "user-456",
                 email: "unverified@example.com",
-                password_hash: "$2b$12$abcdefghijklmnopqrstuvwxyz1234567890",
+                password_hash: "$argon2id$v=19$m=64000,t=3,p=2$abcdefghijklmnopqrst$0123456789abcdef0123456789abcdef",
                 email_verified: false, // Not verified
             }
 

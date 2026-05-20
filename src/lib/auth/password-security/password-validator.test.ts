@@ -6,7 +6,7 @@
  *
  * Test Coverage:
  * - Argon2id hash validation (correct and incorrect passwords)
- * - Bcrypt hash validation (correct and incorrect passwords)
+ * - Argon2id hash validation
  * - Algorithm detection and migration flag
  * - Generic error messages (no algorithm revelation)
  * - Invalid input handling (null, undefined, wrong type)
@@ -90,17 +90,6 @@ describe("Password Validator", () => {
 
             expect(result.timeTakenMs).toBeGreaterThan(0)
             expect(result.timeTakenMs).toBeLessThan(10000) // Should complete within 10 seconds
-        })
-    })
-
-    describe("validatePassword - Legacy Bcrypt Rejected", () => {
-        it("rejects bcrypt hashes", async () => {
-            const bcryptHash =
-                "$2b$10$nOUIs5kJ7naTuTFkBy1Be.PRZQl/qxWXInGA4aBUW3CjjF3XGm2Oi"
-            const result = await validatePassword(TEST_PASSWORD, bcryptHash)
-
-            expect(result.valid).toBe(false)
-            expect(result.algorithmType).toBe("unknown")
         })
     })
 
@@ -223,10 +212,8 @@ describe("Password Validator", () => {
             expect(result.error).toBe("Authentication failed")
         })
 
-        it("should return generic error for incomplete Bcrypt hash", async () => {
-            const incompleteHash = "$2b$12$"
-
-            const result = await validatePassword(TEST_PASSWORD, incompleteHash)
+        it("should return generic error for unsupported hash format", async () => {
+            const result = await validatePassword(TEST_PASSWORD, "$argon2id$v=19$m=64000,t=3,p=2$abcdefghijklmnopqrst$0123456789abcdef0123456789abcdef")
 
             expect(result.valid).toBe(false)
             expect(result.error).toBe("Authentication failed")

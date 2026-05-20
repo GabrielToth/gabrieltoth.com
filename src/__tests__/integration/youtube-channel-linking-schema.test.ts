@@ -444,7 +444,7 @@ describe("YouTube Channel Linking Database Schema", () => {
                 .from("recovery_tokens")
                 .insert({
                     youtube_channel_id: channelId,
-                    token_hash: `$2b$10$hash${Date.now()}`,
+                    token_hash: `tok_hash${Date.now()}`,
                     user_email: "test@example.com",
                     expires_at: new Date(Date.now() + 86400000).toISOString(), // 24 hours
                     status: "pending",
@@ -460,7 +460,7 @@ describe("YouTube Channel Linking Database Schema", () => {
         it("should enforce unique constraint on token_hash", async ({ skip }) => {
     if (!isDbRunning) return skip()
     if (!isDbRunning) return skip()
-            const tokenHash = `$2b$10$unique${Date.now()}`
+            const tokenHash = `tok_unique${Date.now()}`
 
             // Insert first token
             const { error: firstError } = await supabase
@@ -510,7 +510,7 @@ describe("YouTube Channel Linking Database Schema", () => {
                     .from("recovery_tokens")
                     .insert({
                         youtube_channel_id: channelId,
-                        token_hash: `$2b$10$${status}${Date.now()}`,
+                        token_hash: `tok_${status}${Date.now()}`,
                         user_email: `test-${status}@example.com`,
                         expires_at: new Date(
                             Date.now() + 86400000
@@ -531,7 +531,7 @@ describe("YouTube Channel Linking Database Schema", () => {
                 .from("recovery_tokens")
                 .insert({
                     youtube_channel_id: channelId,
-                    token_hash: `$2b$10$null${Date.now()}`,
+                    token_hash: `tok_null${Date.now()}`,
                     user_email: "test-null@example.com",
                     expires_at: new Date(Date.now() + 86400000).toISOString(),
                     initiated_by_user_id: null,

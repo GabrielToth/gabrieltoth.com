@@ -194,9 +194,8 @@ The Account Completion Flow enables legacy OAuth users to complete their account
 ### Environment Variables by Feature
 
 #### General Settings
-- `NODE_ENV` - Node environment (development/production)
-- `DEBUG` - Server-side debug logging
-- `NEXT_PUBLIC_DEBUG` - Client-side debug UI
+- `DEBUG` - Single debug flag (server logs + client UI via Next.js config)
+- `NEXT_PUBLIC_APP_URL` - Public site URL; API is always `{APP_URL}/api`
 
 #### Database
 - `DATABASE_URL` - PostgreSQL connection string
@@ -206,17 +205,13 @@ The Account Completion Flow enables legacy OAuth users to complete their account
 - `REDIS_URL` - Redis connection (optional, for caching)
 
 #### Authentication & Registration
-- `NEXT_PUBLIC_API_URL` - API endpoint URL (local: http://localhost:3000/api, production: https://api.production.com)
 - `JWT_SECRET` - Secret key for signing JWT tokens during OAuth registration
-- `BCRYPT_COST_FACTOR` - Password hashing cost (10-12, higher = more secure but slower)
+- `ARGON2_MEMORY_COST`, `ARGON2_TIME_COST`, `ARGON2_PARALLELISM` - Argon2id tuning (see `.env.local.example`)
 - `SESSION_TIMEOUT` - Registration session timeout in milliseconds (default: 1800000 = 30 minutes)
 - `VERIFICATION_TOKEN_EXPIRY` - Email verification link expiry in milliseconds (default: 86400000 = 24 hours)
 
-#### Email Service (SMTP)
-- `SMTP_HOST` - SMTP server hostname (e.g., smtp.gmail.com)
-- `SMTP_PORT` - SMTP port (587 for TLS, 465 for SSL)
-- `SMTP_USER` - SMTP username/email
-- `SMTP_PASSWORD` - SMTP password or app-specific password
+#### Email (Resend)
+- `RESEND_API_KEY` - Resend API key for transactional email
 - `SMTP_FROM_EMAIL` - Sender email address
 - `SMTP_FROM_NAME` - Sender display name
 
@@ -257,7 +252,7 @@ The application supports both cloud and local deployment:
 
 ⚠️ **Never commit `.env.local` to git** - it's in `.gitignore` for a reason!
 
-- Keep `BCRYPT_COST_FACTOR` at 10 for development (faster), 12 for production (more secure)
+- Use lower `ARGON2_*` values in `.env.test` for fast Vitest runs
 - Use different `JWT_SECRET` for development and production
 - Use test OAuth credentials for development, production credentials for deployment
 - Keep `SUPABASE_SERVICE_ROLE_KEY` secret - never expose to client

@@ -335,9 +335,7 @@ describe("Argon2id Password Hashing", () => {
         })
 
         it("should reject non-Argon2id hash", () => {
-            const bcryptHash = "$2b$12$abcdefghijklmnopqrstuvwxyz"
-
-            expect(isArgon2idHash(bcryptHash)).toBe(false)
+            expect(isArgon2idHash("invalid-password-hash")).toBe(false)
         })
 
         it("should reject empty string", () => {

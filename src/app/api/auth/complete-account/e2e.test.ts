@@ -9,18 +9,18 @@ import { createSession } from "@/lib/auth/session"
 import { generateTempToken, validateTempToken } from "@/lib/auth/temp-token"
 import { getUserByEmail, updateUserAccountCompletion } from "@/lib/auth/user"
 import { rateLimitByKey } from "@/lib/rate-limit"
-import bcrypt from "bcrypt"
 import { NextRequest } from "next/server"
+import { hashPassword } from "@/lib/auth/password-hashing"
 import { beforeEach, describe, expect, it, vi } from "vitest"
 import { POST } from "./route"
 
 // Mock dependencies
+vi.mock("@/lib/auth/password-hashing")
 vi.mock("@/lib/auth/temp-token")
 vi.mock("@/lib/auth/session")
 vi.mock("@/lib/auth/user")
 vi.mock("@/lib/auth/audit-logging")
 vi.mock("@/lib/rate-limit")
-vi.mock("bcrypt")
 vi.mock("@/lib/logger")
 
 describe("Account Completion Flow - End-to-End Integration", () => {
@@ -70,7 +70,7 @@ describe("Account Completion Flow - End-to-End Integration", () => {
             vi.mocked(getUserByEmail).mockResolvedValue(null)
 
             // Mock password hashing
-            vi.mocked(bcrypt.hash).mockResolvedValue(
+            vi.mocked(hashPassword).mockResolvedValue(
                 "hashed-password-123" as never
             )
 
@@ -189,7 +189,7 @@ describe("Account Completion Flow - End-to-End Integration", () => {
             })
 
             vi.mocked(getUserByEmail).mockResolvedValue(null)
-            vi.mocked(bcrypt.hash).mockResolvedValue(
+            vi.mocked(hashPassword).mockResolvedValue(
                 "hashed-password-456" as never
             )
 
@@ -269,7 +269,7 @@ describe("Account Completion Flow - End-to-End Integration", () => {
             })
 
             vi.mocked(getUserByEmail).mockResolvedValue(null)
-            vi.mocked(bcrypt.hash).mockResolvedValue("hashed-preserve" as never)
+            vi.mocked(hashPassword).mockResolvedValue("hashed-preserve" as never)
 
             const updatedUser = {
                 id: "user-preserve",
@@ -375,7 +375,7 @@ describe("Account Completion Flow - End-to-End Integration", () => {
 
             // Second attempt with valid password
             vi.mocked(getUserByEmail).mockResolvedValue(null)
-            vi.mocked(bcrypt.hash).mockResolvedValue("hashed-retry" as never)
+            vi.mocked(hashPassword).mockResolvedValue("hashed-retry" as never)
 
             const updatedUser = {
                 id: "user-retry",
@@ -449,7 +449,7 @@ describe("Account Completion Flow - End-to-End Integration", () => {
             })
 
             vi.mocked(getUserByEmail).mockResolvedValue(null)
-            vi.mocked(bcrypt.hash).mockResolvedValue(
+            vi.mocked(hashPassword).mockResolvedValue(
                 "hashed-concurrent" as never
             )
 
@@ -544,7 +544,7 @@ describe("Account Completion Flow - End-to-End Integration", () => {
             })
 
             vi.mocked(getUserByEmail).mockResolvedValue(null)
-            vi.mocked(bcrypt.hash).mockResolvedValue(
+            vi.mocked(hashPassword).mockResolvedValue(
                 "hashed-integrity" as never
             )
 
@@ -702,7 +702,7 @@ describe("Duplicate Email Prevention - Integration", () => {
 
         // No existing user with this email
         vi.mocked(getUserByEmail).mockResolvedValue(null)
-        vi.mocked(bcrypt.hash).mockResolvedValue("hashed-oauth" as never)
+        vi.mocked(hashPassword).mockResolvedValue("hashed-oauth" as never)
 
         const updatedUser = {
             id: "user-oauth",
@@ -953,7 +953,7 @@ describe("Multilingual Integration - Account Completion Flow", () => {
         })
 
         vi.mocked(getUserByEmail).mockResolvedValue(null)
-        vi.mocked(bcrypt.hash).mockResolvedValue("hashed-en" as never)
+        vi.mocked(hashPassword).mockResolvedValue("hashed-en" as never)
 
         const updatedUser = {
             id: "user-en",
@@ -1032,7 +1032,7 @@ describe("Multilingual Integration - Account Completion Flow", () => {
         })
 
         vi.mocked(getUserByEmail).mockResolvedValue(null)
-        vi.mocked(bcrypt.hash).mockResolvedValue("hashed-pt" as never)
+        vi.mocked(hashPassword).mockResolvedValue("hashed-pt" as never)
 
         const updatedUser = {
             id: "user-pt",
@@ -1111,7 +1111,7 @@ describe("Multilingual Integration - Account Completion Flow", () => {
         })
 
         vi.mocked(getUserByEmail).mockResolvedValue(null)
-        vi.mocked(bcrypt.hash).mockResolvedValue("hashed-es" as never)
+        vi.mocked(hashPassword).mockResolvedValue("hashed-es" as never)
 
         const updatedUser = {
             id: "user-es",
@@ -1190,7 +1190,7 @@ describe("Multilingual Integration - Account Completion Flow", () => {
         })
 
         vi.mocked(getUserByEmail).mockResolvedValue(null)
-        vi.mocked(bcrypt.hash).mockResolvedValue("hashed-de" as never)
+        vi.mocked(hashPassword).mockResolvedValue("hashed-de" as never)
 
         const updatedUser = {
             id: "user-de",
@@ -1269,7 +1269,7 @@ describe("Multilingual Integration - Account Completion Flow", () => {
         })
 
         vi.mocked(getUserByEmail).mockResolvedValue(null)
-        vi.mocked(bcrypt.hash).mockResolvedValue("hashed-multi" as never)
+        vi.mocked(hashPassword).mockResolvedValue("hashed-multi" as never)
 
         const updatedUser = {
             id: "user-multi",

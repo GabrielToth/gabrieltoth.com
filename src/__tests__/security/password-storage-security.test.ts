@@ -1,34 +1,16 @@
-/**
- * Phase 10 Security Tests: Tasks 10.4-10.10
- * Comprehensive security testing for password storage system
- *
- * Task 10.4: Test rate limiting (5 failures → 429)
- * Task 10.5: Test timing attack prevention (constant-time comparison)
- * Task 10.6: Test generic error messages (no algorithm revelation)
- * Task 10.7: Test CAPTCHA bypass attempts (rejected)
- * Task 10.8: Test performance on Vercel (hash generation < 3 seconds)
- * Task 10.9: Test password validation against Bcrypt (legacy support)
- * Task 10.10: Test algorithm migration after successful Bcrypt login
- *
- * Validates: Requirements 5.1-5.4, 6.6, 7.1-7.4, 9.1-9.3, 10.1-10.3, 11.1, 11.5, 15.1-15.3, 20.1, 20.3-20.5
- */
+/** Security tests for password storage and authentication. */
 
 import { comparePassword, hashPassword } from "@/lib/auth/password-hashing"
 import { validatePassword } from "@/lib/auth/password-security/password-validator"
 import argon2 from "argon2"
-import bcrypt from "bcrypt"
 import { beforeEach, describe, expect, it, vi } from "vitest"
 
-describe("Phase 10 Security Tests (Tasks 10.4-10.10)", () => {
+describe("Password storage security", () => {
     beforeEach(() => {
         vi.clearAllMocks()
     })
-
-    // ============================================================================
-    // Task 10.4: Test rate limiting (5 failures → 429)
-    // ============================================================================
-    describe("Task 10.4: Rate Limiting (5 failures → 429)", () => {
-        describe("Requirement 7.1-7.4: Rate limiting enforcement", () => {
+    describe("Rate Limiting (5 failures → 429)", () => {
+        describe("Rate limiting enforcement", () => {
             it("should allow first login attempt", () => {
                 const maxAttempts = 5
                 const currentAttempts = 1
@@ -99,7 +81,7 @@ describe("Phase 10 Security Tests (Tasks 10.4-10.10)", () => {
             })
         })
 
-        describe("Requirement 7.4-7.5: Automatic unlock after 15 minutes", () => {
+        describe("Automatic unlock after 15 minutes", () => {
             it("should lock account after 5 failures", () => {
                 const maxAttempts = 5
                 const currentAttempts = 5
@@ -134,7 +116,7 @@ describe("Phase 10 Security Tests (Tasks 10.4-10.10)", () => {
             })
         })
 
-        describe("Requirement 7.2-7.3: Rate limit response", () => {
+        describe("Rate limit response", () => {
             it("should return 429 Too Many Requests when locked", () => {
                 const statusCode = 429
                 const errorMessage =
@@ -161,12 +143,8 @@ describe("Phase 10 Security Tests (Tasks 10.4-10.10)", () => {
             })
         })
     })
-
-    // ============================================================================
-    // Task 10.5: Test timing attack prevention (constant-time comparison)
-    // ============================================================================
-    describe("Task 10.5: Timing Attack Prevention (Constant-Time Comparison)", () => {
-        describe("Requirement 10.1-10.3: Constant-time comparison", () => {
+    describe("Timing Attack Prevention (Constant-Time Comparison)", () => {
+        describe("Constant-time comparison", () => {
             it("should use constant-time password comparison", async () => {
                 const password = "TestPassword123!"
                 const hash = await hashPassword(password)
@@ -275,7 +253,7 @@ describe("Phase 10 Security Tests (Tasks 10.4-10.10)", () => {
             })
         })
 
-        describe("Requirement 10.4-10.5: Response time normalization", () => {
+        describe("Response time normalization", () => {
             it("should normalize response times to prevent timing attacks", async () => {
                 const password = "TestPassword123!"
                 const hash = await hashPassword(password)
@@ -311,17 +289,13 @@ describe("Phase 10 Security Tests (Tasks 10.4-10.10)", () => {
             })
         })
     })
-
-    // ============================================================================
-    // Task 10.6: Test generic error messages (no algorithm revelation)
-    // ============================================================================
-    describe("Task 10.6: Generic Error Messages (No Algorithm Revelation)", () => {
-        describe("Requirement 6.6, 9.1-9.3: Generic error messages", () => {
-            it("should not indicate Argon2id vs Bcrypt in error messages", () => {
+    describe("Generic Error Messages (No Algorithm Revelation)", () => {
+        describe("Generic error messages", () => {
+            it("should not indicate hash algorithm in error messages", () => {
                 const error = "Invalid email or password"
 
                 expect(error).not.toContain("Argon2")
-                expect(error).not.toContain("Bcrypt")
+                expect(error).not.toContain("argon2id")
                 expect(error).not.toContain("algorithm")
                 expect(error).not.toContain("hash")
             })
@@ -377,12 +351,8 @@ describe("Phase 10 Security Tests (Tasks 10.4-10.10)", () => {
             })
         })
     })
-
-    // ============================================================================
-    // Task 10.7: Test CAPTCHA bypass attempts (rejected)
-    // ============================================================================
-    describe("Task 10.7: CAPTCHA Bypass Attempts (Rejected)", () => {
-        describe("Requirement 20.1, 20.3-20.5: CAPTCHA validation", () => {
+    describe("CAPTCHA Bypass Attempts (Rejected)", () => {
+        describe("CAPTCHA validation", () => {
             it("should reject missing CAPTCHA token with 400", () => {
                 const token = undefined
                 const statusCode = token ? 200 : 400
@@ -447,12 +417,8 @@ describe("Phase 10 Security Tests (Tasks 10.4-10.10)", () => {
             })
         })
     })
-
-    // ============================================================================
-    // Task 10.8: Test performance on Vercel (hash generation < 3 seconds)
-    // ============================================================================
-    describe("Task 10.8: Performance on Vercel (Hash Generation < 3 Seconds)", () => {
-        describe("Requirement 15.1-15.3: Performance requirements", () => {
+    describe("Performance on Vercel (Hash Generation < 3 Seconds)", () => {
+        describe("Performance requirements", () => {
             it("should hash password in less than 3 seconds", async () => {
                 const password = "TestPassword123!"
                 const start = performance.now()
@@ -529,35 +495,7 @@ describe("Phase 10 Security Tests (Tasks 10.4-10.10)", () => {
         })
     })
 
-    describe("Task 10.9: Legacy Bcrypt hashes rejected", () => {
-        it("does not accept bcrypt hashes for login", async () => {
-            const password = "TestPassword123!"
-            const pepper =
-                process.env.PEPPER_SECRET ||
-                "dev-pepper-test-very-long-string-32chars-minimum-required!"
-            const bcryptHash = await bcrypt.hash(password + pepper, 10)
-
-            const result = await validatePassword(password, bcryptHash)
-
-            expect(result.valid).toBe(false)
-            expect(result.algorithmType).toBe("unknown")
-        })
-    })
-
-    describe("Task 10.10: Legacy Bcrypt Rejected (Argon2id only)", () => {
-        it("rejects bcrypt password hashes", async () => {
-            const password = "TestPassword123!"
-            const pepper =
-                process.env.PEPPER_SECRET ||
-                "dev-pepper-test-very-long-string-32chars-minimum-required!"
-            const bcryptHash = await bcrypt.hash(password + pepper, 10)
-
-            const result = await validatePassword(password, bcryptHash)
-
-            expect(result.valid).toBe(false)
-            expect(result.algorithmType).toBe("unknown")
-        })
-
+    describe("Argon2id validation", () => {
         it("accepts Argon2id hashes", async () => {
             const password = "TestPassword123!"
             const pepper =
@@ -576,11 +514,17 @@ describe("Phase 10 Security Tests (Tasks 10.4-10.10)", () => {
             expect(result.valid).toBe(true)
             expect(result.algorithmType).toBe("argon2id")
         })
+
+        it("rejects non-Argon2id hash formats", async () => {
+            const result = await validatePassword(
+                "TestPassword123!",
+                "$argon2id$v=19$m=64000,t=3,p=2$invalidprefix$hash"
+            )
+            expect(result.valid).toBe(false)
+            expect(result.algorithmType).toBe("unknown")
+        })
     })
 
-    // ============================================================================
-    // Integration Tests: Combined Scenarios
-    // ============================================================================
     describe("Integration Tests: Combined Security Scenarios", () => {
         it("should handle complete login flow with rate limiting", () => {
             let attempts = 0
@@ -620,7 +564,7 @@ describe("Phase 10 Security Tests (Tasks 10.4-10.10)", () => {
             // Test 2: Generic error messages
             const error = "Invalid email or password"
             expect(error).not.toContain("Argon2")
-            expect(error).not.toContain("Bcrypt")
+            expect(error).not.toContain("argon2id")
 
             // Test 3: Performance within limits
             expect(time1).toBeLessThan(3000)

@@ -1,12 +1,3 @@
-/**
- * Account Completion Monitoring and Observability Module
- *
- * Provides metrics collection, structured logging, and alerting
- * for the account completion flow.
- *
- * Validates: Phase 10 - Monitoring and Observability
- */
-
 import { logger } from "@/lib/logger"
 
 /**

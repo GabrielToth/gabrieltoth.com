@@ -18,7 +18,7 @@ describe("Integration: Password Reset Flow", () => {
             id: "user-123",
             email: "user@example.com",
             name: "Test User",
-            password_hash: "$2b$12$oldhashedpassword...",
+            password_hash: "$argon2id$v=19$m=64000,t=3,p=2$abcdefghijklmnopqrst$0123456789abcdef0123456789abcdef",
             email_verified: true,
         }
 
@@ -79,12 +79,12 @@ describe("Integration: Password Reset Flow", () => {
         // Step 6: Password is updated in database with new hash
         const updatedUser = {
             ...existingUser,
-            password_hash: "$2b$12$newhashedpassword...",
+            password_hash: "$argon2id$v=19$m=64000,t=3,p=2$abcdefghijklmnopqrst$0123456789abcdef0123456789abcdef",
             updated_at: new Date(),
         }
 
         expect(updatedUser.password_hash).not.toBe(existingUser.password_hash)
-        expect(updatedUser.password_hash).toContain("$2b$12$")
+        expect(updatedUser.password_hash).toContain("$argon2id$v=19$m=64000,t=3,p=2$abcdefghijklmnopqrst$0123456789abcdef0123456789abcdef")
 
         // Step 7: All existing sessions are invalidated
         const existingSessions = [

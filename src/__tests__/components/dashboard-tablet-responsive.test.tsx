@@ -20,7 +20,7 @@ vi.mock("next-intl", () => ({
 }))
 
 /**
- * Tablet Responsive Design Tests (Task 30)
+ * Tablet Responsive Design Tests 
  * Tests for tablet devices (768px-1024px)
  *
  * Requirements:

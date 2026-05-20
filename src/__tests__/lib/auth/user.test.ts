@@ -41,7 +41,7 @@ describe("User Manager - OAuth Functions", () => {
         it("should create a user with all fields", async () => {
             const userData = {
                 email: "test@example.com",
-                password_hash: "$2b$12$abcdefghijklmnopqrstuvwxyz123456",
+                password_hash: "$argon2id$v=19$m=64000,t=3,p=2$abcdefghijklmnopqrst$0123456789abcdef0123456789abcdef",
                 oauth_provider: "google",
                 oauth_id: "google-123",
                 name: "Test User",
@@ -78,7 +78,7 @@ describe("User Manager - OAuth Functions", () => {
         it("should create a user without optional picture field", async () => {
             const userData = {
                 email: "test@example.com",
-                password_hash: "$2b$12$abcdefghijklmnopqrstuvwxyz123456",
+                password_hash: "$argon2id$v=19$m=64000,t=3,p=2$abcdefghijklmnopqrst$0123456789abcdef0123456789abcdef",
                 oauth_provider: "facebook",
                 oauth_id: "facebook-456",
                 name: "Test User",
@@ -116,7 +116,7 @@ describe("User Manager - OAuth Functions", () => {
         it("should set email_verified to true for Google OAuth", async () => {
             const userData = {
                 email: "test@gmail.com",
-                password_hash: "$2b$12$abcdefghijklmnopqrstuvwxyz123456",
+                password_hash: "$argon2id$v=19$m=64000,t=3,p=2$abcdefghijklmnopqrst$0123456789abcdef0123456789abcdef",
                 oauth_provider: "google",
                 oauth_id: "google-789",
                 name: "Google User",
@@ -141,7 +141,7 @@ describe("User Manager - OAuth Functions", () => {
         it("should set email_verified to false for Facebook OAuth", async () => {
             const userData = {
                 email: "test@example.com",
-                password_hash: "$2b$12$abcdefghijklmnopqrstuvwxyz123456",
+                password_hash: "$argon2id$v=19$m=64000,t=3,p=2$abcdefghijklmnopqrst$0123456789abcdef0123456789abcdef",
                 oauth_provider: "facebook",
                 oauth_id: "facebook-101",
                 name: "Facebook User",
@@ -166,7 +166,7 @@ describe("User Manager - OAuth Functions", () => {
         it("should set email_verified to false for TikTok OAuth", async () => {
             const userData = {
                 email: "test@example.com",
-                password_hash: "$2b$12$abcdefghijklmnopqrstuvwxyz123456",
+                password_hash: "$argon2id$v=19$m=64000,t=3,p=2$abcdefghijklmnopqrst$0123456789abcdef0123456789abcdef",
                 oauth_provider: "tiktok",
                 oauth_id: "tiktok-202",
                 name: "TikTok User",
@@ -205,7 +205,7 @@ describe("User Manager - OAuth Functions", () => {
         it("should throw error if oauth_provider is invalid", async () => {
             const invalidData = {
                 email: "test@example.com",
-                password_hash: "$2b$12$abcdefghijklmnopqrstuvwxyz123456",
+                password_hash: "$argon2id$v=19$m=64000,t=3,p=2$abcdefghijklmnopqrst$0123456789abcdef0123456789abcdef",
                 oauth_provider: "invalid-provider",
                 oauth_id: "invalid-123",
                 name: "Test User",
@@ -219,7 +219,7 @@ describe("User Manager - OAuth Functions", () => {
         it("should throw error if database operation fails", async () => {
             const userData = {
                 email: "test@example.com",
-                password_hash: "$2b$12$abcdefghijklmnopqrstuvwxyz123456",
+                password_hash: "$argon2id$v=19$m=64000,t=3,p=2$abcdefghijklmnopqrst$0123456789abcdef0123456789abcdef",
                 oauth_provider: "google",
                 oauth_id: "google-error",
                 name: "Test User",
@@ -240,7 +240,7 @@ describe("User Manager - OAuth Functions", () => {
             const mockUser: OAuthUser = {
                 id: "user-123",
                 email: "test@example.com",
-                password_hash: "$2b$12$abcdefghijklmnopqrstuvwxyz123456",
+                password_hash: "$argon2id$v=19$m=64000,t=3,p=2$abcdefghijklmnopqrst$0123456789abcdef0123456789abcdef",
                 oauth_provider: "google",
                 oauth_id: "google-123",
                 name: "Test User",
@@ -285,7 +285,7 @@ describe("User Manager - OAuth Functions", () => {
             const mockUser: OAuthUser = {
                 id: "user-456",
                 email: "test@example.com",
-                password_hash: "$2b$12$abcdefghijklmnopqrstuvwxyz123456",
+                password_hash: "$argon2id$v=19$m=64000,t=3,p=2$abcdefghijklmnopqrst$0123456789abcdef0123456789abcdef",
                 oauth_provider: "facebook",
                 oauth_id: "facebook-456",
                 name: "Test User",
@@ -341,7 +341,7 @@ describe("User Manager - OAuth Functions", () => {
             const mockUser: OAuthUser = {
                 id: "user-789",
                 email: "test@example.com",
-                password_hash: "$2b$12$newpasswordhash123456789",
+                password_hash: "$argon2id$v=19$m=64000,t=3,p=2$abcdefghijklmnopqrst$0123456789abcdef0123456789abcdef",
                 oauth_provider: "google",
                 oauth_id: "google-789",
                 name: "Test User",
@@ -355,13 +355,13 @@ describe("User Manager - OAuth Functions", () => {
 
             const result = await updateUserPassword(
                 "user-789",
-                "$2b$12$newpasswordhash123456789"
+                "$argon2id$v=19$m=64000,t=3,p=2$abcdefghijklmnopqrst$0123456789abcdef0123456789abcdef"
             )
 
             expect(result).toEqual(mockUser)
             expect(db.queryOne).toHaveBeenCalledWith(
                 expect.stringContaining("UPDATE users"),
-                ["$2b$12$newpasswordhash123456789", "user-789"]
+                ["$argon2id$v=19$m=64000,t=3,p=2$abcdefghijklmnopqrst$0123456789abcdef0123456789abcdef", "user-789"]
             )
         })
 
@@ -369,12 +369,12 @@ describe("User Manager - OAuth Functions", () => {
             vi.mocked(db.queryOne).mockResolvedValue(null)
 
             await expect(
-                updateUserPassword("nonexistent-id", "$2b$12$hash")
+                updateUserPassword("nonexistent-id", "$argon2id$v=19$m=64000,t=3,p=2$abcdefghijklmnopqrst$0123456789abcdef0123456789abcdef")
             ).rejects.toThrow("User not found or failed to update password")
         })
 
         it("should throw error if required fields are missing", async () => {
-            await expect(updateUserPassword("", "$2b$12$hash")).rejects.toThrow(
+            await expect(updateUserPassword("", "$argon2id$v=19$m=64000,t=3,p=2$abcdefghijklmnopqrst$0123456789abcdef0123456789abcdef")).rejects.toThrow(
                 "Missing required fields"
             )
             await expect(updateUserPassword("user-id", "")).rejects.toThrow(
@@ -388,7 +388,7 @@ describe("User Manager - OAuth Functions", () => {
             )
 
             await expect(
-                updateUserPassword("user-123", "$2b$12$hash")
+                updateUserPassword("user-123", "$argon2id$v=19$m=64000,t=3,p=2$abcdefghijklmnopqrst$0123456789abcdef0123456789abcdef")
             ).rejects.toThrow("Database error")
         })
     })

@@ -19,7 +19,7 @@ vi.mock("next-intl", () => ({
 }))
 
 /**
- * Mobile Responsive Design Tests (Task 29)
+ * Mobile Responsive Design Tests 
  * Tests for mobile devices (<768px)
  *
  * Requirements:

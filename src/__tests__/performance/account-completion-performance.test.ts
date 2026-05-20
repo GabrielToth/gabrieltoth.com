@@ -1,11 +1,3 @@
-/**
- * Account Completion Performance Tests
- *
- * Tests for database query optimization, caching, and performance targets.
- *
- * Validates: Phase 9 - Performance Testing
- */
-
 import {
     getAPIResponseTimePercentile,
     getAverageAPIResponseTime,

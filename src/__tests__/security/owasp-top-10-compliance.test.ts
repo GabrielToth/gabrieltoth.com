@@ -20,7 +20,7 @@ import {
 } from "@/lib/middleware/csrf-protection"
 import { beforeEach, describe, expect, it, vi } from "vitest"
 
-describe("Security Tests - OWASP Top 10 Compliance (Task 21)", () => {
+describe("Security: OWASP Top 10 Compliance", () => {
     beforeEach(() => {
         vi.clearAllMocks()
     })
@@ -349,7 +349,7 @@ describe("Security Tests - OWASP Top 10 Compliance (Task 21)", () => {
         })
 
         it("should use secure libraries", () => {
-            // Use bcrypt for password hashing (secure library)
+            // Use Argon2id for password hashing (secure library)
             const hash = "test"
             expect(hash).toBeDefined()
         })

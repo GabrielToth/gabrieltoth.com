@@ -10,7 +10,7 @@ import { comparePassword, hashPassword } from "@/lib/auth/password-hashing"
 import crypto from "crypto"
 import { beforeEach, describe, expect, it, vi } from "vitest"
 
-describe("Security Tests - Cryptography & Data Protection (Task 20)", () => {
+describe("Security: Cryptography & Data Protection", () => {
     beforeEach(() => {
         vi.clearAllMocks()
     })
@@ -157,7 +157,7 @@ describe("Security Tests - Cryptography & Data Protection (Task 20)", () => {
                 const password = "TestPassword123!"
                 const hash = await hashPassword(password)
 
-                // Cannot reverse bcrypt hash
+                // Cannot reverse Argon2id hash
                 expect(hash).not.toBe(password)
             })
 
@@ -360,7 +360,7 @@ describe("Security Tests - Cryptography & Data Protection (Task 20)", () => {
             it("should not log hashes", () => {
                 const logEntry = "User login attempt from 192.168.1.1"
                 expect(logEntry).not.toContain("hash")
-                expect(logEntry).not.toContain("$2b$")
+                expect(logEntry).not.toContain("password_hash")
             })
 
             it("should not log secrets", () => {
@@ -393,7 +393,7 @@ describe("Security Tests - Cryptography & Data Protection (Task 20)", () => {
             it("should not expose hashes in errors", () => {
                 const error = "Invalid email or password"
                 expect(error).not.toContain("hash")
-                expect(error).not.toContain("$2b$")
+                expect(error).not.toContain("password_hash")
             })
 
             it("should not expose database details in errors", () => {

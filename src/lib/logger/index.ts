@@ -23,7 +23,8 @@ const RESET = "\x1b[0m"
 
 const isDev = process.env.NODE_ENV !== "production"
 const isDebugEnabled =
-    process.env.DEBUG === "true" || process.env.NEXT_PUBLIC_DEBUG === "true"
+    process.env.DEBUG === "true" ||
+        process.env.NEXT_PUBLIC_DEBUG === "true"
 
 // Discord rate limiting with automatic cleanup
 class DiscordRateLimiter {

@@ -572,7 +572,7 @@ describe("Session Management", () => {
     })
 })
 
-describe("Session Token Management (Task 5)", () => {
+describe("Session Token Management", () => {
     beforeEach(() => {
         vi.clearAllMocks()
     })

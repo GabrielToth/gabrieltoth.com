@@ -293,7 +293,7 @@ describe.skipIf(!auditSchemaReady)("Audit Logs Table Schema", () => {
             .insert({
                 event_type: "password_migration",
                 email: "migration-test@example.com",
-                old_algorithm: "bcrypt",
+                old_algorithm: "argon2id",
                 new_algorithm: "argon2id",
                 timestamp: new Date().toISOString(),
             })
@@ -301,7 +301,7 @@ describe.skipIf(!auditSchemaReady)("Audit Logs Table Schema", () => {
             .single()
 
         expect(error).toBeNull()
-        expect(data?.old_algorithm).toBe("bcrypt")
+        expect(data?.old_algorithm).toBe("argon2id")
         expect(data?.new_algorithm).toBe("argon2id")
 
         // Cleanup
@@ -443,7 +443,7 @@ describe.skipIf(!auditSchemaReady)("Audit Logs Table Schema", () => {
                 email: `comprehensive-test-${Date.now()}@example.com`,
                 user_id: testUserId,
                 attempt_count: 1,
-                old_algorithm: "bcrypt",
+                old_algorithm: "argon2id",
                 new_algorithm: "argon2id",
                 error_code: null,
                 error_message: null,
@@ -463,7 +463,7 @@ describe.skipIf(!auditSchemaReady)("Audit Logs Table Schema", () => {
 
         expect(error).toBeNull()
         expect(data?.event_type).toBe("password_migration")
-        expect(data?.old_algorithm).toBe("bcrypt")
+        expect(data?.old_algorithm).toBe("argon2id")
         expect(data?.new_algorithm).toBe("argon2id")
         expect(data?.captcha_provider).toBe("cloudflare")
         expect(data?.details?.country).toBe("US")

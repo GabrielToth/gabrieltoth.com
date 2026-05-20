@@ -9,11 +9,14 @@
 # - Restart policy: max 5 attempts in 10 minutes
 
 services:
+    # Secrets and overrides: copy .env.docker.example → .env.docker (never commit)
     # ==========================================================================
     # DATABASES (Backend Network - Internal Only)
     # ==========================================================================
 
     postgres:
+        env_file:
+            - ../.env.docker
         image: postgres:17-alpine
         container_name: platform-postgres
         restart: unless-stopped
@@ -44,6 +47,8 @@ services:
     # ==========================================================================
 
     supabase:
+        env_file:
+            - ../.env.docker
         image: postgres:17-alpine
         container_name: platform-supabase
         restart: unless-stopped
@@ -54,7 +59,7 @@ services:
                 window: 600s
         environment:
             POSTGRES_USER: supabase_admin
-            POSTGRES_PASSWORD: ${SUPABASE_DB_PASSWORD:-supabasepassword}
+            POSTGRES_PASSWORD: ${SUPABASE_DB_PASSWORD}
             POSTGRES_DB: postgres
         volumes:
             - supabase_data:/var/lib/postgresql/data
@@ -95,6 +100,8 @@ services:
     # ==========================================================================
 
     backend:
+        env_file:
+            - ../.env.docker
         image: platform-backend:latest
         container_name: platform-backend
         restart: unless-stopped
@@ -106,30 +113,27 @@ services:
         environment:
             - NODE_ENV=development
             - NODE_OPTIONS=--max-old-space-size=512 --expose-gc
-            - DATABASE_URL=postgresql://platform:${POSTGRES_PASSWORD:-devpassword}@postgres:5432/platform
+            - DATABASE_URL=postgresql://platform:${POSTGRES_PASSWORD}@postgres:5432/platform
             - REDIS_URL=redis://redis:6379
             - DISCORD_WEBHOOK_URL=${DISCORD_WEBHOOK_URL}
-            - DEBUG=${DEBUG:-true}
+            - DEBUG=${DEBUG}
             - PORT=4000
-            # ========================================================================
-            # Supabase Configuration (Local Development)
-            # ========================================================================
             - SUPABASE_URL=http://supabase:5432
-            - SUPABASE_SERVICE_KEY=${SUPABASE_SERVICE_KEY:-eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRldmVsb3BtZW50Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTYxNTc5MjAwMDAwMDAwLCJleHAiOjk5OTk5OTk5OTk5OTk5OTksImlkIjoiZGV2In0.nTnuCaWMrZ4ZXXkh2f5F0PFhZZL5PgDg5qC5QhQ0Z3U}
-            - SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY:-eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRldmVsb3BtZW50Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2MTU3OTIwMDAwMDAwMDAsImV4cCI6OTk5OTk5OTk5OTk5OTk5OX0.5QdBGG3_WPjG5tBOi_HQMi8NJ4JQnlQ9TXnKZKZ_mE4}
+            - SUPABASE_SERVICE_KEY=${SUPABASE_SERVICE_KEY}
+            - SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY}
             # ========================================================================
             # Secure Password Storage - Argon2id Configuration
             # ========================================================================
             - ARGON2_MEMORY_COST=${ARGON2_MEMORY_COST:-64}
             - ARGON2_TIME_COST=${ARGON2_TIME_COST:-3}
             - ARGON2_PARALLELISM=${ARGON2_PARALLELISM:-2}
-            - PEPPER_SECRET=${PEPPER_SECRET:-test-pepper-key-must-be-at-least-32-characters-long}
+            - PEPPER_SECRET=${PEPPER_SECRET}
             # ========================================================================
             # CAPTCHA Configuration
             # ========================================================================
             - CAPTCHA_PROVIDER=${CAPTCHA_PROVIDER:-cloudflare}
-            - CAPTCHA_SECRET_KEY=${CAPTCHA_SECRET_KEY:-0x4AAAAAAAHjFXaZ_J_EhZ4uHc}
-            - NEXT_PUBLIC_CAPTCHA_SITE_KEY=${NEXT_PUBLIC_CAPTCHA_SITE_KEY:-1x00000000000000000000AA}
+            - CAPTCHA_SECRET_KEY=${CAPTCHA_SECRET_KEY}
+            - NEXT_PUBLIC_CAPTCHA_SITE_KEY=${NEXT_PUBLIC_CAPTCHA_SITE_KEY}
             # ========================================================================
             # Rate Limiting Configuration
             # ========================================================================
@@ -157,6 +161,8 @@ services:
     # ==========================================================================
 
     app:
+        env_file:
+            - ../.env.docker
         build:
             context: ..
             dockerfile: docker/Dockerfile.app
@@ -170,19 +176,16 @@ services:
                 window: 600s
         environment:
             - NODE_ENV=development
-            - NEXT_PUBLIC_API_URL=http://backend:4000
-            - BASE_URL=${BASE_URL:-http://localhost:3000}
+            - NEXT_PUBLIC_APP_URL=${NEXT_PUBLIC_APP_URL}
+            - DEBUG=${DEBUG}
             - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
             - STRIPE_WEBHOOK_SECRET=${STRIPE_WEBHOOK_SECRET}
-            # ========================================================================
-            # Supabase Configuration (Local Development)
-            # ========================================================================
-            - NEXT_PUBLIC_SUPABASE_URL=http://localhost:5432
-            - NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=${NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY:-eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRldmVsb3BtZW50Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2MTU3OTIwMDAwMDAwMDAsImV4cCI6OTk5OTk5OTk5OTk5OTk5OX0.5QdBGG3_WPjG5tBOi_HQMi8NJ4JQnlQ9TXnKZKZ_mE4}
+            - NEXT_PUBLIC_SUPABASE_URL=${NEXT_PUBLIC_SUPABASE_URL}
+            - NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=${NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY}
             # ========================================================================
             # Secure Password Storage - Public Configuration (Frontend)
             # ========================================================================
-            - NEXT_PUBLIC_CAPTCHA_SITE_KEY=${NEXT_PUBLIC_CAPTCHA_SITE_KEY:-1x00000000000000000000AA}
+            - NEXT_PUBLIC_CAPTCHA_SITE_KEY=${NEXT_PUBLIC_CAPTCHA_SITE_KEY}
             - CAPTCHA_PROVIDER=${CAPTCHA_PROVIDER:-cloudflare}
         volumes:
             - log_data:/var/log/app
@@ -200,11 +203,13 @@ services:
 
     app-dev:
         profiles: ["dev"]
+        env_file:
+            - ../.env.docker
         image: node:22-alpine
         container_name: platform-app-dev
         environment:
             - NODE_ENV=development
-            - DATABASE_URL=postgresql://platform:${POSTGRES_PASSWORD:-devpassword}@postgres:5432/platform
+            - DATABASE_URL=postgresql://platform:${POSTGRES_PASSWORD}@postgres:5432/platform
             - REDIS_URL=redis://redis:6379
             - DISCORD_WEBHOOK_URL=${DISCORD_WEBHOOK_URL}
             - DEBUG=true
@@ -212,21 +217,21 @@ services:
             # Supabase Configuration (Local Development)
             # ========================================================================
             - NEXT_PUBLIC_SUPABASE_URL=http://localhost:5432
-            - NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=${NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY:-eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRldmVsb3BtZW50Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2MTU3OTIwMDAwMDAwMDAsImV4cCI6OTk5OTk5OTk5OTk5OTk5OX0.5QdBGG3_WPjG5tBOi_HQMi8NJ4JQnlQ9TXnKZKZ_mE4}
-            - SUPABASE_SERVICE_KEY=${SUPABASE_SERVICE_KEY:-eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRldmVsb3BtZW50Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTYxNTc5MjAwMDAwMDAwLCJleHAiOjk5OTk5OTk5OTk5OTk5OTksImlkIjoiZGV2In0.nTnuCaWMrZ4ZXXkh2f5F0PFhZZL5PgDg5qC5QhQ0Z3U}
+            - NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=${NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY}
+            - SUPABASE_SERVICE_KEY=${SUPABASE_SERVICE_KEY}
             # ========================================================================
             # Secure Password Storage - Argon2id Configuration
             # ========================================================================
             - ARGON2_MEMORY_COST=${ARGON2_MEMORY_COST:-64}
             - ARGON2_TIME_COST=${ARGON2_TIME_COST:-3}
             - ARGON2_PARALLELISM=${ARGON2_PARALLELISM:-2}
-            - PEPPER_SECRET=${PEPPER_SECRET:-test-pepper-key-must-be-at-least-32-characters-long}
+            - PEPPER_SECRET=${PEPPER_SECRET}
             # ========================================================================
             # CAPTCHA Configuration
             # ========================================================================
             - CAPTCHA_PROVIDER=${CAPTCHA_PROVIDER:-cloudflare}
-            - CAPTCHA_SECRET_KEY=${CAPTCHA_SECRET_KEY:-0x4AAAAAAAHjFXaZ_J_EhZ4uHc}
-            - NEXT_PUBLIC_CAPTCHA_SITE_KEY=${NEXT_PUBLIC_CAPTCHA_SITE_KEY:-1x00000000000000000000AA}
+            - CAPTCHA_SECRET_KEY=${CAPTCHA_SECRET_KEY}
+            - NEXT_PUBLIC_CAPTCHA_SITE_KEY=${NEXT_PUBLIC_CAPTCHA_SITE_KEY}
             # ========================================================================
             # Rate Limiting Configuration
             # ========================================================================

@@ -10,6 +10,10 @@ const withBundleAnalyzer = require("@next/bundle-analyzer")({
 })
 
 const nextConfig: NextConfig = {
+    // Single DEBUG flag; exposed to the browser as NEXT_PUBLIC_DEBUG
+    env: {
+        NEXT_PUBLIC_DEBUG: process.env.DEBUG === "true" ? "true" : "false",
+    },
     // Docker: standalone output for minimal container size
     output: "standalone",
     trailingSlash: true,

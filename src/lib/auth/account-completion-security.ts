@@ -1,11 +1,4 @@
-/**
- * Account Completion Security Hardening Module
- *
- * Provides CSRF protection, input sanitization, and security validation
- * for the account completion flow.
- *
- * Validates: Phase 9 - Security Hardening
- */
+/** Security tests for password storage and authentication. */
 
 import { logger } from "@/lib/logger"
 

@@ -28,7 +28,7 @@ docs/             → Documentação humana (este arquivo + DEPLOYMENT.md)
 | Ambiente | Arquivo local | Onde configurar na nuvem |
 |----------|---------------|---------------------------|
 | Desenvolvimento | `.env.local` (copiar de `.env.local.example`) | — |
-| Testes Vitest | `.env.test` / `.env.test.local` | — |
+| Vitest | `.env.test` (committed) | — |
 | Espelho produção | `.env.production` (não commitar) | **Vercel → Settings → Environment Variables** |
 | Docker local | `.env.docker` (opcional) | — |
 
@@ -37,7 +37,7 @@ O Next.js **não** carrega `.env.production` no `npm run dev`. Na Vercel, as var
 ## Senhas
 
 - **Somente Argon2id** (`src/lib/auth/password-security/argon2id-hasher.ts`)
-- Bcrypt e migração foram removidos; contas antigas devem ser recriadas após `scripts/cleanup-supabase.ts --confirm`
+- Only Argon2id is used; contas antigas devem ser recriadas após `scripts/cleanup-supabase.ts --confirm`
 
 ## E-mail
 

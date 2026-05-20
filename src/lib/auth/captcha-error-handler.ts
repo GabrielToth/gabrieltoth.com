@@ -1,19 +1,3 @@
-/**
- * CAPTCHA Error Handling Utilities
- *
- * Provides helper functions for handling CAPTCHA verification errors
- * in authentication endpoints with graceful degradation support.
- *
- * Requirements covered:
- * - Requirement 20: CAPTCHA Protection (20.3, 20.4, 20.10, 20.12)
- * - Requirement 14: Error Handling and Logging (14.1, 14.5)
- *
- * Task 6.3: Implement CAPTCHA error handling and generic responses
- * - Return 400 Bad Request for invalid/missing tokens
- * - Don't reveal whether user exists or password is correct
- * - Log CAPTCHA failures without sensitive data
- */
-
 import { createLogger } from "@/lib/logger"
 import { NextResponse } from "next/server"
 

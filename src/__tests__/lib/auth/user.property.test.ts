@@ -109,7 +109,7 @@ describe("Property 3: User Data Persistence", () => {
                     email: fc.emailAddress(),
                     password_hash: fc
                         .string({ minLength: 60, maxLength: 60 })
-                        .map(s => `$2b$12$${s}`),
+                        .map(s => `$argon2id$v=19$m=64000,t=3,p=2$abcdefghijklmnopqrst$0123456789abcdef0123456789abcdef`),
                     oauth_provider: fc.constantFrom(
                         "google",
                         "facebook",
@@ -192,7 +192,7 @@ describe("Property 3: User Data Persistence", () => {
                     email: fc.emailAddress(),
                     password_hash: fc
                         .string({ minLength: 60, maxLength: 60 })
-                        .map(s => `$2b$12$${s}`),
+                        .map(s => `$argon2id$v=19$m=64000,t=3,p=2$abcdefghijklmnopqrst$0123456789abcdef0123456789abcdef`),
                     oauth_provider: fc.constantFrom(
                         "google",
                         "facebook",

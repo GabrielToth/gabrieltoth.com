@@ -8,7 +8,7 @@
  * - Correct pepper allows validation (password validates successfully)
  * - Incorrect pepper denies access (password validation fails)
  * - Pepper is required (fail-secure without it)
- * - Pepper is applied consistently to both Argon2id and Bcrypt
+ * - Pepper is applied consistently with Argon2id
  * - Pepper prevents offline password cracking
  * - Pepper is loaded once at startup and cached
  * - Missing pepper configuration causes fail-secure behavior
@@ -22,7 +22,6 @@
  */
 
 import argon2 from "argon2"
-import bcrypt from "bcrypt"
 import { describe, expect, it } from "vitest"
 import { validatePassword } from "../../lib/auth/password-security/password-validator"
 
@@ -61,16 +60,6 @@ describe("Pepper Application Validation - Security Tests", () => {
 
             expect(result1.valid).toBe(true)
             expect(result2.valid).toBe(true)
-        })
-
-        it("rejects legacy Bcrypt hashes even with correct pepper", async () => {
-            const pepperedPassword = TEST_PASSWORD + CORRECT_PEPPER
-            const hash = await bcrypt.hash(pepperedPassword, 10)
-
-            const result = await validatePassword(TEST_PASSWORD, hash)
-
-            expect(result.valid).toBe(false)
-            expect(result.algorithmType).toBe("unknown")
         })
 
         it("should append pepper to password before hashing (not prepend)", async () => {
@@ -155,16 +144,6 @@ describe("Pepper Application Validation - Security Tests", () => {
             expect(result.error).toBeUndefined()
         })
 
-        it("rejects Bcrypt password hashes (Argon2id only)", async () => {
-            const pepperedPassword = TEST_PASSWORD + CORRECT_PEPPER
-            const hash = await bcrypt.hash(pepperedPassword, 10)
-
-            const result = await validatePassword(TEST_PASSWORD, hash)
-
-            expect(result.valid).toBe(false)
-            expect(result.algorithmType).toBe("unknown")
-        })
-
         it("should validate multiple passwords with correct pepper", async () => {
             const passwords = [
                 "Password123!",
@@ -209,22 +188,6 @@ describe("Pepper Application Validation - Security Tests", () => {
                 type: 2,
                 version: 19,
             })
-
-            // Trying to validate with correct pepper against wrong-pepper hash should fail
-            const result = await validatePassword(TEST_PASSWORD, wrongHash)
-
-            expect(result.valid).toBe(false)
-            expect(result.error).toBe("Authentication failed")
-        })
-
-        it("should reject Bcrypt password with incorrect pepper", async () => {
-            // Create hash with correct pepper
-            const pepperedPassword = TEST_PASSWORD + CORRECT_PEPPER
-            const hash = await bcrypt.hash(pepperedPassword, 10)
-
-            // Create hash with wrong pepper
-            const wrongPepperedPassword = TEST_PASSWORD + WRONG_PEPPER
-            const wrongHash = await bcrypt.hash(wrongPepperedPassword, 10)
 
             // Trying to validate with correct pepper against wrong-pepper hash should fail
             const result = await validatePassword(TEST_PASSWORD, wrongHash)

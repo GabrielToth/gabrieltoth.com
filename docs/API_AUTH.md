@@ -78,7 +78,7 @@ Register a new user account with email and password.
 - 409: Email already registered
 
 **Security:**
-- Password hashed with bcrypt (cost: 12)
+- Password hashed with Argon2id
 - Input sanitized to prevent XSS
 - SQL injection prevention
 - Rate limiting: 5 requests per hour per IP
@@ -124,7 +124,7 @@ Authenticate user and create session.
 **Security:**
 - Rate limiting: max 5 failed attempts in 15 minutes
 - Email verification required
-- Password compared with bcrypt
+- Password verified with Argon2id
 - Login attempts logged
 
 ---
@@ -215,7 +215,7 @@ Reset password using token from reset email.
 
 **Security:**
 - Token validation and expiration check
-- Password hashed with bcrypt (cost: 12)
+- Password hashed with Argon2id
 - All existing sessions invalidated
 - Password reset logged
 
@@ -421,7 +421,7 @@ GET /api/auth/me
 
 ### Password Security
 - Minimum 8 characters with uppercase, number, and special character
-- Hashed using bcrypt with cost factor 12
+- Hashed using Argon2id
 - Never transmitted in plain text
 - Never logged or stored in plain text
 - Validated on both client and server
@@ -499,15 +499,15 @@ GOOGLE_CLIENT_SECRET=your_client_secret
 NEXT_PUBLIC_GOOGLE_CLIENT_ID=your_client_id
 
 # Security
-BCRYPT_COST_FACTOR=12
+ARGON2_MEMORY_COST=64
 SESSION_TIMEOUT=1800000  # 30 minutes in milliseconds
 VERIFICATION_TOKEN_EXPIRY=86400000  # 24 hours in milliseconds
 JWT_SECRET=your_jwt_secret_key
 TOKEN_ENCRYPTION_KEY=your_encryption_key
 
 # URLs
-NEXT_PUBLIC_API_URL=http://localhost:3000/api
 NEXT_PUBLIC_APP_URL=http://localhost:3000
+# API base is always {NEXT_PUBLIC_APP_URL}/api
 VERIFICATION_EMAIL_FROM=noreply@gabrieltoth.com
 ```
 

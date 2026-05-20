@@ -1,9 +1,3 @@
-/**
- * Unit Tests for Authentication Audit Logging Utilities
- * Tests task 8.1 implementation
- * Validates: Requirements 7.1, 7.2, 7.3, 7.4, 7.5
- */
-
 import {
     createAuditLog,
     logFailedLoginAttempt,

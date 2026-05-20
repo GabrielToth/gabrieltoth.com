@@ -17,7 +17,6 @@ import { expect, test } from "@playwright/test"
 
 test.describe("account completion flow", () => {
     /**
-     * Task 14.1: Write E2E test for complete account flow
      * Tests OAuth callback returns requiresPassword with tempToken
      * Tests user accesses completion page successfully
      * Tests user completes Step 1 (pre-filled data review)
@@ -401,7 +400,6 @@ test.describe("account completion flow", () => {
     })
 
     /**
-     * Task 14.2: Write E2E test for middleware redirect behavior
      * Tests incomplete account is redirected to completion flow
      * Tests complete account can access dashboard
      * Tests expired session redirects to login
@@ -422,7 +420,6 @@ test.describe("account completion flow", () => {
     })
 
     /**
-     * Task 14.3: Write E2E test for duplicate email prevention
      * Tests cannot complete account with existing email
      * Tests error response is 409 Conflict
      * Tests database state unchanged after failed attempt

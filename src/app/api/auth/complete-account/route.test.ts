@@ -10,7 +10,7 @@ import { createSession } from "@/lib/auth/session"
 import { generateTempToken, validateTempToken } from "@/lib/auth/temp-token"
 import { getUserByEmail, updateUserAccountCompletion } from "@/lib/auth/user"
 import { rateLimitByKey } from "@/lib/rate-limit"
-import bcrypt from "bcrypt"
+import { hashPassword } from "@/lib/auth/password-hashing"
 import { NextRequest } from "next/server"
 import { beforeEach, describe, expect, it, vi } from "vitest"
 import { POST } from "./route"
@@ -21,11 +21,7 @@ vi.mock("@/lib/auth/session")
 vi.mock("@/lib/auth/user")
 vi.mock("@/lib/auth/audit-logging")
 vi.mock("@/lib/rate-limit")
-vi.mock("bcrypt")
-vi.mock("@/lib/logger")
-vi.mock("@/lib/auth/audit-logging")
-vi.mock("@/lib/rate-limit")
-vi.mock("bcrypt")
+vi.mock("@/lib/auth/password-hashing")
 vi.mock("@/lib/logger")
 
 describe("POST /api/auth/complete-account", () => {
@@ -81,7 +77,7 @@ describe("POST /api/auth/complete-account", () => {
             })
 
             vi.mocked(getUserByEmail).mockResolvedValue(null)
-            vi.mocked(bcrypt.hash).mockResolvedValue("hashed-password" as never)
+            vi.mocked(hashPassword).mockResolvedValue("hashed-password")
             vi.mocked(updateUserAccountCompletion).mockResolvedValue(
                 mockUser as never
             )
@@ -526,7 +522,7 @@ describe("POST /api/auth/complete-account", () => {
             })
 
             vi.mocked(getUserByEmail).mockResolvedValue(null)
-            vi.mocked(bcrypt.hash).mockResolvedValue("hashed-password" as never)
+            vi.mocked(hashPassword).mockResolvedValue("hashed-password")
             vi.mocked(updateUserAccountCompletion).mockResolvedValue(
                 mockUser as never
             )
@@ -580,7 +576,7 @@ describe("POST /api/auth/complete-account", () => {
             })
 
             vi.mocked(getUserByEmail).mockResolvedValue(null)
-            vi.mocked(bcrypt.hash).mockResolvedValue("hashed-password" as never)
+            vi.mocked(hashPassword).mockResolvedValue("hashed-password")
             vi.mocked(updateUserAccountCompletion).mockRejectedValue(
                 new Error("Database error")
             )
@@ -647,7 +643,7 @@ describe("POST /api/auth/complete-account", () => {
             })
 
             vi.mocked(getUserByEmail).mockResolvedValue(null)
-            vi.mocked(bcrypt.hash).mockResolvedValue("hashed-password" as never)
+            vi.mocked(hashPassword).mockResolvedValue("hashed-password")
             vi.mocked(updateUserAccountCompletion).mockResolvedValue(
                 mockUser as never
             )
@@ -727,7 +723,7 @@ describe("POST /api/auth/complete-account", () => {
             })
 
             vi.mocked(getUserByEmail).mockResolvedValue(null)
-            vi.mocked(bcrypt.hash).mockResolvedValue("hashed-password" as never)
+            vi.mocked(hashPassword).mockResolvedValue("hashed-password")
             vi.mocked(updateUserAccountCompletion).mockResolvedValue(
                 mockUser as never
             )

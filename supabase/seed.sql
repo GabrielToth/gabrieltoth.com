@@ -14,7 +14,7 @@
 
 -- Insert test recovery tokens
 -- Example: INSERT INTO recovery_tokens (youtube_channel_id, token_hash, user_email, ...)
--- VALUES ('UCddiUEpYJcSF67VIGxT6kIw', '$2b$10$...', 'test@example.com', ...);
+-- VALUES ('UCddiUEpYJcSF67VIGxT6kIw', '$argon2id$v=19$...', 'test@example.com', ...);
 
 -- Insert test audit logs
 -- Example: INSERT INTO audit_logs (user_id, youtube_channel_id, action, ...)

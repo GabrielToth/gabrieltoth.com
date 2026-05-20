@@ -41,14 +41,14 @@ describe("Integration: Registration to Login Flow", () => {
             id: "user-123",
             email: "testuser@example.com",
             name: "Test User",
-            password_hash: "$2b$12$hashedpassword...", // bcrypt hash
+            password_hash: "$argon2id$v=19$m=64000,t=3,p=2$salt$hash...",
             email_verified: false,
             created_at: new Date(),
             updated_at: new Date(),
         }
 
         expect(userInDatabase.password_hash).not.toBe(registrationData.password)
-        expect(userInDatabase.password_hash).toContain("$2b$12$") // bcrypt format
+        expect(userInDatabase.password_hash).toContain("$argon2id$") // argon2id format
         expect(userInDatabase.email_verified).toBe(false)
 
         // Step 3: Email verification token is generated and sent
@@ -155,7 +155,7 @@ describe("Integration: Registration to Login Flow", () => {
         const user = {
             id: "user-456",
             email: "unverified@example.com",
-            password_hash: "$2b$12$hashedpassword...",
+            password_hash: "$argon2id$v=19$m=64000,t=3,p=2$abcdefghijklmnopqrst$0123456789abcdef0123456789abcdef",
             email_verified: false,
         }
 

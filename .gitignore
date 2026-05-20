@@ -15,6 +15,9 @@
 test_results*.txt
 test_run_output*.txt
 vitest-results.json
+.vitest-last.txt
+.vitest-summary.txt
+.vitest-results.json
 fix_tests*.js
 update-test*.js
 /test-results/
@@ -59,7 +62,6 @@ lerna-debug.log*
 !.env.*.example
 .env.local
 .env.development.local
-.env.test.local
 .env.production.local
 .env.docker
 .env.docker.local

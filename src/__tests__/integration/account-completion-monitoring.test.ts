@@ -1,11 +1,3 @@
-/**
- * Account Completion Monitoring Tests
- *
- * Tests for metrics collection, structured logging, and alerting.
- *
- * Validates: Phase 10 - Monitoring and Observability
- */
-
 import {
     generateMetricsReport,
     getAPIResponseTimePercentile,

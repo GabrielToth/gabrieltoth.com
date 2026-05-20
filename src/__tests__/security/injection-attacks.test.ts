@@ -14,7 +14,7 @@ import {
 } from "@/lib/auth/input-validation"
 import { describe, expect, it } from "vitest"
 
-describe("Security Tests - Injection Attacks (Task 17)", () => {
+describe("Security: Injection Attacks", () => {
     describe("17.1 - SQL Injection Prevention", () => {
         describe("OR clause attacks", () => {
             it("should detect basic OR clause injection", () => {

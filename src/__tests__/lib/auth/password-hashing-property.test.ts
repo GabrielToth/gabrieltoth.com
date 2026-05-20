@@ -109,7 +109,7 @@ describe("Property 2: Password Hashing Consistency", () => {
                     const matches = await comparePassword(password, hash)
                     expect(matches).toBe(true)
 
-                    // Argon2id does not truncate like bcrypt; keep modification visible
+                    // Argon2id does not truncate in invalid samples; keep modification visible
                     if (password.length < 70) {
                         const modifiedPassword = password + "XY"
                         const doesNotMatch = await comparePassword(
@@ -263,13 +263,13 @@ describe("Property 6: Password Comparison Correctness", () => {
                     "", // empty string
                     "invalid", // not a hash
                     "12345", // too short
-                    "$2b$10$short", // incomplete bcrypt hash
-                    "$2b$12$", // missing hash data
-                    "not-a-bcrypt-hash-at-all",
+                    "$argon2id$v=19$m=64000,t=3,p=2$invalidprefix$hash", // unsupported hash prefix
+                    "$argon2id$v=19$m=64000,t=3,p=2$abcdefghijklmnopqrst$0123456789abcdef0123456789abcdef", // missing hash data
+                    "not-a-valid-hash-at-all",
                     "$2x$12$invalidalgorithm", // invalid algorithm
                     "plaintext-password",
                     "   ", // whitespace only
-                    "$2b$12$" + "a".repeat(100), // malformed but long
+                    "$argon2id$v=19$m=64000,t=3,p=2$abcdefghijklmnopqrst$0123456789abcdef0123456789abcdef" + "a".repeat(100), // malformed but long
                     null as any, // null (will be caught by type guard)
                     undefined as any // undefined (will be caught by type guard)
                 ),

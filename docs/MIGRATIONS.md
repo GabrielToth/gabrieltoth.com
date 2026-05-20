@@ -1,8 +1,10 @@
-# Migrações Supabase
+# Supabase migrations
 
-1. Crie a migração em `supabase/migrations/` (timestamp + descrição).
-2. Aplique no projeto remoto: `npx supabase db push` (ou SQL Editor).
-3. Atualize o schema/types local se o projeto usar geração de tipos.
-4. **Remova o arquivo `.sql` da pasta `migrations/`** após aplicar — o histórico fica no Supabase; o repo mantém só o schema atual, não um arquivo por alteração antiga.
+1. Edit `supabase/schema.sql` (canonical DDL snapshot).
+2. Apply to remote: `npx supabase db push` (or SQL Editor).
+3. Regenerate types if needed.
+4. Do not keep numbered `phase-*` or `task-*` labels in SQL comments.
 
-Não adicione testes Vitest só para arquivos de migração.
+Optional one-off deltas can live in `supabase/migrations/` temporarily; after `db push`, merge into `schema.sql` and delete the migration file.
+
+Do not add Vitest suites only for migration files.

@@ -72,7 +72,7 @@ describe("Property 2: Rate Limit Window Reset", () => {
                         return request
                     }
 
-                    // Phase 1: Make 5 requests to reach the rate limit
+                    // Step 1: Make 5 requests to reach the rate limit
                     for (let i = 0; i < 5; i++) {
                         const request = createLogoutRequest()
                         const response = await proxy(request)
@@ -81,18 +81,18 @@ describe("Property 2: Rate Limit Window Reset", () => {
                         expect(response.status).not.toBe(429)
                     }
 
-                    // Phase 2: Verify 6th request is rate limited
+                    // Step 2: Verify 6th request is rate limited
                     const sixthRequest = createLogoutRequest()
                     const sixthResponse = await proxy(sixthRequest)
 
                     // Property: 6th request MUST be rejected with 429
                     expect(sixthResponse.status).toBe(429)
 
-                    // Phase 3: Wait for the 60-second window to expire
+                    // Step 3: Wait for the 60-second window to expire
                     // Add a small buffer to ensure the window has definitely expired
                     await vi.advanceTimersByTimeAsync(60100)
 
-                    // Phase 4: Make a new request after window expiration
+                    // Step 4: Make a new request after window expiration
                     const afterResetRequest = createLogoutRequest()
                     const afterResetResponse = await proxy(afterResetRequest)
 
@@ -100,7 +100,7 @@ describe("Property 2: Rate Limit Window Reset", () => {
                     // and new requests MUST be allowed (not rate limited)
                     expect(afterResetResponse.status).not.toBe(429)
 
-                    // Phase 5: Verify we can make 5 more requests (full reset)
+                    // Step 5: Verify we can make 5 more requests (full reset)
                     for (let i = 0; i < 4; i++) {
                         const request = createLogoutRequest()
                         const response = await proxy(request)
@@ -109,7 +109,7 @@ describe("Property 2: Rate Limit Window Reset", () => {
                         expect(response.status).not.toBe(429)
                     }
 
-                    // Phase 6: Verify 6th request in new window is rate limited
+                    // Step 6: Verify 6th request in new window is rate limited
                     const newWindowSixthRequest = createLogoutRequest()
                     const newWindowSixthResponse = await proxy(
                         newWindowSixthRequest
@@ -147,7 +147,7 @@ describe("Property 2: Rate Limit Window Reset", () => {
                     )
                 }
 
-                // Phase 1: Rate limit IP1
+                // Step 1: Rate limit IP1
                 for (let i = 0; i < 5; i++) {
                     const request = createLogoutRequest(ip1)
                     await proxy(request)
@@ -160,22 +160,22 @@ describe("Property 2: Rate Limit Window Reset", () => {
                 )
                 expect(ip1RateLimitedResponse.status).toBe(429)
 
-                // Phase 2: Verify IP2 is NOT rate limited (independent tracking)
+                // Step 2: Verify IP2 is NOT rate limited (independent tracking)
                 const ip2FirstRequest = createLogoutRequest(ip2)
                 const ip2FirstResponse = await proxy(ip2FirstRequest)
                 expect(ip2FirstResponse.status).not.toBe(429)
 
-                // Phase 3: Wait for IP1's window to expire
+                // Step 3: Wait for IP1's window to expire
                 await vi.advanceTimersByTimeAsync(60100)
 
-                // Phase 4: Verify IP1 can make requests again after reset
+                // Step 4: Verify IP1 can make requests again after reset
                 const ip1AfterResetRequest = createLogoutRequest(ip1)
                 const ip1AfterResetResponse = await proxy(ip1AfterResetRequest)
 
                 // Property: IP1's rate limit MUST reset independently
                 expect(ip1AfterResetResponse.status).not.toBe(429)
 
-                // Phase 5: Verify IP2 is still independent (hasn't been rate limited)
+                // Step 5: Verify IP2 is still independent (hasn't been rate limited)
                 const ip2SecondRequest = createLogoutRequest(ip2)
                 const ip2SecondResponse = await proxy(ip2SecondRequest)
                 expect(ip2SecondResponse.status).not.toBe(429)
@@ -205,17 +205,17 @@ describe("Property 2: Rate Limit Window Reset", () => {
                     )
                 }
 
-                // Phase 1: Make 3 requests (not reaching limit)
+                // Step 1: Make 3 requests (not reaching limit)
                 for (let i = 0; i < 3; i++) {
                     const request = createLogoutRequest()
                     const response = await proxy(request)
                     expect(response.status).not.toBe(429)
                 }
 
-                // Phase 2: Wait for window to expire
+                // Step 2: Wait for window to expire
                 await vi.advanceTimersByTimeAsync(60100)
 
-                // Phase 3: After reset, we should be able to make 5 requests again
+                // Step 3: After reset, we should be able to make 5 requests again
                 // (not 2 remaining from previous window)
                 for (let i = 0; i < 5; i++) {
                     const request = createLogoutRequest()
@@ -225,7 +225,7 @@ describe("Property 2: Rate Limit Window Reset", () => {
                     expect(response.status).not.toBe(429)
                 }
 
-                // Phase 4: 6th request should be rate limited
+                // Step 4: 6th request should be rate limited
                 const sixthRequest = createLogoutRequest()
                 const sixthResponse = await proxy(sixthRequest)
                 expect(sixthResponse.status).toBe(429)

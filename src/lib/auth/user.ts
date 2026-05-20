@@ -311,7 +311,7 @@ export async function createOAuthUser(data: {
  * typically used for migration of existing OAuth users or password changes.
  *
  * @param userId - The user ID
- * @param password_hash - The new bcrypt password hash
+ * @param password_hash - The new Argon2id password hash
  * @returns Updated User object
  * @throws Error if database operation fails or user not found
  *

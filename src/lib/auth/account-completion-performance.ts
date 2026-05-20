@@ -1,12 +1,3 @@
-/**
- * Account Completion Performance Optimization Module
- *
- * Provides caching, query optimization, and performance monitoring
- * for the account completion flow.
- *
- * Validates: Phase 9 - Performance Optimization
- */
-
 import { logger } from "@/lib/logger"
 import { OAuthUser } from "@/types/auth"
 

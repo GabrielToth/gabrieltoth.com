@@ -1,5 +1,5 @@
 /**
- * Password Validator — Argon2id only (no legacy bcrypt)
+ * Password Validator — Argon2id only
  */
 
 import { verifyPasswordArgon2id } from "./argon2id-hasher"

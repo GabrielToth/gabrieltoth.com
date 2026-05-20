@@ -1,11 +1,4 @@
-/**
- * Account Completion Security Tests
- *
- * Tests for CSRF protection, input sanitization, SQL injection prevention,
- * XSS prevention, and rate limiting.
- *
- * Validates: Phase 9 - Security Testing
- */
+/** Security tests for password storage and authentication. */
 
 import {
     DEFAULT_RATE_LIMIT_CONFIG,

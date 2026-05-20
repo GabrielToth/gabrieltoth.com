@@ -122,11 +122,10 @@ vi.mock("@supabase/supabase-js", () => ({
     })),
 }))
 
-// Mock bcrypt
-vi.mock("bcrypt", () => ({
-    default: {
-        hash: vi.fn(async (password: string) => `hashed_${password}`),
-    },
+// Mock password hashing
+vi.mock("@/lib/auth/password-hashing", () => ({
+    hashPassword: vi.fn(async (password: string) => `hashed_${password}`),
+    comparePassword: vi.fn(async () => true),
 }))
 
 // Mock audit logging
@@ -266,7 +265,7 @@ describe("Integration: Authentication API Endpoints", () => {
             expect(phoneResponse.success).toBe(false)
         })
 
-        it("should hash password using bcrypt before storing", async () => {
+        it("should hash password using Argon2id before storing", async () => {
             // Arrange
             const registrationData = {
                 email: "user@example.com",

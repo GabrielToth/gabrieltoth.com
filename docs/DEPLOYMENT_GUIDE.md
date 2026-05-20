@@ -30,7 +30,7 @@ Before deploying to production, ensure all items are completed:
 - [ ] XSS prevention verified
 - [ ] CSRF protection verified
 - [ ] Rate limiting configured
-- [ ] Password hashing verified (bcrypt cost factor 12)
+- [ ] Password hashing verified (Argon2id parameters (see .env.production.example))
 - [ ] Session security verified (HTTP-only, Secure, SameSite)
 
 ### Performance

@@ -127,7 +127,7 @@ export class AuthenticationService {
      * 1. Validates CAPTCHA token (bot protection)
      * 2. Validates input (email, password format)
      * 3. Checks if email already exists
-     * 4. Hashes password with Argon2id (never Bcrypt for new users)
+     * 4. Hashes password with Argon2id (Argon2id only)
      * 5. Creates user record in database
      * 6. Logs registration event
      * 7. Returns success or error with generic messages
@@ -474,7 +474,7 @@ export class AuthenticationService {
      * 3. Validates input (email, password format)
      * 4. Looks up user by email
      * 5. Validates password against stored hash
-     * 6. Triggers algorithm migration if needed (Bcrypt → Argon2id)
+     * 6. Validates password with Argon2id
      * 7. Resets rate limit counter on success
      * 8. Logs authentication event
      * 9. Returns success or error with generic messages
@@ -485,7 +485,7 @@ export class AuthenticationService {
      * - Rate limiting prevents brute force attacks
      * - Constant-time password comparison prevents timing attacks
      * - Generic error messages prevent user enumeration
-     * - Automatic algorithm migration strengthens legacy passwords
+     * - Argon2id-only password storage
      * - Audit logging for compliance
      * - Response time normalization prevents timing attacks (Requirement 10.4, 10.5)
      *

@@ -520,7 +520,7 @@ describe("Load Tests: Login System", () => {
                     statusCode: 200,
                     cached: false,
                     dbQueryTime: 30,
-                    bcryptTime: 50,
+                    passwordHashTime: 50,
                     rateLimitTime: 10,
                     sessionTime: 10,
                 })

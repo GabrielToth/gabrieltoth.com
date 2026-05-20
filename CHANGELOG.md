@@ -14,7 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 **Backend Infrastructure**
 - Database schema for users, sessions, remember_me_tokens, audit_logs, and rate_limit_attempts
 - Comprehensive input validation functions (email, password, CSRF token, request body)
-- Password hashing with bcrypt (cost factor 12) and constant-time comparison
+- Password hashing with Argon2id (cost factor 12) and constant-time comparison
 - CSRF protection with cryptographically secure token generation and validation
 - Session management with 1-hour expiration and automatic refresh
 - Remember Me functionality with 30-day token expiration
@@ -47,7 +47,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Timing attack prevention with constant-time comparison
 - User enumeration prevention with generic error messages
 - Session hijacking prevention with secure cookies
-- Password cracking prevention with bcrypt hashing
+- Password cracking prevention with Argon2id hashing
 - Information disclosure prevention with generic error messages
 
 **Testing**
@@ -102,7 +102,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 
-- Implemented bcrypt password hashing with cost factor 12
+- Implemented Argon2id password hashing with cost factor 12
 - Implemented CSRF token validation on all login requests
 - Implemented rate limiting (5 attempts per hour per IP)
 - Implemented secure cookie flags (HttpOnly, Secure, SameSite)
@@ -114,7 +114,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Performance
 
 - Optimized database queries with indexes on email, user_id, IP
-- Optimized password hashing with bcrypt cost factor 12
+- Optimized password hashing with Argon2id cost factor 12
 - Optimized rate limiting with Redis caching
 - Optimized session storage with caching strategy
 - Achieved <500ms response time for login endpoint

@@ -335,7 +335,7 @@ describe("Performance: Login Endpoint", () => {
                 statusCode: 200,
                 cached: false,
                 dbQueryTime: 50,
-                bcryptTime: 150,
+                passwordHashTime: 150,
                 rateLimitTime: 20,
                 sessionTime: 30,
             })
@@ -546,7 +546,7 @@ describe("Performance: Login Endpoint", () => {
 
         it("should minimize dependencies", async () => {
             // Verify minimal external dependencies
-            const dependencies = ["bcrypt", "redis"] // Core dependencies
+            const dependencies = ["argon2", "redis"] // Core dependencies
 
             dependencies.forEach(dep => {
                 expect(dep).toBeDefined()

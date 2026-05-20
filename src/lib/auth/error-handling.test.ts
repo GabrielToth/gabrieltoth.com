@@ -368,7 +368,7 @@ describe("Error Handling Utilities", () => {
             const response = createErrorResponse(AuthErrorType.INVALID_PASSWORD)
             const json = (await response.json()) as ApiErrorResponse
 
-            expect(json.error).not.toContain("bcrypt")
+            expect(json.error).not.toContain("argon2id")
             expect(json.error).not.toContain("hash")
             expect(json.error).not.toContain("database")
         })

@@ -50,7 +50,7 @@ services:
             dockerfile: docker/Dockerfile.app
         container_name: app-frontend
         environment:
-            NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:3001}
+            NEXT_PUBLIC_APP_URL: ${NEXT_PUBLIC_APP_URL}
             NODE_ENV: production
         ports:
             - "3000:3000"

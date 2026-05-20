@@ -60,16 +60,12 @@ import { POST } from "./route"
 const { createClient } = await import("@supabase/supabase-js")
 const mockSupabase = (createClient as any)()
 
-describe("POST /api/auth/login - Task 8-11: Login Route Handler", () => {
+describe("POST /api/auth/login: Login Route Handler", () => {
     beforeEach(() => {
         vi.clearAllMocks()
         // Reset the mock implementation
         mockSupabase.from.mockReset()
     })
-
-    // ============================================================================
-    // Task 8.3: Request Body Parsing and Validation
-    // ============================================================================
 
     it("should return 400 for missing email", async () => {
         const request = new NextRequest("http://localhost/api/auth/login", {
@@ -193,10 +189,6 @@ describe("POST /api/auth/login - Task 8-11: Login Route Handler", () => {
         expect(data.success).toBe(false)
     })
 
-    // ============================================================================
-    // Task 8.4: CSRF Token Validation
-    // ============================================================================
-
     it("should return 400 for missing CSRF token", async () => {
         const request = new NextRequest("http://localhost/api/auth/login", {
             method: "POST",
@@ -213,10 +205,6 @@ describe("POST /api/auth/login - Task 8-11: Login Route Handler", () => {
         expect(response.status).toBe(400)
         expect(data.success).toBe(false)
     })
-
-    // ============================================================================
-    // Task 8.5: Rate Limiting Check
-    // ============================================================================
 
     it("should return 429 when rate limit exceeded", async () => {
         const { checkRateLimitWithDegradation } = await import("@/lib/auth/rate-limiter")
@@ -238,10 +226,6 @@ describe("POST /api/auth/login - Task 8-11: Login Route Handler", () => {
         expect(response.status).toBe(429)
         expect(data.success).toBe(false)
     })
-
-    // ============================================================================
-    // Task 8.6: Database Query for User by Email
-    // ============================================================================
 
     it("should return 401 for non-existent user", async () => {
         const { checkRateLimit } = await import("@/lib/auth/rate-limiter")
@@ -277,10 +261,6 @@ describe("POST /api/auth/login - Task 8-11: Login Route Handler", () => {
         expect(data.success).toBe(false)
         expect(data.error).toContain("Invalid email or password")
     })
-
-    // ============================================================================
-    // Task 8.7: Password Verification with bcrypt
-    // ============================================================================
 
     it("should return 401 for invalid password", async () => {
         const { checkRateLimit } = await import("@/lib/auth/rate-limiter")
@@ -323,7 +303,7 @@ describe("POST /api/auth/login - Task 8-11: Login Route Handler", () => {
     })
 
     // ============================================================================
-    // Task 8.8 & 8.9 & 8.10: Session Token Creation, Remember Me, Secure Cookies
+    // Session token, remember-me, and secure cookies
     // ============================================================================
 
     it("should successfully login with correct credentials", async () => {
@@ -463,10 +443,6 @@ describe("POST /api/auth/login - Task 8-11: Login Route Handler", () => {
         expect(response.cookies.get("remember_me_token")?.httpOnly).toBe(true)
     })
 
-    // ============================================================================
-    // Task 9: Error Handling
-    // ============================================================================
-
     it("should return 400 for validation errors", async () => {
         const request = new NextRequest("http://localhost/api/auth/login", {
             method: "POST",
@@ -588,10 +564,6 @@ describe("POST /api/auth/login - Task 8-11: Login Route Handler", () => {
         expect(response.status).toBe(200)
     })
 
-    // ============================================================================
-    // Task 10: Logging & Monitoring
-    // ============================================================================
-
     it("should log successful login", async () => {
         const { checkRateLimit } = await import("@/lib/auth/rate-limiter")
         const { validateCSRFToken } = await import("@/lib/auth/csrf-validator")
@@ -677,10 +649,6 @@ describe("POST /api/auth/login - Task 8-11: Login Route Handler", () => {
             expect.any(String)
         )
     })
-
-    // ============================================================================
-    // Task 5.5: Rate Limit Reset on Successful Authentication
-    // ============================================================================
 
     it("should reset rate limit counter on successful login", async () => {
         const { checkRateLimit, resetAttempt } =

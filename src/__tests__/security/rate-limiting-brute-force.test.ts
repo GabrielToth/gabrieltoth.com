@@ -9,7 +9,7 @@
 import { comparePassword, hashPassword } from "@/lib/auth/password-hashing"
 import { beforeEach, describe, expect, it, vi } from "vitest"
 
-describe("Security Tests - Rate Limiting & Brute Force (Task 19)", () => {
+describe("Security: Rate Limiting & Brute Force", () => {
     beforeEach(() => {
         vi.clearAllMocks()
     })
@@ -272,8 +272,8 @@ describe("Security Tests - Rate Limiting & Brute Force (Task 19)", () => {
             expect(result1).toBe(true)
             expect(result2).toBe(false)
 
-            // Times should be similar (within reasonable margin for bcrypt)
-            // Note: bcrypt is designed to be slow, so times will be similar
+            // Times should be similar (within reasonable margin for Argon2id)
+            // Note: Argon2id is designed to be slow, so times will be similar
             expect(Math.abs(time1 - time2)).toBeLessThan(500) // 500ms margin
         })
 
@@ -293,15 +293,15 @@ describe("Security Tests - Rate Limiting & Brute Force (Task 19)", () => {
             await comparePassword(longPassword, hash)
             const time2 = performance.now() - start2
 
-            // Times should be similar (bcrypt uses constant-time comparison)
+            // Times should be similar (argon2 uses constant-time comparison)
             expect(Math.abs(time1 - time2)).toBeLessThan(500)
         })
 
-        it("should use bcrypt for constant-time comparison", async () => {
+        it("should use Argon2id for constant-time comparison", async () => {
             const password = "TestPassword123!"
             const hash = await hashPassword(password)
 
-            // Bcrypt is designed for constant-time comparison
+            // Argon2id is designed for constant-time comparison
             expect(hash).toMatch(/^\$argon2id\$/)
         })
 

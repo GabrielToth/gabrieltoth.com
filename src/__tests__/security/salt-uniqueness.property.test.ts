@@ -1,49 +1,4 @@
-/**
- * Security Test: Salt Uniqueness (Task 10.2)
- *
- * Purpose: Verify that identical passwords produce different hashes due to unique salts
- *
- * This test validates:
- * 1. Salt uniqueness: Each password hash gets a unique salt
- * 2. Hash diversity: Identical passwords produce different hashes
- * 3. Rainbow table resistance: Unique salts prevent pre-computed hash attacks
- * 4. Verification consistency: All unique hashes verify correctly with same password
- *
- * Requirements covered:
- * - Requirement 2.1: Password_Hashing_Engine SHALL generate cryptographically secure random salt
- * - Requirement 2.2: Generated salt SHALL have minimum entropy of 128 bits
- * - Requirement 2.3: Password_Hashing_Engine SHALL NOT allow manual salt specification
- * - Requirement 2.4: Salt SHALL be included in Argon2 output hash string automatically
- * - Requirement 9.4: Identical passwords hashed SHALL produce different hashes (rainbow table resistance)
- *
- * Attack Vectors Addressed:
- * - Rainbow table attacks: Prevented by unique salt per hash
- * - Pre-computed hash tables: Useless without knowing the salt
- * - Dictionary attacks: Mitigated by unique salt (attacker must compute per-salt)
- * - Parallel cracking: Each password requires separate computation due to unique salt
- *
- * Salt Uniqueness Explanation:
- * A salt is a random value prepended to each password before hashing.
- * With unique salts:
- * 1. Same password + different salt = different hash
- * 2. Pre-computed hash table would need entry for every salt
- * 3. Number of possible salts: 2^128 (for 128-bit salt)
- * 4. Storage needed: Impossible (more than atoms in universe)
- * 5. Attacker must compute hashes on-the-fly (no pre-computation advantage)
- *
- * Example:
- * Password: "MyPassword123"
- * Hash 1: $argon2id$v=19$m=64000,t=3,p=2$SALT_A$HASH_A
- * Hash 2: $argon2id$v=19$m=64000,t=3,p=2$SALT_B$HASH_B
- * Hash 3: $argon2id$v=19$m=64000,t=3,p=2$SALT_C$HASH_C
- * All three hashes are different due to unique salts (SALT_A ≠ SALT_B ≠ SALT_C)
- *
- * OWASP Coverage:
- * - A02:2021 - Cryptographic Failures: Uses unique salts for password hashing
- * - A04:2021 - Insecure Design: Salt design prevents rainbow table attacks
- *
- * **Validates: Requirements 2.1, 2.2, 2.3, 2.4**
- */
+/** Security tests for password storage and authentication. */
 
 import {
     hashPasswordArgon2id,
@@ -53,7 +8,7 @@ import { ConfigurationManager } from "@/lib/auth/password-security/config"
 import fc from "fast-check"
 import { beforeEach, describe, expect, it } from "vitest"
 
-describe("Security Test: Salt Uniqueness (Task 10.2)", () => {
+describe("Security Test: Salt Uniqueness ", () => {
     beforeEach(() => {
         // Reset environment variables before each test
         process.env.ARGON2_MEMORY_COST = "64"

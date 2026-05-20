@@ -353,8 +353,7 @@ export async function verifyPasswordArgon2id(
  * // isArgon2id will be true
  *
  * @example
- * const isBcrypt = isArgon2idHash('$2b$12$...')
- * // isBcrypt will be false
+ * // Returns false for non-Argon2id formats
  */
 export function isArgon2idHash(hash: string): boolean {
     if (!hash || typeof hash !== "string") {

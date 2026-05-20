@@ -138,7 +138,7 @@ npm run test -- src/lib/db/migrations/002_add_account_completion_fields.test.ts
        account_completion_status, oauth_provider, oauth_id, name, email_verified
    ) VALUES (
        gen_random_uuid(), 'google-123', 'test@example.com', 'Test User',
-       'test@example.com', '$2b$12$hash', '+1234567890', '1990-01-01',
+       'test@example.com', '$argon2id$v=19$m=64000,t=3,p=2$salt$hash', '+1234567890', '1990-01-01',
        'completed', 'google', 'google-123', 'Test User', true
    );
    ```

@@ -15,7 +15,7 @@ import {
 } from "@/lib/middleware/csrf-protection"
 import { beforeEach, describe, expect, it, vi } from "vitest"
 
-describe("Security Tests - CSRF & Authentication (Task 18)", () => {
+describe("Security: CSRF & Authentication", () => {
     beforeEach(() => {
         vi.clearAllMocks()
     })

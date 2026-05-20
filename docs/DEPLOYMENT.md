@@ -1,90 +1,102 @@
 # Deploy — gabrieltoth.com
 
-Stack: **Vercel** (app) + **Cloudflare** (DNS/CDN) + **Supabase** + **Resend**. Sem AWS/GCP/Azure/SMTP.
+Stack: **Vercel** (app) + **Cloudflare** (DNS/CDN) + **Supabase** + **Resend**. No AWS/GCP/Azure/SMTP.
 
-## 1. Variáveis de ambiente
+## 1. Environment variables
 
-| Arquivo | Uso |
-|---------|-----|
-| `.env.local.example` | Desenvolvimento (`cp .env.local.example .env.local`) |
-| `.env.production.example` | Referência produção + Vercel (não commitar `.env.production`) |
-| `.env.test.example` | Testes Vitest |
+| File | Use |
+|------|-----|
+| `.env.local.example` | Development (`cp .env.local.example .env.local`) |
+| `.env.production.example` | Production reference + Vercel (do not commit `.env.production`) |
+| `.env.test` | Vitest overrides (committed, no secrets) |
+| `.env.docker.example` | Docker Compose local stack |
 
-Cada variável no `.env.production.example` inclui comentários: onde obter, Vercel sensitive ou não, e se está **IMPLEMENTADA** ou **NÃO USADA**.
+Each variable in the `.example` files has a tag line:
 
-### Sincronizar com Vercel
+- `GitHub: ❌ DO NOT COMMIT | Vercel: ✅ SENSITIVE - Production/Preview`
+- `GitHub: ❌ DO NOT COMMIT | Vercel: ⚪ NOT SENSITIVE - Production/Preview`
+- `GitHub: ✅ COMMIT | Vercel: ⚪ NOT SENSITIVE - Development`
+
+**Sensitive** is only a Vercel dashboard checkbox — enable it when the tag says `✅ SENSITIVE`.
+
+### Sync with Vercel
 
 ```bash
-# Baixar (cuidado: sobrescreve .env.production local)
+# Download (overwrites local .env.production)
 vercel env pull .env.production
 
-# Enviar (cuidado: sobrescreve produção se target errado)
+# Upload (overwrites production if wrong target)
 vercel env push .env.production
 ```
 
-Prefira editar no painel [Vercel → Project → Settings → Environment Variables](https://vercel.com) e manter `.env.production` só como espelho local.
+Prefer editing [Vercel → Project → Settings → Environment Variables](https://vercel.com) and keeping `.env.production` as a local mirror only.
 
 ## 2. Vercel
 
-1. Importar repositório GitHub no Vercel.
-2. Framework: Next.js (detecção automática).
-3. Colar variáveis de `.env.production.example` (valores reais).
-4. Domínio: `www.gabrieltoth.com` / `gabrieltoth.com`.
+1. Import the GitHub repo on Vercel.
+2. Framework: Next.js (auto-detected).
+3. Paste variables from `.env.production.example` (real values).
+4. Domain: `www.gabrieltoth.com` / `gabrieltoth.com`.
 5. Deploy.
 
 ## 3. Cloudflare
 
-1. DNS apontando para Vercel (CNAME ou registros que a Vercel indicar).
-2. SSL/TLS: Full (strict) quando certificado Vercel ativo.
-3. Opcional: regras de cache para assets estáticos.
+1. DNS pointing to Vercel (CNAME or records Vercel provides).
+2. SSL/TLS: Full (strict) when the Vercel certificate is active.
+3. Optional: cache rules for static assets.
 
 ## 4. Supabase
 
-1. Projeto em [supabase.com](https://supabase.com).
-2. Copiar `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`.
-3. Aplicar migrações: `npx supabase db push` (ou SQL Editor no painel).
-4. Reset total (só você como usuário): `npx tsx scripts/cleanup-supabase.ts --confirm`
+1. Project at [supabase.com](https://supabase.com).
+2. Copy `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`.
+3. Apply migrations: `npx supabase db push` (or SQL Editor).
+4. Full reset (you as sole user): `npx tsx scripts/cleanup-supabase.ts --confirm`
 
-### Auth no painel (e-mail / OTP)
+### Auth in dashboard (email / OTP)
 
-Pode ativar **Email** em Authentication → Providers (signup, OTP, requisitos de senha). Isso cobre fluxos nativos do Supabase Auth (confirmação, troca de e-mail, etc.).
+You may enable **Email** under Authentication → Providers. The app still uses **custom auth** (`users` + Argon2id + `/api/auth/*`) and **Resend** for transactional mail. Both can coexist until you migrate login fully to Supabase Auth.
 
-O app ainda usa **auth custom** (`users` + Argon2id + rotas `/api/auth/*`) e **Resend** para e-mails transacionais da aplicação (contato, YouTube, etc.). Os dois podem coexistir; alinhe o produto antes de migrar login 100% para Supabase Auth.
+### Database Linter warnings (expected on free tier)
 
-### Avisos do Database Linter (esperados no free)
+| Warning | Action |
+|---------|--------|
+| `auth_leaked_password_protection` | Pro plan only. On free, ignore — strong password policy in dashboard still helps. |
+| `rls_auto_enable` SECURITY DEFINER RPC | Migration `20260518120000_revoke_rls_auto_enable_rpc.sql` revokes `EXECUTE` from `anon`/`authenticated`. |
 
-| Aviso | Ação |
-|-------|------|
-| `auth_leaked_password_protection` | Só no plano **Pro**. No free, ignore — política forte de senha no painel já ajuda. |
-| `rls_auto_enable` SECURITY DEFINER via RPC | Migração `20260518120000_revoke_rls_auto_enable_rpc.sql` revoga `EXECUTE` de `anon`/`authenticated`. A função continua para triggers internos; não é API pública. |
+## 5. Discord
 
-## 5. Resend (e-mail)
+1. Create or open a **Discord server** (guild).
+2. Open the target text channel → **Integrations** → **Webhooks**.
+3. If none exists: **New Webhook** → name it → save.
+4. Copy the webhook URL → `DISCORD_WEBHOOK_URL` on Vercel → enable **Sensitive**.
 
-1. Conta em [resend.com](https://resend.com).
-2. Verificar domínio `gabrieltoth.com`.
-3. `RESEND_API_KEY`, `RESEND_FROM_EMAIL`, `RESEND_FROM_NAME` na Vercel.
+## 6. Resend (email)
 
-Não configure SMTP — o código não envia via SMTP.
+1. Account at [resend.com](https://resend.com).
+2. Verify domain `gabrieltoth.com`.
+3. `RESEND_API_KEY`, `RESEND_FROM_EMAIL`, `RESEND_FROM_NAME` on Vercel (`RESEND_API_KEY` = Sensitive).
 
-## 6. Google OAuth
+Do not configure SMTP — the app does not send via SMTP.
+
+## 7. Google OAuth
 
 1. [Google Cloud Console](https://console.cloud.google.com) → Credentials.
-2. Redirect URIs: `https://www.gabrieltoth.com/api/auth/google/callback` (e variantes sem `www` se usar).
+2. Redirect URIs: `https://www.gabrieltoth.com/api/auth/google/callback`.
 3. `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `NEXT_PUBLIC_GOOGLE_CLIENT_ID`.
 
-## 7. Docker local (testes)
+## 8. Docker local (tests)
 
 ```bash
 docker compose -f docker/docker-compose.yml up -d postgres redis supabase
 ```
 
-## 8. Testes antes do deploy
+## 9. Tests before deploy
 
 ```bash
 npm test
 npm run build
 ```
 
-## 9. Senhas
+## 10. Passwords
 
-Somente **Argon2id**. Após reset do Supabase, crie conta nova — hashes bcrypt antigos não são aceitos.
+**Argon2id only.** After a Supabase reset, create a new account — only Argon2id hashes are accepted.

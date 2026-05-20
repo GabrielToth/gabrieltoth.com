@@ -239,8 +239,8 @@ describe("Login Security Tests", () => {
             await comparePassword("WrongPassword123!", hash)
             const time2 = performance.now() - start2
 
-            // Times should be similar (within reasonable margin for bcrypt)
-            // Note: bcrypt is designed to be slow, so times will be similar
+            // Times should be similar (within reasonable margin for Argon2id)
+            // Note: Argon2id is designed to be slow, so times will be similar
             expect(Math.abs(time1 - time2)).toBeLessThan(500) // 500ms margin
         })
     })

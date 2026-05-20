@@ -23,15 +23,13 @@ import { getUserByEmail, updateUserAccountCompletion } from "@/lib/auth/user"
 import { logger } from "@/lib/logger"
 import { buildClientKey, rateLimitByKey } from "@/lib/rate-limit"
 import { createClient } from "@supabase/supabase-js"
-import bcrypt from "bcrypt"
+import { hashPassword } from "@/lib/auth/password-hashing"
 import { NextRequest, NextResponse } from "next/server"
 
 const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.SUPABASE_SERVICE_ROLE_KEY!
 )
-
-const BCRYPT_COST_FACTOR = parseInt(process.env.BCRYPT_COST_FACTOR || "12")
 
 /**
  * Request body for account completion
@@ -183,7 +181,7 @@ export async function POST(
         // Hash password
         let passwordHash: string
         try {
-            passwordHash = await bcrypt.hash(body.password, BCRYPT_COST_FACTOR)
+            passwordHash = await hashPassword(body.password)
         } catch (error) {
             logger.error("Password hashing failed", {
                 context: "CompleteAccount",

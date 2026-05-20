@@ -228,7 +228,7 @@ describe("AuthenticationService", () => {
             expect(result.statusCode).toBe(409)
         })
 
-        it("should use Argon2id for new user passwords (never Bcrypt)", async () => {
+        it("should use Argon2id for new user passwords (Argon2id only)", async () => {
             vi.mocked(
                 captchaVerifier.verifyCAPTCHAWithFallback
             ).mockResolvedValue({
@@ -275,7 +275,7 @@ describe("AuthenticationService", () => {
                 captchaToken: "valid_token",
             })
 
-            // Verify Argon2id was used (not Bcrypt)
+            // Verify Argon2id was used (Argon2id)
             expect(passwordHasher.hashPasswordArgon2id).toHaveBeenCalledWith(
                 "SecurePassword123!"
             )

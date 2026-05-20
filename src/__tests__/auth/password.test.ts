@@ -197,7 +197,7 @@ describe("Password Hashing Functions", () => {
             const time2 = performance.now() - start2
 
             // Times should be similar (within 100ms tolerance for test environment)
-            // bcrypt.compare uses constant-time comparison internally
+            // argon2.verify uses constant-time comparison internally
             expect(Math.abs(time1 - time2)).toBeLessThan(200)
         })
 
@@ -613,7 +613,7 @@ describe("Password Hashing Functions", () => {
             // Test with invalid hash format
             const result = await comparePassword(
                 "password",
-                "invalid_bcrypt_hash"
+                "invalid_hash_format"
             )
 
             // Should return false instead of throwing
@@ -746,7 +746,7 @@ describe("Password Hashing Functions", () => {
             await comparePassword(longPassword, longHash)
             const time2 = performance.now() - start2
 
-            // Times should be similar (bcrypt uses constant-time comparison)
+            // Times should be similar (argon2 uses constant-time comparison)
             expect(Math.abs(time1 - time2)).toBeLessThan(5000)
         }, 30000)
     })

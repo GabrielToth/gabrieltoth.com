@@ -318,7 +318,7 @@ export async function POST(request: NextRequest) {
   }
 
   // 6. Hash password
-  const passwordHash = await bcrypt.hash(body.password, 12)
+  const passwordHash = await hashPassword(body.password)
 
   // 7. Update user
   const user = await updateUserAccountCompletion(tokenPayload.oauth_id, {
@@ -594,7 +594,7 @@ LIMIT 10;
 
 ### Password Security
 
-- Hash passwords using bcrypt with cost factor 12
+- Hash passwords using Argon2id
 - Never log or store passwords in plain text
 - Validate password strength on both client and server
 

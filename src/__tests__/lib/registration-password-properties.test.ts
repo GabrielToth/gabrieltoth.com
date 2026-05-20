@@ -1,11 +1,3 @@
-/**
- * Property-Based Tests for Password Validation and Hashing
- * Feature: registration-flow-redesign
- * Task 1.5: Write property tests for password validation
- *
- * Tests Properties 2 and 3 from the design document
- */
-
 import { comparePassword, hashPassword } from "@/lib/auth/password-hashing"
 import { validatePassword } from "@/lib/validation"
 import fc from "fast-check"

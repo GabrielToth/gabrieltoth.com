@@ -1,5 +1,5 @@
+import { hashPassword } from "@/lib/auth/password-hashing"
 import { createClient } from "@/lib/supabase/server"
-import bcrypt from "bcrypt"
 import { NextRequest, NextResponse } from "next/server"
 
 /**
@@ -105,12 +105,7 @@ export async function POST(request: NextRequest) {
             )
         }
 
-        // Hash new password
-        const bcryptCostFactor = parseInt(
-            process.env.BCRYPT_COST_FACTOR || "12",
-            10
-        )
-        const hashedPassword = await bcrypt.hash(password, bcryptCostFactor)
+        const hashedPassword = await hashPassword(password)
 
         // Update user password
         const { error: updateError } = await supabase

@@ -8,7 +8,7 @@ import { afterEach, vi } from "vitest"
 
 process.env.VITEST = "true"
 process.env.DEBUG = "false"
-process.env.NEXT_PUBLIC_DEBUG = "false"
+process.env.NEXT_PUBLIC_APP_URL = "http://localhost:3000"
 process.env.SUPPRESS_SECURITY_CONFIG_LOGS = "true"
 process.env.SUPPRESS_AUTH_SECURITY_STDERR = "true"
 
@@ -87,7 +87,6 @@ function loadEnvFile(fileName: string, overwrite: boolean = false): void {
 
 // Load environment variables for tests
 // Vitest auto-loads .env.local, so we must OVERWRITE with test variables
-loadEnvFile(".env.test.local", true)
 loadEnvFile(".env.test", true)
 loadEnvFile(".env.local", false)
 loadEnvFile(".env", false)

@@ -18,7 +18,7 @@
  * - Requirement 10.5: Don't log execution times that could reveal timing information
  *
  * Timing Attack Prevention Strategy:
- * 1. Use built-in constant-time comparison from argon2 and bcryptjs libraries
+ * 1. Use built-in constant-time comparison from the argon2 library
  * 2. Measure actual validation time
  * 3. If validation completes faster than target, add deliberate delay
  * 4. Ensure all paths (success, failure, user not found) take similar time
@@ -26,13 +26,11 @@
  *
  * Performance Targets:
  * - Argon2id validation: 2-3 seconds (inherent to algorithm)
- * - Bcrypt validation: 1-2 seconds (depends on cost factor)
  * - Response time variance: < 10ms on same infrastructure
  * - Normalization overhead: < 50ms
  *
  * Implementation Notes:
  * - argon2.verify() uses constant-time comparison internally
- * - bcrypt.compare() uses constant-time comparison internally
  * - We add response time normalization on top of library functions
  * - Busy-wait is used to avoid revealing timing through sleep precision
  * - All timing measurements are internal (never logged or exposed)
@@ -110,7 +108,6 @@ export interface ConstantTimeComparisonResult {
  *
  * The comparison is constant-time because:
  * - argon2.verify() uses constant-time comparison internally
- * - bcrypt.compare() uses constant-time comparison internally
  * - Response time is normalized to be consistent
  * - No early returns based on comparison result
  *
@@ -173,7 +170,7 @@ export async function performConstantTimeComparison(
     try {
         // Perform the comparison
         // Note: This is a simple string comparison for the constant-time module
-        // In actual usage, this would be called after argon2.verify() or bcrypt.compare()
+        // In actual usage, this would be called after argon2.verify()
         // which already use constant-time comparison internally
         const match = constantTimeStringCompare(actual, expected)
 
