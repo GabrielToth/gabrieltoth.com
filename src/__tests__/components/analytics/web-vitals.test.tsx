@@ -8,7 +8,11 @@ import { beforeEach, describe, expect, it, vi } from "vitest"
 declare global {
     interface Window {
         gtag?: (...args: unknown[]) => void
-        va?: (...args: unknown[]) => void
+        va?: (
+            action: string,
+            event: string,
+            data: Record<string, unknown>
+        ) => void
     }
 }
 

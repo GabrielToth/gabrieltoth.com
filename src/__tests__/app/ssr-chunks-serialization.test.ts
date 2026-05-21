@@ -104,6 +104,8 @@ describe("SSR Chunks Serialization - Bug Condition Exploration", () => {
 
     it("should have valid build output without errors", () => {
         expect(buildSucceeded).toBe(true)
-        expect(buildError).not.toMatch(/Build error occurred|Failed to compile/i)
+        expect(buildError).not.toMatch(
+            /Build error occurred|Failed to compile/i
+        )
     })
 })

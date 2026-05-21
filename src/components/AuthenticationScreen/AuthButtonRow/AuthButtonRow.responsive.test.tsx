@@ -52,7 +52,7 @@ describe("AuthButtonRow Responsive Layout", () => {
                     onSSOClick={mockHandlers.onSSOClick}
                 />
             )
-            const buttonRow = container.querySelector("[role=\"group\"]")
+            const buttonRow = container.querySelector('[role="group"]')
             expect(buttonRow).toBeInTheDocument()
         })
 
@@ -65,7 +65,7 @@ describe("AuthButtonRow Responsive Layout", () => {
                     onSSOClick={mockHandlers.onSSOClick}
                 />
             )
-            const buttonRow = container.querySelector("[role=\"group\"]")
+            const buttonRow = container.querySelector('[role="group"]')
             expect(buttonRow).toBeInTheDocument()
         })
 
@@ -78,7 +78,7 @@ describe("AuthButtonRow Responsive Layout", () => {
                     onSSOClick={mockHandlers.onSSOClick}
                 />
             )
-            const buttonRow = container.querySelector("[role=\"group\"]")
+            const buttonRow = container.querySelector('[role="group"]')
             expect(buttonRow).toBeInTheDocument()
         })
 
@@ -102,7 +102,7 @@ describe("AuthButtonRow Responsive Layout", () => {
                     onSSOClick={mockHandlers.onSSOClick}
                 />
             )
-            const buttonRow = container.querySelector("[role=\"group\"]")
+            const buttonRow = container.querySelector('[role="group"]')
             // Verify the element exists and has the proper role for flexbox layout
             expect(buttonRow).toBeInTheDocument()
             expect(buttonRow).toHaveAttribute("role", "group")
@@ -116,7 +116,7 @@ describe("AuthButtonRow Responsive Layout", () => {
                     onSSOClick={mockHandlers.onSSOClick}
                 />
             )
-            const buttonRow = container.querySelector("[role=\"group\"]")
+            const buttonRow = container.querySelector('[role="group"]')
             // Verify the element exists and is properly structured for centering
             expect(buttonRow).toBeInTheDocument()
             expect(buttonRow).toHaveAttribute("role", "group")
@@ -136,7 +136,7 @@ describe("AuthButtonRow Responsive Layout", () => {
                     onSSOClick={mockHandlers.onSSOClick}
                 />
             )
-            const buttonRow = container.querySelector("[role=\"group\"]")
+            const buttonRow = container.querySelector('[role="group"]')
             expect(buttonRow).toBeInTheDocument()
         })
 
@@ -149,7 +149,7 @@ describe("AuthButtonRow Responsive Layout", () => {
                     onSSOClick={mockHandlers.onSSOClick}
                 />
             )
-            const buttonRow = container.querySelector("[role=\"group\"]")
+            const buttonRow = container.querySelector('[role="group"]')
             expect(buttonRow).toBeInTheDocument()
         })
 
@@ -162,7 +162,7 @@ describe("AuthButtonRow Responsive Layout", () => {
                     onSSOClick={mockHandlers.onSSOClick}
                 />
             )
-            const buttonRow = container.querySelector("[role=\"group\"]")
+            const buttonRow = container.querySelector('[role="group"]')
             expect(buttonRow).toBeInTheDocument()
         })
 
@@ -192,7 +192,7 @@ describe("AuthButtonRow Responsive Layout", () => {
                     onSSOClick={mockHandlers.onSSOClick}
                 />
             )
-            const buttonRow = container.querySelector("[role=\"group\"]")
+            const buttonRow = container.querySelector('[role="group"]')
             expect(buttonRow).toBeInTheDocument()
         })
 
@@ -205,7 +205,7 @@ describe("AuthButtonRow Responsive Layout", () => {
                     onSSOClick={mockHandlers.onSSOClick}
                 />
             )
-            const buttonRow = container.querySelector("[role=\"group\"]")
+            const buttonRow = container.querySelector('[role="group"]')
             expect(buttonRow).toBeInTheDocument()
         })
 
@@ -218,7 +218,7 @@ describe("AuthButtonRow Responsive Layout", () => {
                     onSSOClick={mockHandlers.onSSOClick}
                 />
             )
-            const buttonRow = container.querySelector("[role=\"group\"]")
+            const buttonRow = container.querySelector('[role="group"]')
             expect(buttonRow).toBeInTheDocument()
         })
 
@@ -242,7 +242,7 @@ describe("AuthButtonRow Responsive Layout", () => {
                     onSSOClick={mockHandlers.onSSOClick}
                 />
             )
-            const buttonRow = container.querySelector("[role=\"group\"]")
+            const buttonRow = container.querySelector('[role="group"]')
             // Verify the element exists and is properly structured for wrapping
             expect(buttonRow).toBeInTheDocument()
             expect(buttonRow).toHaveAttribute("role", "group")
@@ -295,7 +295,7 @@ describe("AuthButtonRow Responsive Layout", () => {
                     onSSOClick={mockHandlers.onSSOClick}
                 />
             )
-            const buttonRow = container.querySelector("[role=\"group\"]")
+            const buttonRow = container.querySelector('[role="group"]')
             // Gap should be set via CSS variable or direct value
             expect(buttonRow).toBeInTheDocument()
         })
@@ -308,7 +308,7 @@ describe("AuthButtonRow Responsive Layout", () => {
                     onSSOClick={mockHandlers.onSSOClick}
                 />
             )
-            const buttonRow = container.querySelector("[role=\"group\"]")
+            const buttonRow = container.querySelector('[role="group"]')
             // Verify the element exists and has the proper role
             expect(buttonRow).toBeInTheDocument()
             expect(buttonRow).toHaveAttribute("role", "group")
@@ -322,7 +322,7 @@ describe("AuthButtonRow Responsive Layout", () => {
                     onSSOClick={mockHandlers.onSSOClick}
                 />
             )
-            const buttonRow = container.querySelector("[role=\"group\"]")
+            const buttonRow = container.querySelector('[role="group"]')
             const buttons = buttonRow?.querySelectorAll("button")
             expect(buttons).toHaveLength(5)
         })
@@ -392,7 +392,7 @@ describe("AuthButtonRow Responsive Layout", () => {
                     onSSOClick={mockHandlers.onSSOClick}
                 />
             )
-            const buttonRow = container.querySelector("[role=\"group\"]")
+            const buttonRow = container.querySelector('[role="group"]')
             expect(buttonRow).toHaveAttribute(
                 "aria-label",
                 "Authentication methods"
@@ -408,7 +408,7 @@ describe("AuthButtonRow Responsive Layout", () => {
                     onSSOClick={mockHandlers.onSSOClick}
                 />
             )
-            const buttonRow = container.querySelector("[role=\"group\"]")
+            const buttonRow = container.querySelector('[role="group"]')
             expect(buttonRow).toHaveAttribute(
                 "aria-label",
                 "Authentication methods"
@@ -424,7 +424,7 @@ describe("AuthButtonRow Responsive Layout", () => {
                     onSSOClick={mockHandlers.onSSOClick}
                 />
             )
-            const buttonRow = container.querySelector("[role=\"group\"]")
+            const buttonRow = container.querySelector('[role="group"]')
             expect(buttonRow).toHaveAttribute(
                 "aria-label",
                 "Authentication methods"

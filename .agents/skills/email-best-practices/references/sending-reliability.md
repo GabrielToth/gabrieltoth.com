@@ -120,12 +120,14 @@ try {
 For critical emails, use a queue to ensure delivery even if the initial send fails.
 
 **Benefits:**
+
 - Survives application restarts
 - Automatic retry handling
 - Rate limit management
 - Audit trail
 
 **Simple pattern:**
+
 1. Write email to queue/database with "pending" status
 2. Process queue, attempt send
 3. On success: mark "sent", store message ID

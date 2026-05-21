@@ -33,7 +33,7 @@ describe("TurnstileWidget Component", () => {
     afterEach(() => {
         vi.clearAllMocks()
         document.getElementById("turnstile-script")?.remove()
-        ;(window as Window & { turnstile?: unknown }).turnstile = undefined
+        ;(window as any).turnstile = undefined
     })
 
     it("should render the widget container", async () => {
@@ -47,7 +47,9 @@ describe("TurnstileWidget Component", () => {
         )
 
         await waitFor(() => {
-            expect(document.getElementById("turnstile-widget")).toBeInTheDocument()
+            expect(
+                document.getElementById("turnstile-widget")
+            ).toBeInTheDocument()
         })
     })
 

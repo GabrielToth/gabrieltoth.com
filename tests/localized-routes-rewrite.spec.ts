@@ -36,10 +36,10 @@ test.describe("Bug Condition: Localized Route Rewrites", () => {
 
         // Verify we're on a login page (check for common login elements)
         const hasLoginContent =
-            (await page.locator("input[type=\"email\"]").count()) > 0 ||
-            (await page.locator("input[type=\"password\"]").count()) > 0 ||
-            (await page.locator("button:has-text(\"entrar\")").count()) > 0 ||
-            (await page.locator("button:has-text(\"login\")").count()) > 0 ||
+            (await page.locator('input[type="email"]').count()) > 0 ||
+            (await page.locator('input[type="password"]').count()) > 0 ||
+            (await page.locator('button:has-text("entrar")').count()) > 0 ||
+            (await page.locator('button:has-text("login")').count()) > 0 ||
             pageContent.includes("login") ||
             pageContent.includes("entrar")
 
@@ -63,10 +63,10 @@ test.describe("Bug Condition: Localized Route Rewrites", () => {
 
         // Verify we're on a register page
         const hasRegisterContent =
-            (await page.locator("input[type=\"email\"]").count()) > 0 ||
-            (await page.locator("input[type=\"password\"]").count()) > 0 ||
-            (await page.locator("button:has-text(\"registrar\")").count()) > 0 ||
-            (await page.locator("button:has-text(\"register\")").count()) > 0 ||
+            (await page.locator('input[type="email"]').count()) > 0 ||
+            (await page.locator('input[type="password"]').count()) > 0 ||
+            (await page.locator('button:has-text("registrar")').count()) > 0 ||
+            (await page.locator('button:has-text("register")').count()) > 0 ||
             pageContent.includes("register") ||
             pageContent.includes("registrar")
 
@@ -138,8 +138,8 @@ test.describe("Bug Condition: Localized Route Rewrites", () => {
 
         // Verify we're on a login page
         const hasLoginContent =
-            (await page.locator("input[type=\"email\"]").count()) > 0 ||
-            (await page.locator("input[type=\"password\"]").count()) > 0 ||
+            (await page.locator('input[type="email"]').count()) > 0 ||
+            (await page.locator('input[type="password"]').count()) > 0 ||
             pageContent.includes("login") ||
             pageContent.includes("sesion")
 
@@ -163,8 +163,8 @@ test.describe("Bug Condition: Localized Route Rewrites", () => {
 
         // Verify we're on a register page
         const hasRegisterContent =
-            (await page.locator("input[type=\"email\"]").count()) > 0 ||
-            (await page.locator("input[type=\"password\"]").count()) > 0 ||
+            (await page.locator('input[type="email"]').count()) > 0 ||
+            (await page.locator('input[type="password"]').count()) > 0 ||
             pageContent.includes("register") ||
             pageContent.includes("registrieren")
 

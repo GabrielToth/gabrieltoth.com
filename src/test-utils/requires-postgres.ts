@@ -9,8 +9,7 @@ export async function isPostgresAvailable(): Promise<boolean> {
     }
 
     const connectionString =
-        process.env.DATABASE_URL ||
-        "postgresql://test:test@localhost:5432/test"
+        process.env.DATABASE_URL || "postgresql://test:test@localhost:5432/test"
 
     const pool = new Pool({
         connectionString,

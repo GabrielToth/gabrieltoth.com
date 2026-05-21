@@ -113,7 +113,9 @@ export class BackgroundProcessor {
             const allSucceeded = results.every(
                 (r: { success: boolean }) => r.success
             )
-            const allFailed = results.every((r: { success: boolean }) => !r.success)
+            const allFailed = results.every(
+                (r: { success: boolean }) => !r.success
+            )
 
             if (allSucceeded) {
                 await this.queue.markAsPublished(publication.id)

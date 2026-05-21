@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/nextjs"
 import type { SocialChannel } from "./FilterBar"
 import { FilterBar } from "./FilterBar"
 

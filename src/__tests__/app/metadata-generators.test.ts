@@ -18,7 +18,7 @@ describe("metadata generators", () => {
             params: Promise.resolve({ locale: "en" }),
         } as any)
         expect(metadata).toBeTruthy()
-        expect(metadata.openGraph?.type).toBe("website")
+        expect((metadata.openGraph as any)?.type).toBe("website")
     })
 
     it("terms-of-service generateMetadata returns metadata", async () => {
@@ -28,7 +28,7 @@ describe("metadata generators", () => {
             params: Promise.resolve({ locale: "en" }),
         } as any)
         expect(metadata).toBeTruthy()
-        expect(metadata.openGraph?.type).toBe("website")
+        expect((metadata.openGraph as any)?.type).toBe("website")
     })
 
     it("home-metadata generateMetadata returns metadata", async () => {
@@ -37,7 +37,7 @@ describe("metadata generators", () => {
             params: Promise.resolve({ locale: "en" }),
         } as any)
         expect(metadata).toBeTruthy()
-        expect(metadata.openGraph?.type).toBe("website")
+        expect((metadata.openGraph as any)?.type).toBe("website")
     })
 
     it("pc-optimization generateMetadata returns metadata", async () => {
@@ -47,6 +47,6 @@ describe("metadata generators", () => {
             params: Promise.resolve({ locale: "en" }),
         } as any)
         expect(metadata).toBeTruthy()
-        expect(metadata.openGraph?.type).toBe("website")
+        expect((metadata.openGraph as any)?.type).toBe("website")
     })
 })

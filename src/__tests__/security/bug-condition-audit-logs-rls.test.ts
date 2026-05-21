@@ -106,7 +106,9 @@ describe("Bug Condition: RLS Blocking Audit Logs", () => {
         console.log("✓ Cleaned up test user and audit log")
     })
 
-    it("should allow authenticated user to view their own audit logs", async ({ skip }) => {
+    it("should allow authenticated user to view their own audit logs", async ({
+        skip,
+    }) => {
         if (!isDbRunning) return skip()
         if (!isDbRunning) return skip()
         // Sign in as the test user
@@ -178,7 +180,9 @@ describe("Bug Condition: RLS Blocking Audit Logs", () => {
         console.log(`   Found ${auditLogs.length} audit log(s)`)
     })
 
-    it("should verify RLS policies exist for audit_logs table", async ({ skip }) => {
+    it("should verify RLS policies exist for audit_logs table", async ({
+        skip,
+    }) => {
         if (!isDbRunning) return skip()
         if (!isDbRunning) return skip()
         // Query to check if RLS is enabled and policies exist

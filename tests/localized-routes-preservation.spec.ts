@@ -40,8 +40,8 @@ test.describe("Preservation: English Routes and Static Files", () => {
 
             // Verify we're on a login page
             const hasLoginContent =
-                (await page.locator("input[type=\"email\"]").count()) > 0 ||
-                (await page.locator("input[type=\"password\"]").count()) > 0 ||
+                (await page.locator('input[type="email"]').count()) > 0 ||
+                (await page.locator('input[type="password"]').count()) > 0 ||
                 pageContent.includes("login")
 
             expect(hasLoginContent).toBeTruthy()
@@ -64,8 +64,8 @@ test.describe("Preservation: English Routes and Static Files", () => {
 
             // Verify we're on a register page
             const hasRegisterContent =
-                (await page.locator("input[type=\"email\"]").count()) > 0 ||
-                (await page.locator("input[type=\"password\"]").count()) > 0 ||
+                (await page.locator('input[type="email"]').count()) > 0 ||
+                (await page.locator('input[type="password"]').count()) > 0 ||
                 pageContent.includes("register")
 
             expect(hasRegisterContent).toBeTruthy()
@@ -226,8 +226,8 @@ test.describe("Preservation: English Routes and Static Files", () => {
 
             // Verify we're on a login page
             const hasLoginContent =
-                (await page.locator("input[type=\"email\"]").count()) > 0 ||
-                (await page.locator("input[type=\"password\"]").count()) > 0 ||
+                (await page.locator('input[type="email"]').count()) > 0 ||
+                (await page.locator('input[type="password"]').count()) > 0 ||
                 pageContent.includes("login")
 
             expect(hasLoginContent).toBeTruthy()

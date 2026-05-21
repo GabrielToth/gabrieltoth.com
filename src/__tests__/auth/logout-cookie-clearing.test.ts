@@ -73,12 +73,11 @@ describe("Property 4: Cookie Clearing on Logout", () => {
      * Validates: Requirements 2.2, 2.3
      */
     test.prop([
-            fc.uuid(),
-            fc.uuid(),
-            fc.emailAddress(),
-            fc.string({ minLength: 32, maxLength: 64 }),
-        ])(
-
+        fc.uuid(),
+        fc.uuid(),
+        fc.emailAddress(),
+        fc.string({ minLength: 32, maxLength: 64 }),
+    ])(
         "should satisfy: Session Cookie Clearing",
 
         async (
@@ -172,12 +171,11 @@ describe("Property 4: Cookie Clearing on Logout", () => {
      * Validates: Requirements 2.2, 2.3
      */
     test.prop([
-            fc.uuid(),
-            fc.uuid(),
-            fc.emailAddress(),
-            fc.string({ minLength: 32, maxLength: 64 }),
-        ])(
-
+        fc.uuid(),
+        fc.uuid(),
+        fc.emailAddress(),
+        fc.string({ minLength: 32, maxLength: 64 }),
+    ])(
         "should satisfy: Session Cookie Clearing",
 
         async (
@@ -266,12 +264,11 @@ describe("Property 4: Cookie Clearing on Logout", () => {
      * Validates: Requirements 2.2, 2.3, 9.1, 9.3, 9.4, 9.5
      */
     test.prop([
-            fc.uuid(),
-            fc.uuid(),
-            fc.emailAddress(),
-            fc.string({ minLength: 32, maxLength: 64 }),
-        ])(
-
+        fc.uuid(),
+        fc.uuid(),
+        fc.emailAddress(),
+        fc.string({ minLength: 32, maxLength: 64 }),
+    ])(
         "should satisfy: Session Cookie Clearing",
 
         async (
@@ -353,12 +350,11 @@ describe("Property 4: Cookie Clearing on Logout", () => {
      * Validates: Requirements 2.3
      */
     test.prop([
-            fc.uuid(),
-            fc.uuid(),
-            fc.emailAddress(),
-            fc.string({ minLength: 32, maxLength: 64 }),
-        ])(
-
+        fc.uuid(),
+        fc.uuid(),
+        fc.emailAddress(),
+        fc.string({ minLength: 32, maxLength: 64 }),
+    ])(
         "should satisfy: Session Cookie Clearing",
 
         async (
@@ -437,12 +433,11 @@ describe("Property 4: Cookie Clearing on Logout", () => {
      * Validates: Requirements 2.2
      */
     test.prop([
-            fc.uuid(),
-            fc.uuid(),
-            fc.emailAddress(),
-            fc.string({ minLength: 32, maxLength: 64 }),
-        ])(
-
+        fc.uuid(),
+        fc.uuid(),
+        fc.emailAddress(),
+        fc.string({ minLength: 32, maxLength: 64 }),
+    ])(
         "should satisfy: Session Cookie Clearing",
 
         async (
@@ -523,12 +518,11 @@ describe("Property 4: Cookie Clearing on Logout", () => {
      * Validates: Requirements 2.2, 2.3, 3.1
      */
     test.prop([
-            fc.uuid(),
-            fc.uuid(),
-            fc.emailAddress(),
-            fc.string({ minLength: 32, maxLength: 64 }),
-        ])(
-
+        fc.uuid(),
+        fc.uuid(),
+        fc.emailAddress(),
+        fc.string({ minLength: 32, maxLength: 64 }),
+    ])(
         "should satisfy: Session Cookie Clearing",
 
         async (

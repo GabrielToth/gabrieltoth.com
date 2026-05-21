@@ -460,7 +460,8 @@ describe("UnifiedSignInForm - Preservation Property Tests", () => {
             // Mock successful signin
             vi.mocked(signInWithEmail).mockResolvedValue({
                 success: true,
-                data: { user: { id: "123" } },
+                userExists: true,
+                userId: "123",
             })
 
             render(<UnifiedSignInForm locale="pt-BR" />)
@@ -560,7 +561,7 @@ describe("UnifiedSignInForm - Preservation Property Tests", () => {
          * Preservation: "Já tem uma conta?" link should switch to signin mode
          * This behavior should remain unchanged after the fix
          */
-        it("should switch to signin mode when \"Já tem uma conta?\" is clicked", async () => {
+        it('should switch to signin mode when "Já tem uma conta?" is clicked', async () => {
             const user = userEvent.setup()
             render(<UnifiedSignInForm locale="pt-BR" />)
 

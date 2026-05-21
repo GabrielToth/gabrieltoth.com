@@ -169,8 +169,8 @@ describe("Environment Parity: Docker vs Vercel", () => {
         })
 
         it("should connect to Supabase successfully", async ({ skip }) => {
-    if (!isDbRunning) return skip()
-    if (!isDbRunning) return skip()
+            if (!isDbRunning) return skip()
+            if (!isDbRunning) return skip()
             const { error } = await supabaseClient
                 .from("users")
                 .select("count(*)", { count: "exact", head: true })
@@ -180,8 +180,8 @@ describe("Environment Parity: Docker vs Vercel", () => {
         })
 
         it("should access rate_limit_records table", async ({ skip }) => {
-    if (!isDbRunning) return skip()
-    if (!isDbRunning) return skip()
+            if (!isDbRunning) return skip()
+            if (!isDbRunning) return skip()
             const { error } = await supabaseClient
                 .from("rate_limit_records")
                 .select("count(*)", { count: "exact", head: true })
@@ -190,8 +190,8 @@ describe("Environment Parity: Docker vs Vercel", () => {
         })
 
         it("should access audit_logs table", async ({ skip }) => {
-    if (!isDbRunning) return skip()
-    if (!isDbRunning) return skip()
+            if (!isDbRunning) return skip()
+            if (!isDbRunning) return skip()
             const { error } = await supabaseClient
                 .from("audit_logs")
                 .select("count(*)", { count: "exact", head: true })
@@ -200,8 +200,8 @@ describe("Environment Parity: Docker vs Vercel", () => {
         })
 
         it("should have proper table structure for users", async ({ skip }) => {
-    if (!isDbRunning) return skip()
-    if (!isDbRunning) return skip()
+            if (!isDbRunning) return skip()
+            if (!isDbRunning) return skip()
             const { error, data } = await supabaseClient
                 .from("users")
                 .select("*", { count: "exact", head: true })
@@ -210,9 +210,11 @@ describe("Environment Parity: Docker vs Vercel", () => {
             expect(error).toBeFalsy()
         })
 
-        it("should have proper table structure for rate_limit_records", async ({ skip }) => {
-    if (!isDbRunning) return skip()
-    if (!isDbRunning) return skip()
+        it("should have proper table structure for rate_limit_records", async ({
+            skip,
+        }) => {
+            if (!isDbRunning) return skip()
+            if (!isDbRunning) return skip()
             const { error, data } = await supabaseClient
                 .from("rate_limit_records")
                 .select("*", { count: "exact", head: true })
@@ -220,9 +222,11 @@ describe("Environment Parity: Docker vs Vercel", () => {
             expect(error).toBeFalsy()
         })
 
-        it("should have proper table structure for audit_logs", async ({ skip }) => {
-    if (!isDbRunning) return skip()
-    if (!isDbRunning) return skip()
+        it("should have proper table structure for audit_logs", async ({
+            skip,
+        }) => {
+            if (!isDbRunning) return skip()
+            if (!isDbRunning) return skip()
             const { error, data } = await supabaseClient
                 .from("audit_logs")
                 .select("*", { count: "exact", head: true })

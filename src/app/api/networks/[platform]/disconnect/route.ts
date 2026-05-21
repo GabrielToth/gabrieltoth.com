@@ -31,8 +31,6 @@ export async function DELETE(
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
         }
 
-        
-
         const networkManager = getNetworkManager()
         const disconnected = await networkManager.unlinkNetwork(
             userId,

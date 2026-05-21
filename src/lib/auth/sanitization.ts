@@ -104,7 +104,7 @@ export function escapeHtml(text: string): string {
         "&": "&amp;",
         "<": "&lt;",
         ">": "&gt;",
-        "\"": "&quot;",
+        '"': "&quot;",
         "'": "&#39;",
         "/": "&#x2F;",
     }

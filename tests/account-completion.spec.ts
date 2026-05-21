@@ -60,7 +60,7 @@ test.describe("account completion flow", () => {
         ).toBeVisible()
 
         // Fill in password
-        const passwordInput = page.locator("input[type=\"password\"]").first()
+        const passwordInput = page.locator('input[type="password"]').first()
         await passwordInput.fill("SecurePass123!")
 
         // Verify password strength indicator shows requirements met
@@ -79,14 +79,14 @@ test.describe("account completion flow", () => {
         )
 
         // Fill in phone number
-        const phoneInput = page.locator("input[type=\"tel\"]")
+        const phoneInput = page.locator('input[type="tel"]')
         await phoneInput.fill("+1234567890")
 
         // Verify phone is valid
         await expect(page.locator("text=Valid phone")).toBeVisible()
 
         // Fill in birth date
-        const birthDateInput = page.locator("input[type=\"date\"]")
+        const birthDateInput = page.locator('input[type="date"]')
         await birthDateInput.fill("1990-01-15")
 
         // Verify birth date is valid
@@ -150,13 +150,13 @@ test.describe("account completion flow", () => {
         await expect(page.locator("text=Step 2 of 3")).toBeVisible()
 
         // Fill in some data
-        const passwordInput = page.locator("input[type=\"password\"]").first()
+        const passwordInput = page.locator('input[type="password"]').first()
         await passwordInput.fill("SecurePass123!")
 
-        const phoneInput = page.locator("input[type=\"tel\"]")
+        const phoneInput = page.locator('input[type="tel"]')
         await phoneInput.fill("+1234567890")
 
-        const birthDateInput = page.locator("input[type=\"date\"]")
+        const birthDateInput = page.locator('input[type="date"]')
         await birthDateInput.fill("1990-01-15")
 
         // Click Continue to Verification
@@ -196,7 +196,7 @@ test.describe("account completion flow", () => {
         await editButtons.first().click() // Edit email
 
         // Change email
-        const emailInput = page.locator("input[type=\"email\"]")
+        const emailInput = page.locator('input[type="email"]')
         await emailInput.clear()
         await emailInput.fill("newemail@example.com")
 
@@ -209,13 +209,13 @@ test.describe("account completion flow", () => {
         await continueButton.click()
 
         // Step 2: Fill in new fields
-        const passwordInput = page.locator("input[type=\"password\"]").first()
+        const passwordInput = page.locator('input[type="password"]').first()
         await passwordInput.fill("SecurePass123!")
 
-        const phoneInput = page.locator("input[type=\"tel\"]")
+        const phoneInput = page.locator('input[type="tel"]')
         await phoneInput.fill("+1234567890")
 
-        const birthDateInput = page.locator("input[type=\"date\"]")
+        const birthDateInput = page.locator('input[type="date"]')
         await birthDateInput.fill("1990-01-15")
 
         // Continue to Step 3
@@ -239,7 +239,7 @@ test.describe("account completion flow", () => {
         await continueButton.click()
 
         // Step 2: Test password validation
-        const passwordInput = page.locator("input[type=\"password\"]").first()
+        const passwordInput = page.locator('input[type="password"]').first()
 
         // Test 1: Too short password
         await passwordInput.fill("Short1!")
@@ -293,7 +293,7 @@ test.describe("account completion flow", () => {
         await continueButton.click()
 
         // Step 2: Test phone validation
-        const phoneInput = page.locator("input[type=\"tel\"]")
+        const phoneInput = page.locator('input[type="tel"]')
 
         // Test 1: Invalid format (no +)
         await phoneInput.fill("1234567890")
@@ -324,7 +324,7 @@ test.describe("account completion flow", () => {
         await continueButton.click()
 
         // Step 2: Test birth date validation
-        const birthDateInput = page.locator("input[type=\"date\"]")
+        const birthDateInput = page.locator('input[type="date"]')
 
         // Test 1: Future date
         const futureDate = new Date()
@@ -359,13 +359,13 @@ test.describe("account completion flow", () => {
         await continueButton.click()
 
         // Step 2: Fill with invalid data
-        const passwordInput = page.locator("input[type=\"password\"]").first()
+        const passwordInput = page.locator('input[type="password"]').first()
         await passwordInput.fill("weak")
 
-        const phoneInput = page.locator("input[type=\"tel\"]")
+        const phoneInput = page.locator('input[type="tel"]')
         await phoneInput.fill("invalid")
 
-        const birthDateInput = page.locator("input[type=\"date\"]")
+        const birthDateInput = page.locator('input[type="date"]')
         await birthDateInput.fill("2020-01-01") // Too young
 
         // Try to continue (should fail)
@@ -435,13 +435,13 @@ test.describe("account completion flow", () => {
         await continueButton.click()
 
         // Fill in all required fields
-        const passwordInput = page.locator("input[type=\"password\"]").first()
+        const passwordInput = page.locator('input[type="password"]').first()
         await passwordInput.fill("SecurePass123!")
 
-        const phoneInput = page.locator("input[type=\"tel\"]")
+        const phoneInput = page.locator('input[type="tel"]')
         await phoneInput.fill("+1234567890")
 
-        const birthDateInput = page.locator("input[type=\"date\"]")
+        const birthDateInput = page.locator('input[type="date"]')
         const validDate = new Date()
         validDate.setFullYear(validDate.getFullYear() - 25)
         const validDateStr = validDate.toISOString().split("T")[0]
@@ -520,7 +520,7 @@ test.describe("account completion flow", () => {
         await editButtons.first().click()
 
         // Verify email input is now editable
-        const emailInput = page.locator("input[type=\"email\"]")
+        const emailInput = page.locator('input[type="email"]')
         await expect(emailInput).toBeEditable()
 
         // Change email
@@ -544,7 +544,7 @@ test.describe("account completion flow", () => {
         await editButtons.nth(1).click()
 
         // Verify name input is now editable
-        const nameInput = page.locator("input[type=\"text\"]")
+        const nameInput = page.locator('input[type="text"]')
         await expect(nameInput).toBeEditable()
 
         // Change name
@@ -574,13 +574,13 @@ test.describe("account completion flow", () => {
         await expect(page.locator("text=Step 2 of 3")).toBeVisible()
 
         // Fill in required fields
-        const passwordInput = page.locator("input[type=\"password\"]").first()
+        const passwordInput = page.locator('input[type="password"]').first()
         await passwordInput.fill("SecurePass123!")
 
-        const phoneInput = page.locator("input[type=\"tel\"]")
+        const phoneInput = page.locator('input[type="tel"]')
         await phoneInput.fill("+1234567890")
 
-        const birthDateInput = page.locator("input[type=\"date\"]")
+        const birthDateInput = page.locator('input[type="date"]')
         const validDate = new Date()
         validDate.setFullYear(validDate.getFullYear() - 25)
         const validDateStr = validDate.toISOString().split("T")[0]
@@ -607,13 +607,13 @@ test.describe("account completion flow", () => {
         await continueButton.click()
 
         // Step 2: Fill in required fields
-        const passwordInput = page.locator("input[type=\"password\"]").first()
+        const passwordInput = page.locator('input[type="password"]').first()
         await passwordInput.fill("SecurePass123!")
 
-        const phoneInput = page.locator("input[type=\"tel\"]")
+        const phoneInput = page.locator('input[type="tel"]')
         await phoneInput.fill("+1234567890")
 
-        const birthDateInput = page.locator("input[type=\"date\"]")
+        const birthDateInput = page.locator('input[type="date"]')
         const validDate = new Date()
         validDate.setFullYear(validDate.getFullYear() - 25)
         const validDateStr = validDate.toISOString().split("T")[0]

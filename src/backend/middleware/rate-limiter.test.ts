@@ -64,7 +64,7 @@ describe("Rate Limiter Middleware", () => {
         })
 
         it("should return 429 Too Many Requests when limit exceeded", () => {
-            req.path = "/api/auth/check-email"
+            ;(req as any).path = "/api/auth/check-email"
 
             // Exceed the limit
             for (let i = 0; i < 6; i++) {
@@ -97,7 +97,7 @@ describe("Rate Limiter Middleware", () => {
         })
 
         it("should handle register endpoint with 3 requests per hour", () => {
-            req.path = "/api/auth/register"
+            ;(req as any).path = "/api/auth/register"
 
             // Make 3 requests (within limit)
             for (let i = 0; i < 3; i++) {
@@ -121,7 +121,7 @@ describe("Rate Limiter Middleware", () => {
         })
 
         it("should not rate limit endpoints without configuration", () => {
-            req.path = "/api/other-endpoint"
+            ;(req as any).path = "/api/other-endpoint"
 
             rateLimiterMiddleware(req as Request, res as Response, next)
 
@@ -131,7 +131,7 @@ describe("Rate Limiter Middleware", () => {
 
         it("should extract email from request body for logging", () => {
             req.body = { email: "test@example.com" }
-            req.path = "/api/auth/check-email"
+            ;(req as any).path = "/api/auth/check-email"
 
             // Exceed the limit
             for (let i = 0; i < 6; i++) {
@@ -145,7 +145,7 @@ describe("Rate Limiter Middleware", () => {
     describe("createRateLimiter", () => {
         it("should create custom rate limiter", () => {
             // Use a unique path to avoid conflicts with other tests
-            req.path = "/api/custom-endpoint"
+            ;(req as any).path = "/api/custom-endpoint"
             const limiter = createRateLimiter(
                 2,
                 60000,
@@ -179,7 +179,7 @@ describe("Rate Limiter Middleware", () => {
 
         it("should use default message if not provided", () => {
             // Use a unique path to avoid conflicts with other tests
-            req.path = "/api/custom-endpoint-2"
+            ;(req as any).path = "/api/custom-endpoint-2"
             const limiter = createRateLimiter(1, 60000)
 
             // First request passes
@@ -202,7 +202,7 @@ describe("Rate Limiter Middleware", () => {
 
     describe("cleanupExpiredRecords", () => {
         it("should clean up expired rate limit records", () => {
-            req.path = "/api/auth/check-email"
+            ;(req as any).path = "/api/auth/check-email"
 
             // Make a request to create a record
             rateLimiterMiddleware(req as Request, res as Response, next)
@@ -217,7 +217,7 @@ describe("Rate Limiter Middleware", () => {
 
     describe("getRateLimitStatus", () => {
         it("should return rate limit status for a request", () => {
-            req.path = "/api/auth/check-email"
+            ;(req as any).path = "/api/auth/check-email"
 
             // Make a request
             rateLimiterMiddleware(req as Request, res as Response, next)
@@ -258,7 +258,7 @@ describe("Rate Limiter Middleware", () => {
 
     describe("Rate Limit Window Reset", () => {
         it("should reset rate limit after window expires", () => {
-            req.path = "/api/auth/check-email"
+            ;(req as any).path = "/api/auth/check-email"
 
             // Make 5 requests (within limit)
             for (let i = 0; i < 5; i++) {
@@ -281,8 +281,8 @@ describe("Rate Limiter Middleware", () => {
     describe("IP Address Extraction", () => {
         it("should extract IP from x-forwarded-for header", () => {
             req.headers = { "x-forwarded-for": "203.0.113.1, 198.51.100.1" }
-            req.ip = "127.0.0.1"
-            req.path = "/api/auth/check-email"
+            ;(req as any).ip = "127.0.0.1"
+            ;(req as any).path = "/api/auth/check-email"
 
             rateLimiterMiddleware(req as Request, res as Response, next)
 
@@ -291,8 +291,8 @@ describe("Rate Limiter Middleware", () => {
 
         it("should extract IP from x-real-ip header", () => {
             req.headers = { "x-real-ip": "203.0.113.1" }
-            req.ip = "127.0.0.1"
-            req.path = "/api/auth/check-email"
+            ;(req as any).ip = "127.0.0.1"
+            ;(req as any).path = "/api/auth/check-email"
 
             rateLimiterMiddleware(req as Request, res as Response, next)
 
@@ -301,8 +301,8 @@ describe("Rate Limiter Middleware", () => {
 
         it("should use req.ip as fallback", () => {
             req.headers = {}
-            req.ip = "203.0.113.1"
-            req.path = "/api/auth/check-email"
+            ;(req as any).ip = "203.0.113.1"
+            ;(req as any).path = "/api/auth/check-email"
 
             rateLimiterMiddleware(req as Request, res as Response, next)
 

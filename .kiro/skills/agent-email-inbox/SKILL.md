@@ -106,6 +106,7 @@ Install the `resend` npm package: `npm install resend` (or the equivalent for yo
 ### First Question: New or Existing Resend Account?
 
 Ask your human:
+
 - **New account just for the agent?** → Simpler setup, full account access is fine
 - **Existing account with other projects?** → Use domain-scoped API keys for sandboxing
 
@@ -227,6 +228,7 @@ async function processEmailForAgent(
 After choosing your security level and setting up your domain, create a webhook endpoint. **The webhook endpoint MUST be a POST route.** Resend sends all webhook events as POST requests.
 
 > **Critical: Use raw body for verification.** Webhook signature verification requires the raw request body.
+>
 > - **Next.js App Router:** Use `req.text()` (not `req.json()`)
 > - **Express:** Use `express.raw({ type: 'application/json' })` on the webhook route
 
@@ -380,12 +382,14 @@ OWNER_EMAIL=you@email.com               # For security notifications
 ## Testing
 
 Use Resend's test addresses for development:
+
 - `delivered@resend.dev` — Simulates successful delivery
 - `bounced@resend.dev` — Simulates hard bounce
 
 For security testing, send test emails from non-allowlisted addresses to verify rejection works correctly.
 
 **Quick verification checklist:**
+
 1. Server is running: `curl http://localhost:3000` should return a response
 2. Tunnel is working: `curl https://<your-tunnel-url>` should return the same response
 3. Webhook is active: Check status in Resend dashboard → Webhooks

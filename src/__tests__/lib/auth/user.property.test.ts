@@ -48,11 +48,12 @@ vi.mock("@/lib/db", () => ({
                     id: `user-${usersByEmail.size + 1}`,
                     email,
                     password_hash,
-                    oauth_provider,
+                    oauth_provider: oauth_provider as any,
                     oauth_id,
                     name,
                     picture,
                     email_verified,
+                    account_completion_status: "pending",
                     created_at: new Date(),
                     updated_at: new Date(),
                 }
@@ -66,7 +67,10 @@ vi.mock("@/lib/db", () => ({
                 return usersByEmail.get(params?.[0] as string) ?? null
             }
 
-            if (sql.includes("oauth_provider =") && sql.includes("oauth_id =")) {
+            if (
+                sql.includes("oauth_provider =") &&
+                sql.includes("oauth_id =")
+            ) {
                 const [provider, id] = params as [string, string]
                 return usersByOAuthKey.get(oauthKey(provider, id)) ?? null
             }
@@ -80,7 +84,10 @@ vi.mock("@/lib/db", () => ({
                 if (user) {
                     usersByEmail.delete(email)
                     usersByOAuthKey.delete(
-                        oauthKey(user.oauth_provider, user.oauth_id)
+                        oauthKey(
+                            user.oauth_provider as string,
+                            user.oauth_id as string
+                        )
                     )
                 }
             }
@@ -109,7 +116,10 @@ describe("Property 3: User Data Persistence", () => {
                     email: fc.emailAddress(),
                     password_hash: fc
                         .string({ minLength: 60, maxLength: 60 })
-                        .map(s => `$argon2id$v=19$m=64000,t=3,p=2$abcdefghijklmnopqrst$0123456789abcdef0123456789abcdef`),
+                        .map(
+                            s =>
+                                "$argon2id$v=19$m=64000,t=3,p=2$abcdefghijklmnopqrst$0123456789abcdef0123456789abcdef"
+                        ),
                     oauth_provider: fc.constantFrom(
                         "google",
                         "facebook",
@@ -192,7 +202,10 @@ describe("Property 3: User Data Persistence", () => {
                     email: fc.emailAddress(),
                     password_hash: fc
                         .string({ minLength: 60, maxLength: 60 })
-                        .map(s => `$argon2id$v=19$m=64000,t=3,p=2$abcdefghijklmnopqrst$0123456789abcdef0123456789abcdef`),
+                        .map(
+                            s =>
+                                "$argon2id$v=19$m=64000,t=3,p=2$abcdefghijklmnopqrst$0123456789abcdef0123456789abcdef"
+                        ),
                     oauth_provider: fc.constantFrom(
                         "google",
                         "facebook",

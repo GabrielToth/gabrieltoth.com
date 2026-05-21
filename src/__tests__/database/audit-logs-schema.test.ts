@@ -64,8 +64,8 @@ describe.skipIf(!auditSchemaReady)("Audit Logs Table Schema", () => {
      * Validates that the audit_logs table is created in the public schema
      */
     it("should have audit_logs table in public schema", async ({ skip }) => {
-    if (!isDbRunning) return skip()
-    if (!isDbRunning) return skip()
+        if (!isDbRunning) return skip()
+        if (!isDbRunning) return skip()
         const { data, error } = await supabase.from("audit_logs").select("*")
 
         expect(error).toBeNull()
@@ -77,9 +77,11 @@ describe.skipIf(!auditSchemaReady)("Audit Logs Table Schema", () => {
      * Test: Primary key is UUID
      * Validates that id column is UUID primary key with auto-generation
      */
-    it("should have id as UUID primary key with auto-generation", async ({ skip }) => {
-    if (!isDbRunning) return skip()
-    if (!isDbRunning) return skip()
+    it("should have id as UUID primary key with auto-generation", async ({
+        skip,
+    }) => {
+        if (!isDbRunning) return skip()
+        if (!isDbRunning) return skip()
         const { data: record, error } = await supabase
             .from("audit_logs")
             .insert({
@@ -109,8 +111,8 @@ describe.skipIf(!auditSchemaReady)("Audit Logs Table Schema", () => {
      * Validates enum-like behavior for event types
      */
     it("should accept all required event_type values", async ({ skip }) => {
-    if (!isDbRunning) return skip()
-    if (!isDbRunning) return skip()
+        if (!isDbRunning) return skip()
+        if (!isDbRunning) return skip()
         const eventTypes = [
             "auth_success",
             "auth_failure",
@@ -151,8 +153,8 @@ describe.skipIf(!auditSchemaReady)("Audit Logs Table Schema", () => {
      * Validates that optional columns can be NULL
      */
     it("should allow NULL values for optional columns", async ({ skip }) => {
-    if (!isDbRunning) return skip()
-    if (!isDbRunning) return skip()
+        if (!isDbRunning) return skip()
+        if (!isDbRunning) return skip()
         const { data, error } = await supabase
             .from("audit_logs")
             .insert({
@@ -180,9 +182,11 @@ describe.skipIf(!auditSchemaReady)("Audit Logs Table Schema", () => {
      * Test: JSONB details column works correctly
      * Validates that details column can store complex JSON
      */
-    it("should support JSONB details column for flexible metadata", async ({ skip }) => {
-    if (!isDbRunning) return skip()
-    if (!isDbRunning) return skip()
+    it("should support JSONB details column for flexible metadata", async ({
+        skip,
+    }) => {
+        if (!isDbRunning) return skip()
+        if (!isDbRunning) return skip()
         const testDetails = {
             country: "US",
             city: "New York",
@@ -198,7 +202,7 @@ describe.skipIf(!auditSchemaReady)("Audit Logs Table Schema", () => {
                 details: testDetails,
                 timestamp: new Date().toISOString(),
             })
-            .select("details")
+            .select("id, details")
             .single()
 
         expect(error).toBeNull()
@@ -214,9 +218,11 @@ describe.skipIf(!auditSchemaReady)("Audit Logs Table Schema", () => {
      * Test: Timestamp column defaults to NOW()
      * Validates that timestamp is auto-set if not provided
      */
-    it("should auto-set timestamp to NOW() if not provided", async ({ skip }) => {
-    if (!isDbRunning) return skip()
-    if (!isDbRunning) return skip()
+    it("should auto-set timestamp to NOW() if not provided", async ({
+        skip,
+    }) => {
+        if (!isDbRunning) return skip()
+        if (!isDbRunning) return skip()
         const beforeInsert = new Date()
 
         const { data, error } = await supabase
@@ -226,7 +232,7 @@ describe.skipIf(!auditSchemaReady)("Audit Logs Table Schema", () => {
                 email: "test@example.com",
                 // timestamp not provided
             })
-            .select("timestamp")
+            .select("id, timestamp")
             .single()
 
         const afterInsert = new Date()
@@ -252,9 +258,11 @@ describe.skipIf(!auditSchemaReady)("Audit Logs Table Schema", () => {
      * Test: Foreign key relationship with users table
      * Validates that user_id references users(id)
      */
-    it("should have foreign key relationship with users table", async ({ skip }) => {
-    if (!isDbRunning) return skip()
-    if (!isDbRunning) return skip()
+    it("should have foreign key relationship with users table", async ({
+        skip,
+    }) => {
+        if (!isDbRunning) return skip()
+        if (!isDbRunning) return skip()
         if (!testUserId) {
             console.warn("Skipping foreign key test - no test user created")
             return
@@ -286,8 +294,8 @@ describe.skipIf(!auditSchemaReady)("Audit Logs Table Schema", () => {
      * Validates that old_algorithm and new_algorithm columns work
      */
     it("should support algorithm migration tracking", async ({ skip }) => {
-    if (!isDbRunning) return skip()
-    if (!isDbRunning) return skip()
+        if (!isDbRunning) return skip()
+        if (!isDbRunning) return skip()
         const { data, error } = await supabase
             .from("audit_logs")
             .insert({
@@ -315,8 +323,8 @@ describe.skipIf(!auditSchemaReady)("Audit Logs Table Schema", () => {
      * Validates that CAPTCHA-related columns work
      */
     it("should support CAPTCHA verification tracking", async ({ skip }) => {
-    if (!isDbRunning) return skip()
-    if (!isDbRunning) return skip()
+        if (!isDbRunning) return skip()
+        if (!isDbRunning) return skip()
         const { data, error } = await supabase
             .from("audit_logs")
             .insert({
@@ -343,9 +351,11 @@ describe.skipIf(!auditSchemaReady)("Audit Logs Table Schema", () => {
      * Test: Error tracking columns
      * Validates that error_code and error_message columns work
      */
-    it("should support error tracking for failed attempts", async ({ skip }) => {
-    if (!isDbRunning) return skip()
-    if (!isDbRunning) return skip()
+    it("should support error tracking for failed attempts", async ({
+        skip,
+    }) => {
+        if (!isDbRunning) return skip()
+        if (!isDbRunning) return skip()
         const { data, error } = await supabase
             .from("audit_logs")
             .insert({
@@ -373,8 +383,8 @@ describe.skipIf(!auditSchemaReady)("Audit Logs Table Schema", () => {
      * Validates that ip_address and user_agent columns work
      */
     it("should support request metadata tracking", async ({ skip }) => {
-    if (!isDbRunning) return skip()
-    if (!isDbRunning) return skip()
+        if (!isDbRunning) return skip()
+        if (!isDbRunning) return skip()
         const { data, error } = await supabase
             .from("audit_logs")
             .insert({
@@ -401,9 +411,11 @@ describe.skipIf(!auditSchemaReady)("Audit Logs Table Schema", () => {
      * Test: Attempt count tracking
      * Validates that attempt_count column works for rate limiting events
      */
-    it("should support attempt count tracking for rate limiting", async ({ skip }) => {
-    if (!isDbRunning) return skip()
-    if (!isDbRunning) return skip()
+    it("should support attempt count tracking for rate limiting", async ({
+        skip,
+    }) => {
+        if (!isDbRunning) return skip()
+        if (!isDbRunning) return skip()
         const { data, error } = await supabase
             .from("audit_logs")
             .insert({
@@ -428,9 +440,11 @@ describe.skipIf(!auditSchemaReady)("Audit Logs Table Schema", () => {
      * Test: Comprehensive audit log entry
      * Validates that all columns can be populated together
      */
-    it("should support comprehensive audit log entries with all fields", async ({ skip }) => {
-    if (!isDbRunning) return skip()
-    if (!isDbRunning) return skip()
+    it("should support comprehensive audit log entries with all fields", async ({
+        skip,
+    }) => {
+        if (!isDbRunning) return skip()
+        if (!isDbRunning) return skip()
         if (!testUserId) {
             console.warn("Skipping comprehensive test - no test user created")
             return
@@ -478,9 +492,11 @@ describe.skipIf(!auditSchemaReady)("Audit Logs Table Schema", () => {
      * Test: RLS policy - Users can view their own audit logs
      * Validates that RLS policy restricts access to own logs
      */
-    it("should have RLS policy allowing users to view own audit logs", async ({ skip }) => {
-    if (!isDbRunning) return skip()
-    if (!isDbRunning) return skip()
+    it("should have RLS policy allowing users to view own audit logs", async ({
+        skip,
+    }) => {
+        if (!isDbRunning) return skip()
+        if (!isDbRunning) return skip()
         // This test verifies the policy exists by checking table structure
         // Full RLS testing requires authenticated user context
         const { data, error } = await supabase.from("audit_logs").select("*")
@@ -493,9 +509,11 @@ describe.skipIf(!auditSchemaReady)("Audit Logs Table Schema", () => {
      * Test: Indexes exist for fast queries
      * Validates that required indexes are created for common queries
      */
-    it("should support efficient queries by email, user_id, timestamp, and event_type", async ({ skip }) => {
-    if (!isDbRunning) return skip()
-    if (!isDbRunning) return skip()
+    it("should support efficient queries by email, user_id, timestamp, and event_type", async ({
+        skip,
+    }) => {
+        if (!isDbRunning) return skip()
+        if (!isDbRunning) return skip()
         // Insert test data
         const { data: inserted } = await supabase
             .from("audit_logs")

@@ -4,13 +4,7 @@ import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { type Locale } from "@/lib/i18n"
 import { SiYoutube } from "@icons-pack/react-simple-icons"
-import {
-    Edit3,
-    MessageSquare,
-    TrendingUp,
-    User,
-    Users,
-} from "lucide-react"
+import { Edit3, MessageSquare, TrendingUp, User, Users } from "lucide-react"
 import { useState } from "react"
 
 interface ApplicationFormProps {

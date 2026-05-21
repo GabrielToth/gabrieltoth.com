@@ -5,9 +5,11 @@ This directory contains all components for the Settings Tab of the dashboard red
 ## Components
 
 ### SettingsContainer
+
 Main container for the Settings tab that manages state for all settings sections and coordinates between them.
 
 **Features:**
+
 - Manages user profile state
 - Manages preferences state
 - Manages connected channels
@@ -20,12 +22,15 @@ Main container for the Settings tab that manages state for all settings sections
 - Data caching
 
 **Props:**
+
 - `children?: React.ReactNode` - Optional children to render instead of default sections
 
 ### ProfileSection
+
 User profile management component for editing name, email, and profile photo.
 
 **Features:**
+
 - Edit user name
 - Edit user email
 - Upload/change profile photo
@@ -35,15 +40,18 @@ User profile management component for editing name, email, and profile photo.
 - Success messages
 
 **Props:**
+
 - `user: User` - Current user data
 - `onSave: (user: User) => void` - Callback when profile is saved
 - `isLoading?: boolean` - Loading state
 - `error?: string | null` - Error message
 
 ### PreferencesSection
+
 User preferences management component for notifications, language, and theme settings.
 
 **Features:**
+
 - Toggle notifications on/off
 - Select language (English, Portuguese, Spanish, French)
 - Select theme (Light, Dark, Auto)
@@ -51,13 +59,16 @@ User preferences management component for notifications, language, and theme set
 - Persist preferences
 
 **Props:**
+
 - `preferences: Preferences` - Current preferences
 - `onSave: (preferences: Preferences) => void` - Callback when preferences are saved
 
 ### ChannelsSection
+
 Manage connected social media channels.
 
 **Features:**
+
 - Display connected channels
 - Show connection status
 - Disconnect channels with confirmation
@@ -66,14 +77,17 @@ Manage connected social media channels.
 - Connection date tracking
 
 **Props:**
+
 - `channels: SocialChannel[]` - List of channels
 - `onDisconnect: (channelId: string) => void` - Callback when channel is disconnected
 - `onConnect: () => void` - Callback when add channel is clicked
 
 ### SecuritySection
+
 Security settings management for 2FA and password changes.
 
 **Features:**
+
 - Enable/disable 2FA
 - 2FA setup with QR code
 - Change password form
@@ -82,12 +96,15 @@ Security settings management for 2FA and password changes.
 - Error handling
 
 **Props:**
+
 - `user: User | null` - Current user data
 
 ### BillingSection
+
 Billing and subscription management.
 
 **Features:**
+
 - Display current plan
 - Show plan details and price
 - Display next billing date
@@ -97,13 +114,16 @@ Billing and subscription management.
 - Invoice status tracking
 
 **Props:**
+
 - `billing: BillingInfo` - Billing information
 - `onUpgrade: () => void` - Callback when upgrade is clicked
 
 ### IntegrationsSection
+
 Third-party integrations management.
 
 **Features:**
+
 - Display connected integrations
 - Show connection status
 - Disconnect integrations with confirmation
@@ -112,6 +132,7 @@ Third-party integrations management.
 - Connection date tracking
 
 **Props:**
+
 - `integrations: Integration[]` - List of integrations
 - `onDisconnect: (integrationId: string) => void` - Callback when integration is disconnected
 - `onConnect: () => void` - Callback when add integration is clicked
@@ -119,6 +140,7 @@ Third-party integrations management.
 ## Data Types
 
 ### User
+
 ```typescript
 interface User {
   id: string
@@ -131,6 +153,7 @@ interface User {
 ```
 
 ### SocialChannel
+
 ```typescript
 interface SocialChannel {
   id: string
@@ -143,6 +166,7 @@ interface SocialChannel {
 ```
 
 ### Preferences
+
 ```typescript
 interface Preferences {
   notificationsEnabled: boolean
@@ -152,6 +176,7 @@ interface Preferences {
 ```
 
 ### BillingInfo
+
 ```typescript
 interface BillingInfo {
   plan: string
@@ -162,6 +187,7 @@ interface BillingInfo {
 ```
 
 ### Invoice
+
 ```typescript
 interface Invoice {
   id: string
@@ -173,6 +199,7 @@ interface Invoice {
 ```
 
 ### Integration
+
 ```typescript
 interface Integration {
   id: string
@@ -223,6 +250,7 @@ All components include comprehensive unit tests:
 - `IntegrationsSection.test.tsx` - Tests for integration management
 
 Run tests with:
+
 ```bash
 npm run test
 ```

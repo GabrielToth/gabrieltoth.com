@@ -150,7 +150,7 @@ describe("CSRF Protection Module", () => {
 
         it("should set secure flag in production", async () => {
             const originalEnv = process.env.NODE_ENV
-            process.env.NODE_ENV = "production"
+            ;(process.env as any).NODE_ENV = "production"
 
             const token = generateCSRFToken()
             await storeCSRFToken(token)
@@ -162,13 +162,12 @@ describe("CSRF Protection Module", () => {
                     secure: true,
                 })
             )
-
-            process.env.NODE_ENV = originalEnv
+            ;(process.env as any).NODE_ENV = originalEnv
         })
 
         it("should not set secure flag in development", async () => {
             const originalEnv = process.env.NODE_ENV
-            process.env.NODE_ENV = "development"
+            ;(process.env as any).NODE_ENV = "development"
 
             const token = generateCSRFToken()
             await storeCSRFToken(token)
@@ -180,8 +179,7 @@ describe("CSRF Protection Module", () => {
                     secure: false,
                 })
             )
-
-            process.env.NODE_ENV = originalEnv
+            ;(process.env as any).NODE_ENV = originalEnv
         })
 
         it("should set maxAge to 1 hour (3600 seconds)", async () => {
@@ -409,7 +407,7 @@ describe("CSRF Protection Module", () => {
 
         it("should use Secure flag in production", async () => {
             const originalEnv = process.env.NODE_ENV
-            process.env.NODE_ENV = "production"
+            ;(process.env as any).NODE_ENV = "production"
 
             const token = generateCSRFToken()
             await storeCSRFToken(token)
@@ -421,8 +419,7 @@ describe("CSRF Protection Module", () => {
                     secure: true,
                 })
             )
-
-            process.env.NODE_ENV = originalEnv
+            ;(process.env as any).NODE_ENV = originalEnv
         })
 
         it("should have 1-hour expiration", async () => {

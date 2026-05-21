@@ -1,7 +1,7 @@
 import Header from "@/components/layout/header"
 import { ThemeProvider } from "@/components/theme/theme-provider"
 import enLayoutHeader from "@/i18n/en/layout.header.json"
-import type { Meta, StoryObj } from "@storybook/nextjs-vite"
+import type { Meta, StoryObj } from "@storybook/nextjs"
 import { NextIntlClientProvider } from "next-intl"
 
 const meta: Meta<typeof Header> = {

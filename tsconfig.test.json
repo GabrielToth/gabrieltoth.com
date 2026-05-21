@@ -1,34 +1,34 @@
 {
-  "extends": "./tsconfig.json",
-  "compilerOptions": {
-    "baseUrl": ".",
-    "noEmit": true,
-    "ignoreDeprecations": "6.0",
-    "paths": {
-      "@/*": ["./src/*"]
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+        "baseUrl": ".",
+        "noEmit": true,
+        "ignoreDeprecations": "6.0",
+        "paths": {
+            "@/*": ["./src/*"]
+        },
+        "types": ["vitest/globals", "node", "@testing-library/jest-dom"]
     },
-    "types": ["vitest/globals", "node", "@testing-library/jest-dom"]
-  },
-  "include": [
-    "src/__tests__/**/*.ts",
-    "src/__tests__/**/*.tsx",
-    "src/**/*.test.ts",
-    "src/**/*.test.tsx",
-    "src/test-utils/**/*.ts",
-    "src/types/**/*.d.ts",
-    "vitest.setup.ts",
-    "vitest.config.ts"
-  ],
+    "include": [
+        "src/__tests__/**/*.ts",
+        "src/__tests__/**/*.tsx",
+        "src/**/*.test.ts",
+        "src/**/*.test.tsx",
+        "src/test-utils/**/*.ts",
+        "src/types/**/*.d.ts",
+        "vitest.setup.ts",
+        "vitest.config.ts"
+    ],
     "exclude": [
         "node_modules",
         "src/__tests__/stories/**",
         "src/stories",
         "src/stories/**",
         "stories/**",
-    "src/**/*.stories.ts",
-    "src/**/*.stories.tsx",
-    "src/components/ui/*.stories.tsx",
-    "src/lib/logger/pino-logger.test.ts",
-    "src/backend/server.test.ts"
-  ]
+        "src/**/*.stories.ts",
+        "src/**/*.stories.tsx",
+        "src/components/ui/*.stories.tsx",
+        "src/lib/logger/pino-logger.test.ts",
+        "src/backend/server.test.ts"
+    ]
 }

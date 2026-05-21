@@ -17,4 +17,4 @@ trim_trailing_whitespace = false
 max_line_length = off
 
 [*.{js,jsx,ts,tsx}]
-quote_type = single
+quote_type = double

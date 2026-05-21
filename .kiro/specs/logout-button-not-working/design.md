@@ -24,6 +24,7 @@ The fix is minimal and targeted - it only adds the missing prop connection witho
 The bug manifests when a logged-in user clicks the logout button in the dashboard sidebar. The `DashboardLayout` component renders the `Sidebar` but does not provide the `onLogout` prop, resulting in the logout button having an `onClick` handler that calls `undefined`.
 
 **Formal Specification:**
+
 ```
 FUNCTION isBugCondition(input)
   INPUT: input of type MouseEvent (click on logout button)
@@ -48,6 +49,7 @@ END FUNCTION
 ### Preservation Requirements
 
 **Unchanged Behaviors:**
+
 - The `GoogleLogoutButton` component must continue to work exactly as before (POST to `/api/auth/logout`, redirect to login)
 - The `/api/auth/logout` API endpoint must continue to clear sessions and cookies correctly
 - Mouse clicks on navigation buttons (Publish, Insights, Settings) must continue to work
@@ -58,6 +60,7 @@ END FUNCTION
 
 **Scope:**
 All inputs that do NOT involve clicking the logout button in the dashboard sidebar should be completely unaffected by this fix. This includes:
+
 - Navigation between dashboard tabs
 - Opening/closing the mobile sidebar
 - Clicking channel connection buttons
@@ -196,12 +199,14 @@ The testing strategy follows a two-phase approach: first, surface counterexample
 **Test Plan**: Write tests that simulate clicking the logout button in the dashboard sidebar and assert that the logout flow is triggered. Run these tests on the UNFIXED code to observe failures and confirm the root cause.
 
 **Test Cases**:
+
 1. **Desktop Logout Button Click**: Render DashboardLayout, find logout button in desktop sidebar, click it (will fail on unfixed code - no action occurs)
 2. **Mobile Logout Button Click**: Render DashboardLayout with mobile sidebar open, find logout button, click it (will fail on unfixed code - no action occurs)
 3. **Logout API Not Called**: Click logout button and verify `/api/auth/logout` is NOT called (will pass on unfixed code, confirming the bug)
 4. **No Redirect Occurs**: Click logout button and verify user stays on dashboard page (will pass on unfixed code, confirming the bug)
 
 **Expected Counterexamples**:
+
 - Logout button click does not trigger any network request
 - No redirect to login page occurs
 - User remains authenticated after clicking logout button
@@ -212,6 +217,7 @@ The testing strategy follows a two-phase approach: first, surface counterexample
 **Goal**: Verify that for all inputs where the bug condition holds (clicking logout button), the fixed function produces the expected behavior.
 
 **Pseudocode:**
+
 ```
 FOR ALL input WHERE isBugCondition(input) DO
   result := handleLogout_fixed(input)
@@ -222,6 +228,7 @@ END FOR
 ```
 
 **Test Cases**:
+
 1. **Desktop Logout Success**: Click logout button in desktop sidebar → POST sent → Redirect to login
 2. **Mobile Logout Success**: Click logout button in mobile sidebar → POST sent → Redirect to login
 3. **Logout After Tab Change**: Navigate to Settings, click logout → POST sent → Redirect to login
@@ -233,6 +240,7 @@ END FOR
 **Goal**: Verify that for all inputs where the bug condition does NOT hold (other interactions), the fixed function produces the same result as the original function.
 
 **Pseudocode:**
+
 ```
 FOR ALL input WHERE NOT isBugCondition(input) DO
   ASSERT DashboardLayout_original(input) = DashboardLayout_fixed(input)
@@ -240,6 +248,7 @@ END FOR
 ```
 
 **Testing Approach**: Property-based testing is recommended for preservation checking because:
+
 - It generates many test cases automatically across the input domain
 - It catches edge cases that manual unit tests might miss
 - It provides strong guarantees that behavior is unchanged for all non-logout interactions
@@ -247,6 +256,7 @@ END FOR
 **Test Plan**: Observe behavior on UNFIXED code first for navigation and other interactions, then write property-based tests capturing that behavior.
 
 **Test Cases**:
+
 1. **Navigation Preservation**: Verify clicking Publish/Insights/Settings tabs continues to work correctly
 2. **Mobile Sidebar Preservation**: Verify opening/closing mobile sidebar continues to work
 3. **Organization Display Preservation**: Verify organization info displays correctly

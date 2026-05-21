@@ -330,4 +330,3 @@ The Universal Posting Scheduler is a comprehensive feature that enables users to
 6. THE system SHALL integrate with existing notification system for user alerts
 7. THE system SHALL be compatible with both cloud and local deployment environments
 8. THE system SHALL follow existing code style, conventions, and architectural patterns
-

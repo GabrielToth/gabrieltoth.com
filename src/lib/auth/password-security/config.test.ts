@@ -20,7 +20,7 @@ describe("ConfigurationManager", () => {
 
     afterEach(() => {
         // Restore original environment
-        process.env = originalEnv
+        process.env = originalEnv as NodeJS.ProcessEnv
         // Reset singleton after each test
         ;(ConfigurationManager as any).instance = null
         ;(ConfigurationManager as any).devPepperWarned = false
@@ -34,7 +34,7 @@ describe("ConfigurationManager", () => {
             process.env.ARGON2_PARALLELISM = "2"
             process.env.PEPPER_SECRET =
                 "this-is-a-valid-pepper-secret-that-is-long-enough-32-chars"
-            process.env.NODE_ENV = "development"
+            ;(process.env as any).NODE_ENV = "development"
 
             // Act
             const manager = ConfigurationManager.getInstance()
@@ -56,7 +56,7 @@ describe("ConfigurationManager", () => {
             delete process.env.ARGON2_PARALLELISM
             process.env.PEPPER_SECRET =
                 "this-is-a-valid-pepper-secret-that-is-long-enough-32-chars"
-            process.env.NODE_ENV = "development"
+            ;(process.env as any).NODE_ENV = "development"
 
             // Act
             const manager = ConfigurationManager.getInstance()
@@ -75,7 +75,7 @@ describe("ConfigurationManager", () => {
             process.env.ARGON2_PARALLELISM = "2"
             process.env.PEPPER_SECRET =
                 "this-is-a-valid-pepper-secret-that-is-long-enough-32-chars"
-            process.env.NODE_ENV = "development"
+            ;(process.env as any).NODE_ENV = "development"
 
             // Act
             const manager1 = ConfigurationManager.getInstance()
@@ -100,9 +100,11 @@ describe("ConfigurationManager", () => {
             process.env.ARGON2_PARALLELISM = "2"
             process.env.PEPPER_SECRET =
                 "this-is-a-valid-pepper-secret-that-is-long-enough-32-chars"
-            process.env.NODE_ENV = "development"
+            ;(process.env as any).NODE_ENV = "development"
 
-            const consoleSpy = vi.spyOn(console, "log").mockImplementation()
+            const consoleSpy = vi
+                .spyOn(console, "log")
+                .mockImplementation(() => {})
             delete process.env.SUPPRESS_SECURITY_CONFIG_LOGS
 
             // Act
@@ -155,7 +157,7 @@ describe("ConfigurationManager", () => {
             process.env.ARGON2_PARALLELISM = "2"
             process.env.PEPPER_SECRET =
                 "this-is-a-valid-pepper-secret-that-is-long-enough-32-chars"
-            process.env.NODE_ENV = "development"
+            ;(process.env as any).NODE_ENV = "development"
 
             let manager = ConfigurationManager.getInstance()
             expect(manager.getConfig().argon2id.memory).toBe(16)
@@ -204,7 +206,7 @@ describe("ConfigurationManager", () => {
             process.env.ARGON2_PARALLELISM = "2"
             process.env.PEPPER_SECRET =
                 "this-is-a-valid-pepper-secret-that-is-long-enough-32-chars"
-            process.env.NODE_ENV = "development"
+            ;(process.env as any).NODE_ENV = "development"
 
             let manager = ConfigurationManager.getInstance()
             expect(manager.getConfig().argon2id.time).toBe(2)
@@ -253,7 +255,7 @@ describe("ConfigurationManager", () => {
             process.env.ARGON2_PARALLELISM = "1"
             process.env.PEPPER_SECRET =
                 "this-is-a-valid-pepper-secret-that-is-long-enough-32-chars"
-            process.env.NODE_ENV = "development"
+            ;(process.env as any).NODE_ENV = "development"
 
             let manager = ConfigurationManager.getInstance()
             expect(manager.getConfig().argon2id.parallelism).toBe(1)
@@ -315,7 +317,7 @@ describe("ConfigurationManager", () => {
             process.env.ARGON2_TIME_COST = "3"
             process.env.ARGON2_PARALLELISM = "2"
             process.env.PEPPER_SECRET = "a".repeat(32)
-            process.env.NODE_ENV = "development"
+            ;(process.env as any).NODE_ENV = "development"
 
             // Act
             const manager = ConfigurationManager.getInstance()
@@ -331,7 +333,7 @@ describe("ConfigurationManager", () => {
             process.env.ARGON2_TIME_COST = "3"
             process.env.ARGON2_PARALLELISM = "2"
             process.env.PEPPER_SECRET = "a".repeat(64)
-            process.env.NODE_ENV = "development"
+            ;(process.env as any).NODE_ENV = "development"
 
             // Act
             const manager = ConfigurationManager.getInstance()
@@ -348,7 +350,7 @@ describe("ConfigurationManager", () => {
             process.env.ARGON2_PARALLELISM = "2"
             process.env.PEPPER_SECRET =
                 "dev-pepper-test-very-long-string-32chars-minimum-required!"
-            process.env.NODE_ENV = "production"
+            ;(process.env as any).NODE_ENV = "production"
             process.env.VERCEL = "1"
             process.env.VERCEL_ENV = "production"
 
@@ -365,11 +367,11 @@ describe("ConfigurationManager", () => {
             process.env.ARGON2_PARALLELISM = "2"
             process.env.PEPPER_SECRET =
                 "dev-pepper-test-very-long-string-32chars-minimum-required!"
-            process.env.NODE_ENV = "development"
+            ;(process.env as any).NODE_ENV = "development"
 
             const consoleWarnSpy = vi
                 .spyOn(console, "warn")
-                .mockImplementation()
+                .mockImplementation(() => {})
             delete process.env.SUPPRESS_SECURITY_CONFIG_LOGS
 
             // Act
@@ -394,7 +396,7 @@ describe("ConfigurationManager", () => {
             process.env.ARGON2_PARALLELISM = "3"
             process.env.PEPPER_SECRET =
                 "this-is-a-valid-pepper-secret-that-is-long-enough-32-chars"
-            process.env.NODE_ENV = "development"
+            ;(process.env as any).NODE_ENV = "development"
         })
 
         it("should provide getArgon2Params() method", () => {
@@ -480,7 +482,7 @@ describe("ConfigurationManager", () => {
             process.env.RATE_LIMIT_WINDOW_MINUTES = "30"
             process.env.RATE_LIMIT_LOCKOUT_MINUTES = "60"
             process.env.RATE_LIMIT_CAPTCHA_ESCALATION_THRESHOLD = "2"
-            process.env.NODE_ENV = "development"
+            ;(process.env as any).NODE_ENV = "development"
 
             // Act
             const manager = ConfigurationManager.getInstance()
@@ -504,7 +506,7 @@ describe("ConfigurationManager", () => {
             delete process.env.RATE_LIMIT_WINDOW_MINUTES
             delete process.env.RATE_LIMIT_LOCKOUT_MINUTES
             delete process.env.RATE_LIMIT_CAPTCHA_ESCALATION_THRESHOLD
-            process.env.NODE_ENV = "development"
+            ;(process.env as any).NODE_ENV = "development"
 
             // Act
             const manager = ConfigurationManager.getInstance()
@@ -555,7 +557,7 @@ describe("ConfigurationManager", () => {
 
             const consoleErrorSpy = vi
                 .spyOn(console, "error")
-                .mockImplementation()
+                .mockImplementation(() => {})
             delete process.env.SUPPRESS_AUTH_SECURITY_STDERR
 
             // Act & Assert

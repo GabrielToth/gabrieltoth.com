@@ -120,7 +120,7 @@ export async function GET(
 
         const user = await getUserById(userId)
         void notifyUserAuditDiscord("platform_linked", {
-            email: user?.email,
+            email: user?.google_email,
             userId,
             platform: normalizedPlatform,
             environment: getAuditEnvironment(),

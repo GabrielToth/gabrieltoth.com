@@ -133,7 +133,10 @@ describe("Property 10: Final Data Validation Completeness", () => {
                     phone: fc.option(fc.string()),
                 }),
                 data => {
-                    const result = validateRegistrationForm(data)
+                    const result = validateRegistrationForm({
+                        ...data,
+                        phone: data.phone === null ? undefined : data.phone,
+                    })
 
                     // Property: result always has isValid and errors properties
                     expect(result).toHaveProperty("isValid")

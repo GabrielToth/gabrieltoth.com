@@ -19,7 +19,7 @@ if (!SUPABASE_URL || !SUPABASE_SERVICE_KEY) {
     console.error(
         "❌ Missing SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY environment variables"
     )
-     
+
     process.exit(1)
 }
 
@@ -114,7 +114,7 @@ async function cleanupDatabase() {
         }
     } catch (error) {
         console.error("❌ Cleanup failed:", error)
-         
+
         process.exit(1)
     }
 }
@@ -131,7 +131,7 @@ async function main() {
         console.log(
             "   If you need to cleanup production, set NODE_ENV=development first.\n"
         )
-         
+
         process.exit(1)
     }
 
@@ -145,17 +145,17 @@ async function main() {
         console.log(
             "   Usage: npx ts-node scripts/cleanup-supabase.ts --confirm\n"
         )
-         
+
         process.exit(1)
     }
 
     const success = await cleanupDatabase()
-     
+
     process.exit(success ? 0 : 1)
 }
 
 main().catch(error => {
     console.error("Fatal error:", error)
-     
+
     process.exit(1)
 })

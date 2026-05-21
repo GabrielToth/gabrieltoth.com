@@ -28,7 +28,7 @@ describe("Configuration Logging", () => {
 
     beforeEach(() => {
         // Reset environment for each test
-        process.env.NODE_ENV = "test"
+        ;(process.env as any).NODE_ENV = "test"
         process.env.ARGON2_MEMORY_COST = "64"
         process.env.ARGON2_TIME_COST = "3"
         process.env.ARGON2_PARALLELISM = "2"

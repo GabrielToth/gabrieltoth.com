@@ -376,7 +376,7 @@ describe("Constant-Time Comparison Module", () => {
         it("should not be modifiable", () => {
             const config = getConstantTimeConfig()
             const originalValue = config.TARGET_RESPONSE_TIME_MS
-            config.TARGET_RESPONSE_TIME_MS = 999
+            ;(config as any).TARGET_RESPONSE_TIME_MS = 999
             const newConfig = getConstantTimeConfig()
             expect(newConfig.TARGET_RESPONSE_TIME_MS).toBe(originalValue)
         })

@@ -99,7 +99,6 @@ describe("GoogleLoginButton", () => {
         let redirectUrl = ""
         Object.defineProperty(window, "location", {
             value: {
-                href: "",
                 get href() {
                     return redirectUrl
                 },

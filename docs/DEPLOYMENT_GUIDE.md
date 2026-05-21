@@ -484,6 +484,6 @@ npm run logs:search "ACCOUNT_COMPLETION"
 For deployment issues:
 
 - **Slack:** #deployments
-- **Email:** devops@gabrieltoth.com
-- **Documentation:** https://docs.gabrieltoth.com/deployment
-- **Status Page:** https://status.gabrieltoth.com
+- **Email:** <devops@gabrieltoth.com>
+- **Documentation:** <https://docs.gabrieltoth.com/deployment>
+- **Status Page:** <https://status.gabrieltoth.com>

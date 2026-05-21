@@ -96,7 +96,7 @@ describe("Authentication Security Tests", () => {
 
     describe("XSS Prevention", () => {
         it("should not execute script in email field", () => {
-            const xssPayload = "<script>alert(\"xss\")</script>"
+            const xssPayload = '<script>alert("xss")</script>'
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
             expect(xssPayload).not.toMatch(emailRegex)
         })
@@ -197,7 +197,7 @@ describe("Authentication Security Tests", () => {
         })
 
         it("should invalidate session on logout", () => {
-            let sessionToken = "valid-token"
+            let sessionToken: string | null = "valid-token"
             sessionToken = null
             expect(sessionToken).toBeNull()
         })
@@ -248,7 +248,7 @@ describe("Authentication Security Tests", () => {
         })
 
         it("should invalidate old reset tokens", () => {
-            let resetToken = "valid-token"
+            let resetToken: string | null = "valid-token"
             // Simulate token expiry
             resetToken = null
             expect(resetToken).toBeNull()

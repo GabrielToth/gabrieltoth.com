@@ -201,10 +201,10 @@ describe("Salt Generation Module", () => {
         })
 
         it("should reject non-Buffer, non-string input", () => {
-            expect(verifySaltEntropy(null as unknown)).toBe(false)
-            expect(verifySaltEntropy(undefined as unknown)).toBe(false)
-            expect(verifySaltEntropy(123 as unknown)).toBe(false)
-            expect(verifySaltEntropy({} as unknown)).toBe(false)
+            expect(verifySaltEntropy(null as any)).toBe(false)
+            expect(verifySaltEntropy(undefined as any)).toBe(false)
+            expect(verifySaltEntropy(123 as any)).toBe(false)
+            expect(verifySaltEntropy({} as any)).toBe(false)
         })
     })
 

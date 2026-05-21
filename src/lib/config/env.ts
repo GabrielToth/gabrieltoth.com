@@ -71,11 +71,8 @@ function parseConfig(): EnvironmentConfig {
         YOUTUBE_REDIRECT_URI: process.env.YOUTUBE_REDIRECT_URI ?? "",
         RESEND_API_KEY: process.env.RESEND_API_KEY ?? "",
         RESEND_FROM_EMAIL:
-            process.env.RESEND_FROM_EMAIL ??
-            process.env.EMAIL_FROM ??
-            "",
-        RESEND_FROM_NAME:
-            process.env.RESEND_FROM_NAME ?? "Gabriel Toth",
+            process.env.RESEND_FROM_EMAIL ?? process.env.EMAIL_FROM ?? "",
+        RESEND_FROM_NAME: process.env.RESEND_FROM_NAME ?? "Gabriel Toth",
         TOKEN_ENCRYPTION_KEY: process.env.TOKEN_ENCRYPTION_KEY ?? "",
     }
 }

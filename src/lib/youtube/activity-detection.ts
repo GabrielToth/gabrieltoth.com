@@ -133,13 +133,15 @@ export class ActivityDetectionService {
             } else if (request.headers) {
                 userAgent = request.headers["user-agent"] || ""
             }
-            
+
             const device = this.deviceDetectionService.detectDevice(userAgent)
 
             // Get geolocation information
             let location: GeolocationInfo
             try {
-                location = this.geolocationService.getLocation(request.headers || {})
+                location = this.geolocationService.getLocation(
+                    request.headers || {}
+                )
             } catch (error) {
                 this.logger.warn(
                     `Failed to get geolocation for ${ip}`,

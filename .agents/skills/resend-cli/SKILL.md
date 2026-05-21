@@ -74,26 +74,31 @@ resend --version
 If the command is not found, install it using one of the methods below:
 
 **cURL (macOS / Linux):**
+
 ```bash
 curl -fsSL https://resend.com/install.sh | bash
 ```
 
 **Homebrew (macOS / Linux):**
+
 ```bash
 brew install resend/cli/resend
 ```
 
 **Node.js:**
+
 ```bash
 npm install -g resend-cli
 ```
 
 **PowerShell (Windows):**
+
 ```powershell
 irm https://resend.com/install.ps1 | iex
 ```
 
 After installing, verify:
+
 ```bash
 resend --version
 ```
@@ -103,13 +108,16 @@ resend --version
 The CLI auto-detects non-TTY environments and outputs JSON — no `--json` flag needed.
 
 **Rules for agents:**
+
 - Supply ALL required flags. The CLI will NOT prompt when stdin is not a TTY.
 - Pass `--quiet` (or `-q`) to suppress spinners and status messages.
 - Exit `0` = success, `1` = error.
 - Error JSON goes to stderr, success JSON goes to stdout:
+
   ```json
   {"error":{"message":"...","code":"..."}}
   ```
+
 - Use `--api-key` or `RESEND_API_KEY` env var. Never rely on interactive login.
 - All `delete`/`rm` commands require `--yes` in non-interactive mode.
 
@@ -167,16 +175,19 @@ Read the matching reference file for detailed flags and output shapes.
 ## Common Patterns
 
 **Send an email:**
+
 ```bash
 resend emails send --from "you@domain.com" --to user@example.com --subject "Hello" --text "Body"
 ```
 
 **Send a React Email template (.tsx):**
+
 ```bash
 resend emails send --from "you@domain.com" --to user@example.com --subject "Welcome" --react-email ./emails/welcome.tsx
 ```
 
 **Domain setup flow:**
+
 ```bash
 resend domains create --name example.com --region us-east-1
 # Configure DNS records from output, then:
@@ -185,16 +196,19 @@ resend domains get <domain-id>  # check status
 ```
 
 **Create and send a broadcast:**
+
 ```bash
 resend broadcasts create --from "news@domain.com" --subject "Update" --segment-id <id> --html "<h1>Hi</h1>" --send
 ```
 
 **CI/CD (no login needed):**
+
 ```bash
 RESEND_API_KEY=re_xxx resend emails send --from ... --to ... --subject ... --text ...
 ```
 
 **Check environment health:**
+
 ```bash
 resend doctor -q
 ```

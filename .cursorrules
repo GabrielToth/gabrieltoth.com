@@ -149,6 +149,19 @@ export default HeroSection
 - Duplicated code
 - Portuguese in code/comments (except i18n content)
 
+## Mandatory Startup Rules
+
+Before starting development or performing any tasks, ALL agents (including Cursor, Antigravity, Kiro) MUST ensure that the local infrastructure is up and running by executing:
+1. Spin up all Docker containers:
+   ```bash
+   cd docker
+   docker compose up -d
+   ```
+2. Start the Supabase local backend:
+   ```bash
+   npx supabase start
+   ```
+
 ## Useful Commands
 
 ```bash

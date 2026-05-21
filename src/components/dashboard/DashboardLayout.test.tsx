@@ -65,7 +65,7 @@ describe("DashboardLayout", () => {
         )
         const hamburger = screen.getByLabelText("Toggle sidebar")
         fireEvent.click(hamburger)
-        const overlay = container.querySelector("[aria-hidden=\"true\"]")
+        const overlay = container.querySelector('[aria-hidden="true"]')
         if (overlay) {
             fireEvent.click(overlay)
             expect(hamburger).toHaveAttribute("aria-expanded", "false")

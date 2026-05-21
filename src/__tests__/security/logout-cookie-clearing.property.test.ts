@@ -26,7 +26,7 @@ function createLogoutResponse(
     // Clear session cookies with maxAge=0 and empty value
     response.cookies.set("auth_session", "", {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
+        secure: (process.env as any).NODE_ENV === "production",
         sameSite: "strict",
         maxAge: 0,
         path: "/",
@@ -34,7 +34,7 @@ function createLogoutResponse(
 
     response.cookies.set("session", "", {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
+        secure: (process.env as any).NODE_ENV === "production",
         sameSite: "strict",
         maxAge: 0,
         path: "/",
@@ -43,7 +43,7 @@ function createLogoutResponse(
     if (includeRememberMe) {
         response.cookies.set("remember_me_token", "", {
             httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
+            secure: (process.env as any).NODE_ENV === "production",
             sameSite: "strict",
             maxAge: 0,
             path: "/",
@@ -134,7 +134,9 @@ describe("Property 4: Cookie Clearing on Logout", () => {
                             expect(cookie).toContain("Path=/")
 
                             // Property: In production, should have Secure attribute
-                            if (process.env.NODE_ENV === "production") {
+                            if (
+                                (process.env as any).NODE_ENV === "production"
+                            ) {
                                 expect(cookie).toContain("Secure")
                             }
                         }

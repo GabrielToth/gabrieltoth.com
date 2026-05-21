@@ -17,7 +17,7 @@ describe("metadata generators (extended)", () => {
             params: Promise.resolve({ locale: "en" }),
         } as any)
         expect(metadata).toBeTruthy()
-        expect(metadata.openGraph?.type).toBe("article")
+        expect((metadata.openGraph as any)?.type).toBe("article")
         expect(metadata.alternates?.languages?.en).toContain("/en/editors/")
     })
 
@@ -28,7 +28,7 @@ describe("metadata generators (extended)", () => {
             params: Promise.resolve({ locale: "en" }),
         } as any)
         expect(metadata).toBeTruthy()
-        expect(metadata.openGraph?.type).toBe("website")
+        expect((metadata.openGraph as any)?.type).toBe("website")
         expect(metadata.alternates?.languages?.en).toContain(
             "/en/pc-optimization/terms/"
         )

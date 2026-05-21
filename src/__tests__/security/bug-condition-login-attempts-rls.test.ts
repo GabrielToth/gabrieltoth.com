@@ -58,8 +58,10 @@ describe("Bug Condition: RLS Blocking Login Attempts", () => {
         }
     })
 
-    it("should allow system to insert login attempts for rate limiting", async ({ skip }) => {
-    if (!isDbRunning) return skip()
+    it("should allow system to insert login attempts for rate limiting", async ({
+        skip,
+    }) => {
+        if (!isDbRunning) return skip()
         // Attempt to insert login attempt as anon user (simulating system operation)
         const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
@@ -79,7 +81,7 @@ describe("Bug Condition: RLS Blocking Login Attempts", () => {
 
         // Expected behavior: System should be able to insert login attempts
         if (insertError) {
-            fail(`❌ FAIL: RLS is blocking login attempt inserts, breaking rate limiting
+            throw new Error(`❌ FAIL: RLS is blocking login attempt inserts, breaking rate limiting
         
         Counterexample found:
         - System cannot insert into login_attempts table
@@ -101,7 +103,7 @@ describe("Bug Condition: RLS Blocking Login Attempts", () => {
         }
 
         if (!loginAttempt) {
-            fail(`❌ FAIL: Login attempt insert returned no data
+            throw new Error(`❌ FAIL: Login attempt insert returned no data
         
         Counterexample found:
         - Insert appeared to succeed but returned no data
@@ -128,8 +130,10 @@ describe("Bug Condition: RLS Blocking Login Attempts", () => {
         console.log(`   Created login attempt: ${testLoginAttemptId}`)
     })
 
-    it("should allow authenticated user to view their own login attempts", async ({ skip }) => {
-    if (!isDbRunning) return skip()
+    it("should allow authenticated user to view their own login attempts", async ({
+        skip,
+    }) => {
+        if (!isDbRunning) return skip()
         // Create a test user and login attempt
         const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey)
 
@@ -196,7 +200,7 @@ describe("Bug Condition: RLS Blocking Login Attempts", () => {
 
         // Expected behavior: User should be able to view their own login attempts
         if (queryError) {
-            fail(`❌ FAIL: RLS is blocking user from viewing their own login attempts
+            throw new Error(`❌ FAIL: RLS is blocking user from viewing their own login attempts
         
         Counterexample found:
         - Authenticated user cannot query their own login attempts
@@ -214,8 +218,8 @@ describe("Bug Condition: RLS Blocking Login Attempts", () => {
       `)
         }
 
-        if (!attempts || attempts.length === 0) {
-            fail(`❌ FAIL: RLS is blocking user from viewing their own login attempts
+        if (!attempts || attempts!.length === 0) {
+            throw new Error(`❌ FAIL: RLS is blocking user from viewing their own login attempts
         
         Counterexample found:
         - Query returned no rows despite data existing
@@ -234,11 +238,13 @@ describe("Bug Condition: RLS Blocking Login Attempts", () => {
         console.log(
             "✅ PASS: Authenticated user can view their own login attempts"
         )
-        console.log(`   Found ${attempts.length} login attempt(s)`)
+        console.log(`   Found ${attempts!.length} login attempt(s)`)
     })
 
-    it("should verify RLS policies exist for login_attempts table", async ({ skip }) => {
-    if (!isDbRunning) return skip()
+    it("should verify RLS policies exist for login_attempts table", async ({
+        skip,
+    }) => {
+        if (!isDbRunning) return skip()
         // Query to check if RLS is enabled and policies exist
         const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey)
 
@@ -277,7 +283,7 @@ describe("Bug Condition: RLS Blocking Login Attempts", () => {
             )
 
             if (!policies || policies.length === 0) {
-                fail(`❌ FAIL: RLS is enabled but no policies are defined
+                throw new Error(`❌ FAIL: RLS is enabled but no policies are defined
           
           Counterexample found:
           - login_attempts table has RLS enabled

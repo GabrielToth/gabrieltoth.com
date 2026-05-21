@@ -24,6 +24,7 @@ Include identifiers when helpful: order numbers, account names, expiration times
 ## Pre-Header
 
 The text snippet after subject line. Use it to:
+
 - Reinforce subject ("This link expires in 1 hour")
 - Add urgency or context
 - Call-to-action preview
@@ -33,6 +34,7 @@ Keep under 90 characters.
 ## Content Structure
 
 **Above the fold (first screen):**
+
 - Clear purpose
 - Primary action button
 - Time-sensitive details (expiration)
@@ -55,20 +57,22 @@ Keep under 90 characters.
 | Field | Best Practice | Example |
 |-------|--------------|---------|
 | From Name | App/company name, consistent | [App Name] |
-| From Email | Subdomain, real address | hello@mail.example.com |
-| Reply-To | Monitored inbox | support@example.com |
+| From Email | Subdomain, real address | <hello@mail.example.com> |
+| Reply-To | Monitored inbox | <support@example.com> |
 
 Avoid `noreply@` - users reply to transactional emails.
 
 ## Code and Link Display
 
 **OTP/Verification codes:**
+
 - Large (24-32px), monospace font
 - Centered, clear label
 - Include expiration nearby
 - Make copyable
 
 **Buttons:**
+
 - Large, tappable (44x44px+)
 - Contrasting colors
 - Clear action text ("Reset Password", "Verify Email")
@@ -77,16 +81,19 @@ Avoid `noreply@` - users reply to transactional emails.
 ## Error Handling
 
 **Resend functionality:**
+
 - Allow after 60 seconds
 - Limit attempts (3 per hour)
 - Show countdown timer
 
 **Expired links:**
+
 - Clear "expired" message
 - Offer to send new link
 - Provide support contact
 
 **"I didn't request this":**
+
 - Include in password resets, OTPs, security alerts
 - Link to security contact
 - Log clicks for monitoring

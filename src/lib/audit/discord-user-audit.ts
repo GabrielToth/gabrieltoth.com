@@ -47,7 +47,11 @@ export async function notifyUserAuditDiscord(
         fields.push({ name: "Provedor", value: payload.provider, inline: true })
     }
     if (payload.platform) {
-        fields.push({ name: "Plataforma", value: payload.platform, inline: true })
+        fields.push({
+            name: "Plataforma",
+            value: payload.platform,
+            inline: true,
+        })
     }
     if (payload.locale) {
         fields.push({ name: "Locale", value: payload.locale, inline: true })

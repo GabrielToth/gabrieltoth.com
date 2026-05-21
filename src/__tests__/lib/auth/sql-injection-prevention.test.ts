@@ -53,7 +53,7 @@ describe("detectSqlInjection", () => {
         })
 
         it("should detect double quote", () => {
-            const result = detectSqlInjection("test\" OR \"1\"=\"1")
+            const result = detectSqlInjection('test" OR "1"="1')
             expect(result.detected).toBe(true)
         })
 

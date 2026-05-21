@@ -69,17 +69,17 @@ describe("Login Security Tests", () => {
         })
 
         it("should detect XSS with iframe", () => {
-            const payload = "<iframe src=\"http://evil.com\"></iframe>"
+            const payload = '<iframe src="http://evil.com"></iframe>'
             expect(containsXSSPattern(payload)).toBe(true)
         })
 
         it("should detect XSS with object tag", () => {
-            const payload = "<object data=\"http://evil.com/xss.swf\"></object>"
+            const payload = '<object data="http://evil.com/xss.swf"></object>'
             expect(containsXSSPattern(payload)).toBe(true)
         })
 
         it("should detect XSS with embed tag", () => {
-            const payload = "<embed src=\"http://evil.com/xss.swf\">"
+            const payload = '<embed src="http://evil.com/xss.swf">'
             expect(containsXSSPattern(payload)).toBe(true)
         })
 
@@ -368,7 +368,8 @@ describe("Login Security Tests", () => {
             })
 
             it("should use HTTPS in production", () => {
-                const isProduction = process.env.NODE_ENV === "production"
+                const isProduction =
+                    (process.env as any).NODE_ENV === "production"
                 // In production, HTTPS should be enforced
                 if (isProduction) {
                     expect(true).toBe(true)

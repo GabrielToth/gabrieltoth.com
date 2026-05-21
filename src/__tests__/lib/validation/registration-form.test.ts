@@ -29,10 +29,10 @@ describe("Property-Based Tests: Registration Form Validation", () => {
                         .emailAddress()
                         .filter(email => validateEmail(email).isValid),
                     email => {
-                    const result = validateEmail(email)
-                    expect(result.isValid).toBe(true)
-                    expect(result.error).toBeUndefined()
-                }
+                        const result = validateEmail(email)
+                        expect(result.isValid).toBe(true)
+                        expect(result.error).toBeUndefined()
+                    }
                 ),
                 { numRuns: 100 }
             )

@@ -552,7 +552,7 @@ describe("Security: Cryptography & Data Protection", () => {
         })
 
         it("should use HTTPS in production", () => {
-            const isProduction = process.env.NODE_ENV === "production"
+            const isProduction = (process.env as any).NODE_ENV === "production"
 
             if (isProduction) {
                 // HTTPS should be enforced

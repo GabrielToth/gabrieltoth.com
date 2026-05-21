@@ -22,10 +22,6 @@ vi.mock("web-vitals", () => {
     }
 })
 
-declare global {
-    var PerformanceObserver: any
-}
-
 describe("WebVitalsReport extended", () => {
     beforeEach(() => {
         // Ensure analytics globals exist
@@ -36,15 +32,14 @@ describe("WebVitalsReport extended", () => {
     it("sends metrics to analytics and logs in development", () => {
         const logSpy = vi.spyOn(console, "log").mockImplementation(() => {})
         const oldEnv = process.env.NODE_ENV
-        process.env.NODE_ENV = "development"
+        ;(process.env as any).NODE_ENV = "development"
 
         render(<WebVitalsReport />)
 
         expect(window.gtag).toHaveBeenCalled()
         expect(window.va).toHaveBeenCalled()
         expect(logSpy).toHaveBeenCalled()
-
-        process.env.NODE_ENV = oldEnv
+        ;(process.env as any).NODE_ENV = oldEnv
         logSpy.mockRestore()
     })
 
@@ -54,7 +49,7 @@ describe("WebVitalsReport extended", () => {
         const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {})
         const logSpy = vi.spyOn(console, "log").mockImplementation(() => {})
         const oldEnv = process.env.NODE_ENV
-        process.env.NODE_ENV = "development"
+        ;(process.env as any).NODE_ENV = "development"
 
         class PO {
             cb: (list: any) => void
@@ -102,8 +97,7 @@ describe("WebVitalsReport extended", () => {
         expect(disconnect).toHaveBeenCalledTimes(2)
         expect(logSpy).toHaveBeenCalled()
         expect(warnSpy).toHaveBeenCalled()
-
-        process.env.NODE_ENV = oldEnv
+        ;(process.env as any).NODE_ENV = oldEnv
         warnSpy.mockRestore()
         logSpy.mockRestore()
     })

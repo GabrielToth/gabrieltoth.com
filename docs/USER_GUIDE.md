@@ -1,6 +1,6 @@
 # Account Completion Flow - User Guide
 
-## Welcome!
+## Welcome
 
 If you've logged in with Google, Facebook, or TikTok but haven't set a password yet, you'll need to complete your account setup. This guide will walk you through the process step by step.
 
@@ -129,6 +129,7 @@ This message appears when the email address is already registered to another acc
 This message appears when your password is not strong enough.
 
 **Solution:** Make sure your password contains:
+
 - At least 8 characters
 - At least one uppercase letter
 - At least one lowercase letter
@@ -185,7 +186,7 @@ A: Yes, you can delete your account in your account settings. Please note that t
 
 ### Q: What if I have more questions?
 
-A: Please contact our support team at support@gabrieltoth.com.
+A: Please contact our support team at <support@gabrieltoth.com>.
 
 ## Security Tips
 
@@ -230,7 +231,7 @@ The account completion flow is designed to be accessible to all users:
 - High contrast mode supported
 - Clear error messages and instructions
 
-If you have accessibility concerns, please contact support@gabrieltoth.com.
+If you have accessibility concerns, please contact <support@gabrieltoth.com>.
 
 ## Next Steps
 
@@ -245,9 +246,9 @@ After completing your account setup:
 
 If you need help:
 
-- **Email:** support@gabrieltoth.com
-- **Documentation:** https://docs.gabrieltoth.com
-- **FAQ:** https://gabrieltoth.com/faq
-- **Status Page:** https://status.gabrieltoth.com
+- **Email:** <support@gabrieltoth.com>
+- **Documentation:** <https://docs.gabrieltoth.com>
+- **FAQ:** <https://gabrieltoth.com/faq>
+- **Status Page:** <https://status.gabrieltoth.com>
 
 Thank you for completing your account setup!

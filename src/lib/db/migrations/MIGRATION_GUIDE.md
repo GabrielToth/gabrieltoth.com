@@ -11,6 +11,7 @@ This directory contains database migrations for the platform. Migrations are SQL
 **Purpose**: Creates the initial authentication tables for email/password registration
 
 **Tables Created**:
+
 - `auth_users` - Stores user account information for email/password authentication
 - `email_verification_tokens` - Stores verification tokens for email confirmation
 - `registration_sessions` - Stores registration session data for multi-step forms
@@ -23,6 +24,7 @@ This directory contains database migrations for the platform. Migrations are SQL
 **Purpose**: Adds account completion fields to support legacy OAuth users who need to complete their account setup
 
 **Changes to `users` table**:
+
 - `password_hash VARCHAR(255)` - Hashed password for account security
 - `phone_number VARCHAR(20)` - User's contact phone number
 - `birth_date DATE` - User's date of birth
@@ -36,11 +38,13 @@ This directory contains database migrations for the platform. Migrations are SQL
 - `email_verified BOOLEAN DEFAULT FALSE` - Email verification status
 
 **Indexes Created**:
+
 - `idx_users_account_completion_status` - For efficient querying by completion status
 - `idx_users_email` - For email lookups
 - `idx_users_oauth_provider_id` - For OAuth provider lookups
 
 **Tables Created**:
+
 - `temp_tokens` - Stores temporary tokens for account completion flow
   - `id UUID PRIMARY KEY` - Token ID
   - `user_id UUID` - Reference to user
@@ -55,6 +59,7 @@ This directory contains database migrations for the platform. Migrations are SQL
   - `used_at TIMESTAMP WITH TIME ZONE` - When token was used
 
 **Indexes on temp_tokens**:
+
 - `idx_temp_tokens_expires_at` - For cleanup of expired tokens
 - `idx_temp_tokens_user_id` - For user lookups
 - `idx_temp_tokens_token_hash` - For token lookups
@@ -68,17 +73,20 @@ This directory contains database migrations for the platform. Migrations are SQL
 ### Local Development
 
 1. **Start Docker containers**:
+
    ```bash
    docker-compose up -d
    ```
 
 2. **Apply migrations manually**:
+
    ```bash
    psql -U platform -d platform_test -f src/lib/db/migrations/001_create_auth_tables.sql
    psql -U platform -d platform_test -f src/lib/db/migrations/002_add_account_completion_fields.sql
    ```
 
 3. **Or use the schema test**:
+
    ```bash
    npm run test -- src/lib/db/schema.test.ts
    ```
@@ -92,11 +100,13 @@ For production deployments, use your database migration tool (e.g., Supabase, Fl
 ### Local Development
 
 1. **Rollback the latest migration**:
+
    ```bash
    psql -U platform -d platform_test -f src/lib/db/migrations/002_add_account_completion_fields_rollback.sql
    ```
 
 2. **Verify rollback**:
+
    ```bash
    psql -U platform -d platform_test -c "\d users"
    ```
@@ -116,21 +126,25 @@ npm run test -- src/lib/db/migrations/002_add_account_completion_fields.test.ts
 ### Manual Testing
 
 1. **Apply migration**:
+
    ```bash
    psql -U platform -d platform_test -f src/lib/db/migrations/002_add_account_completion_fields.sql
    ```
 
 2. **Verify columns exist**:
+
    ```bash
    psql -U platform -d platform_test -c "SELECT column_name FROM information_schema.columns WHERE table_name = 'users' ORDER BY ordinal_position;"
    ```
 
 3. **Verify indexes exist**:
+
    ```bash
    psql -U platform -d platform_test -c "SELECT indexname FROM pg_indexes WHERE tablename = 'users';"
    ```
 
 4. **Test insert with new columns**:
+
    ```sql
    INSERT INTO users (
        id, google_id, google_email, google_name,
@@ -144,6 +158,7 @@ npm run test -- src/lib/db/migrations/002_add_account_completion_fields.test.ts
    ```
 
 5. **Rollback migration**:
+
    ```bash
    psql -U platform -d platform_test -f src/lib/db/migrations/002_add_account_completion_fields_rollback.sql
    ```

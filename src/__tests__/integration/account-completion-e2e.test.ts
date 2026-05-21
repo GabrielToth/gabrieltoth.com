@@ -70,7 +70,9 @@ describe("Account Completion End-to-End Flow", () => {
             vi.mocked(getUserByEmail).mockResolvedValue(null)
 
             // Step 5: Hash password
-            vi.mocked(hashPassword).mockResolvedValue("hashed-password" as never)
+            vi.mocked(hashPassword).mockResolvedValue(
+                "hashed-password" as never
+            )
 
             // Step 6: Update user record
             const updatedUser = {
@@ -167,7 +169,7 @@ describe("Account Completion End-to-End Flow", () => {
             // Check if account is incomplete
             const isIncomplete =
                 !user.password_hash ||
-                user.account_completion_status !== "completed"
+                (user.account_completion_status as string) !== "completed"
 
             expect(isIncomplete).toBe(true)
 
@@ -381,7 +383,7 @@ describe("Account Completion End-to-End Flow", () => {
             // Session should be HTTP-only, secure, and SameSite=Strict
             const cookieAttributes = {
                 httpOnly: true,
-                secure: process.env.NODE_ENV === "production",
+                secure: (process.env as any).NODE_ENV === "production",
                 sameSite: "strict",
                 maxAge: 30 * 24 * 60 * 60, // 30 days
             }

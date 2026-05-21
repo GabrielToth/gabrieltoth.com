@@ -218,7 +218,7 @@ describe("Docker Infrastructure Integration Tests", () => {
             async () => {
                 const result = await execInContainer(
                     "platform-backend",
-                    "wget --quiet --tries=1 --spider http://localhost:4000/health || echo \"failed\""
+                    'wget --quiet --tries=1 --spider http://localhost:4000/health || echo "failed"'
                 )
                 expect(result).not.toContain("failed")
             },
@@ -230,7 +230,7 @@ describe("Docker Infrastructure Integration Tests", () => {
             async () => {
                 const result = await execInContainer(
                     "platform-app",
-                    "wget --quiet --tries=1 --spider http://localhost:3000/api/health || echo \"failed\""
+                    'wget --quiet --tries=1 --spider http://localhost:3000/api/health || echo "failed"'
                 )
                 expect(result).not.toContain("failed")
             },
@@ -245,7 +245,7 @@ describe("Docker Infrastructure Integration Tests", () => {
                 // App should be able to reach backend on frontend network
                 const result = await execInContainer(
                     "platform-app",
-                    "wget --quiet --tries=1 --spider http://backend:4000/health || echo \"failed\""
+                    'wget --quiet --tries=1 --spider http://backend:4000/health || echo "failed"'
                 )
                 expect(result).not.toContain("failed")
             },
@@ -258,7 +258,7 @@ describe("Docker Infrastructure Integration Tests", () => {
                 // Backend should be able to reach postgres on backend network
                 const result = await execInContainer(
                     "platform-backend",
-                    "nc -zv postgres 5432 2>&1 || echo \"failed\""
+                    'nc -zv postgres 5432 2>&1 || echo "failed"'
                 )
                 expect(result).toContain("succeeded")
             },
@@ -271,7 +271,7 @@ describe("Docker Infrastructure Integration Tests", () => {
                 // Backend should be able to reach redis on backend network
                 const result = await execInContainer(
                     "platform-backend",
-                    "nc -zv redis 6379 2>&1 || echo \"failed\""
+                    'nc -zv redis 6379 2>&1 || echo "failed"'
                 )
                 expect(result).toContain("succeeded")
             },
@@ -326,7 +326,7 @@ describe("Docker Infrastructure Integration Tests", () => {
                 // Create a test table
                 await execInContainer(
                     "platform-postgres",
-                    "psql -U platform -d platform -c \"CREATE TABLE IF NOT EXISTS test_persistence (id SERIAL PRIMARY KEY, value TEXT);\""
+                    'psql -U platform -d platform -c "CREATE TABLE IF NOT EXISTS test_persistence (id SERIAL PRIMARY KEY, value TEXT);"'
                 )
                 await execInContainer(
                     "platform-postgres",
@@ -340,14 +340,14 @@ describe("Docker Infrastructure Integration Tests", () => {
                 // Verify data still exists
                 const result = await execInContainer(
                     "platform-postgres",
-                    "psql -U platform -d platform -c \"SELECT value FROM test_persistence LIMIT 1;\" -t"
+                    'psql -U platform -d platform -c "SELECT value FROM test_persistence LIMIT 1;" -t'
                 )
                 expect(result.trim()).toBe("test_data")
 
                 // Cleanup
                 await execInContainer(
                     "platform-postgres",
-                    "psql -U platform -d platform -c \"DROP TABLE test_persistence;\""
+                    'psql -U platform -d platform -c "DROP TABLE test_persistence;"'
                 )
             },
             DOCKER_TIMEOUT
@@ -359,7 +359,7 @@ describe("Docker Infrastructure Integration Tests", () => {
                 // Set a test key
                 await execInContainer(
                     "platform-redis",
-                    "redis-cli SET test_key \"test_value\""
+                    'redis-cli SET test_key "test_value"'
                 )
 
                 // Restart redis container
@@ -388,7 +388,7 @@ describe("Docker Infrastructure Integration Tests", () => {
             "should use correct postgres version (17-alpine)",
             async () => {
                 const { stdout } = await execAsync(
-                    "docker inspect --format=\"{{.Config.Image}}\" platform-postgres"
+                    'docker inspect --format="{{.Config.Image}}" platform-postgres'
                 )
                 expect(stdout.trim()).toContain("postgres:17-alpine")
             },
@@ -399,7 +399,7 @@ describe("Docker Infrastructure Integration Tests", () => {
             "should use correct redis version (7-alpine)",
             async () => {
                 const { stdout } = await execAsync(
-                    "docker inspect --format=\"{{.Config.Image}}\" platform-redis"
+                    'docker inspect --format="{{.Config.Image}}" platform-redis'
                 )
                 expect(stdout.trim()).toContain("redis:7-alpine")
             },
@@ -410,7 +410,7 @@ describe("Docker Infrastructure Integration Tests", () => {
             "should use correct node version (22-alpine)",
             async () => {
                 const { stdout } = await execAsync(
-                    "docker inspect --format=\"{{.Config.Image}}\" platform-backend"
+                    'docker inspect --format="{{.Config.Image}}" platform-backend'
                 )
                 expect(stdout.trim()).toContain("node:22-alpine")
             },
@@ -421,7 +421,7 @@ describe("Docker Infrastructure Integration Tests", () => {
             "should have restart policy configured",
             async () => {
                 const { stdout } = await execAsync(
-                    "docker inspect --format=\"{{.HostConfig.RestartPolicy.Name}}\" platform-postgres"
+                    'docker inspect --format="{{.HostConfig.RestartPolicy.Name}}" platform-postgres'
                 )
                 expect(stdout.trim()).toBe("unless-stopped")
             },
@@ -432,7 +432,7 @@ describe("Docker Infrastructure Integration Tests", () => {
             "should have health check interval of 30s",
             async () => {
                 const { stdout } = await execAsync(
-                    "docker inspect --format=\"{{.Config.Healthcheck.Interval}}\" platform-postgres"
+                    'docker inspect --format="{{.Config.Healthcheck.Interval}}" platform-postgres'
                 )
                 expect(stdout.trim()).toBe("30000000000") // 30s in nanoseconds
             },
@@ -443,7 +443,7 @@ describe("Docker Infrastructure Integration Tests", () => {
             "should have health check retries set to 3",
             async () => {
                 const { stdout } = await execAsync(
-                    "docker inspect --format=\"{{.Config.Healthcheck.Retries}}\" platform-postgres"
+                    'docker inspect --format="{{.Config.Healthcheck.Retries}}" platform-postgres'
                 )
                 expect(stdout.trim()).toBe("3")
             },
@@ -456,7 +456,7 @@ describe("Docker Infrastructure Integration Tests", () => {
             "should have postgres data volume mounted",
             async () => {
                 const { stdout } = await execAsync(
-                    "docker inspect --format=\"{{range .Mounts}}{{.Destination}}{{end}}\" platform-postgres"
+                    'docker inspect --format="{{range .Mounts}}{{.Destination}}{{end}}" platform-postgres'
                 )
                 expect(stdout).toContain("/var/lib/postgresql/data")
             },
@@ -467,7 +467,7 @@ describe("Docker Infrastructure Integration Tests", () => {
             "should have redis data volume mounted",
             async () => {
                 const { stdout } = await execAsync(
-                    "docker inspect --format=\"{{range .Mounts}}{{.Destination}}{{end}}\" platform-redis"
+                    'docker inspect --format="{{range .Mounts}}{{.Destination}}{{end}}" platform-redis'
                 )
                 expect(stdout).toContain("/data")
             },
@@ -478,7 +478,7 @@ describe("Docker Infrastructure Integration Tests", () => {
             "should have log volume mounted",
             async () => {
                 const { stdout } = await execAsync(
-                    "docker inspect --format=\"{{range .Mounts}}{{.Destination}}{{end}}\" platform-backend"
+                    'docker inspect --format="{{range .Mounts}}{{.Destination}}{{end}}" platform-backend'
                 )
                 expect(stdout).toContain("/var/log/app")
             },
@@ -491,7 +491,7 @@ describe("Docker Infrastructure Integration Tests", () => {
             "should have frontend network created",
             async () => {
                 const { stdout } = await execAsync(
-                    "docker network ls --format \"{{.Name}}\""
+                    'docker network ls --format "{{.Name}}"'
                 )
                 expect(stdout).toContain("platform-frontend")
             },
@@ -502,7 +502,7 @@ describe("Docker Infrastructure Integration Tests", () => {
             "should have backend network created",
             async () => {
                 const { stdout } = await execAsync(
-                    "docker network ls --format \"{{.Name}}\""
+                    'docker network ls --format "{{.Name}}"'
                 )
                 expect(stdout).toContain("platform-backend")
             },
@@ -513,7 +513,7 @@ describe("Docker Infrastructure Integration Tests", () => {
             "should have backend network as internal",
             async () => {
                 const { stdout } = await execAsync(
-                    "docker network inspect platform-backend --format=\"{{.Internal}}\""
+                    'docker network inspect platform-backend --format="{{.Internal}}"'
                 )
                 expect(stdout.trim()).toBe("true")
             },
@@ -524,7 +524,7 @@ describe("Docker Infrastructure Integration Tests", () => {
             "should have app connected to frontend network only",
             async () => {
                 const { stdout } = await execAsync(
-                    "docker inspect --format=\"{{range $key, $value := .NetworkSettings.Networks}}{{$key}} {{end}}\" platform-app"
+                    'docker inspect --format="{{range $key, $value := .NetworkSettings.Networks}}{{$key}} {{end}}" platform-app'
                 )
                 expect(stdout).toContain("platform-frontend")
                 expect(stdout).not.toContain("platform-backend")
@@ -536,7 +536,7 @@ describe("Docker Infrastructure Integration Tests", () => {
             "should have backend connected to both networks",
             async () => {
                 const { stdout } = await execAsync(
-                    "docker inspect --format=\"{{range $key, $value := .NetworkSettings.Networks}}{{$key}} {{end}}\" platform-backend"
+                    'docker inspect --format="{{range $key, $value := .NetworkSettings.Networks}}{{$key}} {{end}}" platform-backend'
                 )
                 expect(stdout).toContain("platform-frontend")
                 expect(stdout).toContain("platform-backend")
@@ -548,7 +548,7 @@ describe("Docker Infrastructure Integration Tests", () => {
             "should have postgres connected to backend network only",
             async () => {
                 const { stdout } = await execAsync(
-                    "docker inspect --format=\"{{range $key, $value := .NetworkSettings.Networks}}{{$key}} {{end}}\" platform-postgres"
+                    'docker inspect --format="{{range $key, $value := .NetworkSettings.Networks}}{{$key}} {{end}}" platform-postgres'
                 )
                 expect(stdout).toContain("platform-backend")
                 expect(stdout).not.toContain("platform-frontend")

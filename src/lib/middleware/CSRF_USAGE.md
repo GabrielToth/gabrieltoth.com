@@ -5,6 +5,7 @@ This guide explains how to implement CSRF protection in Next.js API routes.
 ## Overview
 
 CSRF (Cross-Site Request Forgery) protection is implemented through:
+
 1. **Token Generation**: Generate CSRF tokens on GET requests
 2. **Token Storage**: Store tokens in session (in-memory or Redis)
 3. **Token Validation**: Validate tokens on POST/PUT/DELETE requests

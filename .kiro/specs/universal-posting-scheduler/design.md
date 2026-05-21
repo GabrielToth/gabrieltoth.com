@@ -19,24 +19,28 @@ The system consists of several interconnected layers:
 ### Integration Points
 
 #### 1. OAuth Authentication
+
 - Leverages existing Google OAuth implementation
 - Extends with OAuth flows for Facebook, Instagram, Twitter, LinkedIn
 - Reuses existing Token Store with AES-256 encryption
 - Integrates with existing session management
 
 #### 2. YouTube Integration
+
 - Uses existing YouTube OAuth service
 - Reuses existing YouTube video upload infrastructure
 - Supports YouTube-specific metadata (title, description, tags, visibility)
 - Supports YouTube premiere and scheduled release features
 
 #### 3. Token Store
+
 - All OAuth tokens encrypted with AES-256
 - Tokens stored in Supabase with encryption at rest
 - Automatic refresh for platforms requiring it
 - Support token revocation and disconnection
 
 #### 4. Audit Logger
+
 - Logs all authentication attempts and token operations
 - Logs all post creation, scheduling, and publication
 - Logs all API errors and publication failures
@@ -49,11 +53,13 @@ The system consists of several interconnected layers:
 **Location**: src/components/publish/UniversalPostingButton.tsx
 
 **Props**:
+
 - linkedNetworksCount: number
 - isDisabled?: boolean
 - onOpen?: () => void
 
 **Behavior**:
+
 - Displays prominently in main navigation
 - Shows visual indicator when linked networks available
 - Disabled state with tooltip when no networks configured
@@ -65,6 +71,7 @@ The system consists of several interconnected layers:
 **Location**: src/components/publish/NetworkSelector.tsx
 
 **Features**:
+
 - Display all linked networks organized by category
 - Display all network groups in separate section
 - Show network status (connected, disconnected, expired)
@@ -79,6 +86,7 @@ The system consists of several interconnected layers:
 **Location**: src/components/publish/PostingScheduler.tsx
 
 **Features**:
+
 - Date and time picker for scheduling
 - Immediate publication option
 - Timezone support (user's local timezone)
@@ -92,6 +100,7 @@ The system consists of several interconnected layers:
 **Location**: src/components/publish/ContentCreator.tsx
 
 **Features**:
+
 - Rich text editor with formatting support (bold, italic, underline, links)
 - Image upload and selection
 - URL addition
@@ -105,6 +114,7 @@ The system consists of several interconnected layers:
 **Location**: src/lib/posting/content-adapter.ts
 
 **Responsibilities**:
+
 - Adjust character limits based on selected networks
 - Display warnings for content exceeding limits
 - Support platform-specific formatting
@@ -118,6 +128,7 @@ The system consists of several interconnected layers:
 **Location**: src/lib/posting/conflict-detector.ts
 
 **Responsibilities**:
+
 - Identify scheduling conflicts
 - Warn about content exceeding platform limits
 - Validate network authentication status
@@ -129,30 +140,39 @@ The system consists of several interconnected layers:
 ### Database Schema
 
 #### 1. social_networks Table
+
 Stores linked social media accounts with connection status and metadata
 
 #### 2. network_groups Table
+
 Stores user-defined groups of networks
 
 #### 3. group_networks Table
+
 Junction table linking networks to groups
 
 #### 4. scheduled_posts Table
+
 Stores scheduled posts with content and metadata
 
 #### 5. scheduled_post_networks Table
+
 Junction table linking posts to target networks
 
 #### 6. publication_history Table
+
 Records all published posts with status and external references
 
 #### 7. oauth_tokens Table
+
 Stores encrypted OAuth tokens for each network
 
 #### 8. user_preferences Table
+
 Stores user preferences for posting and scheduling
 
 ### Key Indexes
+
 - idx_user_platform on social_networks
 - idx_user_scheduled_time on scheduled_posts
 - idx_status on scheduled_posts and publication_history
@@ -164,21 +184,25 @@ Stores user preferences for posting and scheduling
 ### Error Categories
 
 #### 1. Authentication Errors
+
 - Expired Token: Prompt for re-authentication
 - Invalid Credentials: Display clear error message
 - Revoked Access: Notify user and disable network
 
 #### 2. Network Errors
+
 - Connection Timeout: Retry with exponential backoff
 - Rate Limiting: Queue for retry after limit resets
 - Service Unavailable: Retry with exponential backoff
 
 #### 3. Content Errors
+
 - Character Limit Exceeded: Display warning and truncation options
 - Unsupported Format: Display incompatibility warning
 - Invalid Content: Display validation errors
 
 #### 4. Scheduling Errors
+
 - Past Date: Display error and prevent scheduling
 - Conflict Detected: Display conflicts and resolution options
 - Invalid Timezone: Display error and suggest correction
@@ -186,6 +210,7 @@ Stores user preferences for posting and scheduling
 ### Retry Logic
 
 **Exponential Backoff Strategy**:
+
 - Attempt 1: Immediate
 - Attempt 2: 2 seconds delay
 - Attempt 3: 4 seconds delay
@@ -193,12 +218,14 @@ Stores user preferences for posting and scheduling
 - Max attempts: 3
 
 **Retry Conditions**:
+
 - Network errors (timeout, connection refused)
 - Rate limiting (HTTP 429)
 - Server errors (HTTP 5xx)
 - Temporary service unavailability
 
 **Non-Retryable Errors**:
+
 - Authentication errors (HTTP 401)
 - Authorization errors (HTTP 403)
 - Invalid content (HTTP 400)
@@ -211,6 +238,7 @@ Stores user preferences for posting and scheduling
 **Coverage Target**: > 80%
 
 **Test Categories**:
+
 1. Content Adapter Tests: Character limit validation, content truncation, format support
 2. Conflict Detector Tests: Scheduling conflicts, authentication status, compatibility
 3. Network Group Manager Tests: Group creation, network management, toggle functionality
@@ -220,6 +248,7 @@ Stores user preferences for posting and scheduling
 ### Integration Tests
 
 **Test Scenarios**:
+
 1. Complete Posting Flow: Create, select, schedule, verify storage and publication
 2. OAuth Flow: Authorization, callback, token storage, refresh, expiration
 3. Error Handling: Network errors, rate limiting, authentication, conflicts
@@ -228,6 +257,7 @@ Stores user preferences for posting and scheduling
 ### Performance Tests
 
 **Targets**:
+
 - Posting interface load: < 2 seconds
 - Network selector render: < 500ms
 - Schedule validation and save: < 1 second
@@ -239,6 +269,7 @@ Stores user preferences for posting and scheduling
 **Standards**: WCAG 2.1 Level AA
 
 **Test Coverage**:
+
 - Keyboard navigation
 - Screen reader compatibility
 - Color contrast ratios
@@ -248,6 +279,7 @@ Stores user preferences for posting and scheduling
 ### Security Tests
 
 **Coverage**:
+
 - Token encryption/decryption
 - CSRF protection
 - XSS prevention
@@ -258,6 +290,7 @@ Stores user preferences for posting and scheduling
 ## Technology Stack
 
 ### Frontend
+
 - Framework: Next.js 16+ with React 19
 - Styling: Tailwind CSS 4
 - UI Components: Radix UI
@@ -267,6 +300,7 @@ Stores user preferences for posting and scheduling
 - HTTP Client: Fetch API with custom wrapper
 
 ### Backend
+
 - Runtime: Node.js 24+
 - Framework: Express.js (existing)
 - Language: TypeScript
@@ -276,6 +310,7 @@ Stores user preferences for posting and scheduling
 - Encryption: crypto module (AES-256)
 
 ### External Services
+
 - YouTube API: googleapis library
 - Facebook Graph API: facebook-sdk
 - Instagram Graph API: instagram-sdk
@@ -283,6 +318,7 @@ Stores user preferences for posting and scheduling
 - LinkedIn API: linkedin-api
 
 ### Development Tools
+
 - Testing: Vitest + @testing-library/react
 - E2E Testing: Playwright
 - Linting: ESLint
@@ -293,6 +329,7 @@ Stores user preferences for posting and scheduling
 ## Deployment Considerations
 
 ### Environment Variables
+
 - NEXT_PUBLIC_API_URL
 - OAUTH_GOOGLE_CLIENT_ID and SECRET
 - OAUTH_FACEBOOK_CLIENT_ID and SECRET
@@ -305,12 +342,14 @@ Stores user preferences for posting and scheduling
 - AUDIT_LOG_RETENTION_DAYS
 
 ### Database Migrations
+
 - Create all required tables
 - Add indexes for performance
 - Set up foreign key constraints
 - Configure row-level security (RLS) policies
 
 ### Monitoring & Alerts
+
 - Publication queue processing latency
 - OAuth token refresh failures
 - Publication failure rates
@@ -320,12 +359,14 @@ Stores user preferences for posting and scheduling
 ## Compliance & Security
 
 ### Data Protection
+
 - All OAuth tokens encrypted with AES-256
 - Tokens stored in Supabase with encryption at rest
 - Audit logs retained for 90+ days
 - GDPR compliance for user data
 
 ### Security Headers
+
 - Content-Security-Policy
 - X-Frame-Options: DENY
 - X-Content-Type-Options: nosniff
@@ -333,11 +374,13 @@ Stores user preferences for posting and scheduling
 - Referrer-Policy
 
 ### Rate Limiting
+
 - API endpoints: 100 requests/minute per user
 - OAuth endpoints: 10 requests/minute per IP
 - Publication queue: Platform-specific limits
 
 ### Audit Logging
+
 - All OAuth operations logged
 - All post creation/scheduling logged
 - All publication attempts logged

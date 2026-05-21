@@ -155,7 +155,8 @@ describe("Integration: Registration to Login Flow", () => {
         const user = {
             id: "user-456",
             email: "unverified@example.com",
-            password_hash: "$argon2id$v=19$m=64000,t=3,p=2$abcdefghijklmnopqrst$0123456789abcdef0123456789abcdef",
+            password_hash:
+                "$argon2id$v=19$m=64000,t=3,p=2$abcdefghijklmnopqrst$0123456789abcdef0123456789abcdef",
             email_verified: false,
         }
 

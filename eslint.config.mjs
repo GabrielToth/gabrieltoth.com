@@ -74,8 +74,6 @@ const eslintConfig = [
             "react-hooks/exhaustive-deps": "warn",
 
             // Let Prettier handle formatting
-            quotes: ["error", "double"],
-            semi: ["error", "never"],
             indent: "off",
         },
         settings: {
@@ -91,8 +89,6 @@ const eslintConfig = [
             sourceType: "module",
         },
         rules: {
-            quotes: ["error", "double"],
-            semi: ["error", "never"],
             indent: "off",
         },
     },

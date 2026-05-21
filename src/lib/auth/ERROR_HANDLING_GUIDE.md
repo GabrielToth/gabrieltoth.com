@@ -5,6 +5,7 @@ This guide explains how to use the centralized error handling system for the aut
 ## Overview
 
 The error handling system provides:
+
 - **Consistent error responses** across all API endpoints
 - **Generic error messages** that don't expose technical details
 - **Appropriate HTTP status codes** for different error types
@@ -74,6 +75,7 @@ try {
 ```
 
 This will:
+
 - Log the full error details server-side
 - Return a generic error message to the client
 - Include security headers in the response
@@ -93,6 +95,7 @@ logAuthError(AuthErrorType.INVALID_CREDENTIALS, email, clientIp, "Auth")
 ## Available Error Types
 
 ### Validation Errors (400)
+
 - `INVALID_EMAIL` - Invalid email format
 - `INVALID_PASSWORD` - Password doesn't meet requirements
 - `PASSWORDS_MISMATCH` - Passwords don't match
@@ -102,6 +105,7 @@ logAuthError(AuthErrorType.INVALID_CREDENTIALS, email, clientIp, "Auth")
 - `INVALID_INPUT` - Generic invalid input
 
 ### Authentication Errors (401)
+
 - `INVALID_CREDENTIALS` - Invalid email or password
 - `EMAIL_NOT_VERIFIED` - Email not verified
 - `SESSION_EXPIRED` - Session has expired
@@ -109,19 +113,23 @@ logAuthError(AuthErrorType.INVALID_CREDENTIALS, email, clientIp, "Auth")
 - `UNAUTHORIZED` - Generic unauthorized
 
 ### Rate Limiting Errors (429)
+
 - `TOO_MANY_ATTEMPTS` - Too many attempts
 - `ACCOUNT_LOCKED` - Account temporarily locked
 
 ### Conflict Errors (409)
+
 - `EMAIL_ALREADY_REGISTERED` - Email already exists
 - `USER_ALREADY_EXISTS` - User already exists
 
 ### Token Errors (400)
+
 - `INVALID_TOKEN` - Invalid verification token
 - `EXPIRED_TOKEN` - Token has expired
 - `MISSING_TOKEN` - Token is missing
 
 ### Server Errors (500)
+
 - `DATABASE_ERROR` - Database error
 - `EMAIL_SERVICE_ERROR` - Email service error
 - `INTERNAL_ERROR` - Generic internal error

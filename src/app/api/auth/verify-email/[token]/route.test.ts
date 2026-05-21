@@ -122,7 +122,7 @@ describe("GET /api/auth/verify-email/:token", () => {
 
         const response = await GET(request, {
             params: { token: "valid-token" },
-        })
+        } as any)
         const data = await response.json()
 
         expect(response.status).toBe(200)
@@ -137,7 +137,7 @@ describe("GET /api/auth/verify-email/:token", () => {
 
         const response = await GET(request, {
             params: { token: "invalid-token" },
-        })
+        } as any)
         const data = await response.json()
 
         expect(response.status).toBe(400)
@@ -152,7 +152,7 @@ describe("GET /api/auth/verify-email/:token", () => {
 
         const response = await GET(request, {
             params: { token: "expired-token" },
-        })
+        } as any)
         const data = await response.json()
 
         expect(response.status).toBe(400)
@@ -167,7 +167,7 @@ describe("GET /api/auth/verify-email/:token", () => {
 
         const response = await GET(request, {
             params: { token: "already-verified-token" },
-        })
+        } as any)
         const data = await response.json()
 
         expect(response.status).toBe(400)
@@ -180,7 +180,7 @@ describe("GET /api/auth/verify-email/:token", () => {
             "http://localhost:3000/api/auth/verify-email/"
         )
 
-        const response = await GET(request, { params: { token: "" } })
+        const response = await GET(request, { params: { token: "" } } as any)
         const data = await response.json()
 
         expect(response.status).toBe(400)

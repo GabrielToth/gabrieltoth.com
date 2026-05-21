@@ -485,12 +485,10 @@ describe("Property-Based Tests: useRegistration Hook", () => {
                         fc.string({
                             minLength: 2,
                             maxLength: 100,
-                            unit16: true,
                         }),
                         fc.string({
                             minLength: 10,
                             maxLength: 20,
-                            unit16: true,
                         })
                     ),
                     ([name, phone]) => {

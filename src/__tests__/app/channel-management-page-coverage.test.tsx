@@ -23,6 +23,9 @@ vi.mock("next-intl/server", () => {
     return { getTranslations: vi.fn().mockResolvedValue(t) }
 })
 
+vi.mock("@/app/[locale]/channel-management/channel-management-view", () => ({
+    default: () => null,
+}))
 vi.mock(
     "@/app/[locale]/channel-management/channel-management-structured",
     () => ({

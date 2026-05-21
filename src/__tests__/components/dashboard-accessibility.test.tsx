@@ -8,7 +8,7 @@ import { render, screen } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
 /**
- * Accessibility Tests 
+ * Accessibility Tests
  * Tests for WCAG 2.1 AA compliance
  *
  * Requirements:

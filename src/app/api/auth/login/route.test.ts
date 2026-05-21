@@ -207,8 +207,13 @@ describe("POST /api/auth/login: Login Route Handler", () => {
     })
 
     it("should return 429 when rate limit exceeded", async () => {
-        const { checkRateLimitWithDegradation } = await import("@/lib/auth/rate-limiter")
-        vi.mocked(checkRateLimitWithDegradation).mockResolvedValueOnce({ allowed: false, remainingAttempts: 0, degradedMode: false })
+        const { checkRateLimitWithDegradation } =
+            await import("@/lib/auth/rate-limiter")
+        vi.mocked(checkRateLimitWithDegradation).mockResolvedValueOnce({
+            allowed: false,
+            remainingAttempts: 0,
+            degradedMode: false,
+        })
 
         const request = new NextRequest("http://localhost/api/auth/login", {
             method: "POST",
@@ -480,7 +485,6 @@ describe("POST /api/auth/login: Login Route Handler", () => {
             body: JSON.stringify({
                 email: "test@example.com",
                 password: "WrongPassword",
-                captchaToken: "valid-token",
                 csrfToken: "token",
                 captchaToken: "valid-token",
             }),
@@ -635,7 +639,6 @@ describe("POST /api/auth/login: Login Route Handler", () => {
             body: JSON.stringify({
                 email: "test@example.com",
                 password: "WrongPassword",
-                captchaToken: "valid-token",
                 csrfToken: "token",
                 captchaToken: "valid-token",
             }),
@@ -718,7 +721,6 @@ describe("POST /api/auth/login: Login Route Handler", () => {
             body: JSON.stringify({
                 email: "test@example.com",
                 password: "WrongPassword",
-                captchaToken: "valid-token",
                 csrfToken: "token",
                 captchaToken: "valid-token",
             }),

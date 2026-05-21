@@ -18,6 +18,7 @@ Receiving and processing email delivery events in real-time.
 ### 1. Create Endpoint
 
 Your endpoint must:
+
 - Accept POST requests
 - Return 2xx status quickly (within 5 seconds)
 - Handle duplicate events (idempotent processing)
@@ -133,6 +134,7 @@ async function processWebhook(event) {
 ### Retry Behavior
 
 If your endpoint returns non-2xx, webhooks will retry with exponential backoff:
+
 - Retry 1: ~30 seconds
 - Retry 2: ~1 minute
 - Retry 3: ~5 minutes
@@ -158,6 +160,7 @@ ngrok http 3000
 **Verify handling:** Send test events through Resend dashboard or manually trigger each event type.
 
 ## Ingest webhooks for data storage
+
 - [Open source repo](https://github.com/resend/resend-webhooks-ingester)
 - [Why store data](https://resend.com/docs/dashboard/webhooks/how-to-store-webhooks-data)
 

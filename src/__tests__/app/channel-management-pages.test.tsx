@@ -9,6 +9,20 @@ vi.mock("@/components/seo/structured-data", () => ({
 vi.mock("@/components/ui/breadcrumbs", () => ({
     default: () => null,
 }))
+vi.mock("@/app/[locale]/channel-management/channel-management-view", () => ({
+    default: () => null,
+}))
+vi.mock(
+    "@/app/[locale]/channel-management/channel-management-structured",
+    () => ({
+        buildChannelManagementStructured: vi.fn(async () => ({
+            serviceStructuredData: {},
+            faqs: [],
+            breadcrumbs: [],
+            offerCatalog: {},
+        })),
+    })
+)
 
 describe("channel-management app pages imports", () => {
     it("imports main page file", async () => {

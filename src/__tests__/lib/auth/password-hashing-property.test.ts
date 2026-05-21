@@ -17,35 +17,29 @@ describe("Property 2: Password Hashing Consistency", () => {
      */
     it("should produce consistent Argon2id hashes", async () => {
         await fc.assert(
-            fc.asyncProperty(
-                validPasswordArb,
-                async password => {
-                    const hash = await hashPassword(password)
+            fc.asyncProperty(validPasswordArb, async password => {
+                const hash = await hashPassword(password)
 
-                    expect(hash).toBeDefined()
-                    expect(typeof hash).toBe("string")
-                    expect(hash).toMatch(/^\$argon2id\$/)
+                expect(hash).toBeDefined()
+                expect(typeof hash).toBe("string")
+                expect(hash).toMatch(/^\$argon2id\$/)
 
-                    expect(hash.length).toBeGreaterThanOrEqual(60)
-                    expect(hash.length).toBeGreaterThanOrEqual(60)
-                }
-            ),
+                expect(hash.length).toBeGreaterThanOrEqual(60)
+                expect(hash.length).toBeGreaterThanOrEqual(60)
+            }),
             { numRuns: 20 }
         )
     }, 30000)
 
     it("should correctly compare original password with its hash", async () => {
         await fc.assert(
-            fc.asyncProperty(
-                validPasswordArb,
-                async password => {
-                    const hash = await hashPassword(password)
+            fc.asyncProperty(validPasswordArb, async password => {
+                const hash = await hashPassword(password)
 
-                    // Property: original password matches hash
-                    const matches = await comparePassword(password, hash)
-                    expect(matches).toBe(true)
-                }
-            ),
+                // Property: original password matches hash
+                const matches = await comparePassword(password, hash)
+                expect(matches).toBe(true)
+            }),
             { numRuns: 20 }
         )
     }, 30000)
@@ -72,22 +66,19 @@ describe("Property 2: Password Hashing Consistency", () => {
 
     it("should produce different hashes for the same password due to salt", async () => {
         await fc.assert(
-            fc.asyncProperty(
-                validPasswordArb,
-                async password => {
-                    const hash1 = await hashPassword(password)
-                    const hash2 = await hashPassword(password)
+            fc.asyncProperty(validPasswordArb, async password => {
+                const hash1 = await hashPassword(password)
+                const hash2 = await hashPassword(password)
 
-                    // Property: same password produces different hashes (due to random salt)
-                    expect(hash1).not.toBe(hash2)
+                // Property: same password produces different hashes (due to random salt)
+                expect(hash1).not.toBe(hash2)
 
-                    // Property: but both hashes should validate the original password
-                    const matches1 = await comparePassword(password, hash1)
-                    const matches2 = await comparePassword(password, hash2)
-                    expect(matches1).toBe(true)
-                    expect(matches2).toBe(true)
-                }
-            ),
+                // Property: but both hashes should validate the original password
+                const matches1 = await comparePassword(password, hash1)
+                const matches2 = await comparePassword(password, hash2)
+                expect(matches1).toBe(true)
+                expect(matches2).toBe(true)
+            }),
             { numRuns: 20 }
         )
     }, 60000)
@@ -126,23 +117,20 @@ describe("Property 2: Password Hashing Consistency", () => {
 
     it("should maintain hash consistency across multiple comparisons", async () => {
         await fc.assert(
-            fc.asyncProperty(
-                validPasswordArb,
-                async password => {
-                    const hash = await hashPassword(password)
+            fc.asyncProperty(validPasswordArb, async password => {
+                const hash = await hashPassword(password)
 
-                    // Property: comparing the same password multiple times yields consistent results
-                    const result1 = await comparePassword(password, hash)
-                    const result2 = await comparePassword(password, hash)
-                    const result3 = await comparePassword(password, hash)
+                // Property: comparing the same password multiple times yields consistent results
+                const result1 = await comparePassword(password, hash)
+                const result2 = await comparePassword(password, hash)
+                const result3 = await comparePassword(password, hash)
 
-                    expect(result1).toBe(true)
-                    expect(result2).toBe(true)
-                    expect(result3).toBe(true)
-                    expect(result1).toBe(result2)
-                    expect(result2).toBe(result3)
-                }
-            ),
+                expect(result1).toBe(true)
+                expect(result2).toBe(true)
+                expect(result3).toBe(true)
+                expect(result1).toBe(result2)
+                expect(result2).toBe(result3)
+            }),
             { numRuns: 20 }
         )
     }, 60000)
@@ -188,7 +176,7 @@ describe("Property 2: Password Hashing Consistency", () => {
                 fc.constantFrom(
                     "password!@#$%^&*()",
                     "quote'test",
-                    "double\"quote",
+                    'double"quote',
                     "back\\slash",
                     "forward/slash"
                 ),
@@ -219,17 +207,14 @@ describe("Property 6: Password Comparison Correctness", () => {
 
     it("should return true when comparing password with its own hash", async () => {
         await fc.assert(
-            fc.asyncProperty(
-                validPasswordArb,
-                async password => {
-                    // Generate hash from password
-                    const hash = await hashPassword(password)
+            fc.asyncProperty(validPasswordArb, async password => {
+                // Generate hash from password
+                const hash = await hashPassword(password)
 
-                    // Property: password used to generate hash should match
-                    const result = await comparePassword(password, hash)
-                    expect(result).toBe(true)
-                }
-            ),
+                // Property: password used to generate hash should match
+                const result = await comparePassword(password, hash)
+                expect(result).toBe(true)
+            }),
             { numRuns: 20 }
         )
     }, 30000)
@@ -269,7 +254,8 @@ describe("Property 6: Password Comparison Correctness", () => {
                     "$2x$12$invalidalgorithm", // invalid algorithm
                     "plaintext-password",
                     "   ", // whitespace only
-                    "$argon2id$v=19$m=64000,t=3,p=2$abcdefghijklmnopqrst$0123456789abcdef0123456789abcdef" + "a".repeat(100), // malformed but long
+                    "$argon2id$v=19$m=64000,t=3,p=2$abcdefghijklmnopqrst$0123456789abcdef0123456789abcdef" +
+                        "a".repeat(100), // malformed but long
                     null as any, // null (will be caught by type guard)
                     undefined as any // undefined (will be caught by type guard)
                 ),
@@ -319,25 +305,22 @@ describe("Property 6: Password Comparison Correctness", () => {
 
     it("should maintain comparison correctness across multiple calls", async () => {
         await fc.assert(
-            fc.asyncProperty(
-                validPasswordArb,
-                async password => {
-                    const hash = await hashPassword(password)
+            fc.asyncProperty(validPasswordArb, async password => {
+                const hash = await hashPassword(password)
 
-                    // Property: multiple comparisons with same password yield consistent results
-                    const result1 = await comparePassword(password, hash)
-                    const result2 = await comparePassword(password, hash)
-                    const result3 = await comparePassword(password, hash)
+                // Property: multiple comparisons with same password yield consistent results
+                const result1 = await comparePassword(password, hash)
+                const result2 = await comparePassword(password, hash)
+                const result3 = await comparePassword(password, hash)
 
-                    expect(result1).toBe(true)
-                    expect(result2).toBe(true)
-                    expect(result3).toBe(true)
+                expect(result1).toBe(true)
+                expect(result2).toBe(true)
+                expect(result3).toBe(true)
 
-                    // All results should be identical
-                    expect(result1).toBe(result2)
-                    expect(result2).toBe(result3)
-                }
-            ),
+                // All results should be identical
+                expect(result1).toBe(result2)
+                expect(result2).toBe(result3)
+            }),
             { numRuns: 20 }
         )
     }, 60000)

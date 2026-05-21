@@ -21,15 +21,26 @@ for (const file of walk(root)) {
     let content = fs.readFileSync(file, "utf8")
     const original = content
 
-    content = content.replace(/\bbeforeAll\(async ctx =>/g, "beforeAll(async ({ skip }) =>")
-    content = content.replace(/\bbeforeEach\(async ctx =>/g, "beforeEach(async ({ skip }) =>")
-    content = content.replace(/\bit(?:\.(?:only|skip|todo|concurrent|fails))?\(\s*([^,]+),\s*async ctx =>/g, (m, title) =>
-        m.replace("async ctx =>", "async ({ skip }) =>")
+    content = content.replace(
+        /\bbeforeAll\(async ctx =>/g,
+        "beforeAll(async ({ skip }) =>"
     )
-    content = content.replace(/\btest(?:\.(?:only|skip|todo|concurrent|fails))?\(\s*([^,]+),\s*async ctx =>/g, (m) =>
-        m.replace("async ctx =>", "async ({ skip }) =>")
+    content = content.replace(
+        /\bbeforeEach\(async ctx =>/g,
+        "beforeEach(async ({ skip }) =>"
     )
-    content = content.replace(/skipSuiteWithoutPostgres\(ctx\)/g, "skipSuiteWithoutPostgres({ skip })")
+    content = content.replace(
+        /\bit(?:\.(?:only|skip|todo|concurrent|fails))?\(\s*([^,]+),\s*async ctx =>/g,
+        (m, title) => m.replace("async ctx =>", "async ({ skip }) =>")
+    )
+    content = content.replace(
+        /\btest(?:\.(?:only|skip|todo|concurrent|fails))?\(\s*([^,]+),\s*async ctx =>/g,
+        m => m.replace("async ctx =>", "async ({ skip }) =>")
+    )
+    content = content.replace(
+        /skipSuiteWithoutPostgres\(ctx\)/g,
+        "skipSuiteWithoutPostgres({ skip })"
+    )
     content = content.replace(/return ctx\.skip\(\)/g, "return skip()")
     content = content.replace(/ctx\.skip\(\)/g, "skip()")
 

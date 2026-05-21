@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/nextjs-vite"
+import type { Meta, StoryObj } from "@storybook/nextjs"
 import PricingToggle from "./pricing-toggle"
 
 const meta: Meta<typeof PricingToggle> = {

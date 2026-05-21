@@ -105,7 +105,7 @@ describe("Account Completion Middleware", () => {
                 email_verified: true,
                 created_at: new Date(),
                 updated_at: new Date(),
-            })
+            } as any)
 
             const request = new NextRequest(
                 new URL("http://localhost:3000/en/dashboard")
@@ -167,7 +167,7 @@ describe("Account Completion Middleware", () => {
                 email_verified: true,
                 created_at: new Date(),
                 updated_at: new Date(),
-            })
+            } as any)
 
             const status = await getAccountCompletionStatus("user-123")
 
@@ -198,7 +198,7 @@ describe("Account Completion Middleware", () => {
                 email_verified: true,
                 created_at: new Date(),
                 updated_at: new Date(),
-            })
+            } as any)
 
             const status = await getAccountCompletionStatus("user-123")
 
@@ -233,7 +233,7 @@ describe("Account Completion Middleware", () => {
                 email_verified: true,
                 created_at: new Date(),
                 updated_at: new Date(),
-            })
+            } as any)
 
             const isComplete = await isAccountComplete("user-123")
 
@@ -256,7 +256,7 @@ describe("Account Completion Middleware", () => {
                 email_verified: true,
                 created_at: new Date(),
                 updated_at: new Date(),
-            })
+            } as any)
 
             const isComplete = await isAccountComplete("user-123")
 
@@ -279,7 +279,7 @@ describe("Account Completion Middleware", () => {
                 email_verified: true,
                 created_at: new Date(),
                 updated_at: new Date(),
-            })
+            } as any)
 
             const isComplete = await isAccountComplete("user-123")
 

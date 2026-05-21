@@ -53,7 +53,11 @@ function looksLikePlaceholder(name: string, value: string): boolean {
     if (name === "NEXT_PUBLIC_APP_URL" && lower.includes(TEMPLATE_DOMAIN)) {
         return true
     }
-    if (name.includes("SECRET") || name.includes("KEY") || name.includes("TOKEN")) {
+    if (
+        name.includes("SECRET") ||
+        name.includes("KEY") ||
+        name.includes("TOKEN")
+    ) {
         if (
             lower.includes("dev-") &&
             (lower.includes("test") || lower.includes("only"))
@@ -73,7 +77,7 @@ export function requireEnv(name: string): string {
         throw new EnvValidationError(
             name,
             `Missing required environment variable: ${name}\n` +
-                `Copy .env.local.example to .env.local (or .env.production.example to .env.production) and set a real value.`
+                "Copy .env.local.example to .env.local (or .env.production.example to .env.production) and set a real value."
         )
     }
     if (looksLikePlaceholder(name, value)) {
@@ -86,7 +90,10 @@ export function requireEnv(name: string): string {
     return value
 }
 
-export function requireEnvWhen(condition: boolean, name: string): string | undefined {
+export function requireEnvWhen(
+    condition: boolean,
+    name: string
+): string | undefined {
     if (!condition) return undefined
     return requireEnv(name)
 }
@@ -103,7 +110,10 @@ export function getApiUrl(): string {
  * Validate env on server startup (skipped in Vitest unless ENFORCE_ENV_VALIDATION=true).
  */
 export function validateRuntimeEnv(): void {
-    if (process.env.VITEST === "true" && process.env.ENFORCE_ENV_VALIDATION !== "true") {
+    if (
+        process.env.VITEST === "true" &&
+        process.env.ENFORCE_ENV_VALIDATION !== "true"
+    ) {
         return
     }
 

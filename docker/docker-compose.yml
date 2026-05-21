@@ -102,6 +102,9 @@ services:
     backend:
         env_file:
             - ../.env.docker
+        build:
+            context: ..
+            dockerfile: docker/Dockerfile.backend
         image: platform-backend:latest
         container_name: platform-backend
         restart: unless-stopped

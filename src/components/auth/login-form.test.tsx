@@ -21,8 +21,8 @@ vi.mock("next/navigation", () => ({
 }))
 
 // Mock Turnstile (avoid loading Cloudflare script in jsdom)
-vi.mock("@/components/auth/turnstile-widget", () => ({
-    default: ({
+vi.mock("@/components/auth/turnstile-widget", () => {
+    const TurnstileMock = ({
         onTokenChange,
     }: {
         onTokenChange: (token: string | null) => void
@@ -31,8 +31,9 @@ vi.mock("@/components/auth/turnstile-widget", () => ({
             onTokenChange("test-turnstile-token")
         }, [])
         return <div data-testid="turnstile-mock" />
-    },
-}))
+    }
+    return { default: TurnstileMock }
+})
 
 // Mock fetch
 global.fetch = vi.fn()
@@ -301,7 +302,7 @@ describe("LoginForm", () => {
                 expect(global.fetch).toHaveBeenCalledWith(
                     "/api/auth/login",
                     expect.objectContaining({
-                        body: expect.stringContaining("\"rememberMe\":true"),
+                        body: expect.stringContaining('"rememberMe":true'),
                     })
                 )
             })
@@ -312,25 +313,23 @@ describe("LoginForm", () => {
         it("should disable form during submission", async () => {
             const user = userEvent.setup()
 
-            ;(global.fetch as any).mockImplementation(
-                async (url: string) => {
-                    if (String(url).includes("/api/auth/csrf")) {
-                        return csrfFetchResponse
-                    }
-                    await new Promise(resolve => setTimeout(resolve, 100))
-                    return {
-                        ok: true,
-                        json: async () => ({
-                            success: true,
-                            data: {
-                                userId: "123",
-                                email: "john@example.com",
-                                name: "John Doe",
-                            },
-                        }),
-                    }
+            ;(global.fetch as any).mockImplementation(async (url: string) => {
+                if (String(url).includes("/api/auth/csrf")) {
+                    return csrfFetchResponse
                 }
-            )
+                await new Promise(resolve => setTimeout(resolve, 100))
+                return {
+                    ok: true,
+                    json: async () => ({
+                        success: true,
+                        data: {
+                            userId: "123",
+                            email: "john@example.com",
+                            name: "John Doe",
+                        },
+                    }),
+                }
+            })
 
             await renderReadyLoginForm()
 

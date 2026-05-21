@@ -105,7 +105,7 @@ describe("Audit Logger", () => {
             )
 
             const callArgs = mockQuery.mock.calls[0]
-            const detailsJson = callArgs[1][5] as string
+            const detailsJson = callArgs[1]![5] as string
             const details = JSON.parse(detailsJson)
 
             expect(details).toHaveProperty("timestamp")
@@ -139,8 +139,8 @@ describe("Audit Logger", () => {
                 "User not found"
             )
 
-            const callArgs = mockQuery.mock.calls[0]
-            expect(callArgs[1][1]).toBeNull()
+            const callArgs = mockQuery.mock.calls[0]!
+            expect(callArgs[1]![1]).toBeNull()
         })
     })
 
@@ -194,8 +194,8 @@ describe("Audit Logger", () => {
                 "Invalid token format"
             )
 
-            const callArgs = mockQuery.mock.calls[0]
-            const detailsJson = callArgs[1][4] as string
+            const callArgs = mockQuery.mock.calls[0]!
+            const detailsJson = callArgs[1]![4] as string
             const details = JSON.parse(detailsJson)
 
             expect(details).toHaveProperty("reason", "Invalid token format")
@@ -241,8 +241,8 @@ describe("Audit Logger", () => {
 
             await logRateLimitEvent("192.168.1.1", "Mozilla/5.0", 6)
 
-            const callArgs = mockQuery.mock.calls[0]
-            const detailsJson = callArgs[1][4] as string
+            const callArgs = mockQuery.mock.calls[0]!
+            const detailsJson = callArgs[1]![4] as string
             const details = JSON.parse(detailsJson)
 
             expect(details).toHaveProperty("attemptCount", 6)
@@ -256,8 +256,8 @@ describe("Audit Logger", () => {
 
             await logRateLimitEvent("192.168.1.1", "Mozilla/5.0", 5)
 
-            const callArgs = mockQuery.mock.calls[0]
-            expect(callArgs[1][1]).toBeNull()
+            const callArgs = mockQuery.mock.calls[0]!
+            expect(callArgs[1]![1]).toBeNull()
         })
 
         it("should handle database errors gracefully", async () => {
@@ -310,8 +310,8 @@ describe("Audit Logger", () => {
                 "validated"
             )
 
-            const callArgs = mockQuery.mock.calls[0]
-            expect(callArgs[1][0]).toBe("REMEMBER_ME_VALIDATED")
+            const callArgs = mockQuery.mock.calls[0]!
+            expect(callArgs[1]![0]).toBe("REMEMBER_ME_VALIDATED")
         })
 
         it("should log a Remember Me token failure", async () => {
@@ -328,10 +328,10 @@ describe("Audit Logger", () => {
                 "Token expired"
             )
 
-            const callArgs = mockQuery.mock.calls[0]
-            expect(callArgs[1][0]).toBe("REMEMBER_ME_FAILED")
+            const callArgs = mockQuery.mock.calls[0]!
+            expect(callArgs[1]![0]).toBe("REMEMBER_ME_FAILED")
 
-            const detailsJson = callArgs[1][5] as string
+            const detailsJson = callArgs[1]![5] as string
             const details = JSON.parse(detailsJson)
             expect(details).toHaveProperty("reason", "Token expired")
         })
@@ -351,8 +351,8 @@ describe("Audit Logger", () => {
                 expiresAt
             )
 
-            const callArgs = mockQuery.mock.calls[0]
-            const detailsJson = callArgs[1][5] as string
+            const callArgs = mockQuery.mock.calls[0]!
+            const detailsJson = callArgs[1]![5] as string
             const details = JSON.parse(detailsJson)
 
             expect(details).toHaveProperty("expiresAt")
@@ -386,7 +386,7 @@ describe("Audit Logger", () => {
                     email: "user@example.com",
                     ipAddress: "192.168.1.1",
                     userAgent: "Mozilla/5.0",
-                    details: "{\"action\":\"User logged in\"}",
+                    details: '{"action":"User logged in"}',
                     createdAt: new Date(),
                 },
             ]
@@ -475,7 +475,7 @@ describe("Audit Logger", () => {
                 limit: 100,
             })
 
-            const callArgs = mockQueryMany.mock.calls[0]
+            const callArgs = mockQueryMany.mock.calls[0]!
             const sql = callArgs[0] as string
             const params = callArgs[1]
 
@@ -551,7 +551,7 @@ describe("Audit Logger", () => {
                     email: "user@example.com",
                     ipAddress: "192.168.1.1",
                     userAgent: "Mozilla/5.0",
-                    details: "{\"action\":\"User logged in\"}",
+                    details: '{"action":"User logged in"}',
                     createdAt: new Date(),
                 },
             ]
@@ -597,7 +597,7 @@ describe("Audit Logger", () => {
                     email: "user@example.com",
                     ipAddress: "192.168.1.1",
                     userAgent: "Mozilla/5.0",
-                    details: "{\"reason\":\"Invalid password\"}",
+                    details: '{"reason":"Invalid password"}',
                     createdAt: new Date(),
                 },
             ]
@@ -631,7 +631,7 @@ describe("Audit Logger", () => {
                     email: "user@example.com",
                     ipAddress: "192.168.1.1",
                     userAgent: "Mozilla/5.0",
-                    details: "{\"reason\":\"Token mismatch\"}",
+                    details: '{"reason":"Token mismatch"}',
                     createdAt: new Date(),
                 },
             ]
@@ -677,7 +677,7 @@ describe("Audit Logger", () => {
                     email: "user@example.com",
                     ipAddress: "192.168.1.1",
                     userAgent: "Mozilla/5.0",
-                    details: "{\"reason\":\"Invalid password\"}",
+                    details: '{"reason":"Invalid password"}',
                     createdAt: new Date(),
                 },
             ]

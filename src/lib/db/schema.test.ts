@@ -22,6 +22,8 @@ describe.skipIf(!postgresAvailable)("Database Schema Validation", () => {
         pool = new Pool({ connectionString: testDbUrl })
 
         try {
+            const schemaPath = join(process.cwd(), "supabase", "schema.sql")
+            const schema = readFileSync(schemaPath, "utf-8")
             await pool.query(schema)
         } catch (error: unknown) {
             const code =
@@ -29,7 +31,10 @@ describe.skipIf(!postgresAvailable)("Database Schema Validation", () => {
                     ? String((error as { code: string }).code)
                     : ""
             if (code !== "ECONNREFUSED") {
-                console.error("Schema application failed (may already exist):", error)
+                console.error(
+                    "Schema application failed (may already exist):",
+                    error
+                )
             }
         }
     })
@@ -41,7 +46,9 @@ describe.skipIf(!postgresAvailable)("Database Schema Validation", () => {
     })
 
     describe("Unit Tests: Schema Constraints", () => {
-        it("should enforce positive_balance constraint on user_accounts", async ({ skip }) => {
+        it("should enforce positive_balance constraint on user_accounts", async ({
+            skip,
+        }) => {
             const testUserId = "00000000-0000-0000-0000-000000000001"
 
             // First create a profile
@@ -68,7 +75,9 @@ describe.skipIf(!postgresAvailable)("Database Schema Validation", () => {
             }
         })
 
-        it("should enforce foreign key constraint on transactions", async ({ skip }) => {
+        it("should enforce foreign key constraint on transactions", async ({
+            skip,
+        }) => {
             const nonExistentUserId = "99999999-9999-9999-9999-999999999999"
 
             // Try to insert transaction for non-existent user - should fail
@@ -83,7 +92,9 @@ describe.skipIf(!postgresAvailable)("Database Schema Validation", () => {
             }
         })
 
-        it("should enforce unique constraint on daily_usage_summary", async ({ skip }) => {
+        it("should enforce unique constraint on daily_usage_summary", async ({
+            skip,
+        }) => {
             const testUserId = "00000000-0000-0000-0000-000000000002"
             const testDate = "2024-01-01"
 
@@ -136,7 +147,9 @@ describe.skipIf(!postgresAvailable)("Database Schema Validation", () => {
             )
         })
 
-        it("should have pricing_config table with default values", async ({ skip }) => {
+        it("should have pricing_config table with default values", async ({
+            skip,
+        }) => {
             const result = await pool.query("SELECT * FROM pricing_config")
 
             expect(result.rows.length).toBeGreaterThan(0)
@@ -148,7 +161,9 @@ describe.skipIf(!postgresAvailable)("Database Schema Validation", () => {
             expect(metricTypes).toContain("api_calls")
         })
 
-        it("should enforce type constraint on transactions", async ({ skip }) => {
+        it("should enforce type constraint on transactions", async ({
+            skip,
+        }) => {
             const testUserId = "00000000-0000-0000-0000-000000000003"
 
             // First create a profile and account

@@ -40,6 +40,7 @@ Retrieve a sent email by ID.
 **Argument:** `<id>` — Email UUID
 
 **Output:**
+
 ```json
 {
   "object": "email",
@@ -81,6 +82,7 @@ Send up to 100 emails in a single request.
 | `--batch-validation <mode>` | string | No | `strict` (fail all) or `permissive` (partial success) |
 
 **JSON file format:**
+
 ```json
 [
   {"from":"a@domain.com","to":["b@example.com"],"subject":"Hi","text":"Body"},
@@ -177,6 +179,7 @@ Poll for new inbound emails and display them as they arrive. Long-running comman
 | `--interval <seconds>` | number | 5 | Polling interval in seconds (minimum 2) |
 
 **Behavior:**
+
 - Interactive: one-line-per-email display (timestamp, from, to, subject, id)
 - Piped / `--json`: NDJSON (one JSON object per line)
 - Exits after 5 consecutive API failures

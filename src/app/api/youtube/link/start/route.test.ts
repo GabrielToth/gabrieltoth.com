@@ -93,7 +93,7 @@ vi.mock("ioredis", () => ({
 }))
 
 describe("POST /api/youtube/link/start", () => {
-    let mockRequest: Partial<NextRequest>
+    let mockRequest: any
 
     beforeEach(() => {
         vi.clearAllMocks()

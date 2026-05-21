@@ -103,8 +103,10 @@ describe("Preservation: Existing RLS Policies", () => {
             }
         })
 
-        it("should preserve: users can view their own YouTube channels", async ({ skip }) => {
-    if (!isDbRunning) return skip()
+        it("should preserve: users can view their own YouTube channels", async ({
+            skip,
+        }) => {
+            if (!isDbRunning) return skip()
             const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
             const { error: signInError } =
@@ -131,8 +133,10 @@ describe("Preservation: Existing RLS Policies", () => {
             )
         })
 
-        it("should preserve: users can update their own YouTube channels", async ({ skip }) => {
-    if (!isDbRunning) return skip()
+        it("should preserve: users can update their own YouTube channels", async ({
+            skip,
+        }) => {
+            if (!isDbRunning) return skip()
             const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
             const { error: signInError } =
@@ -157,8 +161,10 @@ describe("Preservation: Existing RLS Policies", () => {
             )
         })
 
-        it("should preserve: users cannot view other users YouTube channels", async ({ skip }) => {
-    if (!isDbRunning) return skip()
+        it("should preserve: users cannot view other users YouTube channels", async ({
+            skip,
+        }) => {
+            if (!isDbRunning) return skip()
             // Create another user
             const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey)
 
@@ -270,8 +276,10 @@ describe("Preservation: Existing RLS Policies", () => {
             }
         })
 
-        it("should preserve: users can view their own scheduled posts", async ({ skip }) => {
-    if (!isDbRunning) return skip()
+        it("should preserve: users can view their own scheduled posts", async ({
+            skip,
+        }) => {
+            if (!isDbRunning) return skip()
             const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
             const { error: signInError } =
@@ -298,8 +306,10 @@ describe("Preservation: Existing RLS Policies", () => {
             )
         })
 
-        it("should preserve: users can update their own scheduled posts", async ({ skip }) => {
-    if (!isDbRunning) return skip()
+        it("should preserve: users can update their own scheduled posts", async ({
+            skip,
+        }) => {
+            if (!isDbRunning) return skip()
             const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
             const { error: signInError } =
@@ -324,8 +334,10 @@ describe("Preservation: Existing RLS Policies", () => {
             )
         })
 
-        it("should preserve: users can delete their own scheduled posts", async ({ skip }) => {
-    if (!isDbRunning) return skip()
+        it("should preserve: users can delete their own scheduled posts", async ({
+            skip,
+        }) => {
+            if (!isDbRunning) return skip()
             // Create a temporary post to delete
             const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey)
 
@@ -420,8 +432,10 @@ describe("Preservation: Existing RLS Policies", () => {
             }
         })
 
-        it("should preserve: users can view their own preferences", async ({ skip }) => {
-    if (!isDbRunning) return skip()
+        it("should preserve: users can view their own preferences", async ({
+            skip,
+        }) => {
+            if (!isDbRunning) return skip()
             const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
             const { error: signInError } =
@@ -447,8 +461,10 @@ describe("Preservation: Existing RLS Policies", () => {
             console.log("✅ PRESERVED: Users can view their own preferences")
         })
 
-        it("should preserve: users can update their own preferences", async ({ skip }) => {
-    if (!isDbRunning) return skip()
+        it("should preserve: users can update their own preferences", async ({
+            skip,
+        }) => {
+            if (!isDbRunning) return skip()
             const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
             const { error: signInError } =
@@ -531,8 +547,10 @@ describe("Preservation: Existing RLS Policies", () => {
             }
         })
 
-        it("should preserve: users can view their own linking activity", async ({ skip }) => {
-    if (!isDbRunning) return skip()
+        it("should preserve: users can view their own linking activity", async ({
+            skip,
+        }) => {
+            if (!isDbRunning) return skip()
             const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
             const { error: signInError } =
@@ -559,8 +577,10 @@ describe("Preservation: Existing RLS Policies", () => {
             )
         })
 
-        it("should preserve: linking activity is immutable (cannot update)", async ({ skip }) => {
-    if (!isDbRunning) return skip()
+        it("should preserve: linking activity is immutable (cannot update)", async ({
+            skip,
+        }) => {
+            if (!isDbRunning) return skip()
             const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
             const { error: signInError } =

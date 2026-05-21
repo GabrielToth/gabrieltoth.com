@@ -122,7 +122,7 @@ describe("Environment Configuration", () => {
             )
         })
 
-        it("should parse DEBUG flag as true when set to \"true\"", () => {
+        it('should parse DEBUG flag as true when set to "true"', () => {
             process.env.DATABASE_URL = "postgres://localhost:5432/test"
             process.env.REDIS_URL = "redis://localhost:6379"
             process.env.DISCORD_WEBHOOK_URL =
@@ -133,7 +133,7 @@ describe("Environment Configuration", () => {
             expect(config.DEBUG).toBe(true)
         })
 
-        it("should parse DEBUG flag as false when set to \"false\"", () => {
+        it('should parse DEBUG flag as false when set to "false"', () => {
             process.env.DATABASE_URL = "postgres://localhost:5432/test"
             process.env.REDIS_URL = "redis://localhost:6379"
             process.env.DISCORD_WEBHOOK_URL =
@@ -191,7 +191,7 @@ describe("Environment Configuration", () => {
             process.env.REDIS_URL = "redis://localhost:6379"
             process.env.DISCORD_WEBHOOK_URL =
                 "https://discord.com/api/webhooks/test"
-            delete process.env.NODE_ENV
+            delete (process.env as any).NODE_ENV
 
             const config = validateEnv()
             expect(config.NODE_ENV).toBe("development")

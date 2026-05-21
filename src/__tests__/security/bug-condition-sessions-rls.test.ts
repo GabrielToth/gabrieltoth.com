@@ -106,9 +106,11 @@ describe("Bug Condition: RLS Blocking Sessions", () => {
         await supabaseAdmin.auth.admin.deleteUser(testUserId)
     })
 
-    it("should allow authenticated user to view their own sessions", async ({ skip }) => {
-    if (!isDbRunning) return skip()
-    if (!isDbRunning) return skip()
+    it("should allow authenticated user to view their own sessions", async ({
+        skip,
+    }) => {
+        if (!isDbRunning) return skip()
+        if (!isDbRunning) return skip()
         // Sign in as the test user
         const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
@@ -129,7 +131,7 @@ describe("Bug Condition: RLS Blocking Sessions", () => {
 
         // Expected behavior: User should be able to view their own sessions
         if (queryError) {
-            fail(`❌ FAIL: RLS is blocking legitimate session access
+            throw new Error(`❌ FAIL: RLS is blocking legitimate session access
         
         Counterexample found:
         - Authenticated user cannot query their own sessions
@@ -147,8 +149,8 @@ describe("Bug Condition: RLS Blocking Sessions", () => {
       `)
         }
 
-        if (!sessions || sessions.length === 0) {
-            fail(`❌ FAIL: RLS is blocking legitimate session access
+        if (!sessions || sessions!.length === 0) {
+            throw new Error(`❌ FAIL: RLS is blocking legitimate session access
         
         Counterexample found:
         - Authenticated user query returned no rows
@@ -171,12 +173,14 @@ describe("Bug Condition: RLS Blocking Sessions", () => {
         expect(foundSession?.user_id).toBe(testUserId)
 
         console.log("✅ PASS: Authenticated user can view their own sessions")
-        console.log(`   Found ${sessions.length} session(s)`)
+        console.log(`   Found ${sessions!.length} session(s)`)
     })
 
-    it("should allow authenticated user to insert their own sessions", async ({ skip }) => {
-    if (!isDbRunning) return skip()
-    if (!isDbRunning) return skip()
+    it("should allow authenticated user to insert their own sessions", async ({
+        skip,
+    }) => {
+        if (!isDbRunning) return skip()
+        if (!isDbRunning) return skip()
         // Create a test user
         const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey)
 
@@ -234,7 +238,7 @@ describe("Bug Condition: RLS Blocking Sessions", () => {
 
         // Expected behavior: User should be able to insert their own sessions
         if (insertError) {
-            fail(`❌ FAIL: RLS is blocking session creation
+            throw new Error(`❌ FAIL: RLS is blocking session creation
         
         Counterexample found:
         - Authenticated user cannot insert their own session
@@ -255,7 +259,7 @@ describe("Bug Condition: RLS Blocking Sessions", () => {
         }
 
         if (!newSession) {
-            fail(`❌ FAIL: Session insert returned no data
+            throw new Error(`❌ FAIL: Session insert returned no data
         
         Counterexample found:
         - Insert appeared to succeed but returned no data
@@ -271,9 +275,11 @@ describe("Bug Condition: RLS Blocking Sessions", () => {
         console.log("✅ PASS: Authenticated user can insert their own sessions")
     })
 
-    it("should allow authenticated user to delete their own sessions", async ({ skip }) => {
-    if (!isDbRunning) return skip()
-    if (!isDbRunning) return skip()
+    it("should allow authenticated user to delete their own sessions", async ({
+        skip,
+    }) => {
+        if (!isDbRunning) return skip()
+        if (!isDbRunning) return skip()
         // Create a test user and session
         const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey)
 
@@ -339,7 +345,7 @@ describe("Bug Condition: RLS Blocking Sessions", () => {
 
         // Expected behavior: User should be able to delete their own sessions
         if (deleteError) {
-            fail(`❌ FAIL: RLS is blocking session deletion
+            throw new Error(`❌ FAIL: RLS is blocking session deletion
         
         Counterexample found:
         - Authenticated user cannot delete their own session
@@ -362,9 +368,11 @@ describe("Bug Condition: RLS Blocking Sessions", () => {
         console.log("✅ PASS: Authenticated user can delete their own sessions")
     })
 
-    it("should verify RLS policies exist for sessions table", async ({ skip }) => {
-    if (!isDbRunning) return skip()
-    if (!isDbRunning) return skip()
+    it("should verify RLS policies exist for sessions table", async ({
+        skip,
+    }) => {
+        if (!isDbRunning) return skip()
+        if (!isDbRunning) return skip()
         // Query to check if RLS is enabled and policies exist
         const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey)
 
@@ -403,7 +411,7 @@ describe("Bug Condition: RLS Blocking Sessions", () => {
             )
 
             if (!policies || policies.length === 0) {
-                fail(`❌ FAIL: RLS is enabled but no policies are defined
+                throw new Error(`❌ FAIL: RLS is enabled but no policies are defined
           
           Counterexample found:
           - sessions table has RLS enabled

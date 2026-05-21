@@ -26,13 +26,12 @@ describe("lib/firewall", () => {
 
     it("basicFirewall allows in dev and checks origin in prod", () => {
         const originalNodeEnv = process.env.NODE_ENV
-        process.env.NODE_ENV = "development"
+        ;(process.env as any).NODE_ENV = "development"
         expect(
             basicFirewall(makeReq({ "user-agent": "ua" }), ["https://ok.com"])
                 .ok
         ).toBe(true)
-
-        process.env.NODE_ENV = "production"
+        ;(process.env as any).NODE_ENV = "production"
         // Localhost referer allowed
         expect(
             basicFirewall(
@@ -50,7 +49,6 @@ describe("lib/firewall", () => {
                 ["https://ok.com"]
             ).ok
         ).toBe(false)
-
-        process.env.NODE_ENV = originalNodeEnv
+        ;(process.env as any).NODE_ENV = originalNodeEnv
     })
 })

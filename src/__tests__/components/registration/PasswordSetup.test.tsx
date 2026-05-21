@@ -843,7 +843,7 @@ describe("PasswordSetup Component", () => {
 
             await waitFor(() => {
                 const confirmInput = container.querySelector(
-                    "input[placeholder=\"Confirm your password\"]"
+                    'input[placeholder="Confirm your password"]'
                 )
                 expect(confirmInput).toHaveClass("border-red-500")
             })
@@ -862,7 +862,7 @@ describe("PasswordSetup Component", () => {
 
             await waitFor(() => {
                 const confirmInput = container.querySelector(
-                    "input[placeholder=\"Confirm your password\"]"
+                    'input[placeholder="Confirm your password"]'
                 )
                 expect(confirmInput).toHaveClass("border-green-500")
             })
@@ -880,7 +880,7 @@ describe("PasswordSetup Component", () => {
             )
 
             const confirmInput = container.querySelector(
-                "input[placeholder=\"Confirm your password\"]"
+                'input[placeholder="Confirm your password"]'
             )
             expect(confirmInput).toHaveClass("border-gray-300")
         })
@@ -970,7 +970,7 @@ describe("PasswordSetup Component", () => {
                 "Enter a strong password"
             )
 
-            await user.type(passwordInput, "TestPass123!", { delay: 10 })
+            await user.type(passwordInput, "TestPass123!", { delay: 10 } as any)
 
             expect(onChange).toHaveBeenCalledTimes("TestPass123!".length)
         })

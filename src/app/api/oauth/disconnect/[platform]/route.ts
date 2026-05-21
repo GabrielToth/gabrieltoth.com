@@ -54,8 +54,6 @@ export async function POST(
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
         }
 
-        
-
         // Get the token to revoke
         const tokenStore = getTokenStore()
         const token = await tokenStore.getToken(userId, platform)

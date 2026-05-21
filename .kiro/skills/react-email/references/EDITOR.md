@@ -316,6 +316,7 @@ function ExportPanel() {
 The `preview` parameter is optional — when provided, it sets the inbox preview text in the exported HTML.
 
 The export pipeline:
+
 1. Reads the editor's JSON document
 2. Traverses each node and mark
 3. Calls `renderToReactEmail()` on each `EmailNode` and `EmailMark`

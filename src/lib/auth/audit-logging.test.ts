@@ -284,8 +284,8 @@ describe("Audit Logging", () => {
                 "192.168.1.1"
             )
 
-            const callArgs = mockQuery.mock.calls[0]
-            const detailsJson = callArgs[1][4]
+            const callArgs = mockQuery.mock.calls[0]!
+            const detailsJson = callArgs[1]![4] as string
 
             expect(detailsJson).toContain("success")
             expect(detailsJson).toContain("Account completion successful")
@@ -344,8 +344,8 @@ describe("Audit Logging", () => {
                 "Email already registered"
             )
 
-            const callArgs = mockQuery.mock.calls[0]
-            const detailsJson = callArgs[1][4]
+            const callArgs = mockQuery.mock.calls[0]!
+            const detailsJson = callArgs[1]![4] as string
 
             expect(detailsJson).toContain("failed")
             expect(detailsJson).toContain("Email already registered")
@@ -364,8 +364,8 @@ describe("Audit Logging", () => {
                 "Validation error"
             )
 
-            const callArgs = mockQuery.mock.calls[0]
-            const detailsJson = callArgs[1][4]
+            const callArgs = mockQuery.mock.calls[0]!
+            const detailsJson = callArgs[1]![4] as string
 
             expect(detailsJson).toContain("timestamp")
         })

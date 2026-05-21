@@ -15,6 +15,7 @@
 test_results*.txt
 test_run_output*.txt
 vitest-results.json
+test-results.json
 .vitest-last.txt
 .vitest-summary.txt
 .vitest-results.json

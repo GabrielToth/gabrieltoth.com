@@ -30,11 +30,32 @@ jobs:
             - name: Lint check
               run: npm run lint
 
+            - name: Markdown Lint
+              uses: DavidAnson/markdownlint-cli2-action@main
+              with:
+                  globs: |
+                      **/*.md
+                      #node_modules
+                      #test-results
+                      #coverage
+                      #dist
+                      #out
+                      #build
+                      #.git
+                      #playwright-report
+                      #storybook-static
+                      #.agents
+                      #.gemini
+                      #.next
+
             - name: Format check
               run: npm run format:check
 
             - name: Spell check
               run: npm run spell-check
+
+            - name: Test Suite
+              run: npm run test:all
 
             - name: Build
               run: npm run build

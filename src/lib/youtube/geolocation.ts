@@ -73,7 +73,8 @@ export class GeolocationService {
         if (vercelLat && !isNaN(Number(vercelLat))) latitude = Number(vercelLat)
 
         const vercelLon = getHeader("x-vercel-ip-longitude")
-        if (vercelLon && !isNaN(Number(vercelLon))) longitude = Number(vercelLon)
+        if (vercelLon && !isNaN(Number(vercelLon)))
+            longitude = Number(vercelLon)
 
         const vercelTz = getHeader("x-vercel-ip-timezone")
         if (vercelTz) timezone = decodeURIComponent(vercelTz)

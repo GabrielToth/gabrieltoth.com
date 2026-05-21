@@ -1,11 +1,13 @@
-
 import { createClient } from "@supabase/supabase-js"
 
 // Added by automated fix script to prevent CI crashes when DB is down
 let isDbRunning = true
 beforeAll(async () => {
     try {
-        const client = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL || "http://127.0.0.1:54321", process.env.SUPABASE_SERVICE_ROLE_KEY || "test")
+        const client = createClient(
+            process.env.NEXT_PUBLIC_SUPABASE_URL || "http://127.0.0.1:54321",
+            process.env.SUPABASE_SERVICE_ROLE_KEY || "test"
+        )
         const { error } = await client.from("users").select("id").limit(1)
         if (error && error.message && error.message.includes("fetch")) {
             isDbRunning = false
@@ -55,15 +57,17 @@ describe("YouTube Channel Linking Database Schema", () => {
 
             // Delete the user
             if (testUserId) {
-            await supabase.auth.admin.deleteUser(testUserId)
-        }
+                await supabase.auth.admin.deleteUser(testUserId)
+            }
         }
     })
 
     describe("youtube_channels Table", () => {
-        it("should create a youtube_channels record with all required fields", async ({ skip }) => {
-    if (!isDbRunning) return skip()
-    if (!isDbRunning) return skip()
+        it("should create a youtube_channels record with all required fields", async ({
+            skip,
+        }) => {
+            if (!isDbRunning) return skip()
+            if (!isDbRunning) return skip()
             const { data, error } = await supabase
                 .from("youtube_channels")
                 .insert({
@@ -93,9 +97,11 @@ describe("YouTube Channel Linking Database Schema", () => {
             expect(data?.updated_at).toBeDefined()
         })
 
-        it("should enforce unique constraint on youtube_channel_id", async ({ skip }) => {
-    if (!isDbRunning) return skip()
-    if (!isDbRunning) return skip()
+        it("should enforce unique constraint on youtube_channel_id", async ({
+            skip,
+        }) => {
+            if (!isDbRunning) return skip()
+            if (!isDbRunning) return skip()
             const channelId = `UCunique${Date.now()}`
 
             // Insert first channel
@@ -134,9 +140,11 @@ describe("YouTube Channel Linking Database Schema", () => {
                 .eq("youtube_channel_id", channelId)
         })
 
-        it("should enforce unique constraint on user_id + youtube_channel_id combination", async ({ skip }) => {
-    if (!isDbRunning) return skip()
-    if (!isDbRunning) return skip()
+        it("should enforce unique constraint on user_id + youtube_channel_id combination", async ({
+            skip,
+        }) => {
+            if (!isDbRunning) return skip()
+            if (!isDbRunning) return skip()
             const channelId = `UCcombo${Date.now()}`
 
             // Insert first channel
@@ -175,9 +183,11 @@ describe("YouTube Channel Linking Database Schema", () => {
                 .eq("youtube_channel_id", channelId)
         })
 
-        it("should enforce foreign key constraint on user_id", async ({ skip }) => {
-    if (!isDbRunning) return skip()
-    if (!isDbRunning) return skip()
+        it("should enforce foreign key constraint on user_id", async ({
+            skip,
+        }) => {
+            if (!isDbRunning) return skip()
+            if (!isDbRunning) return skip()
             const { error } = await supabase
                 .from("youtube_channels")
                 .insert({
@@ -193,9 +203,11 @@ describe("YouTube Channel Linking Database Schema", () => {
             expect(error?.code).toBe("23503") // Foreign key violation
         })
 
-        it("should cascade delete youtube_channels when user is deleted", async ({ skip }) => {
-    if (!isDbRunning) return skip()
-    if (!isDbRunning) return skip()
+        it("should cascade delete youtube_channels when user is deleted", async ({
+            skip,
+        }) => {
+            if (!isDbRunning) return skip()
+            if (!isDbRunning) return skip()
             // Create a temporary user
             const { data: userData, error: userError } =
                 await supabase.auth.admin.createUser({
@@ -236,9 +248,11 @@ describe("YouTube Channel Linking Database Schema", () => {
             expect(channels).toHaveLength(0)
         })
 
-        it("should have proper indexes for common queries", async ({ skip }) => {
-    if (!isDbRunning) return skip()
-    if (!isDbRunning) return skip()
+        it("should have proper indexes for common queries", async ({
+            skip,
+        }) => {
+            if (!isDbRunning) return skip()
+            if (!isDbRunning) return skip()
             // This test verifies that indexes exist by checking query performance
             // In a real scenario, you'd use EXPLAIN ANALYZE to verify index usage
             const { data, error } = await supabase
@@ -281,9 +295,11 @@ describe("YouTube Channel Linking Database Schema", () => {
                 .eq("youtube_channel_id", channelId)
         })
 
-        it("should create a linking_activity record with all fields", async ({ skip }) => {
-    if (!isDbRunning) return skip()
-    if (!isDbRunning) return skip()
+        it("should create a linking_activity record with all fields", async ({
+            skip,
+        }) => {
+            if (!isDbRunning) return skip()
+            if (!isDbRunning) return skip()
             const { data, error } = await supabase
                 .from("linking_activity")
                 .insert({
@@ -311,9 +327,11 @@ describe("YouTube Channel Linking Database Schema", () => {
             expect(data?.status).toBe("completed")
         })
 
-        it("should enforce foreign key constraint on youtube_channel_id", async ({ skip }) => {
-    if (!isDbRunning) return skip()
-    if (!isDbRunning) return skip()
+        it("should enforce foreign key constraint on youtube_channel_id", async ({
+            skip,
+        }) => {
+            if (!isDbRunning) return skip()
+            if (!isDbRunning) return skip()
             const { error } = await supabase
                 .from("linking_activity")
                 .insert({
@@ -332,8 +350,8 @@ describe("YouTube Channel Linking Database Schema", () => {
         })
 
         it("should support various activity types", async ({ skip }) => {
-    if (!isDbRunning) return skip()
-    if (!isDbRunning) return skip()
+            if (!isDbRunning) return skip()
+            if (!isDbRunning) return skip()
             const activityTypes = [
                 "link",
                 "unlink",
@@ -360,8 +378,8 @@ describe("YouTube Channel Linking Database Schema", () => {
         })
 
         it("should support various status values", async ({ skip }) => {
-    if (!isDbRunning) return skip()
-    if (!isDbRunning) return skip()
+            if (!isDbRunning) return skip()
+            if (!isDbRunning) return skip()
             const statuses = ["pending", "completed", "failed", "blocked"]
 
             for (const status of statuses) {
@@ -383,8 +401,8 @@ describe("YouTube Channel Linking Database Schema", () => {
         })
 
         it("should mark suspicious activities correctly", async ({ skip }) => {
-    if (!isDbRunning) return skip()
-    if (!isDbRunning) return skip()
+            if (!isDbRunning) return skip()
+            if (!isDbRunning) return skip()
             const { data, error } = await supabase
                 .from("linking_activity")
                 .insert({
@@ -438,8 +456,8 @@ describe("YouTube Channel Linking Database Schema", () => {
         })
 
         it("should create a recovery_token record", async ({ skip }) => {
-    if (!isDbRunning) return skip()
-    if (!isDbRunning) return skip()
+            if (!isDbRunning) return skip()
+            if (!isDbRunning) return skip()
             const { data, error } = await supabase
                 .from("recovery_tokens")
                 .insert({
@@ -457,9 +475,11 @@ describe("YouTube Channel Linking Database Schema", () => {
             expect(data?.status).toBe("pending")
         })
 
-        it("should enforce unique constraint on token_hash", async ({ skip }) => {
-    if (!isDbRunning) return skip()
-    if (!isDbRunning) return skip()
+        it("should enforce unique constraint on token_hash", async ({
+            skip,
+        }) => {
+            if (!isDbRunning) return skip()
+            if (!isDbRunning) return skip()
             const tokenHash = `tok_unique${Date.now()}`
 
             // Insert first token
@@ -500,9 +520,11 @@ describe("YouTube Channel Linking Database Schema", () => {
                 .eq("token_hash", tokenHash)
         })
 
-        it("should support various recovery token statuses", async ({ skip }) => {
-    if (!isDbRunning) return skip()
-    if (!isDbRunning) return skip()
+        it("should support various recovery token statuses", async ({
+            skip,
+        }) => {
+            if (!isDbRunning) return skip()
+            if (!isDbRunning) return skip()
             const statuses = ["pending", "used", "expired", "revoked"]
 
             for (const status of statuses) {
@@ -525,8 +547,8 @@ describe("YouTube Channel Linking Database Schema", () => {
         })
 
         it("should allow NULL values for optional fields", async ({ skip }) => {
-    if (!isDbRunning) return skip()
-    if (!isDbRunning) return skip()
+            if (!isDbRunning) return skip()
+            if (!isDbRunning) return skip()
             const { data, error } = await supabase
                 .from("recovery_tokens")
                 .insert({
@@ -578,8 +600,8 @@ describe("YouTube Channel Linking Database Schema", () => {
         })
 
         it("should create an audit_log record", async ({ skip }) => {
-    if (!isDbRunning) return skip()
-    if (!isDbRunning) return skip()
+            if (!isDbRunning) return skip()
+            if (!isDbRunning) return skip()
             const { data, error } = await supabase
                 .from("audit_logs")
                 .insert({
@@ -602,8 +624,8 @@ describe("YouTube Channel Linking Database Schema", () => {
         })
 
         it("should support various audit actions", async ({ skip }) => {
-    if (!isDbRunning) return skip()
-    if (!isDbRunning) return skip()
+            if (!isDbRunning) return skip()
+            if (!isDbRunning) return skip()
             const actions = [
                 "channel_linked",
                 "channel_unlinked",
@@ -630,8 +652,8 @@ describe("YouTube Channel Linking Database Schema", () => {
         })
 
         it("should allow NULL values for optional fields", async ({ skip }) => {
-    if (!isDbRunning) return skip()
-    if (!isDbRunning) return skip()
+            if (!isDbRunning) return skip()
+            if (!isDbRunning) return skip()
             const { data, error } = await supabase
                 .from("audit_logs")
                 .insert({
@@ -654,8 +676,8 @@ describe("YouTube Channel Linking Database Schema", () => {
         })
 
         it("should store JSONB details correctly", async ({ skip }) => {
-    if (!isDbRunning) return skip()
-    if (!isDbRunning) return skip()
+            if (!isDbRunning) return skip()
+            if (!isDbRunning) return skip()
             const details = {
                 reason: "IP changed",
                 old_ip: "192.168.1.1",
@@ -708,9 +730,11 @@ describe("YouTube Channel Linking Database Schema", () => {
                 .eq("youtube_channel_id", channelId)
         })
 
-        it("should create an unlink_revocation_window record", async ({ skip }) => {
-    if (!isDbRunning) return skip()
-    if (!isDbRunning) return skip()
+        it("should create an unlink_revocation_window record", async ({
+            skip,
+        }) => {
+            if (!isDbRunning) return skip()
+            if (!isDbRunning) return skip()
             const now = new Date()
             const expiresAt = new Date(now.getTime() + 86400000) // 24 hours
 
@@ -731,9 +755,11 @@ describe("YouTube Channel Linking Database Schema", () => {
             expect(data?.status).toBe("active")
         })
 
-        it("should support various revocation window statuses", async ({ skip }) => {
-    if (!isDbRunning) return skip()
-    if (!isDbRunning) return skip()
+        it("should support various revocation window statuses", async ({
+            skip,
+        }) => {
+            if (!isDbRunning) return skip()
+            if (!isDbRunning) return skip()
             const statuses = ["active", "revoked", "expired"]
 
             for (const status of statuses) {
@@ -756,9 +782,11 @@ describe("YouTube Channel Linking Database Schema", () => {
             }
         })
 
-        it("should allow NULL revoked_at for active windows", async ({ skip }) => {
-    if (!isDbRunning) return skip()
-    if (!isDbRunning) return skip()
+        it("should allow NULL revoked_at for active windows", async ({
+            skip,
+        }) => {
+            if (!isDbRunning) return skip()
+            if (!isDbRunning) return skip()
             const now = new Date()
             const expiresAt = new Date(now.getTime() + 86400000)
 
@@ -779,9 +807,11 @@ describe("YouTube Channel Linking Database Schema", () => {
             expect(data?.revoked_at).toBeNull()
         })
 
-        it("should enforce foreign key constraint on youtube_channel_id", async ({ skip }) => {
-    if (!isDbRunning) return skip()
-    if (!isDbRunning) return skip()
+        it("should enforce foreign key constraint on youtube_channel_id", async ({
+            skip,
+        }) => {
+            if (!isDbRunning) return skip()
+            if (!isDbRunning) return skip()
             const now = new Date()
             const expiresAt = new Date(now.getTime() + 86400000)
 
@@ -803,9 +833,11 @@ describe("YouTube Channel Linking Database Schema", () => {
     })
 
     describe("Data Retention and Archival", () => {
-        it("should have archive tables for data retention", async ({ skip }) => {
-    if (!isDbRunning) return skip()
-    if (!isDbRunning) return skip()
+        it("should have archive tables for data retention", async ({
+            skip,
+        }) => {
+            if (!isDbRunning) return skip()
+            if (!isDbRunning) return skip()
             // Check if archive tables exist by attempting to query them
             const { data: activityArchive, error: activityError } =
                 await supabase
@@ -826,8 +858,8 @@ describe("YouTube Channel Linking Database Schema", () => {
 
     describe("RLS Policies", () => {
         it("should enforce RLS on youtube_channels table", async ({ skip }) => {
-    if (!isDbRunning) return skip()
-    if (!isDbRunning) return skip()
+            if (!isDbRunning) return skip()
+            if (!isDbRunning) return skip()
             // Create a second test user
             const { data: userData, error: userError } =
                 await supabase.auth.admin.createUser({

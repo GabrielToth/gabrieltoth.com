@@ -43,8 +43,8 @@ describe("editors metadata coverage", () => {
             params: Promise.resolve({ locale: "en" as any }),
         } as any)
         expect(md.title).toBe("t")
-        expect(md.openGraph?.images?.[0]?.url).toContain("https://x/")
-        expect(md.twitter?.card).toBe("summary_large_image")
+        expect((md.openGraph?.images as any)?.[0]?.url).toContain("https://x/")
+        expect((md.twitter as any)?.card).toBe("summary_large_image")
         expect(md.alternates?.languages?.en).toContain("/en/editors/")
     })
 })

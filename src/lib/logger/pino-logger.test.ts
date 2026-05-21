@@ -53,7 +53,7 @@ describe("Pino Logger Properties", () => {
         it("should output valid JSON in production environment", () => {
             // Note: This test verifies the logger configuration
             // In production, Pino outputs JSON by default when no transport is specified
-            process.env.NODE_ENV = "production"
+            ;(process.env as any).NODE_ENV = "production"
 
             // Create a test logger with JSON output
             const testLogger = pino({
@@ -104,8 +104,8 @@ describe("Pino Logger Properties", () => {
         it("should suppress debug logs when DEBUG is false", () => {
             fc.assert(
                 fc.property(fc.string(), message => {
-                    process.env.DEBUG = "false"
-                    process.env.NODE_ENV = "production"
+                    process.env.DEBUG = "false"(process.env as any).NODE_ENV =
+                        "production"
 
                     const logger = createLogger("test")
 

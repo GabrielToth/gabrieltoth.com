@@ -53,7 +53,7 @@ describe("CAPTCHA Verifier", () => {
                     hostname: "example.com",
                     score: 0.9,
                 }),
-            } as Response)
+            } as unknown as Response)
 
             const result = await verifyCAPTCHA("valid-token")
 
@@ -71,7 +71,7 @@ describe("CAPTCHA Verifier", () => {
                     error_codes: ["invalid-input-response"],
                     hostname: "example.com",
                 }),
-            } as Response)
+            } as unknown as Response)
 
             const result = await verifyCAPTCHA("invalid-token")
 
@@ -93,7 +93,7 @@ describe("CAPTCHA Verifier", () => {
                     challenge_ts: challengeTs,
                     hostname: "example.com",
                 }),
-            } as Response)
+            } as unknown as Response)
 
             const result = await verifyCAPTCHA("expired-token")
 
@@ -137,7 +137,7 @@ describe("CAPTCHA Verifier", () => {
                 ok: false,
                 status: 500,
                 statusText: "Internal Server Error",
-            } as Response)
+            } as unknown as Response)
 
             await expect(verifyCAPTCHA("token")).rejects.toThrow(
                 "Invalid response from CAPTCHA service"
@@ -150,7 +150,7 @@ describe("CAPTCHA Verifier", () => {
                 json: async () => {
                     throw new Error("Invalid JSON")
                 },
-            } as Response)
+            } as unknown as Response)
 
             await expect(verifyCAPTCHA("token")).rejects.toThrow(
                 "Invalid response from CAPTCHA service"
@@ -172,7 +172,7 @@ describe("CAPTCHA Verifier", () => {
                     success: true,
                     challenge_ts: new Date().toISOString(),
                 }),
-            } as Response)
+            } as unknown as Response)
 
             await verifyCAPTCHA("test-token")
 
@@ -205,7 +205,7 @@ describe("CAPTCHA Verifier", () => {
                     challenge_ts: challengeTs,
                     hostname: "example.com",
                 }),
-            } as Response)
+            } as unknown as Response)
 
             const result = await verifyCAPTCHA("boundary-token")
 
@@ -227,7 +227,7 @@ describe("CAPTCHA Verifier", () => {
                     challenge_ts: challengeTs,
                     hostname: "example.com",
                 }),
-            } as Response)
+            } as unknown as Response)
 
             const result = await verifyCAPTCHA("fresh-token")
 
@@ -243,7 +243,7 @@ describe("CAPTCHA Verifier", () => {
                     success: true,
                     challenge_ts: new Date().toISOString(),
                 }),
-            } as Response)
+            } as unknown as Response)
 
             const result = await verifyCAPTCHAWithFallback("valid-token")
 
@@ -258,7 +258,7 @@ describe("CAPTCHA Verifier", () => {
                     success: false,
                     error_codes: ["invalid-input-response"],
                 }),
-            } as Response)
+            } as unknown as Response)
 
             const result = await verifyCAPTCHAWithFallback("invalid-token")
 
@@ -284,7 +284,7 @@ describe("CAPTCHA Verifier", () => {
                 ok: false,
                 status: 500,
                 statusText: "Internal Server Error",
-            } as Response)
+            } as unknown as Response)
 
             const result = await verifyCAPTCHAWithFallback("token")
 

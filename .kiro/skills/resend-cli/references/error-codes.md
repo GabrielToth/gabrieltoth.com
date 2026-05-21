@@ -41,16 +41,21 @@ All errors exit with code `1` and output JSON to **stderr**:
 ## Troubleshooting
 
 ### "No API key found" in CI
+
 Ensure `RESEND_API_KEY` is set in the environment. The CLI does not prompt in non-TTY mode.
 
 ### "Missing required flags" errors
+
 In non-interactive mode (CI, piped, agent), ALL required flags must be provided. The CLI will not prompt.
 
 ### Deletion commands fail without `--yes`
+
 All `delete`/`rm` subcommands require `--yes` in non-interactive mode to prevent accidental deletion.
 
 ### API rate limits
+
 The Resend API has rate limits. If you hit them, the error message will indicate rate limiting. Add delays between batch operations.
 
 ### Scheduled email errors
+
 `--scheduled-at` must be a valid ISO 8601 datetime. The scheduled time must be in the future.

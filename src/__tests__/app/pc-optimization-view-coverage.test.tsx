@@ -131,7 +131,7 @@ describe("pc-optimization view coverage", () => {
         expect(container.textContent).toContain("R$ 220")
 
         // WhatsApp links (hero + CTA)
-        const links = container.querySelectorAll("a[href=\"https://wa.me/TEST\"]")
+        const links = container.querySelectorAll('a[href="https://wa.me/TEST"]')
         expect(links.length).toBeGreaterThanOrEqual(2)
 
         // Testimonials rendered

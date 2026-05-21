@@ -269,7 +269,9 @@ describe("Account Completion Flow - End-to-End Integration", () => {
             })
 
             vi.mocked(getUserByEmail).mockResolvedValue(null)
-            vi.mocked(hashPassword).mockResolvedValue("hashed-preserve" as never)
+            vi.mocked(hashPassword).mockResolvedValue(
+                "hashed-preserve" as never
+            )
 
             const updatedUser = {
                 id: "user-preserve",

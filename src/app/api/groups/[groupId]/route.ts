@@ -108,11 +108,7 @@ export async function PUT(
         }
 
         const groupManager = getNetworkGroupManager()
-        const group = await groupManager.renameGroup(
-            userId,
-            groupId,
-            body.name
-        )
+        const group = await groupManager.renameGroup(userId, groupId, body.name)
 
         logger.info("Group updated successfully", {
             userId,

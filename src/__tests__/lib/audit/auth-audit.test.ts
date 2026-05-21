@@ -112,8 +112,8 @@ describe("Authentication Audit Logging Utilities", () => {
             })
             const afterCall = new Date()
 
-            const callArgs = mockQuery.mock.calls[0]
-            const timestamp = callArgs[1][5] as Date
+            const callArgs = mockQuery.mock.calls[0]!
+            const timestamp = callArgs[1]![5] as Date
 
             expect(timestamp.getTime()).toBeGreaterThanOrEqual(
                 beforeCall.getTime()

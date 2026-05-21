@@ -216,7 +216,9 @@ describe("api whatsapp webhook coverage", () => {
 
     it("POST tracking code not found and found branches", async () => {
         const supa = await import("@/lib/orders-store")
-        ;(supa.ordersDb.getOrderByTrackingCode as any).mockResolvedValueOnce(null)
+        ;(supa.ordersDb.getOrderByTrackingCode as any).mockResolvedValueOnce(
+            null
+        )
         const { POST } = await import("@/app/api/whatsapp/webhook/route")
         // Not found
         let req = new Request("http://localhost", {

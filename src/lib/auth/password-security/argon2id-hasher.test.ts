@@ -26,7 +26,7 @@ describe("Argon2id Password Hashing", () => {
         process.env.ARGON2_PARALLELISM = "2"
         process.env.PEPPER_SECRET =
             "dev-pepper-test-very-long-string-32chars-minimum-required!"
-        process.env.NODE_ENV = "development"
+        ;(process.env as any).NODE_ENV = "development"
 
         // Reset singleton instance
         ;(ConfigurationManager as any).instance = null
@@ -87,7 +87,9 @@ describe("Argon2id Password Hashing", () => {
         })
 
         it("should log performance warning if hashing takes too long", async () => {
-            const warnSpy = vi.spyOn(console, "warn").mockImplementation()
+            const warnSpy = vi
+                .spyOn(console, "warn")
+                .mockImplementation(() => {})
 
             // Create a slow password by using high parameters
             process.env.ARGON2_MEMORY_COST = "256"

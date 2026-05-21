@@ -7,6 +7,6 @@ describe("[locale]/layout-metadata generateMetadata", () => {
             params: Promise.resolve({ locale: "en" }),
         } as any)
         expect(metadata).toBeTruthy()
-        expect(metadata.openGraph?.type).toBe("website")
+        expect((metadata.openGraph as any)?.type).toBe("website")
     })
 })

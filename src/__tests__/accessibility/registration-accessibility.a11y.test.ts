@@ -315,11 +315,11 @@ describe("Accessibility: Registration Flow", () => {
 
         it("should use input elements with proper types", () => {
             // Verify input types
-            const emailInput = document.querySelector("input[type=\"email\"]")
+            const emailInput = document.querySelector('input[type="email"]')
             const passwordInput = document.querySelector(
-                "input[type=\"password\"]"
+                'input[type="password"]'
             )
-            const phoneInput = document.querySelector("input[type=\"tel\"]")
+            const phoneInput = document.querySelector('input[type="tel"]')
 
             expect(emailInput).toBeTruthy()
             expect(passwordInput).toBeTruthy()

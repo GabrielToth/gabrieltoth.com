@@ -20,25 +20,25 @@ import type { RateLimitingConfig } from "./types"
 vi.mock("@supabase/supabase-js", () => ({
     createClient: vi.fn(() => ({
         from: vi.fn((table: string) => ({
-            select: vi.fn(function () {
+            select: vi.fn(function (this: any) {
                 return this
             }),
-            insert: vi.fn(function () {
+            insert: vi.fn(function (this: any) {
                 return this
             }),
-            update: vi.fn(function () {
+            update: vi.fn(function (this: any) {
                 return this
             }),
-            delete: vi.fn(function () {
+            delete: vi.fn(function (this: any) {
                 return this
             }),
-            eq: vi.fn(function () {
+            eq: vi.fn(function (this: any) {
                 return this
             }),
-            neq: vi.fn(function () {
+            neq: vi.fn(function (this: any) {
                 return this
             }),
-            single: vi.fn(function () {
+            single: vi.fn(function (this: any) {
                 return Promise.resolve({ data: null, error: null })
             }),
         })),

@@ -462,30 +462,39 @@ export async function getAuthFailureStatistics(
         const cutoffTime = new Date(Date.now() - hoursBack * 60 * 60 * 1000)
 
         const totalFailures = Number(
-            (await db.queryOne<{ count: string }>(
-                `SELECT COUNT(*) as count FROM audit_logs
+            (
+                await db.queryOne<{ count: string }>(
+                    `SELECT COUNT(*) as count FROM audit_logs
              WHERE event_type = 'auth_failure' AND timestamp > $1`,
-                [cutoffTime]
-            ))?.count || 0
+                    [cutoffTime]
+                )
+            )?.count || 0
         )
 
         const uniqueEmails = Number(
-            (await db.queryOne<{ count: string }>(
-                `SELECT COUNT(DISTINCT email) as count FROM audit_logs
+            (
+                await db.queryOne<{ count: string }>(
+                    `SELECT COUNT(DISTINCT email) as count FROM audit_logs
              WHERE event_type = 'auth_failure' AND timestamp > $1`,
-                [cutoffTime]
-            ))?.count || 0
+                    [cutoffTime]
+                )
+            )?.count || 0
         )
 
         const uniqueIPs = Number(
-            (await db.queryOne<{ count: string }>(
-                `SELECT COUNT(DISTINCT ip_address) as count FROM audit_logs
+            (
+                await db.queryOne<{ count: string }>(
+                    `SELECT COUNT(DISTINCT ip_address) as count FROM audit_logs
              WHERE event_type = 'auth_failure' AND timestamp > $1`,
-                [cutoffTime]
-            ))?.count || 0
+                    [cutoffTime]
+                )
+            )?.count || 0
         )
 
-        const typeRows = await db.queryMany<{ error_code: string; count: string }>(
+        const typeRows = await db.queryMany<{
+            error_code: string
+            count: string
+        }>(
             `SELECT error_code, COUNT(*) as count FROM audit_logs
              WHERE event_type = 'auth_failure' AND timestamp > $1
              GROUP BY error_code`,
@@ -496,7 +505,10 @@ export async function getAuthFailureStatistics(
             failuresByType[row.error_code] = Number(row.count)
         })
 
-        const topFailingEmails = await db.queryMany<{ email: string; count: string }>(
+        const topFailingEmails = await db.queryMany<{
+            email: string
+            count: string
+        }>(
             `SELECT email, COUNT(*) as count FROM audit_logs
              WHERE event_type = 'auth_failure' AND timestamp > $1
              GROUP BY email
@@ -505,7 +517,10 @@ export async function getAuthFailureStatistics(
             [cutoffTime]
         )
 
-        const topFailingIPs = await db.queryMany<{ ip_address: string; count: string }>(
+        const topFailingIPs = await db.queryMany<{
+            ip_address: string
+            count: string
+        }>(
             `SELECT ip_address, COUNT(*) as count FROM audit_logs
              WHERE event_type = 'auth_failure' AND timestamp > $1
              GROUP BY ip_address

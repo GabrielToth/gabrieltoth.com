@@ -44,8 +44,10 @@ describe("Bug Condition: SECURITY DEFINER Function Exposure", () => {
         process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0"
 
-    it("should verify rls_auto_enable() function does not exist or is not accessible to anon role", async ({ skip }) => {
-    if (!isDbRunning) return skip()
+    it("should verify rls_auto_enable() function does not exist or is not accessible to anon role", async ({
+        skip,
+    }) => {
+        if (!isDbRunning) return skip()
         // Create Supabase client with anon key (unauthenticated user)
         const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
@@ -66,7 +68,7 @@ describe("Bug Condition: SECURITY DEFINER Function Exposure", () => {
             console.log("   Error:", queryError.message)
         } else {
             // Bad! Function exists and is accessible - this is the security vulnerability
-            fail(`❌ FAIL: rls_auto_enable() function is accessible to anon role. This is a security vulnerability!
+            throw new Error(`❌ FAIL: rls_auto_enable() function is accessible to anon role. This is a security vulnerability!
         
         Counterexample found:
         - Function exists and is callable by unauthenticated users
@@ -84,8 +86,10 @@ describe("Bug Condition: SECURITY DEFINER Function Exposure", () => {
         }
     })
 
-    it("should verify rls_auto_enable() function is not accessible via REST API endpoint", async ({ skip }) => {
-    if (!isDbRunning) return skip()
+    it("should verify rls_auto_enable() function is not accessible via REST API endpoint", async ({
+        skip,
+    }) => {
+        if (!isDbRunning) return skip()
         // Attempt to call the function via REST API as unauthenticated user
         const response = await fetch(
             `${supabaseUrl}/rest/v1/rpc/rls_auto_enable`,
@@ -105,7 +109,7 @@ describe("Bug Condition: SECURITY DEFINER Function Exposure", () => {
 
         if (response.status === 200) {
             const data = await response.json()
-            fail(`❌ FAIL: rls_auto_enable() function is accessible via REST API endpoint
+            throw new Error(`❌ FAIL: rls_auto_enable() function is accessible via REST API endpoint
         
         Counterexample found:
         - POST /rest/v1/rpc/rls_auto_enable returned 200 OK
@@ -126,8 +130,10 @@ describe("Bug Condition: SECURITY DEFINER Function Exposure", () => {
         )
     })
 
-    it("should document the bug condition if function exists", async ({ skip }) => {
-    if (!isDbRunning) return skip()
+    it("should document the bug condition if function exists", async ({
+        skip,
+    }) => {
+        if (!isDbRunning) return skip()
         // This test documents the bug condition for reference
         const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
@@ -166,7 +172,7 @@ describe("Bug Condition: SECURITY DEFINER Function Exposure", () => {
             )
 
             // Fail the test to indicate bug exists
-            fail(
+            expect.fail(
                 "Bug condition exists: rls_auto_enable() function is present and accessible"
             )
         }

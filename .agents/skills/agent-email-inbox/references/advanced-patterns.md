@@ -66,15 +66,18 @@ This is critical for Level 3+ security. Even emails from trusted senders can con
 
 **Cause:** Resend SDK version too old — `resend.webhooks.verify()` was added in recent versions.
 **Fix:** Update to the latest SDK:
+
 ```bash
 npm install resend@latest
 ```
+
 Or use the Svix fallback (see [webhook-setup.md](webhook-setup.md)).
 
 ### "Cannot read properties of undefined (reading 'get')"
 
 **Cause:** Resend SDK version too old — `emails.receiving.get()` requires a recent SDK.
 **Fix:**
+
 ```bash
 npm install resend@latest
 # Verify version:
@@ -84,6 +87,7 @@ npm list resend
 ### Webhook returns 400 errors
 
 **Possible causes:**
+
 1. **Wrong signing secret** — The signing secret is returned when you create the webhook via the API (`data.signing_secret`). If you've lost it, delete and recreate the webhook to get a new one.
 2. **Body parsing issue** — You must use the raw body for verification. Use `express.raw({ type: 'application/json' })` on the webhook route, not `express.json()`.
 3. **SDK version too old** — Update to `resend@latest`.

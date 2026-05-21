@@ -202,9 +202,12 @@ export async function hashPasswordArgon2id(
                 throw error
             }
 
-            logPasswordHashingError("❌ Password hashing failed: " + error.message, {
-                timeTakenMs,
-            })
+            logPasswordHashingError(
+                "❌ Password hashing failed: " + error.message,
+                {
+                    timeTakenMs,
+                }
+            )
             throw new Error(`Failed to hash password: ${error.message}`)
         }
 

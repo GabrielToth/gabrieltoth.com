@@ -70,7 +70,12 @@ describe("Property 7: Logout Redirect Instruction", () => {
         fc.integer({ min: 60 * 60 * 1000, max: 30 * 24 * 60 * 60 * 1000 }),
     ])(
         "should include redirect to /auth/login in successful logout response",
-        async (sessionId: string, userId: string, userEmail: string, futureTimeMs: number) => {
+        async (
+            sessionId: string,
+            userId: string,
+            userEmail: string,
+            futureTimeMs: number
+        ) => {
             const futureDate = new Date(Date.now() + futureTimeMs)
 
             /**
@@ -134,7 +139,13 @@ describe("Property 7: Logout Redirect Instruction", () => {
         fc.integer({ min: 1, max: 100 }),
     ])(
         "should consistently include redirect instruction across multiple logout attempts",
-        async (sessionId: string, userId: string, userEmail: string, futureTimeMs: number, attemptCount: number) => {
+        async (
+            sessionId: string,
+            userId: string,
+            userEmail: string,
+            futureTimeMs: number,
+            attemptCount: number
+        ) => {
             const futureDate = new Date(Date.now() + futureTimeMs)
 
             /**
@@ -203,7 +214,12 @@ describe("Property 7: Logout Redirect Instruction", () => {
         fc.integer({ min: 60 * 60 * 1000, max: 30 * 24 * 60 * 60 * 1000 }),
     ])(
         "should include redirect instruction regardless of user details",
-        async (sessionId: string, userId: string, userEmail: string, futureTimeMs: number) => {
+        async (
+            sessionId: string,
+            userId: string,
+            userEmail: string,
+            futureTimeMs: number
+        ) => {
             const futureDate = new Date(Date.now() + futureTimeMs)
 
             /**
@@ -264,7 +280,12 @@ describe("Property 7: Logout Redirect Instruction", () => {
         fc.integer({ min: 60 * 60 * 1000, max: 30 * 24 * 60 * 60 * 1000 }),
     ])(
         "should have properly formatted redirect instruction",
-        async (sessionId: string, userId: string, userEmail: string, futureTimeMs: number) => {
+        async (
+            sessionId: string,
+            userId: string,
+            userEmail: string,
+            futureTimeMs: number
+        ) => {
             const futureDate = new Date(Date.now() + futureTimeMs)
 
             /**
@@ -326,7 +347,12 @@ describe("Property 7: Logout Redirect Instruction", () => {
         fc.integer({ min: 60 * 60 * 1000, max: 30 * 24 * 60 * 60 * 1000 }),
     ])(
         "should include redirect in response body with success flag",
-        async (sessionId: string, userId: string, userEmail: string, futureTimeMs: number) => {
+        async (
+            sessionId: string,
+            userId: string,
+            userEmail: string,
+            futureTimeMs: number
+        ) => {
             const futureDate = new Date(Date.now() + futureTimeMs)
 
             /**

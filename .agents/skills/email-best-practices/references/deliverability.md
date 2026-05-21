@@ -33,7 +33,7 @@ v=DMARC1; p=none; rua=mailto:dmarc@example.com
 
 **Rollout:** `p=none` (monitor) → `p=quarantine; pct=25` → `p=reject`
 
-Learn more: https://resend.com/blog/dmarc-policy-modes 
+Learn more: <https://resend.com/blog/dmarc-policy-modes>
 
 ### Verify Your Setup
 
@@ -67,7 +67,7 @@ New IP/domain? Gradually increase volume:
 
 Start with engaged users. Send consistently. Don't rush.
 
-Learn more: https://resend.com/docs/knowledge-base/warming-up
+Learn more: <https://resend.com/docs/knowledge-base/warming-up>
 
 ### Maintaining Reputation
 
@@ -89,6 +89,7 @@ Learn more: https://resend.com/docs/knowledge-base/warming-up
 **Targets:** <0.01% excellent, 0.01-0.05% good, >0.05% critical
 
 **Reduce complaints:**
+
 - Only send to opted-in users
 - Make unsubscribe easy and immediate
 - Use clear sender names and "From" addresses
@@ -97,13 +98,14 @@ Learn more: https://resend.com/docs/knowledge-base/warming-up
 
 ## Infrastructure
 
-**Dedicated sending domain:** Use different subdomains for different sending purposes (e.g., `t.example.com` for transactional emails and `m.example.com` for marketing emails). 
+**Dedicated sending domain:** Use different subdomains for different sending purposes (e.g., `t.example.com` for transactional emails and `m.example.com` for marketing emails).
 
 **DNS TTL:** Low (300s) during setup, high (3600s+) after stable.
 
 ## Troubleshooting
 
 **Emails going to spam?** Check in order:
+
 1. Authentication (SPF, DKIM, DMARC)
 2. List-Unsubscribe header — required by Gmail/Yahoo since Feb 2024 (see [Compliance](./compliance.md))
 3. Sender reputation (blacklists, complaint rates)
@@ -111,6 +113,7 @@ Learn more: https://resend.com/docs/knowledge-base/warming-up
 5. Sending patterns (sudden volume spikes)
 
 **Diagnostic tools:**
+
 - [Google Postmaster Tools](https://postmaster.google.com) - Domain reputation and spam rates
 - [mail-tester.com](https://www.mail-tester.com) - Send a test email, get deliverability score
 - [MXToolbox](https://mxtoolbox.com/blacklists.aspx) - Check blacklist status

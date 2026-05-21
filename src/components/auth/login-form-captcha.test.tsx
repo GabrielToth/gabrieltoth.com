@@ -26,7 +26,7 @@ vi.mock("./turnstile-widget", () => ({
 describe("LoginForm with CAPTCHA Integration", () => {
     beforeEach(() => {
         // Mock fetch for CSRF token
-        global.fetch = vi.fn((url: string) => {
+        ;(global as any).fetch = vi.fn((url: any) => {
             if (url.includes("/api/auth/csrf")) {
                 return Promise.resolve({
                     ok: true,
@@ -99,7 +99,7 @@ describe("LoginForm with CAPTCHA Integration", () => {
 
     it("should include CAPTCHA token in login request", async () => {
         const user = userEvent.setup()
-        global.fetch = vi.fn((url: string) => {
+        ;(global as any).fetch = vi.fn((url: any) => {
             if (url.includes("/api/auth/csrf")) {
                 return Promise.resolve({
                     ok: true,
@@ -156,7 +156,7 @@ describe("LoginForm with CAPTCHA Integration", () => {
 
     it("should show error when CAPTCHA verification fails on server", async () => {
         const user = userEvent.setup()
-        global.fetch = vi.fn((url: string) => {
+        ;(global as any).fetch = vi.fn((url: any) => {
             if (url.includes("/api/auth/csrf")) {
                 return Promise.resolve({
                     ok: true,
@@ -266,7 +266,7 @@ describe("LoginForm with CAPTCHA Integration", () => {
 
     it("should display loading state while submitting with CAPTCHA", async () => {
         const user = userEvent.setup()
-        global.fetch = vi.fn((url: string) => {
+        ;(global as any).fetch = vi.fn((url: any) => {
             if (url.includes("/api/auth/csrf")) {
                 return Promise.resolve({
                     ok: true,

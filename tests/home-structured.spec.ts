@@ -7,7 +7,7 @@ test.describe("home page - structured data", () => {
         await page.goto("/en")
 
         // There should be multiple application/ld+json scripts
-        const ldNodes = page.locator("script[type=\"application/ld+json\"]")
+        const ldNodes = page.locator('script[type="application/ld+json"]')
         const count = await ldNodes.count()
         expect(count).toBeGreaterThan(1)
 

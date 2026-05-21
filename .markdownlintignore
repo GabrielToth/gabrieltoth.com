@@ -1,0 +1,11 @@
+node_modules/
+.next/
+test-results/
+coverage/
+dist/
+out/
+build/
+.git/
+playwright-report/
+storybook-static/
+.agents/**/references/**

@@ -13,20 +13,20 @@ vi.mock("next/navigation", () => ({
 
 // Mock TurnstileWidget
 vi.mock("./turnstile-widget", () => ({
-        default: ({
-            onTokenChange,
-        }: {
-            onTokenChange: (token: string | null) => void
-        }) => {
-            return (
-                <div
-                    data-testid="turnstile-widget"
-                    onClick={() => onTokenChange("test-captcha-token")}
-                >
-                    Mock CAPTCHA Widget
-                </div>
-            )
-        },
+    default: ({
+        onTokenChange,
+    }: {
+        onTokenChange: (token: string | null) => void
+    }) => {
+        return (
+            <div
+                data-testid="turnstile-widget"
+                onClick={() => onTokenChange("test-captcha-token")}
+            >
+                Mock CAPTCHA Widget
+            </div>
+        )
+    },
 }))
 
 async function fillRegistrationFields(
@@ -61,7 +61,7 @@ async function fillRegistrationFields(
 describe("RegisterForm with CAPTCHA Integration", () => {
     beforeEach(() => {
         // Mock fetch for CSRF token
-        global.fetch = vi.fn((url: string) => {
+        ;(global as any).fetch = vi.fn((url: any) => {
             if (url.includes("/api/auth/csrf")) {
                 return Promise.resolve({
                     ok: true,
@@ -116,7 +116,7 @@ describe("RegisterForm with CAPTCHA Integration", () => {
 
     it("should include CAPTCHA token in registration request", async () => {
         const user = userEvent.setup()
-        global.fetch = vi.fn((url: string) => {
+        ;(global as any).fetch = vi.fn((url: any) => {
             if (url.includes("/api/auth/csrf")) {
                 return Promise.resolve({
                     ok: true,
@@ -164,7 +164,7 @@ describe("RegisterForm with CAPTCHA Integration", () => {
 
     it("should show error when CAPTCHA verification fails on server", async () => {
         const user = userEvent.setup()
-        global.fetch = vi.fn((url: string) => {
+        ;(global as any).fetch = vi.fn((url: any) => {
             if (url.includes("/api/auth/csrf")) {
                 return Promise.resolve({
                     ok: true,
@@ -209,7 +209,7 @@ describe("RegisterForm with CAPTCHA Integration", () => {
 
     it("should not submit form without CAPTCHA token", async () => {
         const user = userEvent.setup()
-        global.fetch = vi.fn()
+        ;(global as any).fetch = vi.fn()
 
         render(<RegisterForm locale="en" />)
 
@@ -250,7 +250,7 @@ describe("RegisterForm with CAPTCHA Integration", () => {
 
     it("should display loading state while submitting with CAPTCHA", async () => {
         const user = userEvent.setup()
-        global.fetch = vi.fn((url: string) => {
+        ;(global as any).fetch = vi.fn((url: any) => {
             if (url.includes("/api/auth/csrf")) {
                 return Promise.resolve({
                     ok: true,

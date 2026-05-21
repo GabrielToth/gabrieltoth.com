@@ -217,7 +217,12 @@ describe("Property 5: Deleted Session Authentication Failure", () => {
         fc.uuid(),
     ])(
         "should not confuse deleted sessions with other sessions",
-        async (sessionId1: string, sessionId2: string, futureTimeMs: number, userId: string) => {
+        async (
+            sessionId1: string,
+            sessionId2: string,
+            futureTimeMs: number,
+            userId: string
+        ) => {
             const futureDate = new Date(Date.now() + futureTimeMs)
             /**
              * **Validates: Requirements 2.4**

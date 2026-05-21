@@ -27,7 +27,7 @@ export {
     getYouTubeChannelLinkingConfig,
     resetYouTubeChannelLinkingConfig,
     validateYouTubeChannelLinkingConfig,
-    type EmailServiceConfig,
+    type ResendEmailConfig,
     type TokenEncryptionConfig,
     type YouTubeChannelLinkingConfig,
     type YouTubeOAuthConfig,

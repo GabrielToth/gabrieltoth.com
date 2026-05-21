@@ -20,7 +20,7 @@ describe("Environment Configuration", () => {
         resetConfig()
         // Reset to original env
         process.env = { ...originalEnv }
-        process.env.NODE_ENV = "development"
+        ;(process.env as any).NODE_ENV = "development"
         process.env.NEXT_PUBLIC_APP_URL = "http://localhost:3000"
         process.env.DATABASE_URL = "postgres://user:pass@localhost:5432/db"
         process.env.REDIS_URL = "redis://localhost:6379"
@@ -35,7 +35,7 @@ describe("Environment Configuration", () => {
 
     describe("getEnvironmentConfiguration", () => {
         it("should return development configuration for local deployment", () => {
-            process.env.NODE_ENV = "development"
+            ;(process.env as any).NODE_ENV = "development"
 
             const config = getEnvironmentConfiguration()
 
@@ -48,7 +48,7 @@ describe("Environment Configuration", () => {
         })
 
         it("should return production configuration for cloud deployment", () => {
-            process.env.NODE_ENV = "production"
+            ;(process.env as any).NODE_ENV = "production"
             process.env.NEXT_PUBLIC_APP_URL = "https://acme.test"
             process.env.NEXT_PUBLIC_SUPABASE_URL = "https://project.supabase.co"
 
@@ -63,7 +63,7 @@ describe("Environment Configuration", () => {
         })
 
         it("should return test configuration", () => {
-            process.env.NODE_ENV = "test"
+            ;(process.env as any).NODE_ENV = "test"
 
             const config = getEnvironmentConfiguration()
 
@@ -101,7 +101,7 @@ describe("Environment Configuration", () => {
         it("should configure cloud Supabase database", () => {
             resetConfig()
             delete process.env.DATABASE_URL
-            process.env.NODE_ENV = "production"
+            ;(process.env as any).NODE_ENV = "production"
             process.env.NEXT_PUBLIC_APP_URL = "https://acme.test"
             process.env.NEXT_PUBLIC_SUPABASE_URL = "https://project.supabase.co"
 
@@ -114,21 +114,19 @@ describe("Environment Configuration", () => {
         })
 
         it("should throw error if NEXT_PUBLIC_SUPABASE_URL is missing for cloud deployment", () => {
-            process.env.NODE_ENV = "production"
+            ;(process.env as any).NODE_ENV = "production"
             process.env.NEXT_PUBLIC_APP_URL = "https://acme.test"
             delete process.env.NEXT_PUBLIC_SUPABASE_URL
 
             expect(() => {
                 getEnvironmentConfiguration()
-            }).toThrow(
-                "NEXT_PUBLIC_SUPABASE_URL is required for production"
-            )
+            }).toThrow("NEXT_PUBLIC_SUPABASE_URL is required for production")
         })
     })
 
     describe("Cache Configuration", () => {
         it("should enable Redis cache for cloud deployment", () => {
-            process.env.NODE_ENV = "production"
+            ;(process.env as any).NODE_ENV = "production"
             process.env.NEXT_PUBLIC_APP_URL = "https://acme.test"
             process.env.REDIS_URL = "redis://host:6379"
             process.env.CACHE_ENABLED = "true"
@@ -165,7 +163,7 @@ describe("Environment Configuration", () => {
 
     describe("Security Configuration", () => {
         it("should enforce HTTPS in production", () => {
-            process.env.NODE_ENV = "production"
+            ;(process.env as any).NODE_ENV = "production"
             process.env.NEXT_PUBLIC_APP_URL = "https://acme.test"
             process.env.NEXT_PUBLIC_SUPABASE_URL = "https://project.supabase.co"
 
@@ -175,7 +173,7 @@ describe("Environment Configuration", () => {
         })
 
         it("should not enforce HTTPS in development", () => {
-            process.env.NODE_ENV = "development"
+            ;(process.env as any).NODE_ENV = "development"
 
             const config = getEnvironmentConfiguration()
 
@@ -183,7 +181,7 @@ describe("Environment Configuration", () => {
         })
 
         it("should enable secure cookies in production", () => {
-            process.env.NODE_ENV = "production"
+            ;(process.env as any).NODE_ENV = "production"
             process.env.NEXT_PUBLIC_APP_URL = "https://acme.test"
             process.env.NEXT_PUBLIC_SUPABASE_URL = "https://project.supabase.co"
 
@@ -193,7 +191,7 @@ describe("Environment Configuration", () => {
         })
 
         it("should disable secure cookies in development", () => {
-            process.env.NODE_ENV = "development"
+            ;(process.env as any).NODE_ENV = "development"
 
             const config = getEnvironmentConfiguration()
 
@@ -201,7 +199,7 @@ describe("Environment Configuration", () => {
         })
 
         it("should restrict CORS origins in production", () => {
-            process.env.NODE_ENV = "production"
+            ;(process.env as any).NODE_ENV = "production"
             process.env.NEXT_PUBLIC_APP_URL = "https://acme.test"
             process.env.NEXT_PUBLIC_SUPABASE_URL = "https://project.supabase.co"
 
@@ -215,7 +213,7 @@ describe("Environment Configuration", () => {
         })
 
         it("should allow flexible CORS origins in development", () => {
-            process.env.NODE_ENV = "development"
+            ;(process.env as any).NODE_ENV = "development"
 
             const config = getEnvironmentConfiguration()
 
@@ -258,7 +256,7 @@ describe("Environment Configuration", () => {
 
     describe("Logging Configuration", () => {
         it("should use debug level in development", () => {
-            process.env.NODE_ENV = "development"
+            ;(process.env as any).NODE_ENV = "development"
 
             const config = getEnvironmentConfiguration()
 
@@ -266,7 +264,7 @@ describe("Environment Configuration", () => {
         })
 
         it("should use info level in production", () => {
-            process.env.NODE_ENV = "production"
+            ;(process.env as any).NODE_ENV = "production"
             process.env.NEXT_PUBLIC_APP_URL = "https://acme.test"
             process.env.NEXT_PUBLIC_SUPABASE_URL = "https://project.supabase.co"
 
@@ -276,7 +274,7 @@ describe("Environment Configuration", () => {
         })
 
         it("should use text format in development", () => {
-            process.env.NODE_ENV = "development"
+            ;(process.env as any).NODE_ENV = "development"
 
             const config = getEnvironmentConfiguration()
 
@@ -284,7 +282,7 @@ describe("Environment Configuration", () => {
         })
 
         it("should use JSON format in production", () => {
-            process.env.NODE_ENV = "production"
+            ;(process.env as any).NODE_ENV = "production"
             process.env.NEXT_PUBLIC_APP_URL = "https://acme.test"
             process.env.NEXT_PUBLIC_SUPABASE_URL = "https://project.supabase.co"
 
@@ -302,7 +300,7 @@ describe("Environment Configuration", () => {
 
     describe("Application URLs", () => {
         it("should use localhost URL in development", () => {
-            process.env.NODE_ENV = "development"
+            ;(process.env as any).NODE_ENV = "development"
 
             const config = getEnvironmentConfiguration()
 
@@ -312,7 +310,7 @@ describe("Environment Configuration", () => {
 
         it("should derive API URL from app URL in production", () => {
             resetConfig()
-            process.env.NODE_ENV = "production"
+            ;(process.env as any).NODE_ENV = "production"
             process.env.NEXT_PUBLIC_APP_URL = "https://acme.test"
             process.env.NEXT_PUBLIC_SUPABASE_URL = "https://project.supabase.co"
 
@@ -367,7 +365,7 @@ describe("Environment Configuration", () => {
 
     describe("Environment-specific behavior", () => {
         it("should configure for local development", () => {
-            process.env.NODE_ENV = "development"
+            ;(process.env as any).NODE_ENV = "development"
 
             const config = getEnvironmentConfiguration()
 
@@ -378,7 +376,7 @@ describe("Environment Configuration", () => {
         })
 
         it("should configure for cloud production", () => {
-            process.env.NODE_ENV = "production"
+            ;(process.env as any).NODE_ENV = "production"
             process.env.NEXT_PUBLIC_APP_URL = "https://acme.test"
             process.env.NEXT_PUBLIC_SUPABASE_URL = "https://project.supabase.co"
 

@@ -23,7 +23,6 @@ vi.unmock("@supabase/supabase-js")
  * EXPECTED OUTCOME: Tests PASS (this confirms baseline behavior to preserve)
  */
 
-
 describe("Preservation: Database Functions", () => {
     let isDbRunning = true
 
@@ -38,8 +37,10 @@ describe("Preservation: Database Functions", () => {
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImV4cCI6MTk4MzgxMjk5Nn0.EGIM96RAZx35lJzdJsyH-qQwv8Hdp7fsn3W0YpN81IU"
 
     describe("archive_old_audit_logs() function", () => {
-        it("should preserve: function exists and is callable", async ({ skip }) => {
-    if (!isDbRunning) return skip()
+        it("should preserve: function exists and is callable", async ({
+            skip,
+        }) => {
+            if (!isDbRunning) return skip()
             const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey)
 
             // Check if function exists by calling it
@@ -53,8 +54,10 @@ describe("Preservation: Database Functions", () => {
             )
         })
 
-        it("should preserve: function archives old audit logs", async ({ skip }) => {
-    if (!isDbRunning) return skip()
+        it("should preserve: function archives old audit logs", async ({
+            skip,
+        }) => {
+            if (!isDbRunning) return skip()
             const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey)
 
             // Create an old audit log (older than 2 years)
@@ -105,8 +108,10 @@ describe("Preservation: Database Functions", () => {
     })
 
     describe("archive_old_linking_activity() function", () => {
-        it("should preserve: function exists and is callable", async ({ skip }) => {
-    if (!isDbRunning) return skip()
+        it("should preserve: function exists and is callable", async ({
+            skip,
+        }) => {
+            if (!isDbRunning) return skip()
             const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey)
 
             const { error } = await supabaseAdmin.rpc(
@@ -122,8 +127,10 @@ describe("Preservation: Database Functions", () => {
     })
 
     describe("cleanup_expired_recovery_tokens() function", () => {
-        it("should preserve: function exists and is callable", async ({ skip }) => {
-    if (!isDbRunning) return skip()
+        it("should preserve: function exists and is callable", async ({
+            skip,
+        }) => {
+            if (!isDbRunning) return skip()
             const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey)
 
             const { error } = await supabaseAdmin.rpc(
@@ -137,8 +144,10 @@ describe("Preservation: Database Functions", () => {
             )
         })
 
-        it("should preserve: function deletes expired recovery tokens", async ({ skip }) => {
-    if (!isDbRunning) return skip()
+        it("should preserve: function deletes expired recovery tokens", async ({
+            skip,
+        }) => {
+            if (!isDbRunning) return skip()
             const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey)
 
             // Create an expired recovery token
@@ -187,8 +196,10 @@ describe("Preservation: Database Functions", () => {
     })
 
     describe("cleanup_expired_unlink_revocation_windows() function", () => {
-        it("should preserve: function exists and is callable", async ({ skip }) => {
-    if (!isDbRunning) return skip()
+        it("should preserve: function exists and is callable", async ({
+            skip,
+        }) => {
+            if (!isDbRunning) return skip()
             const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey)
 
             const { error } = await supabaseAdmin.rpc(
@@ -261,8 +272,10 @@ describe("Preservation: Database Functions", () => {
             }
         })
 
-        it("should preserve: trigger updates last_activity_at on linking_activity insert", async ({ skip }) => {
-    if (!isDbRunning) return skip()
+        it("should preserve: trigger updates last_activity_at on linking_activity insert", async ({
+            skip,
+        }) => {
+            if (!isDbRunning) return skip()
             const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey)
 
             // Get current last_activity_at
@@ -394,8 +407,10 @@ describe("Preservation: Database Functions", () => {
             }
         })
 
-        it("should preserve: trigger updates updated_at on youtube_channels update", async ({ skip }) => {
-    if (!isDbRunning) return skip()
+        it("should preserve: trigger updates updated_at on youtube_channels update", async ({
+            skip,
+        }) => {
+            if (!isDbRunning) return skip()
             const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey)
 
             // Get current updated_at

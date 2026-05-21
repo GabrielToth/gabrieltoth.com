@@ -55,7 +55,6 @@ export async function POST(
 
         // Validate platform
         const oauthManager = getOAuthManager()
-        
 
         if (!oauthManager.isPlatformConfigured(platform as any)) {
             logger.warn("Unsupported platform for OAuth", {

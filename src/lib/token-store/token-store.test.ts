@@ -16,75 +16,127 @@ vi.mock("@supabase/supabase-js", () => {
                 return {
                     select: vi.fn(() => ({
                         eq: vi.fn((field: string, val: string) => {
-                            const filtered = mockDb.filter(r => r[field] === val)
+                            const filtered = mockDb.filter(
+                                r => r[field] === val
+                            )
                             return {
                                 eq: vi.fn((field2: string, val2: string) => {
-                                    const f2 = filtered.filter(r => r[field2] === val2)
+                                    const f2 = filtered.filter(
+                                        r => r[field2] === val2
+                                    )
                                     return {
                                         single: vi.fn(() => {
-                                            if (f2.length === 0) return Promise.resolve({ data: null, error: { code: "PGRST116" } })
-                                            return Promise.resolve({ data: f2[0], error: null })
+                                            if (f2.length === 0)
+                                                return Promise.resolve({
+                                                    data: null,
+                                                    error: { code: "PGRST116" },
+                                                })
+                                            return Promise.resolve({
+                                                data: f2[0],
+                                                error: null,
+                                            })
                                         }),
-                                        then: (resolve: any) => resolve({ data: f2, error: null })
+                                        then: (resolve: any) =>
+                                            resolve({ data: f2, error: null }),
                                     }
                                 }),
                                 single: vi.fn(() => {
-                                    if (filtered.length === 0) return Promise.resolve({ data: null, error: { code: "PGRST116" } })
-                                    return Promise.resolve({ data: filtered[0], error: null })
+                                    if (filtered.length === 0)
+                                        return Promise.resolve({
+                                            data: null,
+                                            error: { code: "PGRST116" },
+                                        })
+                                    return Promise.resolve({
+                                        data: filtered[0],
+                                        error: null,
+                                    })
                                 }),
-                                then: (resolve: any) => resolve({ data: filtered, error: null })
+                                then: (resolve: any) =>
+                                    resolve({ data: filtered, error: null }),
                             }
                         }),
-                        then: (resolve: any) => resolve({ data: mockDb, error: null })
+                        then: (resolve: any) =>
+                            resolve({ data: mockDb, error: null }),
                     })),
                     insert: vi.fn((data: any) => {
-                        const newRecord = { id: Math.random().toString(), ...data }
+                        const newRecord = {
+                            id: Math.random().toString(),
+                            ...data,
+                        }
                         mockDb.push(newRecord)
                         return {
                             select: vi.fn(() => ({
-                                single: vi.fn(() => Promise.resolve({ data: newRecord, error: null }))
-                            }))
+                                single: vi.fn(() =>
+                                    Promise.resolve({
+                                        data: newRecord,
+                                        error: null,
+                                    })
+                                ),
+                            })),
                         }
                     }),
                     update: vi.fn((data: any) => {
                         return {
                             eq: vi.fn((field: string, val: string) => {
                                 return {
-                                    eq: vi.fn((field2: string, val2: string) => {
-                                        let updated: Record<string, unknown> | null =
-                                            null
-                                        mockDb = mockDb.map(r => {
-                                            if (r[field] === val && r[field2] === val2) {
-                                                updated = { ...r, ...data }
-                                                return updated
+                                    eq: vi.fn(
+                                        (field2: string, val2: string) => {
+                                            let updated: Record<
+                                                string,
+                                                unknown
+                                            > | null = null
+                                            mockDb = mockDb.map(r => {
+                                                if (
+                                                    r[field] === val &&
+                                                    r[field2] === val2
+                                                ) {
+                                                    updated = { ...r, ...data }
+                                                    return updated
+                                                }
+                                                return r
+                                            })
+                                            return {
+                                                select: vi.fn(() => ({
+                                                    single: vi.fn(() =>
+                                                        Promise.resolve({
+                                                            data: updated,
+                                                            error: null,
+                                                        })
+                                                    ),
+                                                })),
                                             }
-                                            return r
-                                        })
-                                        return {
-                                            select: vi.fn(() => ({
-                                                single: vi.fn(() => Promise.resolve({ data: updated, error: null }))
-                                            }))
                                         }
-                                    })
+                                    ),
                                 }
-                            })
+                            }),
                         }
                     }),
                     delete: vi.fn(() => {
                         return {
                             eq: vi.fn((field: string, val: string) => {
                                 return {
-                                    eq: vi.fn((field2: string, val2: string) => {
-                                        mockDb = mockDb.filter(r => !(r[field] === val && r[field2] === val2))
-                                        return Promise.resolve({ data: null, error: null })
-                                    })
+                                    eq: vi.fn(
+                                        (field2: string, val2: string) => {
+                                            mockDb = mockDb.filter(
+                                                r =>
+                                                    !(
+                                                        r[field] === val &&
+                                                        r[field2] === val2
+                                                    )
+                                            )
+                                            return Promise.resolve({
+                                                data: null,
+                                                error: null,
+                                            })
+                                        }
+                                    ),
                                 }
-                            })
+                            }),
                         }
-                    })
+                    }),
                 }
-            })
-        }))
+            }),
+        })),
     }
 })
 

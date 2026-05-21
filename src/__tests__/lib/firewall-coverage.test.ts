@@ -33,7 +33,7 @@ describe("lib/firewall coverage", () => {
 
         // Production origin check
         const old = process.env.NODE_ENV
-        process.env.NODE_ENV = "production"
+        ;(process.env as any).NODE_ENV = "production"
         res = basicFirewall(
             makeReq({
                 "user-agent": "UA",
@@ -67,6 +67,6 @@ describe("lib/firewall coverage", () => {
             ["https://a"]
         )
         expect(res.ok).toBe(false)
-        process.env.NODE_ENV = old
+        ;(process.env as any).NODE_ENV = old
     })
 })

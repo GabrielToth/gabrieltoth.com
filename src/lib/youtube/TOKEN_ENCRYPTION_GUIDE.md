@@ -128,6 +128,7 @@ constructor(config: KeyManagementConfig)
 ```
 
 **Parameters:**
+
 - `config.strategy`: Key management strategy ("environment" | "local-file" | "aws-kms")
 - `config.environmentVariableName`: (for environment strategy) Name of environment variable
 - `config.localKeyPath`: (for local-file strategy) Path to key file
@@ -138,9 +139,11 @@ constructor(config: KeyManagementConfig)
 Encrypts an OAuth token.
 
 **Parameters:**
+
 - `token`: The OAuth token to encrypt
 
 **Returns:**
+
 ```typescript
 {
     encryptedToken: string,      // base64 encoded encrypted token
@@ -150,6 +153,7 @@ Encrypts an OAuth token.
 ```
 
 **Example:**
+
 ```typescript
 const result = await service.encrypt("ya29.a0AfH6SMBx...")
 // result.encryptedToken: "AgIBAwQFBgcICQoLDA0ODxAREhMUFRYXGBkaGxwdHh8gISIjJCUmJygpKissLS4vMDEyMzQ1Njc4OTo7PD0+P0BBQkNERUZHSElKS0tMTU1OT1BRUlNTVFVWV1hZWltcXV5fYGFiY2RlZmduaGlqa2tsbW1ubm9vcHFyc3N0dXZ3eHl6e3t8fX5/gIGCg4OEhYWGh4eIiIiJiYmKioqLi4uMjIyMjY2Njo6Oj4+PkJCQkJCQkZGRkZGRkpKSkpKSkpKTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk9"
@@ -161,9 +165,11 @@ const result = await service.encrypt("ya29.a0AfH6SMBx...")
 Decrypts an encrypted OAuth token.
 
 **Parameters:**
+
 - `encryptedToken`: The encrypted token in base64 format
 
 **Returns:**
+
 ```typescript
 {
     token: string,               // original OAuth token
@@ -172,6 +178,7 @@ Decrypts an encrypted OAuth token.
 ```
 
 **Example:**
+
 ```typescript
 const result = await service.decrypt(encryptedToken)
 // result.token: "ya29.a0AfH6SMBx..."
@@ -182,9 +189,11 @@ const result = await service.decrypt(encryptedToken)
 Rotates the encryption key. The new key must be a 64-character hex string (32 bytes).
 
 **Parameters:**
+
 - `newKey`: New encryption key as hex string
 
 **Example:**
+
 ```typescript
 const newKey = generateEncryptionKey()
 service.rotateKey(newKey)
@@ -195,6 +204,7 @@ service.rotateKey(newKey)
 Clears the cached encryption key. Useful for testing or when key needs to be reloaded.
 
 **Example:**
+
 ```typescript
 service.clearKeyCache()
 ```
@@ -208,6 +218,7 @@ Generates a cryptographically secure encryption key.
 **Returns:** 64-character hex string (32 bytes)
 
 **Example:**
+
 ```typescript
 const key = generateEncryptionKey()
 // "a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6"
@@ -218,11 +229,13 @@ const key = generateEncryptionKey()
 Validates an encryption key format.
 
 **Parameters:**
+
 - `key`: Key to validate
 
 **Returns:** Object with `isValid` boolean and optional `error` message
 
 **Example:**
+
 ```typescript
 const result = validateEncryptionKey("a1b2c3d4...")
 if (result.isValid) {
@@ -239,6 +252,7 @@ Gets or creates the singleton instance of TokenEncryptionService.
 **Returns:** TokenEncryptionService instance
 
 **Example:**
+
 ```typescript
 const service = getTokenEncryptionService()
 ```
@@ -408,6 +422,7 @@ node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 ### "Failed to decrypt token"
 
 **Possible causes:**
+
 1. Wrong encryption key
 2. Encrypted token was tampered with
 3. Encrypted token is corrupted

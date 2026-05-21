@@ -2,6 +2,18 @@
 
 ## 📋 General Instructions
 
+### 0. Mandatory Startup Infrastructure
+Before performing any task, writing code, or running diagnostics, the agent (including Cursor, Antigravity, Kiro) MUST ensure that the local infrastructure is up and running by executing:
+1. Spin up all Docker containers:
+   ```bash
+   cd docker
+   docker compose up -d
+   ```
+2. Start the Supabase local backend:
+   ```bash
+   npx supabase start
+   ```
+
 ### 1. Documentation
 - **DO NOT** generate `.md` summary files after completing tasks
 - **DO NOT** create change reports, summaries, or lists in `.md` format unless explicitly requested

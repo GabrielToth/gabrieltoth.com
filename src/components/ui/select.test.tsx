@@ -84,7 +84,7 @@ describe("Select Component", () => {
             </Select>
         )
 
-        const items = container.querySelectorAll("[role=\"option\"]")
+        const items = container.querySelectorAll('[role="option"]')
         expect(items.length).toBeGreaterThanOrEqual(0)
     })
 })

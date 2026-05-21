@@ -16,7 +16,7 @@ describe("Security Test: Salt Uniqueness ", () => {
         process.env.ARGON2_PARALLELISM = "2"
         process.env.PEPPER_SECRET =
             "dev-pepper-test-very-long-string-32chars-minimum-required!"
-        process.env.NODE_ENV = "development"
+        ;(process.env as any).NODE_ENV = "development"
 
         // Reset singleton instance
         ;(ConfigurationManager as any).instance = null

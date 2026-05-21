@@ -1,6 +1,6 @@
 import { ThemeProvider } from "@/components/theme/theme-provider"
 import LanguageSelector from "@/components/ui/language-selector"
-import type { Meta, StoryObj } from "@storybook/nextjs-vite"
+import type { Meta, StoryObj } from "@storybook/nextjs"
 
 const meta: Meta<typeof LanguageSelector> = {
     title: "Site/UI/LanguageSelector",
@@ -16,7 +16,7 @@ export const HeaderVariant: Story = {
         includeThemeToggle: true,
     },
     /* c8 ignore next */
-    render: args => (
+    render: (args: any) => (
         <ThemeProvider>
             <div className="p-4">
                 <LanguageSelector {...args} />

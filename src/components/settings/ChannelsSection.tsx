@@ -120,9 +120,11 @@ export const ChannelsSection: React.FC<ChannelsSectionProps> = ({
                                 >
                                     <div className="flex items-center gap-3">
                                         <DynamicIcon
-                                            name={getPlatformIcon(
-                                                channel.platform
-                                            ) as import("@/lib/icons").IconName}
+                                            name={
+                                                getPlatformIcon(
+                                                    channel.platform
+                                                ) as import("@/lib/icons").IconName
+                                            }
                                             size={24}
                                         />
                                         <div>
@@ -216,9 +218,11 @@ export const ChannelsSection: React.FC<ChannelsSectionProps> = ({
                                 >
                                     <div className="flex items-center gap-3">
                                         <DynamicIcon
-                                            name={getPlatformIcon(
-                                                channel.platform
-                                            ) as import("@/lib/icons").IconName}
+                                            name={
+                                                getPlatformIcon(
+                                                    channel.platform
+                                                ) as import("@/lib/icons").IconName
+                                            }
                                             size={24}
                                         />
                                         <div>

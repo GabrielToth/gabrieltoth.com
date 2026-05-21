@@ -41,7 +41,7 @@ export async function validatePassword(
 
         const detection = detectHashAlgorithm(hash)
 
-        if (detection.algorithm !== "argon2id") {
+        if (detection.algorithm !== "argon2id" || !detection.isValid) {
             return {
                 valid: false,
                 algorithmType: "unknown",

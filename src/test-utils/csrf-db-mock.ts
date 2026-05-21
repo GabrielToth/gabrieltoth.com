@@ -12,7 +12,10 @@ export function createCsrfDbModuleMock() {
     let idCounter = 0
 
     const query = vi.fn(
-        async (sql: string, params?: Array<string | number | boolean | Date | null>) => {
+        async (
+            sql: string,
+            params?: Array<string | number | boolean | Date | null>
+        ) => {
             const normalized = sql.replace(/\s+/g, " ").trim().toLowerCase()
 
             if (normalized.startsWith("insert into csrf_tokens")) {
@@ -32,7 +35,9 @@ export function createCsrfDbModuleMock() {
                 return { rows: [], rowCount: deleted ? 1 : 0 }
             }
 
-            if (normalized.includes("delete from csrf_tokens where expires_at")) {
+            if (
+                normalized.includes("delete from csrf_tokens where expires_at")
+            ) {
                 const now = new Date()
                 let deleted = 0
                 for (const [id, row] of [...tokens.entries()]) {

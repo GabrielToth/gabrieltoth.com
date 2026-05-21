@@ -31,7 +31,7 @@ test.describe("editors page", () => {
         }
 
         // Structured data should be present
-        const ldNodes = page.locator("script[type=\"application/ld+json\"]")
+        const ldNodes = page.locator('script[type="application/ld+json"]')
         await expect(ldNodes.first()).toBeVisible()
 
         // Breadcrumbs visible

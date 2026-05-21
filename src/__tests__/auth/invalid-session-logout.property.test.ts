@@ -74,11 +74,7 @@ describe("Property 6: Invalid Session Logout Handling", () => {
      *
      * Validates: Requirements 2.5
      */
-    test.prop([
-            fc.uuid(),
-            fc.string({ minLength: 32, maxLength: 64 }),
-        ])(
-
+    test.prop([fc.uuid(), fc.string({ minLength: 32, maxLength: 64 })])(
         "should satisfy: Invalid Session Returns 401",
 
         async (invalidSessionId: string, csrfToken: string) => {
@@ -129,8 +125,11 @@ describe("Property 6: Invalid Session Logout Handling", () => {
      *
      * Validates: Requirements 2.5
      */
-    test.prop([fc.uuid(), fc.uuid(), fc.string({ minLength: 32, maxLength: 64 })])(
-
+    test.prop([
+        fc.uuid(),
+        fc.uuid(),
+        fc.string({ minLength: 32, maxLength: 64 }),
+    ])(
         "should satisfy: Invalid Session Returns 401",
 
         async (userId: string, sessionId: string, csrfToken: string) => {
@@ -178,11 +177,7 @@ describe("Property 6: Invalid Session Logout Handling", () => {
      *
      * Validates: Requirements 2.5
      */
-    test.prop([
-            fc.uuid(),
-            fc.string({ minLength: 32, maxLength: 64 }),
-        ])(
-
+    test.prop([fc.uuid(), fc.string({ minLength: 32, maxLength: 64 })])(
         "should satisfy: Invalid Session Returns 401",
 
         async (invalidSessionId: string, csrfToken: string) => {
@@ -232,11 +227,7 @@ describe("Property 6: Invalid Session Logout Handling", () => {
      *
      * Validates: Requirements 2.5, 8.3
      */
-    test.prop([
-            fc.uuid(),
-            fc.string({ minLength: 32, maxLength: 64 }),
-        ])(
-
+    test.prop([fc.uuid(), fc.string({ minLength: 32, maxLength: 64 })])(
         "should satisfy: Invalid Session Returns 401",
 
         async (invalidSessionId: string, csrfToken: string) => {
@@ -278,11 +269,7 @@ describe("Property 6: Invalid Session Logout Handling", () => {
      *
      * Validates: Requirements 2.5
      */
-    test.prop([
-            fc.uuid(),
-            fc.string({ minLength: 32, maxLength: 64 }),
-        ])(
-
+    test.prop([fc.uuid(), fc.string({ minLength: 32, maxLength: 64 })])(
         "should satisfy: Invalid Session Returns 401",
 
         async (invalidSessionId: string, csrfToken: string) => {
@@ -324,11 +311,7 @@ describe("Property 6: Invalid Session Logout Handling", () => {
      *
      * Validates: Requirements 2.5
      */
-    test.prop([
-            fc.uuid(),
-            fc.string({ minLength: 32, maxLength: 64 }),
-        ])(
-
+    test.prop([fc.uuid(), fc.string({ minLength: 32, maxLength: 64 })])(
         "should satisfy: Invalid Session Returns 401",
 
         async (invalidSessionId: string, invalidCsrfToken: string) => {
@@ -371,11 +354,7 @@ describe("Property 6: Invalid Session Logout Handling", () => {
      *
      * Validates: Requirements 2.5, 7.1
      */
-    test.prop([
-            fc.uuid(),
-            fc.string({ minLength: 32, maxLength: 64 }),
-        ])(
-
+    test.prop([fc.uuid(), fc.string({ minLength: 32, maxLength: 64 })])(
         "should satisfy: Invalid Session Returns 401",
 
         async (invalidSessionId: string, csrfToken: string) => {
@@ -421,15 +400,11 @@ describe("Property 6: Invalid Session Logout Handling", () => {
      * Validates: Requirements 2.5
      */
     test.prop([
-            fc.array(
-                fc.tuple(
-                    fc.uuid(),
-                    fc.string({ minLength: 32, maxLength: 64 })
-                ),
-                { minLength: 1, maxLength: 5 }
-            ),
-        ])(
-
+        fc.array(
+            fc.tuple(fc.uuid(), fc.string({ minLength: 32, maxLength: 64 })),
+            { minLength: 1, maxLength: 5 }
+        ),
+    ])(
         "should satisfy: Invalid Session Returns 401",
 
         async (requestData: Array<[string, string]>) => {
@@ -480,11 +455,7 @@ describe("Property 6: Invalid Session Logout Handling", () => {
      *
      * Validates: Requirements 2.5
      */
-    test.prop([
-            fc.uuid(),
-            fc.string({ minLength: 32, maxLength: 64 }),
-        ])(
-
+    test.prop([fc.uuid(), fc.string({ minLength: 32, maxLength: 64 })])(
         "should satisfy: Invalid Session Returns 401",
 
         async (invalidSessionId: string, csrfToken: string) => {
@@ -537,11 +508,7 @@ describe("Property 6: Invalid Session Logout Handling", () => {
      *
      * Validates: Requirements 2.5, 8.3
      */
-    test.prop([
-            fc.uuid(),
-            fc.string({ minLength: 32, maxLength: 64 }),
-        ])(
-
+    test.prop([fc.uuid(), fc.string({ minLength: 32, maxLength: 64 })])(
         "should satisfy: Invalid Session Returns 401",
 
         async (invalidSessionId: string, csrfToken: string) => {

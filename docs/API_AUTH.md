@@ -14,6 +14,7 @@ Development: http://localhost:3000/api/auth
 All responses follow a consistent format:
 
 ### Success Response (2xx)
+
 ```json
 {
   "success": true,
@@ -25,6 +26,7 @@ All responses follow a consistent format:
 ```
 
 ### Error Response (4xx, 5xx)
+
 ```json
 {
   "success": false,
@@ -44,6 +46,7 @@ All responses follow a consistent format:
 Register a new user account with email and password.
 
 **Request:**
+
 ```json
 {
   "email": "john@example.com",
@@ -54,12 +57,14 @@ Register a new user account with email and password.
 ```
 
 **Validation Rules:**
+
 - Email: valid RFC 5322 format, max 255 chars, must be unique
 - Password: min 8 chars, uppercase, lowercase, number, special char
 - Name: min 2 chars, letters/spaces/hyphens/apostrophes only, max 255 chars
 - Phone: valid international format (E.164)
 
 **Response (201):**
+
 ```json
 {
   "success": true,
@@ -74,10 +79,12 @@ Register a new user account with email and password.
 ```
 
 **Error Responses:**
+
 - 400: Invalid input or validation failed
 - 409: Email already registered
 
 **Security:**
+
 - Password hashed with Argon2id
 - Input sanitized to prevent XSS
 - SQL injection prevention
@@ -90,6 +97,7 @@ Register a new user account with email and password.
 Authenticate user and create session.
 
 **Request:**
+
 ```json
 {
   "email": "john@example.com",
@@ -100,6 +108,7 @@ Authenticate user and create session.
 ```
 
 **Response (200):**
+
 ```json
 {
   "success": true,
@@ -113,15 +122,18 @@ Authenticate user and create session.
 ```
 
 **Cookies Set:**
+
 - `session`: HTTP-only, secure, SameSite=Strict
   - Duration: 24 hours (default) or 30 days (if rememberMe=true)
 
 **Error Responses:**
+
 - 400: Invalid email format
 - 401: Invalid credentials or unverified email
 - 429: Too many login attempts (rate limited)
 
 **Security:**
+
 - Rate limiting: max 5 failed attempts in 15 minutes
 - Email verification required
 - Password verified with Argon2id
@@ -134,6 +146,7 @@ Authenticate user and create session.
 Invalidate session and log out user.
 
 **Request:**
+
 ```json
 {
   "csrfToken": "token_value"
@@ -141,6 +154,7 @@ Invalidate session and log out user.
 ```
 
 **Response (200):**
+
 ```json
 {
   "success": true,
@@ -149,9 +163,11 @@ Invalidate session and log out user.
 ```
 
 **Cookies Cleared:**
+
 - `session`: Set to empty with maxAge=0
 
 **Error Responses:**
+
 - 401: No active session
 - 403: Invalid CSRF token
 
@@ -162,6 +178,7 @@ Invalidate session and log out user.
 Request password reset email.
 
 **Request:**
+
 ```json
 {
   "email": "john@example.com",
@@ -170,6 +187,7 @@ Request password reset email.
 ```
 
 **Response (200):**
+
 ```json
 {
   "success": true,
@@ -180,6 +198,7 @@ Request password reset email.
 **Note:** Response is always generic to prevent email enumeration attacks.
 
 **Security:**
+
 - Generic response regardless of email existence
 - Reset token expires in 1 hour
 - Reset email sent via Resend
@@ -192,6 +211,7 @@ Request password reset email.
 Reset password using token from reset email.
 
 **Request:**
+
 ```json
 {
   "token": "password_reset_token",
@@ -202,6 +222,7 @@ Reset password using token from reset email.
 ```
 
 **Response (200):**
+
 ```json
 {
   "success": true,
@@ -210,10 +231,12 @@ Reset password using token from reset email.
 ```
 
 **Error Responses:**
+
 - 400: Invalid/expired token or weak password
 - 403: Invalid CSRF token
 
 **Security:**
+
 - Token validation and expiration check
 - Password hashed with Argon2id
 - All existing sessions invalidated
@@ -228,11 +251,13 @@ Reset password using token from reset email.
 Check if an email address is available for registration.
 
 **Request:**
+
 ```
 GET /api/auth/check-email?email=john@example.com
 ```
 
 **Response (200):**
+
 ```json
 {
   "success": true,
@@ -244,11 +269,13 @@ GET /api/auth/check-email?email=john@example.com
 ```
 
 **Performance:**
+
 - Response time: < 500ms
 - Debounced on client-side (500ms)
 - Cached results for 60 seconds per email
 
 **Security:**
+
 - Rate limiting: 10 requests per minute per IP
 - No sensitive information exposed
 
@@ -259,6 +286,7 @@ GET /api/auth/check-email?email=john@example.com
 Send a verification email to the user's email address.
 
 **Request:**
+
 ```json
 {
   "email": "john@example.com",
@@ -267,6 +295,7 @@ Send a verification email to the user's email address.
 ```
 
 **Response (200):**
+
 ```json
 {
   "success": true,
@@ -279,12 +308,14 @@ Send a verification email to the user's email address.
 ```
 
 **Email Content:**
+
 - User's name (personalized greeting)
 - Verification link with token
 - Link expiration time (24 hours)
 - Support contact information
 
 **Security:**
+
 - Rate limiting: 3 requests per hour per email
 - Email service (Resend) used for delivery
 - Verification tokens stored securely
@@ -297,11 +328,13 @@ Send a verification email to the user's email address.
 Verify user's email address using verification token from email link.
 
 **Request:**
+
 ```
 GET /api/auth/verify-email/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 ```
 
 **Response (200):**
+
 ```json
 {
   "success": true,
@@ -315,17 +348,20 @@ GET /api/auth/verify-email/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 ```
 
 **Error Responses:**
+
 - 400: Invalid or expired token
 - 400: Already verified
 - 404: Token not found
 
 **Token Validation:**
+
 - Token must exist in database
 - Token must not be expired (24-hour expiration)
 - Token must not have been used already (single-use)
 - Token must be linked to a valid user
 
 **Security:**
+
 - Single-use tokens (cannot be reused)
 - Tokens expire after 24 hours
 - Verification logged for audit trail
@@ -340,6 +376,7 @@ GET /api/auth/verify-email/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 Handles the Google OAuth callback after user authorization.
 
 **Request:**
+
 ```json
 {
   "code": "authorization_code_from_google"
@@ -347,6 +384,7 @@ Handles the Google OAuth callback after user authorization.
 ```
 
 **Response (200):**
+
 ```json
 {
   "success": true,
@@ -356,9 +394,11 @@ Handles the Google OAuth callback after user authorization.
 ```
 
 **Cookies Set:**
+
 - `session`: HTTP-only, secure, SameSite=Strict, Max-Age=2592000 (30 days)
 
 **Error Responses:**
+
 - 400: Authorization code is required
 - 401: Failed to authenticate with Google
 - 401: Invalid or expired Google token
@@ -366,6 +406,7 @@ Handles the Google OAuth callback after user authorization.
 - 500: Failed to create session
 
 **Process Flow:**
+
 1. Frontend sends authorization code to this endpoint
 2. Backend exchanges code for Google ID token
 3. Backend validates token with Google servers
@@ -377,6 +418,7 @@ Handles the Google OAuth callback after user authorization.
 9. Backend returns redirect URL to dashboard
 
 **Security:**
+
 - Google token validation with Google's servers
 - Token signature verified using Google's public keys
 - Token expiration checked
@@ -390,11 +432,13 @@ Handles the Google OAuth callback after user authorization.
 Returns the current authenticated user's information.
 
 **Request:**
+
 ```
 GET /api/auth/me
 ```
 
 **Response (200):**
+
 ```json
 {
   "success": true,
@@ -408,9 +452,11 @@ GET /api/auth/me
 ```
 
 **Error Responses:**
+
 - 401: Not authenticated or session expired
 
 **Security:**
+
 - Session validation required
 - Session expiration check
 - User data sanitized
@@ -420,6 +466,7 @@ GET /api/auth/me
 ## Security Features
 
 ### Password Security
+
 - Minimum 8 characters with uppercase, number, and special character
 - Hashed using Argon2id
 - Never transmitted in plain text
@@ -427,6 +474,7 @@ GET /api/auth/me
 - Validated on both client and server
 
 ### Email Security
+
 - RFC 5322 format validation
 - Uniqueness check before account creation
 - Verification required before login
@@ -434,12 +482,14 @@ GET /api/auth/me
 - Single-use verification tokens
 
 ### Session Management
+
 - HTTP-only cookies for session storage
 - Session expiration after 24 hours (or 30 days with Remember Me)
 - Secure, SameSite=Strict cookie attributes
 - Session validation on each request
 
 ### Rate Limiting
+
 - Login attempts: 5 failed attempts per 15 minutes per email/IP
 - Account lockout: 15 minutes after exceeding limit
 - Password reset: No limit (generic response prevents abuse)
@@ -447,6 +497,7 @@ GET /api/auth/me
 - Verification email: 3 requests per hour per email
 
 ### Audit Logging
+
 - All login/logout events logged
 - Failed login attempts logged
 - Email verification events logged
@@ -455,7 +506,9 @@ GET /api/auth/me
 - Logs retained for 90 days
 
 ### Security Headers
+
 All responses include:
+
 ```
 Content-Security-Policy: default-src 'self'
 X-Frame-Options: DENY
@@ -584,6 +637,6 @@ curl -X POST https://gabrieltoth.com/api/auth/login \
 ## Support
 
 For API issues or questions:
-- Open an issue on [GitHub](https://github.com/gabrieltoth/gabrieltoth.com/issues)
-- Contact: support@gabrieltoth.com
 
+- Open an issue on [GitHub](https://github.com/gabrieltoth/gabrieltoth.com/issues)
+- Contact: <support@gabrieltoth.com>

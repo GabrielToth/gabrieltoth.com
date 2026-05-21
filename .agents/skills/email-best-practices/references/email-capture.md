@@ -7,11 +7,13 @@ Collecting email addresses responsibly with validation, verification, and proper
 ### Client-Side
 
 **HTML5:**
+
 ```html
 <input type="email" required>
 ```
 
 **Best practices:**
+
 - Validate on blur or with short debounce
 - Show clear error messages
 - Don't be too strict (allow unusual but valid formats)
@@ -22,12 +24,13 @@ Collecting email addresses responsibly with validation, verification, and proper
 Always validate server-side—client-side can be bypassed.
 
 **Check:**
+
 - Email format (RFC 5322)
 - Domain exists (DNS lookup)
 - Domain has MX records
 - Optionally: disposable email detection
 
-Recommended tools: https://resend.com/blog/best-email-verification-apis
+Recommended tools: <https://resend.com/blog/best-email-verification-apis>
 
 ## Double opt-in
 
@@ -59,7 +62,7 @@ Confirms address belongs to user and is deliverable.
 ### Email Input
 
 - Use `type="email"` for mobile keyboard
-- Include placeholder ("you@example.com")
+- Include placeholder ("<you@example.com>")
 - Clear error messages ("Please enter a valid email address" not "Invalid")
 
 ### Consent Checkboxes (Marketing)
@@ -108,6 +111,7 @@ Confirms address belongs to user and is deliverable.
 ## Verification Emails
 
 **Content:**
+
 - Clear purpose ("Verify your email address")
 - Prominent verification button
 - Expiration time
@@ -116,6 +120,7 @@ Confirms address belongs to user and is deliverable.
 - Don't include OTP/2FA codes in subject line or preview text as it discourages opens
 
 **Design:**
+
 - Mobile-friendly
 - Large, tappable button
 - Clear call-to-action

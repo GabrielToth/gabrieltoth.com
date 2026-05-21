@@ -1,6 +1,6 @@
 # 🐳 Docker Quick Start
 
-## ✅ All Set!
+## ✅ All Set
 
 Your project is configured to run with Docker locally.
 
@@ -41,9 +41,9 @@ docker compose ps
 
 ### 5. Access application
 
-- **Frontend**: http://localhost:3000
-- **Backend Health**: http://localhost:4000/health
-- **Backend API**: http://localhost:4000
+- **Frontend**: <http://localhost:3000>
+- **Backend Health**: <http://localhost:4000/health>
+- **Backend API**: <http://localhost:4000>
 
 ---
 
@@ -164,8 +164,8 @@ docker compose up -d redis
 
 | Service | Port | URL |
 |---------|------|-----|
-| Frontend | 3000 | http://localhost:3000 |
-| Backend | 4000 | http://localhost:4000 |
+| Frontend | 3000 | <http://localhost:3000> |
+| Backend | 4000 | <http://localhost:4000> |
 | Postgres | 5432 | localhost:5432 |
 | Redis | 6379 | localhost:6379 |
 
@@ -216,7 +216,7 @@ docker compose down -v
 
 ---
 
-## 🎉 Ready!
+## 🎉 Ready
 
 Your Docker environment is configured and ready to use.
 
@@ -224,6 +224,6 @@ Your Docker environment is configured and ready to use.
 
 1. `cd docker`
 2. `docker compose up -d`
-3. Open http://localhost:3000
+3. Open <http://localhost:3000>
 
 🚀 **Happy coding!**

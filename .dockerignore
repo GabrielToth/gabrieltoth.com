@@ -1,0 +1,15 @@
+# Docker Build Ignore List
+node_modules
+.next
+.git
+.vercel
+out
+storybook-static
+playwright-report
+test-results
+coverage
+*.log
+tsc_errors.log
+test-output.txt
+vitest-bail.log
+C:\Users\User\.gemini\antigravity-ide

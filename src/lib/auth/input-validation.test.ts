@@ -322,7 +322,7 @@ describe("Input Validation Module", () => {
         })
 
         it("should detect event handlers", () => {
-            const input = "<img src=\"x\" onerror=\"alert('xss')\">"
+            const input = '<img src="x" onerror="alert(\'xss\')">'
             expect(containsXSSPattern(input)).toBe(true)
         })
 
@@ -332,7 +332,7 @@ describe("Input Validation Module", () => {
         })
 
         it("should detect iframe tags", () => {
-            const input = "<iframe src=\"http://evil.com\"></iframe>"
+            const input = '<iframe src="http://evil.com"></iframe>'
             expect(containsXSSPattern(input)).toBe(true)
         })
 
@@ -342,7 +342,7 @@ describe("Input Validation Module", () => {
         })
 
         it("should detect object tags", () => {
-            const input = "<object data=\"http://evil.com\"></object>"
+            const input = '<object data="http://evil.com"></object>'
             expect(containsXSSPattern(input)).toBe(true)
         })
     })

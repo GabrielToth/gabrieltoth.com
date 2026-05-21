@@ -131,12 +131,13 @@ describe("Security: HTTP-Only Cookies", () => {
 
     it("should use secure cookie options in production", async () => {
         // In production, use secure options
-        const isProduction = process.env.NODE_ENV === "production"
+        const isProduction = (process.env as any).NODE_ENV === "production"
 
         const cookie = {
             name: "session",
             httpOnly: true,
-            secure: isProduction || process.env.NODE_ENV === "production",
+            secure:
+                isProduction || (process.env as any).NODE_ENV === "production",
             sameSite: "strict",
         }
 

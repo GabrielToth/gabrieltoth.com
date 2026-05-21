@@ -5,7 +5,7 @@
  * Validates: Requirements 1.0, 4.0
  */
 
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/nextjs"
 import { LockKeyhole } from "lucide-react"
 import { FaApple, FaEnvelope, FaFacebook, FaGoogle } from "react-icons/fa"
 import { AuthButton } from "../components/AuthenticationScreen/AuthButtonRow/AuthButton"

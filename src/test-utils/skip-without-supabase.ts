@@ -41,7 +41,10 @@ export async function isAuditLogsSchemaReady(): Promise<boolean> {
 
     try {
         const client = createClient(url, key)
-        const { error } = await client.from("audit_logs").select("email").limit(1)
+        const { error } = await client
+            .from("audit_logs")
+            .select("email")
+            .limit(1)
         if (error?.code === "PGRST204") {
             return false
         }

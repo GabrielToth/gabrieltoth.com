@@ -213,6 +213,7 @@ describe("OAuth Callback Handler", () => {
                 name: "Existing User",
                 picture: "https://example.com/photo.jpg",
                 email_verified: true,
+                account_completion_status: "pending" as const,
                 created_at: new Date(),
                 updated_at: new Date(),
             }
@@ -300,6 +301,7 @@ describe("OAuth Callback Handler", () => {
                 name: "Legacy User",
                 picture: "https://example.com/photo.jpg",
                 email_verified: true,
+                account_completion_status: "pending" as const,
                 created_at: new Date(),
                 updated_at: new Date(),
             }
@@ -581,6 +583,7 @@ describe("OAuth Callback Handler", () => {
                 name: "User",
                 picture: null,
                 email_verified: true,
+                account_completion_status: "pending" as const,
                 created_at: new Date(),
                 updated_at: new Date(),
             }

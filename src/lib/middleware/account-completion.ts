@@ -134,10 +134,7 @@ export async function checkAccountCompletion(
         // Get session from cookie
         const session = await getSessionFromCookie(request)
 
-        if (
-            !session ||
-            new Date(session.expires_at).getTime() <= Date.now()
-        ) {
+        if (!session || new Date(session.expires_at).getTime() <= Date.now()) {
             // No valid session, let other middleware handle (likely redirect to login)
             return null
         }

@@ -5,15 +5,18 @@ This directory contains reusable UI components for the dashboard redesign. All c
 ## Components
 
 ### Card
+
 A flexible container component for displaying content blocks with consistent styling.
 
 **Features:**
+
 - White background with light gray border
 - Rounded corners
 - Shadow effect
 - Composable sub-components: CardHeader, CardTitle, CardDescription, CardContent, CardFooter
 
 **Usage:**
+
 ```tsx
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 
@@ -32,20 +35,24 @@ export function MyCard() {
 ```
 
 ### Button
+
 A versatile button component with multiple variants and sizes.
 
 **Variants:**
+
 - `default` - Primary blue background
 - `secondary` - Light gray background
 - `outline` - Bordered style
 - `ghost` - Minimal style
 
 **Sizes:**
+
 - `sm` - Small button
 - `default` - Medium button (default)
 - `lg` - Large button
 
 **Usage:**
+
 ```tsx
 import { Button } from "@/components/ui/button"
 
@@ -62,9 +69,11 @@ export function MyButtons() {
 ```
 
 ### Input
+
 A text input field with label, error message, and placeholder support.
 
 **Features:**
+
 - Accessible label association
 - Error state styling
 - Placeholder text
@@ -72,6 +81,7 @@ A text input field with label, error message, and placeholder support.
 - Disabled state
 
 **Usage:**
+
 ```tsx
 import { Input } from "@/components/ui/input"
 
@@ -90,9 +100,11 @@ export function MyInput() {
 ```
 
 ### Select
+
 A dropdown select component with support for groups and custom styling.
 
 **Features:**
+
 - Accessible dropdown with keyboard navigation
 - Support for option groups
 - Customizable trigger and content
@@ -100,6 +112,7 @@ A dropdown select component with support for groups and custom styling.
 - Separator support
 
 **Usage:**
+
 ```tsx
 import {
   Select,
@@ -130,9 +143,11 @@ export function MySelect() {
 ```
 
 ### Toggle
+
 An on/off switch component for boolean states.
 
 **Features:**
+
 - Multiple size variants (sm, default, lg)
 - Pressed state management
 - Disabled state
@@ -140,6 +155,7 @@ An on/off switch component for boolean states.
 - Accessible ARIA attributes
 
 **Usage:**
+
 ```tsx
 import { Toggle } from "@/components/ui/toggle"
 import { Bold } from "lucide-react"
@@ -154,9 +170,11 @@ export function MyToggle() {
 ```
 
 ### Modal
+
 A dialog component for displaying modal content with backdrop and close button.
 
 **Features:**
+
 - Backdrop overlay
 - Centered content
 - Close button
@@ -165,6 +183,7 @@ A dialog component for displaying modal content with backdrop and close button.
 - Focus management
 
 **Usage:**
+
 ```tsx
 import { Modal, ModalHeader, ModalTitle, ModalFooter } from "@/components/ui/modal"
 import { Button } from "@/components/ui/button"
@@ -190,15 +209,18 @@ export function MyModal() {
 ```
 
 ### Icon
+
 An SVG icon wrapper component with size and color customization.
 
 **Features:**
+
 - Support for Lucide React and React Icons
 - Customizable size
 - Color customization
 - Flexible styling with className
 
 **Usage:**
+
 ```tsx
 import { Icon } from "@/components/ui/icon"
 import { Heart } from "lucide-react"
@@ -211,15 +233,18 @@ export function MyIcon() {
 ```
 
 ### Tabs
+
 A tab navigation component for organizing content into sections.
 
 **Features:**
+
 - Keyboard navigation
 - Accessible ARIA attributes
 - Customizable styling
 - Composable sub-components: Tabs, TabsList, TabsTrigger, TabsContent
 
 **Usage:**
+
 ```tsx
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 
@@ -238,9 +263,11 @@ export function MyTabs() {
 ```
 
 ### Dialog
+
 A low-level dialog component (used by Modal). Provides full control over dialog behavior.
 
 **Features:**
+
 - Portal rendering
 - Overlay backdrop
 - Close button
@@ -248,6 +275,7 @@ A low-level dialog component (used by Modal). Provides full control over dialog 
 - Full keyboard support
 
 **Usage:**
+
 ```tsx
 import {
   Dialog,
@@ -317,11 +345,13 @@ All components accept a `className` prop for Tailwind CSS customization:
 Each component includes unit tests and Storybook stories for documentation and testing.
 
 **Run tests:**
+
 ```bash
 npm run test
 ```
 
 **View Storybook:**
+
 ```bash
 npm run storybook
 ```

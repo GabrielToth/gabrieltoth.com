@@ -63,9 +63,9 @@ describe("AuthenticationService", () => {
     beforeEach(() => {
         vi.clearAllMocks()
 
-        vi.mocked(passwordInputValidation.validatePasswordInput).mockImplementation(
-            () => undefined
-        )
+        vi.mocked(
+            passwordInputValidation.validatePasswordInput
+        ).mockImplementation(() => ({ valid: true, errors: [] }))
 
         service = new AuthenticationService()
         ;(service as any).rateLimiter = {
@@ -295,7 +295,6 @@ describe("AuthenticationService", () => {
                 valid: true,
                 algorithmType: "argon2id",
                 hashValid: true,
-                requiresMigration: false,
                 timeTakenMs: 2500,
             })
 
@@ -358,7 +357,6 @@ describe("AuthenticationService", () => {
                 algorithmType: "argon2id",
                 hashValid: true,
                 error: "Authentication failed",
-                requiresMigration: false,
                 timeTakenMs: 2500,
             })
 
@@ -447,7 +445,6 @@ describe("AuthenticationService", () => {
                 valid: true,
                 algorithmType: "argon2id",
                 hashValid: true,
-                requiresMigration: false,
                 timeTakenMs: 2500,
             })
 
@@ -500,7 +497,6 @@ describe("AuthenticationService", () => {
                 valid: true,
                 algorithmType: "argon2id",
                 hashValid: true,
-                requiresMigration: false,
                 timeTakenMs: 2500,
             })
 
@@ -551,7 +547,6 @@ describe("AuthenticationService", () => {
                 valid: true,
                 algorithmType: "argon2id",
                 hashValid: true,
-                requiresMigration: false,
                 timeTakenMs: 2500,
             })
 

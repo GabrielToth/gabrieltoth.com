@@ -20,7 +20,6 @@ O sistema é construído como uma aplicação full-stack usando Next.js 16 com R
 - Logs de auditoria para operações críticas
 - Interface multi-idioma (pt-BR, en, es, de)
 
-
 ## Architecture
 
 ### System Architecture
@@ -97,7 +96,6 @@ O sistema segue uma arquitetura em camadas com separação clara de responsabili
 - **Authentication**: OAuth 2.0 (platform-specific flows)
 - **Encryption**: Node.js crypto module (AES-256-GCM)
 - **Testing**: Vitest, Testing Library, Playwright
-
 
 ## Components and Interfaces
 
@@ -230,7 +228,6 @@ interface OAuthConnectButtonProps {
   onDisconnect: () => void;
 }
 ```
-
 
 ### Backend API Routes
 
@@ -414,7 +411,6 @@ interface ValidationError {
 }
 ```
 
-
 ### Backend Services
 
 #### 1. VideoService
@@ -589,7 +585,6 @@ class AuditLogger {
   async logError(userId: string, error: Error, context: Record<string, any>): Promise<void>;
 }
 ```
-
 
 ## Data Models
 
@@ -766,7 +761,6 @@ HSET upload:progress:<uploadId>:<platform>
 SET ratelimit:<platform>:<userId>:<window> <count>
 EXPIRE ratelimit:<platform>:<userId>:<window> <seconds>
 ```
-
 
 ### OAuth Configuration
 
@@ -1048,7 +1042,6 @@ class TikTokPublisher {
 }
 ```
 
-
 ### Platform Validation Rules
 
 ```typescript
@@ -1079,7 +1072,6 @@ const PLATFORM_VALIDATION_RULES = {
   },
 };
 ```
-
 
 ## Correctness Properties
 
@@ -1457,7 +1449,6 @@ After analyzing all acceptance criteria, I identified several areas where proper
 
 **Validates: Requirements 15.7**
 
-
 ## Error Handling
 
 ### Error Categories
@@ -1676,6 +1667,7 @@ interface ErrorResolution {
 ### User-Facing Error Messages
 
 Todas as mensagens de erro devem ser:
+
 - Claras e específicas sobre o problema
 - Acionáveis (indicar o que o usuário pode fazer)
 - Localizadas no idioma selecionado
@@ -1705,7 +1697,6 @@ const ERROR_MESSAGES = {
 };
 ```
 
-
 ## Testing Strategy
 
 ### Dual Testing Approach
@@ -1720,6 +1711,7 @@ O sistema será testado usando uma combinação de testes unitários e testes ba
 Para testes baseados em propriedades, utilizaremos a biblioteca **fast-check** (JavaScript/TypeScript), que é a biblioteca padrão para property-based testing no ecossistema Node.js.
 
 Configuração:
+
 - Mínimo de 100 iterações por teste de propriedade (devido à randomização)
 - Cada teste deve referenciar a propriedade do documento de design
 - Formato de tag: `Feature: video-upload-multi-platform, Property {number}: {property_text}`
@@ -1938,6 +1930,7 @@ describe('Upload Flow Integration', () => {
 ### Mocking Strategy
 
 Para testes unitários e de propriedade, mockar:
+
 - APIs externas (YouTube, Facebook, Instagram, TikTok)
 - Sistema de arquivos (para uploads)
 - Banco de dados (usar banco em memória ou mocks)
@@ -1945,6 +1938,7 @@ Para testes unitários e de propriedade, mockar:
 - Serviços de criptografia (quando testar lógica de negócio)
 
 Para testes de integração:
+
 - Usar banco de dados de teste real
 - Usar Redis de teste real
 - Mockar apenas APIs externas
@@ -1952,15 +1946,16 @@ Para testes de integração:
 ### Continuous Integration
 
 Todos os testes devem ser executados em CI:
+
 ```bash
 npm run test:all  # type-check + lint + format + spell-check + tests
 ```
 
 Testes de propriedade devem ser executados com seed fixo em CI para reprodutibilidade:
+
 ```typescript
 fc.assert(property, { seed: 42, numRuns: 100 });
 ```
-
 
 ## Security and Encryption
 
@@ -2314,7 +2309,6 @@ class VideoService {
 }
 ```
 
-
 ## Data Flow Diagrams
 
 ### Upload Flow
@@ -2469,7 +2463,6 @@ flowchart TD
     L -->|No| N[Continue Normal Processing]
 ```
 
-
 ## Implementation Considerations
 
 ### File Storage Strategy
@@ -2477,6 +2470,7 @@ flowchart TD
 Para armazenamento temporário de vídeos, considerar:
 
 **Opção 1: Local Filesystem (Desenvolvimento/Pequena Escala)**
+
 ```typescript
 const TEMP_DIR = path.join(process.cwd(), 'temp', 'uploads');
 
@@ -2485,6 +2479,7 @@ const TEMP_DIR = path.join(process.cwd(), 'temp', 'uploads');
 ```
 
 **Opção 2: Cloud Storage (Produção/Grande Escala)**
+
 ```typescript
 // AWS S3, Google Cloud Storage, Azure Blob Storage
 const TEMP_BUCKET = 'video-uploads-temp';
@@ -2498,6 +2493,7 @@ Recomendação: Usar filesystem local para desenvolvimento e cloud storage para 
 ### Queue Implementation
 
 **Opção 1: Redis + Bull/BullMQ**
+
 ```typescript
 import { Queue, Worker } from 'bullmq';
 
@@ -2513,6 +2509,7 @@ const worker = new Worker('video-uploads', async (job) => {
 ```
 
 **Opção 2: Database-backed Queue**
+
 ```typescript
 // Use PostgreSQL with pg-boss or similar
 // Pros: Simples, sem dependência adicional
@@ -2524,6 +2521,7 @@ Recomendação: Usar BullMQ com Redis para melhor performance e features (retry,
 ### Real-time Progress Updates
 
 **Opção 1: Polling (Simples)**
+
 ```typescript
 // Client polls every 2 seconds
 useEffect(() => {
@@ -2537,6 +2535,7 @@ useEffect(() => {
 ```
 
 **Opção 2: Server-Sent Events (Melhor UX)**
+
 ```typescript
 // Server
 export async function GET(request: Request) {
@@ -2572,6 +2571,7 @@ eventSource.onmessage = (event) => {
 ```
 
 **Opção 3: WebSockets (Mais Complexo)**
+
 ```typescript
 // Requer servidor WebSocket separado ou Socket.io
 // Pros: Bidirecional, baixa latência
@@ -2675,6 +2675,7 @@ Métricas importantes para monitorar:
 ```
 
 Ferramentas recomendadas:
+
 - **Logging**: Winston ou Pino
 - **APM**: Vercel Analytics, Sentry
 - **Metrics**: Prometheus + Grafana
@@ -2683,6 +2684,7 @@ Ferramentas recomendadas:
 ### Deployment Considerations
 
 **Vercel Deployment**:
+
 ```json
 // vercel.json
 {
@@ -2700,6 +2702,7 @@ Ferramentas recomendadas:
 ```
 
 **Environment-specific Configuration**:
+
 ```typescript
 const config = {
   development: {
@@ -2745,6 +2748,7 @@ Para migração de dados existentes:
 ```
 
 Usar ferramenta de migração como:
+
 - **node-pg-migrate**
 - **Prisma Migrate**
 - **Knex.js**
@@ -2760,7 +2764,6 @@ Estratégia de backup:
 
 Recovery Time Objective (RTO): < 1 hora
 Recovery Point Objective (RPO): < 24 horas
-
 
 ## Dependencies
 
@@ -2807,10 +2810,10 @@ Recovery Point Objective (RPO): < 24 horas
 
 ### External APIs
 
-- **YouTube Data API v3**: https://developers.google.com/youtube/v3
-- **Facebook Graph API**: https://developers.facebook.com/docs/graph-api
-- **Instagram Graph API**: https://developers.facebook.com/docs/instagram-api
-- **TikTok API for Developers**: https://developers.tiktok.com/
+- **YouTube Data API v3**: <https://developers.google.com/youtube/v3>
+- **Facebook Graph API**: <https://developers.facebook.com/docs/graph-api>
+- **Instagram Graph API**: <https://developers.facebook.com/docs/instagram-api>
+- **TikTok API for Developers**: <https://developers.tiktok.com/>
 
 ### Required Accounts
 
@@ -2941,4 +2944,3 @@ Principais destaques do design:
 - **Experiência do usuário**: Feedback em tempo real, suporte multi-idioma, interface intuitiva
 
 O sistema está pronto para ser implementado seguindo as especificações deste documento.
-

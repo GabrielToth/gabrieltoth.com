@@ -31,6 +31,7 @@ npm install
 ### Step 3: Set Up Environment Variables
 
 1. Copy the example file:
+
    ```bash
    cp .env.local.example .env.local
    ```
@@ -38,6 +39,7 @@ npm install
 2. Open `.env.local` and fill in your values (see detailed instructions in the file)
 
 3. **Minimum required** for basic development:
+
    ```env
    NODE_ENV=development
    DEBUG=true
@@ -73,8 +75,8 @@ docker compose up -d
 
 ### Step 3: Access Application
 
-- **Frontend**: http://localhost:3000
-- **Backend**: http://localhost:4000
+- **Frontend**: <http://localhost:3000>
+- **Backend**: <http://localhost:4000>
 - **Postgres**: localhost:5432
 - **Redis**: localhost:6379
 
@@ -89,6 +91,7 @@ docker compose down
 ## 📝 Available Scripts
 
 ### Development
+
 ```bash
 npm run dev              # Start development server (Turbopack)
 npm run build            # Build for production
@@ -96,6 +99,7 @@ npm run start            # Start production server
 ```
 
 ### Code Quality
+
 ```bash
 npm run lint             # Check linting
 npm run lint:fix         # Auto-fix linting issues
@@ -106,6 +110,7 @@ npm run spell-check      # Check spelling (EN + PT-BR)
 ```
 
 ### Testing
+
 ```bash
 npm run test             # Run all tests
 npm run test:unit        # Run unit tests (Vitest)
@@ -115,6 +120,7 @@ npm run test:watch       # Run tests in watch mode
 ```
 
 ### Performance
+
 ```bash
 npm run analyze          # Analyze bundle size
 npm run lighthouse       # Run Lighthouse audits
@@ -122,6 +128,7 @@ npm run perf:full        # Full performance analysis
 ```
 
 ### Utilities
+
 ```bash
 npm run clean            # Clean build files
 ```
@@ -168,6 +175,7 @@ The Account Completion Flow enables legacy OAuth users to complete their account
 - **Testing**: 88+ integration tests covering all scenarios
 
 **Quick Links:**
+
 - [API Documentation](docs/API_DOCUMENTATION.md) - Complete API reference
 - [Developer Guide](docs/DEVELOPER_GUIDE.md) - Implementation details
 - [User Guide](docs/USER_GUIDE.md) - User instructions
@@ -180,6 +188,7 @@ The Account Completion Flow enables legacy OAuth users to complete their account
 ### Quick Setup
 
 1. Copy the example file:
+
    ```bash
    cp .env.local.example .env.local
    ```
@@ -194,10 +203,12 @@ The Account Completion Flow enables legacy OAuth users to complete their account
 ### Environment Variables by Feature
 
 #### General Settings
+
 - `DEBUG` - Single debug flag (server logs + client UI via Next.js config)
 - `NEXT_PUBLIC_APP_URL` - Public site URL; API is always `{APP_URL}/api`
 
 #### Database
+
 - `DATABASE_URL` - PostgreSQL connection string
 - `POSTGRES_USER` - Database user
 - `POSTGRES_PASSWORD` - Database password
@@ -205,23 +216,27 @@ The Account Completion Flow enables legacy OAuth users to complete their account
 - `REDIS_URL` - Redis connection (optional, for caching)
 
 #### Authentication & Registration
+
 - `JWT_SECRET` - Secret key for signing JWT tokens during OAuth registration
 - `ARGON2_MEMORY_COST`, `ARGON2_TIME_COST`, `ARGON2_PARALLELISM` - Argon2id tuning (see `.env.local.example`)
 - `SESSION_TIMEOUT` - Registration session timeout in milliseconds (default: 1800000 = 30 minutes)
 - `VERIFICATION_TOKEN_EXPIRY` - Email verification link expiry in milliseconds (default: 86400000 = 24 hours)
 
 #### Email (Resend)
+
 - `RESEND_API_KEY` - Resend API key for transactional email
 - `SMTP_FROM_EMAIL` - Sender email address
 - `SMTP_FROM_NAME` - Sender display name
 
 #### OAuth Providers
+
 - `GOOGLE_CLIENT_ID` - Google OAuth client ID (server-side)
 - `GOOGLE_CLIENT_SECRET` - Google OAuth client secret
 - `NEXT_PUBLIC_GOOGLE_CLIENT_ID` - Google OAuth client ID (client-side)
 - `NEXT_PUBLIC_GOOGLE_REDIRECT_URI` - Google OAuth redirect URI
 
 #### Third-Party Services
+
 - `NEXT_PUBLIC_SUPABASE_URL` - Supabase project URL
 - `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` - Supabase public key
 - `SUPABASE_SERVICE_ROLE_KEY` - Supabase service role key (server-only)
@@ -236,15 +251,17 @@ The Account Completion Flow enables legacy OAuth users to complete their account
 The application supports both cloud and local deployment:
 
 **Local Development** (npm run dev):
+
 - Uses `.env.local` for configuration
 - Connects to local PostgreSQL database
-- Uses local API endpoints (http://localhost:3000/api)
+- Uses local API endpoints (<http://localhost:3000/api>)
 - Supports simplified authentication for testing
 
 **Cloud Deployment** (Vercel, AWS, etc.):
+
 - Uses `.env.production` for configuration
 - Connects to remote database
-- Uses production API endpoints (https://api.production.com)
+- Uses production API endpoints (<https://api.production.com>)
 - Enforces HTTPS and security headers
 - Uses production OAuth credentials
 
@@ -269,6 +286,7 @@ The application supports both cloud and local deployment:
 - **Coverage**: HTML and LCOV reports in `coverage/`
 
 Run tests before committing:
+
 ```bash
 npm run test
 npm run test:coverage
@@ -318,6 +336,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 💬 Support
 
 For issues or questions:
+
 - Open an issue on [GitHub](https://github.com/gabrieltoth/gabrieltoth.com/issues)
 - Contact: [your-email@example.com](mailto:your-email@example.com)
 

@@ -72,7 +72,7 @@ Regular maintenance to keep lists healthy.
 | Review soft bounces | Daily | Suppress after 3 failures |
 | Remove inactive | Monthly | Re-engagement → remove |
 
-Learn more: https://resend.com/docs/knowledge-base/audience-hygiene
+Learn more: <https://resend.com/docs/knowledge-base/audience-hygiene>
 
 ### Re-engagement Campaigns
 
@@ -143,6 +143,7 @@ async function cleanupOldData() {
 ## Transactional vs Marketing Lists
 
 **Keep separate:**
+
 - Transactional: Can send to anyone with account relationship
 - Marketing: Only opted-in subscribers
 

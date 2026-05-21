@@ -435,14 +435,14 @@ describe.skipIf(!postgresAvailable)("Metering System Edge Cases", () => {
             return
         }
         await pool.query(
-            "DELETE FROM usage_metrics WHERE user_id LIKE \"test-%\""
+            "DELETE FROM usage_metrics WHERE user_id LIKE 'test-%'"
         )
         await pool.query(
-            "DELETE FROM daily_usage_summary WHERE user_id LIKE \"test-%\""
+            "DELETE FROM daily_usage_summary WHERE user_id LIKE 'test-%'"
         )
-        await pool.query("DELETE FROM transactions WHERE user_id LIKE \"test-%\"")
+        await pool.query("DELETE FROM transactions WHERE user_id LIKE 'test-%'")
         await pool.query(
-            "DELETE FROM user_accounts WHERE user_id LIKE \"test-%\""
+            "DELETE FROM user_accounts WHERE user_id LIKE 'test-%'"
         )
     })
 
@@ -548,7 +548,7 @@ describe.skipIf(!postgresAvailable)("Metering System Edge Cases", () => {
 
         // Update pricing
         const updatePricingQuery =
-            "UPDATE pricing_config SET cost_per_unit = 0.20 WHERE metric_type = \"bandwidth\""
+            "UPDATE pricing_config SET cost_per_unit = 0.20 WHERE metric_type = 'bandwidth'"
         await pool.query(updatePricingQuery)
 
         const yesterday = new Date()
@@ -575,7 +575,7 @@ describe.skipIf(!postgresAvailable)("Metering System Edge Cases", () => {
 
         // Restore original pricing
         const restorePricingQuery =
-            "UPDATE pricing_config SET cost_per_unit = 0.10 WHERE metric_type = \"bandwidth\""
+            "UPDATE pricing_config SET cost_per_unit = 0.10 WHERE metric_type = 'bandwidth'"
         await pool.query(restorePricingQuery)
     })
 })

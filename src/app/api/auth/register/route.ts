@@ -28,7 +28,7 @@ const authService = new AuthenticationService()
 export async function POST(request: NextRequest) {
     try {
         // ============================================================================
-        // REQUEST BODY PARSING 
+        // REQUEST BODY PARSING
         // ============================================================================
 
         // Parse request body with error handling
@@ -203,7 +203,7 @@ export async function POST(request: NextRequest) {
         }
 
         // ============================================================================
-        // USE AUTHENTICATION SERVICE FOR REGISTRATION 
+        // USE AUTHENTICATION SERVICE FOR REGISTRATION
         // ============================================================================
         // The AuthenticationService handles:
         // - CAPTCHA validation (Requirement 20.1, 20.2, 20.3, 20.4)

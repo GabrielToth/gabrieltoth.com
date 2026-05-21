@@ -10,8 +10,14 @@ interface RadioGroupProps extends React.HTMLAttributes<HTMLDivElement> {
 
 const RadioGroup = React.forwardRef<HTMLDivElement, RadioGroupProps>(
     ({ className, ...props }, ref) => (
-    <div ref={ref} className={cn("grid gap-2", className)} role="radiogroup" {...props} />
-))
+        <div
+            ref={ref}
+            className={cn("grid gap-2", className)}
+            role="radiogroup"
+            {...props}
+        />
+    )
+)
 RadioGroup.displayName = "RadioGroup"
 
 const RadioGroupItem = React.forwardRef<
@@ -31,4 +37,3 @@ const RadioGroupItem = React.forwardRef<
 RadioGroupItem.displayName = "RadioGroupItem"
 
 export { RadioGroup, RadioGroupItem }
-

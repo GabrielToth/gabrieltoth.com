@@ -142,7 +142,6 @@ describe("Performance: Login Endpoint", () => {
             // Should complete in reasonable time
             expect(duration).toBeLessThan(1000)
         })
-
     })
 
     describe("25.3 Rate Limiting Optimization", () => {

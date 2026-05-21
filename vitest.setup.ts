@@ -9,6 +9,15 @@ import { afterEach, vi } from "vitest"
 process.env.VITEST = "true"
 process.env.DEBUG = "false"
 process.env.NEXT_PUBLIC_APP_URL = "http://localhost:3000"
+
+vi.mock("@/lib/config/env-validation", async importOriginal => {
+    const actual =
+        await importOriginal<typeof import("@/lib/config/env-validation")>()
+    return {
+        ...actual,
+        validateRuntimeEnv: () => {},
+    }
+})
 process.env.SUPPRESS_SECURITY_CONFIG_LOGS = "true"
 process.env.SUPPRESS_AUTH_SECURITY_STDERR = "true"
 
@@ -74,7 +83,7 @@ function loadEnvFile(fileName: string, overwrite: boolean = false): void {
         const key = line.slice(0, eqIndex).trim()
         let value = line.slice(eqIndex + 1).trim()
         if (
-            (value.startsWith("\"") && value.endsWith("\"")) ||
+            (value.startsWith('"') && value.endsWith('"')) ||
             (value.startsWith("'") && value.endsWith("'"))
         ) {
             value = value.slice(1, -1)

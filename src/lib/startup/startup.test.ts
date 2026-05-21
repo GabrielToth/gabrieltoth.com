@@ -240,7 +240,7 @@ describe("Startup Handler", () => {
 
         it("should not redact NODE_ENV", () => {
             const originalEnv = { ...process.env }
-            process.env.NODE_ENV = "production"
+            ;(process.env as any).NODE_ENV = "production"
 
             try {
                 const safeConfig = (

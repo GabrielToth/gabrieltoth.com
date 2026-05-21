@@ -76,6 +76,7 @@
         "Hypixel's",
         "icloud",
         "lgpd",
+        "lhci",
         "Lqmz",
         "malwares",
         "Mentoria",
@@ -83,6 +84,8 @@
         "mlstatic",
         "modpack",
         "modpacks",
+        "Monero",
+        "MONERO",
         "mptools",
         "newuser",
         "nextjs",
@@ -94,6 +97,7 @@
         "policyname",
         "Portafolio",
         "portifolio",
+        "prefs",
         "Privacidad",
         "profesionales",
         "Professionelle",
@@ -128,6 +132,7 @@
         "ViraTrend",
         "WaveIGL",
         "Webentwicklungsdienste",
+        "WHATSAPP",
         "wrongpassword",
         "xmrchain"
     ],
@@ -145,7 +150,5 @@
         "scss",
         "less"
     ],
-    "ignoreWords": [
-        "XVCJ"
-    ]
+    "ignoreWords": ["XVCJ"]
 }

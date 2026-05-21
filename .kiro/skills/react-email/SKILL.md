@@ -151,6 +151,7 @@ export default EmailTemplate;
 See [references/COMPONENTS.md](references/COMPONENTS.md) for complete component documentation.
 
 **Core Structure:**
+
 - `Html` - Root wrapper with `lang` attribute
 - `Head` - Meta elements, styles, fonts
 - `Body` - Main content wrapper
@@ -160,6 +161,7 @@ See [references/COMPONENTS.md](references/COMPONENTS.md) for complete component 
 - `Tailwind` - Enables Tailwind CSS utility classes
 
 **Content:**
+
 - `Preview` - Inbox preview text, always first inside `<Body>`
 - `Heading` - h1-h6 headings
 - `Text` - Paragraphs
@@ -169,6 +171,7 @@ See [references/COMPONENTS.md](references/COMPONENTS.md) for complete component 
 - `Hr` - Horizontal dividers
 
 **Specialized:**
+
 - `CodeBlock` - Syntax-highlighted code
 - `CodeInline` - Inline code
 - `Markdown` - Render markdown
@@ -219,6 +222,7 @@ export default function Email() {
 ```
 
 **How it works:**
+
 - **Development:** `baseURL` is empty, so URL is `/static/logo.png` - served by React Email's dev server
 - **Production:** `baseURL` is the CDN domain, so URL is `https://cdn.example.com/static/logo.png`
 
@@ -247,6 +251,7 @@ See [references/STYLING.md](references/STYLING.md) for comprehensive styling doc
 | Single-side borders | `border-none` + the side | Resets default borders on other sides |
 
 ### Structure Notes
+
 - Always define `<Head />` inside `<Tailwind>` when using Tailwind CSS
 - `<Preview>` should always be the first element inside `<Body>`
 - Only include props in `PreviewProps` that the component actually uses
@@ -315,6 +320,7 @@ See [references/I18N.md](references/I18N.md) for complete i18n documentation. Re
 React Email includes a visual editor (`@react-email/editor`) that can be embedded in your app. It's built on TipTap/ProseMirror and produces email-ready HTML.
 
 See [references/EDITOR.md](references/EDITOR.md) for complete documentation including:
+
 - `EmailEditor` — batteries-included component with bubble menus, slash commands, and theming
 - `StarterKit` — 35+ email-aware extensions (headings, lists, tables, columns, buttons, etc.)
 - `Inspector` — contextual sidebar for editing styles
@@ -345,6 +351,7 @@ export function MyEditor() {
 ## Common Patterns
 
 See [references/PATTERNS.md](references/PATTERNS.md) for complete examples including:
+
 - Password reset emails
 - Order confirmations with product lists
 - Notification emails with code blocks

@@ -518,7 +518,7 @@ describe("Password storage security", () => {
         it("rejects non-Argon2id hash formats", async () => {
             const result = await validatePassword(
                 "TestPassword123!",
-                "$argon2id$v=19$m=64000,t=3,p=2$invalidprefix$hash"
+                "$2b$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8L8GmDj8a"
             )
             expect(result.valid).toBe(false)
             expect(result.algorithmType).toBe("unknown")

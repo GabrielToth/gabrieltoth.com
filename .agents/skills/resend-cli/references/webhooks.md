@@ -22,6 +22,7 @@ Detailed flag specifications for `resend webhooks` commands.
 | `--events <events...>` | string[] | Yes (non-interactive) | Event types or `all` |
 
 **All 17 events:**
+
 - Email: `email.sent`, `email.delivered`, `email.delivery_delayed`, `email.bounced`, `email.complained`, `email.opened`, `email.clicked`, `email.failed`, `email.scheduled`, `email.suppressed`, `email.received`
 - Contact: `contact.created`, `contact.updated`, `contact.deleted`
 - Domain: `domain.created`, `domain.updated`, `domain.deleted`
@@ -72,6 +73,7 @@ Start a local server that receives Resend webhook events in real time via a publ
 | `--port <port>` | number | 4318 | Local server port |
 
 **Behavior:**
+
 1. Starts a local HTTP server on `--port`
 2. Registers a temporary Resend webhook pointing at `--url`
 3. Displays incoming events in the terminal

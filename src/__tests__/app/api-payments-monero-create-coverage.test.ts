@@ -76,7 +76,9 @@ describe("api payments monero/create coverage", () => {
 
     it("GET returns 404 when order not found", async () => {
         const supa = await import("@/lib/orders-store")
-        ;(supa.ordersDb.getOrderByTrackingCode as any).mockResolvedValueOnce(null)
+        ;(supa.ordersDb.getOrderByTrackingCode as any).mockResolvedValueOnce(
+            null
+        )
         const { GET } = await import("@/app/api/payments/monero/create/route")
         const url = new URL("http://localhost?trackingCode=NOPE")
         const res = await GET({ nextUrl: url } as any)

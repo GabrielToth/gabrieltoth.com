@@ -334,7 +334,11 @@ describe("User Management", () => {
                                 expectedUser
                             )
 
-                            const result = await upsertUser(googleData)
+                            const result = await upsertUser({
+                                ...googleData,
+                                google_picture:
+                                    googleData.google_picture ?? undefined,
+                            })
 
                             // Verify all required fields are present
                             expect(result.google_id).toBe(googleData.google_id)

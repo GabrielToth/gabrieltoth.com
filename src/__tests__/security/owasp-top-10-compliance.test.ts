@@ -115,7 +115,7 @@ describe("Security: OWASP Top 10 Compliance", () => {
         })
 
         it("should use HTTPS in production", () => {
-            const isProduction = process.env.NODE_ENV === "production"
+            const isProduction = (process.env as any).NODE_ENV === "production"
 
             if (isProduction) {
                 expect(true).toBe(true)
@@ -296,7 +296,7 @@ describe("Security: OWASP Top 10 Compliance", () => {
         })
 
         it("should enforce HTTPS in production", () => {
-            const isProduction = process.env.NODE_ENV === "production"
+            const isProduction = (process.env as any).NODE_ENV === "production"
 
             if (isProduction) {
                 expect(true).toBe(true)

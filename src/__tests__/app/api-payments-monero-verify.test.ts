@@ -58,7 +58,9 @@ describe("api payments monero verify route", () => {
 
     it("POST returns 404 when order not found by trackingCode", async () => {
         const supa = await import("@/lib/orders-store")
-        ;(supa.ordersDb.getOrderByTrackingCode as any).mockResolvedValueOnce(null)
+        ;(supa.ordersDb.getOrderByTrackingCode as any).mockResolvedValueOnce(
+            null
+        )
         const { POST } = await import("@/app/api/payments/monero/verify/route")
         const req = new Request("http://localhost", {
             method: "POST",
@@ -241,7 +243,9 @@ describe("api payments monero verify route", () => {
 
     it("GET returns 404 when order not found by trackingCode", async () => {
         const supa = await import("@/lib/orders-store")
-        ;(supa.ordersDb.getOrderByTrackingCode as any).mockResolvedValueOnce(null)
+        ;(supa.ordersDb.getOrderByTrackingCode as any).mockResolvedValueOnce(
+            null
+        )
         const { GET } = await import("@/app/api/payments/monero/verify/route")
         const url = new URL("http://localhost?trackingCode=NOPE")
         const res = await GET({ nextUrl: url } as any)

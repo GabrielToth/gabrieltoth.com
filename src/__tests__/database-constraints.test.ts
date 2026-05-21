@@ -47,8 +47,10 @@ describe("Database Constraints and Foreign Keys", () => {
     })
 
     describe("Foreign Key Constraints", () => {
-        it("should enforce foreign key constraint on sessions table", async ({ skip }) => {
-    if (!isDbRunning) return skip()
+        it("should enforce foreign key constraint on sessions table", async ({
+            skip,
+        }) => {
+            if (!isDbRunning) return skip()
             // Try to insert a session with non-existent user_id
             const { error } = await supabase.from("sessions").insert({
                 user_id: "00000000-0000-0000-0000-000000000000", // Non-existent UUID
@@ -62,8 +64,10 @@ describe("Database Constraints and Foreign Keys", () => {
             expect(error?.code).toBe("23503") // Foreign key violation error code
         })
 
-        it("should enforce foreign key constraint on password_reset_tokens table", async ({ skip }) => {
-    if (!isDbRunning) return skip()
+        it("should enforce foreign key constraint on password_reset_tokens table", async ({
+            skip,
+        }) => {
+            if (!isDbRunning) return skip()
             // Try to insert a password reset token with non-existent user_id
             const { error } = await supabase
                 .from("password_reset_tokens")
@@ -79,8 +83,10 @@ describe("Database Constraints and Foreign Keys", () => {
             expect(error?.code).toBe("23503")
         })
 
-        it("should enforce foreign key constraint on email_verification_tokens table", async ({ skip }) => {
-    if (!isDbRunning) return skip()
+        it("should enforce foreign key constraint on email_verification_tokens table", async ({
+            skip,
+        }) => {
+            if (!isDbRunning) return skip()
             // Try to insert an email verification token with non-existent user_id
             const { error } = await supabase
                 .from("email_verification_tokens")
@@ -98,8 +104,10 @@ describe("Database Constraints and Foreign Keys", () => {
     })
 
     describe("ON DELETE CASCADE", () => {
-        it("should cascade delete sessions when user is deleted", async ({ skip }) => {
-    if (!isDbRunning) return skip()
+        it("should cascade delete sessions when user is deleted", async ({
+            skip,
+        }) => {
+            if (!isDbRunning) return skip()
             // Create a temporary user
             const { data: userData, error: userError } = await supabase
                 .from("users")
@@ -142,8 +150,10 @@ describe("Database Constraints and Foreign Keys", () => {
             expect(sessions).toHaveLength(0)
         })
 
-        it("should cascade delete password_reset_tokens when user is deleted", async ({ skip }) => {
-    if (!isDbRunning) return skip()
+        it("should cascade delete password_reset_tokens when user is deleted", async ({
+            skip,
+        }) => {
+            if (!isDbRunning) return skip()
             // Create a temporary user
             const { data: userData, error: userError } = await supabase
                 .from("users")
@@ -186,8 +196,10 @@ describe("Database Constraints and Foreign Keys", () => {
             expect(tokens).toHaveLength(0)
         })
 
-        it("should cascade delete email_verification_tokens when user is deleted", async ({ skip }) => {
-    if (!isDbRunning) return skip()
+        it("should cascade delete email_verification_tokens when user is deleted", async ({
+            skip,
+        }) => {
+            if (!isDbRunning) return skip()
             // Create a temporary user
             const { data: userData, error: userError } = await supabase
                 .from("users")
@@ -233,7 +245,7 @@ describe("Database Constraints and Foreign Keys", () => {
 
     describe("CHECK Constraints - Email Format", () => {
         it("should accept valid email format", async ({ skip }) => {
-    if (!isDbRunning) return skip()
+            if (!isDbRunning) return skip()
             const { error } = await supabase
                 .from("users")
                 .insert({
@@ -248,7 +260,7 @@ describe("Database Constraints and Foreign Keys", () => {
         })
 
         it("should reject invalid email format (no @)", async ({ skip }) => {
-    if (!isDbRunning) return skip()
+            if (!isDbRunning) return skip()
             const { error } = await supabase
                 .from("users")
                 .insert({
@@ -263,8 +275,10 @@ describe("Database Constraints and Foreign Keys", () => {
             expect(error?.code).toBe("23514") // CHECK constraint violation
         })
 
-        it("should reject invalid email format (no domain)", async ({ skip }) => {
-    if (!isDbRunning) return skip()
+        it("should reject invalid email format (no domain)", async ({
+            skip,
+        }) => {
+            if (!isDbRunning) return skip()
             const { error } = await supabase
                 .from("users")
                 .insert({
@@ -280,7 +294,7 @@ describe("Database Constraints and Foreign Keys", () => {
         })
 
         it("should reject invalid email format (no TLD)", async ({ skip }) => {
-    if (!isDbRunning) return skip()
+            if (!isDbRunning) return skip()
             const { error } = await supabase
                 .from("users")
                 .insert({
@@ -297,8 +311,10 @@ describe("Database Constraints and Foreign Keys", () => {
     })
 
     describe("CHECK Constraints - Non-Empty Tokens", () => {
-        it("should reject empty session_id in sessions table", async ({ skip }) => {
-    if (!isDbRunning) return skip()
+        it("should reject empty session_id in sessions table", async ({
+            skip,
+        }) => {
+            if (!isDbRunning) return skip()
             const { error } = await supabase.from("sessions").insert({
                 user_id: testUserId,
                 session_id: "", // Empty session_id
@@ -311,8 +327,10 @@ describe("Database Constraints and Foreign Keys", () => {
             expect(error?.code).toBe("23514") // CHECK constraint violation
         })
 
-        it("should reject empty token in password_reset_tokens table", async ({ skip }) => {
-    if (!isDbRunning) return skip()
+        it("should reject empty token in password_reset_tokens table", async ({
+            skip,
+        }) => {
+            if (!isDbRunning) return skip()
             const { error } = await supabase
                 .from("password_reset_tokens")
                 .insert({
@@ -327,8 +345,10 @@ describe("Database Constraints and Foreign Keys", () => {
             expect(error?.code).toBe("23514")
         })
 
-        it("should reject empty token in email_verification_tokens table", async ({ skip }) => {
-    if (!isDbRunning) return skip()
+        it("should reject empty token in email_verification_tokens table", async ({
+            skip,
+        }) => {
+            if (!isDbRunning) return skip()
             const { error } = await supabase
                 .from("email_verification_tokens")
                 .insert({
@@ -343,8 +363,10 @@ describe("Database Constraints and Foreign Keys", () => {
             expect(error?.code).toBe("23514")
         })
 
-        it("should accept non-empty session_id in sessions table", async ({ skip }) => {
-    if (!isDbRunning) return skip()
+        it("should accept non-empty session_id in sessions table", async ({
+            skip,
+        }) => {
+            if (!isDbRunning) return skip()
             const { data, error } = await supabase
                 .from("sessions")
                 .insert({
@@ -369,7 +391,7 @@ describe("Database Constraints and Foreign Keys", () => {
 
     describe("Unique Constraints", () => {
         it("should enforce unique email constraint", async ({ skip }) => {
-    if (!isDbRunning) return skip()
+            if (!isDbRunning) return skip()
             const email = `unique-test-${Date.now()}@example.com`
 
             // Insert first user
@@ -403,8 +425,10 @@ describe("Database Constraints and Foreign Keys", () => {
             await supabase.from("users").delete().eq("email", email)
         })
 
-        it("should enforce unique session_id constraint in sessions table", async ({ skip }) => {
-    if (!isDbRunning) return skip()
+        it("should enforce unique session_id constraint in sessions table", async ({
+            skip,
+        }) => {
+            if (!isDbRunning) return skip()
             const sessionId = `unique_session_${Date.now()}`
 
             // Insert first session
@@ -427,7 +451,7 @@ describe("Database Constraints and Foreign Keys", () => {
                 .from("sessions")
                 .insert({
                     user_id: testUserId,
-                    token,
+                    session_id: sessionId,
                     expires_at: new Date(
                         Date.now() + 24 * 60 * 60 * 1000
                     ).toISOString(),
@@ -446,8 +470,10 @@ describe("Database Constraints and Foreign Keys", () => {
     })
 
     describe("Data Integrity", () => {
-        it("should maintain referential integrity for sessions", async ({ skip }) => {
-    if (!isDbRunning) return skip()
+        it("should maintain referential integrity for sessions", async ({
+            skip,
+        }) => {
+            if (!isDbRunning) return skip()
             // Create a session
             const { data: session, error: sessionError } = await supabase
                 .from("sessions")
@@ -470,8 +496,10 @@ describe("Database Constraints and Foreign Keys", () => {
             }
         })
 
-        it("should maintain referential integrity for password_reset_tokens", async ({ skip }) => {
-    if (!isDbRunning) return skip()
+        it("should maintain referential integrity for password_reset_tokens", async ({
+            skip,
+        }) => {
+            if (!isDbRunning) return skip()
             // Create a password reset token
             const { data: token, error: tokenError } = await supabase
                 .from("password_reset_tokens")
@@ -497,8 +525,10 @@ describe("Database Constraints and Foreign Keys", () => {
             }
         })
 
-        it("should maintain referential integrity for email_verification_tokens", async ({ skip }) => {
-    if (!isDbRunning) return skip()
+        it("should maintain referential integrity for email_verification_tokens", async ({
+            skip,
+        }) => {
+            if (!isDbRunning) return skip()
             // Create an email verification token
             const { data: token, error: tokenError } = await supabase
                 .from("email_verification_tokens")
@@ -526,8 +556,10 @@ describe("Database Constraints and Foreign Keys", () => {
     })
 
     describe("Registration Fields - Birth Date and Auth Method", () => {
-        it("should accept valid birth_date (user 13+ years old)", async ({ skip }) => {
-    if (!isDbRunning) return skip()
+        it("should accept valid birth_date (user 13+ years old)", async ({
+            skip,
+        }) => {
+            if (!isDbRunning) return skip()
             // Calculate a date for someone 13 years old
             const thirteenYearsAgo = new Date()
             thirteenYearsAgo.setFullYear(thirteenYearsAgo.getFullYear() - 13)
@@ -554,7 +586,7 @@ describe("Database Constraints and Foreign Keys", () => {
         })
 
         it("should reject future birth_date", async ({ skip }) => {
-    if (!isDbRunning) return skip()
+            if (!isDbRunning) return skip()
             // Calculate a future date
             const futureDate = new Date()
             futureDate.setFullYear(futureDate.getFullYear() + 1)
@@ -575,8 +607,10 @@ describe("Database Constraints and Foreign Keys", () => {
             expect(error?.code).toBe("23514") // CHECK constraint violation
         })
 
-        it("should reject birth_date for user under 13 years old", async ({ skip }) => {
-    if (!isDbRunning) return skip()
+        it("should reject birth_date for user under 13 years old", async ({
+            skip,
+        }) => {
+            if (!isDbRunning) return skip()
             // Calculate a date for someone 12 years old
             const twelveYearsAgo = new Date()
             twelveYearsAgo.setFullYear(twelveYearsAgo.getFullYear() - 12)
@@ -598,7 +632,7 @@ describe("Database Constraints and Foreign Keys", () => {
         })
 
         it("should accept valid auth_method values", async ({ skip }) => {
-    if (!isDbRunning) return skip()
+            if (!isDbRunning) return skip()
             const authMethods = ["email", "google", "facebook", "tiktok"]
 
             for (const method of authMethods) {
@@ -627,7 +661,7 @@ describe("Database Constraints and Foreign Keys", () => {
         })
 
         it("should reject invalid auth_method values", async ({ skip }) => {
-    if (!isDbRunning) return skip()
+            if (!isDbRunning) return skip()
             const { error } = await supabase
                 .from("users")
                 .insert({
@@ -643,8 +677,10 @@ describe("Database Constraints and Foreign Keys", () => {
             expect(error?.code).toBe("23514") // CHECK constraint violation
         })
 
-        it("should allow NULL birth_date for existing users", async ({ skip }) => {
-    if (!isDbRunning) return skip()
+        it("should allow NULL birth_date for existing users", async ({
+            skip,
+        }) => {
+            if (!isDbRunning) return skip()
             const { error } = await supabase
                 .from("users")
                 .insert({
@@ -666,8 +702,10 @@ describe("Database Constraints and Foreign Keys", () => {
                 .eq("email", `birth-date-null-${Date.now()}@example.com`)
         })
 
-        it("should allow NULL auth_method for existing users", async ({ skip }) => {
-    if (!isDbRunning) return skip()
+        it("should allow NULL auth_method for existing users", async ({
+            skip,
+        }) => {
+            if (!isDbRunning) return skip()
             const { error } = await supabase
                 .from("users")
                 .insert({
@@ -690,8 +728,10 @@ describe("Database Constraints and Foreign Keys", () => {
     })
 
     describe("Registration Sessions Table", () => {
-        it("should create registration session with all required fields", async ({ skip }) => {
-    if (!isDbRunning) return skip()
+        it("should create registration session with all required fields", async ({
+            skip,
+        }) => {
+            if (!isDbRunning) return skip()
             const { data, error } = await supabase
                 .from("registration_sessions")
                 .insert({
@@ -721,8 +761,10 @@ describe("Database Constraints and Foreign Keys", () => {
             }
         })
 
-        it("should reject empty session_id in registration_sessions", async ({ skip }) => {
-    if (!isDbRunning) return skip()
+        it("should reject empty session_id in registration_sessions", async ({
+            skip,
+        }) => {
+            if (!isDbRunning) return skip()
             const { error } = await supabase
                 .from("registration_sessions")
                 .insert({
@@ -740,7 +782,7 @@ describe("Database Constraints and Foreign Keys", () => {
         })
 
         it("should reject invalid current_step values", async ({ skip }) => {
-    if (!isDbRunning) return skip()
+            if (!isDbRunning) return skip()
             const { error } = await supabase
                 .from("registration_sessions")
                 .insert({
@@ -759,7 +801,7 @@ describe("Database Constraints and Foreign Keys", () => {
         })
 
         it("should enforce unique session_id constraint", async ({ skip }) => {
-    if (!isDbRunning) return skip()
+            if (!isDbRunning) return skip()
             const sessionId = `unique_session_${Date.now()}`
 
             // Insert first session

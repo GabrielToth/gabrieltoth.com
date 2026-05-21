@@ -71,7 +71,7 @@ describe("AuthenticationScreen Component", () => {
                 />
             )
 
-            const buttonRow = container.querySelector("[role=\"group\"]")
+            const buttonRow = container.querySelector('[role="group"]')
             expect(buttonRow).toBeInTheDocument()
         })
 
@@ -108,7 +108,7 @@ describe("AuthenticationScreen Component", () => {
                 />
             )
 
-            const errorAlert = container.querySelector("[role=\"alert\"]")
+            const errorAlert = container.querySelector('[role="alert"]')
             expect(errorAlert).not.toBeInTheDocument()
         })
     })
@@ -128,7 +128,7 @@ describe("AuthenticationScreen Component", () => {
 
             await waitFor(() => {
                 const emailFormContainer = container.querySelector(
-                    "[class*=\"emailFormContainer\"]"
+                    '[class*="emailFormContainer"]'
                 )
                 expect(emailFormContainer).toBeInTheDocument()
             })
@@ -147,7 +147,7 @@ describe("AuthenticationScreen Component", () => {
             await user.click(emailButton)
 
             await waitFor(() => {
-                const buttonRow = container.querySelector("[role=\"group\"]")
+                const buttonRow = container.querySelector('[role="group"]')
                 expect(buttonRow).not.toBeInTheDocument()
             })
         })
@@ -167,7 +167,7 @@ describe("AuthenticationScreen Component", () => {
             // Wait for email form to appear
             await waitFor(() => {
                 const emailFormContainer = container.querySelector(
-                    "[class*=\"emailFormContainer\"]"
+                    '[class*="emailFormContainer"]'
                 )
                 expect(emailFormContainer).toBeInTheDocument()
             })
@@ -354,7 +354,7 @@ describe("AuthenticationScreen Component", () => {
                 />
             )
 
-            const buttonRow = container.querySelector("[role=\"group\"]")
+            const buttonRow = container.querySelector('[role="group"]')
             expect(buttonRow).toHaveAttribute(
                 "aria-label",
                 "Authentication methods"

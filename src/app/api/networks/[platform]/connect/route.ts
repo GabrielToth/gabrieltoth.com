@@ -55,8 +55,6 @@ export async function POST(
             )
         }
 
-        
-
         const networkManager = getNetworkManager()
         const network = await networkManager.linkNetwork(
             userId,

@@ -20,13 +20,9 @@ const mockConfig: YouTubeChannelLinkingConfig = {
         ],
     },
     email: {
-        host: "smtp.example.com",
-        port: 587,
-        user: "test@example.com",
-        password: "password",
+        apiKey: "re_test_key_123",
         fromEmail: "noreply@example.com",
         fromName: "Test",
-        tls: true,
     },
 
     encryption: {

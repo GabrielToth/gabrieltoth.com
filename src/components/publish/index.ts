@@ -1,7 +1,7 @@
 export {
     default as PublishContainer,
     type PublishContainerProps,
-    type SocialChannel
+    type SocialChannel,
 } from "./PublishContainer"
 
 export { type Post } from "./PostCard"
@@ -14,14 +14,14 @@ export { PostList, type PostListProps } from "./PostList"
 
 export {
     default as UniversalPostingButton,
-    type UniversalPostingButtonProps
+    type UniversalPostingButtonProps,
 } from "./UniversalPostingButton"
 
 export {
     default as NetworkSelector,
     type Network,
     type NetworkGroup,
-    type NetworkSelectorProps
+    type NetworkSelectorProps,
 } from "./NetworkSelector"
 
 export { default as PostingScheduler } from "./PostingScheduler"
@@ -29,4 +29,3 @@ export { default as PostingScheduler } from "./PostingScheduler"
 export { default as ContentCreator } from "./ContentCreator"
 
 export { default as PostingInterface } from "./PostingInterface"
-

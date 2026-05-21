@@ -11,8 +11,7 @@ const files = [
     "../database-constraints.test.ts",
 ]
 
-const headerBlock =
-    /^[\s\S]*?vi\.unmock\("@supabase\/supabase-js"\)\n/
+const headerBlock = /^[\s\S]*?vi\.unmock\("@supabase\/supabase-js"\)\n/
 
 const replacement = `import { isSupabaseAvailable } from "@/test-utils/skip-without-supabase"
 import { createClient } from "@supabase/supabase-js"

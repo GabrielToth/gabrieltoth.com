@@ -113,7 +113,8 @@ Cloudflare Turnstile (recommended, free):
 - **NEXT_PUBLIC_CAPTCHA_SITE_KEY**: Frontend site key (can be public)
 
 To get keys:
-1. Go to https://dash.cloudflare.com/
+
+1. Go to <https://dash.cloudflare.com/>
 2. Navigate to Turnstile
 3. Create a new site for localhost
 4. Copy the Site Key and Secret Key
@@ -175,8 +176,8 @@ docker exec -it platform-redis redis-cli
 
 ## Access Points
 
-- **App (Frontend)**: http://localhost:3000
-- **Backend API**: http://localhost:4000
+- **App (Frontend)**: <http://localhost:3000>
+- **Backend API**: <http://localhost:4000>
 - **Postgres**: localhost:5432 (user: platform, password: devpassword)
 - **Supabase**: localhost:5432 (user: supabase_admin, password: supabasepassword)
 - **Redis**: localhost:6379
@@ -341,6 +342,7 @@ SUPABASE_SERVICE_KEY=<your-production-service-key>
 ## Database Schema Management
 
 The docker-compose configuration automatically:
+
 1. Creates Postgres and Supabase containers
 2. Initializes databases on first startup
 3. Applies init-schema.sql if present

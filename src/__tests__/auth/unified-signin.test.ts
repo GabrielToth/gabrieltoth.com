@@ -15,33 +15,58 @@ vi.mock("@/lib/supabase/client", () => ({
     createClient: vi.fn(() => ({
         auth: {
             signInWithPassword: vi.fn(async ({ email, password }) => {
-                if (email === "existing@example.com" || email === "user@example.com") {
+                if (
+                    email === "existing@example.com" ||
+                    email === "user@example.com"
+                ) {
                     if (password === "wrongpassword") {
-                        return { data: { user: null, session: null }, error: { message: "Invalid login credentials" } }
+                        return {
+                            data: { user: null, session: null },
+                            error: { message: "Invalid login credentials" },
+                        }
                     }
                     if (password === "dummy-password-for-check") {
-                        return { data: { user: null, session: null }, error: { message: "Invalid login credentials" } }
+                        return {
+                            data: { user: null, session: null },
+                            error: { message: "Invalid login credentials" },
+                        }
                     }
-                    return { data: { user: { id: "user123", email }, session: {} }, error: null }
+                    return {
+                        data: { user: { id: "user123", email }, session: {} },
+                        error: null,
+                    }
                 }
-                return { data: { user: null, session: null }, error: { message: "Invalid login credentials" } }
+                return {
+                    data: { user: null, session: null },
+                    error: { message: "Invalid login credentials" },
+                }
             }),
             signUp: vi.fn(async ({ email }) => {
                 if (email === "existing@example.com") {
-                    return { data: { user: null, session: null }, error: { message: "User already registered" } }
+                    return {
+                        data: { user: null, session: null },
+                        error: { message: "User already registered" },
+                    }
                 }
-                return { data: { user: { id: "newuser123", email }, session: {} }, error: null }
+                return {
+                    data: { user: { id: "newuser123", email }, session: {} },
+                    error: null,
+                }
             }),
         },
     })),
 }))
 
 // Mock fetch for REST API calls
-global.fetch = vi.fn(async (url) => {
+global.fetch = vi.fn(async url => {
     if (url.includes("users?email=eq.")) {
         const emailMatch = url.match(/email=eq\.([^&]+)/)
         const email = emailMatch ? decodeURIComponent(emailMatch[1]) : ""
-        if (email === "existing@example.com" || email === "user@example.com" || email === "test@example.com") {
+        if (
+            email === "existing@example.com" ||
+            email === "user@example.com" ||
+            email === "test@example.com"
+        ) {
             return { ok: true, json: async () => [{ id: "user123" }] }
         }
         return { ok: true, json: async () => [] }

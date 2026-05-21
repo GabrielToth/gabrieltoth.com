@@ -161,12 +161,12 @@ describe("Security Headers Middleware", () => {
             next = vi.fn()
 
             // Set NODE_ENV to production for testing
-            process.env.NODE_ENV = "production"
+            ;(process.env as any).NODE_ENV = "production"
         })
 
         it("should redirect HTTP to HTTPS in production", () => {
             req.headers = {}
-            req.protocol = "http"
+            ;(req as any).protocol = "http"
 
             httpsRedirectMiddleware(req as Request, res as Response, next)
 
@@ -177,7 +177,7 @@ describe("Security Headers Middleware", () => {
         })
 
         it("should not redirect if already HTTPS", () => {
-            req.protocol = "https"
+            ;(req as any).protocol = "https"
 
             httpsRedirectMiddleware(req as Request, res as Response, next)
 
@@ -186,7 +186,7 @@ describe("Security Headers Middleware", () => {
         })
 
         it("should check x-forwarded-proto header for proxied requests", () => {
-            req.protocol = "http"
+            ;(req as any).protocol = "http"
             req.headers = { "x-forwarded-proto": "https" }
 
             httpsRedirectMiddleware(req as Request, res as Response, next)
@@ -196,8 +196,8 @@ describe("Security Headers Middleware", () => {
         })
 
         it("should not redirect in development environment", () => {
-            process.env.NODE_ENV = "development"
-            req.protocol = "http"
+            ;(process.env as any).NODE_ENV = "development"
+            ;(req as any).protocol = "http"
 
             httpsRedirectMiddleware(req as Request, res as Response, next)
 
@@ -206,7 +206,7 @@ describe("Security Headers Middleware", () => {
         })
 
         it("should preserve original URL in redirect", () => {
-            req.protocol = "http"
+            ;(req as any).protocol = "http"
             req.headers = { host: "example.com" }
             req.originalUrl = "/api/test?param=value"
 
@@ -219,7 +219,7 @@ describe("Security Headers Middleware", () => {
         })
 
         it("should use host header for redirect URL", () => {
-            req.protocol = "http"
+            ;(req as any).protocol = "http"
             req.headers = { host: "example.com" }
 
             httpsRedirectMiddleware(req as Request, res as Response, next)

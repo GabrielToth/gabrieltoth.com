@@ -247,9 +247,7 @@ async function handleGoogleCallback(
  * GET handler for Google OAuth callback
  * Google redirects here with authorization code in query parameters
  */
-export async function GET(
-    request: NextRequest
-): Promise<NextResponse> {
+export async function GET(request: NextRequest): Promise<NextResponse> {
     const clientIp = getClientIp(request)
 
     try {
@@ -305,9 +303,7 @@ export async function GET(
  * POST handler for Google OAuth callback
  * Frontend can also POST the authorization code
  */
-export async function POST(
-    request: NextRequest
-): Promise<NextResponse> {
+export async function POST(request: NextRequest): Promise<NextResponse> {
     const clientIp = getClientIp(request)
 
     try {

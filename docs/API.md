@@ -5,20 +5,24 @@ Complete API reference for gabrieltoth.com platform.
 ## 📚 Table of Contents
 
 ### Authentication
+
 - **[Authentication API](API_AUTH.md)** - User login, password reset, session management
 - **[Registration API](API_REGISTRATION.md)** - Enhanced multi-step registration with email verification
 - **[OAuth API](API_OAUTH.md)** - Google OAuth authentication
 
 ### Platform
+
 - **[Health Check API](#health-check-api)** - System health monitoring
 - **[Contact API](#contact-api)** - Contact form submissions
 - **[Analytics API](#analytics-api)** - User analytics and consumption
 
 ### Payments
+
 - **[Monero API](#monero-api)** - Cryptocurrency payments
 - **[PIX API](#pix-api)** - Brazilian payment method
 
 ### Webhooks
+
 - **[WhatsApp Webhook](#whatsapp-webhook)** - WhatsApp Business API integration
 
 ---
@@ -37,6 +41,7 @@ Development: http://localhost:3000/api
 All API endpoints follow a consistent response format:
 
 ### Success Response (2xx)
+
 ```json
 {
   "success": true,
@@ -48,6 +53,7 @@ All API endpoints follow a consistent response format:
 ```
 
 ### Error Response (4xx, 5xx)
+
 ```json
 {
   "success": false,
@@ -71,11 +77,13 @@ Most endpoints require authentication via session cookies or API keys. See [Auth
 Check system health and status.
 
 **Request:**
+
 ```http
 GET /api/health HTTP/1.1
 ```
 
 **Response (200):**
+
 ```json
 {
   "status": "healthy",
@@ -86,6 +94,7 @@ GET /api/health HTTP/1.1
 ```
 
 **Use Cases:**
+
 - Monitoring system availability
 - Load balancer health checks
 - Uptime monitoring services
@@ -99,6 +108,7 @@ GET /api/health HTTP/1.1
 Submit a contact form message.
 
 **Request:**
+
 ```http
 POST /api/contact HTTP/1.1
 Content-Type: application/json
@@ -113,12 +123,14 @@ Content-Type: application/json
 ```
 
 **Validation Rules:**
+
 - Name: 2-100 characters, alphanumeric with spaces
 - Email: Valid RFC 5322 format
 - Subject: 5-200 characters
 - Message: 10-5000 characters
 
 **Response (200):**
+
 ```json
 {
   "success": true,
@@ -127,11 +139,13 @@ Content-Type: application/json
 ```
 
 **Error Responses:**
+
 - 400: Invalid input or validation failed
 - 403: Invalid CSRF token
 - 429: Rate limit exceeded (max 3 messages per hour per IP)
 
 **Security Features:**
+
 - Rate limiting per IP address
 - CSRF token validation
 - Input sanitization
@@ -147,17 +161,20 @@ Content-Type: application/json
 Get user consumption and credit history.
 
 **Request:**
+
 ```http
 GET /api/platform/analytics?userId=user-uuid HTTP/1.1
 Cookie: session=session_token
 ```
 
 **Query Parameters:**
+
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
 | userId | string | Yes | User UUID |
 
 **Response (200):**
+
 ```json
 {
   "success": true,
@@ -179,6 +196,7 @@ Cookie: session=session_token
 ```
 
 **Error Responses:**
+
 - 401: Unauthorized (no session)
 - 404: User not found
 
@@ -191,6 +209,7 @@ Cookie: session=session_token
 Create a new Monero payment request.
 
 **Request:**
+
 ```http
 POST /api/payments/monero/create HTTP/1.1
 Content-Type: application/json
@@ -203,6 +222,7 @@ Content-Type: application/json
 ```
 
 **Parameters:**
+
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
 | serviceType | string | Yes | Type of service being purchased |
@@ -210,6 +230,7 @@ Content-Type: application/json
 | whatsappNumber | string | No | WhatsApp for notifications |
 
 **Response (201):**
+
 ```json
 {
   "success": true,
@@ -225,6 +246,7 @@ Content-Type: application/json
 ```
 
 **Error Responses:**
+
 - 400: Invalid amount or service type
 - 500: Payment creation failed
 
@@ -235,6 +257,7 @@ Content-Type: application/json
 Verify a Monero payment transaction.
 
 **Request:**
+
 ```http
 POST /api/payments/monero/verify HTTP/1.1
 Content-Type: application/json
@@ -247,6 +270,7 @@ Content-Type: application/json
 ```
 
 **Response (200):**
+
 ```json
 {
   "success": true,
@@ -260,6 +284,7 @@ Content-Type: application/json
 ```
 
 **Error Responses:**
+
 - 400: Invalid transaction hash or tracking code
 - 404: Payment not found
 - 402: Payment not confirmed yet
@@ -271,11 +296,13 @@ Content-Type: application/json
 Check payment status by tracking code.
 
 **Request:**
+
 ```http
 GET /api/payments/monero/verify?trackingCode=ABC123 HTTP/1.1
 ```
 
 **Response (200):**
+
 ```json
 {
   "success": true,
@@ -297,6 +324,7 @@ GET /api/payments/monero/verify?trackingCode=ABC123 HTTP/1.1
 Create a new PIX payment request (Brazilian payment method).
 
 **Request:**
+
 ```http
 POST /api/payments/pix/create HTTP/1.1
 Content-Type: application/json
@@ -309,6 +337,7 @@ Content-Type: application/json
 ```
 
 **Response (201):**
+
 ```json
 {
   "success": true,
@@ -330,11 +359,13 @@ Content-Type: application/json
 Retrieve PIX payment information.
 
 **Request:**
+
 ```http
 GET /api/payments/pix/create?paymentId=payment-uuid HTTP/1.1
 ```
 
 **Response (200):**
+
 ```json
 {
   "success": true,
@@ -356,16 +387,19 @@ GET /api/payments/pix/create?paymentId=payment-uuid HTTP/1.1
 Verify WhatsApp webhook (required by WhatsApp Business API).
 
 **Request:**
+
 ```http
 GET /api/whatsapp/webhook?hub.mode=subscribe&hub.challenge=challenge_string&hub.verify_token=verify_token HTTP/1.1
 ```
 
 **Response (200):**
+
 ```
 challenge_string
 ```
 
 **Error Responses:**
+
 - 403: Invalid verify token
 
 ---
@@ -375,6 +409,7 @@ challenge_string
 Receive WhatsApp messages and events.
 
 **Request:**
+
 ```http
 POST /api/whatsapp/webhook HTTP/1.1
 Content-Type: application/json
@@ -403,6 +438,7 @@ Content-Type: application/json
 ```
 
 **Response (200):**
+
 ```json
 {
   "success": true
@@ -423,6 +459,7 @@ Different endpoints have different rate limits:
 | /payments/* | 10 requests | 1 minute |
 
 Rate limit headers are included in responses:
+
 ```
 X-RateLimit-Limit: 10
 X-RateLimit-Remaining: 9
@@ -452,22 +489,29 @@ X-RateLimit-Reset: 1619712000
 ## Security
 
 ### HTTPS
+
 All API requests must use HTTPS in production. HTTP requests are automatically redirected to HTTPS.
 
 ### CSRF Protection
+
 All state-changing requests (POST, PUT, DELETE) require a valid CSRF token. Get a token from `/auth/csrf`.
 
 ### Authentication
+
 Most endpoints require authentication via HTTP-only session cookies. See [Authentication API](API_AUTH.md).
 
 ### Rate Limiting
+
 Rate limits are enforced per IP address and per user. Exceeding limits results in 429 errors.
 
 ### Input Validation
+
 All input is validated and sanitized to prevent XSS and SQL injection attacks.
 
 ### Security Headers
+
 All responses include security headers:
+
 - Content-Security-Policy
 - X-Frame-Options: DENY
 - X-Content-Type-Options: nosniff
@@ -493,14 +537,16 @@ Or use the Postman MCP integration (if available).
 ## Support
 
 For API issues or questions:
+
 - Open an issue on [GitHub](https://github.com/gabrieltoth/gabrieltoth.com/issues)
-- Contact: support@gabrieltoth.com
+- Contact: <support@gabrieltoth.com>
 
 ---
 
 ## Changelog
 
 ### v1.0.0 (2026-04-20)
+
 - Initial API documentation
 - Authentication endpoints
 - OAuth integration

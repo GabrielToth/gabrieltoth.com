@@ -257,18 +257,18 @@ describe("Security: Injection Attacks", () => {
 
         describe("Other XSS vectors", () => {
             it("should detect iframe injection", () => {
-                const payload = "<iframe src=\"http://evil.com\"></iframe>"
+                const payload = '<iframe src="http://evil.com"></iframe>'
                 expect(containsXSSPattern(payload)).toBe(true)
             })
 
             it("should detect object tag", () => {
                 const payload =
-                    "<object data=\"http://evil.com/xss.swf\"></object>"
+                    '<object data="http://evil.com/xss.swf"></object>'
                 expect(containsXSSPattern(payload)).toBe(true)
             })
 
             it("should detect embed tag", () => {
-                const payload = "<embed src=\"http://evil.com/xss.swf\">"
+                const payload = '<embed src="http://evil.com/xss.swf">'
                 expect(containsXSSPattern(payload)).toBe(true)
             })
 
@@ -278,7 +278,7 @@ describe("Security: Injection Attacks", () => {
             })
 
             it("should detect img tag with onerror", () => {
-                const payload = "<img src=x onerror=alert(\"xss\")>"
+                const payload = '<img src=x onerror=alert("xss")>'
                 expect(containsXSSPattern(payload)).toBe(true)
             })
 
@@ -290,7 +290,7 @@ describe("Security: Injection Attacks", () => {
 
             it("should detect meta refresh", () => {
                 const payload =
-                    "<meta http-equiv=\"refresh\" content=\"0;url=javascript:alert('xss')\">"
+                    '<meta http-equiv="refresh" content="0;url=javascript:alert(\'xss\')">'
                 expect(containsXSSPattern(payload)).toBe(true)
             })
 

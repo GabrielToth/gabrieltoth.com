@@ -327,7 +327,7 @@ describe("Error Handler Middleware", () => {
                 body: JSON.stringify(body),
             })
 
-            const sanitized = await getSanitizedBody(req) as any
+            const sanitized = (await getSanitizedBody(req)) as any
 
             expect(sanitized).toEqual({
                 email: "test@example.com",
@@ -341,7 +341,7 @@ describe("Error Handler Middleware", () => {
                 body: "invalid json",
             })
 
-            const sanitized = await getSanitizedBody(req) as any
+            const sanitized = (await getSanitizedBody(req)) as any
 
             expect(sanitized).toBeNull()
         })
@@ -351,7 +351,7 @@ describe("Error Handler Middleware", () => {
                 method: "GET",
             })
 
-            const sanitized = await getSanitizedBody(req) as any
+            const sanitized = (await getSanitizedBody(req)) as any
 
             expect(sanitized).toBeNull()
         })

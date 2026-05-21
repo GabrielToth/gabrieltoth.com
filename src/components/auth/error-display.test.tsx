@@ -82,9 +82,9 @@ describe("ErrorDisplay Component", () => {
             )
 
             const inlineElement =
-                inlineContainer.querySelector("[role=\"alert\"]")
+                inlineContainer.querySelector('[role="alert"]')
             const bannerElement =
-                bannerContainer.querySelector("[role=\"alert\"]")
+                bannerContainer.querySelector('[role="alert"]')
 
             expect(inlineElement?.className).not.toBe(bannerElement?.className)
         })

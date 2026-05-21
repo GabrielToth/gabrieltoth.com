@@ -5,7 +5,7 @@
  * Validates: Requirements 1.0, 2.0, 3.0, 4.0
  */
 
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/nextjs"
 import { AuthenticationScreen } from "../components/AuthenticationScreen"
 
 const meta = {

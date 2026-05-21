@@ -119,7 +119,7 @@ describe("Property 1: Password Validation Completeness", () => {
                     ";",
                     "'",
                     ":",
-                    "\"",
+                    '"',
                     "\\",
                     "|",
                     ",",

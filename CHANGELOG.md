@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 #### Secure Login Implementation
 
 **Backend Infrastructure**
+
 - Database schema for users, sessions, remember_me_tokens, audit_logs, and rate_limit_attempts
 - Comprehensive input validation functions (email, password, CSRF token, request body)
 - Password hashing with Argon2id (cost factor 12) and constant-time comparison
@@ -23,6 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Redis integration for distributed caching (with in-memory fallback for local development)
 
 **API Endpoints**
+
 - POST /api/auth/login - Authenticate user with email and password
 - Comprehensive error handling with generic error messages
 - Security headers (CSP, X-Frame-Options, HSTS, etc.)
@@ -30,6 +32,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Performance monitoring and metrics
 
 **Frontend Components**
+
 - LoginForm component with email and password inputs
 - PasswordVisibilityToggle component with keyboard accessibility
 - Remember Me checkbox for extended session duration
@@ -40,6 +43,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Responsive design (mobile, tablet, desktop)
 
 **Security Features**
+
 - SQL injection prevention with parameterized queries
 - XSS protection with input sanitization and CSP headers
 - CSRF protection with token validation
@@ -51,6 +55,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Information disclosure prevention with generic error messages
 
 **Testing**
+
 - Unit tests for all authentication functions (>90% coverage)
 - Integration tests for complete login flow
 - Security tests for injection attacks, XSS, CSRF, brute force
@@ -60,6 +65,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Tests for edge cases (expired tokens, concurrent requests)
 
 **Documentation**
+
 - API documentation with endpoint details, parameters, and responses
 - Security documentation with threat model and security measures
 - Deployment guide for cloud (Vercel/AWS) and local environments
@@ -69,6 +75,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Changelog documenting all changes
 
 **Environment Configuration**
+
 - Support for cloud deployment (Vercel, AWS)
 - Support for local development with Docker
 - Environment-specific configuration (database, cache, secrets)
@@ -77,6 +84,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Audit log retention policy
 
 **Monitoring and Alerting**
+
 - Error tracking with Sentry integration
 - Performance monitoring with Lighthouse
 - Audit log monitoring for compliance
@@ -174,12 +182,12 @@ This project follows [Semantic Versioning](https://semver.org/):
 
 ## Security
 
-For security issues, please email security@gabrieltoth.com instead of using the issue tracker.
+For security issues, please email <security@gabrieltoth.com> instead of using the issue tracker.
 
 ## Support
 
 For support, please visit:
-- Documentation: https://gabrieltoth.com/docs
-- Issues: https://github.com/gabrieltoth/gabrieltoth.com/issues
-- Email: support@gabrieltoth.com
 
+- Documentation: <https://gabrieltoth.com/docs>
+- Issues: <https://github.com/gabrieltoth/gabrieltoth.com/issues>
+- Email: <support@gabrieltoth.com>

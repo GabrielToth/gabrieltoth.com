@@ -213,7 +213,10 @@ describe("Password Validator", () => {
         })
 
         it("should return generic error for unsupported hash format", async () => {
-            const result = await validatePassword(TEST_PASSWORD, "$argon2id$v=19$m=64000,t=3,p=2$abcdefghijklmnopqrst$0123456789abcdef0123456789abcdef")
+            const result = await validatePassword(
+                TEST_PASSWORD,
+                "$argon2id$v=19$m=64000,t=3,p=2$abcdefghijklmnopqrst$0123456789abcdef0123456789abcdef"
+            )
 
             expect(result.valid).toBe(false)
             expect(result.error).toBe("Authentication failed")

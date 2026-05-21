@@ -2,7 +2,25 @@
 
 ## 📋 General Instructions
 
+### 0. Mandatory Startup Infrastructure
+
+Before performing any task, writing code, or running diagnostics, the agent (including Cursor, Antigravity, Kiro) MUST ensure that the local infrastructure is up and running by executing:
+
+1. Spin up all Docker containers:
+
+   ```bash
+   cd docker
+   docker compose up -d
+   ```
+
+2. Start the Supabase local backend:
+
+   ```bash
+   npx supabase start
+   ```
+
 ### 1. Documentation
+
 - **DO NOT** generate `.md` summary files after completing tasks
 - **DO NOT** create change reports, summaries, or lists in `.md` format unless explicitly requested
 - **DO NOT** create guides, tutorials, or how-to documents in `.agent/` folder
@@ -26,6 +44,7 @@ Do **not** embed implementation-plan metadata in source, tests, or docs:
 - **Applies to**: Cursor agents, Kiro, Google Antigravity, and all contributors
 
 ### 1.2 Language Requirements (MANDATORY)
+
 - **ALL Issues**: Must be written in English
 - **ALL Pull Requests**: Title, description, and comments must be in English
 - **ALL Commit Messages**: Must be in English (format: `type(#issue): description`)
@@ -36,7 +55,7 @@ Do **not** embed implementation-plan metadata in source, tests, or docs:
 - **ALL Error Messages**: Must be in English (use i18n for user-facing translations)
 - **ALL Code Reviews**: Comments must be in English
 - **NO EXCEPTIONS**: Even if the user writes in Portuguese, all project artifacts must be in English
-- **RATIONALE**: 
+- **RATIONALE**:
   - Ensures consistency across the codebase
   - Enables international team collaboration
   - Maintains professional standards
@@ -44,6 +63,7 @@ Do **not** embed implementation-plan metadata in source, tests, or docs:
   - Facilitates open-source contributions
 
 ### 1.3 Automatic GitHub Issues and Commits (MANDATORY)
+
 - **NEVER ask the user** if they want to create an issue or commit
 - **ALWAYS automatically**:
   1. Create a GitHub issue (if solving a problem or feature)
@@ -67,28 +87,33 @@ Do **not** embed implementation-plan metadata in source, tests, or docs:
 ### Example: Correct vs Incorrect
 
 ❌ **WRONG - Portuguese**:
+
 ```
 git commit -m "feat: implementar login com validação segura"
 ```
 
 ✅ **CORRECT - English**:
+
 ```
 git commit -m "feat(#42): implement secure login with password visibility toggle"
 ```
 
 ❌ **WRONG - Portuguese in issue**:
+
 ```
 Title: [Feature] Implementar Login
 Description: Preciso de um formulário de login com validação...
 ```
 
 ✅ **CORRECT - English in issue**:
+
 ```
 Title: [Feature] Implement Secure Login with Password Visibility
 Description: Need to implement a login form with validation...
 ```
 
 ### 2. Git Commits and PRs
+
 - Always use descriptive commit messages in English
 - Prefer atomic commits (one change per commit)
 - Use conventional commits: `feat:`, `fix:`, `refactor:`, `docs:`, etc.
@@ -98,18 +123,21 @@ Description: Need to implement a login form with validation...
 - Versioning is separate: use `npm version patch|minor|major` after commits
 
 ### 3. Code
+
 - Maintain consistency with project style
 - Follow existing naming conventions
 - Do not add dependencies without confirming
 - Always test before committing
 
 ### 4. Responses
+
 - Be concise and direct
 - Use lists and tables to organize information
 - Show only what's essential
 - If details are needed, the user will ask
 
 ### 5. Disposable Files
+
 - Do not commit to git: change reports, summaries, task lists
 - These files should be created ONLY if the user explicitly requests them
 - Example: "create a report.md" or "document the changes"
@@ -131,6 +159,7 @@ Description: Need to implement a login form with validation...
 **MANDATORY**: Open a GitHub issue BEFORE suggesting or implementing any solution.
 
 ### Why?
+
 - Documents the problem in detail
 - Creates traceability
 - Allows discussion before implementation
@@ -138,18 +167,21 @@ Description: Need to implement a login form with validation...
 - Maintains decision history
 
 ### When to Apply?
+
 - ✅ Every time you identify a problem
 - ✅ Every time you receive a task
 - ✅ Every time you need to make code changes
 - ✅ Even for small fixes
 
 ### When NOT to Apply?
+
 - ❌ Only if the user explicitly says "no issue needed"
 - ❌ Only if the issue already exists (reuse it)
 
 ### Mandatory Process
 
 **STEP 1: Open Issue**
+
 ```
 Title: [Type] Clear description of the problem
 Description: Detail context, problem, impact, requirements
@@ -157,10 +189,12 @@ Labels: feature, bug, enhancement, etc.
 ```
 
 **STEP 2: Wait for Confirmation**
+
 - Wait for user to confirm the issue
 - Or proceed if user authorizes
 
 **STEP 3: Implement with Reference**
+
 - Use issue number in all commits
 - Format: `fix(#123): description`
 - Close issue automatically: `Closes #123`
@@ -219,6 +253,7 @@ Labels: feature, bug, enhancement, etc.
 ## 🔨 Mandatory Local Build
 
 **ALWAYS** execute `npm run build` locally before commit/push:
+
 - If it fails, fix the errors
 - Try again until it passes
 - Do not push code that doesn't compile
@@ -253,20 +288,24 @@ Status: Ready for push
 **MANDATORY** to follow this cycle after completing any feature/spec implementation:
 
 ### 1️⃣ General Tests (Test ENTIRE site)
+
 ```bash
 npm run test                        # Run all tests
 npm run test:coverage               # Generate coverage report
 ```
+
 - Verify all tests pass
 - Review test coverage
 - Fix any failing tests before proceeding
 
 ### 2️⃣ Performance/Speed Tests
+
 ```bash
 npm run lighthouse                  # Run Lighthouse audit
 npm run perf:full                   # Complete performance analysis
 npm run analyze                     # Analyze bundle size
 ```
+
 - Check Core Web Vitals (LCP, FID, CLS)
 - Analyze bundle size
 - Document performance metrics
@@ -274,9 +313,11 @@ npm run analyze                     # Analyze bundle size
 ### 3️⃣ Decision: Performance Acceptable?
 
 **YES - Performance OK:**
+
 - Proceed to step 4 (Code Formatting)
 
 **NO - Performance Poor:**
+
 - Make commit: `fix: performance improvements`
 - Create separate commit for optimizations
 - Execute optimizations (code splitting, lazy loading, etc.)
@@ -284,52 +325,63 @@ npm run analyze                     # Analyze bundle size
 - Repeat until targets are met
 
 ### 4️⃣ Code Formatting and Standardization
+
 ```bash
 npm run format                      # Format code with Prettier
 npm run lint:fix                    # Fix ESLint issues
 npm run type-check                  # Verify TypeScript types
 ```
+
 - Code will be formatted automatically
 - Linting errors will be fixed
 - TypeScript types will be validated
 
 ### 5️⃣ Spelling and Dictionary Verification
+
 ```bash
 npm run spell-check                 # Check spelling
 ```
+
 - If unknown words found:
   - Add to project dictionary (`.cspell.json` or similar)
   - Or fix the spelling if it's a real error
   - Run again until it passes
 
 ### 6️⃣ Storybook Documentation
+
 ```bash
 npm run storybook                   # Start Storybook
 ```
+
 - Create/update stories for new components
 - Document props and behaviors
 - Add usage examples
 - Verify stories render correctly
 
 ### 7️⃣ Final Build
+
 ```bash
 npm run build                       # Build for production
 ```
+
 - Verify build completes without errors
 - Review warnings (if any)
 - Confirm bundle size is acceptable
 
 ### 8️⃣ Final Tests (Complete Cycle)
+
 ```bash
 npm run test                        # All tests again
 npm run test:e2e                    # E2E tests (if applicable)
 npm run lighthouse                  # Final performance
 ```
+
 - Ensure everything still works after formatting
 - Verify final performance
 - Confirm no regressions were introduced
 
 ### 9️⃣ Commit and Push
+
 ```bash
 git add .                           # Add all changes
 git commit -m "feat: complete feature X"  # Descriptive message
@@ -341,41 +393,49 @@ git push -u origin feature-branch   # Push to repository
 **IMPORTANT**: Each commit must include the issue number and describe the specific change.
 
 **Initial implementation:**
+
 ```
 feat(#123): implement dashboard redesign components
 ```
 
 **Performance improvements:**
+
 ```
 perf(#123): optimize bundle size and lazy load components
 ```
 
 **Formatting and linting:**
+
 ```
 style(#123): format code and fix linting issues
 ```
 
 **Documentation:**
+
 ```
 docs(#123): add Storybook stories for dashboard components
 ```
 
 **Tests:**
+
 ```
 test(#123): add comprehensive test coverage for components
 ```
 
 **Bug fix:**
+
 ```
 fix(#123): remove header from registration flow
 ```
 
 **Refactoring:**
+
 ```
 refactor(#123): extract validation logic to utilities
 ```
 
 **NEVER commit like this:**
+
 ```
 ❌ 1.8.22 - Version as name
 ❌ 1.8.23 - Version as name
@@ -397,11 +457,13 @@ refactor(#123): extract validation logic to utilities
 ### ✅ MANDATORY Commit Format
 
 **ALWAYS** use this format:
+
 ```
 <type>(#<issue-number>): <description>
 ```
 
 **Correct examples:**
+
 ```
 fix(#42): remove header from registration flow
 feat(#123): add WhatsApp integration
@@ -440,6 +502,7 @@ refactor(#78): extract validation logic to utilities
 ### 1️⃣ Create GitHub Issue
 
 **Title:** Descriptive and concise
+
 ```
 [Feature] Add WhatsApp Integration
 [Bug] Fix dashboard performance on mobile
@@ -447,6 +510,7 @@ refactor(#78): extract validation logic to utilities
 ```
 
 **Detailed Description:**
+
 ```markdown
 ## Description
 Explain what needs to be done and why.
@@ -496,6 +560,7 @@ git push -u origin feature/issue-123-whatsapp-integration
 ```
 
 **Create PR on GitHub:**
+
 - Title: `[PR #123] Add WhatsApp Integration`
 - Description: Reference the issue: `Closes #123`
 - Linked Issues: Select the created issue
@@ -523,6 +588,7 @@ git commit -m "style(#123): format code and fix linting issues"
 ```
 
 **Mandatory Commit Format:**
+
 ```
 <type>(#<issue-number>): <description>
 
@@ -532,6 +598,7 @@ Closes #<issue-number>
 ```
 
 Example:
+
 ```
 feat(#123): add WhatsApp integration
 
@@ -553,6 +620,7 @@ git push origin feature/issue-123-whatsapp-integration
 ```
 
 **Checklist before Merge:**
+
 - [ ] All tests pass
 - [ ] CI/CD pipeline passed
 - [ ] Code review approved
@@ -567,6 +635,7 @@ git push origin feature/issue-123-whatsapp-integration
 **MANDATORY** for ALL implementations:
 
 ### Cloud Version
+
 - Hosted on server (Vercel, AWS, etc.)
 - Access via public URL
 - Remote database
@@ -574,6 +643,7 @@ git push origin feature/issue-123-whatsapp-integration
 - Production environment variables
 
 ### Local Version
+
 - Run locally (`npm run dev`)
 - Local database (SQLite, PostgreSQL local)
 - Simplified authentication for testing
@@ -637,6 +707,7 @@ export async function fetchData() {
 ### ⚠️ IMPORTANT: Versioning is SEPARATE from Commit Messages
 
 **NEVER** use version as commit name:
+
 ```bash
 ❌ WRONG - Commit with version as name:
 git commit -m "1.8.22"
@@ -666,6 +737,7 @@ git push origin feature-branch --tags
 ```
 
 **Example with Versioning:**
+
 ```bash
 # Make changes
 git add .
@@ -700,6 +772,7 @@ git push origin feature-branch --tags
 After implementing a new route or feature, create comprehensive security tests covering:
 
 #### Authentication & Authorization
+
 - [ ] Unauthenticated access attempts
 - [ ] Invalid/expired tokens
 - [ ] Token tampering
@@ -708,6 +781,7 @@ After implementing a new route or feature, create comprehensive security tests c
 - [ ] Cross-user access attempts
 
 #### Input Validation
+
 - [ ] SQL Injection attempts
 - [ ] NoSQL Injection attempts
 - [ ] Command Injection attempts
@@ -718,6 +792,7 @@ After implementing a new route or feature, create comprehensive security tests c
 - [ ] Format String attacks
 
 #### XSS (Cross-Site Scripting)
+
 - [ ] Stored XSS payloads
 - [ ] Reflected XSS payloads
 - [ ] DOM-based XSS
@@ -727,12 +802,14 @@ After implementing a new route or feature, create comprehensive security tests c
 - [ ] SVG-based XSS
 
 #### CSRF (Cross-Site Request Forgery)
+
 - [ ] Missing CSRF token validation
 - [ ] CSRF token reuse
 - [ ] CSRF token bypass attempts
 - [ ] SameSite cookie bypass
 
 #### Rate Limiting & DoS
+
 - [ ] Brute force attacks
 - [ ] Distributed attacks
 - [ ] Slowloris attacks
@@ -740,6 +817,7 @@ After implementing a new route or feature, create comprehensive security tests c
 - [ ] Memory exhaustion
 
 #### Data Security
+
 - [ ] Sensitive data in logs
 - [ ] Sensitive data in error messages
 - [ ] Sensitive data in responses
@@ -748,6 +826,7 @@ After implementing a new route or feature, create comprehensive security tests c
 - [ ] Side-channel attacks
 
 #### API Security
+
 - [ ] Missing authentication
 - [ ] Broken object level authorization
 - [ ] Excessive data exposure
@@ -757,6 +836,7 @@ After implementing a new route or feature, create comprehensive security tests c
 - [ ] Insecure deserialization
 
 #### Cryptography
+
 - [ ] Weak encryption algorithms
 - [ ] Hardcoded secrets
 - [ ] Exposed API keys
@@ -1018,6 +1098,7 @@ npm run redis:check
 ### Docker Troubleshooting
 
 **Containers won't start:**
+
 ```bash
 # Clean up old containers
 docker-compose down -v
@@ -1030,6 +1111,7 @@ docker-compose up -d
 ```
 
 **Database won't connect:**
+
 ```bash
 # Check PostgreSQL logs
 docker-compose logs postgres
@@ -1039,6 +1121,7 @@ docker-compose restart postgres
 ```
 
 **Redis won't connect:**
+
 ```bash
 # Check Redis logs
 docker-compose logs redis
@@ -1087,6 +1170,7 @@ cat src/types/supabase.ts
 ```
 
 **Why this is CRITICAL?**
+
 - ✅ Keeps TypeScript synchronized with database
 - ✅ Prevents type errors in queries
 - ✅ Improves IDE autocomplete
@@ -1116,6 +1200,7 @@ cat supabase/schema.sql
 ```
 
 **What this does?**
+
 - Creates single SQL file with ENTIRE current schema
 - Includes all tables, indexes, RLS policies, functions, triggers
 - Represents complete database state
@@ -1133,6 +1218,7 @@ mv supabase/migrations/*.sql supabase/migrations_backup/
 ```
 
 **Why delete?**
+
 - ✅ Avoids confusion about actual database state
 - ✅ `schema.sql` is single source of truth
 - ✅ Old migrations may have conflicts or be outdated
