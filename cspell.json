@@ -46,6 +46,7 @@
         "Adobepremierepro",
         "Aegho",
         "afnw",
+        "Anson",
         "autodocs",
         "Autodocs",
         "bacen",
@@ -70,6 +71,7 @@
         "gabriel",
         "gabrieltoth",
         "gdpr",
+        "gemini",
         "Goncalves",
         "Googlebot",
         "hypixel",
@@ -150,5 +152,7 @@
         "scss",
         "less"
     ],
-    "ignoreWords": ["XVCJ"]
+    "ignoreWords": [
+        "XVCJ"
+    ]
 }
