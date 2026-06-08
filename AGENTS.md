@@ -1,0 +1,61 @@
+# gabrieltoth.com — Agent Guide
+
+## Stack
+
+- **Next.js 16** (App Router) + **React 19** + **TypeScript 6** — single `package.json`, not a monorepo
+- **Tailwind CSS 4** via PostCSS, **shadcn/ui** (new-york, RSC enabled), **lucide-react** icons
+- **next-intl** — 4 locales shipped by default: `en`, `pt-BR`, `es`, `de`; default is `pt-BR`. Architecture supports adding more — every user-facing string lives in `src/i18n/{locale}/*.json`, never in TSX.
+- **Separate Express 5 backend** in `src/backend/` (port 4000, via `tsx` for dev). Vercel handles frontend + API routes; the Express backend is for Docker/local/AWS Lambda deployments.
+
+## Commands
+
+| Command | What it does |
+|---------|-------------|
+| `npm run dev` | Next.js dev server (Turbopack, port 3000) |
+| `npm run build` | Production build — **does NOT type-check** (see next.config.ts) |
+| `npm run type-check` | `tsc --noEmit` on both tsconfig.json + tsconfig.test.json |
+| `npm run lint` | ESLint on `src/**/*.{ts,tsx}` |
+| `npm run format:check` | Prettier check (CI uses this) |
+| `npm run format` | Prettier write |
+| `npm run spell-check` | CSpell on source files |
+| `npm run test` | Vitest (unit/component tests only — see exclusions below) |
+| `npm run test:watch` | Vitest watch mode |
+| `npm run test:coverage` | Vitest with coverage (v8) |
+| `npm run test:all` | **Full CI quality gate**: type-check → lint → format:check → spell-check → test |
+| `npm run test:e2e` | Playwright E2E tests (`tests/`) |
+| `npm run start:backend` | Express 5 backend on port 4000 (tsx watch) |
+
+**Use `npm run test:all` before pushing** — it runs the same gate as CI.
+
+## Testing quirks
+
+- Vitest runs **jsdom** environment, globals enabled, 10s timeout.
+- Many test files are **explicitly excluded** from `vitest.config.ts` and will be **skipped** unless infra is up:
+  - DB/integration/security tests that require Docker + Supabase
+  - Backend integration tests, credit/metering system tests
+- Property-based testing uses `@fast-check/vitest` (tests that use it may be slower).
+- E2E tests live in `tests/` (root), not `src/`.
+- `npm run test:e2e` auto-starts the dev server via Playwright config.
+
+## Architecture notes
+
+- **Path alias**: `@/*` → `./src/*` (used in all imports).
+- **Supabase**: Schema dump (`supabase/schema.sql` + `supabase/seed.sql`) is the source of truth. Migration files (`supabase/migrations/`) can also be used and uploaded via `npx supabase db push`. First run `npx supabase login` (opens browser — user logs in manually).
+- **Generated/build artifacts**: `.next/`, `dist/`, `out/`, `coverage/`, `playwright-report/` — `npm run clean` removes them all.
+- **Debug**: Single `DEBUG=true` env var controls both server and client debug output.
+- **Node**: `24.x` required (`.nvmrc` = `24.13.0`). Builds will fail on older versions.
+- **`.env.local.example`** has extensive documentation (695 lines) for every environment variable.
+
+## Code conventions
+
+- **No semicolons**, **double quotes** for strings and JSX, **4-space indent** (see `.prettierrc.json`).
+- **English only** in code, comments, commits, docs, issues, PRs. Non-English only in i18n JSON translation files (`src/i18n/`).
+- **All user-facing text must come from i18n JSON** — never hardcode display strings in TSX files.
+- Arrow functions for components, props destructuring, `export default` at end of file.
+- Components in PascalCase, files in kebab-case.
+
+## Existing instruction files
+
+- `.cursorrules` — Cursor IDE rules (partially stale: says Next.js 15, i18n EN/PT-BR only)
+- `.agents/steering/best-practices.md` — Very detailed (1349 lines) with mandatory startup infra, auto-issue/commit workflow, security testing, DB migrations
+- `.agents/skills/` — Email/Resend skill instructions
