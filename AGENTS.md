@@ -61,10 +61,33 @@
 **For API routes specifically:**
 - Always add JSDoc comment blocks matching the pattern in `src/app/api/auth/login/route.ts`
 - Always add input validation: type checks, extra field rejection, length limits
-- Always add security tests in `src/__tests__/security/` matching the pattern in `src/__tests__/security/request-validation.test.ts`
 - Always update `docs/API.md` with new endpoints
 
-**Failing to check existing patterns is the #1 source of rework.**
+**CRITICAL: Complete attack test matrix — do NOT skip this step.**
+Before finishing ANY route implementation, you MUST enumerate ALL attack vectors per route and implement tests for EVERY applicable category below. For each route, write a comment listing which categories apply before writing tests.
+
+| # | Category | What to test |
+|---|----------|-------------|
+| 1 | **Auth bypass** | null/expired/invalid/malformed session, non-existent user |
+| 2 | **HTTP method confusion** | POST on GET route, GET on POST route |
+| 3 | **Type attacks** | string, number, boolean, null, array, object, NaN, Infinity, undefined |
+| 4 | **Value attacks** | negative, zero, decimal, max boundary, >MAX_SAFE_INTEGER, empty string, whitespace-only |
+| 5 | **Structure attacks** | missing fields, extra fields, empty body `{}`, array body `[]`, null body, BOM prefix |
+| 6 | **Prototype pollution** | `__proto__`, `constructor.prototype`, `constructor[prototype]` |
+| 7 | **Injection** | SQL injection in string fields, XSS/HTML, command injection, NoSQL operators (`$ne`, `$gt`) |
+| 8 | **Unicode/encoding** | emoji, null byte `\0`, control chars, unicode normalization, UTF-16, right-to-left override |
+| 9 | **Size attacks** | oversized string (10k+), deep JSON nesting (100+ levels), body > 1MB, duplicate keys |
+| 10 | **Rate limiting** | within limit, exceeded limit, burst (concurrent), reset behavior |
+| 11 | **CSRF** | missing token, expired token, wrong token, token from different session |
+| 12 | **Race conditions** | concurrent duplicate requests, TOCTOU window |
+| 13 | **Content-Type** | wrong Content-Type, missing Content-Type, multipart, charset confusion |
+| 14 | **HTTP header** | request smuggling, host override, X-Forwarded-For spoofing, cache poisoning |
+| 15 | **Info disclosure** | stack traces in errors, internal paths, user enumeration, timing side-channels |
+| 16 | **Business logic** | self-grant, negative credit operations, replay attacks, insufficient funds bypass |
+
+**Implementation rule:** For EACH route, first write a comment block listing which matrix rows apply (e.g., `// Attack matrix: 1,3,4,5,6,7,8,9,10,11,13`), then write one `it()` per attack variant. Only omit a category if you can justify it with a `// SKIP: reason` comment. If unsure, implement anyway — false positive > missed attack.
+
+**Failing to complete the full attack matrix is the #1 source of rework — this has been explicitly requested by the project owner.**
 
 ## Code conventions
 

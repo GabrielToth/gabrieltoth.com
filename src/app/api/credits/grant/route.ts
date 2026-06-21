@@ -119,11 +119,11 @@ export async function POST(request: NextRequest) {
             )
         }
 
-        if (rawAmount <= 0 || !Number.isInteger(rawAmount)) {
+        if (rawAmount <= 0 || !Number.isInteger(rawAmount) || rawAmount > Number.MAX_SAFE_INTEGER) {
             return createErrorResponse(
                 AuthErrorType.INVALID_INPUT,
                 undefined,
-                "Amount must be a positive integer"
+                "Amount must be a positive integer within safe range"
             )
         }
 

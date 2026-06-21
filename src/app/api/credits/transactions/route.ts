@@ -51,7 +51,27 @@ export async function GET(request: NextRequest) {
         }
 
         const limitParam = request.nextUrl.searchParams.get("limit")
-        const limit = limitParam ? Math.min(parseInt(limitParam, 10), 100) : 50
+        let limit: number
+        if (limitParam !== null) {
+            if (!/^\d+$/.test(limitParam)) {
+                return createErrorResponse(
+                    AuthErrorType.INVALID_INPUT,
+                    undefined,
+                    "Limit must be a positive integer"
+                )
+            }
+            const parsed = parseInt(limitParam, 10)
+            if (!Number.isFinite(parsed) || parsed < 1) {
+                return createErrorResponse(
+                    AuthErrorType.INVALID_INPUT,
+                    undefined,
+                    "Limit must be a positive integer"
+                )
+            }
+            limit = Math.min(parsed, 100)
+        } else {
+            limit = 50
+        }
 
         const transactions = await getTransactions(user.id, limit)
         return createSuccessResponse({ transactions })
