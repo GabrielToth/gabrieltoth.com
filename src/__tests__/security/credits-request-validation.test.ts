@@ -25,7 +25,9 @@ vi.mock("@/lib/credits/session", () => ({
 }))
 
 const mockRateLimit = vi.hoisted(() =>
-    vi.fn().mockResolvedValue({ success: true, limit: 10, remaining: 9, reset: 0 })
+    vi
+        .fn()
+        .mockResolvedValue({ success: true, limit: 10, remaining: 9, reset: 0 })
 )
 
 vi.mock("@/lib/rate-limit", () => ({
@@ -67,8 +69,9 @@ vi.mock("@/lib/credits/service", () => ({
 }))
 
 // ─── GET /api/credits/balance ────────────────────────────────────────────
-// Attack matrix: 1 (auth bypass), 15 (info disclosure)
-// SKIP: 2 (method routing is Next.js-native), 3-14, 16 (no input surface)
+// Attack matrix: 1 (auth bypass), 14 (HTTP headers), 15 (info disclosure)
+// SKIP: 2 (Next.js handles method routing), 3-9, 10 (read-only, intentionally no RL),
+//       11-13, 16 (no input surface)
 describe("GET /api/credits/balance", () => {
     it("should reject request without valid session", async () => {
         const { getSessionUser } = await import("@/lib/credits/session")
@@ -103,11 +106,29 @@ describe("GET /api/credits/balance", () => {
         expect(body.data.userId).toBeTypeOf("string")
         expect(body.data.isAdmin).toBeTypeOf("boolean")
     })
+
+    // ── HTTP header attacks ──
+    it("should not trust X-Forwarded-For for authentication bypass", async () => {
+        const request = new NextRequest(
+            "http://localhost/api/credits/balance",
+            {
+                headers: {
+                    "X-Forwarded-For": "127.0.0.1",
+                    "X-Real-IP": "127.0.0.1",
+                },
+            }
+        )
+        const response = await balanceGET(request)
+        const body = await response.json()
+        expect(body.data).toBeDefined()
+        expect(body.data.isAdmin).toBeTypeOf("boolean")
+    })
 })
 
 // ─── GET /api/credits/whoami ─────────────────────────────────────────────
-// Attack matrix: 1 (auth bypass), 15 (info disclosure)
-// SKIP: 2-14, 16 (no input surface)
+// Attack matrix: 1 (auth bypass), 14 (HTTP headers), 15 (info disclosure)
+// SKIP: 2 (Next.js handles method routing), 3-9, 10 (read-only, intentionally no RL),
+//       11-13, 16 (no input surface)
 describe("GET /api/credits/whoami", () => {
     it("should reject request without valid session", async () => {
         const { getSessionUser } = await import("@/lib/credits/session")
@@ -143,8 +164,9 @@ describe("GET /api/credits/whoami", () => {
 })
 
 // ─── GET /api/credits/costs ──────────────────────────────────────────────
-// Attack matrix: 15 (info disclosure)
-// SKIP: 1 (intentionally public), 2-14, 16 (no input surface)
+// Attack matrix: 14 (HTTP headers), 15 (info disclosure), 16 (business logic)
+// SKIP: 1 (intentionally public), 2 (Next.js handles method routing), 3-9,
+//       10 (intentionally no RL), 11-13
 describe("GET /api/credits/costs", () => {
     it("should return 200 without authentication", async () => {
         const request = new NextRequest("http://localhost/api/credits/costs")
@@ -180,19 +202,45 @@ describe("GET /api/credits/costs", () => {
         const body = await response.json()
         expect(body.error).toBeUndefined()
     })
+
+    // ── HTTP header attacks ──
+    it("should not be affected by Host header override", async () => {
+        const request = new NextRequest("http://localhost/api/credits/costs", {
+            headers: { Host: "evil.com" },
+        })
+        const response = await costsGET(request)
+        const body = await response.json()
+        expect(body.success).toBe(true)
+    })
+
+    // ── Business logic: public abuse ──
+    it("should not return sensitive internal-only costs", async () => {
+        const request = new NextRequest("http://localhost/api/credits/costs")
+        const response = await costsGET(request)
+        const body = await response.json()
+        const keys = Object.keys(body.data.costs)
+        expect(keys.length).toBeGreaterThan(0)
+        for (const key of keys) {
+            expect(typeof body.data.costs[key]).toBe("number")
+        }
+    })
 })
 
 // ─── GET /api/credits/transactions ───────────────────────────────────────
 // Attack matrix: 1 (auth bypass), 3 (type — limit param), 4 (value — limit),
 //                 5 (structure — extra query params), 7 (injection via limit),
-//                 8 (unicode in limit), 9 (size — large limit), 15 (info disclosure)
-// SKIP: 2, 6, 10-14, 16
+//                 8 (unicode in limit), 9 (size — large limit),
+//                 14 (HTTP headers), 15 (info disclosure)
+// SKIP: 2 (Next.js handles method routing), 6, 10 (read-only, intentionally no RL),
+//       11-13, 16
 describe("GET /api/credits/transactions", () => {
     it("should reject request without valid session", async () => {
         const { getSessionUser } = await import("@/lib/credits/session")
         vi.mocked(getSessionUser).mockResolvedValueOnce(null)
 
-        const request = new NextRequest("http://localhost/api/credits/transactions")
+        const request = new NextRequest(
+            "http://localhost/api/credits/transactions"
+        )
         const response = await transactionsGET(request)
         expect(response.status).toBe(401)
     })
@@ -297,7 +345,9 @@ describe("GET /api/credits/transactions", () => {
         const { getSessionUser } = await import("@/lib/credits/session")
         vi.mocked(getSessionUser).mockResolvedValueOnce(null)
 
-        const request = new NextRequest("http://localhost/api/credits/transactions")
+        const request = new NextRequest(
+            "http://localhost/api/credits/transactions"
+        )
         const response = await transactionsGET(request)
         const body = await response.json()
         expect(body.error).not.toContain(":\\")
@@ -312,6 +362,16 @@ describe("GET /api/credits/transactions", () => {
         )
         const response = await transactionsGET(request)
         expect(response.status).toBe(400)
+    })
+
+    // ── HTTP header attacks ──
+    it("should not be affected by X-Forwarded-For spoofing", async () => {
+        const request = new NextRequest(
+            "http://localhost/api/credits/transactions?limit=10",
+            { headers: { "X-Forwarded-For": "10.0.0.1" } }
+        )
+        const response = await transactionsGET(request)
+        expect(response.status).toBe(200)
     })
 
     it("should return expected structure on success", async () => {
@@ -339,7 +399,8 @@ describe("GET /api/credits/transactions", () => {
 //                 6 (prototype pollution), 7 (injection — reason),
 //                 8 (unicode/encoding — reason), 9 (size — reason, body, deep nesting),
 //                 10 (rate limiting), 11 (CSRF), 12 (race conditions),
-//                 13 (content-type), 15 (info disclosure), 16 (business logic)
+//                 13 (content-type), 14 (HTTP headers), 15 (info disclosure), 16 (business logic)
+// SKIP: 2 (Next.js handles method routing)
 describe("POST /api/credits/grant", () => {
     // ── Auth bypass ──
     it("should reject grant when not authenticated (null session)", async () => {
@@ -769,6 +830,33 @@ describe("POST /api/credits/grant", () => {
 
         const request = new NextRequest("http://localhost/api/credits/grant", {
             method: "POST",
+            body: JSON.stringify({ amount: 100 }),
+        })
+        const response = await grantPOST(request)
+        expect(response.status).toBe(429)
+    })
+
+    // ── HTTP header attacks ──
+    it("should not allow Host header injection to bypass auth", async () => {
+        const request = new NextRequest("http://localhost/api/credits/grant", {
+            method: "POST",
+            headers: { Host: "evil.com" },
+            body: JSON.stringify({ amount: 100 }),
+        })
+        const response = await grantPOST(request)
+        expect(response.status).toBe(200) // Host doesn't affect auth
+    })
+
+    it("should not allow X-Forwarded-For spoofing to bypass rate limit", async () => {
+        mockRateLimit.mockResolvedValueOnce({
+            success: false,
+            limit: 10,
+            remaining: 0,
+            reset: Date.now() + 60000,
+        })
+        const request = new NextRequest("http://localhost/api/credits/grant", {
+            method: "POST",
+            headers: { "X-Forwarded-For": "10.0.0.1" },
             body: JSON.stringify({ amount: 100 }),
         })
         const response = await grantPOST(request)

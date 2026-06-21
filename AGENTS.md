@@ -76,14 +76,19 @@ Before finishing ANY route implementation, you MUST enumerate ALL attack vectors
 | 6 | **Prototype pollution** | `__proto__`, `constructor.prototype`, `constructor[prototype]` |
 | 7 | **Injection** | SQL injection in string fields, XSS/HTML, command injection, NoSQL operators (`$ne`, `$gt`) |
 | 8 | **Unicode/encoding** | emoji, null byte `\0`, control chars, unicode normalization, UTF-16, right-to-left override |
-| 9 | **Size attacks** | oversized string (10k+), deep JSON nesting (100+ levels), body > 1MB, duplicate keys |
+| 9 | **Size attacks** | oversized string (10k+), deep JSON nesting (100+ levels), body > 1MB, duplicate keys, JSON bomb |
 | 10 | **Rate limiting** | within limit, exceeded limit, burst (concurrent), reset behavior |
 | 11 | **CSRF** | missing token, expired token, wrong token, token from different session |
-| 12 | **Race conditions** | concurrent duplicate requests, TOCTOU window |
+| 12 | **Race conditions** | concurrent duplicate requests, TOCTOU window, parallel state mutations |
 | 13 | **Content-Type** | wrong Content-Type, missing Content-Type, multipart, charset confusion |
 | 14 | **HTTP header** | request smuggling, host override, X-Forwarded-For spoofing, cache poisoning |
 | 15 | **Info disclosure** | stack traces in errors, internal paths, user enumeration, timing side-channels |
 | 16 | **Business logic** | self-grant, negative credit operations, replay attacks, insufficient funds bypass |
+| 17 | **IDOR** | access another user's resource by changing ID/email in params/body |
+| 18 | **Path traversal** | `../`, `..\\`, absolute paths in filename/directory params |
+| 19 | **Mass assignment** | extra body fields that map to DB columns (role, isAdmin, balance) |
+| 20 | **SSRF** | URL params that make the server fetch external resources |
+| 21 | **Timing side-channel** | measurable response time difference between valid/invalid inputs |
 
 **Implementation rule:** For EACH route, first write a comment block listing which matrix rows apply (e.g., `// Attack matrix: 1,3,4,5,6,7,8,9,10,11,13`), then write one `it()` per attack variant. Only omit a category if you can justify it with a `// SKIP: reason` comment. If unsure, implement anyway — false positive > missed attack.
 
