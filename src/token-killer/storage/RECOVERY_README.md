@@ -1,5 +1,9 @@
 # Storage Recovery and Consistency Module
 
+## Status: ⏸️ DEFERRED
+
+⚠️ **This project is paused indefinitely.** Do not implement or reference these designs in active development. Focus on feature implementation first.
+
 ## Overview
 
 The Storage Recovery and Consistency Module provides comprehensive database integrity checks, recovery mechanisms for corrupted data, backup functionality, and storage consistency validation for the Token Killer system.

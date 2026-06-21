@@ -1,5 +1,9 @@
 # Token Killer - Technical Design Document
 
+## Status: ⏸️ DEFERRED
+
+⚠️ **This project is paused indefinitely.** Do not implement or reference these designs in active development. Focus on feature implementation first.
+
 ## 1. System Architecture Overview
 
 Token Killer is a modular token optimization and tracking system with the following core layers:

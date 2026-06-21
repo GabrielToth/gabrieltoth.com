@@ -1,5 +1,9 @@
 # Token Killer Web Dashboard API
 
+## Status: ⏸️ DEFERRED
+
+⚠️ **This project is paused indefinitely.** Do not implement or reference these designs in active development. Focus on feature implementation first.
+
 ## Overview
 
 The Token Killer Web Dashboard API provides Express.js endpoints for token data aggregation, analytics, and visualization. It implements Requirements 6.1-6.5 of the Token Killer specification.

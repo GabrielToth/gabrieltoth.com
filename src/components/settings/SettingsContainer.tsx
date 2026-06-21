@@ -5,6 +5,7 @@ import React, { useCallback, useEffect, useState } from "react"
 import { BillingSection } from "./BillingSection"
 import { ChannelsSection } from "./ChannelsSection"
 import { IntegrationsSection } from "./IntegrationsSection"
+import { LocalEnvSection } from "./LocalEnvSection"
 import { PreferencesSection } from "./PreferencesSection"
 import { ProfileSection } from "./ProfileSection"
 import { SecuritySection } from "./SecuritySection"
@@ -330,13 +331,14 @@ export const SettingsContainer: React.FC<SettingsContainerProps> = ({
 
             {/* Settings Tabs */}
             <Tabs value={activeTab} onValueChange={setActiveTab}>
-                <TabsList className="grid w-full grid-cols-6">
+                <TabsList className="grid w-full grid-cols-7">
                     <TabsTrigger value="profile">Profile</TabsTrigger>
                     <TabsTrigger value="preferences">Preferences</TabsTrigger>
                     <TabsTrigger value="channels">Channels</TabsTrigger>
                     <TabsTrigger value="security">Security</TabsTrigger>
                     <TabsTrigger value="billing">Billing</TabsTrigger>
                     <TabsTrigger value="integrations">Integrations</TabsTrigger>
+                    <TabsTrigger value="local-apis">APIs Locais</TabsTrigger>
                 </TabsList>
 
                 {/* Profile Section */}
@@ -390,6 +392,11 @@ export const SettingsContainer: React.FC<SettingsContainerProps> = ({
                         onDisconnect={handleDisconnectIntegration}
                         onConnect={handleConnectIntegration}
                     />
+                </TabsContent>
+
+                {/* Local APIs Section */}
+                <TabsContent value="local-apis">
+                    <LocalEnvSection />
                 </TabsContent>
             </Tabs>
         </div>

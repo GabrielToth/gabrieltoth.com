@@ -29,5 +29,7 @@ export type { SecuritySectionProps } from "./SecuritySection"
 export { BillingSection } from "./BillingSection"
 export type { BillingSectionProps } from "./BillingSection"
 
+export { LocalEnvSection } from "./LocalEnvSection"
+
 export { IntegrationsSection } from "./IntegrationsSection"
 export type { IntegrationsSectionProps } from "./IntegrationsSection"

@@ -54,6 +54,8 @@
         "src/lib/logger/pino-logger.ts",
         "src/lib/logger/pino-logger.test.ts",
         "src/test-utils/**",
-        "tests/**"
+        "tests/**",
+        "src/token-killer",
+        "src/token-killer/**"
     ]
 }

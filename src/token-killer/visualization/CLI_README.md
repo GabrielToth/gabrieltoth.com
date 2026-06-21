@@ -1,5 +1,9 @@
 # Token Killer CLI Tool
 
+## Status: ⏸️ DEFERRED
+
+⚠️ **This project is paused indefinitely.** Do not implement or reference these designs in active development. Focus on feature implementation first.
+
 ## Overview
 
 The Token Killer CLI tool provides command-line access to token consumption statistics and reporting. It supports multiple output formats (JSON, CSV, table) with comprehensive metadata inclusion.

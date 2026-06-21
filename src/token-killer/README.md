@@ -1,6 +1,10 @@
 # Token Killer - Token Optimization and Management System
 
-Token Killer is a comprehensive token optimization and management system designed to reduce token consumption per request and task across multiple LLM providers.
+## Status: ⏸️ DEFERRED
+
+⚠️ **This project is paused indefinitely.** Do not implement or reference these designs in active development. Focus on feature implementation first. The existing code compiles but has pre-existing TypeScript errors and is excluded from CI checks.
+
+Token Killer was designed as a comprehensive token optimization and management system to reduce token consumption per request and task across multiple LLM providers.
 
 ## Project Structure
 

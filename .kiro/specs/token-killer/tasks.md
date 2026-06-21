@@ -1,10 +1,14 @@
 # Implementation Plan: Token Killer
 
+## Status: ⏸️ DEFERRED
+
+⚠️ **This entire implementation plan is paused indefinitely.** All remaining tasks (marked `[ ]`) are deferred. Do not work on this until explicitly resumed.
+
 ## Overview
 
-Token Killer is a comprehensive token optimization and management system that tracks, analyzes, and optimizes token consumption across multiple LLM providers. The implementation follows a layered architecture: core infrastructure (SQLite, tokenizers), token tracking with multi-model support, budget management with warning system, optimization strategies, integrations with external systems, and visualization through web dashboard and CLI.
+Token Killer was designed as a comprehensive token optimization and management system that tracks, analyzes, and optimizes token consumption across multiple LLM providers. The implementation follows a layered architecture: core infrastructure (SQLite, tokenizers), token tracking with multi-model support, budget management with warning system, optimization strategies, integrations with external systems, and visualization through web dashboard and CLI.
 
-The implementation is organized into logical phases that build incrementally, with each phase validated through unit tests and property-based tests before moving to the next phase.
+The implementation is organized into logical phases that build incrementally, with each phase validated through unit tests and property-based tests before moving to the next phase. The existing codebase (`src/token-killer/`) compiles but has pre-existing TypeScript errors and is excluded from CI checks.
 
 ---
 

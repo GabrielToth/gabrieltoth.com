@@ -1,5 +1,9 @@
 # Token Killer Dashboard Frontend - Implementation Summary
 
+## Status: ⏸️ DEFERRED
+
+⚠️ **This project is paused indefinitely.** Do not implement or reference these designs in active development. Focus on feature implementation first.
+
 ## Task 23: Implement Web Dashboard Frontend
 
 ### Overview

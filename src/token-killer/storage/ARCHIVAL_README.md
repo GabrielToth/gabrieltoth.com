@@ -1,5 +1,9 @@
 # Data Archival and Compression Module
 
+## Status: ⏸️ DEFERRED
+
+⚠️ **This project is paused indefinitely.** Do not implement or reference these designs in active development. Focus on feature implementation first.
+
 This module provides comprehensive data archival, compression, and restoration functionality for the Token Killer system. It enables efficient storage management by automatically archiving old data and compressing it using gzip or brotli compression.
 
 ## Overview

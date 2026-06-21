@@ -15,6 +15,7 @@ Complete API reference for gabrieltoth.com platform.
 - **[Health Check API](#health-check-api)** - System health monitoring
 - **[Contact API](#contact-api)** - Contact form submissions
 - **[Analytics API](#analytics-api)** - User analytics and consumption
+- **[Credits API](#credits-api)** - Credit balance, transactions, and admin grants
 
 ### Payments
 
@@ -199,6 +200,191 @@ Cookie: session=session_token
 
 - 401: Unauthorized (no session)
 - 404: User not found
+
+---
+
+## Credits API
+
+Credit-based billing system for resource metering. All credit endpoints that require authentication use the `session` cookie (not `auth_session`).
+
+### GET /credits/balance
+
+Get the current user's credit balance.
+
+**Request:**
+
+```http
+GET /api/credits/balance HTTP/1.1
+Cookie: session=session_token
+```
+
+**Response (200):**
+
+```json
+{
+  "success": true,
+  "data": {
+    "balance": 1000,
+    "userId": "user-uuid",
+    "isAdmin": false
+  }
+}
+```
+
+**Error Responses:**
+
+- 401: No valid session
+
+---
+
+### GET /credits/transactions
+
+Get the current user's transaction history.
+
+**Request:**
+
+```http
+GET /api/credits/transactions?limit=50 HTTP/1.1
+Cookie: session=session_token
+```
+
+**Query Parameters:**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| limit | number | No | Max results (default 50, max 100) |
+
+**Response (200):**
+
+```json
+{
+  "success": true,
+  "data": {
+    "transactions": [
+      {
+        "id": "tx-uuid",
+        "amount": -50,
+        "type": "debit",
+        "reason": "video_upload",
+        "balanceBefore": 1000,
+        "balanceAfter": 950,
+        "createdAt": "2026-04-20T12:00:00.000Z"
+      }
+    ]
+  }
+}
+```
+
+**Error Responses:**
+
+- 401: No valid session
+
+---
+
+### GET /credits/costs
+
+Get the credit cost table for all billable actions. Public endpoint, no auth required.
+
+**Request:**
+
+```http
+GET /api/credits/costs HTTP/1.1
+```
+
+**Response (200):**
+
+```json
+{
+  "success": true,
+  "data": {
+    "costs": {
+      "video_upload": 50,
+      "video_process": 30,
+      "email_send": 1,
+      "search": 5,
+      "analytics_query": 10,
+      "ai_chat": 20,
+      "ai_image": 50
+    }
+  }
+}
+```
+
+---
+
+### POST /credits/grant
+
+Admin-only: Grant free credits to the current user's account. Requires the user's UUID to be in the `CREDIT_ADMIN_IDS` environment variable.
+
+**Request:**
+
+```http
+POST /api/credits/grant HTTP/1.1
+Content-Type: application/json
+Cookie: session=session_token
+
+{
+  "amount": 100,
+  "reason": "Test grant"
+}
+```
+
+**Request Body:**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| amount | number | Yes | Positive integer of credits to add |
+| reason | string | No | Reason for the grant (default "Admin grant") |
+
+**Response (200):**
+
+```json
+{
+  "success": true,
+  "message": "100 credits granted",
+  "data": {
+    "transactionId": "tx-uuid",
+    "newBalance": 1100
+  }
+}
+```
+
+**Error Responses:**
+
+- 400: Invalid amount (must be a positive number)
+- 401: No valid session or not an admin
+
+---
+
+### GET /credits/whoami
+
+Get the current user's UUID, email, name, and admin status. Useful for debugging and discovering your UUID for `CREDIT_ADMIN_IDS` configuration.
+
+**Request:**
+
+```http
+GET /api/credits/whoami HTTP/1.1
+Cookie: session=session_token
+```
+
+**Response (200):**
+
+```json
+{
+  "success": true,
+  "data": {
+    "id": "user-uuid",
+    "email": "user@example.com",
+    "name": "User Name",
+    "isAdmin": false,
+    "instructions": "Copy your 'id' value and add it to CREDIT_ADMIN_IDS in .env.local"
+  }
+}
+```
+
+**Error Responses:**
+
+- 401: No valid session
 
 ---
 
@@ -457,6 +643,7 @@ Different endpoints have different rate limits:
 | /auth/login | 5 attempts | 15 minutes |
 | /auth/register | 3 requests | 1 hour |
 | /payments/* | 10 requests | 1 minute |
+| /credits/grant | 10 requests | 1 minute |
 
 Rate limit headers are included in responses:
 
@@ -545,6 +732,11 @@ For API issues or questions:
 
 ## Changelog
 
+### v1.1.0 (2026-06-21)
+
+- Credits API: balance, transactions, costs, admin grant, whoami
+- Rate limit added to /credits/grant
+
 ### v1.0.0 (2026-04-20)
 
 - Initial API documentation
@@ -557,4 +749,4 @@ For API issues or questions:
 
 ---
 
-**Last Updated**: April 20, 2026
+**Last Updated**: June 21, 2026

@@ -46,6 +46,26 @@
 - **Node**: `24.x` required (`.nvmrc` = `24.13.0`). Builds will fail on older versions.
 - **`.env.local.example`** has extensive documentation (695 lines) for every environment variable.
 
+## Mandatory: Check existing patterns before implementing
+
+**BEFORE writing ANY new code (routes, tests, docs, components), you MUST:**
+1. Read **this file** (`AGENTS.md`) fully
+2. Read **`.cursorrules`** — project conventions
+3. Search for **existing test files** in `src/__tests__/` relevant to your task — copy their patterns
+4. Read **`docs/API.md`** and any relevant `docs/modules/*.md` — follow the exact documentation format
+5. Check **`src/__tests__/security/`** for security test patterns (request validation, CSRF, rate limiting)
+6. Check **`src/lib/middleware/CSRF_USAGE.md`** for CSRF patterns on state-changing endpoints
+7. Check **`.cursor/rules/`** for any rule files (`.mdc`)
+8. Look at similar existing implementations before creating new ones
+
+**For API routes specifically:**
+- Always add JSDoc comment blocks matching the pattern in `src/app/api/auth/login/route.ts`
+- Always add input validation: type checks, extra field rejection, length limits
+- Always add security tests in `src/__tests__/security/` matching the pattern in `src/__tests__/security/request-validation.test.ts`
+- Always update `docs/API.md` with new endpoints
+
+**Failing to check existing patterns is the #1 source of rework.**
+
 ## Code conventions
 
 - **No semicolons**, **double quotes** for strings and JSX, **4-space indent** (see `.prettierrc.json`).

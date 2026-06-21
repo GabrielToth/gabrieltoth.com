@@ -1,5 +1,9 @@
 # Token Killer Dashboard Components
 
+## Status: ⏸️ DEFERRED
+
+⚠️ **This project is paused indefinitely.** Do not implement or reference these designs in active development. Focus on feature implementation first.
+
 Web dashboard frontend for visualizing token consumption with interactive charts and real-time updates.
 
 ## Overview

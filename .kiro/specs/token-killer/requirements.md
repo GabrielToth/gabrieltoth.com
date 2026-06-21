@@ -1,8 +1,12 @@
 # Token Killer - Requirements Document
 
+## Status: ⏸️ DEFERRED
+
+This project is **paused indefinitely**. Token optimization is not a priority at this time. Focus should be on feature implementation and core functionality first. Revisit when token costs become a measurable concern.
+
 ## Introduction
 
-Token Killer is a comprehensive token optimization and management system designed to reduce token consumption per request and task across the gabrieltoth.com project, Antigravity agents, and Cursor integration. The system provides real-time token tracking, intelligent optimization strategies, visualization of token usage patterns through Graphify, and integration with Obsidian for documentation and management. Token budgeting at both request and task levels ensures predictable resource consumption and cost control.
+Token Killer was designed as a comprehensive token optimization and management system to reduce token consumption per request and task across the gabrieltoth.com project, Antigravity agents, and Cursor integration. The system provides real-time token tracking, intelligent optimization strategies, visualization of token usage patterns through Graphify, and integration with Obsidian for documentation and management. Token budgeting at both request and task levels ensures predictable resource consumption and cost control.
 
 ## Glossary
 
