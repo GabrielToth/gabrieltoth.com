@@ -1,5 +1,5 @@
 import { checkAccountCompletion } from "@/lib/middleware/account-completion"
-import { validateSession } from "@/lib/middleware/auth-middleware"
+import { getAuthenticatedUser } from "@/lib/middleware/auth-middleware"
 import { NextRequest, NextResponse } from "next/server"
 
 // Simple in-memory rate limiting (in production, use Redis)
@@ -109,16 +109,12 @@ export async function proxy(request: NextRequest) {
         let identifier = ip
 
         try {
-            const sessionToken = request.cookies.get("session")?.value
-            if (sessionToken) {
-                const session = await validateSession(sessionToken)
-                if (session) {
-                    identifier = session.user_id
-                }
+            const userId = await getAuthenticatedUser(request)
+            if (userId) {
+                identifier = userId
             }
-        } catch (error) {
-            // If session validation fails, fall back to IP-based rate limiting
-            // This ensures rate limiting still works even if session validation has issues
+        } catch {
+            // Fall back to IP-based rate limiting
         }
 
         if (!checkRateLimit(identifier, "logout", 5, 60000)) {

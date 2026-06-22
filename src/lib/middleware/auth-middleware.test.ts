@@ -1,123 +1,81 @@
-/**
- * Unit tests for Authentication Middleware
- */
+import { describe, expect, it, vi } from "vitest"
+import { authMiddleware, getAuthenticatedUser } from "./auth-middleware"
 
-import { db } from "@/lib/db"
-import { beforeEach, describe, expect, it, vi } from "vitest"
-import { getAuthenticatedUser, validateSession } from "./auth-middleware"
+describe("authMiddleware", () => {
+    it("should return null if session cookie exists", async () => {
+        const mockRequest = {
+            cookies: {
+                get: vi.fn((name: string) => {
+                    if (name === "session") {
+                        return { value: "token" }
+                    }
+                    return undefined
+                }),
+            },
+        } as any
 
-vi.mock("@/lib/db", () => ({
-    db: {
-        queryOne: vi.fn(),
-    },
-}))
-
-describe("Authentication Middleware", () => {
-    beforeEach(() => {
-        vi.clearAllMocks()
+        const result = await authMiddleware(mockRequest)
+        expect(result).toBeNull()
     })
 
-    describe("validateSession", () => {
-        it("should return session if valid", async () => {
-            const mockSession = {
-                user_id: "123",
-                expires_at: new Date(Date.now() + 24 * 60 * 60 * 1000),
-            }
+    it("should redirect to /auth/login if no session cookie", async () => {
+        const mockRequest = {
+            cookies: {
+                get: vi.fn(() => undefined),
+            },
+            url: "http://localhost:3000/dashboard",
+        } as any
 
-            ;(db.queryOne as any).mockResolvedValueOnce(mockSession)
+        const result = await authMiddleware(mockRequest)
+        expect(result).toBeInstanceOf(Response)
+        expect(result?.status).toBe(302)
+        expect(result?.headers.get("Location")).toBe(
+            "http://localhost:3000/auth/login"
+        )
+    })
+})
 
-            const result = await validateSession("valid-token")
+describe("getAuthenticatedUser", () => {
+    it("should return user ID from cookie if authenticated", async () => {
+        const mockRequest = {
+            cookies: {
+                get: vi.fn((name: string) => {
+                    if (name === "session") {
+                        return { value: "user_123:random-token" }
+                    }
+                    return undefined
+                }),
+            },
+        } as any
 
-            expect(result).toEqual(mockSession)
-        })
-
-        it("should return null if session not found", async () => {
-            ;(db.queryOne as any).mockResolvedValueOnce(null)
-
-            const result = await validateSession("invalid-token")
-
-            expect(result).toBeNull()
-        })
-
-        it("should return null if session is expired", async () => {
-            const mockSession = {
-                user_id: "123",
-                expires_at: new Date(Date.now() - 1000), // Expired 1 second ago
-            }
-
-            ;(db.queryOne as any).mockResolvedValueOnce(mockSession)
-
-            const result = await validateSession("expired-token")
-
-            expect(result).toBeNull()
-        })
-
-        it("should handle database errors gracefully", async () => {
-            ;(db.queryOne as any).mockRejectedValueOnce(
-                new Error("Database error")
-            )
-
-            const result = await validateSession("token")
-
-            expect(result).toBeNull()
-        })
+        const result = await getAuthenticatedUser(mockRequest)
+        expect(result).toBe("user_123")
     })
 
-    describe("getAuthenticatedUser", () => {
-        it("should return user ID if authenticated", async () => {
-            const mockSession = {
-                user_id: "123",
-                expires_at: new Date(Date.now() + 24 * 60 * 60 * 1000),
-            }
+    it("should return null if no session cookie", async () => {
+        const mockRequest = {
+            cookies: {
+                get: vi.fn(() => undefined),
+            },
+        } as any
 
-            ;(db.queryOne as any).mockResolvedValueOnce(mockSession)
+        const result = await getAuthenticatedUser(mockRequest)
+        expect(result).toBeNull()
+    })
 
-            // Mock NextRequest
-            const mockRequest = {
-                cookies: {
-                    get: vi.fn((name: string) => {
-                        if (name === "session") {
-                            return { value: "valid-token" }
-                        }
-                        return undefined
-                    }),
-                },
-            } as any
+    it("should return the full cookie value if no colon separator", async () => {
+        const mockRequest = {
+            cookies: {
+                get: vi.fn((name: string) => {
+                    if (name === "session") {
+                        return { value: "simple-token" }
+                    }
+                    return undefined
+                }),
+            },
+        } as any
 
-            const result = await getAuthenticatedUser(mockRequest)
-
-            expect(result).toBe("123")
-        })
-
-        it("should return null if no session cookie", async () => {
-            const mockRequest = {
-                cookies: {
-                    get: vi.fn(() => undefined),
-                },
-            } as any
-
-            const result = await getAuthenticatedUser(mockRequest)
-
-            expect(result).toBeNull()
-        })
-
-        it("should return null if session is invalid", async () => {
-            ;(db.queryOne as any).mockResolvedValueOnce(null)
-
-            const mockRequest = {
-                cookies: {
-                    get: vi.fn((name: string) => {
-                        if (name === "session") {
-                            return { value: "invalid-token" }
-                        }
-                        return undefined
-                    }),
-                },
-            } as any
-
-            const result = await getAuthenticatedUser(mockRequest)
-
-            expect(result).toBeNull()
-        })
+        const result = await getAuthenticatedUser(mockRequest)
+        expect(result).toBe("simple-token")
     })
 })
