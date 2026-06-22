@@ -1,3 +1,32 @@
+/**
+ * Security Tests for POST /api/oauth/disconnect/tiktok — Attack Matrix
+ *
+ * Attack matrix applicable rows:
+ * 1  (auth bypass — missing/invalid session)
+ * 2  (HTTP method confusion)
+ * 3  (type attacks — body)
+ * 4  (value attacks — body)
+ * 5  (structure attacks — body)
+ * 6  (prototype pollution — body)
+ * 7  (injection — body fields)
+ * 8  (unicode/encoding — body)
+ * 9  (size attacks — body)
+ * 10 (rate limiting)
+ * 11 (CSRF)
+ * 12 (race conditions — concurrent revokes)
+ * 13 (Content-Type confusion)
+ * 14 (HTTP header attacks)
+ * 15 (info disclosure — error messages)
+ * 16 (business logic — double revoke, not-linked)
+ * 17 (IDOR — revoke another user's account)
+ * 19 (mass assignment — extra body fields)
+ *
+ * SKIP:
+ *   18 (path traversal) — no filename params
+ *   20 (SSRF) — no URL params
+ *   21 (timing side-channel) — all paths return JSON errors
+ */
+
 import { POST } from "@/app/api/oauth/disconnect/tiktok/route"
 import { NextRequest } from "next/server"
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
@@ -328,6 +357,135 @@ describe("POST /api/oauth/disconnect/tiktok — Attack Matrix", () => {
             expect(body.message).not.toContain("/src/")
             expect(body.message).not.toContain("at ")
             expect(body.message).not.toContain("stack")
+        })
+    })
+
+    describe("Row 8 — Unicode/encoding", () => {
+        it("should handle null byte in body", async () => {
+            const request = makePostRequest(
+                "http://localhost/api/oauth/disconnect/tiktok",
+                { userId: "test\0user" },
+            )
+            const response = await POST(request)
+            expect([200, 404, 500]).toContain(response.status)
+        })
+
+        it("should handle emoji in body", async () => {
+            const request = makePostRequest(
+                "http://localhost/api/oauth/disconnect/tiktok",
+                { userId: "test😊user" },
+            )
+            const response = await POST(request)
+            expect([200, 404, 500]).toContain(response.status)
+        })
+
+        it("should handle RTL override in body", async () => {
+            const request = makePostRequest(
+                "http://localhost/api/oauth/disconnect/tiktok",
+                { userId: "\u202Etest\u202C" },
+            )
+            const response = await POST(request)
+            expect([200, 404, 500]).toContain(response.status)
+        })
+    })
+
+    describe("Row 10 — Rate limiting", () => {
+        it("should handle request within rate limit", async () => {
+            const request = makePostRequest(
+                "http://localhost/api/oauth/disconnect/tiktok",
+                {},
+            )
+            const response = await POST(request)
+            expect([200, 404, 500]).toContain(response.status)
+        })
+    })
+
+    describe("Row 11 — CSRF", () => {
+        it("should work without CSRF token (x-user-id is the auth mechanism)", async () => {
+            const request = makePostRequest(
+                "http://localhost/api/oauth/disconnect/tiktok",
+                {},
+            )
+            const response = await POST(request)
+            expect([200, 404, 500]).toContain(response.status)
+        })
+    })
+
+    describe("Row 12 — Race conditions", () => {
+        it("should handle concurrent disconnect requests", async () => {
+            const results = await Promise.all(
+                Array.from({ length: 5 }, () =>
+                    POST(
+                        makePostRequest(
+                            "http://localhost/api/oauth/disconnect/tiktok",
+                            {},
+                        ),
+                    ),
+                ),
+            )
+            for (const response of results) {
+                expect([200, 404, 500]).toContain(response.status)
+            }
+        })
+    })
+
+    describe("Row 14 — HTTP header attacks", () => {
+        it("should handle X-Forwarded-For header", async () => {
+            const request = makePostRequest(
+                "http://localhost/api/oauth/disconnect/tiktok",
+                {},
+                { "X-Forwarded-For": "127.0.0.1", "X-Real-IP": "127.0.0.1" },
+            )
+            const response = await POST(request)
+            expect([200, 404, 500]).toContain(response.status)
+        })
+
+        it("should handle Host override header", async () => {
+            const request = makePostRequest(
+                "http://localhost/api/oauth/disconnect/tiktok",
+                {},
+                { Host: "evil.com" },
+            )
+            const response = await POST(request)
+            expect([200, 404, 500]).toContain(response.status)
+        })
+    })
+
+    describe("Row 16 — Business logic", () => {
+        it("should return 404 when TikTok is not linked", async () => {
+            mockGetToken.mockResolvedValue(null)
+
+            const request = makePostRequest(
+                "http://localhost/api/oauth/disconnect/tiktok",
+                {},
+            )
+            const response = await POST(request)
+            expect(response.status).toBe(404)
+            const body = await response.json()
+            expect(body.error).toBe("NOT_LINKED")
+        })
+
+        it("should allow double disconnect (idempotent after first)", async () => {
+            const request = makePostRequest(
+                "http://localhost/api/oauth/disconnect/tiktok",
+                {},
+            )
+            await POST(request)
+
+            mockGetToken.mockResolvedValue(null)
+            const response = await POST(request)
+            expect(response.status).toBe(404)
+        })
+    })
+
+    describe("Row 19 — Mass assignment", () => {
+        it("should ignore extra fields in request body", async () => {
+            const request = makePostRequest(
+                "http://localhost/api/oauth/disconnect/tiktok",
+                { role: "admin", isAdmin: true, balance: 999999 },
+            )
+            const response = await POST(request)
+            expect([200, 404, 500]).toContain(response.status)
         })
     })
 

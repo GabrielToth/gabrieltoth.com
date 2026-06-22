@@ -1,3 +1,32 @@
+/**
+ * Security Tests for POST /api/oauth/authorize/facebook — Attack Matrix
+ *
+ * Attack matrix applicable rows:
+ * 1  (auth bypass — missing/invalid session)
+ * 2  (HTTP method confusion)
+ * 7  (injection — userId header)
+ * 8  (unicode/encoding — SKIP: headers must be ASCII per RFC 7230)
+ * 9  (size attacks — oversized userId)
+ * 10 (rate limiting)
+ * 12 (race conditions — concurrent)
+ * 13 (Content-Type confusion)
+ * 14 (HTTP header attacks)
+ * 15 (info disclosure — error messages)
+ * 17 (IDOR — any userId can initiate)
+ *
+ * SKIP:
+ *   3  (type attacks) — body not read
+ *   4  (value attacks) — body not read
+ *   5  (structure attacks) — body not read
+ *   6  (prototype pollution) — body not read
+ *   11 (CSRF) — POST but no CSRF token enforced
+ *   16 (business logic) — no pre-check of link status
+ *   18 (path traversal) — no filename params
+ *   19 (mass assignment) — no body fields
+ *   20 (SSRF) — no URL params
+ *   21 (timing side-channel) — all paths return JSON errors
+ */
+
 import { POST } from "@/app/api/oauth/authorize/facebook/route"
 import { NextRequest } from "next/server"
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"

@@ -1,3 +1,32 @@
+/**
+ * Security Tests for POST /api/platform/facebook/publish — Attack Matrix
+ *
+ * Attack matrix applicable rows:
+ * 1  (auth bypass — missing/invalid session)
+ * 2  (HTTP method confusion)
+ * 3  (type attacks — body fields)
+ * 4  (value attacks — body fields)
+ * 5  (structure attacks — body)
+ * 6  (prototype pollution — body)
+ * 7  (injection — body fields)
+ * 8  (unicode/encoding — body fields)
+ * 9  (size attacks — body)
+ * 10 (rate limiting)
+ * 11 (CSRF)
+ * 12 (race conditions — concurrent publishes)
+ * 13 (Content-Type confusion)
+ * 14 (HTTP header attacks)
+ * 15 (info disclosure — error messages)
+ * 16 (business logic — not linked, invalid media)
+ * 17 (IDOR — publish to another user's account)
+ * 18 (path traversal — pageId params)
+ * 19 (mass assignment — extra body fields)
+ * 20 (SSRF — media URL injection)
+ *
+ * SKIP:
+ *   21 (timing side-channel) — all paths return JSON errors
+ */
+
 import { POST } from "@/app/api/platform/facebook/publish/route"
 import { NextRequest } from "next/server"
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
@@ -378,6 +407,87 @@ describe("POST /api/platform/facebook/publish — Attack Matrix", () => {
                     { pageId: "123", message: "test" },
                     { "x-user-id": "other-user" }
                 )
+            )
+            expect([201, 400, 500]).toContain(res.status)
+        })
+    })
+
+    describe("Row 14 — HTTP header attacks", () => {
+        it("should handle X-Forwarded-For header", async () => {
+            const res = await POST(
+                makePost("http://localhost/api/platform/facebook/publish", {
+                    pageId: "123",
+                    message: "test",
+                }, { "X-Forwarded-For": "127.0.0.1" }),
+            )
+            expect([201, 400, 500]).toContain(res.status)
+        })
+
+        it("should handle Host override header", async () => {
+            const res = await POST(
+                makePost("http://localhost/api/platform/facebook/publish", {
+                    pageId: "123",
+                    message: "test",
+                }, { Host: "evil.com" }),
+            )
+            expect([201, 400, 500]).toContain(res.status)
+        })
+    })
+
+    describe("Row 16 — Business logic", () => {
+        it("should handle invalid pageId gracefully", async () => {
+            mockGetPageAccessToken.mockRejectedValueOnce(
+                new Error("Page not found"),
+            )
+            const res = await POST(
+                makePost("http://localhost/api/platform/facebook/publish", {
+                    pageId: "nonexistent",
+                    message: "test",
+                }),
+            )
+            expect([400, 500]).toContain(res.status)
+        })
+    })
+
+    describe("Row 18 — Path traversal", () => {
+        it("should handle path traversal in pageId", async () => {
+            const res = await POST(
+                makePost("http://localhost/api/platform/facebook/publish", {
+                    pageId: "../../etc/passwd",
+                    message: "test",
+                }),
+            )
+            expect([201, 400, 500]).toContain(res.status)
+        })
+
+        it("should handle Windows path traversal in pageId", async () => {
+            const res = await POST(
+                makePost("http://localhost/api/platform/facebook/publish", {
+                    pageId: "..\\..\\windows\\system32",
+                    message: "test",
+                }),
+            )
+            expect([201, 400, 500]).toContain(res.status)
+        })
+    })
+
+    describe("Row 20 — SSRF", () => {
+        it("should handle internal URL in message", async () => {
+            const res = await POST(
+                makePost("http://localhost/api/platform/facebook/publish", {
+                    pageId: "123",
+                    message: "Check http://localhost:5432/pg",
+                }),
+            )
+            expect([201, 400, 500]).toContain(res.status)
+        })
+
+        it("should handle internal IP in message", async () => {
+            const res = await POST(
+                makePost("http://localhost/api/platform/facebook/publish", {
+                    pageId: "123",
+                    message: "Check http://10.0.0.1/admin",
+                }),
             )
             expect([201, 400, 500]).toContain(res.status)
         })

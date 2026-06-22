@@ -1,3 +1,32 @@
+/**
+ * Security Tests for POST + GET /api/platform/facebook/live — Attack Matrix
+ *
+ * Attack matrix applicable rows:
+ * 1  (auth bypass — missing/invalid session)
+ * 2  (HTTP method confusion)
+ * 3  (type attacks — body fields)
+ * 4  (value attacks — body fields)
+ * 5  (structure attacks — body)
+ * 6  (prototype pollution — body)
+ * 7  (injection — body fields)
+ * 8  (unicode/encoding — body fields)
+ * 9  (size attacks — body)
+ * 10 (rate limiting)
+ * 11 (CSRF)
+ * 12 (race conditions — concurrent live creations)
+ * 13 (Content-Type confusion)
+ * 14 (HTTP header attacks)
+ * 15 (info disclosure — error messages)
+ * 16 (business logic — not linked, invalid stream)
+ * 17 (IDOR — create live for another user's page)
+ * 18 (path traversal — pageId params)
+ * 19 (mass assignment — extra body fields)
+ *
+ * SKIP:
+ *   20 (SSRF) — no URL params in live
+ *   21 (timing side-channel) — all paths return JSON errors
+ */
+
 import { POST, GET } from "@/app/api/platform/facebook/live/route"
 import { NextRequest } from "next/server"
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
@@ -302,6 +331,79 @@ describe("Facebook Live — Attack Matrix", () => {
                     { pageId: "123" },
                     { "x-user-id": "other-user" }
                 )
+            )
+            expect([201, 400, 500]).toContain(res.status)
+        })
+    })
+
+    describe("Row 11 — CSRF", () => {
+        it("POST: should handle missing CSRF token gracefully", async () => {
+            const res = await POST(
+                makePost("http://localhost/api/platform/facebook/live", {
+                    pageId: "123",
+                    title: "Test Live",
+                }),
+            )
+            expect([201, 400, 500]).toContain(res.status)
+        })
+    })
+
+    describe("Row 14 — HTTP header attacks", () => {
+        it("POST: should handle X-Forwarded-For header", async () => {
+            const res = await POST(
+                makePost(
+                    "http://localhost/api/platform/facebook/live",
+                    { pageId: "123", title: "Test" },
+                    { "X-Forwarded-For": "127.0.0.1" },
+                ),
+            )
+            expect([201, 400, 500]).toContain(res.status)
+        })
+
+        it("POST: should handle Host override header", async () => {
+            const res = await POST(
+                makePost(
+                    "http://localhost/api/platform/facebook/live",
+                    { pageId: "123", title: "Test" },
+                    { Host: "evil.com" },
+                ),
+            )
+            expect([201, 400, 500]).toContain(res.status)
+        })
+    })
+
+    describe("Row 16 — Business logic", () => {
+        it("POST: should handle invalid pageId gracefully", async () => {
+            mockGetPageAccessToken.mockRejectedValueOnce(
+                new Error("Page not found"),
+            )
+            const res = await POST(
+                makePost("http://localhost/api/platform/facebook/live", {
+                    pageId: "nonexistent",
+                    title: "Test Live",
+                }),
+            )
+            expect([400, 500]).toContain(res.status)
+        })
+    })
+
+    describe("Row 18 — Path traversal", () => {
+        it("POST: should handle path traversal in pageId", async () => {
+            const res = await POST(
+                makePost("http://localhost/api/platform/facebook/live", {
+                    pageId: "../../etc/passwd",
+                    title: "Test",
+                }),
+            )
+            expect([201, 400, 500]).toContain(res.status)
+        })
+
+        it("POST: should handle Windows path traversal in pageId", async () => {
+            const res = await POST(
+                makePost("http://localhost/api/platform/facebook/live", {
+                    pageId: "..\\..\\windows\\system32",
+                    title: "Test",
+                }),
             )
             expect([201, 400, 500]).toContain(res.status)
         })

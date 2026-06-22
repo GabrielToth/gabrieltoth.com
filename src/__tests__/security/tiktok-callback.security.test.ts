@@ -1,3 +1,32 @@
+/**
+ * Security Tests for GET /api/oauth/callback/tiktok — Attack Matrix
+ *
+ * Attack matrix applicable rows:
+ * 1  (auth bypass — state param acts as CSRF token)
+ * 2  (HTTP method confusion)
+ * 3  (type attacks — query params)
+ * 4  (value attacks — query params)
+ * 5  (structure attacks — duplicate/missing query params)
+ * 6  (prototype pollution — state param)
+ * 7  (injection — code/state params)
+ * 8  (unicode/encoding — code/state params)
+ * 9  (size attacks — oversized params)
+ * 10 (rate limiting)
+ * 11 (CSRF — state param IS the CSRF protection)
+ * 12 (race conditions — concurrent callbacks)
+ * 14 (HTTP header attacks)
+ * 15 (info disclosure — redirect URLs)
+ * 16 (business logic — OAuth error, user info failure)
+ * 21 (timing side-channel)
+ *
+ * SKIP:
+ *   13 (Content-Type) — GET request
+ *   17 (IDOR) — userId extracted from HMAC state
+ *   18 (path traversal) — no filename params
+ *   19 (mass assignment) — no body
+ *   20 (SSRF) — no user-controlled URLs
+ */
+
 import { GET } from "@/app/api/oauth/callback/tiktok/route"
 import { NextRequest } from "next/server"
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"

@@ -1,3 +1,43 @@
+/**
+ * Security Tests for GET + POST /api/webhooks/facebook — Attack Matrix
+ *
+ * Attack matrix applicable rows — GET (verification handshake):
+ * 1  (auth bypass — missing hub.mode / hub.verify_token)
+ * 2  (HTTP method confusion)
+ * 3  (type attacks — query params)
+ * 4  (value attacks — query params)
+ * 5  (structure attacks — missing/extra params)
+ * 7  (injection — hub.verify_token)
+ * 8  (unicode/encoding — hub.verify_token)
+ * 9  (size attacks — oversized token)
+ * 14 (HTTP header attacks)
+ * 15 (info disclosure — error messages)
+ * 18 (path traversal — hub.verify_token)
+ *
+ * Attack matrix applicable rows — POST (event processing):
+ * 2  (method confusion)
+ * 3  (type attacks — body)
+ * 4  (value attacks — body)
+ * 5  (structure attacks — body)
+ * 6  (prototype pollution — body)
+ * 7  (injection — body fields)
+ * 8  (unicode/encoding — body)
+ * 9  (size attacks — body)
+ * 10 (rate limiting)
+ * 12 (race conditions)
+ * 13 (Content-Type)
+ * 14 (HTTP header attacks)
+ * 15 (info disclosure)
+ * 19 (mass assignment — body fields)
+ * 20 (SSRF — body URL fields)
+ *
+ * SKIP (both methods):
+ *   11 (CSRF) — webhook verification acts as auth
+ *   16 (business logic) — no pre-check
+ *   17 (IDOR) — no user context
+ *   21 (timing side-channel) — all paths return errors
+ */
+
 import { GET, POST } from "@/app/api/webhooks/facebook/route"
 import { NextRequest } from "next/server"
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"

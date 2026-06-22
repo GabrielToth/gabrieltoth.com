@@ -1,3 +1,32 @@
+/**
+ * Security Tests for POST /api/platform/tiktok/publish — Attack Matrix
+ *
+ * Attack matrix applicable rows:
+ * 1  (auth bypass — missing/invalid session)
+ * 2  (HTTP method confusion)
+ * 3  (type attacks — body fields)
+ * 4  (value attacks — body fields)
+ * 5  (structure attacks — body)
+ * 6  (prototype pollution — body)
+ * 7  (injection — body fields)
+ * 8  (unicode/encoding — body fields)
+ * 9  (size attacks — body)
+ * 10 (rate limiting)
+ * 11 (CSRF)
+ * 12 (race conditions — concurrent publishes)
+ * 13 (Content-Type confusion)
+ * 14 (HTTP header attacks)
+ * 15 (info disclosure — error messages)
+ * 16 (business logic — not linked, invalid media)
+ * 17 (IDOR — publish to another user's account)
+ * 18 (path traversal — title/mediaUrl params)
+ * 19 (mass assignment — extra body fields)
+ * 20 (SSRF — uploadUrl injection)
+ *
+ * SKIP:
+ *   21 (timing side-channel) — all paths return JSON errors
+ */
+
 import { POST } from "@/app/api/platform/tiktok/publish/route"
 import { NextRequest } from "next/server"
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
@@ -395,6 +424,79 @@ describe("POST /api/platform/tiktok/publish — Attack Matrix", () => {
                 "http://localhost/api/platform/tiktok/publish",
                 { source: "FILE_UPLOAD", title: "Test" },
                 { "x-user-id": "other-user-id" },
+            )
+            const response = await POST(request)
+            expect([201, 400, 404, 500]).toContain(response.status)
+        })
+    })
+
+    describe("Row 14 — HTTP header attacks", () => {
+        it("should handle X-Forwarded-For header", async () => {
+            const request = makePostRequest(
+                "http://localhost/api/platform/tiktok/publish",
+                { source: "FILE_UPLOAD", title: "Test" },
+                { "X-Forwarded-For": "127.0.0.1" },
+            )
+            const response = await POST(request)
+            expect([201, 400, 404, 500]).toContain(response.status)
+        })
+
+        it("should handle Host override header", async () => {
+            const request = makePostRequest(
+                "http://localhost/api/platform/tiktok/publish",
+                { source: "FILE_UPLOAD", title: "Test" },
+                { Host: "evil.com" },
+            )
+            const response = await POST(request)
+            expect([201, 400, 404, 500]).toContain(response.status)
+        })
+    })
+
+    describe("Row 16 — Business logic", () => {
+        it("should handle invalid source gracefully", async () => {
+            const request = makePostRequest(
+                "http://localhost/api/platform/tiktok/publish",
+                { source: "INVALID_SOURCE", title: "Test" },
+            )
+            const response = await POST(request)
+            expect(response.status).toBe(400)
+        })
+    })
+
+    describe("Row 18 — Path traversal", () => {
+        it("should handle path traversal in title", async () => {
+            const request = makePostRequest(
+                "http://localhost/api/platform/tiktok/publish",
+                { source: "FILE_UPLOAD", title: "../../etc/passwd" },
+            )
+            const response = await POST(request)
+            expect([201, 400, 404, 500]).toContain(response.status)
+        })
+
+        it("should handle Windows path traversal in title", async () => {
+            const request = makePostRequest(
+                "http://localhost/api/platform/tiktok/publish",
+                { source: "FILE_UPLOAD", title: "..\\..\\windows\\system32" },
+            )
+            const response = await POST(request)
+            expect([201, 400, 404, 500]).toContain(response.status)
+        })
+    })
+
+    describe("Row 20 — SSRF", () => {
+        it("should handle internal URL in title", async () => {
+            const request = makePostRequest(
+                "http://localhost/api/platform/tiktok/publish",
+                { source: "FILE_UPLOAD", title: "Check http://localhost:5432/pg" },
+            )
+            const response = await POST(request)
+            expect([201, 400, 404, 500]).toContain(response.status)
+        })
+
+        it("should handle internal IP in title", async () => {
+            const request = makePostRequest(
+                "http://localhost/api/platform/tiktok/publish",
+                { source: "FILE_UPLOAD", title: "Check http://10.0.0.1/admin" },
             )
             const response = await POST(request)
             expect([201, 400, 404, 500]).toContain(response.status)

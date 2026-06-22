@@ -1,3 +1,32 @@
+/**
+ * Security Tests for GET /api/platform/facebook/analytics — Attack Matrix
+ *
+ * Attack matrix applicable rows:
+ * 1  (auth bypass — missing/invalid session)
+ * 2  (HTTP method confusion)
+ * 3  (type attacks — query params)
+ * 4  (value attacks — query params)
+ * 5  (structure attacks — params)
+ * 6  (prototype pollution — query params)
+ * 7  (injection — query params)
+ * 8  (unicode/encoding — params)
+ * 9  (size attacks — params)
+ * 10 (rate limiting)
+ * 11 (CSRF)
+ * 12 (race conditions)
+ * 14 (HTTP header attacks)
+ * 15 (info disclosure)
+ * 17 (IDOR)
+ * 18 (path traversal — pageId)
+ * 20 (SSRF — pageId URL injection)
+ *
+ * SKIP:
+ *   13 (Content-Type) — GET request
+ *   16 (business logic) — simple query
+ *   19 (mass assignment) — query params only
+ *   21 (timing side-channel) — all paths return JSON errors
+ */
+
 import { GET } from "@/app/api/platform/facebook/analytics/route"
 import { NextRequest } from "next/server"
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"

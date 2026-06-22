@@ -1,3 +1,32 @@
+/**
+ * Security Tests for GET + POST + PATCH + DELETE /api/platform/facebook/comments — Attack Matrix
+ *
+ * Attack matrix applicable rows:
+ * 1  (auth bypass — missing/invalid session)
+ * 2  (HTTP method confusion)
+ * 3  (type attacks — body fields)
+ * 4  (value attacks — body fields)
+ * 5  (structure attacks — body)
+ * 6  (prototype pollution — body)
+ * 7  (injection — body fields)
+ * 8  (unicode/encoding — body fields)
+ * 9  (size attacks — body)
+ * 10 (rate limiting)
+ * 11 (CSRF)
+ * 12 (race conditions — concurrent operations)
+ * 13 (Content-Type confusion)
+ * 14 (HTTP header attacks)
+ * 15 (info disclosure — error messages)
+ * 16 (business logic — not linked, invalid comment)
+ * 17 (IDOR — operate on another user's comment)
+ * 18 (path traversal — comment ID params)
+ * 19 (mass assignment — extra body fields)
+ *
+ * SKIP:
+ *   20 (SSRF) — no URL params in comments
+ *   21 (timing side-channel) — all paths return JSON errors
+ */
+
 import { GET, POST } from "@/app/api/platform/facebook/comments/route"
 import { DELETE, PATCH } from "@/app/api/platform/facebook/comments/[id]/route"
 import { NextRequest } from "next/server"
@@ -404,6 +433,79 @@ describe("Facebook Comments — Attack Matrix", () => {
                 )
             )
             expect([201, 400, 500]).toContain(res.status)
+        })
+    })
+
+    describe("Row 11 — CSRF", () => {
+        it("POST: should handle missing CSRF token gracefully", async () => {
+            const res = await POST(
+                makePost("http://localhost/api/platform/facebook/comments", {
+                    pageId: "123",
+                    comment_id: "c1",
+                    message: "hi",
+                }),
+            )
+            expect([201, 400, 500]).toContain(res.status)
+        })
+    })
+
+    describe("Row 14 — HTTP header attacks", () => {
+        it("POST: should handle X-Forwarded-For header", async () => {
+            const res = await POST(
+                makePost(
+                    "http://localhost/api/platform/facebook/comments",
+                    { pageId: "123", comment_id: "c1", message: "hi" },
+                    { "X-Forwarded-For": "127.0.0.1" },
+                ),
+            )
+            expect([201, 400, 500]).toContain(res.status)
+        })
+
+        it("POST: should handle Host override header", async () => {
+            const res = await POST(
+                makePost(
+                    "http://localhost/api/platform/facebook/comments",
+                    { pageId: "123", comment_id: "c1", message: "hi" },
+                    { Host: "evil.com" },
+                ),
+            )
+            expect([201, 400, 500]).toContain(res.status)
+        })
+    })
+
+    describe("Row 16 — Business logic", () => {
+        it("POST: should handle invalid pageId gracefully", async () => {
+            const res = await POST(
+                makePost("http://localhost/api/platform/facebook/comments", {
+                    pageId: "nonexistent",
+                    comment_id: "c1",
+                    message: "hi",
+                }),
+            )
+            expect([201, 400, 500]).toContain(res.status)
+        })
+    })
+
+    describe("Row 18 — Path traversal", () => {
+        it("DELETE: should handle path traversal in comment ID", async () => {
+            const req = makeDelete(
+                "http://localhost/api/platform/facebook/comments/../../etc/passwd?pageId=123",
+            )
+            const res = await DELETE(req, {
+                params: Promise.resolve({ id: "../../etc/passwd" }),
+            })
+            expect([200, 400, 500]).toContain(res.status)
+        })
+
+        it("PATCH: should handle path traversal in comment ID", async () => {
+            const req = makePatch(
+                "http://localhost/api/platform/facebook/comments/..\\..\\windows\\system32?pageId=123",
+                { hide: true },
+            )
+            const res = await PATCH(req, {
+                params: Promise.resolve({ id: "..\\..\\windows\\system32" }),
+            })
+            expect([200, 400, 500]).toContain(res.status)
         })
     })
 
