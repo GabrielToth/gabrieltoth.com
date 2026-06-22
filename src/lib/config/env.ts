@@ -27,6 +27,24 @@ export interface EnvironmentConfig {
     YOUTUBE_CLIENT_SECRET: string
     YOUTUBE_REDIRECT_URI: string
 
+    // Instagram OAuth (Instagram Business account linking)
+    INSTAGRAM_APP_ID: string
+    INSTAGRAM_APP_SECRET: string
+    INSTAGRAM_REDIRECT_URI: string
+
+    // Instagram Webhook (Meta verification handshake)
+    INSTAGRAM_WEBHOOK_VERIFY_TOKEN: string
+
+    // TikTok OAuth (TikTok account linking)
+    TIKTOK_CLIENT_KEY: string
+    TIKTOK_CLIENT_SECRET: string
+    TIKTOK_REDIRECT_URI: string
+
+    // Facebook OAuth (Facebook Page linking)
+    FACEBOOK_APP_ID: string
+    FACEBOOK_APP_SECRET: string
+    FACEBOOK_REDIRECT_URI: string
+
     // Email via Supabase Auth (configured in Supabase Dashboard SMTP)
     EMAIL_FROM: string
 
@@ -70,11 +88,23 @@ function parseConfig(): EnvironmentConfig {
         YOUTUBE_CLIENT_ID: process.env.YOUTUBE_CLIENT_ID ?? "",
         YOUTUBE_CLIENT_SECRET: process.env.YOUTUBE_CLIENT_SECRET ?? "",
         YOUTUBE_REDIRECT_URI: process.env.YOUTUBE_REDIRECT_URI ?? "",
-        EMAIL_FROM:
-            process.env.EMAIL_FROM ?? "noreply@gabrieltoth.com",
+        INSTAGRAM_APP_ID: process.env.INSTAGRAM_APP_ID ?? "",
+        INSTAGRAM_APP_SECRET: process.env.INSTAGRAM_APP_SECRET ?? "",
+        INSTAGRAM_REDIRECT_URI: process.env.INSTAGRAM_REDIRECT_URI ?? "",
+        INSTAGRAM_WEBHOOK_VERIFY_TOKEN:
+            process.env.INSTAGRAM_WEBHOOK_VERIFY_TOKEN ?? "",
+        TIKTOK_CLIENT_KEY: process.env.TIKTOK_CLIENT_KEY ?? "",
+        TIKTOK_CLIENT_SECRET: process.env.TIKTOK_CLIENT_SECRET ?? "",
+        TIKTOK_REDIRECT_URI: process.env.TIKTOK_REDIRECT_URI ?? "",
+        FACEBOOK_APP_ID: process.env.FACEBOOK_APP_ID ?? "",
+        FACEBOOK_APP_SECRET: process.env.FACEBOOK_APP_SECRET ?? "",
+        FACEBOOK_REDIRECT_URI: process.env.FACEBOOK_REDIRECT_URI ?? "",
+        EMAIL_FROM: process.env.EMAIL_FROM ?? "noreply@gabrieltoth.com",
         RESEND_API_KEY: process.env.RESEND_API_KEY ?? "",
         RESEND_FROM_EMAIL:
-            process.env.RESEND_FROM_EMAIL ?? process.env.EMAIL_FROM ?? "noreply@gabrieltoth.com",
+            process.env.RESEND_FROM_EMAIL ??
+            process.env.EMAIL_FROM ??
+            "noreply@gabrieltoth.com",
         RESEND_FROM_NAME: process.env.RESEND_FROM_NAME ?? "Gabriel Toth",
         TOKEN_ENCRYPTION_KEY: process.env.TOKEN_ENCRYPTION_KEY ?? "",
     }

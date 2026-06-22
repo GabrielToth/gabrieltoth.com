@@ -18,6 +18,7 @@ Complete API reference for gabrieltoth.com platform.
 - **[Credits API](#credits-api)** - Credit balance, transactions, and admin grants
 - **[YouTube Upload API](#youtube-upload-api)** - Video upload to YouTube
 - **[YouTube Download API](#youtube-download-api)** - Video download from cloud storage
+- **[Instagram API](#instagram-api)** - Instagram Business Account linking, publishing, and analytics
 
 ### Payments
 
@@ -454,6 +455,195 @@ x-csrf-token: csrf-token-value
 
 ---
 
+## Instagram API
+
+### POST /api/oauth/authorize/instagram
+
+Initiate Instagram Business Account linking. Generates an OAuth authorization URL and stores a CSRF state parameter in Redis.
+
+**Request:**
+
+```http
+POST /api/oauth/authorize/instagram HTTP/1.1
+x-user-id: user-uuid
+```
+
+**Response (200):**
+
+```json
+{
+  "success": true,
+  "authorizationUrl": "https://www.facebook.com/v22.0/dialog/oauth?...",
+  "state": "random_state_string"
+}
+```
+
+**Error Responses:**
+
+- 400: Missing `x-user-id` header
+- 500: Redis not configured or linking initiation failed
+
+---
+
+### GET /api/oauth/callback/instagram
+
+OAuth callback from Facebook after user authorizes Instagram Business Account linking. Exchanges the authorization code for tokens, retrieves Business Account info, and stores encrypted tokens.
+
+**Query Parameters:**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| code | string | Yes | Authorization code from Facebook |
+| state | string | Yes | State parameter for CSRF validation |
+| error | string | No | OAuth error from Facebook |
+
+**Redirects to:**
+
+| Redirect | Description |
+|----------|-------------|
+| `/dashboard?instagram=success` | Successfully linked |
+| `/dashboard?instagram=partial` | Token stored but social_networks record failed |
+| `/dashboard?instagram=error&reason=x` | Error with specific reason |
+
+**Error reasons:**
+
+- `denied` — User denied authorization
+- `missing_params` — Required OAuth params missing
+- `invalid_state` — State not found or expired in Redis
+- `no_business_account` — No Instagram Business Account linked to the Facebook Page
+- `server_error` — Internal server error
+
+---
+
+### POST /api/oauth/disconnect/instagram
+
+Revoke Instagram Business Account linking. Revokes the OAuth token on Facebook's side and removes stored credentials.
+
+**Request:**
+
+```http
+POST /api/oauth/disconnect/instagram HTTP/1.1
+x-user-id: user-uuid
+```
+
+**Response (200):**
+
+```json
+{
+  "success": true,
+  "message": "Instagram account unlinked successfully"
+}
+```
+
+**Error Responses:**
+
+- 400: Missing `x-user-id` header
+- 404: Instagram not linked for this user
+
+---
+
+### POST /api/platform/instagram/publish
+
+Publish content to the authenticated user's Instagram Business Account. Supports single images, single videos, and carousels.
+
+**Request:**
+
+```http
+POST /api/platform/instagram/publish HTTP/1.1
+Content-Type: application/json
+x-user-id: user-uuid
+
+{
+  "caption": "My awesome Instagram post!",
+  "imageUrl": "https://example.com/photo.jpg",
+  "videoUrl": "https://example.com/video.mp4",
+  "carouselItems": [
+    { "type": "image", "url": "https://example.com/photo1.jpg" },
+    { "type": "image", "url": "https://example.com/photo2.jpg" }
+  ]
+}
+```
+
+**Request Body:**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| caption | string | Yes | Post caption. Max 2200 characters. |
+| imageUrl | string | No* | Public URL of an image to post |
+| videoUrl | string | No* | Public URL of a video to post (max 60s, 100MB) |
+| carouselItems | array | No* | Array of {type, url} objects for carousel posts |
+
+\* At least one of `imageUrl`, `videoUrl`, or `carouselItems` is required.
+
+**Response (201):**
+
+```json
+{
+  "success": true,
+  "postId": "instagram-media-id",
+  "url": "https://www.instagram.com/p/instagram-media-id/"
+}
+```
+
+**Error Responses:**
+
+- 400: Missing caption, no media provided, or validation error
+- 404: Instagram not linked for this user
+
+**Security:**
+
+- Extra field rejection (whitelist: `caption`, `imageUrl`, `videoUrl`, `carouselItems`)
+- Caption length limit enforced (2200 characters)
+- Instagram Graph API media container flow (create → publish)
+
+---
+
+### GET /api/platform/instagram/analytics
+
+Get Instagram Business Account analytics (basic insights).
+
+**Request:**
+
+```http
+GET /api/platform/instagram/analytics?metric=impressions,reach,profile_views&period=day HTTP/1.1
+x-user-id: user-uuid
+```
+
+**Query Parameters:**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| metric | string | No | Comma-separated metrics (default: `impressions,reach,profile_views`). Supported: `impressions`, `reach`, `profile_views`, `follower_count` |
+| period | string | No | Time period: `day`, `week`, `days_28` (default: `day`) |
+
+**Response (200):**
+
+```json
+{
+  "success": true,
+  "data": {
+    "businessAccount": {
+      "id": "ig-user-id",
+      "username": "myaccount",
+      "name": "My Account"
+    },
+    "insights": {
+      "impressions": 1500,
+      "reach": 1200,
+      "profile_views": 45
+    }
+  }
+}
+```
+
+**Error Responses:**
+
+- 400: Missing `x-user-id` header
+- 401: Token expired, re-link required
+- 404: Instagram not linked or no Business Account found
+
+---
+
 ## YouTube Download API
 
 ### GET /api/youtube/download/[mediaId]
@@ -849,6 +1039,13 @@ For API issues or questions:
 ---
 
 ## Changelog
+
+### v1.2.0 (2026-06-22)
+
+- Instagram API: OAuth authorize/callback/disconnect
+- Instagram API: Publish and analytics endpoints
+- Instagram Posting Adapter: Real Graph API integration (was stub)
+- Env vars: Added INSTAGRAM/TIKTOK/FACEBOOK OAuth configs
 
 ### v1.1.1 (2026-06-21)
 

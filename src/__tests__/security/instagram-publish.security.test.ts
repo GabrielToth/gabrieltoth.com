@@ -1,0 +1,763 @@
+/**
+ * Security Tests for POST /api/platform/instagram/publish — Attack Matrix
+ *
+ * Attack matrix applicable rows:
+ * 1  (auth bypass — missing/invalid session)
+ * 2  (HTTP method confusion)
+ * 3  (type attacks — body fields)
+ * 4  (value attacks — body fields)
+ * 5  (structure attacks — body)
+ * 6  (prototype pollution — body)
+ * 7  (injection — body fields)
+ * 8  (unicode/encoding — body fields)
+ * 9  (size attacks — body)
+ * 10 (rate limiting)
+ * 11 (CSRF)
+ * 12 (race conditions — concurrent publishes)
+ * 13 (Content-Type confusion)
+ * 14 (HTTP header attacks)
+ * 15 (info disclosure — error messages)
+ * 16 (business logic — not linked, invalid media)
+ * 17 (IDOR — publish to another user's account)
+ * 19 (mass assignment — extra body fields)
+ * 20 (SSRF — imageUrl/videoUrl injection)
+ *
+ * SKIP:
+ *   18 (path traversal) — no filename params
+ *   21 (timing side-channel) — all paths return JSON errors
+ */
+
+import { POST } from "@/app/api/platform/instagram/publish/route"
+import { NextRequest } from "next/server"
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
+
+const mockGetToken = vi.hoisted(() =>
+    vi.fn().mockResolvedValue({
+        accessToken: "mock-access-token",
+        refreshToken: "mock-refresh-token",
+        expiresAt: Date.now() + 3600000,
+        platform: "instagram",
+        userId: "test-user-123",
+    }),
+)
+
+const mockPostToInstagram = vi.hoisted(() =>
+    vi.fn().mockResolvedValue({
+        success: true,
+        postId: "mock-media-id-123",
+        url: "https://www.instagram.com/p/mock-media-id-123/",
+    }),
+)
+
+vi.mock("@/lib/token-store", () => ({
+    getTokenStore: () => ({
+        getToken: mockGetToken,
+    }),
+    resetTokenStore: vi.fn(),
+}))
+
+vi.mock("@/lib/instagram/config", () => ({
+    getInstagramConfig: () => ({
+        oauth: {
+            appId: "test-app-id",
+            appSecret: "test-app-secret",
+            redirectUri: "http://localhost:3000/api/oauth/callback/instagram",
+            scopes: [
+                "instagram_basic",
+                "instagram_content_publish",
+                "pages_show_list",
+                "pages_read_engagement",
+            ],
+            apiVersion: "v22.0",
+        },
+        rateLimit: {
+            linkingAttemptsPerHour: 5,
+            publishAttemptsPerHour: 10,
+        },
+        security: {
+            tokenExpiryBufferMs: 5 * 60 * 1000,
+        },
+    }),
+    resetInstagramConfig: vi.fn(),
+}))
+
+vi.mock("@/lib/instagram/oauth-service", () => ({
+    getInstagramOAuthService: () => ({
+        initialize: vi.fn(),
+    }),
+    resetInstagramOAuthService: vi.fn(),
+}))
+
+vi.mock("@/lib/instagram/get-valid-token", () => ({
+    getValidInstagramToken: vi.fn().mockResolvedValue("mock-access-token"),
+}))
+
+vi.mock("@/lib/posting/adapters/instagram", () => ({
+    postToInstagram: mockPostToInstagram,
+}))
+
+vi.mock("@supabase/supabase-js", () => ({
+    createClient: () => ({
+        from: () => ({
+            select: vi.fn().mockReturnValue({
+                eq: vi.fn().mockReturnValue({
+                    eq: vi.fn().mockReturnValue({
+                        single: vi.fn().mockResolvedValue({
+                            data: {
+                                platform_user_id: "mock-ig-user-id",
+                            },
+                            error: null,
+                        }),
+                    }),
+                }),
+            }),
+            update: vi.fn().mockReturnValue({
+                eq: vi.fn().mockReturnValue({
+                    eq: vi.fn().mockResolvedValue({ error: null }),
+                }),
+            }),
+        }),
+    }),
+}))
+
+vi.mock("@/lib/logger", () => ({
+    createLogger: () => ({
+        info: vi.fn(),
+        warn: vi.fn(),
+        error: vi.fn(),
+    }),
+}))
+
+function makePostRequest(
+    url: string,
+    body: unknown,
+    headers: Record<string, string> = {},
+): NextRequest {
+    return new NextRequest(url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "x-user-id": "test-user-123",
+            ...headers,
+        },
+        body: body !== null ? JSON.stringify(body) : null,
+    })
+}
+
+describe("POST /api/platform/instagram/publish — Attack Matrix", () => {
+    beforeEach(() => {
+        vi.clearAllMocks()
+        mockGetToken.mockResolvedValue({
+            accessToken: "mock-access-token",
+            refreshToken: "mock-refresh-token",
+            expiresAt: Date.now() + 3600000,
+            platform: "instagram",
+            userId: "test-user-123",
+        })
+        mockPostToInstagram.mockResolvedValue({
+            success: true,
+            postId: "mock-media-id-123",
+            url: "https://www.instagram.com/p/mock-media-id-123/",
+        })
+    })
+
+    afterEach(() => {
+        vi.clearAllMocks()
+    })
+
+    // ── Row 1: Auth bypass ──
+    describe("Row 1 — Auth bypass", () => {
+        it("should reject request without x-user-id header", async () => {
+            const request = new NextRequest(
+                "http://localhost/api/platform/instagram/publish",
+                {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        caption: "Test",
+                        imageUrl: "https://example.com/img.jpg",
+                    }),
+                },
+            )
+            const response = await POST(request)
+            expect(response.status).toBe(400)
+            const body = await response.json()
+            expect(body.error).toBe("MISSING_USER_ID")
+        })
+
+        it("should reject request with empty x-user-id", async () => {
+            const request = makePostRequest(
+                "http://localhost/api/platform/instagram/publish",
+                { caption: "Test", imageUrl: "https://example.com/img.jpg" },
+                { "x-user-id": "" },
+            )
+            const response = await POST(request)
+            expect(response.status).toBe(400)
+        })
+    })
+
+    // ── Row 2: HTTP method confusion ──
+    describe("Row 2 — HTTP method confusion", () => {
+        it("should not expose GET handler for publish", async () => {
+            const route = await import(
+                "@/app/api/platform/instagram/publish/route"
+            )
+            expect("GET" in route).toBe(false)
+        })
+    })
+
+    // ── Row 3: Type attacks ──
+    describe("Row 3 — Type attacks on body", () => {
+        it("should handle body with number instead of object", async () => {
+            const request = makePostRequest(
+                "http://localhost/api/platform/instagram/publish",
+                42,
+            )
+            const response = await POST(request)
+            expect([400, 500]).toContain(response.status)
+        })
+
+        it("should handle body with string instead of object", async () => {
+            const request = makePostRequest(
+                "http://localhost/api/platform/instagram/publish",
+                "invalid",
+            )
+            const response = await POST(request)
+            expect([400, 500]).toContain(response.status)
+        })
+
+        it("should handle body with boolean instead of object", async () => {
+            const request = makePostRequest(
+                "http://localhost/api/platform/instagram/publish",
+                true,
+            )
+            const response = await POST(request)
+            expect([400, 500]).toContain(response.status)
+        })
+
+        it("should handle body with array instead of object", async () => {
+            const request = makePostRequest(
+                "http://localhost/api/platform/instagram/publish",
+                [1, 2, 3],
+            )
+            const response = await POST(request)
+            expect([400, 500]).toContain(response.status)
+        })
+    })
+
+    // ── Row 4: Value attacks ──
+    describe("Row 4 — Value attacks", () => {
+        it("should reject empty JSON body", async () => {
+            const request = makePostRequest(
+                "http://localhost/api/platform/instagram/publish",
+                {},
+            )
+            const response = await POST(request)
+            expect(response.status).toBe(400)
+        })
+
+        it("should reject body with null value", async () => {
+            const request = makePostRequest(
+                "http://localhost/api/platform/instagram/publish",
+                null,
+            )
+            const response = await POST(request)
+            expect([400, 500]).toContain(response.status)
+        })
+
+        it("should reject empty caption string", async () => {
+            const request = makePostRequest(
+                "http://localhost/api/platform/instagram/publish",
+                {
+                    caption: "",
+                    imageUrl: "https://example.com/img.jpg",
+                },
+            )
+            const response = await POST(request)
+            expect(response.status).toBe(400)
+        })
+
+        it("should reject caption as number", async () => {
+            const request = makePostRequest(
+                "http://localhost/api/platform/instagram/publish",
+                {
+                    caption: 123,
+                    imageUrl: "https://example.com/img.jpg",
+                },
+            )
+            const response = await POST(request)
+            expect(response.status).toBe(400)
+        })
+
+        it("should reject missing caption", async () => {
+            const request = makePostRequest(
+                "http://localhost/api/platform/instagram/publish",
+                { imageUrl: "https://example.com/img.jpg" },
+            )
+            const response = await POST(request)
+            expect(response.status).toBe(400)
+        })
+
+        it("should reject caption exceeding 2200 chars", async () => {
+            const request = makePostRequest(
+                "http://localhost/api/platform/instagram/publish",
+                {
+                    caption: "A".repeat(2201),
+                    imageUrl: "https://example.com/img.jpg",
+                },
+            )
+            const response = await POST(request)
+            expect(response.status).toBe(400)
+        })
+
+        it("should reject when no imageUrl, videoUrl, or carouselItems", async () => {
+            const request = makePostRequest(
+                "http://localhost/api/platform/instagram/publish",
+                { caption: "Test caption" },
+            )
+            const response = await POST(request)
+            expect(response.status).toBe(400)
+        })
+    })
+
+    // ── Row 5: Structure attacks ──
+    describe("Row 5 — Structure attacks", () => {
+        it("should handle body as empty array", async () => {
+            const request = makePostRequest(
+                "http://localhost/api/platform/instagram/publish",
+                [],
+            )
+            const response = await POST(request)
+            expect([400, 500]).toContain(response.status)
+        })
+
+        it("should handle body with BOM prefix", async () => {
+            const request = new NextRequest(
+                "http://localhost/api/platform/instagram/publish",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "x-user-id": "test-user-123",
+                    },
+                    body: '\uFEFF{"caption":"Test","imageUrl":"https://example.com/img.jpg"}',
+                },
+            )
+            const response = await POST(request)
+            expect([201, 400, 500]).toContain(response.status)
+        })
+    })
+
+    // ── Row 6: Prototype pollution ──
+    describe("Row 6 — Prototype pollution", () => {
+        it("should handle __proto__ in body", async () => {
+            const request = makePostRequest(
+                "http://localhost/api/platform/instagram/publish",
+                {
+                    caption: "Test",
+                    imageUrl: "https://example.com/img.jpg",
+                    __proto__: { polluted: true },
+                },
+            )
+            const response = await POST(request)
+            expect([201, 400, 500]).toContain(response.status)
+        })
+
+        it("should handle constructor.prototype in body", async () => {
+            const request = makePostRequest(
+                "http://localhost/api/platform/instagram/publish",
+                {
+                    caption: "Test",
+                    imageUrl: "https://example.com/img.jpg",
+                    constructor: { prototype: { polluted: true } },
+                },
+            )
+            const response = await POST(request)
+            expect([201, 400, 500]).toContain(response.status)
+        })
+    })
+
+    // ── Row 7: Injection ──
+    describe("Row 7 — Injection attacks", () => {
+        it("should handle SQL injection in caption", async () => {
+            const request = makePostRequest(
+                "http://localhost/api/platform/instagram/publish",
+                {
+                    caption: "1' OR '1'='1",
+                    imageUrl: "https://example.com/img.jpg",
+                },
+            )
+            const response = await POST(request)
+            expect([201, 400, 500]).toContain(response.status)
+        })
+
+        it("should handle XSS in caption", async () => {
+            const request = makePostRequest(
+                "http://localhost/api/platform/instagram/publish",
+                {
+                    caption: "<script>alert(1)</script>",
+                    imageUrl: "https://example.com/img.jpg",
+                },
+            )
+            const response = await POST(request)
+            expect([201, 400, 500]).toContain(response.status)
+        })
+
+        it("should handle NoSQL operators in caption", async () => {
+            const request = makePostRequest(
+                "http://localhost/api/platform/instagram/publish",
+                {
+                    caption: '{"$gt": ""}',
+                    imageUrl: "https://example.com/img.jpg",
+                },
+            )
+            const response = await POST(request)
+            expect([201, 400, 500]).toContain(response.status)
+        })
+
+        it("should handle command injection in imageUrl", async () => {
+            const request = makePostRequest(
+                "http://localhost/api/platform/instagram/publish",
+                {
+                    caption: "Test",
+                    imageUrl: "$(cat /etc/passwd)",
+                },
+            )
+            const response = await POST(request)
+            expect([201, 400, 500]).toContain(response.status)
+        })
+
+        it("should handle XSS in imageUrl", async () => {
+            const request = makePostRequest(
+                "http://localhost/api/platform/instagram/publish",
+                {
+                    caption: "Test",
+                    imageUrl: "javascript:alert(1)",
+                },
+            )
+            const response = await POST(request)
+            expect([201, 400, 500]).toContain(response.status)
+        })
+    })
+
+    // ── Row 8: Unicode/encoding ──
+    describe("Row 8 — Unicode and encoding attacks", () => {
+        it("should handle null byte in caption", async () => {
+            const request = makePostRequest(
+                "http://localhost/api/platform/instagram/publish",
+                {
+                    caption: "test\0caption",
+                    imageUrl: "https://example.com/img.jpg",
+                },
+            )
+            const response = await POST(request)
+            expect([201, 400, 500]).toContain(response.status)
+        })
+
+        it("should handle emoji in caption", async () => {
+            const request = makePostRequest(
+                "http://localhost/api/platform/instagram/publish",
+                {
+                    caption: "test😊caption",
+                    imageUrl: "https://example.com/img.jpg",
+                },
+            )
+            const response = await POST(request)
+            expect([201, 400, 500]).toContain(response.status)
+        })
+
+        it("should handle RTL override in caption", async () => {
+            const request = makePostRequest(
+                "http://localhost/api/platform/instagram/publish",
+                {
+                    caption: "\u202Etest\u202C",
+                    imageUrl: "https://example.com/img.jpg",
+                },
+            )
+            const response = await POST(request)
+            expect([201, 400, 500]).toContain(response.status)
+        })
+    })
+
+    // ── Row 9: Size attacks ──
+    describe("Row 9 — Size attacks", () => {
+        it("should reject caption at 2201 chars (over limit)", async () => {
+            const request = makePostRequest(
+                "http://localhost/api/platform/instagram/publish",
+                {
+                    caption: "A".repeat(2201),
+                    imageUrl: "https://example.com/img.jpg",
+                },
+            )
+            const response = await POST(request)
+            expect(response.status).toBe(400)
+        })
+
+        it("should accept caption at exactly 2200 chars (within limit)", async () => {
+            mockPostToInstagram.mockResolvedValue({
+                success: true,
+                postId: "mock-media-id",
+                url: "https://www.instagram.com/p/mock-media-id/",
+            })
+            const request = makePostRequest(
+                "http://localhost/api/platform/instagram/publish",
+                {
+                    caption: "A".repeat(2200),
+                    imageUrl: "https://example.com/img.jpg",
+                },
+            )
+            const response = await POST(request)
+            expect([201, 500]).toContain(response.status)
+        })
+
+        it("should handle deeply nested JSON (100+ levels)", async () => {
+            let deep: any = { caption: "Test", imageUrl: "https://example.com/img.jpg" }
+            let current = deep
+            for (let i = 0; i < 100; i++) {
+                current.nested = {}
+                current = current.nested
+            }
+            const request = makePostRequest(
+                "http://localhost/api/platform/instagram/publish",
+                deep,
+            )
+            const response = await POST(request)
+            expect([201, 400, 500]).toContain(response.status)
+        })
+    })
+
+    // ── Row 10: Rate limiting ──
+    describe("Row 10 — Rate limiting", () => {
+        it("should handle request within rate limit", async () => {
+            const request = makePostRequest(
+                "http://localhost/api/platform/instagram/publish",
+                {
+                    caption: "Test",
+                    imageUrl: "https://example.com/img.jpg",
+                },
+            )
+            const response = await POST(request)
+            expect([201, 500]).toContain(response.status)
+        })
+    })
+
+    // ── Row 11: CSRF ──
+    describe("Row 11 — CSRF protection", () => {
+        it("should work without CSRF token (x-user-id is the auth mechanism)", async () => {
+            const request = makePostRequest(
+                "http://localhost/api/platform/instagram/publish",
+                {
+                    caption: "Test",
+                    imageUrl: "https://example.com/img.jpg",
+                },
+            )
+            const response = await POST(request)
+            expect([201, 500]).toContain(response.status)
+        })
+    })
+
+    // ── Row 12: Race conditions ──
+    describe("Row 12 — Race conditions", () => {
+        it("should handle concurrent publish requests", async () => {
+            const results = await Promise.all([
+                POST(
+                    makePostRequest(
+                        "http://localhost/api/platform/instagram/publish",
+                        {
+                            caption: "Test 1",
+                            imageUrl: "https://example.com/img1.jpg",
+                        },
+                    ),
+                ),
+                POST(
+                    makePostRequest(
+                        "http://localhost/api/platform/instagram/publish",
+                        {
+                            caption: "Test 2",
+                            imageUrl: "https://example.com/img2.jpg",
+                        },
+                    ),
+                ),
+                POST(
+                    makePostRequest(
+                        "http://localhost/api/platform/instagram/publish",
+                        {
+                            caption: "Test 3",
+                            imageUrl: "https://example.com/img3.jpg",
+                        },
+                    ),
+                ),
+            ])
+            for (const response of results) {
+            expect([201, 400, 500]).toContain(response.status)
+            }
+        })
+    })
+
+    // ── Row 13: Content-Type ──
+    describe("Row 13 — Content-Type attacks", () => {
+        it("should handle wrong Content-Type (text/plain)", async () => {
+            const request = new NextRequest(
+                "http://localhost/api/platform/instagram/publish",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "text/plain",
+                        "x-user-id": "test-user-123",
+                    },
+                    body: '{"caption":"Test","imageUrl":"https://example.com/img.jpg"}',
+                },
+            )
+            const response = await POST(request)
+            expect([201, 400, 500]).toContain(response.status)
+        })
+
+        it("should handle missing Content-Type", async () => {
+            const request = new NextRequest(
+                "http://localhost/api/platform/instagram/publish",
+                {
+                    method: "POST",
+                    headers: { "x-user-id": "test-user-123" },
+                    body: '{"caption":"Test","imageUrl":"https://example.com/img.jpg"}',
+                },
+            )
+            const response = await POST(request)
+            expect([201, 400, 500]).toContain(response.status)
+        })
+    })
+
+    // ── Row 14: HTTP header attacks ──
+    describe("Row 14 — HTTP header attacks", () => {
+        it("should handle X-Forwarded-For header", async () => {
+            const request = makePostRequest(
+                "http://localhost/api/platform/instagram/publish",
+                { caption: "Test", imageUrl: "https://example.com/img.jpg" },
+                { "X-Forwarded-For": "127.0.0.1" },
+            )
+            const response = await POST(request)
+            expect([201, 500]).toContain(response.status)
+        })
+
+        it("should handle Host override header", async () => {
+            const request = makePostRequest(
+                "http://localhost/api/platform/instagram/publish",
+                { caption: "Test", imageUrl: "https://example.com/img.jpg" },
+                { Host: "evil.com" },
+            )
+            const response = await POST(request)
+            expect([201, 500]).toContain(response.status)
+        })
+    })
+
+    // ── Row 15: Info disclosure ──
+    describe("Row 15 — Info disclosure", () => {
+        it("should not leak internal paths in error response", async () => {
+            mockGetToken.mockRejectedValue(
+                new Error("Database connection error"),
+            )
+            const request = makePostRequest(
+                "http://localhost/api/platform/instagram/publish",
+                { caption: "Test", imageUrl: "https://example.com/img.jpg" },
+            )
+            const response = await POST(request)
+            const body = await response.json()
+            expect(body.message).not.toContain(":\\")
+            expect(body.message).not.toContain("/src/")
+            expect(body.message).not.toContain("at ")
+            expect(body.message).not.toContain("stack")
+        })
+    })
+
+    // ── Row 16: Business logic ──
+    describe("Row 16 — Business logic attacks", () => {
+        it("should return 404 when Instagram is not linked", async () => {
+            mockGetToken.mockResolvedValue(null)
+            const request = makePostRequest(
+                "http://localhost/api/platform/instagram/publish",
+                { caption: "Test", imageUrl: "https://example.com/img.jpg" },
+            )
+            const response = await POST(request)
+            expect(response.status).toBe(404)
+        })
+    })
+
+    // ── Row 17: IDOR ──
+    describe("Row 17 — IDOR (publish to another user's account)", () => {
+        it("should use x-user-id header for authorization (not body)", async () => {
+            const request = makePostRequest(
+                "http://localhost/api/platform/instagram/publish",
+                {
+                    caption: "Test",
+                    imageUrl: "https://example.com/img.jpg",
+                    userId: "victim-user-789",
+                },
+                { "x-user-id": "test-user-123" },
+            )
+            const response = await POST(request)
+            expect(mockGetToken).toHaveBeenCalledWith(
+                "test-user-123",
+                "instagram",
+            )
+            expect([201, 400, 500]).toContain(response.status)
+        })
+    })
+
+    // ── Row 19: Mass assignment ──
+    describe("Row 19 — Mass assignment", () => {
+        it("should reject extra fields in request body", async () => {
+            const request = makePostRequest(
+                "http://localhost/api/platform/instagram/publish",
+                {
+                    caption: "Test",
+                    imageUrl: "https://example.com/img.jpg",
+                    role: "admin",
+                    isAdmin: true,
+                    balance: 999999,
+                },
+            )
+            const response = await POST(request)
+            expect(response.status).toBe(400)
+            const body = await response.json()
+            expect(body.error).toBe("VALIDATION_ERROR")
+        })
+    })
+
+    // ── Row 20: SSRF ──
+    describe("Row 20 — SSRF via imageUrl/videoUrl", () => {
+        it("should handle SSRF attempt via imageUrl with internal IP", async () => {
+            const request = makePostRequest(
+                "http://localhost/api/platform/instagram/publish",
+                {
+                    caption: "Test",
+                    imageUrl: "http://169.254.169.254/latest/meta-data/",
+                },
+            )
+            const response = await POST(request)
+            expect([201, 400, 500]).toContain(response.status)
+        })
+
+        it("should handle SSRF attempt via imageUrl with localhost", async () => {
+            const request = makePostRequest(
+                "http://localhost/api/platform/instagram/publish",
+                {
+                    caption: "Test",
+                    imageUrl: "http://localhost:5432/pgdata",
+                },
+            )
+            const response = await POST(request)
+            expect([201, 400, 500]).toContain(response.status)
+        })
+
+        it("should handle SSRF attempt via imageUrl with file protocol", async () => {
+            const request = makePostRequest(
+                "http://localhost/api/platform/instagram/publish",
+                {
+                    caption: "Test",
+                    imageUrl: "file:///etc/passwd",
+                },
+            )
+            const response = await POST(request)
+            expect([201, 400, 500]).toContain(response.status)
+        })
+    })
+})

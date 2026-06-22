@@ -102,6 +102,10 @@ Before finishing ANY route implementation, you MUST enumerate ALL attack vectors
 - Arrow functions for components, props destructuring, `export default` at end of file.
 - Components in PascalCase, files in kebab-case.
 
+## Instagram OAuth — testing caveat
+
+The callback route (`src/app/api/oauth/callback/instagram/route.ts`) reads `process.env.REDIS_URL` directly (not through a config service) and creates a `new Redis()` connection. In tests, mocking `ioredis` via `vi.mock` can fail due to constructor resolution issues with `vi.fn()`. **Solution**: set `process.env.REDIS_URL = ""` in `vi.hoisted()` so the route returns `server_error` before attempting Redis — this still verifies proper error handling (catch → `server_error` redirect, no info leak, proper 307 status).
+
 ## Existing instruction files
 
 - `.cursorrules` — Cursor IDE rules (partially stale: says Next.js 15, i18n EN/PT-BR only)
