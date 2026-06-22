@@ -12,19 +12,9 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import { addDays, formatDistanceToNow, isBefore } from "date-fns"
-import { format, toZonedTime } from "date-fns-tz"
+import { format, fromZonedTime, toZonedTime } from "date-fns-tz"
 import { AlertCircle, Calendar, Clock } from "lucide-react"
-import { useMemo, useState } from "react"
-
-interface PostingSchedulerProps {
-    onScheduleChange: (schedule: {
-        type: "immediate" | "scheduled" | "recurring"
-        scheduledTime?: Date
-        timezone?: string
-        recurrence?: "daily" | "weekly" | "monthly"
-    }) => void
-    timezone?: string
-}
+import { useEffect, useMemo, useState } from "react"
 
 const timezones = [
     "America/New_York",
@@ -34,35 +24,88 @@ const timezones = [
     "Europe/London",
     "Europe/Paris",
     "Europe/Berlin",
+    "Europe/Madrid",
+    "Europe/Lisbon",
     "Asia/Tokyo",
     "Asia/Shanghai",
+    "Asia/Kolkata",
     "Australia/Sydney",
+    "Pacific/Auckland",
     "America/Sao_Paulo",
     "America/Argentina/Buenos_Aires",
+    "Africa/Cairo",
+    "Africa/Lagos",
+    "UTC",
 ]
+
+function getBrowserTimezone(): string {
+    try {
+        return Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC"
+    } catch {
+        return "UTC"
+    }
+}
+
+function getStoredTimezone(): string {
+    if (typeof window === "undefined") return "UTC"
+    try {
+        return localStorage.getItem("user-timezone") || getBrowserTimezone()
+    } catch {
+        return getBrowserTimezone()
+    }
+}
+
+function formatDateForInput(date: Date): string {
+    const y = date.getFullYear()
+    const m = String(date.getMonth() + 1).padStart(2, "0")
+    const d = String(date.getDate()).padStart(2, "0")
+    return `${y}-${m}-${d}`
+}
+
+interface PostingSchedulerProps {
+    onScheduleChange: (schedule: {
+        type: "immediate" | "scheduled"
+        scheduledTime?: Date
+        timezone?: string
+    }) => void
+    defaultDate?: Date
+}
 
 export default function PostingScheduler({
     onScheduleChange,
-    timezone = "America/New_York",
+    defaultDate,
 }: PostingSchedulerProps) {
+    const userTz = getStoredTimezone()
     const [scheduleType, setScheduleType] = useState<
-        "immediate" | "scheduled" | "recurring"
-    >("immediate")
-    const [selectedDate, setSelectedDate] = useState("")
-    const [selectedTime, setSelectedTime] = useState("12:00")
-    const [selectedTimezone, setSelectedTimezone] = useState(timezone)
-    const [recurrence, setRecurrence] = useState<
-        "daily" | "weekly" | "monthly"
-    >("daily")
+        "immediate" | "scheduled"
+    >(defaultDate ? "scheduled" : "immediate")
+    const [selectedTimezone, setSelectedTimezone] = useState(userTz)
+
+    const initialDate = useMemo(() => {
+        if (!defaultDate) return formatDateForInput(new Date())
+        const zoned = toZonedTime(defaultDate, selectedTimezone)
+        return formatDateForInput(zoned)
+    }, [defaultDate, selectedTimezone])
+
+    const [selectedDate, setSelectedDate] = useState(initialDate)
+    const [selectedTime, setSelectedTime] = useState("00:00")
     const [error, setError] = useState("")
+
+    useEffect(() => {
+        if (defaultDate) {
+            const zoned = toZonedTime(defaultDate, selectedTimezone)
+            setSelectedDate(formatDateForInput(zoned))
+            setSelectedTime("00:00")
+        }
+    }, [defaultDate, selectedTimezone])
 
     const maxDate = useMemo(() => {
         const max = addDays(new Date(), 365)
-        return max.toISOString().split("T")[0]
+        return formatDateForInput(max)
     }, [])
 
     const minDate = useMemo(() => {
-        return new Date().toISOString().split("T")[0]
+        return formatDateForInput(new Date())
     }, [])
 
     const previewTime = useMemo(() => {
@@ -76,71 +119,58 @@ export default function PostingScheduler({
 
         try {
             const [hours, minutes] = selectedTime.split(":")
-            const dateTime = new Date(`${selectedDate}T${selectedTime}:00`)
+            const localDateTime = new Date(
+                `${selectedDate}T${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:00`,
+            )
 
-            if (isBefore(dateTime, new Date())) {
+            const utcTime = fromZonedTime(localDateTime, selectedTimezone)
+
+            if (isBefore(utcTime, new Date())) {
                 setError("Scheduled time must be in the future")
                 return ""
             }
 
             setError("")
 
-            const zonedTime = toZonedTime(dateTime, selectedTimezone)
-            const formatted = format(zonedTime, "PPP p zzz", {
+            const formatted = format(localDateTime, "PPP p zzz", {
                 timeZone: selectedTimezone,
             })
 
-            return `${formatted} (${formatDistanceToNow(dateTime, { addSuffix: true })})`
-        } catch (e) {
+            return `${formatted} (${formatDistanceToNow(utcTime, { addSuffix: true })})`
+        } catch {
             return ""
         }
     }, [scheduleType, selectedDate, selectedTime, selectedTimezone])
 
     const handleScheduleChange = () => {
         if (scheduleType === "immediate") {
-            onScheduleChange({
-                type: "immediate",
-            })
-        } else if (scheduleType === "scheduled") {
-            if (!selectedDate || !selectedTime) {
-                setError("Please select date and time")
-                return
-            }
-
-            const dateTime = new Date(`${selectedDate}T${selectedTime}:00`)
-
-            if (isBefore(dateTime, new Date())) {
-                setError("Scheduled time must be in the future")
-                return
-            }
-
-            setError("")
-            onScheduleChange({
-                type: "scheduled",
-                scheduledTime: dateTime,
-                timezone: selectedTimezone,
-            })
-        } else if (scheduleType === "recurring") {
-            if (!selectedDate || !selectedTime) {
-                setError("Please select date and time")
-                return
-            }
-
-            const dateTime = new Date(`${selectedDate}T${selectedTime}:00`)
-
-            if (isBefore(dateTime, new Date())) {
-                setError("Scheduled time must be in the future")
-                return
-            }
-
-            setError("")
-            onScheduleChange({
-                type: "recurring",
-                scheduledTime: dateTime,
-                timezone: selectedTimezone,
-                recurrence,
-            })
+            onScheduleChange({ type: "immediate" })
+            return
         }
+
+        if (!selectedDate || !selectedTime) {
+            setError("Please select date and time")
+            return
+        }
+
+        const [hours, minutes] = selectedTime.split(":")
+        const localDateTime = new Date(
+            `${selectedDate}T${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:00`,
+        )
+
+        const utcTime = fromZonedTime(localDateTime, selectedTimezone)
+
+        if (isBefore(utcTime, new Date())) {
+            setError("Scheduled time must be in the future")
+            return
+        }
+
+        setError("")
+        onScheduleChange({
+            type: "scheduled",
+            scheduledTime: utcTime,
+            timezone: selectedTimezone,
+        })
     }
 
     return (
@@ -167,13 +197,6 @@ export default function PostingScheduler({
                     <RadioGroupItem value="scheduled" id="scheduled" />
                     <Label htmlFor="scheduled" className="cursor-pointer">
                         Schedule for Later
-                    </Label>
-                </div>
-
-                <div className="flex items-center gap-2">
-                    <RadioGroupItem value="recurring" id="recurring" />
-                    <Label htmlFor="recurring" className="cursor-pointer">
-                        Recurring Schedule
                     </Label>
                 </div>
             </RadioGroup>
@@ -235,30 +258,11 @@ export default function PostingScheduler({
                                 ))}
                             </SelectContent>
                         </Select>
+                        <p className="text-xs text-gray-500">
+                            Times are converted from your timezone to UTC for
+                            storage
+                        </p>
                     </div>
-
-                    {scheduleType === "recurring" && (
-                        <div className="space-y-2">
-                            <Label htmlFor="recurrence">Repeat</Label>
-                            <Select
-                                value={recurrence}
-                                onValueChange={(v: any) => setRecurrence(v)}
-                            >
-                                <SelectTrigger id="recurrence">
-                                    <SelectValue />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="daily">Daily</SelectItem>
-                                    <SelectItem value="weekly">
-                                        Weekly
-                                    </SelectItem>
-                                    <SelectItem value="monthly">
-                                        Monthly
-                                    </SelectItem>
-                                </SelectContent>
-                            </Select>
-                        </div>
-                    )}
 
                     {previewTime && (
                         <div className="rounded bg-blue-50 p-3">

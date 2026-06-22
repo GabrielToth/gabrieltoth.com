@@ -5,7 +5,7 @@
 - **Next.js 16** (App Router) + **React 19** + **TypeScript 6** — single `package.json`, not a monorepo
 - **Tailwind CSS 4** via PostCSS, **shadcn/ui** (new-york, RSC enabled), **lucide-react** icons
 - **next-intl** — 4 locales shipped by default: `en`, `pt-BR`, `es`, `de`; default is `pt-BR`. Architecture supports adding more — every user-facing string lives in `src/i18n/{locale}/*.json`, never in TSX.
-- **Separate Express 5 backend** in `src/backend/` (port 4000, via `tsx` for dev). Vercel handles frontend + API routes; the Express backend is for Docker/local/AWS Lambda deployments.
+- **Next.js API routes** handle all server-side logic; no separate backend service. Vercel handles frontend + API routes; Docker is for local development.
 
 ## Commands
 
@@ -23,7 +23,7 @@
 | `npm run test:coverage` | Vitest with coverage (v8) |
 | `npm run test:all` | **Full CI quality gate**: type-check → lint → format:check → spell-check → test |
 | `npm run test:e2e` | Playwright E2E tests (`tests/`) |
-| `npm run start:backend` | Express 5 backend on port 4000 (tsx watch) |
+| `npm run start:backend` | (removed — no separate backend) |
 
 **Use `npm run test:all` before pushing** — it runs the same gate as CI.
 

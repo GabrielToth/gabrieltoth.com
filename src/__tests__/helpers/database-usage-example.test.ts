@@ -48,18 +48,18 @@ describe("Database Helper Usage Examples", () => {
         if (!isDbRunning) return skip()
         if (!isDbRunning) return skip()
         try {
-            // Create a test user with confirmed email
+            // Create a test user
             const testEmail = `example-${Date.now()}@test.com`
             const user = await createTestUser(testEmail)
 
             // User is ready to use in tests
             expect(user.id).toBeDefined()
             expect(user.email).toBe(testEmail)
-            expect(user.email_confirmed_at).toBeDefined()
+            expect(user.email_verified).toBe(true)
 
             // Cleanup after test
             const supabase = await setupTestDatabase()
-            await supabase.auth.admin.deleteUser(user.id)
+            await supabase.from("users").delete().eq("id", user.id)
         } catch (error) {
             // Handle case where Supabase is not configured
             if (

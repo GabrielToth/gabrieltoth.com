@@ -9,6 +9,7 @@ describe("PreferencesSection", () => {
         notificationsEnabled: true,
         language: "en",
         theme: "auto",
+        timezone: "UTC",
     }
 
     const mockOnSave = vi.fn()

@@ -27,10 +27,13 @@ export async function generateMetadata({
 
 export default async function ResetPasswordPage({
     params,
+    searchParams,
 }: {
     params: Promise<{ locale: string }>
+    searchParams: Promise<{ token?: string }>
 }) {
     const { locale } = await params
+    const { token } = await searchParams
     const t = await getTranslations({ locale, namespace: "auth" })
 
     return (
@@ -46,7 +49,7 @@ export default async function ResetPasswordPage({
                 </div>
 
                 <div className="mt-8 bg-white dark:bg-gray-800 py-8 px-4 shadow sm:rounded-lg sm:px-10">
-                    <ResetPasswordForm locale={locale} />
+                    <ResetPasswordForm locale={locale} token={token} />
 
                     <p className="text-center text-gray-600 dark:text-gray-400 mt-6">
                         <Link

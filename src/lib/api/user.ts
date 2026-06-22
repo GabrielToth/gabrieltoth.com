@@ -109,6 +109,7 @@ export async function fetchUserPreferences(): Promise<Preferences> {
             notificationsEnabled: true,
             language: "en",
             theme: "auto",
+            timezone: "UTC",
         }
 
         // Cache the result

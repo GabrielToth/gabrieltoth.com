@@ -41,6 +41,7 @@ export interface Preferences {
     notificationsEnabled: boolean
     language: "en" | "pt" | "es" | "fr"
     theme: "light" | "dark" | "auto"
+    timezone: string
 }
 
 /**
@@ -109,6 +110,7 @@ export const SettingsContainer: React.FC<SettingsContainerProps> = ({
         notificationsEnabled: true,
         language: "en",
         theme: "auto",
+        timezone: "UTC",
     })
     const [channels, setChannels] = useState<SocialChannel[]>([])
     const [billing, setBilling] = useState<BillingInfo | null>(null)
@@ -276,7 +278,11 @@ export const SettingsContainer: React.FC<SettingsContainerProps> = ({
     // Handle preferences save
     const handleSavePreferences = (updatedPreferences: Preferences) => {
         setPreferences(updatedPreferences)
-        // TODO: Call API to save preferences
+        if (typeof window !== "undefined") {
+            try {
+                localStorage.setItem("user-timezone", updatedPreferences.timezone)
+            } catch {}
+        }
     }
 
     // Handle channel disconnect

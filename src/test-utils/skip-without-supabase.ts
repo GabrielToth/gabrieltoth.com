@@ -16,14 +16,6 @@ export async function isSupabaseAvailable(): Promise<boolean> {
             return false
         }
 
-        const { error: adminError } = await client.auth.admin.listUsers({
-            page: 1,
-            perPage: 1,
-        })
-        if (adminError) {
-            return false
-        }
-
         return true
     } catch {
         return false

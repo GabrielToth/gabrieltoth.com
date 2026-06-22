@@ -139,19 +139,25 @@ describe("Bug Condition: RLS Blocking Login Attempts", () => {
 
         const testEmail = `test-view-login-${Date.now()}@example.com`
 
-        const { data: user, error: userError } =
-            await supabaseAdmin.auth.admin.createUser({
+        const { data: user, error: userError } = await supabaseAdmin
+            .from("users")
+            .insert({
                 email: testEmail,
-                password: "test-password-123",
-                email_confirm: true,
+                name: "Test User",
+                phone: "+5511999999999",
+                email_verified: true,
+                created_at: new Date().toISOString(),
+                updated_at: new Date().toISOString(),
             })
+            .select()
+            .single()
 
-        if (userError || !user.user) {
+        if (userError || !user) {
             isDbRunning = false
             return
         }
 
-        const testUserId = user.user.id
+        const testUserId = user.id
 
         // Insert login attempt using service role
         const { data: loginAttempt, error: insertError } = await supabaseAdmin
@@ -196,7 +202,7 @@ describe("Bug Condition: RLS Blocking Login Attempts", () => {
             .from("login_attempts")
             .delete()
             .eq("id", testAttemptId)
-        await supabaseAdmin.auth.admin.deleteUser(testUserId)
+        await supabaseAdmin.from("users").delete().eq("id", testUserId)
 
         // Expected behavior: User should be able to view their own login attempts
         if (queryError) {

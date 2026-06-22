@@ -55,19 +55,25 @@ describe("Bug Condition: RLS Blocking Sessions", () => {
         // Create a test user using service role
         const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey)
 
-        const { data: user, error: userError } =
-            await supabaseAdmin.auth.admin.createUser({
+        const { data: user, error: userError } = await supabaseAdmin
+            .from("users")
+            .insert({
                 email: `test-session-${Date.now()}@example.com`,
-                password: "test-password-123",
-                email_confirm: true,
+                name: "Test User",
+                phone: "+5511999999999",
+                email_verified: true,
+                created_at: new Date().toISOString(),
+                updated_at: new Date().toISOString(),
             })
+            .select()
+            .single()
 
-        if (userError || !user.user) {
+        if (userError || !user) {
             isDbRunning = false
             return
         }
 
-        testUserId = user.user.id
+        testUserId = user.id
 
         // Insert a test session using service role (bypasses RLS)
         const { data: session, error: sessionError } = await supabaseAdmin
@@ -103,7 +109,7 @@ describe("Bug Condition: RLS Blocking Sessions", () => {
         const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey)
 
         await supabaseAdmin.from("sessions").delete().eq("id", testSessionId)
-        await supabaseAdmin.auth.admin.deleteUser(testUserId)
+        await supabaseAdmin.from("users").delete().eq("id", testUserId)
     })
 
     it("should allow authenticated user to view their own sessions", async ({
@@ -186,19 +192,25 @@ describe("Bug Condition: RLS Blocking Sessions", () => {
 
         const testEmail = `test-insert-session-${Date.now()}@example.com`
 
-        const { data: user, error: userError } =
-            await supabaseAdmin.auth.admin.createUser({
+        const { data: user, error: userError } = await supabaseAdmin
+            .from("users")
+            .insert({
                 email: testEmail,
-                password: "test-password-123",
-                email_confirm: true,
+                name: "Test User",
+                phone: "+5511999999999",
+                email_verified: true,
+                created_at: new Date().toISOString(),
+                updated_at: new Date().toISOString(),
             })
+            .select()
+            .single()
 
-        if (userError || !user.user) {
+        if (userError || !user) {
             isDbRunning = false
             return
         }
 
-        const userId = user.user.id
+        const userId = user.id
 
         // Sign in as the test user
         const supabase = createClient(supabaseUrl, supabaseAnonKey)
@@ -234,7 +246,7 @@ describe("Bug Condition: RLS Blocking Sessions", () => {
                 .delete()
                 .eq("id", newSession.id)
         }
-        await supabaseAdmin.auth.admin.deleteUser(userId)
+        await supabaseAdmin.from("users").delete().eq("id", userId)
 
         // Expected behavior: User should be able to insert their own sessions
         if (insertError) {
@@ -285,19 +297,25 @@ describe("Bug Condition: RLS Blocking Sessions", () => {
 
         const testEmail = `test-delete-session-${Date.now()}@example.com`
 
-        const { data: user, error: userError } =
-            await supabaseAdmin.auth.admin.createUser({
+        const { data: user, error: userError } = await supabaseAdmin
+            .from("users")
+            .insert({
                 email: testEmail,
-                password: "test-password-123",
-                email_confirm: true,
+                name: "Test User",
+                phone: "+5511999999999",
+                email_verified: true,
+                created_at: new Date().toISOString(),
+                updated_at: new Date().toISOString(),
             })
+            .select()
+            .single()
 
-        if (userError || !user.user) {
+        if (userError || !user) {
             isDbRunning = false
             return
         }
 
-        const userId = user.user.id
+        const userId = user.id
 
         // Create session using service role
         const { data: session, error: sessionError } = await supabaseAdmin
@@ -341,7 +359,7 @@ describe("Bug Condition: RLS Blocking Sessions", () => {
             .eq("id", sessionId)
 
         // Cleanup
-        await supabaseAdmin.auth.admin.deleteUser(userId)
+        await supabaseAdmin.from("users").delete().eq("id", userId)
 
         // Expected behavior: User should be able to delete their own sessions
         if (deleteError) {

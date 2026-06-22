@@ -83,11 +83,13 @@ describe("User API Service", () => {
                 notificationsEnabled: false,
                 language: "pt",
                 theme: "dark",
+                timezone: "UTC",
             })
 
             expect(updated.notificationsEnabled).toBe(false)
             expect(updated.language).toBe("pt")
             expect(updated.theme).toBe("dark")
+            expect(updated.timezone).toBe("UTC")
         })
 
         it("invalidates cache after update", async () => {
@@ -96,6 +98,7 @@ describe("User API Service", () => {
                 notificationsEnabled: false,
                 language: "pt",
                 theme: "dark",
+                timezone: "UTC",
             })
 
             const preferences = await fetchUserPreferences()

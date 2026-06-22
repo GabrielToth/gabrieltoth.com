@@ -15,8 +15,30 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import { Toggle } from "@/components/ui/toggle"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Preferences } from "./SettingsContainer"
+
+const timezones = [
+    "America/New_York",
+    "America/Chicago",
+    "America/Denver",
+    "America/Los_Angeles",
+    "Europe/London",
+    "Europe/Paris",
+    "Europe/Berlin",
+    "Europe/Madrid",
+    "Europe/Lisbon",
+    "Asia/Tokyo",
+    "Asia/Shanghai",
+    "Asia/Kolkata",
+    "Australia/Sydney",
+    "Pacific/Auckland",
+    "America/Sao_Paulo",
+    "America/Argentina/Buenos_Aires",
+    "Africa/Cairo",
+    "Africa/Lagos",
+    "UTC",
+]
 
 /**
  * PreferencesSectionProps
@@ -47,6 +69,17 @@ export const PreferencesSection: React.FC<PreferencesSectionProps> = ({
 }) => {
     // Local state for preferences
     const [localPreferences, setLocalPreferences] = useState(preferences)
+
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            try {
+                const stored = localStorage.getItem("user-timezone")
+                if (stored && !localPreferences.timezone) {
+                    setLocalPreferences(prev => ({ ...prev, timezone: stored }))
+                }
+            } catch {}
+        }
+    }, [localPreferences.timezone])
 
     /**
      * Handle notifications toggle
@@ -164,6 +197,50 @@ export const PreferencesSection: React.FC<PreferencesSectionProps> = ({
                     </Select>
                     <p className="text-xs text-gray-500">
                         Choose how the interface should look
+                    </p>
+                </div>
+
+                {/* Timezone Select */}
+                <div className="space-y-2">
+                    <label
+                        htmlFor="timezone"
+                        className="block text-sm font-medium text-gray-700"
+                    >
+                        Timezone
+                    </label>
+                    <Select
+                        value={localPreferences.timezone}
+                        onValueChange={value => {
+                            const updated = {
+                                ...localPreferences,
+                                timezone: value,
+                            }
+                            setLocalPreferences(updated)
+                            onSave(updated)
+                            if (typeof window !== "undefined") {
+                                try {
+                                    localStorage.setItem(
+                                        "user-timezone",
+                                        value,
+                                    )
+                                } catch {}
+                            }
+                        }}
+                    >
+                        <SelectTrigger id="timezone">
+                            <SelectValue placeholder="Select a timezone" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            {timezones.map(tz => (
+                                <SelectItem key={tz} value={tz}>
+                                    {tz}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                    <p className="text-xs text-gray-500">
+                        Your timezone is auto-detected from your browser. Change
+                        it here to override. Used for scheduling posts.
                     </p>
                 </div>
 

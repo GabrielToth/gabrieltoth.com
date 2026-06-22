@@ -12,7 +12,7 @@ import { NextResponse } from "next/server"
 const SECURITY_HEADERS = {
     // Content Security Policy - prevents XSS attacks
     "Content-Security-Policy":
-        "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https:; frame-ancestors 'none'; base-uri 'self'; form-action 'self'",
+        "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https:; frame-ancestors 'none'; base-uri 'self'; form-action 'self'",
 
     // X-Frame-Options - prevents clickjacking
     "X-Frame-Options": "DENY",

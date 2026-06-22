@@ -178,17 +178,16 @@ test.describe("dashboard flows", () => {
     })
 
     test.describe("auth-related", () => {
-        test("auth login page is accessible at /auth/login", async ({
+        test("auth login page is accessible at locale-prefixed /en/login", async ({
             page,
         }) => {
-            const response = await page.goto("/auth/login")
+            const response = await page.goto("/en/login")
             expect(response?.status()).toBe(200)
             await expect(page.locator("body")).toBeVisible()
         })
 
         test("login page shows auth form elements", async ({ page }) => {
-            await page.goto("/auth/login")
-            // Should have email/password inputs
+            await page.goto("/en/login")
             const emailInputs = await page
                 .locator('input[type="email"]')
                 .count()

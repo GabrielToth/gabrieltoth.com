@@ -1,7 +1,6 @@
 "use client"
 
 import { GoogleLoginButton } from "@/components/auth/google-login-button"
-import { createClient } from "@/lib/supabase/client"
 import { useTranslations } from "next-intl"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
@@ -28,25 +27,19 @@ export default function LoginForm({ locale }: LoginFormProps) {
         setIsLoading(true)
 
         try {
-            const supabase = createClient()
-            const { error } = await supabase.auth.signInWithPassword({
-                email: formData.email,
-                password: formData.password,
+            const response = await fetch("/api/auth/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    email: formData.email,
+                    password: formData.password,
+                }),
             })
 
-            if (error) {
-                // If user not found, redirect to unified signin flow with email pre-filled
-                if (
-                    error.message.includes("Invalid login credentials") ||
-                    error.message.includes("User not found")
-                ) {
-                    // Redirect to signin page (unified flow) with email as query parameter
-                    const signinUrl = `/${locale}/signin?email=${encodeURIComponent(formData.email)}`
-                    router.push(signinUrl)
-                    return
-                }
+            const data = await response.json()
 
-                setError(error.message)
+            if (!response.ok || !data.success) {
+                setError(data.error || "Invalid email or password")
                 return
             }
 

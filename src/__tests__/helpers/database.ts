@@ -61,17 +61,24 @@ export async function setupTestDatabase(): Promise<SupabaseClient> {
 export async function createTestUser(email: string): Promise<any> {
     const supabase = await setupTestDatabase()
 
-    const { data, error } = await supabase.auth.admin.createUser({
-        email,
-        password: "Test123!@#",
-        email_confirm: true,
-    })
+    const { data, error } = await supabase
+        .from("users")
+        .insert({
+            email: email.toLowerCase(),
+            name: "Test User",
+            phone: "+5511999999999",
+            email_verified: true,
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+        })
+        .select()
+        .single()
 
     if (error) {
         throw new Error(`Failed to create test user: ${error.message}`)
     }
 
-    return data.user
+    return data
 }
 
 /**

@@ -43,6 +43,7 @@ function createValidEnv(): EnvironmentConfig {
         FACEBOOK_APP_ID: "fb-test-id",
         FACEBOOK_APP_SECRET: "fb-test-secret",
         FACEBOOK_REDIRECT_URI: "http://localhost:3000/api/oauth/callback/facebook",
+        FACEBOOK_WEBHOOK_VERIFY_TOKEN: "test-verify-token",
         TOKEN_ENCRYPTION_KEY: "a".repeat(64), // 64 character hex string
     }
 }

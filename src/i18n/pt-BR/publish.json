@@ -1,4 +1,15 @@
 {
+    "calendar": {
+        "today": "Hoje",
+        "hasPosts": "Tem posts agendados",
+        "selected": "Selecionado: {date}",
+        "postsForDate": "Posts para {date}",
+        "allPosts": "Todos os Posts Agendados",
+        "clearFilter": "Limpar filtro",
+        "noPosts": "Nenhum post agendado para este dia",
+        "postCount": "{count} post{count, plural, one {} other {s}}",
+        "scheduleForDate": "Agendar Post para {date}"
+    },
     "videoUploader": {
         "title": "Enviar Vídeo",
         "dropzone": "Arraste o vídeo aqui ou clique para selecionar",

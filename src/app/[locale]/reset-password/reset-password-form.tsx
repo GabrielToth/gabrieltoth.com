@@ -1,12 +1,12 @@
 "use client"
 
-import { createClient } from "@/lib/supabase/client"
 import { useTranslations } from "next-intl"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 
 interface ResetPasswordFormProps {
     locale: string
+    token?: string
 }
 
 interface ValidationErrors {
@@ -14,7 +14,7 @@ interface ValidationErrors {
     confirmPassword?: string
 }
 
-export default function ResetPasswordForm({ locale }: ResetPasswordFormProps) {
+export default function ResetPasswordForm({ locale, token }: ResetPasswordFormProps) {
     const t = useTranslations("auth")
     const router = useRouter()
     const [formData, setFormData] = useState({
@@ -95,16 +95,26 @@ export default function ResetPasswordForm({ locale }: ResetPasswordFormProps) {
         setIsLoading(true)
 
         try {
-            const supabase = createClient()
-            const { error } = await supabase.auth.updateUser({
-                password: formData.password,
+            const response = await fetch("/api/auth/reset-password", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    token,
+                    password: formData.password,
+                    confirmPassword: formData.confirmPassword,
+                }),
             })
 
-            if (error) {
-                if (error.message.includes("expired")) {
+            const data = await response.json()
+
+            if (!response.ok || !data.success) {
+                if (
+                    data.error?.includes("expired") ||
+                    data.error?.includes("invalid")
+                ) {
                     setError(t("resetPassword.tokenExpired"))
                 } else {
-                    setError(error.message)
+                    setError(data.error || "Password reset failed")
                 }
                 return
             }

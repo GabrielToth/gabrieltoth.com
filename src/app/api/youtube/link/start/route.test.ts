@@ -1,6 +1,6 @@
 /**
  * Tests for POST /api/youtube/link/start endpoint
- * Tests OAuth authorization URL generation and state parameter storage
+ * Tests OAuth authorization URL generation and HMAC-signed state (no Redis)
  * Validates: Requirements 1.1, 1.2
  */
 
@@ -8,14 +8,8 @@ import { NextRequest } from "next/server"
 import { beforeEach, describe, expect, it, vi } from "vitest"
 import { POST } from "./route"
 
-const mockRedisInstance = vi.hoisted(() => ({
-    setex: vi.fn().mockResolvedValue("OK"),
-    quit: vi.fn().mockResolvedValue("OK"),
-}))
-
 const mockValidateEnv = vi.hoisted(() =>
     vi.fn(() => ({
-        REDIS_URL: "redis://localhost:6379",
         YOUTUBE_CLIENT_ID: "test-client-id",
         YOUTUBE_CLIENT_SECRET: "test-client-secret",
         YOUTUBE_REDIRECT_URI: "http://localhost:3000/api/youtube/link/callback",
@@ -85,10 +79,16 @@ vi.mock("@/lib/youtube/oauth-service", () => ({
     resetYouTubeOAuthService: vi.fn(),
 }))
 
-vi.mock("ioredis", () => ({
-    Redis: vi.fn(function MockRedis() {
-        return mockRedisInstance
-    }),
+vi.mock("@/lib/oauth/state-signer", () => ({
+    generateState: vi.fn(() => ({
+        token: "signed-state-token-12345",
+        payload: {
+            userId: "test-user-123",
+            platform: "youtube",
+            nonce: "abc123",
+            iat: Date.now(),
+        },
+    })),
 }))
 
 describe("POST /api/youtube/link/start", () => {
@@ -97,7 +97,6 @@ describe("POST /api/youtube/link/start", () => {
     beforeEach(() => {
         vi.clearAllMocks()
         mockValidateEnv.mockImplementation(() => ({
-            REDIS_URL: "redis://localhost:6379",
             YOUTUBE_CLIENT_ID: "test-client-id",
             YOUTUBE_CLIENT_SECRET: "test-client-secret",
             YOUTUBE_REDIRECT_URI:
@@ -107,8 +106,6 @@ describe("POST /api/youtube/link/start", () => {
             RESEND_FROM_NAME: "Test",
             TOKEN_ENCRYPTION_KEY: "a".repeat(64),
         }))
-        mockRedisInstance.setex.mockResolvedValue("OK")
-        mockRedisInstance.quit.mockResolvedValue("OK")
         mockRequest = {
             headers: new Map([["x-user-id", "test-user-123"]]),
         }
@@ -125,7 +122,7 @@ describe("POST /api/youtube/link/start", () => {
         expect(data.authorizationUrl).toContain(
             "https://accounts.google.com/o/oauth2/v2/auth"
         )
-        expect(data.state).toBeTruthy()
+        expect(data.state).toBe("signed-state-token-12345")
     })
 
     it("should return error if user ID is missing", async () => {
@@ -140,18 +137,6 @@ describe("POST /api/youtube/link/start", () => {
         expect(data).toHaveProperty("message")
     })
 
-    it("should store state parameter in Redis with expiration", async () => {
-        const response = await POST(mockRequest as NextRequest)
-
-        expect(response.status).toBe(200)
-        expect(mockRedisInstance.setex).toHaveBeenCalled()
-
-        const [key, ttl, value] = mockRedisInstance.setex.mock.calls[0]
-        expect(key).toMatch(/^youtube:oauth:state:/)
-        expect(ttl).toBe(600)
-        expect(value).toContain("test-user-123")
-    })
-
     it("should handle errors gracefully", async () => {
         mockValidateEnv.mockImplementation(() => {
             throw new Error("Invalid environment")
@@ -163,12 +148,5 @@ describe("POST /api/youtube/link/start", () => {
         expect(response.status).toBe(500)
         expect(data).toHaveProperty("success", false)
         expect(data).toHaveProperty("error", "LINKING_INITIATION_FAILED")
-    })
-
-    it("should close Redis connection after use", async () => {
-        const response = await POST(mockRequest as NextRequest)
-
-        expect(response.status).toBe(200)
-        expect(mockRedisInstance.quit).toHaveBeenCalled()
     })
 })

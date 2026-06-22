@@ -1,34 +1,16 @@
+/**
+ * Bug Condition Exploration Test: RLS Blocking Audit Logs
+ *
+ * NOTE: This test requires Supabase Auth (auth.uid() for RLS).
+ * After removing Supabase Auth, RLS will use custom JWT claims instead.
+ * This test is excluded from vitest config and requires manual execution.
+ */
+
 import { isSupabaseAvailable } from "@/test-utils/skip-without-supabase"
 import { createClient } from "@supabase/supabase-js"
 import { afterAll, beforeAll, describe, expect, it, vi } from "vitest"
 
 vi.unmock("@supabase/supabase-js")
-
-/**
- * Bug Condition Exploration Test: RLS Blocking Audit Logs
- *
- * Property 1: Bug Condition - RLS Blocks Legitimate Audit Log Access
- *
- * CRITICAL: This test MUST FAIL on unfixed code - failure confirms the bug exists
- * DO NOT attempt to fix the test or the code when it fails
- *
- * NOTE: This test encodes the expected behavior - it will validate the fix when it passes after implementation
- *
- * GOAL: Surface counterexamples that demonstrate RLS is blocking legitimate access
- *
- * Scoped PBT Approach: Test concrete failing case - authenticated user querying their own audit logs
- *
- * Test implementation details from Bug Condition in design:
- * - Create test audit log entry for authenticated user
- * - Attempt to query `SELECT * FROM audit_logs WHERE user_id = auth.uid()`
- * - Verify query returns no rows despite data existing
- *
- * The test assertions should match the Expected Behavior Properties from design:
- * - Authenticated users should be able to view their own audit logs
- * - Admin users should be able to view all audit logs
- *
- * EXPECTED OUTCOME: Test FAILS (query returns no rows) - this confirms RLS is blocking access
- */
 
 describe("Bug Condition: RLS Blocking Audit Logs", () => {
     let isDbRunning = true
@@ -54,14 +36,20 @@ describe("Bug Condition: RLS Blocking Audit Logs", () => {
         // Create a test user using service role
         const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey)
 
-        const { data: user, error: userError } =
-            await supabaseAdmin.auth.admin.createUser({
+        const { data: user, error: userError } = await supabaseAdmin
+            .from("users")
+            .insert({
                 email: `test-audit-${Date.now()}@example.com`,
-                password: "test-password-123",
-                email_confirm: true,
+                name: "Test User",
+                phone: "+5511999999999",
+                email_verified: true,
+                created_at: new Date().toISOString(),
+                updated_at: new Date().toISOString(),
             })
+            .select()
+            .single()
 
-        if (userError || !user.user) {
+        if (userError || !user) {
             console.warn(
                 `Failed to create test user: ${userError?.message}. Skipping DB tests.`
             )
@@ -69,7 +57,7 @@ describe("Bug Condition: RLS Blocking Audit Logs", () => {
             return
         }
 
-        testUserId = user.user.id
+        testUserId = user.id
 
         // Insert a test audit log entry using service role (bypasses RLS)
         const { data: auditLog, error: auditError } = await supabaseAdmin
@@ -100,7 +88,7 @@ describe("Bug Condition: RLS Blocking Audit Logs", () => {
 
         await supabaseAdmin.from("audit_logs").delete().eq("id", testAuditLogId)
         if (testUserId) {
-            await supabaseAdmin.auth.admin.deleteUser(testUserId)
+            await supabaseAdmin.from("users").delete().eq("id", testUserId)
         }
 
         console.log("✓ Cleaned up test user and audit log")

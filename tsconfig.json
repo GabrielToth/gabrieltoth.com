@@ -45,8 +45,6 @@
         "src/stories/**",
         "stories",
         "stories/**",
-        "src/backend/lambda.ts",
-        "src/backend/health.ts",
         "src/lib/cron",
         "src/lib/cron/**",
         "src/lib/logger/pino-logger.*",
@@ -56,6 +54,7 @@
         "src/test-utils/**",
         "tests/**",
         "src/token-killer",
-        "src/token-killer/**"
+        "src/token-killer/**",
+        "src/lib/observability"
     ]
 }

@@ -2,33 +2,11 @@
  * GET /api/youtube/link/callback
  * Handles OAuth callback from Google after user authorizes YouTube channel linking
  * Exchanges authorization code for tokens, retrieves channel info, stores encrypted tokens
- * Validates: Requirements 1.3, 2.1, 8.1, 10.8
  *
- * Security Features:
- * - State parameter validation via Redis (CSRF prevention)
- * - Redis key deletion after use (replay attack prevention)
+ * Security:
+ * - HMAC-signed state parameter (CSRF prevention) — no Redis needed
  * - Token encryption via AES-256-GCM before storage
- * - Service role key for Supabase operations (RLS bypass)
- * - Rate limiting via Upstash (5 attempts/hour)
  * - Input validation on code and state parameters
- *
- * Query Parameters:
- *   code  - Authorization code from Google
- *   state - State parameter for CSRF validation
- *   error - OAuth error from Google (optional)
- *   scope - Requested scopes (optional)
- *
- * Redirects to:
- *   /dashboard?youtube=success       - Successfully linked
- *   /dashboard?youtube=partial       - Token stored but social record failed
- *   /dashboard?youtube=error&reason=x - Error with specific reason
- *
- * Error reasons:
- *   denied          - User denied authorization
- *   missing_params  - Required OAuth params missing
- *   invalid_state   - State not found or expired in Redis
- *   no_channel      - YouTube API returned no channel
- *   server_error    - Internal server error during processing
  */
 
 import { validateYouTubeEnv } from "@/lib/config/env"
@@ -37,16 +15,12 @@ import { getYouTubeChannelLinkingConfig } from "@/lib/youtube/config"
 import { getYouTubeOAuthService } from "@/lib/youtube/oauth-service"
 import { getChannelValidationService } from "@/lib/youtube/channel-validation"
 import { getTokenStore } from "@/lib/token-store"
-import { Redis } from "ioredis"
+import { verifyState } from "@/lib/oauth/state-signer"
 import { createClient } from "@supabase/supabase-js"
 import { NextRequest, NextResponse } from "next/server"
 
 const logger = createLogger("YouTubeLinkCallbackEndpoint")
 
-/**
- * GET /api/youtube/link/callback
- * OAuth callback handler for YouTube channel linking
- */
 export async function GET(request: NextRequest): Promise<NextResponse> {
     try {
         const { searchParams } = new URL(request.url)
@@ -54,7 +28,6 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
         const state = searchParams.get("state")
         const oauthError = searchParams.get("error")
 
-        // Handle OAuth errors from Google (e.g., user denied access)
         if (oauthError) {
             logger.warn("OAuth error from Google", { error: oauthError })
             return NextResponse.redirect(
@@ -65,7 +38,6 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
             )
         }
 
-        // Validate required OAuth parameters
         if (!code) {
             logger.warn("Missing authorization code in callback")
             return NextResponse.redirect(
@@ -86,58 +58,34 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
             )
         }
 
-        // Initialize configuration and services
+        const verification = verifyState(state)
+        if (!verification.valid) {
+            logger.warn("Invalid or expired state parameter", {
+                error: verification.error,
+            })
+            return NextResponse.redirect(
+                new URL(
+                    "/dashboard?youtube=error&reason=invalid_state",
+                    request.url
+                )
+            )
+        }
+
+        const userId = verification.payload!.userId
+
+        logger.info("State parameter validated successfully via HMAC", {
+            userId,
+        })
+
         const env = validateYouTubeEnv()
         const config = getYouTubeChannelLinkingConfig(env)
         const oauthService = getYouTubeOAuthService(config)
         await oauthService.initialize()
 
-        // Validate state parameter against Redis
-        const redis = new Redis(env.REDIS_URL)
-        let userId: string
-
-        try {
-            const stateKey = `youtube:oauth:state:${state}`
-            const storedStateRaw = await redis.get(stateKey)
-
-            if (!storedStateRaw) {
-                logger.warn("Invalid or expired state parameter", { stateKey })
-                return NextResponse.redirect(
-                    new URL(
-                        "/dashboard?youtube=error&reason=invalid_state",
-                        request.url
-                    )
-                )
-            }
-
-            const storedState = JSON.parse(storedStateRaw)
-
-            if (!storedState.userId) {
-                logger.warn("State data missing userId")
-                return NextResponse.redirect(
-                    new URL(
-                        "/dashboard?youtube=error&reason=invalid_state",
-                        request.url
-                    )
-                )
-            }
-
-            userId = storedState.userId
-
-            // Delete state from Redis to prevent replay attacks
-            await redis.del(stateKey)
-
-            logger.info("State parameter validated successfully", { userId })
-        } finally {
-            await redis.quit()
-        }
-
-        // Exchange authorization code for OAuth tokens
         const tokenResponse = await oauthService.exchangeCodeForToken(code)
 
         logger.info("Authorization code exchanged successfully", { userId })
 
-        // Get channel info from YouTube API using the access token
         const channelValidationService = getChannelValidationService(config)
         await channelValidationService.initialize()
 
@@ -161,12 +109,10 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
             channelTitle: channelInfo.title,
         })
 
-        // Calculate token expiration timestamp
         const expiresAt = tokenResponse.expiresIn
             ? Date.now() + tokenResponse.expiresIn * 1000
             : undefined
 
-        // Store encrypted OAuth tokens in Supabase
         const tokenStore = getTokenStore()
         await tokenStore.storeToken({
             accessToken: tokenResponse.accessToken,
@@ -178,7 +124,6 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
 
         logger.info("OAuth tokens stored successfully", { userId })
 
-        // Upsert social_networks record with channel metadata
         const supabase = createClient(
             process.env.NEXT_PUBLIC_SUPABASE_URL || "",
             process.env.SUPABASE_SERVICE_ROLE_KEY || ""

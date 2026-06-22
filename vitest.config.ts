@@ -30,7 +30,6 @@ export default defineConfig({
             "src/__tests__/security/preservation-*.test.ts",
             "src/lib/db/migrations/**/*.test.ts",
             "src/lib/db/schema.test.ts",
-            "src/backend/integration.test.ts",
             "src/lib/credits/credit-system.test.ts",
             "src/lib/metering/metering-system.test.ts",
         ],

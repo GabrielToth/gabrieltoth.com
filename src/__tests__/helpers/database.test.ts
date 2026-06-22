@@ -62,7 +62,7 @@ describe("Test Database Helper", () => {
     })
 
     describe("createTestUser()", () => {
-        it("should create test user with confirmed email", async ({ skip }) => {
+        it("should create test user", async ({ skip }) => {
             if (!isDbRunning) return skip()
             if (!isDbRunning) return skip()
             const testEmail = `test-${Date.now()}@example.com`
@@ -73,11 +73,11 @@ describe("Test Database Helper", () => {
                 expect(user).toBeDefined()
                 expect(user.id).toBeDefined()
                 expect(user.email).toBe(testEmail)
-                expect(user.email_confirmed_at).toBeDefined()
+                expect(user.email_verified).toBe(true)
 
                 // Cleanup
                 const supabase = await setupTestDatabase()
-                await supabase.auth.admin.deleteUser(user.id)
+                await supabase.from("users").delete().eq("id", user.id)
             } catch (error) {
                 // Skip test if Supabase is not properly configured
                 if (

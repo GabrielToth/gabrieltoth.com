@@ -30,7 +30,6 @@
         "src/components/ui/*.stories.tsx",
         "src/lib/logger/pino-logger.test.ts",
         "src/lib/credits/session.test.ts",
-        "src/backend/server.test.ts",
         "src/token-killer",
         "src/token-killer/**",
         "src/__tests__/token-killer",

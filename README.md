@@ -11,7 +11,7 @@ Personal portfolio and platform by Gabriel Toth Gonçalves - Full Stack Develope
 
 ### Prerequisites
 
-- **Node.js** 18+ ([Download](https://nodejs.org/))
+- **Node.js** 24+ ([Download](https://nodejs.org/))
 - **npm** (comes with Node.js)
 - **Git** ([Download](https://git-scm.com/))
 
@@ -76,9 +76,7 @@ docker compose up -d
 ### Step 3: Access Application
 
 - **Frontend**: <http://localhost:3000>
-- **Backend**: <http://localhost:4000>
 - **Postgres**: localhost:5432
-- **Redis**: localhost:6379
 
 ### Stop Services
 
@@ -137,49 +135,30 @@ npm run clean            # Clean build files
 
 ## ⚡ Tech Stack
 
-- **Framework**: Next.js 15 (App Router)
-- **Language**: TypeScript
-- **Styling**: Tailwind CSS
-- **Components**: shadcn/ui
+- **Framework**: Next.js 16 (App Router)
+- **Language**: TypeScript 6
+- **Styling**: Tailwind CSS 4
+- **Components**: shadcn/ui (new-york, RSC enabled)
 - **Icons**: Lucide React
-- **Database**: Supabase (Postgres)
-- **Authentication**: Google OAuth + Custom Auth
-- **Payments**: Stripe, Monero
-- **Deployment**: Vercel
-- **i18n**: EN/PT-BR support
+- **Database**: Supabase Postgres (Free plan)
+- **Authentication**: Custom Argon2id (no Supabase Auth)
+- **i18n**: next-intl (4 locales: en, pt-BR, es, de)
+- **Email**: Resend (Free plan)
+- **Deployment**: Vercel + Cloudflare
 
 ---
 
 ## 📚 Documentation
 
-All documentation is in the `docs/` folder:
+Full documentation is on the [GitHub Wiki](https://github.com/GabrielToth/gabrieltoth.com/wiki):
 
-- **[API Documentation](docs/API_DOCUMENTATION.md)** - Account Completion API endpoints
-- **[Developer Guide](docs/DEVELOPER_GUIDE.md)** - Technical implementation details
-- **[User Guide](docs/USER_GUIDE.md)** - User-facing documentation
-- **[Deployment Guide](docs/DEPLOYMENT_GUIDE.md)** - Deployment and rollback procedures
-- **[Architecture](docs/ARCHITECTURE.md)** - System architecture and design
-- **[Database](docs/DATABASE_CONSTRAINTS.md)** - Database schema and constraints
-- **[Credit System](docs/CREDIT_SYSTEM.md)** - Platform credit system
-
-### Account Completion Flow
-
-The Account Completion Flow enables legacy OAuth users to complete their account setup:
-
-- **OAuth Integration**: Seamless integration with Google, Facebook, and TikTok
-- **Multi-Step Form**: 3-step process (pre-filled data, new fields, verification)
-- **Validation**: Comprehensive validation for password, phone, and birth date
-- **Middleware**: Automatic redirection of incomplete accounts
-- **Multilingual**: Support for EN, PT-BR, ES, and DE
-- **Security**: Rate limiting, CSRF protection, input sanitization
-- **Testing**: 88+ integration tests covering all scenarios
-
-**Quick Links:**
-
-- [API Documentation](docs/API_DOCUMENTATION.md) - Complete API reference
-- [Developer Guide](docs/DEVELOPER_GUIDE.md) - Implementation details
-- [User Guide](docs/USER_GUIDE.md) - User instructions
-- [Deployment Guide](docs/DEPLOYMENT_GUIDE.md) - Deployment procedures
+- **[Home](https://github.com/GabrielToth/gabrieltoth.com/wiki)** — Index and navigation
+- **[API](https://github.com/GabrielToth/gabrieltoth.com/wiki/API)** — Complete API reference
+- **[API Auth](https://github.com/GabrielToth/gabrieltoth.com/wiki/API-Auth)** — Authentication endpoints
+- **[Architecture](https://github.com/GabrielToth/gabrieltoth.com/wiki/Architecture)** — System architecture
+- **[Deployment](https://github.com/GabrielToth/gabrieltoth.com/wiki/Deployment)** — Vercel/Cloudflare/Supabase setup
+- **[Developer Guide](https://github.com/GabrielToth/gabrieltoth.com/wiki/Developer-Guide)** — Implementation details
+- **[Testing Guide](https://github.com/GabrielToth/gabrieltoth.com/wiki/Testing-Guide)** — Test strategy
 
 ---
 

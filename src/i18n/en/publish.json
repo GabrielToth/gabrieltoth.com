@@ -1,4 +1,15 @@
 {
+    "calendar": {
+        "today": "Today",
+        "hasPosts": "Has scheduled posts",
+        "selected": "Selected: {date}",
+        "postsForDate": "Posts for {date}",
+        "allPosts": "All Scheduled Posts",
+        "clearFilter": "Clear filter",
+        "noPosts": "No posts scheduled for this day",
+        "postCount": "{count} post{count, plural, one {} other {s}}",
+        "scheduleForDate": "Schedule Post for {date}"
+    },
     "videoUploader": {
         "title": "Upload Video",
         "dropzone": "Drag & drop video file here, or click to select",

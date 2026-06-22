@@ -3,8 +3,7 @@
 # Containers: Local machine (processing power)
 #
 # Architecture:
-# - Frontend Network: app <-> backend
-# - Backend Network: backend <-> postgres, redis (internal only)
+# - Network: app <-> postgres (internal only)
 # - Health checks: 30s interval, 3 retries
 # - Restart policy: max 5 attempts in 10 minutes
 
@@ -34,7 +33,7 @@ services:
             - log_data:/var/log/postgresql
             - ./init-schema.sql:/docker-entrypoint-initdb.d/init.sql
         networks:
-            - backend
+            - platform-net
         healthcheck:
             test: ["CMD-SHELL", "pg_isready -U platform"]
             interval: 30s
@@ -64,7 +63,7 @@ services:
         volumes:
             - supabase_data:/var/lib/postgresql/data
         networks:
-            - backend
+            - platform-net
         healthcheck:
             test: ["CMD-SHELL", "pg_isready -U supabase_admin"]
             interval: 30s
@@ -74,93 +73,8 @@ services:
         ports:
             - "5432:5432"
 
-    redis:
-        image: redis:7-alpine
-        container_name: platform-redis
-        restart: unless-stopped
-        deploy:
-            restart_policy:
-                condition: on-failure
-                max_attempts: 5
-                window: 600s
-        command: redis-server --appendonly yes
-        volumes:
-            - redis_data:/data
-        networks:
-            - backend
-        healthcheck:
-            test: ["CMD", "redis-cli", "ping"]
-            interval: 30s
-            timeout: 3s
-            retries: 3
-            start_period: 10s
-
     # ==========================================================================
-    # BACKEND API (Bridge between Frontend and Backend Networks)
-    # ==========================================================================
-
-    backend:
-        env_file:
-            - ../.env.docker
-        build:
-            context: ..
-            dockerfile: docker/Dockerfile.backend
-        image: platform-backend:latest
-        container_name: platform-backend
-        restart: unless-stopped
-        deploy:
-            restart_policy:
-                condition: on-failure
-                max_attempts: 5
-                window: 600s
-        environment:
-            - NODE_ENV=development
-            - NODE_OPTIONS=--max-old-space-size=512 --expose-gc
-            - DATABASE_URL=postgresql://platform:${POSTGRES_PASSWORD}@postgres:5432/platform
-            - REDIS_URL=redis://redis:6379
-            - DISCORD_WEBHOOK_URL=${DISCORD_WEBHOOK_URL}
-            - DEBUG=${DEBUG}
-            - PORT=4000
-            - SUPABASE_URL=http://supabase:5432
-            - SUPABASE_SERVICE_KEY=${SUPABASE_SERVICE_KEY}
-            - SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY}
-            # ========================================================================
-            # Secure Password Storage - Argon2id Configuration
-            # ========================================================================
-            - ARGON2_MEMORY_COST=${ARGON2_MEMORY_COST:-64}
-            - ARGON2_TIME_COST=${ARGON2_TIME_COST:-3}
-            - ARGON2_PARALLELISM=${ARGON2_PARALLELISM:-2}
-            - PEPPER_SECRET=${PEPPER_SECRET}
-            # ========================================================================
-            # CAPTCHA Configuration
-            # ========================================================================
-            - CAPTCHA_PROVIDER=${CAPTCHA_PROVIDER:-cloudflare}
-            - CAPTCHA_SECRET_KEY=${CAPTCHA_SECRET_KEY}
-            - NEXT_PUBLIC_CAPTCHA_SITE_KEY=${NEXT_PUBLIC_CAPTCHA_SITE_KEY}
-            # ========================================================================
-            # Rate Limiting Configuration
-            # ========================================================================
-            - RATE_LIMIT_FAILURE_THRESHOLD=${RATE_LIMIT_FAILURE_THRESHOLD:-5}
-            - RATE_LIMIT_WINDOW_MINUTES=${RATE_LIMIT_WINDOW_MINUTES:-15}
-            - RATE_LIMIT_LOCKOUT_MINUTES=${RATE_LIMIT_LOCKOUT_MINUTES:-15}
-            - RATE_LIMIT_CAPTCHA_ESCALATION_THRESHOLD=${RATE_LIMIT_CAPTCHA_ESCALATION_THRESHOLD:-3}
-        volumes:
-            - log_data:/var/log/app
-        networks:
-            - frontend
-            - backend
-        ports:
-            - "4000:4000"
-        depends_on:
-            postgres:
-                condition: service_healthy
-            redis:
-                condition: service_healthy
-            supabase:
-                condition: service_healthy
-
-    # ==========================================================================
-    # FRONTEND APP (Next.js - Frontend Network Only)
+    # FRONTEND APP (Next.js)
     # ==========================================================================
 
     app:
@@ -193,11 +107,13 @@ services:
         volumes:
             - log_data:/var/log/app
         networks:
-            - frontend
+            - platform-net
         ports:
             - "3000:3000"
         depends_on:
-            backend:
+            postgres:
+                condition: service_healthy
+            supabase:
                 condition: service_healthy
 
     # ==========================================================================
@@ -213,7 +129,6 @@ services:
         environment:
             - NODE_ENV=development
             - DATABASE_URL=postgresql://platform:${POSTGRES_PASSWORD}@postgres:5432/platform
-            - REDIS_URL=redis://redis:6379
             - DISCORD_WEBHOOK_URL=${DISCORD_WEBHOOK_URL}
             - DEBUG=true
             # ========================================================================
@@ -251,14 +166,11 @@ services:
             - /app/node_modules
             - /app/.next
         networks:
-            - frontend
-            - backend
+            - platform-net
         ports:
             - "3000:3000"
         depends_on:
             postgres:
-                condition: service_healthy
-            redis:
                 condition: service_healthy
             supabase:
                 condition: service_healthy
@@ -276,7 +188,7 @@ services:
             - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
             - prometheus_data:/prometheus
         networks:
-            - frontend
+            - platform-net
         ports:
             - "9090:9090"
         command:
@@ -287,13 +199,9 @@ services:
 # NETWORKS
 # ==========================================================================
 networks:
-    frontend:
+    platform-net:
         driver: bridge
-        name: platform-frontend
-    backend:
-        driver: bridge
-        internal: true # No external access - only internal container communication
-        name: platform-backend
+        name: platform-net
 
 # ==========================================================================
 # VOLUMES
@@ -303,8 +211,6 @@ volumes:
         name: platform-postgres-data
     supabase_data:
         name: platform-supabase-data
-    redis_data:
-        name: platform-redis-data
     log_data:
         name: platform-logs
     prometheus_data:
