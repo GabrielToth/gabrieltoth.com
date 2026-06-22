@@ -45,6 +45,9 @@ export interface EnvironmentConfig {
     FACEBOOK_APP_SECRET: string
     FACEBOOK_REDIRECT_URI: string
 
+    // Facebook Webhook (Meta verification handshake)
+    FACEBOOK_WEBHOOK_VERIFY_TOKEN: string
+
     // Email via Supabase Auth (configured in Supabase Dashboard SMTP)
     EMAIL_FROM: string
 
@@ -99,6 +102,8 @@ function parseConfig(): EnvironmentConfig {
         FACEBOOK_APP_ID: process.env.FACEBOOK_APP_ID ?? "",
         FACEBOOK_APP_SECRET: process.env.FACEBOOK_APP_SECRET ?? "",
         FACEBOOK_REDIRECT_URI: process.env.FACEBOOK_REDIRECT_URI ?? "",
+        FACEBOOK_WEBHOOK_VERIFY_TOKEN:
+            process.env.FACEBOOK_WEBHOOK_VERIFY_TOKEN ?? "",
         EMAIL_FROM: process.env.EMAIL_FROM ?? "noreply@gabrieltoth.com",
         RESEND_API_KEY: process.env.RESEND_API_KEY ?? "",
         RESEND_FROM_EMAIL:
