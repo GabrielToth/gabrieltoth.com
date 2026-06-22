@@ -133,8 +133,8 @@ temp/
 /.auth/
 /.secrets/
 
-# Kiro settings (local development only, may contain sensitive config)
-/.kiro/settings/
+# Kiro settings + data cache (local development only, may contain sensitive config)
+/.kiro/
 
 # Audit reports (generated automatically)
 audit.json
