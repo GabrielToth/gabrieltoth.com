@@ -1,15 +1,16 @@
-/**
- * YouTube Posting Adapter
- * Handles posting content to YouTube
- */
+import { getValidYouTubeToken } from "@/lib/youtube/get-valid-token"
+import { createLogger } from "@/lib/logger"
+import { google } from "googleapis"
+
+const logger = createLogger("YouTubeAdapter")
 
 export interface YouTubePostConfig {
-    videoId?: string
     title: string
     description: string
     tags?: string[]
     privacyStatus: "public" | "unlisted" | "private"
-    thumbnail?: string
+    categoryId?: string
+    madeForKids?: boolean
 }
 
 export interface YouTubePostResult {
@@ -20,34 +21,84 @@ export interface YouTubePostResult {
 }
 
 /**
- * Post content to YouTube
+ * Upload a video directly from a Buffer using resumable upload.
+ * Requires a valid YouTube OAuth token (refreshed on-demand).
  */
-export async function postToYouTube(
-    config: YouTubePostConfig
+export async function uploadVideo(
+    userId: string,
+    videoBuffer: Buffer,
+    config: YouTubePostConfig,
+    mimeType = "video/mp4"
 ): Promise<YouTubePostResult> {
     try {
-        // Validate required fields
-        if (!config.title || !config.description) {
+        const token = await getValidYouTubeToken(userId)
+        if (!token) {
             return {
                 success: false,
-                error: "Title and description are required",
+                error: "YouTube not linked or token expired. Re-link your YouTube account.",
             }
         }
 
-        // TODO: Implement YouTube API integration
-        // This would use the YouTube Data API v3 to upload videos
+        const auth = new google.auth.OAuth2(
+            process.env.YOUTUBE_CLIENT_ID,
+            process.env.YOUTUBE_CLIENT_SECRET
+        )
+        auth.setCredentials({ access_token: token })
+
+        const youtube = google.youtube({ version: "v3", auth })
+
+        const res = await youtube.videos.insert({
+            part: ["snippet", "status"],
+            notifySubscribers: false,
+            requestBody: {
+                snippet: {
+                    title: config.title,
+                    description: config.description,
+                    tags: config.tags,
+                    categoryId: config.categoryId || "22",
+                },
+                status: {
+                    privacyStatus: config.privacyStatus,
+                    madeForKids: config.madeForKids ?? false,
+                    selfDeclaredMadeForKids: config.madeForKids ?? false,
+                },
+            },
+            media: {
+                body: videoBuffer,
+                mimeType,
+            },
+        })
+
+        const videoId = res.data.id
+        if (!videoId) {
+            return { success: false, error: "YouTube returned no video ID" }
+        }
+
+        logger.info("Video uploaded to YouTube", { videoId })
 
         return {
             success: true,
-            videoId: "placeholder-video-id",
-            url: "https://youtube.com/watch?v=placeholder-video-id",
+            videoId,
+            url: `https://youtube.com/watch?v=${videoId}`,
         }
-    } catch (error) {
-        return {
-            success: false,
-            error: error instanceof Error ? error.message : "Unknown error",
-        }
+    } catch (error: unknown) {
+        const message = error instanceof Error ? error.message : "Unknown error"
+        logger.error("YouTube upload failed", { error: message, userId })
+        return { success: false, error: message }
     }
 }
 
-export default { postToYouTube }
+/**
+ * Post content to YouTube (text-only posts/titles not supported directly).
+ * Use uploadVideo for video uploads; this returns an error for text posts.
+ */
+export async function postToYouTube(
+    _config: YouTubePostConfig
+): Promise<YouTubePostResult> {
+    return {
+        success: false,
+        error: "YouTube only supports video uploads. Use the upload endpoint with a video file.",
+    }
+}
+
+export default { postToYouTube, uploadVideo }

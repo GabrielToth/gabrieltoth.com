@@ -27,7 +27,10 @@ export interface EnvironmentConfig {
     YOUTUBE_CLIENT_SECRET: string
     YOUTUBE_REDIRECT_URI: string
 
-    // Email via Resend (contact, auth, YouTube linking)
+    // Email via Supabase Auth (configured in Supabase Dashboard SMTP)
+    EMAIL_FROM: string
+
+    // Email via Resend (legacy, still used by auth/contact modules)
     RESEND_API_KEY: string
     RESEND_FROM_EMAIL: string
     RESEND_FROM_NAME: string
@@ -47,8 +50,6 @@ const YOUTUBE_REQUIRED = [
     "YOUTUBE_CLIENT_ID",
     "YOUTUBE_CLIENT_SECRET",
     "YOUTUBE_REDIRECT_URI",
-    "RESEND_API_KEY",
-    "RESEND_FROM_EMAIL",
     "TOKEN_ENCRYPTION_KEY",
 ] as const
 
@@ -69,9 +70,11 @@ function parseConfig(): EnvironmentConfig {
         YOUTUBE_CLIENT_ID: process.env.YOUTUBE_CLIENT_ID ?? "",
         YOUTUBE_CLIENT_SECRET: process.env.YOUTUBE_CLIENT_SECRET ?? "",
         YOUTUBE_REDIRECT_URI: process.env.YOUTUBE_REDIRECT_URI ?? "",
+        EMAIL_FROM:
+            process.env.EMAIL_FROM ?? "noreply@gabrieltoth.com",
         RESEND_API_KEY: process.env.RESEND_API_KEY ?? "",
         RESEND_FROM_EMAIL:
-            process.env.RESEND_FROM_EMAIL ?? process.env.EMAIL_FROM ?? "",
+            process.env.RESEND_FROM_EMAIL ?? process.env.EMAIL_FROM ?? "noreply@gabrieltoth.com",
         RESEND_FROM_NAME: process.env.RESEND_FROM_NAME ?? "Gabriel Toth",
         TOKEN_ENCRYPTION_KEY: process.env.TOKEN_ENCRYPTION_KEY ?? "",
     }

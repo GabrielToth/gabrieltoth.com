@@ -27,7 +27,7 @@ export interface User {
  */
 export interface SocialChannel {
     id: string
-    platform: "facebook" | "instagram" | "twitter" | "tiktok" | "linkedin"
+    platform: "facebook" | "instagram" | "twitter" | "tiktok" | "linkedin" | "youtube"
     accountId: string
     accountName: string
     isConnected: boolean

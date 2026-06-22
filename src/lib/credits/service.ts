@@ -190,5 +190,131 @@ export async function getTransactions(
     }))
 }
 
+/**
+ * Deduct an arbitrary amount (for computed costs like video storage).
+ */
+export async function deductAmount(
+    userId: string,
+    amount: number,
+    reason: string,
+    metadata?: Record<string, unknown>
+): Promise<DeductResult> {
+    if (amount <= 0) {
+        return { success: true, transactionId: undefined }
+    }
+
+    const amountRounded = +amount.toFixed(2)
+
+    try {
+        return await db.transaction(async client => {
+            const lockResult = await client.query<{ balance: string }>(
+                "SELECT balance FROM user_accounts WHERE user_id = $1 FOR NO KEY UPDATE",
+                [userId]
+            )
+
+            if (lockResult.rows.length === 0) {
+                return { success: false, error: "User account not found" }
+            }
+
+            const balanceBefore = parseFloat(lockResult.rows[0].balance)
+            if (balanceBefore < amountRounded) {
+                return { success: false, error: "Insufficient balance" }
+            }
+
+            const balanceAfter = balanceBefore - amountRounded
+
+            await client.query(
+                "UPDATE user_accounts SET balance = $1, updated_at = NOW() WHERE user_id = $2",
+                [balanceAfter, userId]
+            )
+
+            const txResult = await client.query<{ id: string }>(
+                `INSERT INTO transactions (user_id, amount, type, reason, balance_before, balance_after)
+                 VALUES ($1, $2, 'debit', $3, $4, $5)
+                 RETURNING id`,
+                [userId, amountRounded, reason, balanceBefore, balanceAfter]
+            )
+
+            logger.info("Amount deducted", {
+                amount: amountRounded,
+                balanceAfter,
+                transactionId: txResult.rows[0].id,
+                metadata,
+            })
+
+            return {
+                success: true,
+                transactionId: txResult.rows[0].id,
+                newBalance: balanceAfter,
+            }
+        })
+    } catch (error) {
+        logger.error("deductAmount failed", { error, data: { userId, amount: amountRounded, reason } })
+        return { success: false, error: "Transaction failed" }
+    }
+}
+
+/**
+ * Grant credits to a user (for refunds or admin).
+ */
+export async function grantCredits(
+    userId: string,
+    amount: number,
+    reason: string,
+    metadata?: Record<string, unknown>
+): Promise<GrantResult> {
+    if (amount <= 0) {
+        return { success: true, transactionId: undefined }
+    }
+
+    const amountRounded = +amount.toFixed(2)
+
+    try {
+        return await db.transaction(async client => {
+            await client.query(
+                `INSERT INTO user_accounts (user_id, balance) VALUES ($1, 0)
+                 ON CONFLICT (user_id) DO NOTHING`,
+                [userId]
+            )
+
+            const lockResult = await client.query<{ balance: string }>(
+                "SELECT balance FROM user_accounts WHERE user_id = $1 FOR NO KEY UPDATE",
+                [userId]
+            )
+
+            const balanceBefore = parseFloat(lockResult.rows[0].balance)
+            const balanceAfter = balanceBefore + amountRounded
+
+            await client.query(
+                "UPDATE user_accounts SET balance = $1, updated_at = NOW() WHERE user_id = $2",
+                [balanceAfter, userId]
+            )
+
+            const txResult = await client.query<{ id: string }>(
+                `INSERT INTO transactions (user_id, amount, type, reason, balance_before, balance_after)
+                 VALUES ($1, $2, 'credit', $3, $4, $5)
+                 RETURNING id`,
+                [userId, amountRounded, reason, balanceBefore, balanceAfter]
+            )
+
+            logger.info("Credits granted", {
+                amount: amountRounded,
+                balanceAfter,
+                transactionId: txResult.rows[0].id,
+                metadata,
+            })
+
+            return {
+                success: true,
+                transactionId: txResult.rows[0].id,
+                newBalance: balanceAfter,
+            }
+        })
+    } catch (error) {
+        logger.error("grantCredits failed", { error, data: { userId, amount: amountRounded, reason } })
+        return { success: false, error: "Transaction failed" }
+    }
+}
+
 export { CREDIT_COSTS }
 export type { CreditAction }

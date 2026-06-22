@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS public.profiles (
   email TEXT UNIQUE,
   display_name TEXT,
   avatar_url TEXT,
-  credits_balance BIGINT DEFAULT 0 NOT NULL CHECK (credits_balance >= 0),
+  credits_balance NUMERIC(12, 2) DEFAULT 0.00 NOT NULL CHECK (credits_balance >= 0),
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
@@ -56,10 +56,33 @@ CREATE TABLE IF NOT EXISTS public.metering_logs (
 CREATE TABLE IF NOT EXISTS public.credit_transactions (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID NOT NULL REFERENCES public.profiles(id) ON DELETE CASCADE,
-  amount INTEGER NOT NULL,
+  amount NUMERIC(10, 2) NOT NULL,
   type TEXT NOT NULL, -- 'purchase', 'usage', 'subscription', 'refund'
   description TEXT,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Scheduled Post Media (Video Upload Storage)
+CREATE TABLE IF NOT EXISTS public.scheduled_post_media (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  post_id UUID REFERENCES public.scheduled_posts(id) ON DELETE CASCADE,
+  user_id UUID NOT NULL REFERENCES public.profiles(id) ON DELETE CASCADE,
+  storage_mode VARCHAR(10) NOT NULL DEFAULT 'cloud',
+  original_filename VARCHAR(500),
+  file_size BIGINT NOT NULL,
+  mime_type VARCHAR(100),
+  video_duration_seconds INTEGER,
+  storage_path TEXT,
+  storage_status VARCHAR(20) DEFAULT 'pending',
+  storage_cost_per_gb_per_day NUMERIC(10, 2) NOT NULL DEFAULT 6.67,
+  bandwidth_cost_per_gb NUMERIC(10, 2) NOT NULL DEFAULT 10.00,
+  base_fee NUMERIC(10, 2) NOT NULL DEFAULT 2.00,
+  storage_days INTEGER,
+  total_cost_charged NUMERIC(10, 2),
+  total_cost_refunded NUMERIC(10, 2) DEFAULT 0.00,
+  billing_status VARCHAR(20) DEFAULT 'charged',
+  created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()
 );
 
 -- Infrastructure Aggregates (For Dashboard Performance)

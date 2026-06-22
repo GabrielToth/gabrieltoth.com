@@ -16,6 +16,8 @@ Complete API reference for gabrieltoth.com platform.
 - **[Contact API](#contact-api)** - Contact form submissions
 - **[Analytics API](#analytics-api)** - User analytics and consumption
 - **[Credits API](#credits-api)** - Credit balance, transactions, and admin grants
+- **[YouTube Upload API](#youtube-upload-api)** - Video upload to YouTube
+- **[YouTube Download API](#youtube-download-api)** - Video download from cloud storage
 
 ### Payments
 
@@ -388,6 +390,122 @@ Cookie: session=session_token
 
 ---
 
+## YouTube Upload API
+
+### POST /api/youtube/upload
+
+Upload a video file to YouTube using the authenticated user's YouTube channel.
+
+**Authentication:** Requires `x-user-id` header (user UUID) and CSRF token.
+
+**Request:**
+
+```http
+POST /api/youtube/upload HTTP/1.1
+Content-Type: multipart/form-data
+x-user-id: user-uuid
+x-csrf-token: csrf-token-value
+```
+
+**Multipart Fields:**
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `file` | File | Yes | Video file (MP4, WebM, MOV). Max 500MB. |
+| `title` | string | Yes | Video title. Max 100 characters. |
+| `description` | string | Yes | Video description. Max 5000 characters. |
+| `privacyStatus` | string | Yes | One of: `public`, `unlisted`, `private` |
+| `tags` | string | No | Comma-separated tags. Max 500 chars total, 30 tags max, 100 chars each. |
+| `categoryId` | string | No | YouTube category ID (e.g., `22` for Entertainment). Max 3 chars. |
+| `csrfToken` | string | Yes | CSRF protection token (in form data or header). |
+
+**Response (200):**
+
+```json
+{
+  "success": true,
+  "videoId": "youtube-video-id",
+  "url": "https://youtube.com/watch?v=youtube-video-id"
+}
+```
+
+**Error Responses:**
+
+- 400: Missing/invalid fields, extra fields detected, empty file
+- 401: No valid session or YouTube not linked
+- 403: Invalid CSRF token
+- 413: File exceeds 500MB limit
+- 500: Internal server error or YouTube API failure
+
+**Security:**
+
+- CSRF token required (from form data or `x-csrf-token` header)
+- Extra field rejection (whitelist: only `csrfToken`, `file`, `title`, `description`, `privacyStatus`, `tags`, `categoryId`)
+- Type validation on all fields
+- Length limits enforced (title: 100, description: 5000, tags: 500 total)
+- No stack traces or internal paths in error responses
+- Large files (>4.5MB) logged as warning (Vercel Hobby limitation)
+
+**Notes:**
+
+- For files >4.5MB, use the Express backend (port 4000) instead of Vercel
+- YouTube OAuth token must be linked via the OAuth flow at `/api/youtube/link/start`
+- Token refresh is handled automatically (lazy refresh on each upload)
+
+---
+
+## YouTube Download API
+
+### GET /api/youtube/download/[mediaId]
+
+Download a video file from cloud storage. Redirects to a signed Supabase Storage URL valid for 5 minutes.
+
+**Authentication:** Requires `auth_session` cookie and CSRF token. Environment-gated (only works in `NODE_ENV !== 'production'`). Email-gated (only `gabrieltothgoncalves@gmail.com` may download).
+
+**Request:**
+
+```http
+GET /api/youtube/download/550e8400-e29b-41d4-a716-446655440000 HTTP/1.1
+Cookie: auth_session=session_token
+x-csrf-token: csrf-token-value
+```
+
+**URL Parameters:**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| mediaId | UUID | Yes | UUID of the scheduled_post_media record |
+
+**Response:**
+
+- 302: Redirect to signed Supabase Storage URL
+
+**Error Responses:**
+
+- 400: Invalid media ID format
+- 401: No valid session
+- 403: Access denied (wrong user or production environment)
+- 404: Media not found or file not available
+- 500: Storage not configured or download failed
+
+**Security:**
+
+- Session cookie validated against DB
+- Email-gated to `gabrieltothgoncalves@gmail.com` only
+- Environment-gated (production returns 403)
+- Media ownership verified via `user_id` match
+- UUID format validation prevents injection
+- Redirect to signed URL (no direct data streaming)
+- Signed URL expires in 5 minutes
+
+**Notes:**
+
+- Not available in production — development/Docker only
+- Signed URLs are limited to 5 minute expiry
+- The record must exist in `scheduled_post_media` with `storage_status = 'stored'`
+
+---
+
 ## Monero API
 
 ### POST /payments/monero/create
@@ -731,6 +849,11 @@ For API issues or questions:
 ---
 
 ## Changelog
+
+### v1.1.1 (2026-06-21)
+
+- YouTube Download API: GET /api/youtube/download/[mediaId]
+- OAuth scopes: Added youtube.upload and youtube (full access)
 
 ### v1.1.0 (2026-06-21)
 

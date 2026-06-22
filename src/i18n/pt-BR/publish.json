@@ -1,0 +1,41 @@
+{
+    "videoUploader": {
+        "title": "Enviar Vídeo",
+        "dropzone": "Arraste o vídeo aqui ou clique para selecionar",
+        "browse": "Procurar Arquivos",
+        "maxSize": "Tamanho máximo: {size}",
+        "selectPlatformFirst": "Selecione ao menos uma plataforma para ver requisitos",
+        "unsupportedType": "Tipo de arquivo não suportado. Envie um arquivo de vídeo.",
+        "fileTooLarge": "Arquivo excede o limite de {limit} do {platform}",
+        "uploading": "Enviando...",
+        "uploadComplete": "Upload concluído",
+        "uploadFailed": "Falha no upload. Tente novamente."
+    },
+    "billingSummary": {
+        "title": "Resumo de Cobrança",
+        "baseFee": "Taxa base (não reembolsável)",
+        "storageCost": "Armazenamento ({days} dias @ {rate}/GB/dia)",
+        "bandwidthCost": "Largura de banda (upload + download)",
+        "total": "Total",
+        "cloudStorage": "Armazenamento em nuvem",
+        "cancelRefund": "Reembolso no cancelamento: {amount} créditos",
+        "localStorage": "Armazenamento local (sem taxa de armazenamento)"
+    },
+    "platformLimit": {
+        "title": "Requisitos da Plataforma",
+        "maxSize": "Tamanho máximo: {size}",
+        "maxDuration": "Duração máxima: {duration}",
+        "minDuration": "Duração mínima: {duration}",
+        "supportedCodecs": "Codecs suportados: {codecs}",
+        "resolution": "Resolução máxima: {resolution}",
+        "selectPlatform": "Selecione as plataformas alvo para ver requisitos"
+    },
+    "storageMode": {
+        "title": "Modo de Armazenamento",
+        "cloud": "Armazenamento em Nuvem",
+        "local": "Upload Local",
+        "cloudDescription": "Vídeo armazenado no servidor para publicação multiplataforma. Sujeito a taxas de armazenamento.",
+        "localDescription": "Upload direto para uma plataforma. Sem taxas de armazenamento.",
+        "perPostOverride": "Substituir para esta postagem"
+    }
+}

@@ -1,39 +1,9 @@
-// Credit System - Enhanced with Logging and Validation
-// Focus: Atomicity, Debugability, Reliability
+import { CREDIT_COSTS, type CreditAction } from "./constants"
+export { CREDIT_COSTS, type CreditAction }
 
 import { queryOne, transaction } from "@/lib/db"
 import { logger } from "@/lib/logger"
 import type { PoolClient } from "pg"
-
-// Credit costs per action
-export const CREDIT_COSTS = {
-    // Chat
-    chat_message_received: 1,
-    chat_timeout: 10,
-    chat_ban: 25,
-    chat_unban: 5,
-
-    // YouTube
-    youtube_video_download_per_minute: 100,
-    youtube_metadata: 0,
-    youtube_post_schedule: 50,
-    youtube_ai_rewrite_per_1k_tokens: 500,
-
-    // Analytics
-    analytics_daily_access: 1000,
-
-    // Streaming
-    stream_per_minute_base: 1000,
-    stream_destination_extra: 100,
-
-    // Infrastructure
-    infra_bandwidth_per_gb: 5000,
-    infra_storage_per_gb_month: 1000,
-    infra_cache_per_1k_ops: 50,
-    infra_api_per_1k_req: 100,
-} as const
-
-export type CreditAction = keyof typeof CREDIT_COSTS
 
 interface DeductResult {
     success: boolean
@@ -58,7 +28,7 @@ export async function hasCredits(
     )
 
     if (!row) return false
-    return BigInt(row.credits_balance) >= BigInt(cost)
+    return parseFloat(row.credits_balance) >= cost
 }
 
 /**
@@ -68,16 +38,14 @@ export async function deductCredits(
     userId: string,
     action: CreditAction,
     quantity = 1,
-    metadata?: Record<string, unknown>
+    _metadata?: Record<string, unknown>
 ): Promise<DeductResult> {
     const cost = CREDIT_COSTS[action] * quantity
 
-    // Free actions always succeed
     if (cost === 0) return { success: true }
 
     try {
         return await transaction(async (client: PoolClient) => {
-            // Lock row
             const res = await client.query<{ credits_balance: string }>(
                 "SELECT credits_balance FROM profiles WHERE id = $1 FOR UPDATE",
                 [userId]
@@ -91,35 +59,31 @@ export async function deductCredits(
                 return { success: false, error: "User not found" }
             }
 
-            const current = BigInt(res.rows[0].credits_balance)
-            const bigCost = BigInt(cost)
+            const current = parseFloat(res.rows[0].credits_balance)
 
-            if (current < bigCost) {
+            if (current < cost) {
                 logger.debug("Insufficient credits", {
                     context: "CREDITS",
-                    data: { userId, current: current.toString(), cost },
+                    data: { userId, current, cost },
                 })
                 return { success: false, error: "Insufficient credits" }
             }
 
-            const newBalance = current - bigCost
+            const newBalance = +(current - cost).toFixed(2)
 
-            // Sanity check - should never be negative
-            if (newBalance < BigInt(0)) {
+            if (newBalance < 0) {
                 logger.fatal("NEGATIVE BALANCE DETECTED - BUG", {
                     context: "CREDITS",
-                    data: { userId, newBalance: newBalance.toString() },
+                    data: { userId, newBalance },
                 })
                 return { success: false, error: "Internal error" }
             }
 
-            // Update balance
             await client.query(
                 "UPDATE profiles SET credits_balance = $1, updated_at = NOW() WHERE id = $2",
-                [newBalance.toString(), userId]
+                [newBalance.toFixed(2), userId]
             )
 
-            // Log transaction
             await client.query(
                 "INSERT INTO credit_transactions (user_id, amount, type, description) VALUES ($1, $2, $3, $4)",
                 [
@@ -136,11 +100,11 @@ export async function deductCredits(
                     userId,
                     action,
                     cost,
-                    newBalance: newBalance.toString(),
+                    newBalance,
                 },
             })
 
-            return { success: true, newBalance: Number(newBalance) }
+            return { success: true, newBalance }
         })
     } catch (err) {
         logger.error("Deduct credits failed", {
@@ -172,12 +136,12 @@ export async function addCredits(
                 return { success: false, error: "User not found" }
             }
 
-            const current = BigInt(res.rows[0].credits_balance)
-            const newBalance = current + BigInt(amount)
+            const current = parseFloat(res.rows[0].credits_balance)
+            const newBalance = +(current + amount).toFixed(2)
 
             await client.query(
                 "UPDATE profiles SET credits_balance = $1, updated_at = NOW() WHERE id = $2",
-                [newBalance.toString(), userId]
+                [newBalance.toFixed(2), userId]
             )
 
             await client.query(
@@ -190,7 +154,7 @@ export async function addCredits(
                 data: { userId, amount, type },
             })
 
-            return { success: true, newBalance: Number(newBalance) }
+            return { success: true, newBalance }
         })
     } catch (err) {
         logger.error("Add credits failed", {

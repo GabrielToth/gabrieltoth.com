@@ -1,9 +1,10 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
+import { logger } from "@/lib/logger"
 import { cn } from "@/lib/utils"
 import { useTranslations } from "next-intl"
-import React from "react"
+import React, { useState } from "react"
 
 export interface SidebarProps {
     activeTab: "publish" | "insights" | "settings"
@@ -42,6 +43,34 @@ export const Sidebar: React.FC<SidebarProps> = ({
     onLogout,
 }) => {
     const t = useTranslations("dashboard.sidebar")
+    const [connectingChannel, setConnectingChannel] = useState<string | null>(
+        null
+    )
+
+    const handleChannelConnect = async (channelId: string) => {
+        if (channelId !== "youtube") return
+        if (connectingChannel) return
+        setConnectingChannel(channelId)
+        try {
+            const response = await fetch("/api/youtube/link/start", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+            })
+            if (!response.ok) {
+                const data = await response.json()
+                throw new Error(
+                    data.message || "Failed to start YouTube linking"
+                )
+            }
+            const data = await response.json()
+            if (data.authorizationUrl) {
+                window.location.href = data.authorizationUrl
+            }
+        } catch (err) {
+            logger.error("Failed to connect YouTube", { error: err })
+            setConnectingChannel(null)
+        }
+    }
 
     const navItems = [
         { id: "publish", label: t("publish"), icon: "📝" },
@@ -50,6 +79,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
     ] as const
 
     const channels = [
+        { id: "youtube", name: "YouTube", icon: "▶️" },
         { id: "facebook", name: "Facebook", icon: "f" },
         { id: "instagram", name: "Instagram", icon: "📷" },
         { id: "twitter", name: "Twitter/X", icon: "𝕏" },
@@ -107,9 +137,15 @@ export const Sidebar: React.FC<SidebarProps> = ({
                         {channels.map(channel => (
                             <button
                                 key={channel.id}
+                                onClick={() =>
+                                    handleChannelConnect(channel.id)
+                                }
                                 className="flex h-11 w-11 items-center justify-center rounded-lg border border-gray-200 bg-white text-sm font-medium text-gray-600 hover:border-blue-300 hover:bg-blue-50 hover:text-blue-600 transition-colors min-h-11 min-w-11"
                                 title={channel.name}
                                 aria-label={`Connect ${channel.name}`}
+                                disabled={
+                                    connectingChannel === channel.id
+                                }
                             >
                                 {channel.icon}
                             </button>
@@ -214,9 +250,15 @@ export const Sidebar: React.FC<SidebarProps> = ({
                         {channels.map(channel => (
                             <button
                                 key={channel.id}
+                                onClick={() =>
+                                    handleChannelConnect(channel.id)
+                                }
                                 className="flex h-11 w-11 items-center justify-center rounded-lg border border-gray-200 bg-white text-sm font-medium text-gray-600 hover:border-blue-300 hover:bg-blue-50 hover:text-blue-600 transition-colors min-h-11 min-w-11"
                                 title={channel.name}
                                 aria-label={`Connect ${channel.name}`}
+                                disabled={
+                                    connectingChannel === channel.id
+                                }
                             >
                                 {channel.icon}
                             </button>

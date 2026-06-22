@@ -12,5 +12,22 @@
             "pro": "Pro",
             "enterprise": "Enterprise"
         }
+    },
+    "youtube": {
+        "connect": "Connect YouTube",
+        "connecting": "Connecting...",
+        "disconnect": "Disconnect",
+        "disconnecting": "Disconnecting...",
+        "confirmDisconnect": "Confirm",
+        "cancel": "Cancel",
+        "connected": "Connected",
+        "notConnected": "Not Connected",
+        "linkSuccess": "YouTube channel linked successfully!",
+        "linkError": "Failed to link YouTube channel. Please try again.",
+        "linkPartial": "YouTube channel linked but some data could not be retrieved.",
+        "channelName": "Channel name",
+        "connectedSince": "Connected since",
+        "connectYouTube": "Connect your YouTube channel to manage videos, view analytics, and publish content directly from the dashboard.",
+        "noChannel": "No channel connected"
     }
 }

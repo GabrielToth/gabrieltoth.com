@@ -22,7 +22,6 @@ const mockConfig: YouTubeChannelLinkingConfig = {
         scopes: ["https://www.googleapis.com/auth/youtube.readonly"],
     },
     email: {
-        apiKey: "re_test_123",
         fromEmail: "noreply@example.com",
         fromName: "Test",
     },

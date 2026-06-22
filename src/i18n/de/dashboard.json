@@ -12,5 +12,22 @@
             "pro": "Pro",
             "enterprise": "Enterprise"
         }
+    },
+    "youtube": {
+        "connect": "YouTube verbinden",
+        "connecting": "Verbinde...",
+        "disconnect": "Trennen",
+        "disconnecting": "Trenne...",
+        "confirmDisconnect": "Bestätigen",
+        "cancel": "Abbrechen",
+        "connected": "Verbunden",
+        "notConnected": "Nicht verbunden",
+        "linkSuccess": "YouTube-Kanal erfolgreich verbunden!",
+        "linkError": "Fehler beim Verbinden des YouTube-Kanals. Bitte versuchen Sie es erneut.",
+        "linkPartial": "YouTube-Kanal verbunden, aber einige Daten konnten nicht abgerufen werden.",
+        "channelName": "Kanalname",
+        "connectedSince": "Verbunden seit",
+        "connectYouTube": "Verbinden Sie Ihren YouTube-Kanal, um Videos zu verwalten, Analysen anzuzeigen und Inhalte direkt aus dem Dashboard zu veröffentlichen.",
+        "noChannel": "Kein Kanal verbunden"
     }
 }

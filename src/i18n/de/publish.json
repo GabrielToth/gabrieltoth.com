@@ -1,0 +1,41 @@
+{
+    "videoUploader": {
+        "title": "Video Hochladen",
+        "dropzone": "Video hierher ziehen oder klicken zum Auswählen",
+        "browse": "Dateien Durchsuchen",
+        "maxSize": "Maximale Dateigröße: {size}",
+        "selectPlatformFirst": "Wähle mindestens eine Plattform für die Anforderungen",
+        "unsupportedType": "Nicht unterstützter Dateityp. Bitte lade eine Videodatei hoch.",
+        "fileTooLarge": "Datei überschreitet das {platform}-Limit von {limit}",
+        "uploading": "Wird hochgeladen...",
+        "uploadComplete": "Upload abgeschlossen",
+        "uploadFailed": "Upload fehlgeschlagen. Bitte versuche es erneut."
+    },
+    "billingSummary": {
+        "title": "Abrechnungsübersicht",
+        "baseFee": "Grundgebühr (nicht erstattbar)",
+        "storageCost": "Speicherkosten ({days} Tage @ {rate}/GB/Tag)",
+        "bandwidthCost": "Bandbreitenkosten (Upload + Download)",
+        "total": "Gesamt",
+        "cloudStorage": "Cloud-Speicher",
+        "cancelRefund": "Rückerstattung bei Stornierung: {amount} Credits",
+        "localStorage": "Lokaler Speicher (keine Speichergebühren)"
+    },
+    "platformLimit": {
+        "title": "Plattformanforderungen",
+        "maxSize": "Maximale Dateigröße: {size}",
+        "maxDuration": "Maximale Dauer: {duration}",
+        "minDuration": "Minimale Dauer: {duration}",
+        "supportedCodecs": "Unterstützte Codecs: {codecs}",
+        "resolution": "Maximale Auflösung: {resolution}",
+        "selectPlatform": "Wähle Zielplattformen für die Anforderungen"
+    },
+    "storageMode": {
+        "title": "Speichermodus",
+        "cloud": "Cloud-Speicher",
+        "local": "Lokaler Upload",
+        "cloudDescription": "Video wird auf dem Server für Multi-Plattform-Veröffentlichung gespeichert. Speichergebühren fallen an.",
+        "localDescription": "Direkter Upload zu einer Plattform. Keine Speichergebühren.",
+        "perPostOverride": "Für diesen Beitrag überschreiben"
+    }
+}

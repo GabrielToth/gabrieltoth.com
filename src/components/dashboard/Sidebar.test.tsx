@@ -99,11 +99,13 @@ describe("Sidebar", () => {
 
     it("renders all social channel buttons", () => {
         render(<Sidebar activeTab="publish" onTabChange={vi.fn()} />)
+        const youtubeButtons = screen.getAllByLabelText(/connect youtube/i)
         const facebookButtons = screen.getAllByLabelText(/connect facebook/i)
         const instagramButtons = screen.getAllByLabelText(/connect instagram/i)
         const twitterButtons = screen.getAllByLabelText(/connect twitter/i)
         const tiktokButtons = screen.getAllByLabelText(/connect tiktok/i)
         const linkedinButtons = screen.getAllByLabelText(/connect linkedin/i)
+        expect(youtubeButtons.length).toBeGreaterThan(0)
         expect(facebookButtons.length).toBeGreaterThan(0)
         expect(instagramButtons.length).toBeGreaterThan(0)
         expect(twitterButtons.length).toBeGreaterThan(0)

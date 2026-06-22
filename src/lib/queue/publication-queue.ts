@@ -18,6 +18,8 @@ export interface ScheduledPost {
     id: string
     userId: string
     content: string
+    mediaType: "text" | "video"
+    mediaId?: string
     scheduledTime: number
     status: "pending" | "processing" | "published" | "failed"
     retryCount: number
@@ -76,7 +78,9 @@ export class PublicationQueue {
         userId: string,
         content: string,
         scheduledTime: number,
-        platforms: SocialPlatform[]
+        platforms: SocialPlatform[],
+        mediaType: "text" | "video" = "text",
+        _mediaId?: string
     ): Promise<ScheduledPost> {
         try {
             const now = Date.now()
@@ -87,6 +91,7 @@ export class PublicationQueue {
                 .insert({
                     user_id: userId,
                     content,
+                    media_type: mediaType,
                     scheduled_time: new Date(scheduledTime),
                     status: "pending",
                     created_at: new Date(now),
@@ -124,6 +129,7 @@ export class PublicationQueue {
                 postId: post.id,
                 platforms,
                 scheduledTime,
+                mediaType,
             })
 
             return this.mapDatabaseToScheduledPost(post, platforms)
@@ -500,6 +506,8 @@ export class PublicationQueue {
             id: dbPost.id,
             userId: dbPost.user_id,
             content: dbPost.content,
+            mediaType: dbPost.media_type || "text",
+            mediaId: dbPost.media_id || undefined,
             scheduledTime: new Date(dbPost.scheduled_time).getTime(),
             status: dbPost.status,
             retryCount: dbPost.retry_count,

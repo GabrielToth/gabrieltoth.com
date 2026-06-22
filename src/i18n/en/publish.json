@@ -1,0 +1,41 @@
+{
+    "videoUploader": {
+        "title": "Upload Video",
+        "dropzone": "Drag & drop video file here, or click to select",
+        "browse": "Browse Files",
+        "maxSize": "Max file size: {size}",
+        "selectPlatformFirst": "Select at least one platform to see requirements",
+        "unsupportedType": "Unsupported file type. Please upload a video file.",
+        "fileTooLarge": "File exceeds {platform} limit of {limit}",
+        "uploading": "Uploading...",
+        "uploadComplete": "Upload complete",
+        "uploadFailed": "Upload failed. Please try again."
+    },
+    "billingSummary": {
+        "title": "Billing Summary",
+        "baseFee": "Base fee (non-refundable)",
+        "storageCost": "Storage cost ({days} days @ {rate}/GB/day)",
+        "bandwidthCost": "Bandwidth cost (upload + download)",
+        "total": "Total",
+        "cloudStorage": "Cloud storage",
+        "cancelRefund": "Refund on cancel: {amount} credits",
+        "localStorage": "Local storage (no storage fees)"
+    },
+    "platformLimit": {
+        "title": "Platform Requirements",
+        "maxSize": "Max file size: {size}",
+        "maxDuration": "Max duration: {duration}",
+        "minDuration": "Min duration: {duration}",
+        "supportedCodecs": "Supported codecs: {codecs}",
+        "resolution": "Max resolution: {resolution}",
+        "selectPlatform": "Select target platforms to see upload requirements"
+    },
+    "storageMode": {
+        "title": "Storage Mode",
+        "cloud": "Cloud Storage",
+        "local": "Local Upload",
+        "cloudDescription": "Video stored on server for multi-platform publishing. Subject to storage fees.",
+        "localDescription": "Upload directly to a single platform. No storage fees.",
+        "perPostOverride": "Override for this post"
+    }
+}

@@ -16,11 +16,12 @@ const mockConfig: YouTubeChannelLinkingConfig = {
         redirectUri: "http://localhost:3000/api/youtube/link/callback",
         scopes: [
             "https://www.googleapis.com/auth/youtube.readonly",
+            "https://www.googleapis.com/auth/youtube.upload",
+            "https://www.googleapis.com/auth/youtube",
             "https://www.googleapis.com/auth/userinfo.email",
         ],
     },
     email: {
-        apiKey: "re_test_key_123",
         fromEmail: "noreply@example.com",
         fromName: "Test",
     },
@@ -85,6 +86,12 @@ describe("YouTubeOAuthService", () => {
 
             expect(scope).toContain(
                 "https://www.googleapis.com/auth/youtube.readonly"
+            )
+            expect(scope).toContain(
+                "https://www.googleapis.com/auth/youtube.upload"
+            )
+            expect(scope).toContain(
+                "https://www.googleapis.com/auth/youtube"
             )
             expect(scope).toContain(
                 "https://www.googleapis.com/auth/userinfo.email"

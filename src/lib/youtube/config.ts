@@ -1,6 +1,6 @@
 /**
  * YouTube Channel Linking Service Configuration
- * Centralizes all configuration for YouTube OAuth, email (Resend), and geolocation services
+ * Centralizes all configuration for YouTube OAuth, Supabase email, encryption, rate limits, and security.
  */
 
 import { EnvironmentConfig } from "../config/env"
@@ -12,9 +12,8 @@ export interface YouTubeOAuthConfig {
     scopes: string[]
 }
 
-/** Resend transactional email (free tier) */
-export interface ResendEmailConfig {
-    apiKey: string
+/** Supabase Auth email (configured in Supabase Dashboard SMTP settings) */
+export interface EmailConfig {
     fromEmail: string
     fromName: string
 }
@@ -26,7 +25,7 @@ export interface TokenEncryptionConfig {
 
 export interface YouTubeChannelLinkingConfig {
     oauth: YouTubeOAuthConfig
-    email: ResendEmailConfig
+    email: EmailConfig
     encryption: TokenEncryptionConfig
     rateLimit: {
         linkingAttemptsPerHour: number
@@ -52,14 +51,15 @@ export function createYouTubeChannelLinkingConfig(
             redirectUri: env.YOUTUBE_REDIRECT_URI,
             scopes: [
                 "https://www.googleapis.com/auth/youtube.readonly",
+                "https://www.googleapis.com/auth/youtube.upload",
+                "https://www.googleapis.com/auth/youtube",
                 "https://www.googleapis.com/auth/userinfo.email",
                 "https://www.googleapis.com/auth/userinfo.profile",
             ],
         },
         email: {
-            apiKey: env.RESEND_API_KEY,
-            fromEmail: env.RESEND_FROM_EMAIL,
-            fromName: env.RESEND_FROM_NAME,
+            fromEmail: env.EMAIL_FROM ?? env.RESEND_FROM_EMAIL ?? "noreply@gabrieltoth.com",
+            fromName: env.RESEND_FROM_NAME ?? "Gabriel Toth",
         },
         encryption: {
             encryptionKey: env.TOKEN_ENCRYPTION_KEY,
@@ -93,13 +93,6 @@ export function validateYouTubeChannelLinkingConfig(
     }
     if (!config.oauth.redirectUri) {
         errors.push("YouTube OAuth redirect URI is required")
-    }
-
-    if (!config.email.apiKey) {
-        errors.push("Resend API key is required")
-    }
-    if (!config.email.fromEmail) {
-        errors.push("Resend from email is required")
     }
 
     if (!config.encryption.encryptionKey) {

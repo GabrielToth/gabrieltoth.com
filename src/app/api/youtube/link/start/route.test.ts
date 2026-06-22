@@ -50,7 +50,6 @@ vi.mock("@/lib/youtube/config", () => ({
             ],
         },
         email: {
-            apiKey: "re_test",
             fromEmail: "noreply@example.com",
             fromName: "Test",
         },

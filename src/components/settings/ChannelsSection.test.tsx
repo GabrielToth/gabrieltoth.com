@@ -17,6 +17,33 @@ vi.mock("@/components/ui/dynamic-icon", () => ({
     ),
 }))
 
+vi.mock("next-intl", () => ({
+    useTranslations: (ns: string) => {
+        const translations: Record<string, Record<string, string>> = {
+            dashboard: {
+                "youtube.connectYouTube":
+                    "Connect your YouTube channel to manage videos, view analytics, and publish content directly from the dashboard.",
+                "youtube.connect": "Connect YouTube",
+                "youtube.connecting": "Connecting...",
+                "youtube.disconnect": "Disconnect",
+                "youtube.disconnecting": "Disconnecting...",
+                "youtube.confirmDisconnect": "Confirm",
+                "youtube.cancel": "Cancel",
+                "youtube.connected": "Connected",
+                "youtube.notConnected": "Not Connected",
+                "youtube.noChannel": "No channel connected",
+                "youtube.connectedSince": "Connected since",
+            },
+        }
+        const t = translations[ns] ?? {}
+        return (key: string) => t[key] ?? key
+    },
+}))
+
+// Mock global fetch
+const mockFetch = vi.fn()
+vi.stubGlobal("fetch", mockFetch)
+
 describe("ChannelsSection", () => {
     const mockChannels: SocialChannel[] = [
         {
@@ -47,7 +74,11 @@ describe("ChannelsSection", () => {
     const mockOnDisconnect = vi.fn()
     const mockOnConnect = vi.fn()
 
-    it("renders channels section", () => {
+    beforeEach(() => {
+        mockFetch.mockReset()
+    })
+
+    it("renders YouTube connect section", () => {
         render(
             <ChannelsSection
                 channels={mockChannels}
@@ -56,13 +87,95 @@ describe("ChannelsSection", () => {
             />
         )
 
-        expect(screen.getByText("Connected Channels")).toBeInTheDocument()
+        const descriptions = screen.getAllByText(
+            "Connect your YouTube channel to manage videos, view analytics, and publish content directly from the dashboard."
+        )
+        expect(descriptions.length).toBeGreaterThan(0)
+    })
+
+    it("shows YouTube connect button when no youtube channel", () => {
+        render(
+            <ChannelsSection
+                channels={mockChannels}
+                onDisconnect={mockOnDisconnect}
+                onConnect={mockOnConnect}
+            />
+        )
+
         expect(
-            screen.getByText("Manage your connected social media accounts")
+            screen.getByRole("button", { name: /connect youtube/i })
         ).toBeInTheDocument()
     })
 
-    it("displays connected channels", () => {
+    it("shows YouTube channel info when connected", () => {
+        const channelsWithYoutube: SocialChannel[] = [
+            ...mockChannels,
+            {
+                id: "4",
+                platform: "youtube",
+                accountId: "UC123",
+                accountName: "My YouTube Channel",
+                isConnected: true,
+                connectedAt: new Date(),
+            },
+        ]
+        render(
+            <ChannelsSection
+                channels={channelsWithYoutube}
+                onDisconnect={mockOnDisconnect}
+                onConnect={mockOnConnect}
+            />
+        )
+
+        expect(screen.getByText("My YouTube Channel")).toBeInTheDocument()
+        const disconnectButtons = screen.getAllByRole("button", {
+            name: /disconnect/i,
+        })
+        expect(disconnectButtons.length).toBeGreaterThan(0)
+    })
+
+    it("calls YouTube start API on connect click", async () => {
+        const user = userEvent.setup()
+        mockFetch.mockResolvedValueOnce({
+            ok: true,
+            json: async () => ({
+                success: true,
+                authorizationUrl: "https://accounts.google.com/o/oauth2/auth?....",
+            }),
+        })
+
+        const channelsWithYoutube: SocialChannel[] = [
+            ...mockChannels,
+            {
+                id: "4",
+                platform: "youtube",
+                accountId: "",
+                accountName: "",
+                isConnected: false,
+            },
+        ]
+        render(
+            <ChannelsSection
+                channels={channelsWithYoutube}
+                onDisconnect={mockOnDisconnect}
+                onConnect={mockOnConnect}
+            />
+        )
+
+        const connectButton = screen.getByRole("button", {
+            name: /connect youtube/i,
+        })
+        await user.click(connectButton)
+
+        await waitFor(() => {
+            expect(mockFetch).toHaveBeenCalledWith("/api/youtube/link/start", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+            })
+        })
+    })
+
+    it("displays other connected channels", () => {
         render(
             <ChannelsSection
                 channels={mockChannels}
@@ -150,36 +263,6 @@ describe("ChannelsSection", () => {
         })
     })
 
-    it("displays Add Channel button", () => {
-        render(
-            <ChannelsSection
-                channels={mockChannels}
-                onDisconnect={mockOnDisconnect}
-                onConnect={mockOnConnect}
-            />
-        )
-
-        expect(
-            screen.getByRole("button", { name: /add channel/i })
-        ).toBeInTheDocument()
-    })
-
-    it("calls onConnect when Add Channel is clicked", async () => {
-        const user = userEvent.setup()
-        render(
-            <ChannelsSection
-                channels={mockChannels}
-                onDisconnect={mockOnDisconnect}
-                onConnect={mockOnConnect}
-            />
-        )
-
-        const addButton = screen.getByRole("button", { name: /add channel/i })
-        await user.click(addButton)
-
-        expect(mockOnConnect).toHaveBeenCalled()
-    })
-
     it("displays available channels section", () => {
         render(
             <ChannelsSection
@@ -189,7 +272,7 @@ describe("ChannelsSection", () => {
             />
         )
 
-        expect(screen.getByText(/available channels/i)).toBeInTheDocument()
+        expect(screen.getByText("Not Connected (1)")).toBeInTheDocument()
     })
 
     it("displays not connected status for disconnected channels", () => {
@@ -201,6 +284,7 @@ describe("ChannelsSection", () => {
             />
         )
 
-        expect(screen.getByText("Not Connected")).toBeInTheDocument()
+        const notConnected = screen.getAllByText("Not Connected")
+        expect(notConnected.length).toBeGreaterThan(0)
     })
 })

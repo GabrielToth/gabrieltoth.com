@@ -1,7 +1,7 @@
 "use client"
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { CREDIT_COSTS } from "@/lib/credits/index"
+import { CREDIT_COSTS } from "@/lib/credits/constants"
 import { Coins, TrendingDown, TrendingUp } from "lucide-react"
 import { useEffect, useState } from "react"
 

@@ -29,6 +29,7 @@ function createValidEnv(): EnvironmentConfig {
         YOUTUBE_CLIENT_ID: "test-client-id",
         YOUTUBE_CLIENT_SECRET: "test-client-secret",
         YOUTUBE_REDIRECT_URI: "http://localhost:3000/api/youtube/link/callback",
+        EMAIL_FROM: "noreply@example.com",
         RESEND_API_KEY: "re_test_key",
         RESEND_FROM_EMAIL: "noreply@example.com",
         RESEND_FROM_NAME: "Test App",
@@ -55,14 +56,19 @@ describe("YouTube Channel Linking Configuration", () => {
             expect(config.oauth.scopes).toContain(
                 "https://www.googleapis.com/auth/youtube.readonly"
             )
+            expect(config.oauth.scopes).toContain(
+                "https://www.googleapis.com/auth/youtube.upload"
+            )
+            expect(config.oauth.scopes).toContain(
+                "https://www.googleapis.com/auth/youtube"
+            )
         })
 
-        it("should set correct Resend email configuration", () => {
+        it("should set correct email configuration", () => {
             const env = createValidEnv()
 
             const config = createYouTubeChannelLinkingConfig(env)
 
-            expect(config.email.apiKey).toBe("re_test_key")
             expect(config.email.fromEmail).toBe("noreply@example.com")
             expect(config.email.fromName).toBe("Test App")
         })
@@ -140,15 +146,15 @@ describe("YouTube Channel Linking Configuration", () => {
             )
         })
 
-        it("should detect missing Resend API key", () => {
+        it("should detect missing encryption key", () => {
             const env = createValidEnv()
             const config = createYouTubeChannelLinkingConfig(env)
-            config.email.apiKey = ""
+            config.encryption.encryptionKey = ""
 
             const result = validateYouTubeChannelLinkingConfig(config)
 
             expect(result.isValid).toBe(false)
-            expect(result.errors).toContain("Resend API key is required")
+            expect(result.errors).toContain("Encryption key is required")
         })
 
         it("should detect invalid encryption key length", () => {
@@ -194,7 +200,6 @@ describe("YouTube Channel Linking Configuration", () => {
             const env = createValidEnv()
             const config = createYouTubeChannelLinkingConfig(env)
             config.oauth.clientId = ""
-            config.email.apiKey = ""
             config.encryption.encryptionKey = "invalid"
 
             const result = validateYouTubeChannelLinkingConfig(config)
@@ -229,9 +234,9 @@ describe("YouTube Channel Linking Configuration", () => {
             )
         })
 
-        it("should validate configuration on creation", () => {
+        it("should validate invalid encryption key on creation", () => {
             const env = createValidEnv()
-            env.RESEND_API_KEY = ""
+            env.TOKEN_ENCRYPTION_KEY = "invalid"
 
             expect(() => getYouTubeChannelLinkingConfig(env)).toThrow(
                 "Invalid YouTube Channel Linking configuration"

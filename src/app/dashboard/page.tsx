@@ -1,19 +1,19 @@
 "use client"
 
-import { useRouter } from "next/navigation"
-import { useEffect } from "react"
+import { useRouter, useSearchParams } from "next/navigation"
+import { Suspense, useEffect } from "react"
 
-/**
- * Dashboard Root Page
- * Redirects to the Publish tab by default
- */
-export default function DashboardPage() {
+function DashboardRedirect() {
     const router = useRouter()
+    const searchParams = useSearchParams()
+    const youtubeParam = searchParams.get("youtube")
 
     useEffect(() => {
-        // Redirect to publish tab on initial load
-        router.push("/dashboard/publish")
-    }, [router])
+        const target = youtubeParam
+            ? `/dashboard/publish?youtube=${encodeURIComponent(youtubeParam)}`
+            : "/dashboard/publish"
+        router.push(target)
+    }, [router, youtubeParam])
 
     return (
         <div className="flex h-screen items-center justify-center">
@@ -22,5 +22,13 @@ export default function DashboardPage() {
                 <p className="text-gray-600">Redirecting to dashboard...</p>
             </div>
         </div>
+    )
+}
+
+export default function DashboardPage() {
+    return (
+        <Suspense fallback={null}>
+            <DashboardRedirect />
+        </Suspense>
     )
 }
