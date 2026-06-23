@@ -36,7 +36,8 @@ export async function POST(request: NextRequest) {
         if (!user) {
             return NextResponse.json({
                 success: true,
-                message: "If an account exists with this email, a reset link has been sent.",
+                message:
+                    "If an account exists with this email, a reset link has been sent.",
             })
         }
 
@@ -52,13 +53,12 @@ export async function POST(request: NextRequest) {
 
         const resetUrl = `${request.nextUrl.origin}/${locale}/reset-password?token=${token}`
 
-        console.log(
-            `[FORGOT PASSWORD] Reset link for ${email}: ${resetUrl}`
-        )
+        console.log(`[FORGOT PASSWORD] Reset link for ${email}: ${resetUrl}`)
 
         return NextResponse.json({
             success: true,
-            message: "If an account exists with this email, a reset link has been sent.",
+            message:
+                "If an account exists with this email, a reset link has been sent.",
         })
     } catch (error) {
         console.error("[FORGOT PASSWORD] Unexpected error:", error)

@@ -32,7 +32,7 @@ export default function CalendarDay({
                 isWeekend && "text-gray-400",
                 isToday &&
                     "bg-blue-100 font-semibold text-blue-700 ring-2 ring-blue-300",
-                !isToday && "text-gray-900",
+                !isToday && "text-gray-900"
             )}
             aria-label={`${day}${postCount > 0 ? `, ${postCount} post${postCount !== 1 ? "s" : ""}` : ""}`}
         >

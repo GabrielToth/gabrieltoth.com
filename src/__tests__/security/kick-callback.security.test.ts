@@ -70,7 +70,7 @@ const mockExchangeCodeForToken = vi.hoisted(() =>
         refreshToken: "mock-kick-refresh-token",
         expiresIn: 3600,
         tokenType: "bearer",
-    }),
+    })
 )
 
 const mockGetUser = vi.hoisted(() =>
@@ -79,7 +79,7 @@ const mockGetUser = vi.hoisted(() =>
         username: "testkickuser",
         email: "test@kick.com",
         profilePictureUrl: "https://kick.com/avatar.jpg",
-    }),
+    })
 )
 
 const mockGetChannel = vi.hoisted(() =>
@@ -89,7 +89,7 @@ const mockGetChannel = vi.hoisted(() =>
         slug: "testkickchannel",
         followersCount: 500,
         isLive: false,
-    }),
+    })
 )
 
 vi.mock("@/lib/kick/oauth-service", () => ({
@@ -154,9 +154,7 @@ const validStatePayload = {
     },
 }
 
-function makeCallbackUrl(
-    params: Record<string, string>,
-): string {
+function makeCallbackUrl(params: Record<string, string>): string {
     const searchParams = new URLSearchParams(params)
     return `http://localhost/api/oauth/callback/kick?${searchParams.toString()}`
 }
@@ -175,31 +173,35 @@ describe("GET /api/oauth/callback/kick — Attack Matrix", () => {
     describe("Row 1 — Auth bypass", () => {
         it("should redirect with error when no auth params provided", async () => {
             const request = new NextRequest(
-                "http://localhost/api/oauth/callback/kick",
+                "http://localhost/api/oauth/callback/kick"
             )
             const response = await GET(request)
             expect(response.status).toBe(307)
             const location =
-                response.headers.get("Location") || response.headers.get("location") || ""
+                response.headers.get("Location") ||
+                response.headers.get("location") ||
+                ""
             expect(location).toContain("error")
             expect(location).toContain("missing_params")
         })
 
         it("should redirect with error when only error param is present", async () => {
             const request = new NextRequest(
-                makeCallbackUrl({ error: "access_denied" }),
+                makeCallbackUrl({ error: "access_denied" })
             )
             const response = await GET(request)
             expect(response.status).toBe(307)
             const location =
-                response.headers.get("Location") || response.headers.get("location") || ""
+                response.headers.get("Location") ||
+                response.headers.get("location") ||
+                ""
             expect(location).toContain("error")
             expect(location).toContain("access_denied")
         })
 
         it("should redirect with error for missing code param", async () => {
             const request = new NextRequest(
-                makeCallbackUrl({ state: "valid-state-token" }),
+                makeCallbackUrl({ state: "valid-state-token" })
             )
             const response = await GET(request)
             expect(response.status).toBe(307)
@@ -209,9 +211,7 @@ describe("GET /api/oauth/callback/kick — Attack Matrix", () => {
     // ── Row 2: HTTP method confusion ──
     describe("Row 2 — HTTP method confusion", () => {
         it("should not expose POST handler for callback", async () => {
-            const route = await import(
-                "@/app/api/oauth/callback/kick/route"
-            )
+            const route = await import("@/app/api/oauth/callback/kick/route")
             expect("POST" in route).toBe(false)
         })
     })
@@ -220,7 +220,7 @@ describe("GET /api/oauth/callback/kick — Attack Matrix", () => {
     describe("Row 4 — Value attacks on query params", () => {
         it("should handle empty code parameter", async () => {
             const request = new NextRequest(
-                makeCallbackUrl({ code: "", state: "valid-state-token" }),
+                makeCallbackUrl({ code: "", state: "valid-state-token" })
             )
             const response = await GET(request)
             expect(response.status).toBe(307)
@@ -228,7 +228,7 @@ describe("GET /api/oauth/callback/kick — Attack Matrix", () => {
 
         it("should handle empty state parameter", async () => {
             const request = new NextRequest(
-                makeCallbackUrl({ code: "valid-code", state: "" }),
+                makeCallbackUrl({ code: "valid-code", state: "" })
             )
             const response = await GET(request)
             expect(response.status).toBe(307)
@@ -236,7 +236,7 @@ describe("GET /api/oauth/callback/kick — Attack Matrix", () => {
 
         it("should handle missing state parameter", async () => {
             const request = new NextRequest(
-                makeCallbackUrl({ code: "valid-code" }),
+                makeCallbackUrl({ code: "valid-code" })
             )
             const response = await GET(request)
             expect(response.status).toBe(307)
@@ -250,7 +250,7 @@ describe("GET /api/oauth/callback/kick — Attack Matrix", () => {
                 makeCallbackUrl({
                     code: "1' OR '1'='1",
                     state: "valid-state-token",
-                }),
+                })
             )
             const response = await GET(request)
             expect([307, 500]).toContain(response.status)
@@ -261,7 +261,7 @@ describe("GET /api/oauth/callback/kick — Attack Matrix", () => {
                 makeCallbackUrl({
                     code: "<script>alert(1)</script>",
                     state: "valid-state-token",
-                }),
+                })
             )
             const response = await GET(request)
             expect([307, 500]).toContain(response.status)
@@ -272,7 +272,7 @@ describe("GET /api/oauth/callback/kick — Attack Matrix", () => {
                 makeCallbackUrl({
                     code: "valid-code",
                     state: "$(cat /etc/passwd)",
-                }),
+                })
             )
             const response = await GET(request)
             expect(response.status).toBe(307)
@@ -283,7 +283,7 @@ describe("GET /api/oauth/callback/kick — Attack Matrix", () => {
                 makeCallbackUrl({
                     code: '{"$gt": ""}',
                     state: "valid-state-token",
-                }),
+                })
             )
             const response = await GET(request)
             expect([307, 500]).toContain(response.status)
@@ -297,7 +297,7 @@ describe("GET /api/oauth/callback/kick — Attack Matrix", () => {
                 makeCallbackUrl({
                     code: "valid\0code",
                     state: "valid-state-token",
-                }),
+                })
             )
             const response = await GET(request)
             expect([307, 500]).toContain(response.status)
@@ -308,7 +308,7 @@ describe("GET /api/oauth/callback/kick — Attack Matrix", () => {
                 makeCallbackUrl({
                     code: "code😊test",
                     state: "valid-state-token",
-                }),
+                })
             )
             const response = await GET(request)
             expect([307, 500]).toContain(response.status)
@@ -319,7 +319,7 @@ describe("GET /api/oauth/callback/kick — Attack Matrix", () => {
                 makeCallbackUrl({
                     code: "valid-code",
                     state: "\u202Etest\u202C",
-                }),
+                })
             )
             const response = await GET(request)
             expect(response.status).toBe(307)
@@ -333,7 +333,7 @@ describe("GET /api/oauth/callback/kick — Attack Matrix", () => {
                 makeCallbackUrl({
                     code: "A".repeat(10000),
                     state: "valid-state-token",
-                }),
+                })
             )
             const response = await GET(request)
             expect([307, 500]).toContain(response.status)
@@ -341,7 +341,7 @@ describe("GET /api/oauth/callback/kick — Attack Matrix", () => {
 
         it("should handle deeply nested query params", async () => {
             const request = new NextRequest(
-                `http://localhost/api/oauth/callback/kick?code=valid&state=${"x".repeat(1000)}`,
+                `http://localhost/api/oauth/callback/kick?code=valid&state=${"x".repeat(1000)}`
             )
             const response = await GET(request)
             expect(response.status).toBe(307)
@@ -352,7 +352,10 @@ describe("GET /api/oauth/callback/kick — Attack Matrix", () => {
     describe("Row 10 — Rate limiting", () => {
         it("should handle callback request within rate limit", async () => {
             const request = new NextRequest(
-                makeCallbackUrl({ code: "valid-code", state: "valid-state-token" }),
+                makeCallbackUrl({
+                    code: "valid-code",
+                    state: "valid-state-token",
+                })
             )
             const response = await GET(request)
             expect([307, 500]).toContain(response.status)
@@ -371,12 +374,14 @@ describe("GET /api/oauth/callback/kick — Attack Matrix", () => {
                 makeCallbackUrl({
                     code: "valid-code",
                     state: "tampered-state-token",
-                }),
+                })
             )
             const response = await GET(request)
             expect(response.status).toBe(307)
             const location =
-                response.headers.get("Location") || response.headers.get("location") || ""
+                response.headers.get("Location") ||
+                response.headers.get("location") ||
+                ""
             expect(location).toContain("error")
             expect(location).toContain("invalid_state")
         })
@@ -388,7 +393,10 @@ describe("GET /api/oauth/callback/kick — Attack Matrix", () => {
                 error: "State token expired",
             })
             const request = new NextRequest(
-                makeCallbackUrl({ code: "valid-code", state: "expired-state-token" }),
+                makeCallbackUrl({
+                    code: "valid-code",
+                    state: "expired-state-token",
+                })
             )
             const response = await GET(request)
             expect(response.status).toBe(307)
@@ -405,7 +413,10 @@ describe("GET /api/oauth/callback/kick — Attack Matrix", () => {
                 },
             })
             const request = new NextRequest(
-                makeCallbackUrl({ code: "valid-code", state: "twitch-state-token" }),
+                makeCallbackUrl({
+                    code: "valid-code",
+                    state: "twitch-state-token",
+                })
             )
             const response = await GET(request)
             expect(response.status).toBe(307)
@@ -416,8 +427,16 @@ describe("GET /api/oauth/callback/kick — Attack Matrix", () => {
     describe("Row 12 — Race conditions", () => {
         it("should handle concurrent callback requests", async () => {
             const results = await Promise.all([
-                GET(new NextRequest(makeCallbackUrl({ code: "code-1", state: "state-1" }))),
-                GET(new NextRequest(makeCallbackUrl({ code: "code-2", state: "state-2" }))),
+                GET(
+                    new NextRequest(
+                        makeCallbackUrl({ code: "code-1", state: "state-1" })
+                    )
+                ),
+                GET(
+                    new NextRequest(
+                        makeCallbackUrl({ code: "code-2", state: "state-2" })
+                    )
+                ),
             ])
             for (const response of results) {
                 expect([307, 500]).toContain(response.status)
@@ -429,8 +448,11 @@ describe("GET /api/oauth/callback/kick — Attack Matrix", () => {
     describe("Row 14 — HTTP header attacks", () => {
         it("should handle X-Forwarded-For header", async () => {
             const request = new NextRequest(
-                makeCallbackUrl({ code: "valid-code", state: "valid-state-token" }),
-                { headers: { "X-Forwarded-For": "127.0.0.1" } },
+                makeCallbackUrl({
+                    code: "valid-code",
+                    state: "valid-state-token",
+                }),
+                { headers: { "X-Forwarded-For": "127.0.0.1" } }
             )
             const response = await GET(request)
             expect([307, 500]).toContain(response.status)
@@ -438,8 +460,11 @@ describe("GET /api/oauth/callback/kick — Attack Matrix", () => {
 
         it("should handle Host override header", async () => {
             const request = new NextRequest(
-                makeCallbackUrl({ code: "valid-code", state: "valid-state-token" }),
-                { headers: { Host: "evil.com" } },
+                makeCallbackUrl({
+                    code: "valid-code",
+                    state: "valid-state-token",
+                }),
+                { headers: { Host: "evil.com" } }
             )
             const response = await GET(request)
             expect([307, 500]).toContain(response.status)
@@ -450,11 +475,16 @@ describe("GET /api/oauth/callback/kick — Attack Matrix", () => {
     describe("Row 15 — Info disclosure", () => {
         it("should not leak internal paths in redirect on error", async () => {
             const request = new NextRequest(
-                makeCallbackUrl({ code: "valid-code", state: "valid-state-token" }),
+                makeCallbackUrl({
+                    code: "valid-code",
+                    state: "valid-state-token",
+                })
             )
             const response = await GET(request)
             const location =
-                response.headers.get("Location") || response.headers.get("location") || ""
+                response.headers.get("Location") ||
+                response.headers.get("location") ||
+                ""
             expect(location).not.toContain("internal")
             expect(location).not.toContain(":\\")
         })
@@ -469,14 +499,31 @@ describe("GET /api/oauth/callback/kick — Attack Matrix", () => {
                 payload: null,
                 error: "Invalid state signature",
             })
-            await GET(new NextRequest(makeCallbackUrl({ code: "code-first", state: "replay-state" })))
-            const secondResponse = await GET(new NextRequest(makeCallbackUrl({ code: "code-second", state: "replay-state" })))
+            await GET(
+                new NextRequest(
+                    makeCallbackUrl({
+                        code: "code-first",
+                        state: "replay-state",
+                    })
+                )
+            )
+            const secondResponse = await GET(
+                new NextRequest(
+                    makeCallbackUrl({
+                        code: "code-second",
+                        state: "replay-state",
+                    })
+                )
+            )
             expect(secondResponse.status).toBe(307)
         })
 
         it("should redirect to partial when social_networks upsert fails", async () => {
             const request = new NextRequest(
-                makeCallbackUrl({ code: "valid-code", state: "valid-state-token" }),
+                makeCallbackUrl({
+                    code: "valid-code",
+                    state: "valid-state-token",
+                })
             )
             const response = await GET(request)
             expect(response.status).toBe(307)
@@ -485,7 +532,10 @@ describe("GET /api/oauth/callback/kick — Attack Matrix", () => {
         it("should handle no Kick user found", async () => {
             mockGetUser.mockResolvedValueOnce(null)
             const request = new NextRequest(
-                makeCallbackUrl({ code: "valid-code", state: "valid-state-token" }),
+                makeCallbackUrl({
+                    code: "valid-code",
+                    state: "valid-state-token",
+                })
             )
             const response = await GET(request)
             expect(response.status).toBe(307)
@@ -494,7 +544,10 @@ describe("GET /api/oauth/callback/kick — Attack Matrix", () => {
         it("should handle no Kick channel found", async () => {
             mockGetChannel.mockResolvedValueOnce(null)
             const request = new NextRequest(
-                makeCallbackUrl({ code: "valid-code", state: "valid-state-token" }),
+                makeCallbackUrl({
+                    code: "valid-code",
+                    state: "valid-state-token",
+                })
             )
             const response = await GET(request)
             expect(response.status).toBe(307)

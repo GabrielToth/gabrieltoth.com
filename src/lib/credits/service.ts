@@ -31,9 +31,7 @@ export interface TransactionRecord {
     createdAt: string
 }
 
-export async function getBalance(
-    userId: string
-): Promise<BalanceResult> {
+export async function getBalance(userId: string): Promise<BalanceResult> {
     const row = await db.queryOne<{ balance: string }>(
         "SELECT balance FROM user_accounts WHERE user_id = $1",
         [userId]
@@ -76,7 +74,13 @@ export async function deductAction(
                 `INSERT INTO transactions (user_id, amount, type, reason, balance_before, balance_after)
                  VALUES ($1, $2, 'debit', $3, $4, $5)
                  RETURNING id`,
-                [userId, cost, `${action}${quantity > 1 ? ` x${quantity}` : ""}`, balanceBefore, balanceAfter]
+                [
+                    userId,
+                    cost,
+                    `${action}${quantity > 1 ? ` x${quantity}` : ""}`,
+                    balanceBefore,
+                    balanceAfter,
+                ]
             )
 
             logger.info("Credits deducted for action", {
@@ -94,7 +98,10 @@ export async function deductAction(
             }
         })
     } catch (error) {
-        logger.error("deductAction failed", { error, data: { userId, action, cost } })
+        logger.error("deductAction failed", {
+            error,
+            data: { userId, action, cost },
+        })
         return { success: false, error: "Transaction failed" }
     }
 }
@@ -151,7 +158,10 @@ export async function adminGrant(
             }
         })
     } catch (error) {
-        logger.error("adminGrant failed", { error, data: { userId, amount, reason } })
+        logger.error("adminGrant failed", {
+            error,
+            data: { userId, amount, reason },
+        })
         return { success: false, error: "Transaction failed" }
     }
 }
@@ -249,7 +259,10 @@ export async function deductAmount(
             }
         })
     } catch (error) {
-        logger.error("deductAmount failed", { error, data: { userId, amount: amountRounded, reason } })
+        logger.error("deductAmount failed", {
+            error,
+            data: { userId, amount: amountRounded, reason },
+        })
         return { success: false, error: "Transaction failed" }
     }
 }
@@ -311,7 +324,10 @@ export async function grantCredits(
             }
         })
     } catch (error) {
-        logger.error("grantCredits failed", { error, data: { userId, amount: amountRounded, reason } })
+        logger.error("grantCredits failed", {
+            error,
+            data: { userId, amount: amountRounded, reason },
+        })
         return { success: false, error: "Transaction failed" }
     }
 }

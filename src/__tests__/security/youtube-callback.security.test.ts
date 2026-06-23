@@ -63,8 +63,7 @@ vi.mock("@/lib/config/env", () => ({
         REDIS_URL: "redis://localhost:6379",
         YOUTUBE_CLIENT_ID: "test-client-id",
         YOUTUBE_CLIENT_SECRET: "test-client-secret",
-        YOUTUBE_REDIRECT_URI:
-            "http://localhost:3000/api/youtube/link/callback",
+        YOUTUBE_REDIRECT_URI: "http://localhost:3000/api/youtube/link/callback",
         TOKEN_ENCRYPTION_KEY: "a".repeat(64),
     }),
 }))
@@ -163,7 +162,10 @@ describe("GET /api/youtube/link/callback — Attack Matrix", () => {
     beforeEach(() => {
         vi.clearAllMocks()
         mockRedisInstance.get.mockResolvedValue(
-            JSON.stringify({ userId: "test-user-123", createdAt: new Date().toISOString() })
+            JSON.stringify({
+                userId: "test-user-123",
+                createdAt: new Date().toISOString(),
+            })
         )
         mockRedisInstance.del.mockResolvedValue(1)
         mockRedisInstance.quit.mockResolvedValue("OK")
@@ -269,7 +271,10 @@ describe("GET /api/youtube/link/callback — Attack Matrix", () => {
 
         it("should handle extra unknown params", async () => {
             mockRedisInstance.get.mockResolvedValue(
-                JSON.stringify({ userId: "test-user-123", createdAt: new Date().toISOString() })
+                JSON.stringify({
+                    userId: "test-user-123",
+                    createdAt: new Date().toISOString(),
+                })
             )
             const request = makeRequest(
                 "http://localhost/api/youtube/link/callback?code=valid-code&state=valid-state&extra=unexpected&utm_source=test"
@@ -417,7 +422,10 @@ describe("GET /api/youtube/link/callback — Attack Matrix", () => {
     describe("Row 10 — Rate limiting", () => {
         it("should handle request within rate limit", async () => {
             mockRedisInstance.get.mockResolvedValue(
-                JSON.stringify({ userId: "test-user-123", createdAt: new Date().toISOString() })
+                JSON.stringify({
+                    userId: "test-user-123",
+                    createdAt: new Date().toISOString(),
+                })
             )
             const request = makeRequest(
                 "http://localhost/api/youtube/link/callback?code=valid-code&state=valid-state"
@@ -432,7 +440,10 @@ describe("GET /api/youtube/link/callback — Attack Matrix", () => {
     describe("Row 12 — Race conditions", () => {
         it("should handle concurrent duplicate callbacks", async () => {
             mockRedisInstance.get.mockResolvedValue(
-                JSON.stringify({ userId: "test-user-123", createdAt: new Date().toISOString() })
+                JSON.stringify({
+                    userId: "test-user-123",
+                    createdAt: new Date().toISOString(),
+                })
             )
             const url =
                 "http://localhost/api/youtube/link/callback?code=valid-code&state=valid-state"
@@ -451,7 +462,9 @@ describe("GET /api/youtube/link/callback — Attack Matrix", () => {
     // ── Row 15: Info disclosure ──
     describe("Row 15 — Info disclosure", () => {
         it("should not leak internal paths in error redirect URL", async () => {
-            mockRedisInstance.get.mockRejectedValue(new Error("Connection refused"))
+            mockRedisInstance.get.mockRejectedValue(
+                new Error("Connection refused")
+            )
             const request = makeRequest(
                 "http://localhost/api/youtube/link/callback?code=valid-code&state=valid-state"
             )
@@ -493,7 +506,10 @@ describe("GET /api/youtube/link/callback — Attack Matrix", () => {
         it("should reject replayed state (already deleted)", async () => {
             // First call succeeds
             mockRedisInstance.get.mockResolvedValueOnce(
-                JSON.stringify({ userId: "test-user-123", createdAt: new Date().toISOString() })
+                JSON.stringify({
+                    userId: "test-user-123",
+                    createdAt: new Date().toISOString(),
+                })
             )
             // Second call — state already consumed
             mockRedisInstance.get.mockResolvedValueOnce(null)

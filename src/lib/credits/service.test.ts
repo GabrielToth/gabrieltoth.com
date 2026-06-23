@@ -36,7 +36,13 @@ vi.mock("@/lib/logger", () => ({
 }))
 
 import { db } from "@/lib/db"
-import { getBalance, deductAction, adminGrant, getTransactions, CREDIT_COSTS } from "./service"
+import {
+    getBalance,
+    deductAction,
+    adminGrant,
+    getTransactions,
+    CREDIT_COSTS,
+} from "./service"
 
 beforeEach(() => {
     vi.clearAllMocks()
@@ -64,13 +70,12 @@ describe("deductAction", () => {
     })
 
     it("fails on insufficient balance", async () => {
-        vi.mocked(db.transaction).mockImplementation(
-            async fn =>
-                fn({
-                    query: vi.fn().mockResolvedValue({
-                        rows: [{ balance: "5" }],
-                    }),
-                } as any)
+        vi.mocked(db.transaction).mockImplementation(async fn =>
+            fn({
+                query: vi.fn().mockResolvedValue({
+                    rows: [{ balance: "5" }],
+                }),
+            } as any)
         )
 
         const result = await deductAction("user-1", "analytics_daily_access")
@@ -90,7 +95,9 @@ describe("deductAction", () => {
                 return { rows: [] }
             }),
         }
-        vi.mocked(db.transaction).mockImplementation(async fn => fn(mockClient as any))
+        vi.mocked(db.transaction).mockImplementation(async fn =>
+            fn(mockClient as any)
+        )
 
         const result = await deductAction("user-1", "analytics_daily_access")
         expect(result.success).toBe(true)
@@ -100,21 +107,25 @@ describe("deductAction", () => {
     it("deducts correct cost multiplied by quantity", async () => {
         let capturedAmount = 0
         const mockClient = {
-            query: vi.fn().mockImplementation(async (query: string, params?: any[]) => {
-                if (query.includes("FOR NO KEY UPDATE")) {
-                    return { rows: [{ balance: "50000" }] }
-                }
-                if (query.includes("UPDATE")) {
-                    capturedAmount = params?.[0]
+            query: vi
+                .fn()
+                .mockImplementation(async (query: string, params?: any[]) => {
+                    if (query.includes("FOR NO KEY UPDATE")) {
+                        return { rows: [{ balance: "50000" }] }
+                    }
+                    if (query.includes("UPDATE")) {
+                        capturedAmount = params?.[0]
+                        return { rows: [] }
+                    }
+                    if (query.includes("RETURNING id")) {
+                        return { rows: [{ id: "tx-1" }] }
+                    }
                     return { rows: [] }
-                }
-                if (query.includes("RETURNING id")) {
-                    return { rows: [{ id: "tx-1" }] }
-                }
-                return { rows: [] }
-            }),
+                }),
         }
-        vi.mocked(db.transaction).mockImplementation(async fn => fn(mockClient as any))
+        vi.mocked(db.transaction).mockImplementation(async fn =>
+            fn(mockClient as any)
+        )
 
         await deductAction("user-1", "chat_message_received", 5)
         expect(capturedAmount).toBe(49995) // 50000 - (1 * 5)
@@ -140,7 +151,9 @@ describe("adminGrant", () => {
                 return { rows: [] }
             }),
         }
-        vi.mocked(db.transaction).mockImplementation(async fn => fn(mockClient as any))
+        vi.mocked(db.transaction).mockImplementation(async fn =>
+            fn(mockClient as any)
+        )
 
         const result = await adminGrant("user-1", 100000, "Test grant")
         expect(result.success).toBe(true)

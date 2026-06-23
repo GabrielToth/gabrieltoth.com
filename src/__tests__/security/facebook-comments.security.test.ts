@@ -443,7 +443,7 @@ describe("Facebook Comments — Attack Matrix", () => {
                     pageId: "123",
                     comment_id: "c1",
                     message: "hi",
-                }),
+                })
             )
             expect([201, 400, 500]).toContain(res.status)
         })
@@ -455,8 +455,8 @@ describe("Facebook Comments — Attack Matrix", () => {
                 makePost(
                     "http://localhost/api/platform/facebook/comments",
                     { pageId: "123", comment_id: "c1", message: "hi" },
-                    { "X-Forwarded-For": "127.0.0.1" },
-                ),
+                    { "X-Forwarded-For": "127.0.0.1" }
+                )
             )
             expect([201, 400, 500]).toContain(res.status)
         })
@@ -466,8 +466,8 @@ describe("Facebook Comments — Attack Matrix", () => {
                 makePost(
                     "http://localhost/api/platform/facebook/comments",
                     { pageId: "123", comment_id: "c1", message: "hi" },
-                    { Host: "evil.com" },
-                ),
+                    { Host: "evil.com" }
+                )
             )
             expect([201, 400, 500]).toContain(res.status)
         })
@@ -480,7 +480,7 @@ describe("Facebook Comments — Attack Matrix", () => {
                     pageId: "nonexistent",
                     comment_id: "c1",
                     message: "hi",
-                }),
+                })
             )
             expect([201, 400, 500]).toContain(res.status)
         })
@@ -489,7 +489,7 @@ describe("Facebook Comments — Attack Matrix", () => {
     describe("Row 18 — Path traversal", () => {
         it("DELETE: should handle path traversal in comment ID", async () => {
             const req = makeDelete(
-                "http://localhost/api/platform/facebook/comments/../../etc/passwd?pageId=123",
+                "http://localhost/api/platform/facebook/comments/../../etc/passwd?pageId=123"
             )
             const res = await DELETE(req, {
                 params: Promise.resolve({ id: "../../etc/passwd" }),
@@ -500,7 +500,7 @@ describe("Facebook Comments — Attack Matrix", () => {
         it("PATCH: should handle path traversal in comment ID", async () => {
             const req = makePatch(
                 "http://localhost/api/platform/facebook/comments/..\\..\\windows\\system32?pageId=123",
-                { hide: true },
+                { hide: true }
             )
             const res = await PATCH(req, {
                 params: Promise.resolve({ id: "..\\..\\windows\\system32" }),

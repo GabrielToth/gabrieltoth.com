@@ -160,10 +160,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
                 error: socialError.message,
             })
             return NextResponse.redirect(
-                new URL(
-                    "/dashboard?youtube=partial",
-                    request.url
-                )
+                new URL("/dashboard?youtube=partial", request.url)
             )
         }
 
@@ -181,10 +178,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
         logger.error("Failed to complete YouTube channel linking", err)
 
         return NextResponse.redirect(
-            new URL(
-                "/dashboard?youtube=error&reason=server_error",
-                request.url
-            )
+            new URL("/dashboard?youtube=error&reason=server_error", request.url)
         )
     }
 }

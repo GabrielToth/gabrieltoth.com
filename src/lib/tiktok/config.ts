@@ -85,7 +85,7 @@ export function getTikTokConfig(env?: EnvironmentConfig): TikTokConfig {
     if (!configInstance) {
         if (!env) {
             throw new Error(
-                "Environment configuration is required to create TikTok config",
+                "Environment configuration is required to create TikTok config"
             )
         }
 
@@ -94,7 +94,7 @@ export function getTikTokConfig(env?: EnvironmentConfig): TikTokConfig {
         const validation = validateTikTokConfig(configInstance)
         if (!validation.isValid) {
             throw new Error(
-                `Invalid TikTok configuration: ${validation.errors.join(", ")}`,
+                `Invalid TikTok configuration: ${validation.errors.join(", ")}`
             )
         }
     }

@@ -108,12 +108,20 @@ describe("validateVideoForPlatform", () => {
     })
 
     it("validates Facebook video", () => {
-        const result = validateVideoForPlatform("facebook", 5 * 1024 * 1024 * 1024, 3600)
+        const result = validateVideoForPlatform(
+            "facebook",
+            5 * 1024 * 1024 * 1024,
+            3600
+        )
         expect(result.valid).toBe(true)
     })
 
     it("returns multiple errors for multiple violations", () => {
-        const result = validateVideoForPlatform("tiktok", 600 * 1024 * 1024, 700)
+        const result = validateVideoForPlatform(
+            "tiktok",
+            600 * 1024 * 1024,
+            700
+        )
         expect(result.valid).toBe(false)
         expect(result.errors.length).toBeGreaterThanOrEqual(2)
     })

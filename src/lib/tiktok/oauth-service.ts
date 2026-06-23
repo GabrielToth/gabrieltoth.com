@@ -82,8 +82,7 @@ export class TikTokOAuthService extends BaseService {
             state,
         })
 
-        const authorizationUrl =
-            `${this.authBase}/?${params.toString()}`
+        const authorizationUrl = `${this.authBase}/?${params.toString()}`
 
         this.logger.info("TikTok authorization URL generated", { userId })
 
@@ -101,17 +100,14 @@ export class TikTokOAuthService extends BaseService {
             redirect_uri: this.config.oauth.redirectUri,
         })
 
-        const response = await fetch(
-            `${this.apiBase}/oauth/token/`,
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/x-www-form-urlencoded",
-                    "Cache-Control": "no-cache",
-                },
-                body: params.toString(),
+        const response = await fetch(`${this.apiBase}/oauth/token/`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+                "Cache-Control": "no-cache",
             },
-        )
+            body: params.toString(),
+        })
 
         const data = await response.json()
 
@@ -120,7 +116,7 @@ export class TikTokOAuthService extends BaseService {
                 "TOKEN_EXCHANGE_FAILED",
                 `Failed to exchange code for token: ${data.error_description || data.error || "Unknown"}`,
                 400,
-                { error: data },
+                { error: data }
             )
         }
 
@@ -135,7 +131,7 @@ export class TikTokOAuthService extends BaseService {
     }
 
     async refreshAccessToken(
-        refreshToken: string,
+        refreshToken: string
     ): Promise<OAuthTokenResponse> {
         this.assertReady()
 
@@ -146,17 +142,14 @@ export class TikTokOAuthService extends BaseService {
             refresh_token: refreshToken,
         })
 
-        const response = await fetch(
-            `${this.apiBase}/oauth/token/`,
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/x-www-form-urlencoded",
-                    "Cache-Control": "no-cache",
-                },
-                body: params.toString(),
+        const response = await fetch(`${this.apiBase}/oauth/token/`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+                "Cache-Control": "no-cache",
             },
-        )
+            body: params.toString(),
+        })
 
         const data = await response.json()
 
@@ -165,7 +158,7 @@ export class TikTokOAuthService extends BaseService {
                 "TOKEN_REFRESH_FAILED",
                 `Failed to refresh TikTok token: ${data.error_description || data.error || "Unknown"}`,
                 400,
-                { error: data },
+                { error: data }
             )
         }
 
@@ -188,16 +181,13 @@ export class TikTokOAuthService extends BaseService {
             token: accessToken,
         })
 
-        const response = await fetch(
-            `${this.apiBase}/oauth/revoke/`,
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/x-www-form-urlencoded",
-                },
-                body: params.toString(),
+        const response = await fetch(`${this.apiBase}/oauth/revoke/`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
             },
-        )
+            body: params.toString(),
+        })
 
         if (!response.ok) {
             this.logger.warn("TikTok token revocation failed", {
@@ -238,7 +228,7 @@ export class TikTokOAuthService extends BaseService {
                 headers: {
                     Authorization: `Bearer ${accessToken}`,
                 },
-            },
+            }
         )
 
         if (!response.ok) {
@@ -280,7 +270,7 @@ export class TikTokOAuthService extends BaseService {
         options?: {
             maxCount?: number
             cursor?: string
-        },
+        }
     ): Promise<{ videos: TikTokVideo[]; cursor?: string; hasMore: boolean }> {
         this.assertReady()
 
@@ -314,7 +304,7 @@ export class TikTokOAuthService extends BaseService {
                     "Content-Type": "application/json",
                 },
                 body: "{}",
-            },
+            }
         )
 
         if (!response.ok) {
@@ -323,7 +313,7 @@ export class TikTokOAuthService extends BaseService {
                 "VIDEO_LIST_FAILED",
                 `Failed to get video list: ${error.error?.message || "Unknown"}`,
                 400,
-                { error },
+                { error }
             )
         }
 
@@ -344,7 +334,7 @@ export class TikTokOAuthService extends BaseService {
                 shareCount: v.share_count,
                 viewCount: v.view_count,
                 createTime: v.create_time,
-            }),
+            })
         )
 
         return {
@@ -354,9 +344,7 @@ export class TikTokOAuthService extends BaseService {
         }
     }
 
-    async queryCreatorInfo(
-        accessToken: string,
-    ): Promise<CreatorInfo | null> {
+    async queryCreatorInfo(accessToken: string): Promise<CreatorInfo | null> {
         this.assertReady()
 
         const response = await fetch(
@@ -368,7 +356,7 @@ export class TikTokOAuthService extends BaseService {
                     "Content-Type": "application/json",
                 },
                 body: "{}",
-            },
+            }
         )
 
         if (!response.ok) {
@@ -382,8 +370,9 @@ export class TikTokOAuthService extends BaseService {
         const data = await response.json()
 
         return {
-            privacyLevelOptions:
-                data.data?.privacy_level_options || ["SELF_ONLY"],
+            privacyLevelOptions: data.data?.privacy_level_options || [
+                "SELF_ONLY",
+            ],
             maxVideoPostDurationSec:
                 data.data?.max_video_post_duration_sec || 180,
         }
@@ -401,7 +390,7 @@ export class TikTokOAuthService extends BaseService {
             disableComment?: boolean
             brandContentToggle?: boolean
             brandOrganicToggle?: boolean
-        },
+        }
     ): Promise<VideoInitResponse> {
         this.assertReady()
 
@@ -433,7 +422,7 @@ export class TikTokOAuthService extends BaseService {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify(body),
-            },
+            }
         )
 
         const data = await response.json()
@@ -443,7 +432,7 @@ export class TikTokOAuthService extends BaseService {
                 "VIDEO_INIT_FAILED",
                 `Failed to initialize video publish: ${data.error?.message || data.error_description || "Unknown"}`,
                 400,
-                { error: data },
+                { error: data }
             )
         }
 
@@ -460,7 +449,7 @@ export class TikTokOAuthService extends BaseService {
 
     async uploadVideoFile(
         uploadUrl: string,
-        videoBuffer: ArrayBuffer,
+        videoBuffer: ArrayBuffer
     ): Promise<boolean> {
         this.assertReady()
 
@@ -486,7 +475,7 @@ export class TikTokOAuthService extends BaseService {
 
     async getPublishStatus(
         accessToken: string,
-        publishId: string,
+        publishId: string
     ): Promise<PublishStatusResponse> {
         this.assertReady()
 
@@ -499,7 +488,7 @@ export class TikTokOAuthService extends BaseService {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({ publish_id: publishId }),
-            },
+            }
         )
 
         const data = await response.json()
@@ -509,7 +498,7 @@ export class TikTokOAuthService extends BaseService {
                 "PUBLISH_STATUS_FAILED",
                 `Failed to fetch publish status: ${data.error?.message || "Unknown"}`,
                 400,
-                { error: data },
+                { error: data }
             )
         }
 
@@ -529,7 +518,7 @@ export class TikTokOAuthService extends BaseService {
             source: "FILE_UPLOAD" | "PULL_FROM_URL"
             imageUrl?: string
             disableComment?: boolean
-        },
+        }
     ): Promise<VideoInitResponse> {
         this.assertReady()
 
@@ -555,7 +544,7 @@ export class TikTokOAuthService extends BaseService {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify(body),
-            },
+            }
         )
 
         const data = await response.json()
@@ -565,7 +554,7 @@ export class TikTokOAuthService extends BaseService {
                 "PHOTO_INIT_FAILED",
                 `Failed to initialize photo post: ${data.error?.message || "Unknown"}`,
                 400,
-                { error: data },
+                { error: data }
             )
         }
 
@@ -584,7 +573,7 @@ export class TikTokOAuthService extends BaseService {
 let oauthServiceInstance: TikTokOAuthService | null = null
 
 export function getTikTokOAuthService(
-    config: TikTokConfig,
+    config: TikTokConfig
 ): TikTokOAuthService {
     if (!oauthServiceInstance) {
         oauthServiceInstance = new TikTokOAuthService(config)

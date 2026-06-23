@@ -28,7 +28,7 @@ export interface CreateLiveVideoOptions {
 export async function createLiveVideo(
     pageAccessToken: string,
     pageId: string,
-    options: CreateLiveVideoOptions,
+    options: CreateLiveVideoOptions
 ): Promise<FacebookLiveVideo> {
     const params = new URLSearchParams({
         access_token: pageAccessToken,
@@ -54,7 +54,7 @@ export async function createLiveVideo(
     if (!response.ok) {
         const error = await response.json()
         throw new Error(
-            error.error?.message || "Failed to create Facebook Live video",
+            error.error?.message || "Failed to create Facebook Live video"
         )
     }
 
@@ -68,12 +68,11 @@ export async function getLiveVideos(
         limit?: number
         before?: string
         after?: string
-    },
+    }
 ): Promise<{ data: FacebookLiveVideo[]; paging?: any }> {
     const params = new URLSearchParams({
         access_token: pageAccessToken,
-        fields:
-            "id,stream_url,secure_stream_url,status,title,description,creation_time,planned_start_time,permalink_url,embed_html,live_views",
+        fields: "id,stream_url,secure_stream_url,status,title,description,creation_time,planned_start_time,permalink_url,embed_html,live_views",
     })
 
     if (options?.limit) params.set("limit", String(options.limit))
@@ -87,7 +86,7 @@ export async function getLiveVideos(
     if (!response.ok) {
         const error = await response.json()
         throw new Error(
-            error.error?.message || "Failed to fetch Facebook Live videos",
+            error.error?.message || "Failed to fetch Facebook Live videos"
         )
     }
 
@@ -96,12 +95,11 @@ export async function getLiveVideos(
 
 export async function getLiveVideoStatus(
     pageAccessToken: string,
-    liveVideoId: string,
+    liveVideoId: string
 ): Promise<FacebookLiveVideo> {
     const params = new URLSearchParams({
         access_token: pageAccessToken,
-        fields:
-            "id,status,stream_url,secure_stream_url,title,live_views,permalink_url",
+        fields: "id,status,stream_url,secure_stream_url,title,live_views,permalink_url",
     })
 
     const url = `${GRAPH_API_BASE}/${API_VERSION}/${liveVideoId}?${params.toString()}`
@@ -111,8 +109,7 @@ export async function getLiveVideoStatus(
     if (!response.ok) {
         const error = await response.json()
         throw new Error(
-            error.error?.message ||
-                "Failed to fetch Facebook Live video status",
+            error.error?.message || "Failed to fetch Facebook Live video status"
         )
     }
 
@@ -121,7 +118,7 @@ export async function getLiveVideoStatus(
 
 export async function endLiveVideo(
     pageAccessToken: string,
-    liveVideoId: string,
+    liveVideoId: string
 ): Promise<void> {
     const params = new URLSearchParams({
         access_token: pageAccessToken,
@@ -139,7 +136,7 @@ export async function endLiveVideo(
     if (!response.ok) {
         const error = await response.json()
         throw new Error(
-            error.error?.message || "Failed to end Facebook Live video",
+            error.error?.message || "Failed to end Facebook Live video"
         )
     }
 }
@@ -150,8 +147,16 @@ export async function getLiveComments(
     options?: {
         limit?: number
         after?: string
-    },
-): Promise<{ data: Array<{ id: string; message: string; from?: { name: string; id: string }; created_time?: string }>; paging?: any }> {
+    }
+): Promise<{
+    data: Array<{
+        id: string
+        message: string
+        from?: { name: string; id: string }
+        created_time?: string
+    }>
+    paging?: any
+}> {
     const params = new URLSearchParams({
         access_token: pageAccessToken,
         fields: "id,message,from,created_time",
@@ -167,7 +172,7 @@ export async function getLiveComments(
     if (!response.ok) {
         const error = await response.json()
         throw new Error(
-            error.error?.message || "Failed to fetch Facebook Live comments",
+            error.error?.message || "Failed to fetch Facebook Live comments"
         )
     }
 

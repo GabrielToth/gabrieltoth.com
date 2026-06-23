@@ -8,9 +8,7 @@ test.describe("dashboard flows", () => {
 
     test("dashboard root redirect preserves query params", async ({ page }) => {
         await page.goto("/dashboard?youtube=success")
-        await expect(page).toHaveURL(
-            /\/dashboard\/publish\?youtube=success/
-        )
+        await expect(page).toHaveURL(/\/dashboard\/publish\?youtube=success/)
     })
 
     test("dashboard publish page loads with expected content", async ({
@@ -107,14 +105,10 @@ test.describe("dashboard flows", () => {
             await expect(logoutBtn).toBeVisible()
         })
 
-        test("sidebar shows connect channels section", async ({
-            page,
-        }) => {
+        test("sidebar shows connect channels section", async ({ page }) => {
             await page.goto("/dashboard/publish")
 
-            await expect(
-                page.getByText("Connect Channels")
-            ).toBeVisible()
+            await expect(page.getByText("Connect Channels")).toBeVisible()
         })
 
         test("clicking sidebar insights navigates to /dashboard/insights", async ({

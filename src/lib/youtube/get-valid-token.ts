@@ -98,8 +98,7 @@ export async function getValidYouTubeToken(
 
         return refreshed.accessToken
     } catch (error) {
-        const message =
-            error instanceof Error ? error.message : String(error)
+        const message = error instanceof Error ? error.message : String(error)
         logger.error("Failed to refresh YouTube token", {
             userId,
             error: message,

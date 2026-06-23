@@ -40,9 +40,8 @@ vi.mock("@/lib/logger", () => ({
     }),
 }))
 
-const { uploadVideo, postToYouTube } = await import(
-    "@/lib/posting/adapters/youtube"
-)
+const { uploadVideo, postToYouTube } =
+    await import("@/lib/posting/adapters/youtube")
 
 describe("uploadVideo", () => {
     const userId = "user-123"

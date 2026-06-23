@@ -32,7 +32,8 @@ import { NextRequest } from "next/server"
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 
 vi.hoisted(() => {
-    process.env.OAUTH_STATE_SECRET = "test-state-secret-that-is-at-least-32-chars-long!!"
+    process.env.OAUTH_STATE_SECRET =
+        "test-state-secret-that-is-at-least-32-chars-long!!"
 })
 
 vi.mock("@/lib/kick/config", () => ({
@@ -41,11 +42,7 @@ vi.mock("@/lib/kick/config", () => ({
             clientId: "test-kick-client-id",
             clientSecret: "test-kick-client-secret",
             redirectUri: "http://localhost:3000/api/oauth/callback/kick",
-            scopes: [
-                "user:read",
-                "chat:write",
-                "events:subscribe",
-            ],
+            scopes: ["user:read", "chat:write", "events:subscribe"],
         },
         apiBaseUrl: "https://api.kick.com",
         oauthAuthorizeUrl: "https://id.kick.com/oauth/authorize",
@@ -80,7 +77,7 @@ vi.mock("@/lib/logger", () => ({
 function makePostRequest(
     url: string,
     body: unknown,
-    headers: Record<string, string> = {},
+    headers: Record<string, string> = {}
 ): NextRequest {
     return new NextRequest(url, {
         method: "POST",
@@ -111,7 +108,7 @@ describe("POST /api/oauth/authorize/kick — Attack Matrix", () => {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({}),
-                },
+                }
             )
             const response = await POST(request)
             expect(response.status).toBe(400)
@@ -123,7 +120,7 @@ describe("POST /api/oauth/authorize/kick — Attack Matrix", () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/authorize/kick",
                 {},
-                { "x-user-id": "" },
+                { "x-user-id": "" }
             )
             const response = await POST(request)
             expect(response.status).toBe(400)
@@ -138,7 +135,7 @@ describe("POST /api/oauth/authorize/kick — Attack Matrix", () => {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({}),
-                },
+                }
             )
             const response = await POST(request)
             expect(response.status).toBe(400)
@@ -148,9 +145,7 @@ describe("POST /api/oauth/authorize/kick — Attack Matrix", () => {
     // ── Row 2: HTTP method confusion ──
     describe("Row 2 — HTTP method confusion", () => {
         it("should not expose GET handler for authorize", async () => {
-            const route = await import(
-                "@/app/api/oauth/authorize/kick/route"
-            )
+            const route = await import("@/app/api/oauth/authorize/kick/route")
             expect("GET" in route).toBe(false)
         })
     })
@@ -161,7 +156,7 @@ describe("POST /api/oauth/authorize/kick — Attack Matrix", () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/authorize/kick",
                 {},
-                { "x-user-id": "1' OR '1'='1" },
+                { "x-user-id": "1' OR '1'='1" }
             )
             const response = await POST(request)
             expect([200, 500]).toContain(response.status)
@@ -171,7 +166,7 @@ describe("POST /api/oauth/authorize/kick — Attack Matrix", () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/authorize/kick",
                 {},
-                { "x-user-id": "<script>alert(1)</script>" },
+                { "x-user-id": "<script>alert(1)</script>" }
             )
             const response = await POST(request)
             expect([200, 500]).toContain(response.status)
@@ -181,7 +176,7 @@ describe("POST /api/oauth/authorize/kick — Attack Matrix", () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/authorize/kick",
                 {},
-                { "x-user-id": '{"$gt": ""}' },
+                { "x-user-id": '{"$gt": ""}' }
             )
             const response = await POST(request)
             expect([200, 500]).toContain(response.status)
@@ -194,7 +189,7 @@ describe("POST /api/oauth/authorize/kick — Attack Matrix", () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/authorize/kick",
                 {},
-                { "x-user-id": "A".repeat(10000) },
+                { "x-user-id": "A".repeat(10000) }
             )
             const response = await POST(request)
             expect([200, 500]).toContain(response.status)
@@ -206,7 +201,7 @@ describe("POST /api/oauth/authorize/kick — Attack Matrix", () => {
         it("should handle request within rate limit", async () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/authorize/kick",
-                {},
+                {}
             )
             const response = await POST(request)
             expect([200, 500]).toContain(response.status)
@@ -217,9 +212,24 @@ describe("POST /api/oauth/authorize/kick — Attack Matrix", () => {
     describe("Row 12 — Race conditions", () => {
         it("should handle concurrent authorize requests", async () => {
             const results = await Promise.all([
-                POST(makePostRequest("http://localhost/api/oauth/authorize/kick", {})),
-                POST(makePostRequest("http://localhost/api/oauth/authorize/kick", {})),
-                POST(makePostRequest("http://localhost/api/oauth/authorize/kick", {})),
+                POST(
+                    makePostRequest(
+                        "http://localhost/api/oauth/authorize/kick",
+                        {}
+                    )
+                ),
+                POST(
+                    makePostRequest(
+                        "http://localhost/api/oauth/authorize/kick",
+                        {}
+                    )
+                ),
+                POST(
+                    makePostRequest(
+                        "http://localhost/api/oauth/authorize/kick",
+                        {}
+                    )
+                ),
             ])
             for (const response of results) {
                 expect([200, 500]).toContain(response.status)
@@ -239,7 +249,7 @@ describe("POST /api/oauth/authorize/kick — Attack Matrix", () => {
                         "x-user-id": "test-user-123",
                     },
                     body: "{}",
-                },
+                }
             )
             const response = await POST(request)
             expect([200, 500]).toContain(response.status)
@@ -252,7 +262,7 @@ describe("POST /api/oauth/authorize/kick — Attack Matrix", () => {
                     method: "POST",
                     headers: { "x-user-id": "test-user-123" },
                     body: "{}",
-                },
+                }
             )
             const response = await POST(request)
             expect([200, 500]).toContain(response.status)
@@ -268,7 +278,7 @@ describe("POST /api/oauth/authorize/kick — Attack Matrix", () => {
                         "x-user-id": "test-user-123",
                     },
                     body: "{}",
-                },
+                }
             )
             const response = await POST(request)
             expect([200, 500]).toContain(response.status)
@@ -284,7 +294,7 @@ describe("POST /api/oauth/authorize/kick — Attack Matrix", () => {
                 {
                     "X-Forwarded-For": "127.0.0.1",
                     "x-user-id": "test-user-123",
-                },
+                }
             )
             const response = await POST(request)
             expect([200, 500]).toContain(response.status)
@@ -294,7 +304,7 @@ describe("POST /api/oauth/authorize/kick — Attack Matrix", () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/authorize/kick",
                 {},
-                { Host: "evil.com", "x-user-id": "test-user-123" },
+                { Host: "evil.com", "x-user-id": "test-user-123" }
             )
             const response = await POST(request)
             expect([200, 500]).toContain(response.status)
@@ -307,7 +317,7 @@ describe("POST /api/oauth/authorize/kick — Attack Matrix", () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/authorize/kick",
                 {},
-                { "x-user-id": "" },
+                { "x-user-id": "" }
             )
             const response = await POST(request)
             const body = await response.json()
@@ -324,7 +334,7 @@ describe("POST /api/oauth/authorize/kick — Attack Matrix", () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/authorize/kick",
                 {},
-                { "x-user-id": "any-user-id-123" },
+                { "x-user-id": "any-user-id-123" }
             )
             const response = await POST(request)
             expect([200, 500]).toContain(response.status)

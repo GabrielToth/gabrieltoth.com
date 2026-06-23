@@ -50,9 +50,7 @@ test.describe("language switching journey", () => {
         await expect(page).toHaveURL(/\/de(?:\/)?(?:#.*)?$/)
     })
 
-    test("cycle through all 4 locales maintains URL path", async ({
-        page,
-    }) => {
+    test("cycle through all 4 locales maintains URL path", async ({ page }) => {
         await page.goto("/en/minecraft/modpacks")
 
         for (const locale of LOCALES) {
@@ -139,9 +137,7 @@ test.describe("language switching journey", () => {
         })
     }
 
-    test("back and forward navigation preserves language", async ({
-        page,
-    }) => {
+    test("back and forward navigation preserves language", async ({ page }) => {
         await page.goto("/en/minecraft")
         await page.getByTestId("language-selector-button").click()
         await page.getByTestId("language-selector-option-de").click()
@@ -179,15 +175,11 @@ test.describe("language switching journey", () => {
 
         await page.getByTestId("language-selector-button").click()
         await page.getByTestId("language-selector-option-es").click()
-        await expect(page).toHaveURL(
-            new RegExp(`/es/${ABOUT_ROUTES["es"]}`)
-        )
+        await expect(page).toHaveURL(new RegExp(`/es/${ABOUT_ROUTES["es"]}`))
 
         await page.getByTestId("language-selector-button").click()
         await page.getByTestId("language-selector-option-de").click()
-        await expect(page).toHaveURL(
-            new RegExp(`/de/${ABOUT_ROUTES["de"]}`)
-        )
+        await expect(page).toHaveURL(new RegExp(`/de/${ABOUT_ROUTES["de"]}`))
     })
 
     test("switching language from service page toggles between localized routes", async ({
@@ -198,9 +190,7 @@ test.describe("language switching journey", () => {
             for (const to of LOCALES) {
                 if (from === to) continue
                 await page.getByTestId("language-selector-button").click()
-                await page
-                    .getByTestId(`language-selector-option-${to}`)
-                    .click()
+                await page.getByTestId(`language-selector-option-${to}`).click()
                 await expect(page).toHaveURL(
                     new RegExp(`/${to}/${CHANNEL_ROUTES[to]}`)
                 )

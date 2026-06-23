@@ -32,9 +32,7 @@ export function calculateVideoStorageCost(
     const storageCostPerDay = +(
         CREDIT_COSTS.youtube_video_storage_per_gb_per_day * fileSizeGB
     ).toFixed(2)
-    const storageCostTotal = +(
-        storageCostPerDay * input.storageDays
-    ).toFixed(2)
+    const storageCostTotal = +(storageCostPerDay * input.storageDays).toFixed(2)
     const uploadBandwidthCost = +(
         CREDIT_COSTS.youtube_video_bandwidth_per_gb * fileSizeGB
     ).toFixed(2)

@@ -19,7 +19,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
                     error: "MISSING_USER_ID",
                     message: "User ID is required",
                 },
-                { status: 400 },
+                { status: 400 }
             )
         }
 
@@ -33,7 +33,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
                     error: "VALIDATION_ERROR",
                     message: "post_id query parameter is required",
                 },
-                { status: 400 },
+                { status: 400 }
             )
         }
 
@@ -45,7 +45,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
                     error: "VALIDATION_ERROR",
                     message: "pageId query parameter is required",
                 },
-                { status: 400 },
+                { status: 400 }
             )
         }
 
@@ -53,7 +53,9 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
         const oauthService = getFacebookOAuthService(config)
         await oauthService.initialize()
 
-        const accessToken = await getValidFacebookToken(userId, { oauthService })
+        const accessToken = await getValidFacebookToken(userId, {
+            oauthService,
+        })
 
         if (!accessToken) {
             return NextResponse.json(
@@ -62,13 +64,13 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
                     error: "FACEBOOK_NOT_LINKED",
                     message: "Facebook account is not linked",
                 },
-                { status: 404 },
+                { status: 404 }
             )
         }
 
         const pageAccessToken = await oauthService.getPageAccessToken(
             pageId,
-            accessToken,
+            accessToken
         )
 
         if (!pageAccessToken) {
@@ -79,7 +81,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
                     message:
                         "Failed to obtain access token for the specified page",
                 },
-                { status: 500 },
+                { status: 500 }
             )
         }
 
@@ -101,7 +103,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
                     paging: result.paging,
                 },
             },
-            { status: 200 },
+            { status: 200 }
         )
     } catch (error) {
         const err = error instanceof Error ? error : new Error(String(error))
@@ -113,7 +115,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
                 error: "API_ERROR",
                 message: err.message,
             },
-            { status: 500 },
+            { status: 500 }
         )
     }
 }
@@ -129,7 +131,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
                     error: "MISSING_USER_ID",
                     message: "User ID is required",
                 },
-                { status: 400 },
+                { status: 400 }
             )
         }
 
@@ -137,7 +139,9 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         const oauthService = getFacebookOAuthService(config)
         await oauthService.initialize()
 
-        const accessToken = await getValidFacebookToken(userId, { oauthService })
+        const accessToken = await getValidFacebookToken(userId, {
+            oauthService,
+        })
 
         if (!accessToken) {
             return NextResponse.json(
@@ -146,7 +150,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
                     error: "FACEBOOK_NOT_LINKED",
                     message: "Facebook account is not linked",
                 },
-                { status: 404 },
+                { status: 404 }
             )
         }
 
@@ -160,7 +164,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
                     error: "INVALID_INPUT",
                     message: "Invalid JSON body",
                 },
-                { status: 400 },
+                { status: 400 }
             )
         }
 
@@ -173,7 +177,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
                         error: "VALIDATION_ERROR",
                         message: `Unexpected field: ${key}`,
                     },
-                    { status: 400 },
+                    { status: 400 }
                 )
             }
         }
@@ -189,7 +193,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
                     error: "VALIDATION_ERROR",
                     message: "comment_id is required and must be a string",
                 },
-                { status: 400 },
+                { status: 400 }
             )
         }
 
@@ -201,7 +205,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
                     message:
                         "message is required and must be a non-empty string",
                 },
-                { status: 400 },
+                { status: 400 }
             )
         }
 
@@ -212,7 +216,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
                     error: "VALIDATION_ERROR",
                     message: "Message exceeds 1000 character limit",
                 },
-                { status: 400 },
+                { status: 400 }
             )
         }
 
@@ -223,13 +227,13 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
                     error: "VALIDATION_ERROR",
                     message: "pageId is required and must be a string",
                 },
-                { status: 400 },
+                { status: 400 }
             )
         }
 
         const pageAccessToken = await oauthService.getPageAccessToken(
             pageId,
-            accessToken,
+            accessToken
         )
 
         if (!pageAccessToken) {
@@ -240,7 +244,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
                     message:
                         "Failed to obtain access token for the specified page",
                 },
-                { status: 500 },
+                { status: 500 }
             )
         }
 
@@ -257,7 +261,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
                 success: true,
                 replyId: result.id,
             },
-            { status: 201 },
+            { status: 201 }
         )
     } catch (error) {
         const err = error instanceof Error ? error : new Error(String(error))
@@ -269,7 +273,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
                 error: "API_ERROR",
                 message: err.message,
             },
-            { status: 500 },
+            { status: 500 }
         )
     }
 }

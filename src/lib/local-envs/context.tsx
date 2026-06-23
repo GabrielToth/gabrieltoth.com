@@ -23,7 +23,12 @@ interface LocalEnvsContextValue {
     definedServices: ServiceEnvs[]
     isLoaded: boolean
     setMode: (serviceId: string, mode: EnvMode) => void
-    setEnv: (serviceId: string, key: string, value: string, label: string) => void
+    setEnv: (
+        serviceId: string,
+        key: string,
+        value: string,
+        label: string
+    ) => void
     removeEnv: (serviceId: string, key: string) => void
     removeService: (serviceId: string) => void
     clearAll: () => void
@@ -33,11 +38,7 @@ interface LocalEnvsContextValue {
 
 const LocalEnvsContext = createContext<LocalEnvsContextValue | null>(null)
 
-export function LocalEnvsProvider({
-    children,
-}: {
-    children: React.ReactNode
-}) {
+export function LocalEnvsProvider({ children }: { children: React.ReactNode }) {
     const [services, setServices] = useState<ServiceEnvs[]>([])
     const [isLoaded, setIsLoaded] = useState(false)
 
@@ -72,12 +73,7 @@ export function LocalEnvsProvider({
     )
 
     const setEnv = useCallback(
-        (
-            serviceId: string,
-            key: string,
-            value: string,
-            label: string
-        ) => {
+        (serviceId: string, key: string, value: string, label: string) => {
             storageSetEnv(serviceId, key, value, label)
             refresh()
         },

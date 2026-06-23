@@ -36,14 +36,16 @@ function createValidEnv(): EnvironmentConfig {
         RESEND_FROM_NAME: "Test App",
         INSTAGRAM_APP_ID: "ig-test-id",
         INSTAGRAM_APP_SECRET: "ig-test-secret",
-        INSTAGRAM_REDIRECT_URI: "http://localhost:3000/api/oauth/callback/instagram",
+        INSTAGRAM_REDIRECT_URI:
+            "http://localhost:3000/api/oauth/callback/instagram",
         INSTAGRAM_WEBHOOK_VERIFY_TOKEN: "test-verify-token",
         TIKTOK_CLIENT_KEY: "tt-test-key",
         TIKTOK_CLIENT_SECRET: "tt-test-secret",
         TIKTOK_REDIRECT_URI: "http://localhost:3000/api/oauth/callback/tiktok",
         FACEBOOK_APP_ID: "fb-test-id",
         FACEBOOK_APP_SECRET: "fb-test-secret",
-        FACEBOOK_REDIRECT_URI: "http://localhost:3000/api/oauth/callback/facebook",
+        FACEBOOK_REDIRECT_URI:
+            "http://localhost:3000/api/oauth/callback/facebook",
         FACEBOOK_WEBHOOK_VERIFY_TOKEN: "test-verify-token",
         TOKEN_ENCRYPTION_KEY: "a".repeat(64), // 64 character hex string
     }

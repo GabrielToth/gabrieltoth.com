@@ -88,10 +88,9 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
         const userId = verification.payload.userId
 
         if (verification.payload.platform !== "kick") {
-            logger.warn(
-                "Kick callback received state for different platform",
-                { platform: verification.payload.platform }
-            )
+            logger.warn("Kick callback received state for different platform", {
+                platform: verification.payload.platform,
+            })
             return NextResponse.redirect(
                 new URL(
                     "/dashboard?kick=error&reason=invalid_state",
@@ -116,20 +115,14 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
         if (!user) {
             logger.warn("No Kick user found", { userId })
             return NextResponse.redirect(
-                new URL(
-                    "/dashboard?kick=error&reason=no_user",
-                    request.url
-                )
+                new URL("/dashboard?kick=error&reason=no_user", request.url)
             )
         }
 
         if (!channel) {
             logger.warn("No Kick channel found", { userId })
             return NextResponse.redirect(
-                new URL(
-                    "/dashboard?kick=error&reason=no_channel",
-                    request.url
-                )
+                new URL("/dashboard?kick=error&reason=no_channel", request.url)
             )
         }
 
@@ -210,10 +203,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
         logger.error("Failed to complete Kick linking", err)
 
         return NextResponse.redirect(
-            new URL(
-                "/dashboard?kick=error&reason=server_error",
-                request.url
-            )
+            new URL("/dashboard?kick=error&reason=server_error", request.url)
         )
     }
 }

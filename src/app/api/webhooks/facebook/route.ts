@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
             const appSecret = process.env.FACEBOOK_APP_SECRET
             if (!appSecret) {
                 logger.error(
-                    "Missing FACEBOOK_APP_SECRET for webhook verification",
+                    "Missing FACEBOOK_APP_SECRET for webhook verification"
                 )
                 return new NextResponse("Internal Server Error", {
                     status: 500,
@@ -49,22 +49,18 @@ export async function POST(req: NextRequest) {
             try {
                 const isVerified = crypto.timingSafeEqual(
                     Buffer.from(signature),
-                    Buffer.from(expectedSig),
+                    Buffer.from(expectedSig)
                 )
                 if (!isVerified) {
                     logger.warn("Invalid Facebook webhook signature")
                     return new NextResponse("Forbidden", { status: 403 })
                 }
             } catch {
-                logger.warn(
-                    "Facebook webhook signature comparison failed",
-                )
+                logger.warn("Facebook webhook signature comparison failed")
                 return new NextResponse("Forbidden", { status: 403 })
             }
         } else {
-            logger.warn(
-                "Facebook webhook request missing signature header",
-            )
+            logger.warn("Facebook webhook request missing signature header")
         }
 
         let body: unknown
@@ -97,9 +93,7 @@ export async function POST(req: NextRequest) {
             return new NextResponse("OK", { status: 200 })
         }
 
-        const result = await handleWebhookEvent(
-            event as any,
-        )
+        const result = await handleWebhookEvent(event as any)
 
         logger.info("Facebook webhook processed", {
             handled: result.handled,
@@ -110,7 +104,7 @@ export async function POST(req: NextRequest) {
     } catch (error) {
         logger.error(
             "Facebook webhook processing error",
-            error instanceof Error ? error : new Error(String(error)),
+            error instanceof Error ? error : new Error(String(error))
         )
         return NextResponse.json({ status: "error" }, { status: 500 })
     }

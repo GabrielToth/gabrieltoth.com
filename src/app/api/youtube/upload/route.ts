@@ -179,9 +179,15 @@ export async function POST(request: NextRequest) {
 
         // ── Privacy status validation ──
         const privacyRaw = formData.get("privacyStatus")?.toString() || ""
-        if (!VALID_PRIVACY_STATUSES.has(privacyRaw as "public" | "unlisted" | "private")) {
+        if (
+            !VALID_PRIVACY_STATUSES.has(
+                privacyRaw as "public" | "unlisted" | "private"
+            )
+        ) {
             return NextResponse.json(
-                { error: "Privacy status must be one of: public, unlisted, private" },
+                {
+                    error: "Privacy status must be one of: public, unlisted, private",
+                },
                 { status: 400 }
             )
         }
@@ -197,7 +203,10 @@ export async function POST(request: NextRequest) {
                     { status: 400 }
                 )
             }
-            tags = tagsRaw.split(",").map(t => t.trim()).filter(Boolean)
+            tags = tagsRaw
+                .split(",")
+                .map(t => t.trim())
+                .filter(Boolean)
             if (tags.length > MAX_TAG_COUNT) {
                 return NextResponse.json(
                     { error: "Maximum 30 tags allowed" },
@@ -276,9 +285,6 @@ export async function POST(request: NextRequest) {
         const message =
             error instanceof Error ? error.message : "Internal error"
         logger.error("YouTube upload route error", { error: message })
-        return NextResponse.json(
-            { error: "Upload failed" },
-            { status: 500 }
-        )
+        return NextResponse.json({ error: "Upload failed" }, { status: 500 })
     }
 }

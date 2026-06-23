@@ -22,8 +22,8 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
             return NextResponse.redirect(
                 new URL(
                     `/dashboard?facebook=error&reason=${oauthError}`,
-                    request.url,
-                ),
+                    request.url
+                )
             )
         }
 
@@ -32,8 +32,8 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
             return NextResponse.redirect(
                 new URL(
                     "/dashboard?facebook=error&reason=missing_params",
-                    request.url,
-                ),
+                    request.url
+                )
             )
         }
 
@@ -42,8 +42,8 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
             return NextResponse.redirect(
                 new URL(
                     "/dashboard?facebook=error&reason=missing_params",
-                    request.url,
-                ),
+                    request.url
+                )
             )
         }
 
@@ -60,8 +60,8 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
             return NextResponse.redirect(
                 new URL(
                     "/dashboard?facebook=error&reason=invalid_state",
-                    request.url,
-                ),
+                    request.url
+                )
             )
         }
 
@@ -70,13 +70,13 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
         if (verification.payload.platform !== "facebook") {
             logger.warn(
                 "Facebook callback received state for different platform",
-                { platform: verification.payload.platform },
+                { platform: verification.payload.platform }
             )
             return NextResponse.redirect(
                 new URL(
                     "/dashboard?facebook=error&reason=invalid_state",
-                    request.url,
-                ),
+                    request.url
+                )
             )
         }
 
@@ -89,7 +89,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
         })
 
         const facebookUser = await oauthService.getCurrentUser(
-            tokenResponse.accessToken,
+            tokenResponse.accessToken
         )
 
         if (!facebookUser) {
@@ -97,8 +97,8 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
             return NextResponse.redirect(
                 new URL(
                     "/dashboard?facebook=error&reason=user_info_failed",
-                    request.url,
-                ),
+                    request.url
+                )
             )
         }
 
@@ -108,17 +108,15 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
             name: facebookUser.name,
         })
 
-        const pages = await oauthService.getUserPages(
-            tokenResponse.accessToken,
-        )
+        const pages = await oauthService.getUserPages(tokenResponse.accessToken)
 
         if (pages.length === 0) {
             logger.warn("No Facebook Pages found for user", { userId })
             return NextResponse.redirect(
                 new URL(
                     "/dashboard?facebook=error&reason=no_pages",
-                    request.url,
-                ),
+                    request.url
+                )
             )
         }
 
@@ -144,7 +142,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
 
         const supabase = createClient(
             process.env.NEXT_PUBLIC_SUPABASE_URL || "",
-            process.env.SUPABASE_SERVICE_ROLE_KEY || "",
+            process.env.SUPABASE_SERVICE_ROLE_KEY || ""
         )
 
         for (const page of pages) {
@@ -172,7 +170,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
                     },
                     {
                         onConflict: "user_id, platform, platform_user_id",
-                    },
+                    }
                 )
 
             if (socialError) {
@@ -182,7 +180,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
                         userId,
                         pageId: page.id,
                         error: socialError.message,
-                    },
+                    }
                 )
             }
         }
@@ -194,7 +192,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
         })
 
         return NextResponse.redirect(
-            new URL("/dashboard?facebook=success", request.url),
+            new URL("/dashboard?facebook=success", request.url)
         )
     } catch (error) {
         const err = error instanceof Error ? error : new Error(String(error))
@@ -203,8 +201,8 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
         return NextResponse.redirect(
             new URL(
                 "/dashboard?facebook=error&reason=server_error",
-                request.url,
-            ),
+                request.url
+            )
         )
     }
 }

@@ -48,8 +48,7 @@ vi.mock("@/lib/config/env", () => ({
         REDIS_URL: "redis://localhost:6379",
         YOUTUBE_CLIENT_ID: "test-client-id",
         YOUTUBE_CLIENT_SECRET: "test-client-secret",
-        YOUTUBE_REDIRECT_URI:
-            "http://localhost:3000/api/youtube/link/callback",
+        YOUTUBE_REDIRECT_URI: "http://localhost:3000/api/youtube/link/callback",
         TOKEN_ENCRYPTION_KEY: "a".repeat(64),
     }),
 }))
@@ -454,9 +453,24 @@ describe("POST /api/youtube/link/revoke — Attack Matrix", () => {
     describe("Row 12 — Race conditions", () => {
         it("should handle concurrent revoke requests", async () => {
             const results = await Promise.all([
-                POST(makePostRequest("http://localhost/api/youtube/link/revoke", {})),
-                POST(makePostRequest("http://localhost/api/youtube/link/revoke", {})),
-                POST(makePostRequest("http://localhost/api/youtube/link/revoke", {})),
+                POST(
+                    makePostRequest(
+                        "http://localhost/api/youtube/link/revoke",
+                        {}
+                    )
+                ),
+                POST(
+                    makePostRequest(
+                        "http://localhost/api/youtube/link/revoke",
+                        {}
+                    )
+                ),
+                POST(
+                    makePostRequest(
+                        "http://localhost/api/youtube/link/revoke",
+                        {}
+                    )
+                ),
             ])
             for (const response of results) {
                 expect([200, 500]).toContain(response.status)
@@ -541,7 +555,9 @@ describe("POST /api/youtube/link/revoke — Attack Matrix", () => {
     // ── Row 15: Info disclosure ──
     describe("Row 15 — Info disclosure", () => {
         it("should not leak internal paths in error response", async () => {
-            mockGetToken.mockRejectedValue(new Error("Database connection error"))
+            mockGetToken.mockRejectedValue(
+                new Error("Database connection error")
+            )
             const request = makePostRequest(
                 "http://localhost/api/youtube/link/revoke",
                 {}
@@ -586,11 +602,15 @@ describe("POST /api/youtube/link/revoke — Attack Matrix", () => {
 
         it("should allow double revoke (idempotent)", async () => {
             // First revoke succeeds
-            await POST(makePostRequest("http://localhost/api/youtube/link/revoke", {}))
+            await POST(
+                makePostRequest("http://localhost/api/youtube/link/revoke", {})
+            )
 
             // Second revoke — token already deleted
             mockGetToken.mockResolvedValue(null)
-            const response = await POST(makePostRequest("http://localhost/api/youtube/link/revoke", {}))
+            const response = await POST(
+                makePostRequest("http://localhost/api/youtube/link/revoke", {})
+            )
             expect(response.status).toBe(404)
         })
     })
@@ -607,7 +627,10 @@ describe("POST /api/youtube/link/revoke — Attack Matrix", () => {
             // The route uses x-user-id directly, so it would delete other-user-456's token
             // This is intentional — auth middleware should validate the session
             // Security: verify the route uses the header value, not any body value
-            expect(mockGetToken).toHaveBeenCalledWith("other-user-456", "youtube")
+            expect(mockGetToken).toHaveBeenCalledWith(
+                "other-user-456",
+                "youtube"
+            )
             expect(response.status).toBe(200)
         })
 
@@ -619,7 +642,10 @@ describe("POST /api/youtube/link/revoke — Attack Matrix", () => {
             )
             const response = await POST(request)
             // Verify the route uses x-user-id header, not body.userId
-            expect(mockGetToken).toHaveBeenCalledWith("test-user-123", "youtube")
+            expect(mockGetToken).toHaveBeenCalledWith(
+                "test-user-123",
+                "youtube"
+            )
             expect(response.status).toBe(200)
         })
     })

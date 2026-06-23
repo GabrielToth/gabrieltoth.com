@@ -5,9 +5,9 @@ import dynamic from "next/dynamic"
 
 const SettingsContainer = dynamic(
     () =>
-        import(
-            "@/components/settings/SettingsContainer"
-        ).then(m => m.SettingsContainer),
+        import("@/components/settings/SettingsContainer").then(
+            m => m.SettingsContainer
+        ),
     { ssr: false }
 )
 

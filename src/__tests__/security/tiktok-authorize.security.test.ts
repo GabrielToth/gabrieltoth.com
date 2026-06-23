@@ -37,7 +37,10 @@ vi.hoisted(() => {
 })
 
 const mockGenerateState = vi.hoisted(() =>
-    vi.fn().mockReturnValue({ token: "mock-signed-state-token", payload: { userId: "test-user-123", platform: "tiktok" } }),
+    vi.fn().mockReturnValue({
+        token: "mock-signed-state-token",
+        payload: { userId: "test-user-123", platform: "tiktok" },
+    })
 )
 
 vi.mock("@/lib/oauth/state-signer", () => ({
@@ -50,7 +53,13 @@ vi.mock("@/lib/tiktok/config", () => ({
             clientKey: "test-client-key",
             clientSecret: "test-client-secret",
             redirectUri: "http://localhost:3000/api/oauth/callback/tiktok",
-            scopes: ["user.info.basic", "user.info.profile", "user.info.stats", "video.list", "video.publish"],
+            scopes: [
+                "user.info.basic",
+                "user.info.profile",
+                "user.info.stats",
+                "video.list",
+                "video.publish",
+            ],
             apiVersion: "v2",
         },
         rateLimit: {
@@ -82,7 +91,7 @@ vi.mock("@/lib/logger", () => ({
 function makePostRequest(
     url: string,
     body: unknown,
-    headers: Record<string, string> = {},
+    headers: Record<string, string> = {}
 ): NextRequest {
     return new NextRequest(url, {
         method: "POST",
@@ -112,7 +121,7 @@ describe("POST /api/oauth/authorize/tiktok — Attack Matrix", () => {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({}),
-                },
+                }
             )
             const response = await POST(request)
             expect(response.status).toBe(400)
@@ -124,7 +133,7 @@ describe("POST /api/oauth/authorize/tiktok — Attack Matrix", () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/authorize/tiktok",
                 {},
-                { "x-user-id": "" },
+                { "x-user-id": "" }
             )
             const response = await POST(request)
             expect(response.status).toBe(400)
@@ -139,7 +148,7 @@ describe("POST /api/oauth/authorize/tiktok — Attack Matrix", () => {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({}),
-                },
+                }
             )
             const response = await POST(request)
             expect(response.status).toBe(400)
@@ -150,9 +159,7 @@ describe("POST /api/oauth/authorize/tiktok — Attack Matrix", () => {
 
     describe("Row 2 — HTTP method confusion", () => {
         it("should not expose GET handler for authorize", async () => {
-            const route = await import(
-                "@/app/api/oauth/authorize/tiktok/route"
-            )
+            const route = await import("@/app/api/oauth/authorize/tiktok/route")
             expect("GET" in route).toBe(false)
         })
     })
@@ -162,7 +169,7 @@ describe("POST /api/oauth/authorize/tiktok — Attack Matrix", () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/authorize/tiktok",
                 {},
-                { "x-user-id": "1' OR '1'='1" },
+                { "x-user-id": "1' OR '1'='1" }
             )
             const response = await POST(request)
             expect([200, 400, 500]).toContain(response.status)
@@ -172,7 +179,7 @@ describe("POST /api/oauth/authorize/tiktok — Attack Matrix", () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/authorize/tiktok",
                 {},
-                { "x-user-id": "<script>alert(1)</script>" },
+                { "x-user-id": "<script>alert(1)</script>" }
             )
             const response = await POST(request)
             expect([200, 400, 500]).toContain(response.status)
@@ -182,7 +189,7 @@ describe("POST /api/oauth/authorize/tiktok — Attack Matrix", () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/authorize/tiktok",
                 {},
-                { "x-user-id": '{"$gt": ""}' },
+                { "x-user-id": '{"$gt": ""}' }
             )
             const response = await POST(request)
             expect([200, 400, 500]).toContain(response.status)
@@ -200,7 +207,7 @@ describe("POST /api/oauth/authorize/tiktok — Attack Matrix", () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/authorize/tiktok",
                 {},
-                { "x-user-id": "A".repeat(10000) },
+                { "x-user-id": "A".repeat(10000) }
             )
             const response = await POST(request)
             expect([200, 400, 500]).toContain(response.status)
@@ -211,7 +218,7 @@ describe("POST /api/oauth/authorize/tiktok — Attack Matrix", () => {
         it("should handle request within rate limit", async () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/authorize/tiktok",
-                {},
+                {}
             )
             const response = await POST(request)
             expect([200, 400, 500]).toContain(response.status)
@@ -223,8 +230,8 @@ describe("POST /api/oauth/authorize/tiktok — Attack Matrix", () => {
             const requests = Array.from({ length: 5 }, () =>
                 makePostRequest(
                     "http://localhost/api/oauth/authorize/tiktok",
-                    {},
-                ),
+                    {}
+                )
             )
             const results = await Promise.all(requests.map(r => POST(r)))
             for (const response of results) {
@@ -244,7 +251,7 @@ describe("POST /api/oauth/authorize/tiktok — Attack Matrix", () => {
                         "x-user-id": "test-user-123",
                     },
                     body: "{}",
-                },
+                }
             )
             const response = await POST(request)
             expect([200, 400, 500]).toContain(response.status)
@@ -257,7 +264,7 @@ describe("POST /api/oauth/authorize/tiktok — Attack Matrix", () => {
                     method: "POST",
                     headers: { "x-user-id": "test-user-123" },
                     body: "{}",
-                },
+                }
             )
             const response = await POST(request)
             expect([200, 400, 500]).toContain(response.status)
@@ -273,7 +280,7 @@ describe("POST /api/oauth/authorize/tiktok — Attack Matrix", () => {
                         "x-user-id": "test-user-123",
                     },
                     body: "{}",
-                },
+                }
             )
             const response = await POST(request)
             expect([200, 400, 500]).toContain(response.status)
@@ -288,7 +295,7 @@ describe("POST /api/oauth/authorize/tiktok — Attack Matrix", () => {
                 {
                     "x-user-id": "test-user-123",
                     "X-Forwarded-For": "127.0.0.1",
-                },
+                }
             )
             const response = await POST(request)
             expect([200, 400, 500]).toContain(response.status)
@@ -301,7 +308,7 @@ describe("POST /api/oauth/authorize/tiktok — Attack Matrix", () => {
                 {
                     "x-user-id": "test-user-123",
                     Host: "evil.com",
-                },
+                }
             )
             const response = await POST(request)
             expect([200, 400, 500]).toContain(response.status)
@@ -313,7 +320,7 @@ describe("POST /api/oauth/authorize/tiktok — Attack Matrix", () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/authorize/tiktok",
                 {},
-                { "x-user-id": "" },
+                { "x-user-id": "" }
             )
             const response = await POST(request)
             const body = await response.json()
@@ -329,7 +336,7 @@ describe("POST /api/oauth/authorize/tiktok — Attack Matrix", () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/authorize/tiktok",
                 {},
-                { "x-user-id": "any-user-id" },
+                { "x-user-id": "any-user-id" }
             )
             const response = await POST(request)
             expect([200, 400, 500]).toContain(response.status)

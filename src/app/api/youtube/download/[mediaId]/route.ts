@@ -48,7 +48,8 @@ import { NextRequest, NextResponse } from "next/server"
 const logger = createLogger("YouTubeDownloadRoute")
 
 const ALLOWED_EMAIL = "gabrieltothgoncalves@gmail.com"
-const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
+const UUID_REGEX =
+    /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
 const SIGNED_URL_EXPIRY_SECONDS = 300 // 5 minutes
 
 type MediaRecord = {
@@ -100,10 +101,9 @@ export async function GET(
         const session = await db.queryOne<{
             user_id: string
             expires_at: Date
-        }>(
-            "SELECT user_id, expires_at FROM sessions WHERE session_id = $1",
-            [sessionToken]
-        )
+        }>("SELECT user_id, expires_at FROM sessions WHERE session_id = $1", [
+            sessionToken,
+        ])
 
         if (!session) {
             return NextResponse.json(
@@ -211,9 +211,6 @@ export async function GET(
         const message =
             error instanceof Error ? error.message : "Internal error"
         logger.error("YouTube download route error", { error: message })
-        return NextResponse.json(
-            { error: "Download failed" },
-            { status: 500 }
-        )
+        return NextResponse.json({ error: "Download failed" }, { status: 500 })
     }
 }

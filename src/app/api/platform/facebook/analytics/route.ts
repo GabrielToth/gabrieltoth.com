@@ -24,7 +24,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
                     error: "MISSING_USER_ID",
                     message: "User ID is required",
                 },
-                { status: 400 },
+                { status: 400 }
             )
         }
 
@@ -38,7 +38,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
                     error: "VALIDATION_ERROR",
                     message: "pageId query parameter is required",
                 },
-                { status: 400 },
+                { status: 400 }
             )
         }
 
@@ -46,7 +46,9 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
         const oauthService = getFacebookOAuthService(config)
         await oauthService.initialize()
 
-        const accessToken = await getValidFacebookToken(userId, { oauthService })
+        const accessToken = await getValidFacebookToken(userId, {
+            oauthService,
+        })
 
         if (!accessToken) {
             logger.warn("Facebook not linked for user", { userId })
@@ -56,13 +58,13 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
                     error: "FACEBOOK_NOT_LINKED",
                     message: "Facebook account is not linked",
                 },
-                { status: 404 },
+                { status: 404 }
             )
         }
 
         const pageAccessToken = await oauthService.getPageAccessToken(
             pageId,
-            accessToken,
+            accessToken
         )
 
         if (!pageAccessToken) {
@@ -73,7 +75,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
                     message:
                         "Failed to obtain access token for the specified page",
                 },
-                { status: 500 },
+                { status: 500 }
             )
         }
 
@@ -83,8 +85,12 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
             : COMMON_PAGE_METRICS
 
         const period =
-            (searchParams.get("period") as "day" | "week" | "days_28" | "month" | "lifetime") ||
-            "day"
+            (searchParams.get("period") as
+                | "day"
+                | "week"
+                | "days_28"
+                | "month"
+                | "lifetime") || "day"
 
         const since = searchParams.get("since") || undefined
         const until = searchParams.get("until") || undefined
@@ -101,7 +107,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
                 data: result.data,
                 paging: result.paging,
             },
-            { status: 200 },
+            { status: 200 }
         )
     } catch (error) {
         const err = error instanceof Error ? error : new Error(String(error))
@@ -113,7 +119,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
                 error: "FETCH_FAILED",
                 message: err.message,
             },
-            { status: 500 },
+            { status: 500 }
         )
     }
 }

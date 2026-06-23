@@ -1,5 +1,10 @@
 export { LocalEnvsProvider, useLocalEnvs } from "./context"
-export { resolveEnv, resolveEnvs, shouldUseLocalApi, hasLocalEnvs } from "./resolver"
+export {
+    resolveEnv,
+    resolveEnvs,
+    shouldUseLocalApi,
+    hasLocalEnvs,
+} from "./resolver"
 export type { ResolvedEnvResult } from "./resolver"
 export {
     getServiceEnvs,

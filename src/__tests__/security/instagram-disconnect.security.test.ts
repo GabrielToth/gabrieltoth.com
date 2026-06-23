@@ -38,7 +38,7 @@ const mockGetToken = vi.hoisted(() =>
         expiresAt: Date.now() + 3600000,
         platform: "instagram",
         userId: "test-user-123",
-    }),
+    })
 )
 
 const mockDeleteToken = vi.hoisted(() => vi.fn().mockResolvedValue(true))
@@ -117,7 +117,7 @@ vi.mock("@/lib/logger", () => ({
 function makePostRequest(
     url: string,
     body: unknown,
-    headers: Record<string, string> = {},
+    headers: Record<string, string> = {}
 ): NextRequest {
     return new NextRequest(url, {
         method: "POST",
@@ -156,7 +156,7 @@ describe("POST /api/oauth/disconnect/instagram — Attack Matrix", () => {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({}),
-                },
+                }
             )
             const response = await POST(request)
             expect(response.status).toBe(400)
@@ -168,7 +168,7 @@ describe("POST /api/oauth/disconnect/instagram — Attack Matrix", () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/instagram",
                 {},
-                { "x-user-id": "" },
+                { "x-user-id": "" }
             )
             const response = await POST(request)
             expect(response.status).toBe(400)
@@ -183,7 +183,7 @@ describe("POST /api/oauth/disconnect/instagram — Attack Matrix", () => {
                         "Content-Type": "application/json",
                     },
                     body: JSON.stringify({}),
-                },
+                }
             )
             const response = await POST(request)
             expect(response.status).toBe(400)
@@ -193,9 +193,8 @@ describe("POST /api/oauth/disconnect/instagram — Attack Matrix", () => {
     // ── Row 2: HTTP method confusion ──
     describe("Row 2 — HTTP method confusion", () => {
         it("should not expose GET handler for disconnect", async () => {
-            const route = await import(
-                "@/app/api/oauth/disconnect/instagram/route"
-            )
+            const route =
+                await import("@/app/api/oauth/disconnect/instagram/route")
             expect("GET" in route).toBe(false)
         })
     })
@@ -205,7 +204,7 @@ describe("POST /api/oauth/disconnect/instagram — Attack Matrix", () => {
         it("should handle body with number instead of object", async () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/instagram",
-                42,
+                42
             )
             const response = await POST(request)
             expect([200, 500]).toContain(response.status)
@@ -214,7 +213,7 @@ describe("POST /api/oauth/disconnect/instagram — Attack Matrix", () => {
         it("should handle body with string instead of object", async () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/instagram",
-                "invalid",
+                "invalid"
             )
             const response = await POST(request)
             expect([200, 500]).toContain(response.status)
@@ -223,7 +222,7 @@ describe("POST /api/oauth/disconnect/instagram — Attack Matrix", () => {
         it("should handle body with boolean instead of object", async () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/instagram",
-                true,
+                true
             )
             const response = await POST(request)
             expect([200, 500]).toContain(response.status)
@@ -232,7 +231,7 @@ describe("POST /api/oauth/disconnect/instagram — Attack Matrix", () => {
         it("should handle body with array instead of object", async () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/instagram",
-                [1, 2, 3],
+                [1, 2, 3]
             )
             const response = await POST(request)
             expect([200, 500]).toContain(response.status)
@@ -244,7 +243,7 @@ describe("POST /api/oauth/disconnect/instagram — Attack Matrix", () => {
         it("should handle empty JSON body", async () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/instagram",
-                {},
+                {}
             )
             const response = await POST(request)
             expect(response.status).toBe(200)
@@ -253,7 +252,7 @@ describe("POST /api/oauth/disconnect/instagram — Attack Matrix", () => {
         it("should handle body with null value", async () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/instagram",
-                null,
+                null
             )
             const response = await POST(request)
             expect([200, 500]).toContain(response.status)
@@ -262,7 +261,7 @@ describe("POST /api/oauth/disconnect/instagram — Attack Matrix", () => {
         it("should handle body with negative numbers", async () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/instagram",
-                { id: -1 },
+                { id: -1 }
             )
             const response = await POST(request)
             expect([200, 500]).toContain(response.status)
@@ -274,7 +273,7 @@ describe("POST /api/oauth/disconnect/instagram — Attack Matrix", () => {
         it("should handle body as empty array", async () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/instagram",
-                [],
+                []
             )
             const response = await POST(request)
             expect([200, 500]).toContain(response.status)
@@ -290,7 +289,7 @@ describe("POST /api/oauth/disconnect/instagram — Attack Matrix", () => {
                         "x-user-id": "test-user-123",
                     },
                     body: "\uFEFF{}",
-                },
+                }
             )
             const response = await POST(request)
             expect([200, 500]).toContain(response.status)
@@ -302,7 +301,7 @@ describe("POST /api/oauth/disconnect/instagram — Attack Matrix", () => {
         it("should handle __proto__ in body", async () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/instagram",
-                { __proto__: { polluted: true } },
+                { __proto__: { polluted: true } }
             )
             const response = await POST(request)
             expect(response.status).toBe(200)
@@ -311,7 +310,7 @@ describe("POST /api/oauth/disconnect/instagram — Attack Matrix", () => {
         it("should handle constructor.prototype in body", async () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/instagram",
-                { constructor: { prototype: { polluted: true } } },
+                { constructor: { prototype: { polluted: true } } }
             )
             const response = await POST(request)
             expect(response.status).toBe(200)
@@ -323,7 +322,7 @@ describe("POST /api/oauth/disconnect/instagram — Attack Matrix", () => {
         it("should handle SQL injection in body fields", async () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/instagram",
-                { userId: "1' OR '1'='1" },
+                { userId: "1' OR '1'='1" }
             )
             const response = await POST(request)
             expect(response.status).toBe(200)
@@ -332,7 +331,7 @@ describe("POST /api/oauth/disconnect/instagram — Attack Matrix", () => {
         it("should handle XSS in body fields", async () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/instagram",
-                { userId: "<script>alert(1)</script>" },
+                { userId: "<script>alert(1)</script>" }
             )
             const response = await POST(request)
             expect(response.status).toBe(200)
@@ -341,7 +340,7 @@ describe("POST /api/oauth/disconnect/instagram — Attack Matrix", () => {
         it("should handle NoSQL operators in body", async () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/instagram",
-                { $gt: "" },
+                { $gt: "" }
             )
             const response = await POST(request)
             expect(response.status).toBe(200)
@@ -353,7 +352,7 @@ describe("POST /api/oauth/disconnect/instagram — Attack Matrix", () => {
         it("should handle null byte in body", async () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/instagram",
-                { userId: "test\0user" },
+                { userId: "test\0user" }
             )
             const response = await POST(request)
             expect(response.status).toBe(200)
@@ -362,7 +361,7 @@ describe("POST /api/oauth/disconnect/instagram — Attack Matrix", () => {
         it("should handle emoji in body", async () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/instagram",
-                { userId: "test😊user" },
+                { userId: "test😊user" }
             )
             const response = await POST(request)
             expect(response.status).toBe(200)
@@ -371,7 +370,7 @@ describe("POST /api/oauth/disconnect/instagram — Attack Matrix", () => {
         it("should handle RTL override in body", async () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/instagram",
-                { userId: "\u202Etest\u202C" },
+                { userId: "\u202Etest\u202C" }
             )
             const response = await POST(request)
             expect(response.status).toBe(200)
@@ -384,7 +383,7 @@ describe("POST /api/oauth/disconnect/instagram — Attack Matrix", () => {
             const largeBody = { data: "A".repeat(10000) }
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/instagram",
-                largeBody,
+                largeBody
             )
             const response = await POST(request)
             expect(response.status).toBe(200)
@@ -399,7 +398,7 @@ describe("POST /api/oauth/disconnect/instagram — Attack Matrix", () => {
             }
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/instagram",
-                deep,
+                deep
             )
             const response = await POST(request)
             expect([200, 500]).toContain(response.status)
@@ -411,7 +410,7 @@ describe("POST /api/oauth/disconnect/instagram — Attack Matrix", () => {
         it("should handle request within rate limit", async () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/instagram",
-                {},
+                {}
             )
             const response = await POST(request)
             expect(response.status).toBe(200)
@@ -423,7 +422,7 @@ describe("POST /api/oauth/disconnect/instagram — Attack Matrix", () => {
         it("should work without CSRF token (x-user-id is the auth mechanism)", async () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/instagram",
-                {},
+                {}
             )
             const response = await POST(request)
             expect(response.status).toBe(200)
@@ -437,20 +436,20 @@ describe("POST /api/oauth/disconnect/instagram — Attack Matrix", () => {
                 POST(
                     makePostRequest(
                         "http://localhost/api/oauth/disconnect/instagram",
-                        {},
-                    ),
+                        {}
+                    )
                 ),
                 POST(
                     makePostRequest(
                         "http://localhost/api/oauth/disconnect/instagram",
-                        {},
-                    ),
+                        {}
+                    )
                 ),
                 POST(
                     makePostRequest(
                         "http://localhost/api/oauth/disconnect/instagram",
-                        {},
-                    ),
+                        {}
+                    )
                 ),
             ])
             for (const response of results) {
@@ -471,7 +470,7 @@ describe("POST /api/oauth/disconnect/instagram — Attack Matrix", () => {
                         "x-user-id": "test-user-123",
                     },
                     body: "{}",
-                },
+                }
             )
             const response = await POST(request)
             expect([200, 500]).toContain(response.status)
@@ -484,7 +483,7 @@ describe("POST /api/oauth/disconnect/instagram — Attack Matrix", () => {
                     method: "POST",
                     headers: { "x-user-id": "test-user-123" },
                     body: "{}",
-                },
+                }
             )
             const response = await POST(request)
             expect([200, 500]).toContain(response.status)
@@ -500,7 +499,7 @@ describe("POST /api/oauth/disconnect/instagram — Attack Matrix", () => {
                         "x-user-id": "test-user-123",
                     },
                     body: "{}",
-                },
+                }
             )
             const response = await POST(request)
             expect([200, 500]).toContain(response.status)
@@ -516,7 +515,7 @@ describe("POST /api/oauth/disconnect/instagram — Attack Matrix", () => {
                 {
                     "X-Forwarded-For": "127.0.0.1",
                     "X-Real-IP": "127.0.0.1",
-                },
+                }
             )
             const response = await POST(request)
             expect(response.status).toBe(200)
@@ -526,7 +525,7 @@ describe("POST /api/oauth/disconnect/instagram — Attack Matrix", () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/instagram",
                 {},
-                { Host: "evil.com" },
+                { Host: "evil.com" }
             )
             const response = await POST(request)
             expect(response.status).toBe(200)
@@ -537,11 +536,11 @@ describe("POST /api/oauth/disconnect/instagram — Attack Matrix", () => {
     describe("Row 15 — Info disclosure", () => {
         it("should not leak internal paths in error response", async () => {
             mockGetToken.mockRejectedValue(
-                new Error("Database connection error"),
+                new Error("Database connection error")
             )
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/instagram",
-                {},
+                {}
             )
             const response = await POST(request)
             const body = await response.json()
@@ -557,7 +556,7 @@ describe("POST /api/oauth/disconnect/instagram — Attack Matrix", () => {
             })
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/instagram",
-                {},
+                {}
             )
             const response = await POST(request)
             const body = await response.json()
@@ -573,7 +572,7 @@ describe("POST /api/oauth/disconnect/instagram — Attack Matrix", () => {
             mockGetToken.mockResolvedValue(null)
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/instagram",
-                {},
+                {}
             )
             const response = await POST(request)
             expect(response.status).toBe(404)
@@ -585,16 +584,16 @@ describe("POST /api/oauth/disconnect/instagram — Attack Matrix", () => {
             await POST(
                 makePostRequest(
                     "http://localhost/api/oauth/disconnect/instagram",
-                    {},
-                ),
+                    {}
+                )
             )
 
             mockGetToken.mockResolvedValue(null)
             const response = await POST(
                 makePostRequest(
                     "http://localhost/api/oauth/disconnect/instagram",
-                    {},
-                ),
+                    {}
+                )
             )
             expect(response.status).toBe(404)
         })
@@ -606,12 +605,12 @@ describe("POST /api/oauth/disconnect/instagram — Attack Matrix", () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/instagram",
                 { userId: "victim-user-789" },
-                { "x-user-id": "test-user-123" },
+                { "x-user-id": "test-user-123" }
             )
             const response = await POST(request)
             expect(mockGetToken).toHaveBeenCalledWith(
                 "test-user-123",
-                "instagram",
+                "instagram"
             )
             expect(response.status).toBe(200)
         })
@@ -627,12 +626,12 @@ describe("POST /api/oauth/disconnect/instagram — Attack Matrix", () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/instagram",
                 {},
-                { "x-user-id": "other-user-456" },
+                { "x-user-id": "other-user-456" }
             )
             const response = await POST(request)
             expect(mockGetToken).toHaveBeenCalledWith(
                 "other-user-456",
-                "instagram",
+                "instagram"
             )
             expect(response.status).toBe(200)
         })
@@ -648,7 +647,7 @@ describe("POST /api/oauth/disconnect/instagram — Attack Matrix", () => {
                     isAdmin: true,
                     balance: 999999,
                     isActive: false,
-                },
+                }
             )
             const response = await POST(request)
             expect(response.status).toBe(200)

@@ -64,9 +64,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         const oauthService = getKickOAuthService(config)
         await oauthService.initialize()
 
-        const revoked = await oauthService.revokeToken(
-            storedToken.accessToken
-        )
+        const revoked = await oauthService.revokeToken(storedToken.accessToken)
 
         if (!revoked) {
             logger.warn("Kick token revocation returned false", {

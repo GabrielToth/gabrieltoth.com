@@ -32,7 +32,8 @@ import { NextRequest } from "next/server"
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 
 vi.hoisted(() => {
-    process.env.OAUTH_STATE_SECRET = "test-state-secret-that-is-at-least-32-chars-long!!"
+    process.env.OAUTH_STATE_SECRET =
+        "test-state-secret-that-is-at-least-32-chars-long!!"
 })
 
 vi.mock("@/lib/instagram/config", () => ({
@@ -79,7 +80,7 @@ vi.mock("@/lib/logger", () => ({
 function makePostRequest(
     url: string,
     body: unknown,
-    headers: Record<string, string> = {},
+    headers: Record<string, string> = {}
 ): NextRequest {
     return new NextRequest(url, {
         method: "POST",
@@ -110,7 +111,7 @@ describe("POST /api/oauth/authorize/instagram — Attack Matrix", () => {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({}),
-                },
+                }
             )
             const response = await POST(request)
             expect(response.status).toBe(400)
@@ -122,7 +123,7 @@ describe("POST /api/oauth/authorize/instagram — Attack Matrix", () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/authorize/instagram",
                 {},
-                { "x-user-id": "" },
+                { "x-user-id": "" }
             )
             const response = await POST(request)
             expect(response.status).toBe(400)
@@ -137,7 +138,7 @@ describe("POST /api/oauth/authorize/instagram — Attack Matrix", () => {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({}),
-                },
+                }
             )
             const response = await POST(request)
             expect(response.status).toBe(400)
@@ -147,9 +148,8 @@ describe("POST /api/oauth/authorize/instagram — Attack Matrix", () => {
     // ── Row 2: HTTP method confusion ──
     describe("Row 2 — HTTP method confusion", () => {
         it("should not expose GET handler for authorize", async () => {
-            const route = await import(
-                "@/app/api/oauth/authorize/instagram/route"
-            )
+            const route =
+                await import("@/app/api/oauth/authorize/instagram/route")
             expect("GET" in route).toBe(false)
         })
     })
@@ -160,7 +160,7 @@ describe("POST /api/oauth/authorize/instagram — Attack Matrix", () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/authorize/instagram",
                 {},
-                { "x-user-id": "1' OR '1'='1" },
+                { "x-user-id": "1' OR '1'='1" }
             )
             const response = await POST(request)
             expect([200, 500]).toContain(response.status)
@@ -170,7 +170,7 @@ describe("POST /api/oauth/authorize/instagram — Attack Matrix", () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/authorize/instagram",
                 {},
-                { "x-user-id": "<script>alert(1)</script>" },
+                { "x-user-id": "<script>alert(1)</script>" }
             )
             const response = await POST(request)
             expect([200, 500]).toContain(response.status)
@@ -180,7 +180,7 @@ describe("POST /api/oauth/authorize/instagram — Attack Matrix", () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/authorize/instagram",
                 {},
-                { "x-user-id": '{"$gt": ""}' },
+                { "x-user-id": '{"$gt": ""}' }
             )
             const response = await POST(request)
             expect([200, 500]).toContain(response.status)
@@ -198,7 +198,7 @@ describe("POST /api/oauth/authorize/instagram — Attack Matrix", () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/authorize/instagram",
                 {},
-                { "x-user-id": "A".repeat(10000) },
+                { "x-user-id": "A".repeat(10000) }
             )
             const response = await POST(request)
             expect([200, 500]).toContain(response.status)
@@ -210,7 +210,7 @@ describe("POST /api/oauth/authorize/instagram — Attack Matrix", () => {
         it("should handle request within rate limit", async () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/authorize/instagram",
-                {},
+                {}
             )
             const response = await POST(request)
             expect([200, 500]).toContain(response.status)
@@ -224,20 +224,20 @@ describe("POST /api/oauth/authorize/instagram — Attack Matrix", () => {
                 POST(
                     makePostRequest(
                         "http://localhost/api/oauth/authorize/instagram",
-                        {},
-                    ),
+                        {}
+                    )
                 ),
                 POST(
                     makePostRequest(
                         "http://localhost/api/oauth/authorize/instagram",
-                        {},
-                    ),
+                        {}
+                    )
                 ),
                 POST(
                     makePostRequest(
                         "http://localhost/api/oauth/authorize/instagram",
-                        {},
-                    ),
+                        {}
+                    )
                 ),
             ])
             for (const response of results) {
@@ -258,7 +258,7 @@ describe("POST /api/oauth/authorize/instagram — Attack Matrix", () => {
                         "x-user-id": "test-user-123",
                     },
                     body: "{}",
-                },
+                }
             )
             const response = await POST(request)
             expect([200, 500]).toContain(response.status)
@@ -271,7 +271,7 @@ describe("POST /api/oauth/authorize/instagram — Attack Matrix", () => {
                     method: "POST",
                     headers: { "x-user-id": "test-user-123" },
                     body: "{}",
-                },
+                }
             )
             const response = await POST(request)
             expect([200, 500]).toContain(response.status)
@@ -287,7 +287,7 @@ describe("POST /api/oauth/authorize/instagram — Attack Matrix", () => {
                         "x-user-id": "test-user-123",
                     },
                     body: "{}",
-                },
+                }
             )
             const response = await POST(request)
             expect([200, 500]).toContain(response.status)
@@ -303,7 +303,7 @@ describe("POST /api/oauth/authorize/instagram — Attack Matrix", () => {
                 {
                     "X-Forwarded-For": "127.0.0.1",
                     "x-user-id": "test-user-123",
-                },
+                }
             )
             const response = await POST(request)
             expect([200, 500]).toContain(response.status)
@@ -313,7 +313,7 @@ describe("POST /api/oauth/authorize/instagram — Attack Matrix", () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/authorize/instagram",
                 {},
-                { Host: "evil.com", "x-user-id": "test-user-123" },
+                { Host: "evil.com", "x-user-id": "test-user-123" }
             )
             const response = await POST(request)
             expect([200, 500]).toContain(response.status)
@@ -326,7 +326,7 @@ describe("POST /api/oauth/authorize/instagram — Attack Matrix", () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/authorize/instagram",
                 {},
-                { "x-user-id": "" },
+                { "x-user-id": "" }
             )
             const response = await POST(request)
             const body = await response.json()
@@ -343,7 +343,7 @@ describe("POST /api/oauth/authorize/instagram — Attack Matrix", () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/authorize/instagram",
                 {},
-                { "x-user-id": "any-user-id-123" },
+                { "x-user-id": "any-user-id-123" }
             )
             const response = await POST(request)
             // Authorize endpoint doesn't enforce access control —

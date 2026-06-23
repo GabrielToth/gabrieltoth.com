@@ -46,7 +46,11 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
 
         if (!userId) {
             return NextResponse.json(
-                { success: false, error: "MISSING_USER_ID", message: "User ID is required" },
+                {
+                    success: false,
+                    error: "MISSING_USER_ID",
+                    message: "User ID is required",
+                },
                 { status: 400 }
             )
         }
@@ -56,7 +60,11 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
 
         if (!mediaId || typeof mediaId !== "string") {
             return NextResponse.json(
-                { success: false, error: "VALIDATION_ERROR", message: "media_id query parameter is required" },
+                {
+                    success: false,
+                    error: "VALIDATION_ERROR",
+                    message: "media_id query parameter is required",
+                },
                 { status: 400 }
             )
         }
@@ -70,7 +78,11 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
 
         if (!storedToken) {
             return NextResponse.json(
-                { success: false, error: "INSTAGRAM_NOT_LINKED", message: "Instagram account is not linked" },
+                {
+                    success: false,
+                    error: "INSTAGRAM_NOT_LINKED",
+                    message: "Instagram account is not linked",
+                },
                 { status: 404 }
             )
         }
@@ -79,11 +91,18 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
         const oauthService = getInstagramOAuthService(config)
         await oauthService.initialize()
 
-        const accessToken = await getValidInstagramToken(userId, { tokenStore, oauthService })
+        const accessToken = await getValidInstagramToken(userId, {
+            tokenStore,
+            oauthService,
+        })
 
         if (!accessToken) {
             return NextResponse.json(
-                { success: false, error: "TOKEN_EXPIRED", message: "Instagram token has expired" },
+                {
+                    success: false,
+                    error: "TOKEN_EXPIRED",
+                    message: "Instagram token has expired",
+                },
                 { status: 401 }
             )
         }
@@ -102,19 +121,31 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
 
         if (!network) {
             return NextResponse.json(
-                { success: false, error: "INSTAGRAM_NOT_LINKED", message: "Instagram account is not linked" },
+                {
+                    success: false,
+                    error: "INSTAGRAM_NOT_LINKED",
+                    message: "Instagram account is not linked",
+                },
                 { status: 404 }
             )
         }
 
-        const comments = await getComments(accessToken, network.platform_user_id, mediaId, {
-            apiVersion: config.oauth.apiVersion,
-            limit: limit ? parseInt(limit, 10) : undefined,
-            after: after ?? undefined,
-            before: before ?? undefined,
-        })
+        const comments = await getComments(
+            accessToken,
+            network.platform_user_id,
+            mediaId,
+            {
+                apiVersion: config.oauth.apiVersion,
+                limit: limit ? parseInt(limit, 10) : undefined,
+                after: after ?? undefined,
+                before: before ?? undefined,
+            }
+        )
 
-        return NextResponse.json({ success: true, data: comments }, { status: 200 })
+        return NextResponse.json(
+            { success: true, data: comments },
+            { status: 200 }
+        )
     } catch (error) {
         const err = error instanceof Error ? error : new Error(String(error))
         logger.error("Failed to fetch Instagram comments", err)
@@ -131,7 +162,11 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
         if (!userId) {
             return NextResponse.json(
-                { success: false, error: "MISSING_USER_ID", message: "User ID is required" },
+                {
+                    success: false,
+                    error: "MISSING_USER_ID",
+                    message: "User ID is required",
+                },
                 { status: 400 }
             )
         }
@@ -141,7 +176,11 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
             body = await request.json()
         } catch {
             return NextResponse.json(
-                { success: false, error: "INVALID_INPUT", message: "Invalid JSON body" },
+                {
+                    success: false,
+                    error: "INVALID_INPUT",
+                    message: "Invalid JSON body",
+                },
                 { status: 400 }
             )
         }
@@ -150,7 +189,11 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         for (const key of Object.keys(body)) {
             if (!allowedKeys.has(key)) {
                 return NextResponse.json(
-                    { success: false, error: "VALIDATION_ERROR", message: `Unexpected field: ${key}` },
+                    {
+                        success: false,
+                        error: "VALIDATION_ERROR",
+                        message: `Unexpected field: ${key}`,
+                    },
                     { status: 400 }
                 )
             }
@@ -161,21 +204,34 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
         if (!commentId || typeof commentId !== "string") {
             return NextResponse.json(
-                { success: false, error: "VALIDATION_ERROR", message: "comment_id is required and must be a string" },
+                {
+                    success: false,
+                    error: "VALIDATION_ERROR",
+                    message: "comment_id is required and must be a string",
+                },
                 { status: 400 }
             )
         }
 
         if (!message || typeof message !== "string" || !message.trim()) {
             return NextResponse.json(
-                { success: false, error: "VALIDATION_ERROR", message: "message is required and must be a non-empty string" },
+                {
+                    success: false,
+                    error: "VALIDATION_ERROR",
+                    message:
+                        "message is required and must be a non-empty string",
+                },
                 { status: 400 }
             )
         }
 
         if (message.length > 1000) {
             return NextResponse.json(
-                { success: false, error: "VALIDATION_ERROR", message: "Message exceeds 1000 character limit" },
+                {
+                    success: false,
+                    error: "VALIDATION_ERROR",
+                    message: "Message exceeds 1000 character limit",
+                },
                 { status: 400 }
             )
         }
@@ -185,7 +241,11 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
         if (!storedToken) {
             return NextResponse.json(
-                { success: false, error: "INSTAGRAM_NOT_LINKED", message: "Instagram account is not linked" },
+                {
+                    success: false,
+                    error: "INSTAGRAM_NOT_LINKED",
+                    message: "Instagram account is not linked",
+                },
                 { status: 404 }
             )
         }
@@ -194,11 +254,18 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         const oauthService = getInstagramOAuthService(config)
         await oauthService.initialize()
 
-        const accessToken = await getValidInstagramToken(userId, { tokenStore, oauthService })
+        const accessToken = await getValidInstagramToken(userId, {
+            tokenStore,
+            oauthService,
+        })
 
         if (!accessToken) {
             return NextResponse.json(
-                { success: false, error: "TOKEN_EXPIRED", message: "Instagram token has expired" },
+                {
+                    success: false,
+                    error: "TOKEN_EXPIRED",
+                    message: "Instagram token has expired",
+                },
                 { status: 401 }
             )
         }
@@ -217,16 +284,32 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
         if (!network) {
             return NextResponse.json(
-                { success: false, error: "INSTAGRAM_NOT_LINKED", message: "Instagram account is not linked" },
+                {
+                    success: false,
+                    error: "INSTAGRAM_NOT_LINKED",
+                    message: "Instagram account is not linked",
+                },
                 { status: 404 }
             )
         }
 
-        const result = await replyToComment(accessToken, network.platform_user_id, commentId, message)
+        const result = await replyToComment(
+            accessToken,
+            network.platform_user_id,
+            commentId,
+            message
+        )
 
-        logger.info("Instagram comment reply sent", { userId, commentId, replyId: result.id })
+        logger.info("Instagram comment reply sent", {
+            userId,
+            commentId,
+            replyId: result.id,
+        })
 
-        return NextResponse.json({ success: true, replyId: result.id }, { status: 201 })
+        return NextResponse.json(
+            { success: true, replyId: result.id },
+            { status: 201 }
+        )
     } catch (error) {
         const err = error instanceof Error ? error : new Error(String(error))
         logger.error("Failed to reply to Instagram comment", err)

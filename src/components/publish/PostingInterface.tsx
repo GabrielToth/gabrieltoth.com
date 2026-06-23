@@ -75,8 +75,13 @@ export default function PostingInterface({
                     (n: any, i: number) => ({
                         id: n.id || n.platform || String(i),
                         platform: n.platform || n.name,
-                        status: n.status === "connected" ? "connected" : n.status === "expired" ? "expired" : "disconnected",
-                    }),
+                        status:
+                            n.status === "connected"
+                                ? "connected"
+                                : n.status === "expired"
+                                  ? "expired"
+                                  : "disconnected",
+                    })
                 )
 
                 if (mapped.length === 0) {
@@ -105,17 +110,16 @@ export default function PostingInterface({
         setSelectedNetworkIds(prev =>
             prev.includes(networkId)
                 ? prev.filter(id => id !== networkId)
-                : [...prev, networkId],
+                : [...prev, networkId]
         )
     }, [])
 
-    const handleGroupToggle = useCallback(
-        (_groupId: string) => {},
-        [],
-    )
+    const handleGroupToggle = useCallback((_groupId: string) => {}, [])
 
     const handleSelectAll = useCallback(() => {
-        setSelectedNetworkIds(networks.filter(n => n.status === "connected").map(n => n.id))
+        setSelectedNetworkIds(
+            networks.filter(n => n.status === "connected").map(n => n.id)
+        )
     }, [networks])
 
     const handleDeselectAll = useCallback(() => {
@@ -142,7 +146,9 @@ export default function PostingInterface({
         })
 
         if (expiredNetworks.length > 0) {
-            setError("Some selected networks have expired authentication. Please reconnect them.")
+            setError(
+                "Some selected networks have expired authentication. Please reconnect them."
+            )
             return
         }
 
@@ -188,16 +194,16 @@ export default function PostingInterface({
                                 body: JSON.stringify({
                                     message: content.text,
                                 }),
-                            },
+                            }
                         )
                         if (!res.ok) {
                             const data = await res.json()
                             console.error(
                                 `Failed to publish to ${platform}:`,
-                                data,
+                                data
                             )
                         }
-                    }),
+                    })
                 )
             }
 
@@ -207,7 +213,9 @@ export default function PostingInterface({
             }, 2000)
         } catch (err) {
             setError(
-                err instanceof Error ? err.message : "Failed to publish. Please try again.",
+                err instanceof Error
+                    ? err.message
+                    : "Failed to publish. Please try again."
             )
         } finally {
             setIsSubmitting(false)
@@ -289,8 +297,7 @@ export default function PostingInterface({
                         <Button
                             onClick={handlePublish}
                             disabled={
-                                isSubmitting ||
-                                selectedNetworkIds.length === 0
+                                isSubmitting || selectedNetworkIds.length === 0
                             }
                             className="flex-1"
                         >

@@ -4,7 +4,14 @@
  * (Kick, Twitch, YouTube, etc.) must implement ChatAdapter.
  */
 
-export type ChatPlatform = "kick" | "twitch" | "youtube" | "instagram" | "twitter" | "tiktok" | "facebook"
+export type ChatPlatform =
+    | "kick"
+    | "twitch"
+    | "youtube"
+    | "instagram"
+    | "twitter"
+    | "tiktok"
+    | "facebook"
 
 export interface ChatUser {
     id: string
@@ -24,7 +31,13 @@ export interface ChatBadge {
     imageUrl: string
 }
 
-export type ChatMessageType = "text" | "emote" | "system" | "announcement" | "subscription" | "raid"
+export type ChatMessageType =
+    | "text"
+    | "emote"
+    | "system"
+    | "announcement"
+    | "subscription"
+    | "raid"
 
 export interface ChatMessage {
     id: string
@@ -73,9 +86,16 @@ export interface ChatAdapter {
 
     connect(roomId: string, token: string): Promise<void>
     disconnect(roomId: string): Promise<void>
-    sendMessage(roomId: string, message: string, options?: SendMessageOptions): Promise<string>
+    sendMessage(
+        roomId: string,
+        message: string,
+        options?: SendMessageOptions
+    ): Promise<string>
     getRoom(roomId: string): Promise<ChatRoom | null>
     getHistory(roomId: string, limit?: number): Promise<ChatMessage[]>
-    onMessage(roomId: string, handler: (message: ChatMessage) => void): () => void
+    onMessage(
+        roomId: string,
+        handler: (message: ChatMessage) => void
+    ): () => void
     onError(handler: (error: Error) => void): () => void
 }

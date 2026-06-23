@@ -168,11 +168,14 @@ export class KickOAuthService extends BaseService {
         this.assertReady()
 
         try {
-            const response = await fetch(`${this.config.apiBaseUrl}/api/v2/users`, {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`,
-                },
-            })
+            const response = await fetch(
+                `${this.config.apiBaseUrl}/api/v2/users`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                    },
+                }
+            )
 
             if (!response.ok) {
                 this.logger.warn("Failed to get Kick user", {
@@ -203,11 +206,14 @@ export class KickOAuthService extends BaseService {
         this.assertReady()
 
         try {
-            const response = await fetch(`${this.config.apiBaseUrl}/api/v2/channels`, {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`,
-                },
-            })
+            const response = await fetch(
+                `${this.config.apiBaseUrl}/api/v2/channels`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                    },
+                }
+            )
 
             if (!response.ok) {
                 this.logger.warn("Failed to get Kick channel", {

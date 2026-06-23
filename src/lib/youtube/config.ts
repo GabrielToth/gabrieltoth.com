@@ -58,7 +58,10 @@ export function createYouTubeChannelLinkingConfig(
             ],
         },
         email: {
-            fromEmail: env.EMAIL_FROM ?? env.RESEND_FROM_EMAIL ?? "noreply@gabrieltoth.com",
+            fromEmail:
+                env.EMAIL_FROM ??
+                env.RESEND_FROM_EMAIL ??
+                "noreply@gabrieltoth.com",
             fromName: env.RESEND_FROM_NAME ?? "Gabriel Toth",
         },
         encryption: {

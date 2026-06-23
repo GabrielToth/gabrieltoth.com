@@ -16,7 +16,7 @@ export interface WebhookHandlerResult {
 }
 
 export async function handleTikTokWebhookEvent(
-    event: TikTokWebhookEvent,
+    event: TikTokWebhookEvent
 ): Promise<WebhookHandlerResult> {
     const result: WebhookHandlerResult = {
         handled: 0,
@@ -28,17 +28,19 @@ export async function handleTikTokWebhookEvent(
         switch (event.event) {
             case "authorization.removed": {
                 const content = JSON.parse(
-                    event.content,
+                    event.content
                 ) as TikTokAuthorizationRemovedContent
                 handleAuthorizationRemoved(content)
                 result.handled++
-                result.details.push(`authorization.removed:${content.user_open_id}`)
+                result.details.push(
+                    `authorization.removed:${content.user_open_id}`
+                )
                 break
             }
 
             case "video.upload.failed": {
                 const content = JSON.parse(
-                    event.content,
+                    event.content
                 ) as TikTokVideoUploadFailedContent
                 handleVideoUploadFailed(content)
                 result.handled++
@@ -48,21 +50,25 @@ export async function handleTikTokWebhookEvent(
 
             case "video.publish.completed": {
                 const content = JSON.parse(
-                    event.content,
+                    event.content
                 ) as TikTokVideoPublishCompletedContent
                 handleVideoPublishCompleted(content)
                 result.handled++
-                result.details.push(`video.publish.completed:${content.publish_id}`)
+                result.details.push(
+                    `video.publish.completed:${content.publish_id}`
+                )
                 break
             }
 
             case "portability.download.ready": {
                 const content = JSON.parse(
-                    event.content,
+                    event.content
                 ) as TikTokPortabilityDownloadReadyContent
                 handlePortabilityDownloadReady(content)
                 result.handled++
-                result.details.push(`portability.download.ready:${content.user_open_id}`)
+                result.details.push(
+                    `portability.download.ready:${content.user_open_id}`
+                )
                 break
             }
 
@@ -80,7 +86,7 @@ export async function handleTikTokWebhookEvent(
         })
         result.errors++
         result.details.push(
-            `error:${event.event}:${error instanceof Error ? error.message : "Unknown"}`,
+            `error:${event.event}:${error instanceof Error ? error.message : "Unknown"}`
         )
     }
 
@@ -93,7 +99,7 @@ export async function handleTikTokWebhookEvent(
 }
 
 function handleAuthorizationRemoved(
-    content: TikTokAuthorizationRemovedContent,
+    content: TikTokAuthorizationRemovedContent
 ): void {
     logger.info("TikTok authorization removed by user", {
         openId: content.user_open_id,
@@ -102,7 +108,7 @@ function handleAuthorizationRemoved(
 }
 
 function handleVideoUploadFailed(
-    content: TikTokVideoUploadFailedContent,
+    content: TikTokVideoUploadFailedContent
 ): void {
     logger.warn("TikTok video upload failed", {
         openId: content.user_open_id,
@@ -113,7 +119,7 @@ function handleVideoUploadFailed(
 }
 
 function handleVideoPublishCompleted(
-    content: TikTokVideoPublishCompletedContent,
+    content: TikTokVideoPublishCompletedContent
 ): void {
     logger.info("TikTok video publish completed", {
         openId: content.user_open_id,
@@ -124,7 +130,7 @@ function handleVideoPublishCompleted(
 }
 
 function handlePortabilityDownloadReady(
-    content: TikTokPortabilityDownloadReadyContent,
+    content: TikTokPortabilityDownloadReadyContent
 ): void {
     logger.info("TikTok portability download ready", {
         openId: content.user_open_id,

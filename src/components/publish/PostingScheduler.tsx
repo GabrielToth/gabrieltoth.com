@@ -76,9 +76,9 @@ export default function PostingScheduler({
     defaultDate,
 }: PostingSchedulerProps) {
     const userTz = getStoredTimezone()
-    const [scheduleType, setScheduleType] = useState<
-        "immediate" | "scheduled"
-    >(defaultDate ? "scheduled" : "immediate")
+    const [scheduleType, setScheduleType] = useState<"immediate" | "scheduled">(
+        defaultDate ? "scheduled" : "immediate"
+    )
     const [selectedTimezone, setSelectedTimezone] = useState(userTz)
 
     const initialDate = useMemo(() => {
@@ -120,7 +120,7 @@ export default function PostingScheduler({
         try {
             const [hours, minutes] = selectedTime.split(":")
             const localDateTime = new Date(
-                `${selectedDate}T${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:00`,
+                `${selectedDate}T${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:00`
             )
 
             const utcTime = fromZonedTime(localDateTime, selectedTimezone)
@@ -155,7 +155,7 @@ export default function PostingScheduler({
 
         const [hours, minutes] = selectedTime.split(":")
         const localDateTime = new Date(
-            `${selectedDate}T${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:00`,
+            `${selectedDate}T${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:00`
         )
 
         const utcTime = fromZonedTime(localDateTime, selectedTimezone)

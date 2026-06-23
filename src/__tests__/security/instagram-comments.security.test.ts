@@ -28,21 +28,24 @@ const mockGetToken = vi.hoisted(() =>
         expiresAt: Date.now() + 3600000,
         platform: "instagram",
         userId: "test-user-123",
-    }),
+    })
 )
 
 const mockGetComments = vi.hoisted(() =>
-    vi.fn().mockResolvedValue({ data: [], paging: { cursors: { before: "", after: "" } } }),
+    vi.fn().mockResolvedValue({
+        data: [],
+        paging: { cursors: { before: "", after: "" } },
+    })
 )
 
 const mockReplyToComment = vi.hoisted(() =>
-    vi.fn().mockResolvedValue({ id: "mock-reply-id-123" }),
+    vi.fn().mockResolvedValue({ id: "mock-reply-id-123" })
 )
 
 const mockDeleteComment = vi.hoisted(() => vi.fn().mockResolvedValue(undefined))
 
 const mockGetValidToken = vi.hoisted(() =>
-    vi.fn().mockResolvedValue("mock-valid-access-token"),
+    vi.fn().mockResolvedValue("mock-valid-access-token")
 )
 
 vi.mock("@/lib/token-store", () => ({
@@ -92,7 +95,12 @@ vi.mock("@/lib/instagram/comments", () => ({
 }))
 
 vi.mock("@/lib/logger", () => ({
-    createLogger: () => ({ info: vi.fn(), warn: vi.fn(), error: vi.fn(), debug: vi.fn() }),
+    createLogger: () => ({
+        info: vi.fn(),
+        warn: vi.fn(),
+        error: vi.fn(),
+        debug: vi.fn(),
+    }),
 }))
 
 vi.mock("@supabase/supabase-js", () => ({
@@ -114,18 +122,21 @@ vi.mock("@supabase/supabase-js", () => ({
 
 function makeGetRequest(
     query: Record<string, string> = {},
-    headers: Record<string, string> = {},
+    headers: Record<string, string> = {}
 ): NextRequest {
     const params = new URLSearchParams(query).toString()
-    return new NextRequest(`http://localhost/api/platform/instagram/comments?${params}`, {
-        method: "GET",
-        headers: { "x-user-id": "test-user-123", ...headers },
-    })
+    return new NextRequest(
+        `http://localhost/api/platform/instagram/comments?${params}`,
+        {
+            method: "GET",
+            headers: { "x-user-id": "test-user-123", ...headers },
+        }
+    )
 }
 
 function makePostRequest(
     body: unknown,
-    headers: Record<string, string> = {},
+    headers: Record<string, string> = {}
 ): NextRequest {
     return new NextRequest("http://localhost/api/platform/instagram/comments", {
         method: "POST",
@@ -140,37 +151,44 @@ function makePostRequest(
 
 function makeDeleteRequest(
     commentId: string,
-    headers: Record<string, string> = {},
+    headers: Record<string, string> = {}
 ): NextRequest {
     return new NextRequest(
         `http://localhost/api/platform/instagram/comments/${commentId}`,
         {
             method: "DELETE",
             headers: { "x-user-id": "test-user-123", ...headers },
-        },
+        }
     )
 }
 
 function makeDeleteRouteRequest(
     commentId: string,
-    headers: Record<string, string> = {},
+    headers: Record<string, string> = {}
 ): NextRequest {
     return new NextRequest(
         `http://localhost/api/platform/instagram/comments/${commentId}`,
         {
             method: "DELETE",
             headers: { "x-user-id": "test-user-123", ...headers },
-        },
+        }
     )
 }
 
 describe("GET /api/platform/instagram/comments — Attack Matrix", () => {
-    beforeEach(() => { vi.clearAllMocks() })
-    afterEach(() => { vi.clearAllMocks() })
+    beforeEach(() => {
+        vi.clearAllMocks()
+    })
+    afterEach(() => {
+        vi.clearAllMocks()
+    })
 
     describe("Row 1 — Auth bypass", () => {
         it("should reject without x-user-id", async () => {
-            const request = makeGetRequest({ media_id: "123" }, { "x-user-id": "" })
+            const request = makeGetRequest(
+                { media_id: "123" },
+                { "x-user-id": "" }
+            )
             const response = await GET(request)
             expect(response.status).toBe(400)
             const body = await response.json()
@@ -180,7 +198,7 @@ describe("GET /api/platform/instagram/comments — Attack Matrix", () => {
         it("should reject with missing x-user-id header", async () => {
             const request = new NextRequest(
                 "http://localhost/api/platform/instagram/comments?media_id=123",
-                { method: "GET", headers: {} },
+                { method: "GET", headers: {} }
             )
             const response = await GET(request)
             expect(response.status).toBe(400)
@@ -189,7 +207,8 @@ describe("GET /api/platform/instagram/comments — Attack Matrix", () => {
 
     describe("Row 2 — HTTP method confusion", () => {
         it("should not expose POST handler via GET route", async () => {
-            const route = await import("@/app/api/platform/instagram/comments/route")
+            const route =
+                await import("@/app/api/platform/instagram/comments/route")
             expect(typeof route.GET).toBe("function")
             expect(typeof route.POST).toBe("function")
         })
@@ -217,7 +236,9 @@ describe("GET /api/platform/instagram/comments — Attack Matrix", () => {
         })
 
         it("should handle XSS in media_id", async () => {
-            const request = makeGetRequest({ media_id: "<script>alert(1)</script>" })
+            const request = makeGetRequest({
+                media_id: "<script>alert(1)</script>",
+            })
             const response = await GET(request)
             expect([200, 400, 500]).toContain(response.status)
         })
@@ -242,7 +263,9 @@ describe("GET /api/platform/instagram/comments — Attack Matrix", () => {
     describe("Row 10 — Rate limiting", () => {
         it("should handle concurrent GET requests", async () => {
             const results = await Promise.all(
-                Array.from({ length: 5 }, () => GET(makeGetRequest({ media_id: "123" }))),
+                Array.from({ length: 5 }, () =>
+                    GET(makeGetRequest({ media_id: "123" }))
+                )
             )
             for (const r of results) {
                 expect([200, 400, 500]).toContain(r.status)
@@ -265,7 +288,10 @@ describe("GET /api/platform/instagram/comments — Attack Matrix", () => {
 
     describe("Row 14 — HTTP header attacks", () => {
         it("should handle Host override", async () => {
-            const request = makeGetRequest({ media_id: "123" }, { host: "evil.com" })
+            const request = makeGetRequest(
+                { media_id: "123" },
+                { host: "evil.com" }
+            )
             const response = await GET(request)
             expect([200, 400, 500]).toContain(response.status)
         })
@@ -273,7 +299,10 @@ describe("GET /api/platform/instagram/comments — Attack Matrix", () => {
 
     describe("Row 15 — Info disclosure", () => {
         it("should not leak internal paths in error response", async () => {
-            const request = makeGetRequest({ "media_id": "123" }, { "x-user-id": "" })
+            const request = makeGetRequest(
+                { media_id: "123" },
+                { "x-user-id": "" }
+            )
             const response = await GET(request)
             const body = await response.json()
             expect(body.message).not.toContain(":\\")
@@ -283,7 +312,10 @@ describe("GET /api/platform/instagram/comments — Attack Matrix", () => {
 
     describe("Row 17 — IDOR", () => {
         it("should allow any userId to list comments (authorized per user)", async () => {
-            const request = makeGetRequest({ media_id: "123" }, { "x-user-id": "other-user-456" })
+            const request = makeGetRequest(
+                { media_id: "123" },
+                { "x-user-id": "other-user-456" }
+            )
             const response = await GET(request)
             // Each user sees their own linked account's comments
             expect([200, 404, 500]).toContain(response.status)
@@ -305,7 +337,9 @@ describe("POST /api/platform/instagram/comments — Attack Matrix", () => {
         mockReplyToComment.mockResolvedValue({ id: "mock-reply-id-123" })
     })
 
-    afterEach(() => { vi.clearAllMocks() })
+    afterEach(() => {
+        vi.clearAllMocks()
+    })
 
     const validReply = { comment_id: "comment-123", message: "Great post!" }
 
@@ -319,7 +353,8 @@ describe("POST /api/platform/instagram/comments — Attack Matrix", () => {
 
     describe("Row 2 — HTTP method confusion", () => {
         it("should have both GET and POST handlers", async () => {
-            const route = await import("@/app/api/platform/instagram/comments/route")
+            const route =
+                await import("@/app/api/platform/instagram/comments/route")
             expect(typeof route.GET).toBe("function")
             expect(typeof route.POST).toBe("function")
         })
@@ -355,7 +390,10 @@ describe("POST /api/platform/instagram/comments — Attack Matrix", () => {
         })
 
         it("should reject message with only whitespace", async () => {
-            const request = makePostRequest({ comment_id: "c-1", message: "   " })
+            const request = makePostRequest({
+                comment_id: "c-1",
+                message: "   ",
+            })
             const response = await POST(request)
             expect(response.status).toBe(400)
         })
@@ -369,7 +407,11 @@ describe("POST /api/platform/instagram/comments — Attack Matrix", () => {
         })
 
         it("should reject body with extra unexpected fields", async () => {
-            const request = makePostRequest({ ...validReply, admin: true, role: "moderator" })
+            const request = makePostRequest({
+                ...validReply,
+                admin: true,
+                role: "moderator",
+            })
             const response = await POST(request)
             expect(response.status).toBe(400)
         })
@@ -407,19 +449,28 @@ describe("POST /api/platform/instagram/comments — Attack Matrix", () => {
 
     describe("Row 7 — Injection", () => {
         it("should handle SQL injection in message", async () => {
-            const request = makePostRequest({ comment_id: "c-1", message: "1' DROP TABLE users; --" })
+            const request = makePostRequest({
+                comment_id: "c-1",
+                message: "1' DROP TABLE users; --",
+            })
             const response = await POST(request)
             expect([201, 400, 500]).toContain(response.status)
         })
 
         it("should handle XSS in message", async () => {
-            const request = makePostRequest({ comment_id: "c-1", message: "<script>alert(1)</script>" })
+            const request = makePostRequest({
+                comment_id: "c-1",
+                message: "<script>alert(1)</script>",
+            })
             const response = await POST(request)
             expect([201, 400, 500]).toContain(response.status)
         })
 
         it("should handle HTML in message", async () => {
-            const request = makePostRequest({ comment_id: "c-1", message: "<b>bold</b><img src=x onerror=alert(1)>" })
+            const request = makePostRequest({
+                comment_id: "c-1",
+                message: "<b>bold</b><img src=x onerror=alert(1)>",
+            })
             const response = await POST(request)
             expect([201, 400, 500]).toContain(response.status)
         })
@@ -427,19 +478,28 @@ describe("POST /api/platform/instagram/comments — Attack Matrix", () => {
 
     describe("Row 8 — Unicode", () => {
         it("should handle emoji in message", async () => {
-            const request = makePostRequest({ comment_id: "c-1", message: "🔥🚀 Great content!" })
+            const request = makePostRequest({
+                comment_id: "c-1",
+                message: "🔥🚀 Great content!",
+            })
             const response = await POST(request)
             expect([201, 400, 500]).toContain(response.status)
         })
 
         it("should handle null byte in message", async () => {
-            const request = makePostRequest({ comment_id: "c-1", message: "hello\0world" })
+            const request = makePostRequest({
+                comment_id: "c-1",
+                message: "hello\0world",
+            })
             const response = await POST(request)
             expect([201, 400, 500]).toContain(response.status)
         })
 
         it("should handle RTL override in message", async () => {
-            const request = makePostRequest({ comment_id: "c-1", message: "\u202Etest" })
+            const request = makePostRequest({
+                comment_id: "c-1",
+                message: "\u202Etest",
+            })
             const response = await POST(request)
             expect([201, 400, 500]).toContain(response.status)
         })
@@ -447,7 +507,10 @@ describe("POST /api/platform/instagram/comments — Attack Matrix", () => {
 
     describe("Row 9 — Size attacks", () => {
         it("should reject message over 1000 chars", async () => {
-            const request = makePostRequest({ comment_id: "c-1", message: "A".repeat(1001) })
+            const request = makePostRequest({
+                comment_id: "c-1",
+                message: "A".repeat(1001),
+            })
             const response = await POST(request)
             expect(response.status).toBe(400)
         })
@@ -466,7 +529,9 @@ describe("POST /api/platform/instagram/comments — Attack Matrix", () => {
     describe("Row 10 — Rate limiting", () => {
         it("should handle concurrent POST requests", async () => {
             const results = await Promise.all(
-                Array.from({ length: 5 }, () => POST(makePostRequest(validReply))),
+                Array.from({ length: 5 }, () =>
+                    POST(makePostRequest(validReply))
+                )
             )
             for (const r of results) {
                 expect([201, 400, 500]).toContain(r.status)
@@ -476,7 +541,9 @@ describe("POST /api/platform/instagram/comments — Attack Matrix", () => {
 
     describe("Row 11 — CSRF", () => {
         it("should handle POST without CSRF token", async () => {
-            const request = makePostRequest(validReply, { "x-user-id": "test-user-123" })
+            const request = makePostRequest(validReply, {
+                "x-user-id": "test-user-123",
+            })
             const response = await POST(request)
             expect([201, 400]).toContain(response.status)
         })
@@ -497,31 +564,46 @@ describe("POST /api/platform/instagram/comments — Attack Matrix", () => {
 
     describe("Row 13 — Content-Type", () => {
         it("should handle wrong Content-Type (text/plain)", async () => {
-            const request = new NextRequest("http://localhost/api/platform/instagram/comments", {
-                method: "POST",
-                headers: { "Content-Type": "text/plain", "x-user-id": "test-user-123" },
-                body: JSON.stringify(validReply),
-            })
+            const request = new NextRequest(
+                "http://localhost/api/platform/instagram/comments",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "text/plain",
+                        "x-user-id": "test-user-123",
+                    },
+                    body: JSON.stringify(validReply),
+                }
+            )
             const response = await POST(request)
             expect([201, 400]).toContain(response.status)
         })
 
         it("should handle missing Content-Type", async () => {
-            const request = new NextRequest("http://localhost/api/platform/instagram/comments", {
-                method: "POST",
-                headers: { "x-user-id": "test-user-123" },
-                body: JSON.stringify(validReply),
-            })
+            const request = new NextRequest(
+                "http://localhost/api/platform/instagram/comments",
+                {
+                    method: "POST",
+                    headers: { "x-user-id": "test-user-123" },
+                    body: JSON.stringify(validReply),
+                }
+            )
             const response = await POST(request)
             expect([201, 400]).toContain(response.status)
         })
 
         it("should handle multipart Content-Type", async () => {
-            const request = new NextRequest("http://localhost/api/platform/instagram/comments", {
-                method: "POST",
-                headers: { "Content-Type": "multipart/form-data", "x-user-id": "test-user-123" },
-                body: JSON.stringify(validReply),
-            })
+            const request = new NextRequest(
+                "http://localhost/api/platform/instagram/comments",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                        "x-user-id": "test-user-123",
+                    },
+                    body: JSON.stringify(validReply),
+                }
+            )
             const response = await POST(request)
             expect([201, 400]).toContain(response.status)
         })
@@ -547,7 +629,9 @@ describe("POST /api/platform/instagram/comments — Attack Matrix", () => {
 
     describe("Row 17 — IDOR", () => {
         it("should allow reply from any userId (per-user auth)", async () => {
-            const request = makePostRequest(validReply, { "x-user-id": "other-user-789" })
+            const request = makePostRequest(validReply, {
+                "x-user-id": "other-user-789",
+            })
             const response = await POST(request)
             expect([201, 404, 500]).toContain(response.status)
         })
@@ -555,7 +639,10 @@ describe("POST /api/platform/instagram/comments — Attack Matrix", () => {
 
     describe("Row 18 — Path traversal in comment_id", () => {
         it("should handle path traversal in comment_id", async () => {
-            const request = makePostRequest({ comment_id: "../../../etc/passwd", message: "test" })
+            const request = makePostRequest({
+                comment_id: "../../../etc/passwd",
+                message: "test",
+            })
             const response = await POST(request)
             expect([201, 400, 500]).toContain(response.status)
         })
@@ -580,22 +667,27 @@ describe("DELETE /api/platform/instagram/comments/{id} — Attack Matrix", () =>
         mockDeleteComment.mockResolvedValue(undefined)
     })
 
-    afterEach(() => { vi.clearAllMocks() })
+    afterEach(() => {
+        vi.clearAllMocks()
+    })
 
     describe("Row 1 — Auth bypass", () => {
         it("should reject without x-user-id", async () => {
             const request = new NextRequest(
                 "http://localhost/api/platform/instagram/comments/c-123",
-                { method: "DELETE", headers: {} },
+                { method: "DELETE", headers: {} }
             )
-            const response = await DELETE(request, { params: Promise.resolve({ id: "c-123" }) })
+            const response = await DELETE(request, {
+                params: Promise.resolve({ id: "c-123" }),
+            })
             expect(response.status).toBe(400)
         })
     })
 
     describe("Row 2 — HTTP method confusion", () => {
         it("should only expose DELETE handler for [id] route", async () => {
-            const route = await import("@/app/api/platform/instagram/comments/[id]/route")
+            const route =
+                await import("@/app/api/platform/instagram/comments/[id]/route")
             expect(typeof route.DELETE).toBe("function")
             expect("GET" in route).toBe(false)
             expect("POST" in route).toBe(false)
@@ -611,7 +703,13 @@ describe("DELETE /api/platform/instagram/comments/{id} — Attack Matrix", () =>
                 makeDeleteRouteRequest("NaN"),
             ]
             const results = await Promise.all(
-                ids.map(req => DELETE(req, { params: Promise.resolve({ id: req.url.split("/").pop() ?? "" }) })),
+                ids.map(req =>
+                    DELETE(req, {
+                        params: Promise.resolve({
+                            id: req.url.split("/").pop() ?? "",
+                        }),
+                    })
+                )
             )
             for (const r of results) {
                 expect([200, 400, 500]).toContain(r.status)
@@ -622,7 +720,9 @@ describe("DELETE /api/platform/instagram/comments/{id} — Attack Matrix", () =>
     describe("Row 4 — Value attacks", () => {
         it("should handle empty comment id", async () => {
             const request = makeDeleteRouteRequest("")
-            const response = await DELETE(request, { params: Promise.resolve({ id: "" }) })
+            const response = await DELETE(request, {
+                params: Promise.resolve({ id: "" }),
+            })
             expect(response.status).toBe(400)
         })
     })
@@ -638,9 +738,11 @@ describe("DELETE /api/platform/instagram/comments/{id} — Attack Matrix", () =>
                         "x-user-id": "test-user-123",
                     },
                     body: JSON.stringify({ extra: "field" }),
-                },
+                }
             )
-            const response = await DELETE(request, { params: Promise.resolve({ id: "c-123" }) })
+            const response = await DELETE(request, {
+                params: Promise.resolve({ id: "c-123" }),
+            })
             expect([200, 400, 500]).toContain(response.status)
         })
     })
@@ -648,13 +750,17 @@ describe("DELETE /api/platform/instagram/comments/{id} — Attack Matrix", () =>
     describe("Row 7 — Injection", () => {
         it("should handle SQL injection in comment id", async () => {
             const request = makeDeleteRouteRequest("1' OR '1'='1")
-            const response = await DELETE(request, { params: Promise.resolve({ id: "1' OR '1'='1" }) })
+            const response = await DELETE(request, {
+                params: Promise.resolve({ id: "1' OR '1'='1" }),
+            })
             expect([200, 400, 500]).toContain(response.status)
         })
 
         it("should handle NoSQL operator in comment id", async () => {
             const request = makeDeleteRouteRequest('{"$gt": ""}')
-            const response = await DELETE(request, { params: Promise.resolve({ id: '{"$gt": ""}' }) })
+            const response = await DELETE(request, {
+                params: Promise.resolve({ id: '{"$gt": ""}' }),
+            })
             expect([200, 400, 500]).toContain(response.status)
         })
     })
@@ -662,13 +768,17 @@ describe("DELETE /api/platform/instagram/comments/{id} — Attack Matrix", () =>
     describe("Row 8 — Unicode", () => {
         it("should handle emoji in comment id", async () => {
             const request = makeDeleteRouteRequest("🔥")
-            const response = await DELETE(request, { params: Promise.resolve({ id: "🔥" }) })
+            const response = await DELETE(request, {
+                params: Promise.resolve({ id: "🔥" }),
+            })
             expect([200, 400, 500]).toContain(response.status)
         })
 
         it("should handle null byte in comment id", async () => {
             const request = makeDeleteRouteRequest("c-123\0")
-            const response = await DELETE(request, { params: Promise.resolve({ id: "c-123\0" }) })
+            const response = await DELETE(request, {
+                params: Promise.resolve({ id: "c-123\0" }),
+            })
             expect([200, 400, 500]).toContain(response.status)
         })
     })
@@ -676,7 +786,9 @@ describe("DELETE /api/platform/instagram/comments/{id} — Attack Matrix", () =>
     describe("Row 9 — Size attacks", () => {
         it("should handle oversized comment id", async () => {
             const request = makeDeleteRouteRequest("A".repeat(10000))
-            const response = await DELETE(request, { params: Promise.resolve({ id: "A".repeat(10000) }) })
+            const response = await DELETE(request, {
+                params: Promise.resolve({ id: "A".repeat(10000) }),
+            })
             expect([200, 400, 500]).toContain(response.status)
         })
     })
@@ -685,8 +797,10 @@ describe("DELETE /api/platform/instagram/comments/{id} — Attack Matrix", () =>
         it("should handle concurrent DELETE requests", async () => {
             const results = await Promise.all(
                 Array.from({ length: 5 }, () =>
-                    DELETE(makeDeleteRouteRequest("c-123"), { params: Promise.resolve({ id: "c-123" }) }),
-                ),
+                    DELETE(makeDeleteRouteRequest("c-123"), {
+                        params: Promise.resolve({ id: "c-123" }),
+                    })
+                )
             )
             for (const r of results) {
                 expect([200, 400, 500]).toContain(r.status)
@@ -697,7 +811,9 @@ describe("DELETE /api/platform/instagram/comments/{id} — Attack Matrix", () =>
     describe("Row 11 — CSRF", () => {
         it("should handle DELETE without CSRF token", async () => {
             const request = makeDeleteRouteRequest("c-123")
-            const response = await DELETE(request, { params: Promise.resolve({ id: "c-123" }) })
+            const response = await DELETE(request, {
+                params: Promise.resolve({ id: "c-123" }),
+            })
             expect([200, 400]).toContain(response.status)
         })
     })
@@ -705,8 +821,12 @@ describe("DELETE /api/platform/instagram/comments/{id} — Attack Matrix", () =>
     describe("Row 12 — Race conditions", () => {
         it("should handle concurrent deletions of same comment", async () => {
             const results = await Promise.all([
-                DELETE(makeDeleteRouteRequest("c-123"), { params: Promise.resolve({ id: "c-123" }) }),
-                DELETE(makeDeleteRouteRequest("c-123"), { params: Promise.resolve({ id: "c-123" }) }),
+                DELETE(makeDeleteRouteRequest("c-123"), {
+                    params: Promise.resolve({ id: "c-123" }),
+                }),
+                DELETE(makeDeleteRouteRequest("c-123"), {
+                    params: Promise.resolve({ id: "c-123" }),
+                }),
             ])
             for (const r of results) {
                 expect([200, 400, 500]).toContain(r.status)
@@ -718,17 +838,23 @@ describe("DELETE /api/platform/instagram/comments/{id} — Attack Matrix", () =>
         it("should handle missing Content-Type on DELETE", async () => {
             const request = new NextRequest(
                 "http://localhost/api/platform/instagram/comments/c-123",
-                { method: "DELETE", headers: { "x-user-id": "test-user-123" } },
+                { method: "DELETE", headers: { "x-user-id": "test-user-123" } }
             )
-            const response = await DELETE(request, { params: Promise.resolve({ id: "c-123" }) })
+            const response = await DELETE(request, {
+                params: Promise.resolve({ id: "c-123" }),
+            })
             expect([200, 400, 500]).toContain(response.status)
         })
     })
 
     describe("Row 14 — HTTP header attacks", () => {
         it("should handle Host override", async () => {
-            const request = makeDeleteRouteRequest("c-123", { host: "evil.com" })
-            const response = await DELETE(request, { params: Promise.resolve({ id: "c-123" }) })
+            const request = makeDeleteRouteRequest("c-123", {
+                host: "evil.com",
+            })
+            const response = await DELETE(request, {
+                params: Promise.resolve({ id: "c-123" }),
+            })
             expect([200, 400, 500]).toContain(response.status)
         })
     })
@@ -737,9 +863,11 @@ describe("DELETE /api/platform/instagram/comments/{id} — Attack Matrix", () =>
         it("should not leak internal paths in error", async () => {
             const request = new NextRequest(
                 "http://localhost/api/platform/instagram/comments/c-123",
-                { method: "DELETE", headers: {} },
+                { method: "DELETE", headers: {} }
             )
-            const response = await DELETE(request, { params: Promise.resolve({ id: "c-123" }) })
+            const response = await DELETE(request, {
+                params: Promise.resolve({ id: "c-123" }),
+            })
             const body = await response.json()
             expect(body.message).not.toContain(":\\")
             expect(body.message).not.toContain("/src/")
@@ -748,8 +876,12 @@ describe("DELETE /api/platform/instagram/comments/{id} — Attack Matrix", () =>
 
     describe("Row 17 — IDOR", () => {
         it("should allow delete from any userId (per-user auth)", async () => {
-            const request = makeDeleteRouteRequest("c-123", { "x-user-id": "other-user-789" })
-            const response = await DELETE(request, { params: Promise.resolve({ id: "c-123" }) })
+            const request = makeDeleteRouteRequest("c-123", {
+                "x-user-id": "other-user-789",
+            })
+            const response = await DELETE(request, {
+                params: Promise.resolve({ id: "c-123" }),
+            })
             expect([200, 404, 500]).toContain(response.status)
         })
     })
@@ -757,7 +889,9 @@ describe("DELETE /api/platform/instagram/comments/{id} — Attack Matrix", () =>
     describe("Row 18 — Path traversal", () => {
         it("should handle path traversal in comment id", async () => {
             const request = makeDeleteRouteRequest("../../../etc/passwd")
-            const response = await DELETE(request, { params: Promise.resolve({ id: "../../../etc/passwd" }) })
+            const response = await DELETE(request, {
+                params: Promise.resolve({ id: "../../../etc/passwd" }),
+            })
             expect([200, 400, 500]).toContain(response.status)
         })
     })

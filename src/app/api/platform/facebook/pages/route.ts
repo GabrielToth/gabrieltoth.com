@@ -19,7 +19,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
                     error: "MISSING_USER_ID",
                     message: "User ID is required",
                 },
-                { status: 400 },
+                { status: 400 }
             )
         }
 
@@ -27,7 +27,9 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
         const oauthService = getFacebookOAuthService(config)
         await oauthService.initialize()
 
-        const accessToken = await getValidFacebookToken(userId, { oauthService })
+        const accessToken = await getValidFacebookToken(userId, {
+            oauthService,
+        })
 
         if (!accessToken) {
             logger.warn("Facebook not linked for user", { userId })
@@ -37,7 +39,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
                     error: "FACEBOOK_NOT_LINKED",
                     message: "Facebook account is not linked",
                 },
-                { status: 404 },
+                { status: 404 }
             )
         }
 
@@ -46,7 +48,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
         return NextResponse.json(
             {
                 success: true,
-                data: pages.map((page) => ({
+                data: pages.map(page => ({
                     id: page.id,
                     name: page.name,
                     category: page.category,
@@ -55,7 +57,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
                     followerCount: page.followerCount,
                 })),
             },
-            { status: 200 },
+            { status: 200 }
         )
     } catch (error) {
         const err = error instanceof Error ? error : new Error(String(error))
@@ -67,7 +69,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
                 error: "FETCH_FAILED",
                 message: err.message,
             },
-            { status: 500 },
+            { status: 500 }
         )
     }
 }

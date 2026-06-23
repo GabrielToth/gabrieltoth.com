@@ -24,7 +24,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
                     error: "MISSING_USER_ID",
                     message: "User ID is required",
                 },
-                { status: 400 },
+                { status: 400 }
             )
         }
 
@@ -42,7 +42,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
                     error: "TIKTOK_NOT_LINKED",
                     message: "TikTok account is not linked",
                 },
-                { status: 404 },
+                { status: 404 }
             )
         }
 
@@ -50,7 +50,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
         const includeVideos = searchParams.get("includeVideos") === "true"
         const videoLimit = Math.min(
             parseInt(searchParams.get("videoLimit") || "5", 10),
-            20,
+            20
         )
 
         const user = await oauthService.getUserInfo(accessToken)
@@ -62,7 +62,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
                     error: "USER_INFO_FAILED",
                     message: "Failed to retrieve TikTok user information",
                 },
-                { status: 500 },
+                { status: 500 }
             )
         }
 
@@ -91,7 +91,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
                     },
                 },
             },
-            { status: 200 },
+            { status: 200 }
         )
     } catch (error) {
         const err = error instanceof Error ? error : new Error(String(error))
@@ -103,7 +103,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
                 error: "FETCH_FAILED",
                 message: err.message,
             },
-            { status: 500 },
+            { status: 500 }
         )
     }
 }

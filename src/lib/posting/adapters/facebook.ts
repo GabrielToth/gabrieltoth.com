@@ -22,7 +22,7 @@ export interface FacebookPostResult {
 }
 
 export async function postToFacebook(
-    config: FacebookPostConfig,
+    config: FacebookPostConfig
 ): Promise<FacebookPostResult> {
     try {
         if (!config.pageId || !config.message) {
@@ -49,7 +49,7 @@ export async function postToFacebook(
 
         const pageAccessToken = await oauthService.getPageAccessToken(
             config.pageId,
-            userToken,
+            userToken
         )
 
         if (!pageAccessToken) {
@@ -59,17 +59,13 @@ export async function postToFacebook(
             }
         }
 
-        const result = await postToPageFeed(
-            pageAccessToken,
-            config.pageId,
-            {
-                message: config.message,
-                link: config.link,
-                picture: config.picture,
-                caption: config.caption,
-                description: config.description,
-            },
-        )
+        const result = await postToPageFeed(pageAccessToken, config.pageId, {
+            message: config.message,
+            link: config.link,
+            picture: config.picture,
+            caption: config.caption,
+            description: config.description,
+        })
 
         return {
             success: true,

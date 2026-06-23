@@ -38,7 +38,7 @@ const mockGetToken = vi.hoisted(() =>
         expiresAt: Date.now() + 3600000,
         platform: "instagram",
         userId: "test-user-123",
-    }),
+    })
 )
 
 const mockPostToInstagram = vi.hoisted(() =>
@@ -46,7 +46,7 @@ const mockPostToInstagram = vi.hoisted(() =>
         success: true,
         postId: "mock-media-id-123",
         url: "https://www.instagram.com/p/mock-media-id-123/",
-    }),
+    })
 )
 
 vi.mock("@/lib/token-store", () => ({
@@ -131,7 +131,7 @@ vi.mock("@/lib/logger", () => ({
 function makePostRequest(
     url: string,
     body: unknown,
-    headers: Record<string, string> = {},
+    headers: Record<string, string> = {}
 ): NextRequest {
     return new NextRequest(url, {
         method: "POST",
@@ -177,7 +177,7 @@ describe("POST /api/platform/instagram/publish — Attack Matrix", () => {
                         caption: "Test",
                         imageUrl: "https://example.com/img.jpg",
                     }),
-                },
+                }
             )
             const response = await POST(request)
             expect(response.status).toBe(400)
@@ -189,7 +189,7 @@ describe("POST /api/platform/instagram/publish — Attack Matrix", () => {
             const request = makePostRequest(
                 "http://localhost/api/platform/instagram/publish",
                 { caption: "Test", imageUrl: "https://example.com/img.jpg" },
-                { "x-user-id": "" },
+                { "x-user-id": "" }
             )
             const response = await POST(request)
             expect(response.status).toBe(400)
@@ -199,9 +199,8 @@ describe("POST /api/platform/instagram/publish — Attack Matrix", () => {
     // ── Row 2: HTTP method confusion ──
     describe("Row 2 — HTTP method confusion", () => {
         it("should not expose GET handler for publish", async () => {
-            const route = await import(
-                "@/app/api/platform/instagram/publish/route"
-            )
+            const route =
+                await import("@/app/api/platform/instagram/publish/route")
             expect("GET" in route).toBe(false)
         })
     })
@@ -211,7 +210,7 @@ describe("POST /api/platform/instagram/publish — Attack Matrix", () => {
         it("should handle body with number instead of object", async () => {
             const request = makePostRequest(
                 "http://localhost/api/platform/instagram/publish",
-                42,
+                42
             )
             const response = await POST(request)
             expect([400, 500]).toContain(response.status)
@@ -220,7 +219,7 @@ describe("POST /api/platform/instagram/publish — Attack Matrix", () => {
         it("should handle body with string instead of object", async () => {
             const request = makePostRequest(
                 "http://localhost/api/platform/instagram/publish",
-                "invalid",
+                "invalid"
             )
             const response = await POST(request)
             expect([400, 500]).toContain(response.status)
@@ -229,7 +228,7 @@ describe("POST /api/platform/instagram/publish — Attack Matrix", () => {
         it("should handle body with boolean instead of object", async () => {
             const request = makePostRequest(
                 "http://localhost/api/platform/instagram/publish",
-                true,
+                true
             )
             const response = await POST(request)
             expect([400, 500]).toContain(response.status)
@@ -238,7 +237,7 @@ describe("POST /api/platform/instagram/publish — Attack Matrix", () => {
         it("should handle body with array instead of object", async () => {
             const request = makePostRequest(
                 "http://localhost/api/platform/instagram/publish",
-                [1, 2, 3],
+                [1, 2, 3]
             )
             const response = await POST(request)
             expect([400, 500]).toContain(response.status)
@@ -250,7 +249,7 @@ describe("POST /api/platform/instagram/publish — Attack Matrix", () => {
         it("should reject empty JSON body", async () => {
             const request = makePostRequest(
                 "http://localhost/api/platform/instagram/publish",
-                {},
+                {}
             )
             const response = await POST(request)
             expect(response.status).toBe(400)
@@ -259,7 +258,7 @@ describe("POST /api/platform/instagram/publish — Attack Matrix", () => {
         it("should reject body with null value", async () => {
             const request = makePostRequest(
                 "http://localhost/api/platform/instagram/publish",
-                null,
+                null
             )
             const response = await POST(request)
             expect([400, 500]).toContain(response.status)
@@ -271,7 +270,7 @@ describe("POST /api/platform/instagram/publish — Attack Matrix", () => {
                 {
                     caption: "",
                     imageUrl: "https://example.com/img.jpg",
-                },
+                }
             )
             const response = await POST(request)
             expect(response.status).toBe(400)
@@ -283,7 +282,7 @@ describe("POST /api/platform/instagram/publish — Attack Matrix", () => {
                 {
                     caption: 123,
                     imageUrl: "https://example.com/img.jpg",
-                },
+                }
             )
             const response = await POST(request)
             expect(response.status).toBe(400)
@@ -292,7 +291,7 @@ describe("POST /api/platform/instagram/publish — Attack Matrix", () => {
         it("should reject missing caption", async () => {
             const request = makePostRequest(
                 "http://localhost/api/platform/instagram/publish",
-                { imageUrl: "https://example.com/img.jpg" },
+                { imageUrl: "https://example.com/img.jpg" }
             )
             const response = await POST(request)
             expect(response.status).toBe(400)
@@ -304,7 +303,7 @@ describe("POST /api/platform/instagram/publish — Attack Matrix", () => {
                 {
                     caption: "A".repeat(2201),
                     imageUrl: "https://example.com/img.jpg",
-                },
+                }
             )
             const response = await POST(request)
             expect(response.status).toBe(400)
@@ -313,7 +312,7 @@ describe("POST /api/platform/instagram/publish — Attack Matrix", () => {
         it("should reject when no imageUrl, videoUrl, or carouselItems", async () => {
             const request = makePostRequest(
                 "http://localhost/api/platform/instagram/publish",
-                { caption: "Test caption" },
+                { caption: "Test caption" }
             )
             const response = await POST(request)
             expect(response.status).toBe(400)
@@ -325,7 +324,7 @@ describe("POST /api/platform/instagram/publish — Attack Matrix", () => {
         it("should handle body as empty array", async () => {
             const request = makePostRequest(
                 "http://localhost/api/platform/instagram/publish",
-                [],
+                []
             )
             const response = await POST(request)
             expect([400, 500]).toContain(response.status)
@@ -341,7 +340,7 @@ describe("POST /api/platform/instagram/publish — Attack Matrix", () => {
                         "x-user-id": "test-user-123",
                     },
                     body: '\uFEFF{"caption":"Test","imageUrl":"https://example.com/img.jpg"}',
-                },
+                }
             )
             const response = await POST(request)
             expect([201, 400, 500]).toContain(response.status)
@@ -357,7 +356,7 @@ describe("POST /api/platform/instagram/publish — Attack Matrix", () => {
                     caption: "Test",
                     imageUrl: "https://example.com/img.jpg",
                     __proto__: { polluted: true },
-                },
+                }
             )
             const response = await POST(request)
             expect([201, 400, 500]).toContain(response.status)
@@ -370,7 +369,7 @@ describe("POST /api/platform/instagram/publish — Attack Matrix", () => {
                     caption: "Test",
                     imageUrl: "https://example.com/img.jpg",
                     constructor: { prototype: { polluted: true } },
-                },
+                }
             )
             const response = await POST(request)
             expect([201, 400, 500]).toContain(response.status)
@@ -385,7 +384,7 @@ describe("POST /api/platform/instagram/publish — Attack Matrix", () => {
                 {
                     caption: "1' OR '1'='1",
                     imageUrl: "https://example.com/img.jpg",
-                },
+                }
             )
             const response = await POST(request)
             expect([201, 400, 500]).toContain(response.status)
@@ -397,7 +396,7 @@ describe("POST /api/platform/instagram/publish — Attack Matrix", () => {
                 {
                     caption: "<script>alert(1)</script>",
                     imageUrl: "https://example.com/img.jpg",
-                },
+                }
             )
             const response = await POST(request)
             expect([201, 400, 500]).toContain(response.status)
@@ -409,7 +408,7 @@ describe("POST /api/platform/instagram/publish — Attack Matrix", () => {
                 {
                     caption: '{"$gt": ""}',
                     imageUrl: "https://example.com/img.jpg",
-                },
+                }
             )
             const response = await POST(request)
             expect([201, 400, 500]).toContain(response.status)
@@ -421,7 +420,7 @@ describe("POST /api/platform/instagram/publish — Attack Matrix", () => {
                 {
                     caption: "Test",
                     imageUrl: "$(cat /etc/passwd)",
-                },
+                }
             )
             const response = await POST(request)
             expect([201, 400, 500]).toContain(response.status)
@@ -433,7 +432,7 @@ describe("POST /api/platform/instagram/publish — Attack Matrix", () => {
                 {
                     caption: "Test",
                     imageUrl: "javascript:alert(1)",
-                },
+                }
             )
             const response = await POST(request)
             expect([201, 400, 500]).toContain(response.status)
@@ -448,7 +447,7 @@ describe("POST /api/platform/instagram/publish — Attack Matrix", () => {
                 {
                     caption: "test\0caption",
                     imageUrl: "https://example.com/img.jpg",
-                },
+                }
             )
             const response = await POST(request)
             expect([201, 400, 500]).toContain(response.status)
@@ -460,7 +459,7 @@ describe("POST /api/platform/instagram/publish — Attack Matrix", () => {
                 {
                     caption: "test😊caption",
                     imageUrl: "https://example.com/img.jpg",
-                },
+                }
             )
             const response = await POST(request)
             expect([201, 400, 500]).toContain(response.status)
@@ -472,7 +471,7 @@ describe("POST /api/platform/instagram/publish — Attack Matrix", () => {
                 {
                     caption: "\u202Etest\u202C",
                     imageUrl: "https://example.com/img.jpg",
-                },
+                }
             )
             const response = await POST(request)
             expect([201, 400, 500]).toContain(response.status)
@@ -487,7 +486,7 @@ describe("POST /api/platform/instagram/publish — Attack Matrix", () => {
                 {
                     caption: "A".repeat(2201),
                     imageUrl: "https://example.com/img.jpg",
-                },
+                }
             )
             const response = await POST(request)
             expect(response.status).toBe(400)
@@ -504,14 +503,17 @@ describe("POST /api/platform/instagram/publish — Attack Matrix", () => {
                 {
                     caption: "A".repeat(2200),
                     imageUrl: "https://example.com/img.jpg",
-                },
+                }
             )
             const response = await POST(request)
             expect([201, 500]).toContain(response.status)
         })
 
         it("should handle deeply nested JSON (100+ levels)", async () => {
-            let deep: any = { caption: "Test", imageUrl: "https://example.com/img.jpg" }
+            let deep: any = {
+                caption: "Test",
+                imageUrl: "https://example.com/img.jpg",
+            }
             let current = deep
             for (let i = 0; i < 100; i++) {
                 current.nested = {}
@@ -519,7 +521,7 @@ describe("POST /api/platform/instagram/publish — Attack Matrix", () => {
             }
             const request = makePostRequest(
                 "http://localhost/api/platform/instagram/publish",
-                deep,
+                deep
             )
             const response = await POST(request)
             expect([201, 400, 500]).toContain(response.status)
@@ -534,7 +536,7 @@ describe("POST /api/platform/instagram/publish — Attack Matrix", () => {
                 {
                     caption: "Test",
                     imageUrl: "https://example.com/img.jpg",
-                },
+                }
             )
             const response = await POST(request)
             expect([201, 500]).toContain(response.status)
@@ -549,7 +551,7 @@ describe("POST /api/platform/instagram/publish — Attack Matrix", () => {
                 {
                     caption: "Test",
                     imageUrl: "https://example.com/img.jpg",
-                },
+                }
             )
             const response = await POST(request)
             expect([201, 500]).toContain(response.status)
@@ -566,8 +568,8 @@ describe("POST /api/platform/instagram/publish — Attack Matrix", () => {
                         {
                             caption: "Test 1",
                             imageUrl: "https://example.com/img1.jpg",
-                        },
-                    ),
+                        }
+                    )
                 ),
                 POST(
                     makePostRequest(
@@ -575,8 +577,8 @@ describe("POST /api/platform/instagram/publish — Attack Matrix", () => {
                         {
                             caption: "Test 2",
                             imageUrl: "https://example.com/img2.jpg",
-                        },
-                    ),
+                        }
+                    )
                 ),
                 POST(
                     makePostRequest(
@@ -584,12 +586,12 @@ describe("POST /api/platform/instagram/publish — Attack Matrix", () => {
                         {
                             caption: "Test 3",
                             imageUrl: "https://example.com/img3.jpg",
-                        },
-                    ),
+                        }
+                    )
                 ),
             ])
             for (const response of results) {
-            expect([201, 400, 500]).toContain(response.status)
+                expect([201, 400, 500]).toContain(response.status)
             }
         })
     })
@@ -606,7 +608,7 @@ describe("POST /api/platform/instagram/publish — Attack Matrix", () => {
                         "x-user-id": "test-user-123",
                     },
                     body: '{"caption":"Test","imageUrl":"https://example.com/img.jpg"}',
-                },
+                }
             )
             const response = await POST(request)
             expect([201, 400, 500]).toContain(response.status)
@@ -619,7 +621,7 @@ describe("POST /api/platform/instagram/publish — Attack Matrix", () => {
                     method: "POST",
                     headers: { "x-user-id": "test-user-123" },
                     body: '{"caption":"Test","imageUrl":"https://example.com/img.jpg"}',
-                },
+                }
             )
             const response = await POST(request)
             expect([201, 400, 500]).toContain(response.status)
@@ -632,7 +634,7 @@ describe("POST /api/platform/instagram/publish — Attack Matrix", () => {
             const request = makePostRequest(
                 "http://localhost/api/platform/instagram/publish",
                 { caption: "Test", imageUrl: "https://example.com/img.jpg" },
-                { "X-Forwarded-For": "127.0.0.1" },
+                { "X-Forwarded-For": "127.0.0.1" }
             )
             const response = await POST(request)
             expect([201, 500]).toContain(response.status)
@@ -642,7 +644,7 @@ describe("POST /api/platform/instagram/publish — Attack Matrix", () => {
             const request = makePostRequest(
                 "http://localhost/api/platform/instagram/publish",
                 { caption: "Test", imageUrl: "https://example.com/img.jpg" },
-                { Host: "evil.com" },
+                { Host: "evil.com" }
             )
             const response = await POST(request)
             expect([201, 500]).toContain(response.status)
@@ -653,11 +655,11 @@ describe("POST /api/platform/instagram/publish — Attack Matrix", () => {
     describe("Row 15 — Info disclosure", () => {
         it("should not leak internal paths in error response", async () => {
             mockGetToken.mockRejectedValue(
-                new Error("Database connection error"),
+                new Error("Database connection error")
             )
             const request = makePostRequest(
                 "http://localhost/api/platform/instagram/publish",
-                { caption: "Test", imageUrl: "https://example.com/img.jpg" },
+                { caption: "Test", imageUrl: "https://example.com/img.jpg" }
             )
             const response = await POST(request)
             const body = await response.json()
@@ -674,7 +676,7 @@ describe("POST /api/platform/instagram/publish — Attack Matrix", () => {
             mockGetToken.mockResolvedValue(null)
             const request = makePostRequest(
                 "http://localhost/api/platform/instagram/publish",
-                { caption: "Test", imageUrl: "https://example.com/img.jpg" },
+                { caption: "Test", imageUrl: "https://example.com/img.jpg" }
             )
             const response = await POST(request)
             expect(response.status).toBe(404)
@@ -691,12 +693,12 @@ describe("POST /api/platform/instagram/publish — Attack Matrix", () => {
                     imageUrl: "https://example.com/img.jpg",
                     userId: "victim-user-789",
                 },
-                { "x-user-id": "test-user-123" },
+                { "x-user-id": "test-user-123" }
             )
             const response = await POST(request)
             expect(mockGetToken).toHaveBeenCalledWith(
                 "test-user-123",
-                "instagram",
+                "instagram"
             )
             expect([201, 400, 500]).toContain(response.status)
         })
@@ -713,7 +715,7 @@ describe("POST /api/platform/instagram/publish — Attack Matrix", () => {
                     role: "admin",
                     isAdmin: true,
                     balance: 999999,
-                },
+                }
             )
             const response = await POST(request)
             expect(response.status).toBe(400)
@@ -730,7 +732,7 @@ describe("POST /api/platform/instagram/publish — Attack Matrix", () => {
                 {
                     caption: "Test",
                     imageUrl: "http://169.254.169.254/latest/meta-data/",
-                },
+                }
             )
             const response = await POST(request)
             expect([201, 400, 500]).toContain(response.status)
@@ -742,7 +744,7 @@ describe("POST /api/platform/instagram/publish — Attack Matrix", () => {
                 {
                     caption: "Test",
                     imageUrl: "http://localhost:5432/pgdata",
-                },
+                }
             )
             const response = await POST(request)
             expect([201, 400, 500]).toContain(response.status)
@@ -754,7 +756,7 @@ describe("POST /api/platform/instagram/publish — Attack Matrix", () => {
                 {
                     caption: "Test",
                     imageUrl: "file:///etc/passwd",
-                },
+                }
             )
             const response = await POST(request)
             expect([201, 400, 500]).toContain(response.status)

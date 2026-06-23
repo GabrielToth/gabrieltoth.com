@@ -61,10 +61,7 @@ export interface EnvironmentConfig {
     TOKEN_ENCRYPTION_KEY: string
 }
 
-const BASE_REQUIRED = [
-    "DATABASE_URL",
-    "DISCORD_WEBHOOK_URL",
-] as const
+const BASE_REQUIRED = ["DATABASE_URL", "DISCORD_WEBHOOK_URL"] as const
 
 const YOUTUBE_REQUIRED = [
     ...BASE_REQUIRED,

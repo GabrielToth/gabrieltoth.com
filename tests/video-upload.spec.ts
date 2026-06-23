@@ -4,11 +4,11 @@ test.describe("video upload and publish flow", () => {
     test("publish page loads with expected structure", async ({ page }) => {
         await page.goto("/en/dashboard/publish")
 
-        await expect(page.getByRole("heading", { name: /Publish/i })).toBeVisible()
         await expect(
-            page.getByText(
-                /manage your scheduled and published posts/i
-            )
+            page.getByRole("heading", { name: /Publish/i })
+        ).toBeVisible()
+        await expect(
+            page.getByText(/manage your scheduled and published posts/i)
         ).toBeVisible()
         await expect(
             page.getByText(/publish content management coming soon/i)

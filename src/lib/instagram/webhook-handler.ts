@@ -7,7 +7,10 @@
  */
 
 import { createLogger } from "@/lib/logger"
-import type { InstagramWebhookEvent, InstagramWebhookMessaging } from "./webhook-types"
+import type {
+    InstagramWebhookEvent,
+    InstagramWebhookMessaging,
+} from "./webhook-types"
 
 const logger = createLogger("InstagramWebhookHandler")
 
@@ -87,7 +90,6 @@ function handleMessaging(
         igUserId,
         from: messaging.sender.id,
         text: messaging.message?.text?.substring(0, 200),
-        hasAttachment:
-            (messaging.message?.attachments?.length ?? 0) > 0,
+        hasAttachment: (messaging.message?.attachments?.length ?? 0) > 0,
     })
 }

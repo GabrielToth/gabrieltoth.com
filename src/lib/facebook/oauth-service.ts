@@ -51,8 +51,7 @@ export class FacebookOAuthService extends BaseService {
                 state,
             })
 
-            const authorizationUrl =
-                `https://www.facebook.com/${this.config.oauth.apiVersion}/dialog/oauth?${params.toString()}`
+            const authorizationUrl = `https://www.facebook.com/${this.config.oauth.apiVersion}/dialog/oauth?${params.toString()}`
 
             this.logger.info("Facebook authorization URL generated", {
                 userId,
@@ -63,7 +62,7 @@ export class FacebookOAuthService extends BaseService {
             throw this.handleError(
                 error,
                 "Failed to generate Facebook authorization URL",
-                { userId },
+                { userId }
             )
         }
     }
@@ -76,7 +75,7 @@ export class FacebookOAuthService extends BaseService {
         try {
             return crypto.timingSafeEqual(
                 Buffer.from(state),
-                Buffer.from(storedState),
+                Buffer.from(storedState)
             )
         } catch {
             this.logger.warn("Facebook state validation failed")
@@ -104,7 +103,7 @@ export class FacebookOAuthService extends BaseService {
                         "Content-Type": "application/x-www-form-urlencoded",
                     },
                     body: params.toString(),
-                },
+                }
             )
 
             if (!response.ok) {
@@ -113,31 +112,31 @@ export class FacebookOAuthService extends BaseService {
                     "TOKEN_EXCHANGE_FAILED",
                     `Failed to exchange code for token: ${error.error?.message || error.error?.type || "Unknown"}`,
                     400,
-                    { error },
+                    { error }
                 )
             }
 
             const data = await response.json()
 
             this.logger.info(
-                "Facebook authorization code exchanged for short-lived token",
+                "Facebook authorization code exchanged for short-lived token"
             )
 
             const longLivedToken = await this.exchangeForLongLivedToken(
-                data.access_token,
+                data.access_token
             )
 
             return longLivedToken
         } catch (error) {
             throw this.handleError(
                 error,
-                "Failed to exchange Facebook authorization code for token",
+                "Failed to exchange Facebook authorization code for token"
             )
         }
     }
 
     private async exchangeForLongLivedToken(
-        shortLivedToken: string,
+        shortLivedToken: string
     ): Promise<OAuthTokenResponse> {
         try {
             const params = new URLSearchParams({
@@ -148,7 +147,7 @@ export class FacebookOAuthService extends BaseService {
             })
 
             const response = await fetch(
-                `${this.graphApiBase}/${this.config.oauth.apiVersion}/oauth/access_token?${params.toString()}`,
+                `${this.graphApiBase}/${this.config.oauth.apiVersion}/oauth/access_token?${params.toString()}`
             )
 
             if (!response.ok) {
@@ -157,7 +156,7 @@ export class FacebookOAuthService extends BaseService {
                     "LONG_LIVED_TOKEN_FAILED",
                     `Failed to exchange for long-lived token: ${error.error?.message || error.error?.type || "Unknown"}`,
                     400,
-                    { error },
+                    { error }
                 )
             }
 
@@ -174,13 +173,13 @@ export class FacebookOAuthService extends BaseService {
         } catch (error) {
             throw this.handleError(
                 error,
-                "Failed to exchange for long-lived token",
+                "Failed to exchange for long-lived token"
             )
         }
     }
 
     async refreshAccessToken(
-        currentToken: string,
+        currentToken: string
     ): Promise<OAuthTokenResponse> {
         this.assertReady()
 
@@ -193,7 +192,7 @@ export class FacebookOAuthService extends BaseService {
             })
 
             const response = await fetch(
-                `${this.graphApiBase}/${this.config.oauth.apiVersion}/oauth/access_token?${params.toString()}`,
+                `${this.graphApiBase}/${this.config.oauth.apiVersion}/oauth/access_token?${params.toString()}`
             )
 
             if (!response.ok) {
@@ -202,7 +201,7 @@ export class FacebookOAuthService extends BaseService {
                     "TOKEN_REFRESH_FAILED",
                     `Failed to refresh Facebook token: ${error.error?.message || error.error?.type || "Unknown"}`,
                     400,
-                    { error },
+                    { error }
                 )
             }
 
@@ -231,7 +230,7 @@ export class FacebookOAuthService extends BaseService {
             })
 
             const response = await fetch(
-                `${this.graphApiBase}/${this.config.oauth.apiVersion}/me?${params.toString()}`,
+                `${this.graphApiBase}/${this.config.oauth.apiVersion}/me?${params.toString()}`
             )
 
             if (!response.ok) {
@@ -253,7 +252,7 @@ export class FacebookOAuthService extends BaseService {
         } catch (error) {
             this.logger.error(
                 "Failed to get Facebook user",
-                error instanceof Error ? error : new Error(String(error)),
+                error instanceof Error ? error : new Error(String(error))
             )
             return null
         }
@@ -278,7 +277,7 @@ export class FacebookOAuthService extends BaseService {
             })
 
             const response = await fetch(
-                `${this.graphApiBase}/${this.config.oauth.apiVersion}/me/accounts?${params.toString()}`,
+                `${this.graphApiBase}/${this.config.oauth.apiVersion}/me/accounts?${params.toString()}`
             )
 
             if (!response.ok) {
@@ -287,7 +286,7 @@ export class FacebookOAuthService extends BaseService {
                     "PAGES_FETCH_FAILED",
                     `Failed to get Facebook Pages: ${error.error?.message || "Unknown"}`,
                     400,
-                    { error },
+                    { error }
                 )
             }
 
@@ -302,7 +301,7 @@ export class FacebookOAuthService extends BaseService {
                     tasks: page.tasks,
                     pictureUrl: page.picture?.data?.url,
                     followerCount: page.followers_count,
-                }),
+                })
             )
 
             this.logger.info("Facebook Pages retrieved", {
@@ -317,7 +316,7 @@ export class FacebookOAuthService extends BaseService {
 
     async getPageAccessToken(
         pageId: string,
-        userAccessToken: string,
+        userAccessToken: string
     ): Promise<string | null> {
         this.assertReady()
 
@@ -328,7 +327,7 @@ export class FacebookOAuthService extends BaseService {
             })
 
             const response = await fetch(
-                `${this.graphApiBase}/${this.config.oauth.apiVersion}/${pageId}?${params.toString()}`,
+                `${this.graphApiBase}/${this.config.oauth.apiVersion}/${pageId}?${params.toString()}`
             )
 
             if (!response.ok) {
@@ -346,7 +345,7 @@ export class FacebookOAuthService extends BaseService {
         } catch (error) {
             this.logger.error(
                 "Failed to get Page access token",
-                error instanceof Error ? error : new Error(String(error)),
+                error instanceof Error ? error : new Error(String(error))
             )
             return null
         }
@@ -362,7 +361,7 @@ export class FacebookOAuthService extends BaseService {
 
             const response = await fetch(
                 `${this.graphApiBase}/${this.config.oauth.apiVersion}/me/permissions?${params.toString()}`,
-                { method: "DELETE" },
+                { method: "DELETE" }
             )
 
             if (!response.ok) {
@@ -377,7 +376,7 @@ export class FacebookOAuthService extends BaseService {
         } catch (error) {
             this.logger.error(
                 "Error revoking Facebook token",
-                error instanceof Error ? error : new Error(String(error)),
+                error instanceof Error ? error : new Error(String(error))
             )
             return false
         }
@@ -387,7 +386,7 @@ export class FacebookOAuthService extends BaseService {
 let oauthServiceInstance: FacebookOAuthService | null = null
 
 export function getFacebookOAuthService(
-    config: FacebookConfig,
+    config: FacebookConfig
 ): FacebookOAuthService {
     if (!oauthServiceInstance) {
         oauthServiceInstance = new FacebookOAuthService(config)

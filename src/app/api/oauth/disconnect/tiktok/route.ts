@@ -19,7 +19,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
                     error: "MISSING_USER_ID",
                     message: "User ID is required",
                 },
-                { status: 400 },
+                { status: 400 }
             )
         }
 
@@ -36,7 +36,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
                     error: "NOT_LINKED",
                     message: "TikTok account is not linked",
                 },
-                { status: 404 },
+                { status: 404 }
             )
         }
 
@@ -56,7 +56,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
         const supabase = createClient(
             process.env.NEXT_PUBLIC_SUPABASE_URL || "",
-            process.env.SUPABASE_SERVICE_ROLE_KEY || "",
+            process.env.SUPABASE_SERVICE_ROLE_KEY || ""
         )
 
         const { error: socialError } = await supabase
@@ -82,7 +82,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
                 success: true,
                 message: "TikTok account unlinked successfully",
             },
-            { status: 200 },
+            { status: 200 }
         )
     } catch (error) {
         const err = error instanceof Error ? error : new Error(String(error))
@@ -94,7 +94,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
                 error: "REVOCATION_FAILED",
                 message: err.message,
             },
-            { status: 500 },
+            { status: 500 }
         )
     }
 }

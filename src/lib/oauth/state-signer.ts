@@ -15,7 +15,9 @@ const SIGNING_ALGORITHM = "sha256"
 const STATE_EXPIRY_MS = 10 * 60 * 1000
 
 function getSigningKey(): string {
-    return process.env.OAUTH_STATE_SECRET || process.env.TOKEN_ENCRYPTION_KEY || ""
+    return (
+        process.env.OAUTH_STATE_SECRET || process.env.TOKEN_ENCRYPTION_KEY || ""
+    )
 }
 
 export interface StatePayload {
@@ -34,14 +36,11 @@ export interface SignedState {
  * Generate a signed OAuth state token.
  * No Redis needed — the state is self-verifiable via HMAC.
  */
-export function generateState(
-    userId: string,
-    platform: string,
-): SignedState {
+export function generateState(userId: string, platform: string): SignedState {
     const key = getSigningKey()
     if (!key) {
         throw new Error(
-            "OAUTH_STATE_SECRET or TOKEN_ENCRYPTION_KEY must be set to generate OAuth state",
+            "OAUTH_STATE_SECRET or TOKEN_ENCRYPTION_KEY must be set to generate OAuth state"
         )
     }
 
@@ -53,8 +52,7 @@ export function generateState(
     }
 
     const payloadJson = JSON.stringify(payload)
-    const payloadBase64 = Buffer.from(payloadJson)
-        .toString("base64url")
+    const payloadBase64 = Buffer.from(payloadJson).toString("base64url")
 
     const hmac = crypto.createHmac(SIGNING_ALGORITHM, key)
     hmac.update(payloadBase64)
@@ -79,7 +77,11 @@ export interface VerificationResult {
 export function verifyState(token: string): VerificationResult {
     const key = getSigningKey()
     if (!key) {
-        return { valid: false, payload: null, error: "Signing key not configured" }
+        return {
+            valid: false,
+            payload: null,
+            error: "Signing key not configured",
+        }
     }
 
     const parts = token.split(".")
@@ -95,14 +97,29 @@ export function verifyState(token: string): VerificationResult {
         const expectedSignature = hmac.digest().toString("base64url")
 
         if (signature !== expectedSignature) {
-            return { valid: false, payload: null, error: "Invalid state signature" }
+            return {
+                valid: false,
+                payload: null,
+                error: "Invalid state signature",
+            }
         }
 
-        const payloadJson = Buffer.from(payloadBase64, "base64url").toString("utf-8")
+        const payloadJson = Buffer.from(payloadBase64, "base64url").toString(
+            "utf-8"
+        )
         const payload: StatePayload = JSON.parse(payloadJson)
 
-        if (!payload.userId || !payload.platform || !payload.nonce || !payload.iat) {
-            return { valid: false, payload: null, error: "Invalid state payload structure" }
+        if (
+            !payload.userId ||
+            !payload.platform ||
+            !payload.nonce ||
+            !payload.iat
+        ) {
+            return {
+                valid: false,
+                payload: null,
+                error: "Invalid state payload structure",
+            }
         }
 
         const age = Date.now() - payload.iat
@@ -111,11 +128,19 @@ export function verifyState(token: string): VerificationResult {
         }
 
         if (age < 0) {
-            return { valid: false, payload: null, error: "State token is from the future" }
+            return {
+                valid: false,
+                payload: null,
+                error: "State token is from the future",
+            }
         }
 
         return { valid: true, payload }
     } catch {
-        return { valid: false, payload: null, error: "Failed to verify state token" }
+        return {
+            valid: false,
+            payload: null,
+            error: "Failed to verify state token",
+        }
     }
 }

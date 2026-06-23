@@ -5,12 +5,13 @@
 
 import { describe, it, expect, vi, beforeEach } from "vitest"
 import type { TokenStore, TokenData } from "@/lib/token-store"
-import type { YouTubeOAuthService, OAuthTokenResponse } from "@/lib/youtube/oauth-service"
+import type {
+    YouTubeOAuthService,
+    OAuthTokenResponse,
+} from "@/lib/youtube/oauth-service"
 import { getValidYouTubeToken } from "@/lib/youtube/get-valid-token"
 
-function makeTokenData(
-    overrides: Partial<TokenData> = {}
-): TokenData {
+function makeTokenData(overrides: Partial<TokenData> = {}): TokenData {
     return {
         accessToken: "ya29.valid-access-token",
         refreshToken: "1//refresh-token",
@@ -74,8 +75,7 @@ describe("getValidYouTubeToken", () => {
 
         const result = await getValidYouTubeToken("user-1", {
             tokenStore: mockTokenStore as unknown as TokenStore,
-            oauthService:
-                mockOAuthService as unknown as YouTubeOAuthService,
+            oauthService: mockOAuthService as unknown as YouTubeOAuthService,
         })
 
         expect(result).toBeNull()
@@ -88,14 +88,11 @@ describe("getValidYouTubeToken", () => {
 
         const result = await getValidYouTubeToken("user-1", {
             tokenStore: mockTokenStore as unknown as TokenStore,
-            oauthService:
-                mockOAuthService as unknown as YouTubeOAuthService,
+            oauthService: mockOAuthService as unknown as YouTubeOAuthService,
         })
 
         expect(result).toBe("ya29.valid")
-        expect(
-            mockOAuthService.refreshAccessToken
-        ).not.toHaveBeenCalled()
+        expect(mockOAuthService.refreshAccessToken).not.toHaveBeenCalled()
     })
 
     it("returns the token when it has no expiresAt (treat as non-expiring)", async () => {
@@ -108,14 +105,11 @@ describe("getValidYouTubeToken", () => {
 
         const result = await getValidYouTubeToken("user-1", {
             tokenStore: mockTokenStore as unknown as TokenStore,
-            oauthService:
-                mockOAuthService as unknown as YouTubeOAuthService,
+            oauthService: mockOAuthService as unknown as YouTubeOAuthService,
         })
 
         expect(result).toBe("ya29.no-expiry")
-        expect(
-            mockOAuthService.refreshAccessToken
-        ).not.toHaveBeenCalled()
+        expect(mockOAuthService.refreshAccessToken).not.toHaveBeenCalled()
     })
 
     it("refreshes and returns new token when expired", async () => {
@@ -135,17 +129,14 @@ describe("getValidYouTubeToken", () => {
 
         const result = await getValidYouTubeToken("user-1", {
             tokenStore: mockTokenStore as unknown as TokenStore,
-            oauthService:
-                mockOAuthService as unknown as YouTubeOAuthService,
+            oauthService: mockOAuthService as unknown as YouTubeOAuthService,
         })
 
         expect(result).toBe("ya29.refreshed")
-        expect(
-            mockOAuthService.refreshAccessToken
-        ).toHaveBeenCalledWith("1//old-refresh")
-        expect(
-            mockTokenStore.refreshToken
-        ).toHaveBeenCalledWith(
+        expect(mockOAuthService.refreshAccessToken).toHaveBeenCalledWith(
+            "1//old-refresh"
+        )
+        expect(mockTokenStore.refreshToken).toHaveBeenCalledWith(
             "user-1",
             "youtube",
             expect.objectContaining({
@@ -166,14 +157,11 @@ describe("getValidYouTubeToken", () => {
 
         const result = await getValidYouTubeToken("user-1", {
             tokenStore: mockTokenStore as unknown as TokenStore,
-            oauthService:
-                mockOAuthService as unknown as YouTubeOAuthService,
+            oauthService: mockOAuthService as unknown as YouTubeOAuthService,
         })
 
         expect(result).toBeNull()
-        expect(
-            mockOAuthService.refreshAccessToken
-        ).not.toHaveBeenCalled()
+        expect(mockOAuthService.refreshAccessToken).not.toHaveBeenCalled()
     })
 
     it("returns null when refresh fails", async () => {
@@ -190,14 +178,11 @@ describe("getValidYouTubeToken", () => {
 
         const result = await getValidYouTubeToken("user-1", {
             tokenStore: mockTokenStore as unknown as TokenStore,
-            oauthService:
-                mockOAuthService as unknown as YouTubeOAuthService,
+            oauthService: mockOAuthService as unknown as YouTubeOAuthService,
         })
 
         expect(result).toBeNull()
-        expect(
-            mockOAuthService.refreshAccessToken
-        ).toHaveBeenCalled()
+        expect(mockOAuthService.refreshAccessToken).toHaveBeenCalled()
     })
 
     it("preserves existing refresh_token when Google does not issue new one", async () => {
@@ -218,14 +203,11 @@ describe("getValidYouTubeToken", () => {
 
         const result = await getValidYouTubeToken("user-1", {
             tokenStore: mockTokenStore as unknown as TokenStore,
-            oauthService:
-                mockOAuthService as unknown as YouTubeOAuthService,
+            oauthService: mockOAuthService as unknown as YouTubeOAuthService,
         })
 
         expect(result).toBe("ya29.refreshed")
-        expect(
-            mockTokenStore.refreshToken
-        ).toHaveBeenCalledWith(
+        expect(mockTokenStore.refreshToken).toHaveBeenCalledWith(
             "user-1",
             "youtube",
             expect.objectContaining({
@@ -246,12 +228,9 @@ describe("getValidYouTubeToken", () => {
 
         await getValidYouTubeToken("user-1", {
             tokenStore: mockTokenStore as unknown as TokenStore,
-            oauthService:
-                mockOAuthService as unknown as YouTubeOAuthService,
+            oauthService: mockOAuthService as unknown as YouTubeOAuthService,
         })
 
-        expect(
-            mockOAuthService.initialize
-        ).toHaveBeenCalled()
+        expect(mockOAuthService.initialize).toHaveBeenCalled()
     })
 })

@@ -73,7 +73,7 @@ const mockExchangeCodeForToken = vi.hoisted(() =>
         refreshToken: "mock-refresh-token",
         expiresIn: 5184000,
         tokenType: "bearer",
-    }),
+    })
 )
 
 const mockGetBusinessAccount = vi.hoisted(() =>
@@ -83,7 +83,7 @@ const mockGetBusinessAccount = vi.hoisted(() =>
         name: "Test User",
         profilePictureUrl: "https://example.com/pic.jpg",
         followerCount: 100,
-    }),
+    })
 )
 
 vi.mock("@/lib/instagram/oauth-service", () => ({
@@ -147,9 +147,7 @@ const validStatePayload = {
     },
 }
 
-function makeCallbackUrl(
-    params: Record<string, string>,
-): string {
+function makeCallbackUrl(params: Record<string, string>): string {
     const searchParams = new URLSearchParams(params)
     return `http://localhost/api/oauth/callback/instagram?${searchParams.toString()}`
 }
@@ -168,31 +166,35 @@ describe("GET /api/oauth/callback/instagram — Attack Matrix", () => {
     describe("Row 1 — Auth bypass", () => {
         it("should redirect with error when no auth params provided", async () => {
             const request = new NextRequest(
-                "http://localhost/api/oauth/callback/instagram",
+                "http://localhost/api/oauth/callback/instagram"
             )
             const response = await GET(request)
             expect(response.status).toBe(307)
             const location =
-                response.headers.get("Location") || response.headers.get("location") || ""
+                response.headers.get("Location") ||
+                response.headers.get("location") ||
+                ""
             expect(location).toContain("error")
             expect(location).toContain("missing_params")
         })
 
         it("should redirect with error when only error param is present", async () => {
             const request = new NextRequest(
-                makeCallbackUrl({ error: "access_denied" }),
+                makeCallbackUrl({ error: "access_denied" })
             )
             const response = await GET(request)
             expect(response.status).toBe(307)
             const location =
-                response.headers.get("Location") || response.headers.get("location") || ""
+                response.headers.get("Location") ||
+                response.headers.get("location") ||
+                ""
             expect(location).toContain("error")
             expect(location).toContain("access_denied")
         })
 
         it("should redirect with error for missing code param", async () => {
             const request = new NextRequest(
-                makeCallbackUrl({ state: "valid-state-token" }),
+                makeCallbackUrl({ state: "valid-state-token" })
             )
             const response = await GET(request)
             expect(response.status).toBe(307)
@@ -202,9 +204,8 @@ describe("GET /api/oauth/callback/instagram — Attack Matrix", () => {
     // ── Row 2: HTTP method confusion ──
     describe("Row 2 — HTTP method confusion", () => {
         it("should not expose POST handler for callback", async () => {
-            const route = await import(
-                "@/app/api/oauth/callback/instagram/route"
-            )
+            const route =
+                await import("@/app/api/oauth/callback/instagram/route")
             expect("POST" in route).toBe(false)
         })
     })
@@ -213,7 +214,7 @@ describe("GET /api/oauth/callback/instagram — Attack Matrix", () => {
     describe("Row 4 — Value attacks on query params", () => {
         it("should handle empty code parameter", async () => {
             const request = new NextRequest(
-                makeCallbackUrl({ code: "", state: "valid-state-token" }),
+                makeCallbackUrl({ code: "", state: "valid-state-token" })
             )
             const response = await GET(request)
             expect(response.status).toBe(307)
@@ -221,7 +222,7 @@ describe("GET /api/oauth/callback/instagram — Attack Matrix", () => {
 
         it("should handle empty state parameter", async () => {
             const request = new NextRequest(
-                makeCallbackUrl({ code: "valid-code", state: "" }),
+                makeCallbackUrl({ code: "valid-code", state: "" })
             )
             const response = await GET(request)
             expect(response.status).toBe(307)
@@ -229,7 +230,7 @@ describe("GET /api/oauth/callback/instagram — Attack Matrix", () => {
 
         it("should handle missing state parameter", async () => {
             const request = new NextRequest(
-                makeCallbackUrl({ code: "valid-code" }),
+                makeCallbackUrl({ code: "valid-code" })
             )
             const response = await GET(request)
             expect(response.status).toBe(307)
@@ -243,7 +244,7 @@ describe("GET /api/oauth/callback/instagram — Attack Matrix", () => {
                 makeCallbackUrl({
                     code: "1' OR '1'='1",
                     state: "valid-state-token",
-                }),
+                })
             )
             const response = await GET(request)
             expect([307, 500]).toContain(response.status)
@@ -254,7 +255,7 @@ describe("GET /api/oauth/callback/instagram — Attack Matrix", () => {
                 makeCallbackUrl({
                     code: "<script>alert(1)</script>",
                     state: "valid-state-token",
-                }),
+                })
             )
             const response = await GET(request)
             expect([307, 500]).toContain(response.status)
@@ -265,7 +266,7 @@ describe("GET /api/oauth/callback/instagram — Attack Matrix", () => {
                 makeCallbackUrl({
                     code: "valid-code",
                     state: "$(cat /etc/passwd)",
-                }),
+                })
             )
             const response = await GET(request)
             expect(response.status).toBe(307)
@@ -276,7 +277,7 @@ describe("GET /api/oauth/callback/instagram — Attack Matrix", () => {
                 makeCallbackUrl({
                     code: '{"$gt": ""}',
                     state: "valid-state-token",
-                }),
+                })
             )
             const response = await GET(request)
             expect([307, 500]).toContain(response.status)
@@ -290,7 +291,7 @@ describe("GET /api/oauth/callback/instagram — Attack Matrix", () => {
                 makeCallbackUrl({
                     code: "valid\0code",
                     state: "valid-state-token",
-                }),
+                })
             )
             const response = await GET(request)
             expect([307, 500]).toContain(response.status)
@@ -301,7 +302,7 @@ describe("GET /api/oauth/callback/instagram — Attack Matrix", () => {
                 makeCallbackUrl({
                     code: "code😊test",
                     state: "valid-state-token",
-                }),
+                })
             )
             const response = await GET(request)
             expect([307, 500]).toContain(response.status)
@@ -312,7 +313,7 @@ describe("GET /api/oauth/callback/instagram — Attack Matrix", () => {
                 makeCallbackUrl({
                     code: "valid-code",
                     state: "\u202Etest\u202C",
-                }),
+                })
             )
             const response = await GET(request)
             expect(response.status).toBe(307)
@@ -326,7 +327,7 @@ describe("GET /api/oauth/callback/instagram — Attack Matrix", () => {
                 makeCallbackUrl({
                     code: "A".repeat(10000),
                     state: "valid-state-token",
-                }),
+                })
             )
             const response = await GET(request)
             expect([307, 500]).toContain(response.status)
@@ -334,7 +335,7 @@ describe("GET /api/oauth/callback/instagram — Attack Matrix", () => {
 
         it("should handle deeply nested query params", async () => {
             const request = new NextRequest(
-                `http://localhost/api/oauth/callback/instagram?code=valid&state=${"x".repeat(1000)}`,
+                `http://localhost/api/oauth/callback/instagram?code=valid&state=${"x".repeat(1000)}`
             )
             const response = await GET(request)
             expect(response.status).toBe(307)
@@ -345,7 +346,10 @@ describe("GET /api/oauth/callback/instagram — Attack Matrix", () => {
     describe("Row 10 — Rate limiting", () => {
         it("should handle callback request within rate limit", async () => {
             const request = new NextRequest(
-                makeCallbackUrl({ code: "valid-code", state: "valid-state-token" }),
+                makeCallbackUrl({
+                    code: "valid-code",
+                    state: "valid-state-token",
+                })
             )
             const response = await GET(request)
             expect([307, 500]).toContain(response.status)
@@ -364,12 +368,14 @@ describe("GET /api/oauth/callback/instagram — Attack Matrix", () => {
                 makeCallbackUrl({
                     code: "valid-code",
                     state: "tampered-state-token",
-                }),
+                })
             )
             const response = await GET(request)
             expect(response.status).toBe(307)
             const location =
-                response.headers.get("Location") || response.headers.get("location") || ""
+                response.headers.get("Location") ||
+                response.headers.get("location") ||
+                ""
             expect(location).toContain("error")
             expect(location).toContain("invalid_state")
         })
@@ -381,7 +387,10 @@ describe("GET /api/oauth/callback/instagram — Attack Matrix", () => {
                 error: "State token expired",
             })
             const request = new NextRequest(
-                makeCallbackUrl({ code: "valid-code", state: "expired-state-token" }),
+                makeCallbackUrl({
+                    code: "valid-code",
+                    state: "expired-state-token",
+                })
             )
             const response = await GET(request)
             expect(response.status).toBe(307)
@@ -398,7 +407,10 @@ describe("GET /api/oauth/callback/instagram — Attack Matrix", () => {
                 },
             })
             const request = new NextRequest(
-                makeCallbackUrl({ code: "valid-code", state: "youtube-state-token" }),
+                makeCallbackUrl({
+                    code: "valid-code",
+                    state: "youtube-state-token",
+                })
             )
             const response = await GET(request)
             expect(response.status).toBe(307)
@@ -414,16 +426,16 @@ describe("GET /api/oauth/callback/instagram — Attack Matrix", () => {
                         makeCallbackUrl({
                             code: "code-1",
                             state: "state-1",
-                        }),
-                    ),
+                        })
+                    )
                 ),
                 GET(
                     new NextRequest(
                         makeCallbackUrl({
                             code: "code-2",
                             state: "state-2",
-                        }),
-                    ),
+                        })
+                    )
                 ),
             ])
             for (const response of results) {
@@ -436,12 +448,15 @@ describe("GET /api/oauth/callback/instagram — Attack Matrix", () => {
     describe("Row 14 — HTTP header attacks", () => {
         it("should handle X-Forwarded-For header", async () => {
             const request = new NextRequest(
-                makeCallbackUrl({ code: "valid-code", state: "valid-state-token" }),
+                makeCallbackUrl({
+                    code: "valid-code",
+                    state: "valid-state-token",
+                }),
                 {
                     headers: {
                         "X-Forwarded-For": "127.0.0.1",
                     },
-                },
+                }
             )
             const response = await GET(request)
             expect([307, 500]).toContain(response.status)
@@ -449,10 +464,13 @@ describe("GET /api/oauth/callback/instagram — Attack Matrix", () => {
 
         it("should handle Host override header", async () => {
             const request = new NextRequest(
-                makeCallbackUrl({ code: "valid-code", state: "valid-state-token" }),
+                makeCallbackUrl({
+                    code: "valid-code",
+                    state: "valid-state-token",
+                }),
                 {
                     headers: { Host: "evil.com" },
-                },
+                }
             )
             const response = await GET(request)
             expect([307, 500]).toContain(response.status)
@@ -463,11 +481,16 @@ describe("GET /api/oauth/callback/instagram — Attack Matrix", () => {
     describe("Row 15 — Info disclosure", () => {
         it("should not leak internal paths in redirect on error", async () => {
             const request = new NextRequest(
-                makeCallbackUrl({ code: "valid-code", state: "valid-state-token" }),
+                makeCallbackUrl({
+                    code: "valid-code",
+                    state: "valid-state-token",
+                })
             )
             const response = await GET(request)
             const location =
-                response.headers.get("Location") || response.headers.get("location") || ""
+                response.headers.get("Location") ||
+                response.headers.get("location") ||
+                ""
             expect(location).not.toContain("internal")
             expect(location).not.toContain(":\\")
         })
@@ -492,8 +515,8 @@ describe("GET /api/oauth/callback/instagram — Attack Matrix", () => {
                     makeCallbackUrl({
                         code: "code-first",
                         state: "replay-state",
-                    }),
-                ),
+                    })
+                )
             )
             expect([307, 500]).toContain(firstResponse.status)
             const secondResponse = await GET(
@@ -501,15 +524,18 @@ describe("GET /api/oauth/callback/instagram — Attack Matrix", () => {
                     makeCallbackUrl({
                         code: "code-second",
                         state: "replay-state",
-                    }),
-                ),
+                    })
+                )
             )
             expect(secondResponse.status).toBe(307)
         })
 
         it("should redirect to partial when social_networks upsert fails", async () => {
             const request = new NextRequest(
-                makeCallbackUrl({ code: "valid-code", state: "valid-state-token" }),
+                makeCallbackUrl({
+                    code: "valid-code",
+                    state: "valid-state-token",
+                })
             )
             const response = await GET(request)
             expect(response.status).toBe(307)
@@ -517,7 +543,10 @@ describe("GET /api/oauth/callback/instagram — Attack Matrix", () => {
 
         it("should handle no Instagram Business Account found", async () => {
             const request = new NextRequest(
-                makeCallbackUrl({ code: "valid-code", state: "valid-state-token" }),
+                makeCallbackUrl({
+                    code: "valid-code",
+                    state: "valid-state-token",
+                })
             )
             const response = await GET(request)
             expect(response.status).toBe(307)

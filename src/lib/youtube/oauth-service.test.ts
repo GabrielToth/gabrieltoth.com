@@ -90,9 +90,7 @@ describe("YouTubeOAuthService", () => {
             expect(scope).toContain(
                 "https://www.googleapis.com/auth/youtube.upload"
             )
-            expect(scope).toContain(
-                "https://www.googleapis.com/auth/youtube"
-            )
+            expect(scope).toContain("https://www.googleapis.com/auth/youtube")
             expect(scope).toContain(
                 "https://www.googleapis.com/auth/userinfo.email"
             )

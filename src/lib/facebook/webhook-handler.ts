@@ -19,7 +19,7 @@ export interface WebhookHandlerResult {
 }
 
 export async function handleWebhookEvent(
-    event: FacebookWebhookEvent,
+    event: FacebookWebhookEvent
 ): Promise<WebhookHandlerResult> {
     const result: WebhookHandlerResult = {
         handled: 0,
@@ -33,7 +33,8 @@ export async function handleWebhookEvent(
                 try {
                     switch (change.field) {
                         case "feed": {
-                            const val = change.value as unknown as FacebookFeedValue
+                            const val =
+                                change.value as unknown as FacebookFeedValue
                             handleFeedChange(val, entry.id)
                             result.handled++
                             result.details.push(`feed:${val.postId}`)
@@ -41,7 +42,8 @@ export async function handleWebhookEvent(
                         }
 
                         case "comments": {
-                            const val = change.value as unknown as FacebookCommentsValue
+                            const val =
+                                change.value as unknown as FacebookCommentsValue
                             handleCommentsChange(val, entry.id)
                             result.handled++
                             result.details.push(`comments:${val.commentId}`)
@@ -49,7 +51,8 @@ export async function handleWebhookEvent(
                         }
 
                         case "live_videos": {
-                            const val = change.value as unknown as FacebookLiveVideoValue
+                            const val =
+                                change.value as unknown as FacebookLiveVideoValue
                             handleLiveVideoChange(val, entry.id)
                             result.handled++
                             result.details.push(`live_videos:${val.videoId}`)
@@ -57,15 +60,19 @@ export async function handleWebhookEvent(
                         }
 
                         case "conversations": {
-                            const val = change.value as unknown as FacebookConversationsValue
+                            const val =
+                                change.value as unknown as FacebookConversationsValue
                             handleConversationsChange(val, entry.id)
                             result.handled++
-                            result.details.push(`conversations:${val.messageId}`)
+                            result.details.push(
+                                `conversations:${val.messageId}`
+                            )
                             break
                         }
 
                         case "mention": {
-                            const val = change.value as unknown as FacebookMentionValue
+                            const val =
+                                change.value as unknown as FacebookMentionValue
                             handleMentionChange(val, entry.id)
                             result.handled++
                             result.details.push(`mention:${val.postId}`)
@@ -73,7 +80,8 @@ export async function handleWebhookEvent(
                         }
 
                         case "page_mention": {
-                            const val = change.value as unknown as FacebookPageMentionValue
+                            const val =
+                                change.value as unknown as FacebookPageMentionValue
                             handlePageMentionChange(val, entry.id)
                             result.handled++
                             result.details.push(`page_mention:${val.postId}`)
@@ -97,7 +105,7 @@ export async function handleWebhookEvent(
                     })
                     result.errors++
                     result.details.push(
-                        `error:${change.field}:${error instanceof Error ? error.message : "Unknown"}`,
+                        `error:${change.field}:${error instanceof Error ? error.message : "Unknown"}`
                     )
                 }
             }
@@ -109,7 +117,7 @@ export async function handleWebhookEvent(
                     handleMessagingEvent(msg, entry.id)
                     result.handled++
                     result.details.push(
-                        `messaging:${msg.message?.mid || msg.read?.mid || "unknown"}`,
+                        `messaging:${msg.message?.mid || msg.read?.mid || "unknown"}`
                     )
                 } catch (error) {
                     logger.error("Error processing Facebook messaging event", {
@@ -143,7 +151,7 @@ function handleFeedChange(value: FacebookFeedValue, pageId: string): void {
 
 function handleCommentsChange(
     value: FacebookCommentsValue,
-    pageId: string,
+    pageId: string
 ): void {
     logger.debug("Facebook comments change", {
         pageId,
@@ -155,7 +163,7 @@ function handleCommentsChange(
 
 function handleLiveVideoChange(
     value: FacebookLiveVideoValue,
-    pageId: string,
+    pageId: string
 ): void {
     logger.debug("Facebook live_video change", {
         pageId,
@@ -166,7 +174,7 @@ function handleLiveVideoChange(
 
 function handleConversationsChange(
     value: FacebookConversationsValue,
-    pageId: string,
+    pageId: string
 ): void {
     logger.debug("Facebook conversations change", {
         pageId,
@@ -177,7 +185,7 @@ function handleConversationsChange(
 
 function handleMentionChange(
     value: FacebookMentionValue,
-    pageId: string,
+    pageId: string
 ): void {
     logger.debug("Facebook mention change", {
         pageId,
@@ -188,7 +196,7 @@ function handleMentionChange(
 
 function handlePageMentionChange(
     value: FacebookPageMentionValue,
-    pageId: string,
+    pageId: string
 ): void {
     logger.debug("Facebook page_mention change", {
         pageId,
@@ -199,7 +207,7 @@ function handlePageMentionChange(
 
 function handleMessagingEvent(
     msg: FacebookWebhookMessaging,
-    pageId: string,
+    pageId: string
 ): void {
     logger.debug("Facebook messaging event", {
         pageId,

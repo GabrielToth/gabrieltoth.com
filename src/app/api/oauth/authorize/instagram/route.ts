@@ -33,7 +33,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
                     error: "MISSING_USER_ID",
                     message: "User ID is required",
                 },
-                { status: 400 },
+                { status: 400 }
             )
         }
 
@@ -53,8 +53,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
             state: signedState.token,
         })
 
-        const authorizationUrl =
-            `https://www.facebook.com/${config.oauth.apiVersion}/dialog/oauth?${params.toString()}`
+        const authorizationUrl = `https://www.facebook.com/${config.oauth.apiVersion}/dialog/oauth?${params.toString()}`
 
         logger.info("Instagram authorization URL generated (HMAC state)", {
             userId,
@@ -66,7 +65,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
                 authorizationUrl,
                 state: signedState.token,
             },
-            { status: 200 },
+            { status: 200 }
         )
     } catch (error) {
         const err = error instanceof Error ? error : new Error(String(error))
@@ -78,7 +77,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
                 error: "LINKING_INITIATION_FAILED",
                 message: err.message,
             },
-            { status: 500 },
+            { status: 500 }
         )
     }
 }

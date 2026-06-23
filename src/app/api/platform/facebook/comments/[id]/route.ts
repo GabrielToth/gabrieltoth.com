@@ -10,7 +10,7 @@ const logger = createLogger("FacebookCommentIdEndpoint")
 
 export async function DELETE(
     request: NextRequest,
-    { params }: { params: Promise<{ id: string }> },
+    { params }: { params: Promise<{ id: string }> }
 ): Promise<NextResponse> {
     try {
         const userId = request.headers.get("x-user-id")
@@ -22,7 +22,7 @@ export async function DELETE(
                     error: "MISSING_USER_ID",
                     message: "User ID is required",
                 },
-                { status: 400 },
+                { status: 400 }
             )
         }
 
@@ -37,7 +37,7 @@ export async function DELETE(
                     error: "VALIDATION_ERROR",
                     message: "pageId query parameter is required",
                 },
-                { status: 400 },
+                { status: 400 }
             )
         }
 
@@ -45,7 +45,9 @@ export async function DELETE(
         const oauthService = getFacebookOAuthService(config)
         await oauthService.initialize()
 
-        const accessToken = await getValidFacebookToken(userId, { oauthService })
+        const accessToken = await getValidFacebookToken(userId, {
+            oauthService,
+        })
 
         if (!accessToken) {
             return NextResponse.json(
@@ -54,13 +56,13 @@ export async function DELETE(
                     error: "FACEBOOK_NOT_LINKED",
                     message: "Facebook account is not linked",
                 },
-                { status: 404 },
+                { status: 404 }
             )
         }
 
         const pageAccessToken = await oauthService.getPageAccessToken(
             pageId,
-            accessToken,
+            accessToken
         )
 
         if (!pageAccessToken) {
@@ -71,7 +73,7 @@ export async function DELETE(
                     message:
                         "Failed to obtain access token for the specified page",
                 },
-                { status: 500 },
+                { status: 500 }
             )
         }
 
@@ -84,7 +86,7 @@ export async function DELETE(
                 success: true,
                 message: "Comment deleted successfully",
             },
-            { status: 200 },
+            { status: 200 }
         )
     } catch (error) {
         const err = error instanceof Error ? error : new Error(String(error))
@@ -96,14 +98,14 @@ export async function DELETE(
                 error: "API_ERROR",
                 message: err.message,
             },
-            { status: 500 },
+            { status: 500 }
         )
     }
 }
 
 export async function PATCH(
     request: NextRequest,
-    { params }: { params: Promise<{ id: string }> },
+    { params }: { params: Promise<{ id: string }> }
 ): Promise<NextResponse> {
     try {
         const userId = request.headers.get("x-user-id")
@@ -115,7 +117,7 @@ export async function PATCH(
                     error: "MISSING_USER_ID",
                     message: "User ID is required",
                 },
-                { status: 400 },
+                { status: 400 }
             )
         }
 
@@ -130,7 +132,7 @@ export async function PATCH(
                     error: "VALIDATION_ERROR",
                     message: "pageId query parameter is required",
                 },
-                { status: 400 },
+                { status: 400 }
             )
         }
 
@@ -144,7 +146,7 @@ export async function PATCH(
                     error: "INVALID_INPUT",
                     message: "Invalid JSON body",
                 },
-                { status: 400 },
+                { status: 400 }
             )
         }
 
@@ -157,7 +159,7 @@ export async function PATCH(
                         error: "VALIDATION_ERROR",
                         message: `Unexpected field: ${key}`,
                     },
-                    { status: 400 },
+                    { status: 400 }
                 )
             }
         }
@@ -169,7 +171,7 @@ export async function PATCH(
                     error: "VALIDATION_ERROR",
                     message: "hide field must be a boolean",
                 },
-                { status: 400 },
+                { status: 400 }
             )
         }
 
@@ -177,7 +179,9 @@ export async function PATCH(
         const oauthService = getFacebookOAuthService(config)
         await oauthService.initialize()
 
-        const accessToken = await getValidFacebookToken(userId, { oauthService })
+        const accessToken = await getValidFacebookToken(userId, {
+            oauthService,
+        })
 
         if (!accessToken) {
             return NextResponse.json(
@@ -186,13 +190,13 @@ export async function PATCH(
                     error: "FACEBOOK_NOT_LINKED",
                     message: "Facebook account is not linked",
                 },
-                { status: 404 },
+                { status: 404 }
             )
         }
 
         const pageAccessToken = await oauthService.getPageAccessToken(
             pageId,
-            accessToken,
+            accessToken
         )
 
         if (!pageAccessToken) {
@@ -203,7 +207,7 @@ export async function PATCH(
                     message:
                         "Failed to obtain access token for the specified page",
                 },
-                { status: 500 },
+                { status: 500 }
             )
         }
 
@@ -222,7 +226,7 @@ export async function PATCH(
                     ? "Comment hidden successfully"
                     : "Comment unhidden successfully",
             },
-            { status: 200 },
+            { status: 200 }
         )
     } catch (error) {
         const err = error instanceof Error ? error : new Error(String(error))
@@ -234,7 +238,7 @@ export async function PATCH(
                 error: "API_ERROR",
                 message: err.message,
             },
-            { status: 500 },
+            { status: 500 }
         )
     }
 }

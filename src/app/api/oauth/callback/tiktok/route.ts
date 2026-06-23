@@ -22,8 +22,8 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
             return NextResponse.redirect(
                 new URL(
                     `/dashboard?tiktok=error&reason=${oauthError}`,
-                    request.url,
-                ),
+                    request.url
+                )
             )
         }
 
@@ -32,8 +32,8 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
             return NextResponse.redirect(
                 new URL(
                     "/dashboard?tiktok=error&reason=missing_params",
-                    request.url,
-                ),
+                    request.url
+                )
             )
         }
 
@@ -42,8 +42,8 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
             return NextResponse.redirect(
                 new URL(
                     "/dashboard?tiktok=error&reason=missing_params",
-                    request.url,
-                ),
+                    request.url
+                )
             )
         }
 
@@ -60,8 +60,8 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
             return NextResponse.redirect(
                 new URL(
                     "/dashboard?tiktok=error&reason=invalid_state",
-                    request.url,
-                ),
+                    request.url
+                )
             )
         }
 
@@ -70,13 +70,13 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
         if (verification.payload.platform !== "tiktok") {
             logger.warn(
                 "TikTok callback received state for different platform",
-                { platform: verification.payload.platform },
+                { platform: verification.payload.platform }
             )
             return NextResponse.redirect(
                 new URL(
                     "/dashboard?tiktok=error&reason=invalid_state",
-                    request.url,
-                ),
+                    request.url
+                )
             )
         }
 
@@ -89,7 +89,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
         })
 
         const tiktokUser = await oauthService.getUserInfo(
-            tokenResponse.accessToken,
+            tokenResponse.accessToken
         )
 
         if (!tiktokUser) {
@@ -97,8 +97,8 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
             return NextResponse.redirect(
                 new URL(
                     "/dashboard?tiktok=error&reason=user_info_failed",
-                    request.url,
-                ),
+                    request.url
+                )
             )
         }
 
@@ -125,7 +125,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
 
         const supabase = createClient(
             process.env.NEXT_PUBLIC_SUPABASE_URL || "",
-            process.env.SUPABASE_SERVICE_ROLE_KEY || "",
+            process.env.SUPABASE_SERVICE_ROLE_KEY || ""
         )
 
         const { error: socialError } = await supabase
@@ -152,17 +152,14 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
                 },
                 {
                     onConflict: "user_id, platform, platform_user_id",
-                },
+                }
             )
 
         if (socialError) {
-            logger.error(
-                "Failed to upsert TikTok social_networks record",
-                {
-                    userId,
-                    error: socialError.message,
-                },
-            )
+            logger.error("Failed to upsert TikTok social_networks record", {
+                userId,
+                error: socialError.message,
+            })
         }
 
         logger.info("TikTok account linked successfully", {
@@ -171,17 +168,14 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
         })
 
         return NextResponse.redirect(
-            new URL("/dashboard?tiktok=success", request.url),
+            new URL("/dashboard?tiktok=success", request.url)
         )
     } catch (error) {
         const err = error instanceof Error ? error : new Error(String(error))
         logger.error("Failed to complete TikTok linking", err)
 
         return NextResponse.redirect(
-            new URL(
-                "/dashboard?tiktok=error&reason=server_error",
-                request.url,
-            ),
+            new URL("/dashboard?tiktok=error&reason=server_error", request.url)
         )
     }
 }

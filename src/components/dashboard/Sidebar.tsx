@@ -137,15 +137,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
                         {channels.map(channel => (
                             <button
                                 key={channel.id}
-                                onClick={() =>
-                                    handleChannelConnect(channel.id)
-                                }
+                                onClick={() => handleChannelConnect(channel.id)}
                                 className="flex h-11 w-11 items-center justify-center rounded-lg border border-gray-200 bg-white text-sm font-medium text-gray-600 hover:border-blue-300 hover:bg-blue-50 hover:text-blue-600 transition-colors min-h-11 min-w-11"
                                 title={channel.name}
                                 aria-label={`Connect ${channel.name}`}
-                                disabled={
-                                    connectingChannel === channel.id
-                                }
+                                disabled={connectingChannel === channel.id}
                             >
                                 {channel.icon}
                             </button>
@@ -250,15 +246,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
                         {channels.map(channel => (
                             <button
                                 key={channel.id}
-                                onClick={() =>
-                                    handleChannelConnect(channel.id)
-                                }
+                                onClick={() => handleChannelConnect(channel.id)}
                                 className="flex h-11 w-11 items-center justify-center rounded-lg border border-gray-200 bg-white text-sm font-medium text-gray-600 hover:border-blue-300 hover:bg-blue-50 hover:text-blue-600 transition-colors min-h-11 min-w-11"
                                 title={channel.name}
                                 aria-label={`Connect ${channel.name}`}
-                                disabled={
-                                    connectingChannel === channel.id
-                                }
+                                disabled={connectingChannel === channel.id}
                             >
                                 {channel.icon}
                             </button>

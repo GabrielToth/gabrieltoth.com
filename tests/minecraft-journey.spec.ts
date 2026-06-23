@@ -14,9 +14,7 @@ test.describe("minecraft journey", () => {
     // 1-24: All Minecraft sub-pages load for all locales (6 routes × 4 locales)
     for (const locale of LOCALES) {
         for (const route of MINECRAFT_ROUTES) {
-            test(`/${locale}/${route} loads successfully`, async ({
-                page,
-            }) => {
+            test(`/${locale}/${route} loads successfully`, async ({ page }) => {
                 const response = await page.goto(`/${locale}/${route}`)
                 expect(response?.status()).toBe(200)
             })
@@ -105,9 +103,7 @@ test.describe("minecraft journey", () => {
         for (const route of MINECRAFT_ROUTES) {
             test(`/${locale}/${route} URL is correct`, async ({ page }) => {
                 await page.goto(`/${locale}/${route}`)
-                await expect(page).toHaveURL(
-                    new RegExp(`/${locale}/${route}`)
-                )
+                await expect(page).toHaveURL(new RegExp(`/${locale}/${route}`))
             })
         }
     }
@@ -147,7 +143,10 @@ test.describe("minecraft journey", () => {
         await page.goto("/en/minecraft/modpacks/hypixel-qol")
 
         await page.getByTestId("minecraft-dropdown-button").click()
-        await page.getByRole("link", { name: /plugins/i }).first().click()
+        await page
+            .getByRole("link", { name: /plugins/i })
+            .first()
+            .click()
 
         await expect(page).toHaveURL(/\/en\/minecraft\/plugins/)
     })

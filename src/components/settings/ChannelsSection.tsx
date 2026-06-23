@@ -83,7 +83,9 @@ export const ChannelsSection: React.FC<ChannelsSectionProps> = ({
             })
             if (!response.ok) {
                 const data = await response.json()
-                throw new Error(data.message || "Failed to start YouTube linking")
+                throw new Error(
+                    data.message || "Failed to start YouTube linking"
+                )
             }
             const data = await response.json()
             if (data.authorizationUrl) {
@@ -154,26 +156,25 @@ export const ChannelsSection: React.FC<ChannelsSectionProps> = ({
     const connectedChannels = channels.filter(c => c.isConnected)
     const disconnectedChannels = channels.filter(c => !c.isConnected)
     const youtubeChannel = channels.find(c => c.platform === "youtube")
-    const nonYoutubeConnected = connectedChannels.filter(c => c.platform !== "youtube")
-    const nonYoutubeDisconnected = disconnectedChannels.filter(c => c.platform !== "youtube")
+    const nonYoutubeConnected = connectedChannels.filter(
+        c => c.platform !== "youtube"
+    )
+    const nonYoutubeDisconnected = disconnectedChannels.filter(
+        c => c.platform !== "youtube"
+    )
 
     return (
         <Card>
             <CardHeader>
                 <CardTitle>YouTube</CardTitle>
-                <CardDescription>
-                    {t("youtube.connectYouTube")}
-                </CardDescription>
+                <CardDescription>{t("youtube.connectYouTube")}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
                 {/* YouTube Connect Card */}
                 <div className="rounded-lg border border-gray-200 p-4">
                     <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3">
-                            <DynamicIcon
-                                name="Youtube"
-                                size={32}
-                            />
+                            <DynamicIcon name="Youtube" size={32} />
                             <div>
                                 <p className="font-medium text-gray-900">
                                     YouTube
@@ -232,7 +233,9 @@ export const ChannelsSection: React.FC<ChannelsSectionProps> = ({
                                             {disconnectingId ===
                                             youtubeChannel.id
                                                 ? t("youtube.disconnecting")
-                                                : t("youtube.confirmDisconnect")}
+                                                : t(
+                                                      "youtube.confirmDisconnect"
+                                                  )}
                                         </Button>
                                     </div>
                                 ) : (
@@ -269,7 +272,8 @@ export const ChannelsSection: React.FC<ChannelsSectionProps> = ({
                 {nonYoutubeConnected.length > 0 && (
                     <div className="space-y-4">
                         <h3 className="text-sm font-semibold text-gray-900">
-                            {t("youtube.connected")} ({nonYoutubeConnected.length})
+                            {t("youtube.connected")} (
+                            {nonYoutubeConnected.length})
                         </h3>
                         <div className="space-y-3">
                             {nonYoutubeConnected.map(channel => (
@@ -297,7 +301,9 @@ export const ChannelsSection: React.FC<ChannelsSectionProps> = ({
                                             </p>
                                             {channel.connectedAt && (
                                                 <p className="text-xs text-gray-500">
-                                                    {t("youtube.connectedSince")}{" "}
+                                                    {t(
+                                                        "youtube.connectedSince"
+                                                    )}{" "}
                                                     {new Date(
                                                         channel.connectedAt
                                                     ).toLocaleDateString()}
@@ -338,8 +344,12 @@ export const ChannelsSection: React.FC<ChannelsSectionProps> = ({
                                                 >
                                                     {disconnectingId ===
                                                     channel.id
-                                                        ? t("youtube.disconnecting")
-                                                        : t("youtube.confirmDisconnect")}
+                                                        ? t(
+                                                              "youtube.disconnecting"
+                                                          )
+                                                        : t(
+                                                              "youtube.confirmDisconnect"
+                                                          )}
                                                 </Button>
                                             </div>
                                         ) : (
@@ -367,7 +377,8 @@ export const ChannelsSection: React.FC<ChannelsSectionProps> = ({
                 {nonYoutubeDisconnected.length > 0 && (
                     <div className="space-y-4">
                         <h3 className="text-sm font-semibold text-gray-900">
-                            {t("youtube.notConnected")} ({nonYoutubeDisconnected.length})
+                            {t("youtube.notConnected")} (
+                            {nonYoutubeDisconnected.length})
                         </h3>
                         <div className="space-y-3">
                             {nonYoutubeDisconnected.map(channel => (

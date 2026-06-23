@@ -19,7 +19,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
                     error: "MISSING_USER_ID",
                     message: "User ID is required",
                 },
-                { status: 400 },
+                { status: 400 }
             )
         }
 
@@ -37,7 +37,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
                     error: "TIKTOK_NOT_LINKED",
                     message: "TikTok account is not linked",
                 },
-                { status: 404 },
+                { status: 404 }
             )
         }
 
@@ -51,7 +51,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
                     error: "INVALID_INPUT",
                     message: "Invalid JSON body",
                 },
-                { status: 400 },
+                { status: 400 }
             )
         }
 
@@ -74,7 +74,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
                         error: "VALIDATION_ERROR",
                         message: `Unexpected field: ${key}`,
                     },
-                    { status: 400 },
+                    { status: 400 }
                 )
             }
         }
@@ -88,9 +88,10 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
                 {
                     success: false,
                     error: "VALIDATION_ERROR",
-                    message: "source is required and must be FILE_UPLOAD or PULL_FROM_URL",
+                    message:
+                        "source is required and must be FILE_UPLOAD or PULL_FROM_URL",
                 },
-                { status: 400 },
+                { status: 400 }
             )
         }
 
@@ -101,7 +102,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
                     error: "VALIDATION_ERROR",
                     message: "source must be FILE_UPLOAD or PULL_FROM_URL",
                 },
-                { status: 400 },
+                { status: 400 }
             )
         }
 
@@ -112,7 +113,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
                     error: "VALIDATION_ERROR",
                     message: "title is required and must be a non-empty string",
                 },
-                { status: 400 },
+                { status: 400 }
             )
         }
 
@@ -123,18 +124,22 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
                     error: "VALIDATION_ERROR",
                     message: "Title exceeds 2200 character limit",
                 },
-                { status: 400 },
+                { status: 400 }
             )
         }
 
-        if (source === "PULL_FROM_URL" && (!videoUrl || typeof videoUrl !== "string")) {
+        if (
+            source === "PULL_FROM_URL" &&
+            (!videoUrl || typeof videoUrl !== "string")
+        ) {
             return NextResponse.json(
                 {
                     success: false,
                     error: "VALIDATION_ERROR",
-                    message: "videoUrl is required when source is PULL_FROM_URL",
+                    message:
+                        "videoUrl is required when source is PULL_FROM_URL",
                 },
-                { status: 400 },
+                { status: 400 }
             )
         }
 
@@ -176,7 +181,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
                         ? "Upload your video file to the uploadUrl via PUT, then poll /api/platform/tiktok/publish/status"
                         : "TikTok will fetch the video from the provided URL",
             },
-            { status: 201 },
+            { status: 201 }
         )
     } catch (error) {
         const err = error instanceof Error ? error : new Error(String(error))
@@ -188,7 +193,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
                 error: "PUBLISH_FAILED",
                 message: err.message,
             },
-            { status: 500 },
+            { status: 500 }
         )
     }
 }

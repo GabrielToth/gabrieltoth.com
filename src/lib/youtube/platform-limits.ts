@@ -15,15 +15,15 @@ export interface PlatformLimits {
 export const PLATFORM_LIMITS: Record<string, PlatformLimits> = {
     youtube: {
         maxFileSizeBytes: 256 * 1024 * 1024 * 1024, // 256GB
-        maxDurationSeconds: 432000,                   // 12 hours
-        minDurationSeconds: 33,                        // 33 seconds
+        maxDurationSeconds: 432000, // 12 hours
+        minDurationSeconds: 33, // 33 seconds
         supportedCodecs: ["h264", "vp9", "av1"],
         maxResolution: "8K",
         description: "YouTube supports up to 12 hours and 256GB",
     },
     tiktok: {
         maxFileSizeBytes: 500 * 1024 * 1024, // 500MB
-        maxDurationSeconds: 600,               // 10 minutes
+        maxDurationSeconds: 600, // 10 minutes
         minDurationSeconds: 1,
         supportedCodecs: ["h264"],
         maxResolution: "1080p",
@@ -31,7 +31,7 @@ export const PLATFORM_LIMITS: Record<string, PlatformLimits> = {
     },
     instagram: {
         maxFileSizeBytes: 650 * 1024 * 1024, // 650MB (carousel) / 100MB (single)
-        maxDurationSeconds: 3600,              // 60 minutes
+        maxDurationSeconds: 3600, // 60 minutes
         minDurationSeconds: 3,
         supportedCodecs: ["h264"],
         maxResolution: "4K",
@@ -39,7 +39,7 @@ export const PLATFORM_LIMITS: Record<string, PlatformLimits> = {
     },
     facebook: {
         maxFileSizeBytes: 10 * 1024 * 1024 * 1024, // 10GB
-        maxDurationSeconds: 14400,                    // 4 hours
+        maxDurationSeconds: 14400, // 4 hours
         minDurationSeconds: 1,
         supportedCodecs: ["h264", "vp9"],
         maxResolution: "4K",
@@ -47,9 +47,7 @@ export const PLATFORM_LIMITS: Record<string, PlatformLimits> = {
     },
 }
 
-export function getPlatformLimit(
-    platform: string
-): PlatformLimits | undefined {
+export function getPlatformLimit(platform: string): PlatformLimits | undefined {
     return PLATFORM_LIMITS[platform.toLowerCase()]
 }
 

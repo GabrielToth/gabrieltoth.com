@@ -22,22 +22,22 @@ const mockUploadVideo = vi.hoisted(() => vi.fn())
 const mockValidateCsrf = vi.hoisted(() =>
     vi.fn().mockResolvedValue({ valid: true, csrfToken: "test-token" })
 )
-const mockRegenerateCsrf = vi.hoisted(() => vi.fn().mockReturnValue("new-token"))
-const mockAddCsrf = vi.hoisted(
-    () =>
-        vi.fn((res: Response) => {
-            res.headers.set("X-CSRF-Token", "new-token")
-            return res
-        })
+const mockRegenerateCsrf = vi.hoisted(() =>
+    vi.fn().mockReturnValue("new-token")
 )
-const mockCreateCsrfError = vi.hoisted(
-    () =>
-        vi.fn().mockReturnValue(
-            new Response(JSON.stringify({ error: "Invalid CSRF token" }), {
-                status: 403,
-                headers: { "content-type": "application/json" },
-            })
-        )
+const mockAddCsrf = vi.hoisted(() =>
+    vi.fn((res: Response) => {
+        res.headers.set("X-CSRF-Token", "new-token")
+        return res
+    })
+)
+const mockCreateCsrfError = vi.hoisted(() =>
+    vi.fn().mockReturnValue(
+        new Response(JSON.stringify({ error: "Invalid CSRF token" }), {
+            status: 403,
+            headers: { "content-type": "application/json" },
+        })
+    )
 )
 
 vi.mock("@/lib/posting/adapters/youtube", () => ({
@@ -77,7 +77,10 @@ function makeFormData(overrides?: {
             new File(["fake-video-content"], "test.mp4", { type: "video/mp4" })
     )
     fd.append("title", overrides?.title ?? "My Test Video")
-    fd.append("description", overrides?.description ?? "A test video description")
+    fd.append(
+        "description",
+        overrides?.description ?? "A test video description"
+    )
     fd.append("privacyStatus", overrides?.privacyStatus ?? "unlisted")
     if (overrides?.tags) fd.append("tags", overrides.tags)
     if (overrides?.categoryId) fd.append("categoryId", overrides.categoryId)
@@ -99,8 +102,6 @@ function makeRequest(formData: FormData, userId = "user-123"): NextRequest {
 async function responseToJson(res: Response): Promise<Record<string, unknown>> {
     return JSON.parse(await res.text()) as Record<string, unknown>
 }
-
-
 
 describe("POST /api/youtube/upload — Attack Matrix", () => {
     beforeEach(() => {
@@ -177,7 +178,9 @@ describe("POST /api/youtube/upload — Attack Matrix", () => {
         })
 
         it("accepts object-as-string for title (JSON)", async () => {
-            const fd = makeFormData({ title: JSON.stringify({ malicious: true }) })
+            const fd = makeFormData({
+                title: JSON.stringify({ malicious: true }),
+            })
             const req = makeRequest(fd)
             const res = await POST(req)
             expect(res.status).not.toBe(400)
@@ -197,7 +200,9 @@ describe("POST /api/youtube/upload — Attack Matrix", () => {
 
         it("rejects oversized file (>500MB)", async () => {
             const bigFile = new File(["x"], "big.mp4", { type: "video/mp4" })
-            Object.defineProperty(bigFile, "size", { value: 501 * 1024 * 1024 + 1 })
+            Object.defineProperty(bigFile, "size", {
+                value: 501 * 1024 * 1024 + 1,
+            })
             const fd = makeFormData({ file: bigFile })
             const req = makeRequest(fd)
             const res = await POST(req)
@@ -328,7 +333,7 @@ describe("POST /api/youtube/upload — Attack Matrix", () => {
     describe("Row 7 — Injection attacks", () => {
         it("handles SQL injection in title", async () => {
             const fd = makeFormData({
-                title: "'; DROP TABLE profiles; --"
+                title: "'; DROP TABLE profiles; --",
             })
             const req = makeRequest(fd)
             const res = await POST(req)
@@ -337,7 +342,7 @@ describe("POST /api/youtube/upload — Attack Matrix", () => {
 
         it("handles XSS in title", async () => {
             const fd = makeFormData({
-                title: "<script>alert('xss')</script>"
+                title: "<script>alert('xss')</script>",
             })
             const req = makeRequest(fd)
             const res = await POST(req)
@@ -346,7 +351,7 @@ describe("POST /api/youtube/upload — Attack Matrix", () => {
 
         it("handles XSS in description", async () => {
             const fd = makeFormData({
-                description: "<img src=x onerror=alert(1)>"
+                description: "<img src=x onerror=alert(1)>",
             })
             const req = makeRequest(fd)
             const res = await POST(req)
@@ -387,7 +392,7 @@ describe("POST /api/youtube/upload — Attack Matrix", () => {
 
         it("handles unicode normalization in title", async () => {
             const fd = makeFormData({
-                title: "Café ñoño \u00e9 \u0065\u0301"
+                title: "Café ñoño \u00e9 \u0065\u0301",
             })
             const req = makeRequest(fd)
             const res = await POST(req)
@@ -429,7 +434,7 @@ describe("POST /api/youtube/upload — Attack Matrix", () => {
 
         it("rejects more than 30 tags", async () => {
             const fd = makeFormData({
-                tags: Array.from({ length: 31 }, (_, i) => `tag${i}`).join(",")
+                tags: Array.from({ length: 31 }, (_, i) => `tag${i}`).join(","),
             })
             const req = makeRequest(fd)
             const res = await POST(req)

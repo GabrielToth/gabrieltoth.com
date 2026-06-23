@@ -8,7 +8,7 @@ const logger = createLogger("PostsIdApi")
 
 export async function PUT(
     request: NextRequest,
-    { params }: { params: Promise<{ id: string }> },
+    { params }: { params: Promise<{ id: string }> }
 ): Promise<NextResponse> {
     try {
         const session = await getServerSession(authOptions)
@@ -24,7 +24,7 @@ export async function PUT(
         } catch {
             return NextResponse.json(
                 { error: "Invalid JSON body" },
-                { status: 400 },
+                { status: 400 }
             )
         }
 
@@ -33,7 +33,7 @@ export async function PUT(
             if (!allowedKeys.has(key)) {
                 return NextResponse.json(
                     { error: `Unexpected field: ${key}` },
-                    { status: 400 },
+                    { status: 400 }
                 )
             }
         }
@@ -43,14 +43,14 @@ export async function PUT(
         if (!existing) {
             return NextResponse.json(
                 { error: "Post not found" },
-                { status: 404 },
+                { status: 404 }
             )
         }
 
         if (existing.status !== "pending") {
             return NextResponse.json(
                 { error: "Only pending posts can be updated" },
-                { status: 400 },
+                { status: 400 }
             )
         }
 
@@ -61,13 +61,13 @@ export async function PUT(
             if (typeof content !== "string" || !content.trim()) {
                 return NextResponse.json(
                     { error: "content must be a non-empty string" },
-                    { status: 400 },
+                    { status: 400 }
                 )
             }
             if (content.length > 100000) {
                 return NextResponse.json(
                     { error: "content exceeds maximum length" },
-                    { status: 400 },
+                    { status: 400 }
                 )
             }
         }
@@ -76,19 +76,21 @@ export async function PUT(
             if (typeof scheduledTime !== "number") {
                 return NextResponse.json(
                     { error: "scheduledTime must be a number" },
-                    { status: 400 },
+                    { status: 400 }
                 )
             }
             if (scheduledTime < Date.now()) {
                 return NextResponse.json(
                     { error: "scheduledTime must be in the future" },
-                    { status: 400 },
+                    { status: 400 }
                 )
             }
             if (scheduledTime > Date.now() + 365 * 24 * 60 * 60 * 1000) {
                 return NextResponse.json(
-                    { error: "scheduledTime cannot be more than 365 days in the future" },
-                    { status: 400 },
+                    {
+                        error: "scheduledTime cannot be more than 365 days in the future",
+                    },
+                    { status: 400 }
                 )
             }
         }
@@ -103,7 +105,7 @@ export async function PUT(
         const { createClient } = await import("@supabase/supabase-js")
         const supabase = createClient(
             process.env.NEXT_PUBLIC_SUPABASE_URL || "",
-            process.env.SUPABASE_SERVICE_ROLE_KEY || "",
+            process.env.SUPABASE_SERVICE_ROLE_KEY || ""
         )
 
         const updates: Record<string, unknown> = {
@@ -132,14 +134,14 @@ export async function PUT(
         })
         return NextResponse.json(
             { error: "Failed to update scheduled post" },
-            { status: 500 },
+            { status: 500 }
         )
     }
 }
 
 export async function DELETE(
     _request: NextRequest,
-    { params }: { params: Promise<{ id: string }> },
+    { params }: { params: Promise<{ id: string }> }
 ): Promise<NextResponse> {
     try {
         const session = await getServerSession(authOptions)
@@ -154,7 +156,7 @@ export async function DELETE(
         if (!existing) {
             return NextResponse.json(
                 { error: "Post not found" },
-                { status: 404 },
+                { status: 404 }
             )
         }
 
@@ -172,7 +174,7 @@ export async function DELETE(
         })
         return NextResponse.json(
             { error: "Failed to delete scheduled post" },
-            { status: 500 },
+            { status: 500 }
         )
     }
 }

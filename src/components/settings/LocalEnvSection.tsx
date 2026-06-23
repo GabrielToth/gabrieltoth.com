@@ -17,7 +17,11 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import { useLocalEnvs } from "@/lib/local-envs"
-import { KNOWN_SERVICES, MODE_DESCRIPTIONS, MODE_LABELS } from "@/lib/local-envs"
+import {
+    KNOWN_SERVICES,
+    MODE_DESCRIPTIONS,
+    MODE_LABELS,
+} from "@/lib/local-envs"
 import type { EnvMode, ServiceDefinition } from "@/lib/local-envs"
 import { cn } from "@/lib/utils"
 import {
@@ -31,11 +35,7 @@ import {
     Trash2,
 } from "lucide-react"
 import React, { useState } from "react"
-import {
-    FaFacebook,
-    FaLinkedin,
-    FaTwitter,
-} from "react-icons/fa"
+import { FaFacebook, FaLinkedin, FaTwitter } from "react-icons/fa"
 
 const SERVICE_ICONS: Record<string, React.ReactNode> = {
     google: <Globe className="h-5 w-5" />,
@@ -166,10 +166,7 @@ export function LocalEnvSection() {
                                     <Select
                                         value={currentMode}
                                         onValueChange={v =>
-                                            setMode(
-                                                serviceDef.id,
-                                                v as EnvMode
-                                            )
+                                            setMode(serviceDef.id, v as EnvMode)
                                         }
                                     >
                                         <SelectTrigger className="w-44">
@@ -177,9 +174,10 @@ export function LocalEnvSection() {
                                         </SelectTrigger>
                                         <SelectContent>
                                             {(
-                                                Object.entries(
-                                                    MODE_LABELS
-                                                ) as [EnvMode, string][]
+                                                Object.entries(MODE_LABELS) as [
+                                                    EnvMode,
+                                                    string,
+                                                ][]
                                             ).map(([mode, label]) => (
                                                 <SelectItem
                                                     key={mode}

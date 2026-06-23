@@ -31,11 +31,36 @@ interface TransactionData {
 }
 
 const API_ROUTES = [
-    { method: "GET", path: "/api/credits/balance", auth: true, desc: "Current balance" },
-    { method: "GET", path: "/api/credits/transactions?limit=5", auth: true, desc: "Recent transactions" },
-    { method: "GET", path: "/api/credits/costs", auth: false, desc: "Credit cost table" },
-    { method: "GET", path: "/api/credits/whoami", auth: true, desc: "User info + admin status" },
-    { method: "POST", path: "/api/credits/grant", auth: true, desc: "Admin: grant credits" },
+    {
+        method: "GET",
+        path: "/api/credits/balance",
+        auth: true,
+        desc: "Current balance",
+    },
+    {
+        method: "GET",
+        path: "/api/credits/transactions?limit=5",
+        auth: true,
+        desc: "Recent transactions",
+    },
+    {
+        method: "GET",
+        path: "/api/credits/costs",
+        auth: false,
+        desc: "Credit cost table",
+    },
+    {
+        method: "GET",
+        path: "/api/credits/whoami",
+        auth: true,
+        desc: "User info + admin status",
+    },
+    {
+        method: "POST",
+        path: "/api/credits/grant",
+        auth: true,
+        desc: "Admin: grant credits",
+    },
 ] as const
 
 export default function CreditsPage() {

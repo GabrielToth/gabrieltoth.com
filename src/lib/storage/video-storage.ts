@@ -91,9 +91,7 @@ export async function getVideoUrl(
 export async function downloadVideo(path: string): Promise<Buffer> {
     const storage = getStorageClient()
 
-    const { data, error } = await storage
-        .from(BUCKET_NAME)
-        .download(path)
+    const { data, error } = await storage.from(BUCKET_NAME).download(path)
 
     if (error || !data) {
         logger.error("Failed to download video from storage", {
@@ -112,9 +110,7 @@ export async function downloadVideo(path: string): Promise<Buffer> {
 export async function deleteVideo(path: string): Promise<void> {
     const storage = getStorageClient()
 
-    const { error } = await storage
-        .from(BUCKET_NAME)
-        .remove([path])
+    const { error } = await storage.from(BUCKET_NAME).remove([path])
 
     if (error) {
         logger.error("Failed to delete video from storage", {

@@ -24,7 +24,7 @@ export interface TikTokPostResult {
 }
 
 export async function postToTikTok(
-    config: TikTokPostConfig,
+    config: TikTokPostConfig
 ): Promise<TikTokPostResult> {
     try {
         if (!config.title || !config.source) {
@@ -34,10 +34,7 @@ export async function postToTikTok(
             }
         }
 
-        if (
-            config.source === "PULL_FROM_URL" &&
-            !config.videoUrl
-        ) {
+        if (config.source === "PULL_FROM_URL" && !config.videoUrl) {
             return {
                 success: false,
                 error: "Video URL is required when source is PULL_FROM_URL",
@@ -80,7 +77,7 @@ export async function postToTikTok(
 
             const uploaded = await oauthService.uploadVideoFile(
                 initResult.uploadUrl,
-                config.videoBuffer,
+                config.videoBuffer
             )
 
             if (!uploaded) {

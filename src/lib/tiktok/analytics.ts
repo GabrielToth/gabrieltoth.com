@@ -17,14 +17,12 @@ export interface TikTokVideoEngagement {
     createTime?: string
 }
 
-export function extractUserStats(
-    user: {
-        followerCount?: number
-        followingCount?: number
-        likesCount?: number
-        videoCount?: number
-    },
-): TikTokUserStats {
+export function extractUserStats(user: {
+    followerCount?: number
+    followingCount?: number
+    likesCount?: number
+    videoCount?: number
+}): TikTokUserStats {
     return {
         followerCount: user.followerCount || 0,
         followingCount: user.followingCount || 0,
@@ -34,9 +32,9 @@ export function extractUserStats(
 }
 
 export function extractVideoEngagement(
-    videos: TikTokVideo[],
+    videos: TikTokVideo[]
 ): TikTokVideoEngagement[] {
-    return videos.map((v) => ({
+    return videos.map(v => ({
         id: v.id,
         title: v.title,
         likeCount: v.likeCount || 0,

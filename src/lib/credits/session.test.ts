@@ -10,13 +10,10 @@ vi.mock("@/lib/db", () => {
 import { db } from "@/lib/db"
 import { getSessionUser, isAdminUser } from "./session"
 
-function mockRequest(
-    cookie?: string
-): globalThis.Request {
+function mockRequest(cookie?: string): globalThis.Request {
     return {
         cookies: {
-            get: () =>
-                cookie ? { value: cookie } : undefined,
+            get: () => (cookie ? { value: cookie } : undefined),
         },
     } as any
 }

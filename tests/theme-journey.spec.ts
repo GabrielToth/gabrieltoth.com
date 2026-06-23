@@ -131,9 +131,7 @@ test.describe("theme switching journey", () => {
         })
     }
 
-    test("theme toggle works on channel management page", async ({
-        page,
-    }) => {
+    test("theme toggle works on channel management page", async ({ page }) => {
         await page.goto("/en/channel-management")
 
         await page
@@ -219,9 +217,7 @@ test.describe("theme switching journey", () => {
             .toBe("dark")
     })
 
-    test("theme persists across multiple locale switches", async ({
-        page,
-    }) => {
+    test("theme persists across multiple locale switches", async ({ page }) => {
         await page.goto("/en")
 
         await page

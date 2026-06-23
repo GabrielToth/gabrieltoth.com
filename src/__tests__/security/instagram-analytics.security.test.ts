@@ -38,11 +38,11 @@ const mockGetToken = vi.hoisted(() =>
         expiresAt: Date.now() + 3600000,
         platform: "instagram",
         userId: "test-user-123",
-    }),
+    })
 )
 
 const mockGetValidInstagramToken = vi.hoisted(() =>
-    vi.fn().mockResolvedValue("mock-access-token"),
+    vi.fn().mockResolvedValue("mock-access-token")
 )
 
 vi.mock("@/lib/token-store", () => ({
@@ -122,7 +122,7 @@ vi.mock("@/lib/logger", () => ({
 
 function makeGetRequest(
     url: string,
-    headers: Record<string, string> = {},
+    headers: Record<string, string> = {}
 ): NextRequest {
     return new NextRequest(url, {
         method: "GET",
@@ -154,7 +154,7 @@ describe("GET /api/platform/instagram/analytics — Attack Matrix", () => {
     describe("Row 1 — Auth bypass", () => {
         it("should reject request without x-user-id header", async () => {
             const request = new NextRequest(
-                "http://localhost/api/platform/instagram/analytics",
+                "http://localhost/api/platform/instagram/analytics"
             )
             const response = await GET(request)
             expect(response.status).toBe(400)
@@ -165,7 +165,7 @@ describe("GET /api/platform/instagram/analytics — Attack Matrix", () => {
         it("should reject request with empty x-user-id", async () => {
             const request = makeGetRequest(
                 "http://localhost/api/platform/instagram/analytics",
-                { "x-user-id": "" },
+                { "x-user-id": "" }
             )
             const response = await GET(request)
             expect(response.status).toBe(400)
@@ -175,9 +175,8 @@ describe("GET /api/platform/instagram/analytics — Attack Matrix", () => {
     // ── Row 2: HTTP method confusion ──
     describe("Row 2 — HTTP method confusion", () => {
         it("should not expose POST handler for analytics", async () => {
-            const route = await import(
-                "@/app/api/platform/instagram/analytics/route"
-            )
+            const route =
+                await import("@/app/api/platform/instagram/analytics/route")
             expect("POST" in route).toBe(false)
         })
     })
@@ -186,7 +185,7 @@ describe("GET /api/platform/instagram/analytics — Attack Matrix", () => {
     describe("Row 4 — Value attacks on query params", () => {
         it("should handle empty metric parameter", async () => {
             const request = makeGetRequest(
-                "http://localhost/api/platform/instagram/analytics?metric=&period=day",
+                "http://localhost/api/platform/instagram/analytics?metric=&period=day"
             )
             const response = await GET(request)
             expect([200, 500]).toContain(response.status)
@@ -194,7 +193,7 @@ describe("GET /api/platform/instagram/analytics — Attack Matrix", () => {
 
         it("should handle invalid metric value", async () => {
             const request = makeGetRequest(
-                "http://localhost/api/platform/instagram/analytics?metric=nonexistent_metric&period=day",
+                "http://localhost/api/platform/instagram/analytics?metric=nonexistent_metric&period=day"
             )
             const response = await GET(request)
             expect([200, 500]).toContain(response.status)
@@ -202,7 +201,7 @@ describe("GET /api/platform/instagram/analytics — Attack Matrix", () => {
 
         it("should handle empty period parameter", async () => {
             const request = makeGetRequest(
-                "http://localhost/api/platform/instagram/analytics?metric=impressions&period=",
+                "http://localhost/api/platform/instagram/analytics?metric=impressions&period="
             )
             const response = await GET(request)
             expect([200, 500]).toContain(response.status)
@@ -210,7 +209,7 @@ describe("GET /api/platform/instagram/analytics — Attack Matrix", () => {
 
         it("should handle invalid period value", async () => {
             const request = makeGetRequest(
-                "http://localhost/api/platform/instagram/analytics?metric=impressions&period=invalid",
+                "http://localhost/api/platform/instagram/analytics?metric=impressions&period=invalid"
             )
             const response = await GET(request)
             expect([200, 500]).toContain(response.status)
@@ -218,7 +217,7 @@ describe("GET /api/platform/instagram/analytics — Attack Matrix", () => {
 
         it("should handle no query params (defaults)", async () => {
             const request = makeGetRequest(
-                "http://localhost/api/platform/instagram/analytics",
+                "http://localhost/api/platform/instagram/analytics"
             )
             const response = await GET(request)
             expect([200, 500]).toContain(response.status)
@@ -226,7 +225,7 @@ describe("GET /api/platform/instagram/analytics — Attack Matrix", () => {
 
         it("should handle negative values in period", async () => {
             const request = makeGetRequest(
-                "http://localhost/api/platform/instagram/analytics?metric=impressions&period=-1",
+                "http://localhost/api/platform/instagram/analytics?metric=impressions&period=-1"
             )
             const response = await GET(request)
             expect([200, 500]).toContain(response.status)
@@ -237,7 +236,7 @@ describe("GET /api/platform/instagram/analytics — Attack Matrix", () => {
     describe("Row 7 — Injection attacks", () => {
         it("should handle SQL injection in metric parameter", async () => {
             const request = makeGetRequest(
-                "http://localhost/api/platform/instagram/analytics?metric=1' OR '1'='1&period=day",
+                "http://localhost/api/platform/instagram/analytics?metric=1' OR '1'='1&period=day"
             )
             const response = await GET(request)
             expect([200, 500]).toContain(response.status)
@@ -245,7 +244,7 @@ describe("GET /api/platform/instagram/analytics — Attack Matrix", () => {
 
         it("should handle XSS in metric parameter", async () => {
             const request = makeGetRequest(
-                "http://localhost/api/platform/instagram/analytics?metric=<script>alert(1)</script>&period=day",
+                "http://localhost/api/platform/instagram/analytics?metric=<script>alert(1)</script>&period=day"
             )
             const response = await GET(request)
             expect([200, 500]).toContain(response.status)
@@ -253,7 +252,7 @@ describe("GET /api/platform/instagram/analytics — Attack Matrix", () => {
 
         it("should handle NoSQL operators in metric parameter", async () => {
             const request = makeGetRequest(
-                "http://localhost/api/platform/instagram/analytics?metric=$gt&period=day",
+                "http://localhost/api/platform/instagram/analytics?metric=$gt&period=day"
             )
             const response = await GET(request)
             expect([200, 500]).toContain(response.status)
@@ -264,7 +263,7 @@ describe("GET /api/platform/instagram/analytics — Attack Matrix", () => {
     describe("Row 8 — Unicode and encoding attacks", () => {
         it("should handle null byte in metric parameter", async () => {
             const request = makeGetRequest(
-                "http://localhost/api/platform/instagram/analytics?metric=impress\0ions&period=day",
+                "http://localhost/api/platform/instagram/analytics?metric=impress\0ions&period=day"
             )
             const response = await GET(request)
             expect([200, 500]).toContain(response.status)
@@ -272,7 +271,7 @@ describe("GET /api/platform/instagram/analytics — Attack Matrix", () => {
 
         it("should handle emoji in metric parameter", async () => {
             const request = makeGetRequest(
-                "http://localhost/api/platform/instagram/analytics?metric=impress😊ions&period=day",
+                "http://localhost/api/platform/instagram/analytics?metric=impress😊ions&period=day"
             )
             const response = await GET(request)
             expect([200, 500]).toContain(response.status)
@@ -280,7 +279,7 @@ describe("GET /api/platform/instagram/analytics — Attack Matrix", () => {
 
         it("should handle RTL override in metric parameter", async () => {
             const request = makeGetRequest(
-                "http://localhost/api/platform/instagram/analytics?metric=\u202Eimpressions&period=day",
+                "http://localhost/api/platform/instagram/analytics?metric=\u202Eimpressions&period=day"
             )
             const response = await GET(request)
             expect([200, 500]).toContain(response.status)
@@ -291,7 +290,7 @@ describe("GET /api/platform/instagram/analytics — Attack Matrix", () => {
     describe("Row 9 — Size attacks", () => {
         it("should handle oversized metric parameter (10k+ chars)", async () => {
             const request = makeGetRequest(
-                `http://localhost/api/platform/instagram/analytics?metric=${"A".repeat(10000)}&period=day`,
+                `http://localhost/api/platform/instagram/analytics?metric=${"A".repeat(10000)}&period=day`
             )
             const response = await GET(request)
             expect([200, 500]).toContain(response.status)
@@ -299,7 +298,7 @@ describe("GET /api/platform/instagram/analytics — Attack Matrix", () => {
 
         it("should handle deeply nested query params", async () => {
             const request = makeGetRequest(
-                `http://localhost/api/platform/instagram/analytics?metric=impressions&period=day&${"x".repeat(1000)}=y`,
+                `http://localhost/api/platform/instagram/analytics?metric=impressions&period=day&${"x".repeat(1000)}=y`
             )
             const response = await GET(request)
             expect([200, 500]).toContain(response.status)
@@ -310,7 +309,7 @@ describe("GET /api/platform/instagram/analytics — Attack Matrix", () => {
     describe("Row 10 — Rate limiting", () => {
         it("should handle request within rate limit", async () => {
             const request = makeGetRequest(
-                "http://localhost/api/platform/instagram/analytics?metric=impressions&period=day",
+                "http://localhost/api/platform/instagram/analytics?metric=impressions&period=day"
             )
             const response = await GET(request)
             expect([200, 500]).toContain(response.status)
@@ -323,18 +322,18 @@ describe("GET /api/platform/instagram/analytics — Attack Matrix", () => {
             const results = await Promise.all([
                 GET(
                     makeGetRequest(
-                        "http://localhost/api/platform/instagram/analytics?metric=impressions&period=day",
-                    ),
+                        "http://localhost/api/platform/instagram/analytics?metric=impressions&period=day"
+                    )
                 ),
                 GET(
                     makeGetRequest(
-                        "http://localhost/api/platform/instagram/analytics?metric=reach&period=week",
-                    ),
+                        "http://localhost/api/platform/instagram/analytics?metric=reach&period=week"
+                    )
                 ),
                 GET(
                     makeGetRequest(
-                        "http://localhost/api/platform/instagram/analytics?metric=profile_views&period=days_28",
-                    ),
+                        "http://localhost/api/platform/instagram/analytics?metric=profile_views&period=days_28"
+                    )
                 ),
             ])
             for (const response of results) {
@@ -348,7 +347,7 @@ describe("GET /api/platform/instagram/analytics — Attack Matrix", () => {
         it("should handle X-Forwarded-For header", async () => {
             const request = makeGetRequest(
                 "http://localhost/api/platform/instagram/analytics",
-                { "X-Forwarded-For": "127.0.0.1" },
+                { "X-Forwarded-For": "127.0.0.1" }
             )
             const response = await GET(request)
             expect([200, 500]).toContain(response.status)
@@ -357,7 +356,7 @@ describe("GET /api/platform/instagram/analytics — Attack Matrix", () => {
         it("should handle Host override header", async () => {
             const request = makeGetRequest(
                 "http://localhost/api/platform/instagram/analytics",
-                { Host: "evil.com" },
+                { Host: "evil.com" }
             )
             const response = await GET(request)
             expect([200, 500]).toContain(response.status)
@@ -368,10 +367,10 @@ describe("GET /api/platform/instagram/analytics — Attack Matrix", () => {
     describe("Row 15 — Info disclosure", () => {
         it("should not leak internal paths in error response", async () => {
             mockGetToken.mockRejectedValue(
-                new Error("Database connection error"),
+                new Error("Database connection error")
             )
             const request = makeGetRequest(
-                "http://localhost/api/platform/instagram/analytics",
+                "http://localhost/api/platform/instagram/analytics"
             )
             const response = await GET(request)
             const body = await response.json()
@@ -387,7 +386,7 @@ describe("GET /api/platform/instagram/analytics — Attack Matrix", () => {
         it("should return 404 when Instagram is not linked", async () => {
             mockGetToken.mockResolvedValue(null)
             const request = makeGetRequest(
-                "http://localhost/api/platform/instagram/analytics",
+                "http://localhost/api/platform/instagram/analytics"
             )
             const response = await GET(request)
             expect(response.status).toBe(404)
@@ -396,7 +395,7 @@ describe("GET /api/platform/instagram/analytics — Attack Matrix", () => {
         it("should return 401 when token is expired and cannot refresh", async () => {
             mockGetValidInstagramToken.mockResolvedValue(null)
             const request = makeGetRequest(
-                "http://localhost/api/platform/instagram/analytics",
+                "http://localhost/api/platform/instagram/analytics"
             )
             const response = await GET(request)
             expect(response.status).toBe(401)
@@ -408,12 +407,12 @@ describe("GET /api/platform/instagram/analytics — Attack Matrix", () => {
         it("should use x-user-id header for authorization", async () => {
             const request = makeGetRequest(
                 "http://localhost/api/platform/instagram/analytics",
-                { "x-user-id": "other-user-456" },
+                { "x-user-id": "other-user-456" }
             )
             const response = await GET(request)
             expect(mockGetToken).toHaveBeenCalledWith(
                 "other-user-456",
-                "instagram",
+                "instagram"
             )
             expect([200, 500]).toContain(response.status)
         })
@@ -423,7 +422,7 @@ describe("GET /api/platform/instagram/analytics — Attack Matrix", () => {
     describe("Row 20 — SSRF via metric parameter", () => {
         it("should handle SSRF attempt via metric with internal IP redirect", async () => {
             const request = makeGetRequest(
-                "http://localhost/api/platform/instagram/analytics?metric=impressions&period=day",
+                "http://localhost/api/platform/instagram/analytics?metric=impressions&period=day"
             )
             const response = await GET(request)
             expect([200, 500]).toContain(response.status)

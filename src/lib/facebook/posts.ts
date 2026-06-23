@@ -33,7 +33,7 @@ export interface PostToPageFeedOptions {
 export async function postToPageFeed(
     pageAccessToken: string,
     pageId: string,
-    options: PostToPageFeedOptions,
+    options: PostToPageFeedOptions
 ): Promise<FacebookPostResult> {
     const params = new URLSearchParams({
         access_token: pageAccessToken,
@@ -49,7 +49,7 @@ export async function postToPageFeed(
         if (options.scheduledPublishTime) {
             params.set(
                 "scheduled_publish_time",
-                String(options.scheduledPublishTime),
+                String(options.scheduledPublishTime)
             )
         }
     }
@@ -65,7 +65,7 @@ export async function postToPageFeed(
     if (!response.ok) {
         const error = await response.json()
         throw new Error(
-            error.error?.message || "Failed to post to Facebook Page feed",
+            error.error?.message || "Failed to post to Facebook Page feed"
         )
     }
 
@@ -79,7 +79,7 @@ export async function postToGroupFeed(
     options?: {
         link?: string
         picture?: string
-    },
+    }
 ): Promise<FacebookPostResult> {
     const params = new URLSearchParams({
         access_token: pageAccessToken,
@@ -100,7 +100,7 @@ export async function postToGroupFeed(
     if (!response.ok) {
         const error = await response.json()
         throw new Error(
-            error.error?.message || "Failed to post to Facebook Group",
+            error.error?.message || "Failed to post to Facebook Group"
         )
     }
 
@@ -114,7 +114,7 @@ export async function getPagePosts(
         limit?: number
         before?: string
         after?: string
-    },
+    }
 ): Promise<{ data: FacebookPost[]; paging?: any }> {
     const params = new URLSearchParams({
         access_token: pageAccessToken,
@@ -132,7 +132,7 @@ export async function getPagePosts(
     if (!response.ok) {
         const error = await response.json()
         throw new Error(
-            error.error?.message || "Failed to fetch Facebook Page posts",
+            error.error?.message || "Failed to fetch Facebook Page posts"
         )
     }
 

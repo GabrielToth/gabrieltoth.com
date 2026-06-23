@@ -83,9 +83,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         await oauthService.initialize()
 
         // Revoke the access token on Google's side
-        const revoked = await oauthService.revokeToken(
-            storedToken.accessToken
-        )
+        const revoked = await oauthService.revokeToken(storedToken.accessToken)
 
         if (!revoked) {
             logger.warn("Token revocation returned false", { userId })

@@ -1,4 +1,8 @@
-export type EnvMode = "local_only" | "local_preferred" | "cloud_preferred" | "cloud_only"
+export type EnvMode =
+    | "local_only"
+    | "local_preferred"
+    | "cloud_preferred"
+    | "cloud_only"
 
 export interface LocalEnvEntry {
     key: string
@@ -32,10 +36,26 @@ export const KNOWN_SERVICES: ServiceDefinition[] = [
         name: "Google (YouTube, OAuth)",
         icon: "globe",
         envVars: [
-            { key: "GOOGLE_CLIENT_ID", label: "Google Client ID", secret: true },
-            { key: "GOOGLE_CLIENT_SECRET", label: "Google Client Secret", secret: true },
-            { key: "YOUTUBE_CLIENT_ID", label: "YouTube Client ID", secret: true },
-            { key: "YOUTUBE_CLIENT_SECRET", label: "YouTube Client Secret", secret: true },
+            {
+                key: "GOOGLE_CLIENT_ID",
+                label: "Google Client ID",
+                secret: true,
+            },
+            {
+                key: "GOOGLE_CLIENT_SECRET",
+                label: "Google Client Secret",
+                secret: true,
+            },
+            {
+                key: "YOUTUBE_CLIENT_ID",
+                label: "YouTube Client ID",
+                secret: true,
+            },
+            {
+                key: "YOUTUBE_CLIENT_SECRET",
+                label: "YouTube Client Secret",
+                secret: true,
+            },
         ],
     },
     {
@@ -43,7 +63,11 @@ export const KNOWN_SERVICES: ServiceDefinition[] = [
         name: "Meta (Facebook, Instagram)",
         icon: "facebook",
         envVars: [
-            { key: "META_ACCESS_TOKEN", label: "Meta Access Token", secret: true },
+            {
+                key: "META_ACCESS_TOKEN",
+                label: "Meta Access Token",
+                secret: true,
+            },
             { key: "META_APP_ID", label: "Meta App ID", secret: true },
             { key: "META_APP_SECRET", label: "Meta App Secret", secret: true },
             { key: "FACEBOOK_PAGE_ID", label: "Facebook Page ID" },
@@ -55,9 +79,21 @@ export const KNOWN_SERVICES: ServiceDefinition[] = [
         name: "TikTok",
         icon: "music",
         envVars: [
-            { key: "TIKTOK_ACCESS_TOKEN", label: "TikTok Access Token", secret: true },
-            { key: "TIKTOK_CLIENT_KEY", label: "TikTok Client Key", secret: true },
-            { key: "TIKTOK_CLIENT_SECRET", label: "TikTok Client Secret", secret: true },
+            {
+                key: "TIKTOK_ACCESS_TOKEN",
+                label: "TikTok Access Token",
+                secret: true,
+            },
+            {
+                key: "TIKTOK_CLIENT_KEY",
+                label: "TikTok Client Key",
+                secret: true,
+            },
+            {
+                key: "TIKTOK_CLIENT_SECRET",
+                label: "TikTok Client Secret",
+                secret: true,
+            },
         ],
     },
     {
@@ -66,10 +102,26 @@ export const KNOWN_SERVICES: ServiceDefinition[] = [
         icon: "twitter",
         envVars: [
             { key: "TWITTER_API_KEY", label: "Twitter API Key", secret: true },
-            { key: "TWITTER_API_SECRET", label: "Twitter API Secret", secret: true },
-            { key: "TWITTER_ACCESS_TOKEN", label: "Twitter Access Token", secret: true },
-            { key: "TWITTER_ACCESS_SECRET", label: "Twitter Access Token Secret", secret: true },
-            { key: "TWITTER_BEARER_TOKEN", label: "Twitter Bearer Token", secret: true },
+            {
+                key: "TWITTER_API_SECRET",
+                label: "Twitter API Secret",
+                secret: true,
+            },
+            {
+                key: "TWITTER_ACCESS_TOKEN",
+                label: "Twitter Access Token",
+                secret: true,
+            },
+            {
+                key: "TWITTER_ACCESS_SECRET",
+                label: "Twitter Access Token Secret",
+                secret: true,
+            },
+            {
+                key: "TWITTER_BEARER_TOKEN",
+                label: "Twitter Bearer Token",
+                secret: true,
+            },
         ],
     },
     {
@@ -77,9 +129,21 @@ export const KNOWN_SERVICES: ServiceDefinition[] = [
         name: "LinkedIn",
         icon: "linkedin",
         envVars: [
-            { key: "LINKEDIN_CLIENT_ID", label: "LinkedIn Client ID", secret: true },
-            { key: "LINKEDIN_CLIENT_SECRET", label: "LinkedIn Client Secret", secret: true },
-            { key: "LINKEDIN_ACCESS_TOKEN", label: "LinkedIn Access Token", secret: true },
+            {
+                key: "LINKEDIN_CLIENT_ID",
+                label: "LinkedIn Client ID",
+                secret: true,
+            },
+            {
+                key: "LINKEDIN_CLIENT_SECRET",
+                label: "LinkedIn Client Secret",
+                secret: true,
+            },
+            {
+                key: "LINKEDIN_ACCESS_TOKEN",
+                label: "LinkedIn Access Token",
+                secret: true,
+            },
         ],
     },
     {
@@ -104,7 +168,11 @@ export const KNOWN_SERVICES: ServiceDefinition[] = [
         name: "Discord",
         icon: "message-circle",
         envVars: [
-            { key: "DISCORD_WEBHOOK_URL", label: "Discord Webhook URL", secret: true },
+            {
+                key: "DISCORD_WEBHOOK_URL",
+                label: "Discord Webhook URL",
+                secret: true,
+            },
         ],
     },
 ]
@@ -120,7 +188,9 @@ export const MODE_LABELS: Record<EnvMode, string> = {
 
 export const MODE_DESCRIPTIONS: Record<EnvMode, string> = {
     local_only: "Nunca usar nossas APIs na nuvem. Apenas suas chaves locais.",
-    local_preferred: "Usar suas chaves locais primeiro. Fallback para nuvem quando atingir limites.",
-    cloud_preferred: "Usar créditos da nuvem primeiro. Fallback para suas chaves locais quando acabar.",
+    local_preferred:
+        "Usar suas chaves locais primeiro. Fallback para nuvem quando atingir limites.",
+    cloud_preferred:
+        "Usar créditos da nuvem primeiro. Fallback para suas chaves locais quando acabar.",
     cloud_only: "Usar apenas nossas APIs na nuvem. Ignorar chaves locais.",
 }

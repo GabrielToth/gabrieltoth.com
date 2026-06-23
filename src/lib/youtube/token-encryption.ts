@@ -270,11 +270,11 @@ export class TokenEncryptionService {
      * @throws Error if encryption fails
      *
      * @example
- * const service = new TokenEncryptionService({
- *   strategy: 'environment',
- *   environmentVariableName: 'TOKEN_ENCRYPTION_KEY'
- * })
- * const result = await service.encrypt('ya29.a0AfH6SMBx...')
+     * const service = new TokenEncryptionService({
+     *   strategy: 'environment',
+     *   environmentVariableName: 'TOKEN_ENCRYPTION_KEY'
+     * })
+     * const result = await service.encrypt('ya29.a0AfH6SMBx...')
      * // result.encryptedToken will be a base64 string
      */
     async encrypt(token: string): Promise<EncryptionResult> {
@@ -327,11 +327,11 @@ export class TokenEncryptionService {
      * @throws Error if decryption fails or token is invalid
      *
      * @example
- * const service = new TokenEncryptionService({
- *   strategy: 'environment',
- *   environmentVariableName: 'TOKEN_ENCRYPTION_KEY'
- * })
- * const result = await service.decrypt(encryptedToken)
+     * const service = new TokenEncryptionService({
+     *   strategy: 'environment',
+     *   environmentVariableName: 'TOKEN_ENCRYPTION_KEY'
+     * })
+     * const result = await service.decrypt(encryptedToken)
      * // result.token will be the original OAuth token
      */
     async decrypt(encryptedToken: string): Promise<DecryptionResult> {

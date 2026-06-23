@@ -48,7 +48,13 @@ vi.mock("@/lib/tiktok/config", () => ({
             clientKey: "test-client-key",
             clientSecret: "test-client-secret",
             redirectUri: "http://localhost:3000/api/oauth/callback/tiktok",
-            scopes: ["user.info.basic", "user.info.profile", "user.info.stats", "video.list", "video.publish"],
+            scopes: [
+                "user.info.basic",
+                "user.info.profile",
+                "user.info.stats",
+                "video.list",
+                "video.publish",
+            ],
             apiVersion: "v2",
         },
         rateLimit: {
@@ -68,7 +74,7 @@ const mockExchangeCodeForToken = vi.hoisted(() =>
         refreshToken: "mock-refresh-token",
         expiresIn: 86400,
         tokenType: "bearer",
-    }),
+    })
 )
 
 const mockGetUserInfo = vi.hoisted(() =>
@@ -83,7 +89,7 @@ const mockGetUserInfo = vi.hoisted(() =>
         likesCount: 500,
         videoCount: 10,
         isVerified: false,
-    }),
+    })
 )
 
 vi.mock("@/lib/tiktok/oauth-service", () => ({
@@ -146,7 +152,7 @@ vi.mock("@supabase/supabase-js", () => {
 
 function makeGetRequest(
     url: string,
-    headers: Record<string, string> = {},
+    headers: Record<string, string> = {}
 ): NextRequest {
     return new NextRequest(url, {
         method: "GET",
@@ -172,7 +178,7 @@ describe("GET /api/oauth/callback/tiktok — Attack Matrix", () => {
     describe("Row 1 — Auth bypass (state acts as CSRF token)", () => {
         it("should handle null state gracefully", async () => {
             const request = makeGetRequest(
-                "http://localhost/api/oauth/callback/tiktok?code=test-code",
+                "http://localhost/api/oauth/callback/tiktok?code=test-code"
             )
             const response = await GET(request)
             expect(response.status).toBe(307)
@@ -182,7 +188,7 @@ describe("GET /api/oauth/callback/tiktok — Attack Matrix", () => {
 
         it("should handle empty state gracefully", async () => {
             const request = makeGetRequest(
-                "http://localhost/api/oauth/callback/tiktok?code=test-code&state=",
+                "http://localhost/api/oauth/callback/tiktok?code=test-code&state="
             )
             const response = await GET(request)
             expect(response.status).toBe(307)
@@ -201,7 +207,7 @@ describe("GET /api/oauth/callback/tiktok — Attack Matrix", () => {
                 },
             })
             const request = makeGetRequest(
-                "http://localhost/api/oauth/callback/tiktok?code=test-code&state=invalid-platform-state",
+                "http://localhost/api/oauth/callback/tiktok?code=test-code&state=invalid-platform-state"
             )
             const response = await GET(request)
             expect(response.status).toBe(307)
@@ -212,9 +218,7 @@ describe("GET /api/oauth/callback/tiktok — Attack Matrix", () => {
 
     describe("Row 2 — HTTP method confusion", () => {
         it("should not expose POST handler for callback", async () => {
-            const route = await import(
-                "@/app/api/oauth/callback/tiktok/route"
-            )
+            const route = await import("@/app/api/oauth/callback/tiktok/route")
             expect("POST" in route).toBe(false)
         })
     })
@@ -222,7 +226,7 @@ describe("GET /api/oauth/callback/tiktok — Attack Matrix", () => {
     describe("Row 3 — Type attacks (query params)", () => {
         it("should handle code as array-like string", async () => {
             const request = makeGetRequest(
-                "http://localhost/api/oauth/callback/tiktok?code[]=test&state=some-state",
+                "http://localhost/api/oauth/callback/tiktok?code[]=test&state=some-state"
             )
             const response = await GET(request)
             expect(response.status).toBe(307)
@@ -230,7 +234,7 @@ describe("GET /api/oauth/callback/tiktok — Attack Matrix", () => {
 
         it("should handle code as number string", async () => {
             const request = makeGetRequest(
-                "http://localhost/api/oauth/callback/tiktok?code=12345&state=some-state",
+                "http://localhost/api/oauth/callback/tiktok?code=12345&state=some-state"
             )
             const response = await GET(request)
             expect(response.status).toBe(307)
@@ -240,7 +244,7 @@ describe("GET /api/oauth/callback/tiktok — Attack Matrix", () => {
     describe("Row 4 — Value attacks", () => {
         it("should handle missing code parameter", async () => {
             const request = makeGetRequest(
-                "http://localhost/api/oauth/callback/tiktok?state=some-state",
+                "http://localhost/api/oauth/callback/tiktok?state=some-state"
             )
             const response = await GET(request)
             expect(response.status).toBe(307)
@@ -250,7 +254,7 @@ describe("GET /api/oauth/callback/tiktok — Attack Matrix", () => {
 
         it("should handle empty code parameter", async () => {
             const request = makeGetRequest(
-                "http://localhost/api/oauth/callback/tiktok?code=&state=some-state",
+                "http://localhost/api/oauth/callback/tiktok?code=&state=some-state"
             )
             const response = await GET(request)
             expect(response.status).toBe(307)
@@ -260,7 +264,7 @@ describe("GET /api/oauth/callback/tiktok — Attack Matrix", () => {
 
         it("should handle whitespace-only code", async () => {
             const request = makeGetRequest(
-                "http://localhost/api/oauth/callback/tiktok?code=++&state=some-state",
+                "http://localhost/api/oauth/callback/tiktok?code=++&state=some-state"
             )
             const response = await GET(request)
             expect(response.status).toBe(307)
@@ -270,7 +274,7 @@ describe("GET /api/oauth/callback/tiktok — Attack Matrix", () => {
     describe("Row 5 — Structure attacks", () => {
         it("should handle no query params at all", async () => {
             const request = makeGetRequest(
-                "http://localhost/api/oauth/callback/tiktok",
+                "http://localhost/api/oauth/callback/tiktok"
             )
             const response = await GET(request)
             expect(response.status).toBe(307)
@@ -280,7 +284,7 @@ describe("GET /api/oauth/callback/tiktok — Attack Matrix", () => {
 
         it("should handle duplicate code parameter", async () => {
             const request = makeGetRequest(
-                "http://localhost/api/oauth/callback/tiktok?code=first&code=second&state=some-state",
+                "http://localhost/api/oauth/callback/tiktok?code=first&code=second&state=some-state"
             )
             const response = await GET(request)
             expect(response.status).toBe(307)
@@ -290,7 +294,7 @@ describe("GET /api/oauth/callback/tiktok — Attack Matrix", () => {
     describe("Row 6 — Prototype pollution", () => {
         it("should handle __proto__ as state param", async () => {
             const request = makeGetRequest(
-                "http://localhost/api/oauth/callback/tiktok?code=test-code&__proto__[polluted]=true&state=valid",
+                "http://localhost/api/oauth/callback/tiktok?code=test-code&__proto__[polluted]=true&state=valid"
             )
             const response = await GET(request)
             expect(response.status).toBe(307)
@@ -298,7 +302,7 @@ describe("GET /api/oauth/callback/tiktok — Attack Matrix", () => {
 
         it("should handle constructor[prototype] as param", async () => {
             const request = makeGetRequest(
-                "http://localhost/api/oauth/callback/tiktok?code=test-code&constructor[prototype][polluted]=true&state=valid",
+                "http://localhost/api/oauth/callback/tiktok?code=test-code&constructor[prototype][polluted]=true&state=valid"
             )
             const response = await GET(request)
             expect(response.status).toBe(307)
@@ -308,7 +312,7 @@ describe("GET /api/oauth/callback/tiktok — Attack Matrix", () => {
     describe("Row 7 — Injection", () => {
         it("should handle SQL injection in code", async () => {
             const request = makeGetRequest(
-                "http://localhost/api/oauth/callback/tiktok?code=1' OR '1'='1&state=some-state",
+                "http://localhost/api/oauth/callback/tiktok?code=1' OR '1'='1&state=some-state"
             )
             const response = await GET(request)
             expect([307, 500]).toContain(response.status)
@@ -316,7 +320,7 @@ describe("GET /api/oauth/callback/tiktok — Attack Matrix", () => {
 
         it("should handle XSS in code param", async () => {
             const request = makeGetRequest(
-                "http://localhost/api/oauth/callback/tiktok?code=<script>alert(1)</script>&state=some-state",
+                "http://localhost/api/oauth/callback/tiktok?code=<script>alert(1)</script>&state=some-state"
             )
             const response = await GET(request)
             expect([307, 500]).toContain(response.status)
@@ -324,7 +328,7 @@ describe("GET /api/oauth/callback/tiktok — Attack Matrix", () => {
 
         it("should handle NoSQL operators in code", async () => {
             const request = makeGetRequest(
-                "http://localhost/api/oauth/callback/tiktok?code[$gt]=&state=some-state",
+                "http://localhost/api/oauth/callback/tiktok?code[$gt]=&state=some-state"
             )
             const response = await GET(request)
             expect([307, 500]).toContain(response.status)
@@ -337,7 +341,7 @@ describe("GET /api/oauth/callback/tiktok — Attack Matrix", () => {
                 error: "Invalid state signature",
             })
             const request = makeGetRequest(
-                "http://localhost/api/oauth/callback/tiktok?code=test-code&state=1' OR '1'='1",
+                "http://localhost/api/oauth/callback/tiktok?code=test-code&state=1' OR '1'='1"
             )
             const response = await GET(request)
             expect([307, 500]).toContain(response.status)
@@ -345,7 +349,7 @@ describe("GET /api/oauth/callback/tiktok — Attack Matrix", () => {
 
         it("should handle command injection in code", async () => {
             const request = makeGetRequest(
-                "http://localhost/api/oauth/callback/tiktok?code=$(cat /etc/passwd)&state=some-state",
+                "http://localhost/api/oauth/callback/tiktok?code=$(cat /etc/passwd)&state=some-state"
             )
             const response = await GET(request)
             expect([307, 500]).toContain(response.status)
@@ -355,7 +359,7 @@ describe("GET /api/oauth/callback/tiktok — Attack Matrix", () => {
     describe("Row 8 — Unicode/encoding", () => {
         it("should handle emoji in code param", async () => {
             const request = makeGetRequest(
-                "http://localhost/api/oauth/callback/tiktok?code=🔑🔓&state=some-state",
+                "http://localhost/api/oauth/callback/tiktok?code=🔑🔓&state=some-state"
             )
             const response = await GET(request)
             expect([307, 500]).toContain(response.status)
@@ -363,7 +367,7 @@ describe("GET /api/oauth/callback/tiktok — Attack Matrix", () => {
 
         it("should handle null byte in code", async () => {
             const request = makeGetRequest(
-                "http://localhost/api/oauth/callback/tiktok?code=test%00code&state=some-state",
+                "http://localhost/api/oauth/callback/tiktok?code=test%00code&state=some-state"
             )
             const response = await GET(request)
             expect([307, 500]).toContain(response.status)
@@ -371,7 +375,7 @@ describe("GET /api/oauth/callback/tiktok — Attack Matrix", () => {
 
         it("should handle unicode normalization in state", async () => {
             const request = makeGetRequest(
-                "http://localhost/api/oauth/callback/tiktok?code=test-code&state=café",
+                "http://localhost/api/oauth/callback/tiktok?code=test-code&state=café"
             )
             const response = await GET(request)
             expect([307, 500]).toContain(response.status)
@@ -381,7 +385,7 @@ describe("GET /api/oauth/callback/tiktok — Attack Matrix", () => {
     describe("Row 9 — Size attacks", () => {
         it("should handle oversized code (10k+ chars)", async () => {
             const request = makeGetRequest(
-                `http://localhost/api/oauth/callback/tiktok?code=${"A".repeat(10000)}&state=some-state`,
+                `http://localhost/api/oauth/callback/tiktok?code=${"A".repeat(10000)}&state=some-state`
             )
             const response = await GET(request)
             expect([307, 500]).toContain(response.status)
@@ -389,7 +393,7 @@ describe("GET /api/oauth/callback/tiktok — Attack Matrix", () => {
 
         it("should handle oversized state (10k+ chars)", async () => {
             const request = makeGetRequest(
-                `http://localhost/api/oauth/callback/tiktok?code=test-code&state=${"A".repeat(10000)}`,
+                `http://localhost/api/oauth/callback/tiktok?code=test-code&state=${"A".repeat(10000)}`
             )
             const response = await GET(request)
             expect([307, 500]).toContain(response.status)
@@ -398,7 +402,7 @@ describe("GET /api/oauth/callback/tiktok — Attack Matrix", () => {
         it("should handle deep nested query params", async () => {
             const deepParam = "a".repeat(100) + "[" + "a".repeat(100) + "]"
             const request = makeGetRequest(
-                `http://localhost/api/oauth/callback/tiktok?code=test-code&state=valid&${deepParam}=value`,
+                `http://localhost/api/oauth/callback/tiktok?code=test-code&state=valid&${deepParam}=value`
             )
             const response = await GET(request)
             expect([307, 500]).toContain(response.status)
@@ -417,7 +421,7 @@ describe("GET /api/oauth/callback/tiktok — Attack Matrix", () => {
                 },
             })
             const request = makeGetRequest(
-                "http://localhost/api/oauth/callback/tiktok?code=test-code&state=valid-state-token",
+                "http://localhost/api/oauth/callback/tiktok?code=test-code&state=valid-state-token"
             )
             const response = await GET(request)
             expect([307, 500]).toContain(response.status)
@@ -432,7 +436,7 @@ describe("GET /api/oauth/callback/tiktok — Attack Matrix", () => {
                 error: "Invalid state signature",
             })
             const request = makeGetRequest(
-                "http://localhost/api/oauth/callback/tiktok?code=test-code&state=invalid-state",
+                "http://localhost/api/oauth/callback/tiktok?code=test-code&state=invalid-state"
             )
             const response = await GET(request)
             expect(response.status).toBe(307)
@@ -447,7 +451,7 @@ describe("GET /api/oauth/callback/tiktok — Attack Matrix", () => {
                 error: "State token expired",
             })
             const request = makeGetRequest(
-                "http://localhost/api/oauth/callback/tiktok?code=test-code&state=expired-state",
+                "http://localhost/api/oauth/callback/tiktok?code=test-code&state=expired-state"
             )
             const response = await GET(request)
             expect(response.status).toBe(307)
@@ -462,7 +466,7 @@ describe("GET /api/oauth/callback/tiktok — Attack Matrix", () => {
                 error: "Invalid state format",
             })
             const request = makeGetRequest(
-                "http://localhost/api/oauth/callback/tiktok?code=test-code&state=malformed",
+                "http://localhost/api/oauth/callback/tiktok?code=test-code&state=malformed"
             )
             const response = await GET(request)
             expect(response.status).toBe(307)
@@ -484,8 +488,8 @@ describe("GET /api/oauth/callback/tiktok — Attack Matrix", () => {
             })
             const requests = Array.from({ length: 5 }, () =>
                 makeGetRequest(
-                    "http://localhost/api/oauth/callback/tiktok?code=test-code&state=valid-state",
-                ),
+                    "http://localhost/api/oauth/callback/tiktok?code=test-code&state=valid-state"
+                )
             )
             const results = await Promise.all(requests.map(r => GET(r)))
             for (const response of results) {
@@ -498,7 +502,7 @@ describe("GET /api/oauth/callback/tiktok — Attack Matrix", () => {
         it("should handle X-Forwarded-For header", async () => {
             const request = makeGetRequest(
                 "http://localhost/api/oauth/callback/tiktok?code=test-code&state=some-state",
-                { "X-Forwarded-For": "127.0.0.1" },
+                { "X-Forwarded-For": "127.0.0.1" }
             )
             const response = await GET(request)
             expect([307, 500]).toContain(response.status)
@@ -507,7 +511,7 @@ describe("GET /api/oauth/callback/tiktok — Attack Matrix", () => {
         it("should handle Host override header", async () => {
             const request = makeGetRequest(
                 "http://localhost/api/oauth/callback/tiktok?code=test-code&state=some-state",
-                { Host: "evil.com" },
+                { Host: "evil.com" }
             )
             const response = await GET(request)
             expect([307, 500]).toContain(response.status)
@@ -517,7 +521,7 @@ describe("GET /api/oauth/callback/tiktok — Attack Matrix", () => {
     describe("Row 15 — Info disclosure", () => {
         it("should not leak internal paths in redirect location", async () => {
             const request = makeGetRequest(
-                "http://localhost/api/oauth/callback/tiktok",
+                "http://localhost/api/oauth/callback/tiktok"
             )
             const response = await GET(request)
             const location = response.headers.get("location") || ""
@@ -528,7 +532,7 @@ describe("GET /api/oauth/callback/tiktok — Attack Matrix", () => {
 
         it("should not expose stack traces on error", async () => {
             mockExchangeCodeForToken.mockRejectedValueOnce(
-                new Error("Internal server error"),
+                new Error("Internal server error")
             )
             mockVerifyState.mockReturnValue({
                 valid: true,
@@ -540,7 +544,7 @@ describe("GET /api/oauth/callback/tiktok — Attack Matrix", () => {
                 },
             })
             const request = makeGetRequest(
-                "http://localhost/api/oauth/callback/tiktok?code=test-code&state=valid-state",
+                "http://localhost/api/oauth/callback/tiktok?code=test-code&state=valid-state"
             )
             const response = await GET(request)
             expect(response.status).toBe(307)
@@ -553,7 +557,7 @@ describe("GET /api/oauth/callback/tiktok — Attack Matrix", () => {
     describe("Row 16 — Business logic", () => {
         it("should handle OAuth error from TikTok", async () => {
             const request = makeGetRequest(
-                "http://localhost/api/oauth/callback/tiktok?error=access_denied&error_description=User+denied",
+                "http://localhost/api/oauth/callback/tiktok?error=access_denied&error_description=User+denied"
             )
             const response = await GET(request)
             expect(response.status).toBe(307)
@@ -573,7 +577,7 @@ describe("GET /api/oauth/callback/tiktok — Attack Matrix", () => {
             })
             mockGetUserInfo.mockResolvedValueOnce(null)
             const request = makeGetRequest(
-                "http://localhost/api/oauth/callback/tiktok?code=test-code&state=valid-state",
+                "http://localhost/api/oauth/callback/tiktok?code=test-code&state=valid-state"
             )
             const response = await GET(request)
             expect(response.status).toBe(307)
@@ -595,7 +599,7 @@ describe("GET /api/oauth/callback/tiktok — Attack Matrix", () => {
                 },
             })
             const request = makeGetRequest(
-                "http://localhost/api/oauth/callback/tiktok?code=test-code&state=valid-state",
+                "http://localhost/api/oauth/callback/tiktok?code=test-code&state=valid-state"
             )
             const response = await GET(request)
             const elapsed = Date.now() - start

@@ -9,7 +9,7 @@ export async function getValidTikTokToken(
     options?: {
         tokenStore?: ReturnType<typeof getTokenStore>
         oauthService?: TikTokOAuthService
-    },
+    }
 ): Promise<string | null> {
     const tokenStore = options?.tokenStore ?? getTokenStore()
 
@@ -46,7 +46,7 @@ export async function getValidTikTokToken(
 
     try {
         const refreshed = await oauthService.refreshAccessToken(
-            stored.refreshToken,
+            stored.refreshToken
         )
 
         const newExpiresAt = refreshed.expiresIn

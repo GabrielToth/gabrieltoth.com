@@ -32,7 +32,7 @@ export async function getComments(
         limit?: number
         after?: string
         before?: string
-    },
+    }
 ): Promise<FacebookCommentsResponse> {
     const params = new URLSearchParams({
         access_token: pageAccessToken,
@@ -50,7 +50,7 @@ export async function getComments(
     if (!response.ok) {
         const error = await response.json()
         throw new Error(
-            error.error?.message || "Failed to fetch Facebook comments",
+            error.error?.message || "Failed to fetch Facebook comments"
         )
     }
 
@@ -60,7 +60,7 @@ export async function getComments(
 export async function replyToComment(
     pageAccessToken: string,
     commentId: string,
-    message: string,
+    message: string
 ): Promise<{ id: string }> {
     const params = new URLSearchParams({
         access_token: pageAccessToken,
@@ -78,7 +78,7 @@ export async function replyToComment(
     if (!response.ok) {
         const error = await response.json()
         throw new Error(
-            error.error?.message || "Failed to reply to Facebook comment",
+            error.error?.message || "Failed to reply to Facebook comment"
         )
     }
 
@@ -87,7 +87,7 @@ export async function replyToComment(
 
 export async function deleteComment(
     pageAccessToken: string,
-    commentId: string,
+    commentId: string
 ): Promise<void> {
     const url = `${GRAPH_API_BASE}/${API_VERSION}/${commentId}?access_token=${pageAccessToken}`
 
@@ -96,7 +96,7 @@ export async function deleteComment(
     if (!response.ok) {
         const error = await response.json()
         throw new Error(
-            error.error?.message || "Failed to delete Facebook comment",
+            error.error?.message || "Failed to delete Facebook comment"
         )
     }
 }
@@ -104,7 +104,7 @@ export async function deleteComment(
 export async function hideComment(
     pageAccessToken: string,
     commentId: string,
-    hide: boolean = true,
+    hide: boolean = true
 ): Promise<void> {
     const params = new URLSearchParams({
         access_token: pageAccessToken,
@@ -122,7 +122,7 @@ export async function hideComment(
     if (!response.ok) {
         const error = await response.json()
         throw new Error(
-            error.error?.message || "Failed to hide/unhide Facebook comment",
+            error.error?.message || "Failed to hide/unhide Facebook comment"
         )
     }
 }

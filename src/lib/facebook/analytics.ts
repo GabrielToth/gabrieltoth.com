@@ -70,7 +70,7 @@ export async function getPageInsights(
         since?: string
         until?: string
         period?: "day" | "week" | "days_28" | "month" | "lifetime"
-    },
+    }
 ): Promise<FacebookPageInsightsResponse> {
     const params = new URLSearchParams({
         access_token: pageAccessToken,
@@ -88,7 +88,7 @@ export async function getPageInsights(
     if (!response.ok) {
         const error = await response.json()
         throw new Error(
-            error.error?.message || "Failed to fetch Facebook Page insights",
+            error.error?.message || "Failed to fetch Facebook Page insights"
         )
     }
 
@@ -98,7 +98,7 @@ export async function getPageInsights(
 export async function getPostInsights(
     pageAccessToken: string,
     postId: string,
-    metrics: string[],
+    metrics: string[]
 ): Promise<FacebookPostInsightsResponse> {
     const params = new URLSearchParams({
         access_token: pageAccessToken,
@@ -112,7 +112,7 @@ export async function getPostInsights(
     if (!response.ok) {
         const error = await response.json()
         throw new Error(
-            error.error?.message || "Failed to fetch Facebook Post insights",
+            error.error?.message || "Failed to fetch Facebook Post insights"
         )
     }
 

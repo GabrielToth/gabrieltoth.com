@@ -1,4 +1,9 @@
-import type { EnvMode, LocalEnvEntry, LocalEnvsData, ServiceEnvs } from "./types"
+import type {
+    EnvMode,
+    LocalEnvEntry,
+    LocalEnvsData,
+    ServiceEnvs,
+} from "./types"
 import { KNOWN_SERVICES, STORAGE_KEY } from "./types"
 
 function getStored(): LocalEnvsData {
@@ -91,7 +96,10 @@ export function removeService(serviceId: string): void {
     persist(data)
 }
 
-export function getEnvVarValue(serviceId: string, key: string): string | undefined {
+export function getEnvVarValue(
+    serviceId: string,
+    key: string
+): string | undefined {
     const service = getServiceEnvs(serviceId)
     if (!service) return undefined
     return service.envs.find(e => e.key === key)?.value

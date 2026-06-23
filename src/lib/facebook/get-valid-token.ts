@@ -9,7 +9,7 @@ export async function getValidFacebookToken(
     options?: {
         tokenStore?: ReturnType<typeof getTokenStore>
         oauthService?: FacebookOAuthService
-    },
+    }
 ): Promise<string | null> {
     const tokenStore = options?.tokenStore ?? getTokenStore()
 
@@ -46,7 +46,7 @@ export async function getValidFacebookToken(
 
     try {
         const refreshed = await oauthService.refreshAccessToken(
-            stored.refreshToken,
+            stored.refreshToken
         )
 
         const newExpiresAt = refreshed.expiresIn

@@ -114,7 +114,7 @@ vi.mock("@/lib/logger", () => ({
 function makePostRequest(
     url: string,
     body: unknown,
-    headers: Record<string, string> = {},
+    headers: Record<string, string> = {}
 ): NextRequest {
     return new NextRequest(url, {
         method: "POST",
@@ -151,7 +151,7 @@ describe("POST /api/oauth/disconnect/kick — Attack Matrix", () => {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({}),
-                },
+                }
             )
             const response = await POST(request)
             expect(response.status).toBe(400)
@@ -163,7 +163,7 @@ describe("POST /api/oauth/disconnect/kick — Attack Matrix", () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/kick",
                 {},
-                { "x-user-id": "" },
+                { "x-user-id": "" }
             )
             const response = await POST(request)
             expect(response.status).toBe(400)
@@ -181,7 +181,7 @@ describe("POST /api/oauth/disconnect/kick — Attack Matrix", () => {
                         "x-user-id": "",
                     },
                     body: JSON.stringify({}),
-                },
+                }
             )
             const response = await POST(request)
             expect(response.status).toBe(400)
@@ -191,9 +191,7 @@ describe("POST /api/oauth/disconnect/kick — Attack Matrix", () => {
     // ── Row 2: HTTP method confusion ──
     describe("Row 2 — HTTP method confusion", () => {
         it("should not expose GET handler for disconnect", async () => {
-            const route = await import(
-                "@/app/api/oauth/disconnect/kick/route"
-            )
+            const route = await import("@/app/api/oauth/disconnect/kick/route")
             expect("GET" in route).toBe(false)
         })
     })
@@ -203,7 +201,7 @@ describe("POST /api/oauth/disconnect/kick — Attack Matrix", () => {
         it("should handle body with number instead of object", async () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/kick",
-                42,
+                42
             )
             const response = await POST(request)
             expect([200, 500]).toContain(response.status)
@@ -212,7 +210,7 @@ describe("POST /api/oauth/disconnect/kick — Attack Matrix", () => {
         it("should handle body with string instead of object", async () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/kick",
-                "string-body",
+                "string-body"
             )
             const response = await POST(request)
             expect([200, 500]).toContain(response.status)
@@ -221,7 +219,7 @@ describe("POST /api/oauth/disconnect/kick — Attack Matrix", () => {
         it("should handle body with boolean instead of object", async () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/kick",
-                true,
+                true
             )
             const response = await POST(request)
             expect([200, 500]).toContain(response.status)
@@ -230,7 +228,7 @@ describe("POST /api/oauth/disconnect/kick — Attack Matrix", () => {
         it("should handle body with array instead of object", async () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/kick",
-                [1, 2, 3],
+                [1, 2, 3]
             )
             const response = await POST(request)
             expect([200, 500]).toContain(response.status)
@@ -242,7 +240,7 @@ describe("POST /api/oauth/disconnect/kick — Attack Matrix", () => {
         it("should handle empty JSON body", async () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/kick",
-                {},
+                {}
             )
             const response = await POST(request)
             expect([200, 500]).toContain(response.status)
@@ -251,7 +249,7 @@ describe("POST /api/oauth/disconnect/kick — Attack Matrix", () => {
         it("should handle body with null value", async () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/kick",
-                null,
+                null
             )
             const response = await POST(request)
             expect([200, 500]).toContain(response.status)
@@ -260,7 +258,7 @@ describe("POST /api/oauth/disconnect/kick — Attack Matrix", () => {
         it("should handle body with negative numbers", async () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/kick",
-                { amount: -100 },
+                { amount: -100 }
             )
             const response = await POST(request)
             expect([200, 500]).toContain(response.status)
@@ -272,7 +270,7 @@ describe("POST /api/oauth/disconnect/kick — Attack Matrix", () => {
         it("should handle body as empty array", async () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/kick",
-                [],
+                []
             )
             const response = await POST(request)
             expect([200, 500]).toContain(response.status)
@@ -288,7 +286,7 @@ describe("POST /api/oauth/disconnect/kick — Attack Matrix", () => {
                         "x-user-id": "test-user-123",
                     },
                     body: "\uFEFF{}",
-                },
+                }
             )
             const response = await POST(request)
             expect([200, 500]).toContain(response.status)
@@ -300,7 +298,7 @@ describe("POST /api/oauth/disconnect/kick — Attack Matrix", () => {
         it("should handle __proto__ in body", async () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/kick",
-                JSON.parse('{"__proto__": {"isAdmin": true}}'),
+                JSON.parse('{"__proto__": {"isAdmin": true}}')
             )
             const response = await POST(request)
             expect([200, 500]).toContain(response.status)
@@ -309,7 +307,7 @@ describe("POST /api/oauth/disconnect/kick — Attack Matrix", () => {
         it("should handle constructor.prototype in body", async () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/kick",
-                JSON.parse('{"constructor": {"prototype": {"isAdmin": true}}}'),
+                JSON.parse('{"constructor": {"prototype": {"isAdmin": true}}}')
             )
             const response = await POST(request)
             expect([200, 500]).toContain(response.status)
@@ -321,7 +319,7 @@ describe("POST /api/oauth/disconnect/kick — Attack Matrix", () => {
         it("should handle SQL injection in body fields", async () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/kick",
-                { userId: "1' OR '1'='1" },
+                { userId: "1' OR '1'='1" }
             )
             const response = await POST(request)
             expect([200, 500]).toContain(response.status)
@@ -330,7 +328,7 @@ describe("POST /api/oauth/disconnect/kick — Attack Matrix", () => {
         it("should handle XSS in body fields", async () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/kick",
-                { reason: "<script>alert(1)</script>" },
+                { reason: "<script>alert(1)</script>" }
             )
             const response = await POST(request)
             expect([200, 500]).toContain(response.status)
@@ -339,7 +337,7 @@ describe("POST /api/oauth/disconnect/kick — Attack Matrix", () => {
         it("should handle NoSQL operators in body", async () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/kick",
-                { userId: '{"$ne": ""}' },
+                { userId: '{"$ne": ""}' }
             )
             const response = await POST(request)
             expect([200, 500]).toContain(response.status)
@@ -351,7 +349,7 @@ describe("POST /api/oauth/disconnect/kick — Attack Matrix", () => {
         it("should handle null byte in body", async () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/kick",
-                { data: "test\0null" },
+                { data: "test\0null" }
             )
             const response = await POST(request)
             expect([200, 500]).toContain(response.status)
@@ -360,7 +358,7 @@ describe("POST /api/oauth/disconnect/kick — Attack Matrix", () => {
         it("should handle emoji in body", async () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/kick",
-                { reason: "test😊reason" },
+                { reason: "test😊reason" }
             )
             const response = await POST(request)
             expect([200, 500]).toContain(response.status)
@@ -369,7 +367,7 @@ describe("POST /api/oauth/disconnect/kick — Attack Matrix", () => {
         it("should handle RTL override in body", async () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/kick",
-                { reason: "\u202Emalicious\u202C" },
+                { reason: "\u202Emalicious\u202C" }
             )
             const response = await POST(request)
             expect([200, 500]).toContain(response.status)
@@ -381,7 +379,7 @@ describe("POST /api/oauth/disconnect/kick — Attack Matrix", () => {
         it("should handle oversized body with 10k+ chars", async () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/kick",
-                { reason: "A".repeat(10000) },
+                { reason: "A".repeat(10000) }
             )
             const response = await POST(request)
             expect([200, 500]).toContain(response.status)
@@ -397,7 +395,7 @@ describe("POST /api/oauth/disconnect/kick — Attack Matrix", () => {
             current.value = "deep"
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/kick",
-                nested,
+                nested
             )
             const response = await POST(request)
             expect([200, 500]).toContain(response.status)
@@ -409,7 +407,7 @@ describe("POST /api/oauth/disconnect/kick — Attack Matrix", () => {
         it("should handle request within rate limit", async () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/kick",
-                {},
+                {}
             )
             const response = await POST(request)
             expect([200, 500]).toContain(response.status)
@@ -421,7 +419,7 @@ describe("POST /api/oauth/disconnect/kick — Attack Matrix", () => {
         it("should work without CSRF token (x-user-id is the auth mechanism)", async () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/kick",
-                {},
+                {}
             )
             const response = await POST(request)
             expect([200, 500]).toContain(response.status)
@@ -432,8 +430,18 @@ describe("POST /api/oauth/disconnect/kick — Attack Matrix", () => {
     describe("Row 12 — Race conditions", () => {
         it("should handle concurrent disconnect requests", async () => {
             const results = await Promise.all([
-                POST(makePostRequest("http://localhost/api/oauth/disconnect/kick", {})),
-                POST(makePostRequest("http://localhost/api/oauth/disconnect/kick", {})),
+                POST(
+                    makePostRequest(
+                        "http://localhost/api/oauth/disconnect/kick",
+                        {}
+                    )
+                ),
+                POST(
+                    makePostRequest(
+                        "http://localhost/api/oauth/disconnect/kick",
+                        {}
+                    )
+                ),
             ])
             for (const response of results) {
                 expect([200, 500]).toContain(response.status)
@@ -453,7 +461,7 @@ describe("POST /api/oauth/disconnect/kick — Attack Matrix", () => {
                         "x-user-id": "test-user-123",
                     },
                     body: "{}",
-                },
+                }
             )
             const response = await POST(request)
             expect([200, 500]).toContain(response.status)
@@ -466,7 +474,7 @@ describe("POST /api/oauth/disconnect/kick — Attack Matrix", () => {
                     method: "POST",
                     headers: { "x-user-id": "test-user-123" },
                     body: "{}",
-                },
+                }
             )
             const response = await POST(request)
             expect([200, 500]).toContain(response.status)
@@ -482,7 +490,7 @@ describe("POST /api/oauth/disconnect/kick — Attack Matrix", () => {
                         "x-user-id": "test-user-123",
                     },
                     body: "{}",
-                },
+                }
             )
             const response = await POST(request)
             expect([200, 500]).toContain(response.status)
@@ -498,7 +506,7 @@ describe("POST /api/oauth/disconnect/kick — Attack Matrix", () => {
                 {
                     "X-Forwarded-For": "127.0.0.1",
                     "x-user-id": "test-user-123",
-                },
+                }
             )
             const response = await POST(request)
             expect([200, 500]).toContain(response.status)
@@ -508,7 +516,7 @@ describe("POST /api/oauth/disconnect/kick — Attack Matrix", () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/kick",
                 {},
-                { Host: "evil.com", "x-user-id": "test-user-123" },
+                { Host: "evil.com", "x-user-id": "test-user-123" }
             )
             const response = await POST(request)
             expect([200, 500]).toContain(response.status)
@@ -518,10 +526,12 @@ describe("POST /api/oauth/disconnect/kick — Attack Matrix", () => {
     // ── Row 15: Info disclosure ──
     describe("Row 15 — Info disclosure", () => {
         it("should not leak internal paths in error response", async () => {
-            mockGetToken.mockRejectedValue(new Error("Database connection error"))
+            mockGetToken.mockRejectedValue(
+                new Error("Database connection error")
+            )
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/kick",
-                {},
+                {}
             )
             const response = await POST(request)
             const body = await response.json()
@@ -535,7 +545,7 @@ describe("POST /api/oauth/disconnect/kick — Attack Matrix", () => {
             mockGetToken.mockRejectedValue(new Error("Internal server error"))
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/kick",
-                {},
+                {}
             )
             const response = await POST(request)
             const body = await response.json()
@@ -549,7 +559,7 @@ describe("POST /api/oauth/disconnect/kick — Attack Matrix", () => {
             mockGetToken.mockResolvedValue(null)
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/kick",
-                {},
+                {}
             )
             const response = await POST(request)
             expect(response.status).toBe(404)
@@ -569,11 +579,17 @@ describe("POST /api/oauth/disconnect/kick — Attack Matrix", () => {
                 platform: "kick",
             })
             const firstResponse = await POST(
-                makePostRequest("http://localhost/api/oauth/disconnect/kick", {}),
+                makePostRequest(
+                    "http://localhost/api/oauth/disconnect/kick",
+                    {}
+                )
             )
             expect([200, 500]).toContain(firstResponse.status)
             const secondResponse = await POST(
-                makePostRequest("http://localhost/api/oauth/disconnect/kick", {}),
+                makePostRequest(
+                    "http://localhost/api/oauth/disconnect/kick",
+                    {}
+                )
             )
             expect([200, 500]).toContain(secondResponse.status)
         })
@@ -584,7 +600,7 @@ describe("POST /api/oauth/disconnect/kick — Attack Matrix", () => {
         it("should use x-user-id header for authorization (not body)", async () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/kick",
-                { userId: "different-user-in-body" },
+                { userId: "different-user-in-body" }
             )
             const response = await POST(request)
             expect([200, 500]).toContain(response.status)
@@ -594,7 +610,7 @@ describe("POST /api/oauth/disconnect/kick — Attack Matrix", () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/kick",
                 {},
-                { "x-user-id": "another-user-id" },
+                { "x-user-id": "another-user-id" }
             )
             const response = await POST(request)
             expect([200, 500]).toContain(response.status)
@@ -611,7 +627,7 @@ describe("POST /api/oauth/disconnect/kick — Attack Matrix", () => {
                     isAdmin: true,
                     userId: "malicious-id",
                     platform: "twitch",
-                },
+                }
             )
             const response = await POST(request)
             expect([200, 500]).toContain(response.status)

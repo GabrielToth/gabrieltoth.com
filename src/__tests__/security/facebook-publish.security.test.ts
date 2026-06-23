@@ -415,20 +415,28 @@ describe("POST /api/platform/facebook/publish — Attack Matrix", () => {
     describe("Row 14 — HTTP header attacks", () => {
         it("should handle X-Forwarded-For header", async () => {
             const res = await POST(
-                makePost("http://localhost/api/platform/facebook/publish", {
-                    pageId: "123",
-                    message: "test",
-                }, { "X-Forwarded-For": "127.0.0.1" }),
+                makePost(
+                    "http://localhost/api/platform/facebook/publish",
+                    {
+                        pageId: "123",
+                        message: "test",
+                    },
+                    { "X-Forwarded-For": "127.0.0.1" }
+                )
             )
             expect([201, 400, 500]).toContain(res.status)
         })
 
         it("should handle Host override header", async () => {
             const res = await POST(
-                makePost("http://localhost/api/platform/facebook/publish", {
-                    pageId: "123",
-                    message: "test",
-                }, { Host: "evil.com" }),
+                makePost(
+                    "http://localhost/api/platform/facebook/publish",
+                    {
+                        pageId: "123",
+                        message: "test",
+                    },
+                    { Host: "evil.com" }
+                )
             )
             expect([201, 400, 500]).toContain(res.status)
         })
@@ -437,13 +445,13 @@ describe("POST /api/platform/facebook/publish — Attack Matrix", () => {
     describe("Row 16 — Business logic", () => {
         it("should handle invalid pageId gracefully", async () => {
             mockGetPageAccessToken.mockRejectedValueOnce(
-                new Error("Page not found"),
+                new Error("Page not found")
             )
             const res = await POST(
                 makePost("http://localhost/api/platform/facebook/publish", {
                     pageId: "nonexistent",
                     message: "test",
-                }),
+                })
             )
             expect([400, 500]).toContain(res.status)
         })
@@ -455,7 +463,7 @@ describe("POST /api/platform/facebook/publish — Attack Matrix", () => {
                 makePost("http://localhost/api/platform/facebook/publish", {
                     pageId: "../../etc/passwd",
                     message: "test",
-                }),
+                })
             )
             expect([201, 400, 500]).toContain(res.status)
         })
@@ -465,7 +473,7 @@ describe("POST /api/platform/facebook/publish — Attack Matrix", () => {
                 makePost("http://localhost/api/platform/facebook/publish", {
                     pageId: "..\\..\\windows\\system32",
                     message: "test",
-                }),
+                })
             )
             expect([201, 400, 500]).toContain(res.status)
         })
@@ -477,7 +485,7 @@ describe("POST /api/platform/facebook/publish — Attack Matrix", () => {
                 makePost("http://localhost/api/platform/facebook/publish", {
                     pageId: "123",
                     message: "Check http://localhost:5432/pg",
-                }),
+                })
             )
             expect([201, 400, 500]).toContain(res.status)
         })
@@ -487,7 +495,7 @@ describe("POST /api/platform/facebook/publish — Attack Matrix", () => {
                 makePost("http://localhost/api/platform/facebook/publish", {
                     pageId: "123",
                     message: "Check http://10.0.0.1/admin",
-                }),
+                })
             )
             expect([201, 400, 500]).toContain(res.status)
         })

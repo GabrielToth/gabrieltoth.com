@@ -3,7 +3,10 @@
 import { Info } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { useTranslations } from "next-intl"
-import { getPlatformLimit, type PlatformLimits } from "@/lib/youtube/platform-limits"
+import {
+    getPlatformLimit,
+    type PlatformLimits,
+} from "@/lib/youtube/platform-limits"
 
 export interface PlatformLimitIndicatorProps {
     platforms: string[]

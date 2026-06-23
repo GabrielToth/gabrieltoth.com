@@ -238,7 +238,7 @@ describe("Posts API Service", () => {
     describe("fetchPosts failure", () => {
         it("returns empty array on error", async () => {
             vi.spyOn(globalThis, "fetch").mockRejectedValueOnce(
-                new Error("Network error"),
+                new Error("Network error")
             )
 
             await expect(fetchPosts()).rejects.toThrow("Network error")

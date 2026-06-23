@@ -14,7 +14,10 @@ interface ValidationErrors {
     confirmPassword?: string
 }
 
-export default function ResetPasswordForm({ locale, token }: ResetPasswordFormProps) {
+export default function ResetPasswordForm({
+    locale,
+    token,
+}: ResetPasswordFormProps) {
     const t = useTranslations("auth")
     const router = useRouter()
     const [formData, setFormData] = useState({

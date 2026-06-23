@@ -76,6 +76,10 @@ export async function GET(request: NextRequest) {
         const transactions = await getTransactions(user.id, limit)
         return createSuccessResponse({ transactions })
     } catch (err) {
-        return handleUnexpectedError(err, "Credits", "/api/credits/transactions")
+        return handleUnexpectedError(
+            err,
+            "Credits",
+            "/api/credits/transactions"
+        )
     }
 }

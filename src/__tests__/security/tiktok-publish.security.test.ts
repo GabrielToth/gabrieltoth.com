@@ -40,7 +40,7 @@ const mockQueryCreatorInfo = vi.hoisted(() =>
     vi.fn().mockResolvedValue({
         privacyLevelOptions: ["SELF_ONLY", "PUBLIC_TO_EVERYONE"],
         maxVideoPostDurationSec: 180,
-    }),
+    })
 )
 
 const mockInitVideoPublish = vi.hoisted(() =>
@@ -48,7 +48,7 @@ const mockInitVideoPublish = vi.hoisted(() =>
         uploadUrl: "https://upload.tiktok.com/video/123",
         publishId: "mock-publish-id-123",
         uploadMethod: "FILE_UPLOAD",
-    }),
+    })
 )
 
 vi.mock("@/lib/tiktok/config", () => ({
@@ -57,7 +57,13 @@ vi.mock("@/lib/tiktok/config", () => ({
             clientKey: "test-client-key",
             clientSecret: "test-client-secret",
             redirectUri: "http://localhost:3000/api/oauth/callback/tiktok",
-            scopes: ["user.info.basic", "user.info.profile", "user.info.stats", "video.list", "video.publish"],
+            scopes: [
+                "user.info.basic",
+                "user.info.profile",
+                "user.info.stats",
+                "video.list",
+                "video.publish",
+            ],
             apiVersion: "v2",
         },
         rateLimit: {
@@ -107,7 +113,7 @@ vi.mock("@/lib/logger", () => ({
 function makePostRequest(
     url: string,
     body: unknown,
-    headers: Record<string, string> = {},
+    headers: Record<string, string> = {}
 ): NextRequest {
     return new NextRequest(url, {
         method: "POST",
@@ -136,8 +142,11 @@ describe("POST /api/platform/tiktok/publish — Attack Matrix", () => {
                 {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ source: "FILE_UPLOAD", title: "Test Video" }),
-                },
+                    body: JSON.stringify({
+                        source: "FILE_UPLOAD",
+                        title: "Test Video",
+                    }),
+                }
             )
             const response = await POST(request)
             expect(response.status).toBe(400)
@@ -149,7 +158,7 @@ describe("POST /api/platform/tiktok/publish — Attack Matrix", () => {
             const request = makePostRequest(
                 "http://localhost/api/platform/tiktok/publish",
                 { source: "FILE_UPLOAD", title: "Test Video" },
-                { "x-user-id": "" },
+                { "x-user-id": "" }
             )
             const response = await POST(request)
             expect(response.status).toBe(400)
@@ -159,9 +168,8 @@ describe("POST /api/platform/tiktok/publish — Attack Matrix", () => {
 
     describe("Row 2 — Method confusion", () => {
         it("should not expose GET handler", async () => {
-            const route = await import(
-                "@/app/api/platform/tiktok/publish/route"
-            )
+            const route =
+                await import("@/app/api/platform/tiktok/publish/route")
             expect("GET" in route).toBe(false)
         })
     })
@@ -169,7 +177,8 @@ describe("POST /api/platform/tiktok/publish — Attack Matrix", () => {
     describe("Row 3 — Type attacks", () => {
         it("should handle null body", async () => {
             const request = makePostRequest(
-                "http://localhost/api/platform/tiktok/publish", null,
+                "http://localhost/api/platform/tiktok/publish",
+                null
             )
             const response = await POST(request)
             expect([400, 404, 500]).toContain(response.status)
@@ -177,7 +186,8 @@ describe("POST /api/platform/tiktok/publish — Attack Matrix", () => {
 
         it("should handle array body", async () => {
             const request = makePostRequest(
-                "http://localhost/api/platform/tiktok/publish", [],
+                "http://localhost/api/platform/tiktok/publish",
+                []
             )
             const response = await POST(request)
             expect([400, 404, 500]).toContain(response.status)
@@ -185,7 +195,8 @@ describe("POST /api/platform/tiktok/publish — Attack Matrix", () => {
 
         it("should handle number body", async () => {
             const request = makePostRequest(
-                "http://localhost/api/platform/tiktok/publish", 42,
+                "http://localhost/api/platform/tiktok/publish",
+                42
             )
             const response = await POST(request)
             expect([400, 404, 500]).toContain(response.status)
@@ -193,7 +204,8 @@ describe("POST /api/platform/tiktok/publish — Attack Matrix", () => {
 
         it("should handle boolean body", async () => {
             const request = makePostRequest(
-                "http://localhost/api/platform/tiktok/publish", true,
+                "http://localhost/api/platform/tiktok/publish",
+                true
             )
             const response = await POST(request)
             expect([400, 404, 500]).toContain(response.status)
@@ -203,7 +215,8 @@ describe("POST /api/platform/tiktok/publish — Attack Matrix", () => {
     describe("Row 4 — Value attacks", () => {
         it("should handle empty object body", async () => {
             const request = makePostRequest(
-                "http://localhost/api/platform/tiktok/publish", {},
+                "http://localhost/api/platform/tiktok/publish",
+                {}
             )
             const response = await POST(request)
             expect(response.status).toBe(400)
@@ -212,7 +225,7 @@ describe("POST /api/platform/tiktok/publish — Attack Matrix", () => {
         it("should reject missing source", async () => {
             const request = makePostRequest(
                 "http://localhost/api/platform/tiktok/publish",
-                { title: "Test" },
+                { title: "Test" }
             )
             const response = await POST(request)
             expect(response.status).toBe(400)
@@ -221,7 +234,7 @@ describe("POST /api/platform/tiktok/publish — Attack Matrix", () => {
         it("should reject missing title", async () => {
             const request = makePostRequest(
                 "http://localhost/api/platform/tiktok/publish",
-                { source: "FILE_UPLOAD" },
+                { source: "FILE_UPLOAD" }
             )
             const response = await POST(request)
             expect(response.status).toBe(400)
@@ -230,7 +243,7 @@ describe("POST /api/platform/tiktok/publish — Attack Matrix", () => {
         it("should reject invalid source value", async () => {
             const request = makePostRequest(
                 "http://localhost/api/platform/tiktok/publish",
-                { source: "INVALID", title: "Test Video" },
+                { source: "INVALID", title: "Test Video" }
             )
             const response = await POST(request)
             expect(response.status).toBe(400)
@@ -239,7 +252,7 @@ describe("POST /api/platform/tiktok/publish — Attack Matrix", () => {
         it("should reject whitespace-only title", async () => {
             const request = makePostRequest(
                 "http://localhost/api/platform/tiktok/publish",
-                { source: "FILE_UPLOAD", title: "   " },
+                { source: "FILE_UPLOAD", title: "   " }
             )
             const response = await POST(request)
             expect(response.status).toBe(400)
@@ -248,7 +261,7 @@ describe("POST /api/platform/tiktok/publish — Attack Matrix", () => {
         it("should reject empty title", async () => {
             const request = makePostRequest(
                 "http://localhost/api/platform/tiktok/publish",
-                { source: "FILE_UPLOAD", title: "" },
+                { source: "FILE_UPLOAD", title: "" }
             )
             const response = await POST(request)
             expect(response.status).toBe(400)
@@ -259,7 +272,7 @@ describe("POST /api/platform/tiktok/publish — Attack Matrix", () => {
         it("should reject extra fields", async () => {
             const request = makePostRequest(
                 "http://localhost/api/platform/tiktok/publish",
-                { source: "FILE_UPLOAD", title: "Test", extraField: "bad" },
+                { source: "FILE_UPLOAD", title: "Test", extraField: "bad" }
             )
             const response = await POST(request)
             expect(response.status).toBe(400)
@@ -272,7 +285,9 @@ describe("POST /api/platform/tiktok/publish — Attack Matrix", () => {
         it("should handle __proto__ in body", async () => {
             const request = makePostRequest(
                 "http://localhost/api/platform/tiktok/publish",
-                JSON.parse('{"__proto__": {"polluted": true}, "source": "FILE_UPLOAD", "title": "Test"}'),
+                JSON.parse(
+                    '{"__proto__": {"polluted": true}, "source": "FILE_UPLOAD", "title": "Test"}'
+                )
             )
             const response = await POST(request)
             expect([201, 400, 404, 500]).toContain(response.status)
@@ -281,7 +296,9 @@ describe("POST /api/platform/tiktok/publish — Attack Matrix", () => {
         it("should handle constructor.prototype in body", async () => {
             const request = makePostRequest(
                 "http://localhost/api/platform/tiktok/publish",
-                JSON.parse('{"constructor": {"prototype": {"polluted": true}}, "source": "FILE_UPLOAD", "title": "Test"}'),
+                JSON.parse(
+                    '{"constructor": {"prototype": {"polluted": true}}, "source": "FILE_UPLOAD", "title": "Test"}'
+                )
             )
             const response = await POST(request)
             expect([201, 400, 404, 500]).toContain(response.status)
@@ -292,7 +309,7 @@ describe("POST /api/platform/tiktok/publish — Attack Matrix", () => {
         it("should handle SQL injection in title", async () => {
             const request = makePostRequest(
                 "http://localhost/api/platform/tiktok/publish",
-                { source: "FILE_UPLOAD", title: "1' OR '1'='1" },
+                { source: "FILE_UPLOAD", title: "1' OR '1'='1" }
             )
             const response = await POST(request)
             expect([201, 400, 404, 500]).toContain(response.status)
@@ -301,7 +318,7 @@ describe("POST /api/platform/tiktok/publish — Attack Matrix", () => {
         it("should handle XSS in title", async () => {
             const request = makePostRequest(
                 "http://localhost/api/platform/tiktok/publish",
-                { source: "FILE_UPLOAD", title: "<script>alert(1)</script>" },
+                { source: "FILE_UPLOAD", title: "<script>alert(1)</script>" }
             )
             const response = await POST(request)
             expect([201, 400, 404, 500]).toContain(response.status)
@@ -311,7 +328,7 @@ describe("POST /api/platform/tiktok/publish — Attack Matrix", () => {
             const request = makePostRequest(
                 "http://localhost/api/platform/tiktok/publish",
                 { source: "FILE_UPLOAD", title: "Test" },
-                { "x-user-id": "1' OR '1'='1" },
+                { "x-user-id": "1' OR '1'='1" }
             )
             const response = await POST(request)
             expect([201, 400, 404, 500]).toContain(response.status)
@@ -322,7 +339,7 @@ describe("POST /api/platform/tiktok/publish — Attack Matrix", () => {
         it("should handle emoji in title", async () => {
             const request = makePostRequest(
                 "http://localhost/api/platform/tiktok/publish",
-                { source: "FILE_UPLOAD", title: "Test Video 🔥" },
+                { source: "FILE_UPLOAD", title: "Test Video 🔥" }
             )
             const response = await POST(request)
             expect([201, 400, 404, 500]).toContain(response.status)
@@ -333,7 +350,7 @@ describe("POST /api/platform/tiktok/publish — Attack Matrix", () => {
         it("should handle oversized title (>2200 chars)", async () => {
             const request = makePostRequest(
                 "http://localhost/api/platform/tiktok/publish",
-                { source: "FILE_UPLOAD", title: "A".repeat(2201) },
+                { source: "FILE_UPLOAD", title: "A".repeat(2201) }
             )
             const response = await POST(request)
             expect(response.status).toBe(400)
@@ -342,7 +359,7 @@ describe("POST /api/platform/tiktok/publish — Attack Matrix", () => {
         it("should handle 2200-char title (boundary)", async () => {
             const request = makePostRequest(
                 "http://localhost/api/platform/tiktok/publish",
-                { source: "FILE_UPLOAD", title: "A".repeat(2200) },
+                { source: "FILE_UPLOAD", title: "A".repeat(2200) }
             )
             const response = await POST(request)
             expect([201, 400, 404, 500]).toContain(response.status)
@@ -353,7 +370,7 @@ describe("POST /api/platform/tiktok/publish — Attack Matrix", () => {
         it("should handle single POST request", async () => {
             const request = makePostRequest(
                 "http://localhost/api/platform/tiktok/publish",
-                { source: "FILE_UPLOAD", title: "Test Video" },
+                { source: "FILE_UPLOAD", title: "Test Video" }
             )
             const response = await POST(request)
             expect([201, 400, 404, 500]).toContain(response.status)
@@ -365,8 +382,8 @@ describe("POST /api/platform/tiktok/publish — Attack Matrix", () => {
             const requests = Array.from({ length: 5 }, () =>
                 makePostRequest(
                     "http://localhost/api/platform/tiktok/publish",
-                    { source: "FILE_UPLOAD", title: "Test Video" },
-                ),
+                    { source: "FILE_UPLOAD", title: "Test Video" }
+                )
             )
             const results = await Promise.all(requests.map(r => POST(r)))
             for (const response of results) {
@@ -381,9 +398,15 @@ describe("POST /api/platform/tiktok/publish — Attack Matrix", () => {
                 "http://localhost/api/platform/tiktok/publish",
                 {
                     method: "POST",
-                    headers: { "Content-Type": "text/plain", "x-user-id": "test-user-123" },
-                    body: JSON.stringify({ source: "FILE_UPLOAD", title: "Test" }),
-                },
+                    headers: {
+                        "Content-Type": "text/plain",
+                        "x-user-id": "test-user-123",
+                    },
+                    body: JSON.stringify({
+                        source: "FILE_UPLOAD",
+                        title: "Test",
+                    }),
+                }
             )
             const response = await POST(request)
             expect([201, 400, 404, 500]).toContain(response.status)
@@ -395,8 +418,11 @@ describe("POST /api/platform/tiktok/publish — Attack Matrix", () => {
                 {
                     method: "POST",
                     headers: { "x-user-id": "test-user-123" },
-                    body: JSON.stringify({ source: "FILE_UPLOAD", title: "Test" }),
-                },
+                    body: JSON.stringify({
+                        source: "FILE_UPLOAD",
+                        title: "Test",
+                    }),
+                }
             )
             const response = await POST(request)
             expect([201, 400, 404, 500]).toContain(response.status)
@@ -408,7 +434,7 @@ describe("POST /api/platform/tiktok/publish — Attack Matrix", () => {
             const request = makePostRequest(
                 "http://localhost/api/platform/tiktok/publish",
                 {},
-                { "x-user-id": "" },
+                { "x-user-id": "" }
             )
             const response = await POST(request)
             const body = await response.json()
@@ -423,7 +449,7 @@ describe("POST /api/platform/tiktok/publish — Attack Matrix", () => {
             const request = makePostRequest(
                 "http://localhost/api/platform/tiktok/publish",
                 { source: "FILE_UPLOAD", title: "Test" },
-                { "x-user-id": "other-user-id" },
+                { "x-user-id": "other-user-id" }
             )
             const response = await POST(request)
             expect([201, 400, 404, 500]).toContain(response.status)
@@ -435,7 +461,7 @@ describe("POST /api/platform/tiktok/publish — Attack Matrix", () => {
             const request = makePostRequest(
                 "http://localhost/api/platform/tiktok/publish",
                 { source: "FILE_UPLOAD", title: "Test" },
-                { "X-Forwarded-For": "127.0.0.1" },
+                { "X-Forwarded-For": "127.0.0.1" }
             )
             const response = await POST(request)
             expect([201, 400, 404, 500]).toContain(response.status)
@@ -445,7 +471,7 @@ describe("POST /api/platform/tiktok/publish — Attack Matrix", () => {
             const request = makePostRequest(
                 "http://localhost/api/platform/tiktok/publish",
                 { source: "FILE_UPLOAD", title: "Test" },
-                { Host: "evil.com" },
+                { Host: "evil.com" }
             )
             const response = await POST(request)
             expect([201, 400, 404, 500]).toContain(response.status)
@@ -456,7 +482,7 @@ describe("POST /api/platform/tiktok/publish — Attack Matrix", () => {
         it("should handle invalid source gracefully", async () => {
             const request = makePostRequest(
                 "http://localhost/api/platform/tiktok/publish",
-                { source: "INVALID_SOURCE", title: "Test" },
+                { source: "INVALID_SOURCE", title: "Test" }
             )
             const response = await POST(request)
             expect(response.status).toBe(400)
@@ -467,7 +493,7 @@ describe("POST /api/platform/tiktok/publish — Attack Matrix", () => {
         it("should handle path traversal in title", async () => {
             const request = makePostRequest(
                 "http://localhost/api/platform/tiktok/publish",
-                { source: "FILE_UPLOAD", title: "../../etc/passwd" },
+                { source: "FILE_UPLOAD", title: "../../etc/passwd" }
             )
             const response = await POST(request)
             expect([201, 400, 404, 500]).toContain(response.status)
@@ -476,7 +502,7 @@ describe("POST /api/platform/tiktok/publish — Attack Matrix", () => {
         it("should handle Windows path traversal in title", async () => {
             const request = makePostRequest(
                 "http://localhost/api/platform/tiktok/publish",
-                { source: "FILE_UPLOAD", title: "..\\..\\windows\\system32" },
+                { source: "FILE_UPLOAD", title: "..\\..\\windows\\system32" }
             )
             const response = await POST(request)
             expect([201, 400, 404, 500]).toContain(response.status)
@@ -487,7 +513,10 @@ describe("POST /api/platform/tiktok/publish — Attack Matrix", () => {
         it("should handle internal URL in title", async () => {
             const request = makePostRequest(
                 "http://localhost/api/platform/tiktok/publish",
-                { source: "FILE_UPLOAD", title: "Check http://localhost:5432/pg" },
+                {
+                    source: "FILE_UPLOAD",
+                    title: "Check http://localhost:5432/pg",
+                }
             )
             const response = await POST(request)
             expect([201, 400, 404, 500]).toContain(response.status)
@@ -496,7 +525,7 @@ describe("POST /api/platform/tiktok/publish — Attack Matrix", () => {
         it("should handle internal IP in title", async () => {
             const request = makePostRequest(
                 "http://localhost/api/platform/tiktok/publish",
-                { source: "FILE_UPLOAD", title: "Check http://10.0.0.1/admin" },
+                { source: "FILE_UPLOAD", title: "Check http://10.0.0.1/admin" }
             )
             const response = await POST(request)
             expect([201, 400, 404, 500]).toContain(response.status)
@@ -512,7 +541,7 @@ describe("POST /api/platform/tiktok/publish — Attack Matrix", () => {
                     title: "Test",
                     extraField1: "bad",
                     extraField2: "also bad",
-                },
+                }
             )
             const response = await POST(request)
             expect(response.status).toBe(400)

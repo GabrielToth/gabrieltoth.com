@@ -39,7 +39,8 @@ export default function BillingSummaryCard({
                             <span>{t("billingSummary.cloudStorage")}</span>
                             <span className="text-xs text-gray-500">
                                 {t("billingSummary.cancelRefund", {
-                                    amount: refundOnCancel?.toFixed(2) ?? "0.00",
+                                    amount:
+                                        refundOnCancel?.toFixed(2) ?? "0.00",
                                 })}
                             </span>
                         </div>
@@ -53,7 +54,9 @@ export default function BillingSummaryCard({
                             <span>
                                 {t("billingSummary.storageCost", {
                                     days: breakdown.storageDays,
-                                    rate: breakdown.storageCostPerDay.toFixed(2),
+                                    rate: breakdown.storageCostPerDay.toFixed(
+                                        2
+                                    ),
                                 })}
                             </span>
                             <span>

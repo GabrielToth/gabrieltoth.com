@@ -31,19 +31,17 @@ import { POST } from "@/app/api/oauth/disconnect/tiktok/route"
 import { NextRequest } from "next/server"
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 
-const { mockGetToken, mockDeleteToken, mockRevokeToken } = vi.hoisted(
-    () => ({
-        mockGetToken: vi.fn().mockResolvedValue({
-            accessToken: "mock-access-token",
-            refreshToken: "mock-refresh-token",
-            expiresAt: Date.now() + 3600000,
-            platform: "tiktok",
-            userId: "test-user-123",
-        }),
-        mockDeleteToken: vi.fn().mockResolvedValue(true),
-        mockRevokeToken: vi.fn().mockResolvedValue(true),
+const { mockGetToken, mockDeleteToken, mockRevokeToken } = vi.hoisted(() => ({
+    mockGetToken: vi.fn().mockResolvedValue({
+        accessToken: "mock-access-token",
+        refreshToken: "mock-refresh-token",
+        expiresAt: Date.now() + 3600000,
+        platform: "tiktok",
+        userId: "test-user-123",
     }),
-)
+    mockDeleteToken: vi.fn().mockResolvedValue(true),
+    mockRevokeToken: vi.fn().mockResolvedValue(true),
+}))
 
 vi.hoisted(() => {
     process.env.NEXT_PUBLIC_SUPABASE_URL = ""
@@ -56,7 +54,13 @@ vi.mock("@/lib/tiktok/config", () => ({
             clientKey: "test-client-key",
             clientSecret: "test-client-secret",
             redirectUri: "http://localhost:3000/api/oauth/callback/tiktok",
-            scopes: ["user.info.basic", "user.info.profile", "user.info.stats", "video.list", "video.publish"],
+            scopes: [
+                "user.info.basic",
+                "user.info.profile",
+                "user.info.stats",
+                "video.list",
+                "video.publish",
+            ],
             apiVersion: "v2",
         },
         rateLimit: {
@@ -109,7 +113,7 @@ vi.mock("@supabase/supabase-js", () => {
 function makePostRequest(
     url: string,
     body: unknown,
-    headers: Record<string, string> = {},
+    headers: Record<string, string> = {}
 ): NextRequest {
     return new NextRequest(url, {
         method: "POST",
@@ -139,7 +143,7 @@ describe("POST /api/oauth/disconnect/tiktok — Attack Matrix", () => {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({}),
-                },
+                }
             )
             const response = await POST(request)
             expect(response.status).toBe(400)
@@ -151,7 +155,7 @@ describe("POST /api/oauth/disconnect/tiktok — Attack Matrix", () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/tiktok",
                 {},
-                { "x-user-id": "" },
+                { "x-user-id": "" }
             )
             const response = await POST(request)
             expect(response.status).toBe(400)
@@ -162,9 +166,8 @@ describe("POST /api/oauth/disconnect/tiktok — Attack Matrix", () => {
 
     describe("Row 2 — HTTP method confusion", () => {
         it("should not expose GET handler for disconnect", async () => {
-            const route = await import(
-                "@/app/api/oauth/disconnect/tiktok/route"
-            )
+            const route =
+                await import("@/app/api/oauth/disconnect/tiktok/route")
             expect("GET" in route).toBe(false)
         })
     })
@@ -172,7 +175,8 @@ describe("POST /api/oauth/disconnect/tiktok — Attack Matrix", () => {
     describe("Row 3 — Type attacks", () => {
         it("should handle boolean body", async () => {
             const request = makePostRequest(
-                "http://localhost/api/oauth/disconnect/tiktok", true,
+                "http://localhost/api/oauth/disconnect/tiktok",
+                true
             )
             const response = await POST(request)
             expect([200, 404, 500]).toContain(response.status)
@@ -180,7 +184,8 @@ describe("POST /api/oauth/disconnect/tiktok — Attack Matrix", () => {
 
         it("should handle null body", async () => {
             const request = makePostRequest(
-                "http://localhost/api/oauth/disconnect/tiktok", null,
+                "http://localhost/api/oauth/disconnect/tiktok",
+                null
             )
             const response = await POST(request)
             expect([200, 404, 500]).toContain(response.status)
@@ -188,7 +193,8 @@ describe("POST /api/oauth/disconnect/tiktok — Attack Matrix", () => {
 
         it("should handle number body", async () => {
             const request = makePostRequest(
-                "http://localhost/api/oauth/disconnect/tiktok", 42,
+                "http://localhost/api/oauth/disconnect/tiktok",
+                42
             )
             const response = await POST(request)
             expect([200, 404, 500]).toContain(response.status)
@@ -196,7 +202,8 @@ describe("POST /api/oauth/disconnect/tiktok — Attack Matrix", () => {
 
         it("should handle array body", async () => {
             const request = makePostRequest(
-                "http://localhost/api/oauth/disconnect/tiktok", [],
+                "http://localhost/api/oauth/disconnect/tiktok",
+                []
             )
             const response = await POST(request)
             expect([200, 404, 500]).toContain(response.status)
@@ -206,7 +213,8 @@ describe("POST /api/oauth/disconnect/tiktok — Attack Matrix", () => {
     describe("Row 4 — Value attacks", () => {
         it("should handle empty object body", async () => {
             const request = makePostRequest(
-                "http://localhost/api/oauth/disconnect/tiktok", {},
+                "http://localhost/api/oauth/disconnect/tiktok",
+                {}
             )
             const response = await POST(request)
             expect([200, 404, 500]).toContain(response.status)
@@ -217,7 +225,7 @@ describe("POST /api/oauth/disconnect/tiktok — Attack Matrix", () => {
         it("should handle extra fields in body", async () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/tiktok",
-                { extraField: "should-be-ignored" },
+                { extraField: "should-be-ignored" }
             )
             const response = await POST(request)
             expect([200, 404, 500]).toContain(response.status)
@@ -228,7 +236,7 @@ describe("POST /api/oauth/disconnect/tiktok — Attack Matrix", () => {
         it("should handle __proto__ in body", async () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/tiktok",
-                JSON.parse('{"__proto__": {"polluted": true}}'),
+                JSON.parse('{"__proto__": {"polluted": true}}')
             )
             const response = await POST(request)
             expect([200, 404, 500]).toContain(response.status)
@@ -237,7 +245,7 @@ describe("POST /api/oauth/disconnect/tiktok — Attack Matrix", () => {
         it("should handle constructor.prototype in body", async () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/tiktok",
-                JSON.parse('{"constructor": {"prototype": {"polluted": true}}}'),
+                JSON.parse('{"constructor": {"prototype": {"polluted": true}}}')
             )
             const response = await POST(request)
             expect([200, 404, 500]).toContain(response.status)
@@ -249,7 +257,7 @@ describe("POST /api/oauth/disconnect/tiktok — Attack Matrix", () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/tiktok",
                 {},
-                { "x-user-id": "1' OR '1'='1" },
+                { "x-user-id": "1' OR '1'='1" }
             )
             const response = await POST(request)
             expect([200, 404, 500]).toContain(response.status)
@@ -259,7 +267,7 @@ describe("POST /api/oauth/disconnect/tiktok — Attack Matrix", () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/tiktok",
                 {},
-                { "x-user-id": "<script>alert(1)</script>" },
+                { "x-user-id": "<script>alert(1)</script>" }
             )
             const response = await POST(request)
             expect([200, 404, 500]).toContain(response.status)
@@ -269,7 +277,7 @@ describe("POST /api/oauth/disconnect/tiktok — Attack Matrix", () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/tiktok",
                 {},
-                { "x-user-id": '{"$gt": ""}' },
+                { "x-user-id": '{"$gt": ""}' }
             )
             const response = await POST(request)
             expect([200, 404, 500]).toContain(response.status)
@@ -281,7 +289,7 @@ describe("POST /api/oauth/disconnect/tiktok — Attack Matrix", () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/tiktok",
                 {},
-                { "x-user-id": "A".repeat(10000) },
+                { "x-user-id": "A".repeat(10000) }
             )
             const response = await POST(request)
             expect([200, 404, 500]).toContain(response.status)
@@ -296,7 +304,7 @@ describe("POST /api/oauth/disconnect/tiktok — Attack Matrix", () => {
             }
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/tiktok",
-                nested,
+                nested
             )
             const response = await POST(request)
             expect([200, 404, 500]).toContain(response.status)
@@ -309,9 +317,12 @@ describe("POST /api/oauth/disconnect/tiktok — Attack Matrix", () => {
                 "http://localhost/api/oauth/disconnect/tiktok",
                 {
                     method: "POST",
-                    headers: { "Content-Type": "text/plain", "x-user-id": "test-user-123" },
+                    headers: {
+                        "Content-Type": "text/plain",
+                        "x-user-id": "test-user-123",
+                    },
                     body: "{}",
-                },
+                }
             )
             const response = await POST(request)
             expect([200, 404, 500]).toContain(response.status)
@@ -324,7 +335,7 @@ describe("POST /api/oauth/disconnect/tiktok — Attack Matrix", () => {
                     method: "POST",
                     headers: { "x-user-id": "test-user-123" },
                     body: "{}",
-                },
+                }
             )
             const response = await POST(request)
             expect([200, 404, 500]).toContain(response.status)
@@ -335,9 +346,12 @@ describe("POST /api/oauth/disconnect/tiktok — Attack Matrix", () => {
                 "http://localhost/api/oauth/disconnect/tiktok",
                 {
                     method: "POST",
-                    headers: { "Content-Type": "multipart/form-data", "x-user-id": "test-user-123" },
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                        "x-user-id": "test-user-123",
+                    },
                     body: "{}",
-                },
+                }
             )
             const response = await POST(request)
             expect([200, 404, 500]).toContain(response.status)
@@ -349,7 +363,7 @@ describe("POST /api/oauth/disconnect/tiktok — Attack Matrix", () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/tiktok",
                 {},
-                { "x-user-id": "" },
+                { "x-user-id": "" }
             )
             const response = await POST(request)
             const body = await response.json()
@@ -364,7 +378,7 @@ describe("POST /api/oauth/disconnect/tiktok — Attack Matrix", () => {
         it("should handle null byte in body", async () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/tiktok",
-                { userId: "test\0user" },
+                { userId: "test\0user" }
             )
             const response = await POST(request)
             expect([200, 404, 500]).toContain(response.status)
@@ -373,7 +387,7 @@ describe("POST /api/oauth/disconnect/tiktok — Attack Matrix", () => {
         it("should handle emoji in body", async () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/tiktok",
-                { userId: "test😊user" },
+                { userId: "test😊user" }
             )
             const response = await POST(request)
             expect([200, 404, 500]).toContain(response.status)
@@ -382,7 +396,7 @@ describe("POST /api/oauth/disconnect/tiktok — Attack Matrix", () => {
         it("should handle RTL override in body", async () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/tiktok",
-                { userId: "\u202Etest\u202C" },
+                { userId: "\u202Etest\u202C" }
             )
             const response = await POST(request)
             expect([200, 404, 500]).toContain(response.status)
@@ -393,7 +407,7 @@ describe("POST /api/oauth/disconnect/tiktok — Attack Matrix", () => {
         it("should handle request within rate limit", async () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/tiktok",
-                {},
+                {}
             )
             const response = await POST(request)
             expect([200, 404, 500]).toContain(response.status)
@@ -404,7 +418,7 @@ describe("POST /api/oauth/disconnect/tiktok — Attack Matrix", () => {
         it("should work without CSRF token (x-user-id is the auth mechanism)", async () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/tiktok",
-                {},
+                {}
             )
             const response = await POST(request)
             expect([200, 404, 500]).toContain(response.status)
@@ -418,10 +432,10 @@ describe("POST /api/oauth/disconnect/tiktok — Attack Matrix", () => {
                     POST(
                         makePostRequest(
                             "http://localhost/api/oauth/disconnect/tiktok",
-                            {},
-                        ),
-                    ),
-                ),
+                            {}
+                        )
+                    )
+                )
             )
             for (const response of results) {
                 expect([200, 404, 500]).toContain(response.status)
@@ -434,7 +448,7 @@ describe("POST /api/oauth/disconnect/tiktok — Attack Matrix", () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/tiktok",
                 {},
-                { "X-Forwarded-For": "127.0.0.1", "X-Real-IP": "127.0.0.1" },
+                { "X-Forwarded-For": "127.0.0.1", "X-Real-IP": "127.0.0.1" }
             )
             const response = await POST(request)
             expect([200, 404, 500]).toContain(response.status)
@@ -444,7 +458,7 @@ describe("POST /api/oauth/disconnect/tiktok — Attack Matrix", () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/tiktok",
                 {},
-                { Host: "evil.com" },
+                { Host: "evil.com" }
             )
             const response = await POST(request)
             expect([200, 404, 500]).toContain(response.status)
@@ -457,7 +471,7 @@ describe("POST /api/oauth/disconnect/tiktok — Attack Matrix", () => {
 
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/tiktok",
-                {},
+                {}
             )
             const response = await POST(request)
             expect(response.status).toBe(404)
@@ -468,7 +482,7 @@ describe("POST /api/oauth/disconnect/tiktok — Attack Matrix", () => {
         it("should allow double disconnect (idempotent after first)", async () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/tiktok",
-                {},
+                {}
             )
             await POST(request)
 
@@ -482,7 +496,7 @@ describe("POST /api/oauth/disconnect/tiktok — Attack Matrix", () => {
         it("should ignore extra fields in request body", async () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/tiktok",
-                { role: "admin", isAdmin: true, balance: 999999 },
+                { role: "admin", isAdmin: true, balance: 999999 }
             )
             const response = await POST(request)
             expect([200, 404, 500]).toContain(response.status)
@@ -496,7 +510,7 @@ describe("POST /api/oauth/disconnect/tiktok — Attack Matrix", () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/tiktok",
                 {},
-                { "x-user-id": "other-user-id" },
+                { "x-user-id": "other-user-id" }
             )
             const response = await POST(request)
             expect(response.status).toBe(404)

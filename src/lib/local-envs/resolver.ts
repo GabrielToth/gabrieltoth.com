@@ -11,10 +11,7 @@ function getCloudEnv(key: string): string | undefined {
     return process.env[key] ?? undefined
 }
 
-export function resolveEnv(
-    serviceId: string,
-    key: string
-): ResolvedEnvResult {
+export function resolveEnv(serviceId: string, key: string): ResolvedEnvResult {
     const mode = getServiceMode(serviceId)
     const localValue = getEnvVarValue(serviceId, key)
     const cloudValue = getCloudEnv(key)

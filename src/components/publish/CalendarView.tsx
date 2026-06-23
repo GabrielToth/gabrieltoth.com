@@ -42,16 +42,16 @@ export default function CalendarView({
     const monthEnd = useMemo(() => endOfMonth(currentMonth), [currentMonth])
     const calendarStart = useMemo(
         () => startOfWeek(monthStart, { weekStartsOn: 0 }),
-        [monthStart],
+        [monthStart]
     )
     const calendarEnd = useMemo(
         () => endOfWeek(monthEnd, { weekStartsOn: 0 }),
-        [monthEnd],
+        [monthEnd]
     )
 
     const days = useMemo(
         () => eachDayOfInterval({ start: calendarStart, end: calendarEnd }),
-        [calendarStart, calendarEnd],
+        [calendarStart, calendarEnd]
     )
 
     const postDays = useMemo(() => {
@@ -65,11 +65,11 @@ export default function CalendarView({
 
     const goToPrevMonth = useCallback(
         () => setCurrentMonth(d => subMonths(d, 1)),
-        [],
+        []
     )
     const goToNextMonth = useCallback(
         () => setCurrentMonth(d => addMonths(d, 1)),
-        [],
+        []
     )
     const goToToday = useCallback(() => setCurrentMonth(new Date()), [])
 
@@ -147,7 +147,7 @@ export default function CalendarView({
                                 onSelect={() => onSelectDate(day)}
                             />
                         )
-                    }),
+                    })
                 )}
             </div>
 

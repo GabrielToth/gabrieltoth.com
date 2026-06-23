@@ -27,7 +27,13 @@ export interface User {
  */
 export interface SocialChannel {
     id: string
-    platform: "facebook" | "instagram" | "twitter" | "tiktok" | "linkedin" | "youtube"
+    platform:
+        | "facebook"
+        | "instagram"
+        | "twitter"
+        | "tiktok"
+        | "linkedin"
+        | "youtube"
     accountId: string
     accountName: string
     isConnected: boolean
@@ -280,7 +286,10 @@ export const SettingsContainer: React.FC<SettingsContainerProps> = ({
         setPreferences(updatedPreferences)
         if (typeof window !== "undefined") {
             try {
-                localStorage.setItem("user-timezone", updatedPreferences.timezone)
+                localStorage.setItem(
+                    "user-timezone",
+                    updatedPreferences.timezone
+                )
             } catch {}
         }
     }

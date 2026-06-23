@@ -59,7 +59,7 @@ export async function POST(req: NextRequest) {
     } catch (error) {
         logger.error(
             "TikTok webhook processing error",
-            error instanceof Error ? error : new Error(String(error)),
+            error instanceof Error ? error : new Error(String(error))
         )
         return NextResponse.json({ status: "error" }, { status: 500 })
     }

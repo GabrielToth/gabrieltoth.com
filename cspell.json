@@ -160,7 +160,5 @@
         "scss",
         "less"
     ],
-    "ignoreWords": [
-        "XVCJ"
-    ]
+    "ignoreWords": ["XVCJ"]
 }

@@ -377,7 +377,7 @@ describe("POST /api/oauth/disconnect/facebook — Attack Matrix", () => {
         it("should handle null byte in body", async () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/facebook",
-                { userId: "test\0user" },
+                { userId: "test\0user" }
             )
             const response = await POST(request)
             expect([200, 404, 500]).toContain(response.status)
@@ -386,7 +386,7 @@ describe("POST /api/oauth/disconnect/facebook — Attack Matrix", () => {
         it("should handle emoji in body", async () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/facebook",
-                { userId: "test😊user" },
+                { userId: "test😊user" }
             )
             const response = await POST(request)
             expect([200, 404, 500]).toContain(response.status)
@@ -395,7 +395,7 @@ describe("POST /api/oauth/disconnect/facebook — Attack Matrix", () => {
         it("should handle RTL override in body", async () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/facebook",
-                { userId: "\u202Etest\u202C" },
+                { userId: "\u202Etest\u202C" }
             )
             const response = await POST(request)
             expect([200, 404, 500]).toContain(response.status)
@@ -406,7 +406,7 @@ describe("POST /api/oauth/disconnect/facebook — Attack Matrix", () => {
         it("should handle request within rate limit", async () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/facebook",
-                {},
+                {}
             )
             const response = await POST(request)
             expect([200, 404, 500]).toContain(response.status)
@@ -417,7 +417,7 @@ describe("POST /api/oauth/disconnect/facebook — Attack Matrix", () => {
         it("should work without CSRF token (x-user-id is the auth mechanism)", async () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/facebook",
-                {},
+                {}
             )
             const response = await POST(request)
             expect([200, 404, 500]).toContain(response.status)
@@ -431,10 +431,10 @@ describe("POST /api/oauth/disconnect/facebook — Attack Matrix", () => {
                     POST(
                         makePostRequest(
                             "http://localhost/api/oauth/disconnect/facebook",
-                            {},
-                        ),
-                    ),
-                ),
+                            {}
+                        )
+                    )
+                )
             )
             for (const response of results) {
                 expect([200, 404, 500]).toContain(response.status)
@@ -447,7 +447,7 @@ describe("POST /api/oauth/disconnect/facebook — Attack Matrix", () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/facebook",
                 {},
-                { "X-Forwarded-For": "127.0.0.1", "X-Real-IP": "127.0.0.1" },
+                { "X-Forwarded-For": "127.0.0.1", "X-Real-IP": "127.0.0.1" }
             )
             const response = await POST(request)
             expect([200, 404, 500]).toContain(response.status)
@@ -457,7 +457,7 @@ describe("POST /api/oauth/disconnect/facebook — Attack Matrix", () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/facebook",
                 {},
-                { Host: "evil.com" },
+                { Host: "evil.com" }
             )
             const response = await POST(request)
             expect([200, 404, 500]).toContain(response.status)
@@ -470,7 +470,7 @@ describe("POST /api/oauth/disconnect/facebook — Attack Matrix", () => {
 
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/facebook",
-                {},
+                {}
             )
             const response = await POST(request)
             expect(response.status).toBe(404)
@@ -481,7 +481,7 @@ describe("POST /api/oauth/disconnect/facebook — Attack Matrix", () => {
         it("should allow double disconnect (idempotent after first)", async () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/facebook",
-                {},
+                {}
             )
             await POST(request)
 
@@ -495,7 +495,7 @@ describe("POST /api/oauth/disconnect/facebook — Attack Matrix", () => {
         it("should ignore extra fields in request body", async () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/facebook",
-                { role: "admin", isAdmin: true, balance: 999999 },
+                { role: "admin", isAdmin: true, balance: 999999 }
             )
             const response = await POST(request)
             expect([200, 404, 500]).toContain(response.status)

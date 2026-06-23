@@ -6,22 +6,22 @@ const LOCALE_SERVICE_ROUTES: Record<string, Record<string, string>> = {
     en: {
         "channel-management": "channel-management",
         "pc-optimization": "pc-optimization",
-        "editors": "editors",
+        editors: "editors",
     },
     "pt-BR": {
         "channel-management": "gerenciamento-de-canais",
         "pc-optimization": "otimizacao-de-pc",
-        "editors": "editores",
+        editors: "editores",
     },
     es: {
         "channel-management": "gestion-de-canales",
         "pc-optimization": "optimizacion-de-pc",
-        "editors": "editores",
+        editors: "editores",
     },
     de: {
         "channel-management": "kanalverwaltung",
         "pc-optimization": "pc-optimierung",
-        "editors": "editoren",
+        editors: "editoren",
     },
 }
 
@@ -103,7 +103,9 @@ test.describe("services journey", () => {
         await page.goto("/en")
         await page.getByTestId("services-button").click()
         await page.getByTestId("services-link-channel-management").click()
-        await expect(page).toHaveURL(/\/en\/(channel-management|gerenciamento-de-canais|gestion-de-canales|kanalverwaltung)/)
+        await expect(page).toHaveURL(
+            /\/en\/(channel-management|gerenciamento-de-canais|gestion-de-canales|kanalverwaltung)/
+        )
         await page.goBack()
         await expect(page).toHaveURL(/\/en(?:\/)?(?:#.*)?$/)
     })
@@ -115,7 +117,9 @@ test.describe("services journey", () => {
         await page.goto("/en")
         await page.getByTestId("services-button").click()
         await page.getByTestId("services-link-pc-optimization").click()
-        await expect(page).toHaveURL(/\/en\/(pc-optimization|otimizacao-de-pc|optimizacion-de-pc|pc-optimierung)/)
+        await expect(page).toHaveURL(
+            /\/en\/(pc-optimization|otimizacao-de-pc|optimizacion-de-pc|pc-optimierung)/
+        )
         await page.goBack()
         await expect(page).toHaveURL(/\/en(?:\/)?(?:#.*)?$/)
     })

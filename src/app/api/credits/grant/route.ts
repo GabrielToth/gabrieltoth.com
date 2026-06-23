@@ -119,7 +119,11 @@ export async function POST(request: NextRequest) {
             )
         }
 
-        if (rawAmount <= 0 || !Number.isInteger(rawAmount) || rawAmount > Number.MAX_SAFE_INTEGER) {
+        if (
+            rawAmount <= 0 ||
+            !Number.isInteger(rawAmount) ||
+            rawAmount > Number.MAX_SAFE_INTEGER
+        ) {
             return createErrorResponse(
                 AuthErrorType.INVALID_INPUT,
                 undefined,

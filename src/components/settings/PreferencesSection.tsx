@@ -219,10 +219,7 @@ export const PreferencesSection: React.FC<PreferencesSectionProps> = ({
                             onSave(updated)
                             if (typeof window !== "undefined") {
                                 try {
-                                    localStorage.setItem(
-                                        "user-timezone",
-                                        value,
-                                    )
+                                    localStorage.setItem("user-timezone", value)
                                 } catch {}
                             }
                         }}

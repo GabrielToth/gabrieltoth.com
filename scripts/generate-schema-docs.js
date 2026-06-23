@@ -7,13 +7,11 @@ const fs = require("fs")
 const path = require("path")
 
 const schemaPath = path.resolve(__dirname, "..", "supabase", "schema.sql")
-const outputPath = process.argv[2]
-  ? path.resolve(process.argv[2])
-  : null
+const outputPath = process.argv[2] ? path.resolve(process.argv[2]) : null
 
 if (!fs.existsSync(schemaPath)) {
-  console.error(`Schema file not found: ${schemaPath}`)
-  process.exit(1)
+    console.error(`Schema file not found: ${schemaPath}`)
+    process.exit(1)
 }
 
 const content = fs.readFileSync(schemaPath, "utf-8")
@@ -27,110 +25,114 @@ let tableComment = []
 
 let i = 0
 while (i < lines.length) {
-  const line = lines[i]
+    const line = lines[i]
 
-  // Match section headers: -- ========== N. NAME ==========
-  const sectionMatch = line.match(/^-- =+\n?$/)
-  if (sectionMatch && i + 1 < lines.length) {
-    const titleLine = lines[i + 1]
-    const titleMatch = titleLine.match(/^-- (\d+\.\s*.+)/)
-    if (titleMatch) {
-      if (currentSection) {
-        output.push("\n---\n")
-      }
-      currentSection = titleMatch[1].trim()
-      output.push(`\n## ${currentSection}\n`)
-      // Collect comment lines after title
-      let j = i + 2
-      sectionComment = []
-      while (j < lines.length) {
-        const cl = lines[j].trim()
-        if (cl.startsWith("--")) {
-          sectionComment.push(cl.replace(/^--\s*/, ""))
-          j++
-        } else {
-          break
+    // Match section headers: -- ========== N. NAME ==========
+    const sectionMatch = line.match(/^-- =+\n?$/)
+    if (sectionMatch && i + 1 < lines.length) {
+        const titleLine = lines[i + 1]
+        const titleMatch = titleLine.match(/^-- (\d+\.\s*.+)/)
+        if (titleMatch) {
+            if (currentSection) {
+                output.push("\n---\n")
+            }
+            currentSection = titleMatch[1].trim()
+            output.push(`\n## ${currentSection}\n`)
+            // Collect comment lines after title
+            let j = i + 2
+            sectionComment = []
+            while (j < lines.length) {
+                const cl = lines[j].trim()
+                if (cl.startsWith("--")) {
+                    sectionComment.push(cl.replace(/^--\s*/, ""))
+                    j++
+                } else {
+                    break
+                }
+            }
+            if (sectionComment.length > 0) {
+                output.push(`\n${sectionComment.join(" ")}\n`)
+            }
+            i = j
+            continue
         }
-      }
-      if (sectionComment.length > 0) {
-        output.push(`\n${sectionComment.join(" ")}\n`)
-      }
-      i = j
-      continue
-    }
-  }
-
-  // Match CREATE TABLE
-  const tableMatch = line.match(/^CREATE TABLE IF NOT EXISTS\s+(\S+)\s*\(/)
-  if (tableMatch) {
-    const tableName = tableMatch[1]
-    output.push(`\n### \`${tableName}\`\n`)
-
-    // Collect comment lines before CREATE TABLE
-    if (tableComment.length > 0) {
-      output.push(`\n${tableComment.join("\n")}\n`)
-      tableComment = []
     }
 
-    // Collect column definitions
-    i++
-    let columns = []
-    let constraints = []
-    let parenDepth = 1
+    // Match CREATE TABLE
+    const tableMatch = line.match(/^CREATE TABLE IF NOT EXISTS\s+(\S+)\s*\(/)
+    if (tableMatch) {
+        const tableName = tableMatch[1]
+        output.push(`\n### \`${tableName}\`\n`)
 
-    while (i < lines.length && parenDepth > 0) {
-      const cl = lines[i].trim()
-      if (cl.includes("(")) parenDepth++
-      if (cl.includes(")")) parenDepth--
-
-      if (parenDepth === 0) break
-
-      // Skip comments inside table definition
-      if (cl.startsWith("--") || cl.startsWith("/*") || cl.startsWith("*")) {
-        // Not a column
-      } else if (cl.endsWith(",") || cl.endsWith(")")) {
-        const clean = cl.replace(/,$/, "").trim()
-        if (clean.length > 0) {
-          // Check if it's a constraint or column
-          if (
-            clean.toUpperCase().includes("PRIMARY KEY") ||
-            clean.toUpperCase().includes("UNIQUE") ||
-            clean.toUpperCase().includes("CHECK") ||
-            clean.toUpperCase().includes("FOREIGN KEY") ||
-            clean.toUpperCase().includes("EXCLUDE") ||
-            clean.toUpperCase().includes("INDEX")
-          ) {
-            constraints.push(`  - ${clean}`)
-          } else {
-            columns.push(`  - \`${clean}\``)
-          }
+        // Collect comment lines before CREATE TABLE
+        if (tableComment.length > 0) {
+            output.push(`\n${tableComment.join("\n")}\n`)
+            tableComment = []
         }
-      }
 
-      i++
+        // Collect column definitions
+        i++
+        let columns = []
+        let constraints = []
+        let parenDepth = 1
+
+        while (i < lines.length && parenDepth > 0) {
+            const cl = lines[i].trim()
+            if (cl.includes("(")) parenDepth++
+            if (cl.includes(")")) parenDepth--
+
+            if (parenDepth === 0) break
+
+            // Skip comments inside table definition
+            if (
+                cl.startsWith("--") ||
+                cl.startsWith("/*") ||
+                cl.startsWith("*")
+            ) {
+                // Not a column
+            } else if (cl.endsWith(",") || cl.endsWith(")")) {
+                const clean = cl.replace(/,$/, "").trim()
+                if (clean.length > 0) {
+                    // Check if it's a constraint or column
+                    if (
+                        clean.toUpperCase().includes("PRIMARY KEY") ||
+                        clean.toUpperCase().includes("UNIQUE") ||
+                        clean.toUpperCase().includes("CHECK") ||
+                        clean.toUpperCase().includes("FOREIGN KEY") ||
+                        clean.toUpperCase().includes("EXCLUDE") ||
+                        clean.toUpperCase().includes("INDEX")
+                    ) {
+                        constraints.push(`  - ${clean}`)
+                    } else {
+                        columns.push(`  - \`${clean}\``)
+                    }
+                }
+            }
+
+            i++
+        }
+
+        if (columns.length > 0) {
+            output.push(`\n**Columns:**\n`)
+            output.push(columns.join("\n") + "\n")
+        }
+        if (constraints.length > 0) {
+            output.push(`\n**Constraints:**\n`)
+            output.push(constraints.join("\n") + "\n")
+        }
+
+        i++
+        continue
     }
 
-    if (columns.length > 0) {
-      output.push(`\n**Columns:**\n`)
-      output.push(columns.join("\n") + "\n")
-    }
-    if (constraints.length > 0) {
-      output.push(`\n**Constraints:**\n`)
-      output.push(constraints.join("\n") + "\n")
+    // Collect comment blocks before CREATE TABLE
+    if (line.trim().startsWith("--") && !line.match(/^-- =+/)) {
+        tableComment.push(line.trim().replace(/^--\s*/, ""))
+    } else if (line.trim() !== "") {
+        tableComment = []
     }
 
     i++
-    continue
-  }
-
-  // Collect comment blocks before CREATE TABLE
-  if (line.trim().startsWith("--") && !line.match(/^-- =+/)) {
-    tableComment.push(line.trim().replace(/^--\s*/, ""))
-  } else if (line.trim() !== "") {
-    tableComment = []
-  }
-
-  i++
 }
 
 let result = `# Database Schema
@@ -150,8 +152,8 @@ ${output.join("")}
 `
 
 if (outputPath) {
-  fs.writeFileSync(outputPath, result, "utf-8")
-  console.log(`Schema docs written to: ${outputPath}`)
+    fs.writeFileSync(outputPath, result, "utf-8")
+    console.log(`Schema docs written to: ${outputPath}`)
 } else {
-  console.log(result)
+    console.log(result)
 }

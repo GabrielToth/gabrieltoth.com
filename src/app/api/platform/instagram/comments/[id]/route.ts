@@ -34,7 +34,11 @@ export async function DELETE(
 
         if (!userId) {
             return NextResponse.json(
-                { success: false, error: "MISSING_USER_ID", message: "User ID is required" },
+                {
+                    success: false,
+                    error: "MISSING_USER_ID",
+                    message: "User ID is required",
+                },
                 { status: 400 }
             )
         }
@@ -43,7 +47,11 @@ export async function DELETE(
 
         if (!commentId) {
             return NextResponse.json(
-                { success: false, error: "VALIDATION_ERROR", message: "Comment ID is required" },
+                {
+                    success: false,
+                    error: "VALIDATION_ERROR",
+                    message: "Comment ID is required",
+                },
                 { status: 400 }
             )
         }
@@ -53,7 +61,11 @@ export async function DELETE(
 
         if (!storedToken) {
             return NextResponse.json(
-                { success: false, error: "INSTAGRAM_NOT_LINKED", message: "Instagram account is not linked" },
+                {
+                    success: false,
+                    error: "INSTAGRAM_NOT_LINKED",
+                    message: "Instagram account is not linked",
+                },
                 { status: 404 }
             )
         }
@@ -62,11 +74,18 @@ export async function DELETE(
         const oauthService = getInstagramOAuthService(config)
         await oauthService.initialize()
 
-        const accessToken = await getValidInstagramToken(userId, { tokenStore, oauthService })
+        const accessToken = await getValidInstagramToken(userId, {
+            tokenStore,
+            oauthService,
+        })
 
         if (!accessToken) {
             return NextResponse.json(
-                { success: false, error: "TOKEN_EXPIRED", message: "Instagram token has expired" },
+                {
+                    success: false,
+                    error: "TOKEN_EXPIRED",
+                    message: "Instagram token has expired",
+                },
                 { status: 401 }
             )
         }
@@ -85,7 +104,11 @@ export async function DELETE(
 
         if (!network) {
             return NextResponse.json(
-                { success: false, error: "INSTAGRAM_NOT_LINKED", message: "Instagram account is not linked" },
+                {
+                    success: false,
+                    error: "INSTAGRAM_NOT_LINKED",
+                    message: "Instagram account is not linked",
+                },
                 { status: 404 }
             )
         }

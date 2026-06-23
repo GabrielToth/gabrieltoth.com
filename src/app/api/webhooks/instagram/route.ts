@@ -26,7 +26,11 @@ export async function GET(req: NextRequest) {
     const token = searchParams.get("hub.verify_token")
     const challenge = searchParams.get("hub.challenge")
 
-    if (mode === "subscribe" && token === process.env.INSTAGRAM_WEBHOOK_VERIFY_TOKEN && challenge) {
+    if (
+        mode === "subscribe" &&
+        token === process.env.INSTAGRAM_WEBHOOK_VERIFY_TOKEN &&
+        challenge
+    ) {
         logger.info("Instagram webhook verified")
         return new NextResponse(challenge, { status: 200 })
     }
@@ -42,13 +46,20 @@ export async function POST(req: NextRequest) {
         if (signature) {
             const appSecret = process.env.INSTAGRAM_APP_SECRET
             if (!appSecret) {
-                logger.error("Missing INSTAGRAM_APP_SECRET for webhook verification")
-                return new NextResponse("Internal Server Error", { status: 500 })
+                logger.error(
+                    "Missing INSTAGRAM_APP_SECRET for webhook verification"
+                )
+                return new NextResponse("Internal Server Error", {
+                    status: 500,
+                })
             }
 
             const expectedSig =
                 "sha256=" +
-                crypto.createHmac("sha256", appSecret).update(rawBody).digest("hex")
+                crypto
+                    .createHmac("sha256", appSecret)
+                    .update(rawBody)
+                    .digest("hex")
 
             try {
                 const isVerified = crypto.timingSafeEqual(

@@ -31,7 +31,7 @@ export async function fetchPosts(from?: string, to?: string): Promise<Post[]> {
 }
 
 export async function createPost(
-    post: Omit<Post, "id" | "createdAt">,
+    post: Omit<Post, "id" | "createdAt">
 ): Promise<Post> {
     try {
         const res = await fetch("/api/posts", {
@@ -58,7 +58,7 @@ export async function createPost(
 
 export async function updatePost(
     id: string,
-    updates: Partial<Post>,
+    updates: Partial<Post>
 ): Promise<Post> {
     try {
         const body: Record<string, unknown> = {}
@@ -113,7 +113,7 @@ function mapScheduledPostToPost(p: any): Post {
                   ? "failed"
                   : "scheduled",
         channels: (p.networks || []).map((n: any) =>
-            typeof n === "string" ? n : n.platform || "",
+            typeof n === "string" ? n : n.platform || ""
         ),
         errorMessage: p.errorMessage,
         createdAt: new Date(p.createdAt),

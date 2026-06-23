@@ -140,7 +140,8 @@ describe("ChannelsSection", () => {
             ok: true,
             json: async () => ({
                 success: true,
-                authorizationUrl: "https://accounts.google.com/o/oauth2/auth?....",
+                authorizationUrl:
+                    "https://accounts.google.com/o/oauth2/auth?....",
             }),
         })
 

@@ -46,7 +46,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
         })
         return NextResponse.json(
             { error: "Failed to fetch posts" },
-            { status: 500 },
+            { status: 500 }
         )
     }
 }
@@ -64,7 +64,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         } catch {
             return NextResponse.json(
                 { error: "Invalid JSON body" },
-                { status: 400 },
+                { status: 400 }
             )
         }
 
@@ -78,7 +78,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
             if (!allowedKeys.has(key)) {
                 return NextResponse.json(
                     { error: `Unexpected field: ${key}` },
-                    { status: 400 },
+                    { status: 400 }
                 )
             }
         }
@@ -91,42 +91,48 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         if (!content || typeof content !== "string" || !content.trim()) {
             return NextResponse.json(
                 { error: "content is required and must be a non-empty string" },
-                { status: 400 },
+                { status: 400 }
             )
         }
 
         if (content.length > 100000) {
             return NextResponse.json(
-                { error: "content exceeds maximum length of 100000 characters" },
-                { status: 400 },
+                {
+                    error: "content exceeds maximum length of 100000 characters",
+                },
+                { status: 400 }
             )
         }
 
         if (!scheduledTime || typeof scheduledTime !== "number") {
             return NextResponse.json(
                 { error: "scheduledTime is required and must be a number" },
-                { status: 400 },
+                { status: 400 }
             )
         }
 
         if (scheduledTime < Date.now()) {
             return NextResponse.json(
                 { error: "scheduledTime must be in the future" },
-                { status: 400 },
+                { status: 400 }
             )
         }
 
         if (scheduledTime > Date.now() + 365 * 24 * 60 * 60 * 1000) {
             return NextResponse.json(
-                { error: "scheduledTime cannot be more than 365 days in the future" },
-                { status: 400 },
+                {
+                    error: "scheduledTime cannot be more than 365 days in the future",
+                },
+                { status: 400 }
             )
         }
 
         if (!Array.isArray(platforms) || platforms.length === 0) {
             return NextResponse.json(
-                { error: "platforms is required and must be a non-empty array" },
-                { status: 400 },
+                {
+                    error: "platforms is required and must be a non-empty array",
+                },
+                { status: 400 }
             )
         }
 
@@ -136,7 +142,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
                     {
                         error: `Invalid platform: ${p}. Valid platforms: ${VALID_PLATFORMS.join(", ")}`,
                     },
-                    { status: 400 },
+                    { status: 400 }
                 )
             }
         }
@@ -144,7 +150,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         if (mediaType !== "text" && mediaType !== "video") {
             return NextResponse.json(
                 { error: "mediaType must be 'text' or 'video'" },
-                { status: 400 },
+                { status: 400 }
             )
         }
 
@@ -161,7 +167,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
             content,
             scheduledTime,
             platforms as SocialPlatform[],
-            mediaType as "text" | "video",
+            mediaType as "text" | "video"
         )
 
         return NextResponse.json({ post }, { status: 201 })
@@ -171,7 +177,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         })
         return NextResponse.json(
             { error: "Failed to create scheduled post" },
-            { status: 500 },
+            { status: 500 }
         )
     }
 }

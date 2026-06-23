@@ -148,8 +148,7 @@ export async function signInWithOAuth(
     })
 
     if (typeof window !== "undefined") {
-        window.location.href =
-            `https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}`
+        window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}`
     }
 }
 

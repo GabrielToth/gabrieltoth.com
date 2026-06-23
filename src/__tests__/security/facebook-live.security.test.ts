@@ -40,15 +40,13 @@ const mockGetPageAccessToken = vi.hoisted(() =>
     vi.fn().mockResolvedValue("mock-page-token")
 )
 const mockCreateLiveVideo = vi.hoisted(() =>
-    vi
-        .fn()
-        .mockResolvedValue({
-            id: "mock-video-123",
-            streamUrl: "rtmp://example.com/live",
-            secureStreamUrl: "rtmps://example.com/live",
-            status: "LIVE",
-            title: "Test Live",
-        })
+    vi.fn().mockResolvedValue({
+        id: "mock-video-123",
+        streamUrl: "rtmp://example.com/live",
+        secureStreamUrl: "rtmps://example.com/live",
+        status: "LIVE",
+        title: "Test Live",
+    })
 )
 const mockGetLiveVideos = vi.hoisted(() =>
     vi.fn().mockResolvedValue({ data: [], paging: {} })
@@ -342,7 +340,7 @@ describe("Facebook Live — Attack Matrix", () => {
                 makePost("http://localhost/api/platform/facebook/live", {
                     pageId: "123",
                     title: "Test Live",
-                }),
+                })
             )
             expect([201, 400, 500]).toContain(res.status)
         })
@@ -354,8 +352,8 @@ describe("Facebook Live — Attack Matrix", () => {
                 makePost(
                     "http://localhost/api/platform/facebook/live",
                     { pageId: "123", title: "Test" },
-                    { "X-Forwarded-For": "127.0.0.1" },
-                ),
+                    { "X-Forwarded-For": "127.0.0.1" }
+                )
             )
             expect([201, 400, 500]).toContain(res.status)
         })
@@ -365,8 +363,8 @@ describe("Facebook Live — Attack Matrix", () => {
                 makePost(
                     "http://localhost/api/platform/facebook/live",
                     { pageId: "123", title: "Test" },
-                    { Host: "evil.com" },
-                ),
+                    { Host: "evil.com" }
+                )
             )
             expect([201, 400, 500]).toContain(res.status)
         })
@@ -375,13 +373,13 @@ describe("Facebook Live — Attack Matrix", () => {
     describe("Row 16 — Business logic", () => {
         it("POST: should handle invalid pageId gracefully", async () => {
             mockGetPageAccessToken.mockRejectedValueOnce(
-                new Error("Page not found"),
+                new Error("Page not found")
             )
             const res = await POST(
                 makePost("http://localhost/api/platform/facebook/live", {
                     pageId: "nonexistent",
                     title: "Test Live",
-                }),
+                })
             )
             expect([400, 500]).toContain(res.status)
         })
@@ -393,7 +391,7 @@ describe("Facebook Live — Attack Matrix", () => {
                 makePost("http://localhost/api/platform/facebook/live", {
                     pageId: "../../etc/passwd",
                     title: "Test",
-                }),
+                })
             )
             expect([201, 400, 500]).toContain(res.status)
         })
@@ -403,7 +401,7 @@ describe("Facebook Live — Attack Matrix", () => {
                 makePost("http://localhost/api/platform/facebook/live", {
                     pageId: "..\\..\\windows\\system32",
                     title: "Test",
-                }),
+                })
             )
             expect([201, 400, 500]).toContain(res.status)
         })

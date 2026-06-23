@@ -24,10 +24,7 @@ describe("Environment Configuration", () => {
         it("should fail when any required variable is missing", () => {
             fc.assert(
                 fc.property(
-                    fc.constantFrom(
-                        "DATABASE_URL",
-                        "DISCORD_WEBHOOK_URL"
-                    ),
+                    fc.constantFrom("DATABASE_URL", "DISCORD_WEBHOOK_URL"),
                     missingVar => {
                         // Setup: Set all required vars except one
                         process.env.DATABASE_URL =

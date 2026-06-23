@@ -27,11 +27,8 @@ vi.mock("@/lib/logger", () => ({
     }),
 }))
 
-const {
-    chargeForVideoStorage,
-    refundVideoStorage,
-    getUserStorageUsageBytes,
-} = await import("@/lib/billing/video-schedule-billing")
+const { chargeForVideoStorage, refundVideoStorage, getUserStorageUsageBytes } =
+    await import("@/lib/billing/video-schedule-billing")
 
 describe("chargeForVideoStorage", () => {
     beforeEach(() => {

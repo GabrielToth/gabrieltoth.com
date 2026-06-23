@@ -1,5 +1,8 @@
 import { deductAmount, grantCredits } from "@/lib/credits/service"
-import { calculateVideoStorageCost, calculateRefundAmount } from "./video-storage-cost"
+import {
+    calculateVideoStorageCost,
+    calculateRefundAmount,
+} from "./video-storage-cost"
 import { query } from "@/lib/db"
 import { createLogger } from "@/lib/logger"
 

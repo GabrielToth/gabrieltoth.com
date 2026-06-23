@@ -53,17 +53,26 @@ export default function PublishPage() {
                 title: p.content.slice(0, 80),
                 content: p.content,
                 scheduledAt: new Date(p.scheduledTime),
-                publishedAt: p.publishedAt ? new Date(p.publishedAt) : undefined,
-                status: p.status === "published" ? "published" : p.status === "failed" ? "failed" : "scheduled",
+                publishedAt: p.publishedAt
+                    ? new Date(p.publishedAt)
+                    : undefined,
+                status:
+                    p.status === "published"
+                        ? "published"
+                        : p.status === "failed"
+                          ? "failed"
+                          : "scheduled",
                 channels: (p.networks || []).map((n: any) =>
-                    typeof n === "string" ? n : n.platform || "",
+                    typeof n === "string" ? n : n.platform || ""
                 ),
                 errorMessage: p.errorMessage,
                 createdAt: new Date(p.createdAt),
             }))
             setPosts(mapped)
         } catch (err) {
-            setError(err instanceof Error ? err.message : "Failed to fetch posts")
+            setError(
+                err instanceof Error ? err.message : "Failed to fetch posts"
+            )
         } finally {
             setIsLoading(false)
         }
@@ -90,13 +99,10 @@ export default function PublishPage() {
         setShowPostingInterface(true)
     }, [])
 
-    const handleEditPost = useCallback(
-        (post: Post) => {
-            setInterfaceDate(post.scheduledAt)
-            setShowPostingInterface(true)
-        },
-        [],
-    )
+    const handleEditPost = useCallback((post: Post) => {
+        setInterfaceDate(post.scheduledAt)
+        setShowPostingInterface(true)
+    }, [])
 
     const handleDeletePost = useCallback(
         async (post: Post) => {
@@ -111,7 +117,7 @@ export default function PublishPage() {
                 console.error("Failed to delete post:", err)
             }
         },
-        [fetchPosts],
+        [fetchPosts]
     )
 
     const filteredPosts = useMemo(() => {
@@ -131,14 +137,16 @@ export default function PublishPage() {
                     id: p.id,
                     scheduledTime: p.scheduledAt.getTime(),
                 })),
-        [posts],
+        [posts]
     )
 
     return (
         <div className="space-y-6">
             <div className="flex items-center justify-between">
                 <div>
-                    <h1 className="text-3xl font-bold text-gray-900">Publish</h1>
+                    <h1 className="text-3xl font-bold text-gray-900">
+                        Publish
+                    </h1>
                     <p className="mt-2 text-gray-600">
                         Schedule and manage your social media posts
                     </p>
@@ -172,13 +180,13 @@ export default function PublishPage() {
                     )}
                 </div>
                 <PostList
-                        posts={filteredPosts}
-                        isLoading={isLoading}
-                        error={error}
-                        onEdit={handleEditPost}
-                        onDelete={handleDeletePost}
-                        onRetry={fetchPosts}
-                    />
+                    posts={filteredPosts}
+                    isLoading={isLoading}
+                    error={error}
+                    onEdit={handleEditPost}
+                    onDelete={handleDeletePost}
+                    onRetry={fetchPosts}
+                />
             </div>
 
             {showPostingInterface && (

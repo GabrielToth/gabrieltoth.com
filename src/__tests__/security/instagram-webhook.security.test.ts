@@ -40,10 +40,8 @@ import crypto from "crypto"
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 
 vi.hoisted(() => {
-    process.env.INSTAGRAM_WEBHOOK_VERIFY_TOKEN =
-        "test-verify-token-123"
-    process.env.INSTAGRAM_APP_SECRET =
-        "test-app-secret-for-webhook-signing"
+    process.env.INSTAGRAM_WEBHOOK_VERIFY_TOKEN = "test-verify-token-123"
+    process.env.INSTAGRAM_APP_SECRET = "test-app-secret-for-webhook-signing"
 })
 
 vi.mock("@/lib/instagram/webhook-handler", () => ({
@@ -63,7 +61,10 @@ const VALID_TOKEN = "test-verify-token-123"
 const APP_SECRET = "test-app-secret-for-webhook-signing"
 
 function signBody(body: string): string {
-    return "sha256=" + crypto.createHmac("sha256", APP_SECRET).update(body).digest("hex")
+    return (
+        "sha256=" +
+        crypto.createHmac("sha256", APP_SECRET).update(body).digest("hex")
+    )
 }
 
 function makeGetRequest(
@@ -71,10 +72,13 @@ function makeGetRequest(
     headers: Record<string, string> = {}
 ): NextRequest {
     const search = new URLSearchParams(params).toString()
-    return new NextRequest(`http://localhost/api/webhooks/instagram?${search}`, {
-        method: "GET",
-        headers,
-    })
+    return new NextRequest(
+        `http://localhost/api/webhooks/instagram?${search}`,
+        {
+            method: "GET",
+            headers,
+        }
+    )
 }
 
 function makePostRequest(
@@ -385,7 +389,18 @@ describe("POST /api/webhooks/instagram — Attack Matrix", () => {
         it("should handle zero values in payload", async () => {
             const body = {
                 object: "instagram",
-                entry: [{ id: "0", time: 0, changes: [{ field: "comments", value: { id: "0", media_id: "0", text: "" } }] }],
+                entry: [
+                    {
+                        id: "0",
+                        time: 0,
+                        changes: [
+                            {
+                                field: "comments",
+                                value: { id: "0", media_id: "0", text: "" },
+                            },
+                        ],
+                    },
+                ],
             }
             const request = makePostRequest(body)
             const response = await POST(request)
@@ -395,7 +410,22 @@ describe("POST /api/webhooks/instagram — Attack Matrix", () => {
         it("should handle negative values in payload", async () => {
             const body = {
                 object: "instagram",
-                entry: [{ id: "-1", time: -1, changes: [{ field: "comments", value: { id: "-1", media_id: "-1", text: "test" } }] }],
+                entry: [
+                    {
+                        id: "-1",
+                        time: -1,
+                        changes: [
+                            {
+                                field: "comments",
+                                value: {
+                                    id: "-1",
+                                    media_id: "-1",
+                                    text: "test",
+                                },
+                            },
+                        ],
+                    },
+                ],
             }
             const request = makePostRequest(body)
             const response = await POST(request)
@@ -412,7 +442,8 @@ describe("POST /api/webhooks/instagram — Attack Matrix", () => {
         })
 
         it("should handle BOM prefix in body", async () => {
-            const bodyStr = "\uFEFF" + JSON.stringify({ object: "instagram", entry: [] })
+            const bodyStr =
+                "\uFEFF" + JSON.stringify({ object: "instagram", entry: [] })
             const sig = signBody(bodyStr)
             const request = new NextRequest(
                 "http://localhost/api/webhooks/instagram",
@@ -474,7 +505,12 @@ describe("POST /api/webhooks/instagram — Attack Matrix", () => {
         it("should handle constructor.prototype in body", async () => {
             const bodyStr = JSON.stringify({
                 object: "instagram",
-                entry: [{ constructor: { prototype: { admin: true } }, changes: [] }],
+                entry: [
+                    {
+                        constructor: { prototype: { admin: true } },
+                        changes: [],
+                    },
+                ],
             })
             const request = makePostRequest(bodyStr, {
                 "x-hub-signature-256": signBody(bodyStr),
@@ -498,18 +534,22 @@ describe("POST /api/webhooks/instagram — Attack Matrix", () => {
         it("should handle SQL injection in comment text", async () => {
             const body = {
                 object: "instagram",
-                entry: [{
-                    id: "123",
-                    time: 1000,
-                    changes: [{
-                        field: "comments",
-                        value: {
-                            id: "1",
-                            media_id: "1",
-                            text: "1' DROP TABLE users; --",
-                        },
-                    }],
-                }],
+                entry: [
+                    {
+                        id: "123",
+                        time: 1000,
+                        changes: [
+                            {
+                                field: "comments",
+                                value: {
+                                    id: "1",
+                                    media_id: "1",
+                                    text: "1' DROP TABLE users; --",
+                                },
+                            },
+                        ],
+                    },
+                ],
             }
             const request = makePostRequest(body)
             const response = await POST(request)
@@ -519,18 +559,22 @@ describe("POST /api/webhooks/instagram — Attack Matrix", () => {
         it("should handle XSS in comment text", async () => {
             const body = {
                 object: "instagram",
-                entry: [{
-                    id: "123",
-                    time: 1000,
-                    changes: [{
-                        field: "comments",
-                        value: {
-                            id: "1",
-                            media_id: "1",
-                            text: "<script>alert(document.cookie)</script>",
-                        },
-                    }],
-                }],
+                entry: [
+                    {
+                        id: "123",
+                        time: 1000,
+                        changes: [
+                            {
+                                field: "comments",
+                                value: {
+                                    id: "1",
+                                    media_id: "1",
+                                    text: "<script>alert(document.cookie)</script>",
+                                },
+                            },
+                        ],
+                    },
+                ],
             }
             const request = makePostRequest(body)
             const response = await POST(request)
@@ -540,18 +584,22 @@ describe("POST /api/webhooks/instagram — Attack Matrix", () => {
         it("should handle NoSQL operator in text", async () => {
             const body = {
                 object: "instagram",
-                entry: [{
-                    id: "123",
-                    time: 1000,
-                    changes: [{
-                        field: "comments",
-                        value: {
-                            id: "1",
-                            media_id: "1",
-                            text: '{"$ne": null}',
-                        },
-                    }],
-                }],
+                entry: [
+                    {
+                        id: "123",
+                        time: 1000,
+                        changes: [
+                            {
+                                field: "comments",
+                                value: {
+                                    id: "1",
+                                    media_id: "1",
+                                    text: '{"$ne": null}',
+                                },
+                            },
+                        ],
+                    },
+                ],
             }
             const request = makePostRequest(body)
             const response = await POST(request)
@@ -564,14 +612,22 @@ describe("POST /api/webhooks/instagram — Attack Matrix", () => {
         it("should handle emoji in comment text", async () => {
             const body = {
                 object: "instagram",
-                entry: [{
-                    id: "123",
-                    time: 1000,
-                    changes: [{
-                        field: "comments",
-                        value: { id: "1", media_id: "1", text: "🔥🚀 Great stream! 🎉" },
-                    }],
-                }],
+                entry: [
+                    {
+                        id: "123",
+                        time: 1000,
+                        changes: [
+                            {
+                                field: "comments",
+                                value: {
+                                    id: "1",
+                                    media_id: "1",
+                                    text: "🔥🚀 Great stream! 🎉",
+                                },
+                            },
+                        ],
+                    },
+                ],
             }
             const request = makePostRequest(body)
             const response = await POST(request)
@@ -581,14 +637,22 @@ describe("POST /api/webhooks/instagram — Attack Matrix", () => {
         it("should handle null byte in text", async () => {
             const body = {
                 object: "instagram",
-                entry: [{
-                    id: "123",
-                    time: 1000,
-                    changes: [{
-                        field: "comments",
-                        value: { id: "1", media_id: "1", text: "hello\0world" },
-                    }],
-                }],
+                entry: [
+                    {
+                        id: "123",
+                        time: 1000,
+                        changes: [
+                            {
+                                field: "comments",
+                                value: {
+                                    id: "1",
+                                    media_id: "1",
+                                    text: "hello\0world",
+                                },
+                            },
+                        ],
+                    },
+                ],
             }
             const request = makePostRequest(body)
             const response = await POST(request)
@@ -598,14 +662,22 @@ describe("POST /api/webhooks/instagram — Attack Matrix", () => {
         it("should handle control characters in text", async () => {
             const body = {
                 object: "instagram",
-                entry: [{
-                    id: "123",
-                    time: 1000,
-                    changes: [{
-                        field: "comments",
-                        value: { id: "1", media_id: "1", text: "\x00\x01\x02\x1F" },
-                    }],
-                }],
+                entry: [
+                    {
+                        id: "123",
+                        time: 1000,
+                        changes: [
+                            {
+                                field: "comments",
+                                value: {
+                                    id: "1",
+                                    media_id: "1",
+                                    text: "\x00\x01\x02\x1F",
+                                },
+                            },
+                        ],
+                    },
+                ],
             }
             const request = makePostRequest(body)
             const response = await POST(request)
@@ -618,14 +690,22 @@ describe("POST /api/webhooks/instagram — Attack Matrix", () => {
         it("should handle oversized body (10k+ chars)", async () => {
             const body = {
                 object: "instagram",
-                entry: [{
-                    id: "123",
-                    time: 1000,
-                    changes: [{
-                        field: "comments",
-                        value: { id: "1", media_id: "1", text: "A".repeat(10000) },
-                    }],
-                }],
+                entry: [
+                    {
+                        id: "123",
+                        time: 1000,
+                        changes: [
+                            {
+                                field: "comments",
+                                value: {
+                                    id: "1",
+                                    media_id: "1",
+                                    text: "A".repeat(10000),
+                                },
+                            },
+                        ],
+                    },
+                ],
             }
             const request = makePostRequest(body)
             const response = await POST(request)
@@ -639,11 +719,13 @@ describe("POST /api/webhooks/instagram — Attack Matrix", () => {
             }
             const body = {
                 object: "instagram",
-                entry: [{
-                    id: "123",
-                    time: 1000,
-                    changes: [{ field: "comments", value: nested }],
-                }],
+                entry: [
+                    {
+                        id: "123",
+                        time: 1000,
+                        changes: [{ field: "comments", value: nested }],
+                    },
+                ],
             }
             const request = makePostRequest(body)
             const response = await POST(request)
@@ -660,7 +742,8 @@ describe("POST /api/webhooks/instagram — Attack Matrix", () => {
         })
 
         it("should handle JSON bomb (duplicate keys)", async () => {
-            const bodyStr = '{"a":1,"a":2,"a":3,"a":4,"a":5,"a":6,"a":7,"a":8,"a":9,"a":10}'
+            const bodyStr =
+                '{"a":1,"a":2,"a":3,"a":4,"a":5,"a":6,"a":7,"a":8,"a":9,"a":10}'
             const request = makePostRequest(bodyStr, {
                 "x-hub-signature-256": signBody(bodyStr),
             })
@@ -741,7 +824,8 @@ describe("POST /api/webhooks/instagram — Attack Matrix", () => {
         it("should reject request with wrong signature", async () => {
             const body = { object: "instagram", entry: [] }
             const request = makePostRequest(body, {
-                "x-hub-signature-256": "sha256=0000000000000000000000000000000000000000000000000000000000000000",
+                "x-hub-signature-256":
+                    "sha256=0000000000000000000000000000000000000000000000000000000000000000",
             })
             const response = await POST(request)
             expect(response.status).toBe(403)
@@ -829,21 +913,25 @@ describe("POST /api/webhooks/instagram — Attack Matrix", () => {
         it("should handle extra unexpected fields in payload", async () => {
             const body = {
                 object: "instagram",
-                entry: [{
-                    id: "123",
-                    time: 1000,
-                    changes: [{
-                        field: "comments",
-                        value: {
-                            id: "1",
-                            media_id: "1",
-                            text: "test",
-                            is_admin: true,
-                            role: "moderator",
-                            __proto__: { delete_all: true },
-                        },
-                    }],
-                }],
+                entry: [
+                    {
+                        id: "123",
+                        time: 1000,
+                        changes: [
+                            {
+                                field: "comments",
+                                value: {
+                                    id: "1",
+                                    media_id: "1",
+                                    text: "test",
+                                    is_admin: true,
+                                    role: "moderator",
+                                    __proto__: { delete_all: true },
+                                },
+                            },
+                        ],
+                    },
+                ],
             }
             const request = makePostRequest(body)
             const response = await POST(request)
@@ -856,18 +944,22 @@ describe("POST /api/webhooks/instagram — Attack Matrix", () => {
         it("should handle URL-like values without fetching", async () => {
             const body = {
                 object: "instagram",
-                entry: [{
-                    id: "123",
-                    time: 1000,
-                    changes: [{
-                        field: "comments",
-                        value: {
-                            id: "1",
-                            media_id: "1",
-                            text: "http://169.254.169.254/latest/meta-data/",
-                        },
-                    }],
-                }],
+                entry: [
+                    {
+                        id: "123",
+                        time: 1000,
+                        changes: [
+                            {
+                                field: "comments",
+                                value: {
+                                    id: "1",
+                                    media_id: "1",
+                                    text: "http://169.254.169.254/latest/meta-data/",
+                                },
+                            },
+                        ],
+                    },
+                ],
             }
             const request = makePostRequest(body)
             const response = await POST(request)
@@ -877,17 +969,21 @@ describe("POST /api/webhooks/instagram — Attack Matrix", () => {
         it("should handle media_url without fetching", async () => {
             const body = {
                 object: "instagram",
-                entry: [{
-                    id: "123",
-                    time: 1000,
-                    changes: [{
-                        field: "mentioned",
-                        value: {
-                            media_id: "1",
-                            media_url: "file:///etc/passwd",
-                        },
-                    }],
-                }],
+                entry: [
+                    {
+                        id: "123",
+                        time: 1000,
+                        changes: [
+                            {
+                                field: "mentioned",
+                                value: {
+                                    media_id: "1",
+                                    media_url: "file:///etc/passwd",
+                                },
+                            },
+                        ],
+                    },
+                ],
             }
             const request = makePostRequest(body)
             const response = await POST(request)
