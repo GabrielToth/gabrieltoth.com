@@ -14,7 +14,7 @@ let connectionError: Error | null = null
 
 /**
  * Initialize Redis connection
- * Supports both Upstash (REST API) and local Redis
+ * Uses Upstash Redis (REST API)
  */
 export async function initializeRedis(): Promise<Redis | null> {
     // Return existing client if already initialized
@@ -103,8 +103,7 @@ export function getConnectionError(): Error | null {
 export async function closeRedis(): Promise<void> {
     if (redisClient) {
         try {
-            // Upstash Redis doesn't require explicit close
-            // but we'll clear the reference
+            // Clear the reference (Upstash client doesn't need connection close)
             redisClient = null
             logger.info("Redis connection closed")
         } catch (error) {

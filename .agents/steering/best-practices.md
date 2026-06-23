@@ -1047,88 +1047,13 @@ Recommended tools for security testing:
 
 ## 🔐 Security Testing Requirements
 
-**CRITICAL**: Local tests and development REQUIRE Docker containers running.
-
-### Required Containers
-
-Before running tests or development, ensure these containers are running:
-
-- **PostgreSQL Database**: Main database
-- **Redis Cache**: Cache and session storage
-- **SMTP Server** (MailHog or similar): Email testing
-- **Backend Services**: Containerized backend services
-
-### Start Containers
+**Note**: Local development requires local PostgreSQL. Use Docker for convenience:
 
 ```bash
-# Start all containers (docker-compose)
-docker-compose up -d
-
-# Check container status
-docker-compose ps
-
-# View container logs
-docker-compose logs -f
+docker compose up -d
 ```
 
-### Pre-Test Verification
-
-**MANDATORY** before running tests:
-
-```bash
-# Check if containers are running
-docker-compose ps
-
-# Check database connectivity
-npm run db:check
-
-# Check Redis connectivity
-npm run redis:check
-```
-
-### Docker Checklist
-
-- [ ] Docker Desktop installed and running
-- [ ] `docker-compose up -d` executed
-- [ ] All containers have status "Up"
-- [ ] Database is accessible
-- [ ] Redis is accessible
-- [ ] SMTP server is accessible
-
-### Docker Troubleshooting
-
-**Containers won't start:**
-
-```bash
-# Clean up old containers
-docker-compose down -v
-
-# Rebuild images
-docker-compose build --no-cache
-
-# Start again
-docker-compose up -d
-```
-
-**Database won't connect:**
-
-```bash
-# Check PostgreSQL logs
-docker-compose logs postgres
-
-# Restart container
-docker-compose restart postgres
-```
-
-**Redis won't connect:**
-
-```bash
-# Check Redis logs
-docker-compose logs redis
-
-# Restart container
-docker-compose restart redis
-```
+Docker is only used for local Postgres. Redis is via Upstash (cloud), SMTP is not required for dev.
 
 ---
 

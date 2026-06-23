@@ -20,7 +20,7 @@ export interface EnvironmentConfig {
     // Discord (optional alerts)
     DISCORD_WEBHOOK_URL: string
 
-    // Docker
+    // Hostname
     HOSTNAME: string
 
     // YouTube OAuth (YouTube linking feature)

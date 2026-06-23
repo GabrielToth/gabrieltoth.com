@@ -113,8 +113,7 @@ The callback route (`src/app/api/oauth/callback/instagram/route.ts`) uses HMAC-s
 
 ## Deprecation candidates
 
-- **`ioredis`**: Only used in `src/lib/shutdown/index.ts` and `src/lib/retry/wrappers.ts` — legacy Docker backend patterns. Main cache layer uses `@upstash/redis`. Consolidate when possible.
-- **`stripe`**: Config exists at `src/lib/stripe/index.ts`, but `src/app/api/platform/webhooks/route.ts` is an empty shell (`export {}`). Either implement Stripe webhooks or remove entirely.
+- **`stripe`**: Config existed at `src/lib/stripe/index.ts` (deleted), and `src/app/api/platform/webhooks/route.ts` was an empty shell (deleted). Stripe integration not yet implemented.
 
 ## Existing instruction files
 

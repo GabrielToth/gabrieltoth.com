@@ -76,7 +76,7 @@ export class RateLimiter {
     constructor(config: RateLimitingConfig) {
         this.config = config
 
-        // Create Supabase client with service role key for backend operations
+        // Create Supabase client with service role key for privileged operations
         const url = process.env.NEXT_PUBLIC_SUPABASE_URL
         const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
 

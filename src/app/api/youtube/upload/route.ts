@@ -11,7 +11,7 @@
  * - Length validation (title: 100, description: 5000, tags: 500 each)
  * - Extra field rejection (whitelist approach)
  * - File type verification
- * - File size limit (500MB via Vercel, larger via Express backend)
+ * - File size limit (500MB via Vercel, larger via multipart upload)
  * - Scoped error messages (no stack traces or internal paths)
  * - Audit logging for all attempts
  *

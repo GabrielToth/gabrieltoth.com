@@ -47,7 +47,7 @@ export function GoogleLogoutButton({
             setIsLoading(true)
             setError(null)
 
-            // Send logout request to backend
+            // Send logout request to API route
             const response = await fetch("/api/auth/logout", {
                 method: "POST",
                 headers: {

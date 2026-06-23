@@ -39,7 +39,7 @@ export class YouTubeOAuthService extends BaseService {
     /**
      * Generate OAuth authorization URL with state parameter
      * Requirement 1.1: Generate OAuth authorization URL
-     * Requirement 1.2: Store state parameter in Redis with expiration
+     * Requirement 1.2: Uses HMAC-signed state (no Redis needed)
      *
      * @param userId - User ID for tracking
      * @returns Authorization URL and state parameter
@@ -97,7 +97,7 @@ export class YouTubeOAuthService extends BaseService {
      * Ensures state matches what was stored
      *
      * @param state - State parameter from OAuth callback
-     * @param storedState - State stored in Redis
+     * @param storedState - State parameter from OAuth callback
      * @returns True if state is valid
      */
     validateState(state: string, storedState: string): boolean {

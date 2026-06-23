@@ -3,7 +3,7 @@
  * Implements protection against brute force attacks
  * Max 5 failed attempts per hour per IP address
  *
- * Supports both Redis (cloud) and in-memory (local) backends
+ * Supports both Upstash Redis and in-memory backends
  */
 
 import { getRedisClient, isRedisConnected } from "@/lib/cache/redis-client"

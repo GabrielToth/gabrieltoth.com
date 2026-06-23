@@ -25,7 +25,7 @@ interface UseEmailAuthReturn {
  * This hook:
  * 1. Manages loading state during email auth
  * 2. Handles errors and provides error state
- * 3. Submits email/password to backend for authentication
+ * 3. Submits email/password to API route for authentication
  * 4. Calls success/error callbacks appropriately
  */
 export const useEmailAuth = (
@@ -46,7 +46,7 @@ export const useEmailAuth = (
                     throw new Error("Email and password are required")
                 }
 
-                // Submit email/password to backend for authentication
+                // Submit email/password to API route for authentication
                 const response = await fetch("/api/auth/login", {
                     method: "POST",
                     headers: {

@@ -14,7 +14,7 @@ const nextConfig: NextConfig = {
     env: {
         NEXT_PUBLIC_DEBUG: process.env.DEBUG === "true" ? "true" : "false",
     },
-    // Docker: standalone output for minimal container size
+    // Standalone output for minimal container size
     output: "standalone",
     trailingSlash: true,
     generateEtags: false,

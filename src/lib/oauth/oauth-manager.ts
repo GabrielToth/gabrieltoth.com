@@ -211,7 +211,7 @@ export class OAuthManager {
     /**
      * Generate OAuth authorization URL
      * Requirement 10.1: Generate OAuth authorization URL
-     * Requirement 10.2: Store state parameter in Redis with expiration
+     * Requirement 10.2: Uses HMAC-signed state (no Redis needed)
      */
     async generateAuthorizationUrl(
         platform: OAuthPlatform,

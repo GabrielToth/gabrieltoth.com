@@ -40,7 +40,7 @@ export const useSSOAuth = (
             setIsLoading(true)
             setError(null)
 
-            // Get SSO authorization URL from backend
+            // Get SSO authorization URL from API route
             const response = await fetch("/api/auth/oauth/authorize-sso", {
                 method: "POST",
                 headers: {

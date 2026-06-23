@@ -1,6 +1,6 @@
 /**
  * Module: CAPTCHA Token Verification
- * Purpose: Verify Cloudflare Turnstile CAPTCHA tokens on the backend
+ * Purpose: Verify Cloudflare Turnstile CAPTCHA tokens on the server
  *
  * This module handles:
  * - Verifying CAPTCHA tokens with Cloudflare API

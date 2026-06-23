@@ -40,7 +40,7 @@ export const useGoogleAuth = (
             setIsLoading(true)
             setError(null)
 
-            // Get Google OAuth authorization URL from backend
+            // Get Google OAuth authorization URL from API route
             const response = await fetch("/api/auth/oauth/authorize-google", {
                 method: "POST",
                 headers: {
