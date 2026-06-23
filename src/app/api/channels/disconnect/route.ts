@@ -51,8 +51,7 @@ export async function POST(request: NextRequest) {
             return createErrorResponse(AuthErrorType.SESSION_EXPIRED)
 
         const clientIp =
-            request.headers.get("x-forwarded-for")?.split(",")[0] ||
-            "unknown"
+            request.headers.get("x-forwarded-for")?.split(",")[0] || "unknown"
         const rateLimit = await rateLimitByKey(
             buildClientKey({
                 ip: clientIp,

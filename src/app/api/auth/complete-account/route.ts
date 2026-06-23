@@ -192,60 +192,54 @@ export async function POST(
 
         let updatedUser
         if (isEmailRegistration) {
-            // EMAIL REGISTRATION FLOW: Create new user account
+            // EMAIL REGISTRATION FLOW: Update existing user record
+            // (user was already created in registration step with email + password_hash)
             try {
-                // Check if email already exists
-                const { data: existingUser } = await supabase
+                const { data: existingUser, error: findError } = await supabase
                     .from("users")
                     .select("id")
                     .eq("email", body.email.toLowerCase())
                     .single()
 
-                if (existingUser) {
-                    logAuthError(
-                        AuthErrorType.EMAIL_ALREADY_REGISTERED,
-                        body.email,
-                        clientIp,
-                        "CompleteAccount"
-                    )
-                    return createErrorResponse(
-                        AuthErrorType.EMAIL_ALREADY_REGISTERED,
-                        "email",
-                        "This email is already in use"
-                    )
+                if (findError || !existingUser) {
+                    logger.error("User not found for account completion", {
+                        context: "CompleteAccount",
+                        error: findError,
+                        data: { email: body.email },
+                    })
+                    return createErrorResponse(AuthErrorType.INTERNAL_ERROR)
                 }
 
-                // Create new user account
-                const { data: newUser, error: createError } = await supabase
-                    .from("users")
-                    .insert({
-                        email: body.email.toLowerCase(),
-                        password_hash: passwordHash,
-                        name: body.name,
-                        phone: body.phone,
-                        birth_date: body.birthDate || null,
-                        email_verified: false,
-                        auth_method: "email",
-                        account_status: "active",
-                        account_completed_at: new Date(),
-                    })
-                    .select("id")
-                    .single()
+                const { data: updatedUserRecord, error: updateError } =
+                    await supabase
+                        .from("users")
+                        .update({
+                            name: body.name,
+                            phone: body.phone,
+                            birth_date: body.birthDate || null,
+                            email_verified: true,
+                            auth_method: "email",
+                            account_status: "active",
+                            account_completed_at: new Date().toISOString(),
+                        })
+                        .eq("id", existingUser.id)
+                        .select("id")
+                        .single()
 
-                if (createError || !newUser) {
-                    logger.error("User creation error:", {
+                if (updateError || !updatedUserRecord) {
+                    logger.error("User update error:", {
                         context: "CompleteAccount",
-                        error: createError,
+                        error: updateError,
                     })
                     return createErrorResponse(AuthErrorType.DATABASE_ERROR)
                 }
 
-                updatedUser = newUser
+                updatedUser = updatedUserRecord
 
                 // Log registration completion
-                await logRegistration(body.email, clientIp, newUser.id)
+                await logRegistration(body.email, clientIp, updatedUser.id)
             } catch (error) {
-                logger.error("Failed to create user account", {
+                logger.error("Failed to update user account", {
                     context: "CompleteAccount",
                     error: error as Error,
                     data: { email: body.email },

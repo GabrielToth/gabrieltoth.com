@@ -29,7 +29,6 @@
         "src/**/*.stories.tsx",
         "src/components/ui/*.stories.tsx",
         "src/lib/logger/pino-logger.test.ts",
-        "src/lib/credits/session.test.ts",
-
+        "src/lib/credits/session.test.ts"
     ]
 }
