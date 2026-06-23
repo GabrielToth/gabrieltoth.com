@@ -20,6 +20,7 @@
         "test:coverage": "vitest --run --coverage",
         "test:all": "npm run type-check && npm run lint && npm run format:check && npm run spell-check && npm test",
         "clean": "Remove-Item -Recurse -Force .next, dist, out -ErrorAction SilentlyContinue",
+        "docs:schema": "node scripts/generate-schema-docs.js",
         "prepare": "husky",
         "test:e2e": "playwright test",
         "test:e2e:ui": "playwright test --ui",

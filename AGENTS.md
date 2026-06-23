@@ -63,6 +63,11 @@
 - Always add input validation: type checks, extra field rejection, length limits
 - Always update the wiki API page with new endpoints
 
+**Documentation maintenance:**
+- If you modify code that has a corresponding wiki page, update the wiki in the same commit/PR
+- If you create a new feature, create or update the relevant wiki module page
+- Architecture decisions must be recorded as ADRs in the wiki (`docs/adr/ADR-NNN-title.md`)
+
 **CRITICAL: Complete attack test matrix — do NOT skip this step.**
 Before finishing ANY route implementation, you MUST enumerate ALL attack vectors per route and implement tests for EVERY applicable category below. For each route, write a comment listing which categories apply before writing tests.
 
