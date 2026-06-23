@@ -9,7 +9,7 @@ import {
     type Locale,
 } from "@/lib/i18n"
 import { usePathname, useRouter } from "next/navigation"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
 // Global state para sincronizar entre instâncias
 let globalLocale: Locale | null = null
@@ -27,6 +27,7 @@ export function useLocale() {
     // Inicializar com o valor global se disponível
     const [locale, setLocale] = useState<Locale>(globalLocale || defaultLocale)
     const [isLoading, setIsLoading] = useState(!globalLocale)
+    const hasSynced = useRef(false)
 
     useEffect(() => {
         // Extract locale from current pathname
@@ -37,7 +38,8 @@ export function useLocale() {
             currentPathLocale &&
             locales.includes(currentPathLocale as Locale)
         ) {
-            if (globalLocale !== currentPathLocale) {
+            if (!hasSynced.current || globalLocale !== currentPathLocale) {
+                hasSynced.current = true
                 globalLocale = currentPathLocale as Locale
                 setLocale(currentPathLocale as Locale)
                 setLocaleCookie(currentPathLocale as Locale)

@@ -5,6 +5,7 @@ const BASE_URL = process.env.E2E_BASE_URL || `http://localhost:${PORT}`
 
 const config: PlaywrightTestConfig = {
     testDir: "./tests",
+    testMatch: "**/*.spec.*",
     fullyParallel: true,
     workers: process.env.CI ? "100%" : undefined,
     forbidOnly: !!process.env.CI,

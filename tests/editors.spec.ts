@@ -32,7 +32,7 @@ test.describe("editors page", () => {
 
         // Structured data should be present
         const ldNodes = page.locator('script[type="application/ld+json"]')
-        await expect(ldNodes.first()).toBeVisible()
+        await expect(ldNodes.first()).toBeAttached()
 
         // Breadcrumbs visible
         const breadcrumbNav = page.getByRole("navigation", {

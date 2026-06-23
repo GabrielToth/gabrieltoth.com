@@ -39,22 +39,27 @@ export default function Header() {
 
     const getServicesLinks = () => [
         {
+            key: "channel-management",
             href: getLocalizedPath("channel-management", locale),
             label: t("servicesDropdown.channelManagement"),
         },
         {
+            key: "pc-optimization",
             href: getLocalizedPath("pc-optimization", locale),
             label: t("servicesDropdown.pcOptimization"),
         },
         {
+            key: "amazon-affiliate",
             href: getLocalizedPath("amazon-affiliate", locale),
             label: t("servicesDropdown.affiliate"),
         },
         {
+            key: "iq-test",
             href: getLocalizedPath("iq-test", locale),
             label: t("servicesDropdown.iqTest"),
         },
         {
+            key: "personality-test",
             href: getLocalizedPath("personality-test", locale),
             label: t("servicesDropdown.personalityTest", {
                 default: "Personality Test",
@@ -88,10 +93,13 @@ export default function Header() {
     const minecraftLinks = getMinecraftLinks()
 
     // Show theme toggle inside language menu only on selected pages
-    const pagesWithThemeInLanguage = ["/channel-management", "/pc-optimization"]
-    const _includeThemeInLanguage = pagesWithThemeInLanguage.some(slug => {
-        const base = `/${locale}${slug}`
-        return pathname === base || pathname.startsWith(`${base}/`)
+    const pagesWithThemeInLanguage = ["channel-management", "pc-optimization"]
+    const includeThemeInLanguage = pagesWithThemeInLanguage.some(slug => {
+        const localizedPath = getLocalizedPath(slug, locale)
+        return (
+            pathname === localizedPath ||
+            pathname.startsWith(localizedPath + "/")
+        )
     })
 
     return (
@@ -238,17 +246,7 @@ export default function Header() {
                                             onClick={() =>
                                                 setIsServicesOpen(false)
                                             }
-                                            data-testid={
-                                                link.href.endsWith(
-                                                    "/channel-management"
-                                                )
-                                                    ? "services-link-channel-management"
-                                                    : link.href.endsWith(
-                                                            "/pc-optimization"
-                                                        )
-                                                      ? "services-link-pc-optimization"
-                                                      : undefined
-                                            }
+                                            data-testid={`services-link-${link.key}`}
                                         >
                                             {link.label}
                                         </Link>
@@ -264,7 +262,7 @@ export default function Header() {
                         <div className="flex items-center space-x-2">
                             <LanguageSelector
                                 variant="header"
-                                includeThemeToggle={false}
+                                includeThemeToggle={includeThemeInLanguage}
                             />
                             <ThemeToggleClient />
                         </div>
@@ -359,17 +357,7 @@ export default function Header() {
                                         onClick={() =>
                                             setIsMobileMenuOpen(false)
                                         }
-                                        data-testid={
-                                            link.href.endsWith(
-                                                "/channel-management"
-                                            )
-                                                ? "services-link-channel-management"
-                                                : link.href.endsWith(
-                                                        "/pc-optimization"
-                                                    )
-                                                  ? "services-link-pc-optimization"
-                                                  : undefined
-                                        }
+                                        data-testid={`services-link-${link.key}`}
                                     >
                                         {link.label}
                                     </Link>

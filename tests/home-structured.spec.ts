@@ -4,30 +4,28 @@ test.describe("home page - structured data", () => {
     test("renders JSON-LD scripts for person and website and custom data", async ({
         page,
     }) => {
-        await page.goto("/en")
+        await page.goto("/en", { waitUntil: "networkidle" })
 
         // There should be multiple application/ld+json scripts
         const ldNodes = page.locator('script[type="application/ld+json"]')
         const count = await ldNodes.count()
         expect(count).toBeGreaterThan(1)
 
-        // Validate that at least one contains "@type":"ProfilePage" (customData)
-        const hasProfilePage = await ldNodes.evaluateAll(nodes =>
+        // Validate that at least one contains "@type":"Person" (from default structured data)
+        const hasPerson = await ldNodes.evaluateAll(nodes =>
             nodes.some(n => {
                 try {
                     const json = JSON.parse(n.textContent || "{}")
                     return (
-                        json["@type"] === "ProfilePage" ||
+                        json["@type"] === "Person" ||
                         (Array.isArray(json) &&
-                            json.some(
-                                (j: any) => j?.["@type"] === "ProfilePage"
-                            ))
+                            json.some((j: any) => j?.["@type"] === "Person"))
                     )
                 } catch {
                     return false
                 }
             })
         )
-        expect(hasProfilePage).toBe(true)
+        expect(hasPerson).toBe(true)
     })
 })

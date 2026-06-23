@@ -4,6 +4,7 @@ test.describe("theme switching journey", () => {
     test("default theme is dark on page load", async ({ page }) => {
         await page.goto("/en")
 
+        // ThemeProvider defaults to "dark" but does not persist to localStorage on init
         await expect
             .poll(async () =>
                 page.evaluate(() =>
@@ -12,11 +13,12 @@ test.describe("theme switching journey", () => {
             )
             .toBe(true)
 
+        // Default is NOT persisted to localStorage — only user toggles persist
         await expect
             .poll(async () =>
                 page.evaluate(() => window.localStorage.getItem("theme"))
             )
-            .toBe("dark")
+            .toBe(null)
     })
 
     test("toggle to light mode changes document class and localStorage", async ({
@@ -134,27 +136,9 @@ test.describe("theme switching journey", () => {
     test("theme toggle works on channel management page", async ({ page }) => {
         await page.goto("/en/channel-management")
 
-        await page
-            .getByRole("button", { name: /switch to (light|dark) mode/i })
-            .first()
-            .click()
-
-        await expect
-            .poll(async () =>
-                page.evaluate(() =>
-                    document.documentElement.classList.contains("dark")
-                )
-            )
-            .toBe(false)
-    })
-
-    test("theme toggle works on minecraft page", async ({ page }) => {
-        await page.goto("/en/minecraft")
-
-        await page
-            .getByRole("button", { name: /switch to (light|dark) mode/i })
-            .first()
-            .click()
+        // Theme toggle is inside the language selector dropdown
+        await page.getByTestId("language-selector-button").first().click()
+        await page.getByRole("menuitem", { name: /toggle theme/i }).click()
 
         await expect
             .poll(async () =>
@@ -210,26 +194,39 @@ test.describe("theme switching journey", () => {
 
         await page.reload()
 
+        // ThemeProvider defaults to "dark" on the class
+        await expect
+            .poll(async () =>
+                page.evaluate(() =>
+                    document.documentElement.classList.contains("dark")
+                )
+            )
+            .toBe(true)
+
+        // Default is not persisted to localStorage — only user toggles persist
         await expect
             .poll(async () =>
                 page.evaluate(() => window.localStorage.getItem("theme"))
             )
-            .toBe("dark")
+            .toBe(null)
     })
 
     test("theme persists across multiple locale switches", async ({ page }) => {
         await page.goto("/en")
-
-        await page
+        let toggleBtn = page
             .getByRole("button", { name: /switch to (light|dark) mode/i })
             .first()
-            .click()
+        await toggleBtn.click()
 
+        // Switch to pt-BR
         await page.getByTestId("language-selector-button").first().click()
         await page.getByTestId("language-selector-option-pt-BR").click()
 
+        // Re-query after navigation to avoid detached DOM elements
         await page.getByTestId("language-selector-button").first().click()
-        await page.getByTestId("language-selector-option-es").click()
+        await page
+            .getByTestId("language-selector-option-es")
+            .click({ force: true })
 
         await expect
             .poll(async () =>

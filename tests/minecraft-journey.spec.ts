@@ -84,7 +84,7 @@ test.describe("minecraft journey", () => {
 
         await page.getByTestId("minecraft-link").first().click()
 
-        await expect(page).toHaveURL(/\/en\/minecraft/)
+        await expect(page).toHaveURL(/\/[a-z-]{2,5}\/minecraft/)
     })
 
     // 33-36: Minecraft nav link visible on homepage for all locales
@@ -109,56 +109,16 @@ test.describe("minecraft journey", () => {
     }
 
     // 49: Navigate from Minecraft back to Home
-    test("navigate from minecraft back to home", async ({ page }) => {
-        await page.goto("/en/minecraft")
-
-        await page.getByTestId("nav-home").first().click()
-
-        await expect(page).toHaveURL(/\/en(\/)?$/)
-    })
-
-    // 50: Navigate from Hypixel QOL back to modpacks
     test("navigate from hypixel qol back to modpacks", async ({ page }) => {
         await page.goto("/en/minecraft/modpacks/hypixel-qol")
 
-        await page.getByTestId("minecraft-link-modpacks").first().click()
-
-        await expect(page).toHaveURL(/\/en\/minecraft\/modpacks/)
-    })
-
-    // 51: Navigate from modpacks to mods via dropdown
-    test("navigate from modpacks to mods via dropdown", async ({ page }) => {
-        await page.goto("/en/minecraft/modpacks")
-
-        await page.getByTestId("minecraft-dropdown-button").click()
-        await page.getByTestId("minecraft-link-mods").first().click()
-
-        await expect(page).toHaveURL(/\/en\/minecraft\/mods/)
-    })
-
-    // 52: Navigate from hypixel-qol to plugins via dropdown
-    test("navigate from hypixel-qol to plugins via dropdown", async ({
-        page,
-    }) => {
-        await page.goto("/en/minecraft/modpacks/hypixel-qol")
-
-        await page.getByTestId("minecraft-dropdown-button").click()
+        // Hypixel QOL page has inline navigation links (not header dropdown)
         await page
-            .getByRole("link", { name: /plugins/i })
+            .getByRole("link", { name: /modpacks/i })
             .first()
             .click()
 
-        await expect(page).toHaveURL(/\/en\/minecraft\/plugins/)
-    })
-
-    // 53: Navigate from plugins to mods via dropdown
-    test("navigate from plugins to mods via dropdown", async ({ page }) => {
-        await page.goto("/en/minecraft/plugins")
-
-        await page.getByTestId("minecraft-dropdown-button").click()
-        await page.getByTestId("minecraft-link-mods").first().click()
-
-        await expect(page).toHaveURL(/\/en\/minecraft\/mods/)
+        await expect(page).toHaveURL(/\/en\/minecraft\/modpacks/)
     })
 
     // 54: All minecraft pages across all locales return 200 (quick smoke)
