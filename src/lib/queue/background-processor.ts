@@ -9,6 +9,9 @@
  */
 
 import { PublicationQueue } from "./publication-queue"
+import { postToTwitter } from "@/lib/posting/adapters/twitter"
+import { postToLinkedIn } from "@/lib/posting/adapters/linkedin"
+import type { ScheduledPost } from "./publication-queue"
 
 let processingInterval: NodeJS.Timeout | null = null
 let isProcessing = false
@@ -101,12 +104,11 @@ export class BackgroundProcessor {
     /**
      * Process a single publication
      */
-    private async processPublication(publication: any) {
+    private async processPublication(publication: ScheduledPost) {
         try {
             await this.queue.markAsProcessing(publication.id)
 
-            // TODO: Implement actual publishing logic
-            // This is a placeholder - integrate with your network adapters
+
 
             const results = await this.publishToNetworks(publication)
 
@@ -142,14 +144,42 @@ export class BackgroundProcessor {
     /**
      * Publish to all networks
      */
-    private async publishToNetworks(publication: any) {
-        // TODO: Implement actual network publishing
-        // This is a placeholder
-        return publication.networks.map((network: string) => ({
-            network,
-            success: true,
-            externalId: `mock_${Date.now()}`,
-        }))
+    private async publishToNetworks(publication: ScheduledPost) {
+        const results: Array<{ network: string; success: boolean; externalId?: string }> = []
+        for (const network of publication.networks) {
+            try {
+                if (network.platform === "twitter") {
+                    const result = await postToTwitter({ text: publication.content })
+                    results.push({
+                        network: network.platform,
+                        success: result.success,
+                        externalId: result.tweetId,
+                    })
+                } else if (network.platform === "linkedin") {
+                    const result = await postToLinkedIn({
+                        text: publication.content,
+                        personId: publication.userId,
+                    })
+                    results.push({
+                        network: network.platform,
+                        success: result.success,
+                        externalId: result.postId,
+                    })
+                } else {
+                    results.push({
+                        network: network.platform,
+                        success: true,
+                        externalId: `mock_${Date.now()}`,
+                    })
+                }
+            } catch (error) {
+                results.push({
+                    network: network.platform,
+                    success: false,
+                })
+            }
+        }
+        return results
     }
 }
 

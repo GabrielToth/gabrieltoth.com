@@ -3,6 +3,10 @@
  * Handles posting content to LinkedIn
  */
 
+import { createLogger } from "@/lib/logger"
+
+const logger = createLogger("LinkedInAdapter")
+
 export interface LinkedInPostConfig {
     personId?: string
     organizationId?: string
@@ -41,13 +45,51 @@ export async function postToLinkedIn(
             }
         }
 
-        // TODO: Implement LinkedIn API integration
-        // This would use the LinkedIn API to create posts
+        const authorUrn = config.personId
+            ? `urn:li:person:${config.personId}`
+            : `urn:li:organization:${config.organizationId}`
 
+        const response = await fetch("https://api.linkedin.com/v2/ugcPosts", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${process.env.LINKEDIN_ACCESS_TOKEN || ""}`,
+                "X-Restli-Protocol-Version": "2.0.0",
+            },
+            body: JSON.stringify({
+                author: authorUrn,
+                lifecycleState: "PUBLISHED",
+                specificContent: {
+                    "com.linkedin.ugc.ShareContent": {
+                        shareCommentary: {
+                            text: config.text,
+                        },
+                        shareMediaCategory: "NONE",
+                    },
+                },
+                visibility: {
+                    "com.linkedin.ugc.MemberNetworkVisibility": config.visibility || "PUBLIC",
+                },
+            }),
+        })
+
+        if (!response.ok) {
+            const errorBody = await response.text()
+            logger.error("LinkedIn API error", {
+                status: response.status,
+                body: errorBody,
+            })
+            return {
+                success: false,
+                error: `LinkedIn API returned ${response.status}`,
+            }
+        }
+
+        const data = await response.json()
         return {
             success: true,
-            postId: "placeholder-post-id",
-            url: "https://linkedin.com/feed/update/placeholder-post-id",
+            postId: data.id,
+            url: `https://linkedin.com/feed/update/${data.id}`,
         }
     } catch (error) {
         return {

@@ -12,6 +12,7 @@ import { Input } from "@/components/ui/input"
 import { Toggle } from "@/components/ui/toggle"
 import React, { useState } from "react"
 import { User } from "./SettingsContainer"
+import { changePassword, enableTwoFactor, disableTwoFactor } from "@/lib/api/user"
 
 /**
  * SecuritySectionProps
@@ -155,8 +156,7 @@ export const SecuritySection: React.FC<SecuritySectionProps> = ({ user }) => {
             setIsChangingPassword(true)
             setPasswordSuccess("")
 
-            // TODO: Call API to change password
-            // await changePassword(passwordForm)
+            await changePassword(passwordForm.currentPassword, passwordForm.newPassword)
 
             setPasswordSuccess("Password changed successfully!")
             setPasswordForm({
@@ -182,10 +182,11 @@ export const SecuritySection: React.FC<SecuritySectionProps> = ({ user }) => {
     /**
      * Handle 2FA toggle
      */
-    const handleTwoFactorToggle = (checked: boolean) => {
+    const handleTwoFactorToggle = async (checked: boolean) => {
         if (checked) {
             setShowTwoFactorSetup(true)
         } else {
+            await disableTwoFactor()
             setTwoFactorEnabled(false)
             setShowTwoFactorSetup(false)
         }
@@ -194,10 +195,14 @@ export const SecuritySection: React.FC<SecuritySectionProps> = ({ user }) => {
     /**
      * Handle 2FA setup confirmation
      */
-    const handleTwoFactorSetup = () => {
-        // TODO: Implement 2FA setup flow
-        setTwoFactorEnabled(true)
-        setShowTwoFactorSetup(false)
+    const handleTwoFactorSetup = async () => {
+        try {
+            const result = await enableTwoFactor()
+            setTwoFactorEnabled(true)
+            setShowTwoFactorSetup(false)
+        } catch (err) {
+            console.error("Failed to enable 2FA:", err)
+        }
     }
 
     const passwordRequirementsMet = checkPasswordRequirements(

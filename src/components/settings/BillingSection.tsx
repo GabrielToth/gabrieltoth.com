@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/card"
 import React, { useState } from "react"
 import { BillingInfo } from "./SettingsContainer"
+import { downloadInvoice } from "@/lib/api/user"
 
 /**
  * BillingSectionProps
@@ -51,9 +52,17 @@ export const BillingSection: React.FC<BillingSectionProps> = ({
     const handleDownloadInvoice = async (invoiceId: string) => {
         try {
             setDownloadingInvoiceId(invoiceId)
-            // TODO: Implement invoice download
-            // await downloadInvoice(invoiceId)
-            console.log("Downloading invoice:", invoiceId)
+            const blob = await downloadInvoice(invoiceId)
+            const url = window.URL.createObjectURL(blob)
+            const a = document.createElement("a")
+            a.href = url
+            a.download = `invoice-${invoiceId}.pdf`
+            document.body.appendChild(a)
+            a.click()
+            document.body.removeChild(a)
+            window.URL.revokeObjectURL(url)
+        } catch (err) {
+            console.error("Failed to download invoice:", err)
         } finally {
             setDownloadingInvoiceId(null)
         }

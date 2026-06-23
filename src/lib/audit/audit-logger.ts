@@ -34,8 +34,20 @@ export async function auditLog(entry: AuditLogEntry): Promise<void> {
 
         // In production, send to audit service or database
         if (process.env.NODE_ENV === "production") {
-            // TODO: Implement production audit logging
-            // Could send to: Datadog, Sentry, custom audit service, etc.
+            const { createClient } = await import("@supabase/supabase-js")
+            const supabase = createClient(
+                process.env.NEXT_PUBLIC_SUPABASE_URL || "",
+                process.env.SUPABASE_SERVICE_ROLE_KEY || ""
+            )
+            await supabase.from("audit_logs").insert({
+                event_type: entry.action,
+                user_id: entry.userId,
+                ip_address: entry.ipAddress,
+                user_agent: entry.userAgent,
+                details: entry.changes ? JSON.stringify(entry.changes) : null,
+                error_message: entry.errorMessage,
+                timestamp: entry.timestamp.toISOString(),
+            })
         }
     } catch (error) {
         console.error("Failed to log audit entry:", error)

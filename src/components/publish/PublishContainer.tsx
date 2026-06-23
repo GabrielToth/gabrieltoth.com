@@ -1,6 +1,6 @@
 "use client"
 
-import { fetchChannels, fetchPosts } from "@/lib/api"
+import { fetchChannels, fetchPosts, updatePost, deletePost } from "@/lib/api"
 import React, { useCallback, useEffect, useMemo, useState } from "react"
 import { FilterBar } from "./FilterBar"
 import { Post } from "./PostCard"
@@ -116,15 +116,23 @@ export const PublishContainer: React.FC<PublishContainerProps> = ({
     }
 
     // Handle edit post
-    const handleEditPost = (post: Post) => {
-        console.log("Edit post:", post)
-        // TODO: Implement edit functionality
+    const handleEditPost = async (post: Post) => {
+        try {
+            const updated = await updatePost(post.id, post)
+            setPosts(prev => prev.map(p => p.id === updated.id ? updated : p))
+        } catch (err) {
+            console.error("Failed to edit post:", err)
+        }
     }
 
     // Handle delete post
-    const handleDeletePost = (post: Post) => {
-        console.log("Delete post:", post)
-        // TODO: Implement delete functionality
+    const handleDeletePost = async (post: Post) => {
+        try {
+            await deletePost(post.id)
+            setPosts(prev => prev.filter(p => p.id !== post.id))
+        } catch (err) {
+            console.error("Failed to delete post:", err)
+        }
     }
 
     // Handle retry

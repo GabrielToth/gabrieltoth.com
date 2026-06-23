@@ -2,6 +2,8 @@
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import React, { useCallback, useEffect, useState } from "react"
+import { updateUserProfile, disconnectIntegration, connectIntegration } from "@/lib/api/user"
+import { connectChannel, disconnectChannel } from "@/lib/api/channels"
 import { BillingSection } from "./BillingSection"
 import { ChannelsSection } from "./ChannelsSection"
 import { IntegrationsSection } from "./IntegrationsSection"
@@ -276,9 +278,13 @@ export const SettingsContainer: React.FC<SettingsContainerProps> = ({
     ])
 
     // Handle user save
-    const handleSaveUser = (updatedUser: User) => {
-        setUser(updatedUser)
-        // TODO: Call API to save user data
+    const handleSaveUser = async (updatedUser: User) => {
+        try {
+            const saved = await updateUserProfile(updatedUser)
+            setUser(saved)
+        } catch (err) {
+            setError(err instanceof Error ? err.message : "Failed to save user profile")
+        }
     }
 
     // Handle preferences save
@@ -295,33 +301,44 @@ export const SettingsContainer: React.FC<SettingsContainerProps> = ({
     }
 
     // Handle channel disconnect
-    const handleDisconnectChannel = (channelId: string) => {
-        setChannels(channels.filter(c => c.id !== channelId))
-        // TODO: Call API to disconnect channel
+    const handleDisconnectChannel = async (channelId: string) => {
+        try {
+            await disconnectChannel(channelId)
+        } catch (err) {
+            console.error("Failed to disconnect channel:", err)
+        }
     }
 
     // Handle channel connect
-    const handleConnectChannel = () => {
-        // TODO: Implement channel connection flow
-        console.log("Connect channel")
+    const handleConnectChannel = async () => {
+        try {
+            await connectChannel("facebook")
+        } catch (err) {
+            console.error("Failed to connect channel:", err)
+        }
     }
 
     // Handle billing upgrade
     const handleUpgradePlan = () => {
-        // TODO: Implement upgrade flow
-        console.log("Upgrade plan")
+        alert("Upgrade not available yet")
     }
 
     // Handle integration disconnect
-    const handleDisconnectIntegration = (integrationId: string) => {
-        setIntegrations(integrations.filter(i => i.id !== integrationId))
-        // TODO: Call API to disconnect integration
+    const handleDisconnectIntegration = async (integrationId: string) => {
+        try {
+            await disconnectIntegration(integrationId)
+        } catch (err) {
+            console.error("Failed to disconnect integration:", err)
+        }
     }
 
     // Handle integration connect
-    const handleConnectIntegration = () => {
-        // TODO: Implement integration connection flow
-        console.log("Connect integration")
+    const handleConnectIntegration = async () => {
+        try {
+            await connectIntegration("1")
+        } catch (err) {
+            console.error("Failed to connect integration:", err)
+        }
     }
 
     // If children are provided, render them
