@@ -52,7 +52,7 @@
 1. Read **this file** (`AGENTS.md`) fully
 2. Read **`.cursorrules`** — project conventions
 3. Search for **existing test files** in `src/__tests__/` relevant to your task — copy their patterns
-4. Read **`docs/API.md`** and any relevant `docs/modules/*.md` — follow the exact documentation format
+4. Read the **[API docs on the Wiki](https://github.com/GabrielToth/gabrieltoth.com/wiki/API)** and any relevant **[module pages on the Wiki](https://github.com/GabrielToth/gabrieltoth.com/wiki/)** — follow the exact documentation format
 5. Check **`src/__tests__/security/`** for security test patterns (request validation, CSRF, rate limiting)
 6. Check **`src/lib/middleware/CSRF_USAGE.md`** for CSRF patterns on state-changing endpoints
 7. Check **`.cursor/rules/`** for any rule files (`.mdc`)
@@ -61,7 +61,7 @@
 **For API routes specifically:**
 - Always add JSDoc comment blocks matching the pattern in `src/app/api/auth/login/route.ts`
 - Always add input validation: type checks, extra field rejection, length limits
-- Always update `docs/API.md` with new endpoints
+- Always update the wiki API page with new endpoints
 
 **CRITICAL: Complete attack test matrix — do NOT skip this step.**
 Before finishing ANY route implementation, you MUST enumerate ALL attack vectors per route and implement tests for EVERY applicable category below. For each route, write a comment listing which categories apply before writing tests.
@@ -104,10 +104,15 @@ Before finishing ANY route implementation, you MUST enumerate ALL attack vectors
 
 ## Instagram OAuth — testing caveat
 
-The callback route (`src/app/api/oauth/callback/instagram/route.ts`) reads `process.env.REDIS_URL` directly (not through a config service) and creates a `new Redis()` connection. In tests, mocking `ioredis` via `vi.mock` can fail due to constructor resolution issues with `vi.fn()`. **Solution**: set `process.env.REDIS_URL = ""` in `vi.hoisted()` so the route returns `server_error` before attempting Redis — this still verifies proper error handling (catch → `server_error` redirect, no info leak, proper 307 status).
+The callback route (`src/app/api/oauth/callback/instagram/route.ts`) uses HMAC-signed state (no Redis). To test, mock `src/lib/oauth/state-signer.ts` return values instead of mocking Redis connections.
+
+## Deprecation candidates
+
+- **`ioredis`**: Only used in `src/lib/shutdown/index.ts` and `src/lib/retry/wrappers.ts` — legacy Docker backend patterns. Main cache layer uses `@upstash/redis`. Consolidate when possible.
+- **`stripe`**: Config exists at `src/lib/stripe/index.ts`, but `src/app/api/platform/webhooks/route.ts` is an empty shell (`export {}`). Either implement Stripe webhooks or remove entirely.
 
 ## Existing instruction files
 
-- `.cursorrules` — Cursor IDE rules (partially stale: says Next.js 15, i18n EN/PT-BR only)
+- `.cursorrules` — Cursor IDE rules (updated to Next.js 16, 4 locales, Tailwind 4, no backend)
 - `.agents/steering/best-practices.md` — Very detailed (1349 lines) with mandatory startup infra, auto-issue/commit workflow, security testing, DB migrations
 - `.agents/skills/` — Email/Resend skill instructions

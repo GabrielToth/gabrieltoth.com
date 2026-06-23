@@ -7,11 +7,15 @@ Website: <https://www.gabrieltoth.com>
 
 ## Tech Stack
 
-- **Framework**: Next.js 15 (App Router)
-- **Language**: TypeScript
-- **Styling**: Tailwind CSS + shadcn/ui
-- **Internationalization**: i18n (EN/PT-BR)
-- **Deployment**: Vercel
+- **Framework**: Next.js 16 (App Router) + React 19 + TypeScript 6
+- **Styling**: Tailwind CSS 4 + shadcn/ui (new-york, RSC enabled)
+- **Icons**: lucide-react
+- **Internationalization**: next-intl (4 locales: en, pt-BR, es, de; default pt-BR)
+- **Authentication**: Custom Argon2id (no Supabase Auth)
+- **Database**: Supabase Postgres (Free plan)
+- **Email**: Resend (Free plan)
+- **Deployment**: Vercel + Cloudflare
+- **Social integrations**: YouTube, Instagram, Facebook, TikTok, Kick
 
 ## Language Policy
 
@@ -26,8 +30,8 @@ Website: <https://www.gabrieltoth.com>
 ### Formatting
 
 - **Indentation**: 4 spaces (ALWAYS)
-- **Quotes**: Single for strings, double for JSX
-- **Semicolon**: Always required
+- **Quotes**: Double for ALL strings AND JSX (see .prettierrc.json)
+- **Semicolon**: Never (Prettier strips them)
 - **Trailing comma**: Always in multi-line objects/arrays
 
 ### File Structure
@@ -35,19 +39,53 @@ Website: <https://www.gabrieltoth.com>
 ```
 src/
 ├── app/
-│   ├── [locale]/           # Internationalized routes
-│   ├── globals.css         # Global styles
-│   └── layout.tsx          # Root layout
+│   ├── [locale]/               # Internationalized routes
+│   │   ├── login/              # Custom Argon2id login
+│   │   ├── register/           # Multi-step registration
+│   │   ├── reset-password/     # Token-based reset (password_reset_tokens table)
+│   │   ├── dashboard/          # Dashboard + publish
+│   │   └── settings/           # Preferences, Security, Billing
+│   ├── api/
+│   │   ├── auth/               # login, register, forgot-password, reset-password
+│   │   ├── oauth/callback/     # Instagram, Facebook, TikTok, YouTube
+│   │   ├── youtube/            # link/start, link/callback, upload
+│   │   ├── posts/              # CRUD posts
+│   │   ├── contact/            # Contact form
+│   │   └── platform/           # Webhooks (Stripe — shell only)
+│   ├── globals.css
+│   └── layout.tsx
 ├── components/
-│   ├── ui/                 # shadcn/ui components
-│   ├── layout/             # Header, Footer
-│   └── sections/           # Page sections
+│   ├── ui/                     # shadcn/ui primitives
+│   ├── layout/                 # Header, Footer
+│   ├── publish/                # PostingInterface, Calendar, Scheduler
+│   ├── settings/               # PreferencesSection, SecuritySection, BillingSection
+│   └── auth/                   # GoogleLogoutButton, EmailAuthForm
 ├── lib/
-│   ├── utils.ts            # Utilities (cn, etc)
-│   └── i18n.ts             # i18n configuration
-└── i18n/
-    ├── en.json             # English translations
-    └── pt-BR.json          # Portuguese translations
+│   ├── middleware/              # context, csrf-protection, security-headers
+│   ├── supabase/               # client.ts, server.ts (simplified, no @supabase/ssr)
+│   ├── auth/                   # unified-auth, email-service, temp-token, rate-limiter
+│   ├── stripe/                 # Config only (no active API routes)
+│   ├── cache/                  # @upstash/redis client
+│   ├── shutdown/               # Graceful shutdown (ioredis — legacy Docker)
+│   ├── retry/                  # Retry wrappers (ioredis — legacy Docker)
+│   ├── audit/                  # Audit logger (TODO)
+│   ├── posting/                # Social platform adapters (Facebook, Twitter, LinkedIn)
+│   ├── queue/                  # Background processor
+│   ├── oauth/                  # State signer (HMAC, not Redis)
+│   ├── facebook/               # Facebook Pages integration
+│   └── tiktok/                 # TikTok integration
+├── i18n/
+│   ├── en/                     # English (JSON files)
+│   ├── pt-BR/                  # Portuguese (JSON files)
+│   ├── es/                     # Spanish (JSON files)
+│   └── de/                     # German (JSON files)
+├── __tests__/
+│   ├── security/               # 55+ attack matrix test files
+│   ├── auth/                   # Auth flow tests
+│   ├── integration/            # Integration tests
+│   ├── lib/                    # Lib unit tests
+│   └── token-killer/           # Standalone tool tests
+└── token-killer/               # Standalone CLI tool (embedded, uses Express)
 ```
 
 ### React Components
@@ -136,9 +174,19 @@ export default HeroSection
 
 - shadcn/ui (components)
 - lucide-react (icons)
-- clsx/cn (conditional classes)
+- clsx + tailwind-merge (conditional classes, cn utility)
 - next-intl (i18n)
-- framer-motion (animations, if needed)
+- next-auth (authentication)
+- @supabase/supabase-js (database)
+- argon2 (password hashing, LGPD compliance)
+- googleapis (YouTube)
+- @upstash/ratelimit + @upstash/redis (rate limiting + cache)
+- resend (email)
+- react-icons + @icons-pack/react-simple-icons (social icons)
+- date-fns + date-fns-tz (dates)
+- uplot (charts)
+- class-variance-authority (shadcn/ui dependency)
+- commander (token-killer CLI only)
 
 ### Avoid
 
@@ -149,30 +197,64 @@ export default HeroSection
 - Duplicated code
 - Portuguese in code/comments (except i18n content)
 
-## Mandatory Startup Rules
+## Development Environment
 
-Before starting development or performing any tasks, ALL agents (including Cursor, Antigravity, Kiro) MUST ensure that the local infrastructure is up and running by executing:
+- No mandatory local infrastructure for most tasks.
+- `npm run dev` starts Next.js dev server on port 3000.
+- For DB-dependent tests: ensure `DATABASE_URL` is set (local Postgres or Supabase remote).
+- For full integration tests that need Supabase local: `docker compose up -d` in `docker/` + `npx supabase start` (optional).
 
-1. Spin up all Docker containers:
+## Attack Matrix (Security Tests)
 
-   ```bash
-   cd docker
-   docker compose up -d
-   ```
+Every API route MUST have an attack matrix comment and corresponding tests. Categories that apply must be enumerated before writing tests:
 
-2. Start the Supabase local backend:
+| # | Category | What to test |
+|---|----------|-------------|
+| 1 | **Auth bypass** | null/expired/invalid session, non-existent user |
+| 2 | **HTTP method confusion** | POST on GET route, GET on POST route |
+| 3 | **Type attacks** | string, number, boolean, null, array, object, NaN, Infinity, undefined |
+| 4 | **Value attacks** | negative, zero, empty string, whitespace-only, max boundary |
+| 5 | **Structure attacks** | missing fields, extra fields, empty `{}`, array `[]`, null body |
+| 6 | **Prototype pollution** | `__proto__`, `constructor.prototype` |
+| 7 | **Injection** | SQL, XSS, command injection, NoSQL operators (`$ne`, `$gt`) |
+| 8 | **Unicode/encoding** | emoji, null byte `\0`, control chars, RTL override |
+| 9 | **Size attacks** | 10k+ strings, 100+ level nesting, duplicate keys, JSON bomb |
+| 10 | **Rate limiting** | within limit, exceeded limit, burst, reset |
+| 11 | **CSRF** | missing token, expired token, wrong session |
+| 12 | **Race conditions** | concurrent duplicates, TOCTOU, parallel mutations |
+| 13 | **Content-Type** | wrong/missing Content-Type, multipart, charset confusion |
+| 14 | **HTTP header** | smuggling, host override, X-Forwarded-For spoofing |
+| 15 | **Info disclosure** | stack traces, internal paths, user enumeration, timing |
+| 16 | **Business logic** | self-grant, replay, insufficient funds bypass |
+| 17 | **IDOR** | change ID/email in params/body to access other users |
+| 18 | **Path traversal** | `../`, `..\\`, absolute paths |
+| 19 | **Mass assignment** | extra body fields mapping to DB columns |
+| 20 | **SSRF** | URL params that make server fetch external resources |
+| 21 | **Timing side-channel** | measurable response time differences |
 
-   ```bash
-   npx supabase start
-   ```
+**Rule**: Write comment `// Attack matrix: 1,3,4,5` (applicable rows) before each route, then one `it()` per variant. Omit only with `// SKIP: reason`.
+
+## Social Platform Integrations
+
+- **Facebook**: `src/lib/facebook/` — Pages API, OAuth, publish, webhooks, analytics
+- **Instagram**: `src/app/api/oauth/callback/instagram/` — OAuth callback, HMAC state signer
+- **TikTok**: `src/lib/tiktok/` — OAuth, publish, analytics, webhooks
+- **YouTube**: `src/app/api/youtube/` — OAuth linking (start/callback), upload
+- **Kick**: (basic config exists)
 
 ## Useful Commands
 
 ```bash
-npm run dev          # Development
-npm run build        # Production build
-npm run lint         # Linting
-npm run lint:fix     # Auto fix
+npm run dev          # Development (Turbopack, port 3000)
+npm run build        # Production build (does NOT type-check)
+npm run type-check   # tsc --noEmit on tsconfig.json + tsconfig.test.json
+npm run lint         # ESLint on src/**/*.{ts,tsx}
+npm run format       # Prettier write
+npm run format:check # Prettier check
+npm run spell-check  # CSpell on source files
+npm run test         # Vitest (unit/component)
+npm run test:all     # Full CI gate: type-check → lint → format:check → spell-check → test
+npm run test:e2e     # Playwright E2E (auto-starts dev server)
 ```
 
 ## Translation Structure
@@ -197,10 +279,10 @@ npm run lint:fix     # Auto fix
 - **README**: English only
 - **Code comments**: English only
 - **JSDoc**: English only
-- **API documentation**: English only
+- **API documentation**: GitHub Wiki (English only)
 - **Technical specs**: English only
 - **Markdown files (.md)**: English only
-- **Documentation files**: English only
+- **Architecture decisions**: ADRs in GitHub Wiki (English only)
 
 ## Naming Conventions (ENGLISH ONLY)
 
@@ -224,10 +306,4 @@ const usuarioAutenticado = false
 4. **English** is the primary language for code
 5. **Clean and maintainable** code
 
-## Strict Rules
 
-- NO Portuguese variable names, function names, or comments
-- ALL documentation in English
-- ALL commit messages in English with proper format
-- Portuguese ONLY in i18n translation files
-- English is the default and primary language
