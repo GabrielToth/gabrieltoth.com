@@ -119,7 +119,7 @@ export const PublishContainer: React.FC<PublishContainerProps> = ({
     const handleEditPost = async (post: Post) => {
         try {
             const updated = await updatePost(post.id, post)
-            setPosts(prev => prev.map(p => p.id === updated.id ? updated : p))
+            setPosts(prev => prev.map(p => (p.id === updated.id ? updated : p)))
         } catch (err) {
             console.error("Failed to edit post:", err)
         }

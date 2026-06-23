@@ -68,7 +68,8 @@ export async function postToLinkedIn(
                     },
                 },
                 visibility: {
-                    "com.linkedin.ugc.MemberNetworkVisibility": config.visibility || "PUBLIC",
+                    "com.linkedin.ugc.MemberNetworkVisibility":
+                        config.visibility || "PUBLIC",
                 },
             }),
         })

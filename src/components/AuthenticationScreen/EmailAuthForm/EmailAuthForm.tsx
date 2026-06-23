@@ -35,7 +35,9 @@ export const EmailAuthForm: React.FC<EmailAuthFormProps> = ({
     return (
         <form onSubmit={handleSubmit} className={styles.formContainer}>
             {error && <div className={styles.error}>{error}</div>}
-            {validationError && <div className={styles.error}>{validationError}</div>}
+            {validationError && (
+                <div className={styles.error}>{validationError}</div>
+            )}
             <div className={styles.field}>
                 <label htmlFor="email">Email</label>
                 <input
@@ -61,10 +63,19 @@ export const EmailAuthForm: React.FC<EmailAuthFormProps> = ({
                 />
             </div>
             <div className={styles.actions}>
-                <button type="submit" disabled={isLoading} className={styles.submitButton}>
+                <button
+                    type="submit"
+                    disabled={isLoading}
+                    className={styles.submitButton}
+                >
                     {isLoading ? "Signing in..." : "Sign In"}
                 </button>
-                <button type="button" onClick={onBack} disabled={isLoading} className={styles.backButton}>
+                <button
+                    type="button"
+                    onClick={onBack}
+                    disabled={isLoading}
+                    className={styles.backButton}
+                >
                     Back
                 </button>
             </div>

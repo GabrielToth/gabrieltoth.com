@@ -30,12 +30,15 @@ const logger = createLogger("ConnectChannel")
 export async function POST(request: NextRequest) {
     try {
         const sessionToken = request.cookies.get("session")?.value
-        if (!sessionToken) return createErrorResponse(AuthErrorType.UNAUTHORIZED)
+        if (!sessionToken)
+            return createErrorResponse(AuthErrorType.UNAUTHORIZED)
 
-        const session = await db.queryOne<{ user_id: string; expires_at: Date }>(
-            "SELECT user_id, expires_at FROM sessions WHERE session_id = $1",
-            [sessionToken]
-        )
+        const session = await db.queryOne<{
+            user_id: string
+            expires_at: Date
+        }>("SELECT user_id, expires_at FROM sessions WHERE session_id = $1", [
+            sessionToken,
+        ])
         if (!session) return createErrorResponse(AuthErrorType.UNAUTHORIZED)
         if (new Date(session.expires_at) < new Date())
             return createErrorResponse(AuthErrorType.SESSION_EXPIRED)
@@ -55,10 +58,7 @@ export async function POST(request: NextRequest) {
                 return createErrorResponse(AuthErrorType.INVALID_INPUT)
 
         const { platform } = body
-        if (
-            typeof platform !== "string" ||
-            !VALID_PLATFORMS.has(platform)
-        )
+        if (typeof platform !== "string" || !VALID_PLATFORMS.has(platform))
             return createErrorResponse(AuthErrorType.INVALID_INPUT)
 
         logger.info("Channel connect initiated", {

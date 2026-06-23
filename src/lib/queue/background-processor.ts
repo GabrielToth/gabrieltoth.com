@@ -108,8 +108,6 @@ export class BackgroundProcessor {
         try {
             await this.queue.markAsProcessing(publication.id)
 
-
-
             const results = await this.publishToNetworks(publication)
 
             const allSucceeded = results.every(
@@ -145,11 +143,17 @@ export class BackgroundProcessor {
      * Publish to all networks
      */
     private async publishToNetworks(publication: ScheduledPost) {
-        const results: Array<{ network: string; success: boolean; externalId?: string }> = []
+        const results: Array<{
+            network: string
+            success: boolean
+            externalId?: string
+        }> = []
         for (const network of publication.networks) {
             try {
                 if (network.platform === "twitter") {
-                    const result = await postToTwitter({ text: publication.content })
+                    const result = await postToTwitter({
+                        text: publication.content,
+                    })
                     results.push({
                         network: network.platform,
                         success: result.success,

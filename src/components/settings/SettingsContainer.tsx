@@ -2,7 +2,11 @@
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import React, { useCallback, useEffect, useState } from "react"
-import { updateUserProfile, disconnectIntegration, connectIntegration } from "@/lib/api/user"
+import {
+    updateUserProfile,
+    disconnectIntegration,
+    connectIntegration,
+} from "@/lib/api/user"
 import { connectChannel, disconnectChannel } from "@/lib/api/channels"
 import { BillingSection } from "./BillingSection"
 import { ChannelsSection } from "./ChannelsSection"
@@ -283,7 +287,11 @@ export const SettingsContainer: React.FC<SettingsContainerProps> = ({
             const saved = await updateUserProfile(updatedUser)
             setUser(saved)
         } catch (err) {
-            setError(err instanceof Error ? err.message : "Failed to save user profile")
+            setError(
+                err instanceof Error
+                    ? err.message
+                    : "Failed to save user profile"
+            )
         }
     }
 

@@ -12,7 +12,11 @@ import { Input } from "@/components/ui/input"
 import { Toggle } from "@/components/ui/toggle"
 import React, { useState } from "react"
 import { User } from "./SettingsContainer"
-import { changePassword, enableTwoFactor, disableTwoFactor } from "@/lib/api/user"
+import {
+    changePassword,
+    enableTwoFactor,
+    disableTwoFactor,
+} from "@/lib/api/user"
 
 /**
  * SecuritySectionProps
@@ -156,7 +160,10 @@ export const SecuritySection: React.FC<SecuritySectionProps> = ({ user }) => {
             setIsChangingPassword(true)
             setPasswordSuccess("")
 
-            await changePassword(passwordForm.currentPassword, passwordForm.newPassword)
+            await changePassword(
+                passwordForm.currentPassword,
+                passwordForm.newPassword
+            )
 
             setPasswordSuccess("Password changed successfully!")
             setPasswordForm({
