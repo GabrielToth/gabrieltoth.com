@@ -13,10 +13,11 @@ export interface EnvironmentConfig {
     POSTGRES_PASSWORD: string
     POSTGRES_DB: string
 
-    // Redis (Docker backend only; Vercel app does not require)
-    REDIS_URL: string
+    // Redis (Upstash REST API; Vercel-friendly, optional for cache)
+    UPSTASH_REDIS_REST_URL: string
+    UPSTASH_REDIS_REST_TOKEN: string
 
-    // Discord (optional alerts; backend)
+    // Discord (optional alerts)
     DISCORD_WEBHOOK_URL: string
 
     // Docker
@@ -62,7 +63,6 @@ export interface EnvironmentConfig {
 
 const BASE_REQUIRED = [
     "DATABASE_URL",
-    "REDIS_URL",
     "DISCORD_WEBHOOK_URL",
 ] as const
 
@@ -85,7 +85,8 @@ function parseConfig(): EnvironmentConfig {
         POSTGRES_USER: process.env.POSTGRES_USER ?? "postgres",
         POSTGRES_PASSWORD: process.env.POSTGRES_PASSWORD ?? "",
         POSTGRES_DB: process.env.POSTGRES_DB ?? "app",
-        REDIS_URL: process.env.REDIS_URL!,
+        UPSTASH_REDIS_REST_URL: process.env.UPSTASH_REDIS_REST_URL ?? "",
+        UPSTASH_REDIS_REST_TOKEN: process.env.UPSTASH_REDIS_REST_TOKEN ?? "",
         DISCORD_WEBHOOK_URL: process.env.DISCORD_WEBHOOK_URL!,
         HOSTNAME: process.env.HOSTNAME ?? "unknown",
         YOUTUBE_CLIENT_ID: process.env.YOUTUBE_CLIENT_ID ?? "",
@@ -116,7 +117,7 @@ function parseConfig(): EnvironmentConfig {
 }
 
 /**
- * Validate minimal backend / Docker environment variables.
+ * Validate minimal environment variables.
  */
 export function validateEnv(): EnvironmentConfig {
     const missing = BASE_REQUIRED.filter(key => !process.env[key])

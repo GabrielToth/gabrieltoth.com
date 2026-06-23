@@ -26,14 +26,12 @@ describe("Environment Configuration", () => {
                 fc.property(
                     fc.constantFrom(
                         "DATABASE_URL",
-                        "REDIS_URL",
                         "DISCORD_WEBHOOK_URL"
                     ),
                     missingVar => {
                         // Setup: Set all required vars except one
                         process.env.DATABASE_URL =
                             "postgres://localhost:5432/test"
-                        process.env.REDIS_URL = "redis://localhost:6379"
                         process.env.DISCORD_WEBHOOK_URL =
                             "https://discord.com/api/webhooks/test"
 
@@ -57,9 +55,6 @@ describe("Environment Configuration", () => {
                         DATABASE_URL: fc.webUrl({
                             validSchemes: ["postgres", "postgresql"],
                         }),
-                        REDIS_URL: fc
-                            .string()
-                            .map(s => `redis://localhost:6379/${s}`),
                         DISCORD_WEBHOOK_URL: fc.webUrl({
                             validSchemes: ["https"],
                         }),
@@ -67,7 +62,6 @@ describe("Environment Configuration", () => {
                     envVars => {
                         // Setup environment
                         process.env.DATABASE_URL = envVars.DATABASE_URL
-                        process.env.REDIS_URL = envVars.REDIS_URL
                         process.env.DISCORD_WEBHOOK_URL =
                             envVars.DISCORD_WEBHOOK_URL
 
@@ -77,7 +71,6 @@ describe("Environment Configuration", () => {
                         // Should return valid config
                         const config = validateEnv()
                         expect(config.DATABASE_URL).toBe(envVars.DATABASE_URL)
-                        expect(config.REDIS_URL).toBe(envVars.REDIS_URL)
                         expect(config.DISCORD_WEBHOOK_URL).toBe(
                             envVars.DISCORD_WEBHOOK_URL
                         )
@@ -90,11 +83,10 @@ describe("Environment Configuration", () => {
         it("should list all missing variables in error message", () => {
             // Remove all required variables
             delete process.env.DATABASE_URL
-            delete process.env.REDIS_URL
             delete process.env.DISCORD_WEBHOOK_URL
 
             expect(() => validateEnv()).toThrow(
-                "Missing required environment variables: DATABASE_URL, REDIS_URL, DISCORD_WEBHOOK_URL"
+                "Missing required environment variables: DATABASE_URL, DISCORD_WEBHOOK_URL"
             )
         })
     })
