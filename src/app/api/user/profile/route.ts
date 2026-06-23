@@ -13,6 +13,14 @@ import {
 } from "@/lib/auth/error-handling"
 import { db } from "@/lib/db"
 import { createLogger } from "@/lib/logger"
+import { NextResponse } from "next/server"
+import {
+    addCsrfTokenToResponse,
+    createCsrfErrorResponse,
+    regenerateCsrfToken,
+    validateCsrfFromRequest,
+} from "@/lib/middleware/api-csrf-middleware"
+import { buildClientKey, rateLimitByKey } from "@/lib/rate-limit"
 import { NextRequest } from "next/server"
 
 const logger = createLogger("UserProfile")
@@ -32,6 +40,25 @@ export async function PUT(request: NextRequest) {
         if (!session) return createErrorResponse(AuthErrorType.UNAUTHORIZED)
         if (new Date(session.expires_at) < new Date())
             return createErrorResponse(AuthErrorType.SESSION_EXPIRED)
+
+        const clientIp =
+            request.headers.get("x-forwarded-for")?.split(",")[0] ||
+            "unknown"
+        const rateLimit = await rateLimitByKey(
+            buildClientKey({
+                ip: clientIp,
+                path: "/api/user/profile",
+                userAgent: request.headers.get("user-agent"),
+            })
+        )
+        if (!rateLimit.success)
+            return NextResponse.json(
+                { error: "Too many requests. Please try again later." },
+                { status: 429 }
+            )
+
+        const { valid } = await validateCsrfFromRequest(request)
+        if (!valid) return createCsrfErrorResponse()
 
         let body: Record<string, unknown>
         try {
@@ -94,7 +121,10 @@ export async function PUT(request: NextRequest) {
         )
 
         logger.info("Profile updated", { userId: session.user_id })
-        return createSuccessResponse(user)
+        const response = createSuccessResponse(user)
+        const newCsrfToken = regenerateCsrfToken(request)
+        if (newCsrfToken) return addCsrfTokenToResponse(response, newCsrfToken)
+        return response
     } catch (err) {
         return handleUnexpectedError(err, "UserProfile", "/api/user/profile")
     }

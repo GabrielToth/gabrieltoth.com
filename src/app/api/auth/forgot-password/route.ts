@@ -1,11 +1,8 @@
 import { generateRandomHex } from "@/lib/crypto-utils"
-import { createClient } from "@supabase/supabase-js"
+import { getAdminClient } from "@/lib/supabase/server"
 import { NextRequest, NextResponse } from "next/server"
 
-const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-)
+const supabase = getAdminClient()
 
 export async function POST(request: NextRequest) {
     try {

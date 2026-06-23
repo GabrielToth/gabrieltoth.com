@@ -47,14 +47,9 @@
         "stories/**",
         "src/lib/cron",
         "src/lib/cron/**",
-        "src/lib/logger/pino-logger.*",
         "scripts/**",
-        "src/lib/logger/pino-logger.ts",
-        "src/lib/logger/pino-logger.test.ts",
         "src/test-utils/**",
         "tests/**",
-        "src/token-killer",
-        "src/token-killer/**",
         "src/lib/observability"
     ]
 }

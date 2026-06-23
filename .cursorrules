@@ -298,10 +298,6 @@ const calcularPrecoTotal = () => {}
 const usuarioAutenticado = false
 ```
 
-## Token-Killer — DO NOT TOUCH
-
-The `src/token-killer/` module (19,378 lines, 58 files) must be **completely ignored** unless the user explicitly asks about it. Zero production imports, no API routes, disconnected from the app. Do not read it, refactor it, delete it, or suggest changes to it.
-
 ## Priorities
 
 1. **Functionality** over aesthetics

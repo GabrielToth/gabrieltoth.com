@@ -3,15 +3,15 @@ import { NextRequest } from "next/server"
 import { beforeEach, describe, expect, it, vi } from "vitest"
 
 // Mock Supabase and dependencies - MUST be before route import
-vi.mock("@supabase/supabase-js", () => {
-    const mockFrom = vi.fn()
-    const mockSupabase = {
-        from: mockFrom,
-    }
-    return {
-        createClient: vi.fn(() => mockSupabase),
-    }
-})
+const mockSupabase = vi.hoisted(() => ({ from: vi.fn() }))
+
+vi.mock("@supabase/supabase-js", () => ({
+    createClient: vi.fn(() => mockSupabase),
+}))
+
+vi.mock("@/lib/supabase/server", () => ({
+    getAdminClient: vi.fn(() => mockSupabase),
+}))
 
 vi.mock("@/lib/rate-limit")
 vi.mock("@/lib/auth/audit-logging", () => ({
@@ -57,8 +57,7 @@ vi.mock("@/lib/auth/captcha-error-handler", () => ({
 import { POST } from "./route"
 
 // Get the mocked Supabase instance for test manipulation
-const { createClient } = await import("@supabase/supabase-js")
-const mockSupabase = (createClient as any)()
+const { getAdminClient } = await import("@/lib/supabase/server")
 
 describe("POST /api/auth/login: Login Route Handler", () => {
     beforeEach(() => {

@@ -63,6 +63,16 @@ vi.mock("@/lib/db", () => {
     return { db: { queryOne: mockQueryOne, query: mockQuery } }
 })
 
+vi.mock("@/lib/middleware/api-csrf-middleware", () => ({
+    validateCsrfFromRequest: vi
+        .fn()
+        .mockResolvedValue({ valid: true, csrfToken: "mock-csrf-token" }),
+    regenerateCsrfToken: vi.fn().mockReturnValue("mock-csrf-token"),
+    addCsrfTokenToResponse: vi.fn((res: Response) => res),
+    createCsrfErrorResponse: vi.fn(() => new Response(null, { status: 403 })),
+    getOrGenerateCsrfToken: vi.fn().mockReturnValue("mock-csrf-token"),
+}))
+
 vi.mock("@/lib/auth/password-security", () => ({
     verifyPasswordArgon2id: mockVerifyPassword,
     hashPasswordArgon2id: mockHashPassword,
@@ -1196,7 +1206,10 @@ describe("GET /api/user/invoices/[id]/download — Attack Matrix", () => {
     })
 
     it("should return 404 without session", async () => {
-        const res = await handler()
+        const req = makeRequest(
+            "http://localhost/api/user/invoices/inv-001/download"
+        )
+        const res = await handler(req)
         expect(res.status).toBe(404)
     })
 
@@ -1207,18 +1220,24 @@ describe("GET /api/user/invoices/[id]/download — Attack Matrix", () => {
                 cookie: "valid",
             }
         )
-        const res = await handler()
+        const res = await handler(req)
         expect(res.status).toBe(404)
     })
 
     it("should not leak internal paths", async () => {
-        const res = await handler()
+        const req = makeRequest(
+            "http://localhost/api/user/invoices/inv-001/download"
+        )
+        const res = await handler(req)
         const body = await res.json()
         expect(JSON.stringify(body)).not.toContain(":\\")
     })
 
     it("should return consistent error message", async () => {
-        const res = await handler()
+        const req = makeRequest(
+            "http://localhost/api/user/invoices/inv-001/download"
+        )
+        const res = await handler(req)
         const body = await res.json()
         expect(body).toHaveProperty("error")
         expect(body.error).toBe("Invoices not available")

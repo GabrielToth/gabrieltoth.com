@@ -27,14 +27,11 @@ import {
     resetAttempt,
 } from "@/lib/auth/rate-limiter"
 import { validateEmail } from "@/lib/validation"
-import { createClient } from "@supabase/supabase-js"
+import { getAdminClient } from "@/lib/supabase/server"
 import { NextRequest } from "next/server"
 import { v4 as uuidv4 } from "uuid"
 
-const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-)
+const supabase = getAdminClient()
 
 const authService = getAuthenticationService()
 

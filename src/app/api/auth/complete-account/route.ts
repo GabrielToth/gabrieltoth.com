@@ -22,14 +22,11 @@ import { validateTempToken } from "@/lib/auth/temp-token"
 import { getUserByEmail, updateUserAccountCompletion } from "@/lib/auth/user"
 import { logger } from "@/lib/logger"
 import { buildClientKey, rateLimitByKey } from "@/lib/rate-limit"
-import { createClient } from "@supabase/supabase-js"
+import { getAdminClient } from "@/lib/supabase/server"
 import { hashPassword } from "@/lib/auth/password-hashing"
 import { NextRequest, NextResponse } from "next/server"
 
-const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-)
+const supabase = getAdminClient()
 
 /**
  * Request body for account completion

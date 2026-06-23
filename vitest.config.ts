@@ -18,7 +18,6 @@ export default defineConfig({
         setupFiles: ["./vitest.setup.ts"],
         exclude: [
             "node_modules",
-            "src/lib/logger/pino-logger.test.ts",
             // Live Supabase / DB — run manually with infra up (not part of default CI)
             "src/__tests__/database/**",
             "src/__tests__/database-constraints.test.ts",

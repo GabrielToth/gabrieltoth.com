@@ -1,7 +1,6 @@
-import { authOptions } from "@/lib/auth/auth-options"
+import { getServerSession } from "@/lib/auth/get-server-session"
 import { createLogger } from "@/lib/logger"
 import { getPublicationQueue } from "@/lib/queue/publication-queue"
-import { getServerSession } from "next-auth"
 import { NextRequest, NextResponse } from "next/server"
 
 const logger = createLogger("PostsIdApi")
@@ -11,7 +10,7 @@ export async function PUT(
     { params }: { params: Promise<{ id: string }> }
 ): Promise<NextResponse> {
     try {
-        const session = await getServerSession(authOptions)
+        const session = await getServerSession(request)
         if (!session?.user?.id) {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
         }
@@ -140,11 +139,11 @@ export async function PUT(
 }
 
 export async function DELETE(
-    _request: NextRequest,
+    request: NextRequest,
     { params }: { params: Promise<{ id: string }> }
 ): Promise<NextResponse> {
     try {
-        const session = await getServerSession(authOptions)
+        const session = await getServerSession(request)
         if (!session?.user?.id) {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
         }

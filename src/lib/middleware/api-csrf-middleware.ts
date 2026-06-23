@@ -18,10 +18,18 @@ import {
  * Validate CSRF token from request
  * Returns the CSRF token if valid, null otherwise
  */
+function getSessionToken(request: NextRequest): string | null {
+    return (
+        request.cookies.get("session")?.value ||
+        request.cookies.get("auth_session")?.value ||
+        null
+    )
+}
+
 export async function validateCsrfFromRequest(
     request: NextRequest
 ): Promise<{ valid: boolean; csrfToken: string | null }> {
-    const sessionToken = request.cookies.get("auth_session")?.value
+    const sessionToken = getSessionToken(request)
 
     if (!sessionToken) {
         return { valid: false, csrfToken: null }
@@ -65,7 +73,7 @@ export async function validateCsrfFromRequest(
  * Used in GET requests to provide token to client
  */
 export function getOrGenerateCsrfToken(request: NextRequest): string | null {
-    const sessionToken = request.cookies.get("auth_session")?.value
+    const sessionToken = getSessionToken(request)
 
     if (!sessionToken) {
         return null
@@ -88,7 +96,7 @@ export function getOrGenerateCsrfToken(request: NextRequest): string | null {
  * Call this after processing a successful POST/PUT/DELETE request
  */
 export function regenerateCsrfToken(request: NextRequest): string | null {
-    const sessionToken = request.cookies.get("auth_session")?.value
+    const sessionToken = getSessionToken(request)
 
     if (!sessionToken) {
         return null

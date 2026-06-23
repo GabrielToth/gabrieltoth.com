@@ -58,8 +58,8 @@ vi.mock("@/lib/auth/audit-logging", () => ({
 }))
 
 // Mock Supabase (still needed for initialization)
-vi.mock("@supabase/supabase-js", () => ({
-    createClient: vi.fn(() => ({})),
+vi.mock("@/lib/supabase/server", () => ({
+    getAdminClient: vi.fn(() => ({})),
 }))
 
 describe("POST /api/auth/register", () => {

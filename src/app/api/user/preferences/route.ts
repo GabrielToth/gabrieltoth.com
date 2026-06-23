@@ -13,7 +13,14 @@ import {
 } from "@/lib/auth/error-handling"
 import { db } from "@/lib/db"
 import { createLogger } from "@/lib/logger"
-import { NextRequest } from "next/server"
+import {
+    addCsrfTokenToResponse,
+    createCsrfErrorResponse,
+    regenerateCsrfToken,
+    validateCsrfFromRequest,
+} from "@/lib/middleware/api-csrf-middleware"
+import { buildClientKey, rateLimitByKey } from "@/lib/rate-limit"
+import { NextRequest, NextResponse } from "next/server"
 
 const logger = createLogger("UserPreferences")
 
@@ -33,8 +40,30 @@ export async function PUT(request: NextRequest) {
         if (new Date(session.expires_at) < new Date())
             return createErrorResponse(AuthErrorType.SESSION_EXPIRED)
 
+        const clientIp =
+            request.headers.get("x-forwarded-for")?.split(",")[0] ||
+            "unknown"
+        const rateLimit = await rateLimitByKey(
+            buildClientKey({
+                ip: clientIp,
+                path: "/api/user/preferences",
+                userAgent: request.headers.get("user-agent"),
+            })
+        )
+        if (!rateLimit.success)
+            return NextResponse.json(
+                { error: "Too many requests. Please try again later." },
+                { status: 429 }
+            )
+
+        const { valid } = await validateCsrfFromRequest(request)
+        if (!valid) return createCsrfErrorResponse()
+
         logger.info("Preferences saved", { userId: session.user_id })
-        return createSuccessResponse({ message: "Preferences saved" })
+        const response = createSuccessResponse({ message: "Preferences saved" })
+        const newCsrfToken = regenerateCsrfToken(request)
+        if (newCsrfToken) return addCsrfTokenToResponse(response, newCsrfToken)
+        return response
     } catch (err) {
         return handleUnexpectedError(
             err,

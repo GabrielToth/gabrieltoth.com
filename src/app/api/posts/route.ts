@@ -1,8 +1,7 @@
-import { authOptions } from "@/lib/auth/auth-options"
+import { getServerSession } from "@/lib/auth/get-server-session"
 import { createLogger } from "@/lib/logger"
 import { getPublicationQueue } from "@/lib/queue/publication-queue"
 import type { SocialPlatform } from "@/lib/networks"
-import { getServerSession } from "next-auth"
 import { NextRequest, NextResponse } from "next/server"
 
 const logger = createLogger("PostsApi")
@@ -17,7 +16,7 @@ const VALID_PLATFORMS: SocialPlatform[] = [
 
 export async function GET(request: NextRequest): Promise<NextResponse> {
     try {
-        const session = await getServerSession(authOptions)
+        const session = await getServerSession(request)
         if (!session?.user?.id) {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
         }
@@ -53,7 +52,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
     try {
-        const session = await getServerSession(authOptions)
+        const session = await getServerSession(request)
         if (!session?.user?.id) {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
         }

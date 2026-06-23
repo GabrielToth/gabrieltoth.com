@@ -1,12 +1,9 @@
 import { buildClientKey, rateLimitByKey } from "@/lib/rate-limit"
 import { validateEmail } from "@/lib/validation"
-import { createClient } from "@supabase/supabase-js"
+import { getAdminClient } from "@/lib/supabase/server"
 import { NextRequest, NextResponse } from "next/server"
 
-const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-)
+const supabase = getAdminClient()
 
 export async function GET(request: NextRequest) {
     const startTime = Date.now()

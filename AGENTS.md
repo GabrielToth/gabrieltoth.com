@@ -115,10 +115,6 @@ The callback route (`src/app/api/oauth/callback/instagram/route.ts`) uses HMAC-s
 
 - **`stripe`**: Config existed at `src/lib/stripe/index.ts` (deleted), and `src/app/api/platform/webhooks/route.ts` was an empty shell (deleted). Stripe integration not yet implemented.
 
-## Token-killer — ignore unless asked
-
-The `src/token-killer/` module (19,378 lines, 58 files) is kept as-is but **agents must ignore it** for all tasks unless the user explicitly asks to use or implement something in it. It has zero production imports, no API routes, and is disconnected from the running application. Do not touch it, delete it, refactor it, or suggest changes to it.
-
 ## Existing instruction files
 
 - `.cursorrules` — Cursor IDE rules (updated to Next.js 16, 4 locales, Tailwind 4, no backend)

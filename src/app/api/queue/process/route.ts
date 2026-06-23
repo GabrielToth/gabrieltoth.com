@@ -1,7 +1,6 @@
 import { auditLog } from "@/lib/audit/audit-logger"
-import { authOptions } from "@/lib/auth/auth-options"
+import { getServerSession } from "@/lib/auth/get-server-session"
 import { PublicationQueue } from "@/lib/queue/publication-queue"
-import { getServerSession } from "next-auth"
 import { NextRequest, NextResponse } from "next/server"
 
 export const dynamic = "force-dynamic"
@@ -13,7 +12,7 @@ export const runtime = "nodejs"
  */
 export async function POST(request: NextRequest) {
     try {
-        const session = await getServerSession(authOptions)
+        const session = await getServerSession(request)
 
         if (!session?.user?.id) {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 })

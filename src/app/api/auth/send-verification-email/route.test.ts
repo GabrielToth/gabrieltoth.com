@@ -8,8 +8,8 @@ import { beforeEach, describe, expect, it, vi } from "vitest"
 import { POST } from "./route"
 
 // Mock Supabase
-vi.mock("@supabase/supabase-js", () => ({
-    createClient: vi.fn(() => ({
+vi.mock("@/lib/supabase/server", () => ({
+    getAdminClient: vi.fn(() => ({
         from: vi.fn((table: string) => ({
             select: vi.fn(function () {
                 return {

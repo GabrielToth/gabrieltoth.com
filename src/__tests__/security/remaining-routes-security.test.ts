@@ -86,7 +86,7 @@ vi.mock("@supabase/supabase-js", () => ({
 }))
 
 vi.mock("@/lib/supabase/server", () => ({
-    createClient: vi.fn().mockReturnValue({
+    getAdminClient: vi.fn().mockReturnValue({
         from: vi.fn().mockReturnValue({
             select: vi.fn().mockReturnThis(),
             insert: vi.fn().mockReturnThis(),
@@ -468,14 +468,10 @@ vi.mock("@/lib/db", () => ({
     },
 }))
 
-vi.mock("next-auth", () => ({
+vi.mock("@/lib/auth/get-server-session", () => ({
     getServerSession: vi.fn().mockResolvedValue({
-        user: { id: "mock-user-id", email: "test@example.com" },
+        user: { id: "mock-user-id" },
     }),
-}))
-
-vi.mock("@/lib/auth/auth-options", () => ({
-    authOptions: {},
 }))
 
 vi.mock("@/lib/queue/publication-queue", () => ({

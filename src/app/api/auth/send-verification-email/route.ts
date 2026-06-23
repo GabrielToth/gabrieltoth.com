@@ -1,12 +1,9 @@
 import { logEmailVerification } from "@/lib/auth/audit-logging"
 import { sendVerificationEmail } from "@/lib/auth/email-service"
-import { createClient } from "@supabase/supabase-js"
+import { getAdminClient } from "@/lib/supabase/server"
 import { NextRequest, NextResponse } from "next/server"
 
-const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-)
+const supabase = getAdminClient()
 
 const VERIFICATION_TOKEN_EXPIRY = parseInt(
     process.env.VERIFICATION_TOKEN_EXPIRY || "86400000"
