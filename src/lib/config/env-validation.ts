@@ -28,7 +28,7 @@ const PLACEHOLDER_SUBSTRINGS = [
 ]
 
 /** Legacy template domain — replace with your own site URL. */
-const TEMPLATE_DOMAIN = "gabrieltoth.com"
+const TEMPLATE_DOMAIN = "your-production-site.com"
 
 function isTruthy(value: string | undefined): boolean {
     if (!value) return false

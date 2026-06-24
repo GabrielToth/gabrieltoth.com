@@ -469,7 +469,7 @@ export default function UnifiedSignInForm({
 
             {/* Step 3: Register (new user) */}
             {step === "password" && mode === "signup" && (
-                <form onSubmit={handleRegisterSubmit} className="space-y-4">
+                <form onSubmit={handleRegisterSubmit} noValidate className="space-y-4">
                     {/* Back Button */}
                     <button
                         type="button"

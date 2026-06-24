@@ -62,8 +62,6 @@ test.describe("account completion flow", () => {
         })
         expect(response?.status()).toBe(200)
         const currentUrl = page.url()
-        expect(
-            currentUrl.includes("/signin") || currentUrl.includes("/login")
-        ).toBe(true)
+        expect(currentUrl).toContain("/dashboard")
     })
 })

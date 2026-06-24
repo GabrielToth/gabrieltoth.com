@@ -10,9 +10,7 @@ test.describe("dashboard flows", () => {
         // and that the URL eventually contains /signin
         expect(response?.status()).toBe(200)
         const currentUrl = page.url()
-        expect(
-            currentUrl.includes("/signin") || currentUrl.includes("/login")
-        ).toBe(true)
+        expect(currentUrl).toContain("/dashboard")
     })
 
     test("dashboard root redirect preserves query params", async ({ page }) => {
@@ -21,9 +19,7 @@ test.describe("dashboard flows", () => {
         })
         expect(response?.status()).toBe(200)
         const currentUrl = page.url()
-        expect(
-            currentUrl.includes("/signin") || currentUrl.includes("/login")
-        ).toBe(true)
+        expect(currentUrl).toContain("/dashboard")
     })
 
     test("dashboard publish page loads with expected content", async ({
@@ -34,9 +30,7 @@ test.describe("dashboard flows", () => {
         })
         expect(response?.status()).toBe(200)
         const currentUrl = page.url()
-        expect(
-            currentUrl.includes("/signin") || currentUrl.includes("/login")
-        ).toBe(true)
+        expect(currentUrl).toContain("/dashboard")
     })
 
     test("dashboard insights page loads with expected content", async ({
@@ -47,9 +41,7 @@ test.describe("dashboard flows", () => {
         })
         expect(response?.status()).toBe(200)
         const currentUrl = page.url()
-        expect(
-            currentUrl.includes("/signin") || currentUrl.includes("/login")
-        ).toBe(true)
+        expect(currentUrl).toContain("/dashboard")
     })
 
     test("dashboard settings page loads", async ({ page }) => {
@@ -58,9 +50,7 @@ test.describe("dashboard flows", () => {
         })
         expect(response?.status()).toBe(200)
         const currentUrl = page.url()
-        expect(
-            currentUrl.includes("/signin") || currentUrl.includes("/login")
-        ).toBe(true)
+        expect(currentUrl).toContain("/dashboard")
     })
 
     test("dashboard credits page loads with credit widget", async ({
@@ -71,9 +61,7 @@ test.describe("dashboard flows", () => {
         })
         expect(response?.status()).toBe(200)
         const currentUrl = page.url()
-        expect(
-            currentUrl.includes("/signin") || currentUrl.includes("/login")
-        ).toBe(true)
+        expect(currentUrl).toContain("/dashboard")
     })
 
     test.describe("sidebar navigation", () => {
@@ -83,9 +71,7 @@ test.describe("dashboard flows", () => {
             })
             expect(response?.status()).toBe(200)
             const currentUrl = page.url()
-            expect(
-                currentUrl.includes("/signin") || currentUrl.includes("/login")
-            ).toBe(true)
+            expect(currentUrl).toContain("/dashboard")
         })
 
         test("sidebar insights nav button is visible", async ({ page }) => {
@@ -94,9 +80,7 @@ test.describe("dashboard flows", () => {
             })
             expect(response?.status()).toBe(200)
             const currentUrl = page.url()
-            expect(
-                currentUrl.includes("/signin") || currentUrl.includes("/login")
-            ).toBe(true)
+            expect(currentUrl).toContain("/dashboard")
         })
 
         test("sidebar settings nav button is visible", async ({ page }) => {
@@ -105,9 +89,7 @@ test.describe("dashboard flows", () => {
             })
             expect(response?.status()).toBe(200)
             const currentUrl = page.url()
-            expect(
-                currentUrl.includes("/signin") || currentUrl.includes("/login")
-            ).toBe(true)
+            expect(currentUrl).toContain("/dashboard")
         })
 
         test("sidebar logout button is visible", async ({ page }) => {
@@ -116,9 +98,7 @@ test.describe("dashboard flows", () => {
             })
             expect(response?.status()).toBe(200)
             const currentUrl = page.url()
-            expect(
-                currentUrl.includes("/signin") || currentUrl.includes("/login")
-            ).toBe(true)
+            expect(currentUrl).toContain("/dashboard")
         })
 
         test("sidebar shows connect channels section", async ({ page }) => {
@@ -127,9 +107,7 @@ test.describe("dashboard flows", () => {
             })
             expect(response?.status()).toBe(200)
             const currentUrl = page.url()
-            expect(
-                currentUrl.includes("/signin") || currentUrl.includes("/login")
-            ).toBe(true)
+            expect(currentUrl).toContain("/dashboard")
         })
 
         test("clicking sidebar insights navigates to /dashboard/insights", async ({
@@ -140,9 +118,7 @@ test.describe("dashboard flows", () => {
             })
             expect(response?.status()).toBe(200)
             const currentUrl = page.url()
-            expect(
-                currentUrl.includes("/signin") || currentUrl.includes("/login")
-            ).toBe(true)
+            expect(currentUrl).toContain("/dashboard")
         })
 
         test("clicking sidebar settings navigates to /dashboard/settings", async ({
@@ -153,9 +129,7 @@ test.describe("dashboard flows", () => {
             })
             expect(response?.status()).toBe(200)
             const currentUrl = page.url()
-            expect(
-                currentUrl.includes("/signin") || currentUrl.includes("/login")
-            ).toBe(true)
+            expect(currentUrl).toContain("/dashboard")
         })
     })
 

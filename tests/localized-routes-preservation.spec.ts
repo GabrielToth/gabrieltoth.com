@@ -265,7 +265,10 @@ test.describe("Preservation: English Routes and Static Files", () => {
                     })
 
                     // Verify the request was successful
-                    expect(response?.status()).toBe(200)
+                    expect(
+                        response?.status(),
+                        `${locale}/${route} returned ${response?.status()}`
+                    ).toBe(200)
 
                     // Verify the page loaded
                     const pageContent = await page.content()
