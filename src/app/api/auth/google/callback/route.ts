@@ -24,40 +24,55 @@ import {
 } from "@/lib/middleware/security-headers"
 import { NextRequest, NextResponse } from "next/server"
 
-interface GoogleCallbackResponse {
-    success: boolean
-    message?: string
-    error?: string
-    redirectUrl?: string
+type CallbackResult =
+    | { success: true; sessionId: string; userEmail: string; userId: string }
+    | { success: false; response: NextResponse }
+
+const SESSION_COOKIE = {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax" as const,
+    maxAge: 30 * 24 * 60 * 60,
+    path: "/",
+}
+
+/**
+ * Set the session cookie on a NextResponse
+ */
+function setSessionCookie(res: NextResponse, sessionId: string): void {
+    res.cookies.set("session", sessionId, SESSION_COOKIE)
+}
+
+/**
+ * Build an error response
+ */
+function errorResponse(
+    message: string,
+    status: number
+): NextResponse {
+    return NextResponse.json(
+        { success: false, error: message },
+        { status, headers: getSecurityHeaders() }
+    )
 }
 
 /**
  * Process Google OAuth callback
  * Handles both GET (from Google redirect) and POST (from frontend)
+ * Returns session data on success, error response on failure
  */
 async function handleGoogleCallback(
     code: string,
     clientIp: string
-): Promise<NextResponse> {
+): Promise<CallbackResult> {
     try {
         // Get redirect URI from environment
-        // Note: Using NEXT_PUBLIC_ variable here because the redirect URI
-        // must match exactly what was sent from the client-side button.
-        // This is not a security issue - the redirect URI is public information
-        // that Google validates against the OAuth app configuration.
         const redirectUri = process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI
         if (!redirectUri) {
             logger.error("Google redirect URI not configured", {
                 context: "Auth",
             })
-
-            return NextResponse.json(
-                {
-                    success: false,
-                    error: "Server configuration error",
-                },
-                { status: 500, headers: getSecurityHeaders() }
-            )
+            return { success: false, response: errorResponse("Server configuration error", 500) }
         }
 
         // Exchange authorization code for Google ID token
@@ -70,19 +85,10 @@ async function handleGoogleCallback(
                 error: error as Error,
                 data: { ip: clientIp },
             })
-
-            // Log failed login attempt
             await logAuditEvent("LOGIN_FAILED", undefined, clientIp, {
                 reason: "Failed to exchange authorization code",
             })
-
-            return NextResponse.json(
-                {
-                    success: false,
-                    error: "Failed to authenticate with Google",
-                },
-                { status: 401, headers: getSecurityHeaders() }
-            )
+            return { success: false, response: errorResponse("Failed to authenticate with Google", 401) }
         }
 
         // Validate Google token
@@ -95,19 +101,10 @@ async function handleGoogleCallback(
                 error: error as Error,
                 data: { ip: clientIp },
             })
-
-            // Log failed login attempt
             await logAuditEvent("LOGIN_FAILED", undefined, clientIp, {
                 reason: "Invalid or expired Google token",
             })
-
-            return NextResponse.json(
-                {
-                    success: false,
-                    error: "Invalid or expired Google token",
-                },
-                { status: 401, headers: getSecurityHeaders() }
-            )
+            return { success: false, response: errorResponse("Invalid or expired Google token", 401) }
         }
 
         // Extract user information from token
@@ -128,22 +125,10 @@ async function handleGoogleCallback(
                 error: error as Error,
                 data: { google_id: googleUserData.google_id },
             })
-
-            // Log failed login attempt
-            await logAuditEvent(
-                "LOGIN_FAILED",
-                googleUserData.google_email,
-                clientIp,
-                { reason: "Failed to create or update user" }
-            )
-
-            return NextResponse.json(
-                {
-                    success: false,
-                    error: "Failed to authenticate",
-                },
-                { status: 500, headers: getSecurityHeaders() }
-            )
+            await logAuditEvent("LOGIN_FAILED", googleUserData.google_email, clientIp, {
+                reason: "Failed to create or update user",
+            })
+            return { success: false, response: errorResponse("Failed to authenticate", 500) }
         }
 
         // Create session
@@ -156,41 +141,23 @@ async function handleGoogleCallback(
                 error: error as Error,
                 data: { userId: user.id },
             })
-
-            // Log failed login attempt
-            await logAuditEvent(
-                "LOGIN_FAILED",
-                user.google_email,
-                clientIp,
-                { reason: "Failed to create session" },
-                user.id
-            )
-
-            return NextResponse.json(
-                {
-                    success: false,
-                    error: "Failed to create session",
-                },
-                { status: 500, headers: getSecurityHeaders() }
-            )
+            await logAuditEvent("LOGIN_FAILED", user.google_email, clientIp, {
+                reason: "Failed to create session",
+            }, user.id)
+            return { success: false, response: errorResponse("Failed to create session", 500) }
         }
 
         // Log successful login
         try {
-            await logAuditEvent(
-                "LOGIN_SUCCESS",
-                user.google_email,
-                clientIp,
-                { action: "User logged in via Google OAuth" },
-                user.id
-            )
+            await logAuditEvent("LOGIN_SUCCESS", user.google_email, clientIp, {
+                action: "User logged in via Google OAuth",
+            }, user.id)
         } catch (error) {
             logger.error("Failed to log login event", {
                 context: "Auth",
                 error: error as Error,
                 data: { userId: user.id },
             })
-            // Don't fail the login if audit logging fails
         }
 
         logger.info("User logged in successfully via Google OAuth", {
@@ -206,40 +173,19 @@ async function handleGoogleCallback(
             environment: getAuditEnvironment(),
         })
 
-        // Create response with session cookie
-        const response = NextResponse.json(
-            {
-                success: true,
-                message: "Login successful",
-                redirectUrl: "/dashboard",
-            },
-            { status: 200, headers: getSecurityHeaders() }
-        )
-
-        // Set HTTP-Only session cookie
-        response.cookies.set("session", session.session_id, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-            sameSite: "strict",
-            maxAge: 30 * 24 * 60 * 60, // 30 days in seconds
-            path: "/",
-        })
-
-        return response
+        return {
+            success: true,
+            sessionId: session.session_id,
+            userEmail: user.google_email,
+            userId: user.id,
+        }
     } catch (err) {
         logger.error("Google callback processing error", {
             context: "Auth",
             error: err as Error,
             data: { ip: clientIp },
         })
-
-        return NextResponse.json(
-            {
-                success: false,
-                error: "An error occurred. Please try again later",
-            },
-            { status: 500, headers: getSecurityHeaders() }
-        )
+        return { success: false, response: errorResponse("An error occurred. Please try again later", 500) }
     }
 }
 
@@ -251,65 +197,35 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
     const clientIp = getClientIp(request)
 
     try {
-        // Get authorization code from query parameters
         const code = request.nextUrl.searchParams.get("code")
 
-        // Validate authorization code
         if (!code) {
             logger.warn("Google callback without authorization code", {
                 context: "Auth",
                 data: { ip: clientIp },
             })
-
-            return NextResponse.json(
-                {
-                    success: false,
-                    error: "Authorization code is required",
-                },
-                { status: 400, headers: getSecurityHeaders() }
-            )
+            return errorResponse("Authorization code is required", 400)
         }
 
-        // Redirect to dashboard after successful authentication
-        // The handleGoogleCallback will set the session cookie
-        const response = await handleGoogleCallback(code, clientIp)
+        const result = await handleGoogleCallback(code, clientIp)
 
-        // If successful, redirect to dashboard
-        // IMPORTANT: preserve cookies from the callback response
-        if (response.status === 200) {
-            const redirectResponse = NextResponse.redirect(
-                new URL("/dashboard", request.url)
-            )
-            const cookies = (response.cookies as unknown as {
-                getAll(): Array<{ name: string; value: string }>
-            }).getAll()
-            for (const cookie of cookies) {
-                redirectResponse.cookies.set(cookie.name, cookie.value, {
-                    httpOnly: true,
-                    secure: process.env.NODE_ENV === "production",
-                    sameSite: "strict",
-                    maxAge: 30 * 24 * 60 * 60,
-                    path: "/",
-                })
-            }
-            return redirectResponse
+        if (!result.success) {
+            return result.response
         }
 
-        return response
+        // Build redirect with session cookie directly on the redirect response
+        const redirectResponse = NextResponse.redirect(
+            new URL("/dashboard", request.url)
+        )
+        setSessionCookie(redirectResponse, result.sessionId)
+        return redirectResponse
     } catch (err) {
         logger.error("Google callback GET error", {
             context: "Auth",
             error: err as Error,
             data: { ip: clientIp },
         })
-
-        return NextResponse.json(
-            {
-                success: false,
-                error: "An error occurred. Please try again later",
-            },
-            { status: 500, headers: getSecurityHeaders() }
-        )
+        return errorResponse("An error occurred. Please try again later", 500)
     }
 }
 
@@ -321,41 +237,38 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     const clientIp = getClientIp(request)
 
     try {
-        // Parse request body
         const body = (await request.json().catch(() => ({}))) as {
             code?: string
         }
 
-        // Validate authorization code
         if (!body.code) {
             logger.warn("Google callback POST without authorization code", {
                 context: "Auth",
                 data: { ip: clientIp },
             })
-
-            return NextResponse.json(
-                {
-                    success: false,
-                    error: "Authorization code is required",
-                },
-                { status: 400, headers: getSecurityHeaders() }
-            )
+            return errorResponse("Authorization code is required", 400)
         }
 
-        return handleGoogleCallback(body.code, clientIp)
+        const result = await handleGoogleCallback(body.code, clientIp)
+
+        if (!result.success) {
+            return result.response
+        }
+
+        // POST handler from frontend — return JSON so client JS can redirect
+        const response = NextResponse.json({
+            success: true,
+            message: "Login successful",
+            redirectUrl: "/dashboard",
+        })
+        setSessionCookie(response, result.sessionId)
+        return response
     } catch (err) {
         logger.error("Google callback POST error", {
             context: "Auth",
             error: err as Error,
             data: { ip: clientIp },
         })
-
-        return NextResponse.json(
-            {
-                success: false,
-                error: "An error occurred. Please try again later",
-            },
-            { status: 500, headers: getSecurityHeaders() }
-        )
+        return errorResponse("An error occurred. Please try again later", 500)
     }
 }
