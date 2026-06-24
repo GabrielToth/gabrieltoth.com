@@ -55,7 +55,7 @@ export async function logAuditEvent(
         }
 
         await query(
-            `INSERT INTO audit_logs (user_id, event_type, email, ip_address, details, created_at)
+            `INSERT INTO audit_logs (user_id, event_type, email, ip_address, details, timestamp)
              VALUES ($1, $2, $3, $4, $5, CURRENT_TIMESTAMP)`,
             [
                 finalUserId || null,

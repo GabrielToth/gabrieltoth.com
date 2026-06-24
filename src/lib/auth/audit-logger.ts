@@ -63,7 +63,7 @@ export async function logLoginAttempt(
         }
 
         await query(
-            `INSERT INTO audit_logs (event_type, user_id, email, ip_address, user_agent, details, created_at)
+            `INSERT INTO audit_logs (event_type, user_id, email, ip_address, user_agent, details, timestamp)
              VALUES ($1, $2, $3, $4, $5, $6, CURRENT_TIMESTAMP)`,
             [
                 eventType,
@@ -107,7 +107,7 @@ export async function logCSRFFailure(
         }
 
         await query(
-            `INSERT INTO audit_logs (event_type, email, ip_address, user_agent, details, created_at)
+            `INSERT INTO audit_logs (event_type, email, ip_address, user_agent, details, timestamp)
              VALUES ($1, $2, $3, $4, $5, CURRENT_TIMESTAMP)`,
             [
                 "CSRF_FAILURE",
@@ -151,7 +151,7 @@ export async function logRateLimitEvent(
         }
 
         await query(
-            `INSERT INTO audit_logs (event_type, email, ip_address, user_agent, details, created_at)
+            `INSERT INTO audit_logs (event_type, email, ip_address, user_agent, details, timestamp)
              VALUES ($1, $2, $3, $4, $5, CURRENT_TIMESTAMP)`,
             [
                 "RATE_LIMIT_EXCEEDED",
@@ -205,7 +205,7 @@ export async function logRememberMeEvent(
         }
 
         await query(
-            `INSERT INTO audit_logs (event_type, user_id, email, ip_address, user_agent, details, created_at)
+            `INSERT INTO audit_logs (event_type, user_id, email, ip_address, user_agent, details, timestamp)
              VALUES ($1, $2, $3, $4, $5, $6, CURRENT_TIMESTAMP)`,
             [
                 eventType,

@@ -47,7 +47,7 @@ export async function createAuditLog(entry: AuthAuditLogEntry): Promise<void> {
         const timestamp = entry.timestamp || new Date()
 
         await query(
-            `INSERT INTO audit_logs (event_type, user_id, ip_address, user_agent, details, created_at)
+            `INSERT INTO audit_logs (event_type, user_id, ip_address, user_agent, details, timestamp)
              VALUES ($1, $2, $3, $4, $5, $6)`,
             [
                 entry.event_type,

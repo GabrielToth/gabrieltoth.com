@@ -275,10 +275,24 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
         const response = await handleGoogleCallback(code, clientIp)
 
         // If successful, redirect to dashboard
+        // IMPORTANT: preserve cookies from the callback response
         if (response.status === 200) {
-            return NextResponse.redirect(new URL("/dashboard", request.url), {
-                status: 302,
-            })
+            const redirectResponse = NextResponse.redirect(
+                new URL("/dashboard", request.url)
+            )
+            const cookies = (response.cookies as unknown as {
+                getAll(): Array<{ name: string; value: string }>
+            }).getAll()
+            for (const cookie of cookies) {
+                redirectResponse.cookies.set(cookie.name, cookie.value, {
+                    httpOnly: true,
+                    secure: process.env.NODE_ENV === "production",
+                    sameSite: "strict",
+                    maxAge: 30 * 24 * 60 * 60,
+                    path: "/",
+                })
+            }
+            return redirectResponse
         }
 
         return response
