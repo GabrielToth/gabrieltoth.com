@@ -9,6 +9,7 @@ import {
     DialogTitle,
 } from "@/components/ui/dialog"
 import { AlertCircle, CheckCircle, Loader2, X } from "lucide-react"
+import { useTranslations } from "next-intl"
 import { useCallback, useEffect, useState } from "react"
 import ContentCreator from "./ContentCreator"
 import NetworkSelector from "./NetworkSelector"
@@ -63,6 +64,7 @@ export default function PostingInterface({
     const [isLoadingNetworks, setIsLoadingNetworks] = useState(true)
     const [error, setError] = useState("")
     const [success, setSuccess] = useState(false)
+    const t = useTranslations("dashboard.publish")
 
     useEffect(() => {
         async function loadNetworks() {
@@ -131,12 +133,12 @@ export default function PostingInterface({
         setSuccess(false)
 
         if (selectedNetworkIds.length === 0) {
-            setError("Please select at least one network")
+            setError(t("networkRequired"))
             return
         }
 
         if (!content.text.trim() && content.images.length === 0) {
-            setError("Please add content (text or images)")
+            setError(t("contentRequired"))
             return
         }
 
@@ -146,9 +148,7 @@ export default function PostingInterface({
         })
 
         if (expiredNetworks.length > 0) {
-            setError(
-                "Some selected networks have expired authentication. Please reconnect them."
-            )
+            setError(t("expiredAuth"))
             return
         }
 
@@ -178,7 +178,7 @@ export default function PostingInterface({
 
                 if (!res.ok) {
                     const data = await res.json()
-                    throw new Error(data.error || "Failed to schedule post")
+                    throw new Error(data.error || t("failedToSchedule"))
                 }
             } else {
                 // Immediate publish - send to each platform's publish endpoint
@@ -212,11 +212,7 @@ export default function PostingInterface({
                 onClose()
             }, 2000)
         } catch (err) {
-            setError(
-                err instanceof Error
-                    ? err.message
-                    : "Failed to publish. Please try again."
-            )
+            setError(err instanceof Error ? err.message : t("failedToPublish"))
         } finally {
             setIsSubmitting(false)
         }
@@ -228,16 +224,18 @@ export default function PostingInterface({
                 <DialogHeader>
                     <DialogTitle>
                         {defaultDate
-                            ? `Schedule Post for ${defaultDate.toLocaleDateString()}`
-                            : "Universal Posting"}
+                            ? t("schedulePost") +
+                              " " +
+                              defaultDate.toLocaleDateString()
+                            : t("universalPosting")}
                     </DialogTitle>
                     <DialogDescription>
-                        Create and schedule content across multiple networks
+                        {t("universalPostingDesc")}
                     </DialogDescription>
                     <button
                         onClick={onClose}
                         className="absolute right-4 top-4 rounded-sm opacity-70 hover:opacity-100"
-                        aria-label="Close"
+                        aria-label={t("close")}
                     >
                         <X className="h-4 w-4" />
                     </button>
@@ -256,8 +254,8 @@ export default function PostingInterface({
                             <CheckCircle className="h-5 w-5 flex-shrink-0" />
                             <p className="text-sm">
                                 {schedule.type === "immediate"
-                                    ? "Posted successfully!"
-                                    : "Post scheduled successfully!"}
+                                    ? t("postedSuccessfully")
+                                    : t("postScheduled")}
                             </p>
                         </div>
                     )}
@@ -292,7 +290,7 @@ export default function PostingInterface({
                             disabled={isSubmitting}
                             className="flex-1"
                         >
-                            Cancel
+                            {t("cancel")}
                         </Button>
                         <Button
                             onClick={handlePublish}

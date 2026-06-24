@@ -2,6 +2,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { CREDIT_COSTS } from "@/lib/credits/constants"
+import { useTranslations } from "next-intl"
 import { Coins, TrendingDown, TrendingUp } from "lucide-react"
 import { useEffect, useState } from "react"
 
@@ -19,6 +20,7 @@ interface TransactionData {
 }
 
 export function CreditWidget() {
+    const t = useTranslations("dashboard.credits")
     const [balance, setBalance] = useState<number | null>(null)
     const [recent, setRecent] = useState<TransactionData[]>([])
     const [loading, setLoading] = useState(true)
@@ -37,7 +39,7 @@ export function CreditWidget() {
                 if (balData.success) setBalance(balData.data.balance)
                 if (txData.success) setRecent(txData.data.transactions)
             } catch {
-                setError("Failed to load credits")
+                setError(t("failedToLoadCredits"))
             } finally {
                 setLoading(false)
             }
@@ -51,11 +53,13 @@ export function CreditWidget() {
                 <CardHeader>
                     <CardTitle className="flex items-center gap-2 text-lg">
                         <Coins className="h-5 w-5" />
-                        Credits
+                        {t("title")}
                     </CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <p className="text-sm text-muted-foreground">Loading...</p>
+                    <p className="text-sm text-muted-foreground">
+                        {t("loading")}
+                    </p>
                 </CardContent>
             </Card>
         )
@@ -67,7 +71,7 @@ export function CreditWidget() {
                 <CardHeader>
                     <CardTitle className="flex items-center gap-2 text-lg">
                         <Coins className="h-5 w-5" />
-                        Credits
+                        {t("title")}
                     </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -82,7 +86,7 @@ export function CreditWidget() {
             <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-lg">
                     <Coins className="h-5 w-5" />
-                    Credits
+                    {t("title")}
                 </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -90,13 +94,13 @@ export function CreditWidget() {
                     {balance?.toLocaleString() ?? 0}
                 </div>
                 <p className="text-xs text-muted-foreground">
-                    Available balance
+                    {t("availableBalance")}
                 </p>
 
                 {recent.length > 0 && (
                     <div className="space-y-2 pt-2 border-t">
                         <p className="text-xs font-medium text-muted-foreground">
-                            Recent
+                            {t("recent")}
                         </p>
                         {recent.slice(0, 3).map(tx => (
                             <div
@@ -133,10 +137,11 @@ export function CreditWidget() {
 }
 
 export function CreditCostsTable() {
+    const t = useTranslations("dashboard.credits")
     return (
         <Card>
             <CardHeader>
-                <CardTitle className="text-lg">Credit Costs</CardTitle>
+                <CardTitle className="text-lg">{t("creditCosts")}</CardTitle>
             </CardHeader>
             <CardContent>
                 <div className="divide-y text-sm">
@@ -149,7 +154,9 @@ export function CreditCostsTable() {
                                 {action}
                             </span>
                             <span className="font-medium">
-                                {cost === 0 ? "Free" : `${cost} credits`}
+                                {cost === 0
+                                    ? t("free")
+                                    : `${cost} ${t("credits")}`}
                             </span>
                         </div>
                     ))}

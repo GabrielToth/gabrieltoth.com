@@ -1,7 +1,26 @@
 import { render, screen, waitFor } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
-import { describe, expect, it } from "vitest"
+import { describe, expect, it, vi } from "vitest"
 import { SettingsContainer } from "./SettingsContainer"
+
+vi.mock("next-intl", () => ({
+    useTranslations: (ns: string) => (key: string) => {
+        const map: Record<string, string> = {
+            "dashboard.settings.title": "Settings",
+            "dashboard.settings.description":
+                "Manage your account settings and preferences",
+            "dashboard.settings.profile": "Profile",
+            "dashboard.settings.preferences": "Preferences",
+            "dashboard.settings.channels": "Channels",
+            "dashboard.settings.security": "Security",
+            "dashboard.settings.billing": "Billing",
+            "dashboard.settings.integrations": "Integrations",
+            "dashboard.settings.profileInformation": "Profile Information",
+        }
+        return map[`${ns}.${key}`] ?? key
+    },
+    useLocale: () => "en",
+}))
 
 describe("SettingsContainer", () => {
     it("renders the settings container with header", () => {

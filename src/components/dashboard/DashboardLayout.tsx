@@ -1,6 +1,7 @@
 "use client"
 
 import { logger } from "@/lib/logger"
+import { useLocale, useTranslations } from "next-intl"
 import { useRouter } from "next/navigation"
 import React, { useState } from "react"
 import { Sidebar } from "./Sidebar"
@@ -22,6 +23,8 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
     activeTab,
     onTabChange,
 }) => {
+    const t = useTranslations("dashboard.layout")
+    const locale = useLocale()
     const router = useRouter()
     const [sidebarOpen, setSidebarOpen] = useState(false)
     const [isLoggingOut, setIsLoggingOut] = useState(false)
@@ -51,7 +54,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                 context: "Dashboard",
             })
 
-            router.push("/login")
+            router.push(`/${locale}/login`)
         } catch (err) {
             const error = err instanceof Error ? err : new Error(String(err))
             logger.error("Logout error", {
@@ -90,7 +93,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                     <button
                         onClick={() => setSidebarOpen(!sidebarOpen)}
                         className="inline-flex items-center justify-center rounded-md p-2 text-gray-600 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 min-h-10 min-w-10"
-                        aria-label="Toggle sidebar"
+                        aria-label={t("toggleSidebar")}
                         aria-expanded={sidebarOpen}
                     >
                         <svg
@@ -108,7 +111,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                         </svg>
                     </button>
                     <span className="text-xs sm:text-sm font-medium text-gray-900">
-                        Dashboard
+                        {t("dashboard")}
                     </span>
                     <div className="w-10" />
                 </div>

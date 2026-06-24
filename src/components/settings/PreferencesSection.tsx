@@ -15,6 +15,7 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import { Toggle } from "@/components/ui/toggle"
+import { useTranslations } from "next-intl"
 import React, { useEffect, useState } from "react"
 import { Preferences } from "./SettingsContainer"
 
@@ -67,6 +68,7 @@ export const PreferencesSection: React.FC<PreferencesSectionProps> = ({
     preferences,
     onSave,
 }) => {
+    const t = useTranslations("dashboard.settings")
     // Local state for preferences
     const [localPreferences, setLocalPreferences] = useState(preferences)
 
@@ -120,30 +122,28 @@ export const PreferencesSection: React.FC<PreferencesSectionProps> = ({
     return (
         <Card>
             <CardHeader>
-                <CardTitle>Preferences</CardTitle>
-                <CardDescription>
-                    Customize your experience with language, theme, and
-                    notification settings
-                </CardDescription>
+                <CardTitle>{t("preferences")}</CardTitle>
+                <CardDescription>{t("preferences")}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
                 {/* Notifications Toggle */}
                 <div className="flex items-center justify-between">
                     <div>
                         <label className="block text-sm font-medium text-gray-700">
-                            Notifications
+                            {t("notifications")}
                         </label>
                         <p className="mt-1 text-sm text-gray-600">
-                            Receive email notifications about your account
-                            activity
+                            {t("notificationsDescription")}
                         </p>
                     </div>
                     <Toggle
                         pressed={localPreferences.notificationsEnabled}
                         onPressedChange={handleNotificationsToggle}
-                        aria-label="Toggle notifications"
+                        aria-label={t("toggleNotifications")}
                     >
-                        {localPreferences.notificationsEnabled ? "On" : "Off"}
+                        {localPreferences.notificationsEnabled
+                            ? t("on")
+                            : t("off")}
                     </Toggle>
                 </div>
 
@@ -153,24 +153,32 @@ export const PreferencesSection: React.FC<PreferencesSectionProps> = ({
                         htmlFor="language"
                         className="block text-sm font-medium text-gray-700"
                     >
-                        Language
+                        {t("language")}
                     </label>
                     <Select
                         value={localPreferences.language}
                         onValueChange={handleLanguageChange}
                     >
                         <SelectTrigger id="language">
-                            <SelectValue placeholder="Select a language" />
+                            <SelectValue placeholder={t("selectLanguage")} />
                         </SelectTrigger>
                         <SelectContent>
-                            <SelectItem value="en">English</SelectItem>
-                            <SelectItem value="pt">Portuguese</SelectItem>
-                            <SelectItem value="es">Spanish</SelectItem>
-                            <SelectItem value="fr">French</SelectItem>
+                            <SelectItem value="en">
+                                {t("languageEnglish") || "English"}
+                            </SelectItem>
+                            <SelectItem value="pt">
+                                {t("languagePortuguese") || "Portuguese"}
+                            </SelectItem>
+                            <SelectItem value="es">
+                                {t("languageSpanish") || "Spanish"}
+                            </SelectItem>
+                            <SelectItem value="fr">
+                                {t("languageFrench") || "French"}
+                            </SelectItem>
                         </SelectContent>
                     </Select>
                     <p className="text-xs text-gray-500">
-                        Choose your preferred language for the interface
+                        {t("languageDescription")}
                     </p>
                 </div>
 
@@ -180,23 +188,25 @@ export const PreferencesSection: React.FC<PreferencesSectionProps> = ({
                         htmlFor="theme"
                         className="block text-sm font-medium text-gray-700"
                     >
-                        Theme
+                        {t("theme")}
                     </label>
                     <Select
                         value={localPreferences.theme}
                         onValueChange={handleThemeChange}
                     >
                         <SelectTrigger id="theme">
-                            <SelectValue placeholder="Select a theme" />
+                            <SelectValue placeholder={t("selectTheme")} />
                         </SelectTrigger>
                         <SelectContent>
-                            <SelectItem value="light">Light</SelectItem>
-                            <SelectItem value="dark">Dark</SelectItem>
-                            <SelectItem value="auto">Auto (System)</SelectItem>
+                            <SelectItem value="light">{t("light")}</SelectItem>
+                            <SelectItem value="dark">{t("dark")}</SelectItem>
+                            <SelectItem value="auto">
+                                {t("autoTheme")}
+                            </SelectItem>
                         </SelectContent>
                     </Select>
                     <p className="text-xs text-gray-500">
-                        Choose how the interface should look
+                        {t("themeDescription")}
                     </p>
                 </div>
 
@@ -206,7 +216,7 @@ export const PreferencesSection: React.FC<PreferencesSectionProps> = ({
                         htmlFor="timezone"
                         className="block text-sm font-medium text-gray-700"
                     >
-                        Timezone
+                        {t("timezone")}
                     </label>
                     <Select
                         value={localPreferences.timezone}
@@ -225,7 +235,7 @@ export const PreferencesSection: React.FC<PreferencesSectionProps> = ({
                         }}
                     >
                         <SelectTrigger id="timezone">
-                            <SelectValue placeholder="Select a timezone" />
+                            <SelectValue placeholder={t("selectTimezone")} />
                         </SelectTrigger>
                         <SelectContent>
                             {timezones.map(tz => (
@@ -236,15 +246,13 @@ export const PreferencesSection: React.FC<PreferencesSectionProps> = ({
                         </SelectContent>
                     </Select>
                     <p className="text-xs text-gray-500">
-                        Your timezone is auto-detected from your browser. Change
-                        it here to override. Used for scheduling posts.
+                        {t("timezoneDescription")}
                     </p>
                 </div>
 
                 {/* Info Message */}
                 <div className="rounded-md bg-blue-50 p-4 text-sm text-blue-700">
-                    Your preferences are saved automatically when you make
-                    changes.
+                    {t("preferencesSavedAutomatically")}
                 </div>
             </CardContent>
         </Card>

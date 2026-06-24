@@ -3,16 +3,37 @@ import { describe, expect, it, vi } from "vitest"
 import { Sidebar } from "./Sidebar"
 
 vi.mock("next-intl", () => ({
-    useTranslations: (ns: string) => (key: string) => {
-        const map: Record<string, string> = {
-            "dashboard.sidebar.publish": "Publish",
-            "dashboard.sidebar.insights": "Insights",
-            "dashboard.sidebar.settings": "Settings",
-            "dashboard.sidebar.logout": "Logout",
-            "dashboard.sidebar.connectChannels": "Connect Channels",
-        }
-        return map[`${ns}.${key}`] ?? key
-    },
+    useTranslations:
+        (ns: string) =>
+        (key: string, params?: Record<string, string | number>) => {
+            const map: Record<string, string> = {
+                "dashboard.layout.dashboard": "Dashboard",
+                "dashboard.layout.closeSidebar": "Close sidebar",
+                "dashboard.layout.organization": "Organization",
+                "dashboard.layout.myOrganization": "My Organization",
+                "dashboard.layout.connected": "Connected",
+                "dashboard.layout.disconnected": "Disconnected",
+                "dashboard.layout.connectChannel": "Connect {channel}",
+                "dashboard.layout.channelsConnected":
+                    "{count} of {total} channels connected",
+                "dashboard.layout.plan.free": "Free",
+                "dashboard.layout.plan.pro": "Pro",
+                "dashboard.layout.plan.enterprise": "Enterprise",
+                "dashboard.sidebar.publish": "Publish",
+                "dashboard.sidebar.insights": "Insights",
+                "dashboard.sidebar.settings": "Settings",
+                "dashboard.sidebar.logout": "Logout",
+                "dashboard.sidebar.connectChannels": "Connect Channels",
+            }
+            let value = map[`${ns}.${key}`] ?? key
+            if (params) {
+                for (const [k, v] of Object.entries(params)) {
+                    value = value.replace(`{${k}}`, String(v))
+                }
+            }
+            return value
+        },
+    useLocale: () => "en",
 }))
 
 describe("Sidebar", () => {

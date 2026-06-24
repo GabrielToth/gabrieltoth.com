@@ -30,7 +30,7 @@ describe("authMiddleware", () => {
         expect(result).toBeInstanceOf(Response)
         expect(result?.status).toBe(302)
         expect(result?.headers.get("Location")).toBe(
-            "http://localhost:3000/auth/login"
+            "http://localhost:3000/en/login"
         )
     })
 })

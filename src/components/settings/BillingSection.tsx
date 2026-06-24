@@ -8,6 +8,7 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
+import { useTranslations } from "next-intl"
 import React, { useState } from "react"
 import { BillingInfo } from "./SettingsContainer"
 import { downloadInvoice } from "@/lib/api/user"
@@ -42,6 +43,7 @@ export const BillingSection: React.FC<BillingSectionProps> = ({
     billing,
     onUpgrade,
 }) => {
+    const t = useTranslations("dashboard.settings")
     const [downloadingInvoiceId, setDownloadingInvoiceId] = useState<
         string | null
     >(null)
@@ -110,10 +112,8 @@ export const BillingSection: React.FC<BillingSectionProps> = ({
             {/* Current Plan */}
             <Card>
                 <CardHeader>
-                    <CardTitle>Current Plan</CardTitle>
-                    <CardDescription>
-                        Manage your subscription and billing
-                    </CardDescription>
+                    <CardTitle>{t("currentPlan")}</CardTitle>
+                    <CardDescription>{t("planDescription")}</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
                     {/* Plan Details */}
@@ -121,37 +121,42 @@ export const BillingSection: React.FC<BillingSectionProps> = ({
                         <div className="flex items-start justify-between">
                             <div>
                                 <h3 className="text-2xl font-bold text-gray-900">
-                                    {billing.plan} Plan
+                                    {t("planValue", { plan: billing.plan }) ||
+                                        billing.plan + " " + t("plan")}
                                 </h3>
                                 <p className="mt-2 text-sm text-gray-600">
-                                    You are currently on the {billing.plan} plan
+                                    {t("youAreOnPlan", { plan: billing.plan })}
                                 </p>
                             </div>
                             <div className="text-right">
                                 <p className="text-3xl font-bold text-gray-900">
                                     {formatCurrency(billing.price)}
                                 </p>
-                                <p className="text-sm text-gray-600">/month</p>
+                                <p className="text-sm text-gray-600">
+                                    {t("perMonth")}
+                                </p>
                             </div>
                         </div>
 
                         {/* Plan Features */}
                         <div className="mt-6 space-y-2">
                             <p className="text-sm font-medium text-gray-900">
-                                Plan includes:
+                                {t("planIncludes")}:
                             </p>
                             <ul className="space-y-1 text-sm text-gray-700">
-                                <li>✓ Unlimited posts</li>
-                                <li>✓ 5 connected channels</li>
-                                <li>✓ Basic analytics</li>
-                                <li>✓ Email support</li>
+                                <li>✓ {t("unlimitedPosts")}</li>
+                                <li>
+                                    ✓ {t("connectedChannels", { count: 5 })}
+                                </li>
+                                <li>✓ {t("basicAnalytics")}</li>
+                                <li>✓ {t("emailSupport")}</li>
                             </ul>
                         </div>
 
                         {/* Next Billing Date */}
                         <div className="mt-6 border-t border-blue-200 pt-4">
                             <p className="text-sm text-gray-600">
-                                Next billing date:{" "}
+                                {t("nextBillingDate")}
                                 <span className="font-medium text-gray-900">
                                     {formatDate(billing.nextBillingDate)}
                                 </span>
@@ -165,7 +170,7 @@ export const BillingSection: React.FC<BillingSectionProps> = ({
                             onClick={onUpgrade}
                             className="bg-blue-600 hover:bg-blue-700"
                         >
-                            Upgrade Plan
+                            {t("upgradePlan")}
                         </Button>
                     </div>
                 </CardContent>
@@ -174,9 +179,9 @@ export const BillingSection: React.FC<BillingSectionProps> = ({
             {/* Billing History */}
             <Card>
                 <CardHeader>
-                    <CardTitle>Billing History</CardTitle>
+                    <CardTitle>{t("billingHistory")}</CardTitle>
                     <CardDescription>
-                        View and download your past invoices
+                        {t("billingHistoryDescription")}
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -186,16 +191,16 @@ export const BillingSection: React.FC<BillingSectionProps> = ({
                                 <thead>
                                     <tr className="border-b border-gray-200">
                                         <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900">
-                                            Date
+                                            {t("date")}
                                         </th>
                                         <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900">
-                                            Amount
+                                            {t("amount")}
                                         </th>
                                         <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900">
-                                            Status
+                                            {t("status")}
                                         </th>
                                         <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900">
-                                            Action
+                                            {t("action")}
                                         </th>
                                     </tr>
                                 </thead>
@@ -239,8 +244,8 @@ export const BillingSection: React.FC<BillingSectionProps> = ({
                                                 >
                                                     {downloadingInvoiceId ===
                                                     invoice.id
-                                                        ? "Downloading..."
-                                                        : "Download"}
+                                                        ? t("downloading")
+                                                        : t("download")}
                                                 </Button>
                                             </td>
                                         </tr>
@@ -251,8 +256,7 @@ export const BillingSection: React.FC<BillingSectionProps> = ({
                     ) : (
                         <div className="rounded-lg bg-gray-50 p-8 text-center">
                             <p className="text-sm text-gray-600">
-                                No invoices yet. Your first invoice will appear
-                                here.
+                                {t("noInvoices")}
                             </p>
                         </div>
                     )}

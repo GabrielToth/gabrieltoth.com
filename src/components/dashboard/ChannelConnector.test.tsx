@@ -2,6 +2,28 @@ import { fireEvent, render, screen } from "@testing-library/react"
 import { describe, expect, it, vi } from "vitest"
 import { ChannelConnector, type SocialChannel } from "./ChannelConnector"
 
+vi.mock("next-intl", () => ({
+    useTranslations:
+        (ns: string) =>
+        (key: string, params?: Record<string, string | number>) => {
+            const map: Record<string, string> = {
+                "dashboard.layout.connected": "Connected",
+                "dashboard.layout.disconnected": "Disconnected",
+                "dashboard.layout.channelsConnected":
+                    "{count} of {total} channels connected",
+                "dashboard.sidebar.connectChannels": "Connect Channels",
+            }
+            let value = map[`${ns}.${key}`] ?? key
+            if (params) {
+                for (const [k, v] of Object.entries(params)) {
+                    value = value.replace(`{${k}}`, String(v))
+                }
+            }
+            return value
+        },
+    useLocale: () => "en",
+}))
+
 describe("ChannelConnector", () => {
     const mockChannels: SocialChannel[] = [
         { id: "facebook", name: "Facebook", icon: "f", isConnected: true },

@@ -15,17 +15,18 @@ import { NextRequest, NextResponse } from "next/server"
  * Edge-compatible: only checks cookie presence, no DB queries.
  *
  * @param request - The incoming request
- * @returns NextResponse with redirect to /auth/login (302) if not authenticated, null if authenticated
- *
- * Validates: Requirements 10.1, 10.2, 10.3, 10.4
+ * @param pathname - The request pathname to extract locale from
+ * @returns NextResponse with redirect to login (302) if not authenticated, null if authenticated
  */
 export async function authMiddleware(
-    request: NextRequest
+    request: NextRequest,
+    pathname?: string
 ): Promise<NextResponse | null> {
     const sessionToken = request.cookies.get("session")?.value
 
     if (!sessionToken) {
-        return NextResponse.redirect(new URL("/auth/login", request.url), {
+        const locale = pathname?.match(/^\/([a-z]{2}(-[A-Z]{2})?)/)?.[1] || "en"
+        return NextResponse.redirect(new URL(`/${locale}/login`, request.url), {
             status: 302,
         })
     }

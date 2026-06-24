@@ -1,6 +1,7 @@
 "use client"
 
 import { cn } from "@/lib/utils"
+import { useTranslations } from "next-intl"
 
 export interface CalendarDayProps {
     day: number
@@ -19,6 +20,7 @@ export default function CalendarDay({
     isWeekend = false,
     onSelect,
 }: CalendarDayProps) {
+    const t = useTranslations("dashboard.publish")
     if (!isCurrentMonth) {
         return <div className="h-10 sm:h-14" />
     }
@@ -34,7 +36,7 @@ export default function CalendarDay({
                     "bg-blue-100 font-semibold text-blue-700 ring-2 ring-blue-300",
                 !isToday && "text-gray-900"
             )}
-            aria-label={`${day}${postCount > 0 ? `, ${postCount} post${postCount !== 1 ? "s" : ""}` : ""}`}
+            aria-label={`${day}${postCount > 0 ? `, ${postCount} ${postCount !== 1 ? "posts" : "post"}` : ""}`}
         >
             <span>{day}</span>
             {postCount > 0 && (

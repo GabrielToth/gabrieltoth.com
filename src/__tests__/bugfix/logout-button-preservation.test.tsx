@@ -24,6 +24,39 @@ import { Sidebar } from "@/components/dashboard/Sidebar"
 import { fireEvent, render, screen, waitFor } from "@testing-library/react"
 import { beforeEach, describe, expect, it, vi } from "vitest"
 
+vi.mock("next-intl", () => ({
+    useTranslations:
+        (ns: string) => (key: string, params?: Record<string, string>) => {
+            const map: Record<string, string> = {
+                "dashboard.sidebar.publish": "Publish",
+                "dashboard.sidebar.insights": "Insights",
+                "dashboard.sidebar.settings": "Settings",
+                "dashboard.sidebar.logout": "Logout",
+                "dashboard.sidebar.connectChannels": "Connect Channels",
+                "dashboard.sidebar.plan.free": "Free",
+                "dashboard.sidebar.plan.pro": "Pro",
+                "dashboard.sidebar.plan.enterprise": "Enterprise",
+                "dashboard.layout.dashboard": "Dashboard",
+                "dashboard.layout.toggleSidebar": "Toggle sidebar",
+                "dashboard.layout.closeSidebar": "Close sidebar",
+                "dashboard.layout.organization": "Organization",
+                "dashboard.layout.myOrganization": "My Organization",
+                "dashboard.layout.connectChannel": "Connect {channel}",
+                "dashboard.layout.connected": "Connected",
+                "dashboard.layout.channelsConnected":
+                    "{count} of {total} channels connected",
+            }
+            let value = map[`${ns}.${key}`] ?? key
+            if (params) {
+                for (const [k, v] of Object.entries(params)) {
+                    value = value.replace(`{${k}}`, v)
+                }
+            }
+            return value
+        },
+    useLocale: () => "en",
+}))
+
 describe("Preservation Property Tests - Non-Logout Dashboard Interactions", () => {
     beforeEach(() => {
         vi.clearAllMocks()
@@ -273,7 +306,7 @@ describe("Preservation Property Tests - Non-Logout Dashboard Interactions", () =
                 />
             )
 
-            expect(screen.getAllByText(/pro plan/i).length).toBeGreaterThan(0)
+            expect(screen.getAllByText("Pro").length).toBeGreaterThan(0)
         })
 
         it("should display default organization when not provided", () => {
@@ -282,7 +315,7 @@ describe("Preservation Property Tests - Non-Logout Dashboard Interactions", () =
             expect(
                 screen.getAllByText("My Organization").length
             ).toBeGreaterThan(0)
-            expect(screen.getAllByText(/pro plan/i).length).toBeGreaterThan(0)
+            expect(screen.getAllByText("Pro").length).toBeGreaterThan(0)
         })
 
         it("should display free plan correctly", () => {
@@ -298,7 +331,7 @@ describe("Preservation Property Tests - Non-Logout Dashboard Interactions", () =
             )
 
             expect(screen.getAllByText("Startup Inc").length).toBeGreaterThan(0)
-            expect(screen.getAllByText(/free plan/i).length).toBeGreaterThan(0)
+            expect(screen.getAllByText("Free").length).toBeGreaterThan(0)
         })
 
         it("should display enterprise plan correctly", () => {
@@ -316,9 +349,7 @@ describe("Preservation Property Tests - Non-Logout Dashboard Interactions", () =
             expect(screen.getAllByText("Enterprise Co").length).toBeGreaterThan(
                 0
             )
-            expect(
-                screen.getAllByText(/enterprise plan/i).length
-            ).toBeGreaterThan(0)
+            expect(screen.getAllByText("Enterprise").length).toBeGreaterThan(0)
         })
 
         it("should update organization info when props change", () => {
@@ -347,9 +378,7 @@ describe("Preservation Property Tests - Non-Logout Dashboard Interactions", () =
             )
 
             expect(screen.getAllByText("New Company").length).toBeGreaterThan(0)
-            expect(
-                screen.getAllByText(/enterprise plan/i).length
-            ).toBeGreaterThan(0)
+            expect(screen.getAllByText("Enterprise").length).toBeGreaterThan(0)
         })
     })
 
@@ -402,7 +431,7 @@ describe("Preservation Property Tests - Non-Logout Dashboard Interactions", () =
             )
 
             expect(screen.getAllByText("Test Org").length).toBeGreaterThan(0)
-            expect(screen.getAllByText(/pro plan/i).length).toBeGreaterThan(0)
+            expect(screen.getAllByText("Pro").length).toBeGreaterThan(0)
         })
 
         it("should render logo section without errors", () => {

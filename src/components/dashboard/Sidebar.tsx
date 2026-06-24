@@ -36,13 +36,15 @@ export const Sidebar: React.FC<SidebarProps> = ({
     onTabChange,
     isOpen = false,
     onClose,
-    organization = {
-        name: "My Organization",
-        plan: "pro",
-    },
+    organization: orgProp,
     onLogout,
 }) => {
     const t = useTranslations("dashboard.sidebar")
+    const lt = useTranslations("dashboard.layout")
+    const organization = orgProp ?? {
+        name: lt("myOrganization"),
+        plan: "pro",
+    }
     const [connectingChannel, setConnectingChannel] = useState<string | null>(
         null
     )
@@ -102,7 +104,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                         D
                     </div>
                     <span className="ml-3 text-lg font-semibold text-gray-900">
-                        Dashboard
+                        {lt("dashboard")}
                     </span>
                 </div>
 
@@ -140,7 +142,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
                                 onClick={() => handleChannelConnect(channel.id)}
                                 className="flex h-11 w-11 items-center justify-center rounded-lg border border-gray-200 bg-white text-sm font-medium text-gray-600 hover:border-blue-300 hover:bg-blue-50 hover:text-blue-600 transition-colors min-h-11 min-w-11"
                                 title={channel.name}
-                                aria-label={`Connect ${channel.name}`}
+                                aria-label={lt("connectChannel", {
+                                    channel: channel.name,
+                                })}
                                 disabled={connectingChannel === channel.id}
                             >
                                 {channel.icon}
@@ -153,13 +157,13 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 <div className="border-t border-gray-200 px-6 py-4">
                     <div className="rounded-lg bg-gray-50 p-3">
                         <p className="text-xs font-semibold text-gray-600">
-                            Organization
+                            {lt("organization")}
                         </p>
                         <p className="mt-1 text-sm font-medium text-gray-900">
                             {organization.name}
                         </p>
                         <p className="mt-1 text-xs text-gray-500 capitalize">
-                            {organization.plan} Plan
+                            {t("plan." + organization.plan)}
                         </p>
                     </div>
                 </div>
@@ -191,13 +195,13 @@ export const Sidebar: React.FC<SidebarProps> = ({
                             D
                         </div>
                         <span className="ml-3 text-lg font-semibold text-gray-900">
-                            Dashboard
+                            {lt("dashboard")}
                         </span>
                     </div>
                     <button
                         onClick={onClose}
                         className="rounded-md p-2 text-gray-600 hover:bg-gray-100 min-h-11 min-w-11"
-                        aria-label="Close sidebar"
+                        aria-label={lt("closeSidebar")}
                     >
                         <svg
                             className="h-5 w-5"
@@ -249,7 +253,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
                                 onClick={() => handleChannelConnect(channel.id)}
                                 className="flex h-11 w-11 items-center justify-center rounded-lg border border-gray-200 bg-white text-sm font-medium text-gray-600 hover:border-blue-300 hover:bg-blue-50 hover:text-blue-600 transition-colors min-h-11 min-w-11"
                                 title={channel.name}
-                                aria-label={`Connect ${channel.name}`}
+                                aria-label={lt("connectChannel", {
+                                    channel: channel.name,
+                                })}
                                 disabled={connectingChannel === channel.id}
                             >
                                 {channel.icon}
@@ -262,13 +268,13 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 <div className="border-t border-gray-200 px-6 py-4">
                     <div className="rounded-lg bg-gray-50 p-3">
                         <p className="text-xs font-semibold text-gray-600">
-                            Organization
+                            {lt("organization")}
                         </p>
                         <p className="mt-1 text-sm font-medium text-gray-900">
                             {organization.name}
                         </p>
                         <p className="mt-1 text-xs text-gray-500 capitalize">
-                            {organization.plan} Plan
+                            {t("plan." + organization.plan)}
                         </p>
                     </div>
                 </div>

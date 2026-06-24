@@ -15,10 +15,9 @@ import {
     subMonths,
 } from "date-fns"
 import { ChevronLeft, ChevronRight } from "lucide-react"
+import { useLocale, useTranslations } from "next-intl"
 import { useCallback, useMemo, useState } from "react"
 import CalendarDay from "./CalendarDay"
-
-const DAY_HEADERS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
 
 export interface CalendarPost {
     id: string
@@ -36,6 +35,14 @@ export default function CalendarView({
     selectedDate,
     onSelectDate,
 }: CalendarViewProps) {
+    const t = useTranslations("dashboard.publish")
+    const locale = useLocale()
+    const DAY_HEADERS = useMemo(() => {
+        const formatter = new Intl.DateTimeFormat(locale, { weekday: "short" })
+        return Array.from({ length: 7 }, (_, i) =>
+            formatter.format(new Date(2024, 0, i + 1))
+        )
+    }, [locale])
     const [currentMonth, setCurrentMonth] = useState(new Date())
 
     const monthStart = useMemo(() => startOfMonth(currentMonth), [currentMonth])
@@ -92,7 +99,7 @@ export default function CalendarView({
                         variant="ghost"
                         size="sm"
                         onClick={goToPrevMonth}
-                        aria-label="Previous month"
+                        aria-label={t("previousMonth")}
                         className="h-8 w-8 p-0"
                     >
                         <ChevronLeft className="h-4 w-4" />
@@ -103,13 +110,13 @@ export default function CalendarView({
                         onClick={goToToday}
                         className="text-xs"
                     >
-                        Today
+                        {t("today")}
                     </Button>
                     <Button
                         variant="ghost"
                         size="sm"
                         onClick={goToNextMonth}
-                        aria-label="Next month"
+                        aria-label={t("nextMonth")}
                         className="h-8 w-8 p-0"
                     >
                         <ChevronRight className="h-4 w-4" />
@@ -154,12 +161,14 @@ export default function CalendarView({
             <div className="mt-3 flex items-center gap-4 text-xs text-gray-500">
                 <div className="flex items-center gap-1">
                     <span className="inline-block h-2 w-2 rounded-full bg-blue-500" />
-                    <span>Has scheduled posts</span>
+                    <span>{t("hasScheduledPosts")}</span>
                 </div>
                 {selectedDate && (
                     <div className="flex items-center gap-1 text-blue-700">
                         <span>
-                            Selected: {format(selectedDate, "MMM d, yyyy")}
+                            {t("selected", {
+                                date: format(selectedDate, "MMM d, yyyy"),
+                            })}
                         </span>
                     </div>
                 )}

@@ -1,6 +1,7 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
+import { useTranslations } from "next-intl"
 import React from "react"
 
 export interface SocialChannel {
@@ -34,6 +35,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
     selectedChannels,
     onFilterChange,
 }) => {
+    const t = useTranslations("dashboard.publish")
     const handleChannelToggle = (platform: string) => {
         const newSelectedChannels = selectedChannels.includes(platform)
             ? selectedChannels.filter(c => c !== platform)
@@ -54,13 +56,13 @@ export const FilterBar: React.FC<FilterBarProps> = ({
                 <div className="flex items-center justify-between">
                     <div>
                         <label className="block text-sm font-medium text-gray-900">
-                            Filter by Channel
+                            {t("filterByChannel")}
                         </label>
                         {selectedChannels.length > 0 && (
                             <p className="mt-1 text-xs text-gray-500">
-                                {selectedChannels.length} filter
-                                {selectedChannels.length !== 1 ? "s" : ""}{" "}
-                                applied
+                                {t("filtersApplied", {
+                                    count: selectedChannels.length,
+                                })}
                             </p>
                         )}
                     </div>
@@ -83,14 +85,18 @@ export const FilterBar: React.FC<FilterBarProps> = ({
                                 aria-pressed={selectedChannels.includes(
                                     channel.platform
                                 )}
-                                title={`Filter by ${channel.accountName}`}
+                                title={
+                                    t("filterByChannel") +
+                                    ": " +
+                                    channel.accountName
+                                }
                             >
                                 {channel.accountName}
                             </button>
                         ))
                     ) : (
                         <p className="text-sm text-gray-500">
-                            No connected channels available
+                            {t("noConnectedChannels")}
                         </p>
                     )}
                 </div>
@@ -104,7 +110,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
                             onClick={handleClearAll}
                             className="text-blue-600 hover:text-blue-700 hover:bg-blue-50 min-h-10"
                         >
-                            Clear all filters
+                            {t("clearAllFilters")}
                         </Button>
                     </div>
                 )}

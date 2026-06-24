@@ -46,10 +46,7 @@ function setSessionCookie(res: NextResponse, sessionId: string): void {
 /**
  * Build an error response
  */
-function errorResponse(
-    message: string,
-    status: number
-): NextResponse {
+function errorResponse(message: string, status: number): NextResponse {
     return NextResponse.json(
         { success: false, error: message },
         { status, headers: getSecurityHeaders() }
@@ -72,7 +69,10 @@ async function handleGoogleCallback(
             logger.error("Google redirect URI not configured", {
                 context: "Auth",
             })
-            return { success: false, response: errorResponse("Server configuration error", 500) }
+            return {
+                success: false,
+                response: errorResponse("Server configuration error", 500),
+            }
         }
 
         // Exchange authorization code for Google ID token
@@ -88,7 +88,13 @@ async function handleGoogleCallback(
             await logAuditEvent("LOGIN_FAILED", undefined, clientIp, {
                 reason: "Failed to exchange authorization code",
             })
-            return { success: false, response: errorResponse("Failed to authenticate with Google", 401) }
+            return {
+                success: false,
+                response: errorResponse(
+                    "Failed to authenticate with Google",
+                    401
+                ),
+            }
         }
 
         // Validate Google token
@@ -104,7 +110,10 @@ async function handleGoogleCallback(
             await logAuditEvent("LOGIN_FAILED", undefined, clientIp, {
                 reason: "Invalid or expired Google token",
             })
-            return { success: false, response: errorResponse("Invalid or expired Google token", 401) }
+            return {
+                success: false,
+                response: errorResponse("Invalid or expired Google token", 401),
+            }
         }
 
         // Extract user information from token
@@ -125,10 +134,18 @@ async function handleGoogleCallback(
                 error: error as Error,
                 data: { google_id: googleUserData.google_id },
             })
-            await logAuditEvent("LOGIN_FAILED", googleUserData.google_email, clientIp, {
-                reason: "Failed to create or update user",
-            })
-            return { success: false, response: errorResponse("Failed to authenticate", 500) }
+            await logAuditEvent(
+                "LOGIN_FAILED",
+                googleUserData.google_email,
+                clientIp,
+                {
+                    reason: "Failed to create or update user",
+                }
+            )
+            return {
+                success: false,
+                response: errorResponse("Failed to authenticate", 500),
+            }
         }
 
         // Create session
@@ -141,17 +158,32 @@ async function handleGoogleCallback(
                 error: error as Error,
                 data: { userId: user.id },
             })
-            await logAuditEvent("LOGIN_FAILED", user.google_email, clientIp, {
-                reason: "Failed to create session",
-            }, user.id)
-            return { success: false, response: errorResponse("Failed to create session", 500) }
+            await logAuditEvent(
+                "LOGIN_FAILED",
+                user.google_email,
+                clientIp,
+                {
+                    reason: "Failed to create session",
+                },
+                user.id
+            )
+            return {
+                success: false,
+                response: errorResponse("Failed to create session", 500),
+            }
         }
 
         // Log successful login
         try {
-            await logAuditEvent("LOGIN_SUCCESS", user.google_email, clientIp, {
-                action: "User logged in via Google OAuth",
-            }, user.id)
+            await logAuditEvent(
+                "LOGIN_SUCCESS",
+                user.google_email,
+                clientIp,
+                {
+                    action: "User logged in via Google OAuth",
+                },
+                user.id
+            )
         } catch (error) {
             logger.error("Failed to log login event", {
                 context: "Auth",
@@ -185,7 +217,13 @@ async function handleGoogleCallback(
             error: err as Error,
             data: { ip: clientIp },
         })
-        return { success: false, response: errorResponse("An error occurred. Please try again later", 500) }
+        return {
+            success: false,
+            response: errorResponse(
+                "An error occurred. Please try again later",
+                500
+            ),
+        }
     }
 }
 

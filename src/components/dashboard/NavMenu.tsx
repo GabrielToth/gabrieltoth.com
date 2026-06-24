@@ -1,6 +1,7 @@
 "use client"
 
 import { cn } from "@/lib/utils"
+import { useTranslations } from "next-intl"
 import React from "react"
 
 export interface NavItem {
@@ -32,11 +33,12 @@ export const NavMenu: React.FC<NavMenuProps> = ({
     onItemClick,
     className,
 }) => {
+    const t = useTranslations("dashboard.layout")
     return (
         <nav
             className={cn("flex flex-col space-y-1", className)}
             role="navigation"
-            aria-label="Main navigation"
+            aria-label={t("mainNavigation")}
         >
             {items.map(item => (
                 <button

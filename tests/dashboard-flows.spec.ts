@@ -1,141 +1,49 @@
 import { expect, test } from "@playwright/test"
 
 test.describe("dashboard flows", () => {
-    test("dashboard root redirects to publish page", async ({ page }) => {
-        const response = await page.goto("/dashboard", {
-            waitUntil: "networkidle",
-        })
-        // Without auth session, any dashboard route redirects to signin.
-        // Verify the server returned the page (status 200 means route exists)
-        // and that the URL eventually contains /signin
-        expect(response?.status()).toBe(200)
-        const currentUrl = page.url()
-        expect(currentUrl).toContain("/dashboard")
-    })
-
-    test("dashboard root redirect preserves query params", async ({ page }) => {
-        const response = await page.goto("/dashboard?youtube=success", {
-            waitUntil: "networkidle",
-        })
-        expect(response?.status()).toBe(200)
-        const currentUrl = page.url()
-        expect(currentUrl).toContain("/dashboard")
-    })
-
-    test("dashboard publish page loads with expected content", async ({
+    test("dashboard root redirects through locale prefix to sign-in", async ({
         page,
     }) => {
-        const response = await page.goto("/dashboard/publish", {
-            waitUntil: "networkidle",
-        })
-        expect(response?.status()).toBe(200)
+        await page.goto("/dashboard", { waitUntil: "networkidle" })
+        // Without auth, the chain is:
+        //   /dashboard --308--> /{locale}/dashboard --302--> /{locale}/login --redirect--> /{locale}/signin
         const currentUrl = page.url()
-        expect(currentUrl).toContain("/dashboard")
+        expect(currentUrl).toMatch(/\/(en|pt-BR|es|de)\/signin/)
     })
 
-    test("dashboard insights page loads with expected content", async ({
+    test("dashboard root 308 redirects to locale-prefixed URL", async ({
         page,
     }) => {
-        const response = await page.goto("/dashboard/insights", {
-            waitUntil: "networkidle",
+        const response = await page.request.get("/dashboard", {
+            maxRedirects: 0,
         })
-        expect(response?.status()).toBe(200)
-        const currentUrl = page.url()
-        expect(currentUrl).toContain("/dashboard")
+        expect(response.status()).toBe(308)
+        expect(response.headers()["location"]).toMatch(
+            /\/(en|pt-BR|es|de)\/dashboard/
+        )
     })
 
-    test("dashboard settings page loads", async ({ page }) => {
-        const response = await page.goto("/dashboard/settings", {
-            waitUntil: "networkidle",
-        })
-        expect(response?.status()).toBe(200)
-        const currentUrl = page.url()
-        expect(currentUrl).toContain("/dashboard")
-    })
-
-    test("dashboard credits page loads with credit widget", async ({
+    test("dashboard redirect preserves query params through locale prefix", async ({
         page,
     }) => {
-        const response = await page.goto("/dashboard/credits", {
-            waitUntil: "networkidle",
+        const response = await page.request.get("/dashboard?youtube=success", {
+            maxRedirects: 0,
         })
-        expect(response?.status()).toBe(200)
+        expect(response.status()).toBe(308)
+        const location = response.headers()["location"]
+        expect(location).toContain("youtube=success")
+    })
+
+    test("locale-prefixed dashboard redirects to sign-in without auth", async ({
+        page,
+    }) => {
+        await page.goto("/en/dashboard", { waitUntil: "networkidle" })
         const currentUrl = page.url()
-        expect(currentUrl).toContain("/dashboard")
+        expect(currentUrl).toContain("/en/signin")
     })
 
-    test.describe("sidebar navigation", () => {
-        test("sidebar publish nav button is visible", async ({ page }) => {
-            const response = await page.goto("/dashboard/publish", {
-                waitUntil: "networkidle",
-            })
-            expect(response?.status()).toBe(200)
-            const currentUrl = page.url()
-            expect(currentUrl).toContain("/dashboard")
-        })
-
-        test("sidebar insights nav button is visible", async ({ page }) => {
-            const response = await page.goto("/dashboard/insights", {
-                waitUntil: "networkidle",
-            })
-            expect(response?.status()).toBe(200)
-            const currentUrl = page.url()
-            expect(currentUrl).toContain("/dashboard")
-        })
-
-        test("sidebar settings nav button is visible", async ({ page }) => {
-            const response = await page.goto("/dashboard/settings", {
-                waitUntil: "networkidle",
-            })
-            expect(response?.status()).toBe(200)
-            const currentUrl = page.url()
-            expect(currentUrl).toContain("/dashboard")
-        })
-
-        test("sidebar logout button is visible", async ({ page }) => {
-            const response = await page.goto("/dashboard/publish", {
-                waitUntil: "networkidle",
-            })
-            expect(response?.status()).toBe(200)
-            const currentUrl = page.url()
-            expect(currentUrl).toContain("/dashboard")
-        })
-
-        test("sidebar shows connect channels section", async ({ page }) => {
-            const response = await page.goto("/dashboard/publish", {
-                waitUntil: "networkidle",
-            })
-            expect(response?.status()).toBe(200)
-            const currentUrl = page.url()
-            expect(currentUrl).toContain("/dashboard")
-        })
-
-        test("clicking sidebar insights navigates to /dashboard/insights", async ({
-            page,
-        }) => {
-            const response = await page.goto("/dashboard/publish", {
-                waitUntil: "networkidle",
-            })
-            expect(response?.status()).toBe(200)
-            const currentUrl = page.url()
-            expect(currentUrl).toContain("/dashboard")
-        })
-
-        test("clicking sidebar settings navigates to /dashboard/settings", async ({
-            page,
-        }) => {
-            const response = await page.goto("/dashboard/publish", {
-                waitUntil: "networkidle",
-            })
-            expect(response?.status()).toBe(200)
-            const currentUrl = page.url()
-            expect(currentUrl).toContain("/dashboard")
-        })
-    })
-
-    test.describe("route responses", () => {
+    test.describe("sub-page redirects", () => {
         const routes = [
-            "/dashboard",
             "/dashboard/publish",
             "/dashboard/insights",
             "/dashboard/settings",
@@ -143,29 +51,26 @@ test.describe("dashboard flows", () => {
         ] as const
 
         for (const route of routes) {
-            test(`dashboard route ${route} responds successfully`, async ({
+            test(`${route} redirects through locale prefix to sign-in without auth`, async ({
                 page,
             }) => {
-                const response = await page.goto(route, {
-                    waitUntil: "networkidle",
+                const response = await page.request.get(route, {
+                    maxRedirects: 0,
                 })
-                expect(response?.status()).toBe(200)
+                expect(response.status()).toBe(308)
+                expect(response.headers()["location"]).toMatch(
+                    /\/(en|pt-BR|es|de)\/dashboard/
+                )
+            })
+
+            test(`${route} eventually reaches sign-in page without auth`, async ({
+                page,
+            }) => {
+                await page.goto(route, { waitUntil: "networkidle" })
+                const currentUrl = page.url()
+                expect(currentUrl).toMatch(/\/(en|pt-BR|es|de)\/signin/)
             })
         }
-
-        test("all dashboard routes return 200 sequentially", async ({
-            page,
-        }) => {
-            for (const route of routes) {
-                const response = await page.goto(route, {
-                    waitUntil: "networkidle",
-                })
-                expect(
-                    response?.status(),
-                    `Expected ${route} to return 200`
-                ).toBe(200)
-            }
-        })
     })
 
     test.describe("auth-related", () => {

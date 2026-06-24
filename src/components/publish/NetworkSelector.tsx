@@ -3,6 +3,7 @@
 import { Badge } from "@/components/ui/badge"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
+import { useTranslations } from "next-intl"
 import {
     Select,
     SelectContent,
@@ -62,6 +63,7 @@ export default function NetworkSelector({
 }: NetworkSelectorProps) {
     const [searchTerm, setSearchTerm] = useState("")
     const [sortBy, setSortBy] = useState<"name" | "status">("name")
+    const t = useTranslations("dashboard.publish")
 
     const filteredNetworks = useMemo(() => {
         return networks
@@ -119,18 +121,21 @@ export default function NetworkSelector({
     return (
         <div className="space-y-4 rounded-lg border p-4">
             <div className="space-y-2">
-                <h3 className="font-semibold">Select Networks</h3>
+                <h3 className="font-semibold">{t("selectNetworks")}</h3>
                 <p className="text-sm text-gray-600">
-                    {selectedNetworkIds.length} of {networks.length} selected
+                    {t("xOfYSelected", {
+                        selected: selectedNetworkIds.length,
+                        total: networks.length,
+                    })}
                 </p>
             </div>
 
             <div className="space-y-3">
                 <Input
-                    placeholder="Search networks or groups..."
+                    placeholder={t("searchNetworks")}
                     value={searchTerm}
                     onChange={e => setSearchTerm(e.target.value)}
-                    aria-label="Search networks"
+                    aria-label={t("searchNetworks")}
                 />
 
                 <div className="flex gap-2">
@@ -142,9 +147,11 @@ export default function NetworkSelector({
                             <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
-                            <SelectItem value="name">Sort by Name</SelectItem>
+                            <SelectItem value="name">
+                                {t("sortByName")}
+                            </SelectItem>
                             <SelectItem value="status">
-                                Sort by Status
+                                {t("sortByStatus")}
                             </SelectItem>
                         </SelectContent>
                     </Select>
@@ -152,23 +159,23 @@ export default function NetworkSelector({
                     <button
                         onClick={onSelectAll}
                         className="text-sm text-blue-600 hover:underline"
-                        aria-label="Select all networks"
+                        aria-label={t("selectAll")}
                     >
-                        Select All
+                        {t("selectAll")}
                     </button>
                     <button
                         onClick={onDeselectAll}
                         className="text-sm text-blue-600 hover:underline"
-                        aria-label="Deselect all networks"
+                        aria-label={t("deselectAll")}
                     >
-                        Deselect All
+                        {t("deselectAll")}
                     </button>
                 </div>
             </div>
 
             {filteredGroups.length > 0 && (
                 <div className="space-y-2 border-t pt-3">
-                    <h4 className="text-sm font-medium">Groups</h4>
+                    <h4 className="text-sm font-medium">{t("groups")}</h4>
                     {filteredGroups.map(group => {
                         const state = getGroupState(group.id)
                         return (
@@ -211,9 +218,11 @@ export default function NetworkSelector({
             )}
 
             <div className="space-y-2 border-t pt-3">
-                <h4 className="text-sm font-medium">Networks</h4>
+                <h4 className="text-sm font-medium">{t("networks")}</h4>
                 {filteredNetworks.length === 0 ? (
-                    <p className="text-sm text-gray-500">No networks found</p>
+                    <p className="text-sm text-gray-500">
+                        {t("noNetworksFound")}
+                    </p>
                 ) : (
                     <div className="space-y-2 max-h-64 overflow-y-auto">
                         {filteredNetworks.map(network => (

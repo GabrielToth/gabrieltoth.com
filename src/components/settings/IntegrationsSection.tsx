@@ -9,6 +9,7 @@ import {
     CardTitle,
 } from "@/components/ui/card"
 import { DynamicIcon } from "@/components/ui/dynamic-icon"
+import { useTranslations } from "next-intl"
 import React, { useState } from "react"
 import { Integration } from "./SettingsContainer"
 
@@ -41,6 +42,7 @@ export const IntegrationsSection: React.FC<IntegrationsSectionProps> = ({
     onDisconnect,
     onConnect,
 }) => {
+    const t = useTranslations("dashboard.settings")
     const [disconnectingId, setDisconnectingId] = useState<string | null>(null)
     const [confirmDisconnect, setConfirmDisconnect] = useState<string | null>(
         null
@@ -72,9 +74,9 @@ export const IntegrationsSection: React.FC<IntegrationsSectionProps> = ({
     return (
         <Card>
             <CardHeader>
-                <CardTitle>Integrations</CardTitle>
+                <CardTitle>{t("integrations")}</CardTitle>
                 <CardDescription>
-                    Connect third-party apps to extend functionality
+                    {t("integrationsDescription")}
                 </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
@@ -82,7 +84,9 @@ export const IntegrationsSection: React.FC<IntegrationsSectionProps> = ({
                 {connectedIntegrations.length > 0 && (
                     <div className="space-y-4">
                         <h3 className="text-sm font-semibold text-gray-900">
-                            Connected Apps ({connectedIntegrations.length})
+                            {t("connectedApps", {
+                                count: connectedIntegrations.length,
+                            })}
                         </h3>
                         <div className="grid gap-4 md:grid-cols-2">
                             {connectedIntegrations.map(integration => (
@@ -104,7 +108,7 @@ export const IntegrationsSection: React.FC<IntegrationsSectionProps> = ({
                                                 </p>
                                                 {integration.connectedAt && (
                                                     <p className="text-xs text-gray-500">
-                                                        Connected on{" "}
+                                                        {t("connectedOn")}{" "}
                                                         {new Date(
                                                             integration.connectedAt
                                                         ).toLocaleDateString()}
@@ -113,7 +117,7 @@ export const IntegrationsSection: React.FC<IntegrationsSectionProps> = ({
                                             </div>
                                         </div>
                                         <span className="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800">
-                                            Connected
+                                            {t("connected")}
                                         </span>
                                     </div>
                                     <div className="mt-4">
@@ -129,7 +133,7 @@ export const IntegrationsSection: React.FC<IntegrationsSectionProps> = ({
                                                         )
                                                     }
                                                 >
-                                                    Cancel
+                                                    {t("cancel")}
                                                 </Button>
                                                 <Button
                                                     size="sm"
@@ -147,8 +151,8 @@ export const IntegrationsSection: React.FC<IntegrationsSectionProps> = ({
                                                 >
                                                     {disconnectingId ===
                                                     integration.id
-                                                        ? "Disconnecting..."
-                                                        : "Confirm"}
+                                                        ? t("disconnecting")
+                                                        : t("confirma")}
                                                 </Button>
                                             </div>
                                         ) : (
@@ -162,7 +166,7 @@ export const IntegrationsSection: React.FC<IntegrationsSectionProps> = ({
                                                     )
                                                 }
                                             >
-                                                Disconnect
+                                                {t("disconnect")}
                                             </Button>
                                         )}
                                     </div>
@@ -176,7 +180,9 @@ export const IntegrationsSection: React.FC<IntegrationsSectionProps> = ({
                 {availableIntegrations.length > 0 && (
                     <div className="space-y-4">
                         <h3 className="text-sm font-semibold text-gray-900">
-                            Available Apps ({availableIntegrations.length})
+                            {t("availableApps", {
+                                count: availableIntegrations.length,
+                            })}
                         </h3>
                         <div className="grid gap-4 md:grid-cols-2">
                             {availableIntegrations.map(integration => (
@@ -197,12 +203,12 @@ export const IntegrationsSection: React.FC<IntegrationsSectionProps> = ({
                                                     {integration.name}
                                                 </p>
                                                 <p className="text-xs text-gray-500">
-                                                    Not connected
+                                                    {t("notConnected")}
                                                 </p>
                                             </div>
                                         </div>
                                         <span className="inline-flex items-center rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-800">
-                                            Available
+                                            {t("available")}
                                         </span>
                                     </div>
                                 </div>
@@ -217,7 +223,7 @@ export const IntegrationsSection: React.FC<IntegrationsSectionProps> = ({
                         onClick={onConnect}
                         className="bg-blue-600 hover:bg-blue-700"
                     >
-                        Add Integration
+                        {t("addIntegration")}
                     </Button>
                 </div>
             </CardContent>

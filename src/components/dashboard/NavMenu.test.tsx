@@ -2,6 +2,15 @@ import { fireEvent, render, screen } from "@testing-library/react"
 import { describe, expect, it, vi } from "vitest"
 import { NavMenu, type NavItem } from "./NavMenu"
 
+vi.mock("next-intl", () => ({
+    useTranslations: (ns: string) => (key: string) => {
+        const map: Record<string, string> = {
+            "dashboard.layout.mainNavigation": "Main navigation",
+        }
+        return map[`${ns}.${key}`] ?? key
+    },
+}))
+
 describe("NavMenu", () => {
     const mockItems: NavItem[] = [
         { id: "publish", label: "Publish", icon: "📝" },

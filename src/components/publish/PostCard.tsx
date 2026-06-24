@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
+import { useTranslations } from "next-intl"
 import React from "react"
 
 export interface Post {
@@ -41,6 +42,7 @@ export const PostCard: React.FC<PostCardProps> = ({
     onEdit,
     onDelete,
 }) => {
+    const t = useTranslations("dashboard.publish")
     const isPublished = post.status === "published"
     const isFailed = post.status === "failed"
     const isScheduled = post.status === "scheduled"
@@ -107,14 +109,21 @@ export const PostCard: React.FC<PostCardProps> = ({
                         {/* Date and Error Info */}
                         <div className="mt-3 text-xs text-gray-500 space-y-1">
                             {isPublished && post.publishedAt && (
-                                <p>Published: {formatDate(post.publishedAt)}</p>
+                                <p>
+                                    {t("published")}
+                                    {formatDate(post.publishedAt)}
+                                </p>
                             )}
                             {isScheduled && (
-                                <p>Scheduled: {formatDate(post.scheduledAt)}</p>
+                                <p>
+                                    {t("scheduled")}
+                                    {formatDate(post.scheduledAt)}
+                                </p>
                             )}
                             {isFailed && post.errorMessage && (
                                 <p className="text-red-600">
-                                    Error: {post.errorMessage}
+                                    {t("error")}
+                                    {post.errorMessage}
                                 </p>
                             )}
                         </div>
@@ -129,8 +138,8 @@ export const PostCard: React.FC<PostCardProps> = ({
                             disabled={isPublished}
                             title={
                                 isPublished
-                                    ? "Cannot edit published posts"
-                                    : "Edit post"
+                                    ? t("cannotEditPublished")
+                                    : t("edit")
                             }
                             className={`min-h-10 min-w-10 ${
                                 isPublished
@@ -138,7 +147,7 @@ export const PostCard: React.FC<PostCardProps> = ({
                                     : ""
                             }`}
                         >
-                            Edit
+                            {t("edit")}
                         </Button>
                         <Button
                             variant="outline"
@@ -146,7 +155,7 @@ export const PostCard: React.FC<PostCardProps> = ({
                             onClick={() => onDelete(post)}
                             className="text-red-600 hover:text-red-700 hover:bg-red-50 border-red-200 min-h-10 min-w-10"
                         >
-                            Delete
+                            {t("delete")}
                         </Button>
                     </div>
                 </div>

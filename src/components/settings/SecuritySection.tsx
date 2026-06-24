@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Toggle } from "@/components/ui/toggle"
+import { useTranslations } from "next-intl"
 import React, { useState } from "react"
 import { User } from "./SettingsContainer"
 import {
@@ -58,6 +59,7 @@ interface FormErrors {
  * - Error handling
  */
 export const SecuritySection: React.FC<SecuritySectionProps> = ({ user }) => {
+    const t = useTranslations("dashboard.settings")
     // 2FA state
     const [twoFactorEnabled, setTwoFactorEnabled] = useState(false)
     const [showTwoFactorSetup, setShowTwoFactorSetup] = useState(false)
@@ -77,11 +79,11 @@ export const SecuritySection: React.FC<SecuritySectionProps> = ({ user }) => {
      * Password requirements
      */
     const passwordRequirements = [
-        { label: "At least 8 characters", regex: /.{8,}/ },
-        { label: "At least one uppercase letter", regex: /[A-Z]/ },
-        { label: "At least one lowercase letter", regex: /[a-z]/ },
-        { label: "At least one number", regex: /\d/ },
-        { label: "At least one special character", regex: /[!@#$%^&*]/ },
+        { label: t("passwordMinChars"), regex: /.{8,}/ },
+        { label: t("passwordUppercase"), regex: /[A-Z]/ },
+        { label: t("passwordLowercase"), regex: /[a-z]/ },
+        { label: t("passwordNumber"), regex: /\d/ },
+        { label: t("passwordSpecial"), regex: /[!@#$%^&*]/ },
     ]
 
     /**
@@ -101,25 +103,25 @@ export const SecuritySection: React.FC<SecuritySectionProps> = ({ user }) => {
         const errors: FormErrors = {}
 
         if (!passwordForm.currentPassword) {
-            errors.currentPassword = "Current password is required"
+            errors.currentPassword = t("currentPasswordRequired")
         }
 
         if (!passwordForm.newPassword) {
-            errors.newPassword = "New password is required"
+            errors.newPassword = t("newPasswordRequired")
         } else {
             const requirements = checkPasswordRequirements(
                 passwordForm.newPassword
             )
             const allMet = requirements.every(req => req.met)
             if (!allMet) {
-                errors.newPassword = "Password does not meet all requirements"
+                errors.newPassword = t("passwordRequirementsNotMet")
             }
         }
 
         if (!passwordForm.confirmPassword) {
-            errors.confirmPassword = "Please confirm your password"
+            errors.confirmPassword = t("confirmPasswordRequired")
         } else if (passwordForm.newPassword !== passwordForm.confirmPassword) {
-            errors.confirmPassword = "Passwords do not match"
+            errors.confirmPassword = t("passwordsDoNotMatch")
         }
 
         setPasswordErrors(errors)
@@ -165,7 +167,7 @@ export const SecuritySection: React.FC<SecuritySectionProps> = ({ user }) => {
                 passwordForm.newPassword
             )
 
-            setPasswordSuccess("Password changed successfully!")
+            setPasswordSuccess(t("passwordChanged"))
             setPasswordForm({
                 currentPassword: "",
                 newPassword: "",
@@ -179,7 +181,7 @@ export const SecuritySection: React.FC<SecuritySectionProps> = ({ user }) => {
                 currentPassword:
                     err instanceof Error
                         ? err.message
-                        : "Failed to change password",
+                        : t("failedToChangePassword"),
             })
         } finally {
             setIsChangingPassword(false)
@@ -221,9 +223,9 @@ export const SecuritySection: React.FC<SecuritySectionProps> = ({ user }) => {
             {/* Two-Factor Authentication */}
             <Card>
                 <CardHeader>
-                    <CardTitle>Two-Factor Authentication</CardTitle>
+                    <CardTitle>{t("twoFactorAuthentication")}</CardTitle>
                     <CardDescription>
-                        Add an extra layer of security to your account
+                        {t("twoFactorDescription")}
                     </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
@@ -231,21 +233,21 @@ export const SecuritySection: React.FC<SecuritySectionProps> = ({ user }) => {
                         <div>
                             <p className="font-medium text-gray-900">
                                 {twoFactorEnabled
-                                    ? "2FA Enabled"
-                                    : "2FA Disabled"}
+                                    ? t("twoFactorEnabled")
+                                    : t("twoFactorDisabled")}
                             </p>
                             <p className="text-sm text-gray-600">
                                 {twoFactorEnabled
-                                    ? "Your account is protected with two-factor authentication"
-                                    : "Enable 2FA to secure your account"}
+                                    ? t("twoFactorProtected")
+                                    : t("twoFactorEnablePrompt")}
                             </p>
                         </div>
                         <Toggle
                             pressed={twoFactorEnabled}
                             onPressedChange={handleTwoFactorToggle}
-                            aria-label="Toggle 2FA"
+                            aria-label={t("toggle2FA")}
                         >
-                            {twoFactorEnabled ? "On" : "Off"}
+                            {twoFactorEnabled ? t("on") : t("off")}
                         </Toggle>
                     </div>
 
@@ -253,7 +255,7 @@ export const SecuritySection: React.FC<SecuritySectionProps> = ({ user }) => {
                     {showTwoFactorSetup && !twoFactorEnabled && (
                         <div className="space-y-4 rounded-lg bg-blue-50 p-4">
                             <p className="text-sm font-medium text-blue-900">
-                                Set up Two-Factor Authentication
+                                {t("setup2FA")}
                             </p>
                             <ol className="space-y-2 text-sm text-blue-800">
                                 <li>
@@ -277,12 +279,12 @@ export const SecuritySection: React.FC<SecuritySectionProps> = ({ user }) => {
                                     htmlFor="2fa-code"
                                     className="block text-sm font-medium text-blue-900"
                                 >
-                                    Enter 6-digit code
+                                    {t("enter6DigitCode")}
                                 </label>
                                 <Input
                                     id="2fa-code"
                                     type="text"
-                                    placeholder="000000"
+                                    placeholder={t("codePlaceholder")}
                                     maxLength={6}
                                     className="text-center text-2xl tracking-widest"
                                 />
@@ -292,13 +294,13 @@ export const SecuritySection: React.FC<SecuritySectionProps> = ({ user }) => {
                                     variant="outline"
                                     onClick={() => setShowTwoFactorSetup(false)}
                                 >
-                                    Cancel
+                                    {t("cancel")}
                                 </Button>
                                 <Button
                                     onClick={handleTwoFactorSetup}
                                     className="bg-blue-600 hover:bg-blue-700"
                                 >
-                                    Confirm & Enable
+                                    {t("confirmAndEnable")}
                                 </Button>
                             </div>
                         </div>
@@ -309,9 +311,9 @@ export const SecuritySection: React.FC<SecuritySectionProps> = ({ user }) => {
             {/* Password Change */}
             <Card>
                 <CardHeader>
-                    <CardTitle>Password</CardTitle>
+                    <CardTitle>{t("changePassword")}</CardTitle>
                     <CardDescription>
-                        Change your password to keep your account secure
+                        {t("changePasswordDescription")}
                     </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
@@ -326,7 +328,7 @@ export const SecuritySection: React.FC<SecuritySectionProps> = ({ user }) => {
                             onClick={() => setShowPasswordForm(true)}
                             variant="outline"
                         >
-                            Change Password
+                            {t("changePassword")}
                         </Button>
                     ) : (
                         <form
@@ -339,7 +341,7 @@ export const SecuritySection: React.FC<SecuritySectionProps> = ({ user }) => {
                                     htmlFor="currentPassword"
                                     className="block text-sm font-medium text-gray-700"
                                 >
-                                    Current Password
+                                    {t("currentPassword")}
                                 </label>
                                 <Input
                                     id="currentPassword"
@@ -347,7 +349,7 @@ export const SecuritySection: React.FC<SecuritySectionProps> = ({ user }) => {
                                     type="password"
                                     value={passwordForm.currentPassword}
                                     onChange={handlePasswordInputChange}
-                                    placeholder="Enter your current password"
+                                    placeholder={t("enterCurrentPassword")}
                                     disabled={isChangingPassword}
                                     aria-invalid={
                                         !!passwordErrors.currentPassword
@@ -374,7 +376,7 @@ export const SecuritySection: React.FC<SecuritySectionProps> = ({ user }) => {
                                     htmlFor="newPassword"
                                     className="block text-sm font-medium text-gray-700"
                                 >
-                                    New Password
+                                    {t("newPassword")}
                                 </label>
                                 <Input
                                     id="newPassword"
@@ -382,7 +384,7 @@ export const SecuritySection: React.FC<SecuritySectionProps> = ({ user }) => {
                                     type="password"
                                     value={passwordForm.newPassword}
                                     onChange={handlePasswordInputChange}
-                                    placeholder="Enter your new password"
+                                    placeholder={t("enterNewPassword")}
                                     disabled={isChangingPassword}
                                     aria-invalid={!!passwordErrors.newPassword}
                                     aria-describedby={
@@ -404,7 +406,7 @@ export const SecuritySection: React.FC<SecuritySectionProps> = ({ user }) => {
                                 {passwordForm.newPassword && (
                                     <div className="space-y-2 rounded-lg bg-gray-50 p-3">
                                         <p className="text-xs font-medium text-gray-700">
-                                            Password Requirements:
+                                            {t("passwordRequirements")}:
                                         </p>
                                         <ul className="space-y-1">
                                             {passwordRequirementsMet.map(
@@ -433,7 +435,7 @@ export const SecuritySection: React.FC<SecuritySectionProps> = ({ user }) => {
                                     htmlFor="confirmPassword"
                                     className="block text-sm font-medium text-gray-700"
                                 >
-                                    Confirm Password
+                                    {t("confirmPassword")}
                                 </label>
                                 <Input
                                     id="confirmPassword"
@@ -441,7 +443,7 @@ export const SecuritySection: React.FC<SecuritySectionProps> = ({ user }) => {
                                     type="password"
                                     value={passwordForm.confirmPassword}
                                     onChange={handlePasswordInputChange}
-                                    placeholder="Confirm your new password"
+                                    placeholder={t("confirmNewPassword")}
                                     disabled={isChangingPassword}
                                     aria-invalid={
                                         !!passwordErrors.confirmPassword
@@ -478,7 +480,7 @@ export const SecuritySection: React.FC<SecuritySectionProps> = ({ user }) => {
                                     }}
                                     disabled={isChangingPassword}
                                 >
-                                    Cancel
+                                    {t("cancel")}
                                 </Button>
                                 <Button
                                     type="submit"
@@ -486,8 +488,8 @@ export const SecuritySection: React.FC<SecuritySectionProps> = ({ user }) => {
                                     className="bg-blue-600 hover:bg-blue-700"
                                 >
                                     {isChangingPassword
-                                        ? "Changing..."
-                                        : "Change Password"}
+                                        ? t("changing")
+                                        : t("changePassword")}
                                 </Button>
                             </div>
                         </form>

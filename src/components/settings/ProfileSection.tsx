@@ -9,6 +9,7 @@ import {
     CardTitle,
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
+import { useTranslations } from "next-intl"
 import React, { useState } from "react"
 import { User } from "./SettingsContainer"
 
@@ -50,6 +51,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
     isLoading = false,
     error = null,
 }) => {
+    const t = useTranslations("dashboard.settings")
     // Form state
     const [formData, setFormData] = useState({
         name: user.name,
@@ -68,16 +70,16 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
 
         // Validate name
         if (!formData.name.trim()) {
-            newErrors.name = "Name is required"
+            newErrors.name = t("nameRequired")
         } else if (formData.name.trim().length < 2) {
-            newErrors.name = "Name must be at least 2 characters"
+            newErrors.name = t("nameMinLength")
         }
 
         // Validate email
         if (!formData.email.trim()) {
-            newErrors.email = "Email is required"
+            newErrors.email = t("emailRequired")
         } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-            newErrors.email = "Please enter a valid email address"
+            newErrors.email = t("emailValid")
         }
 
         setErrors(newErrors)
@@ -145,14 +147,14 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
 
             onSave(updatedUser)
 
-            setSuccessMessage("Profile updated successfully!")
+            setSuccessMessage(t("profileUpdated"))
             setTimeout(() => setSuccessMessage(""), 3000)
         } catch (err) {
             setErrors({
                 name:
                     err instanceof Error
                         ? err.message
-                        : "Failed to save profile",
+                        : t("failedToSaveProfile"),
             })
         } finally {
             setIsSaving(false)
@@ -162,10 +164,8 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
     return (
         <Card>
             <CardHeader>
-                <CardTitle>Profile Information</CardTitle>
-                <CardDescription>
-                    Update your personal information and profile photo
-                </CardDescription>
+                <CardTitle>{t("profileInformation")}</CardTitle>
+                <CardDescription>{t("profileDescription")}</CardDescription>
             </CardHeader>
             <CardContent>
                 <form onSubmit={handleSubmit} className="space-y-6">
@@ -186,7 +186,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
                     {/* Profile Photo */}
                     <div className="space-y-2">
                         <label className="block text-sm font-medium text-gray-700">
-                            Profile Photo
+                            {t("profilePhoto")}
                         </label>
                         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
                             {formData.profilePhoto && (
@@ -211,7 +211,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
                             htmlFor="name"
                             className="block text-sm font-medium text-gray-700"
                         >
-                            Full Name
+                            {t("fullName")}
                         </label>
                         <Input
                             id="name"
@@ -219,7 +219,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
                             type="text"
                             value={formData.name}
                             onChange={handleInputChange}
-                            placeholder="Enter your full name"
+                            placeholder={t("enterFullName")}
                             disabled={isLoading || isSaving}
                             aria-invalid={!!errors.name}
                             aria-describedby={
@@ -239,7 +239,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
                             htmlFor="email"
                             className="block text-sm font-medium text-gray-700"
                         >
-                            Email Address
+                            {t("emailAddress")}
                         </label>
                         <Input
                             id="email"
@@ -247,7 +247,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
                             type="email"
                             value={formData.email}
                             onChange={handleInputChange}
-                            placeholder="Enter your email address"
+                            placeholder={t("enterEmail")}
                             disabled={isLoading || isSaving}
                             aria-invalid={!!errors.email}
                             aria-describedby={
@@ -271,7 +271,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
                             disabled={isLoading || isSaving}
                             className="bg-blue-600 hover:bg-blue-700"
                         >
-                            {isSaving ? "Saving..." : "Save Changes"}
+                            {isSaving ? t("saving") : t("saveChanges")}
                         </Button>
                     </div>
                 </form>

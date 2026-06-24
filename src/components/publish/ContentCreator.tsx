@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { AlertCircle, Bold, Italic, Link2, Underline, X } from "lucide-react"
+import { useTranslations } from "next-intl"
 import React, { useCallback, useState } from "react"
 
 interface ContentCreatorProps {
@@ -30,6 +31,7 @@ export default function ContentCreator({
     onContentChange,
     platformLimits = PLATFORM_LIMITS,
 }: ContentCreatorProps) {
+    const t = useTranslations("dashboard.publish")
     const [text, setText] = useState("")
     const [images, setImages] = useState<File[]>([])
     const [urls, setUrls] = useState<string[]>([])
@@ -127,22 +129,22 @@ export default function ContentCreator({
     return (
         <div className="space-y-4 rounded-lg border p-4">
             <div className="space-y-2">
-                <h3 className="font-semibold">Create Content</h3>
+                <h3 className="font-semibold">{t("createContent")}</h3>
                 <p className="text-sm text-gray-600">
-                    Compose your post with text, images, and links
+                    {t("contentDescription")}
                 </p>
             </div>
 
             <div className="space-y-2">
-                <Label htmlFor="content-textarea">Content</Label>
+                <Label htmlFor="content-textarea">{t("content")}</Label>
                 <div className="space-y-2">
                     <div className="flex gap-1 rounded border bg-gray-50 p-2">
                         <Button
                             size="sm"
                             variant="ghost"
                             onClick={() => applyFormatting("**", "**")}
-                            title="Bold"
-                            aria-label="Bold"
+                            title={t("bold")}
+                            aria-label={t("bold")}
                         >
                             <Bold className="h-4 w-4" />
                         </Button>
@@ -150,8 +152,8 @@ export default function ContentCreator({
                             size="sm"
                             variant="ghost"
                             onClick={() => applyFormatting("*", "*")}
-                            title="Italic"
-                            aria-label="Italic"
+                            title={t("italic")}
+                            aria-label={t("italic")}
                         >
                             <Italic className="h-4 w-4" />
                         </Button>
@@ -159,8 +161,8 @@ export default function ContentCreator({
                             size="sm"
                             variant="ghost"
                             onClick={() => applyFormatting("__", "__")}
-                            title="Underline"
-                            aria-label="Underline"
+                            title={t("underline")}
+                            aria-label={t("underline")}
                         >
                             <Underline className="h-4 w-4" />
                         </Button>
@@ -169,8 +171,8 @@ export default function ContentCreator({
                             size="sm"
                             variant="ghost"
                             onClick={() => applyFormatting("[", "](url)")}
-                            title="Link"
-                            aria-label="Link"
+                            title={t("link")}
+                            aria-label={t("link")}
                         >
                             <Link2 className="h-4 w-4" />
                         </Button>
@@ -178,11 +180,11 @@ export default function ContentCreator({
 
                     <Textarea
                         id="content-textarea"
-                        placeholder="What's on your mind?"
+                        placeholder={t("whatsOnYourMind")}
                         value={text}
                         onChange={e => handleTextChange(e.target.value)}
                         className="min-h-32 resize-none"
-                        aria-label="Post content"
+                        aria-label={t("content")}
                     />
 
                     <div className="flex items-center justify-between">
@@ -194,13 +196,16 @@ export default function ContentCreator({
                             }`}
                             aria-live="polite"
                         >
-                            {characterCount} / {maxLimit} characters
+                            {t("characters", {
+                                count: characterCount,
+                                limit: maxLimit,
+                            })}
                         </span>
                         {isOverLimit && (
                             <div className="flex items-center gap-1 text-red-600">
                                 <AlertCircle className="h-4 w-4" />
                                 <span className="text-sm">
-                                    Exceeds platform limit
+                                    {t("exceedsLimit")}
                                 </span>
                             </div>
                         )}
@@ -209,14 +214,14 @@ export default function ContentCreator({
             </div>
 
             <div className="space-y-2">
-                <Label htmlFor="image-upload">Images</Label>
+                <Label htmlFor="image-upload">{t("images")}</Label>
                 <Input
                     id="image-upload"
                     type="file"
                     multiple
                     accept="image/*"
                     onChange={handleImageUpload}
-                    aria-label="Upload images"
+                    aria-label={t("uploadImages")}
                 />
                 {images.length > 0 && (
                     <div className="grid grid-cols-3 gap-2">
@@ -230,7 +235,13 @@ export default function ContentCreator({
                                 <button
                                     onClick={() => removeImage(idx)}
                                     className="absolute -top-2 -right-2 rounded-full bg-red-500 p-1 text-white hover:bg-red-600"
-                                    aria-label={`Remove image ${idx + 1}`}
+                                    aria-label={
+                                        t("delete") +
+                                        " " +
+                                        t("images") +
+                                        " " +
+                                        (idx + 1)
+                                    }
                                 >
                                     <X className="h-3 w-3" />
                                 </button>
@@ -241,7 +252,7 @@ export default function ContentCreator({
             </div>
 
             <div className="space-y-2">
-                <Label htmlFor="url-input">Add URLs</Label>
+                <Label htmlFor="url-input">{t("addUrls")}</Label>
                 <div className="flex gap-2">
                     <Input
                         id="url-input"
@@ -250,10 +261,10 @@ export default function ContentCreator({
                         value={urlInput}
                         onChange={e => setUrlInput(e.target.value)}
                         onKeyPress={e => e.key === "Enter" && addUrl()}
-                        aria-label="URL input"
+                        aria-label={t("addUrls")}
                     />
                     <Button onClick={addUrl} variant="outline">
-                        Add
+                        {t("add")}
                     </Button>
                 </div>
                 {urls.length > 0 && (
@@ -274,7 +285,13 @@ export default function ContentCreator({
                                 </a>
                                 <button
                                     onClick={() => removeUrl(idx)}
-                                    aria-label={`Remove URL ${idx + 1}`}
+                                    aria-label={
+                                        t("delete") +
+                                        " " +
+                                        t("addUrls") +
+                                        " " +
+                                        (idx + 1)
+                                    }
                                 >
                                     <X className="h-3 w-3" />
                                 </button>
@@ -298,10 +315,10 @@ export default function ContentCreator({
                             draft: e.target.checked,
                         })
                     }}
-                    aria-label="Save as draft"
+                    aria-label={t("saveAsDraft")}
                 />
                 <Label htmlFor="draft" className="cursor-pointer">
-                    Save as Draft
+                    {t("saveAsDraft")}
                 </Label>
             </div>
         </div>

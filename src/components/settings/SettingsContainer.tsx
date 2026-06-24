@@ -1,6 +1,7 @@
 "use client"
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { useTranslations } from "next-intl"
 import React, { useCallback, useEffect, useState } from "react"
 import {
     updateUserProfile,
@@ -130,6 +131,7 @@ export const SettingsContainer: React.FC<SettingsContainerProps> = ({
     const [isLoading, setIsLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
     const [activeTab, setActiveTab] = useState("profile")
+    const t = useTranslations("dashboard.settings")
 
     /**
      * Fetch user data from API
@@ -361,10 +363,10 @@ export const SettingsContainer: React.FC<SettingsContainerProps> = ({
             <div className="flex items-center justify-between">
                 <div>
                     <h1 className="text-3xl font-bold text-gray-900">
-                        Settings
+                        {t("title")}
                     </h1>
                     <p className="mt-1 text-sm text-gray-600">
-                        Manage your account settings and preferences
+                        {t("description")}
                     </p>
                 </div>
             </div>
@@ -372,12 +374,16 @@ export const SettingsContainer: React.FC<SettingsContainerProps> = ({
             {/* Settings Tabs */}
             <Tabs value={activeTab} onValueChange={setActiveTab}>
                 <TabsList className="grid w-full grid-cols-7">
-                    <TabsTrigger value="profile">Profile</TabsTrigger>
-                    <TabsTrigger value="preferences">Preferences</TabsTrigger>
-                    <TabsTrigger value="channels">Channels</TabsTrigger>
-                    <TabsTrigger value="security">Security</TabsTrigger>
-                    <TabsTrigger value="billing">Billing</TabsTrigger>
-                    <TabsTrigger value="integrations">Integrations</TabsTrigger>
+                    <TabsTrigger value="profile">{t("profile")}</TabsTrigger>
+                    <TabsTrigger value="preferences">
+                        {t("preferences")}
+                    </TabsTrigger>
+                    <TabsTrigger value="channels">{t("channels")}</TabsTrigger>
+                    <TabsTrigger value="security">{t("security")}</TabsTrigger>
+                    <TabsTrigger value="billing">{t("billing")}</TabsTrigger>
+                    <TabsTrigger value="integrations">
+                        {t("integrations")}
+                    </TabsTrigger>
                     <TabsTrigger value="local-apis">APIs Locais</TabsTrigger>
                 </TabsList>
 

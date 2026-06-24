@@ -12,6 +12,7 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import { AlertCircle, CheckCircle, Download, Upload } from "lucide-react"
+import { useTranslations } from "next-intl"
 import React, { useState } from "react"
 
 interface UserPreferencesProps {
@@ -48,6 +49,7 @@ export default function UserPreferences({
     onExport,
     onImport,
 }: UserPreferencesProps) {
+    const t = useTranslations("dashboard.settings")
     const [preferences, setPreferences] = useState<UserPreferences>({
         timezone: "America/New_York",
         defaultNetworks: [],
@@ -72,7 +74,7 @@ export default function UserPreferences({
             setIsSaved(true)
             setTimeout(() => setIsSaved(false), 3000)
         } catch (err) {
-            setError("Failed to save preferences")
+            setError(t("failedToSavePreferences"))
         }
     }
 
@@ -80,7 +82,7 @@ export default function UserPreferences({
         try {
             onExport?.()
         } catch (err) {
-            setError("Failed to export preferences")
+            setError(t("failedToExportPreferences"))
         }
     }
 
@@ -90,7 +92,7 @@ export default function UserPreferences({
             try {
                 onImport?.(file)
             } catch (err) {
-                setError("Failed to import preferences")
+                setError(t("failedToImportPreferences"))
             }
         }
     }
@@ -98,9 +100,9 @@ export default function UserPreferences({
     return (
         <div className="space-y-6 rounded-lg border p-4">
             <div className="space-y-2">
-                <h3 className="font-semibold">User Preferences</h3>
+                <h3 className="font-semibold">{t("userPreferences")}</h3>
                 <p className="text-sm text-gray-600">
-                    Configure your posting preferences and settings
+                    {t("userPreferencesDescription")}
                 </p>
             </div>
 
@@ -114,15 +116,15 @@ export default function UserPreferences({
             {isSaved && (
                 <div className="flex items-center gap-2 rounded-lg bg-green-50 p-3 text-green-800">
                     <CheckCircle className="h-5 w-5 flex-shrink-0" />
-                    <p className="text-sm">Preferences saved successfully</p>
+                    <p className="text-sm">{t("preferencesSaved")}</p>
                 </div>
             )}
 
             <div className="space-y-4 border-b pb-4">
-                <h4 className="font-medium">General Settings</h4>
+                <h4 className="font-medium">{t("generalSettings")}</h4>
 
                 <div className="space-y-2">
-                    <Label htmlFor="timezone">Default Timezone</Label>
+                    <Label htmlFor="timezone">{t("defaultTimezone")}</Label>
                     <Select
                         value={preferences.timezone}
                         onValueChange={value =>
@@ -143,7 +145,7 @@ export default function UserPreferences({
                 </div>
 
                 <div className="space-y-2">
-                    <Label htmlFor="retry-attempts">Retry Attempts</Label>
+                    <Label htmlFor="retry-attempts">{t("retryAttempts")}</Label>
                     <Input
                         id="retry-attempts"
                         type="number"
@@ -158,7 +160,7 @@ export default function UserPreferences({
                         }
                     />
                     <p className="text-xs text-gray-600">
-                        Number of times to retry failed publications
+                        {t("retryDescription")}
                     </p>
                 </div>
 
@@ -174,15 +176,15 @@ export default function UserPreferences({
                         }
                     />
                     <Label htmlFor="notifications" className="cursor-pointer">
-                        Enable Notifications
+                        {t("enableNotifications")}
                     </Label>
                 </div>
             </div>
 
             <div className="space-y-4 border-b pb-4">
-                <h4 className="font-medium">Privacy Settings</h4>
+                <h4 className="font-medium">{t("privacySettings")}</h4>
                 <p className="text-sm text-gray-600">
-                    Set default visibility for each network
+                    {t("privacyDescription")}
                 </p>
 
                 <div className="space-y-3">
@@ -212,13 +214,13 @@ export default function UserPreferences({
                                     </SelectTrigger>
                                     <SelectContent>
                                         <SelectItem value="public">
-                                            Public
+                                            {t("public")}
                                         </SelectItem>
                                         <SelectItem value="friends">
-                                            Friends Only
+                                            {t("friendsOnly")}
                                         </SelectItem>
                                         <SelectItem value="private">
-                                            Private
+                                            {t("private")}
                                         </SelectItem>
                                     </SelectContent>
                                 </Select>
@@ -229,9 +231,9 @@ export default function UserPreferences({
             </div>
 
             <div className="space-y-4 border-b pb-4">
-                <h4 className="font-medium">Import / Export</h4>
+                <h4 className="font-medium">{t("importExport")}</h4>
                 <p className="text-sm text-gray-600">
-                    Backup or restore your preferences
+                    {t("importExportDescription")}
                 </p>
 
                 <div className="flex gap-2">
@@ -241,7 +243,7 @@ export default function UserPreferences({
                         className="flex-1 gap-2"
                     >
                         <Download className="h-4 w-4" />
-                        Export
+                        {t("export")}
                     </Button>
 
                     <div className="flex-1">
@@ -253,7 +255,7 @@ export default function UserPreferences({
                             >
                                 <span>
                                     <Upload className="h-4 w-4" />
-                                    Import
+                                    {t("import")}
                                 </span>
                             </Button>
                         </label>
@@ -263,7 +265,7 @@ export default function UserPreferences({
                             accept=".json"
                             onChange={handleImport}
                             className="hidden"
-                            aria-label="Import preferences file"
+                            aria-label={t("importFile")}
                         />
                     </div>
                 </div>
@@ -271,10 +273,10 @@ export default function UserPreferences({
 
             <div className="flex gap-2">
                 <Button variant="outline" className="flex-1">
-                    Reset to Defaults
+                    {t("resetToDefaults")}
                 </Button>
                 <Button onClick={handleSave} className="flex-1">
-                    Save Preferences
+                    {t("savePreferences")}
                 </Button>
             </div>
         </div>

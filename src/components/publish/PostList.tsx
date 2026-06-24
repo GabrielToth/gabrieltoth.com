@@ -1,6 +1,7 @@
 "use client"
 
 import { Card, CardContent } from "@/components/ui/card"
+import { useTranslations } from "next-intl"
 import React from "react"
 import { Post, PostCard } from "./PostCard"
 
@@ -32,6 +33,7 @@ export const PostList: React.FC<PostListProps> = ({
     onDelete,
     onRetry,
 }) => {
+    const t = useTranslations("dashboard.publish")
     // Loading skeleton
     if (isLoading) {
         return (
@@ -63,7 +65,7 @@ export const PostList: React.FC<PostListProps> = ({
                     <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
                         <div>
                             <h3 className="font-semibold text-red-900">
-                                Error loading posts
+                                {t("errorLoading")}
                             </h3>
                             <p className="mt-1 text-xs sm:text-sm text-red-700">
                                 {error}
@@ -74,7 +76,7 @@ export const PostList: React.FC<PostListProps> = ({
                                 onClick={onRetry}
                                 className="shrink-0 rounded-md bg-red-100 px-3 py-2 text-xs sm:text-sm font-medium text-red-700 hover:bg-red-200 transition-colors min-h-10"
                             >
-                                Retry
+                                {t("retry")}
                             </button>
                         )}
                     </div>
@@ -88,9 +90,9 @@ export const PostList: React.FC<PostListProps> = ({
         return (
             <Card>
                 <CardContent className="p-8 text-center">
-                    <p className="text-gray-600">No posts found</p>
+                    <p className="text-gray-600">{t("noPostsFound")}</p>
                     <p className="mt-1 text-sm text-gray-500">
-                        Create your first post to get started
+                        {t("createFirstPost")}
                     </p>
                 </CardContent>
             </Card>

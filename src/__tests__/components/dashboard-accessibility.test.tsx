@@ -5,7 +5,37 @@ import { TimePeriodSelector } from "@/components/insights/TimePeriodSelector"
 import { FilterBar } from "@/components/publish/FilterBar"
 import { PostCard } from "@/components/publish/PostCard"
 import { render, screen } from "@testing-library/react"
-import { describe, expect, it } from "vitest"
+import { describe, expect, it, vi } from "vitest"
+
+vi.mock("next-intl", () => ({
+    useTranslations: (ns: string) => (key: string) => {
+        const map: Record<string, string> = {
+            "dashboard.layout.dashboard": "Dashboard",
+            "dashboard.layout.toggleSidebar": "Toggle sidebar",
+            "dashboard.layout.closeSidebar": "Close sidebar",
+            "dashboard.layout.mainNavigation": "Main navigation",
+            "dashboard.layout.organization": "Organization",
+            "dashboard.layout.myOrganization": "My Organization",
+            "dashboard.layout.connected": "Connected",
+            "dashboard.layout.disconnected": "Disconnected",
+            "dashboard.layout.connectChannel": "Connect {channel}",
+            "dashboard.layout.channelsConnected":
+                "{count} of {total} channels connected",
+            "dashboard.layout.plan.free": "Free",
+            "dashboard.layout.plan.pro": "Pro",
+            "dashboard.layout.plan.enterprise": "Enterprise",
+            "dashboard.publish.filterByChannel": "Filter by channel",
+            "dashboard.publish.clearAllFilters": "Clear all filters",
+            "dashboard.sidebar.publish": "Publish",
+            "dashboard.sidebar.insights": "Insights",
+            "dashboard.sidebar.settings": "Settings",
+            "dashboard.sidebar.logout": "Logout",
+            "dashboard.sidebar.connectChannels": "Connect Channels",
+        }
+        return map[`${ns}.${key}`] ?? key
+    },
+    useLocale: () => "en",
+}))
 
 /**
  * Accessibility Tests

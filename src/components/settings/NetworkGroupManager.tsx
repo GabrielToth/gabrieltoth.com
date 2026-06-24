@@ -22,6 +22,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Edit2, GripVertical, Plus, Trash2 } from "lucide-react"
+import { useTranslations } from "next-intl"
 import { useState } from "react"
 
 interface Network {
@@ -50,6 +51,7 @@ export default function NetworkGroupManager({
     onGroupUpdate,
     onGroupDelete,
 }: NetworkGroupManagerProps) {
+    const t = useTranslations("dashboard.settings")
     const [isCreateOpen, setIsCreateOpen] = useState(false)
     const [editingGroupId, setEditingGroupId] = useState<string | null>(null)
     const [deleteGroupId, setDeleteGroupId] = useState<string | null>(null)
@@ -91,38 +93,40 @@ export default function NetworkGroupManager({
         <div className="space-y-4 rounded-lg border p-4">
             <div className="flex items-center justify-between">
                 <div className="space-y-1">
-                    <h3 className="font-semibold">Network Groups</h3>
+                    <h3 className="font-semibold">{t("networkGroups")}</h3>
                     <p className="text-sm text-gray-600">
-                        Organize networks into groups for quick selection
+                        {t("networkGroupsDescription")}
                     </p>
                 </div>
                 <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
                     <DialogTrigger asChild>
                         <Button size="sm" className="gap-2">
                             <Plus className="h-4 w-4" />
-                            New Group
+                            {t("newGroup")}
                         </Button>
                     </DialogTrigger>
                     <DialogContent>
                         <DialogHeader>
-                            <DialogTitle>Create Network Group</DialogTitle>
+                            <DialogTitle>{t("createGroup")}</DialogTitle>
                             <DialogDescription>
-                                Create a new group to organize your networks
+                                {t("createGroupDescription")}
                             </DialogDescription>
                         </DialogHeader>
                         <div className="space-y-4">
                             <div className="space-y-2">
-                                <Label htmlFor="group-name">Group Name</Label>
+                                <Label htmlFor="group-name">
+                                    {t("groupName")}
+                                </Label>
                                 <Input
                                     id="group-name"
-                                    placeholder="e.g., Social Media, Professional"
+                                    placeholder={t("groupNamePlaceholder")}
                                     value={groupName}
                                     onChange={e => setGroupName(e.target.value)}
                                 />
                             </div>
 
                             <div className="space-y-2">
-                                <Label>Select Networks</Label>
+                                <Label>{t("selectNetworks")}</Label>
                                 <div className="space-y-2 max-h-48 overflow-y-auto">
                                     {networks.map(network => (
                                         <div
@@ -168,7 +172,7 @@ export default function NetworkGroupManager({
                                     onClick={() => setIsCreateOpen(false)}
                                     className="flex-1"
                                 >
-                                    Cancel
+                                    {t("cancel")}
                                 </Button>
                                 <Button
                                     onClick={handleCreateGroup}
@@ -178,7 +182,7 @@ export default function NetworkGroupManager({
                                     }
                                     className="flex-1"
                                 >
-                                    Create
+                                    {t("create")}
                                 </Button>
                             </div>
                         </div>
@@ -188,9 +192,9 @@ export default function NetworkGroupManager({
 
             {groups.length === 0 ? (
                 <div className="rounded-lg border border-dashed p-8 text-center">
-                    <p className="text-sm text-gray-600">No groups yet</p>
+                    <p className="text-sm text-gray-600">{t("noGroups")}</p>
                     <p className="text-xs text-gray-500">
-                        Create a group to organize your networks
+                        {t("createGroupPrompt")}
                     </p>
                 </div>
             ) : (
@@ -205,10 +209,10 @@ export default function NetworkGroupManager({
                                 <div>
                                     <p className="font-medium">{group.name}</p>
                                     <p className="text-xs text-gray-600">
-                                        {group.networkIds.length} network
+                                        {group.networkIds.length}{" "}
                                         {group.networkIds.length !== 1
-                                            ? "s"
-                                            : ""}
+                                            ? "networks"
+                                            : "network"}
                                     </p>
                                 </div>
                             </div>
@@ -229,16 +233,16 @@ export default function NetworkGroupManager({
                                     <DialogContent>
                                         <DialogHeader>
                                             <DialogTitle>
-                                                Edit Network Group
+                                                {t("editGroup")}
                                             </DialogTitle>
                                             <DialogDescription>
-                                                Update group name and networks
+                                                {t("editGroupDescription")}
                                             </DialogDescription>
                                         </DialogHeader>
                                         <div className="space-y-4">
                                             <div className="space-y-2">
                                                 <Label htmlFor="edit-group-name">
-                                                    Group Name
+                                                    {t("groupName")}
                                                 </Label>
                                                 <Input
                                                     id="edit-group-name"
@@ -252,7 +256,9 @@ export default function NetworkGroupManager({
                                             </div>
 
                                             <div className="space-y-2">
-                                                <Label>Select Networks</Label>
+                                                <Label>
+                                                    {t("selectNetworks")}
+                                                </Label>
                                                 <div className="space-y-2 max-h-48 overflow-y-auto">
                                                     {networks.map(network => (
                                                         <div
@@ -308,7 +314,7 @@ export default function NetworkGroupManager({
                                                     }}
                                                     className="flex-1"
                                                 >
-                                                    Cancel
+                                                    {t("cancel")}
                                                 </Button>
                                                 <Button
                                                     onClick={handleUpdateGroup}
@@ -319,7 +325,7 @@ export default function NetworkGroupManager({
                                                     }
                                                     className="flex-1"
                                                 >
-                                                    Update
+                                                    {t("update")}
                                                 </Button>
                                             </div>
                                         </div>
@@ -341,12 +347,12 @@ export default function NetworkGroupManager({
                                         <AlertDialogContent>
                                             <AlertDialogHeader>
                                                 <AlertDialogTitle>
-                                                    Delete Group
+                                                    {t("deleteGroup")}
                                                 </AlertDialogTitle>
                                                 <AlertDialogDescription>
-                                                    Are you sure you want to
-                                                    delete "{group.name}"? This
-                                                    action cannot be undone.
+                                                    {t("deleteGroupConfirm", {
+                                                        name: group.name,
+                                                    })}
                                                 </AlertDialogDescription>
                                             </AlertDialogHeader>
                                             <div className="flex gap-2">
@@ -355,13 +361,13 @@ export default function NetworkGroupManager({
                                                         setDeleteGroupId(null)
                                                     }
                                                 >
-                                                    Cancel
+                                                    {t("cancel")}
                                                 </AlertDialogCancel>
                                                 <AlertDialogAction
                                                     onClick={handleDeleteGroup}
                                                     className="bg-red-600 hover:bg-red-700"
                                                 >
-                                                    Delete
+                                                    {t("delete")}
                                                 </AlertDialogAction>
                                             </div>
                                         </AlertDialogContent>

@@ -1,8 +1,68 @@
 import { render, screen, waitFor } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
-import { describe, expect, it } from "vitest"
+import { describe, expect, it, vi } from "vitest"
 import { SecuritySection } from "./SecuritySection"
 import { User } from "./SettingsContainer"
+
+vi.mock("next-intl", () => ({
+    useTranslations: (ns: string) => (key: string) => {
+        const map: Record<string, string> = {
+            "dashboard.settings.twoFactorAuthentication":
+                "Two-Factor Authentication",
+            "dashboard.settings.twoFactorDescription":
+                "Add an extra layer of security to your account",
+            "dashboard.settings.twoFactorEnabled": "2FA Enabled",
+            "dashboard.settings.twoFactorDisabled": "2FA Disabled",
+            "dashboard.settings.twoFactorProtected":
+                "Your account is protected with two-factor authentication",
+            "dashboard.settings.twoFactorEnablePrompt":
+                "Enable 2FA to secure your account",
+            "dashboard.settings.toggle2FA": "Toggle 2FA",
+            "dashboard.settings.setup2FA": "Set up Two-Factor Authentication",
+            "dashboard.settings.enter6DigitCode": "Enter 6-digit code",
+            "dashboard.settings.codePlaceholder": "000000",
+            "dashboard.settings.confirmAndEnable": "Confirm \u0026 Enable",
+            "dashboard.settings.changePassword": "Change Password",
+            "dashboard.settings.changePasswordDescription":
+                "Change your password to keep your account secure",
+            "dashboard.settings.currentPassword": "Current Password",
+            "dashboard.settings.enterCurrentPassword":
+                "Enter your current password",
+            "dashboard.settings.newPassword": "New Password",
+            "dashboard.settings.enterNewPassword": "Enter your new password",
+            "dashboard.settings.passwordRequirements": "Password Requirements:",
+            "dashboard.settings.passwordMinChars": "At least 8 characters",
+            "dashboard.settings.passwordUppercase":
+                "At least one uppercase letter",
+            "dashboard.settings.passwordLowercase":
+                "At least one lowercase letter",
+            "dashboard.settings.passwordNumber": "At least one number",
+            "dashboard.settings.passwordSpecial":
+                "At least one special character",
+            "dashboard.settings.currentPasswordRequired":
+                "Current password is required",
+            "dashboard.settings.newPasswordRequired":
+                "New password is required",
+            "dashboard.settings.passwordRequirementsNotMet":
+                "Password does not meet all requirements",
+            "dashboard.settings.confirmPassword": "Confirm Password",
+            "dashboard.settings.confirmNewPassword":
+                "Confirm your new password",
+            "dashboard.settings.confirmPasswordRequired":
+                "Please confirm your password",
+            "dashboard.settings.passwordsDoNotMatch": "Passwords do not match",
+            "dashboard.settings.passwordChanged":
+                "Password changed successfully!",
+            "dashboard.settings.failedToChangePassword":
+                "Failed to change password",
+            "dashboard.settings.changing": "Changing...",
+            "dashboard.settings.cancel": "Cancel",
+            "dashboard.settings.on": "On",
+            "dashboard.settings.off": "Off",
+        }
+        return map[`${ns}.${key}`] ?? key
+    },
+}))
 
 describe("SecuritySection", () => {
     const mockUser: User = {
@@ -19,7 +79,7 @@ describe("SecuritySection", () => {
         expect(
             screen.getByText("Two-Factor Authentication")
         ).toBeInTheDocument()
-        expect(screen.getByText("Password")).toBeInTheDocument()
+        expect(screen.getAllByText("Change Password").length).toBeGreaterThan(0)
     })
 
     it("displays 2FA toggle", () => {

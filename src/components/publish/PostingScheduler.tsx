@@ -14,6 +14,7 @@ import {
 import { addDays, formatDistanceToNow, isBefore } from "date-fns"
 import { format, fromZonedTime, toZonedTime } from "date-fns-tz"
 import { AlertCircle, Calendar, Clock } from "lucide-react"
+import { useTranslations } from "next-intl"
 import { useEffect, useMemo, useState } from "react"
 
 const timezones = [
@@ -76,6 +77,7 @@ export default function PostingScheduler({
     defaultDate,
 }: PostingSchedulerProps) {
     const userTz = getStoredTimezone()
+    const t = useTranslations("dashboard.publish")
     const [scheduleType, setScheduleType] = useState<"immediate" | "scheduled">(
         defaultDate ? "scheduled" : "immediate"
     )
@@ -110,7 +112,7 @@ export default function PostingScheduler({
 
     const previewTime = useMemo(() => {
         if (scheduleType === "immediate") {
-            return "Now"
+            return t("now")
         }
 
         if (!selectedDate || !selectedTime) {
@@ -126,7 +128,7 @@ export default function PostingScheduler({
             const utcTime = fromZonedTime(localDateTime, selectedTimezone)
 
             if (isBefore(utcTime, new Date())) {
-                setError("Scheduled time must be in the future")
+                setError(t("scheduleTimeFuture"))
                 return ""
             }
 
@@ -149,7 +151,7 @@ export default function PostingScheduler({
         }
 
         if (!selectedDate || !selectedTime) {
-            setError("Please select date and time")
+            setError(t("selectDate") + " " + t("selectTime"))
             return
         }
 
@@ -161,7 +163,7 @@ export default function PostingScheduler({
         const utcTime = fromZonedTime(localDateTime, selectedTimezone)
 
         if (isBefore(utcTime, new Date())) {
-            setError("Scheduled time must be in the future")
+            setError(t("scheduleTimeFuture"))
             return
         }
 
@@ -176,9 +178,9 @@ export default function PostingScheduler({
     return (
         <div className="space-y-4 rounded-lg border p-4">
             <div className="space-y-2">
-                <h3 className="font-semibold">Schedule</h3>
+                <h3 className="font-semibold">{t("schedule")}</h3>
                 <p className="text-sm text-gray-600">
-                    Choose when to publish your content
+                    {t("scheduleDescription")}
                 </p>
             </div>
 
@@ -189,14 +191,14 @@ export default function PostingScheduler({
                 <div className="flex items-center gap-2">
                     <RadioGroupItem value="immediate" id="immediate" />
                     <Label htmlFor="immediate" className="cursor-pointer">
-                        Publish Now
+                        {t("publishNow")}
                     </Label>
                 </div>
 
                 <div className="flex items-center gap-2">
                     <RadioGroupItem value="scheduled" id="scheduled" />
                     <Label htmlFor="scheduled" className="cursor-pointer">
-                        Schedule for Later
+                        {t("scheduleForLater")}
                     </Label>
                 </div>
             </RadioGroup>
@@ -210,7 +212,7 @@ export default function PostingScheduler({
                                 className="flex items-center gap-2"
                             >
                                 <Calendar className="h-4 w-4" />
-                                Date
+                                {t("scheduleDate")}
                             </Label>
                             <Input
                                 id="date"
@@ -219,7 +221,7 @@ export default function PostingScheduler({
                                 onChange={e => setSelectedDate(e.target.value)}
                                 min={minDate}
                                 max={maxDate}
-                                aria-label="Select date"
+                                aria-label={t("selectDate")}
                             />
                         </div>
 
@@ -229,20 +231,20 @@ export default function PostingScheduler({
                                 className="flex items-center gap-2"
                             >
                                 <Clock className="h-4 w-4" />
-                                Time
+                                {t("scheduleTime")}
                             </Label>
                             <Input
                                 id="time"
                                 type="time"
                                 value={selectedTime}
                                 onChange={e => setSelectedTime(e.target.value)}
-                                aria-label="Select time"
+                                aria-label={t("selectTime")}
                             />
                         </div>
                     </div>
 
                     <div className="space-y-2">
-                        <Label htmlFor="timezone">Timezone</Label>
+                        <Label htmlFor="timezone">{t("timezone")}</Label>
                         <Select
                             value={selectedTimezone}
                             onValueChange={setSelectedTimezone}
@@ -259,15 +261,14 @@ export default function PostingScheduler({
                             </SelectContent>
                         </Select>
                         <p className="text-xs text-gray-500">
-                            Times are converted from your timezone to UTC for
-                            storage
+                            {t("timezoneDescription")}
                         </p>
                     </div>
 
                     {previewTime && (
                         <div className="rounded bg-blue-50 p-3">
                             <p className="text-sm font-medium text-blue-900">
-                                Scheduled for: {previewTime}
+                                {t("schedulePost")}: {previewTime}
                             </p>
                         </div>
                     )}
@@ -284,11 +285,11 @@ export default function PostingScheduler({
             <Button
                 onClick={handleScheduleChange}
                 className="w-full"
-                aria-label="Confirm schedule"
+                aria-label={t("confirmSchedule")}
             >
                 {scheduleType === "immediate"
-                    ? "Ready to Publish"
-                    : "Schedule Post"}
+                    ? t("readyToPublish")
+                    : t("schedulePost")}
             </Button>
         </div>
     )

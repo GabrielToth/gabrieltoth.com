@@ -2,6 +2,34 @@ import { fireEvent, render, screen } from "@testing-library/react"
 import { describe, expect, it, vi } from "vitest"
 import { DashboardLayout } from "./DashboardLayout"
 
+vi.mock("next-intl", () => ({
+    useTranslations: (ns: string) => (key: string) => {
+        const map: Record<string, string> = {
+            "dashboard.layout.dashboard": "Dashboard",
+            "dashboard.layout.toggleSidebar": "Toggle sidebar",
+            "dashboard.layout.closeSidebar": "Close sidebar",
+            "dashboard.layout.mainNavigation": "Main navigation",
+            "dashboard.layout.organization": "Organization",
+            "dashboard.layout.myOrganization": "My Organization",
+            "dashboard.layout.connected": "Connected",
+            "dashboard.layout.disconnected": "Disconnected",
+            "dashboard.layout.connectChannel": "Connect {channel}",
+            "dashboard.layout.channelsConnected":
+                "{count} of {total} channels connected",
+            "dashboard.layout.plan.free": "Free",
+            "dashboard.layout.plan.pro": "Pro",
+            "dashboard.layout.plan.enterprise": "Enterprise",
+            "dashboard.sidebar.publish": "Publish",
+            "dashboard.sidebar.insights": "Insights",
+            "dashboard.sidebar.settings": "Settings",
+            "dashboard.sidebar.logout": "Logout",
+            "dashboard.sidebar.connectChannels": "Connect Channels",
+        }
+        return map[`${ns}.${key}`] ?? key
+    },
+    useLocale: () => "en",
+}))
+
 describe("DashboardLayout", () => {
     it("renders children content", () => {
         render(

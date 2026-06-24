@@ -1,6 +1,7 @@
 "use client"
 
 import { fetchChannels, fetchPosts, updatePost, deletePost } from "@/lib/api"
+import { useTranslations } from "next-intl"
 import React, { useCallback, useEffect, useMemo, useState } from "react"
 import { FilterBar } from "./FilterBar"
 import { Post } from "./PostCard"
@@ -44,6 +45,7 @@ export interface PublishContainerProps {
 export const PublishContainer: React.FC<PublishContainerProps> = ({
     children,
 }) => {
+    const t = useTranslations("dashboard.publish")
     // State management
     const [posts, setPosts] = useState<Post[]>([])
     const [availableChannels, setAvailableChannels] = useState<SocialChannel[]>(
@@ -152,10 +154,10 @@ export const PublishContainer: React.FC<PublishContainerProps> = ({
             <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                     <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
-                        Publish
+                        {t("title")}
                     </h1>
                     <p className="mt-1 text-xs sm:text-sm text-gray-600">
-                        Manage and schedule your social media posts
+                        {t("description")}
                     </p>
                 </div>
             </div>
@@ -172,8 +174,10 @@ export const PublishContainer: React.FC<PublishContainerProps> = ({
             {/* Post Count */}
             {!isLoading && !error && sortedPosts.length > 0 && (
                 <div className="text-xs sm:text-sm text-gray-600">
-                    Showing {sortedPosts.length} of {posts.length} post
-                    {posts.length !== 1 ? "s" : ""}
+                    {t("postCount", {
+                        shown: sortedPosts.length,
+                        total: posts.length,
+                    })}
                 </div>
             )}
 

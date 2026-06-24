@@ -8,6 +8,7 @@ import {
     TooltipTrigger,
 } from "@/components/ui/tooltip"
 import { Share2 } from "lucide-react"
+import { useTranslations } from "next-intl"
 import { useState } from "react"
 import PostingInterface from "./PostingInterface"
 
@@ -22,6 +23,7 @@ export default function UniversalPostingButton({
     isDisabled = false,
     onOpen,
 }: UniversalPostingButtonProps) {
+    const t = useTranslations("dashboard.publish")
     const [isOpen, setIsOpen] = useState(false)
 
     const handleClick = () => {
@@ -34,8 +36,8 @@ export default function UniversalPostingButton({
     }
 
     const tooltipText = isDisabled
-        ? "Link social networks first to start posting"
-        : `Post to ${linkedNetworksCount} network${linkedNetworksCount !== 1 ? "s" : ""}`
+        ? t("linkNetworksFirst")
+        : t("postToNetworks", { count: linkedNetworksCount })
 
     return (
         <>
@@ -46,15 +48,21 @@ export default function UniversalPostingButton({
                             onClick={handleClick}
                             disabled={isDisabled}
                             className="relative gap-2"
-                            aria-label={`Universal posting button. ${linkedNetworksCount} networks linked.`}
+                            aria-label={t("networksLinked", {
+                                count: linkedNetworksCount,
+                            })}
                             aria-disabled={isDisabled}
                         >
                             <Share2 className="h-4 w-4" />
-                            <span className="hidden sm:inline">Post</span>
+                            <span className="hidden sm:inline">
+                                {t("post")}
+                            </span>
                             {linkedNetworksCount > 0 && (
                                 <span
                                     className="absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full bg-green-500 text-xs font-bold text-white"
-                                    aria-label={`${linkedNetworksCount} networks`}
+                                    aria-label={t("networksLinked", {
+                                        count: linkedNetworksCount,
+                                    })}
                                 >
                                     {linkedNetworksCount}
                                 </span>

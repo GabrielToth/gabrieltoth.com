@@ -6,16 +6,43 @@ import { render, screen } from "@testing-library/react"
 import { describe, expect, it, vi } from "vitest"
 
 vi.mock("next-intl", () => ({
-    useTranslations: (ns: string) => (key: string) => {
-        const map: Record<string, string> = {
-            "dashboard.sidebar.publish": "Publish",
-            "dashboard.sidebar.insights": "Insights",
-            "dashboard.sidebar.settings": "Settings",
-            "dashboard.sidebar.logout": "Logout",
-            "dashboard.sidebar.connectChannels": "Connect Channels",
-        }
-        return map[`${ns}.${key}`] ?? key
-    },
+    useTranslations:
+        (ns: string) => (key: string, params?: Record<string, string>) => {
+            const map: Record<string, string> = {
+                "dashboard.sidebar.publish": "Publish",
+                "dashboard.sidebar.insights": "Insights",
+                "dashboard.sidebar.settings": "Settings",
+                "dashboard.sidebar.logout": "Logout",
+                "dashboard.sidebar.connectChannels": "Connect Channels",
+                "dashboard.sidebar.plan.free": "Free",
+                "dashboard.sidebar.plan.pro": "Pro",
+                "dashboard.sidebar.plan.enterprise": "Enterprise",
+                "dashboard.layout.dashboard": "Dashboard",
+                "dashboard.layout.toggleSidebar": "Toggle sidebar",
+                "dashboard.layout.closeSidebar": "Close sidebar",
+                "dashboard.layout.organization": "Organization",
+                "dashboard.layout.myOrganization": "My Organization",
+                "dashboard.layout.connectChannel": "Connect {channel}",
+                "dashboard.layout.connected": "Connected",
+                "dashboard.layout.channelsConnected":
+                    "{count} of {total} channels connected",
+                "dashboard.publish.published": "Published: ",
+                "dashboard.publish.scheduled": "Scheduled: ",
+                "dashboard.publish.error": "Error: ",
+                "dashboard.publish.cannotEditPublished":
+                    "Cannot edit published posts",
+                "dashboard.publish.edit": "Edit",
+                "dashboard.publish.delete": "Delete",
+            }
+            let value = map[`${ns}.${key}`] ?? key
+            if (params) {
+                for (const [k, v] of Object.entries(params)) {
+                    value = value.replace(`{${k}}`, v)
+                }
+            }
+            return value
+        },
+    useLocale: () => "en",
 }))
 
 /**

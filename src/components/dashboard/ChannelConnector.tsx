@@ -1,7 +1,10 @@
 "use client"
 
 import { cn } from "@/lib/utils"
+import { useTranslations } from "next-intl"
 import React, { useState } from "react"
+
+const CONNECT_MSG = "Connect Channels"
 
 export interface SocialChannel {
     id: string
@@ -34,6 +37,8 @@ export const ChannelConnector: React.FC<ChannelConnectorProps> = ({
     onDisconnect,
     className,
 }) => {
+    const lt = useTranslations("dashboard.layout")
+    const st = useTranslations("dashboard.sidebar")
     const [hoveredChannel, setHoveredChannel] = useState<string | null>(null)
 
     const handleChannelClick = (channel: SocialChannel) => {
@@ -47,7 +52,7 @@ export const ChannelConnector: React.FC<ChannelConnectorProps> = ({
     return (
         <div className={cn("space-y-3", className)}>
             <h3 className="text-xs font-semibold uppercase tracking-wide text-gray-500">
-                Connect Channels
+                {st("connectChannels")}
             </h3>
             <div className="grid grid-cols-3 gap-2 sm:grid-cols-5">
                 {channels.map(channel => (
@@ -67,7 +72,7 @@ export const ChannelConnector: React.FC<ChannelConnectorProps> = ({
                                     : "border-gray-200 bg-white text-gray-600 hover:border-blue-300 hover:bg-blue-50 hover:text-blue-600"
                             )}
                             title={channel.name}
-                            aria-label={`${channel.name} - ${channel.isConnected ? "Connected" : "Disconnected"}`}
+                            aria-label={`${channel.name} - ${channel.isConnected ? lt("connected") : lt("disconnected")}`}
                             aria-pressed={channel.isConnected}
                         >
                             <span className="flex h-6 w-6 items-center justify-center text-lg">
@@ -105,8 +110,10 @@ export const ChannelConnector: React.FC<ChannelConnectorProps> = ({
 
             {/* Connection Status Summary */}
             <div className="text-xs text-gray-500">
-                {channels.filter(c => c.isConnected).length} of{" "}
-                {channels.length} channels connected
+                {lt("channelsConnected", {
+                    count: channels.filter(c => c.isConnected).length,
+                    total: channels.length,
+                })}
             </div>
         </div>
     )
