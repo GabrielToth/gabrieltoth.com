@@ -93,8 +93,8 @@ export async function upsertUser(googleData: GoogleUserData): Promise<User> {
 
         // User does not exist - create new user
         const newUser = await db.queryOne<User>(
-            `INSERT INTO users (google_id, google_email, google_name, google_picture, created_at, updated_at)
-             VALUES ($1, $2, $3, $4, NOW(), NOW())
+            `INSERT INTO users (google_id, google_email, google_name, google_picture, email, name, created_at, updated_at)
+             VALUES ($1, $2, $3, $4, $2, $3, NOW(), NOW())
              RETURNING id, google_id, google_email, google_name, google_picture, created_at, updated_at`,
             [
                 googleData.google_id,
