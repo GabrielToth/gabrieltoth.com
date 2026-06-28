@@ -11,12 +11,14 @@ interface LanguageSelectorProps {
     variant?: "default" | "header" | "footer"
     className?: string
     includeThemeToggle?: boolean
+    align?: "left" | "right"
 }
 
 export default function LanguageSelector({
     variant = "default",
     className = "",
     includeThemeToggle = false,
+    align = "right",
 }: LanguageSelectorProps) {
     const { locale, changeLocale } = useLocale()
     const { theme, toggleTheme } = useTheme()
@@ -108,7 +110,10 @@ export default function LanguageSelector({
 
                     {/* Dropdown */}
                     <div
-                        className={currentVariant.dropdown}
+                        className={currentVariant.dropdown.replace(
+                            "right-0",
+                            align === "left" ? "left-0" : "right-0"
+                        )}
                         role="menu"
                         aria-orientation="vertical"
                         aria-labelledby="language-selector"

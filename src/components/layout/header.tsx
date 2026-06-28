@@ -312,6 +312,7 @@ export default function Header() {
                                 <LanguageSelector
                                     variant="header"
                                     includeThemeToggle={false}
+                                    align="left"
                                 />
                                 <ThemeToggleClient />
                             </div>
