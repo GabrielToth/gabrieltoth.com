@@ -1,6 +1,5 @@
 "use client"
 
-import { ThemeToggleClient } from "@/components/theme/theme-toggle-client"
 import { logger } from "@/lib/logger"
 import { useLocale, useTranslations } from "next-intl"
 import { useRouter } from "next/navigation"
@@ -128,7 +127,6 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                     <span className="text-xs sm:text-sm font-medium text-gray-900 dark:text-white">
                         {t("dashboard")}
                     </span>
-                    <ThemeToggleClient />
                 </div>
 
                 {/* Logout error message */}

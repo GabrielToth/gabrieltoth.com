@@ -1,5 +1,6 @@
 "use client"
 
+import LanguageSelector from "@/components/ui/language-selector"
 import { ThemeToggleClient } from "@/components/theme/theme-toggle-client"
 import { Button } from "@/components/ui/button"
 import { logger } from "@/lib/logger"
@@ -189,7 +190,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             {/* Mobile Sidebar */}
             <aside
                 className={cn(
-                    "fixed inset-y-0 left-0 z-40 w-60 flex-col border-r border-gray-200 bg-white transition-transform duration-300 ease-in-out md:hidden dark:border-gray-800 dark:bg-gray-900",
+                    "fixed inset-y-0 left-0 z-40 w-60 flex-col border-r border-gray-200 bg-white transition-transform duration-300 ease-in-out md:hidden overflow-y-auto dark:border-gray-800 dark:bg-gray-900",
                     isOpen ? "translate-x-0" : "-translate-x-full"
                 )}
             >
@@ -245,6 +246,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
                         </button>
                     ))}
                 </nav>
+
+                {/* Language & Theme (mobile only) */}
+                <div className="border-t border-gray-200 dark:border-gray-800 px-6 py-4">
+                    <div className="flex items-center justify-between gap-2">
+                        <LanguageSelector variant="default" />
+                        <ThemeToggleClient />
+                    </div>
+                </div>
 
                 {/* Connect Channels Section */}
                 <div className="border-t border-gray-200 dark:border-gray-800 px-6 py-4">
