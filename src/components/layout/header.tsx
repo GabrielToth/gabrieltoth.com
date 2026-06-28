@@ -283,13 +283,7 @@ export default function Header() {
                     </div>
 
                     {/* Mobile menu button */}
-                    <div className="md:hidden flex items-center space-x-2">
-                        <ThemeToggleClient />
-                        <LanguageSelector
-                            variant="header"
-                            includeThemeToggle={false}
-                        />
-
+                    <div className="md:hidden flex items-center">
                         <button
                             onClick={() =>
                                 setIsMobileMenuOpen(!isMobileMenuOpen)
@@ -313,6 +307,15 @@ export default function Header() {
                         data-testid="mobile-nav"
                     >
                         <div className="space-y-2">
+                            {/* Mobile Language & Theme */}
+                            <div className="flex items-center justify-between py-2 px-3 border-b border-gray-200 dark:border-gray-700 mb-2">
+                                <LanguageSelector
+                                    variant="header"
+                                    includeThemeToggle={false}
+                                />
+                                <ThemeToggleClient />
+                            </div>
+
                             <Link
                                 href={getHomeLink()}
                                 className="block px-3 py-2 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
@@ -402,11 +405,6 @@ export default function Header() {
                                         defaultValue: "Sign In",
                                     })}
                                 </Link>
-                            </div>
-
-                            {/* Mobile Actions */}
-                            <div className="px-3 py-2 flex items-center justify-end md:hidden">
-                                <ThemeToggleClient />
                             </div>
                         </div>
                     </div>
