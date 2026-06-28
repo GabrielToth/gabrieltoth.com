@@ -105,6 +105,7 @@
     /* Screens */
     --breakpoint-xs: 475px;
     --breakpoint-3xl: 1600px;
+    --breakpoint-nav: 880px;
 }
 
 /* ─── Keyframes ─── */

@@ -118,7 +118,7 @@ export default function Header() {
                     </div>
 
                     {/* Desktop Navigation - Center */}
-                    <nav className="hidden md:flex items-center space-x-8 flex-1 justify-center">
+                    <nav className="hidden nav:flex items-center space-x-8 flex-1 justify-center">
                         <Link
                             href={getHomeLink()}
                             className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
@@ -257,7 +257,7 @@ export default function Header() {
                     </nav>
 
                     {/* Language, Theme and Auth Buttons - Right */}
-                    <div className="hidden md:flex items-center space-x-3">
+                    <div className="hidden nav:flex items-center space-x-3">
                         {/* Language and Theme Selectors */}
                         <div className="flex items-center space-x-2">
                             <LanguageSelector
@@ -282,8 +282,64 @@ export default function Header() {
                         </Link>
                     </div>
 
+                    {/* Mid navigation (About + Services) - visible between 640-880px */}
+                    <div className="hidden max-nav:flex max-sm:hidden items-center space-x-3">
+                        <Link
+                            href={getLocalizedPath("about-me", locale)}
+                            className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors text-sm font-medium"
+                            data-testid="nav-about-mid"
+                        >
+                            {t("about")}
+                        </Link>
+
+                        <div className="relative">
+                            <button
+                                onClick={() =>
+                                    setIsServicesOpen(!isServicesOpen)
+                                }
+                                className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors text-sm font-medium flex items-center"
+                                data-testid="services-button-mid"
+                            >
+                                {t("services")}
+                                <svg
+                                    className={`ml-1 h-4 w-4 transition-transform ${
+                                        isServicesOpen ? "rotate-180" : ""
+                                    }`}
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="m19 9-7 7-7-7"
+                                    />
+                                </svg>
+                            </button>
+
+                            {isServicesOpen && (
+                                <div className="absolute top-full right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg border border-gray-200 dark:border-gray-700 z-50">
+                                    {servicesLinks.map(link => (
+                                        <Link
+                                            key={link.href}
+                                            href={link.href}
+                                            className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                                            onClick={() =>
+                                                setIsServicesOpen(false)
+                                            }
+                                            data-testid={`services-link-mid-${link.key}`}
+                                        >
+                                            {link.label}
+                                        </Link>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+                    </div>
+
                     {/* Mobile menu button */}
-                    <div className="md:hidden flex items-center">
+                    <div className="nav:hidden flex items-center">
                         <button
                             onClick={() =>
                                 setIsMobileMenuOpen(!isMobileMenuOpen)
@@ -303,7 +359,7 @@ export default function Header() {
                 {/* Mobile Navigation */}
                 {isMobileMenuOpen && (
                     <div
-                        className="md:hidden py-4 border-t border-gray-200 dark:border-gray-700"
+                        className="nav:hidden py-4 border-t border-gray-200 dark:border-gray-700"
                         data-testid="mobile-nav"
                     >
                         <div className="space-y-2">
