@@ -51,26 +51,27 @@ export const Sidebar: React.FC<SidebarProps> = ({
     )
 
     const handleChannelConnect = async (channelId: string) => {
-        if (channelId !== "youtube") return
         if (connectingChannel) return
         setConnectingChannel(channelId)
         try {
-            const response = await fetch("/api/youtube/link/start", {
+            const response = await fetch(`/api/oauth/authorize/${channelId}`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
             })
             if (!response.ok) {
                 const data = await response.json()
                 throw new Error(
-                    data.message || "Failed to start YouTube linking"
+                    data.message || `Failed to start ${channelId} linking`
                 )
             }
             const data = await response.json()
             if (data.authorizationUrl) {
                 window.location.href = data.authorizationUrl
+            } else {
+                throw new Error("No authorization URL returned")
             }
         } catch (err) {
-            logger.error("Failed to connect YouTube", { error: err })
+            logger.error(`Failed to connect ${channelId}`, { error: err })
             setConnectingChannel(null)
         }
     }

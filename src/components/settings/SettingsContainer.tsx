@@ -8,6 +8,7 @@ import {
     disconnectIntegration,
     connectIntegration,
 } from "@/lib/api/user"
+import { logger } from "@/lib/logger"
 import { connectChannel, disconnectChannel } from "@/lib/api/channels"
 import { BillingSection } from "./BillingSection"
 import { ChannelsSection } from "./ChannelsSection"
@@ -34,13 +35,7 @@ export interface User {
  */
 export interface SocialChannel {
     id: string
-    platform:
-        | "facebook"
-        | "instagram"
-        | "twitter"
-        | "tiktok"
-        | "linkedin"
-        | "youtube"
+    platform: string
     accountId: string
     accountName: string
     isConnected: boolean
@@ -313,18 +308,51 @@ export const SettingsContainer: React.FC<SettingsContainerProps> = ({
     // Handle channel disconnect
     const handleDisconnectChannel = async (channelId: string) => {
         try {
-            await disconnectChannel(channelId)
+            const channel = channels.find(c => c.id === channelId)
+            if (!channel) return
+            const response = await fetch(
+                `/api/oauth/disconnect/${channel.platform}`,
+                {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({}),
+                }
+            )
+            if (!response.ok) {
+                const data = await response.json()
+                throw new Error(
+                    data.message || `Failed to disconnect ${channel.platform}`
+                )
+            }
+            setChannels(prev =>
+                prev.map(c =>
+                    c.id === channelId
+                        ? { ...c, isConnected: false, connectedAt: undefined }
+                        : c
+                )
+            )
         } catch (err) {
-            console.error("Failed to disconnect channel:", err)
+            logger.error("Failed to disconnect channel", { error: err })
         }
     }
 
     // Handle channel connect
     const handleConnectChannel = async () => {
         try {
-            await connectChannel("facebook")
+            const response = await fetch("/api/oauth/authorize/facebook", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+            })
+            if (!response.ok) {
+                const data = await response.json()
+                throw new Error(data.message || "Failed to start connection")
+            }
+            const data = await response.json()
+            if (data.authorizationUrl) {
+                window.location.href = data.authorizationUrl
+            }
         } catch (err) {
-            console.error("Failed to connect channel:", err)
+            logger.error("Failed to connect channel", { error: err })
         }
     }
 

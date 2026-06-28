@@ -48,7 +48,9 @@ export const ChannelsSection: React.FC<ChannelsSectionProps> = ({
     const [confirmDisconnect, setConfirmDisconnect] = useState<string | null>(
         null
     )
-    const [connectingYoutube, setConnectingYoutube] = useState(false)
+    const [connectingPlatform, setConnectingPlatform] = useState<string | null>(
+        null
+    )
 
     /**
      * Handle disconnect click
@@ -71,20 +73,20 @@ export const ChannelsSection: React.FC<ChannelsSectionProps> = ({
     }
 
     /**
-     * Handle YouTube OAuth connect
+     * Handle OAuth connect for any platform
      */
-    const handleYoutubeConnect = async () => {
-        if (connectingYoutube) return
-        setConnectingYoutube(true)
+    const handlePlatformConnect = async (platform: string) => {
+        if (connectingPlatform) return
+        setConnectingPlatform(platform)
         try {
-            const response = await fetch("/api/youtube/link/start", {
+            const response = await fetch(`/api/oauth/authorize/${platform}`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
             })
             if (!response.ok) {
                 const data = await response.json()
                 throw new Error(
-                    data.message || "Failed to start YouTube linking"
+                    data.message || `Failed to start ${platform} linking`
                 )
             }
             const data = await response.json()
@@ -94,30 +96,35 @@ export const ChannelsSection: React.FC<ChannelsSectionProps> = ({
                 throw new Error("No authorization URL returned")
             }
         } catch (err) {
-            logger.error("Failed to connect YouTube", { error: err })
-            setConnectingYoutube(false)
+            logger.error(`Failed to connect ${platform}`, { error: err })
+            setConnectingPlatform(null)
         }
     }
 
     /**
-     * Handle YouTube disconnect via revoke API
+     * Handle platform disconnect via OAuth revoke API
      */
-    const handleYoutubeDisconnect = async (channelId: string) => {
+    const handlePlatformDisconnect = async (
+        channelId: string,
+        platform: string
+    ) => {
         try {
             setDisconnectingId(channelId)
-            const response = await fetch("/api/youtube/link/revoke", {
+            const response = await fetch(`/api/oauth/disconnect/${platform}`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({}),
             })
             if (!response.ok) {
                 const data = await response.json()
-                throw new Error(data.message || "Failed to disconnect YouTube")
+                throw new Error(
+                    data.message || `Failed to disconnect ${platform}`
+                )
             }
             onDisconnect(channelId)
             setConfirmDisconnect(null)
         } catch (err) {
-            logger.error("Failed to disconnect YouTube", { error: err })
+            logger.error(`Failed to disconnect ${platform}`, { error: err })
         } finally {
             setDisconnectingId(null)
         }
@@ -134,6 +141,7 @@ export const ChannelsSection: React.FC<ChannelsSectionProps> = ({
             tiktok: "tiktok",
             linkedin: "linkedin",
             youtube: "Youtube",
+            kick: "kick",
         }
         return iconMap[platform] || "link"
     }
@@ -221,8 +229,9 @@ export const ChannelsSection: React.FC<ChannelsSectionProps> = ({
                                             variant="outline"
                                             className="text-red-600 hover:bg-red-50"
                                             onClick={() =>
-                                                handleYoutubeDisconnect(
-                                                    youtubeChannel.id
+                                                handlePlatformDisconnect(
+                                                    youtubeChannel.id,
+                                                    "youtube"
                                                 )
                                             }
                                             disabled={
@@ -256,11 +265,11 @@ export const ChannelsSection: React.FC<ChannelsSectionProps> = ({
                         ) : (
                             <Button
                                 size="sm"
-                                onClick={handleYoutubeConnect}
-                                disabled={connectingYoutube}
+                                onClick={() => handlePlatformConnect("youtube")}
+                                disabled={connectingPlatform === "youtube"}
                                 className="bg-red-600 text-white hover:bg-red-700"
                             >
-                                {connectingYoutube
+                                {connectingPlatform === "youtube"
                                     ? t("youtube.connecting")
                                     : t("youtube.connect")}
                             </Button>
@@ -333,8 +342,9 @@ export const ChannelsSection: React.FC<ChannelsSectionProps> = ({
                                                     variant="outline"
                                                     className="text-red-600 hover:bg-red-50"
                                                     onClick={() =>
-                                                        handleConfirmDisconnect(
-                                                            channel.id
+                                                        handlePlatformDisconnect(
+                                                            channel.id,
+                                                            channel.platform
                                                         )
                                                     }
                                                     disabled={
@@ -384,7 +394,7 @@ export const ChannelsSection: React.FC<ChannelsSectionProps> = ({
                             {nonYoutubeDisconnected.map(channel => (
                                 <div
                                     key={channel.id}
-                                    className="flex items-center justify-between rounded-lg border border-gray-200 p-4 opacity-60"
+                                    className="flex items-center justify-between rounded-lg border border-gray-200 p-4"
                                 >
                                     <div className="flex items-center gap-3">
                                         <DynamicIcon
@@ -406,9 +416,22 @@ export const ChannelsSection: React.FC<ChannelsSectionProps> = ({
                                             </p>
                                         </div>
                                     </div>
-                                    <span className="inline-flex items-center rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-800">
-                                        {t("youtube.notConnected")}
-                                    </span>
+                                    <Button
+                                        size="sm"
+                                        onClick={() =>
+                                            handlePlatformConnect(
+                                                channel.platform
+                                            )
+                                        }
+                                        disabled={
+                                            connectingPlatform ===
+                                            channel.platform
+                                        }
+                                    >
+                                        {connectingPlatform === channel.platform
+                                            ? t("youtube.connecting")
+                                            : t("youtube.connect")}
+                                    </Button>
                                 </div>
                             ))}
                         </div>

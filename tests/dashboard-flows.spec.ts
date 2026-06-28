@@ -174,9 +174,7 @@ test.describe("dashboard flows", () => {
             expect(response.status()).toBe(405)
         })
 
-        test("rejects logout with wrong content type", async ({
-            request,
-        }) => {
+        test("rejects logout with wrong content type", async ({ request }) => {
             const response = await request.post("/api/auth/logout", {
                 headers: {
                     "Content-Type": "text/plain",
