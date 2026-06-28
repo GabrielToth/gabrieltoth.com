@@ -67,11 +67,28 @@ describe("GoogleLogoutButton", () => {
         expect(button).not.toBeDisabled()
     })
 
+    const mockCsrfResponse = () => ({
+        ok: true,
+        json: async () => ({
+            success: true,
+            data: { csrfToken: "test-csrf-token" },
+        }),
+    })
+
+    const mockLogoutSuccess = () => ({
+        ok: true,
+        json: async () => ({ success: true }),
+    })
+
+    const mockLogoutFailure = () => ({
+        ok: false,
+        json: async () => ({ error: "Logout failed" }),
+    })
+
     it("shows loading state when clicked", async () => {
-        ;(global.fetch as any).mockResolvedValueOnce({
-            ok: true,
-            json: async () => ({ success: true }),
-        })
+        ;(global.fetch as any)
+            .mockResolvedValueOnce(mockCsrfResponse())
+            .mockResolvedValueOnce(mockLogoutSuccess())
 
         render(<GoogleLogoutButton />)
         const button = screen.getByRole("button", { name: /logout/i })
@@ -85,11 +102,10 @@ describe("GoogleLogoutButton", () => {
         })
     })
 
-    it("sends POST request to /api/auth/logout", async () => {
-        ;(global.fetch as any).mockResolvedValueOnce({
-            ok: true,
-            json: async () => ({ success: true }),
-        })
+    it("sends POST request to /api/auth/logout with CSRF token", async () => {
+        ;(global.fetch as any)
+            .mockResolvedValueOnce(mockCsrfResponse())
+            .mockResolvedValueOnce(mockLogoutSuccess())
 
         render(<GoogleLogoutButton />)
         const button = screen.getByRole("button", { name: /logout/i })
@@ -103,6 +119,7 @@ describe("GoogleLogoutButton", () => {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
+                        "X-CSRF-Token": "test-csrf-token",
                     },
                 })
             )
@@ -110,10 +127,9 @@ describe("GoogleLogoutButton", () => {
     })
 
     it("redirects to /auth/login on success", async () => {
-        ;(global.fetch as any).mockResolvedValueOnce({
-            ok: true,
-            json: async () => ({ success: true }),
-        })
+        ;(global.fetch as any)
+            .mockResolvedValueOnce(mockCsrfResponse())
+            .mockResolvedValueOnce(mockLogoutSuccess())
 
         render(<GoogleLogoutButton />)
         const button = screen.getByRole("button", { name: /logout/i })
@@ -128,10 +144,9 @@ describe("GoogleLogoutButton", () => {
     it("calls onSuccess callback on success", async () => {
         const onSuccess = vi.fn()
 
-        ;(global.fetch as any).mockResolvedValueOnce({
-            ok: true,
-            json: async () => ({ success: true }),
-        })
+        ;(global.fetch as any)
+            .mockResolvedValueOnce(mockCsrfResponse())
+            .mockResolvedValueOnce(mockLogoutSuccess())
 
         render(<GoogleLogoutButton onSuccess={onSuccess} />)
         const button = screen.getByRole("button", { name: /logout/i })
@@ -144,10 +159,9 @@ describe("GoogleLogoutButton", () => {
     })
 
     it("displays error message on failure", async () => {
-        ;(global.fetch as any).mockResolvedValueOnce({
-            ok: false,
-            json: async () => ({ error: "Logout failed" }),
-        })
+        ;(global.fetch as any)
+            .mockResolvedValueOnce(mockCsrfResponse())
+            .mockResolvedValueOnce(mockLogoutFailure())
 
         render(<GoogleLogoutButton />)
         const button = screen.getByRole("button", { name: /logout/i })
@@ -155,17 +169,16 @@ describe("GoogleLogoutButton", () => {
         fireEvent.click(button)
 
         await waitFor(() => {
-            expect(screen.getByText(/logout failed/i)).toBeInTheDocument()
+            expect(screen.getByText(/Logout failed/i)).toBeInTheDocument()
         })
     })
 
     it("calls onError callback on failure", async () => {
         const onError = vi.fn()
 
-        ;(global.fetch as any).mockResolvedValueOnce({
-            ok: false,
-            json: async () => ({ error: "Logout failed" }),
-        })
+        ;(global.fetch as any)
+            .mockResolvedValueOnce(mockCsrfResponse())
+            .mockResolvedValueOnce(mockLogoutFailure())
 
         render(<GoogleLogoutButton onError={onError} />)
         const button = screen.getByRole("button", { name: /logout/i })

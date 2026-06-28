@@ -42,12 +42,12 @@ export const PostList: React.FC<PostListProps> = ({
                     <Card key={i} className="animate-pulse">
                         <CardContent className="p-4">
                             <div className="space-y-3">
-                                <div className="h-4 bg-gray-200 rounded w-3/4" />
-                                <div className="h-3 bg-gray-200 rounded w-full" />
-                                <div className="h-3 bg-gray-200 rounded w-2/3" />
+                                <div className="h-4 bg-gray-200 rounded w-3/4 dark:bg-gray-700" />
+                                <div className="h-3 bg-gray-200 rounded w-full dark:bg-gray-700" />
+                                <div className="h-3 bg-gray-200 rounded w-2/3 dark:bg-gray-700" />
                                 <div className="flex gap-2 pt-2">
-                                    <div className="h-6 bg-gray-200 rounded-full w-20" />
-                                    <div className="h-6 bg-gray-200 rounded-full w-24" />
+                                    <div className="h-6 bg-gray-200 rounded-full w-20 dark:bg-gray-700" />
+                                    <div className="h-6 bg-gray-200 rounded-full w-24 dark:bg-gray-700" />
                                 </div>
                             </div>
                         </CardContent>
@@ -60,21 +60,21 @@ export const PostList: React.FC<PostListProps> = ({
     // Error state
     if (error) {
         return (
-            <Card className="border-red-200 bg-red-50">
+            <Card className="border-red-200 bg-red-50 dark:border-red-900 dark:bg-red-950/30">
                 <CardContent className="p-4 sm:p-6">
                     <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
                         <div>
-                            <h3 className="font-semibold text-red-900">
+                            <h3 className="font-semibold text-red-900 dark:text-red-400">
                                 {t("errorLoading")}
                             </h3>
-                            <p className="mt-1 text-xs sm:text-sm text-red-700">
+                            <p className="mt-1 text-xs sm:text-sm text-red-700 dark:text-red-400">
                                 {error}
                             </p>
                         </div>
                         {onRetry && (
                             <button
                                 onClick={onRetry}
-                                className="shrink-0 rounded-md bg-red-100 px-3 py-2 text-xs sm:text-sm font-medium text-red-700 hover:bg-red-200 transition-colors min-h-10"
+                                className="shrink-0 rounded-md bg-red-100 px-3 py-2 text-xs sm:text-sm font-medium text-red-700 hover:bg-red-200 transition-colors min-h-10 dark:bg-red-900/50 dark:text-red-400 dark:hover:bg-red-900"
                             >
                                 {t("retry")}
                             </button>
@@ -90,8 +90,10 @@ export const PostList: React.FC<PostListProps> = ({
         return (
             <Card>
                 <CardContent className="p-8 text-center">
-                    <p className="text-gray-600">{t("noPostsFound")}</p>
-                    <p className="mt-1 text-sm text-gray-500">
+                    <p className="text-gray-600 dark:text-gray-300">
+                        {t("noPostsFound")}
+                    </p>
+                    <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
                         {t("createFirstPost")}
                     </p>
                 </CardContent>

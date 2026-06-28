@@ -30,11 +30,11 @@ export default function CalendarDay({
             onClick={onSelect}
             className={cn(
                 "relative flex h-10 sm:h-14 flex-col items-center justify-center rounded-lg text-sm transition-colors",
-                "hover:bg-blue-50 hover:text-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500",
-                isWeekend && "text-gray-400",
+                "hover:bg-blue-50 hover:text-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 dark:hover:bg-blue-950/50 dark:hover:text-blue-400",
+                isWeekend && "text-gray-500 dark:text-gray-500",
                 isToday &&
-                    "bg-blue-100 font-semibold text-blue-700 ring-2 ring-blue-300",
-                !isToday && "text-gray-900"
+                    "bg-blue-100 font-semibold text-blue-700 ring-2 ring-blue-300 dark:bg-blue-900 dark:text-blue-300 dark:ring-blue-700",
+                !isToday && "text-gray-900 dark:text-gray-200"
             )}
             aria-label={`${day}${postCount > 0 ? `, ${postCount} ${postCount !== 1 ? "posts" : "post"}` : ""}`}
         >

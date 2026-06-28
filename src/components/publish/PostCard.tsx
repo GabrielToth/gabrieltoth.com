@@ -50,13 +50,13 @@ export const PostCard: React.FC<PostCardProps> = ({
     const getStatusColor = (status: string) => {
         switch (status) {
             case "scheduled":
-                return "bg-blue-100 text-blue-800"
+                return "bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-300"
             case "published":
-                return "bg-green-100 text-green-800"
+                return "bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-300"
             case "failed":
-                return "bg-red-100 text-red-800"
+                return "bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-300"
             default:
-                return "bg-gray-100 text-gray-800"
+                return "bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300"
         }
     }
 
@@ -71,18 +71,18 @@ export const PostCard: React.FC<PostCardProps> = ({
     }
 
     return (
-        <Card className="hover:shadow-md transition-shadow">
+        <Card className="hover:shadow-md transition-shadow dark:border-gray-700">
             <CardContent className="p-3 sm:p-4">
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
                     {/* Post Content */}
                     <div className="flex-1 min-w-0">
                         {/* Title */}
-                        <h3 className="font-semibold text-gray-900 truncate text-base sm:text-base">
+                        <h3 className="font-semibold text-gray-900 truncate text-base sm:text-base dark:text-white">
                             {post.title}
                         </h3>
 
                         {/* Content Preview */}
-                        <p className="mt-1 text-sm text-gray-600 line-clamp-2">
+                        <p className="mt-1 text-sm text-gray-600 line-clamp-2 dark:text-gray-300">
                             {post.content}
                         </p>
 
@@ -99,7 +99,7 @@ export const PostCard: React.FC<PostCardProps> = ({
                             {post.channels.map(channel => (
                                 <span
                                     key={channel}
-                                    className="inline-flex items-center rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-800 capitalize"
+                                    className="inline-flex items-center rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-800 capitalize dark:bg-gray-700 dark:text-gray-300"
                                 >
                                     {channel}
                                 </span>
@@ -107,7 +107,7 @@ export const PostCard: React.FC<PostCardProps> = ({
                         </div>
 
                         {/* Date and Error Info */}
-                        <div className="mt-3 text-xs text-gray-500 space-y-1">
+                        <div className="mt-3 text-xs text-gray-600 dark:text-gray-400 space-y-1">
                             {isPublished && post.publishedAt && (
                                 <p>
                                     {t("published")}
@@ -121,7 +121,7 @@ export const PostCard: React.FC<PostCardProps> = ({
                                 </p>
                             )}
                             {isFailed && post.errorMessage && (
-                                <p className="text-red-600">
+                                <p className="text-red-600 dark:text-red-400">
                                     {t("error")}
                                     {post.errorMessage}
                                 </p>
@@ -153,7 +153,7 @@ export const PostCard: React.FC<PostCardProps> = ({
                             variant="outline"
                             size="sm"
                             onClick={() => onDelete(post)}
-                            className="text-red-600 hover:text-red-700 hover:bg-red-50 border-red-200 min-h-10 min-w-10"
+                            className="text-red-600 hover:text-red-700 hover:bg-red-50 border-red-200 min-h-10 min-w-10 dark:text-red-400 dark:hover:text-red-300 dark:hover:bg-red-950/30 dark:border-red-800"
                         >
                             {t("delete")}
                         </Button>

@@ -48,8 +48,8 @@ export const NavMenu: React.FC<NavMenuProps> = ({
                         "flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium transition-colors",
                         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2",
                         activeItem === item.id
-                            ? "bg-blue-50 text-blue-600"
-                            : "text-gray-700 hover:bg-gray-50"
+                            ? "bg-blue-50 text-blue-600 dark:bg-blue-950 dark:text-blue-400"
+                            : "text-gray-700 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-800"
                     )}
                     aria-current={activeItem === item.id ? "page" : undefined}
                     aria-label={item.label}

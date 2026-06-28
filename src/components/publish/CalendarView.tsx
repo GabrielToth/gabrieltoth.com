@@ -89,9 +89,9 @@ export default function CalendarView({
     }, [days])
 
     return (
-        <div className="rounded-lg border bg-white p-4">
+        <div className="rounded-lg border bg-white p-4 dark:border-gray-700 dark:bg-gray-800">
             <div className="mb-4 flex items-center justify-between">
-                <h2 className="text-lg font-semibold text-gray-900">
+                <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
                     {format(currentMonth, "MMMM yyyy")}
                 </h2>
                 <div className="flex items-center gap-1">
@@ -128,7 +128,7 @@ export default function CalendarView({
                 {DAY_HEADERS.map(header => (
                     <div
                         key={header}
-                        className="py-2 text-center text-xs font-medium text-gray-500"
+                        className="py-2 text-center text-xs font-medium text-gray-600 dark:text-gray-400"
                     >
                         {header}
                     </div>
@@ -158,13 +158,13 @@ export default function CalendarView({
                 )}
             </div>
 
-            <div className="mt-3 flex items-center gap-4 text-xs text-gray-500">
+            <div className="mt-3 flex items-center gap-4 text-xs text-gray-600 dark:text-gray-400">
                 <div className="flex items-center gap-1">
                     <span className="inline-block h-2 w-2 rounded-full bg-blue-500" />
                     <span>{t("hasScheduledPosts")}</span>
                 </div>
                 {selectedDate && (
-                    <div className="flex items-center gap-1 text-blue-700">
+                    <div className="flex items-center gap-1 text-blue-700 dark:text-blue-400">
                         <span>
                             {t("selected", {
                                 date: format(selectedDate, "MMM d, yyyy"),

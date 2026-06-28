@@ -93,5 +93,96 @@ test.describe("dashboard flows", () => {
                 .count()
             expect(emailInputs).toBeGreaterThan(0)
         })
+
+        test("GET /api/auth/csrf returns a CSRF token for anonymous session", async ({
+            request,
+        }) => {
+            const response = await request.get("/api/auth/csrf")
+            expect(response.ok()).toBe(true)
+            const body = await response.json()
+            expect(body.success).toBe(true)
+            expect(body.data).toBeDefined()
+            expect(body.data.csrfToken).toBeDefined()
+            expect(typeof body.data.csrfToken).toBe("string")
+        })
+
+        test("POST /api/auth/logout rejects without CSRF token", async ({
+            request,
+        }) => {
+            const response = await request.post("/api/auth/logout")
+            expect(response.status()).toBe(403)
+            const body = await response.json()
+            expect(body.error).toBeDefined()
+        })
+
+        test("POST /api/auth/logout rejects with invalid CSRF token", async ({
+            request,
+        }) => {
+            const response = await request.post("/api/auth/logout", {
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-Token": "invalid-token-123",
+                },
+            })
+            // Session-level CSRF check fails → 403
+            expect(response.status()).toBe(403)
+            const body = await response.json()
+            expect(body.error).toBeDefined()
+        })
+
+        for (const locale of ["en", "pt-BR", "es", "de"]) {
+            test(`dashboard redirects unauthenticated users away from ${locale} dashboard`, async ({
+                page,
+            }) => {
+                await page.goto(`/${locale}/dashboard`, {
+                    waitUntil: "networkidle",
+                })
+                const currentUrl = page.url()
+                expect(currentUrl).toContain(`/${locale}/signin`)
+            })
+        }
+    })
+
+    test.describe("logout API security", () => {
+        test("rejects GET requests to /api/auth/logout", async ({
+            request,
+        }) => {
+            const response = await request.get("/api/auth/logout")
+            expect(response.status()).toBe(405)
+            const body = await response.json()
+            expect(body.error).toBeDefined()
+        })
+
+        test("rejects PUT requests to /api/auth/logout", async ({
+            request,
+        }) => {
+            const response = await request.put("/api/auth/logout", {})
+            expect(response.status()).toBe(405)
+        })
+
+        test("rejects DELETE requests to /api/auth/logout", async ({
+            request,
+        }) => {
+            const response = await request.delete("/api/auth/logout")
+            expect(response.status()).toBe(405)
+        })
+
+        test("rejects PATCH requests to /api/auth/logout", async ({
+            request,
+        }) => {
+            const response = await request.patch("/api/auth/logout", {})
+            expect(response.status()).toBe(405)
+        })
+
+        test("rejects logout with wrong content type", async ({
+            request,
+        }) => {
+            const response = await request.post("/api/auth/logout", {
+                headers: {
+                    "Content-Type": "text/plain",
+                },
+            })
+            expect(response.status()).toBe(403)
+        })
     })
 })

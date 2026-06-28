@@ -24,6 +24,10 @@ import { Sidebar } from "@/components/dashboard/Sidebar"
 import { fireEvent, render, screen, waitFor } from "@testing-library/react"
 import { beforeEach, describe, expect, it, vi } from "vitest"
 
+vi.mock("@/components/theme/theme-toggle-client", () => ({
+    ThemeToggleClient: () => null,
+}))
+
 vi.mock("next-intl", () => ({
     useTranslations:
         (ns: string) => (key: string, params?: Record<string, string>) => {

@@ -144,7 +144,7 @@ export default function CreditsPage() {
                     <ArrowLeft className="h-5 w-5" />
                 </Link>
                 <div>
-                    <h1 className="text-2xl font-bold flex items-center gap-2">
+                    <h1 className="text-2xl font-bold flex items-center gap-2 dark:text-white">
                         <Coins className="h-6 w-6" />
                         {t("title")}
                     </h1>
@@ -234,8 +234,8 @@ export default function CreditsPage() {
                                     <p
                                         className={`text-xs ${
                                             grantMsg.startsWith("+")
-                                                ? "text-green-600"
-                                                : "text-red-600"
+                                                ? "text-green-600 dark:text-green-400"
+                                                : "text-red-600 dark:text-red-400"
                                         }`}
                                     >
                                         {grantMsg}

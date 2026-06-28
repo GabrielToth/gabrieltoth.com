@@ -2,6 +2,11 @@ import { fireEvent, render, screen } from "@testing-library/react"
 import { describe, expect, it, vi } from "vitest"
 import { DashboardLayout } from "./DashboardLayout"
 
+// Mock ThemeToggleClient to avoid ThemeProvider dependency
+vi.mock("@/components/theme/theme-toggle-client", () => ({
+    ThemeToggleClient: () => null,
+}))
+
 vi.mock("next-intl", () => ({
     useTranslations: (ns: string) => (key: string) => {
         const map: Record<string, string> = {

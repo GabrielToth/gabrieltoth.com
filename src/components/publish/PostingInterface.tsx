@@ -243,14 +243,14 @@ export default function PostingInterface({
 
                 <div className="space-y-4">
                     {error && (
-                        <div className="flex items-center gap-2 rounded-lg bg-red-50 p-3 text-red-800">
+                        <div className="flex items-center gap-2 rounded-lg bg-red-50 p-3 text-red-800 dark:bg-red-950/30 dark:text-red-400">
                             <AlertCircle className="h-5 w-5 flex-shrink-0" />
                             <p className="text-sm">{error}</p>
                         </div>
                     )}
 
                     {success && (
-                        <div className="flex items-center gap-2 rounded-lg bg-green-50 p-3 text-green-800">
+                        <div className="flex items-center gap-2 rounded-lg bg-green-50 p-3 text-green-800 dark:bg-green-950/30 dark:text-green-400">
                             <CheckCircle className="h-5 w-5 flex-shrink-0" />
                             <p className="text-sm">
                                 {schedule.type === "immediate"
@@ -262,7 +262,7 @@ export default function PostingInterface({
 
                     {isLoadingNetworks ? (
                         <div className="flex items-center justify-center py-8">
-                            <Loader2 className="h-6 w-6 animate-spin text-gray-400" />
+                            <Loader2 className="h-6 w-6 animate-spin text-gray-400 dark:text-gray-500" />
                         </div>
                     ) : (
                         <NetworkSelector
@@ -283,7 +283,7 @@ export default function PostingInterface({
                         defaultDate={defaultDate}
                     />
 
-                    <div className="flex gap-2 border-t pt-4">
+                    <div className="flex gap-2 border-t pt-4 dark:border-gray-700">
                         <Button
                             onClick={onClose}
                             variant="outline"

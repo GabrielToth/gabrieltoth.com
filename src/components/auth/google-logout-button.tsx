@@ -47,11 +47,22 @@ export function GoogleLogoutButton({
             setIsLoading(true)
             setError(null)
 
+            const csrfRes = await fetch("/api/auth/csrf")
+            if (!csrfRes.ok) {
+                throw new Error("Failed to get CSRF token")
+            }
+            const csrfData = await csrfRes.json()
+            const csrfToken = csrfData.data?.csrfToken
+            if (!csrfToken) {
+                throw new Error("No CSRF token returned")
+            }
+
             // Send logout request to API route
             const response = await fetch("/api/auth/logout", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
+                    "X-CSRF-Token": csrfToken,
                 },
             })
 
