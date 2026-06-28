@@ -12,26 +12,22 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined)
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-    const [theme, setTheme] = useState<Theme>("dark") // Default to dark
+    const [theme, setTheme] = useState<Theme>("dark")
     const [mounted, setMounted] = useState(false)
-
     useEffect(() => {
         setMounted(true)
 
-        // Check if there's a saved theme preference (only on client)
-        const savedTheme =
-            typeof window !== "undefined"
-                ? (localStorage.getItem("theme") as Theme | null)
-                : null
+        // Sync React state with the class already set by ThemeScript.
+        // If no class is set (SSR render, tests), fall back to default.
+        const isDark = document.documentElement.classList.contains("dark")
+        const isLight = document.documentElement.classList.contains("light")
+        const resolved: Theme = isDark ? "dark" : isLight ? "light" : "dark"
 
-        // Use saved theme or default to dark
-        const initialTheme = savedTheme || "dark"
-        setTheme(initialTheme)
+        setTheme(resolved)
 
-        // Apply theme to document (only on client)
         if (typeof document !== "undefined") {
             document.documentElement.classList.remove("light", "dark")
-            document.documentElement.classList.add(initialTheme)
+            document.documentElement.classList.add(resolved)
         }
     }, [])
 
@@ -39,19 +35,16 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
         const newTheme = theme === "light" ? "dark" : "light"
         setTheme(newTheme)
 
-        // Save theme preference (only on client)
         if (typeof window !== "undefined") {
             localStorage.setItem("theme", newTheme)
         }
 
-        // Apply theme to document (only on client)
         if (typeof document !== "undefined") {
             document.documentElement.classList.remove("light", "dark")
             document.documentElement.classList.add(newTheme)
         }
     }
 
-    // Always provide context; use fallback class before mount to avoid mismatch
     return (
         <ThemeContext.Provider value={{ theme, toggleTheme }}>
             <div className={mounted ? theme : "dark"}>{children}</div>
