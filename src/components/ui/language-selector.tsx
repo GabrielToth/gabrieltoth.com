@@ -93,7 +93,9 @@ export default function LanguageSelector({
                     size={16}
                     data-lucide="globe"
                 />
-                <span className="min-w-[20px]">{localeNamesShort[locale]}</span>
+                <span className="min-w-[20px] text-gray-700 dark:text-gray-300">
+                    {localeNamesShort[locale]}
+                </span>
             </Button>
 
             {isOpen && (
