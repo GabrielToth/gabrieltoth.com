@@ -34,6 +34,7 @@ export default getRequestConfig(async ({ locale }) => {
         personality,
         auth,
         minecraft,
+        services,
         dashboard,
     ] = await Promise.all([
         loadJson(() => import(`@/i18n/${selectedLocale}/home.json`)),
@@ -50,6 +51,7 @@ export default getRequestConfig(async ({ locale }) => {
         loadJson(() => import(`@/i18n/${selectedLocale}/personality.json`)),
         loadJson(() => import(`@/i18n/${selectedLocale}/auth.json`)),
         loadJson(() => import(`@/i18n/${selectedLocale}/minecraft.json`)),
+        loadJson(() => import(`@/i18n/${selectedLocale}/services.json`)),
         loadJson(() => import(`@/i18n/${selectedLocale}/dashboard.json`)),
     ])
 
@@ -66,6 +68,7 @@ export default getRequestConfig(async ({ locale }) => {
         personality,
         auth,
         minecraft,
+        services,
         dashboard,
         layout: {
             header,

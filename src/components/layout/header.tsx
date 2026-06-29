@@ -225,28 +225,37 @@ export default function Header() {
 
                         {/* Services Dropdown */}
                         <div className="relative">
-                            <button
-                                onClick={toggleServices}
-                                className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors flex items-center"
-                                data-testid="services-button"
-                            >
-                                {t("services")}
-                                <svg
-                                    className={`ml-1 h-4 w-4 transition-transform ${
-                                        isServicesOpen ? "rotate-180" : ""
-                                    }`}
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
+                            <div className="flex items-center">
+                                <Link
+                                    href={getLocalizedPath("services", locale)}
+                                    className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
+                                    data-testid="services-link"
                                 >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth={2}
-                                        d="m19 9-7 7-7-7"
-                                    />
-                                </svg>
-                            </button>
+                                    {t("services")}
+                                </Link>
+                                <button
+                                    onClick={toggleServices}
+                                    className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors ml-1 p-1"
+                                    data-testid="services-dropdown-button"
+                                    aria-label="Toggle Services submenu"
+                                >
+                                    <svg
+                                        className={`h-4 w-4 transition-transform ${
+                                            isServicesOpen ? "rotate-180" : ""
+                                        }`}
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke="currentColor"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            d="m19 9-7 7-7-7"
+                                        />
+                                    </svg>
+                                </button>
+                            </div>
 
                             {isServicesOpen && (
                                 <div className="absolute top-full left-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg border border-gray-200 dark:border-gray-700">
@@ -306,28 +315,42 @@ export default function Header() {
                             </Link>
 
                             <div className="relative">
-                                <button
-                                    onClick={toggleServices}
-                                    className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors flex items-center"
-                                    data-testid="services-button-mid"
-                                >
-                                    {t("services")}
-                                    <svg
-                                        className={`ml-1 h-4 w-4 transition-transform ${
-                                            isServicesOpen ? "rotate-180" : ""
-                                        }`}
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        stroke="currentColor"
+                                <div className="flex items-center">
+                                    <Link
+                                        href={getLocalizedPath(
+                                            "services",
+                                            locale
+                                        )}
+                                        className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
+                                        data-testid="services-link-mid"
                                     >
-                                        <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            strokeWidth={2}
-                                            d="m19 9-7 7-7-7"
-                                        />
-                                    </svg>
-                                </button>
+                                        {t("services")}
+                                    </Link>
+                                    <button
+                                        onClick={toggleServices}
+                                        className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors ml-1 p-1"
+                                        data-testid="services-dropdown-button-mid"
+                                        aria-label="Toggle Services submenu"
+                                    >
+                                        <svg
+                                            className={`h-4 w-4 transition-transform ${
+                                                isServicesOpen
+                                                    ? "rotate-180"
+                                                    : ""
+                                            }`}
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            stroke="currentColor"
+                                        >
+                                            <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                strokeWidth={2}
+                                                d="m19 9-7 7-7-7"
+                                            />
+                                        </svg>
+                                    </button>
+                                </div>
 
                                 {isServicesOpen && (
                                     <div className="absolute top-full right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg border border-gray-200 dark:border-gray-700 z-50">
@@ -429,28 +452,42 @@ export default function Header() {
                             </Link>
 
                             <div className="relative">
-                                <button
-                                    onClick={toggleServices}
-                                    className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors flex items-center"
-                                    data-testid="services-button-mid-sm"
-                                >
-                                    {t("services")}
-                                    <svg
-                                        className={`ml-1 h-4 w-4 transition-transform ${
-                                            isServicesOpen ? "rotate-180" : ""
-                                        }`}
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        stroke="currentColor"
+                                <div className="flex items-center">
+                                    <Link
+                                        href={getLocalizedPath(
+                                            "services",
+                                            locale
+                                        )}
+                                        className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
+                                        data-testid="services-link-mid-sm"
                                     >
-                                        <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            strokeWidth={2}
-                                            d="m19 9-7 7-7-7"
-                                        />
-                                    </svg>
-                                </button>
+                                        {t("services")}
+                                    </Link>
+                                    <button
+                                        onClick={toggleServices}
+                                        className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors ml-1 p-1"
+                                        data-testid="services-dropdown-button-mid-sm"
+                                        aria-label="Toggle Services submenu"
+                                    >
+                                        <svg
+                                            className={`h-4 w-4 transition-transform ${
+                                                isServicesOpen
+                                                    ? "rotate-180"
+                                                    : ""
+                                            }`}
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            stroke="currentColor"
+                                        >
+                                            <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                strokeWidth={2}
+                                                d="m19 9-7 7-7-7"
+                                            />
+                                        </svg>
+                                    </button>
+                                </div>
 
                                 {isServicesOpen && (
                                     <div className="absolute top-full right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg border border-gray-200 dark:border-gray-700 z-50">
@@ -537,9 +574,14 @@ export default function Header() {
 
                             {/* Mobile Services */}
                             <div className="px-3 py-2">
-                                <div className="text-gray-900 dark:text-white font-medium mb-2">
+                                <Link
+                                    href={getLocalizedPath("services", locale)}
+                                    className="text-gray-900 dark:text-white font-medium mb-2 block"
+                                    onClick={() => setIsMobileMenuOpen(false)}
+                                    data-testid="nav-services-mobile"
+                                >
                                     {t("services")}
-                                </div>
+                                </Link>
                                 {servicesLinks.map(link => (
                                     <Link
                                         key={link.href}
@@ -557,9 +599,14 @@ export default function Header() {
 
                             {/* Mobile Minecraft */}
                             <div className="px-3 py-2">
-                                <div className="text-gray-900 dark:text-white font-medium mb-2">
+                                <Link
+                                    href={getLocalizedPath("minecraft", locale)}
+                                    className="text-gray-900 dark:text-white font-medium mb-2 block"
+                                    onClick={() => setIsMobileMenuOpen(false)}
+                                    data-testid="nav-minecraft-mobile"
+                                >
                                     {t("minecraft")}
-                                </div>
+                                </Link>
                                 {minecraftLinks.map(link => (
                                     <Link
                                         key={link.href}

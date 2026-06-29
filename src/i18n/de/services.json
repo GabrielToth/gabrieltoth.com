@@ -1,0 +1,27 @@
+{
+    "landing": {
+        "title": "Dienstleistungen",
+        "subtitle": "Professionelle Lösungen für Ihre digitalen Bedürfnisse",
+        "description": "Von der Kanalverwaltung bis zur individuellen Entwicklung biete ich eine Reihe von Dienstleistungen an, die Ihnen helfen, Ihre Online-Präsenz auszubauen und Ihre Ziele zu erreichen.",
+        "chooseCategory": "Wähle eine Dienstleistung",
+        "channelManagementTitle": "ViraTrend",
+        "channelManagementDescription": "Social-Media-Management und Content-Strategie für Kreative und Unternehmen",
+        "pcOptimizationTitle": "PC-Optimierung",
+        "pcOptimizationDescription": "Leistungsoptimierung, Hardware-Empfehlungen und Systemoptimierung",
+        "affiliateTitle": "Amazon-Partner",
+        "affiliateDescription": "Affiliate-Marketing-Strategien und Nischenseiten-Entwicklung",
+        "iqTestTitle": "IQ-Test",
+        "iqTestDescription": "Kognitive Bewertungsplattform mit detaillierten Analysen",
+        "personalityTestTitle": "Persönlichkeitstest",
+        "personalityTestDescription": "Werkzeuge zur psychologischen Profilerstellung und Persönlichkeitsanalyse",
+        "approach": {
+            "title": "Mein Ansatz",
+            "qualityFirst": "Qualität zuerst",
+            "qualityFirstText": "Qualität steht im Mittelpunkt allem, was ich liefere. Jeder Dienst durchläuft strenge Tests und Verfeinerung, bevor er zu Ihnen gelangt.",
+            "tailoredSolutions": "Maßgeschneiderte Lösungen",
+            "tailoredSolutionsText": "Keine zwei Projekte sind gleich. Ich nehme mir Zeit, um Ihre individuellen Bedürfnisse zu verstehen und Lösungen zu entwickeln, die perfekt passen.",
+            "resultsDriven": "Ergebnisorientiert",
+            "resultsDrivenText": "Jeder Dienst ist auf messbare Ergebnisse ausgelegt, damit Sie echten Wert aus unserer Zusammenarbeit ziehen."
+        }
+    }
+}

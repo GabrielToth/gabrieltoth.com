@@ -1,0 +1,27 @@
+{
+    "landing": {
+        "title": "Serviços",
+        "subtitle": "Soluções profissionais para suas necessidades digitais",
+        "description": "Do gerenciamento de canais ao desenvolvimento personalizado, ofereço uma gama de serviços para ajudar você a crescer sua presença online e alcançar seus objetivos.",
+        "chooseCategory": "Escolha um serviço",
+        "channelManagementTitle": "ViraTrend",
+        "channelManagementDescription": "Gerenciamento de mídias sociais e estratégia de conteúdo para criadores e empresas",
+        "pcOptimizationTitle": "Otimização de PC",
+        "pcOptimizationDescription": "Ajuste de desempenho, recomendações de hardware e otimização de sistema",
+        "affiliateTitle": "Afiliados Amazon",
+        "affiliateDescription": "Estratégias de marketing de afiliados e desenvolvimento de sites de nicho",
+        "iqTestTitle": "Teste de QI",
+        "iqTestDescription": "Plataforma de avaliação cognitiva com análises detalhadas",
+        "personalityTestTitle": "Teste de Personalidade",
+        "personalityTestDescription": "Ferramentas de perfil psicológico e análise de personalidade",
+        "approach": {
+            "title": "Minha Abordagem",
+            "qualityFirst": "Qualidade Primeiro",
+            "qualityFirstText": "Qualidade está no centro de tudo que entrego. Cada serviço passa por testes rigorosos e refinamento antes de chegar até você.",
+            "tailoredSolutions": "Soluções Personalizadas",
+            "tailoredSolutionsText": "Não existem dois projetos iguais. Dedico tempo para entender suas necessidades únicas e criar soluções que se encaixam perfeitamente.",
+            "resultsDriven": "Foco em Resultados",
+            "resultsDrivenText": "Cada serviço é projetado com resultados mensuráveis em mente, garantindo que você veja valor real da nossa colaboração."
+        }
+    }
+}

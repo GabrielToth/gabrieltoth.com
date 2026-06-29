@@ -1,0 +1,27 @@
+{
+    "landing": {
+        "title": "Services",
+        "subtitle": "Professional solutions for your digital needs",
+        "description": "From channel management to custom development, I offer a range of services to help you grow your online presence and achieve your goals.",
+        "chooseCategory": "Choose a service",
+        "channelManagementTitle": "ViraTrend",
+        "channelManagementDescription": "Social media management and content strategy for creators and businesses",
+        "pcOptimizationTitle": "PC Optimization",
+        "pcOptimizationDescription": "Performance tuning, hardware recommendations, and system optimization",
+        "affiliateTitle": "Amazon Affiliate",
+        "affiliateDescription": "Affiliate marketing strategies and niche site development",
+        "iqTestTitle": "IQ Test",
+        "iqTestDescription": "Cognitive assessment platform with detailed analytics",
+        "personalityTestTitle": "Personality Test",
+        "personalityTestDescription": "Psychological profiling and personality analysis tools",
+        "approach": {
+            "title": "My Approach",
+            "qualityFirst": "Quality First",
+            "qualityFirstText": "Quality is at the core of everything I deliver. Each service undergoes rigorous testing and refinement before reaching you.",
+            "tailoredSolutions": "Tailored Solutions",
+            "tailoredSolutionsText": "No two projects are the same. I take time to understand your unique needs and craft solutions that fit perfectly.",
+            "resultsDriven": "Results Driven",
+            "resultsDrivenText": "Every service is designed with measurable outcomes in mind, ensuring you see real value from our collaboration."
+        }
+    }
+}
