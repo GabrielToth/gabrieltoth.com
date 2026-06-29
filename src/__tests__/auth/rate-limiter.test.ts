@@ -563,4 +563,81 @@ describe("Rate Limiter - In-Memory Backend", () => {
             expect(await getRemainingAttempts(ipAddress)).toBe(0)
         })
     })
+
+    describe("Error Handling (In-Memory)", () => {
+        const ipAddress = "192.168.1.1"
+
+        it("should fail open and log error if checkRateLimit throws", async () => {
+            const mapGetSpy = vi.spyOn(Map.prototype, "get").mockImplementationOnce(() => {
+                throw new Error("Simulated Map error")
+            })
+
+            const isLimited = await checkRateLimit(ipAddress)
+            
+            expect(isLimited).toBe(false) // Fail open
+            mapGetSpy.mockRestore()
+        })
+
+        it("should return 0 and log error if incrementAttempt throws", async () => {
+            const mapSetSpy = vi.spyOn(Map.prototype, "set").mockImplementationOnce(() => {
+                throw new Error("Simulated Map error")
+            })
+
+            const count = await incrementAttempt(ipAddress)
+            
+            expect(count).toBe(0)
+            mapSetSpy.mockRestore()
+        })
+
+        it("should handle error during resetAttempt", async () => {
+            const mapDeleteSpy = vi.spyOn(Map.prototype, "delete").mockImplementationOnce(() => {
+                throw new Error("Simulated Map error")
+            })
+
+            await expect(resetAttempt(ipAddress)).resolves.not.toThrow()
+            mapDeleteSpy.mockRestore()
+        })
+
+        it("should return 0 if getAttemptCount throws", async () => {
+            const mapGetSpy = vi.spyOn(Map.prototype, "get").mockImplementationOnce(() => {
+                throw new Error("Simulated Map error")
+            })
+
+            const count = await getAttemptCount(ipAddress)
+            
+            expect(count).toBe(0)
+            mapGetSpy.mockRestore()
+        })
+
+        it("should return 0 if getTimeUntilReset throws", async () => {
+            const mapGetSpy = vi.spyOn(Map.prototype, "get").mockImplementationOnce(() => {
+                throw new Error("Simulated Map error")
+            })
+
+            const ttl = await getTimeUntilReset(ipAddress)
+            
+            expect(ttl).toBe(0)
+            mapGetSpy.mockRestore()
+        })
+
+        it("should handle error during clearAllRateLimits", async () => {
+            const mapClearSpy = vi.spyOn(Map.prototype, "clear").mockImplementationOnce(() => {
+                throw new Error("Simulated Map error")
+            })
+
+            await expect(clearAllRateLimits()).resolves.not.toThrow()
+            mapClearSpy.mockRestore()
+        })
+
+        it("should return fallback stats if getRateLimiterStats throws", async () => {
+            const mapSizeSpy = vi.spyOn(Map.prototype, "size", "get").mockImplementationOnce(() => {
+                throw new Error("Simulated Map error")
+            })
+
+            const stats = await getRateLimiterStats()
+            
+            expect(stats).toEqual({ backend: "in-memory", entriesCount: 0 })
+            mapSizeSpy.mockRestore()
+        })
+    })
 })
