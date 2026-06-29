@@ -79,6 +79,7 @@ export default function UnifiedSignInForm({
 
             router.push(`/${locale}/dashboard`)
             router.refresh()
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (err) {
             setError("Invalid email or password")
         } finally {

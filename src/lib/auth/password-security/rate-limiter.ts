@@ -70,7 +70,7 @@ export interface RateLimitCheckResult {
  *   }
  */
 export class RateLimiter {
-    private supabase: SupabaseClient<any>
+    private supabase: SupabaseClient
     private config: RateLimitingConfig
 
     constructor(config: RateLimitingConfig) {
@@ -87,7 +87,7 @@ export class RateLimiter {
             )
         }
 
-        this.supabase = createClient<any>(url, serviceKey, {
+        this.supabase = createClient<unknown>(url, serviceKey, {
             auth: {
                 autoRefreshToken: false,
                 persistSession: false,

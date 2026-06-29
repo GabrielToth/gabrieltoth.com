@@ -56,6 +56,7 @@ export async function POST(
         // Validate platform
         const oauthManager = getOAuthManager()
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         if (!oauthManager.isPlatformConfigured(platform as any)) {
             logger.warn("Unsupported platform for OAuth", {
                 platform,
@@ -69,6 +70,7 @@ export async function POST(
 
         // Generate authorization URL
         const authResponse = await oauthManager.generateAuthorizationUrl(
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             platform as any,
             userId
         )

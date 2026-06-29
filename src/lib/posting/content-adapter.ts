@@ -161,6 +161,7 @@ export class ContentAdapter {
         platforms: SocialPlatform[]
     ): Record<SocialPlatform, ContentValidationResult> {
         const results: Record<SocialPlatform, ContentValidationResult> =
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             {} as any
 
         for (const platform of platforms) {
@@ -240,6 +241,7 @@ export class ContentAdapter {
      * Get all platform character limits
      */
     getAllCharacterLimits(): Record<SocialPlatform, number> {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const limits: Record<SocialPlatform, number> = {} as any
 
         for (const [platform, config] of Object.entries(PLATFORM_CONFIGS)) {

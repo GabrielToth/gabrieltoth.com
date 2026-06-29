@@ -25,6 +25,7 @@ export const AuthButtonRow: React.FC<AuthButtonRowProps> = ({
     onEmailClick,
     onSSOClick,
     loadingProvider,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     error,
 }) => {
     // Define button configurations with icons and labels

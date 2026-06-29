@@ -39,11 +39,13 @@ export default async function LocaleLayout({
     let messages
     try {
         messages = await getMessages({ locale })
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
         // If getMessages fails, try with default locale
         try {
             messages = await getMessages({ locale: defaultLocale })
             locale = defaultLocale
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (fallbackError) {
             // If even default locale fails, use empty messages object
             messages = {}

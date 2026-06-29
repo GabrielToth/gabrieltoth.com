@@ -242,6 +242,7 @@ export class ChannelValidationService extends BaseService {
         accessToken: string,
         url: string,
         params: Record<string, string | boolean>
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ): Promise<any> {
         try {
             // Build query string

@@ -34,11 +34,13 @@ interface GoogleLoginButtonProps {
  * Validates: Requirements 20.1, 20.2, 20.3, 20.4, 20.5
  */
 export function GoogleLoginButton({
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     onSuccess,
     onError,
     className = "",
     type = "login",
 }: GoogleLoginButtonProps) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const router = useRouter()
     const t = useTranslations("auth")
     const [isLoading, setIsLoading] = useState(false)

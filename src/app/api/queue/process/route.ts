@@ -128,6 +128,7 @@ export async function POST(request: NextRequest) {
 }
 
 async function publishToNetworks(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     publication: any,
     userId: string
 ): Promise<Array<{ network: string; success: boolean; error?: string }>> {

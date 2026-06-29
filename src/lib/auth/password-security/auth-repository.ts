@@ -19,9 +19,9 @@ export interface CreateUserParams {
  * Handles all direct database operations for authentication
  */
 export class AuthRepository {
-    private supabase: SupabaseClient<any>
+    private supabase: SupabaseClient
 
-    constructor(supabaseClient: SupabaseClient<any>) {
+    constructor(supabaseClient: SupabaseClient) {
         this.supabase = supabaseClient
     }
 

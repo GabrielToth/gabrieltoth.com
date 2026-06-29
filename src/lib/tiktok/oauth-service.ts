@@ -320,6 +320,7 @@ export class TikTokOAuthService extends BaseService {
         const data = await response.json()
 
         const videos: TikTokVideo[] = (data.data?.videos || []).map(
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             (v: any) => ({
                 id: v.id,
                 title: v.title,

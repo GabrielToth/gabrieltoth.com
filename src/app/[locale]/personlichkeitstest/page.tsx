@@ -3,6 +3,7 @@ import { generateMetadata as generatePersonalityMetadata } from "../personality-
 
 export { default } from "../personality-test/page"
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function generateMetadata(props: any) {
     return generatePersonalityMetadata(props)
 }

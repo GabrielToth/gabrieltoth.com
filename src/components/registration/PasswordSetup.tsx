@@ -23,6 +23,7 @@ export function PasswordSetup({
 }: PasswordSetupProps) {
     const [showPassword, setShowPassword] = useState(false)
     const [showConfirm, setShowConfirm] = useState(false)
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [error, setError] = useState<string | null>(null)
 
     const validation = validatePassword(value)

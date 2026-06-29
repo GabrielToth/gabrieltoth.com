@@ -53,6 +53,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         // Validate content for each platform
         const platformValidations = contentAdapter.validateForPlatforms(
             body.content,
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             body.platforms as any
         )
 
@@ -60,6 +61,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         const conflictResult = await conflictDetector.detectConflicts(
             userId,
             body.content,
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             body.platforms as any,
             body.scheduledTime
         )

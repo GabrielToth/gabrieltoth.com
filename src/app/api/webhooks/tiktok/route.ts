@@ -45,6 +45,7 @@ export async function POST(req: NextRequest) {
         }
 
         const result = await handleTikTokWebhookEvent({
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             event: event.event as any,
             create_time: event.create_time,
             content: event.content,

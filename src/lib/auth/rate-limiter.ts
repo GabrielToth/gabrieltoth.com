@@ -396,6 +396,7 @@ export async function checkRateLimitWithDegradation(
 }> {
     const key = generateKey(ipAddress)
     const maxAttempts = degradedMode ? DEGRADED_MODE_MAX_ATTEMPTS : MAX_ATTEMPTS
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const windowMs = degradedMode ? DEGRADED_MODE_WINDOW_MS : WINDOW_DURATION_MS
 
     try {

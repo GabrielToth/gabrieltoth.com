@@ -38,6 +38,7 @@ export interface SocialNetwork {
     status: NetworkStatus
     linkedAt: number
     expiresAt?: number
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     metadata?: Record<string, any>
     createdAt: number
     updatedAt: number
@@ -62,6 +63,7 @@ export class NetworkManager {
         platform: SocialPlatform,
         platformUserId: string,
         platformUsername: string,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         metadata?: Record<string, any>
     ): Promise<SocialNetwork> {
         try {
@@ -389,6 +391,7 @@ export class NetworkManager {
     /**
      * Map database record to SocialNetwork
      */
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private mapDatabaseToNetwork(dbNetwork: any): SocialNetwork {
         return {
             id: dbNetwork.id,

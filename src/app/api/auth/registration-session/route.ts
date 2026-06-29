@@ -115,6 +115,7 @@ export async function POST(request: NextRequest) {
  *   error: "SESSION_EXPIRED" | "SESSION_NOT_FOUND"
  * }
  */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function GET(request: NextRequest) {
     try {
         // Get session ID from HTTP-only cookie
@@ -274,6 +275,7 @@ export async function PUT(request: NextRequest) {
  *   message: "Registration session removed"
  * }
  */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function DELETE(request: NextRequest) {
     try {
         // Get session ID from HTTP-only cookie

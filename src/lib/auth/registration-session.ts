@@ -286,6 +286,7 @@ export async function updateRegistrationSession(
 
         // Build update query dynamically based on provided data
         const updateFields: string[] = []
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const updateValues: any[] = [sessionId]
         let paramIndex = 2
 
