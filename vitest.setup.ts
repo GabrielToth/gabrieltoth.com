@@ -138,20 +138,18 @@ vi.mock("next/navigation", () => ({
 vi.mock("next-intl", () => ({
     useTranslations: (namespace?: string) => {
         const t = (key: string) => {
-            // Return the key as fallback
+            if (key === "saveChanges") return "Save changes"
+            // Expand camelCase for testing queries
             return key
+                .replace(/([A-Z])/g, " $1")
+                .trim()
+                .replace(/^./, str => str.toUpperCase())
         }
-        // Add raw method that returns empty array by default
-        t.raw = (key: string) => {
-            // For testing, return empty array
-            // Tests should provide their own messages via NextIntlClientProvider
-            return []
-        }
-        // Add rich method
+        t.raw = (key: string) => []
         t.rich = (key: string, values?: any) => key
         return t
     },
-    useLocale: () => "pt-BR",
+    useLocale: () => "en",
     useMessages: () => ({}),
     useFormatter: () => ({
         dateTime: (date: Date) => date.toISOString(),
@@ -159,6 +157,16 @@ vi.mock("next-intl", () => ({
     }),
     NextIntlClientProvider: ({ children }: { children: React.ReactNode }) =>
         children,
+}))
+
+// Mock next-themes
+vi.mock("next-themes", () => ({
+    useTheme: () => ({
+        theme: "light",
+        setTheme: vi.fn(),
+        systemTheme: "light",
+    }),
+    ThemeProvider: ({ children }: { children: React.ReactNode }) => children,
 }))
 
 // Mock window.matchMedia (jsdom only)
