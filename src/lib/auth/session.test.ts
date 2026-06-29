@@ -1381,9 +1381,7 @@ describe("Session Token Management", () => {
             vi.setSystemTime(fixedNow)
 
             const token = "boundary-refresh-token-valid"
-            const newExpiration = new Date(
-                fixedNow.getTime() + 60 * 60 * 1000
-            )
+            const newExpiration = new Date(fixedNow.getTime() + 60 * 60 * 1000)
 
             vi.mocked(db.db.queryOne)
                 .mockResolvedValueOnce({
