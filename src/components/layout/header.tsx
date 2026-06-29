@@ -17,6 +17,22 @@ export default function Header() {
     const [isMinecraftOpen, setIsMinecraftOpen] = useState(false)
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
+    const toggleServices = () => {
+        setIsServicesOpen(prev => !prev)
+        setIsMinecraftOpen(false)
+    }
+
+    const toggleMinecraft = () => {
+        setIsMinecraftOpen(prev => !prev)
+        setIsServicesOpen(false)
+    }
+
+    const toggleMobileMenu = () => {
+        setIsMobileMenuOpen(prev => !prev)
+        setIsServicesOpen(false)
+        setIsMinecraftOpen(false)
+    }
+
     // Get translations
     const t = useTranslations("layout.header")
 
@@ -157,9 +173,7 @@ export default function Header() {
                                     {t("minecraft")}
                                 </Link>
                                 <button
-                                    onClick={() =>
-                                        setIsMinecraftOpen(!isMinecraftOpen)
-                                    }
+                                    onClick={toggleMinecraft}
                                     className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors ml-1 p-1"
                                     data-testid="minecraft-dropdown-button"
                                     aria-label="Toggle Minecraft submenu"
@@ -212,9 +226,7 @@ export default function Header() {
                         {/* Services Dropdown */}
                         <div className="relative">
                             <button
-                                onClick={() =>
-                                    setIsServicesOpen(!isServicesOpen)
-                                }
+                                onClick={toggleServices}
                                 className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors flex items-center"
                                 data-testid="services-button"
                             >
@@ -282,7 +294,9 @@ export default function Header() {
                         </div>
 
                         {/* Mid tier 1: About + Services + Minecraft (768–880px) */}
-                        <div className="hidden md:flex nav:!hidden items-center space-x-8 mr-6">
+                        <div
+                            className={`${isMobileMenuOpen ? "hidden" : "hidden md:flex nav:!hidden"} items-center space-x-8 mr-6`}
+                        >
                             <Link
                                 href={getLocalizedPath("about-me", locale)}
                                 className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
@@ -293,9 +307,7 @@ export default function Header() {
 
                             <div className="relative">
                                 <button
-                                    onClick={() =>
-                                        setIsServicesOpen(!isServicesOpen)
-                                    }
+                                    onClick={toggleServices}
                                     className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors flex items-center"
                                     data-testid="services-button-mid"
                                 >
@@ -349,9 +361,7 @@ export default function Header() {
                                         {t("minecraft")}
                                     </Link>
                                     <button
-                                        onClick={() =>
-                                            setIsMinecraftOpen(!isMinecraftOpen)
-                                        }
+                                        onClick={toggleMinecraft}
                                         className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors ml-1 p-1"
                                         data-testid="minecraft-dropdown-button-mid"
                                         aria-label="Toggle Minecraft submenu"
@@ -407,7 +417,9 @@ export default function Header() {
                         </div>
 
                         {/* Mid tier 2: About + Services (640–768px) */}
-                        <div className="hidden sm:flex md:!hidden items-center space-x-8 mr-6">
+                        <div
+                            className={`${isMobileMenuOpen ? "hidden" : "hidden sm:flex md:!hidden"} items-center space-x-8 mr-6`}
+                        >
                             <Link
                                 href={getLocalizedPath("about-me", locale)}
                                 className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
@@ -418,9 +430,7 @@ export default function Header() {
 
                             <div className="relative">
                                 <button
-                                    onClick={() =>
-                                        setIsServicesOpen(!isServicesOpen)
-                                    }
+                                    onClick={toggleServices}
                                     className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors flex items-center"
                                     data-testid="services-button-mid-sm"
                                 >
@@ -463,9 +473,7 @@ export default function Header() {
                         </div>
                         <div className="nav:hidden flex items-center">
                             <button
-                                onClick={() =>
-                                    setIsMobileMenuOpen(!isMobileMenuOpen)
-                                }
+                                onClick={toggleMobileMenu}
                                 className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
                                 data-testid="mobile-menu-toggle"
                             >
