@@ -48,6 +48,7 @@ jobs:
                       #.gemini
                       #.kiro
                       #.next
+                      #.opencode
 
             - name: Format check
               run: npm run format:check
