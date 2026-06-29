@@ -15,6 +15,8 @@ import * as captchaVerifier from "@/lib/auth/captcha-verifier"
 import { beforeEach, describe, expect, it, vi } from "vitest"
 import * as passwordHasher from "./argon2id-hasher"
 import { AuthenticationService } from "./authentication-service"
+import { AuthRepository } from "./auth-repository"
+import { AuthAuditService } from "./auth-audit-service"
 import * as passwordInputValidation from "./password-input-validation"
 import * as passwordValidator from "./password-validator"
 
@@ -123,6 +125,12 @@ describe("AuthenticationService", () => {
 
             // Replace Supabase client
             ;(service as any).supabase = mockSupabase
+            ;(service as any).repository = new AuthRepository(
+                mockSupabase as any
+            )
+            ;(service as any).auditService = new AuthAuditService(
+                mockSupabase as any
+            )
 
             const result = await service.register({
                 email: "user@example.com",
@@ -216,6 +224,12 @@ describe("AuthenticationService", () => {
             }
 
             ;(service as any).supabase = mockSupabase
+            ;(service as any).repository = new AuthRepository(
+                mockSupabase as any
+            )
+            ;(service as any).auditService = new AuthAuditService(
+                mockSupabase as any
+            )
 
             const result = await service.register({
                 email: "existing@example.com",
@@ -268,6 +282,12 @@ describe("AuthenticationService", () => {
             }
 
             ;(service as any).supabase = mockSupabase
+            ;(service as any).repository = new AuthRepository(
+                mockSupabase as any
+            )
+            ;(service as any).auditService = new AuthAuditService(
+                mockSupabase as any
+            )
 
             await service.register({
                 email: "user@example.com",
@@ -320,6 +340,12 @@ describe("AuthenticationService", () => {
             }
 
             ;(service as any).supabase = mockSupabase
+            ;(service as any).repository = new AuthRepository(
+                mockSupabase as any
+            )
+            ;(service as any).auditService = new AuthAuditService(
+                mockSupabase as any
+            )
 
             const result = await service.login({
                 email: "user@example.com",
@@ -382,6 +408,12 @@ describe("AuthenticationService", () => {
             }
 
             ;(service as any).supabase = mockSupabase
+            ;(service as any).repository = new AuthRepository(
+                mockSupabase as any
+            )
+            ;(service as any).auditService = new AuthAuditService(
+                mockSupabase as any
+            )
 
             const result = await service.login({
                 email: "user@example.com",
@@ -419,6 +451,12 @@ describe("AuthenticationService", () => {
             }
 
             ;(service as any).supabase = mockSupabase
+            ;(service as any).repository = new AuthRepository(
+                mockSupabase as any
+            )
+            ;(service as any).auditService = new AuthAuditService(
+                mockSupabase as any
+            )
 
             const result = await service.login({
                 email: "nonexistent@example.com",
@@ -470,6 +508,12 @@ describe("AuthenticationService", () => {
             }
 
             ;(service as any).supabase = mockSupabase
+            ;(service as any).repository = new AuthRepository(
+                mockSupabase as any
+            )
+            ;(service as any).auditService = new AuthAuditService(
+                mockSupabase as any
+            )
 
             const result = await service.login({
                 email: "user@example.com",
@@ -522,6 +566,12 @@ describe("AuthenticationService", () => {
             }
 
             ;(service as any).supabase = mockSupabase
+            ;(service as any).repository = new AuthRepository(
+                mockSupabase as any
+            )
+            ;(service as any).auditService = new AuthAuditService(
+                mockSupabase as any
+            )
 
             await service.login({
                 email: "user@example.com",
@@ -572,6 +622,12 @@ describe("AuthenticationService", () => {
             }
 
             ;(service as any).supabase = mockSupabase
+            ;(service as any).repository = new AuthRepository(
+                mockSupabase as any
+            )
+            ;(service as any).auditService = new AuthAuditService(
+                mockSupabase as any
+            )
 
             await service.login({
                 email: "user@example.com",
