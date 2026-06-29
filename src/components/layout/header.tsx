@@ -282,7 +282,7 @@ export default function Header() {
                         </div>
 
                         {/* Mid tier 1: About + Services + Minecraft (768–880px) */}
-                        <div className="hidden md:flex nav:hidden items-center space-x-8 mr-6">
+                        <div className="hidden md:flex nav:!hidden items-center space-x-8 mr-6">
                             <Link
                                 href={getLocalizedPath("about-me", locale)}
                                 className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
@@ -407,7 +407,7 @@ export default function Header() {
                         </div>
 
                         {/* Mid tier 2: About + Services (640–768px) */}
-                        <div className="hidden sm:flex md:hidden items-center space-x-8 mr-6">
+                        <div className="hidden sm:flex md:!hidden items-center space-x-8 mr-6">
                             <Link
                                 href={getLocalizedPath("about-me", locale)}
                                 className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"

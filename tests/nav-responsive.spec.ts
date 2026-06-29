@@ -8,7 +8,13 @@ test.describe("header responsive navigation", () => {
         await page.goto("/en")
 
         await expect(page.getByTestId("nav-home-desktop")).toBeVisible()
+        await expect(page.getByTestId("minecraft-link")).toBeVisible()
+        await expect(page.getByTestId("services-button")).toBeVisible()
+        await expect(page.getByTestId("nav-login")).toBeVisible()
         await expect(page.getByTestId("mobile-menu-toggle")).not.toBeVisible()
+
+        // Mid tier elements must NOT be visible at desktop width
+        await expect(page.getByTestId("nav-about-mid")).not.toBeVisible()
     })
 
     test("mid tier 1: About + Services + Minecraft visible at 820px", async ({
