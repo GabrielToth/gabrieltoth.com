@@ -90,4 +90,23 @@ describe("metadata for all core pages", () => {
             )
         }
     })
+
+    it("services landing", async () => {
+        const mod: any = await import("@/app/[locale]/services/page")
+        const locales = ["en", "pt-BR", "es", "de"] as const
+        for (const locale of locales) {
+            const meta = await mod.generateMetadata({
+                params: Promise.resolve({ locale }),
+            } as any)
+            expect(meta).toBeTruthy()
+            expect(meta.title).toBe("landing.title - Gabriel Toth")
+            expect(meta.description).toBe("landing.description")
+            expect(meta.openGraph?.title).toBe("landing.title")
+            expect(meta.openGraph?.description).toBe("landing.description")
+            expect(meta.openGraph?.type).toBe("website")
+            expect(meta.openGraph?.locale).toBe(locale)
+            expect(meta.keywords).toBeDefined()
+            expect(meta.keywords).toContain("services")
+        }
+    })
 })
