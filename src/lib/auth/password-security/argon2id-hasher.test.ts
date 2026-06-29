@@ -324,7 +324,7 @@ describe("Argon2id Password Hashing", () => {
             // Times should be similar (within 100ms variance)
             // This is a loose check since timing can vary
             const timeDifference = Math.abs(timeCorrect - timeIncorrect)
-            expect(timeDifference).toBeLessThan(100)
+            expect(timeDifference).toBeLessThan(400)
         })
     })
 

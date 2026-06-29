@@ -134,19 +134,60 @@ vi.mock("next/navigation", () => ({
     notFound: vi.fn(),
 }))
 
+// Load translations for next-intl mock
+const flatTranslations: Record<string, string> = {}
+function flattenObj(obj: any, prefix = "") {
+    for (const k in obj) {
+        const pre = prefix.length ? prefix + "." : ""
+        if (typeof obj[k] === "object" && obj[k] !== null) {
+            flattenObj(obj[k], pre + k)
+        } else {
+            flatTranslations[pre + k] = String(obj[k])
+            flatTranslations[k] = String(obj[k])
+        }
+    }
+}
+
+try {
+    const i18nDir = path.resolve(process.cwd(), "src/i18n/en")
+    if (fs.existsSync(i18nDir)) {
+        const files = fs.readdirSync(i18nDir)
+        for (const file of files) {
+            if (file.endsWith(".json")) {
+                const ns = file.replace(".json", "")
+                const content = JSON.parse(
+                    fs.readFileSync(path.join(i18nDir, file), "utf8")
+                )
+                flattenObj(content, ns)
+            }
+        }
+    }
+} catch (e) {
+    console.error("Failed to load mock translations", e)
+}
+
 // Mock next-intl
 vi.mock("next-intl", () => ({
     useTranslations: (namespace?: string) => {
         const t = (key: string) => {
+            const fullKey = namespace ? `${namespace}.${key}` : key
+            if (flatTranslations[fullKey]) return flatTranslations[fullKey]
+            if (flatTranslations[key]) return flatTranslations[key]
+
             if (key === "saveChanges") return "Save changes"
-            // Expand camelCase for testing queries
+            // Expand camelCase for testing queries fallback
             return key
                 .replace(/([A-Z])/g, " $1")
                 .trim()
                 .replace(/^./, str => str.toUpperCase())
         }
         t.raw = (key: string) => []
-        t.rich = (key: string, values?: any) => key
+        t.rich = (key: string, values?: any) => {
+            const fullKey = namespace ? `${namespace}.${key}` : key
+            if (flatTranslations[fullKey]) return flatTranslations[fullKey]
+            if (flatTranslations[key]) return flatTranslations[key]
+            return key
+        }
         return t
     },
     useLocale: () => "en",
@@ -159,7 +200,16 @@ vi.mock("next-intl", () => ({
         children,
 }))
 
-// Mock next-themes
+// Mock custom theme provider
+vi.mock("@/components/theme/theme-provider", () => ({
+    useTheme: () => ({
+        theme: "light",
+        toggleTheme: vi.fn(),
+    }),
+    ThemeProvider: ({ children }: { children: React.ReactNode }) => children,
+}))
+
+// Mock next-themes just in case
 vi.mock("next-themes", () => ({
     useTheme: () => ({
         theme: "light",
