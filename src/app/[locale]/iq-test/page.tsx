@@ -1,5 +1,4 @@
 import Footer from "@/components/layout/footer"
-import Header from "@/components/layout/header"
 import StructuredData from "@/components/seo/structured-data"
 import { locales, type Locale } from "@/lib/i18n"
 import { generateSeoConfig } from "@/lib/seo"
@@ -61,7 +60,6 @@ export default async function IQTestPage({ params }: IQTestPageProps) {
 
     return (
         <>
-            <Header />
             <StructuredData
                 locale={locale}
                 type="all"

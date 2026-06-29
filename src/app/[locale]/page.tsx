@@ -1,5 +1,4 @@
 import Footer from "@/components/layout/footer"
-import Header from "@/components/layout/header"
 import { locales, type Locale } from "@/lib/i18n"
 import { getTranslations } from "next-intl/server"
 import LandingBenefitsSection from "./home/landing-benefits-section"
@@ -34,7 +33,6 @@ export default async function HomePage({ params }: HomePageProps) {
     return (
         <>
             <main className="min-h-screen bg-white dark:bg-gray-900">
-                <Header />
                 <LandingHeroSection locale={locale} />
                 <LandingFeaturesSection />
                 <LandingPlatformsSection />

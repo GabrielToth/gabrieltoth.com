@@ -1,5 +1,4 @@
 import Footer from "@/components/layout/footer"
-import Header from "@/components/layout/header"
 import { getCurrencyForLocale } from "@/lib/currency"
 import { locales, type Locale } from "@/lib/i18n"
 import { generateSeoConfig } from "@/lib/seo"
@@ -41,7 +40,6 @@ export default async function IQSummaryPage({ params }: SummaryPageProps) {
 
     return (
         <>
-            <Header />
             <section className="max-w-3xl mx-auto px-4 py-24">
                 <h1 className="text-2xl font-bold mb-4">
                     {t("summary.title")}

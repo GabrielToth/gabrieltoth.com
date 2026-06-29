@@ -1,6 +1,5 @@
 import QuestionsDebugPanel from "@/components/debug/questions-debug-panel"
 import Footer from "@/components/layout/footer"
-import Header from "@/components/layout/header"
 import { type Locale } from "@/lib/i18n"
 import { loadQuestions } from "@/lib/questions/loader"
 import { generateSeoConfig } from "@/lib/seo"
@@ -175,7 +174,6 @@ export default async function IQStepPage({
 
     return (
         <>
-            <Header />
             <section className="max-w-3xl mx-auto px-4 py-24 relative">
                 <h1 className="text-2xl font-bold mb-6">{t("title")}</h1>
                 <p className="text-muted-foreground mb-4">

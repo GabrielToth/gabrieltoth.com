@@ -1,5 +1,4 @@
 import Footer from "@/components/layout/footer"
-import Header from "@/components/layout/header"
 import StructuredData from "@/components/seo/structured-data"
 import Breadcrumbs from "@/components/ui/breadcrumbs"
 import { locales, type Locale } from "@/lib/i18n"
@@ -32,8 +31,6 @@ export default async function TermsOfServicePage({
                 customData={webPageStructuredData}
                 breadcrumbs={breadcrumbs}
             />
-
-            <Header />
 
             <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-12">
                 <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">

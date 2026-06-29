@@ -1,3 +1,4 @@
+import Header from "@/components/layout/header"
 import StructuredData from "@/components/seo/structured-data"
 import { ThemeScript } from "@/components/theme/theme-script"
 import { defaultLocale, locales, type Locale } from "@/lib/i18n"
@@ -54,6 +55,7 @@ export default async function LocaleLayout({
             <LocaleProvider locale={locale}>
                 <ThemeScript />
                 <StructuredData locale={locale} type="both" />
+                <Header />
                 {children}
             </LocaleProvider>
         </NextIntlClientProvider>
