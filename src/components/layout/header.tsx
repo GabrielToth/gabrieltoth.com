@@ -256,103 +256,226 @@ export default function Header() {
                         </div>
                     </nav>
 
-                    {/* Language, Theme and Auth Buttons - Right */}
-                    <div className="hidden nav:flex items-center space-x-3">
-                        {/* Language and Theme Selectors */}
-                        <div className="flex items-center space-x-2">
-                            <LanguageSelector
-                                variant="header"
-                                includeThemeToggle={includeThemeInLanguage}
-                            />
-                            <ThemeToggleClient />
+                    {/* Right group: desktop actions, mid nav, hamburger */}
+                    <div className="flex items-center">
+                        {/* Language, Theme and Auth Buttons - visible ≥ 880px */}
+                        <div className="hidden nav:flex items-center space-x-3">
+                            <div className="flex items-center space-x-2">
+                                <LanguageSelector
+                                    variant="header"
+                                    includeThemeToggle={includeThemeInLanguage}
+                                />
+                                <ThemeToggleClient />
+                            </div>
+
+                            <div className="border-l border-gray-200 dark:border-gray-700 h-6"></div>
+
+                            <Link
+                                href={getLocalizedPath("login", locale)}
+                                className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md text-sm font-medium transition-colors"
+                                data-testid="nav-login"
+                            >
+                                {t("login", {
+                                    defaultValue: "Sign In",
+                                })}
+                            </Link>
                         </div>
 
-                        {/* Divider */}
-                        <div className="border-l border-gray-200 dark:border-gray-700 h-6"></div>
+                        {/* Mid tier 1: About + Services + Minecraft (768–880px) */}
+                        <div className="hidden md:flex nav:hidden items-center space-x-8 mr-6">
+                            <Link
+                                href={getLocalizedPath("about-me", locale)}
+                                className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
+                                data-testid="nav-about-mid"
+                            >
+                                {t("about")}
+                            </Link>
 
-                        {/* Auth Button */}
-                        <Link
-                            href={getLocalizedPath("login", locale)}
-                            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md text-sm font-medium transition-colors"
-                            data-testid="nav-login"
-                        >
-                            {t("login", {
-                                defaultValue: "Sign In",
-                            })}
-                        </Link>
-                    </div>
+                            <div className="relative">
+                                <button
+                                    onClick={() =>
+                                        setIsServicesOpen(!isServicesOpen)
+                                    }
+                                    className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors flex items-center"
+                                    data-testid="services-button-mid"
+                                >
+                                    {t("services")}
+                                    <svg
+                                        className={`ml-1 h-4 w-4 transition-transform ${
+                                            isServicesOpen ? "rotate-180" : ""
+                                        }`}
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke="currentColor"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            d="m19 9-7 7-7-7"
+                                        />
+                                    </svg>
+                                </button>
 
-                    {/* Mid navigation (About + Services) - visible between 640-880px */}
-                    <div className="hidden max-nav:flex max-sm:hidden items-center space-x-3">
-                        <Link
-                            href={getLocalizedPath("about-me", locale)}
-                            className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors text-sm font-medium"
-                            data-testid="nav-about-mid"
-                        >
-                            {t("about")}
-                        </Link>
+                                {isServicesOpen && (
+                                    <div className="absolute top-full right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg border border-gray-200 dark:border-gray-700 z-50">
+                                        {servicesLinks.map(link => (
+                                            <Link
+                                                key={link.href}
+                                                href={link.href}
+                                                className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                                                onClick={() =>
+                                                    setIsServicesOpen(false)
+                                                }
+                                                data-testid={`services-link-t1-${link.key}`}
+                                            >
+                                                {link.label}
+                                            </Link>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
 
-                        <div className="relative">
+                            <div className="relative">
+                                <div className="flex items-center">
+                                    <Link
+                                        href={getLocalizedPath(
+                                            "minecraft",
+                                            locale
+                                        )}
+                                        className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
+                                        data-testid="minecraft-link-mid"
+                                    >
+                                        {t("minecraft")}
+                                    </Link>
+                                    <button
+                                        onClick={() =>
+                                            setIsMinecraftOpen(!isMinecraftOpen)
+                                        }
+                                        className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors ml-1 p-1"
+                                        data-testid="minecraft-dropdown-button-mid"
+                                        aria-label="Toggle Minecraft submenu"
+                                    >
+                                        <svg
+                                            className={`h-4 w-4 transition-transform ${
+                                                isMinecraftOpen
+                                                    ? "rotate-180"
+                                                    : ""
+                                            }`}
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            stroke="currentColor"
+                                        >
+                                            <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                strokeWidth={2}
+                                                d="m19 9-7 7-7-7"
+                                            />
+                                        </svg>
+                                    </button>
+                                </div>
+
+                                {isMinecraftOpen && (
+                                    <div className="absolute top-full right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg border border-gray-200 dark:border-gray-700 z-50">
+                                        {minecraftLinks.map(link => (
+                                            <Link
+                                                key={link.href}
+                                                href={link.href}
+                                                className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                                                onClick={() =>
+                                                    setIsMinecraftOpen(false)
+                                                }
+                                                data-testid={
+                                                    link.href.includes(
+                                                        "/modpacks"
+                                                    )
+                                                        ? "minecraft-link-modpacks-mid"
+                                                        : link.href.includes(
+                                                                "/mods"
+                                                            )
+                                                          ? "minecraft-link-mods-mid"
+                                                          : undefined
+                                                }
+                                            >
+                                                {link.label}
+                                            </Link>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+
+                        {/* Mid tier 2: About + Services (640–768px) */}
+                        <div className="hidden sm:flex md:hidden items-center space-x-8 mr-6">
+                            <Link
+                                href={getLocalizedPath("about-me", locale)}
+                                className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
+                                data-testid="nav-about-mid-sm"
+                            >
+                                {t("about")}
+                            </Link>
+
+                            <div className="relative">
+                                <button
+                                    onClick={() =>
+                                        setIsServicesOpen(!isServicesOpen)
+                                    }
+                                    className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors flex items-center"
+                                    data-testid="services-button-mid-sm"
+                                >
+                                    {t("services")}
+                                    <svg
+                                        className={`ml-1 h-4 w-4 transition-transform ${
+                                            isServicesOpen ? "rotate-180" : ""
+                                        }`}
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke="currentColor"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            d="m19 9-7 7-7-7"
+                                        />
+                                    </svg>
+                                </button>
+
+                                {isServicesOpen && (
+                                    <div className="absolute top-full right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg border border-gray-200 dark:border-gray-700 z-50">
+                                        {servicesLinks.map(link => (
+                                            <Link
+                                                key={link.href}
+                                                href={link.href}
+                                                className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                                                onClick={() =>
+                                                    setIsServicesOpen(false)
+                                                }
+                                                data-testid={`services-link-t2-${link.key}`}
+                                            >
+                                                {link.label}
+                                            </Link>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                        <div className="nav:hidden flex items-center">
                             <button
                                 onClick={() =>
-                                    setIsServicesOpen(!isServicesOpen)
+                                    setIsMobileMenuOpen(!isMobileMenuOpen)
                                 }
-                                className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors text-sm font-medium flex items-center"
-                                data-testid="services-button-mid"
+                                className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
+                                data-testid="mobile-menu-toggle"
                             >
-                                {t("services")}
-                                <svg
-                                    className={`ml-1 h-4 w-4 transition-transform ${
-                                        isServicesOpen ? "rotate-180" : ""
-                                    }`}
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
-                                >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth={2}
-                                        d="m19 9-7 7-7-7"
-                                    />
-                                </svg>
+                                {isMobileMenuOpen ? (
+                                    <X className="h-6 w-6" />
+                                ) : (
+                                    <Menu className="h-6 w-6" />
+                                )}
                             </button>
-
-                            {isServicesOpen && (
-                                <div className="absolute top-full right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg border border-gray-200 dark:border-gray-700 z-50">
-                                    {servicesLinks.map(link => (
-                                        <Link
-                                            key={link.href}
-                                            href={link.href}
-                                            className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-                                            onClick={() =>
-                                                setIsServicesOpen(false)
-                                            }
-                                            data-testid={`services-link-mid-${link.key}`}
-                                        >
-                                            {link.label}
-                                        </Link>
-                                    ))}
-                                </div>
-                            )}
                         </div>
-                    </div>
-
-                    {/* Mobile menu button */}
-                    <div className="nav:hidden flex items-center">
-                        <button
-                            onClick={() =>
-                                setIsMobileMenuOpen(!isMobileMenuOpen)
-                            }
-                            className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
-                            data-testid="mobile-menu-toggle"
-                        >
-                            {isMobileMenuOpen ? (
-                                <X className="h-6 w-6" />
-                            ) : (
-                                <Menu className="h-6 w-6" />
-                            )}
-                        </button>
                     </div>
                 </div>
 
