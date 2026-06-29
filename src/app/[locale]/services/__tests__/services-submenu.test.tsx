@@ -21,9 +21,7 @@ const CATEGORIES = [
 describe("ServicesSubmenu", () => {
     for (const locale of LOCALES) {
         it(`renders without error for locale ${locale}`, () => {
-            const { container } = render(
-                <ServicesSubmenu locale={locale} />
-            )
+            const { container } = render(<ServicesSubmenu locale={locale} />)
             expect(container).toBeTruthy()
         })
 
@@ -34,9 +32,7 @@ describe("ServicesSubmenu", () => {
         })
 
         it(`each link has an h3 and p element for locale ${locale}`, () => {
-            const { container } = render(
-                <ServicesSubmenu locale={locale} />
-            )
+            const { container } = render(<ServicesSubmenu locale={locale} />)
             const headings = container.querySelectorAll("h3")
             expect(headings).toHaveLength(5)
             const paragraphs = container.querySelectorAll("p")
@@ -48,9 +44,7 @@ describe("ServicesSubmenu", () => {
         render(<ServicesSubmenu locale="en" />)
         const links = screen.getAllByRole("link")
         links.forEach((link, i) => {
-            expect(link.getAttribute("href")).toBe(
-                `/en/${CATEGORIES[i].key}`
-            )
+            expect(link.getAttribute("href")).toBe(`/en/${CATEGORIES[i].key}`)
         })
     })
 })

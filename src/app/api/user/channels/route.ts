@@ -48,9 +48,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
         const socialNetworks = socialResult.data || []
         const tokens = tokensResult.data || []
 
-        const tokenMap = new Map(
-            tokens.map(t => [t.platform, t])
-        )
+        const tokenMap = new Map(tokens.map(t => [t.platform, t]))
 
         const channels: SocialChannel[] = socialNetworks.map(sn => {
             const token = tokenMap.get(sn.platform)
