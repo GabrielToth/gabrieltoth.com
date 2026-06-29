@@ -62,8 +62,8 @@ export class StartupHandlerImpl implements StartupHandler {
         logger.info("Startup complete")
     }
 
-    private getSafeConfiguration(): Record<string, any> {
-        const config: Record<string, any> = {}
+    private getSafeConfiguration(): Record<string, unknown> {
+        const config: Record<string, unknown> = {}
 
         for (const [key, value] of Object.entries(process.env)) {
             // Skip sensitive variables

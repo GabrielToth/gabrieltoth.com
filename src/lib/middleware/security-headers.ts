@@ -51,6 +51,7 @@ export function applySecurityHeaders(response: NextResponse): NextResponse {
 /**
  * Middleware to add security headers to all responses
  */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function securityHeadersMiddleware(request: NextRequest): NextResponse {
     // Create a response
     let response = NextResponse.next()

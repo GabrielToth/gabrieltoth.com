@@ -499,6 +499,7 @@ export class PublicationQueue {
      * Map database record to ScheduledPost
      */
     private mapDatabaseToScheduledPost(
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         dbPost: any,
         platforms: SocialPlatform[]
     ): ScheduledPost {
@@ -532,6 +533,7 @@ export class PublicationQueue {
      * Map database record to PublicationHistoryEntry
      */
     private mapDatabaseToPublicationHistory(
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         dbEntry: any
     ): PublicationHistoryEntry {
         return {

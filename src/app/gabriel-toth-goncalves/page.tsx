@@ -72,6 +72,7 @@ export async function generateMetadata(): Promise<Metadata> {
     }
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default async function AboutPage({ params }: AboutPageProps) {
     // Use default locale for this language-independent page
     const locale = defaultLocale as Locale

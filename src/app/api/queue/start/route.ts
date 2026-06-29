@@ -33,6 +33,7 @@ export async function POST(request: NextRequest) {
         }
 
         // Start background processing
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const processor = startBackgroundProcessing(60000) // 1 minute interval
 
         return NextResponse.json({

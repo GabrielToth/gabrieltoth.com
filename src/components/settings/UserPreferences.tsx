@@ -73,6 +73,7 @@ export default function UserPreferences({
             onPreferencesChange?.(preferences)
             setIsSaved(true)
             setTimeout(() => setIsSaved(false), 3000)
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (err) {
             setError(t("failedToSavePreferences"))
         }
@@ -81,6 +82,7 @@ export default function UserPreferences({
     const handleExport = () => {
         try {
             onExport?.()
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (err) {
             setError(t("failedToExportPreferences"))
         }
@@ -91,6 +93,7 @@ export default function UserPreferences({
         if (file) {
             try {
                 onImport?.(file)
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
             } catch (err) {
                 setError(t("failedToImportPreferences"))
             }

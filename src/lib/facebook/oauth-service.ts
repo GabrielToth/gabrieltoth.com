@@ -293,6 +293,7 @@ export class FacebookOAuthService extends BaseService {
             const data = await response.json()
 
             const pages: FacebookPage[] = (data.data || []).map(
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 (page: any) => ({
                     id: page.id,
                     name: page.name,

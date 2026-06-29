@@ -25,9 +25,9 @@ export interface AuthSuccessAuditParams {
  * Handles logging of all security-related authentication events
  */
 export class AuthAuditService {
-    private supabase: SupabaseClient<any>
+    private supabase: SupabaseClient
 
-    constructor(supabaseClient: SupabaseClient<any>) {
+    constructor(supabaseClient: SupabaseClient) {
         this.supabase = supabaseClient
     }
 

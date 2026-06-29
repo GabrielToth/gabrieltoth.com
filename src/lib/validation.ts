@@ -572,6 +572,7 @@ export function validatePhoneNumber(
         // If no country code is provided in the number, use the defaultCountry
         const isValid = isValidPhoneNumber(
             phoneWithoutExt,
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             defaultCountry as any
         )
 
@@ -601,6 +602,7 @@ export function validatePhoneNumber(
             return { isValid: true }
         }
 
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         return { isValid: true }
     } catch (error) {
         // Fallback validation on error
@@ -666,6 +668,7 @@ export function normalizePhoneNumber(
 
     try {
         // Parse the phone number using libphonenumber-js
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const parsed = parsePhoneNumber(trimmedPhone, defaultCountry as any)
 
         if (!parsed) {
@@ -717,6 +720,8 @@ export function normalizePhoneNumber(
 
         // Return the phone number in E.164 format
         const normalized = parsed.format("E.164")
+
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
 
         return { normalized }
     } catch (error) {

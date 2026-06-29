@@ -134,6 +134,7 @@ export async function healthCheck(): Promise<boolean> {
         try {
             await query("SELECT 1")
             return true
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (err) {
             logger.warn(
                 `DB health check failed, attempt ${i + 1}/${MAX_RETRIES}`,

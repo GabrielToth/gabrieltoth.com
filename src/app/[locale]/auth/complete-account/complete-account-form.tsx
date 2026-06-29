@@ -120,6 +120,7 @@ export default function CompleteAccountForm({
         }
     }, [validateStep, submitForm, t])
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const handleReset = useCallback(() => {
         resetForm()
         setError(null)

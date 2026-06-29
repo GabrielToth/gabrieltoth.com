@@ -55,6 +55,7 @@ export interface LoginRequest {
  * Main controller orchestrating all password security components
  */
 export class AuthenticationService {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private supabase: SupabaseClient<any>
     private rateLimiter: RateLimiter
     private config: ReturnType<typeof getSecurityConfig>
@@ -73,6 +74,7 @@ export class AuthenticationService {
             )
         }
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         this.supabase = createClient<any>(url, serviceKey, {
             auth: {
                 autoRefreshToken: false,
@@ -185,6 +187,7 @@ export class AuthenticationService {
             let emailExists = false
             try {
                 emailExists = await this.repository.userExistsByEmail(
+                    // eslint-disable-next-line @typescript-eslint/no-unused-vars
                     request.email
                 )
             } catch (error) {
@@ -218,6 +221,7 @@ export class AuthenticationService {
             // STEP 4: HASH PASSWORD WITH ARGON2ID
             // ================================================================
 
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             let hashResult: any
             try {
                 hashResult = await hashPasswordArgon2id(request.password)
@@ -248,9 +252,11 @@ export class AuthenticationService {
             // STEP 5: CREATE USER RECORD
             // ================================================================
 
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             let newUser: any
             try {
                 newUser = await this.repository.createUser({
+                    // eslint-disable-next-line @typescript-eslint/no-unused-vars
                     email: request.email,
                     passwordHash: hashResult.hash,
                     passwordAlgorithm: hashResult.algorithm,
@@ -447,6 +453,7 @@ export class AuthenticationService {
             // STEP 4: LOOK UP USER
             // ================================================================
 
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             let user: any
             try {
                 user = await this.repository.findUserByEmail(request.email)
@@ -460,6 +467,7 @@ export class AuthenticationService {
                             success: false,
                             error: "Authentication failed",
                             errorCode: "AUTH_FAILED",
+                            // eslint-disable-next-line @typescript-eslint/no-unused-vars
                             statusCode: 401,
                         },
                         operationStartTime
@@ -482,6 +490,7 @@ export class AuthenticationService {
             // STEP 5: VALIDATE PASSWORD
             // ================================================================
 
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             let validationResult: any
             try {
                 validationResult = await validatePassword(

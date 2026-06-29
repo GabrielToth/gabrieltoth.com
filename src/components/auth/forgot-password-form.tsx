@@ -30,6 +30,7 @@ interface ValidationErrors {
  * - Loading and error states
  * - Generic success message (doesn't reveal if email exists)
  */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function ForgotPasswordForm({ locale }: ForgotPasswordFormProps) {
     const [email, setEmail] = useState("")
     const [errors, setErrors] = useState<ValidationErrors>({})

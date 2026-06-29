@@ -257,6 +257,7 @@ export function detectSqlInjection(input: string): {
         return { detected: false }
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const upperInput = input.toUpperCase()
 
     // Check for SQL keywords

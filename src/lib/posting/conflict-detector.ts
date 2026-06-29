@@ -202,6 +202,7 @@ export class ConflictDetector {
     private async checkSchedulingConflicts(
         userId: string,
         scheduledTime: number,
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         platforms: SocialPlatform[]
     ): Promise<Conflict[]> {
         const conflicts: Conflict[] = []

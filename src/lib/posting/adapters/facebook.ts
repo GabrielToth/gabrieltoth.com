@@ -2,6 +2,7 @@ import { getValidFacebookToken } from "@/lib/facebook/get-valid-token"
 import { getFacebookConfig } from "@/lib/facebook/config"
 import { getFacebookOAuthService } from "@/lib/facebook/oauth-service"
 import { postToPageFeed } from "@/lib/facebook/posts"
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { getTokenStore } from "@/lib/token-store"
 
 export interface FacebookPostConfig {

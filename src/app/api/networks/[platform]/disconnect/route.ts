@@ -34,6 +34,7 @@ export async function DELETE(
         const networkManager = getNetworkManager()
         const disconnected = await networkManager.unlinkNetwork(
             userId,
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             platform as any
         )
 

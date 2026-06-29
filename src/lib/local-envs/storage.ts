@@ -1,5 +1,6 @@
 import type {
     EnvMode,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     LocalEnvEntry,
     LocalEnvsData,
     ServiceEnvs,

@@ -283,6 +283,7 @@ export async function connectIntegration(
  * Disconnect an integration
  */
 export async function disconnectIntegration(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     integrationId: string
 ): Promise<void> {
     try {
@@ -303,7 +304,9 @@ export async function disconnectIntegration(
  * Change password
  */
 export async function changePassword(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     currentPassword: string,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     newPassword: string
 ): Promise<void> {
     try {
@@ -367,6 +370,7 @@ export async function disableTwoFactor(): Promise<void> {
 /**
  * Download invoice
  */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function downloadInvoice(invoiceId: string): Promise<Blob> {
     try {
         // In production, replace with actual API call

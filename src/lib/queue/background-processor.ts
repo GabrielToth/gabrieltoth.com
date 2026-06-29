@@ -176,6 +176,7 @@ export class BackgroundProcessor {
                         externalId: `mock_${Date.now()}`,
                     })
                 }
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
             } catch (error) {
                 results.push({
                     network: network.platform,

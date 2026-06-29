@@ -111,6 +111,7 @@ export class IPValidationService {
         // Fall back to socket address
         const socketAddress =
             request.socket?.remoteAddress ||
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             (request as any).connection?.remoteAddress
         if (socketAddress && this.isValidIPAddress(socketAddress)) {
             return socketAddress

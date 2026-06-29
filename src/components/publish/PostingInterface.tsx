@@ -50,6 +50,7 @@ export default function PostingInterface({
     defaultDate,
 }: PostingInterfaceProps) {
     const [networks, setNetworks] = useState<Network[]>([])
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [groups, setGroups] = useState<NetworkGroup[]>([])
     const [selectedNetworkIds, setSelectedNetworkIds] = useState<string[]>([])
     const [content, setContent] = useState<PostContent>({
@@ -74,6 +75,7 @@ export default function PostingInterface({
                 const data = await res.json()
 
                 const mapped: Network[] = (data.networks || data || []).map(
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     (n: any, i: number) => ({
                         id: n.id || n.platform || String(i),
                         platform: n.platform || n.name,

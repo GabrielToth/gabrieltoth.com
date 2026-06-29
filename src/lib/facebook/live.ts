@@ -69,7 +69,7 @@ export async function getLiveVideos(
         before?: string
         after?: string
     }
-): Promise<{ data: FacebookLiveVideo[]; paging?: any }> {
+): Promise<{ data: FacebookLiveVideo[]; paging?: unknown }> {
     const params = new URLSearchParams({
         access_token: pageAccessToken,
         fields: "id,stream_url,secure_stream_url,status,title,description,creation_time,planned_start_time,permalink_url,embed_html,live_views",
@@ -155,7 +155,7 @@ export async function getLiveComments(
         from?: { name: string; id: string }
         created_time?: string
     }>
-    paging?: any
+    paging?: unknown
 }> {
     const params = new URLSearchParams({
         access_token: pageAccessToken,

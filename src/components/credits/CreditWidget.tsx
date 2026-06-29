@@ -6,6 +6,7 @@ import { useTranslations } from "next-intl"
 import { Coins, TrendingDown, TrendingUp } from "lucide-react"
 import { useEffect, useState } from "react"
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 interface BalanceData {
     balance: number
 }

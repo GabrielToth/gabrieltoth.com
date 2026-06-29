@@ -14,7 +14,7 @@ export interface FacebookPageInsight {
 
 export interface FacebookPageInsightsResponse {
     data: FacebookPageInsight[]
-    paging?: any
+    paging?: unknown
 }
 
 export type PageInsightMetric =
@@ -59,7 +59,7 @@ export interface FacebookPostInsight {
 
 export interface FacebookPostInsightsResponse {
     data: FacebookPostInsight[]
-    paging?: any
+    paging?: unknown
 }
 
 export async function getPageInsights(
