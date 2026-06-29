@@ -18,7 +18,8 @@
         "test:unit": "vitest --run --passWithNoTests",
         "test:watch": "vitest --watch",
         "test:coverage": "vitest --run --coverage",
-        "test:all": "npm run type-check && npm run lint && npm run format:check && npm run spell-check && npm test",
+        "test:all": "npm run type-check && npm run lint && npm run markdownlint && npm run format:check && npm run spell-check && npm test",
+        "markdownlint": "markdownlint-cli2 \"**/*.md\" \"#node_modules\" \"#.next\" \"#coverage\" \"#dist\" \"#out\" \"#build\" \"#.git\" \"#playwright-report\" \"#storybook-static\" \"#.venv\" \"#.kiro\" \"#.agents\" \"#.gemini\"",
         "clean": "Remove-Item -Recurse -Force .next, dist, out -ErrorAction SilentlyContinue",
         "prepare": "husky",
         "test:e2e": "playwright test",
@@ -84,6 +85,7 @@
         "husky": "^9.1.7",
         "jsdom": "^29.0.2",
         "lint-staged": "^17.0.7",
+        "markdownlint-cli2": "^0.22.1",
         "node-fetch": "^3.3.2",
         "prettier": "^3.8.3",
         "storybook": "^10.3.5",
@@ -101,6 +103,9 @@
         ],
         "*.{json,css,md}": [
             "prettier --write"
+        ],
+        "*.md": [
+            "markdownlint-cli2 --fix"
         ]
     },
     "engines": {

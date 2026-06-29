@@ -46,6 +46,7 @@ jobs:
                       #storybook-static
                       #.agents
                       #.gemini
+                      #.kiro
                       #.next
 
             - name: Format check

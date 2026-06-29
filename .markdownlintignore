@@ -9,3 +9,7 @@ build/
 playwright-report/
 storybook-static/
 .agents/**/references/**
+.agents/
+.kiro/
+.gemini/
+.venv/

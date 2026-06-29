@@ -1,15 +1,26 @@
 {
     "default": true,
+    "MD009": false,
+    "MD012": false,
     "MD013": false,
-    "MD033": false,
-    "MD041": false,
-    "MD040": false,
-    "MD060": false,
-    "MD036": false,
+    "MD022": false,
     "MD024": {
         "siblings_only": true
     },
-    "MD025": {
-        "level": 2
-    }
+    "MD025": false,
+    "MD026": false,
+    "MD028": false,
+    "MD029": false,
+    "MD032": false,
+    "MD031": false,
+    "MD033": false,
+    "MD034": false,
+    "MD036": false,
+    "MD040": false,
+    "MD041": false,
+    "MD047": false,
+    "MD048": false,
+    "MD049": false,
+    "MD050": false,
+    "MD060": false
 }
