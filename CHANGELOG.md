@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.16.0] - 2026-06-30
+
+### Added
+- Services landing page test suite — 35 unit and metadata tests (PR [#89](https://github.com/GabrielToth/gabrieltoth.com/pull/89))
+- Coverage crisis Phase 1 — test suite stabilization with 357 files passing, 6645/6649 tests (PR [#87](https://github.com/GabrielToth/gabrieltoth.com/pull/87))
+- `src/lib/validation/` domain modules — extracted from 988-line validation.ts into 8 files (PR [#86](https://github.com/GabrielToth/gabrieltoth.com/pull/86))
+
+### Changed
+- Updated resend from ^6.12.0 to ^6.16.0 (PR [#88](https://github.com/GabrielToth/gabrieltoth.com/pull/88))
+
 ## [1.12.0] - 2024-04-28
 
 ### Added

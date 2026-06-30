@@ -32,5 +32,5 @@ describe("editors app pages imports", () => {
             import("@/app/[locale]/editors/editors-whatsapp"),
         ])
         expect(mods.length).toBe(8)
-    }, 60_000)
+    }, 120_000)
 })

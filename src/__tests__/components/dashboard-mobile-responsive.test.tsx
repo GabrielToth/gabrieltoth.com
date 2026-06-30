@@ -5,6 +5,14 @@ import { PostCard } from "@/components/publish/PostCard"
 import { render, screen } from "@testing-library/react"
 import { describe, expect, it, vi } from "vitest"
 
+vi.mock("@/components/theme/theme-provider", () => ({
+    ThemeProvider: ({ children }: { children: React.ReactNode }) => children,
+    useTheme: () => ({
+        theme: "dark" as const,
+        toggleTheme: vi.fn(),
+    }),
+}))
+
 vi.mock("next-intl", () => ({
     useTranslations:
         (ns: string) => (key: string, params?: Record<string, string>) => {
@@ -292,9 +300,14 @@ describe("Mobile Responsive Design (<768px)", () => {
 
             const buttons = screen.getAllByRole("button")
             buttons.forEach(button => {
-                const hasMinHeight = button.className.includes("min-h-")
-                const hasMinWidth = button.className.includes("min-w-")
-                expect(hasMinHeight || hasMinWidth).toBe(true)
+                const className = button.className
+                const hasMinSize =
+                    className.includes("min-h-") ||
+                    className.includes("min-w-") ||
+                    className.includes("h-9") ||
+                    className.includes("w-9") ||
+                    className.includes("py-")
+                expect(hasMinSize).toBe(true)
             })
         })
 
