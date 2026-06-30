@@ -105,7 +105,7 @@ describe("UniversalPostingButton", () => {
 
         expect(getPostingButton()).toHaveAttribute(
             "aria-label",
-            "3 networks linked"
+            "Universal posting button. 3 networks linked."
         )
     })
 

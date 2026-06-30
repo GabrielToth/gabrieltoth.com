@@ -59,11 +59,18 @@ describe("Bug Condition Exploration - Logout Button Not Working", () => {
         })
 
         it("should send POST request to /api/auth/logout when logout button is clicked", async () => {
-            // Mock successful logout response
-            mockFetch.mockResolvedValueOnce({
-                ok: true,
-                json: async () => ({ success: true }),
-            })
+            // Mock CSRF response first, then successful logout response
+            mockFetch
+                .mockResolvedValueOnce({
+                    ok: true,
+                    json: async () => ({
+                        data: { csrfToken: "test-csrf-token" },
+                    }),
+                })
+                .mockResolvedValueOnce({
+                    ok: true,
+                    json: async () => ({ success: true }),
+                })
 
             render(
                 <DashboardLayout activeTab="publish">
@@ -88,6 +95,7 @@ describe("Bug Condition Exploration - Logout Button Not Working", () => {
                             method: "POST",
                             headers: expect.objectContaining({
                                 "Content-Type": "application/json",
+                                "X-CSRF-Token": "test-csrf-token",
                             }),
                         })
                     )
@@ -97,11 +105,18 @@ describe("Bug Condition Exploration - Logout Button Not Working", () => {
         })
 
         it("should handle logout API error gracefully", async () => {
-            // Mock failed logout response
-            mockFetch.mockResolvedValueOnce({
-                ok: false,
-                json: async () => ({ error: "Logout failed" }),
-            })
+            // Mock CSRF response first, then failed logout response
+            mockFetch
+                .mockResolvedValueOnce({
+                    ok: true,
+                    json: async () => ({
+                        data: { csrfToken: "test-csrf-token" },
+                    }),
+                })
+                .mockResolvedValueOnce({
+                    ok: false,
+                    json: async () => ({ error: "Logout failed" }),
+                })
 
             render(
                 <DashboardLayout activeTab="publish">
@@ -115,7 +130,7 @@ describe("Bug Condition Exploration - Logout Button Not Working", () => {
             })
             fireEvent.click(logoutButtons[0])
 
-            // Assert that fetch was called
+            // Assert that fetch was called for logout
             await waitFor(
                 () => {
                     expect(mockFetch).toHaveBeenCalledWith(
@@ -128,8 +143,15 @@ describe("Bug Condition Exploration - Logout Button Not Working", () => {
         })
 
         it("should handle network errors during logout", async () => {
-            // Mock network error
-            mockFetch.mockRejectedValueOnce(new Error("Network error"))
+            // Mock CSRF response first, then network error for logout
+            mockFetch
+                .mockResolvedValueOnce({
+                    ok: true,
+                    json: async () => ({
+                        data: { csrfToken: "test-csrf-token" },
+                    }),
+                })
+                .mockRejectedValueOnce(new Error("Network error"))
 
             render(
                 <DashboardLayout activeTab="publish">
@@ -143,7 +165,7 @@ describe("Bug Condition Exploration - Logout Button Not Working", () => {
             })
             fireEvent.click(logoutButtons[0])
 
-            // Assert that fetch was called
+            // Assert that fetch was called for logout
             await waitFor(
                 () => {
                     expect(mockFetch).toHaveBeenCalledWith(
@@ -156,11 +178,18 @@ describe("Bug Condition Exploration - Logout Button Not Working", () => {
         })
 
         it("should send correct headers in logout request", async () => {
-            // Mock successful logout response
-            mockFetch.mockResolvedValueOnce({
-                ok: true,
-                json: async () => ({ success: true }),
-            })
+            // Mock CSRF response first, then successful logout response
+            mockFetch
+                .mockResolvedValueOnce({
+                    ok: true,
+                    json: async () => ({
+                        data: { csrfToken: "test-csrf-token" },
+                    }),
+                })
+                .mockResolvedValueOnce({
+                    ok: true,
+                    json: async () => ({ success: true }),
+                })
 
             render(
                 <DashboardLayout activeTab="publish">
@@ -181,9 +210,10 @@ describe("Bug Condition Exploration - Logout Button Not Working", () => {
                         "/api/auth/logout",
                         expect.objectContaining({
                             method: "POST",
-                            headers: {
+                            headers: expect.objectContaining({
                                 "Content-Type": "application/json",
-                            },
+                                "X-CSRF-Token": "test-csrf-token",
+                            }),
                         })
                     )
                 },
