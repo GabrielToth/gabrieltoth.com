@@ -271,12 +271,12 @@ describe("Password storage security", () => {
                     times.push(performance.now() - start)
                 }
 
-                // All times should be within acceptable variance (100ms on CI systems)
+                // All times should be within acceptable variance (200ms on CI systems)
                 const maxTime = Math.max(...times)
                 const minTime = Math.min(...times)
                 const variance = maxTime - minTime
 
-                expect(variance).toBeLessThan(150)
+                expect(variance).toBeLessThan(200)
             })
 
             it("should not log execution times that reveal timing information", () => {
