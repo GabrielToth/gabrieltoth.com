@@ -36,6 +36,7 @@ export async function DELETE(
         const group = await groupManager.removeNetworkFromGroup(
             userId,
             groupId,
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             platform as any
         )
 

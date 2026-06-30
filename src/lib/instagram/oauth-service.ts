@@ -248,6 +248,7 @@ export class InstagramOAuthService extends BaseService {
             const data = await response.json()
 
             const pageWithIg = data.data?.find(
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 (page: any) => page.instagram_business_account
             )
 

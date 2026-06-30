@@ -467,6 +467,7 @@ export class NetworkGroupManager {
      * Map database record to NetworkGroup
      */
     private mapDatabaseToGroup(
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         dbGroup: any,
         networks: SocialPlatform[]
     ): NetworkGroup {

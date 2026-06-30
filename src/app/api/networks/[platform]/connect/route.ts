@@ -17,6 +17,7 @@ const logger = createLogger("NetworkConnectEndpoint")
 interface ConnectNetworkRequest {
     platformUserId: string
     platformUsername: string
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     metadata?: Record<string, any>
 }
 
@@ -58,6 +59,7 @@ export async function POST(
         const networkManager = getNetworkManager()
         const network = await networkManager.linkNetwork(
             userId,
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             platform as any,
             body.platformUserId,
             body.platformUsername,

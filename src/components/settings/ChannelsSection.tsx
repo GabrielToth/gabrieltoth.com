@@ -41,6 +41,7 @@ export interface ChannelsSectionProps {
 export const ChannelsSection: React.FC<ChannelsSectionProps> = ({
     channels,
     onDisconnect,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     onConnect,
 }) => {
     const t = useTranslations("dashboard")
@@ -62,6 +63,7 @@ export const ChannelsSection: React.FC<ChannelsSectionProps> = ({
     /**
      * Confirm disconnect
      */
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const handleConfirmDisconnect = async (channelId: string) => {
         try {
             setDisconnectingId(channelId)

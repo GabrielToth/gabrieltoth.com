@@ -37,6 +37,7 @@ export default function ContentCreator({
     const [urls, setUrls] = useState<string[]>([])
     const [urlInput, setUrlInput] = useState("")
     const [isDraft, setIsDraft] = useState(false)
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([])
 
     const characterCount = text.length

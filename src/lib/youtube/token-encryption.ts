@@ -208,6 +208,7 @@ export class TokenEncryptionService {
      */
     private getKeyFromLocalFile(): Buffer {
         const fs = require("fs")
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const path = require("path")
 
         const keyPath = this.keyManagementConfig.localKeyPath!

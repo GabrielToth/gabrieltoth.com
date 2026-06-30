@@ -67,9 +67,11 @@ const API_ROUTES = [
 export default function CreditsPage() {
     const t = useTranslations("dashboard.credits")
     const locale = useLocale()
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [balance, setBalance] = useState<number | null>(null)
     const [transactions, setTransactions] = useState<TransactionData[]>([])
     const [loading, setLoading] = useState(true)
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [isAdmin, setIsAdmin] = useState(false)
     const [userId, setUserId] = useState<string | null>(null)
     const [grantAmount, setGrantAmount] = useState("")

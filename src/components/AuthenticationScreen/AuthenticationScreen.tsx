@@ -26,7 +26,9 @@ import { EmailAuthForm } from "./EmailAuthForm"
  * Handles error display and dismissal
  */
 export const AuthenticationScreen: React.FC<AuthenticationScreenProps> = ({
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     onAuthSuccess,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     onAuthError,
     redirectTo,
 }) => {

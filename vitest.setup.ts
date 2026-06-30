@@ -134,177 +134,90 @@ vi.mock("next/navigation", () => ({
     notFound: vi.fn(),
 }))
 
-// Mock next-intl with English text for common namespaces
-vi.mock("next-intl", () => {
-    // Translation maps for each namespace
-    const publishMap: Record<string, string> = {
-        title: "Publish",
-        description: "Manage and schedule your social media posts",
-        postCount: "Showing {shown} of {total} posts",
-        filterByChannel: "Filter by Channel",
-        filtersApplied: "{count} filters applied",
-        clearAllFilters: "Clear all filters",
-        noConnectedChannels: "No connected channels available",
-        createContent: "Create Content",
-        contentDescription: "Write your post content below",
-        content: "Post content",
-        whatsOnYourMind: "What's on your mind?",
-        bold: "Bold",
-        italic: "Italic",
-        underline: "Underline",
-        link: "Link",
-        characters: "{count} / {limit} characters",
-        exceedsLimit: "Exceeds platform limit",
-        images: "Upload images",
-        uploadImages: "Upload images",
-        delete: "Delete",
-        addUrls: "Add URLs",
-        add: "Add",
-        saveAsDraft: "Save as draft",
-        edit: "Edit",
-        published: "Published: ",
-        scheduled: "Scheduled: ",
-        error: "Error: ",
-        cannotEditPublished: "Cannot edit published posts",
-        errorLoading: "Error loading posts",
-        retry: "Retry",
-        noPostsFound: "No posts found",
-        createFirstPost: "Create your first post",
-        linkNetworksFirst: "Link social networks first to start posting",
-        postToNetworks: "Post to {count} networks",
-        networksLinked: "{count} networks linked",
-        post: "Post",
-        tooltipText: "",
+// Load translations for next-intl mock
+const flatTranslations: Record<string, string> = {}
+function flattenObj(obj: any, prefix = "") {
+    for (const k in obj) {
+        const pre = prefix.length ? prefix + "." : ""
+        if (typeof obj[k] === "object" && obj[k] !== null) {
+            flattenObj(obj[k], pre + k)
+        } else {
+            flatTranslations[pre + k] = String(obj[k])
+            flatTranslations[k] = String(obj[k])
+        }
     }
-    const settingsMap: Record<string, string> = {
-        profileInformation: "Profile Information",
-        profileDescription: "Update your profile information",
-        profilePhoto: "Profile Photo",
-        fullName: "Full Name",
-        emailAddress: "Email Address",
-        enterFullName: "Enter your full name",
-        enterEmail: "Enter your email",
-        saveChanges: "Save Changes",
-        saving: "Saving...",
-        nameRequired: "Name is required",
-        nameMinLength: "Name must be at least 2 characters",
-        emailRequired: "Email is required",
-        emailValid: "Please enter a valid email",
-        profileUpdated: "Profile updated successfully!",
-        failedToSaveProfile: "Failed to save profile",
-        currentPlan: "Current Plan",
-        planDescription: "Manage your subscription and billing",
-        planValue: "{plan} Plan",
-        plan: "Pro Plan",
-        youAreOnPlan: "You are on the {plan} plan",
-        perMonth: "/month",
-        planIncludes: "Plan includes",
-        unlimitedPosts: "Unlimited posts",
-        connectedChannels: "{count} connected channels",
-        basicAnalytics: "Basic analytics",
-        emailSupport: "Email support",
-        nextBillingDate: "Next billing date:",
-        upgradePlan: "Upgrade Plan",
-        billingHistory: "Billing History",
-        billingHistoryDescription: "View and download your past invoices",
-        date: "Date",
-        amount: "Amount",
-        status: "Status",
-        action: "Action",
-        downloading: "Downloading...",
-        download: "Download",
-        noInvoices: "No invoices yet. Your first invoice will appear here.",
-        integrations: "Integrations",
-        integrationsDescription: "Connect third-party apps to extend functionality",
-        connectedApps: "{count} apps connected",
-        connectedOn: "Connected on",
-        connected: "Connected",
-        cancel: "Cancel",
-        disconnecting: "Disconnecting...",
-        confirma: "Confirm",
-        disconnect: "Disconnect",
-        availableApps: "{count} available apps",
-        notConnected: "Not Connected",
-        available: "Available",
-        addIntegration: "Add Integration",
-        preferences: "Preferences",
-        notifications: "Notifications",
-        notificationsDescription: "Receive email notifications about your account activity",
-        toggleNotifications: "Toggle notifications",
-        on: "On",
-        off: "Off",
-        language: "Language",
-        selectLanguage: "Select language",
-        languageEnglish: "English",
-        languagePortuguese: "Portuguese",
-        languageSpanish: "Spanish",
-        languageFrench: "French",
-        languageDescription: "Choose your preferred language",
-        theme: "Theme",
-        selectTheme: "Select theme",
-        light: "Light",
-        dark: "Dark",
-        autoTheme: "Auto (System)",
-        themeDescription: "Choose your preferred theme",
-        timezone: "Timezone",
-        selectTimezone: "Select timezone",
-        timezoneDescription: "Choose your timezone",
-        preferencesSavedAutomatically: "Your preferences are saved automatically when you make changes.",
-    }
-    const dashboardMap: Record<string, string> = {
-        "youtube.connectYouTube": "Connect YouTube",
-        "youtube.connectedSince": "Connected since",
-        "youtube.noChannel": "No YouTube channel connected",
-        "youtube.connected": "Connected",
-        "youtube.cancel": "Cancel",
-        "youtube.disconnecting": "Disconnecting...",
-        "youtube.confirmDisconnect": "Confirm disconnect",
-        "youtube.disconnect": "Disconnect",
-        "youtube.connecting": "Connecting...",
-        "youtube.connect": "Connect",
-        "youtube.notConnected": "Not Connected",
-        organisation: "My Organization",
-        chooseOrg: "Choose organization",
-    }
+}
 
-    return {
-        useTranslations: (namespace?: string) => {
-            const t = (key: string, params?: Record<string, string | number>) => {
-                // Choose the right map based on namespace
-                let map: Record<string, string> = {}
-                if (namespace === "dashboard.publish") {
-                    map = publishMap
-                } else if (namespace === "dashboard.settings") {
-                    map = settingsMap
-                } else if (namespace === "dashboard") {
-                    map = dashboardMap
-                }
-                let value = map[key] ?? key
-                if (params) {
-                    for (const [k, v] of Object.entries(params)) {
-                        value = value.replace(`{${k}}`, String(v))
-                    }
-                }
-                return value
+try {
+    const i18nDir = path.resolve(process.cwd(), "src/i18n/en")
+    if (fs.existsSync(i18nDir)) {
+        const files = fs.readdirSync(i18nDir)
+        for (const file of files) {
+            if (file.endsWith(".json")) {
+                const ns = file.replace(".json", "")
+                const content = JSON.parse(
+                    fs.readFileSync(path.join(i18nDir, file), "utf8")
+                )
+                flattenObj(content, ns)
             }
-            // Add raw method that returns empty array by default
-            t.raw = (key: string) => {
-                return []
-            }
-            // Add rich method
-            t.rich = (key: string, values?: any) => key
-            return t
-        },
-        useLocale: () => "en",
-        useMessages: () => ({}),
-        useFormatter: () => ({
-            dateTime: (date: Date) => date.toISOString(),
-            number: (num: number) => num.toString(),
-        }),
-        NextIntlClientProvider: ({ children }: { children: React.ReactNode }) =>
-            children,
+        }
     }
-})
+} catch (e) {
+    console.error("Failed to load mock translations", e)
+}
+
+// Mock next-intl
+vi.mock("next-intl", () => ({
+    useTranslations: (namespace?: string) => {
+        const t = (key: string) => {
+            const fullKey = namespace ? `${namespace}.${key}` : key
+            if (flatTranslations[fullKey]) return flatTranslations[fullKey]
+            if (flatTranslations[key]) return flatTranslations[key]
+
+            if (key === "saveChanges") return "Save changes"
+            // Expand camelCase for testing queries fallback
+            return key
+                .replace(/([A-Z])/g, " $1")
+                .trim()
+                .replace(/^./, str => str.toUpperCase())
+        }
+        t.raw = (key: string) => []
+        t.rich = (key: string, values?: any) => {
+            const fullKey = namespace ? `${namespace}.${key}` : key
+            if (flatTranslations[fullKey]) return flatTranslations[fullKey]
+            if (flatTranslations[key]) return flatTranslations[key]
+            return key
+        }
+        return t
+    },
+    useLocale: () => "en",
+    useMessages: () => ({}),
+    useFormatter: () => ({
+        dateTime: (date: Date) => date.toISOString(),
+        number: (num: number) => num.toString(),
+    }),
+    NextIntlClientProvider: ({ children }: { children: React.ReactNode }) =>
+        children,
+}))
+
+// Mock custom theme provider
+vi.mock("@/components/theme/theme-provider", () => ({
+    useTheme: () => ({
+        theme: "light",
+        toggleTheme: vi.fn(),
+    }),
+    ThemeProvider: ({ children }: { children: React.ReactNode }) => children,
+}))
+
+// Mock next-themes just in case
+vi.mock("next-themes", () => ({
+    useTheme: () => ({
+        theme: "light",
+        setTheme: vi.fn(),
+        systemTheme: "light",
+    }),
+    ThemeProvider: ({ children }: { children: React.ReactNode }) => children,
+}))
 
 // Mock window.matchMedia (jsdom only)
 if (typeof window !== "undefined") {

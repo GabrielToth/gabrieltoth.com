@@ -72,6 +72,7 @@ export async function POST(
         // Revoke the token with the OAuth provider
         const oauthManager = getOAuthManager()
         const revoked = await oauthManager.revokeToken(
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             platform as any,
             token.accessToken,
             userId

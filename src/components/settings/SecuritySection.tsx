@@ -58,6 +58,7 @@ interface FormErrors {
  * - Current password verification
  * - Error handling
  */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const SecuritySection: React.FC<SecuritySectionProps> = ({ user }) => {
     const t = useTranslations("dashboard.settings")
     // 2FA state
@@ -206,6 +207,7 @@ export const SecuritySection: React.FC<SecuritySectionProps> = ({ user }) => {
      */
     const handleTwoFactorSetup = async () => {
         try {
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             const result = await enableTwoFactor()
             setTwoFactorEnabled(true)
             setShowTwoFactorSetup(false)

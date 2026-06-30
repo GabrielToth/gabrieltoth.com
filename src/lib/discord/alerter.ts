@@ -12,6 +12,7 @@ export interface Alert {
     level: AlertLevel
     title: string
     message: string
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     context?: Record<string, any>
     stack?: string
 }
@@ -67,6 +68,7 @@ export class DiscordAlerterImpl implements DiscordAlerter {
         }
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private createEmbed(alert: Alert): any {
         const colors: Record<AlertLevel, number> = {
             error: 0xffa500, // Orange
@@ -75,6 +77,7 @@ export class DiscordAlerterImpl implements DiscordAlerter {
             shutdown: 0x0000ff, // Blue
         }
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const embed: any = {
             title: alert.title,
             description: alert.message,

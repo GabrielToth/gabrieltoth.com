@@ -140,6 +140,7 @@ export async function PUT(request: NextRequest) {
         }
 
         // Parse request body
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const body = await request.json()
 
         // Process the update

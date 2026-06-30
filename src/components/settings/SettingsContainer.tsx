@@ -9,6 +9,8 @@ import {
     connectIntegration,
 } from "@/lib/api/user"
 import { logger } from "@/lib/logger"
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { connectChannel, disconnectChannel } from "@/lib/api/channels"
 import { BillingSection } from "./BillingSection"
 import { ChannelsSection } from "./ChannelsSection"

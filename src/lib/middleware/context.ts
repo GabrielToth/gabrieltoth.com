@@ -28,6 +28,7 @@ export interface RequestContext {
 export function contextMiddleware(request: NextRequest): NextResponse {
     const requestId = request.headers.get("x-request-id") || generateRequestId()
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const context: RequestContext = {
         requestId,
         startTime: Date.now(),

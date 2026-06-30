@@ -17,6 +17,7 @@ import {
     markAccountInProgress,
     updateUserAccountCompletion,
     upsertUser,
+    createOAuthUser,
 } from "./user"
 
 // Mock the database module
@@ -566,6 +567,14 @@ describe("User Management", () => {
 
             expect(result).toBeNull()
         })
+
+        it("should throw error and log when database query fails", async () => {
+            const googleId = "123456789"
+            const error = new Error("Database connection failed")
+            vi.mocked(db.db.queryOne).mockRejectedValueOnce(error)
+
+            await expect(getUserByGoogleId(googleId)).rejects.toThrow("Database connection failed")
+        })
     })
 
     describe("getUserByEmail()", () => {
@@ -593,6 +602,22 @@ describe("User Management", () => {
             const result = await getUserByEmail("non-existent@example.com")
 
             expect(result).toBeUndefined()
+        })
+    })
+
+    describe("createOAuthUser()", () => {
+        it("should throw error and log when database query fails", async () => {
+            const data = {
+                email: "test@example.com",
+                password_hash: "hashed123",
+                oauth_provider: "google",
+                oauth_id: "google-123",
+                name: "Test User"
+            }
+            const error = new Error("Database connection failed")
+            vi.mocked(db.db.queryOne).mockRejectedValueOnce(error)
+
+            await expect(createOAuthUser(data)).rejects.toThrow("Database connection failed")
         })
     })
 

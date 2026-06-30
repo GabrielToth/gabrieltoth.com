@@ -19,7 +19,7 @@
         "test:watch": "vitest --watch",
         "test:coverage": "vitest --run --coverage",
         "test:all": "npm run type-check && npm run lint && npm run markdownlint && npm run format:check && npm run spell-check && npm test",
-        "markdownlint": "markdownlint-cli2 \"**/*.md\" \"#node_modules\" \"#.next\" \"#coverage\" \"#dist\" \"#out\" \"#build\" \"#.git\" \"#playwright-report\" \"#storybook-static\" \"#.venv\" \"#.kiro\" \"#.agents\" \"#.gemini\"",
+        "markdownlint": "markdownlint-cli2 \"**/*.md\" \"#node_modules\" \"#.next\" \"#coverage\" \"#dist\" \"#out\" \"#build\" \"#.git\" \"#playwright-report\" \"#storybook-static\" \"#.venv\" \"#.kiro\" \"#.agents\" \"#.gemini\" \"#.opencode\"",
         "clean": "Remove-Item -Recurse -Force .next, dist, out -ErrorAction SilentlyContinue",
         "prepare": "husky",
         "test:e2e": "playwright test",
@@ -36,7 +36,13 @@
         "perf:full": "npm run build && npm run analyze && npm run lighthouse",
         "bundle:size": "npm run build && node -e \"const fs=require('fs'); const path=require('path'); const getBundleSize=dir=>{let size=0; fs.readdirSync(dir).forEach(file=>{const filePath=path.join(dir,file); const stat=fs.statSync(filePath); if(stat.isDirectory()){size+=getBundleSize(filePath);}else{size+=stat.size;}}); return size;}; console.log('Bundle size:', (getBundleSize('.next')/1024/1024).toFixed(2) + 'MB');\"",
         "metrics:gsc": "node scripts/gsc-api-extract.js",
-        "metrics:psi": "node scripts/psi-extract.js"
+        "metrics:psi": "node scripts/psi-extract.js",
+        "supabase": "supabase",
+        "db:push": "supabase db push",
+        "db:types": "supabase gen types typescript --linked > src/types/supabase.ts",
+        "db:types:local": "supabase gen types typescript --local > src/types/supabase.ts",
+        "db:migrate": "powershell -File scripts/apply-migration.ps1 local",
+        "db:migrate:remote": "powershell -File scripts/apply-migration.ps1 remote"
     },
     "devDependencies": {
         "@chromatic-com/storybook": "^5.1.2",

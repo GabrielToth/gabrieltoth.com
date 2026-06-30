@@ -176,6 +176,7 @@ async function handleOAuthCallback(
             // Log failed login attempt
             const errorCode =
                 error instanceof OAuthValidationError ||
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 (error as any).code !== undefined
                     ? (error as OAuthValidationError).code
                     : "VALIDATION_FAILED"

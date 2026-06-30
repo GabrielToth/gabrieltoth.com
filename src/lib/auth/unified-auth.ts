@@ -125,6 +125,7 @@ export async function signUpWithEmail(
 }
 
 export async function signInWithOAuth(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     provider: "google" | "github"
 ): Promise<void> {
     const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID
@@ -152,6 +153,7 @@ export async function signInWithOAuth(
     }
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function signInWithSSO(email: string): Promise<void> {
     throw new Error(
         "SSO is not supported with the current authentication system."

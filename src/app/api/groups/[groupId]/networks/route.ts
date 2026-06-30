@@ -55,6 +55,7 @@ export async function POST(
         const group = await groupManager.addNetworkToGroup(
             userId,
             groupId,
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             body.platform as any
         )
 

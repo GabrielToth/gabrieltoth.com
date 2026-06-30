@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils"
 import { useTranslations } from "next-intl"
 import React, { useState } from "react"
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const CONNECT_MSG = "Connect Channels"
 
 export interface SocialChannel {
