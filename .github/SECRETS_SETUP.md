@@ -1,8 +1,48 @@
-# GitHub Secrets Configuration
+# GitHub Secrets & Variables Configuration
 
-This document records the GitHub Actions secrets that have been configured for CI/CD builds.
+This document records all GitHub Actions secrets and variables that have been configured for CI/CD builds.
 
-## Added Secrets (for Build Support)
+## GitHub Variables (Non-sensitive Environment Variables)
+
+The following variables were added as GitHub repository variables (visible in build logs):
+
+### Build Configuration
+- `NODE_ENV` = production
+- `DEBUG` = false
+- `NEXT_PUBLIC_DEBUG` = false
+
+### Application URLs
+- `NEXT_PUBLIC_APP_URL` = https://www.gabrieltoth.com
+- `NEXT_PUBLIC_SITE_URL` = https://www.gabrieltoth.com
+- `NEXT_PUBLIC_SUPABASE_URL` = https://test.supabase.co (for CI builds)
+
+### Locale Settings
+- `LANG` = en_US.UTF-8
+- `LC_ALL` = en_US.UTF-8
+
+### OAuth Redirect URIs
+- `YOUTUBE_REDIRECT_URI` = https://www.gabrieltoth.com/api/youtube/link/callback
+- `INSTAGRAM_REDIRECT_URI` = https://www.gabrieltoth.com/api/oauth/callback/instagram
+- `TIKTOK_REDIRECT_URI` = https://www.gabrieltoth.com/api/oauth/callback/tiktok
+- `FACEBOOK_REDIRECT_URI` = https://www.gabrieltoth.com/api/oauth/callback/facebook
+
+### Security Configuration
+- `SUPPRESS_SECURITY_CONFIG_LOGS` = true
+- `SUPPRESS_AUTH_SECURITY_STDERR` = true
+
+### Password Hashing (Argon2id)
+- `ARGON2_MEMORY_COST` = 64
+- `ARGON2_TIME_COST` = 3
+- `ARGON2_PARALLELISM` = 2
+
+### CAPTCHA
+- `CAPTCHA_PROVIDER` = cloudflare
+- `NEXT_PUBLIC_CAPTCHA_SITE_KEY` = 1x00000000000000000000000000000000000001
+
+### Supabase
+- `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.test-key-for-ci-build
+
+## Added Secrets (for Build Support - Sensitive)
 
 The following secrets were added to enable the production build to complete successfully:
 
