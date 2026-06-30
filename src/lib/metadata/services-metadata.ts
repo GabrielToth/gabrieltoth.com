@@ -1,7 +1,10 @@
 import { type Locale } from "@/lib/i18n"
 import { type Metadata } from "next"
 
-export async function generateServicesMetadata(locale: Locale, t: (key: string) => string): Promise<Metadata> {
+export async function generateServicesMetadata(
+    locale: Locale,
+    t: (key: string) => string
+): Promise<Metadata> {
     return {
         title: `${t("landing.title")} - Gabriel Toth`,
         description: t("landing.description"),
