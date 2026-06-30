@@ -21,6 +21,12 @@ import { DashboardLayout } from "@/components/dashboard/DashboardLayout"
 import { fireEvent, render, screen, waitFor } from "@testing-library/react"
 import { beforeEach, describe, expect, it, vi } from "vitest"
 
+vi.mock("next/navigation", () => ({
+    useRouter: () => ({ push: vi.fn() }),
+    usePathname: () => "/dashboard",
+    useSearchParams: () => new URLSearchParams(),
+}))
+
 describe("Bug Condition Exploration - Logout Button Not Working", () => {
     let mockFetch: any
 
@@ -61,11 +67,6 @@ describe("Bug Condition Exploration - Logout Button Not Working", () => {
                     json: async () => ({ success: true }),
                 })
 
-            // Mock router.push to prevent actual navigation
-            vi.mock("next/navigation", () => ({
-                useRouter: () => ({ push: vi.fn() }),
-            }))
-
             render(
                 <DashboardLayout activeTab="publish">
                     <div>Dashboard Content</div>
@@ -85,7 +86,7 @@ describe("Bug Condition Exploration - Logout Button Not Working", () => {
                 () => {
                     // Check that logout endpoint was called (second fetch call)
                     const callsToLogout = mockFetch.mock.calls.filter(
-                        call => call[0] === "/api/auth/logout"
+                        (call: unknown[]) => call[0] === "/api/auth/logout"
                     )
                     expect(callsToLogout.length).toBeGreaterThan(0)
                 },
@@ -121,7 +122,7 @@ describe("Bug Condition Exploration - Logout Button Not Working", () => {
             await waitFor(
                 () => {
                     const callsToLogout = mockFetch.mock.calls.filter(
-                        call => call[0] === "/api/auth/logout"
+                        (call: unknown[]) => call[0] === "/api/auth/logout"
                     )
                     expect(callsToLogout.length).toBeGreaterThan(0)
                 },
@@ -154,7 +155,7 @@ describe("Bug Condition Exploration - Logout Button Not Working", () => {
             await waitFor(
                 () => {
                     const callsToLogout = mockFetch.mock.calls.filter(
-                        call => call[0] === "/api/auth/logout"
+                        (call: unknown[]) => call[0] === "/api/auth/logout"
                     )
                     expect(callsToLogout.length).toBeGreaterThan(0)
                 },
@@ -190,7 +191,7 @@ describe("Bug Condition Exploration - Logout Button Not Working", () => {
             await waitFor(
                 () => {
                     const callsToLogout = mockFetch.mock.calls.filter(
-                        call => call[0] === "/api/auth/logout"
+                        (call: unknown[]) => call[0] === "/api/auth/logout"
                     )
                     expect(callsToLogout.length).toBeGreaterThan(0)
                     if (callsToLogout.length > 0) {

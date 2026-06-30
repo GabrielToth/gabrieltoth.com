@@ -127,19 +127,11 @@ describe("Property 1: Email Format Validation Consistency", () => {
     it("should reject emails without @ symbol", () => {
         fc.assert(
             fc.property(
-                fc.tuple(
-                    fc.string({ minLength: 1, maxLength: 20 }),
-                    fc.string({ minLength: 1, maxLength: 20 })
-                ),
-                ([part1, part2]) => {
-                    // Generate invalid email by removing @ symbol
-                    const invalidEmail = `${part1}${part2}`
-
-                    const result = validateEmail(invalidEmail)
-
+                fc.stringMatching(/^[^@]+$/),
+                invalidEmail => {
                     // Property: emails without @ are always invalid
-                    expect(result.isValid).toBe(false)
-                    expect(result.error).toBeDefined()
+                    expect(validateEmail(invalidEmail).isValid).toBe(false)
+                    expect(validateEmail(invalidEmail).error).toBeDefined()
                 }
             ),
             { numRuns: 100 }
