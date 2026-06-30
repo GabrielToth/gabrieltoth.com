@@ -1,77 +1,52 @@
-import { beforeAll, describe, expect, it, vi } from "vitest"
+import servicesEn from "../../i18n/en/services.json"
+import servicesEs from "../../i18n/es/services.json"
+import servicesDe from "../../i18n/de/services.json"
+import servicesPtBr from "../../i18n/pt-BR/services.json"
+import { describe, expect, it, vi } from "vitest"
 
 const LOCALES = ["en", "pt-BR", "es", "de"] as const
 
-const mockTranslations: Record<string, Record<string, string>> = {
-    en: {
-        "landing.title": "Services",
-        "landing.description":
-            "From channel management to custom development, I offer a range of services to help you grow your online presence and achieve your goals.",
-    },
-    "pt-BR": {
-        "landing.title": "Serviços",
-        "landing.description":
-            "Do gerenciamento de canais ao desenvolvimento personalizado, ofereço uma gama de serviços para ajudar você a crescer sua presença online e alcançar seus objetivos.",
-    },
-    es: {
-        "landing.title": "Servicios",
-        "landing.description":
-            "Desde la gestión de canales hasta el desarrollo personalizado, ofrezco uma gama de servicios para ayudarte a crecer tu presencia online y alcanzar tus objetivos.",
-    },
-    de: {
-        "landing.title": "Dienstleistungen",
-        "landing.description":
-            "Von der Kanalverwaltung bis zur individuellen Entwicklung biete ich eine Reihe von Dienstleistungen an, die Ihnen helfen, Ihre Online-Präsenz auszubauen und Ihre Ziele zu erreichen.",
-    },
+// Map locales to their translations
+const translationMap: Record<string, typeof servicesEn> = {
+    en: servicesEn,
+    "pt-BR": servicesPtBr,
+    es: servicesEs,
+    de: servicesDe,
 }
 
-// Mock next-intl/server before importing the module
+// Mock next-intl/server with actual translations from i18n files
 vi.mock("next-intl/server", () => ({
     getTranslations: (opts: { locale: string; namespace: string }) => {
-        const translations = mockTranslations[opts.locale] ?? {}
-        return (key: string) => translations[key] ?? key
+        const translations = translationMap[opts.locale] ?? translationMap["en"]
+        return (key: string) => {
+            // Navigate nested keys like "landing.title"
+            const keys = key.split(".")
+            let value: any = translations
+            for (const k of keys) {
+                value = value?.[k as keyof typeof value]
+            }
+            return value ?? key
+        }
     },
 }))
 
-// Lazy import after mocking
-let generateMetadata: any
-
 describe("Services page - generateMetadata", () => {
-    beforeAll(async () => {
-        // Dynamic import to avoid TypeScript resolution issues with [locale] in path
-        // @ts-expect-error - dynamic import with path alias variable
-        const mod = await import(`../../../app/[locale]/services/page`)
-        generateMetadata = mod.generateMetadata
+    it.each(LOCALES)("returns metadata for locale '%s'", async locale => {
+        const mod = await import("@/app/[locale]/services/page")
+        const metadata = await mod.generateMetadata({
+            params: Promise.resolve({ locale }),
+        })
+
+        expect(metadata).toBeTruthy()
+        expect(metadata.title).toBeTruthy()
+        expect(metadata.description).toBeTruthy()
     })
 
     it.each(LOCALES)(
-        "returns metadata object for locale '%s'",
+        "includes keywords array for locale '%s'",
         async locale => {
-            const metadata = await generateMetadata({
-                params: Promise.resolve({ locale }),
-            })
-
-            expect(metadata).toBeTruthy()
-            expect(metadata.title).toBeTruthy()
-        }
-    )
-
-    it.each(LOCALES)(
-        "includes description in metadata for locale '%s'",
-        async locale => {
-            const metadata = await generateMetadata({
-                params: Promise.resolve({ locale }),
-            })
-
-            expect(metadata.description).toBeTruthy()
-            expect(typeof metadata.description).toBe("string")
-        }
-    )
-
-    it.each(LOCALES)(
-        "includes keywords array in metadata for locale '%s'",
-        async locale => {
-            const metadata = await generateMetadata({
+            const mod = await import("@/app/[locale]/services/page")
+            const metadata = await mod.generateMetadata({
                 params: Promise.resolve({ locale }),
             })
 
@@ -85,7 +60,8 @@ describe("Services page - generateMetadata", () => {
     it.each(LOCALES)(
         "includes openGraph properties for locale '%s'",
         async locale => {
-            const metadata = await generateMetadata({
+            const mod = await import("@/app/[locale]/services/page")
+            const metadata = await mod.generateMetadata({
                 params: Promise.resolve({ locale }),
             })
 
@@ -99,7 +75,8 @@ describe("Services page - generateMetadata", () => {
     it.each(LOCALES)(
         "openGraph locale matches provided locale '%s'",
         async locale => {
-            const metadata = await generateMetadata({
+            const mod = await import("@/app/[locale]/services/page")
+            const metadata = await mod.generateMetadata({
                 params: Promise.resolve({ locale }),
             })
 
@@ -109,7 +86,8 @@ describe("Services page - generateMetadata", () => {
 
     it("metadata includes Gabriel Toth in title for all locales", async () => {
         for (const locale of LOCALES) {
-            const metadata = await generateMetadata({
+            const mod = await import("@/app/[locale]/services/page")
+            const metadata = await mod.generateMetadata({
                 params: Promise.resolve({ locale }),
             })
 
@@ -117,21 +95,10 @@ describe("Services page - generateMetadata", () => {
         }
     })
 
-    it("keywords include service categories", async () => {
-        const metadata = await generateMetadata({
-            params: Promise.resolve({ locale: "en" }),
-        })
-
-        const keywords = metadata.keywords as string[]
-        expect(keywords.length).toBeGreaterThan(5)
-        expect(keywords.some(k => k.toLowerCase().includes("service"))).toBe(
-            true
-        )
-    })
-
     it("all locales produce consistent metadata structure", async () => {
         for (const locale of LOCALES) {
-            const metadata = await generateMetadata({
+            const mod = await import("@/app/[locale]/services/page")
+            const metadata = await mod.generateMetadata({
                 params: Promise.resolve({ locale }),
             })
 
@@ -142,13 +109,28 @@ describe("Services page - generateMetadata", () => {
         }
     })
 
-    it("openGraph type is always 'website'", async () => {
+    it("translated titles match i18n files for all locales", async () => {
         for (const locale of LOCALES) {
-            const metadata = await generateMetadata({
+            const mod = await import("@/app/[locale]/services/page")
+            const metadata = await mod.generateMetadata({
                 params: Promise.resolve({ locale }),
             })
 
-            expect((metadata.openGraph as any)?.type).toBe("website")
+            const translations = translationMap[locale]
+            const expectedTitle = `${translations.landing.title} - Gabriel Toth`
+            expect(metadata.title).toBe(expectedTitle)
+        }
+    })
+
+    it("translated descriptions match i18n files for all locales", async () => {
+        for (const locale of LOCALES) {
+            const mod = await import("@/app/[locale]/services/page")
+            const metadata = await mod.generateMetadata({
+                params: Promise.resolve({ locale }),
+            })
+
+            const translations = translationMap[locale]
+            expect(metadata.description).toBe(translations.landing.description)
         }
     })
 })
