@@ -23,9 +23,7 @@ export interface IAuthRepository {
     }): Promise<{ id: string; email: string }>
 
     /** Find a user by email with password hash */
-    findUserByEmail(
-        email: string
-    ): Promise<{
+    findUserByEmail(email: string): Promise<{
         id: string
         email: string
         password_hash: string
@@ -65,9 +63,7 @@ export interface IAuthAuditService {
  */
 export interface IRateLimiter {
     /** Check if the request is allowed based on rate limits */
-    checkAndUpdateRateLimit(
-        identifier: string
-    ): Promise<{
+    checkAndUpdateRateLimit(identifier: string): Promise<{
         allowed: boolean
         isLocked: boolean
         lockedUntil?: Date

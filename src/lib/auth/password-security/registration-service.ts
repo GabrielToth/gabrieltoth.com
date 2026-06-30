@@ -20,7 +20,10 @@ import {
     normalizeResponseTime,
     validatePasswordInput,
 } from "./index"
-import type { AuthenticationResult, RegistrationRequest } from "./authentication-service"
+import type {
+    AuthenticationResult,
+    RegistrationRequest,
+} from "./authentication-service"
 import type {
     IAuthAuditService,
     IAuthRepository,
@@ -95,13 +98,20 @@ export class RegistrationService {
             }
 
             // STEP 5: Create user
-            const createUserResult = await this.createUser(request, hashResult.hashResult!)
+            const createUserResult = await this.createUser(
+                request,
+                hashResult.hashResult!
+            )
             if (createUserResult.errorResult) {
                 return createUserResult.errorResult
             }
 
             // STEP 6: Log registration event
-            await this.logRegistration(request, createUserResult.newUser!, hashResult.hashResult!)
+            await this.logRegistration(
+                request,
+                createUserResult.newUser!,
+                hashResult.hashResult!
+            )
 
             // STEP 7-8: Return success with normalized response time
             logger.info("User registered successfully", {
@@ -201,8 +211,7 @@ export class RegistrationService {
         } catch (error) {
             logger.warn("Invalid password in registration request", {
                 email: request.email,
-                error:
-                    error instanceof Error ? error.message : String(error),
+                error: error instanceof Error ? error.message : String(error),
             })
             return {
                 success: false,
@@ -241,8 +250,7 @@ export class RegistrationService {
         } catch (error) {
             logger.error("Database error checking email existence", {
                 email,
-                error:
-                    error instanceof Error ? error.message : String(error),
+                error: error instanceof Error ? error.message : String(error),
             })
             return {
                 success: false,
@@ -262,9 +270,9 @@ export class RegistrationService {
         errorResult?: AuthenticationResult
     }> {
         try {
-            const hashResult = await hashPasswordArgon2id(
+            const hashResult = (await hashPasswordArgon2id(
                 request.password
-            ) as unknown as HashResultWithMeta
+            )) as unknown as HashResultWithMeta
 
             if (hashResult.performanceWarning) {
                 logger.warn("Password hashing performance warning", {
@@ -277,8 +285,7 @@ export class RegistrationService {
         } catch (error) {
             logger.error("Password hashing error during registration", {
                 email: request.email,
-                error:
-                    error instanceof Error ? error.message : String(error),
+                error: error instanceof Error ? error.message : String(error),
             })
             return {
                 errorResult: {
@@ -312,8 +319,7 @@ export class RegistrationService {
         } catch (error) {
             logger.error("Error creating user record", {
                 email: request.email,
-                error:
-                    error instanceof Error ? error.message : String(error),
+                error: error instanceof Error ? error.message : String(error),
             })
             return {
                 errorResult: {
@@ -344,8 +350,7 @@ export class RegistrationService {
         } catch (error) {
             logger.error("Failed to log registration event", {
                 email: request.email,
-                error:
-                    error instanceof Error ? error.message : String(error),
+                error: error instanceof Error ? error.message : String(error),
             })
             // Don't fail registration if logging fails
         }

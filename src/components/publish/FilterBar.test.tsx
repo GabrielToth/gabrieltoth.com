@@ -127,7 +127,7 @@ describe("FilterBar Component", () => {
             />
         )
 
-        expect(screen.getByText("2 filters applied")).toBeInTheDocument()
+        expect(screen.getByText("2 filter(s) applied")).toBeInTheDocument()
     })
 
     it("shows clear all button when filters are selected", () => {

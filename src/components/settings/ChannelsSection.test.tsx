@@ -189,10 +189,13 @@ describe("ChannelsSection", () => {
         await user.click(connectButtons[0])
 
         await waitFor(() => {
-            expect(mockFetch).toHaveBeenCalledWith("/api/oauth/authorize/youtube", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-            })
+            expect(mockFetch).toHaveBeenCalledWith(
+                "/api/oauth/authorize/youtube",
+                {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                }
+            )
         })
     })
 

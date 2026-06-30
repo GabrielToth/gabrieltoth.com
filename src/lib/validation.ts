@@ -15,8 +15,19 @@
 
 export { validateEmail } from "./validation/email"
 export { validatePassword, validatePasswordMatch } from "./validation/password"
-export { validateName, validateNameNotOnlyNumbersOrSpecialChars } from "./validation/name"
+export {
+    validateName,
+    validateNameNotOnlyNumbersOrSpecialChars,
+} from "./validation/name"
 export { validateFieldLength } from "./validation/utils"
-export { validatePhoneNumber, normalizePhoneNumber, validateAndNormalizePhoneNumber } from "./validation/phone"
+export {
+    validatePhoneNumber,
+    normalizePhoneNumber,
+    validateAndNormalizePhoneNumber,
+} from "./validation/phone"
 export { validateBirthDateFormat, validateMinimumAge } from "./validation/date"
-export { validateRegistrationForm, validateLoginForm, validatePasswordResetForm } from "./validation/form"
+export {
+    validateRegistrationForm,
+    validateLoginForm,
+    validatePasswordResetForm,
+} from "./validation/form"

@@ -24,8 +24,8 @@ const { mockLogger, mockRedisClient, mockState } = vi.hoisted(() => ({
         keys: vi.fn(),
     },
     mockState: {
-        isConnected: false
-    }
+        isConnected: false,
+    },
 }))
 
 // Mock the cache modules
@@ -106,7 +106,10 @@ describe("Rate Limiter - Degradation Mode", () => {
             expect(status.degradedMode).toBe(false)
 
             await incrementAttemptWithDegradation(ipAddress, false)
-            expect(mockLogger.debug).toHaveBeenCalledWith("Login attempt incremented", expect.any(Object))
+            expect(mockLogger.debug).toHaveBeenCalledWith(
+                "Login attempt incremented",
+                expect.any(Object)
+            )
         })
     })
 
@@ -127,7 +130,7 @@ describe("Rate Limiter - Degradation Mode", () => {
         it("should increment with Redis and set correct expiry (degraded)", async () => {
             mockRedisClient.incr.mockResolvedValueOnce(1)
             const count = await incrementAttemptWithDegradation(ipAddress, true)
-            
+
             expect(mockRedisClient.incr).toHaveBeenCalledWith(key)
             // 10 minutes * 60 seconds = 600
             expect(mockRedisClient.expire).toHaveBeenCalledWith(key, 600)
@@ -136,8 +139,11 @@ describe("Rate Limiter - Degradation Mode", () => {
 
         it("should fallback to normal mode increment expiry", async () => {
             mockRedisClient.incr.mockResolvedValueOnce(1)
-            const count = await incrementAttemptWithDegradation(ipAddress, false)
-            
+            const count = await incrementAttemptWithDegradation(
+                ipAddress,
+                false
+            )
+
             expect(mockRedisClient.incr).toHaveBeenCalledWith(key)
             // 1 hour * 60 * 60 = 3600
             expect(mockRedisClient.expire).toHaveBeenCalledWith(key, 3600)
@@ -153,8 +159,11 @@ describe("Rate Limiter - Degradation Mode", () => {
         it("should fail open and log error if checkRateLimitWithDegradation throws", async () => {
             mockRedisClient.get.mockRejectedValueOnce(new Error("Redis error"))
             const status = await checkRateLimitWithDegradation(ipAddress, true)
-            
-            expect(mockLogger.error).toHaveBeenCalledWith("Failed to get attempt count from Redis", expect.any(Object))
+
+            expect(mockLogger.error).toHaveBeenCalledWith(
+                "Failed to get attempt count from Redis",
+                expect.any(Object)
+            )
             expect(status.allowed).toBe(true)
             expect(status.remainingAttempts).toBe(3)
         })
@@ -162,8 +171,11 @@ describe("Rate Limiter - Degradation Mode", () => {
         it("should return 0 and log error if incrementAttemptWithDegradation throws", async () => {
             mockRedisClient.incr.mockRejectedValueOnce(new Error("Redis error"))
             const count = await incrementAttemptWithDegradation(ipAddress, true)
-            
-            expect(mockLogger.error).toHaveBeenCalledWith("Error incrementing attempt count with degradation", expect.any(Object))
+
+            expect(mockLogger.error).toHaveBeenCalledWith(
+                "Error incrementing attempt count with degradation",
+                expect.any(Object)
+            )
             expect(count).toBe(0)
         })
     })

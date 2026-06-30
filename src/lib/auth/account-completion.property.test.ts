@@ -301,7 +301,10 @@ describe("Account Completion - Property-Based Tests", () => {
         it("should correctly validate age for any birth date", () => {
             fc.assert(
                 fc.property(
-                    fc.date({ min: new Date(1900, 0, 1), max: new Date() }),
+                    fc.date({
+                        min: new Date("1900-01-01"),
+                        max: new Date(),
+                    }),
                     birthDate => {
                         const dateStr = birthDate.toISOString().split("T")[0]
                         const result = validateBirthDate(dateStr)

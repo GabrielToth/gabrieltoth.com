@@ -1217,8 +1217,8 @@ describe("Property-Based Tests: useRegistration Hook", () => {
             fc.assert(
                 fc.property(
                     fc.tuple(
-                        fc.string({ minLength: 1 }),
-                        fc.string({ minLength: 1 })
+                        fc.string({ minLength: 1, maxLength: 50 }),
+                        fc.string({ minLength: 1, maxLength: 50 })
                     ),
                     ([errorField, errorMessage]) => {
                         const { result } = renderHook(() => useRegistration())

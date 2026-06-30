@@ -23,7 +23,10 @@ import {
     validatePassword,
     validatePasswordInput,
 } from "./index"
-import type { AuthenticationResult, LoginRequest } from "./authentication-service"
+import type {
+    AuthenticationResult,
+    LoginRequest,
+} from "./authentication-service"
 import type {
     IAuthAuditService,
     IAuthRepository,
@@ -104,12 +107,14 @@ export class LoginService {
             // STEP 4: Look up user
             const userLookupResult = await this.lookupUser(request.email)
             if (!userLookupResult.user) {
-                return userLookupResult.errorResult ?? {
-                    success: false,
-                    error: "Authentication failed",
-                    errorCode: "AUTH_FAILED",
-                    statusCode: 401,
-                }
+                return (
+                    userLookupResult.errorResult ?? {
+                        success: false,
+                        error: "Authentication failed",
+                        errorCode: "AUTH_FAILED",
+                        statusCode: 401,
+                    }
+                )
             }
 
             // STEP 5: Validate password
@@ -119,9 +124,11 @@ export class LoginService {
             )
             if (!passwordResult.valid) {
                 // Record failure for rate limiting
-                await this.rateLimiter.recordFailure(request.email).catch(() => {
-                    // ignore failure recording errors
-                })
+                await this.rateLimiter
+                    .recordFailure(request.email)
+                    .catch(() => {
+                        // ignore failure recording errors
+                    })
 
                 return {
                     success: false,
@@ -132,7 +139,7 @@ export class LoginService {
             }
 
             // STEP 6: Reset rate limit counter on success
-            await this.rateLimiter.recordSuccess(request.email).catch((error) => {
+            await this.rateLimiter.recordSuccess(request.email).catch(error => {
                 logger.error("Failed to reset rate limit counter", {
                     email: request.email,
                     error:
@@ -149,7 +156,7 @@ export class LoginService {
                     algorithm: passwordResult.algorithmType || "unknown",
                     degradedMode,
                 })
-                .catch((error) => {
+                .catch(error => {
                     logger.error("Failed to log authentication event", {
                         email: request.email,
                         error:
@@ -198,9 +205,7 @@ export class LoginService {
      * Validate CAPTCHA token
      * Returns an error result or indicates degraded mode
      */
-    private async validateCaptcha(
-        request: LoginRequest
-    ): Promise<{
+    private async validateCaptcha(request: LoginRequest): Promise<{
         success: boolean
         error?: string
         errorCode?: string
@@ -276,7 +281,7 @@ export class LoginService {
                     email,
                     degradedMode,
                 })
-                .catch((error) => {
+                .catch(error => {
                     logger.error("Failed to log rate limit event", {
                         error:
                             error instanceof Error
@@ -293,8 +298,7 @@ export class LoginService {
                 isLocked: true,
                 unlockTimeSeconds: rateLimitCheck.lockedUntil
                     ? Math.ceil(
-                          (rateLimitCheck.lockedUntil.getTime() -
-                              Date.now()) /
+                          (rateLimitCheck.lockedUntil.getTime() - Date.now()) /
                               1000
                       )
                     : undefined,
@@ -333,8 +337,7 @@ export class LoginService {
         } catch (error) {
             logger.warn("Invalid password in login request", {
                 email: request.email,
-                error:
-                    error instanceof Error ? error.message : String(error),
+                error: error instanceof Error ? error.message : String(error),
             })
 
             await this.rateLimiter.recordFailure(request.email).catch(() => {
@@ -356,9 +359,7 @@ export class LoginService {
      * Look up user by email
      * Returns user data or error result
      */
-    private async lookupUser(
-        email: string
-    ): Promise<{
+    private async lookupUser(email: string): Promise<{
         user?: {
             id: string
             email: string
@@ -392,8 +393,7 @@ export class LoginService {
         } catch (error) {
             logger.error("Database error during login", {
                 email,
-                error:
-                    error instanceof Error ? error.message : String(error),
+                error: error instanceof Error ? error.message : String(error),
             })
 
             await this.rateLimiter.recordFailure(email).catch(() => {
@@ -420,10 +420,10 @@ export class LoginService {
         passwordHash: string
     ): Promise<PasswordValidationResult> {
         try {
-            const validationResult = await validatePassword(
+            const validationResult = (await validatePassword(
                 password,
                 passwordHash
-            ) as unknown as PasswordValidationResult
+            )) as unknown as PasswordValidationResult
 
             if (!validationResult.valid) {
                 logger.warn("Invalid password during login", {
@@ -434,8 +434,7 @@ export class LoginService {
             return validationResult
         } catch (error) {
             logger.error("Password validation error", {
-                error:
-                    error instanceof Error ? error.message : String(error),
+                error: error instanceof Error ? error.message : String(error),
             })
             return { valid: false }
         }

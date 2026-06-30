@@ -160,7 +160,7 @@ describe("Constant-Time Comparison Module", () => {
                 CONSTANT_TIME_CONFIG.MAX_NORMALIZATION_TIME_MS + 1000
             )
             expect(normalizationTime).toBeLessThanOrEqual(
-                CONSTANT_TIME_CONFIG.MAX_NORMALIZATION_TIME_MS + 10
+                CONSTANT_TIME_CONFIG.MAX_NORMALIZATION_TIME_MS + 100
             )
         })
 

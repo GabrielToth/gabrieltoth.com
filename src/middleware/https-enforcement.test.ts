@@ -62,18 +62,21 @@ describe("HTTPS Enforcement Middleware", () => {
                 security: { httpsEnforced: true },
             } as any)
 
-            const request = new NextRequest("https://localhost:3000/dashboard", {
-                headers: { "x-forwarded-proto": "https" },
-            })
+            const request = new NextRequest(
+                "https://localhost:3000/dashboard",
+                {
+                    headers: { "x-forwarded-proto": "https" },
+                }
+            )
             const response = httpsEnforcementMiddleware(request)
 
             expect(response.status).toBe(200)
-            expect(
-                response.headers.get("Strict-Transport-Security")
-            ).toContain("max-age=31536000")
-            expect(
-                response.headers.get("Strict-Transport-Security")
-            ).toContain("includeSubDomains")
+            expect(response.headers.get("Strict-Transport-Security")).toContain(
+                "max-age=31536000"
+            )
+            expect(response.headers.get("Strict-Transport-Security")).toContain(
+                "includeSubDomains"
+            )
         })
 
         it("should default to HTTP when x-forwarded-proto header is missing", () => {
@@ -99,9 +102,9 @@ describe("HTTPS Enforcement Middleware", () => {
                 security: { httpsEnforced: false },
             } as any)
 
-            const handler = vi.fn().mockResolvedValue(
-                NextResponse.json({ message: "ok" })
-            )
+            const handler = vi
+                .fn()
+                .mockResolvedValue(NextResponse.json({ message: "ok" }))
             const wrapped = withHttpsEnforcement(handler)
 
             const request = new NextRequest("http://localhost:3000/api/test")
@@ -134,21 +137,20 @@ describe("HTTPS Enforcement Middleware", () => {
                 security: { httpsEnforced: true },
             } as any)
 
-            const handler = vi.fn().mockResolvedValue(
-                NextResponse.json({ message: "ok" })
-            )
+            const handler = vi
+                .fn()
+                .mockResolvedValue(NextResponse.json({ message: "ok" }))
             const wrapped = withHttpsEnforcement(handler)
 
-            const request = new NextRequest(
-                "https://localhost:3000/api/test",
-                { headers: { "x-forwarded-proto": "https" } }
-            )
+            const request = new NextRequest("https://localhost:3000/api/test", {
+                headers: { "x-forwarded-proto": "https" },
+            })
             const response = await wrapped(request)
 
             expect(handler).toHaveBeenCalledWith(request)
-            expect(
-                response.headers.get("Strict-Transport-Security")
-            ).toContain("max-age=31536000")
+            expect(response.headers.get("Strict-Transport-Security")).toContain(
+                "max-age=31536000"
+            )
         })
 
         it("should convert plain Response to NextResponse", async () => {

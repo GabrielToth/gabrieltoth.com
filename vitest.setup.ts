@@ -108,6 +108,9 @@ process.env.DATABASE_URL =
 process.env.NEXTAUTH_SECRET =
     process.env.NEXTAUTH_SECRET || "test-secret-key-for-testing-only"
 process.env.NEXTAUTH_URL = process.env.NEXTAUTH_URL || "http://localhost:3000"
+process.env.PEPPER_SECRET =
+    process.env.PEPPER_SECRET ||
+    "dev-pepper-test-very-long-string-32chars-minimum-required!"
 
 // Cleanup after each test
 afterEach(() => {
@@ -166,16 +169,41 @@ try {
     console.error("Failed to load mock translations", e)
 }
 
+// Hardcoded fallbacks for commonly used mock translation keys not present in JSON files
+const mockTranslationFallbacks: Record<string, string> = {
+    saveChanges: "Save changes",
+    languageEnglish: "English",
+    languagePortuguese: "Portuguese",
+    languageSpanish: "Spanish",
+    languageFrench: "French",
+    planValue: "{plan} Plan",
+    plan: "Plan",
+    on: "On",
+    off: "Off",
+}
+
 // Mock next-intl
 vi.mock("next-intl", () => ({
     useTranslations: (namespace?: string) => {
-        const t = (key: string) => {
+        const t = (key: string, params?: Record<string, string | number>) => {
             const fullKey = namespace ? `${namespace}.${key}` : key
-            if (flatTranslations[fullKey]) return flatTranslations[fullKey]
-            if (flatTranslations[key]) return flatTranslations[key]
+            let value: string | undefined
 
-            if (key === "saveChanges") return "Save changes"
-            // Expand camelCase for testing queries fallback
+            if (flatTranslations[fullKey]) value = flatTranslations[fullKey]
+            else if (flatTranslations[key]) value = flatTranslations[key]
+            else if (mockTranslationFallbacks[key])
+                value = mockTranslationFallbacks[key]
+
+            // If value is found, interpolate params
+            if (value !== undefined && params) {
+                for (const [k, v] of Object.entries(params)) {
+                    value = value.replace(`{${k}}`, String(v))
+                }
+            }
+
+            if (value !== undefined) return value
+
+            // Fallback: Expand camelCase for testing queries fallback (preserves existing behavior)
             return key
                 .replace(/([A-Z])/g, " $1")
                 .trim()

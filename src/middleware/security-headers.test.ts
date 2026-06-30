@@ -64,15 +64,11 @@ describe("Security Headers Middleware (src/middleware/)", () => {
 
             expect(result.headers.get("X-Frame-Options")).toBe("DENY")
             expect(result.headers.get("X-Content-Type-Options")).toBe("nosniff")
-            expect(
-                result.headers.get("Content-Security-Policy")
-            ).toBeTruthy()
+            expect(result.headers.get("Content-Security-Policy")).toBeTruthy()
             expect(result.headers.get("Referrer-Policy")).toBe(
                 "strict-origin-when-cross-origin"
             )
-            expect(
-                result.headers.get("X-XSS-Protection")
-            ).toBeTruthy()
+            expect(result.headers.get("X-XSS-Protection")).toBeTruthy()
             expect(
                 result.headers.get("X-Permitted-Cross-Domain-Policies")
             ).toBe("none")
@@ -100,9 +96,7 @@ describe("Security Headers Middleware (src/middleware/)", () => {
             const response = new NextResponse("test")
             const result = applySecurityHeaders(response)
 
-            expect(
-                result.headers.get("Strict-Transport-Security")
-            ).toBeNull()
+            expect(result.headers.get("Strict-Transport-Security")).toBeNull()
         })
 
         it("should include HSTS header in production", () => {
@@ -127,15 +121,15 @@ describe("Security Headers Middleware (src/middleware/)", () => {
             const response = new NextResponse("test")
             const result = applySecurityHeaders(response)
 
-            expect(
-                result.headers.get("Strict-Transport-Security")
-            ).toContain("max-age=31536000")
-            expect(
-                result.headers.get("Strict-Transport-Security")
-            ).toContain("includeSubDomains")
-            expect(
-                result.headers.get("Strict-Transport-Security")
-            ).toContain("preload")
+            expect(result.headers.get("Strict-Transport-Security")).toContain(
+                "max-age=31536000"
+            )
+            expect(result.headers.get("Strict-Transport-Security")).toContain(
+                "includeSubDomains"
+            )
+            expect(result.headers.get("Strict-Transport-Security")).toContain(
+                "preload"
+            )
         })
     })
 
@@ -167,9 +161,7 @@ describe("Security Headers Middleware (src/middleware/)", () => {
             const response = securityHeadersMiddleware(request)
 
             expect(response.headers.get("X-Frame-Options")).toBe("DENY")
-            expect(
-                response.headers.get("Content-Security-Policy")
-            ).toBeTruthy()
+            expect(response.headers.get("Content-Security-Policy")).toBeTruthy()
         })
     })
 
@@ -262,9 +254,9 @@ describe("Security Headers Middleware (src/middleware/)", () => {
                 logging: {} as any,
             })
 
-            const handler = vi.fn().mockResolvedValue(
-                NextResponse.json({ message: "ok" })
-            )
+            const handler = vi
+                .fn()
+                .mockResolvedValue(NextResponse.json({ message: "ok" }))
             const wrapped = withSecurityHeaders(handler)
 
             const request = new NextRequest("http://localhost:3000/api/test")
@@ -272,9 +264,7 @@ describe("Security Headers Middleware (src/middleware/)", () => {
 
             expect(handler).toHaveBeenCalledWith(request)
             expect(response.headers.get("X-Frame-Options")).toBe("DENY")
-            expect(
-                response.headers.get("Content-Security-Policy")
-            ).toBeTruthy()
+            expect(response.headers.get("Content-Security-Policy")).toBeTruthy()
         })
 
         it("should handle plain Response from handler", async () => {
@@ -334,9 +324,7 @@ describe("Security Headers Middleware (src/middleware/)", () => {
     describe("validateOrigin()", () => {
         it("should return true when request has no origin header", () => {
             const request = new NextRequest("http://localhost:3000/dashboard")
-            const result = validateOrigin(request, [
-                "http://localhost:3000",
-            ])
+            const result = validateOrigin(request, ["http://localhost:3000"])
             expect(result).toBe(true)
         })
 
@@ -355,9 +343,7 @@ describe("Security Headers Middleware (src/middleware/)", () => {
             const request = new NextRequest("http://localhost:3000/dashboard", {
                 headers: { origin: "https://evil.com" },
             })
-            const result = validateOrigin(request, [
-                "http://localhost:3000",
-            ])
+            const result = validateOrigin(request, ["http://localhost:3000"])
             expect(result).toBe(false)
         })
     })

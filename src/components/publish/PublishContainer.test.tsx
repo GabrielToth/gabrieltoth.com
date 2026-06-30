@@ -91,7 +91,7 @@ describe("PublishContainer", () => {
 
         expect(screen.getByText("Publish")).toBeInTheDocument()
         expect(
-            screen.getByText("Manage and schedule your social media posts")
+            screen.getByText("Schedule and manage your social media posts")
         ).toBeInTheDocument()
 
         // Wait for data to load
@@ -178,7 +178,9 @@ describe("PublishContainer", () => {
 
         // Wait for data to load
         await waitFor(() => {
-            expect(screen.getByText("Showing 3 of 3 posts")).toBeInTheDocument()
+            expect(
+                screen.getByText("Showing 3 of 3 post(s)")
+            ).toBeInTheDocument()
         })
     })
 

@@ -3,7 +3,11 @@
  * Validates: Requirements 4.7, 10.1, 10.4
  */
 
-import { isValidPhoneNumber, parsePhoneNumber, CountryCode } from "libphonenumber-js"
+import {
+    isValidPhoneNumber,
+    parsePhoneNumber,
+    CountryCode,
+} from "libphonenumber-js"
 
 /**
  * Validates phone number format using international standards
@@ -147,7 +151,10 @@ export function normalizePhoneNumber(
 
     try {
         // Parse the phone number using libphonenumber-js
-        const parsed = parsePhoneNumber(trimmedPhone, defaultCountry as CountryCode)
+        const parsed = parsePhoneNumber(
+            trimmedPhone,
+            defaultCountry as CountryCode
+        )
 
         if (!parsed) {
             // Fallback: try to normalize manually for test numbers

@@ -26,9 +26,7 @@ describe("updateSession()", () => {
 
     describe("when no session token exists", () => {
         it("should redirect to login for protected routes", async () => {
-            const request = new NextRequest(
-                "http://localhost:3000/dashboard"
-            )
+            const request = new NextRequest("http://localhost:3000/dashboard")
 
             const response = await updateSession(request)
 
@@ -70,18 +68,14 @@ describe("updateSession()", () => {
                 role: "user",
             } as any)
 
-            const request = new NextRequest(
-                "http://localhost:3000/dashboard"
-            )
+            const request = new NextRequest("http://localhost:3000/dashboard")
             request.cookies.set("auth_session", "valid_token_123")
 
             const response = await updateSession(request)
 
             expect(response.status).toBe(200)
             expect(response.headers.get("location")).toBeNull()
-            expect(validateSession).toHaveBeenCalledWith(
-                "valid_token_123"
-            )
+            expect(validateSession).toHaveBeenCalledWith("valid_token_123")
         })
 
         it("should allow access to deeply nested protected routes", async () => {
@@ -108,17 +102,13 @@ describe("updateSession()", () => {
         it("should redirect to login for protected routes", async () => {
             vi.mocked(validateSession).mockResolvedValue(null)
 
-            const request = new NextRequest(
-                "http://localhost:3000/dashboard"
-            )
+            const request = new NextRequest("http://localhost:3000/dashboard")
             request.cookies.set("auth_session", "expired_token_123")
 
             const response = await updateSession(request)
 
             expect(response.status).toBe(307)
-            expect(response.headers.get("location")).toContain(
-                "/auth/login"
-            )
+            expect(response.headers.get("location")).toContain("/auth/login")
         })
 
         it("should NOT redirect for /login path even with invalid token", async () => {
@@ -143,9 +133,7 @@ describe("updateSession()", () => {
                 new Error("Database connection failed")
             )
 
-            const request = new NextRequest(
-                "http://localhost:3000/dashboard"
-            )
+            const request = new NextRequest("http://localhost:3000/dashboard")
             request.cookies.set("auth_session", "token_123")
 
             // Should not throw - catches errors and treats as unauthenticated
@@ -153,15 +141,11 @@ describe("updateSession()", () => {
 
             // Should redirect since session validation failed
             expect(response.status).toBe(307)
-            expect(response.headers.get("location")).toContain(
-                "/auth/login"
-            )
+            expect(response.headers.get("location")).toContain("/auth/login")
         })
 
         it("should handle malformed session token values", async () => {
-            const request = new NextRequest(
-                "http://localhost:3000/dashboard"
-            )
+            const request = new NextRequest("http://localhost:3000/dashboard")
             request.cookies.set("auth_session", "")
 
             const response = await updateSession(request)

@@ -31,6 +31,13 @@ pnpm-lock.yaml
 # Generated files
 *.tsbuildinfo
 next-env.d.ts
+lint-files.json
+lint-results.json
+lint-summary.json
+lint-raw.txt
+lint-output.json
+audit.json
+audit2.json
 
 # IDE
 .vscode/

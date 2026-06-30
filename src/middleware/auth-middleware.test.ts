@@ -564,7 +564,7 @@ describe("Authentication Middleware (auth-middleware.ts)", () => {
                 user_id: "user-123",
                 session_id: "session_token_abc123",
                 created_at: new Date(now.getTime() - 60 * 60 * 1000),
-                expires_at: new Date(now.getTime() + 1), // 1 millisecond remaining
+                expires_at: new Date(now.getTime() + 100), // 100ms remaining (to account for async delays)
             }
 
             const request = new NextRequest("http://localhost:3000/dashboard", {

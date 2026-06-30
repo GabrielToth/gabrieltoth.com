@@ -573,7 +573,9 @@ describe("User Management", () => {
             const error = new Error("Database connection failed")
             vi.mocked(db.db.queryOne).mockRejectedValueOnce(error)
 
-            await expect(getUserByGoogleId(googleId)).rejects.toThrow("Database connection failed")
+            await expect(getUserByGoogleId(googleId)).rejects.toThrow(
+                "Database connection failed"
+            )
         })
     })
 
@@ -612,12 +614,14 @@ describe("User Management", () => {
                 password_hash: "hashed123",
                 oauth_provider: "google",
                 oauth_id: "google-123",
-                name: "Test User"
+                name: "Test User",
             }
             const error = new Error("Database connection failed")
             vi.mocked(db.db.queryOne).mockRejectedValueOnce(error)
 
-            await expect(createOAuthUser(data)).rejects.toThrow("Database connection failed")
+            await expect(createOAuthUser(data)).rejects.toThrow(
+                "Database connection failed"
+            )
         })
     })
 
