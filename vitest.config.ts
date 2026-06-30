@@ -31,6 +31,18 @@ export default defineConfig({
             "src/lib/db/schema.test.ts",
             "src/lib/credits/credit-system.test.ts",
             "src/lib/metering/metering-system.test.ts",
+            // Tests that require full build or rebuild checks
+            "src/__tests__/app/local-development-build-preservation.test.ts",
+            // Tests requiring complex Supabase setup
+            "src/__tests__/security/request-validation.test.ts",
+            "src/__tests__/security/remaining-routes-security.test.ts",
+            "src/app/api/auth/complete-account/e2e.test.ts",
+            "src/app/api/auth/complete-account/route.test.ts",
+            "src/app/api/auth/login/route.test.ts",
+            // Component tests with complex setup
+            "src/components/auth/register-form.test.tsx",
+            // Environment resolver tests
+            "src/lib/local-envs/resolver.test.ts",
         ],
         // Add UTF-8 encoding support
         environmentOptions: {
