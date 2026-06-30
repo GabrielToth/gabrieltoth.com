@@ -24,6 +24,14 @@ import { Sidebar } from "@/components/dashboard/Sidebar"
 import { fireEvent, render, screen, waitFor } from "@testing-library/react"
 import { beforeEach, describe, expect, it, vi } from "vitest"
 
+vi.mock("@/components/theme/theme-provider", () => ({
+    ThemeProvider: ({ children }: { children: React.ReactNode }) => children,
+    useTheme: () => ({
+        theme: "dark" as const,
+        toggleTheme: vi.fn(),
+    }),
+}))
+
 vi.mock("@/components/theme/theme-toggle-client", () => ({
     ThemeToggleClient: () => null,
 }))

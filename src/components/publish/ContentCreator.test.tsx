@@ -2,6 +2,38 @@ import { fireEvent, render, screen } from "@testing-library/react"
 import { describe, expect, it, vi } from "vitest"
 import ContentCreator from "./ContentCreator"
 
+// Mock next-intl with English translations
+vi.mock("next-intl", () => ({
+    useTranslations: (ns: string) => (key: string, params?: Record<string, string | number>) => {
+        const map: Record<string, string> = {
+            "dashboard.publish.createContent": "Create Content",
+            "dashboard.publish.contentDescription": "Write your post content below",
+            "dashboard.publish.content": "Post content",
+            "dashboard.publish.whatsOnYourMind": "What's on your mind?",
+            "dashboard.publish.bold": "Bold",
+            "dashboard.publish.italic": "Italic",
+            "dashboard.publish.underline": "Underline",
+            "dashboard.publish.link": "Link",
+            "dashboard.publish.characters": "{count} / {limit} characters",
+            "dashboard.publish.exceedsLimit": "Exceeds platform limit",
+            "dashboard.publish.images": "Upload images",
+            "dashboard.publish.uploadImages": "Upload images",
+            "dashboard.publish.delete": "Delete",
+            "dashboard.publish.addUrls": "Add URLs",
+            "dashboard.publish.add": "Add",
+            "dashboard.publish.saveAsDraft": "Save as draft",
+        }
+        let value = map[`${ns}.${key}`] ?? key
+        if (params) {
+            for (const [k, v] of Object.entries(params)) {
+                value = value.replace(`{${k}}`, String(v))
+            }
+        }
+        return value
+    },
+    useLocale: () => "en",
+}))
+
 describe("ContentCreator", () => {
     it("renders text editor", () => {
         render(<ContentCreator onContentChange={vi.fn()} />)
@@ -76,7 +108,7 @@ describe("ContentCreator", () => {
         const addButton = screen.getByRole("button", { name: /Add/ })
         fireEvent.click(addButton)
 
-        const removeButton = screen.getByLabelText(/Remove URL 1/)
+        const removeButton = screen.getByLabelText(/Delete Add URLs 1/)
         fireEvent.click(removeButton)
 
         expect(

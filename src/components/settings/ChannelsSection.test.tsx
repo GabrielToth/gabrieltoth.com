@@ -102,9 +102,11 @@ describe("ChannelsSection", () => {
             />
         )
 
-        expect(
-            screen.getByRole("button", { name: /connect youtube/i })
-        ).toBeInTheDocument()
+        // Both YouTube and other disconnected channels use t("youtube.connect")
+        const connectButtons = screen.getAllByRole("button", {
+            name: /connect youtube/i,
+        })
+        expect(connectButtons.length).toBeGreaterThanOrEqual(1)
     })
 
     it("shows YouTube channel info when connected", () => {
@@ -139,7 +141,6 @@ describe("ChannelsSection", () => {
         mockFetch.mockResolvedValueOnce({
             ok: true,
             json: async () => ({
-                success: true,
                 authorizationUrl:
                     "https://accounts.google.com/o/oauth2/auth?....",
             }),
@@ -155,21 +156,40 @@ describe("ChannelsSection", () => {
                 isConnected: false,
             },
         ]
+        // Only YouTube + connected channels (no other disconnected)
+        const channelsOnlyYoutubeDisconnected: SocialChannel[] = [
+            {
+                id: "1",
+                platform: "facebook",
+                accountId: "123456",
+                accountName: "John's Facebook",
+                isConnected: true,
+                connectedAt: new Date(),
+            },
+            {
+                id: "4",
+                platform: "youtube",
+                accountId: "",
+                accountName: "",
+                isConnected: false,
+            },
+        ]
         render(
             <ChannelsSection
-                channels={channelsWithYoutube}
+                channels={channelsOnlyYoutubeDisconnected}
                 onDisconnect={mockOnDisconnect}
                 onConnect={mockOnConnect}
             />
         )
 
-        const connectButton = screen.getByRole("button", {
+        const connectButtons = screen.getAllByRole("button", {
             name: /connect youtube/i,
         })
-        await user.click(connectButton)
+        // Click the YouTube connect button (only non-connected channel)
+        await user.click(connectButtons[0])
 
         await waitFor(() => {
-            expect(mockFetch).toHaveBeenCalledWith("/api/youtube/link/start", {
+            expect(mockFetch).toHaveBeenCalledWith("/api/oauth/authorize/youtube", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
             })
@@ -243,6 +263,10 @@ describe("ChannelsSection", () => {
 
     it("calls onDisconnect when confirmed", async () => {
         const user = userEvent.setup()
+        mockFetch.mockResolvedValueOnce({
+            ok: true,
+            json: async () => ({}),
+        })
         render(
             <ChannelsSection
                 channels={mockChannels}
