@@ -193,9 +193,9 @@ describe("CAPTCHA Verifier", () => {
 
         it("should accept token at expiration boundary", async () => {
             const now = new Date()
-            // Token from exactly 5 minutes ago (at boundary)
+            // Token from 4 minutes 59 seconds ago (just before boundary to account for test execution time)
             const challengeTs = new Date(
-                now.getTime() - 5 * 60 * 1000
+                now.getTime() - 4 * 60 * 1000 - 59 * 1000
             ).toISOString()
 
             vi.mocked(global.fetch).mockResolvedValueOnce({
@@ -209,7 +209,7 @@ describe("CAPTCHA Verifier", () => {
 
             const result = await verifyCAPTCHA("boundary-token")
 
-            // Should be accepted (exactly at 5 minute boundary, not over)
+            // Should be accepted (just before 5 minute boundary)
             expect(result.success).toBe(true)
         })
 

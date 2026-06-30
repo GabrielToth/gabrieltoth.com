@@ -119,10 +119,13 @@ describe("Salt Generation Module", () => {
             }
 
             // Each range should have roughly 1/3 of bytes (with tolerance)
-            const tolerance = 64 * 0.3 // 30% tolerance for smaller sample
-            expect(Math.abs(ranges.low - 64 / 3)).toBeLessThan(tolerance)
-            expect(Math.abs(ranges.mid - 64 / 3)).toBeLessThan(tolerance)
-            expect(Math.abs(ranges.high - 64 / 3)).toBeLessThan(tolerance)
+            // With 64 bytes total, expect ~21.33 in each range
+            // Allow 40% deviation to account for randomness
+            const expectedPerRange = 64 / 3
+            const tolerance = expectedPerRange * 0.4
+            expect(Math.abs(ranges.low - expectedPerRange)).toBeLessThan(tolerance)
+            expect(Math.abs(ranges.mid - expectedPerRange)).toBeLessThan(tolerance)
+            expect(Math.abs(ranges.high - expectedPerRange)).toBeLessThan(tolerance)
         })
     })
 

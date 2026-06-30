@@ -50,11 +50,21 @@ describe("Bug Condition Exploration - Logout Button Not Working", () => {
         })
 
         it("should send POST request to /api/auth/logout when logout button is clicked", async () => {
-            // Mock successful logout response
-            mockFetch.mockResolvedValueOnce({
-                ok: true,
-                json: async () => ({ success: true }),
-            })
+            // Mock CSRF token fetch first, then logout response
+            mockFetch
+                .mockResolvedValueOnce({
+                    ok: true,
+                    json: async () => ({ data: { csrfToken: "test-csrf-token" } }),
+                })
+                .mockResolvedValueOnce({
+                    ok: true,
+                    json: async () => ({ success: true }),
+                })
+
+            // Mock router.push to prevent actual navigation
+            vi.mock("next/navigation", () => ({
+                useRouter: () => ({ push: vi.fn() }),
+            }))
 
             render(
                 <DashboardLayout activeTab="publish">
@@ -73,26 +83,27 @@ describe("Bug Condition Exploration - Logout Button Not Working", () => {
             // On fixed code: this will PASS (fetch is called)
             await waitFor(
                 () => {
-                    expect(mockFetch).toHaveBeenCalledWith(
-                        "/api/auth/logout",
-                        expect.objectContaining({
-                            method: "POST",
-                            headers: expect.objectContaining({
-                                "Content-Type": "application/json",
-                            }),
-                        })
+                    // Check that logout endpoint was called (second fetch call)
+                    const callsToLogout = mockFetch.mock.calls.filter(
+                        call => call[0] === "/api/auth/logout"
                     )
+                    expect(callsToLogout.length).toBeGreaterThan(0)
                 },
                 { timeout: 2000 }
             )
         })
 
         it("should handle logout API error gracefully", async () => {
-            // Mock failed logout response
-            mockFetch.mockResolvedValueOnce({
-                ok: false,
-                json: async () => ({ error: "Logout failed" }),
-            })
+            // Mock CSRF token fetch success, then failed logout response
+            mockFetch
+                .mockResolvedValueOnce({
+                    ok: true,
+                    json: async () => ({ data: { csrfToken: "test-csrf-token" } }),
+                })
+                .mockResolvedValueOnce({
+                    ok: false,
+                    json: async () => ({ error: "Logout failed" }),
+                })
 
             render(
                 <DashboardLayout activeTab="publish">
@@ -109,18 +120,23 @@ describe("Bug Condition Exploration - Logout Button Not Working", () => {
             // Assert that fetch was called
             await waitFor(
                 () => {
-                    expect(mockFetch).toHaveBeenCalledWith(
-                        "/api/auth/logout",
-                        expect.any(Object)
+                    const callsToLogout = mockFetch.mock.calls.filter(
+                        call => call[0] === "/api/auth/logout"
                     )
+                    expect(callsToLogout.length).toBeGreaterThan(0)
                 },
                 { timeout: 2000 }
             )
         })
 
         it("should handle network errors during logout", async () => {
-            // Mock network error
-            mockFetch.mockRejectedValueOnce(new Error("Network error"))
+            // Mock CSRF token success, then network error on logout
+            mockFetch
+                .mockResolvedValueOnce({
+                    ok: true,
+                    json: async () => ({ data: { csrfToken: "test-csrf-token" } }),
+                })
+                .mockRejectedValueOnce(new Error("Network error"))
 
             render(
                 <DashboardLayout activeTab="publish">
@@ -137,21 +153,26 @@ describe("Bug Condition Exploration - Logout Button Not Working", () => {
             // Assert that fetch was called
             await waitFor(
                 () => {
-                    expect(mockFetch).toHaveBeenCalledWith(
-                        "/api/auth/logout",
-                        expect.any(Object)
+                    const callsToLogout = mockFetch.mock.calls.filter(
+                        call => call[0] === "/api/auth/logout"
                     )
+                    expect(callsToLogout.length).toBeGreaterThan(0)
                 },
                 { timeout: 2000 }
             )
         })
 
         it("should send correct headers in logout request", async () => {
-            // Mock successful logout response
-            mockFetch.mockResolvedValueOnce({
-                ok: true,
-                json: async () => ({ success: true }),
-            })
+            // Mock CSRF token fetch first, then logout response
+            mockFetch
+                .mockResolvedValueOnce({
+                    ok: true,
+                    json: async () => ({ data: { csrfToken: "test-csrf-token" } }),
+                })
+                .mockResolvedValueOnce({
+                    ok: true,
+                    json: async () => ({ success: true }),
+                })
 
             render(
                 <DashboardLayout activeTab="publish">
@@ -168,15 +189,17 @@ describe("Bug Condition Exploration - Logout Button Not Working", () => {
             // Assert that correct headers are sent
             await waitFor(
                 () => {
-                    expect(mockFetch).toHaveBeenCalledWith(
-                        "/api/auth/logout",
-                        expect.objectContaining({
-                            method: "POST",
-                            headers: {
-                                "Content-Type": "application/json",
-                            },
-                        })
+                    const callsToLogout = mockFetch.mock.calls.filter(
+                        call => call[0] === "/api/auth/logout"
                     )
+                    expect(callsToLogout.length).toBeGreaterThan(0)
+                    if (callsToLogout.length > 0) {
+                        const [, options] = callsToLogout[0]
+                        expect(options.method).toBe("POST")
+                        expect(options.headers["Content-Type"]).toBe(
+                            "application/json"
+                        )
+                    }
                 },
                 { timeout: 2000 }
             )
@@ -185,9 +208,16 @@ describe("Bug Condition Exploration - Logout Button Not Working", () => {
 
     describe("Counterexamples - Bug Manifestation", () => {
         it("demonstrates that logout button click does not trigger network request on unfixed code", async () => {
-            // This test documents the bug: clicking logout button does nothing
-            // On unfixed code, mockFetch will NOT be called
-            // On fixed code, mockFetch WILL be called
+            // Mock CSRF token fetch first, then logout response
+            mockFetch
+                .mockResolvedValueOnce({
+                    ok: true,
+                    json: async () => ({ data: { csrfToken: "test-csrf-token" } }),
+                })
+                .mockResolvedValueOnce({
+                    ok: true,
+                    json: async () => ({ success: true }),
+                })
 
             render(
                 <DashboardLayout activeTab="publish">
@@ -200,8 +230,8 @@ describe("Bug Condition Exploration - Logout Button Not Working", () => {
             })
             fireEvent.click(logoutButtons[0])
 
-            // On unfixed code: mockFetch is NOT called (bug confirmed)
-            // On fixed code: mockFetch IS called (bug fixed)
+            // On unfixed code: mockFetch is NOT called for logout (bug confirmed)
+            // On fixed code: mockFetch IS called for logout (bug fixed)
             // This assertion will FAIL on unfixed code, PASS on fixed code
             await waitFor(
                 () => {

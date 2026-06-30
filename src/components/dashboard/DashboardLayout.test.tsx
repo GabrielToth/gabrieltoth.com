@@ -90,7 +90,7 @@ describe("DashboardLayout", () => {
         expect(onTabChange).toHaveBeenCalledWith("insights")
     })
 
-    it("closes sidebar when overlay is clicked", () => {
+    it("closes sidebar when overlay is clicked", async () => {
         const { container } = render(
             <DashboardLayout activeTab="publish">
                 <div>Content</div>
@@ -98,10 +98,18 @@ describe("DashboardLayout", () => {
         )
         const hamburger = screen.getByLabelText("Toggle sidebar")
         fireEvent.click(hamburger)
+        
+        // Wait for the overlay to be rendered
         const overlay = container.querySelector('[aria-hidden="true"]')
         if (overlay) {
             fireEvent.click(overlay)
-            expect(hamburger).toHaveAttribute("aria-expanded", "false")
+            // Use waitFor since state updates might be async
+            await waitFor(() => {
+                expect(hamburger).toHaveAttribute("aria-expanded", "false")
+            })
+        } else {
+            // If overlay not found, still verify sidebar can be toggled
+            expect(hamburger).toHaveAttribute("aria-expanded", "true")
         }
     })
 
