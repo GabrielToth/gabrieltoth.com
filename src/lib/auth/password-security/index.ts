@@ -94,6 +94,17 @@ export type {
     RegistrationRequest,
 } from "./authentication-service"
 
+export { RegistrationService } from "./registration-service"
+
+export { LoginService } from "./login-service"
+
+export type {
+    IAuthAuditService,
+    IAuthRepository,
+    IRateLimiter,
+    ISecurityConfig,
+} from "./auth-service-types"
+
 export {
     getConfigurationSummary,
     logConfigurationOnStartup,

@@ -1,31 +1,29 @@
 /**
- * Authentication Service: Main Controller
- * Purpose: Orchestrate all password security components into a cohesive authentication system
+ * Authentication Service: Thin Facade
+ * Purpose: Orchestrate registration and login via delegated services.
+ * Maintains backward-compatible API (getAuthenticationService()).
  *
- * This service coordinates:
- * - CAPTCHA validation (bot protection)
- * - Rate limiting (brute force protection)
- * - Password hashing (Argon2id with salt and pepper)
- * - Password validation (with algorithm detection)
- * - Audit logging (security events)
- * - Error handling (generic messages, no user enumeration)
+ * Requirements covered:
+ * - Requirement 1: Argon2id Password Hashing
+ * - Requirement 3: Pepper Security Layer
+ * - Requirement 6: Password Hash Validation
+ * - Requirement 7: Brute Force Protection with Rate Limiting
+ * - Requirement 8: Input Validation
+ * - Requirement 9: Security Against Attack Vectors
+ * - Requirement 10: Constant-Time Comparison
+ * - Requirement 14: Error Handling and Logging
+ * - Requirement 20: CAPTCHA Protection Against Automated Attacks
  */
 
-import { verifyCAPTCHAWithFallback } from "@/lib/auth/captcha-verifier"
-import { logger } from "@/lib/logger"
 import { createClient, type SupabaseClient } from "@supabase/supabase-js"
-import {
-    RateLimiter,
-    getRateLimiter,
-    getSecurityConfig,
-    hashPasswordArgon2id,
-    normalizeResponseTime,
-    validatePassword,
-    validatePasswordInput,
-} from "./index"
-import { AuthRepository } from "./auth-repository"
-import { AuthAuditService } from "./auth-audit-service"
+import type { IAuthAuditService, IAuthRepository, IRateLimiter, ISecurityConfig } from "./auth-service-types"
+import { getRateLimiter, getSecurityConfig, RateLimiter } from "./index"
+import { LoginService } from "./login-service"
+import { RegistrationService } from "./registration-service"
 
+/**
+ * Authentication result from login/registration
+ */
 export interface AuthenticationResult {
     success: boolean
     userId?: string
@@ -38,12 +36,18 @@ export interface AuthenticationResult {
     degradedMode?: boolean
 }
 
+/**
+ * Registration request data
+ */
 export interface RegistrationRequest {
     email: string
     password: string
     captchaToken?: string
 }
 
+/**
+ * Login request data
+ */
 export interface LoginRequest {
     email: string
     password: string
@@ -51,575 +55,249 @@ export interface LoginRequest {
 }
 
 /**
- * Authentication Service
- * Main controller orchestrating all password security components
+ * Concrete implementations for DI interfaces using Supabase
  */
-export class AuthenticationService {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    private supabase: SupabaseClient<any>
-    private rateLimiter: RateLimiter
-    private config: ReturnType<typeof getSecurityConfig>
-    private repository: AuthRepository
-    private auditService: AuthAuditService
 
-    constructor() {
-        // Initialize Supabase client
-        const url = process.env.NEXT_PUBLIC_SUPABASE_URL
-        const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
+class SupabaseAuthRepository implements IAuthRepository {
+    constructor(private readonly supabase: SupabaseClient) {}
 
-        if (!url || !serviceKey) {
-            throw new Error(
-                "Missing Supabase configuration. " +
-                    "Ensure NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY are set."
-            )
+    async userExistsByEmail(email: string): Promise<boolean> {
+        const { data, error } = await this.supabase
+            .from("users")
+            .select("id")
+            .eq("email", email.toLowerCase())
+            .single()
+
+        // PGRST116 = no rows found
+        if (error && error.code !== "PGRST116") {
+            throw error
         }
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        this.supabase = createClient<any>(url, serviceKey, {
-            auth: {
-                autoRefreshToken: false,
-                persistSession: false,
-            },
-        })
-
-        // Initialize configuration
-        this.config = getSecurityConfig()
-
-        // Initialize rate limiter with configuration
-        this.rateLimiter = getRateLimiter(this.config.rateLimiting)
-
-        // Initialize repository and audit service
-        this.repository = new AuthRepository(this.supabase)
-        this.auditService = new AuthAuditService(this.supabase)
+        return data !== null
     }
 
-    /**
-     * Register a new user with email and password
-     */
-    async register(
-        request: RegistrationRequest
-    ): Promise<AuthenticationResult> {
-        const operationStartTime = Date.now()
-        try {
-            // ================================================================
-            // STEP 1: VALIDATE CAPTCHA
-            // ================================================================
-
-            if (!request.captchaToken) {
-                logger.warn("Registration attempt without CAPTCHA token", {
-                    email: request.email,
-                })
-                return this.normalizeAndReturn(
-                    {
-                        success: false,
-                        error: "CAPTCHA verification required",
-                        errorCode: "CAPTCHA_REQUIRED",
-                        statusCode: 400,
-                    },
-                    operationStartTime
-                )
-            }
-
-            const captchaResult = await verifyCAPTCHAWithFallback(
-                request.captchaToken
-            )
-
-            if (!captchaResult.success) {
-                logger.warn("CAPTCHA verification failed during registration", {
-                    email: request.email,
-                    reason: captchaResult.failureReason,
-                    degradedMode: captchaResult.degradedMode,
-                })
-                return this.normalizeAndReturn(
-                    {
-                        success: false,
-                        error: "Registration failed",
-                        errorCode: "REGISTRATION_FAILED",
-                        statusCode: 400,
-                        degradedMode: captchaResult.degradedMode,
-                    },
-                    operationStartTime
-                )
-            }
-
-            // ================================================================
-            // STEP 2: VALIDATE INPUT
-            // ================================================================
-
-            if (!request.email || typeof request.email !== "string") {
-                logger.warn("Invalid email in registration request", {
-                    email: request.email,
-                })
-                return this.normalizeAndReturn(
-                    {
-                        success: false,
-                        error: "Invalid email format",
-                        errorCode: "INVALID_EMAIL",
-                        statusCode: 400,
-                    },
-                    operationStartTime
-                )
-            }
-
-            try {
-                validatePasswordInput(request.password)
-            } catch (error) {
-                logger.warn("Invalid password in registration request", {
-                    email: request.email,
-                    error:
-                        error instanceof Error ? error.message : String(error),
-                })
-                return this.normalizeAndReturn(
-                    {
-                        success: false,
-                        error: "Invalid password format",
-                        errorCode: "INVALID_PASSWORD",
-                        statusCode: 400,
-                    },
-                    operationStartTime
-                )
-            }
-
-            // ================================================================
-            // STEP 3: CHECK IF EMAIL EXISTS
-            // ================================================================
-
-            let emailExists = false
-            try {
-                emailExists = await this.repository.userExistsByEmail(
-                    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                    request.email
-                )
-            } catch (error) {
-                return this.normalizeAndReturn(
-                    {
-                        success: false,
-                        error: "Registration failed",
-                        errorCode: "DATABASE_ERROR",
-                        statusCode: 500,
-                    },
-                    operationStartTime
-                )
-            }
-
-            if (emailExists) {
-                logger.warn("Registration attempt with existing email", {
-                    email: request.email,
-                })
-                return this.normalizeAndReturn(
-                    {
-                        success: false,
-                        error: "Registration failed",
-                        errorCode: "REGISTRATION_FAILED",
-                        statusCode: 409,
-                    },
-                    operationStartTime
-                )
-            }
-
-            // ================================================================
-            // STEP 4: HASH PASSWORD WITH ARGON2ID
-            // ================================================================
-
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            let hashResult: any
-            try {
-                hashResult = await hashPasswordArgon2id(request.password)
-                if (hashResult.performanceWarning) {
-                    logger.warn("Password hashing performance warning", {
-                        email: request.email,
-                        timeTakenMs: hashResult.timeTakenMs,
-                    })
-                }
-            } catch (error) {
-                logger.error("Password hashing error during registration", {
-                    email: request.email,
-                    error:
-                        error instanceof Error ? error.message : String(error),
-                })
-                return this.normalizeAndReturn(
-                    {
-                        success: false,
-                        error: "Registration failed",
-                        errorCode: "HASHING_ERROR",
-                        statusCode: 500,
-                    },
-                    operationStartTime
-                )
-            }
-
-            // ================================================================
-            // STEP 5: CREATE USER RECORD
-            // ================================================================
-
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            let newUser: any
-            try {
-                newUser = await this.repository.createUser({
-                    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                    email: request.email,
-                    passwordHash: hashResult.hash,
-                    passwordAlgorithm: hashResult.algorithm,
-                })
-            } catch (error) {
-                return this.normalizeAndReturn(
-                    {
-                        success: false,
-                        error: "Registration failed",
-                        errorCode: "DATABASE_ERROR",
-                        statusCode: 500,
-                    },
-                    operationStartTime
-                )
-            }
-
-            // ================================================================
-            // STEP 6: LOG REGISTRATION EVENT
-            // ================================================================
-
-            await this.auditService.logRegistration({
-                email: request.email,
-                userId: newUser.id,
-                algorithm: hashResult.algorithm,
-                hashTimeTakenMs: hashResult.timeTakenMs,
+    async createUser(data: {
+        email: string
+        passwordHash: string
+        passwordAlgorithm: string
+    }): Promise<{ id: string; email: string }> {
+        const { data: result, error } = await this.supabase
+            .from("users")
+            .insert({
+                email: data.email.toLowerCase(),
+                password_hash: data.passwordHash,
+                password_algorithm: data.passwordAlgorithm,
+                email_verified: false,
+                created_at: new Date().toISOString(),
+                updated_at: new Date().toISOString(),
             })
+            .select("id, email")
+            .single()
 
-            // ================================================================
-            // STEP 7: RETURN SUCCESS & NORMALIZE
-            // ================================================================
-
-            logger.info("User registered successfully", {
-                userId: newUser.id,
-                email: request.email,
-            })
-
-            return this.normalizeAndReturn(
-                {
-                    success: true,
-                    userId: newUser.id,
-                    email: newUser.email,
-                    statusCode: 201,
-                },
-                operationStartTime
-            )
-        } catch (error) {
-            logger.error("Unexpected error during registration", {
-                error: error instanceof Error ? error.message : String(error),
-            })
-            return this.normalizeAndReturn(
-                {
-                    success: false,
-                    error: "Registration failed",
-                    errorCode: "INTERNAL_ERROR",
-                    statusCode: 500,
-                },
-                operationStartTime
-            )
+        if (error) {
+            throw error
         }
-    }
 
-    /**
-     * Authenticate user with email and password
-     */
-    async login(request: LoginRequest): Promise<AuthenticationResult> {
-        const operationStartTime = Date.now()
-        try {
-            // ================================================================
-            // STEP 1: VALIDATE CAPTCHA
-            // ================================================================
-
-            let degradedMode = false
-
-            if (!request.captchaToken) {
-                logger.warn("Login attempt without CAPTCHA token", {
-                    email: request.email,
-                })
-                return this.normalizeAndReturn(
-                    {
-                        success: false,
-                        error: "CAPTCHA verification required",
-                        errorCode: "CAPTCHA_REQUIRED",
-                        statusCode: 400,
-                    },
-                    operationStartTime
-                )
-            }
-
-            const captchaResult = await verifyCAPTCHAWithFallback(
-                request.captchaToken
-            )
-
-            if (!captchaResult.success) {
-                logger.warn("CAPTCHA verification failed during login", {
-                    email: request.email,
-                    reason: captchaResult.failureReason,
-                    degradedMode: captchaResult.degradedMode,
-                })
-
-                if (captchaResult.degradedMode) {
-                    degradedMode = true
-                } else {
-                    return this.normalizeAndReturn(
-                        {
-                            success: false,
-                            error: "Authentication failed",
-                            errorCode: "AUTH_FAILED",
-                            statusCode: 401,
-                        },
-                        operationStartTime
-                    )
-                }
-            }
-
-            // ================================================================
-            // STEP 2: CHECK RATE LIMITS
-            // ================================================================
-
-            const rateLimitCheck =
-                await this.rateLimiter.checkAndUpdateRateLimit(request.email)
-
-            if (!rateLimitCheck.allowed) {
-                logger.warn("Login attempt on rate-limited account", {
-                    email: request.email,
-                    isLocked: rateLimitCheck.isLocked,
-                    lockedUntil: rateLimitCheck.lockedUntil?.toISOString(),
-                })
-
-                await this.auditService.logRateLimitExceeded({
-                    email: request.email,
-                    degradedMode,
-                })
-
-                return this.normalizeAndReturn(
-                    {
-                        success: false,
-                        error: "Too many login attempts. Please try again later.",
-                        errorCode: "TOO_MANY_ATTEMPTS",
-                        statusCode: 429,
-                        isLocked: true,
-                        unlockTimeSeconds: rateLimitCheck.lockedUntil
-                            ? Math.ceil(
-                                  (rateLimitCheck.lockedUntil.getTime() -
-                                      Date.now()) /
-                                      1000
-                              )
-                            : undefined,
-                    },
-                    operationStartTime
-                )
-            }
-
-            // ================================================================
-            // STEP 3: VALIDATE INPUT
-            // ================================================================
-
-            if (!request.email || typeof request.email !== "string") {
-                logger.warn("Invalid email in login request", {
-                    email: request.email,
-                })
-                await this.rateLimiter.recordFailure(request.email)
-                return this.normalizeAndReturn(
-                    {
-                        success: false,
-                        error: "Authentication failed",
-                        errorCode: "AUTH_FAILED",
-                        statusCode: 401,
-                    },
-                    operationStartTime
-                )
-            }
-
-            try {
-                validatePasswordInput(request.password)
-            } catch (error) {
-                logger.warn("Invalid password in login request", {
-                    email: request.email,
-                    error:
-                        error instanceof Error ? error.message : String(error),
-                })
-                await this.rateLimiter.recordFailure(request.email)
-                return this.normalizeAndReturn(
-                    {
-                        success: false,
-                        error: "Authentication failed",
-                        errorCode: "AUTH_FAILED",
-                        statusCode: 401,
-                    },
-                    operationStartTime
-                )
-            }
-
-            // ================================================================
-            // STEP 4: LOOK UP USER
-            // ================================================================
-
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            let user: any
-            try {
-                user = await this.repository.findUserByEmail(request.email)
-                if (!user) {
-                    logger.warn("User not found during login", {
-                        email: request.email,
-                    })
-                    await this.rateLimiter.recordFailure(request.email)
-                    return this.normalizeAndReturn(
-                        {
-                            success: false,
-                            error: "Authentication failed",
-                            errorCode: "AUTH_FAILED",
-                            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                            statusCode: 401,
-                        },
-                        operationStartTime
-                    )
-                }
-            } catch (error) {
-                await this.rateLimiter.recordFailure(request.email)
-                return this.normalizeAndReturn(
-                    {
-                        success: false,
-                        error: "Authentication failed",
-                        errorCode: "AUTH_FAILED",
-                        statusCode: 401,
-                    },
-                    operationStartTime
-                )
-            }
-
-            // ================================================================
-            // STEP 5: VALIDATE PASSWORD
-            // ================================================================
-
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            let validationResult: any
-            try {
-                validationResult = await validatePassword(
-                    request.password,
-                    user.password_hash
-                )
-            } catch (error) {
-                logger.error("Password validation error", {
-                    email: request.email,
-                    error:
-                        error instanceof Error ? error.message : String(error),
-                })
-                await this.rateLimiter.recordFailure(request.email)
-                return this.normalizeAndReturn(
-                    {
-                        success: false,
-                        error: "Authentication failed",
-                        errorCode: "AUTH_FAILED",
-                        statusCode: 401,
-                    },
-                    operationStartTime
-                )
-            }
-
-            if (!validationResult.valid) {
-                logger.warn("Invalid password during login", {
-                    email: request.email,
-                    algorithmType: validationResult.algorithmType,
-                })
-                await this.rateLimiter.recordFailure(request.email)
-                return this.normalizeAndReturn(
-                    {
-                        success: false,
-                        error: "Authentication failed",
-                        errorCode: "AUTH_FAILED",
-                        statusCode: 401,
-                    },
-                    operationStartTime
-                )
-            }
-
-            // ================================================================
-            // STEP 6: RESET RATE LIMIT COUNTER
-            // ================================================================
-
-            try {
-                await this.rateLimiter.recordSuccess(request.email)
-            } catch (error) {
-                logger.error("Failed to reset rate limit counter", {
-                    email: request.email,
-                    error:
-                        error instanceof Error ? error.message : String(error),
-                })
-            }
-
-            // ================================================================
-            // STEP 7: LOG AUTHENTICATION EVENT
-            // ================================================================
-
-            await this.auditService.logAuthSuccess({
-                email: request.email,
-                userId: user.id,
-                algorithm: validationResult.algorithmType,
-                degradedMode,
-            })
-
-            // ================================================================
-            // STEP 8: RETURN SUCCESS & NORMALIZE
-            // ================================================================
-
-            logger.info("User authenticated successfully", {
-                userId: user.id,
-                email: request.email,
-                algorithmType: validationResult.algorithmType,
-            })
-
-            return this.normalizeAndReturn(
-                {
-                    success: true,
-                    userId: user.id,
-                    email: user.email,
-                    statusCode: 200,
-                    degradedMode,
-                },
-                operationStartTime
-            )
-        } catch (error) {
-            logger.error("Unexpected error during login", {
-                error: error instanceof Error ? error.message : String(error),
-            })
-            return this.normalizeAndReturn(
-                {
-                    success: false,
-                    error: "Authentication failed",
-                    errorCode: "INTERNAL_ERROR",
-                    statusCode: 500,
-                },
-                operationStartTime
-            )
-        }
-    }
-
-    private async normalizeAndReturn(
-        result: AuthenticationResult,
-        operationStartTime: number,
-        targetResponseTimeMs: number = 500
-    ): Promise<AuthenticationResult> {
-        try {
-            const operationTimeMs = Date.now() - operationStartTime
-            await normalizeResponseTime(operationTimeMs, targetResponseTimeMs)
-        } catch (error) {
-            logger.debug("Response time normalization error", {
-                error: error instanceof Error ? error.message : String(error),
-            })
-        }
         return result
     }
 
-    getRateLimiter(): RateLimiter {
-        return this.rateLimiter
-    }
+    async findUserByEmail(
+        email: string
+    ): Promise<{
+        id: string
+        email: string
+        password_hash: string
+        password_algorithm: string
+    } | null> {
+        const { data, error } = await this.supabase
+            .from("users")
+            .select("id, email, password_hash, password_algorithm")
+            .eq("email", email.toLowerCase())
+            .single()
 
-    getSecurityConfig() {
-        return this.config
+        if (error && error.code !== "PGRST116") {
+            throw error
+        }
+
+        return data
     }
 }
 
+class SupabaseAuthAuditService implements IAuthAuditService {
+    constructor(private readonly supabase: SupabaseClient) {}
+
+    async logRegistration(data: {
+        email: string
+        userId: string
+        algorithm: string
+        hashTimeTakenMs: number
+    }): Promise<void> {
+        const { error } = await this.supabase.from("audit_logs").insert({
+            event_type: "user_registered",
+            email: data.email,
+            user_id: data.userId,
+            timestamp: new Date().toISOString(),
+            details: {
+                algorithm: data.algorithm,
+                hashTimeTakenMs: data.hashTimeTakenMs,
+            },
+        })
+
+        if (error) {
+            throw error
+        }
+    }
+
+    async logAuthSuccess(data: {
+        email: string
+        userId: string
+        algorithm: string
+        degradedMode: boolean
+    }): Promise<void> {
+        const { error } = await this.supabase.from("audit_logs").insert({
+            event_type: "auth_success",
+            email: data.email,
+            user_id: data.userId,
+            timestamp: new Date().toISOString(),
+            details: {
+                algorithm: data.algorithm,
+                degradedMode: data.degradedMode,
+            },
+        })
+
+        if (error) {
+            throw error
+        }
+    }
+
+    async logRateLimitExceeded(data: {
+        email: string
+        degradedMode: boolean
+    }): Promise<void> {
+        const { error } = await this.supabase.from("audit_logs").insert({
+            event_type: "rate_limit_exceeded",
+            email: data.email,
+            timestamp: new Date().toISOString(),
+            details: {
+                degradedMode: data.degradedMode,
+            },
+        })
+
+        if (error) {
+            throw error
+        }
+    }
+}
+
+class RateLimiterAdapter implements IRateLimiter {
+    constructor(private readonly rateLimiter: RateLimiter) {}
+
+    async checkAndUpdateRateLimit(
+        identifier: string
+    ): Promise<{ allowed: boolean; isLocked: boolean; lockedUntil?: Date }> {
+        const result = await this.rateLimiter.checkAndUpdateRateLimit(identifier)
+        return {
+            allowed: result.allowed,
+            isLocked: result.isLocked,
+            lockedUntil: result.lockedUntil,
+        }
+    }
+
+    async recordFailure(identifier: string): Promise<void> {
+        await this.rateLimiter.recordFailure(identifier)
+    }
+
+    async recordSuccess(identifier: string): Promise<void> {
+        await this.rateLimiter.recordSuccess(identifier)
+    }
+}
+
+class SecurityConfigAdapter implements ISecurityConfig {
+    get rateLimiting() {
+        const config = getSecurityConfig()
+        return {
+            maxAttempts: config.rateLimiting.failureThreshold,
+            windowMs: config.rateLimiting.windowMinutes * 60 * 1000,
+            lockoutDurationMs: config.rateLimiting.lockoutMinutes * 60 * 1000,
+        }
+    }
+}
+
+/**
+ * Authentication Service (Thin Facade)
+ *
+ * Maintains backward-compatible API while delegating to
+ * RegistrationService and LoginService.
+ */
+export class AuthenticationService {
+    private registrationService: RegistrationService
+    private loginService: LoginService
+    private rateLimiterInstance: RateLimiter
+
+    constructor(supabase?: SupabaseClient) {
+        const client =
+            supabase ??
+            createClient(
+                process.env.NEXT_PUBLIC_SUPABASE_URL!,
+                process.env.SUPABASE_SERVICE_ROLE_KEY!,
+                {
+                    auth: {
+                        autoRefreshToken: false,
+                        persistSession: false,
+                    },
+                }
+            )
+
+        const config = getSecurityConfig()
+        this.rateLimiterInstance = getRateLimiter(config.rateLimiting)
+
+        const authRepository = new SupabaseAuthRepository(client)
+        const authAuditService = new SupabaseAuthAuditService(client)
+        const rateLimiterAdapter = new RateLimiterAdapter(
+            this.rateLimiterInstance
+        )
+        const securityConfig = new SecurityConfigAdapter()
+
+        this.registrationService = new RegistrationService(
+            authRepository,
+            authAuditService,
+            rateLimiterAdapter,
+            securityConfig
+        )
+        this.loginService = new LoginService(
+            authRepository,
+            authAuditService,
+            rateLimiterAdapter
+        )
+    }
+
+    async register(
+        request: RegistrationRequest
+    ): Promise<AuthenticationResult> {
+        return this.registrationService.register(request)
+    }
+
+    async login(request: LoginRequest): Promise<AuthenticationResult> {
+        return this.loginService.login(request)
+    }
+
+    getRateLimiter(): RateLimiter {
+        return this.rateLimiterInstance
+    }
+
+    getSecurityConfig() {
+        return getSecurityConfig()
+    }
+}
+
+/**
+ * Singleton instance of Authentication Service
+ */
 let authServiceInstance: AuthenticationService | null = null
 
+/**
+ * Get or create Authentication Service instance
+ */
 export function getAuthenticationService(): AuthenticationService {
     if (!authServiceInstance) {
         authServiceInstance = new AuthenticationService()
