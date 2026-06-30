@@ -1,6 +1,7 @@
 import ServicesSubmenu from "@/app/[locale]/services/services-submenu"
 import Footer from "@/components/layout/footer"
 import { type Locale } from "@/lib/i18n"
+import { generateServicesMetadata } from "@/lib/metadata/services-metadata"
 import { getLocalizedPath } from "@/lib/url-mapping"
 import { type Metadata } from "next"
 import { getTranslations } from "next-intl/server"
@@ -16,25 +17,7 @@ export async function generateMetadata({
     const { locale } = await params
     const t = await getTranslations({ locale, namespace: "services" })
 
-    return {
-        title: `${t("landing.title")} - Gabriel Toth`,
-        description: t("landing.description"),
-        keywords: [
-            "services",
-            "channel management",
-            "pc optimization",
-            "amazon affiliate",
-            "iq test",
-            "personality test",
-            "consulting",
-        ],
-        openGraph: {
-            title: t("landing.title"),
-            description: t("landing.description"),
-            type: "website",
-            locale: locale,
-        },
-    }
+    return generateServicesMetadata(locale, (key: string) => t(key))
 }
 
 export default async function ServicesPage({ params }: ServicesPageProps) {
