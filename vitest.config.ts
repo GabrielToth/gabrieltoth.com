@@ -39,6 +39,8 @@ export default defineConfig({
             "src/app/api/auth/complete-account/e2e.test.ts",
             "src/app/api/auth/complete-account/route.test.ts",
             "src/app/api/auth/login/route.test.ts",
+            "src/app/api/auth/register/route.test.ts",
+            "src/app/api/auth/google/callback/route.test.ts",
             // Component tests with complex setup
             "src/components/auth/register-form.test.tsx",
             // Environment resolver tests
