@@ -7,6 +7,7 @@
 import { db } from "@/lib/db"
 import { logger } from "@/lib/logger"
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const { query, queryOne, queryMany } = db
 
 export type AuditEventType =

@@ -80,6 +80,7 @@ export async function GET(
         // Validate state parameter
         const oauthManager = getOAuthManager()
         const isStateValid = await oauthManager.validateState(
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             platform as any,
             userId,
             state
@@ -98,6 +99,7 @@ export async function GET(
 
         // Exchange code for token
         const tokenResponse = await oauthManager.exchangeCodeForToken(
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             platform as any,
             code,
             userId

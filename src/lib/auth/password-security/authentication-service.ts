@@ -9,17 +9,6 @@
  * - Password validation (with algorithm detection)
  * - Audit logging (security events)
  * - Error handling (generic messages, no user enumeration)
- *
- * Requirements covered:
- * - Requirement 1: Argon2id Password Hashing
- * - Requirement 3: Pepper Security Layer
- * - Requirement 6: Password Hash Validation
- * - Requirement 7: Brute Force Protection with Rate Limiting
- * - Requirement 8: Input Validation
- * - Requirement 9: Security Against Attack Vectors
- * - Requirement 10: Constant-Time Comparison
- * - Requirement 14: Error Handling and Logging
- * - Requirement 20: CAPTCHA Protection Against Automated Attacks
  */
 
 import { verifyCAPTCHAWithFallback } from "@/lib/auth/captcha-verifier"
@@ -34,51 +23,27 @@ import {
     validatePassword,
     validatePasswordInput,
 } from "./index"
+import { AuthRepository } from "./auth-repository"
+import { AuthAuditService } from "./auth-audit-service"
 
-/**
- * Authentication result from login/registration
- */
 export interface AuthenticationResult {
-    /** Whether authentication succeeded */
     success: boolean
-
-    /** User ID (if successful) */
     userId?: string
-
-    /** User email (if successful) */
     email?: string
-
-    /** Error message (if failed) */
     error?: string
-
-    /** Error code for client handling */
     errorCode?: string
-
-    /** HTTP status code */
     statusCode: number
-
-    /** Whether account is locked due to rate limiting */
     isLocked?: boolean
-
-    /** Time until account unlock in seconds (if locked) */
     unlockTimeSeconds?: number
-
-    /** Whether degraded mode is active (CAPTCHA unavailable) */
     degradedMode?: boolean
 }
 
-/**
- * Registration request data
- */
 export interface RegistrationRequest {
     email: string
     password: string
     captchaToken?: string
 }
 
-/**
- * Login request data
- */
 export interface LoginRequest {
     email: string
     password: string
@@ -90,9 +55,12 @@ export interface LoginRequest {
  * Main controller orchestrating all password security components
  */
 export class AuthenticationService {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private supabase: SupabaseClient<any>
     private rateLimiter: RateLimiter
     private config: ReturnType<typeof getSecurityConfig>
+    private repository: AuthRepository
+    private auditService: AuthAuditService
 
     constructor() {
         // Initialize Supabase client
@@ -106,6 +74,7 @@ export class AuthenticationService {
             )
         }
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         this.supabase = createClient<any>(url, serviceKey, {
             auth: {
                 autoRefreshToken: false,
@@ -118,47 +87,14 @@ export class AuthenticationService {
 
         // Initialize rate limiter with configuration
         this.rateLimiter = getRateLimiter(this.config.rateLimiting)
+
+        // Initialize repository and audit service
+        this.repository = new AuthRepository(this.supabase)
+        this.auditService = new AuthAuditService(this.supabase)
     }
 
     /**
      * Register a new user with email and password
-     *
-     * This function:
-     * 1. Validates CAPTCHA token (bot protection)
-     * 2. Validates input (email, password format)
-     * 3. Checks if email already exists
-     * 4. Hashes password with Argon2id (Argon2id only)
-     * 5. Creates user record in database
-     * 6. Logs registration event
-     * 7. Returns success or error with generic messages
-     * 8. Normalizes response time to prevent timing attacks
-     *
-     * Security Features:
-     * - CAPTCHA validation prevents automated registration
-     * - Input validation prevents injection attacks
-     * - Generic error messages prevent user enumeration
-     * - Argon2id hashing with salt and pepper
-     * - Audit logging for compliance
-     * - Response time normalization prevents timing attacks (Requirement 10.4, 10.5)
-     *
-     * @param request Registration request with email, password, CAPTCHA token
-     * @returns Authentication result with success status and user data
-     *
-     * @example
-     * ```typescript
-     * const service = new AuthenticationService()
-     * const result = await service.register({
-     *   email: 'user@example.com',
-     *   password: 'SecurePassword123!',
-     *   captchaToken: 'token_from_frontend'
-     * })
-     *
-     * if (result.success) {
-     *   console.log('User registered:', result.userId)
-     * } else {
-     *   console.error('Registration failed:', result.error)
-     * }
-     * ```
      */
     async register(
         request: RegistrationRequest
@@ -166,7 +102,7 @@ export class AuthenticationService {
         const operationStartTime = Date.now()
         try {
             // ================================================================
-            // STEP 1: VALIDATE CAPTCHA (Requirement 20.1, 20.2)
+            // STEP 1: VALIDATE CAPTCHA
             // ================================================================
 
             if (!request.captchaToken) {
@@ -184,22 +120,16 @@ export class AuthenticationService {
                 )
             }
 
-            // Verify CAPTCHA with graceful degradation
             const captchaResult = await verifyCAPTCHAWithFallback(
                 request.captchaToken
             )
 
             if (!captchaResult.success) {
-                // Log CAPTCHA failure
                 logger.warn("CAPTCHA verification failed during registration", {
                     email: request.email,
                     reason: captchaResult.failureReason,
                     degradedMode: captchaResult.degradedMode,
                 })
-
-                // Return generic error (don't reveal CAPTCHA failure)
-                // Requirement 20.3: Return 400 for invalid tokens
-                // Requirement 20.4: Don't reveal CAPTCHA failure vs other failures
                 return this.normalizeAndReturn(
                     {
                         success: false,
@@ -213,10 +143,9 @@ export class AuthenticationService {
             }
 
             // ================================================================
-            // STEP 2: VALIDATE INPUT (Requirement 8.1, 8.2, 8.3, 8.6)
+            // STEP 2: VALIDATE INPUT
             // ================================================================
 
-            // Validate email format
             if (!request.email || typeof request.email !== "string") {
                 logger.warn("Invalid email in registration request", {
                     email: request.email,
@@ -232,7 +161,6 @@ export class AuthenticationService {
                 )
             }
 
-            // Validate password input (length, format, no null bytes)
             try {
                 validatePasswordInput(request.password)
             } catch (error) {
@@ -253,41 +181,16 @@ export class AuthenticationService {
             }
 
             // ================================================================
-            // STEP 3: CHECK IF EMAIL EXISTS (Requirement 8.6)
+            // STEP 3: CHECK IF EMAIL EXISTS
             // ================================================================
 
-            let existingUser: any
+            let emailExists = false
             try {
-                const { data, error } = await this.supabase
-                    .from("users")
-                    .select("id")
-                    .eq("email", request.email.toLowerCase())
-                    .single()
-
-                // PGRST116 = no rows found (expected for new users)
-                if (error && error.code !== "PGRST116") {
-                    logger.error("Database error checking email existence", {
-                        email: request.email,
-                        error: error.message,
-                    })
-                    return this.normalizeAndReturn(
-                        {
-                            success: false,
-                            error: "Registration failed",
-                            errorCode: "DATABASE_ERROR",
-                            statusCode: 500,
-                        },
-                        operationStartTime
-                    )
-                }
-
-                existingUser = data
+                emailExists = await this.repository.userExistsByEmail(
+                    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                    request.email
+                )
             } catch (error) {
-                logger.error("Error checking email existence", {
-                    email: request.email,
-                    error:
-                        error instanceof Error ? error.message : String(error),
-                })
                 return this.normalizeAndReturn(
                     {
                         success: false,
@@ -299,8 +202,7 @@ export class AuthenticationService {
                 )
             }
 
-            // Email already exists - return generic error (no user enumeration)
-            if (existingUser) {
+            if (emailExists) {
                 logger.warn("Registration attempt with existing email", {
                     email: request.email,
                 })
@@ -316,14 +218,13 @@ export class AuthenticationService {
             }
 
             // ================================================================
-            // STEP 4: HASH PASSWORD WITH ARGON2ID (Requirement 1.1, 1.2, 1.3)
+            // STEP 4: HASH PASSWORD WITH ARGON2ID
             // ================================================================
 
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             let hashResult: any
             try {
                 hashResult = await hashPasswordArgon2id(request.password)
-
-                // Log performance warning if hashing took too long
                 if (hashResult.performanceWarning) {
                     logger.warn("Password hashing performance warning", {
                         email: request.email,
@@ -348,47 +249,19 @@ export class AuthenticationService {
             }
 
             // ================================================================
-            // STEP 5: CREATE USER RECORD (Requirement 1.1, 5.5)
+            // STEP 5: CREATE USER RECORD
             // ================================================================
 
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             let newUser: any
             try {
-                const { data, error } = await this.supabase
-                    .from("users")
-                    .insert({
-                        email: request.email.toLowerCase(),
-                        password_hash: hashResult.hash,
-                        password_algorithm: hashResult.algorithm,
-                        email_verified: false,
-                        created_at: new Date().toISOString(),
-                        updated_at: new Date().toISOString(),
-                    })
-                    .select("id, email")
-                    .single()
-
-                if (error) {
-                    logger.error("Failed to create user record", {
-                        email: request.email,
-                        error: error.message,
-                    })
-                    return this.normalizeAndReturn(
-                        {
-                            success: false,
-                            error: "Registration failed",
-                            errorCode: "DATABASE_ERROR",
-                            statusCode: 500,
-                        },
-                        operationStartTime
-                    )
-                }
-
-                newUser = data
-            } catch (error) {
-                logger.error("Error creating user record", {
+                newUser = await this.repository.createUser({
+                    // eslint-disable-next-line @typescript-eslint/no-unused-vars
                     email: request.email,
-                    error:
-                        error instanceof Error ? error.message : String(error),
+                    passwordHash: hashResult.hash,
+                    passwordAlgorithm: hashResult.algorithm,
                 })
+            } catch (error) {
                 return this.normalizeAndReturn(
                     {
                         success: false,
@@ -401,31 +274,18 @@ export class AuthenticationService {
             }
 
             // ================================================================
-            // STEP 6: LOG REGISTRATION EVENT (Requirement 14.1, 14.3)
+            // STEP 6: LOG REGISTRATION EVENT
             // ================================================================
 
-            try {
-                await this.supabase.from("audit_logs").insert({
-                    event_type: "user_registered",
-                    email: request.email,
-                    user_id: newUser.id,
-                    timestamp: new Date().toISOString(),
-                    details: {
-                        algorithm: hashResult.algorithm,
-                        hashTimeTakenMs: hashResult.timeTakenMs,
-                    },
-                })
-            } catch (error) {
-                logger.error("Failed to log registration event", {
-                    email: request.email,
-                    error:
-                        error instanceof Error ? error.message : String(error),
-                })
-                // Don't fail registration if logging fails
-            }
+            await this.auditService.logRegistration({
+                email: request.email,
+                userId: newUser.id,
+                algorithm: hashResult.algorithm,
+                hashTimeTakenMs: hashResult.timeTakenMs,
+            })
 
             // ================================================================
-            // STEP 7: RETURN SUCCESS
+            // STEP 7: RETURN SUCCESS & NORMALIZE
             // ================================================================
 
             logger.info("User registered successfully", {
@@ -433,11 +293,6 @@ export class AuthenticationService {
                 email: request.email,
             })
 
-            // ================================================================
-            // STEP 8: NORMALIZE RESPONSE TIME (Requirement 10.4, 10.5)
-            // ================================================================
-            // Ensure response time is consistent regardless of path taken
-            // This prevents timing attacks that could reveal information
             return this.normalizeAndReturn(
                 {
                     success: true,
@@ -451,8 +306,6 @@ export class AuthenticationService {
             logger.error("Unexpected error during registration", {
                 error: error instanceof Error ? error.message : String(error),
             })
-
-            // Normalize response time even on error
             return this.normalizeAndReturn(
                 {
                     success: false,
@@ -467,54 +320,12 @@ export class AuthenticationService {
 
     /**
      * Authenticate user with email and password
-     *
-     * This function:
-     * 1. Validates CAPTCHA token (bot protection)
-     * 2. Checks rate limits (brute force protection)
-     * 3. Validates input (email, password format)
-     * 4. Looks up user by email
-     * 5. Validates password against stored hash
-     * 6. Validates password with Argon2id
-     * 7. Resets rate limit counter on success
-     * 8. Logs authentication event
-     * 9. Returns success or error with generic messages
-     * 10. Normalizes response time to prevent timing attacks
-     *
-     * Security Features:
-     * - CAPTCHA validation prevents automated attacks
-     * - Rate limiting prevents brute force attacks
-     * - Constant-time password comparison prevents timing attacks
-     * - Generic error messages prevent user enumeration
-     * - Argon2id-only password storage
-     * - Audit logging for compliance
-     * - Response time normalization prevents timing attacks (Requirement 10.4, 10.5)
-     *
-     * @param request Login request with email, password, CAPTCHA token
-     * @returns Authentication result with success status and user data
-     *
-     * @example
-     * ```typescript
-     * const service = new AuthenticationService()
-     * const result = await service.login({
-     *   email: 'user@example.com',
-     *   password: 'SecurePassword123!',
-     *   captchaToken: 'token_from_frontend'
-     * })
-     *
-     * if (result.success) {
-     *   console.log('User logged in:', result.userId)
-     * } else if (result.isLocked) {
-     *   console.error('Account locked for', result.unlockTimeSeconds, 'seconds')
-     * } else {
-     *   console.error('Login failed:', result.error)
-     * }
-     * ```
      */
     async login(request: LoginRequest): Promise<AuthenticationResult> {
         const operationStartTime = Date.now()
         try {
             // ================================================================
-            // STEP 1: VALIDATE CAPTCHA (Requirement 20.1, 20.2)
+            // STEP 1: VALIDATE CAPTCHA
             // ================================================================
 
             let degradedMode = false
@@ -534,13 +345,11 @@ export class AuthenticationService {
                 )
             }
 
-            // Verify CAPTCHA with graceful degradation
             const captchaResult = await verifyCAPTCHAWithFallback(
                 request.captchaToken
             )
 
             if (!captchaResult.success) {
-                // Log CAPTCHA failure
                 logger.warn("CAPTCHA verification failed during login", {
                     email: request.email,
                     reason: captchaResult.failureReason,
@@ -548,12 +357,8 @@ export class AuthenticationService {
                 })
 
                 if (captchaResult.degradedMode) {
-                    // CAPTCHA service unavailable - activate degraded mode
-                    // Continue with enhanced rate limiting
                     degradedMode = true
                 } else {
-                    // CAPTCHA verification failed (not degraded mode)
-                    // Return generic error (don't reveal CAPTCHA failure)
                     return this.normalizeAndReturn(
                         {
                             success: false,
@@ -567,42 +372,24 @@ export class AuthenticationService {
             }
 
             // ================================================================
-            // STEP 2: CHECK RATE LIMITS (Requirement 7.1, 7.2, 7.3, 7.4)
+            // STEP 2: CHECK RATE LIMITS
             // ================================================================
 
             const rateLimitCheck =
                 await this.rateLimiter.checkAndUpdateRateLimit(request.email)
 
             if (!rateLimitCheck.allowed) {
-                // Account is locked due to rate limiting
                 logger.warn("Login attempt on rate-limited account", {
                     email: request.email,
                     isLocked: rateLimitCheck.isLocked,
                     lockedUntil: rateLimitCheck.lockedUntil?.toISOString(),
                 })
 
-                // Log rate limit event
-                try {
-                    await this.supabase.from("audit_logs").insert({
-                        event_type: "rate_limit_exceeded",
-                        email: request.email,
-                        timestamp: new Date().toISOString(),
-                        details: {
-                            degradedMode,
-                        },
-                    })
-                } catch (error) {
-                    logger.error("Failed to log rate limit event", {
-                        error:
-                            error instanceof Error
-                                ? error.message
-                                : String(error),
-                    })
-                }
+                await this.auditService.logRateLimitExceeded({
+                    email: request.email,
+                    degradedMode,
+                })
 
-                // Return 429 Too Many Requests
-                // Requirement 7.3: Return 429 when locked
-                // Requirement 7.6: Don't reveal whether account exists or password was correct
                 return this.normalizeAndReturn(
                     {
                         success: false,
@@ -623,18 +410,14 @@ export class AuthenticationService {
             }
 
             // ================================================================
-            // STEP 3: VALIDATE INPUT (Requirement 8.1, 8.2, 8.3, 8.6)
+            // STEP 3: VALIDATE INPUT
             // ================================================================
 
-            // Validate email format
             if (!request.email || typeof request.email !== "string") {
                 logger.warn("Invalid email in login request", {
                     email: request.email,
                 })
-
-                // Record failure for rate limiting
                 await this.rateLimiter.recordFailure(request.email)
-
                 return this.normalizeAndReturn(
                     {
                         success: false,
@@ -646,7 +429,6 @@ export class AuthenticationService {
                 )
             }
 
-            // Validate password input (length, format, no null bytes)
             try {
                 validatePasswordInput(request.password)
             } catch (error) {
@@ -655,10 +437,7 @@ export class AuthenticationService {
                     error:
                         error instanceof Error ? error.message : String(error),
                 })
-
-                // Record failure for rate limiting
                 await this.rateLimiter.recordFailure(request.email)
-
                 return this.normalizeAndReturn(
                     {
                         success: false,
@@ -671,50 +450,31 @@ export class AuthenticationService {
             }
 
             // ================================================================
-            // STEP 4: LOOK UP USER (Requirement 6.1)
+            // STEP 4: LOOK UP USER
             // ================================================================
 
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             let user: any
             try {
-                const { data, error } = await this.supabase
-                    .from("users")
-                    .select("id, email, password_hash, password_algorithm")
-                    .eq("email", request.email.toLowerCase())
-                    .single()
-
-                // User not found or database error
-                if (error || !data) {
+                user = await this.repository.findUserByEmail(request.email)
+                if (!user) {
                     logger.warn("User not found during login", {
                         email: request.email,
                     })
-
-                    // Record failure for rate limiting
                     await this.rateLimiter.recordFailure(request.email)
-
-                    // Return generic error (no user enumeration)
-                    // Requirement 7.6: Don't reveal whether account exists
                     return this.normalizeAndReturn(
                         {
                             success: false,
                             error: "Authentication failed",
                             errorCode: "AUTH_FAILED",
+                            // eslint-disable-next-line @typescript-eslint/no-unused-vars
                             statusCode: 401,
                         },
                         operationStartTime
                     )
                 }
-
-                user = data
             } catch (error) {
-                logger.error("Database error during login", {
-                    email: request.email,
-                    error:
-                        error instanceof Error ? error.message : String(error),
-                })
-
-                // Record failure for rate limiting
                 await this.rateLimiter.recordFailure(request.email)
-
                 return this.normalizeAndReturn(
                     {
                         success: false,
@@ -727,9 +487,10 @@ export class AuthenticationService {
             }
 
             // ================================================================
-            // STEP 5: VALIDATE PASSWORD (Requirement 6.4, 6.5, 6.6, 6.7)
+            // STEP 5: VALIDATE PASSWORD
             // ================================================================
 
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             let validationResult: any
             try {
                 validationResult = await validatePassword(
@@ -742,10 +503,7 @@ export class AuthenticationService {
                     error:
                         error instanceof Error ? error.message : String(error),
                 })
-
-                // Record failure for rate limiting
                 await this.rateLimiter.recordFailure(request.email)
-
                 return this.normalizeAndReturn(
                     {
                         success: false,
@@ -757,18 +515,12 @@ export class AuthenticationService {
                 )
             }
 
-            // Password validation failed
             if (!validationResult.valid) {
                 logger.warn("Invalid password during login", {
                     email: request.email,
                     algorithmType: validationResult.algorithmType,
                 })
-
-                // Record failure for rate limiting
                 await this.rateLimiter.recordFailure(request.email)
-
-                // Return generic error (no algorithm revelation)
-                // Requirement 6.6: Don't indicate algorithm type in errors
                 return this.normalizeAndReturn(
                     {
                         success: false,
@@ -781,7 +533,7 @@ export class AuthenticationService {
             }
 
             // ================================================================
-            // STEP 6: RESET RATE LIMIT COUNTER (Requirement 7.5)
+            // STEP 6: RESET RATE LIMIT COUNTER
             // ================================================================
 
             try {
@@ -792,35 +544,21 @@ export class AuthenticationService {
                     error:
                         error instanceof Error ? error.message : String(error),
                 })
-                // Don't fail authentication if rate limit reset fails
             }
 
             // ================================================================
-            // STEP 7: LOG AUTHENTICATION EVENT (Requirement 14.1, 14.6)
+            // STEP 7: LOG AUTHENTICATION EVENT
             // ================================================================
 
-            try {
-                await this.supabase.from("audit_logs").insert({
-                    event_type: "auth_success",
-                    email: request.email,
-                    user_id: user.id,
-                    timestamp: new Date().toISOString(),
-                    details: {
-                        algorithm: validationResult.algorithmType,
-                        degradedMode,
-                    },
-                })
-            } catch (error) {
-                logger.error("Failed to log authentication event", {
-                    email: request.email,
-                    error:
-                        error instanceof Error ? error.message : String(error),
-                })
-                // Don't fail authentication if logging fails
-            }
+            await this.auditService.logAuthSuccess({
+                email: request.email,
+                userId: user.id,
+                algorithm: validationResult.algorithmType,
+                degradedMode,
+            })
 
             // ================================================================
-            // STEP 9: RETURN SUCCESS
+            // STEP 8: RETURN SUCCESS & NORMALIZE
             // ================================================================
 
             logger.info("User authenticated successfully", {
@@ -829,11 +567,6 @@ export class AuthenticationService {
                 algorithmType: validationResult.algorithmType,
             })
 
-            // ================================================================
-            // STEP 9: NORMALIZE RESPONSE TIME (Requirement 10.4, 10.5)
-            // ================================================================
-            // Ensure response time is consistent regardless of path taken
-            // This prevents timing attacks that could reveal information
             return this.normalizeAndReturn(
                 {
                     success: true,
@@ -848,8 +581,6 @@ export class AuthenticationService {
             logger.error("Unexpected error during login", {
                 error: error instanceof Error ? error.message : String(error),
             })
-
-            // Normalize response time even on error
             return this.normalizeAndReturn(
                 {
                     success: false,
@@ -862,21 +593,6 @@ export class AuthenticationService {
         }
     }
 
-    /**
-     * Normalize response time and return authentication result
-     *
-     * This helper method ensures all authentication responses take consistent time
-     * to prevent timing attacks that could reveal information about the authentication
-     * process (e.g., whether user exists, password is correct, etc.)
-     *
-     * Requirement 10.4: Add deliberate delay to normalize response times
-     * Requirement 10.5: Don't log execution times that could reveal timing information
-     *
-     * @param result - The authentication result to return
-     * @param operationStartTime - When the operation started (Date.now())
-     * @param targetResponseTimeMs - Target response time in milliseconds
-     * @returns The same authentication result after normalizing response time
-     */
     private async normalizeAndReturn(
         result: AuthenticationResult,
         operationStartTime: number,
@@ -886,7 +602,6 @@ export class AuthenticationService {
             const operationTimeMs = Date.now() - operationStartTime
             await normalizeResponseTime(operationTimeMs, targetResponseTimeMs)
         } catch (error) {
-            // Ignore normalization errors - don't fail authentication
             logger.debug("Response time normalization error", {
                 error: error instanceof Error ? error.message : String(error),
             })
@@ -894,37 +609,17 @@ export class AuthenticationService {
         return result
     }
 
-    /**
-     * Get rate limiter instance
-     * Useful for admin operations like unlocking accounts
-     *
-     * @returns Rate limiter instance
-     */
     getRateLimiter(): RateLimiter {
         return this.rateLimiter
     }
 
-    /**
-     * Get security configuration
-     * Useful for debugging and monitoring
-     *
-     * @returns Security configuration
-     */
     getSecurityConfig() {
         return this.config
     }
 }
 
-/**
- * Singleton instance of Authentication Service
- */
 let authServiceInstance: AuthenticationService | null = null
 
-/**
- * Get or create Authentication Service instance
- *
- * @returns Authentication Service instance
- */
 export function getAuthenticationService(): AuthenticationService {
     if (!authServiceInstance) {
         authServiceInstance = new AuthenticationService()

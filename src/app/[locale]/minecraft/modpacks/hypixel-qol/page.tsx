@@ -13,6 +13,7 @@ export async function generateMetadata({
     params,
 }: HypixelQolPageProps): Promise<Metadata> {
     const { locale } = await params
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const t = await getTranslations({ locale, namespace: "minecraft" })
 
     return {

@@ -99,6 +99,7 @@ export function invalidateCache(): void {
     cache.clear()
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function mapScheduledPostToPost(p: any): Post {
     return {
         id: p.id,
@@ -112,6 +113,7 @@ function mapScheduledPostToPost(p: any): Post {
                 : p.status === "failed"
                   ? "failed"
                   : "scheduled",
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         channels: (p.networks || []).map((n: any) =>
             typeof n === "string" ? n : n.platform || ""
         ),

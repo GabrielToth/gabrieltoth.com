@@ -120,6 +120,7 @@ export class ActivityDetectionService {
      * const activity = await service.collectActivity(req)
      * // Returns: { ip: '203.0.113.42', device: {...}, location: {...}, ... }
      */
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async collectActivity(request: any): Promise<ActivityInfo> {
         try {
             // Extract IP address
@@ -298,6 +299,7 @@ export class ActivityDetectionService {
         if (threshold < 0 || threshold > 100) {
             throw new Error("Threshold must be between 0 and 100")
         }
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         ;(this as any).SUSPICIOUS_THRESHOLD = threshold
     }
 }

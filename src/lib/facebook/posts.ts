@@ -115,7 +115,7 @@ export async function getPagePosts(
         before?: string
         after?: string
     }
-): Promise<{ data: FacebookPost[]; paging?: any }> {
+): Promise<{ data: FacebookPost[]; paging?: unknown }> {
     const params = new URLSearchParams({
         access_token: pageAccessToken,
         fields: "id,message,story,created_time,permalink_url,attachments",

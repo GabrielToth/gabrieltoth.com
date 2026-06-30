@@ -43,6 +43,7 @@ export async function generateMetadata({
 export default async function AboutPage({ params }: AboutPageProps) {
     const { locale } = await params
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const seoConfig = generateSeoConfig({
         locale,
         path: "/about-me",

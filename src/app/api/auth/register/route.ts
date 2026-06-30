@@ -17,6 +17,7 @@ import {
 import { getAdminClient } from "@/lib/supabase/server"
 import { NextRequest, NextResponse } from "next/server"
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const supabase = getAdminClient()
 
 // Initialize authentication service for password security

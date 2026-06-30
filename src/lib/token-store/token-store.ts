@@ -382,6 +382,7 @@ export class TokenStore {
     /**
      * Map database record to StoredToken
      */
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private mapDatabaseToStoredToken(dbToken: any): StoredToken {
         return {
             id: dbToken.id,

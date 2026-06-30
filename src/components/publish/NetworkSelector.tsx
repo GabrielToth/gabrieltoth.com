@@ -25,6 +25,7 @@ export interface Network {
     id: string
     platform: string
     status: "connected" | "disconnected" | "expired"
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     metadata?: Record<string, any>
 }
 
@@ -141,6 +142,7 @@ export default function NetworkSelector({
                 <div className="flex gap-2">
                     <Select
                         value={sortBy}
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
                         onValueChange={(v: any) => setSortBy(v)}
                     >
                         <SelectTrigger className="w-32">

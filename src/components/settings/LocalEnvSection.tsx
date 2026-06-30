@@ -49,6 +49,7 @@ const SERVICE_ICONS: Record<string, React.ReactNode> = {
 }
 
 function EnvVarInput({
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     def: { key, label, secret },
     value,
     onChange,

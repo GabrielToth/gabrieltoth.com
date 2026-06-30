@@ -87,6 +87,7 @@ export async function POST(req: NextRequest) {
 
         const event = body as { object?: string }
         if (event?.object === "page" || event?.object === "instagram") {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             handleWebhookEvent(event as any)
         }
 

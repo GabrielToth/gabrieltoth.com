@@ -12,6 +12,7 @@ interface ContactFormData {
     turnstileToken?: string
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const RATE_LIMIT = { MAX_REQUESTS: 5, WINDOW_MS: 15 * 60 * 1000 }
 
 const SPAM_PATTERNS = [

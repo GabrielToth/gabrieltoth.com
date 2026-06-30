@@ -121,6 +121,7 @@ export async function connectChannel(platform: string): Promise<SocialChannel> {
 /**
  * Disconnect a social channel
  */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function disconnectChannel(platform: string): Promise<void> {
     try {
         // In production, replace with actual API call

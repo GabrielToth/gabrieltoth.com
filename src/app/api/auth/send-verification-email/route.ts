@@ -14,6 +14,7 @@ export async function POST(request: NextRequest) {
         let body
         try {
             body = await request.json()
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (error) {
             return NextResponse.json(
                 {

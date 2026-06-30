@@ -27,6 +27,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
     const locale = useLocale()
     const router = useRouter()
     const [sidebarOpen, setSidebarOpen] = useState(false)
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [isLoggingOut, setIsLoggingOut] = useState(false)
     const [logoutError, setLogoutError] = useState<string | null>(null)
 

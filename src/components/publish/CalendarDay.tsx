@@ -20,6 +20,7 @@ export default function CalendarDay({
     isWeekend = false,
     onSelect,
 }: CalendarDayProps) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const t = useTranslations("dashboard.publish")
     if (!isCurrentMonth) {
         return <div className="h-10 sm:h-14" />

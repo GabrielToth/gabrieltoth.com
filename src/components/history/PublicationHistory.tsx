@@ -58,6 +58,7 @@ export default function PublicationHistory({
     const [filterNetwork, setFilterNetwork] = useState<string>("all")
     const [filterStatus, setFilterStatus] = useState<string>("all")
     const [searchTerm, setSearchTerm] = useState("")
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [selectedPublication, setSelectedPublication] =
         useState<PublicationRecord | null>(null)
 
