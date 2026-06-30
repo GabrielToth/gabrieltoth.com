@@ -104,7 +104,7 @@ describe("generateMetadata", () => {
         expect(metadata.openGraph?.description).toBe(
             "From channel management to custom development, I offer a range of services to help you grow your online presence and achieve your goals."
         )
-        expect(metadata.openGraph?.type).toBe("website")
+        expect((metadata.openGraph as Record<string, unknown>)?.type).toBe("website")
     })
 
     it("sets locale-specific openGraph locale", async () => {
