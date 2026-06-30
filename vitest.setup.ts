@@ -188,7 +188,8 @@ vi.mock("next-intl", () => ({
 
             if (flatTranslations[fullKey]) value = flatTranslations[fullKey]
             else if (flatTranslations[key]) value = flatTranslations[key]
-            else if (mockTranslationFallbacks[key]) value = mockTranslationFallbacks[key]
+            else if (mockTranslationFallbacks[key])
+                value = mockTranslationFallbacks[key]
 
             // If value is found, interpolate params
             if (value !== undefined && params) {

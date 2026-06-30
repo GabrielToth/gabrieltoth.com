@@ -10,10 +10,7 @@ vi.mock("next-intl/server", () => ({
         locale: string
         namespace: string
     }) => {
-        const translations: Record<
-            string,
-            Record<string, string>
-        > = {
+        const translations: Record<string, Record<string, string>> = {
             en: {
                 "landing.title": "Services",
                 "landing.description":
@@ -104,7 +101,9 @@ describe("generateMetadata", () => {
         expect(metadata.openGraph?.description).toBe(
             "From channel management to custom development, I offer a range of services to help you grow your online presence and achieve your goals."
         )
-        expect((metadata.openGraph as Record<string, unknown>)?.type).toBe("website")
+        expect((metadata.openGraph as Record<string, unknown>)?.type).toBe(
+            "website"
+        )
     })
 
     it("sets locale-specific openGraph locale", async () => {

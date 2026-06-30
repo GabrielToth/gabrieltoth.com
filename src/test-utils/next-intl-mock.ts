@@ -82,7 +82,8 @@ const settingsMocks: TranslationMap = {
     addIntegration: "Add Integration",
     preferences: "Preferences",
     notifications: "Notifications",
-    notificationsDescription: "Receive email notifications about your account activity",
+    notificationsDescription:
+        "Receive email notifications about your account activity",
     toggleNotifications: "Toggle notifications",
     on: "On",
     off: "Off",
@@ -102,7 +103,8 @@ const settingsMocks: TranslationMap = {
     timezone: "Timezone",
     selectTimezone: "Select timezone",
     timezoneDescription: "Choose your timezone",
-    preferencesSavedAutomatically: "Your preferences are saved automatically when you make changes.",
+    preferencesSavedAutomatically:
+        "Your preferences are saved automatically when you make changes.",
     profileInformation: "Profile Information",
     profileDescription: "Update your profile information",
     profilePhoto: "Profile Photo",

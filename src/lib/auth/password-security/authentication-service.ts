@@ -16,7 +16,12 @@
  */
 
 import { createClient, type SupabaseClient } from "@supabase/supabase-js"
-import type { IAuthAuditService, IAuthRepository, IRateLimiter, ISecurityConfig } from "./auth-service-types"
+import type {
+    IAuthAuditService,
+    IAuthRepository,
+    IRateLimiter,
+    ISecurityConfig,
+} from "./auth-service-types"
 import { getRateLimiter, getSecurityConfig, RateLimiter } from "./index"
 import { LoginService } from "./login-service"
 import { RegistrationService } from "./registration-service"
@@ -101,9 +106,7 @@ class SupabaseAuthRepository implements IAuthRepository {
         return result
     }
 
-    async findUserByEmail(
-        email: string
-    ): Promise<{
+    async findUserByEmail(email: string): Promise<{
         id: string
         email: string
         password_hash: string
@@ -195,7 +198,8 @@ class RateLimiterAdapter implements IRateLimiter {
     async checkAndUpdateRateLimit(
         identifier: string
     ): Promise<{ allowed: boolean; isLocked: boolean; lockedUntil?: Date }> {
-        const result = await this.rateLimiter.checkAndUpdateRateLimit(identifier)
+        const result =
+            await this.rateLimiter.checkAndUpdateRateLimit(identifier)
         return {
             allowed: result.allowed,
             isLocked: result.isLocked,

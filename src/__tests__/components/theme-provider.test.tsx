@@ -38,9 +38,9 @@ describe("ThemeProvider + ThemeToggle", () => {
         fireEvent.click(button)
 
         await waitFor(() => {
-            expect(
-                document.documentElement.classList.contains("light")
-            ).toBe(true)
+            expect(document.documentElement.classList.contains("light")).toBe(
+                true
+            )
         })
         expect(localStorage.getItem("theme")).toBe("light")
     })

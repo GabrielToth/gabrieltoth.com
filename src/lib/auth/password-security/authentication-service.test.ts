@@ -115,19 +115,22 @@ function createMockSupabase(config?: {
     from: ReturnType<typeof vi.fn>
 } {
     const selectSingle = config?.rejectSelectSingle
-        ? vi.fn().mockRejectedValue(config?.selectSingle ?? new Error("DB error"))
+        ? vi
+              .fn()
+              .mockRejectedValue(config?.selectSingle ?? new Error("DB error"))
         : vi.fn().mockResolvedValue(
-              config?.selectSingle ?? { data: null, error: { code: "PGRST116" } }
+              config?.selectSingle ?? {
+                  data: null,
+                  error: { code: "PGRST116" },
+              }
           )
 
     const insertSelectSingle = config?.insertSelectSingle
         ? vi.fn().mockResolvedValue(config.insertSelectSingle)
-        : vi
-              .fn()
-              .mockResolvedValue({
-                  data: { id: "user-123", email: "user@example.com" },
-                  error: null,
-              })
+        : vi.fn().mockResolvedValue({
+              data: { id: "user-123", email: "user@example.com" },
+              error: null,
+          })
 
     return {
         from: vi.fn().mockReturnValue({
@@ -224,9 +227,9 @@ describe("AuthenticationService", () => {
 
     describe("register", () => {
         it("should successfully register a new user with valid credentials", async () => {
-            vi.mocked(captchaVerifier.verifyCAPTCHAWithFallback).mockResolvedValue(
-                { success: true, degradedMode: false }
-            )
+            vi.mocked(
+                captchaVerifier.verifyCAPTCHAWithFallback
+            ).mockResolvedValue({ success: true, degradedMode: false })
 
             vi.mocked(passwordHasher.hashPasswordArgon2id).mockResolvedValue({
                 hash: "$argon2id$v=19$m=65536,t=3,p=2$...",
@@ -259,7 +262,9 @@ describe("AuthenticationService", () => {
         })
 
         it("should reject registration with invalid CAPTCHA token", async () => {
-            vi.mocked(captchaVerifier.verifyCAPTCHAWithFallback).mockResolvedValue({
+            vi.mocked(
+                captchaVerifier.verifyCAPTCHAWithFallback
+            ).mockResolvedValue({
                 success: false,
                 degradedMode: false,
                 failureReason: "invalid_token",
@@ -277,7 +282,9 @@ describe("AuthenticationService", () => {
         })
 
         it("should reject registration with invalid password", async () => {
-            vi.mocked(captchaVerifier.verifyCAPTCHAWithFallback).mockResolvedValue({
+            vi.mocked(
+                captchaVerifier.verifyCAPTCHAWithFallback
+            ).mockResolvedValue({
                 success: true,
                 degradedMode: false,
             })
@@ -300,7 +307,9 @@ describe("AuthenticationService", () => {
         })
 
         it("should reject registration with existing email", async () => {
-            vi.mocked(captchaVerifier.verifyCAPTCHAWithFallback).mockResolvedValue({
+            vi.mocked(
+                captchaVerifier.verifyCAPTCHAWithFallback
+            ).mockResolvedValue({
                 success: true,
                 degradedMode: false,
             })
@@ -326,7 +335,9 @@ describe("AuthenticationService", () => {
         })
 
         it("should use Argon2id for new user passwords", async () => {
-            vi.mocked(captchaVerifier.verifyCAPTCHAWithFallback).mockResolvedValue({
+            vi.mocked(
+                captchaVerifier.verifyCAPTCHAWithFallback
+            ).mockResolvedValue({
                 success: true,
                 degradedMode: false,
             })
@@ -350,7 +361,9 @@ describe("AuthenticationService", () => {
         })
 
         it("should handle database error when checking email existence", async () => {
-            vi.mocked(captchaVerifier.verifyCAPTCHAWithFallback).mockResolvedValue({
+            vi.mocked(
+                captchaVerifier.verifyCAPTCHAWithFallback
+            ).mockResolvedValue({
                 success: true,
                 degradedMode: false,
             })
@@ -384,7 +397,9 @@ describe("AuthenticationService", () => {
         })
 
         it("should handle hashing error during registration", async () => {
-            vi.mocked(captchaVerifier.verifyCAPTCHAWithFallback).mockResolvedValue({
+            vi.mocked(
+                captchaVerifier.verifyCAPTCHAWithFallback
+            ).mockResolvedValue({
                 success: true,
                 degradedMode: false,
             })
@@ -405,7 +420,9 @@ describe("AuthenticationService", () => {
         })
 
         it("should log performance warning when hashing takes too long", async () => {
-            vi.mocked(captchaVerifier.verifyCAPTCHAWithFallback).mockResolvedValue({
+            vi.mocked(
+                captchaVerifier.verifyCAPTCHAWithFallback
+            ).mockResolvedValue({
                 success: true,
                 degradedMode: false,
             })
@@ -436,7 +453,9 @@ describe("AuthenticationService", () => {
         })
 
         it("should handle database error when creating user", async () => {
-            vi.mocked(captchaVerifier.verifyCAPTCHAWithFallback).mockResolvedValue({
+            vi.mocked(
+                captchaVerifier.verifyCAPTCHAWithFallback
+            ).mockResolvedValue({
                 success: true,
                 degradedMode: false,
             })
@@ -461,15 +480,13 @@ describe("AuthenticationService", () => {
                     }),
                     insert: vi.fn().mockReturnValue({
                         select: vi.fn().mockReturnValue({
-                            single: vi
-                                .fn()
-                                .mockResolvedValue({
-                                    data: null,
-                                    error: {
-                                        message: "Duplicate key",
-                                        code: "23505",
-                                    },
-                                }),
+                            single: vi.fn().mockResolvedValue({
+                                data: null,
+                                error: {
+                                    message: "Duplicate key",
+                                    code: "23505",
+                                },
+                            }),
                         }),
                     }),
                 }),
@@ -497,7 +514,9 @@ describe("AuthenticationService", () => {
 
     describe("login", () => {
         it("should successfully authenticate user with valid credentials", async () => {
-            vi.mocked(captchaVerifier.verifyCAPTCHAWithFallback).mockResolvedValue({
+            vi.mocked(
+                captchaVerifier.verifyCAPTCHAWithFallback
+            ).mockResolvedValue({
                 success: true,
                 degradedMode: false,
             })
@@ -550,7 +569,9 @@ describe("AuthenticationService", () => {
         })
 
         it("should reject login with invalid password", async () => {
-            vi.mocked(captchaVerifier.verifyCAPTCHAWithFallback).mockResolvedValue({
+            vi.mocked(
+                captchaVerifier.verifyCAPTCHAWithFallback
+            ).mockResolvedValue({
                 success: true,
                 degradedMode: false,
             })
@@ -591,7 +612,9 @@ describe("AuthenticationService", () => {
         })
 
         it("should return generic error messages (no user enumeration)", async () => {
-            vi.mocked(captchaVerifier.verifyCAPTCHAWithFallback).mockResolvedValue({
+            vi.mocked(
+                captchaVerifier.verifyCAPTCHAWithFallback
+            ).mockResolvedValue({
                 success: true,
                 degradedMode: false,
             })
@@ -609,7 +632,9 @@ describe("AuthenticationService", () => {
         })
 
         it("should handle CAPTCHA degraded mode", async () => {
-            vi.mocked(captchaVerifier.verifyCAPTCHAWithFallback).mockResolvedValue({
+            vi.mocked(
+                captchaVerifier.verifyCAPTCHAWithFallback
+            ).mockResolvedValue({
                 success: false,
                 degradedMode: true,
                 failureReason: "CAPTCHA service unavailable",
@@ -649,19 +674,23 @@ describe("AuthenticationService", () => {
         })
 
         it("should handle rate-limited account with unlockTimeSeconds", async () => {
-            vi.mocked(captchaVerifier.verifyCAPTCHAWithFallback).mockResolvedValue({
+            vi.mocked(
+                captchaVerifier.verifyCAPTCHAWithFallback
+            ).mockResolvedValue({
                 success: true,
                 degradedMode: false,
             })
 
             // Make rate limiter return locked
             const lockedUntil = new Date(Date.now() + 600000)
-            mockRateLimiter.checkAndUpdateRateLimit = vi.fn().mockResolvedValue({
-                allowed: false,
-                isLocked: true,
-                remainingAttempts: 0,
-                lockedUntil,
-            })
+            mockRateLimiter.checkAndUpdateRateLimit = vi
+                .fn()
+                .mockResolvedValue({
+                    allowed: false,
+                    isLocked: true,
+                    remainingAttempts: 0,
+                    lockedUntil,
+                })
 
             const result = await service.login({
                 email: "locked@example.com",
@@ -678,7 +707,9 @@ describe("AuthenticationService", () => {
         })
 
         it("should handle database error during login user lookup", async () => {
-            vi.mocked(captchaVerifier.verifyCAPTCHAWithFallback).mockResolvedValue({
+            vi.mocked(
+                captchaVerifier.verifyCAPTCHAWithFallback
+            ).mockResolvedValue({
                 success: true,
                 degradedMode: false,
             })
@@ -705,7 +736,9 @@ describe("AuthenticationService", () => {
         })
 
         it("should handle rateLimiter.recordSuccess() failure gracefully", async () => {
-            vi.mocked(captchaVerifier.verifyCAPTCHAWithFallback).mockResolvedValue({
+            vi.mocked(
+                captchaVerifier.verifyCAPTCHAWithFallback
+            ).mockResolvedValue({
                 success: true,
                 degradedMode: false,
             })
@@ -756,7 +789,9 @@ describe("AuthenticationService", () => {
 
     describe("security features", () => {
         it("should use constant-time password comparison", async () => {
-            vi.mocked(captchaVerifier.verifyCAPTCHAWithFallback).mockResolvedValue({
+            vi.mocked(
+                captchaVerifier.verifyCAPTCHAWithFallback
+            ).mockResolvedValue({
                 success: true,
                 degradedMode: false,
             })
@@ -794,7 +829,9 @@ describe("AuthenticationService", () => {
         })
 
         it("should apply pepper to passwords during validation", async () => {
-            vi.mocked(captchaVerifier.verifyCAPTCHAWithFallback).mockResolvedValue({
+            vi.mocked(
+                captchaVerifier.verifyCAPTCHAWithFallback
+            ).mockResolvedValue({
                 success: true,
                 degradedMode: false,
             })
@@ -862,7 +899,9 @@ describe("AuthenticationService", () => {
 
     describe("normalizeAndReturn error handling", () => {
         it("should handle normalizeAndReturn errors gracefully", async () => {
-            vi.mocked(captchaVerifier.verifyCAPTCHAWithFallback).mockResolvedValue({
+            vi.mocked(
+                captchaVerifier.verifyCAPTCHAWithFallback
+            ).mockResolvedValue({
                 success: true,
                 degradedMode: false,
             })
@@ -875,9 +914,8 @@ describe("AuthenticationService", () => {
             })
 
             // Mock normalizeResponseTime to throw
-            const { normalizeResponseTime } = await import(
-                "./constant-time-comparison"
-            )
+            const { normalizeResponseTime } =
+                await import("./constant-time-comparison")
             vi.mocked(normalizeResponseTime).mockRejectedValue(
                 new Error("Normalization failed")
             )

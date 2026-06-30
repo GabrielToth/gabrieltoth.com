@@ -81,10 +81,7 @@ describe("CORS Middleware", () => {
             })
             const config = getConfig()
 
-            const result = validateCorsOrigin(
-                "https://gabrieltoth.com",
-                config
-            )
+            const result = validateCorsOrigin("https://gabrieltoth.com", config)
 
             expect(result).toBe(true)
         })
@@ -158,10 +155,7 @@ describe("CORS Middleware", () => {
             })
             const config = getConfig()
 
-            const result = validateCorsOrigin(
-                "http://localhost:8080",
-                config
-            )
+            const result = validateCorsOrigin("http://localhost:8080", config)
 
             expect(result).toBe(true)
         })
@@ -345,9 +339,9 @@ describe("CORS Middleware", () => {
                 logging: {} as any,
             })
 
-            const handler = vi.fn().mockResolvedValue(
-                NextResponse.json({ message: "ok" })
-            )
+            const handler = vi
+                .fn()
+                .mockResolvedValue(NextResponse.json({ message: "ok" }))
             const wrapped = withCors(handler)
 
             const request = createRequest({
@@ -404,9 +398,9 @@ describe("CORS Middleware", () => {
 
             expect(handler).not.toHaveBeenCalled()
             expect(response.status).toBe(200)
-            expect(
-                response.headers.get("Access-Control-Allow-Origin")
-            ).toBe("http://localhost:3000")
+            expect(response.headers.get("Access-Control-Allow-Origin")).toBe(
+                "http://localhost:3000"
+            )
         })
 
         it("should return 403 when origin is not allowed in production", async () => {
@@ -440,9 +434,9 @@ describe("CORS Middleware", () => {
                 logging: {} as any,
             })
 
-            const handler = vi.fn().mockResolvedValue(
-                NextResponse.json({ message: "ok" })
-            )
+            const handler = vi
+                .fn()
+                .mockResolvedValue(NextResponse.json({ message: "ok" }))
             const wrapped = withCors(handler)
 
             const request = createRequest({

@@ -26,7 +26,7 @@ const { mockLogger, mockRedisClient } = vi.hoisted(() => ({
         del: vi.fn(),
         ttl: vi.fn(),
         keys: vi.fn(),
-    }
+    },
 }))
 
 // Mock the cache modules
@@ -101,14 +101,18 @@ describe("Rate Limiter - Redis Backend", () => {
         it("should clear all rate limits using Redis keys", async () => {
             mockRedisClient.keys.mockResolvedValueOnce(["key1", "key2"])
             await clearAllRateLimits()
-            expect(mockRedisClient.keys).toHaveBeenCalledWith("rate-limit:login:*")
+            expect(mockRedisClient.keys).toHaveBeenCalledWith(
+                "rate-limit:login:*"
+            )
             expect(mockRedisClient.del).toHaveBeenCalledWith("key1", "key2")
         })
 
         it("should get rate limiter stats from Redis", async () => {
             mockRedisClient.keys.mockResolvedValueOnce(["key1", "key2", "key3"])
             const stats = await getRateLimiterStats()
-            expect(mockRedisClient.keys).toHaveBeenCalledWith("rate-limit:login:*")
+            expect(mockRedisClient.keys).toHaveBeenCalledWith(
+                "rate-limit:login:*"
+            )
             expect(stats).toEqual({ backend: "redis", entriesCount: 3 })
         })
     })
@@ -117,41 +121,59 @@ describe("Rate Limiter - Redis Backend", () => {
         it("should fail open and log error if checkRateLimit throws", async () => {
             mockRedisClient.get.mockRejectedValueOnce(new Error("Redis error"))
             const isLimited = await checkRateLimit(ipAddress)
-            expect(mockLogger.error).toHaveBeenCalledWith("Failed to get attempt count from Redis", expect.any(Object))
+            expect(mockLogger.error).toHaveBeenCalledWith(
+                "Failed to get attempt count from Redis",
+                expect.any(Object)
+            )
             expect(isLimited).toBe(false) // Fail open
         })
 
         it("should return 0 and log error if incrementAttempt throws", async () => {
             mockRedisClient.incr.mockRejectedValueOnce(new Error("Redis error"))
             const count = await incrementAttempt(ipAddress)
-            expect(mockLogger.error).toHaveBeenCalledWith("Failed to increment attempt count in Redis", expect.any(Object))
+            expect(mockLogger.error).toHaveBeenCalledWith(
+                "Failed to increment attempt count in Redis",
+                expect.any(Object)
+            )
             expect(count).toBe(0)
         })
 
         it("should handle error during resetAttempt", async () => {
             mockRedisClient.del.mockRejectedValueOnce(new Error("Redis error"))
             await resetAttempt(ipAddress)
-            expect(mockLogger.error).toHaveBeenCalledWith("Failed to reset attempt count in Redis", expect.any(Object))
+            expect(mockLogger.error).toHaveBeenCalledWith(
+                "Failed to reset attempt count in Redis",
+                expect.any(Object)
+            )
         })
 
         it("should return 0 and log error if getAttemptCount throws", async () => {
             mockRedisClient.get.mockRejectedValueOnce(new Error("Redis error"))
             const count = await getAttemptCount(ipAddress)
-            expect(mockLogger.error).toHaveBeenCalledWith("Failed to get attempt count from Redis", expect.any(Object))
+            expect(mockLogger.error).toHaveBeenCalledWith(
+                "Failed to get attempt count from Redis",
+                expect.any(Object)
+            )
             expect(count).toBe(0)
         })
 
         it("should return 0 and log error if getTimeUntilReset throws", async () => {
             mockRedisClient.ttl.mockRejectedValueOnce(new Error("Redis error"))
             const ttl = await getTimeUntilReset(ipAddress)
-            expect(mockLogger.error).toHaveBeenCalledWith("Error getting time until reset", expect.any(Object))
+            expect(mockLogger.error).toHaveBeenCalledWith(
+                "Error getting time until reset",
+                expect.any(Object)
+            )
             expect(ttl).toBe(0)
         })
-        
+
         it("should handle error during clearAllRateLimits", async () => {
             mockRedisClient.keys.mockRejectedValueOnce(new Error("Redis error"))
             await clearAllRateLimits()
-            expect(mockLogger.error).toHaveBeenCalledWith("Error clearing rate limits", expect.any(Object))
+            expect(mockLogger.error).toHaveBeenCalledWith(
+                "Error clearing rate limits",
+                expect.any(Object)
+            )
         })
     })
 })

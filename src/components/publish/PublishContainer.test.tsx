@@ -178,7 +178,9 @@ describe("PublishContainer", () => {
 
         // Wait for data to load
         await waitFor(() => {
-            expect(screen.getByText("Showing 3 of 3 post(s)")).toBeInTheDocument()
+            expect(
+                screen.getByText("Showing 3 of 3 post(s)")
+            ).toBeInTheDocument()
         })
     })
 

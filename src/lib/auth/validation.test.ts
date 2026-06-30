@@ -317,12 +317,8 @@ describe("validateAccountCompletionData()", () => {
             birthDate: "invalid-date",
         })
         expect(result.valid).toBe(false)
-        expect(result.errors.email).toBe(
-            "Please enter a valid email address"
-        )
-        expect(result.errors.name).toBe(
-            "Name must be at least 2 characters"
-        )
+        expect(result.errors.email).toBe("Please enter a valid email address")
+        expect(result.errors.name).toBe("Name must be at least 2 characters")
         expect(result.errors.password).toBeTruthy()
         expect(result.errors.phone).toBe(
             "Please enter a valid international phone number"
