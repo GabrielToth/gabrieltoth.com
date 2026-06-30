@@ -21,6 +21,15 @@ import { DashboardLayout } from "@/components/dashboard/DashboardLayout"
 import { fireEvent, render, screen, waitFor } from "@testing-library/react"
 import { beforeEach, describe, expect, it, vi } from "vitest"
 
+// Mock ThemeProvider to avoid useTheme dependency in LanguageSelector
+vi.mock("@/components/theme/theme-provider", () => ({
+    ThemeProvider: ({ children }: { children: React.ReactNode }) => children,
+    useTheme: () => ({
+        theme: "dark" as const,
+        toggleTheme: vi.fn(),
+    }),
+}))
+
 describe("Bug Condition Exploration - Logout Button Not Working", () => {
     let mockFetch: any
 

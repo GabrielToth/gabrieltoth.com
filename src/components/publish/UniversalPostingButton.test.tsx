@@ -7,7 +7,7 @@ vi.mock("./PostingInterface", () => ({
 }))
 
 function getPostingButton() {
-    return screen.getByLabelText(/Universal posting button/i)
+    return screen.getByRole("button", { name: /networks linked/i })
 }
 
 describe("UniversalPostingButton", () => {
@@ -20,7 +20,7 @@ describe("UniversalPostingButton", () => {
         )
 
         expect(getPostingButton()).toBeInTheDocument()
-        expect(screen.getByLabelText("3 networks")).toHaveTextContent("3")
+        expect(getPostingButton()).toHaveTextContent("3")
     })
 
     it("displays disabled state when no networks", () => {
@@ -105,7 +105,7 @@ describe("UniversalPostingButton", () => {
 
         expect(getPostingButton()).toHaveAttribute(
             "aria-label",
-            "Universal posting button. 3 networks linked."
+            "3 networks linked"
         )
     })
 

@@ -2,6 +2,15 @@ import { fireEvent, render, screen } from "@testing-library/react"
 import { describe, expect, it, vi } from "vitest"
 import { Sidebar } from "./Sidebar"
 
+// Mock ThemeProvider to avoid useTheme dependency in LanguageSelector
+vi.mock("@/components/theme/theme-provider", () => ({
+    ThemeProvider: ({ children }: { children: React.ReactNode }) => children,
+    useTheme: () => ({
+        theme: "dark" as const,
+        toggleTheme: vi.fn(),
+    }),
+}))
+
 vi.mock("@/components/theme/theme-toggle-client", () => ({
     ThemeToggleClient: () => null,
 }))
