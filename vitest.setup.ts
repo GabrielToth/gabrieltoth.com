@@ -12,16 +12,14 @@ process.env.NEXT_PUBLIC_APP_URL = "http://localhost:3000"
 
 // Supabase environment variables for tests
 process.env.NEXT_PUBLIC_SUPABASE_URL =
-    process.env.NEXT_PUBLIC_SUPABASE_URL ||
-    "https://test.supabase.co"
+    process.env.NEXT_PUBLIC_SUPABASE_URL || "https://test.supabase.co"
 process.env.SUPABASE_SERVICE_ROLE_KEY =
     process.env.SUPABASE_SERVICE_ROLE_KEY ||
     "test-service-role-key-with-minimum-length-required-for-validation"
 
 // Token encryption key for tests (must be minimum 32 characters)
 process.env.TOKEN_ENCRYPTION_KEY =
-    process.env.TOKEN_ENCRYPTION_KEY ||
-    "a".repeat(64) // 64-character hex string (32 bytes)
+    process.env.TOKEN_ENCRYPTION_KEY || "a".repeat(64) // 64-character hex string (32 bytes)
 
 vi.mock("@/lib/config/env-validation", async importOriginal => {
     const actual =
