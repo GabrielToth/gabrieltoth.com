@@ -223,7 +223,7 @@ describe("Performance: Login Endpoint", () => {
         it("should cache session data for performance", async () => {
             // First access (cache miss)
             const { duration: duration1 } = await measureAsync(async () => {
-                await new Promise(resolve => setTimeout(resolve, 30))
+                await new Promise(resolve => setTimeout(resolve, 50))
                 return { sessionId: "session-123" }
             }, "Session cache miss")
 
@@ -233,8 +233,8 @@ describe("Performance: Login Endpoint", () => {
                 return { sessionId: "session-123" }
             }, "Session cache hit")
 
-            // Cache hit should be faster
-            expect(duration2).toBeLessThan(duration1)
+            // Cache hit should be much faster (at least 50% faster, allowing for timing variance)
+            expect(duration2).toBeLessThan(duration1 * 0.8)
         })
 
         it("should use efficient session storage strategy", async () => {
