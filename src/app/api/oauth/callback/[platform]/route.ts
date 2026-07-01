@@ -9,10 +9,13 @@ import {
     getAuditEnvironment,
     notifyUserAuditDiscord,
 } from "@/lib/audit/discord-user-audit"
+import { getServerSession } from "@/lib/auth/get-server-session"
 import { getUserById } from "@/lib/auth/user"
 import { createLogger } from "@/lib/logger"
 import { getOAuthManager } from "@/lib/oauth"
+import { getScopeVersion } from "@/lib/oauth/scope-versions"
 import { getTokenStore } from "@/lib/token-store"
+import { createClient } from "@supabase/supabase-js"
 import { NextRequest, NextResponse } from "next/server"
 
 const logger = createLogger("OAuthCallbackEndpoint")
@@ -66,7 +69,8 @@ export async function GET(
         }
 
         // Get user ID from session
-        const userId = request.headers.get("x-user-id")
+        const session = await getServerSession(request)
+        const userId = session?.user?.id
         if (!userId) {
             logger.warn("Unauthorized OAuth callback", {
                 platform: normalizedPlatform,
@@ -119,6 +123,69 @@ export async function GET(
             platform,
             userId,
         })
+
+        // Save to social_networks so channel appears in the dashboard list
+        try {
+            const supabase = createClient(
+                process.env.NEXT_PUBLIC_SUPABASE_URL || "",
+                process.env.SUPABASE_SERVICE_ROLE_KEY || ""
+            )
+
+            if (normalizedPlatform === "youtube") {
+                // Fetch YouTube channel info using the access token
+                const channelResponse = await fetch(
+                    "https://www.googleapis.com/youtube/v3/channels?part=snippet&mine=true",
+                    { headers: { Authorization: `Bearer ${tokenResponse.accessToken}` } }
+                )
+                if (channelResponse.ok) {
+                    const channelData = await channelResponse.json()
+                    const channel = channelData?.items?.[0]?.snippet
+                    if (channel) {
+                        await supabase.from("social_networks").upsert(
+                            {
+                                user_id: userId,
+                                platform: "youtube",
+                                platform_user_id: channelData.items[0].id,
+                                platform_username: channel.title,
+                                status: "connected",
+                                linked_at: new Date().toISOString(),
+                                metadata: {
+                                    channelId: channelData.items[0].id,
+                                    channelTitle: channel.title,
+                                    channelDescription: channel.description,
+                                    customUrl: channel.customUrl,
+                                    profileImageUrl: channel.thumbnails?.default?.url,
+                                    scopeVersion: getScopeVersion("youtube"),
+                                },
+                                updated_at: new Date().toISOString(),
+                            },
+                            { onConflict: "user_id, platform" }
+                        )
+                    }
+                }
+            } else {
+                // Other platforms: save minimal record
+                await supabase.from("social_networks").upsert(
+                    {
+                        user_id: userId,
+                        platform: normalizedPlatform,
+                        platform_user_id: "",
+                        platform_username: normalizedPlatform,
+                        status: "connected",
+                        linked_at: new Date().toISOString(),
+                        metadata: { scopeVersion: getScopeVersion(normalizedPlatform) },
+                        updated_at: new Date().toISOString(),
+                    },
+                    { onConflict: "user_id, platform" }
+                )
+            }
+        } catch (socialError) {
+            logger.warn("Failed to save social_networks record, token already stored", {
+                platform: normalizedPlatform,
+                userId,
+                error: socialError instanceof Error ? socialError.message : String(socialError),
+            })
+        }
 
         const user = await getUserById(userId)
         void notifyUserAuditDiscord("platform_linked", {
