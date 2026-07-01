@@ -8,8 +8,8 @@ import { Sidebar } from "./Sidebar"
 
 export interface DashboardLayoutProps {
     children: React.ReactNode
-    activeTab: "publish" | "insights" | "settings"
-    onTabChange?: (tab: "publish" | "insights" | "settings") => void
+    activeTab: "publish" | "insights" | "channels" | "settings"
+    onTabChange?: (tab: "publish" | "insights" | "channels" | "settings") => void
 }
 
 /**
@@ -31,7 +31,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
     const [isLoggingOut, setIsLoggingOut] = useState(false)
     const [logoutError, setLogoutError] = useState<string | null>(null)
 
-    const handleTabChange = (tab: "publish" | "insights" | "settings") => {
+    const handleTabChange = (tab: "publish" | "insights" | "channels" | "settings") => {
         setSidebarOpen(false)
         onTabChange?.(tab)
     }

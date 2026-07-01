@@ -9,8 +9,8 @@ import { useTranslations } from "next-intl"
 import React, { useState } from "react"
 
 export interface SidebarProps {
-    activeTab: "publish" | "insights" | "settings"
-    onTabChange: (tab: "publish" | "insights" | "settings") => void
+    activeTab: "publish" | "insights" | "channels" | "settings"
+    onTabChange: (tab: "publish" | "insights" | "channels" | "settings") => void
     isOpen?: boolean
     onClose?: () => void
     organization?: {
@@ -85,6 +85,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
     const navItems = [
         { id: "publish", label: t("publish"), icon: "📝" },
         { id: "insights", label: t("insights"), icon: "📊" },
+        { id: "channels", label: t("channels"), icon: "🔗" },
         { id: "settings", label: t("settings"), icon: "⚙️" },
     ] as const
 

@@ -2,6 +2,7 @@
     "sidebar": {
         "publish": "Publicar",
         "insights": "Estadísticas",
+        "channels": "Canales",
         "settings": "Configuración",
         "logout": "Cerrar sesión",
         "loggingOut": "Cerrando sesión...",
