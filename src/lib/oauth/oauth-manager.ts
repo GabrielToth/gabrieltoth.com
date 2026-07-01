@@ -111,12 +111,12 @@ export class OAuthManager {
 
         // Facebook
         if (
-            process.env.FACEBOOK_CLIENT_ID &&
-            process.env.FACEBOOK_CLIENT_SECRET
+            process.env.FACEBOOK_APP_ID &&
+            process.env.FACEBOOK_APP_SECRET
         ) {
             this.configs.set("facebook", {
-                clientId: process.env.FACEBOOK_CLIENT_ID,
-                clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
+                clientId: process.env.FACEBOOK_APP_ID,
+                clientSecret: process.env.FACEBOOK_APP_SECRET,
                 redirectUri:
                     process.env.FACEBOOK_REDIRECT_URI ||
                     "http://localhost:3000/api/oauth/callback/facebook",
@@ -132,12 +132,12 @@ export class OAuthManager {
 
         // Instagram
         if (
-            process.env.INSTAGRAM_CLIENT_ID &&
-            process.env.INSTAGRAM_CLIENT_SECRET
+            process.env.INSTAGRAM_APP_ID &&
+            process.env.INSTAGRAM_APP_SECRET
         ) {
             this.configs.set("instagram", {
-                clientId: process.env.INSTAGRAM_CLIENT_ID,
-                clientSecret: process.env.INSTAGRAM_CLIENT_SECRET,
+                clientId: process.env.INSTAGRAM_APP_ID,
+                clientSecret: process.env.INSTAGRAM_APP_SECRET,
                 redirectUri:
                     process.env.INSTAGRAM_REDIRECT_URI ||
                     "http://localhost:3000/api/oauth/callback/instagram",
