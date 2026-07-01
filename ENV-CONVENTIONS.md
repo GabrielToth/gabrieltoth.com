@@ -74,6 +74,37 @@ Todos os outros componentes (`facebook/config.ts`, `instagram/config.ts`, `tikto
 
 No Next.js App Router, rotas específicas têm precedência sobre rotas dinâmicas `[platform]`.
 
+## YouTube Scopes Atuais (v2)
+
+Definidos em `src/lib/oauth/oauth-manager.ts` e registrados no Google Cloud Console:
+
+| Escopo | Versão | Funcionalidades |
+|--------|--------|----------------|
+| `.../auth/youtube.upload` | v1 | Postar vídeos |
+| `.../auth/youtube` | v1 | Gerenciar conta, ler comentários, chat ao vivo, moderar |
+| `.../auth/userinfo.email` | v1 | Ver email |
+| `.../auth/userinfo.profile` | v1 | Ver info pessoal |
+| `.../auth/yt-analytics.readonly` | **v2** | Dados analíticos do canal |
+| `.../auth/yt-analytics-monetary.readonly` | **v2** | Dados monetários, membros, afiliados |
+
+Usuários conectados antes da v2 precisam **desconectar e reconectar** o YouTube. O sistema detecta automaticamente via `scopeVersion` e mostra um aviso "Reconnect needed" na UI.
+
+## Scope Version Tracking
+
+Arquivo: `src/lib/oauth/scope-versions.ts`
+
+| Plataforma | Versão Atual |
+|-----------|-------------|
+| youtube | 2 (analytics add) |
+| facebook | 1 |
+| instagram | 1 |
+| tiktok | 1 |
+| kick | 1 |
+| twitter | 1 |
+| linkedin | 1 |
+
+Quando um canal é conectado, o callback salva `metadata.scopeVersion` na tabela `social_networks`. O endpoint `/api/user/channels` compara com a versão atual e retorna `needsReconnect: true` se desatualizado.
+
 ## Lições Aprendidas (NÃO REPETIR)
 
 1. **Sempre verificar nomes de env vars em 3 lugares**: código (oauth-manager), config files (facebook/config.ts), e Vercel (env ls)
