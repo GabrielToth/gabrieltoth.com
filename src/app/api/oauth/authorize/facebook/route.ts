@@ -1,3 +1,4 @@
+import { getServerSession } from "@/lib/auth/get-server-session"
 import { createLogger } from "@/lib/logger"
 import { getFacebookConfig } from "@/lib/facebook/config"
 import { getFacebookOAuthService } from "@/lib/facebook/oauth-service"
@@ -8,19 +9,20 @@ const logger = createLogger("FacebookAuthorizeEndpoint")
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
     try {
-        const userId = request.headers.get("x-user-id")
+        const session = await getServerSession(request)
 
-        if (!userId) {
-            logger.warn("Missing user ID in request")
+        if (!session?.user?.id) {
+            logger.warn("Unauthorized OAuth authorization attempt", { platform: "facebook" })
             return NextResponse.json(
                 {
                     success: false,
-                    error: "MISSING_USER_ID",
-                    message: "User ID is required",
+                    error: "UNAUTHORIZED",
+                    message: "Authentication required",
                 },
-                { status: 400 }
+                { status: 401 }
             )
         }
+        const userId = session.user.id
 
         logger.info("Facebook linking initiation requested", { userId })
 

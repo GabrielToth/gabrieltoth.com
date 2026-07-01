@@ -13,6 +13,7 @@
  * }
  */
 
+import { getServerSession } from "@/lib/auth/get-server-session"
 import { createLogger } from "@/lib/logger"
 import { getInstagramConfig } from "@/lib/instagram/config"
 import { getInstagramOAuthService } from "@/lib/instagram/oauth-service"
@@ -23,19 +24,20 @@ const logger = createLogger("InstagramAuthorizeEndpoint")
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
     try {
-        const userId = request.headers.get("x-user-id")
+        const session = await getServerSession(request)
 
-        if (!userId) {
-            logger.warn("Missing user ID in request")
+        if (!session?.user?.id) {
+            logger.warn("Unauthorized OAuth authorization attempt", { platform: "instagram" })
             return NextResponse.json(
                 {
                     success: false,
-                    error: "MISSING_USER_ID",
-                    message: "User ID is required",
+                    error: "UNAUTHORIZED",
+                    message: "Authentication required",
                 },
-                { status: 400 }
+                { status: 401 }
             )
         }
+        const userId = session.user.id
 
         logger.info("Instagram linking initiation requested", { userId })
 
