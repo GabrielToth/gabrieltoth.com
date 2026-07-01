@@ -24,6 +24,7 @@ import { createLogger } from "@/lib/logger"
 import { getInstagramConfig } from "@/lib/instagram/config"
 import { getInstagramOAuthService } from "@/lib/instagram/oauth-service"
 import { getTokenStore } from "@/lib/token-store"
+import { getScopeVersion } from "@/lib/oauth/scope-versions"
 import { verifyState } from "@/lib/oauth/state-signer"
 import { createClient } from "@supabase/supabase-js"
 import { NextRequest, NextResponse } from "next/server"
@@ -170,6 +171,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
                         name: businessAccount.name,
                         profilePictureUrl: businessAccount.profilePictureUrl,
                         followerCount: businessAccount.followerCount,
+                        scopeVersion: getScopeVersion("instagram"),
                     },
                     updated_at: new Date().toISOString(),
                 },

@@ -15,6 +15,7 @@ import { getYouTubeChannelLinkingConfig } from "@/lib/youtube/config"
 import { getYouTubeOAuthService } from "@/lib/youtube/oauth-service"
 import { getChannelValidationService } from "@/lib/youtube/channel-validation"
 import { getTokenStore } from "@/lib/token-store"
+import { getScopeVersion } from "@/lib/oauth/scope-versions"
 import { verifyState } from "@/lib/oauth/state-signer"
 import { createClient } from "@supabase/supabase-js"
 import { NextRequest, NextResponse } from "next/server"
@@ -146,6 +147,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
                         customUrl: channelInfo.customUrl,
                         subscriberCount: channelInfo.subscriberCount,
                         profileImageUrl: channelInfo.profileImageUrl,
+                        scopeVersion: getScopeVersion("youtube"),
                     },
                     updated_at: new Date().toISOString(),
                 },

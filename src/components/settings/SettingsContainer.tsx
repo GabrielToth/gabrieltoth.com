@@ -42,6 +42,7 @@ export interface SocialChannel {
     accountName: string
     isConnected: boolean
     connectedAt?: Date
+    needsReconnect?: boolean
 }
 
 /**
@@ -163,36 +164,23 @@ export const SettingsContainer: React.FC<SettingsContainerProps> = ({
      */
     const handleFetchChannels = useCallback(async () => {
         try {
-            // Mock data for development
-            const channelsData: SocialChannel[] = [
-                {
-                    id: "1",
-                    platform: "facebook",
-                    accountId: "123456",
-                    accountName: "John's Facebook",
-                    isConnected: true,
-                    connectedAt: new Date(),
-                },
-                {
-                    id: "2",
-                    platform: "instagram",
-                    accountId: "789012",
-                    accountName: "john_instagram",
-                    isConnected: true,
-                    connectedAt: new Date(),
-                },
-                {
-                    id: "3",
-                    platform: "twitter",
-                    accountId: "345678",
-                    accountName: "@johndoe",
-                    isConnected: false,
-                },
-            ]
-
+            const response = await fetch("/api/user/channels")
+            if (!response.ok) {
+                throw new Error(`Failed to fetch channels: ${response.status}`)
+            }
+            const data = await response.json()
+            const channelsData: SocialChannel[] = (data.channels || []).map(
+                (ch: SocialChannel) => ({
+                    ...ch,
+                    connectedAt: ch.connectedAt
+                        ? new Date(ch.connectedAt)
+                        : undefined,
+                })
+            )
             setChannels(channelsData)
         } catch (err) {
             console.error("Failed to fetch channels:", err)
+            setChannels([])
         }
     }, [])
 

@@ -24,6 +24,7 @@ import { createLogger } from "@/lib/logger"
 import { getKickConfig } from "@/lib/kick/config"
 import { getKickOAuthService } from "@/lib/kick/oauth-service"
 import { getTokenStore } from "@/lib/token-store"
+import { getScopeVersion } from "@/lib/oauth/scope-versions"
 import { verifyState } from "@/lib/oauth/state-signer"
 import { createClient } from "@supabase/supabase-js"
 import { NextRequest, NextResponse } from "next/server"
@@ -171,6 +172,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
                         channelId: channel.id,
                         channelName: channel.name,
                         channelSlug: channel.slug,
+                        scopeVersion: getScopeVersion("kick"),
                     },
                     updated_at: new Date().toISOString(),
                 },

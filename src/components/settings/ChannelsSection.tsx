@@ -202,6 +202,11 @@ export const ChannelsSection: React.FC<ChannelsSectionProps> = ({
                                                 ).toLocaleDateString()}
                                             </p>
                                         )}
+                                        {youtubeChannel.needsReconnect && (
+                                            <p className="mt-1 text-xs text-amber-600">
+                                                Disconnect and reconnect to enable analytics & monetization features
+                                            </p>
+                                        )}
                                     </>
                                 ) : (
                                     <p className="text-sm text-gray-500">
@@ -215,6 +220,14 @@ export const ChannelsSection: React.FC<ChannelsSectionProps> = ({
                                 <span className="inline-flex items-center rounded-full bg-green-100 px-3 py-1 text-xs font-medium text-green-800">
                                     {t("youtube.connected")}
                                 </span>
+                                {youtubeChannel.needsReconnect && (
+                                    <span
+                                        className="inline-flex items-center rounded-full bg-amber-100 px-3 py-1 text-xs font-medium text-amber-800 cursor-help"
+                                        title="New scopes required: disconnect and reconnect to access analytics, members, and affiliates data"
+                                    >
+                                        Reconnect needed
+                                    </span>
+                                )}
                                 {confirmDisconnect === youtubeChannel.id ? (
                                     <div className="flex gap-2">
                                         <Button
@@ -326,6 +339,14 @@ export const ChannelsSection: React.FC<ChannelsSectionProps> = ({
                                         <span className="inline-flex items-center rounded-full bg-green-100 px-3 py-1 text-xs font-medium text-green-800">
                                             {t("youtube.connected")}
                                         </span>
+                                        {channel.needsReconnect && (
+                                            <span
+                                                className="inline-flex items-center rounded-full bg-amber-100 px-3 py-1 text-xs font-medium text-amber-800 cursor-help"
+                                                title="New scopes required: disconnect and reconnect to access new features"
+                                            >
+                                                Reconnect needed
+                                            </span>
+                                        )}
                                         {confirmDisconnect === channel.id ? (
                                             <div className="flex gap-2">
                                                 <Button

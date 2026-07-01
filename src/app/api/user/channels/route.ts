@@ -1,4 +1,5 @@
 import { getCurrentUserId } from "@/lib/auth/get-current-user"
+import { isScopeOutdated, getScopeVersion } from "@/lib/oauth/scope-versions"
 import { createLogger } from "@/lib/logger"
 import { createClient } from "@supabase/supabase-js"
 import { NextRequest, NextResponse } from "next/server"
@@ -12,6 +13,8 @@ export interface SocialChannel {
     accountName: string
     isConnected: boolean
     connectedAt?: string
+    needsReconnect?: boolean
+    currentScopeVersion?: number
 }
 
 export async function GET(request: NextRequest): Promise<NextResponse> {
@@ -55,14 +58,19 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
             const isExpired = token?.expires_at
                 ? new Date(token.expires_at) < new Date()
                 : false
+            const isConnected = sn.status === "connected" && !isExpired
+            const metadata = sn.metadata as Record<string, unknown> | null
+            const storedScopeVersion = metadata?.scopeVersion as number | undefined
 
             return {
                 id: sn.id,
                 platform: sn.platform,
                 accountId: sn.platform_user_id,
                 accountName: sn.platform_username || sn.platform,
-                isConnected: sn.status === "connected" && !isExpired,
+                isConnected,
                 connectedAt: sn.linked_at,
+                needsReconnect: isConnected ? isScopeOutdated(storedScopeVersion, sn.platform) : false,
+                currentScopeVersion: getScopeVersion(sn.platform),
             }
         })
 
