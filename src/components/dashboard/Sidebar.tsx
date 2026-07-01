@@ -50,6 +50,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
     const [connectingChannel, setConnectingChannel] = useState<string | null>(
         null
     )
+    const [connectionError, setConnectionError] = useState<string | null>(null)
 
     const handleChannelConnect = async (channelId: string) => {
         if (connectingChannel) return
@@ -72,8 +73,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 throw new Error("No authorization URL returned")
             }
         } catch (err) {
+            const message = err instanceof Error ? err.message : `Failed to connect ${channelId}`
             logger.error(`Failed to connect ${channelId}`, { error: err })
+            setConnectionError(message)
             setConnectingChannel(null)
+            // Auto-clear error after 5 seconds
+            setTimeout(() => setConnectionError(null), 5000)
         }
     }
 
@@ -141,6 +146,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
                     <h3 className="mb-3 text-xs font-semibold uppercase tracking-wide text-gray-600 dark:text-gray-400">
                         {t("connectChannels")}
                     </h3>
+                    {connectionError && (
+                        <div className="mb-3 rounded-md bg-red-50 p-2 text-xs text-red-600 dark:bg-red-950 dark:text-red-400">
+                            {connectionError}
+                        </div>
+                    )}
                     <div className="grid grid-cols-3 gap-2">
                         {channels.map(channel => (
                             <button
@@ -260,6 +270,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
                     <h3 className="mb-3 text-xs font-semibold uppercase tracking-wide text-gray-600 dark:text-gray-400">
                         {t("connectChannels")}
                     </h3>
+                    {connectionError && (
+                        <div className="mb-3 rounded-md bg-red-50 p-2 text-xs text-red-600 dark:bg-red-950 dark:text-red-400">
+                            {connectionError}
+                        </div>
+                    )}
                     <div className="grid grid-cols-3 gap-2">
                         {channels.map(channel => (
                             <button

@@ -27,6 +27,7 @@
  *   21 (timing side-channel) — all paths return JSON errors
  */
 
+import { getServerSession } from "@/lib/auth/get-server-session"
 import { POST } from "@/app/api/oauth/authorize/instagram/route"
 import { NextRequest } from "next/server"
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
@@ -77,6 +78,10 @@ vi.mock("@/lib/logger", () => ({
     }),
 }))
 
+vi.mock("@/lib/auth/get-server-session", () => ({
+    getServerSession: vi.fn(),
+}))
+
 function makePostRequest(
     url: string,
     body: unknown,
@@ -96,6 +101,7 @@ function makePostRequest(
 describe("POST /api/oauth/authorize/instagram — Attack Matrix", () => {
     beforeEach(() => {
         vi.clearAllMocks()
+        vi.mocked(getServerSession).mockResolvedValue({ user: { id: "test-user-123" } })
     })
 
     afterEach(() => {
@@ -104,7 +110,8 @@ describe("POST /api/oauth/authorize/instagram — Attack Matrix", () => {
 
     // ── Row 1: Auth bypass ──
     describe("Row 1 — Auth bypass", () => {
-        it("should reject request without x-user-id header", async () => {
+        it("should reject request without session cookie", async () => {
+            vi.mocked(getServerSession).mockResolvedValue(null)
             const request = new NextRequest(
                 "http://localhost/api/oauth/authorize/instagram",
                 {
@@ -114,24 +121,26 @@ describe("POST /api/oauth/authorize/instagram — Attack Matrix", () => {
                 }
             )
             const response = await POST(request)
-            expect(response.status).toBe(400)
+            expect(response.status).toBe(401)
             const body = await response.json()
-            expect(body.error).toBe("MISSING_USER_ID")
+            expect(body.error).toBe("UNAUTHORIZED")
         })
 
-        it("should reject request with empty x-user-id", async () => {
+        it("should reject request with invalid session", async () => {
+            vi.mocked(getServerSession).mockResolvedValue(null)
             const request = makePostRequest(
                 "http://localhost/api/oauth/authorize/instagram",
                 {},
                 { "x-user-id": "" }
             )
             const response = await POST(request)
-            expect(response.status).toBe(400)
+            expect(response.status).toBe(401)
             const body = await response.json()
-            expect(body.error).toBe("MISSING_USER_ID")
+            expect(body.error).toBe("UNAUTHORIZED")
         })
 
         it("should reject request without any auth headers", async () => {
+            vi.mocked(getServerSession).mockResolvedValue(null)
             const request = new NextRequest(
                 "http://localhost/api/oauth/authorize/instagram",
                 {
@@ -141,7 +150,7 @@ describe("POST /api/oauth/authorize/instagram — Attack Matrix", () => {
                 }
             )
             const response = await POST(request)
-            expect(response.status).toBe(400)
+            expect(response.status).toBe(401)
         })
     })
 
@@ -323,17 +332,21 @@ describe("POST /api/oauth/authorize/instagram — Attack Matrix", () => {
     // ── Row 15: Info disclosure ──
     describe("Row 15 — Info disclosure", () => {
         it("should not leak internal paths in error response", async () => {
-            const request = makePostRequest(
+            vi.mocked(getServerSession).mockResolvedValue(null)
+            const request = new NextRequest(
                 "http://localhost/api/oauth/authorize/instagram",
-                {},
-                { "x-user-id": "" }
+                {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({}),
+                }
             )
             const response = await POST(request)
             const body = await response.json()
-            expect(body.message).not.toContain(":\\")
-            expect(body.message).not.toContain("/src/")
-            expect(body.message).not.toContain("at ")
-            expect(body.message).not.toContain("stack")
+            expect(body.error).not.toContain(":\\")
+            expect(body.error).not.toContain("/src/")
+            expect(body.error).not.toContain("at ")
+            expect(body.error).not.toContain("stack")
         })
     })
 
