@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Fixed
+- **OAuth authorize routes**: Fixed "Conectar Canais" (Connect Channels) buttons not working. Replaced `x-user-id` header check with session-cookie-based authentication using `getServerSession()`. ([#100](https://github.com/GabrielToth/gabrieltoth.com/issues/100), [#102](https://github.com/GabrielToth/gabrieltoth.com/pull/102))
+- **Database migration**: Created missing `scheduled_posts`, `scheduled_post_networks`, `publication_history`, and `scheduled_post_media` tables that were defined in schema.sql but never applied to production. Fixes GET /api/posts/ 500 error. ([#101](https://github.com/GabrielToth/gabrieltoth.com/issues/101), [#103](https://github.com/GabrielToth/gabrieltoth.com/pull/103))
+
 ## [1.16.0] - 2026-06-30
 
 ### Added
