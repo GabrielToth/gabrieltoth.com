@@ -132,7 +132,7 @@ export class OAuthManager {
             })
         }
 
-        // Instagram
+        // Instagram (via Facebook Graph API for Business/Creator accounts)
         if (
             process.env.INSTAGRAM_APP_ID &&
             process.env.INSTAGRAM_APP_SECRET
@@ -140,17 +140,18 @@ export class OAuthManager {
             this.configs.set("instagram", {
                 clientId: process.env.INSTAGRAM_APP_ID,
                 clientSecret: process.env.INSTAGRAM_APP_SECRET,
-                redirectUri:
-                    process.env.INSTAGRAM_REDIRECT_URI ||
-                    "http://localhost:3000/api/oauth/callback/instagram",
+                redirectUri: process.env.INSTAGRAM_REDIRECT_URI ?? "",
                 scopes: [
-                    "instagram_business_basic",
-                    "instagram_business_content_publish",
+                    "instagram_basic",
+                    "instagram_content_publish",
+                    "pages_show_list",
+                    "pages_read_engagement",
+                    "instagram_business_manage_comments",
                     "instagram_business_manage_messages",
+                    "pages_manage_metadata",
                 ],
-                authorizationUrl: "https://api.instagram.com/oauth/authorize",
-                tokenUrl:
-                    "https://graph.instagram.com/v18.0/oauth/access_token",
+                authorizationUrl: "https://www.facebook.com/v22.0/dialog/oauth",
+                tokenUrl: "https://graph.facebook.com/v22.0/oauth/access_token",
             })
         }
 
