@@ -118,6 +118,11 @@ export default function Header() {
         )
     })
 
+    // Don't render public header on dashboard pages
+    if (pathname?.includes("/dashboard/")) {
+        return null
+    }
+
     return (
         <header className="fixed top-0 w-full bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 z-50">
             <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8">
