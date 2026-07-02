@@ -26,6 +26,7 @@ import {
     incrementAttemptWithDegradation,
     resetAttempt,
 } from "@/lib/auth/rate-limiter"
+import { generateRandomHex } from "@/lib/crypto-utils"
 import { validateEmail } from "@/lib/validation"
 import { getAdminClient } from "@/lib/supabase/server"
 import { NextRequest } from "next/server"
@@ -501,9 +502,7 @@ export async function POST(request: NextRequest) {
         // ============================================================================
 
         // Generate cryptographically secure session token
-        const sessionToken = Buffer.from(
-            `${userId}:${Date.now()}:${Math.random()}`
-        ).toString("base64")
+        const sessionToken = generateRandomHex(32)
 
         // Calculate expiration time (1 hour for session, 30 days for remember me)
         const sessionExpirationTime = new Date(Date.now() + 60 * 60 * 1000) // 1 hour
@@ -558,18 +557,18 @@ export async function POST(request: NextRequest) {
         // REMEMBER ME TOKEN CREATION (Task 8.9)
         // ============================================================================
 
+        let rememberMeToken: string | undefined
+
         if (rememberMe) {
             try {
-                const rememberMeToken = Buffer.from(
-                    `${userId}:${Date.now()}:${Math.random()}`
-                ).toString("base64")
+                rememberMeToken = generateRandomHex(32)
 
                 // Store remember me token in database
                 const { error: rememberMeError } = await supabase
                     .from("remember_me_tokens")
                     .insert({
                         user_id: userId,
-                        token_hash: rememberMeToken, // In production, hash this
+                        token_hash: rememberMeToken,
                         expires_at: rememberMeExpirationTime.toISOString(),
                         ip_address: clientIp,
                         user_agent: userAgent,
@@ -625,11 +624,7 @@ export async function POST(request: NextRequest) {
         })
 
         // Set remember me cookie if requested
-        if (rememberMe) {
-            const rememberMeToken = Buffer.from(
-                `${userId}:${Date.now()}:${Math.random()}`
-            ).toString("base64")
-
+        if (rememberMe && rememberMeToken) {
             response.cookies.set({
                 name: "remember_me_token",
                 value: rememberMeToken,

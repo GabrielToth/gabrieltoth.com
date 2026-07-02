@@ -499,11 +499,12 @@ describe("UnifiedSignInForm - Preservation Property Tests", () => {
             // Submit password
             await user.click(screen.getByRole("button", { name: /entrar/i }))
 
-            // Should call signInWithEmail
+            // Should call signInWithEmail with rememberMe parameter
             await waitFor(() => {
                 expect(signInWithEmail).toHaveBeenCalledWith(
                     "test@example.com",
-                    "password123"
+                    "password123",
+                    expect.any(Boolean)
                 )
             })
         })

@@ -9,9 +9,7 @@ export async function getCurrentUserId(
     request: NextRequest
 ): Promise<string | null> {
     try {
-        const sessionToken =
-            request.cookies.get("auth_session")?.value ||
-            request.cookies.get("session")?.value
+        const sessionToken = request.cookies.get("auth_session")?.value
 
         if (!sessionToken) {
             return null

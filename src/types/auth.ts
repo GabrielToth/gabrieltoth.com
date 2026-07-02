@@ -73,6 +73,20 @@ export interface Session {
 }
 
 /**
+ * Remember Me Token interface
+ * Stores long-lived authentication tokens for persistent sessions
+ */
+export interface RememberMeToken {
+    id: string
+    user_id: string
+    token_hash: string
+    expires_at: Date
+    created_at?: Date
+    ip_address?: string
+    user_agent?: string
+}
+
+/**
  * Audit Log interface for security audit trail
  * Records all authentication events for security monitoring
  *

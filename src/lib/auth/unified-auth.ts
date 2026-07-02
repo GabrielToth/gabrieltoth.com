@@ -47,13 +47,14 @@ export async function checkUserExists(
 
 export async function signInWithEmail(
     email: string,
-    password: string
+    password: string,
+    rememberMe?: boolean
 ): Promise<UnifiedAuthResult> {
     try {
         const response = await fetch("/api/auth/login", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email, password }),
+            body: JSON.stringify({ email, password, rememberMe }),
         })
 
         const data = await response.json()

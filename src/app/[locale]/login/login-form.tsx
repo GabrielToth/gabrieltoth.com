@@ -17,6 +17,7 @@ export default function LoginForm({ locale }: LoginFormProps) {
         email: "",
         password: "",
     })
+    const [rememberMe, setRememberMe] = useState(false)
     const [error, setError] = useState<string | null>(null)
     const [isLoading, setIsLoading] = useState(false)
     const [showEmailForm, setShowEmailForm] = useState(false)
@@ -33,6 +34,7 @@ export default function LoginForm({ locale }: LoginFormProps) {
                 body: JSON.stringify({
                     email: formData.email,
                     password: formData.password,
+                    rememberMe,
                 }),
             })
 
@@ -114,9 +116,11 @@ export default function LoginForm({ locale }: LoginFormProps) {
                     </div>
 
                     <div className="flex items-center justify-between">
-                        <label className="flex items-center">
+                        <label className="flex items-center cursor-pointer">
                             <input
                                 type="checkbox"
+                                checked={rememberMe}
+                                onChange={e => setRememberMe(e.target.checked)}
                                 className="rounded border-gray-300 dark:border-gray-600 text-blue-600 focus:ring-blue-500"
                                 disabled={isLoading}
                             />

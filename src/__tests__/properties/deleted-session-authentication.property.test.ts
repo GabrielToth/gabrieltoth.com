@@ -371,7 +371,7 @@ describe("Property 5: Deleted Session Authentication Failure", () => {
 
             expect(result).toBe(true)
             expect(db.db.query).toHaveBeenCalledWith(
-                "DELETE FROM sessions WHERE session_id = $1",
+                "DELETE FROM sessions WHERE token_hash = $1",
                 [sessionId]
             )
         })

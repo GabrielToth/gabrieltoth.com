@@ -272,7 +272,7 @@ describe("OAuth Callback Handler", () => {
 
             // Verify session cookie was set
             const cookies = response.cookies.getAll()
-            const sessionCookie = cookies.find(c => c.name === "session")
+            const sessionCookie = cookies.find(c => c.name === "auth_session")
             expect(sessionCookie).toBeDefined()
             expect(sessionCookie?.value).toBe("session-id-123")
 

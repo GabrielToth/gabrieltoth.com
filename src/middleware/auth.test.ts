@@ -215,9 +215,10 @@ describe("Authentication Middleware", () => {
             request.cookies.set("auth_session", "valid_token_123")
 
             const newExpirationDate = new Date(Date.now() + 60 * 60 * 1000)
-            vi.mocked(sessionModule.refreshSessionToken).mockResolvedValueOnce(
-                newExpirationDate
-            )
+            vi.mocked(sessionModule.refreshSessionToken).mockResolvedValueOnce({
+                token: "new-rotated-token",
+                expiresAt: newExpirationDate,
+            })
 
             const result = await refreshSessionTokenMiddleware(request)
 

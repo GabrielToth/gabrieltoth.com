@@ -9,7 +9,7 @@
 import { generateRandomHex } from "@/lib/crypto-utils"
 import { db } from "@/lib/db"
 import { logger } from "@/lib/logger"
-import { Session } from "@/types/auth"
+import { RememberMeToken, Session } from "@/types/auth"
 import { cookies } from "next/headers"
 import { NextRequest } from "next/server"
 
@@ -80,9 +80,9 @@ export async function createSession(userId: string): Promise<Session> {
 
         // Create session record in database
         const session = await queryOne<Session>(
-            `INSERT INTO sessions (user_id, session_id, created_at, expires_at)
+            `INSERT INTO sessions (user_id, token_hash, created_at, expires_at)
              VALUES ($1, $2, NOW(), $3)
-             RETURNING id, user_id, session_id, created_at, expires_at`,
+             RETURNING id, user_id, token_hash AS session_id, created_at, expires_at`,
             [userId, sessionId, expiresAt]
         )
 
@@ -137,11 +137,11 @@ export async function validateSession(
             return null
         }
 
-        // Query session by session_id
+        // Query session by token_hash
         const session = await queryOne<Session>(
-            `SELECT id, user_id, session_id, created_at, expires_at
+            `SELECT id, user_id, token_hash AS session_id, created_at, expires_at
              FROM sessions
-             WHERE session_id = $1`,
+             WHERE token_hash = $1`,
             [sessionId]
         )
 
@@ -209,9 +209,9 @@ export async function removeSession(sessionId: string): Promise<boolean> {
             throw new Error("Invalid session ID provided")
         }
 
-        // Delete session from database (use session_id column)
+        // Delete session from database (use token_hash column)
         const result = await query(
-            "DELETE FROM sessions WHERE session_id = $1",
+            "DELETE FROM sessions WHERE token_hash = $1",
             [sessionId]
         )
 
@@ -454,7 +454,7 @@ export async function validateSessionToken(token: string): Promise<boolean> {
             return false
         }
 
-        // Check if token exists in database
+        // Check if token exists in sessions table
         const sessionToken = await queryOne<{
             id: string
             user_id: string
@@ -462,7 +462,7 @@ export async function validateSessionToken(token: string): Promise<boolean> {
             expires_at: Date
         }>(
             `SELECT id, user_id, token_hash, expires_at
-             FROM session_tokens
+             FROM sessions
              WHERE token_hash = $1`,
             [token]
         )
@@ -595,20 +595,27 @@ export async function validateRememberMeToken(token: string): Promise<boolean> {
 }
 
 /**
- * Refresh a session token by extending its expiration
+ * Refresh a session token with full token rotation
  *
  * This function:
- * 1. Validates the token exists and is not expired
- * 2. Updates the token's expiration to 1 hour from now
- * 3. Returns the new expiration date
+ * 1. Validates the old token exists and is not expired
+ * 2. Generates a NEW cryptographically secure token
+ * 3. DELETES the old session row
+ * 4. INSERTS a new session row with the new token and extended expiry
+ * 5. Returns the new token and expiration
  *
- * @param token - The session token to refresh
- * @returns New expiration date if successful, null if token invalid or expired
+ * Token rotation prevents session fixation attacks and limits
+ * the window of vulnerability if a token is compromised.
+ *
+ * @param token - The old session token to rotate
+ * @returns Object with new token and expiresAt if successful, null if token invalid or expired
  * @throws Error if database operation fails
  *
  * Validates: Requirements 5.7
  */
-export async function refreshSessionToken(token: string): Promise<Date | null> {
+export async function refreshSessionToken(
+    token: string
+): Promise<{ token: string; expiresAt: Date } | null> {
     try {
         // Validate token format
         if (!token || typeof token !== "string" || token.length === 0) {
@@ -618,20 +625,20 @@ export async function refreshSessionToken(token: string): Promise<Date | null> {
             return null
         }
 
-        // Check if token exists and is not expired
-        const sessionToken = await queryOne<{
+        // Check if old token exists and is not expired
+        const sessionRow = await queryOne<{
             id: string
             user_id: string
             expires_at: Date
         }>(
             `SELECT id, user_id, expires_at
-             FROM session_tokens
+             FROM sessions
              WHERE token_hash = $1`,
             [token]
         )
 
         // Token not found
-        if (!sessionToken) {
+        if (!sessionRow) {
             logger.debug("Session token not found for refresh", {
                 context: "Auth",
                 data: { tokenPreview: token.substring(0, 8) + "..." },
@@ -641,51 +648,211 @@ export async function refreshSessionToken(token: string): Promise<Date | null> {
 
         // Check if token is expired
         const now = new Date()
-        const expiresAt = new Date(sessionToken.expires_at)
+        const expiresAt = new Date(sessionRow.expires_at)
 
         if (expiresAt < now) {
             logger.debug("Session token expired, cannot refresh", {
                 context: "Auth",
                 data: {
-                    userId: sessionToken.user_id,
+                    userId: sessionRow.user_id,
                     expiresAt: expiresAt.toISOString(),
                 },
             })
             return null
         }
 
-        // Calculate new expiration (1 hour from now)
+        // Generate new token and calculate new expiration
+        const newToken = generateRandomHex(TOKEN_LENGTH)
         const newExpiresAt = new Date(
             now.getTime() + SESSION_TOKEN_EXPIRATION_HOURS * 60 * 60 * 1000
         )
 
-        // Update token expiration in database
-        const updated = await queryOne<{ expires_at: Date }>(
-            `UPDATE session_tokens
-             SET expires_at = $1
-             WHERE token_hash = $2
-             RETURNING expires_at`,
-            [newExpiresAt, token]
-        )
+        // Token rotation: delete old session, insert new one with fresh token
+        // This prevents session fixation: if the old token was compromised,
+        // the attacker's copy becomes invalid after rotation.
+        const result = await db.transaction(async (client) => {
+            // Delete old session row
+            await client.query(
+                "DELETE FROM sessions WHERE token_hash = $1",
+                [token]
+            )
 
-        if (!updated) {
-            throw new Error("Failed to update session token expiration")
+            // Insert new session row with rotated token
+            const inserted = await client.query<{ token_hash: string; expires_at: Date }>(
+                `INSERT INTO sessions (user_id, token_hash, created_at, expires_at)
+                 VALUES ($1, $2, NOW(), $3)
+                 RETURNING token_hash, expires_at`,
+                [sessionRow.user_id, newToken, newExpiresAt]
+            )
+
+            return inserted.rows[0]
+        })
+
+        if (!result) {
+            throw new Error("Failed to rotate session token")
         }
 
-        logger.debug("Session token refreshed successfully", {
+        logger.debug("Session token rotated successfully", {
             context: "Auth",
             data: {
-                userId: sessionToken.user_id,
+                userId: sessionRow.user_id,
                 newExpiresAt: newExpiresAt.toISOString(),
             },
         })
 
-        return newExpiresAt
+        return { token: newToken, expiresAt: newExpiresAt }
     } catch (error) {
         logger.error("Failed to refresh session token", {
             context: "Auth",
             error: error as Error,
             data: { tokenPreview: token?.substring(0, 8) + "..." },
+        })
+        throw error
+    }
+}
+
+/**
+ * Get a Remember Me token from the database
+ *
+ * @param token - The Remember Me token to look up
+ * @returns RememberMeToken row if found, null otherwise
+ */
+export async function getRememberMeToken(
+    token: string
+): Promise<RememberMeToken | null> {
+    try {
+        if (!token || typeof token !== "string" || token.length === 0) {
+            return null
+        }
+
+        const row = await queryOne<RememberMeToken>(
+            `SELECT id, user_id, token_hash, expires_at, created_at, ip_address, user_agent
+             FROM remember_me_tokens
+             WHERE token_hash = $1`,
+            [token]
+        )
+
+        if (!row) {
+            return null
+        }
+
+        // Check if expired
+        if (new Date(row.expires_at) < new Date()) {
+            // Clean up expired token
+            await query("DELETE FROM remember_me_tokens WHERE token_hash = $1", [token])
+            return null
+        }
+
+        return row
+    } catch (error) {
+        logger.error("Failed to get Remember Me token", {
+            context: "Auth",
+            error: error as Error,
+            data: { tokenPreview: token?.substring(0, 8) + "..." },
+        })
+        return null
+    }
+}
+
+/**
+ * Delete a Remember Me token from the database
+ *
+ * @param token - The Remember Me token to delete
+ * @returns true if deleted, false if not found
+ */
+export async function deleteRememberMeToken(token: string): Promise<boolean> {
+    try {
+        if (!token || typeof token !== "string" || token.length === 0) {
+            return false
+        }
+
+        const result = await query(
+            "DELETE FROM remember_me_tokens WHERE token_hash = $1",
+            [token]
+        )
+
+        return (result.rowCount || 0) > 0
+    } catch (error) {
+        logger.error("Failed to delete Remember Me token", {
+            context: "Auth",
+            error: error as Error,
+            data: { tokenPreview: token?.substring(0, 8) + "..." },
+        })
+        return false
+    }
+}
+
+/**
+ * Create a new Remember Me token
+ *
+ * @param userId - The user ID to create the token for
+ * @param ipAddress - Optional IP address for audit
+ * @param userAgent - Optional user agent for audit
+ * @returns The created RememberMeToken
+ */
+export async function createRememberMeToken(
+    userId: string,
+    ipAddress?: string,
+    userAgent?: string
+): Promise<RememberMeToken> {
+    try {
+        if (!userId || typeof userId !== "string") {
+            throw new Error("Invalid user ID")
+        }
+
+        const token = generateRandomHex(TOKEN_LENGTH)
+        const expiresAt = new Date(
+            Date.now() + REMEMBER_ME_TOKEN_EXPIRATION_DAYS * 24 * 60 * 60 * 1000
+        )
+
+        const row = await queryOne<RememberMeToken>(
+            `INSERT INTO remember_me_tokens (user_id, token_hash, expires_at, ip_address, user_agent)
+             VALUES ($1, $2, $3, $4, $5)
+             RETURNING id, user_id, token_hash, expires_at, created_at, ip_address, user_agent`,
+            [userId, token, expiresAt, ipAddress || null, userAgent || null]
+        )
+
+        if (!row) {
+            throw new Error("Failed to create Remember Me token")
+        }
+
+        return row
+    } catch (error) {
+        logger.error("Failed to create Remember Me token", {
+            context: "Auth",
+            error: error as Error,
+            data: { userId },
+        })
+        throw error
+    }
+}
+
+/**
+ * Set the auth_session cookie with the given token
+ *
+ * @param token - The session token to set in the cookie
+ */
+export async function setAuthSessionCookie(token: string): Promise<void> {
+    try {
+        if (!token || typeof token !== "string" || token.length === 0) {
+            throw new Error("Invalid session token provided")
+        }
+
+        const cookieStore = await cookies()
+
+        cookieStore.set("auth_session", token, SESSION_COOKIE_OPTIONS)
+
+        logger.debug("Auth session cookie set", {
+            context: "Auth",
+            data: {
+                tokenPreview: token.substring(0, 8) + "...",
+                expirationHours: SESSION_TOKEN_EXPIRATION_HOURS,
+            },
+        })
+    } catch (error) {
+        logger.error("Failed to set auth session cookie", {
+            context: "Auth",
+            error: error as Error,
         })
         throw error
     }

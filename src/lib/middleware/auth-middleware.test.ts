@@ -1,13 +1,15 @@
 import { describe, expect, it, vi } from "vitest"
 import { authMiddleware, getAuthenticatedUser } from "./auth-middleware"
 
+const validToken = "a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2"
+
 describe("authMiddleware", () => {
     it("should return null if session cookie exists", async () => {
         const mockRequest = {
             cookies: {
                 get: vi.fn((name: string) => {
-                    if (name === "session") {
-                        return { value: "token" }
+                    if (name === "auth_session") {
+                        return { value: validToken }
                     }
                     return undefined
                 }),
@@ -36,12 +38,12 @@ describe("authMiddleware", () => {
 })
 
 describe("getAuthenticatedUser", () => {
-    it("should return user ID from cookie if authenticated", async () => {
+    it("should return partial hash from cookie if authenticated", async () => {
         const mockRequest = {
             cookies: {
                 get: vi.fn((name: string) => {
-                    if (name === "session") {
-                        return { value: "user_123:random-token" }
+                    if (name === "auth_session") {
+                        return { value: validToken }
                     }
                     return undefined
                 }),
@@ -49,7 +51,7 @@ describe("getAuthenticatedUser", () => {
         } as any
 
         const result = await getAuthenticatedUser(mockRequest)
-        expect(result).toBe("user_123")
+        expect(result).toBe(validToken.substring(0, 8))
     })
 
     it("should return null if no session cookie", async () => {
@@ -63,12 +65,12 @@ describe("getAuthenticatedUser", () => {
         expect(result).toBeNull()
     })
 
-    it("should return the full cookie value if no colon separator", async () => {
+    it("should return null for invalid token format", async () => {
         const mockRequest = {
             cookies: {
                 get: vi.fn((name: string) => {
-                    if (name === "session") {
-                        return { value: "simple-token" }
+                    if (name === "auth_session") {
+                        return { value: "invalid-token-format" }
                     }
                     return undefined
                 }),
@@ -76,6 +78,6 @@ describe("getAuthenticatedUser", () => {
         } as any
 
         const result = await getAuthenticatedUser(mockRequest)
-        expect(result).toBe("simple-token")
+        expect(result).toBeNull()
     })
 })
