@@ -22,7 +22,11 @@ import {
     createErrorResponse,
     handleUnexpectedError,
 } from "@/lib/auth/error-handling"
-import { removeSession, validateSession } from "@/lib/auth/session"
+import {
+    deleteRememberMeToken,
+    removeSession,
+    validateSession,
+} from "@/lib/auth/session"
 import { db } from "@/lib/db"
 import { logger } from "@/lib/logger"
 import { validateCsrfToken } from "@/lib/middleware/csrf-protection"
@@ -101,6 +105,21 @@ export async function POST(request: NextRequest) {
             // Continue with logout even if session removal fails
         }
 
+        // 5. Delete remember_me_token from database if exists
+        const rememberMeToken = request.cookies.get("remember_me_token")?.value
+        if (rememberMeToken) {
+            try {
+                await deleteRememberMeToken(rememberMeToken)
+            } catch (error) {
+                logger.warn("Failed to delete Remember Me token on logout", {
+                    context: "Auth",
+                    error: error as Error,
+                    data: { userId: session.user_id },
+                })
+                // Continue with logout even if token deletion fails
+            }
+        }
+
         // 6. Create audit log entry (non-blocking)
         if (userEmail) {
             try {
@@ -135,7 +154,7 @@ export async function POST(request: NextRequest) {
             { status: 200 }
         )
 
-        // 5. Clear session cookies with maxAge=0 and empty value (both possible names for compatibility)
+        // 5. Clear session and remember me cookies
         // Maintains security attributes: httpOnly, secure, sameSite, path
         response.cookies.set("auth_session", "", {
             httpOnly: true,
@@ -145,15 +164,6 @@ export async function POST(request: NextRequest) {
             path: "/",
         })
 
-        response.cookies.set("session", "", {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-            sameSite: "strict",
-            maxAge: 0,
-            path: "/",
-        })
-
-        // Also clear remember me token if it exists
         response.cookies.set("remember_me_token", "", {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",

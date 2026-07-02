@@ -381,10 +381,9 @@ describe("Property 3: Session Deletion on Logout", () => {
                     // Delete session
                     await removeSession(sessionToken)
 
-                    // Property: Query should use session_id column (based on implementation)
-                    // Note: The actual implementation uses session_id, not token_hash
+                    // Property: Query should use token_hash column
                     expect(db.query).toHaveBeenCalledWith(
-                        expect.stringContaining("WHERE session_id = $1"),
+                        expect.stringContaining("WHERE token_hash = $1"),
                         [sessionToken]
                     )
                 }

@@ -20,7 +20,7 @@ const { queryOne } = db
 export async function GET(request: NextRequest) {
     try {
         // Get session token from cookie
-        const sessionToken = request.cookies.get("session")?.value
+        const sessionToken = request.cookies.get("auth_session")?.value
 
         if (!sessionToken) {
             logger.debug("GET /me request without session", {
@@ -31,7 +31,7 @@ export async function GET(request: NextRequest) {
 
         // Find session
         const session = await queryOne<{ user_id: string; expires_at: Date }>(
-            "SELECT user_id, expires_at FROM sessions WHERE session_id = $1",
+            "SELECT user_id, expires_at FROM sessions WHERE token_hash = $1",
             [sessionToken]
         )
 

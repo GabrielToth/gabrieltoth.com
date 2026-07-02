@@ -64,9 +64,9 @@ export async function validateSession(
 
         // Query session by session_id from database
         const session = await queryOne<Session>(
-            `SELECT id, user_id, session_id, created_at, expires_at
+            `SELECT id, user_id, token_hash AS session_id, created_at, expires_at
              FROM sessions
-             WHERE session_id = $1`,
+             WHERE token_hash = $1`,
             [sessionId]
         )
 
@@ -133,7 +133,9 @@ export async function authMiddleware(
 ): Promise<NextResponse | null> {
     try {
         // Extract session token from cookie
-        const sessionCookie = request.cookies.get("session")
+        const sessionCookie =
+            request.cookies.get("auth_session") ||
+            request.cookies.get("session")
 
         if (!sessionCookie || !sessionCookie.value) {
             logger.debug("No session cookie found", {
@@ -203,7 +205,9 @@ export async function getAuthenticatedUser(
 ): Promise<string | null> {
     try {
         // Extract session token from cookie
-        const sessionCookie = request.cookies.get("session")
+        const sessionCookie =
+            request.cookies.get("auth_session") ||
+            request.cookies.get("session")
 
         if (!sessionCookie || !sessionCookie.value) {
             return null
@@ -237,7 +241,9 @@ export async function getAuthenticatedUser(
 export async function isAuthenticated(request: NextRequest): Promise<boolean> {
     try {
         // Extract session token from cookie
-        const sessionCookie = request.cookies.get("session")
+        const sessionCookie =
+            request.cookies.get("auth_session") ||
+            request.cookies.get("session")
 
         if (!sessionCookie || !sessionCookie.value) {
             return false

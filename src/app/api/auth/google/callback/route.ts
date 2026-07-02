@@ -15,7 +15,7 @@ import {
     exchangeCodeForToken,
     validateGoogleToken,
 } from "@/lib/auth/google-auth"
-import { createSession } from "@/lib/auth/session"
+import { createRememberMeToken, createSession } from "@/lib/auth/session"
 import { upsertUser } from "@/lib/auth/user"
 import { logger } from "@/lib/logger"
 import {
@@ -32,7 +32,15 @@ const SESSION_COOKIE = {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax" as const,
-    maxAge: 30 * 24 * 60 * 60,
+    maxAge: 60 * 60, // 1 hour
+    path: "/",
+}
+
+const REMEMBER_ME_COOKIE = {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax" as const,
+    maxAge: 30 * 24 * 60 * 60, // 30 days
     path: "/",
 }
 
@@ -40,7 +48,7 @@ const SESSION_COOKIE = {
  * Set the session cookie on a NextResponse
  */
 function setSessionCookie(res: NextResponse, sessionId: string): void {
-    res.cookies.set("session", sessionId, SESSION_COOKIE)
+    res.cookies.set("auth_session", sessionId, SESSION_COOKIE)
 }
 
 /**
@@ -273,10 +281,12 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
  */
 export async function POST(request: NextRequest): Promise<NextResponse> {
     const clientIp = getClientIp(request)
+    const userAgent = request.headers.get("user-agent") || undefined
 
     try {
         const body = (await request.json().catch(() => ({}))) as {
             code?: string
+            rememberMe?: boolean
         }
 
         if (!body.code) {
@@ -300,6 +310,30 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
             redirectUrl: "/dashboard",
         })
         setSessionCookie(response, result.sessionId)
+
+        // If rememberMe is true, create remember_me_token in DB and set cookie
+        if (body.rememberMe) {
+            try {
+                const rememberMeToken = await createRememberMeToken(
+                    result.userId,
+                    clientIp,
+                    userAgent
+                )
+                response.cookies.set(
+                    "remember_me_token",
+                    rememberMeToken.token_hash,
+                    REMEMBER_ME_COOKIE
+                )
+            } catch (error) {
+                logger.warn("Failed to create Remember Me token for Google OAuth", {
+                    context: "Auth",
+                    error: error as Error,
+                    data: { userId: result.userId },
+                })
+                // Don't fail the login if remember me fails
+            }
+        }
+
         return response
     } catch (err) {
         logger.error("Google callback POST error", {

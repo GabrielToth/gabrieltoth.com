@@ -31,6 +31,7 @@ vi.mock("@/lib/db", () => ({
     db: {
         queryOne: vi.fn(),
         query: vi.fn(),
+        transaction: vi.fn(),
     },
 }))
 
@@ -243,7 +244,7 @@ describe("Session Management", () => {
              * **Validates: Requirements 6.2**
              *
              * The function SHALL execute a DELETE query on the sessions table
-             * using the session_id column.
+             * using the token_hash column.
              */
             const sessionId = "test-session-id"
 
@@ -258,7 +259,7 @@ describe("Session Management", () => {
             await removeSession(sessionId)
 
             expect(db.db.query).toHaveBeenCalledWith(
-                "DELETE FROM sessions WHERE session_id = $1",
+                "DELETE FROM sessions WHERE token_hash = $1",
                 [sessionId]
             )
         })
@@ -542,7 +543,7 @@ describe("Session Management", () => {
                 [sessionId]
             )
             expect(db.db.queryOne).toHaveBeenCalledWith(
-                expect.stringContaining("WHERE session_id = $1"),
+                expect.stringContaining("WHERE token_hash = $1"),
                 [sessionId]
             )
         })
@@ -1261,30 +1262,39 @@ describe("Session Token Management", () => {
     })
 
     describe("refreshSessionToken()", () => {
-        it("should return new expiration date when token is valid", async () => {
+        it("should return new token and expiration when token is valid", async () => {
             /**
              * **Validates: Requirements 5.7**
              *
-             * The function SHALL extend the token expiration to 1 hour from now.
+             * The function SHALL rotate the token and extend expiration to 1 hour from now.
              */
             const token = "valid-token"
             const now = new Date()
             const futureDate = new Date(now.getTime() + 30 * 60 * 1000)
+            const newExpiration = new Date(now.getTime() + 60 * 60 * 1000)
 
-            vi.mocked(db.db.queryOne)
-                .mockResolvedValueOnce({
-                    id: "token-id",
-                    user_id: "user-id",
-                    expires_at: futureDate,
-                })
-                .mockResolvedValueOnce({
-                    expires_at: new Date(now.getTime() + 60 * 60 * 1000),
-                })
+            vi.mocked(db.db.queryOne).mockResolvedValueOnce({
+                id: "token-id",
+                user_id: "user-id",
+                expires_at: futureDate,
+            })
+
+            vi.mocked(db.db.transaction).mockImplementationOnce(
+                async (fn: any) => {
+                    return fn({
+                        query: async () => ({
+                            rows: [{ token_hash: "new-rotated-token", expires_at: newExpiration }],
+                        }),
+                    })
+                }
+            )
 
             const result = await refreshSessionToken(token)
 
             expect(result).toBeDefined()
-            expect(result instanceof Date).toBe(true)
+            expect(result).toHaveProperty("token")
+            expect(result).toHaveProperty("expiresAt")
+            expect(result!.expiresAt).toEqual(newExpiration)
         })
 
         it("should return null when token not found", async () => {
@@ -1383,37 +1393,50 @@ describe("Session Token Management", () => {
             const token = "boundary-refresh-token-valid"
             const newExpiration = new Date(fixedNow.getTime() + 60 * 60 * 1000)
 
-            vi.mocked(db.db.queryOne)
-                .mockResolvedValueOnce({
-                    id: "token-id",
-                    user_id: "user-id",
-                    expires_at: fixedNow,
-                })
-                .mockResolvedValueOnce({
-                    expires_at: newExpiration,
-                })
+            vi.mocked(db.db.queryOne).mockResolvedValueOnce({
+                id: "token-id",
+                user_id: "user-id",
+                expires_at: fixedNow,
+            })
+
+            vi.mocked(db.db.transaction).mockImplementationOnce(
+                async (fn: any) => {
+                    return fn({
+                        query: async () => ({
+                            rows: [{ token_hash: "new-rotated-token", expires_at: newExpiration }],
+                        }),
+                    })
+                }
+            )
 
             const result = await refreshSessionToken(token)
 
-            expect(result).toEqual(newExpiration)
+            expect(result).toBeDefined()
+            expect(result!.expiresAt).toEqual(newExpiration)
             vi.useRealTimers()
         })
 
-        it("should throw error when update returns null", async () => {
+        it("should throw error when transaction returns null", async () => {
             const token = "valid-token"
             const now = new Date()
             const futureDate = new Date(now.getTime() + 30 * 60 * 1000)
 
-            vi.mocked(db.db.queryOne)
-                .mockResolvedValueOnce({
-                    id: "token-id",
-                    user_id: "user-id",
-                    expires_at: futureDate,
-                })
-                .mockResolvedValueOnce(null)
+            vi.mocked(db.db.queryOne).mockResolvedValueOnce({
+                id: "token-id",
+                user_id: "user-id",
+                expires_at: futureDate,
+            })
+
+            vi.mocked(db.db.transaction).mockImplementationOnce(
+                async (fn: any) => {
+                    return fn({
+                        query: async () => ({ rows: [] }),
+                    })
+                }
+            )
 
             await expect(refreshSessionToken(token)).rejects.toThrow(
-                "Failed to update session token expiration"
+                "Failed to rotate session token"
             )
         })
 
@@ -1428,12 +1451,12 @@ describe("Session Token Management", () => {
             )
         })
 
-        it("Property 15: Session Token Refresh - For any valid non-expired token, system extends expiration", async () => {
+        it("Property 15: Session Token Refresh - For any valid non-expired token, system rotates and extends expiration", async () => {
             /**
              * **Validates: Requirements 5.7**
              *
              * Property: For any valid, non-expired session token, the system SHALL
-             * extend its expiration to 1 hour from now.
+             * rotate the token and extend its expiration to 1 hour from now.
              */
             await fc.assert(
                 fc.asyncProperty(
@@ -1452,20 +1475,27 @@ describe("Session Token Management", () => {
                             now.getTime() + 60 * 60 * 1000
                         )
 
-                        vi.mocked(db.db.queryOne)
-                            .mockResolvedValueOnce({
-                                id: "token-id",
-                                user_id: "user-id",
-                                expires_at: futureDate,
-                            })
-                            .mockResolvedValueOnce({
-                                expires_at: newExpiration,
-                            })
+                        vi.mocked(db.db.queryOne).mockResolvedValueOnce({
+                            id: "token-id",
+                            user_id: "user-id",
+                            expires_at: futureDate,
+                        })
+
+                        vi.mocked(db.db.transaction).mockImplementationOnce(
+                            async (fn: any) => {
+                                return fn({
+                                    query: async () => ({
+                                        rows: [{ token_hash: "new-token", expires_at: newExpiration }],
+                                    }),
+                                })
+                            }
+                        )
 
                         const result = await refreshSessionToken(token)
 
                         expect(result).toBeDefined()
-                        expect(result instanceof Date).toBe(true)
+                        expect(result).toHaveProperty("token")
+                        expect(result).toHaveProperty("expiresAt")
 
                         vi.clearAllMocks()
                     }

@@ -281,10 +281,10 @@ export async function refreshSessionTokenMiddleware(
             return null
         }
 
-        // Refresh session token (extends expiration)
-        const newExpirationDate = await refreshSessionToken(sessionToken)
+        // Refresh session token with token rotation
+        const refreshResult = await refreshSessionToken(sessionToken)
 
-        if (!newExpirationDate) {
+        if (!refreshResult) {
             logger.debug("Session token refresh failed or not needed", {
                 context: "Auth",
                 data: { path: request.nextUrl.pathname },
@@ -296,11 +296,11 @@ export async function refreshSessionTokenMiddleware(
             context: "Auth",
             data: {
                 path: request.nextUrl.pathname,
-                newExpirationDate: newExpirationDate.toISOString(),
+                newExpirationDate: refreshResult.expiresAt.toISOString(),
             },
         })
 
-        return newExpirationDate
+        return refreshResult.expiresAt
     } catch (error) {
         logger.error("Error refreshing session token", {
             context: "Auth",

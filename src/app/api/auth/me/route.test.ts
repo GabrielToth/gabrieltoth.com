@@ -105,7 +105,7 @@ describe("GET /api/auth/me", () => {
         const request = new NextRequest("http://localhost:3000/api/auth/me", {
             method: "GET",
             headers: {
-                cookie: "session=invalid-session-id",
+                cookie: "auth_session=invalid-session-id",
             },
         })
 
@@ -126,7 +126,7 @@ describe("GET /api/auth/me", () => {
         const request = new NextRequest("http://localhost:3000/api/auth/me", {
             method: "GET",
             headers: {
-                cookie: "session=valid-session-id",
+                cookie: "auth_session=valid-session-id",
             },
         })
 
@@ -149,7 +149,7 @@ describe("GET /api/auth/me", () => {
         const request = new NextRequest("http://localhost:3000/api/auth/me", {
             method: "GET",
             headers: {
-                cookie: "session=valid-session-id",
+                cookie: "auth_session=valid-session-id",
             },
         })
 
@@ -177,7 +177,7 @@ describe("GET /api/auth/me", () => {
         const request = new NextRequest("http://localhost:3000/api/auth/me", {
             method: "GET",
             headers: {
-                cookie: "session=valid-session-id",
+                cookie: "auth_session=valid-session-id",
             },
         })
 
@@ -210,7 +210,7 @@ describe("GET /api/auth/me", () => {
         const request = new NextRequest("http://localhost:3000/api/auth/me", {
             method: "GET",
             headers: {
-                cookie: "session=valid-session-id",
+                cookie: "auth_session=valid-session-id",
             },
         })
 
@@ -228,7 +228,7 @@ describe("GET /api/auth/me", () => {
         const request = new NextRequest("http://localhost:3000/api/auth/me", {
             method: "GET",
             headers: {
-                cookie: "session=valid-session-id",
+                cookie: "auth_session=valid-session-id",
             },
         })
 

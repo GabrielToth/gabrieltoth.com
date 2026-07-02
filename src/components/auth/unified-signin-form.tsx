@@ -42,6 +42,7 @@ export default function UnifiedSignInForm({
     const [fullName, setFullName] = useState("")
     const [password, setPassword] = useState("")
     const [confirmPassword, setConfirmPassword] = useState("")
+    const [rememberMe, setRememberMe] = useState(false)
     const [error, setError] = useState<string | null>(null)
     const [isLoading, setIsLoading] = useState(false)
 
@@ -69,7 +70,7 @@ export default function UnifiedSignInForm({
         setIsLoading(true)
 
         try {
-            const result = await signInWithEmail(email, password)
+            const result = await signInWithEmail(email, password, rememberMe)
 
             if (!result.success) {
                 // Always return generic error message to prevent user enumeration
@@ -444,10 +445,24 @@ export default function UnifiedSignInForm({
                         </Link>
                     </div>
 
+                    {/* Remember Me Checkbox */}
+                    <label className="flex items-center gap-2 cursor-pointer">
+                        <input
+                            type="checkbox"
+                            checked={rememberMe}
+                            onChange={e => setRememberMe(e.target.checked)}
+                            className="rounded border-gray-300 dark:border-gray-600 text-blue-600 focus:ring-blue-500"
+                            disabled={isLoading}
+                        />
+                        <span className="text-sm text-gray-600 dark:text-gray-400">
+                            {t("login.rememberMe")}
+                        </span>
+                    </label>
+
                     <button
                         type="submit"
                         disabled={isLoading}
-                        className="w-full px-4 py-3 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white rounded-lg font-medium transition-colors mt-6 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="w-full px-4 py-3 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white rounded-lg font-medium transition-colors mt-2 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                         {isLoading ? t("signin.loading") : t("signin.signIn")}
                     </button>

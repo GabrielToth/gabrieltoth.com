@@ -50,7 +50,7 @@ describe("Authentication Middleware (auth-middleware.ts)", () => {
 
             expect(result).toEqual(mockSession)
             expect(dbModule.db.queryOne).toHaveBeenCalledWith(
-                expect.stringContaining("SELECT id, user_id, session_id"),
+                expect.stringContaining("token_hash AS session_id"),
                 ["session_token_abc123"]
             )
         })

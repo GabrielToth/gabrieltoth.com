@@ -337,7 +337,7 @@ export async function POST(
         )
 
         // Set session cookie (HTTP-only, secure, SameSite=Strict)
-        response.cookies.set("session", session.session_id, {
+        response.cookies.set("auth_session", session.session_id, {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
             sameSite: "strict",
