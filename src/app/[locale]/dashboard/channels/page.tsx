@@ -28,12 +28,12 @@ const PLATFORM_NAMES: Record<string, string> = {
 
 const PLATFORM_ICONS: Record<string, string> = {
     youtube: "Youtube",
-    facebook: "facebook",
-    instagram: "instagram",
-    twitter: "twitter",
-    tiktok: "tiktok",
-    linkedin: "linkedin",
-    kick: "kick",
+    facebook: "Facebook",
+    instagram: "Instagram",
+    twitter: "Twitter",
+    tiktok: "TikTok",
+    linkedin: "Linkedin",
+    kick: "Kick",
 }
 
 export default function ChannelsPage() {
