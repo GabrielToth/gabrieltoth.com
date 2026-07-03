@@ -7,6 +7,7 @@ Sempre use `--value "..."` explicitamente.
 ## Canonical Naming (from `src/lib/config/env.ts`)
 
 ### YouTube
+
 | Var | Status |
 |-----|--------|
 | `YOUTUBE_CLIENT_ID` | Encrypted in Vercel |
@@ -14,6 +15,7 @@ Sempre use `--value "..."` explicitamente.
 | `YOUTUBE_REDIRECT_URI` | `https://www.gabrieltoth.com/api/oauth/callback/youtube` |
 
 ### Facebook/Meta
+
 | Var | Status |
 |-----|--------|
 | `FACEBOOK_APP_ID` | = `META_APP_ID` (alias) = `"your-meta-app-id"` placeholder |
@@ -23,6 +25,7 @@ Sempre use `--value "..."` explicitamente.
 | `META_APP_SECRET` | Legacy name, same value as `FACEBOOK_APP_SECRET` |
 
 ### Instagram
+
 | Var | Status |
 |-----|--------|
 | `INSTAGRAM_APP_ID` | `1298289779064053` ✅ Real |
@@ -30,6 +33,7 @@ Sempre use `--value "..."` explicitamente.
 | `INSTAGRAM_REDIRECT_URI` | `https://www.gabrieltoth.com/api/oauth/callback/instagram` |
 
 ### TikTok
+
 | Var | Status |
 |-----|--------|
 | `TIKTOK_CLIENT_KEY` | Empty — needs real value |
@@ -37,6 +41,7 @@ Sempre use `--value "..."` explicitamente.
 | `TIKTOK_REDIRECT_URI` | `https://www.gabrieltoth.com/api/oauth/callback/tiktok` |
 
 ### Kick
+
 | Var | Status |
 |-----|--------|
 | `KICK_CLIENT_ID` | `01KVPT4Y8XMT10QWWVDTNQZ5G7` ✅ Real |
