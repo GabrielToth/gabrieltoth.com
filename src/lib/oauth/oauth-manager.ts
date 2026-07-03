@@ -5,9 +5,9 @@
  * Requirements: 10.1, 10.2, 10.3, 10.4, 10.5, 10.6, 10.7
  */
 
-import crypto from "crypto"
 import { CACHE_KEYS, CacheManager } from "../cache"
 import { createLogger } from "../logger"
+import { generateState, verifyState } from "./state-signer"
 
 const logger = createLogger("OAuthManager")
 
@@ -218,7 +218,8 @@ export class OAuthManager {
      */
     async generateAuthorizationUrl(
         platform: OAuthPlatform,
-        userId: string
+        userId: string,
+        locale?: string
     ): Promise<AuthorizationUrlResponse> {
         const config = this.configs.get(platform)
         if (!config) {
@@ -226,12 +227,10 @@ export class OAuthManager {
         }
 
         try {
-            // Generate cryptographically secure state parameter
-            const state = this.generateState()
-
-            // Store state in cache with 10-minute expiration
-            const stateKey = `oauth:state:${platform}:${userId}`
-            await CacheManager.set(stateKey, state, 10 * 60)
+            // Generate HMAC-signed state token (no Redis needed)
+            // The state contains userId, platform, locale, and timestamp — signed with HMAC-SHA256
+            const signedState = generateState(userId, platform, locale)
+            const state = signedState.token
 
             // Build authorization URL
             const params = new URLSearchParams({
@@ -258,6 +257,7 @@ export class OAuthManager {
             logger.info("Authorization URL generated", {
                 platform,
                 userId,
+                locale: locale || "unknown",
                 state: state.substring(0, 8) + "...",
             })
 
@@ -281,38 +281,49 @@ export class OAuthManager {
      * Requirement 10.3: Validate state parameter
      */
     async validateState(
-        platform: OAuthPlatform,
+        platform: string,
         userId: string,
         state: string
-    ): Promise<boolean> {
+    ): Promise<{ valid: boolean; locale?: string }> {
         try {
-            const stateKey = `oauth:state:${platform}:${userId}`
-            const storedState = await CacheManager.get<string>(stateKey)
+            const result = verifyState(state)
 
-            if (!storedState) {
-                logger.warn("State not found in cache", { platform, userId })
-                return false
+            if (!result.valid) {
+                logger.warn("Invalid state parameter", {
+                    platform,
+                    userId,
+                    error: result.error,
+                })
+                return { valid: false }
             }
 
-            // Use constant-time comparison to prevent timing attacks
-            const isValid = crypto.timingSafeEqual(
-                Buffer.from(state),
-                Buffer.from(storedState)
-            )
-
-            if (isValid) {
-                // Delete state from cache after validation
-                await CacheManager.delete(stateKey)
+            // Verify the state is for the correct user and platform
+            if (result.payload?.userId !== userId) {
+                logger.warn("State user mismatch", {
+                    platform,
+                    userId,
+                    stateUserId: result.payload?.userId,
+                })
+                return { valid: false }
             }
 
-            return isValid
+            if (result.payload?.platform !== platform) {
+                logger.warn("State platform mismatch", {
+                    platform,
+                    userId,
+                    statePlatform: result.payload?.platform,
+                })
+                return { valid: false }
+            }
+
+            return { valid: true, locale: result.payload?.locale }
         } catch (error) {
             logger.error("State validation failed", {
                 platform,
                 userId,
                 error: error instanceof Error ? error.message : String(error),
             })
-            return false
+            return { valid: false }
         }
     }
 
@@ -493,13 +504,6 @@ export class OAuthManager {
             })
             return false
         }
-    }
-
-    /**
-     * Generate cryptographically secure state parameter
-     */
-    private generateState(): string {
-        return crypto.randomBytes(32).toString("hex")
     }
 
     /**

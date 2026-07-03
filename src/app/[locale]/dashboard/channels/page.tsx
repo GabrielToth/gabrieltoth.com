@@ -4,6 +4,7 @@ import { DynamicIcon } from "@/components/ui/dynamic-icon"
 import { Button } from "@/components/ui/button"
 import { logger } from "@/lib/logger"
 import { useTranslations } from "next-intl"
+import { useParams } from "next/navigation"
 import React, { useCallback, useEffect, useState } from "react"
 
 interface ConnectedChannel {
@@ -38,6 +39,8 @@ const PLATFORM_ICONS: Record<string, string> = {
 
 export default function ChannelsPage() {
     const t = useTranslations("dashboard")
+    const params = useParams()
+    const locale = (params?.locale as string) || "en"
     const [channels, setChannels] = useState<ConnectedChannel[]>([])
     const [isLoading, setIsLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
@@ -73,6 +76,7 @@ export default function ChannelsPage() {
             const response = await fetch(`/api/oauth/authorize/${platform}`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ locale }),
             })
             if (!response.ok) {
                 const data = await response.json()
@@ -110,14 +114,14 @@ export default function ChannelsPage() {
     if (isLoading) {
         return (
             <div className="flex items-center justify-center py-20">
-                <div className="h-8 w-8 animate-spin rounded-full border-4 border-gray-200 border-t-blue-500" />
+                <div className="h-8 w-8 animate-spin rounded-full border-4 border-gray-200 border-t-blue-500 dark:border-gray-700 dark:border-t-blue-500" />
             </div>
         )
     }
 
     if (error) {
         return (
-            <div className="rounded-lg border border-red-200 bg-red-50 p-4 text-red-800">
+            <div className="rounded-lg border border-red-200 bg-red-50 p-4 text-red-800 dark:border-red-800 dark:bg-red-950/30 dark:text-red-400">
                 <p>{error}</p>
                 <Button variant="outline" size="sm" className="mt-2" onClick={fetchChannels}>
                     Retry
@@ -132,8 +136,8 @@ export default function ChannelsPage() {
     return (
         <div className="space-y-6">
             <div>
-                <h1 className="text-2xl font-bold text-gray-900">Channels</h1>
-                <p className="mt-1 text-sm text-gray-600">
+                <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Channels</h1>
+                <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
                     Manage all your connected social media channels
                 </p>
             </div>
@@ -141,14 +145,14 @@ export default function ChannelsPage() {
             {/* Connected Channels */}
             <section>
                 <div className="flex items-center justify-between mb-4">
-                    <h2 className="text-lg font-semibold text-gray-900">
+                    <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
                         Connected ({connectedChannels.length})
                     </h2>
                 </div>
                 {connectedChannels.length === 0 ? (
-                    <div className="rounded-lg border-2 border-dashed border-gray-200 p-8 text-center">
-                        <p className="text-gray-500">No channels connected yet</p>
-                        <p className="mt-1 text-sm text-gray-400">
+                    <div className="rounded-lg border-2 border-dashed border-gray-200 p-8 text-center dark:border-gray-700">
+                        <p className="text-gray-500 dark:text-gray-400">No channels connected yet</p>
+                        <p className="mt-1 text-sm text-gray-400 dark:text-gray-500">
                             Connect a channel below to start publishing
                         </p>
                     </div>
@@ -157,29 +161,29 @@ export default function ChannelsPage() {
                         {connectedChannels.map(channel => (
                             <div
                                 key={channel.id}
-                                className="flex items-center justify-between rounded-lg border border-gray-200 bg-white p-4"
+                                className="flex items-center justify-between rounded-lg border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-900"
                             >
                                 <div className="flex items-center gap-4">
-                                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gray-100">
+                                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gray-100 dark:bg-gray-800">
                                         <DynamicIcon
                                             name={PLATFORM_ICONS[channel.platform] as any}
                                             size={24}
                                         />
                                     </div>
                                     <div>
-                                        <p className="font-medium text-gray-900">
+                                        <p className="font-medium text-gray-900 dark:text-white">
                                             {PLATFORM_NAMES[channel.platform] || channel.platform}
                                         </p>
-                                        <p className="text-sm text-gray-600">
+                                        <p className="text-sm text-gray-600 dark:text-gray-400">
                                             {channel.accountName}
                                         </p>
                                         {channel.connectedAt && (
-                                            <p className="text-xs text-gray-500">
+                                            <p className="text-xs text-gray-500 dark:text-gray-500">
                                                 Connected {new Date(channel.connectedAt).toLocaleDateString()}
                                             </p>
                                         )}
                                         {channel.needsReconnect && (
-                                            <p className="mt-1 text-xs text-amber-600">
+                                            <p className="mt-1 text-xs text-amber-600 dark:text-amber-400">
                                                 Reconnect required for new features
                                             </p>
                                         )}
@@ -213,7 +217,7 @@ export default function ChannelsPage() {
 
             {/* Available Channels */}
             <section>
-                <h2 className="text-lg font-semibold text-gray-900 mb-4">
+                <h2 className="text-lg font-semibold text-gray-900 mb-4 dark:text-white">
                     Available Channels
                 </h2>
                 <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
@@ -223,18 +227,18 @@ export default function ChannelsPage() {
                         return (
                             <div
                                 key={platform}
-                                className="flex items-center justify-between rounded-lg border border-gray-200 bg-white p-4"
+                                className="flex items-center justify-between rounded-lg border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-900"
                             >
                                 <div className="flex items-center gap-3">
-                                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gray-100">
+                                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gray-100 dark:bg-gray-800">
                                         <DynamicIcon
                                             name={PLATFORM_ICONS[platform] as any}
                                             size={24}
                                         />
                                     </div>
                                     <div>
-                                        <p className="font-medium text-gray-900">{name}</p>
-                                        <p className="text-sm text-gray-500">Not connected</p>
+                                        <p className="font-medium text-gray-900 dark:text-white">{name}</p>
+                                        <p className="text-sm text-gray-500 dark:text-gray-400">Not connected</p>
                                     </div>
                                 </div>
                                 <Button

@@ -55,6 +55,16 @@ export async function POST(
         }
         const userId = session.user.id
 
+        // Extract locale from request body or query params
+        let locale: string | undefined
+        try {
+            const body = await request.clone().json()
+            locale = body.locale
+        } catch {
+            // Not JSON body, try query params
+            locale = request.nextUrl.searchParams.get("locale") || undefined
+        }
+
         // Validate platform
         const oauthManager = getOAuthManager()
 
@@ -70,11 +80,12 @@ export async function POST(
             )
         }
 
-        // Generate authorization URL
+        // Generate authorization URL with locale for redirect back
         const authResponse = await oauthManager.generateAuthorizationUrl(
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             platform as any,
-            userId
+            userId,
+            locale
         )
 
         logger.info("OAuth authorization URL generated", {

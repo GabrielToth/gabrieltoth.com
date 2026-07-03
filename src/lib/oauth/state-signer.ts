@@ -25,6 +25,8 @@ export interface StatePayload {
     platform: string
     nonce: string
     iat: number
+    locale?: string
+    redirectTo?: string
 }
 
 export interface SignedState {
@@ -36,7 +38,12 @@ export interface SignedState {
  * Generate a signed OAuth state token.
  * No Redis needed — the state is self-verifiable via HMAC.
  */
-export function generateState(userId: string, platform: string): SignedState {
+export function generateState(
+    userId: string,
+    platform: string,
+    locale?: string,
+    redirectTo?: string
+): SignedState {
     const key = getSigningKey()
     if (!key) {
         throw new Error(
@@ -49,6 +56,8 @@ export function generateState(userId: string, platform: string): SignedState {
         platform,
         nonce: crypto.randomBytes(16).toString("hex"),
         iat: Date.now(),
+        locale,
+        redirectTo,
     }
 
     const payloadJson = JSON.stringify(payload)

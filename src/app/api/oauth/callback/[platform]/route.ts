@@ -38,6 +38,19 @@ export async function GET(
         const error = searchParams.get("error")
         const errorDescription = searchParams.get("error_description")
 
+        // Helper to extract locale from state (may not be validated yet)
+        const localeFromState = (s: string): string => {
+            try {
+                const parts = s.split(".")
+                if (parts.length === 2) {
+                    const payloadJson = Buffer.from(parts[0], "base64url").toString("utf-8")
+                    const payload = JSON.parse(payloadJson)
+                    return payload.locale || "en"
+                }
+            } catch {}
+            return "en"
+        }
+
         // Handle OAuth errors
         if (error) {
             logger.warn("OAuth error from provider", {
@@ -46,7 +59,8 @@ export async function GET(
                 errorDescription,
             })
 
-            const redirectUrl = new URL("/dashboard", request.nextUrl.origin)
+            const fallbackLocale = state ? localeFromState(state) : "en"
+            const redirectUrl = new URL(`/${fallbackLocale}/dashboard/channels`, request.nextUrl.origin)
             redirectUrl.searchParams.set("oauth_error", error)
             redirectUrl.searchParams.set(
                 "oauth_error_description",
@@ -63,7 +77,7 @@ export async function GET(
                 hasState: !!state,
             })
 
-            const redirectUrl = new URL("/dashboard", request.nextUrl.origin)
+            const redirectUrl = new URL(`/en/dashboard/channels`, request.nextUrl.origin)
             redirectUrl.searchParams.set("oauth_error", "missing_parameters")
             return NextResponse.redirect(redirectUrl)
         }
@@ -81,22 +95,22 @@ export async function GET(
             return NextResponse.redirect(redirectUrl)
         }
 
-        // Validate state parameter
+        // Validate state parameter (HMAC-signed, no Redis needed)
         const oauthManager = getOAuthManager()
-        const isStateValid = await oauthManager.validateState(
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            platform as any,
+        const stateResult = await oauthManager.validateState(
+            normalizedPlatform,
             userId,
             state
         )
 
-        if (!isStateValid) {
+        if (!stateResult.valid) {
             logger.warn("Invalid state parameter", {
                 platform: normalizedPlatform,
                 userId,
             })
 
-            const redirectUrl = new URL("/dashboard", request.nextUrl.origin)
+            const locale = stateResult.locale || "en"
+            const redirectUrl = new URL(`/${locale}/dashboard/channels`, request.nextUrl.origin)
             redirectUrl.searchParams.set("oauth_error", "invalid_state")
             return NextResponse.redirect(redirectUrl)
         }
@@ -195,8 +209,9 @@ export async function GET(
             environment: getAuditEnvironment(),
         })
 
-        // Redirect to dashboard with success
-        const redirectUrl = new URL("/dashboard", request.nextUrl.origin)
+        // Redirect back to channels page with correct locale
+        const locale = stateResult.locale || "en"
+        const redirectUrl = new URL(`/${locale}/dashboard/channels`, request.nextUrl.origin)
         redirectUrl.searchParams.set("oauth_success", normalizedPlatform)
         return NextResponse.redirect(redirectUrl)
     } catch (error) {
@@ -205,7 +220,7 @@ export async function GET(
             error: error instanceof Error ? error.message : String(error),
         })
 
-        const redirectUrl = new URL("/dashboard", request.nextUrl.origin)
+        const redirectUrl = new URL("/en/dashboard/channels", request.nextUrl.origin)
         redirectUrl.searchParams.set("oauth_error", "callback_failed")
         return NextResponse.redirect(redirectUrl)
     }
