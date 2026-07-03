@@ -62,52 +62,83 @@ const REMEMBER_ME_COOKIE_OPTIONS = {
  * Validates: Requirements 4.1, 4.2, 4.3, 4.4
  */
 export async function createSession(userId: string): Promise<Session> {
-    try {
-        // Validate user ID
-        if (!userId || typeof userId !== "string") {
-            throw new Error("Invalid user ID provided")
-        }
-
-        // Generate unique session_id using crypto.getRandomValues
-        // Convert to hex string for storage in database
-        const sessionId = generateRandomHex(SESSION_ID_LENGTH)
-
-        // Calculate expiration date (30 days from now)
-        const now = new Date()
-        const expiresAt = new Date(
-            now.getTime() + SESSION_EXPIRATION_DAYS * 24 * 60 * 60 * 1000
-        )
-
-        // Create session record in database
-        const session = await queryOne<Session>(
-            `INSERT INTO sessions (user_id, token_hash, created_at, expires_at)
-             VALUES ($1, $2, NOW(), $3)
-             RETURNING id, user_id, token_hash AS session_id, created_at, expires_at`,
-            [userId, sessionId, expiresAt]
-        )
-
-        if (!session) {
-            throw new Error("Failed to create session record")
-        }
-
-        logger.debug("Session created successfully", {
-            context: "Auth",
-            data: {
-                userId,
-                sessionId: sessionId.substring(0, 8) + "...", // Log only first 8 chars for security
-                expiresAt: expiresAt.toISOString(),
-            },
-        })
-
-        return session
-    } catch (error) {
-        logger.error("Failed to create session", {
-            context: "Auth",
-            error: error as Error,
-            data: { userId },
-        })
-        throw error
+    // Validate user ID early (no retry needed)
+    if (!userId || typeof userId !== "string") {
+        throw new Error("Invalid user ID provided")
     }
+
+    const MAX_RETRIES = 3
+    let lastError: Error | null = null
+
+    for (let attempt = 0; attempt < MAX_RETRIES; attempt++) {
+        try {
+            // Generate unique session_id using crypto.getRandomValues
+            // Convert to hex string for storage in database
+            const sessionId = generateRandomHex(SESSION_ID_LENGTH)
+
+            // Calculate expiration date (30 days from now)
+            const expiresAt = new Date(
+                Date.now() + SESSION_EXPIRATION_DAYS * 24 * 60 * 60 * 1000
+            )
+
+            // Create session record in database
+            const session = await queryOne<Session>(
+                `INSERT INTO sessions (user_id, token_hash, created_at, expires_at)
+                 VALUES ($1, $2, NOW(), $3)
+                 RETURNING id, user_id, token_hash AS session_id, created_at, expires_at`,
+                [userId, sessionId, expiresAt]
+            )
+
+            if (!session) {
+                throw new Error("Failed to create session record")
+            }
+
+            logger.debug("Session created successfully", {
+                context: "Auth",
+                data: {
+                    userId,
+                    sessionId: sessionId.substring(0, 8) + "...", // Log only first 8 chars for security
+                    expiresAt: expiresAt.toISOString(),
+                },
+            })
+
+            return session
+        } catch (error) {
+            const pgError = error as { code?: string }
+
+            // If it's a unique constraint violation (PostgreSQL code 23505),
+            // retry with a new randomly-generated token_hash.
+            // This handles an extremely rare edge case where `crypto.getRandomValues`
+            // could theoretically produce a colliding value under specific
+            // serverless runtime conditions.
+            if (pgError.code === "23505") {
+                lastError = error as Error
+                logger.warn("Session token collision detected, retrying with new token", {
+                    context: "Auth",
+                    data: { userId, attempt: attempt + 1, maxRetries: MAX_RETRIES },
+                })
+                continue
+            }
+
+            // For all other errors (connection failure, invalid params, etc.),
+            // throw immediately — no retry will fix these.
+            logger.error("Failed to create session", {
+                context: "Auth",
+                error: error as Error,
+                data: { userId },
+            })
+            throw error
+        }
+    }
+
+    // All retries exhausted — token collisions on every attempt are virtually
+    // impossible, but we handle it gracefully instead of crashing.
+    logger.error("Failed to create session after exhausting retries", {
+        context: "Auth",
+        error: lastError,
+        data: { userId },
+    })
+    throw new Error("Failed to create session after multiple attempts")
 }
 
 /**

@@ -123,6 +123,63 @@ describe("Session Management", () => {
                 "Database connection failed"
             )
         })
+
+        it("should retry with new token on unique constraint violation", async () => {
+            const userId = "user-id-1"
+            const uniqueError = Object.assign(
+                new Error(
+                    'duplicate key value violates unique constraint "sessions_token_key"'
+                ),
+                { code: "23505" }
+            )
+
+            const expectedSession: Session = {
+                id: "session-id-1",
+                user_id: userId,
+                session_id: "new-session-token",
+                created_at: new Date("2024-01-01T00:00:00Z"),
+                expires_at: new Date("2024-01-31T00:00:00Z"),
+            }
+
+            // First call fails with unique violation, second succeeds
+            vi.mocked(db.db.queryOne)
+                .mockRejectedValueOnce(uniqueError)
+                .mockResolvedValueOnce(expectedSession)
+
+            const result = await createSession(userId)
+
+            expect(result).toEqual(expectedSession)
+            expect(db.db.queryOne).toHaveBeenCalledTimes(2)
+            expect(logger.warn).toHaveBeenCalledWith(
+                "Session token collision detected, retrying with new token",
+                expect.objectContaining({
+                    context: "Auth",
+                    data: expect.objectContaining({ userId, attempt: 1 }),
+                })
+            )
+        })
+
+        it("should throw after exhausting retries on persistent unique violations", async () => {
+            const userId = "user-id-1"
+            const uniqueError = Object.assign(
+                new Error(
+                    'duplicate key value violates unique constraint "sessions_token_key"'
+                ),
+                { code: "23505" }
+            )
+
+            // All 3 attempts fail with unique violation
+            vi.mocked(db.db.queryOne)
+                .mockRejectedValueOnce(uniqueError)
+                .mockRejectedValueOnce(uniqueError)
+                .mockRejectedValueOnce(uniqueError)
+
+            await expect(createSession(userId)).rejects.toThrow(
+                "Failed to create session after multiple attempts"
+            )
+
+            expect(db.db.queryOne).toHaveBeenCalledTimes(3)
+        })
     })
 
     describe("validateSession()", () => {
