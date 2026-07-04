@@ -17,6 +17,7 @@ import {
 import {
     generateCsrfTokenForSession,
     invalidateCsrfToken,
+    validateCsrfToken,
 } from "./csrf-protection"
 
 describe("API CSRF Middleware", () => {
@@ -116,23 +117,7 @@ describe("API CSRF Middleware", () => {
     })
 
     describe("getOrGenerateCsrfToken", () => {
-        it("should return existing CSRF token", () => {
-            // Generate a token first
-            const existingToken = generateCsrfTokenForSession(sessionToken)
-
-            const request = new NextRequest("http://localhost/api/test", {
-                method: "GET",
-                headers: {
-                    cookie: `auth_session=${sessionToken}`,
-                },
-            })
-
-            const token = getOrGenerateCsrfToken(request)
-
-            expect(token).toBe(existingToken)
-        })
-
-        it("should generate new CSRF token if none exists", () => {
+        it("should generate a valid CSRF token for session", () => {
             const request = new NextRequest("http://localhost/api/test", {
                 method: "GET",
                 headers: {
@@ -145,6 +130,33 @@ describe("API CSRF Middleware", () => {
             expect(token).toBeDefined()
             expect(typeof token).toBe("string")
             expect(token!.length).toBeGreaterThan(0)
+
+            // Generated token should be valid for the session
+            expect(validateCsrfToken(sessionToken, token!)).toBe(true)
+        })
+
+        it("should generate unique tokens on each call", () => {
+            const request1 = new NextRequest("http://localhost/api/test", {
+                method: "GET",
+                headers: {
+                    cookie: `auth_session=${sessionToken}`,
+                },
+            })
+
+            const request2 = new NextRequest("http://localhost/api/test", {
+                method: "GET",
+                headers: {
+                    cookie: `auth_session=${sessionToken}`,
+                },
+            })
+
+            const token1 = getOrGenerateCsrfToken(request1)
+            const token2 = getOrGenerateCsrfToken(request2)
+
+            // Stateless: each call generates a fresh token
+            expect(token1).not.toBe(token2)
+            expect(validateCsrfToken(sessionToken, token1!)).toBe(true)
+            expect(validateCsrfToken(sessionToken, token2!)).toBe(true)
         })
 
         it("should return null if no session token", () => {

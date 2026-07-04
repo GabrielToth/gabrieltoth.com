@@ -42,10 +42,7 @@ describe("GET /api/auth/csrf", () => {
         expect(response.headers.get("X-CSRF-Token")).toBe(body.data.csrfToken)
     })
 
-    it("should return existing CSRF token if already generated", async () => {
-        // Generate a token first
-        const existingToken = generateCsrfTokenForSession(sessionToken)
-
+    it("should return a valid CSRF token for the session", async () => {
         const request = new NextRequest("http://localhost/api/auth/csrf", {
             method: "GET",
             headers: {
@@ -58,7 +55,13 @@ describe("GET /api/auth/csrf", () => {
 
         expect(response.status).toBe(200)
         expect(body.success).toBe(true)
-        expect(body.data.csrfToken).toBe(existingToken)
+        expect(body.data.csrfToken).toBeDefined()
+        expect(typeof body.data.csrfToken).toBe("string")
+
+        // Generated token should be valid
+        const { validateCsrfToken } =
+            await import("@/lib/middleware/csrf-protection")
+        expect(validateCsrfToken(sessionToken, body.data.csrfToken)).toBe(true)
     })
 
     it("should return 401 for unauthenticated request", async () => {

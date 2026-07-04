@@ -42,16 +42,21 @@ describe("Security: OWASP Top 10 Compliance", () => {
             expect(isValid).toBe(false)
         })
 
-        it("should enforce session expiration", () => {
+        it("should reject expired CSRF tokens", () => {
             const sessionToken = "test-session-789"
-            generateCsrfTokenForSession(sessionToken)
+            const csrfToken = generateCsrfTokenForSession(sessionToken)
 
             // Mock time to 25 hours in the future
             const originalNow = Date.now
             Date.now = vi.fn(() => originalNow() + 25 * 60 * 60 * 1000)
 
+            // Stateless: getCsrfToken generates a fresh token
             const token = getCsrfToken(sessionToken)
-            expect(token).toBeNull()
+            expect(token).toBeDefined()
+
+            // But the original token should be expired
+            const isValid = validateCsrfToken(sessionToken, csrfToken)
+            expect(isValid).toBe(false)
 
             // Restore Date.now
             Date.now = originalNow

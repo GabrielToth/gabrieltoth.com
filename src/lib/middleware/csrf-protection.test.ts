@@ -1,8 +1,11 @@
 /**
  * Unit tests for CSRF protection middleware
+ *
+ * CSRF tokens are now stateless HMAC-signed tokens.
+ * No server-side storage — tokens are self-validating.
  */
 
-import { beforeEach, describe, expect, it } from "vitest"
+import { describe, expect, it } from "vitest"
 import {
     generateCsrfTokenForSession,
     getCsrfToken,
@@ -13,11 +16,6 @@ import {
 
 describe("CSRF Protection", () => {
     const sessionToken = "test-session-token-123"
-
-    beforeEach(() => {
-        // Clear tokens before each test
-        invalidateCsrfToken(sessionToken)
-    })
 
     describe("generateCsrfTokenForSession", () => {
         it("should generate a CSRF token for a session", () => {
@@ -35,10 +33,11 @@ describe("CSRF Protection", () => {
             expect(token1).not.toBe(token2)
         })
 
-        it("should overwrite existing token for same session", () => {
+        it("should generate unique tokens on each call for same session", () => {
             const token1 = generateCsrfTokenForSession(sessionToken)
             const token2 = generateCsrfTokenForSession(sessionToken)
 
+            // Each call includes a random nonce and different expiry
             expect(token1).not.toBe(token2)
         })
     })
@@ -76,12 +75,19 @@ describe("CSRF Protection", () => {
     })
 
     describe("invalidateCsrfToken", () => {
-        it("should invalidate a CSRF token", () => {
+        it("should not throw error (stateless — no-op)", () => {
+            // Stateless HMAC tokens cannot be invalidated server-side.
+            // The token naturally expires after 24 hours.
             const token = generateCsrfTokenForSession(sessionToken)
-            invalidateCsrfToken(sessionToken)
+            expect(() => {
+                invalidateCsrfToken(sessionToken)
+            }).not.toThrow()
 
+            // Token remains valid since there's no server-side storage
+            // to invalidate. On logout, the session cookie is cleared
+            // which prevents the token from being useful.
             const isValid = validateCsrfToken(sessionToken, token)
-            expect(isValid).toBe(false)
+            expect(isValid).toBe(true)
         })
 
         it("should not throw error when invalidating non-existent token", () => {
@@ -92,25 +98,25 @@ describe("CSRF Protection", () => {
     })
 
     describe("getCsrfToken", () => {
-        it("should retrieve a stored CSRF token", () => {
-            const generatedToken = generateCsrfTokenForSession(sessionToken)
-            const retrievedToken = getCsrfToken(sessionToken)
-
-            expect(retrievedToken).toBe(generatedToken)
-        })
-
-        it("should return null for non-existent session", () => {
-            const token = getCsrfToken("non-existent-session")
-
-            expect(token).toBeNull()
-        })
-
-        it("should return null after token is invalidated", () => {
-            generateCsrfTokenForSession(sessionToken)
-            invalidateCsrfToken(sessionToken)
-
+        it("should generate a valid CSRF token for any session", () => {
+            // getCsrfToken generates a fresh token (stateless — no storage)
             const token = getCsrfToken(sessionToken)
-            expect(token).toBeNull()
+
+            expect(token).toBeDefined()
+            expect(typeof token).toBe("string")
+            expect(token.length).toBeGreaterThan(0)
+
+            // The generated token should be valid for the session
+            const isValid = validateCsrfToken(sessionToken, token)
+            expect(isValid).toBe(true)
+        })
+
+        it("should generate different tokens on each call", () => {
+            const token1 = getCsrfToken(sessionToken)
+            const token2 = getCsrfToken(sessionToken)
+
+            // Each call generates a unique token (nonce + different expiry)
+            expect(token1).not.toBe(token2)
         })
     })
 
@@ -131,21 +137,16 @@ describe("CSRF Protection", () => {
     })
 
     describe("CSRF token lifecycle", () => {
-        it("should complete full lifecycle: generate -> validate -> invalidate", () => {
+        it("should complete full lifecycle: generate -> validate", () => {
+            const session = "lifecycle-session"
+
             // Generate
-            const token = generateCsrfTokenForSession(sessionToken)
+            const token = generateCsrfTokenForSession(session)
             expect(token).toBeDefined()
 
             // Validate
-            let isValid = validateCsrfToken(sessionToken, token)
+            const isValid = validateCsrfToken(session, token)
             expect(isValid).toBe(true)
-
-            // Invalidate
-            invalidateCsrfToken(sessionToken)
-
-            // Validate after invalidation
-            isValid = validateCsrfToken(sessionToken, token)
-            expect(isValid).toBe(false)
         })
 
         it("should handle multiple sessions independently", () => {
@@ -155,20 +156,13 @@ describe("CSRF Protection", () => {
             const token1 = generateCsrfTokenForSession(session1)
             const token2 = generateCsrfTokenForSession(session2)
 
-            // Validate session 1
+            // Validate session 1's token
             expect(validateCsrfToken(session1, token1)).toBe(true)
             expect(validateCsrfToken(session1, token2)).toBe(false)
 
-            // Validate session 2
+            // Validate session 2's token
             expect(validateCsrfToken(session2, token2)).toBe(true)
             expect(validateCsrfToken(session2, token1)).toBe(false)
-
-            // Invalidate session 1
-            invalidateCsrfToken(session1)
-
-            // Session 1 should be invalid, session 2 should still be valid
-            expect(validateCsrfToken(session1, token1)).toBe(false)
-            expect(validateCsrfToken(session2, token2)).toBe(true)
         })
     })
 })

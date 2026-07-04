@@ -69,8 +69,9 @@ export async function validateCsrfFromRequest(
 }
 
 /**
- * Generate or retrieve CSRF token for a session
- * Used in GET requests to provide token to client
+ * Generate a CSRF token for a session.
+ * Used in GET requests to provide token to client.
+ * Stateless HMAC tokens are generated fresh each time.
  */
 export function getOrGenerateCsrfToken(request: NextRequest): string | null {
     const sessionToken = getSessionToken(request)
@@ -79,14 +80,10 @@ export function getOrGenerateCsrfToken(request: NextRequest): string | null {
         return null
     }
 
-    let csrfToken = getCsrfToken(sessionToken)
-
-    if (!csrfToken) {
-        csrfToken = generateCsrfTokenForSession(sessionToken)
-        logger.info("Generated new CSRF token for session", {
-            context: "Security",
-        })
-    }
+    const csrfToken = generateCsrfTokenForSession(sessionToken)
+    logger.info("Generated CSRF token for session", {
+        context: "Security",
+    })
 
     return csrfToken
 }

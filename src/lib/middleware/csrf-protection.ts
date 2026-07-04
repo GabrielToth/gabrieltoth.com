@@ -1,162 +1,148 @@
 /**
- * CSRF Protection Middleware
- * Implements CSRF token generation, validation, and injection
+ * CSRF Protection — Stateless HMAC-Signed Token Pattern
+ *
+ * Instead of storing CSRF tokens in server memory (which breaks on serverless
+ * where each request may hit a different instance), this uses a cryptographically
+ * signed token that is self-validating.
+ *
+ * The CSRF token is an HMAC-SHA256 signature of `sessionToken:expiryTimestamp`.
+ * The server signs it with CSRF_SECRET and validates by recomputing the HMAC.
+ * No server-side storage, no database, no cookies needed — works across all
+ * serverless instances.
+ *
+ * Frontend flow (unchanged):
+ * 1. GET /api/auth/csrf → get signed token
+ * 2. Send token in X-CSRF-Token header on POST/PUT/DELETE
+ * 3. Server validates signature + session binding + expiry
  */
 
 import crypto from "crypto"
-import { generateCsrfToken } from "@/lib/auth/password-hashing"
 import { logger } from "@/lib/logger"
-import { NextRequest, NextResponse } from "next/server"
 
-const csrfTokenStore = new Map<string, { token: string; expiresAt: number }>()
+const CSRF_TOKEN_EXPIRY_SECONDS = 24 * 60 * 60 // 24 hours
+const CSRF_SECRET =
+    process.env.CSRF_SECRET ||
+    process.env.NEXTAUTH_SECRET ||
+    "csrf-dev-secret-do-not-use-in-production"
 
-// Clean up expired tokens only in non-Edge environments
-if (typeof setInterval !== "undefined") {
-    setInterval(
-        () => {
-            const now = Date.now()
-            for (const [key, value] of csrfTokenStore.entries()) {
-                if (value.expiresAt < now) {
-                    csrfTokenStore.delete(key)
-                }
-            }
-        },
-        5 * 60 * 1000
-    )
-}
-
+/**
+ * Generate an HMAC-signed CSRF token bound to a session.
+ * Token format: base64url(sessionToken:expiry).hmac_hex
+ *
+ * This is stateless — the token is self-validating on verify.
+ */
 export function generateCsrfTokenForSession(sessionToken: string): string {
-    const csrfToken = generateCsrfToken()
-    const expiresAt = Date.now() + 24 * 60 * 60 * 1000
+    if (!sessionToken) {
+        logger.warn("generateCsrfTokenForSession called without sessionToken", {
+            context: "Security",
+        })
+        return ""
+    }
 
-    csrfTokenStore.set(sessionToken, {
-        token: csrfToken,
-        expiresAt,
-    })
+    const expiry = Math.floor(Date.now() / 1000) + CSRF_TOKEN_EXPIRY_SECONDS
+    const nonce = crypto.randomBytes(8).toString("hex")
+    const payload = `${sessionToken}:${expiry}:${nonce}`
+    const encodedPayload = Buffer.from(payload).toString("base64url")
+    const signature = crypto
+        .createHmac("sha256", CSRF_SECRET)
+        .update(payload)
+        .digest("hex")
 
-    return csrfToken
+    return `${encodedPayload}.${signature}`
 }
 
+/**
+ * Validate an HMAC-signed CSRF token.
+ * Verifies:
+ * 1. Token format is valid (payload.signature)
+ * 2. HMAC signature matches (tamper detection)
+ * 3. Session token in payload matches the caller's session
+ * 4. Token has not expired
+ */
 export function validateCsrfToken(
     sessionToken: string,
     csrfToken: string
 ): boolean {
-    if (!csrfToken || typeof csrfToken !== "string") {
-        logger.warn("CSRF token is null, undefined, or not a string", {
-            context: "Security",
-        })
+    if (!sessionToken || !csrfToken) {
         return false
     }
 
-    const stored = csrfTokenStore.get(sessionToken)
-
-    if (!stored) {
-        logger.warn("CSRF token not found for session", {
-            context: "Security",
-        })
-        return false
-    }
-
-    if (stored.expiresAt < Date.now()) {
-        csrfTokenStore.delete(sessionToken)
-        logger.warn("CSRF token expired", {
-            context: "Security",
-        })
-        return false
-    }
-
-    const storedBuf = Buffer.from(stored.token)
-    const givenBuf = Buffer.from(csrfToken)
-
-    if (storedBuf.length !== givenBuf.length) {
-        logger.warn("CSRF token mismatch", {
-            context: "Security",
-        })
-        return false
-    }
-
-    if (!crypto.timingSafeEqual(storedBuf, givenBuf)) {
-        logger.warn("CSRF token mismatch", {
-            context: "Security",
-        })
-        return false
-    }
-
-    return true
-}
-
-export function invalidateCsrfToken(sessionToken: string): void {
-    csrfTokenStore.delete(sessionToken)
-}
-
-export async function validateCsrfMiddleware(
-    request: NextRequest
-): Promise<NextResponse | null> {
-    const method = request.method
-    if (!["POST", "PUT", "DELETE", "PATCH"].includes(method)) {
-        return null
-    }
-
-    const sessionToken = request.cookies.get("auth_session")?.value
-    let csrfToken: string | null = null
-
-    csrfToken = request.headers.get("x-csrf-token")
-
-    if (!csrfToken) {
-        try {
-            const body = await request.json()
-            csrfToken = body.csrfToken
-        } catch {
-            try {
-                const formData = await request.formData()
-                csrfToken = formData.get("csrfToken") as string
-            } catch {
-                // No CSRF token found
-            }
+    try {
+        const parts = csrfToken.split(".")
+        if (parts.length !== 2) {
+            return false
         }
-    }
 
-    if (
-        !csrfToken ||
-        !sessionToken ||
-        !validateCsrfToken(sessionToken, csrfToken)
-    ) {
-        logger.warn("CSRF validation failed", {
+        const [encodedPayload, signature] = parts
+        const payload = Buffer.from(encodedPayload, "base64url").toString()
+
+        // Split payload into session token, expiry, and nonce
+        // Format: sessionToken:expiryTimestamp:nonce
+        const parts_ = payload.split(":")
+        if (parts_.length < 3) {
+            return false
+        }
+        const expiryStr = parts_[parts_.length - 2]
+        const tokenPart = parts_.slice(0, -2).join(":")
+        const expiry = parseInt(expiryStr, 10)
+
+        // Verify session token matches
+        if (tokenPart !== sessionToken) {
+            return false
+        }
+
+        // Verify not expired
+        if (isNaN(expiry) || expiry < Math.floor(Date.now() / 1000)) {
+            return false
+        }
+
+        // Verify HMAC signature
+        const expectedSignature = crypto
+            .createHmac("sha256", CSRF_SECRET)
+            .update(payload)
+            .digest("hex")
+
+        const sigBuf = Buffer.from(signature)
+        const expectedBuf = Buffer.from(expectedSignature)
+
+        if (sigBuf.length !== expectedBuf.length) {
+            return false
+        }
+
+        return crypto.timingSafeEqual(sigBuf, expectedBuf)
+    } catch (error) {
+        logger.warn("CSRF validation failed with error", {
             context: "Security",
-            data: {
-                method,
-                hasToken: !!csrfToken,
-                hasSession: !!sessionToken,
-            },
+            error: error instanceof Error ? error.message : String(error),
         })
-
-        return NextResponse.json(
-            {
-                success: false,
-                error: "Invalid CSRF token",
-            },
-            { status: 403 }
-        )
+        return false
     }
-
-    return null
 }
 
+/**
+ * No-op: stateless tokens cannot be invalidated server-side.
+ * The token will naturally expire after CSRF_TOKEN_EXPIRY_SECONDS.
+ * Keeping for backward compatibility.
+ */
+export function invalidateCsrfToken(_sessionToken: string): void {
+    // Stateless HMAC tokens cannot be invalidated early.
+    // Rely on expiry. On logout, the session cookie is cleared
+    // which makes the token useless (sessionToken won't match).
+}
+
+/**
+ * Get or generate a CSRF token for a session.
+ * Since tokens are stateless, this always generates a fresh one.
+ * Keeping for backward compatibility.
+ */
 export function getCsrfToken(sessionToken: string): string | null {
-    const stored = csrfTokenStore.get(sessionToken)
-
-    if (!stored) {
-        return null
-    }
-
-    if (stored.expiresAt < Date.now()) {
-        csrfTokenStore.delete(sessionToken)
-        return null
-    }
-
-    return stored.token
+    if (!sessionToken) return null
+    return generateCsrfTokenForSession(sessionToken)
 }
 
+/**
+ * Inject CSRF token into response (for JSON responses)
+ */
 export function injectCsrfToken(csrfToken: string): { csrfToken: string } {
     return { csrfToken }
 }

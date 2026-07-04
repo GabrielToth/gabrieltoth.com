@@ -62,19 +62,22 @@ describe("CSRF Protection - Token Generation", () => {
         expect(token1).not.toBe(token2)
     })
 
-    it("should retrieve existing CSRF token for a session", () => {
+    it("should generate a valid CSRF token for a session", () => {
         const sessionToken = "test-session-token-456"
-        const generatedToken = generateCsrfTokenForSession(sessionToken)
+        const token = getCsrfToken(sessionToken)
 
-        const retrievedToken = getCsrfToken(sessionToken)
-
-        expect(retrievedToken).toBe(generatedToken)
+        // Stateless: getCsrfToken generates a fresh signed token
+        expect(token).toBeDefined()
+        expect(typeof token).toBe("string")
+        expect(validateCsrfToken(sessionToken, token!)).toBe(true)
     })
 
-    it("should return null when retrieving token for non-existent session", () => {
-        const token = getCsrfToken("non-existent-session")
+    it("should generate CSRF tokens for any session", () => {
+        const token = getCsrfToken("any-session-id")
 
-        expect(token).toBeNull()
+        // Stateless: getCsrfToken generates a token for any session
+        expect(token).toBeDefined()
+        expect(validateCsrfToken("any-session-id", token!)).toBe(true)
     })
 })
 
@@ -142,17 +145,17 @@ describe("CSRF Protection - Token Expiration", () => {
         Date.now = originalNow
     })
 
-    it("should return null when retrieving expired token", () => {
+    it("should reject expired CSRF token via validation", () => {
         const sessionToken = "test-session-expired-2"
-        generateCsrfTokenForSession(sessionToken)
+        const csrfToken = generateCsrfTokenForSession(sessionToken)
 
-        // Mock time to 25 hours in the future
+        // Mock time to 25 hours in the future (past 24h expiration)
         const originalNow = Date.now
         Date.now = vi.fn(() => originalNow() + 25 * 60 * 60 * 1000)
 
-        const token = getCsrfToken(sessionToken)
-
-        expect(token).toBeNull()
+        // Token should be expired
+        const isValid = validateCsrfToken(sessionToken, csrfToken)
+        expect(isValid).toBe(false)
 
         // Restore Date.now
         Date.now = originalNow
@@ -164,18 +167,16 @@ describe("CSRF Protection - Token Invalidation", () => {
         vi.clearAllMocks()
     })
 
-    it("should invalidate CSRF token", () => {
+    it("should not throw error on invalidation (stateless no-op)", () => {
         const sessionToken = "test-session-invalidate"
         const csrfToken = generateCsrfTokenForSession(sessionToken)
 
-        // Verify token exists
-        expect(getCsrfToken(sessionToken)).toBe(csrfToken)
-
-        // Invalidate token
+        // Stateless: invalidateCsrfToken is a no-op
         invalidateCsrfToken(sessionToken)
 
-        // Verify token is gone
-        expect(getCsrfToken(sessionToken)).toBeNull()
+        // Token remains valid since there's no server-side storage
+        const isValid = validateCsrfToken(sessionToken, csrfToken)
+        expect(isValid).toBe(true)
     })
 
     it("should not throw error when invalidating non-existent token", () => {
@@ -280,7 +281,7 @@ describe("CSRF Middleware - Token Generation for Requests", () => {
         vi.clearAllMocks()
     })
 
-    it("should get or generate CSRF token for session", () => {
+    it("should generate a CSRF token for session", () => {
         const sessionToken = "test-session-get-or-gen"
 
         const request = new NextRequest("http://localhost/api/test", {
@@ -289,12 +290,34 @@ describe("CSRF Middleware - Token Generation for Requests", () => {
             },
         })
 
-        const token1 = getOrGenerateCsrfToken(request)
-        expect(token1).toBeDefined()
+        const token = getOrGenerateCsrfToken(request)
+        expect(token).toBeDefined()
+        expect(typeof token).toBe("string")
+        expect(validateCsrfToken(sessionToken, token!)).toBe(true)
+    })
 
-        // Second call should return same token
-        const token2 = getOrGenerateCsrfToken(request)
-        expect(token2).toBe(token1)
+    it("should generate unique tokens on each call", () => {
+        const sessionToken = "test-session-unique"
+
+        const request1 = new NextRequest("http://localhost/api/test", {
+            headers: {
+                cookie: `auth_session=${sessionToken}`,
+            },
+        })
+
+        const request2 = new NextRequest("http://localhost/api/test", {
+            headers: {
+                cookie: `auth_session=${sessionToken}`,
+            },
+        })
+
+        const token1 = getOrGenerateCsrfToken(request1)
+        const token2 = getOrGenerateCsrfToken(request2)
+
+        // Stateless: each call generates a unique token
+        expect(token1).not.toBe(token2)
+        expect(validateCsrfToken(sessionToken, token1!)).toBe(true)
+        expect(validateCsrfToken(sessionToken, token2!)).toBe(true)
     })
 
     it("should return null when no session cookie", () => {
