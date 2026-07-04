@@ -56,12 +56,15 @@ export function MoneroPricingProvider({
     ) => {
         // Currency and conversion logic by locale (from i18n)
         const localesMap = { en, "pt-BR": pt, es, de } as const
-        const ns = localesMap[
-            locale as keyof typeof localesMap
-        ] as unknown as ChannelManagementNs
-        const currency = (ns.moneroToggle as MoneroToggleConfig).currencySymbol!
-        const conversionRate = (ns.moneroToggle as MoneroToggleConfig)
-            .conversionRate!
+        const ns = localesMap[locale as keyof typeof localesMap] as unknown as
+            | ChannelManagementNs
+            | undefined
+        const currency =
+            (ns?.moneroToggle as MoneroToggleConfig | undefined)
+                ?.currencySymbol ?? "R$"
+        const conversionRate =
+            (ns?.moneroToggle as MoneroToggleConfig | undefined)
+                ?.conversionRate ?? 1
 
         const convertedMoneroPrice = baseMoneroPrice / conversionRate
         const convertedPixPrice = (baseMoneroPrice * 2) / conversionRate
@@ -103,11 +106,13 @@ export function useMoneroPricing() {
                 const localesMap = { en, "pt-BR": pt, es, de } as const
                 const ns = localesMap[
                     locale as keyof typeof localesMap
-                ] as unknown as ChannelManagementNs
-                const currency = (ns.moneroToggle as MoneroToggleConfig)
-                    .currencySymbol!
-                const conversionRate = (ns.moneroToggle as MoneroToggleConfig)
-                    .conversionRate!
+                ] as unknown as ChannelManagementNs | undefined
+                const currency =
+                    (ns?.moneroToggle as MoneroToggleConfig | undefined)
+                        ?.currencySymbol ?? "R$"
+                const conversionRate =
+                    (ns?.moneroToggle as MoneroToggleConfig | undefined)
+                        ?.conversionRate ?? 1
 
                 const convertedMoneroPrice = baseMoneroPrice / conversionRate
                 const convertedPixPrice = (baseMoneroPrice * 2) / conversionRate
