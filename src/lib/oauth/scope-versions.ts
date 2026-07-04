@@ -13,13 +13,13 @@
  */
 
 export const CURRENT_SCOPE_VERSIONS: Record<string, number> = {
-    youtube: 2,   // v2 = added yt-analytics scopes (monetary, members, affiliates)
-    facebook: 1,  // v1 = initial pages_manage_posts, pages_read_engagement
+    youtube: 2, // v2 = added yt-analytics scopes (monetary, members, affiliates)
+    facebook: 1, // v1 = initial pages_manage_posts, pages_read_engagement
     instagram: 1, // v1 = initial instagram_basic, instagram_content_publish
-    tiktok: 1,    // v1 = initial video.publish, user.info.basic
-    kick: 1,      // v1 = initial user:read, channel:read, chat:write
-    twitter: 1,   // v1 = initial tweet.write, tweet.read
-    linkedin: 1,  // v1 = initial w_member_social
+    tiktok: 1, // v1 = initial video.publish, user.info.basic
+    kick: 1, // v1 = initial user:read, channel:read, chat:write
+    twitter: 1, // v1 = initial tweet.write, tweet.read
+    linkedin: 1, // v1 = initial w_member_social
 }
 
 /**

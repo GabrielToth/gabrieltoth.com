@@ -1,7 +1,8 @@
 import { describe, expect, it, vi } from "vitest"
 import { authMiddleware, getAuthenticatedUser } from "./auth-middleware"
 
-const validToken = "a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2"
+const validToken =
+    "a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2"
 
 describe("authMiddleware", () => {
     it("should return null if session cookie exists", async () => {

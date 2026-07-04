@@ -60,13 +60,10 @@ describe("useAutoLogin Hook", () => {
         renderHook(() => useAutoLogin("pt-BR"))
 
         await waitFor(() => {
-            expect(globalThis.fetch).toHaveBeenCalledWith(
-                "/api/auth/refresh",
-                {
-                    method: "POST",
-                    credentials: "include",
-                }
-            )
+            expect(globalThis.fetch).toHaveBeenCalledWith("/api/auth/refresh", {
+                method: "POST",
+                credentials: "include",
+            })
         })
     })
 
@@ -88,9 +85,7 @@ describe("useAutoLogin Hook", () => {
     })
 
     it("should set error when fetch throws", async () => {
-        globalThis.fetch = vi
-            .fn()
-            .mockRejectedValue(new Error("Network error"))
+        globalThis.fetch = vi.fn().mockRejectedValue(new Error("Network error"))
 
         const { result } = renderHook(() => useAutoLogin("en"))
 
@@ -104,7 +99,7 @@ describe("useAutoLogin Hook", () => {
 
     it("should cancel fetch on unmount", async () => {
         let resolvePromise: (value: unknown) => void
-        const pendingPromise = new Promise((resolve) => {
+        const pendingPromise = new Promise(resolve => {
             resolvePromise = resolve
         })
 
@@ -124,7 +119,7 @@ describe("useAutoLogin Hook", () => {
         })
 
         // Small delay to let any pending microtasks resolve
-        await new Promise((r) => setTimeout(r, 50))
+        await new Promise(r => setTimeout(r, 50))
 
         // Hook was unmounted and cancelled, state should remain initial
         expect(result.current.isChecking).toBe(true)

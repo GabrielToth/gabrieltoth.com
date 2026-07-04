@@ -105,7 +105,9 @@ function makePostRequest(
 describe("POST /api/oauth/authorize/facebook — Attack Matrix", () => {
     beforeEach(() => {
         vi.clearAllMocks()
-        vi.mocked(getServerSession).mockResolvedValue({ user: { id: "test-user-123" } })
+        vi.mocked(getServerSession).mockResolvedValue({
+            user: { id: "test-user-123" },
+        })
     })
 
     afterEach(() => {

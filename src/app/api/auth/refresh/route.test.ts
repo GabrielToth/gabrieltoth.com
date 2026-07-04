@@ -36,7 +36,7 @@ vi.mock("@/lib/middleware/security-headers", () => ({
 }))
 
 vi.mock("@/lib/auth/error-handling", () => ({
-    handleUnexpectedError: vi.fn((err) =>
+    handleUnexpectedError: vi.fn(err =>
         Response.json(
             { success: false, error: "An unexpected error occurred" },
             { status: 500 }

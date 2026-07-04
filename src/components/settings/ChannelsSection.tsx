@@ -204,7 +204,9 @@ export const ChannelsSection: React.FC<ChannelsSectionProps> = ({
                                         )}
                                         {youtubeChannel.needsReconnect && (
                                             <p className="mt-1 text-xs text-amber-600">
-                                                Disconnect and reconnect to enable analytics & monetization features
+                                                Disconnect and reconnect to
+                                                enable analytics & monetization
+                                                features
                                             </p>
                                         )}
                                     </>

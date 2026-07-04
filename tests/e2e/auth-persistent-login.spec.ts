@@ -39,10 +39,10 @@ test.describe("Persistent Login (Keep Me Logged In)", () => {
             // Cannot directly check HttpOnly cookies from JS (that's the point),
             // but we can verify they exist by checking the page behavior
             const cookies = await page.context().cookies()
-            const authCookie = cookies.find((c) =>
+            const authCookie = cookies.find(c =>
                 c.name.includes("auth_session")
             )
-            const rememberMeCookie = cookies.find((c) =>
+            const rememberMeCookie = cookies.find(c =>
                 c.name.includes("remember_me_token")
             )
 
@@ -144,7 +144,9 @@ test.describe("Persistent Login (Keep Me Logged In)", () => {
 
         test("login form has email and password fields", async ({ page }) => {
             await page.goto("/en/auth/login")
-            const inputs = page.locator('input[type="email"], input[type="password"]')
+            const inputs = page.locator(
+                'input[type="email"], input[type="password"]'
+            )
             const count = await inputs.count()
             expect(count).toBeGreaterThanOrEqual(2)
         })
