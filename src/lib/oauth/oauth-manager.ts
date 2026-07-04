@@ -85,14 +85,20 @@ export class OAuthManager {
      * Initialize OAuth configurations for all platforms
      */
     private initializeConfigs(): void {
-        // YouTube
-        if (
-            process.env.YOUTUBE_CLIENT_ID &&
-            process.env.YOUTUBE_CLIENT_SECRET
-        ) {
+        // YouTube (uses same Google Cloud OAuth credentials as Google Sign-In)
+        // Prefer GOOGLE_CLIENT_ID/SECRET since they're more likely to be up-to-date
+        const youtubeClientId =
+            process.env.GOOGLE_CLIENT_ID ||
+            process.env.YOUTUBE_CLIENT_ID ||
+            ""
+        const youtubeClientSecret =
+            process.env.GOOGLE_CLIENT_SECRET ||
+            process.env.YOUTUBE_CLIENT_SECRET ||
+            ""
+        if (youtubeClientId && youtubeClientSecret) {
             this.configs.set("youtube", {
-                clientId: process.env.YOUTUBE_CLIENT_ID,
-                clientSecret: process.env.YOUTUBE_CLIENT_SECRET,
+                clientId: youtubeClientId,
+                clientSecret: youtubeClientSecret,
                 redirectUri:
                     process.env.YOUTUBE_REDIRECT_URI ||
                     "http://localhost:3000/api/oauth/callback/youtube",
@@ -112,10 +118,7 @@ export class OAuthManager {
         }
 
         // Facebook
-        if (
-            process.env.FACEBOOK_APP_ID &&
-            process.env.FACEBOOK_APP_SECRET
-        ) {
+        if (process.env.FACEBOOK_APP_ID && process.env.FACEBOOK_APP_SECRET) {
             this.configs.set("facebook", {
                 clientId: process.env.FACEBOOK_APP_ID,
                 clientSecret: process.env.FACEBOOK_APP_SECRET,
@@ -133,10 +136,7 @@ export class OAuthManager {
         }
 
         // Instagram (via Facebook Graph API for Business/Creator accounts)
-        if (
-            process.env.INSTAGRAM_APP_ID &&
-            process.env.INSTAGRAM_APP_SECRET
-        ) {
+        if (process.env.INSTAGRAM_APP_ID && process.env.INSTAGRAM_APP_SECRET) {
             this.configs.set("instagram", {
                 clientId: process.env.INSTAGRAM_APP_ID,
                 clientSecret: process.env.INSTAGRAM_APP_SECRET,
