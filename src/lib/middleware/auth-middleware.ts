@@ -21,6 +21,9 @@ function isValidTokenFormat(token: string): boolean {
  * Validates sessions before allowing access to protected routes.
  * Edge-compatible: only checks cookie presence, no DB queries.
  *
+ * Accepts either an auth_session cookie (short-lived, refreshed on activity)
+ * or a remember_me_token cookie (long-lived, 30 days).
+ *
  * @param request - The incoming request
  * @param pathname - The request pathname to extract locale from
  * @returns NextResponse with redirect to login (302) if not authenticated, null if authenticated
@@ -30,15 +33,23 @@ export async function authMiddleware(
     pathname?: string
 ): Promise<NextResponse | null> {
     const sessionToken = request.cookies.get("auth_session")?.value
+    const rememberMeToken = request.cookies.get("remember_me_token")?.value
 
-    if (!sessionToken || !isValidTokenFormat(sessionToken)) {
-        const locale = pathname?.match(/^\/([a-z]{2}(-[A-Z]{2})?)/)?.[1] || "en"
-        return NextResponse.redirect(new URL(`/${locale}/login`, request.url), {
-            status: 302,
-        })
+    // Allow if auth_session is present and valid format
+    if (sessionToken && isValidTokenFormat(sessionToken)) {
+        return null
     }
 
-    return null
+    // Allow if remember_me_token is present and valid format
+    if (rememberMeToken && isValidTokenFormat(rememberMeToken)) {
+        return null
+    }
+
+    // No valid token found — redirect to login
+    const locale = pathname?.match(/^\/([a-z]{2}(-[A-Z]{2})?)/)?.[1] || "en"
+    return NextResponse.redirect(new URL(`/${locale}/login`, request.url), {
+        status: 302,
+    })
 }
 
 /**

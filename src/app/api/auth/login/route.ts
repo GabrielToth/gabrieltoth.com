@@ -613,13 +613,15 @@ export async function POST(request: NextRequest) {
         // ============================================================================
 
         // Set secure session cookie (HttpOnly, Secure, SameSite)
+        // Cookie duration matches DB session duration (30 days) so users stay
+        // logged in across deployments and don't need to re-authenticate.
         response.cookies.set({
             name: "auth_session",
             value: sessionToken,
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
-            sameSite: "strict",
-            maxAge: 60 * 60, // 1 hour
+            sameSite: "lax",
+            maxAge: 30 * 24 * 60 * 60, // 30 days (matches SESSION_EXPIRATION_DAYS)
             path: "/",
         })
 

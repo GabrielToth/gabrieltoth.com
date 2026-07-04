@@ -30,8 +30,10 @@ const TOKEN_LENGTH = 32 // 32 bytes = 256 bits
 const SESSION_COOKIE_OPTIONS = {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: "strict" as const,
-    maxAge: SESSION_TOKEN_EXPIRATION_HOURS * 60 * 60, // 1 hour in seconds
+    sameSite: "lax" as const,
+    // Cookie matches DB session duration (30 days) so users stay logged in
+    // across deployments. Actual session validation happens server-side.
+    maxAge: SESSION_EXPIRATION_DAYS * 24 * 60 * 60, // 30 days
     path: "/",
 }
 
@@ -41,7 +43,7 @@ const SESSION_COOKIE_OPTIONS = {
 const REMEMBER_ME_COOKIE_OPTIONS = {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: "strict" as const,
+    sameSite: "lax" as const,
     maxAge: REMEMBER_ME_TOKEN_EXPIRATION_DAYS * 24 * 60 * 60, // 30 days in seconds
     path: "/",
 }
@@ -113,10 +115,17 @@ export async function createSession(userId: string): Promise<Session> {
             // serverless runtime conditions.
             if (pgError.code === "23505") {
                 lastError = error as Error
-                logger.warn("Session token collision detected, retrying with new token", {
-                    context: "Auth",
-                    data: { userId, attempt: attempt + 1, maxRetries: MAX_RETRIES },
-                })
+                logger.warn(
+                    "Session token collision detected, retrying with new token",
+                    {
+                        context: "Auth",
+                        data: {
+                            userId,
+                            attempt: attempt + 1,
+                            maxRetries: MAX_RETRIES,
+                        },
+                    }
+                )
                 continue
             }
 
@@ -701,15 +710,17 @@ export async function refreshSessionToken(
         // Token rotation: delete old session, insert new one with fresh token
         // This prevents session fixation: if the old token was compromised,
         // the attacker's copy becomes invalid after rotation.
-        const result = await db.transaction(async (client) => {
+        const result = await db.transaction(async client => {
             // Delete old session row
-            await client.query(
-                "DELETE FROM sessions WHERE token_hash = $1",
-                [token]
-            )
+            await client.query("DELETE FROM sessions WHERE token_hash = $1", [
+                token,
+            ])
 
             // Insert new session row with rotated token
-            const inserted = await client.query<{ token_hash: string; expires_at: Date }>(
+            const inserted = await client.query<{
+                token_hash: string
+                expires_at: Date
+            }>(
                 `INSERT INTO sessions (user_id, token_hash, created_at, expires_at)
                  VALUES ($1, $2, NOW(), $3)
                  RETURNING token_hash, expires_at`,
@@ -770,7 +781,10 @@ export async function getRememberMeToken(
         // Check if expired
         if (new Date(row.expires_at) < new Date()) {
             // Clean up expired token
-            await query("DELETE FROM remember_me_tokens WHERE token_hash = $1", [token])
+            await query(
+                "DELETE FROM remember_me_tokens WHERE token_hash = $1",
+                [token]
+            )
             return null
         }
 
