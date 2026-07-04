@@ -64,7 +64,12 @@ export function GoogleLoginButton({
             }
 
             // Generate state parameter for CSRF protection
-            const state = Math.random().toString(36).substring(7)
+            // Prefix with 'r_' if user opted for "Manter login"
+            const rememberMe =
+                sessionStorage.getItem("oauth_remember_me") === "true"
+            const state =
+                (rememberMe ? "r_" : "") +
+                Math.random().toString(36).substring(7)
             sessionStorage.setItem("oauth_state", state)
 
             // Build Google OAuth authorization URL

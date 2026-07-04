@@ -32,7 +32,7 @@ const SESSION_COOKIE = {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax" as const,
-    maxAge: 60 * 60, // 1 hour
+    maxAge: 30 * 24 * 60 * 60, // 30 days
     path: "/",
 }
 
@@ -236,11 +236,22 @@ async function handleGoogleCallback(
 }
 
 /**
+ * Parse rememberMe flag from the OAuth state parameter
+ * State format: optionally prefixed with 'r_' for rememberMe=true
+ * Example: "r_abc123" → rememberMe=true, "abc123" → rememberMe=false
+ */
+function parseRememberMeFromState(stateParam: string | null): boolean {
+    if (!stateParam) return false
+    return stateParam.startsWith("r_")
+}
+
+/**
  * GET handler for Google OAuth callback
  * Google redirects here with authorization code in query parameters
  */
 export async function GET(request: NextRequest): Promise<NextResponse> {
     const clientIp = getClientIp(request)
+    const userAgent = request.headers.get("user-agent") || undefined
 
     try {
         const code = request.nextUrl.searchParams.get("code")
@@ -264,6 +275,35 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
             new URL("/dashboard", request.url)
         )
         setSessionCookie(redirectResponse, result.sessionId)
+
+        // Create remember_me_token if user opted for "Manter login"
+        const stateParam = request.nextUrl.searchParams.get("state")
+        const rememberMe = parseRememberMeFromState(stateParam)
+        if (rememberMe) {
+            try {
+                const rememberMeToken = await createRememberMeToken(
+                    result.userId,
+                    clientIp,
+                    userAgent
+                )
+                redirectResponse.cookies.set(
+                    "remember_me_token",
+                    rememberMeToken.token_hash,
+                    REMEMBER_ME_COOKIE
+                )
+            } catch (error) {
+                logger.warn(
+                    "Failed to create Remember Me token for Google OAuth (GET)",
+                    {
+                        context: "Auth",
+                        error: error as Error,
+                        data: { userId: result.userId },
+                    }
+                )
+                // Don't fail the login if remember me fails
+            }
+        }
+
         return redirectResponse
     } catch (err) {
         logger.error("Google callback GET error", {
@@ -325,11 +365,14 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
                     REMEMBER_ME_COOKIE
                 )
             } catch (error) {
-                logger.warn("Failed to create Remember Me token for Google OAuth", {
-                    context: "Auth",
-                    error: error as Error,
-                    data: { userId: result.userId },
-                })
+                logger.warn(
+                    "Failed to create Remember Me token for Google OAuth",
+                    {
+                        context: "Auth",
+                        error: error as Error,
+                        data: { userId: result.userId },
+                    }
+                )
                 // Don't fail the login if remember me fails
             }
         }
