@@ -15,9 +15,7 @@
  * - SameSite=Strict prevents CSRF
  */
 
-import {
-    handleUnexpectedError,
-} from "@/lib/auth/error-handling"
+import { handleUnexpectedError } from "@/lib/auth/error-handling"
 import {
     createRememberMeToken,
     createSession,
@@ -173,7 +171,11 @@ export async function POST(request: NextRequest) {
         )
 
         // Set auth_session cookie (1 hour)
-        response.cookies.set("auth_session", session.session_id, SESSION_COOKIE_OPTIONS)
+        response.cookies.set(
+            "auth_session",
+            session.session_id,
+            SESSION_COOKIE_OPTIONS
+        )
 
         // Set remember_me_token cookie (30 days)
         response.cookies.set(

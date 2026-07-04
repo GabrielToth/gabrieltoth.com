@@ -1340,7 +1340,12 @@ describe("Session Token Management", () => {
                 async (fn: any) => {
                     return fn({
                         query: async () => ({
-                            rows: [{ token_hash: "new-rotated-token", expires_at: newExpiration }],
+                            rows: [
+                                {
+                                    token_hash: "new-rotated-token",
+                                    expires_at: newExpiration,
+                                },
+                            ],
                         }),
                     })
                 }
@@ -1460,7 +1465,12 @@ describe("Session Token Management", () => {
                 async (fn: any) => {
                     return fn({
                         query: async () => ({
-                            rows: [{ token_hash: "new-rotated-token", expires_at: newExpiration }],
+                            rows: [
+                                {
+                                    token_hash: "new-rotated-token",
+                                    expires_at: newExpiration,
+                                },
+                            ],
                         }),
                     })
                 }
@@ -1542,7 +1552,12 @@ describe("Session Token Management", () => {
                             async (fn: any) => {
                                 return fn({
                                     query: async () => ({
-                                        rows: [{ token_hash: "new-token", expires_at: newExpiration }],
+                                        rows: [
+                                            {
+                                                token_hash: "new-token",
+                                                expires_at: newExpiration,
+                                            },
+                                        ],
                                     }),
                                 })
                             }

@@ -32,25 +32,38 @@ export function useAutoLogin(locale: string): UseAutoLoginResult {
                 if (cancelled) return
 
                 if (res.ok) {
-                    setState({ isChecking: false, isAuthenticated: true, error: null })
+                    setState({
+                        isChecking: false,
+                        isAuthenticated: true,
+                        error: null,
+                    })
                     // Redirect to dashboard
                     router.push(`/${locale}/dashboard`)
                 } else {
-                    setState({ isChecking: false, isAuthenticated: false, error: null })
+                    setState({
+                        isChecking: false,
+                        isAuthenticated: false,
+                        error: null,
+                    })
                 }
             } catch (err) {
                 if (!cancelled) {
                     setState({
                         isChecking: false,
                         isAuthenticated: false,
-                        error: err instanceof Error ? err.message : "Session check failed",
+                        error:
+                            err instanceof Error
+                                ? err.message
+                                : "Session check failed",
                     })
                 }
             }
         }
 
         checkSession()
-        return () => { cancelled = true }
+        return () => {
+            cancelled = true
+        }
     }, [locale, router])
 
     return state

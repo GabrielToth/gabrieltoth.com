@@ -44,7 +44,9 @@ export default function ChannelsPage() {
     const [channels, setChannels] = useState<ConnectedChannel[]>([])
     const [isLoading, setIsLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
-    const [connectingPlatform, setConnectingPlatform] = useState<string | null>(null)
+    const [connectingPlatform, setConnectingPlatform] = useState<string | null>(
+        null
+    )
     const [disconnectingId, setDisconnectingId] = useState<string | null>(null)
 
     const fetchChannels = useCallback(async () => {
@@ -57,7 +59,8 @@ export default function ChannelsPage() {
             const data = await response.json()
             setChannels(data.channels || [])
         } catch (err) {
-            const msg = err instanceof Error ? err.message : "Failed to load channels"
+            const msg =
+                err instanceof Error ? err.message : "Failed to load channels"
             setError(msg)
             logger.error("Failed to fetch channels", { error: err })
         } finally {
@@ -80,7 +83,9 @@ export default function ChannelsPage() {
             })
             if (!response.ok) {
                 const data = await response.json()
-                throw new Error(data.message || `Failed to start ${platform} linking`)
+                throw new Error(
+                    data.message || `Failed to start ${platform} linking`
+                )
             }
             const data = await response.json()
             if (data.authorizationUrl) {
@@ -95,17 +100,24 @@ export default function ChannelsPage() {
     const handleDisconnect = async (channel: ConnectedChannel) => {
         setDisconnectingId(channel.id)
         try {
-            const response = await fetch(`/api/oauth/disconnect/${channel.platform}`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-            })
+            const response = await fetch(
+                `/api/oauth/disconnect/${channel.platform}`,
+                {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                }
+            )
             if (!response.ok) {
                 const data = await response.json()
-                throw new Error(data.message || `Failed to disconnect ${channel.platform}`)
+                throw new Error(
+                    data.message || `Failed to disconnect ${channel.platform}`
+                )
             }
             await fetchChannels()
         } catch (err) {
-            logger.error(`Failed to disconnect ${channel.platform}`, { error: err })
+            logger.error(`Failed to disconnect ${channel.platform}`, {
+                error: err,
+            })
         } finally {
             setDisconnectingId(null)
         }
@@ -123,7 +135,12 @@ export default function ChannelsPage() {
         return (
             <div className="rounded-lg border border-red-200 bg-red-50 p-4 text-red-800 dark:border-red-800 dark:bg-red-950/30 dark:text-red-400">
                 <p>{error}</p>
-                <Button variant="outline" size="sm" className="mt-2" onClick={fetchChannels}>
+                <Button
+                    variant="outline"
+                    size="sm"
+                    className="mt-2"
+                    onClick={fetchChannels}
+                >
                     Retry
                 </Button>
             </div>
@@ -136,7 +153,9 @@ export default function ChannelsPage() {
     return (
         <div className="space-y-6">
             <div>
-                <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Channels</h1>
+                <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+                    Channels
+                </h1>
                 <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
                     Manage all your connected social media channels
                 </p>
@@ -151,7 +170,9 @@ export default function ChannelsPage() {
                 </div>
                 {connectedChannels.length === 0 ? (
                     <div className="rounded-lg border-2 border-dashed border-gray-200 p-8 text-center dark:border-gray-700">
-                        <p className="text-gray-500 dark:text-gray-400">No channels connected yet</p>
+                        <p className="text-gray-500 dark:text-gray-400">
+                            No channels connected yet
+                        </p>
                         <p className="mt-1 text-sm text-gray-400 dark:text-gray-500">
                             Connect a channel below to start publishing
                         </p>
@@ -166,25 +187,34 @@ export default function ChannelsPage() {
                                 <div className="flex items-center gap-4">
                                     <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gray-100 dark:bg-gray-800">
                                         <DynamicIcon
-                                            name={PLATFORM_ICONS[channel.platform] as any}
+                                            name={
+                                                PLATFORM_ICONS[
+                                                    channel.platform
+                                                ] as any
+                                            }
                                             size={24}
                                         />
                                     </div>
                                     <div>
                                         <p className="font-medium text-gray-900 dark:text-white">
-                                            {PLATFORM_NAMES[channel.platform] || channel.platform}
+                                            {PLATFORM_NAMES[channel.platform] ||
+                                                channel.platform}
                                         </p>
                                         <p className="text-sm text-gray-600 dark:text-gray-400">
                                             {channel.accountName}
                                         </p>
                                         {channel.connectedAt && (
                                             <p className="text-xs text-gray-500 dark:text-gray-500">
-                                                Connected {new Date(channel.connectedAt).toLocaleDateString()}
+                                                Connected{" "}
+                                                {new Date(
+                                                    channel.connectedAt
+                                                ).toLocaleDateString()}
                                             </p>
                                         )}
                                         {channel.needsReconnect && (
                                             <p className="mt-1 text-xs text-amber-600 dark:text-amber-400">
-                                                Reconnect required for new features
+                                                Reconnect required for new
+                                                features
                                             </p>
                                         )}
                                     </div>
@@ -197,16 +227,24 @@ export default function ChannelsPage() {
                                                 : "bg-green-100 text-green-800"
                                         }`}
                                     >
-                                        {channel.needsReconnect ? "Update needed" : "Connected"}
+                                        {channel.needsReconnect
+                                            ? "Update needed"
+                                            : "Connected"}
                                     </span>
                                     <Button
                                         size="sm"
                                         variant="outline"
                                         className="text-red-600 hover:bg-red-50"
-                                        onClick={() => handleDisconnect(channel)}
-                                        disabled={disconnectingId === channel.id}
+                                        onClick={() =>
+                                            handleDisconnect(channel)
+                                        }
+                                        disabled={
+                                            disconnectingId === channel.id
+                                        }
                                     >
-                                        {disconnectingId === channel.id ? "..." : "Disconnect"}
+                                        {disconnectingId === channel.id
+                                            ? "..."
+                                            : "Disconnect"}
                                     </Button>
                                 </div>
                             </div>
@@ -222,7 +260,9 @@ export default function ChannelsPage() {
                 </h2>
                 <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
                     {Object.entries(PLATFORM_NAMES).map(([platform, name]) => {
-                        const isConnected = connectedChannels.some(c => c.platform === platform)
+                        const isConnected = connectedChannels.some(
+                            c => c.platform === platform
+                        )
                         if (isConnected) return null
                         return (
                             <div
@@ -232,13 +272,19 @@ export default function ChannelsPage() {
                                 <div className="flex items-center gap-3">
                                     <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gray-100 dark:bg-gray-800">
                                         <DynamicIcon
-                                            name={PLATFORM_ICONS[platform] as any}
+                                            name={
+                                                PLATFORM_ICONS[platform] as any
+                                            }
                                             size={24}
                                         />
                                     </div>
                                     <div>
-                                        <p className="font-medium text-gray-900 dark:text-white">{name}</p>
-                                        <p className="text-sm text-gray-500 dark:text-gray-400">Not connected</p>
+                                        <p className="font-medium text-gray-900 dark:text-white">
+                                            {name}
+                                        </p>
+                                        <p className="text-sm text-gray-500 dark:text-gray-400">
+                                            Not connected
+                                        </p>
                                     </div>
                                 </div>
                                 <Button
@@ -246,7 +292,9 @@ export default function ChannelsPage() {
                                     onClick={() => handleConnect(platform)}
                                     disabled={connectingPlatform === platform}
                                 >
-                                    {connectingPlatform === platform ? "..." : "Connect"}
+                                    {connectingPlatform === platform
+                                        ? "..."
+                                        : "Connect"}
                                 </Button>
                             </div>
                         )

@@ -27,7 +27,9 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         const session = await getServerSession(request)
 
         if (!session?.user?.id) {
-            logger.warn("Unauthorized OAuth authorization attempt", { platform: "kick" })
+            logger.warn("Unauthorized OAuth authorization attempt", {
+                platform: "kick",
+            })
             return NextResponse.json(
                 {
                     success: false,

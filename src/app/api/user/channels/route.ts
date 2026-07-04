@@ -60,7 +60,9 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
                 : false
             const isConnected = sn.status === "connected" && !isExpired
             const metadata = sn.metadata as Record<string, unknown> | null
-            const storedScopeVersion = metadata?.scopeVersion as number | undefined
+            const storedScopeVersion = metadata?.scopeVersion as
+                | number
+                | undefined
 
             return {
                 id: sn.id,
@@ -69,7 +71,9 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
                 accountName: sn.platform_username || sn.platform,
                 isConnected,
                 connectedAt: sn.linked_at,
-                needsReconnect: isConnected ? isScopeOutdated(storedScopeVersion, sn.platform) : false,
+                needsReconnect: isConnected
+                    ? isScopeOutdated(storedScopeVersion, sn.platform)
+                    : false,
                 currentScopeVersion: getScopeVersion(sn.platform),
             }
         })

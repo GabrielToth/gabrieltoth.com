@@ -43,7 +43,10 @@ export async function GET(
             try {
                 const parts = s.split(".")
                 if (parts.length === 2) {
-                    const payloadJson = Buffer.from(parts[0], "base64url").toString("utf-8")
+                    const payloadJson = Buffer.from(
+                        parts[0],
+                        "base64url"
+                    ).toString("utf-8")
                     const payload = JSON.parse(payloadJson)
                     return payload.locale || "en"
                 }
@@ -60,7 +63,10 @@ export async function GET(
             })
 
             const fallbackLocale = state ? localeFromState(state) : "en"
-            const redirectUrl = new URL(`/${fallbackLocale}/dashboard/channels`, request.nextUrl.origin)
+            const redirectUrl = new URL(
+                `/${fallbackLocale}/dashboard/channels`,
+                request.nextUrl.origin
+            )
             redirectUrl.searchParams.set("oauth_error", error)
             redirectUrl.searchParams.set(
                 "oauth_error_description",
@@ -77,7 +83,10 @@ export async function GET(
                 hasState: !!state,
             })
 
-            const redirectUrl = new URL(`/en/dashboard/channels`, request.nextUrl.origin)
+            const redirectUrl = new URL(
+                `/en/dashboard/channels`,
+                request.nextUrl.origin
+            )
             redirectUrl.searchParams.set("oauth_error", "missing_parameters")
             return NextResponse.redirect(redirectUrl)
         }
@@ -110,7 +119,10 @@ export async function GET(
             })
 
             const locale = stateResult.locale || "en"
-            const redirectUrl = new URL(`/${locale}/dashboard/channels`, request.nextUrl.origin)
+            const redirectUrl = new URL(
+                `/${locale}/dashboard/channels`,
+                request.nextUrl.origin
+            )
             redirectUrl.searchParams.set("oauth_error", "invalid_state")
             return NextResponse.redirect(redirectUrl)
         }
@@ -149,7 +161,11 @@ export async function GET(
                 // Fetch YouTube channel info using the access token
                 const channelResponse = await fetch(
                     "https://www.googleapis.com/youtube/v3/channels?part=snippet&mine=true",
-                    { headers: { Authorization: `Bearer ${tokenResponse.accessToken}` } }
+                    {
+                        headers: {
+                            Authorization: `Bearer ${tokenResponse.accessToken}`,
+                        },
+                    }
                 )
                 if (channelResponse.ok) {
                     const channelData = await channelResponse.json()
@@ -168,7 +184,8 @@ export async function GET(
                                     channelTitle: channel.title,
                                     channelDescription: channel.description,
                                     customUrl: channel.customUrl,
-                                    profileImageUrl: channel.thumbnails?.default?.url,
+                                    profileImageUrl:
+                                        channel.thumbnails?.default?.url,
                                     scopeVersion: getScopeVersion("youtube"),
                                 },
                                 updated_at: new Date().toISOString(),
@@ -187,18 +204,26 @@ export async function GET(
                         platform_username: normalizedPlatform,
                         status: "connected",
                         linked_at: new Date().toISOString(),
-                        metadata: { scopeVersion: getScopeVersion(normalizedPlatform) },
+                        metadata: {
+                            scopeVersion: getScopeVersion(normalizedPlatform),
+                        },
                         updated_at: new Date().toISOString(),
                     },
                     { onConflict: "user_id, platform" }
                 )
             }
         } catch (socialError) {
-            logger.warn("Failed to save social_networks record, token already stored", {
-                platform: normalizedPlatform,
-                userId,
-                error: socialError instanceof Error ? socialError.message : String(socialError),
-            })
+            logger.warn(
+                "Failed to save social_networks record, token already stored",
+                {
+                    platform: normalizedPlatform,
+                    userId,
+                    error:
+                        socialError instanceof Error
+                            ? socialError.message
+                            : String(socialError),
+                }
+            )
         }
 
         const user = await getUserById(userId)
@@ -211,7 +236,10 @@ export async function GET(
 
         // Redirect back to channels page with correct locale
         const locale = stateResult.locale || "en"
-        const redirectUrl = new URL(`/${locale}/dashboard/channels`, request.nextUrl.origin)
+        const redirectUrl = new URL(
+            `/${locale}/dashboard/channels`,
+            request.nextUrl.origin
+        )
         redirectUrl.searchParams.set("oauth_success", normalizedPlatform)
         return NextResponse.redirect(redirectUrl)
     } catch (error) {
@@ -220,7 +248,10 @@ export async function GET(
             error: error instanceof Error ? error.message : String(error),
         })
 
-        const redirectUrl = new URL("/en/dashboard/channels", request.nextUrl.origin)
+        const redirectUrl = new URL(
+            "/en/dashboard/channels",
+            request.nextUrl.origin
+        )
         redirectUrl.searchParams.set("oauth_error", "callback_failed")
         return NextResponse.redirect(redirectUrl)
     }

@@ -12,7 +12,9 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         const session = await getServerSession(request)
 
         if (!session?.user?.id) {
-            logger.warn("Unauthorized OAuth authorization attempt", { platform: "facebook" })
+            logger.warn("Unauthorized OAuth authorization attempt", {
+                platform: "facebook",
+            })
             return NextResponse.json(
                 {
                     success: false,

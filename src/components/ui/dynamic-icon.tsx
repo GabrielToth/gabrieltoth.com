@@ -19,10 +19,7 @@ export const DynamicIcon = ({
     if (!IconComponent) {
         return (
             <div
-                className={cn(
-                    "flex items-center justify-center",
-                    className
-                )}
+                className={cn("flex items-center justify-center", className)}
                 style={{ width: size, height: size }}
                 aria-hidden="true"
             />

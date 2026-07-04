@@ -73,7 +73,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 throw new Error("No authorization URL returned")
             }
         } catch (err) {
-            const message = err instanceof Error ? err.message : `Failed to connect ${channelId}`
+            const message =
+                err instanceof Error
+                    ? err.message
+                    : `Failed to connect ${channelId}`
             logger.error(`Failed to connect ${channelId}`, { error: err })
             setConnectionError(message)
             setConnectingChannel(null)
