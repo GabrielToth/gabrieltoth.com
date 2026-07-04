@@ -163,8 +163,15 @@ export default function UnifiedSignInForm({
                 throw new Error("Google redirect URI not configured")
             }
 
+            // Save rememberMe preference to sessionStorage so it survives
+            // the Google OAuth redirect and is available on callback
+            sessionStorage.setItem("oauth_remember_me", String(rememberMe))
+
             // Generate state parameter for CSRF protection
-            const state = Math.random().toString(36).substring(7)
+            // Prefix with 'r_' if user opted for "Manter login"
+            const state =
+                (rememberMe ? "r_" : "") +
+                Math.random().toString(36).substring(7)
             sessionStorage.setItem("oauth_state", state)
 
             // Build Google OAuth authorization URL
@@ -237,6 +244,20 @@ export default function UnifiedSignInForm({
                             ? t("signin.emailButton")
                             : t("signin.emailSignUpButton")}
                     </button>
+
+                    {/* Remember Me Checkbox */}
+                    <label className="flex items-center gap-2 cursor-pointer justify-center">
+                        <input
+                            type="checkbox"
+                            checked={rememberMe}
+                            onChange={e => setRememberMe(e.target.checked)}
+                            className="rounded border-gray-300 dark:border-gray-600 text-blue-600 focus:ring-blue-500"
+                            disabled={isLoading}
+                        />
+                        <span className="text-sm text-gray-600 dark:text-gray-400">
+                            {t("login.rememberMe")}
+                        </span>
+                    </label>
 
                     {/* Create Account Link */}
                     <div className="mt-6 pt-6 border-t border-gray-300 dark:border-gray-600 text-center">
