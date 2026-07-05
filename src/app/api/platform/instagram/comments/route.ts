@@ -29,6 +29,7 @@
  *   API_ERROR             - Instagram Graph API error
  */
 
+import { getServerSession } from "@/lib/auth/get-server-session"
 import { createLogger } from "@/lib/logger"
 import { getTokenStore } from "@/lib/token-store"
 import { getValidInstagramToken } from "@/lib/instagram/get-valid-token"
@@ -42,7 +43,8 @@ const logger = createLogger("InstagramCommentsEndpoint")
 
 export async function GET(request: NextRequest): Promise<NextResponse> {
     try {
-        const userId = request.headers.get("x-user-id")
+        const session = await getServerSession(request)
+        const userId = session?.user?.id
 
         if (!userId) {
             return NextResponse.json(
@@ -158,7 +160,8 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
     try {
-        const userId = request.headers.get("x-user-id")
+        const session = await getServerSession(request)
+        const userId = session?.user?.id
 
         if (!userId) {
             return NextResponse.json(

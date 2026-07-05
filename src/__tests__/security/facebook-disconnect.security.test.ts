@@ -31,7 +31,7 @@ import { POST } from "@/app/api/oauth/disconnect/facebook/route"
 import { NextRequest } from "next/server"
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 
-const { mockGetToken, mockDeleteToken, mockRevokeToken } = vi.hoisted(() => ({
+const { mockGetToken, mockDeleteToken, mockRevokeToken, mockGetServerSession } = vi.hoisted(() => ({
     mockGetToken: vi.fn().mockResolvedValue({
         accessToken: "mock-access-token",
         refreshToken: "mock-refresh-token",
@@ -41,6 +41,7 @@ const { mockGetToken, mockDeleteToken, mockRevokeToken } = vi.hoisted(() => ({
     }),
     mockDeleteToken: vi.fn().mockResolvedValue(true),
     mockRevokeToken: vi.fn().mockResolvedValue(true),
+    mockGetServerSession: vi.fn().mockResolvedValue({ user: { id: "test-user-123" } }),
 }))
 
 vi.hoisted(() => {
@@ -109,6 +110,10 @@ vi.mock("@supabase/supabase-js", () => {
     }
 })
 
+vi.mock("@/lib/auth/get-server-session", () => ({
+    getServerSession: mockGetServerSession,
+}))
+
 function makePostRequest(
     url: string,
     body: unknown,
@@ -135,7 +140,8 @@ describe("POST /api/oauth/disconnect/facebook — Attack Matrix", () => {
     })
 
     describe("Row 1 — Auth bypass", () => {
-        it("should reject request without x-user-id header", async () => {
+        it("should reject request when not authenticated", async () => {
+            mockGetServerSession.mockResolvedValueOnce(null)
             const request = new NextRequest(
                 "http://localhost/api/oauth/disconnect/facebook",
                 {
@@ -150,7 +156,8 @@ describe("POST /api/oauth/disconnect/facebook — Attack Matrix", () => {
             expect(body.error).toBe("MISSING_USER_ID")
         })
 
-        it("should reject request with empty x-user-id", async () => {
+        it("should reject request with empty session user id", async () => {
+            mockGetServerSession.mockResolvedValueOnce(null)
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/facebook",
                 {},
@@ -414,7 +421,7 @@ describe("POST /api/oauth/disconnect/facebook — Attack Matrix", () => {
     })
 
     describe("Row 11 — CSRF", () => {
-        it("should work without CSRF token (x-user-id is the auth mechanism)", async () => {
+        it("should work without CSRF token (session is the auth mechanism)", async () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/facebook",
                 {}

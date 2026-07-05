@@ -298,8 +298,8 @@ export async function getSessionFromCookie(
     request: NextRequest
 ): Promise<Session | null> {
     try {
-        // Get session cookie from request
-        const sessionCookie = request.cookies.get("session")
+        // Get session cookie from request (actual cookie name is "auth_session")
+        const sessionCookie = request.cookies.get("auth_session")
 
         if (!sessionCookie || !sessionCookie.value) {
             return null

@@ -51,6 +51,10 @@ const mockInitVideoPublish = vi.hoisted(() =>
     })
 )
 
+const mockGetServerSession = vi.hoisted(() =>
+    vi.fn().mockResolvedValue({ user: { id: "test-user-123" } })
+)
+
 vi.mock("@/lib/tiktok/config", () => ({
     getTikTokConfig: () => ({
         oauth: {
@@ -110,6 +114,10 @@ vi.mock("@/lib/logger", () => ({
     }),
 }))
 
+vi.mock("@/lib/auth/get-server-session", () => ({
+    getServerSession: mockGetServerSession,
+}))
+
 function makePostRequest(
     url: string,
     body: unknown,
@@ -136,7 +144,8 @@ describe("POST /api/platform/tiktok/publish — Attack Matrix", () => {
     })
 
     describe("Row 1 — Auth bypass", () => {
-        it("should reject without x-user-id header", async () => {
+        it("should reject request when not authenticated", async () => {
+            mockGetServerSession.mockResolvedValueOnce(null)
             const request = new NextRequest(
                 "http://localhost/api/platform/tiktok/publish",
                 {
@@ -154,7 +163,8 @@ describe("POST /api/platform/tiktok/publish — Attack Matrix", () => {
             expect(body.error).toBe("MISSING_USER_ID")
         })
 
-        it("should reject with empty x-user-id", async () => {
+        it("should reject with empty session user id", async () => {
+            mockGetServerSession.mockResolvedValueOnce(null)
             const request = makePostRequest(
                 "http://localhost/api/platform/tiktok/publish",
                 { source: "FILE_UPLOAD", title: "Test Video" },

@@ -22,6 +22,7 @@
  *   FETCH_FAILED         - Instagram API returned an error
  */
 
+import { getServerSession } from "@/lib/auth/get-server-session"
 import { createLogger } from "@/lib/logger"
 import { getTokenStore } from "@/lib/token-store"
 import { getValidInstagramToken } from "@/lib/instagram/get-valid-token"
@@ -36,7 +37,8 @@ const GRAPH_API_BASE = "https://graph.facebook.com"
 
 export async function GET(request: NextRequest): Promise<NextResponse> {
     try {
-        const userId = request.headers.get("x-user-id")
+        const session = await getServerSession(request)
+        const userId = session?.user?.id
 
         if (!userId) {
             logger.warn("Missing user ID in Instagram analytics request")

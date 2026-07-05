@@ -1,3 +1,4 @@
+import { getServerSession } from "@/lib/auth/get-server-session"
 import { createLogger } from "@/lib/logger"
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { getTokenStore } from "@/lib/token-store"
@@ -14,7 +15,8 @@ export async function DELETE(
     { params }: { params: Promise<{ id: string }> }
 ): Promise<NextResponse> {
     try {
-        const userId = request.headers.get("x-user-id")
+        const session = await getServerSession(request)
+        const userId = session?.user?.id
 
         if (!userId) {
             return NextResponse.json(
@@ -109,7 +111,8 @@ export async function PATCH(
     { params }: { params: Promise<{ id: string }> }
 ): Promise<NextResponse> {
     try {
-        const userId = request.headers.get("x-user-id")
+        const session = await getServerSession(request)
+        const userId = session?.user?.id
 
         if (!userId) {
             return NextResponse.json(

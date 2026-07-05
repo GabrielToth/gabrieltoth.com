@@ -14,6 +14,7 @@
  *   API_ERROR             - Instagram Graph API error
  */
 
+import { getServerSession } from "@/lib/auth/get-server-session"
 import { createLogger } from "@/lib/logger"
 import { getTokenStore } from "@/lib/token-store"
 import { getValidInstagramToken } from "@/lib/instagram/get-valid-token"
@@ -30,7 +31,8 @@ export async function DELETE(
     { params }: { params: Promise<{ id: string }> }
 ): Promise<NextResponse> {
     try {
-        const userId = request.headers.get("x-user-id")
+        const session = await getServerSession(request)
+        const userId = session?.user?.id
 
         if (!userId) {
             return NextResponse.json(

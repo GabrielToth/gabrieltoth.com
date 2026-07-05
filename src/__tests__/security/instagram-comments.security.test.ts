@@ -48,6 +48,10 @@ const mockGetValidToken = vi.hoisted(() =>
     vi.fn().mockResolvedValue("mock-valid-access-token")
 )
 
+const mockGetServerSession = vi.hoisted(() =>
+    vi.fn().mockResolvedValue({ user: { id: "test-user-123" } })
+)
+
 vi.mock("@/lib/token-store", () => ({
     getTokenStore: () => ({ getToken: mockGetToken }),
     resetTokenStore: vi.fn(),
@@ -101,6 +105,10 @@ vi.mock("@/lib/logger", () => ({
         error: vi.fn(),
         debug: vi.fn(),
     }),
+}))
+
+vi.mock("@/lib/auth/get-server-session", () => ({
+    getServerSession: mockGetServerSession,
 }))
 
 vi.mock("@supabase/supabase-js", () => ({
@@ -178,6 +186,7 @@ function makeDeleteRouteRequest(
 describe("GET /api/platform/instagram/comments — Attack Matrix", () => {
     beforeEach(() => {
         vi.clearAllMocks()
+        mockGetServerSession.mockResolvedValue({ user: { id: "test-user-123" } })
     })
     afterEach(() => {
         vi.clearAllMocks()
@@ -185,6 +194,7 @@ describe("GET /api/platform/instagram/comments — Attack Matrix", () => {
 
     describe("Row 1 — Auth bypass", () => {
         it("should reject without x-user-id", async () => {
+            mockGetServerSession.mockResolvedValueOnce(null)
             const request = makeGetRequest(
                 { media_id: "123" },
                 { "x-user-id": "" }
@@ -196,6 +206,7 @@ describe("GET /api/platform/instagram/comments — Attack Matrix", () => {
         })
 
         it("should reject with missing x-user-id header", async () => {
+            mockGetServerSession.mockResolvedValueOnce(null)
             const request = new NextRequest(
                 "http://localhost/api/platform/instagram/comments?media_id=123",
                 { method: "GET", headers: {} }
@@ -299,6 +310,7 @@ describe("GET /api/platform/instagram/comments — Attack Matrix", () => {
 
     describe("Row 15 — Info disclosure", () => {
         it("should not leak internal paths in error response", async () => {
+            mockGetServerSession.mockResolvedValueOnce(null)
             const request = makeGetRequest(
                 { media_id: "123" },
                 { "x-user-id": "" }
@@ -312,9 +324,9 @@ describe("GET /api/platform/instagram/comments — Attack Matrix", () => {
 
     describe("Row 17 — IDOR", () => {
         it("should allow any userId to list comments (authorized per user)", async () => {
+            mockGetServerSession.mockResolvedValueOnce({ user: { id: "other-user-456" } })
             const request = makeGetRequest(
-                { media_id: "123" },
-                { "x-user-id": "other-user-456" }
+                { media_id: "123" }
             )
             const response = await GET(request)
             // Each user sees their own linked account's comments
@@ -335,6 +347,7 @@ describe("POST /api/platform/instagram/comments — Attack Matrix", () => {
     beforeEach(() => {
         vi.clearAllMocks()
         mockReplyToComment.mockResolvedValue({ id: "mock-reply-id-123" })
+        mockGetServerSession.mockResolvedValue({ user: { id: "test-user-123" } })
     })
 
     afterEach(() => {
@@ -345,6 +358,7 @@ describe("POST /api/platform/instagram/comments — Attack Matrix", () => {
 
     describe("Row 1 — Auth bypass", () => {
         it("should reject without x-user-id", async () => {
+            mockGetServerSession.mockResolvedValueOnce(null)
             const request = makePostRequest(validReply, { "x-user-id": "" })
             const response = await POST(request)
             expect(response.status).toBe(400)
@@ -619,6 +633,7 @@ describe("POST /api/platform/instagram/comments — Attack Matrix", () => {
 
     describe("Row 15 — Info disclosure", () => {
         it("should not leak internal paths in error", async () => {
+            mockGetServerSession.mockResolvedValueOnce(null)
             const request = makePostRequest(validReply, { "x-user-id": "" })
             const response = await POST(request)
             const body = await response.json()
@@ -629,9 +644,8 @@ describe("POST /api/platform/instagram/comments — Attack Matrix", () => {
 
     describe("Row 17 — IDOR", () => {
         it("should allow reply from any userId (per-user auth)", async () => {
-            const request = makePostRequest(validReply, {
-                "x-user-id": "other-user-789",
-            })
+            mockGetServerSession.mockResolvedValueOnce({ user: { id: "other-user-789" } })
+            const request = makePostRequest(validReply)
             const response = await POST(request)
             expect([201, 404, 500]).toContain(response.status)
         })
@@ -665,6 +679,7 @@ describe("DELETE /api/platform/instagram/comments/{id} — Attack Matrix", () =>
     beforeEach(() => {
         vi.clearAllMocks()
         mockDeleteComment.mockResolvedValue(undefined)
+        mockGetServerSession.mockResolvedValue({ user: { id: "test-user-123" } })
     })
 
     afterEach(() => {
@@ -673,6 +688,7 @@ describe("DELETE /api/platform/instagram/comments/{id} — Attack Matrix", () =>
 
     describe("Row 1 — Auth bypass", () => {
         it("should reject without x-user-id", async () => {
+            mockGetServerSession.mockResolvedValueOnce(null)
             const request = new NextRequest(
                 "http://localhost/api/platform/instagram/comments/c-123",
                 { method: "DELETE", headers: {} }
@@ -861,6 +877,7 @@ describe("DELETE /api/platform/instagram/comments/{id} — Attack Matrix", () =>
 
     describe("Row 15 — Info disclosure", () => {
         it("should not leak internal paths in error", async () => {
+            mockGetServerSession.mockResolvedValueOnce(null)
             const request = new NextRequest(
                 "http://localhost/api/platform/instagram/comments/c-123",
                 { method: "DELETE", headers: {} }
@@ -876,9 +893,8 @@ describe("DELETE /api/platform/instagram/comments/{id} — Attack Matrix", () =>
 
     describe("Row 17 — IDOR", () => {
         it("should allow delete from any userId (per-user auth)", async () => {
-            const request = makeDeleteRouteRequest("c-123", {
-                "x-user-id": "other-user-789",
-            })
+            mockGetServerSession.mockResolvedValueOnce({ user: { id: "other-user-789" } })
+            const request = makeDeleteRouteRequest("c-123")
             const response = await DELETE(request, {
                 params: Promise.resolve({ id: "c-123" }),
             })

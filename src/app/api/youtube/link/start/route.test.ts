@@ -28,8 +28,16 @@ vi.mock("@/lib/logger", () => ({
     }),
 }))
 
+const mockGetServerSession = vi.hoisted(() =>
+    vi.fn().mockResolvedValue({ user: { id: "test-user-123" } })
+)
+
 vi.mock("@/lib/config/env", () => ({
     validateYouTubeEnv: mockValidateEnv,
+}))
+
+vi.mock("@/lib/auth/get-server-session", () => ({
+    getServerSession: mockGetServerSession,
 }))
 
 vi.mock("@/lib/youtube/config", () => ({
@@ -106,8 +114,9 @@ describe("POST /api/youtube/link/start", () => {
             RESEND_FROM_NAME: "Test",
             TOKEN_ENCRYPTION_KEY: "a".repeat(64),
         }))
+        mockGetServerSession.mockResolvedValue({ user: { id: "test-user-123" } })
         mockRequest = {
-            headers: new Map([["x-user-id", "test-user-123"]]),
+            headers: new Map(),
         }
     })
 
@@ -126,7 +135,7 @@ describe("POST /api/youtube/link/start", () => {
     })
 
     it("should return error if user ID is missing", async () => {
-        mockRequest.headers = new Map()
+        mockGetServerSession.mockResolvedValueOnce(null)
 
         const response = await POST(mockRequest as NextRequest)
         const data = await response.json()

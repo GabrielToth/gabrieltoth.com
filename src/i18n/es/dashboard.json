@@ -113,7 +113,7 @@
         "characters": "{count} / {limit} caracteres",
         "exceedsLimit": "Excede el límite de la plataforma",
         "selectNetworks": "Seleccionar Redes",
-        "xOfYSelected": "{selected} de {networks} seleccionadas",
+        "xOfYSelected": "{selected} de {total} seleccionadas",
         "sortByName": "Ordenar por Nombre",
         "sortByStatus": "Ordenar por Estado",
         "postCount": "Mostrando {shown} de {total} publicación(es)",

@@ -5,6 +5,7 @@
  * Requirements: 3.1, 3.2, 3.3, 3.4, 3.5, 3.6, 3.7, 3.8, 3.9, 3.10
  */
 
+import { getServerSession } from "@/lib/auth/get-server-session"
 import { getNetworkGroupManager } from "@/lib/groups"
 import { createLogger } from "@/lib/logger"
 import { NextRequest, NextResponse } from "next/server"
@@ -29,8 +30,9 @@ export async function POST(
     const { groupId } = await context.params
 
     try {
-        // Get user ID from session
-        const userId = request.headers.get("x-user-id")
+        // Get user ID from session cookie
+        const session = await getServerSession(request)
+        const userId = session?.user?.id
         if (!userId) {
             logger.warn("Unauthorized add network to group attempt", {
                 groupId: groupId,

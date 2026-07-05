@@ -5,6 +5,7 @@
  * Requirements: 8.1, 8.2, 8.3, 8.4, 8.5, 8.6, 8.7, 8.8, 14.1, 14.2, 14.3, 14.4, 14.5, 14.6, 14.7, 14.8
  */
 
+import { getServerSession } from "@/lib/auth/get-server-session"
 import { createLogger } from "@/lib/logger"
 import { getConflictDetector, getContentAdapter } from "@/lib/posting"
 import { NextRequest, NextResponse } from "next/server"
@@ -26,8 +27,9 @@ interface ValidateContentRequest {
  */
 export async function POST(request: NextRequest): Promise<NextResponse> {
     try {
-        // Get user ID from session
-        const userId = request.headers.get("x-user-id")
+        // Get user ID from session cookie
+        const session = await getServerSession(request)
+        const userId = session?.user?.id
         if (!userId) {
             logger.warn("Unauthorized content validation request")
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 })

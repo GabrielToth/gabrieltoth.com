@@ -49,6 +49,10 @@ const mockPostToInstagram = vi.hoisted(() =>
     })
 )
 
+const mockGetServerSession = vi.hoisted(() =>
+    vi.fn().mockResolvedValue({ user: { id: "test-user-123" } })
+)
+
 vi.mock("@/lib/token-store", () => ({
     getTokenStore: () => ({
         getToken: mockGetToken,
@@ -128,6 +132,10 @@ vi.mock("@/lib/logger", () => ({
     }),
 }))
 
+vi.mock("@/lib/auth/get-server-session", () => ({
+    getServerSession: mockGetServerSession,
+}))
+
 function makePostRequest(
     url: string,
     body: unknown,
@@ -159,6 +167,7 @@ describe("POST /api/platform/instagram/publish — Attack Matrix", () => {
             postId: "mock-media-id-123",
             url: "https://www.instagram.com/p/mock-media-id-123/",
         })
+        mockGetServerSession.mockResolvedValue({ user: { id: "test-user-123" } })
     })
 
     afterEach(() => {
@@ -167,7 +176,8 @@ describe("POST /api/platform/instagram/publish — Attack Matrix", () => {
 
     // ── Row 1: Auth bypass ──
     describe("Row 1 — Auth bypass", () => {
-        it("should reject request without x-user-id header", async () => {
+        it("should reject request when not authenticated", async () => {
+            mockGetServerSession.mockResolvedValueOnce(null)
             const request = new NextRequest(
                 "http://localhost/api/platform/instagram/publish",
                 {
@@ -185,7 +195,8 @@ describe("POST /api/platform/instagram/publish — Attack Matrix", () => {
             expect(body.error).toBe("MISSING_USER_ID")
         })
 
-        it("should reject request with empty x-user-id", async () => {
+        it("should reject request with empty session user id", async () => {
+            mockGetServerSession.mockResolvedValueOnce(null)
             const request = makePostRequest(
                 "http://localhost/api/platform/instagram/publish",
                 { caption: "Test", imageUrl: "https://example.com/img.jpg" },
@@ -545,7 +556,7 @@ describe("POST /api/platform/instagram/publish — Attack Matrix", () => {
 
     // ── Row 11: CSRF ──
     describe("Row 11 — CSRF protection", () => {
-        it("should work without CSRF token (x-user-id is the auth mechanism)", async () => {
+        it("should work without CSRF token (session is the auth mechanism)", async () => {
             const request = makePostRequest(
                 "http://localhost/api/platform/instagram/publish",
                 {
@@ -685,7 +696,7 @@ describe("POST /api/platform/instagram/publish — Attack Matrix", () => {
 
     // ── Row 17: IDOR ──
     describe("Row 17 — IDOR (publish to another user's account)", () => {
-        it("should use x-user-id header for authorization (not body)", async () => {
+        it("should use session userId for authorization (not body)", async () => {
             const request = makePostRequest(
                 "http://localhost/api/platform/instagram/publish",
                 {

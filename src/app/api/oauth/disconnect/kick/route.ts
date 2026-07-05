@@ -18,6 +18,7 @@
  * }
  */
 
+import { getServerSession } from "@/lib/auth/get-server-session"
 import { createLogger } from "@/lib/logger"
 import { getTokenStore } from "@/lib/token-store"
 import { getKickConfig } from "@/lib/kick/config"
@@ -29,7 +30,8 @@ const logger = createLogger("KickDisconnectEndpoint")
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
     try {
-        const userId = request.headers.get("x-user-id")
+        const session = await getServerSession(request)
+        const userId = session?.user?.id
 
         if (!userId) {
             logger.warn("Missing user ID in Kick disconnect request")

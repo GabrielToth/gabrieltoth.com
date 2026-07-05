@@ -1,3 +1,4 @@
+import { getServerSession } from "@/lib/auth/get-server-session"
 import { createLogger } from "@/lib/logger"
 import { getTokenStore } from "@/lib/token-store"
 import { getTikTokConfig } from "@/lib/tiktok/config"
@@ -9,7 +10,8 @@ const logger = createLogger("TikTokDisconnectEndpoint")
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
     try {
-        const userId = request.headers.get("x-user-id")
+        const session = await getServerSession(request)
+        const userId = session?.user?.id
 
         if (!userId) {
             logger.warn("Missing user ID in TikTok disconnect request")

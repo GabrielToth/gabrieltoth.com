@@ -113,7 +113,7 @@
         "characters": "{count} / {limit} Zeichen",
         "exceedsLimit": "Übersteigt das Plattformlimit",
         "selectNetworks": "Netzwerke Auswählen",
-        "xOfYSelected": "{selected} von {networks} ausgewählt",
+        "xOfYSelected": "{selected} von {total} ausgewählt",
         "sortByName": "Nach Name sortieren",
         "sortByStatus": "Nach Status sortieren",
         "postCount": "Zeige {shown} von {total} Beitrag/Beiträgen",

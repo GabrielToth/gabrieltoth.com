@@ -32,6 +32,7 @@
  *   DELETE_FAILED     - Failed to clean up stored credentials
  */
 
+import { getServerSession } from "@/lib/auth/get-server-session"
 import { createLogger } from "@/lib/logger"
 import { getTokenStore } from "@/lib/token-store"
 import { validateYouTubeEnv } from "@/lib/config/env"
@@ -44,7 +45,8 @@ const logger = createLogger("YouTubeLinkRevokeEndpoint")
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
     try {
-        const userId = request.headers.get("x-user-id")
+        const session = await getServerSession(request)
+        const userId = session?.user?.id
 
         if (!userId) {
             logger.warn("Missing user ID in revoke request")

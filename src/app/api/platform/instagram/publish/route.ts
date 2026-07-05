@@ -26,6 +26,7 @@
  *   VALIDATION_ERROR        - Missing or invalid caption
  */
 
+import { getServerSession } from "@/lib/auth/get-server-session"
 import { createLogger } from "@/lib/logger"
 import { getTokenStore } from "@/lib/token-store"
 import { postToInstagram } from "@/lib/posting/adapters/instagram"
@@ -36,7 +37,8 @@ const logger = createLogger("InstagramPublishEndpoint")
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
     try {
-        const userId = request.headers.get("x-user-id")
+        const session = await getServerSession(request)
+        const userId = session?.user?.id
 
         if (!userId) {
             logger.warn("Missing user ID in Instagram publish request")

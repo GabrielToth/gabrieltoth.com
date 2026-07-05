@@ -51,6 +51,9 @@ const mockCreateLiveVideo = vi.hoisted(() =>
 const mockGetLiveVideos = vi.hoisted(() =>
     vi.fn().mockResolvedValue({ data: [], paging: {} })
 )
+const mockGetServerSession = vi.hoisted(() =>
+    vi.fn().mockResolvedValue({ user: { id: "test-user-123" } })
+)
 
 vi.mock("@/lib/facebook/config", () => ({
     getFacebookConfig: () => ({
@@ -92,6 +95,10 @@ vi.mock("@/lib/logger", () => ({
     createLogger: () => ({ info: vi.fn(), warn: vi.fn(), error: vi.fn() }),
 }))
 
+vi.mock("@/lib/auth/get-server-session", () => ({
+    getServerSession: mockGetServerSession,
+}))
+
 function makePost(
     url: string,
     body: unknown,
@@ -120,7 +127,8 @@ describe("Facebook Live — Attack Matrix", () => {
     afterEach(() => vi.clearAllMocks())
 
     describe("Row 1 — Auth bypass", () => {
-        it("POST: should reject without x-user-id", async () => {
+        it("POST: should reject when not authenticated", async () => {
+            mockGetServerSession.mockResolvedValueOnce(null)
             const req = new NextRequest(
                 "http://localhost/api/platform/facebook/live",
                 {
@@ -132,7 +140,8 @@ describe("Facebook Live — Attack Matrix", () => {
             const res = await POST(req)
             expect(res.status).toBe(400)
         })
-        it("GET: should reject without x-user-id", async () => {
+        it("GET: should reject when not authenticated", async () => {
+            mockGetServerSession.mockResolvedValueOnce(null)
             const req = new NextRequest(
                 "http://localhost/api/platform/facebook/live?pageId=123",
                 { method: "GET" }

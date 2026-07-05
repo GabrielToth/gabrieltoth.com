@@ -19,6 +19,9 @@ import { POST } from "@/app/api/youtube/upload/route"
 
 // ── Hoisted mocks ──
 const mockUploadVideo = vi.hoisted(() => vi.fn())
+const mockGetServerSession = vi.hoisted(() =>
+    vi.fn().mockResolvedValue({ user: { id: "user-123" } })
+)
 const mockValidateCsrf = vi.hoisted(() =>
     vi.fn().mockResolvedValue({ valid: true, csrfToken: "test-token" })
 )
@@ -49,6 +52,10 @@ vi.mock("@/lib/middleware/api-csrf-middleware", () => ({
     regenerateCsrfToken: mockRegenerateCsrf,
     addCsrfTokenToResponse: mockAddCsrf,
     createCsrfErrorResponse: mockCreateCsrfError,
+}))
+
+vi.mock("@/lib/auth/get-server-session", () => ({
+    getServerSession: mockGetServerSession,
 }))
 
 vi.mock("@/lib/logger", () => ({
@@ -116,6 +123,7 @@ describe("POST /api/youtube/upload — Attack Matrix", () => {
             csrfToken: "test-token",
         })
         mockRegenerateCsrf.mockReturnValue("new-token")
+        mockGetServerSession.mockResolvedValue({ user: { id: "user-123" } })
     })
 
     afterEach(() => {
@@ -124,7 +132,8 @@ describe("POST /api/youtube/upload — Attack Matrix", () => {
 
     // ── Row 1: Auth bypass ──
     describe("Row 1 — Auth bypass", () => {
-        it("rejects missing x-user-id header", async () => {
+        it("rejects request when not authenticated", async () => {
+            mockGetServerSession.mockResolvedValueOnce(null)
             const fd = makeFormData()
             const req = new NextRequest(
                 "http://localhost:3000/api/youtube/upload",
@@ -138,7 +147,8 @@ describe("POST /api/youtube/upload — Attack Matrix", () => {
             expect(res.status).toBe(401)
         })
 
-        it("rejects empty x-user-id header", async () => {
+        it("rejects request with empty session user id", async () => {
+            mockGetServerSession.mockResolvedValueOnce(null)
             const fd = makeFormData()
             const req = makeRequest(fd, "")
             const res = await POST(req)

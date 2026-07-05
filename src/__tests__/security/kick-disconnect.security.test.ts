@@ -70,6 +70,10 @@ vi.mock("@/lib/kick/config", () => ({
     resetKickConfig: vi.fn(),
 }))
 
+const mockGetServerSession = vi.hoisted(() =>
+    vi.fn().mockResolvedValue({ user: { id: "test-user-123" } })
+)
+
 const mockRevokeToken = vi.hoisted(() => vi.fn().mockResolvedValue(true))
 
 vi.mock("@/lib/kick/oauth-service", () => ({
@@ -111,6 +115,10 @@ vi.mock("@/lib/logger", () => ({
     }),
 }))
 
+vi.mock("@/lib/auth/get-server-session", () => ({
+    getServerSession: mockGetServerSession,
+}))
+
 function makePostRequest(
     url: string,
     body: unknown,
@@ -136,6 +144,7 @@ describe("POST /api/oauth/disconnect/kick — Attack Matrix", () => {
             platform: "kick",
         })
         mockDeleteToken.mockResolvedValue(undefined)
+        mockGetServerSession.mockResolvedValue({ user: { id: "test-user-123" } })
     })
 
     afterEach(() => {
@@ -145,6 +154,7 @@ describe("POST /api/oauth/disconnect/kick — Attack Matrix", () => {
     // ── Row 1: Auth bypass ──
     describe("Row 1 — Auth bypass", () => {
         it("should reject request without x-user-id header", async () => {
+            mockGetServerSession.mockResolvedValueOnce(null)
             const request = new NextRequest(
                 "http://localhost/api/oauth/disconnect/kick",
                 {
@@ -160,6 +170,7 @@ describe("POST /api/oauth/disconnect/kick — Attack Matrix", () => {
         })
 
         it("should reject request with empty x-user-id", async () => {
+            mockGetServerSession.mockResolvedValueOnce(null)
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/kick",
                 {},
@@ -172,6 +183,7 @@ describe("POST /api/oauth/disconnect/kick — Attack Matrix", () => {
         })
 
         it("should reject request with null x-user-id header", async () => {
+            mockGetServerSession.mockResolvedValueOnce(null)
             const request = new NextRequest(
                 "http://localhost/api/oauth/disconnect/kick",
                 {
@@ -416,7 +428,7 @@ describe("POST /api/oauth/disconnect/kick — Attack Matrix", () => {
 
     // ── Row 11: CSRF ──
     describe("Row 11 — CSRF protection", () => {
-        it("should work without CSRF token (x-user-id is the auth mechanism)", async () => {
+        it("should work without CSRF token (session is the auth mechanism)", async () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/kick",
                 {}
@@ -597,7 +609,7 @@ describe("POST /api/oauth/disconnect/kick — Attack Matrix", () => {
 
     // ── Row 17: IDOR ──
     describe("Row 17 — IDOR (access other user's account)", () => {
-        it("should use x-user-id header for authorization (not body)", async () => {
+        it("should use session for authorization (not body)", async () => {
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/kick",
                 { userId: "different-user-in-body" }
@@ -606,14 +618,17 @@ describe("POST /api/oauth/disconnect/kick — Attack Matrix", () => {
             expect([200, 500]).toContain(response.status)
         })
 
-        it("should disconnect for any userId in header (auth middleware enforces session)", async () => {
+        it("should reject unauthenticated request even with x-user-id header", async () => {
+            mockGetServerSession.mockResolvedValueOnce(null)
             const request = makePostRequest(
                 "http://localhost/api/oauth/disconnect/kick",
                 {},
                 { "x-user-id": "another-user-id" }
             )
             const response = await POST(request)
-            expect([200, 500]).toContain(response.status)
+            expect(response.status).toBe(400)
+            const body = await response.json()
+            expect(body.error).toBe("MISSING_USER_ID")
         })
     })
 

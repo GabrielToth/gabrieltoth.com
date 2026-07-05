@@ -43,6 +43,10 @@ const mockGetToken = vi.hoisted(() =>
 
 const mockDeleteToken = vi.hoisted(() => vi.fn().mockResolvedValue(true))
 
+const mockGetServerSession = vi.hoisted(() =>
+    vi.fn().mockResolvedValue({ user: { id: "test-user-123" } })
+)
+
 vi.mock("@/lib/config/env", () => ({
     validateYouTubeEnv: () => ({
         REDIS_URL: "redis://localhost:6379",
@@ -134,6 +138,10 @@ vi.mock("@/lib/rate-limit", () => ({
     ),
 }))
 
+vi.mock("@/lib/auth/get-server-session", () => ({
+    getServerSession: mockGetServerSession,
+}))
+
 function makePostRequest(
     url: string,
     body: unknown,
@@ -161,6 +169,7 @@ describe("POST /api/youtube/link/revoke — Attack Matrix", () => {
             userId: "test-user-123",
         })
         mockDeleteToken.mockResolvedValue(true)
+        mockGetServerSession.mockResolvedValue({ user: { id: "test-user-123" } })
     })
 
     afterEach(() => {
@@ -169,7 +178,8 @@ describe("POST /api/youtube/link/revoke — Attack Matrix", () => {
 
     // ── Row 1: Auth bypass ──
     describe("Row 1 — Auth bypass", () => {
-        it("should reject request without x-user-id header", async () => {
+        it("should reject request when not authenticated", async () => {
+            mockGetServerSession.mockResolvedValueOnce(null)
             const request = new NextRequest(
                 "http://localhost/api/youtube/link/revoke",
                 {
@@ -184,7 +194,8 @@ describe("POST /api/youtube/link/revoke — Attack Matrix", () => {
             expect(body.error).toBe("MISSING_USER_ID")
         })
 
-        it("should reject request with empty x-user-id", async () => {
+        it("should reject request with empty session user id", async () => {
+            mockGetServerSession.mockResolvedValueOnce(null)
             const request = makePostRequest(
                 "http://localhost/api/youtube/link/revoke",
                 {},
@@ -194,7 +205,8 @@ describe("POST /api/youtube/link/revoke — Attack Matrix", () => {
             expect(response.status).toBe(400)
         })
 
-        it("should reject request with null x-user-id header", async () => {
+        it("should reject request with null session", async () => {
+            mockGetServerSession.mockResolvedValueOnce(null)
             const request = new NextRequest(
                 "http://localhost/api/youtube/link/revoke",
                 {
@@ -439,7 +451,7 @@ describe("POST /api/youtube/link/revoke — Attack Matrix", () => {
 
     // ── Row 11: CSRF ──
     describe("Row 11 — CSRF protection", () => {
-        it("should work without CSRF token (x-user-id is the auth mechanism)", async () => {
+        it("should work without CSRF token (session is the auth mechanism)", async () => {
             const request = makePostRequest(
                 "http://localhost/api/youtube/link/revoke",
                 {}
@@ -617,16 +629,17 @@ describe("POST /api/youtube/link/revoke — Attack Matrix", () => {
 
     // ── Row 17: IDOR ──
     describe("Row 17 — IDOR (access other user's channel)", () => {
-        it("should only revoke own channel (userId from header is used)", async () => {
+        it("should only revoke own channel (userId from session is used)", async () => {
+            mockGetServerSession.mockResolvedValueOnce({ user: { id: "other-user-456" } })
             const request = makePostRequest(
                 "http://localhost/api/youtube/link/revoke",
                 {},
                 { "x-user-id": "other-user-456" }
             )
             const response = await POST(request)
-            // The route uses x-user-id directly, so it would delete other-user-456's token
+            // The route uses getServerSession, so it would delete other-user-456's token
             // This is intentional — auth middleware should validate the session
-            // Security: verify the route uses the header value, not any body value
+            // Security: verify the route uses the session value, not any body value
             expect(mockGetToken).toHaveBeenCalledWith(
                 "other-user-456",
                 "youtube"
@@ -641,7 +654,7 @@ describe("POST /api/youtube/link/revoke — Attack Matrix", () => {
                 { "x-user-id": "test-user-123" }
             )
             const response = await POST(request)
-            // Verify the route uses x-user-id header, not body.userId
+            // Verify the route uses session userId, not body.userId
             expect(mockGetToken).toHaveBeenCalledWith(
                 "test-user-123",
                 "youtube"

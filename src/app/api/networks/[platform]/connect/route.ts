@@ -5,6 +5,7 @@
  * Requirements: 5.1, 5.2, 5.3, 5.4, 5.5
  */
 
+import { getServerSession } from "@/lib/auth/get-server-session"
 import { createLogger } from "@/lib/logger"
 import { getNetworkManager } from "@/lib/networks"
 import { NextRequest, NextResponse } from "next/server"
@@ -32,8 +33,9 @@ export async function POST(
     const { platform } = await context.params
 
     try {
-        // Get user ID from session
-        const userId = request.headers.get("x-user-id")
+        // Get user ID from session cookie
+        const session = await getServerSession(request)
+        const userId = session?.user?.id
         if (!userId) {
             logger.warn("Unauthorized network connect attempt", {
                 platform: platform,

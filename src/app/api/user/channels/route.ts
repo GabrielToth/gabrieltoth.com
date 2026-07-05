@@ -1,4 +1,4 @@
-import { getCurrentUserId } from "@/lib/auth/get-current-user"
+import { getServerSession } from "@/lib/auth/get-server-session"
 import { isScopeOutdated, getScopeVersion } from "@/lib/oauth/scope-versions"
 import { createLogger } from "@/lib/logger"
 import { createClient } from "@supabase/supabase-js"
@@ -19,7 +19,8 @@ export interface SocialChannel {
 
 export async function GET(request: NextRequest): Promise<NextResponse> {
     try {
-        const userId = await getCurrentUserId(request)
+        const session = await getServerSession(request)
+        const userId = session?.user?.id
         if (!userId) {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
         }

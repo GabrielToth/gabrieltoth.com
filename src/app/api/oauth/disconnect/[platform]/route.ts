@@ -5,6 +5,7 @@
  * Requirements: 10.1, 10.2, 10.3, 10.5, 10.6, 10.7
  */
 
+import { getServerSession } from "@/lib/auth/get-server-session"
 import { createLogger } from "@/lib/logger"
 import { getOAuthManager } from "@/lib/oauth"
 import { rateLimitByKey } from "@/lib/rate-limit"
@@ -45,8 +46,9 @@ export async function POST(
             )
         }
 
-        // Get user ID from session
-        const userId = request.headers.get("x-user-id")
+        // Get user ID from session cookie
+        const session = await getServerSession(request)
+        const userId = session?.user?.id
         if (!userId) {
             logger.warn("Unauthorized OAuth disconnect attempt", {
                 platform: platform,

@@ -1,3 +1,4 @@
+import { getServerSession } from "@/lib/auth/get-server-session"
 import { createLogger } from "@/lib/logger"
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { getTokenStore } from "@/lib/token-store"
@@ -10,7 +11,8 @@ const logger = createLogger("FacebookPagesEndpoint")
 
 export async function GET(request: NextRequest): Promise<NextResponse> {
     try {
-        const userId = request.headers.get("x-user-id")
+        const session = await getServerSession(request)
+        const userId = session?.user?.id
 
         if (!userId) {
             logger.warn("Missing user ID in Facebook pages request")

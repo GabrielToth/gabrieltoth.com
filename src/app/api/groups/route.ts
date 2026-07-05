@@ -5,6 +5,7 @@
  * Requirements: 3.1, 3.2, 3.3, 3.4, 3.5, 3.6, 3.7, 3.8, 3.9, 3.10
  */
 
+import { getServerSession } from "@/lib/auth/get-server-session"
 import { getNetworkGroupManager } from "@/lib/groups"
 import { createLogger } from "@/lib/logger"
 import { NextRequest, NextResponse } from "next/server"
@@ -25,8 +26,9 @@ interface CreateGroupRequest {
  */
 export async function GET(request: NextRequest): Promise<NextResponse> {
     try {
-        // Get user ID from session
-        const userId = request.headers.get("x-user-id")
+        // Get user ID from session cookie
+        const session = await getServerSession(request)
+        const userId = session?.user?.id
         if (!userId) {
             logger.warn("Unauthorized groups list request")
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
@@ -68,8 +70,9 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
  */
 export async function POST(request: NextRequest): Promise<NextResponse> {
     try {
-        // Get user ID from session
-        const userId = request.headers.get("x-user-id")
+        // Get user ID from session cookie
+        const session = await getServerSession(request)
+        const userId = session?.user?.id
         if (!userId) {
             logger.warn("Unauthorized group creation attempt")
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 })

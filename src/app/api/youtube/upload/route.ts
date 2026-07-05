@@ -43,6 +43,7 @@
  * 8. Mass Assignment: Only known fields extracted from form data
  */
 
+import { getServerSession } from "@/lib/auth/get-server-session"
 import { NextRequest, NextResponse } from "next/server"
 import { uploadVideo } from "@/lib/posting/adapters/youtube"
 import {
@@ -87,7 +88,8 @@ export async function POST(request: NextRequest) {
 
     try {
         // ── Auth check ──
-        const userId = request.headers.get("x-user-id")
+        const session = await getServerSession(request)
+        const userId = session?.user?.id
         if (!userId || typeof userId !== "string") {
             return NextResponse.json(
                 { error: "Authentication required" },

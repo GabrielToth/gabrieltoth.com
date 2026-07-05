@@ -4,6 +4,7 @@
  * Generates OAuth authorization URL with HMAC-signed state (no Redis needed)
  */
 
+import { getServerSession } from "@/lib/auth/get-server-session"
 import { validateYouTubeEnv } from "@/lib/config/env"
 import { createLogger } from "@/lib/logger"
 import { getYouTubeChannelLinkingConfig } from "@/lib/youtube/config"
@@ -15,7 +16,8 @@ const logger = createLogger("YouTubeLinkStartEndpoint")
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
     try {
-        const userId = request.headers.get("x-user-id")
+        const session = await getServerSession(request)
+        const userId = session?.user?.id
 
         if (!userId) {
             logger.warn("Missing user ID in request")

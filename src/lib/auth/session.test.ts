@@ -371,7 +371,7 @@ describe("Session Management", () => {
             const result = await getSessionFromCookie(mockRequest)
 
             expect(result).toEqual(expectedSession)
-            expect(mockRequest.cookies.get).toHaveBeenCalledWith("session")
+            expect(mockRequest.cookies.get).toHaveBeenCalledWith("auth_session")
         })
 
         it("should return null when no session cookie exists", async () => {
@@ -389,7 +389,7 @@ describe("Session Management", () => {
             const result = await getSessionFromCookie(mockRequest)
 
             expect(result).toBeNull()
-            expect(mockRequest.cookies.get).toHaveBeenCalledWith("session")
+            expect(mockRequest.cookies.get).toHaveBeenCalledWith("auth_session")
         })
 
         it("should return null when session cookie has no value", async () => {
@@ -518,7 +518,7 @@ describe("Session Management", () => {
 
             expect(result).toEqual(expectedSession)
             expect(mockRequest.cookies.get).toHaveBeenCalledTimes(1)
-            expect(mockRequest.cookies.get).toHaveBeenCalledWith("session")
+            expect(mockRequest.cookies.get).toHaveBeenCalledWith("auth_session")
         })
     })
 

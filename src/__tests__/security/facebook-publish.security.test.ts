@@ -36,9 +36,17 @@ vi.hoisted(() => {
     process.env.SUPABASE_SERVICE_ROLE_KEY = ""
 })
 
+const mockGetServerSession = vi.hoisted(() =>
+    vi.fn().mockResolvedValue({ user: { id: "test-user-123" } })
+)
+
 const mockGetPageAccessToken = vi.hoisted(() =>
     vi.fn().mockResolvedValue("mock-page-token")
 )
+
+vi.mock("@/lib/auth/get-server-session", () => ({
+    getServerSession: mockGetServerSession,
+}))
 
 vi.mock("@/lib/facebook/config", () => ({
     getFacebookConfig: () => ({
@@ -96,11 +104,15 @@ function makePost(
 }
 
 describe("POST /api/platform/facebook/publish — Attack Matrix", () => {
-    beforeEach(() => vi.clearAllMocks())
+    beforeEach(() => {
+        vi.clearAllMocks()
+        mockGetServerSession.mockResolvedValue({ user: { id: "test-user-123" } })
+    })
     afterEach(() => vi.clearAllMocks())
 
     describe("Row 1 — Auth bypass", () => {
         it("should reject without x-user-id", async () => {
+            mockGetServerSession.mockResolvedValueOnce(null)
             const req = new NextRequest(
                 "http://localhost/api/platform/facebook/publish",
                 {

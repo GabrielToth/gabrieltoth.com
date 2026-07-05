@@ -45,6 +45,10 @@ const mockGetValidInstagramToken = vi.hoisted(() =>
     vi.fn().mockResolvedValue("mock-access-token")
 )
 
+const mockGetServerSession = vi.hoisted(() =>
+    vi.fn().mockResolvedValue({ user: { id: "test-user-123" } })
+)
+
 vi.mock("@/lib/token-store", () => ({
     getTokenStore: () => ({
         getToken: mockGetToken,
@@ -120,6 +124,10 @@ vi.mock("@/lib/logger", () => ({
     }),
 }))
 
+vi.mock("@/lib/auth/get-server-session", () => ({
+    getServerSession: mockGetServerSession,
+}))
+
 function makeGetRequest(
     url: string,
     headers: Record<string, string> = {}
@@ -144,6 +152,7 @@ describe("GET /api/platform/instagram/analytics — Attack Matrix", () => {
             userId: "test-user-123",
         })
         mockGetValidInstagramToken.mockResolvedValue("mock-access-token")
+        mockGetServerSession.mockResolvedValue({ user: { id: "test-user-123" } })
     })
 
     afterEach(() => {
@@ -153,6 +162,7 @@ describe("GET /api/platform/instagram/analytics — Attack Matrix", () => {
     // ── Row 1: Auth bypass ──
     describe("Row 1 — Auth bypass", () => {
         it("should reject request without x-user-id header", async () => {
+            mockGetServerSession.mockResolvedValueOnce(null)
             const request = new NextRequest(
                 "http://localhost/api/platform/instagram/analytics"
             )
@@ -163,6 +173,7 @@ describe("GET /api/platform/instagram/analytics — Attack Matrix", () => {
         })
 
         it("should reject request with empty x-user-id", async () => {
+            mockGetServerSession.mockResolvedValueOnce(null)
             const request = makeGetRequest(
                 "http://localhost/api/platform/instagram/analytics",
                 { "x-user-id": "" }
@@ -404,10 +415,10 @@ describe("GET /api/platform/instagram/analytics — Attack Matrix", () => {
 
     // ── Row 17: IDOR ──
     describe("Row 17 — IDOR (access another user's analytics)", () => {
-        it("should use x-user-id header for authorization", async () => {
+        it("should use session for authorization", async () => {
+            mockGetServerSession.mockResolvedValueOnce({ user: { id: "other-user-456" } })
             const request = makeGetRequest(
-                "http://localhost/api/platform/instagram/analytics",
-                { "x-user-id": "other-user-456" }
+                "http://localhost/api/platform/instagram/analytics"
             )
             const response = await GET(request)
             expect(mockGetToken).toHaveBeenCalledWith(
