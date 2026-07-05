@@ -317,5 +317,22 @@
         "failedToStartYoutubeLinking": "Failed to start YouTube linking",
         "noAuthUrl": "No authorization URL returned",
         "failedToDisconnectYoutube": "Failed to disconnect YouTube"
+    },
+    "channels": {
+        "channels": "Channels",
+        "description": "Manage all your connected social media channels",
+        "connected": "Connected ({count})",
+        "noConnected": "No channels connected yet",
+        "connectPrompt": "Connect a channel below to start publishing",
+        "onPlatform": "on {platform}",
+        "connectedSince": "Connected {date}",
+        "reconnectRequired": "Reconnect required for new features",
+        "updateNeeded": "Update needed",
+        "connectedStatus": "Connected",
+        "disconnect": "Disconnect",
+        "available": "Available Platforms",
+        "notImplemented": "Not implemented",
+        "addAnother": "Add Another",
+        "connect": "Connect"
     }
 }

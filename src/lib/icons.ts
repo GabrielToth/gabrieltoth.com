@@ -9,9 +9,11 @@ import {
     FaLinkedin,
     FaTiktok,
     FaTwitter,
+    FaTwitch,
     FaYoutube,
 } from "react-icons/fa"
 import { SiKick } from "react-icons/si"
+import { MdLiveTv, MdVideocam } from "react-icons/md"
 
 export type IconName =
     | keyof typeof LucideIcons
@@ -25,6 +27,9 @@ export type IconName =
     | "TikTok"
     | "Linkedin"
     | "Kick"
+    | "Twitch"
+    | "Trovo"
+    | "Kwai"
 
 export const getIconByName = (name: IconName): LucideIcon | IconType => {
     // Handle special cases first
@@ -38,6 +43,9 @@ export const getIconByName = (name: IconName): LucideIcon | IconType => {
     if (name === "TikTok") return FaTiktok
     if (name === "Linkedin") return FaLinkedin
     if (name === "Kick") return SiKick
+    if (name === "Twitch") return FaTwitch
+    if (name === "Trovo") return MdLiveTv
+    if (name === "Kwai") return MdVideocam
 
     // Handle Lucide icons
     return LucideIcons[name as keyof typeof LucideIcons] as LucideIcon

@@ -2,6 +2,7 @@
 
 import { DynamicIcon } from "@/components/ui/dynamic-icon"
 import { Button } from "@/components/ui/button"
+import { Badge } from "@/components/ui/badge"
 import { logger } from "@/lib/logger"
 import { useTranslations } from "next-intl"
 import { useParams } from "next/navigation"
@@ -13,19 +14,24 @@ interface ConnectedChannel {
     accountId: string
     accountName: string
     isConnected: boolean
+    thumbnailUrl?: string
     connectedAt?: string
     needsReconnect?: boolean
 }
 
-const PLATFORM_NAMES: Record<string, string> = {
-    youtube: "YouTube",
-    facebook: "Facebook",
-    instagram: "Instagram",
-    twitter: "Twitter/X",
-    tiktok: "TikTok",
-    linkedin: "LinkedIn",
-    kick: "Kick",
-}
+/** All available platforms */
+const ALL_PLATFORMS = [
+    { id: "youtube", name: "YouTube", implemented: true },
+    { id: "facebook", name: "Facebook", implemented: false },
+    { id: "instagram", name: "Instagram", implemented: false },
+    { id: "twitter", name: "Twitter/X", implemented: false },
+    { id: "tiktok", name: "TikTok", implemented: false },
+    { id: "linkedin", name: "LinkedIn", implemented: false },
+    { id: "kick", name: "Kick", implemented: false },
+    { id: "twitch", name: "Twitch", implemented: false },
+    { id: "trovo", name: "Trovo", implemented: false },
+    { id: "kwai", name: "Kwai", implemented: false },
+] as const
 
 const PLATFORM_ICONS: Record<string, string> = {
     youtube: "Youtube",
@@ -35,6 +41,9 @@ const PLATFORM_ICONS: Record<string, string> = {
     tiktok: "TikTok",
     linkedin: "Linkedin",
     kick: "Kick",
+    twitch: "Twitch",
+    trovo: "Trovo",
+    kwai: "Kwai",
 }
 
 export default function ChannelsPage() {
@@ -141,23 +150,31 @@ export default function ChannelsPage() {
                     className="mt-2"
                     onClick={fetchChannels}
                 >
-                    Retry
+                    {t("publish.retry")}
                 </Button>
             </div>
         )
     }
 
     const connectedChannels = channels.filter(c => c.isConnected)
-    const disconnectedChannels = channels.filter(c => !c.isConnected)
+
+    // Build a map of which platforms are connected and how many channels each has
+    const platformConnectedChannels = connectedChannels.reduce<
+        Record<string, ConnectedChannel[]>
+    >((acc, ch) => {
+        if (!acc[ch.platform]) acc[ch.platform] = []
+        acc[ch.platform].push(ch)
+        return acc
+    }, {})
 
     return (
         <div className="space-y-6">
             <div>
                 <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-                    Channels
+                    {t("channels.channels")}
                 </h1>
                 <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                    Manage all your connected social media channels
+                    {t("channels.description")}
                 </p>
             </div>
 
@@ -165,16 +182,18 @@ export default function ChannelsPage() {
             <section>
                 <div className="flex items-center justify-between mb-4">
                     <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
-                        Connected ({connectedChannels.length})
+                        {t("channels.connected", {
+                            count: connectedChannels.length,
+                        })}
                     </h2>
                 </div>
                 {connectedChannels.length === 0 ? (
                     <div className="rounded-lg border-2 border-dashed border-gray-200 p-8 text-center dark:border-gray-700">
                         <p className="text-gray-500 dark:text-gray-400">
-                            No channels connected yet
+                            {t("channels.noConnected")}
                         </p>
                         <p className="mt-1 text-sm text-gray-400 dark:text-gray-500">
-                            Connect a channel below to start publishing
+                            {t("channels.connectPrompt")}
                         </p>
                     </div>
                 ) : (
@@ -197,24 +216,32 @@ export default function ChannelsPage() {
                                     </div>
                                     <div>
                                         <p className="font-medium text-gray-900 dark:text-white">
-                                            {PLATFORM_NAMES[channel.platform] ||
-                                                channel.platform}
-                                        </p>
-                                        <p className="text-sm text-gray-600 dark:text-gray-400">
                                             {channel.accountName}
+                                        </p>
+                                        <p className="text-sm text-gray-500 dark:text-gray-400">
+                                            {t("channels.onPlatform", {
+                                                platform:
+                                                    ALL_PLATFORMS.find(
+                                                        p =>
+                                                            p.id ===
+                                                            channel.platform
+                                                    )?.name || channel.platform,
+                                            })}
                                         </p>
                                         {channel.connectedAt && (
                                             <p className="text-xs text-gray-500 dark:text-gray-500">
-                                                Connected{" "}
-                                                {new Date(
-                                                    channel.connectedAt
-                                                ).toLocaleDateString()}
+                                                {t("channels.connectedSince", {
+                                                    date: new Date(
+                                                        channel.connectedAt
+                                                    ).toLocaleDateString(),
+                                                })}
                                             </p>
                                         )}
                                         {channel.needsReconnect && (
                                             <p className="mt-1 text-xs text-amber-600 dark:text-amber-400">
-                                                Reconnect required for new
-                                                features
+                                                {t(
+                                                    "channels.reconnectRequired"
+                                                )}
                                             </p>
                                         )}
                                     </div>
@@ -228,8 +255,8 @@ export default function ChannelsPage() {
                                         }`}
                                     >
                                         {channel.needsReconnect
-                                            ? "Update needed"
-                                            : "Connected"}
+                                            ? t("channels.updateNeeded")
+                                            : t("channels.connectedStatus")}
                                     </span>
                                     <Button
                                         size="sm"
@@ -244,7 +271,7 @@ export default function ChannelsPage() {
                                     >
                                         {disconnectingId === channel.id
                                             ? "..."
-                                            : "Disconnect"}
+                                            : t("channels.disconnect")}
                                     </Button>
                                 </div>
                             </div>
@@ -253,49 +280,89 @@ export default function ChannelsPage() {
                 )}
             </section>
 
-            {/* Available Channels */}
+            {/* Available Platforms — ALL platforms always visible */}
             <section>
-                <h2 className="text-lg font-semibold text-gray-900 mb-4 dark:text-white">
-                    Available Channels
-                </h2>
+                <div className="flex items-center justify-between mb-4">
+                    <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+                        {t("channels.available")}
+                    </h2>
+                </div>
                 <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                    {Object.entries(PLATFORM_NAMES).map(([platform, name]) => {
-                        const isConnected = connectedChannels.some(
-                            c => c.platform === platform
-                        )
-                        if (isConnected) return null
+                    {ALL_PLATFORMS.map(platform => {
+                        const connectedList =
+                            platformConnectedChannels[platform.id] || []
+                        const hasConnected = connectedList.length > 0
+
                         return (
                             <div
-                                key={platform}
-                                className="flex items-center justify-between rounded-lg border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-900"
+                                key={platform.id}
+                                className="flex flex-col rounded-lg border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-900"
                             >
-                                <div className="flex items-center gap-3">
-                                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gray-100 dark:bg-gray-800">
-                                        <DynamicIcon
-                                            name={
-                                                PLATFORM_ICONS[platform] as any
-                                            }
-                                            size={24}
-                                        />
+                                <div className="flex items-center justify-between">
+                                    <div className="flex items-center gap-3">
+                                        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gray-100 dark:bg-gray-800">
+                                            <DynamicIcon
+                                                name={
+                                                    PLATFORM_ICONS[
+                                                        platform.id
+                                                    ] as any
+                                                }
+                                                size={24}
+                                            />
+                                        </div>
+                                        <div>
+                                            <p className="font-medium text-gray-900 dark:text-white">
+                                                {platform.name}
+                                            </p>
+                                            {!platform.implemented && (
+                                                <Badge
+                                                    variant="secondary"
+                                                    className="mt-0.5 text-xs"
+                                                >
+                                                    {t(
+                                                        "channels.notImplemented"
+                                                    )}
+                                                </Badge>
+                                            )}
+                                        </div>
                                     </div>
-                                    <div>
-                                        <p className="font-medium text-gray-900 dark:text-white">
-                                            {name}
-                                        </p>
-                                        <p className="text-sm text-gray-500 dark:text-gray-400">
-                                            Not connected
-                                        </p>
-                                    </div>
+                                    <Button
+                                        size="sm"
+                                        disabled={
+                                            connectingPlatform === platform.id
+                                        }
+                                        onClick={() =>
+                                            handleConnect(platform.id)
+                                        }
+                                    >
+                                        {connectingPlatform === platform.id
+                                            ? "..."
+                                            : hasConnected
+                                              ? t("channels.addAnother")
+                                              : t("channels.connect")}
+                                    </Button>
                                 </div>
-                                <Button
-                                    size="sm"
-                                    onClick={() => handleConnect(platform)}
-                                    disabled={connectingPlatform === platform}
-                                >
-                                    {connectingPlatform === platform
-                                        ? "..."
-                                        : "Connect"}
-                                </Button>
+
+                                {/* Show connected accounts for this platform */}
+                                {connectedList.length > 0 && (
+                                    <div className="mt-3 space-y-1.5 border-t border-gray-100 pt-3 dark:border-gray-700">
+                                        {connectedList.map(ch => (
+                                            <div
+                                                key={ch.id}
+                                                className="flex items-center justify-between text-sm"
+                                            >
+                                                <span className="truncate text-gray-700 dark:text-gray-300">
+                                                    {ch.accountName}
+                                                </span>
+                                                <span className="ml-2 flex-shrink-0 text-xs text-green-600">
+                                                    {t(
+                                                        "channels.connectedStatus"
+                                                    )}
+                                                </span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
                             </div>
                         )
                     })}
