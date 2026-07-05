@@ -99,7 +99,7 @@ CREATE TABLE IF NOT EXISTS public.social_networks (
   metadata JSONB DEFAULT '{}',
   created_at TIMESTAMPTZ DEFAULT NOW() NOT NULL,
   updated_at TIMESTAMPTZ DEFAULT NOW() NOT NULL,
-  UNIQUE(user_id, platform)
+  UNIQUE(user_id, platform, platform_user_id)
 );
 
 CREATE INDEX IF NOT EXISTS idx_social_networks_user_id ON public.social_networks(user_id);
