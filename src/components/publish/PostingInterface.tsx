@@ -14,6 +14,7 @@ import { useCallback, useEffect, useState } from "react"
 import ContentCreator from "./ContentCreator"
 import NetworkSelector from "./NetworkSelector"
 import PostingScheduler from "./PostingScheduler"
+import VideoUploader from "./VideoUploader"
 
 interface PostingInterfaceProps {
     onClose: () => void
@@ -45,6 +46,9 @@ interface Schedule {
     timezone?: string
 }
 
+/** Platforms that require video content instead of text */
+const VIDEO_REQUIRED_PLATFORMS = new Set(["youtube"])
+
 export default function PostingInterface({
     onClose,
     defaultDate,
@@ -58,6 +62,7 @@ export default function PostingInterface({
         images: [],
         urls: [],
     })
+    const [videoFile, setVideoFile] = useState<File | null>(null)
     const [schedule, setSchedule] = useState<Schedule>({
         type: defaultDate ? "scheduled" : "immediate",
     })
@@ -110,12 +115,24 @@ export default function PostingInterface({
         { id: "5", platform: "linkedin", status: "disconnected" },
     ]
 
+    /** Get the set of selected platform names */
+    const selectedPlatforms = selectedNetworkIds
+        .map(id => networks.find(n => n.id === id)?.platform)
+        .filter(Boolean) as string[]
+
+    /** Whether YouTube is among the selected platforms */
+    const hasYouTubeSelected = selectedPlatforms.some(p =>
+        VIDEO_REQUIRED_PLATFORMS.has(p)
+    )
+
     const handleNetworkToggle = useCallback((networkId: string) => {
         setSelectedNetworkIds(prev =>
             prev.includes(networkId)
                 ? prev.filter(id => id !== networkId)
                 : [...prev, networkId]
         )
+        // Clear previous error on network change
+        setError("")
     }, [])
 
     const handleGroupToggle = useCallback((_groupId: string) => {}, [])
@@ -134,12 +151,13 @@ export default function PostingInterface({
         setError("")
         setSuccess(false)
 
+        // ── Validation ──
         if (selectedNetworkIds.length === 0) {
             setError(t("networkRequired"))
             return
         }
 
-        if (!content.text.trim() && content.images.length === 0) {
+        if (!content.text.trim() && content.images.length === 0 && !videoFile) {
             setError(t("contentRequired"))
             return
         }
@@ -154,19 +172,36 @@ export default function PostingInterface({
             return
         }
 
+        // Validate video requirement for YouTube
+        if (hasYouTubeSelected && !videoFile) {
+            setError(
+                "YouTube requer um arquivo de vídeo para publicar. Selecione um vídeo na área de upload abaixo."
+            )
+            return
+        }
+
+        // Validate scheduled + YouTube (not supported yet)
+        if (
+            schedule.type === "scheduled" &&
+            schedule.scheduledTime &&
+            hasYouTubeSelected
+        ) {
+            setError(
+                "Publicação agendada para o YouTube não é suportada no momento. Publique imediatamente ou remova o YouTube das plataformas selecionadas."
+            )
+            return
+        }
+
         setIsSubmitting(true)
 
         try {
-            const selectedPlatforms = selectedNetworkIds
-                .map(id => networks.find(n => n.id === id)?.platform)
-                .filter(Boolean) as string[]
-
             let scheduledTime: number | undefined
             if (schedule.type === "scheduled" && schedule.scheduledTime) {
                 scheduledTime = schedule.scheduledTime.getTime()
             }
 
             if (schedule.type === "scheduled" && scheduledTime) {
+                // Scheduled post - YouTube not allowed here (validated above)
                 const res = await fetch("/api/posts", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
@@ -183,9 +218,37 @@ export default function PostingInterface({
                     throw new Error(data.error || t("failedToSchedule"))
                 }
             } else {
-                // Immediate publish - send to each platform's publish endpoint
-                await Promise.all(
-                    selectedPlatforms.map(async platform => {
+                // Immediate publish - send to each platform
+                const errors: string[] = []
+
+                for (const platform of selectedPlatforms) {
+                    if (VIDEO_REQUIRED_PLATFORMS.has(platform) && videoFile) {
+                        // ── YouTube: send multipart with video + description ──
+                        const formData = new FormData()
+                        formData.append("video", videoFile)
+                        formData.append("description", content.text)
+                        formData.append("privacyStatus", "unlisted")
+
+                        const res = await fetch(
+                            `/api/platform/${platform}/publish`,
+                            {
+                                method: "POST",
+                                body: formData,
+                            }
+                        )
+
+                        if (!res.ok) {
+                            const data = await res.json()
+                            const errorMsg =
+                                data.message || data.error || "Unknown error"
+                            errors.push(`${platform}: ${errorMsg}`)
+                            console.error(
+                                `Failed to publish to ${platform}:`,
+                                data
+                            )
+                        }
+                    } else {
+                        // ── Other platforms: send JSON ──
                         const res = await fetch(
                             `/api/platform/${platform}/publish`,
                             {
@@ -200,13 +263,23 @@ export default function PostingInterface({
                         )
                         if (!res.ok) {
                             const data = await res.json()
+                            const errorMsg =
+                                data.message || data.error || "Unknown error"
+                            errors.push(`${platform}: ${errorMsg}`)
                             console.error(
                                 `Failed to publish to ${platform}:`,
                                 data
                             )
                         }
-                    })
-                )
+                    }
+                }
+
+                if (errors.length > 0) {
+                    throw new Error(
+                        "Falha ao publicar em algumas plataformas:\n" +
+                            errors.join("\n")
+                    )
+                }
             }
 
             setSuccess(true)
@@ -245,9 +318,11 @@ export default function PostingInterface({
 
                 <div className="space-y-4">
                     {error && (
-                        <div className="flex items-center gap-2 rounded-lg bg-red-50 p-3 text-red-800 dark:bg-red-950/30 dark:text-red-400">
-                            <AlertCircle className="h-5 w-5 flex-shrink-0" />
-                            <p className="text-sm">{error}</p>
+                        <div className="flex items-start gap-2 rounded-lg bg-red-50 p-3 text-red-800 dark:bg-red-950/30 dark:text-red-400">
+                            <AlertCircle className="h-5 w-5 flex-shrink-0 mt-0.5" />
+                            <div className="text-sm whitespace-pre-line">
+                                {error}
+                            </div>
                         </div>
                     )}
 
@@ -279,6 +354,17 @@ export default function PostingInterface({
                     )}
 
                     <ContentCreator onContentChange={setContent} />
+
+                    {/* Show VideoUploader when YouTube is selected */}
+                    {hasYouTubeSelected && (
+                        <VideoUploader
+                            onFileSelect={setVideoFile}
+                            selectedPlatforms={selectedPlatforms.filter(p =>
+                                VIDEO_REQUIRED_PLATFORMS.has(p)
+                            )}
+                            disabled={isSubmitting}
+                        />
+                    )}
 
                     <PostingScheduler
                         onScheduleChange={setSchedule}

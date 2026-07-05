@@ -101,4 +101,21 @@ export async function postToYouTube(
     }
 }
 
-export default { postToYouTube, uploadVideo }
+/**
+ * Queue-compatible publish method.
+ * Matches the interface expected by PublicationQueue.
+ * YouTube only supports video uploads - use uploadVideo for actual publishing.
+ */
+export async function publish(config: {
+    content: string
+    images?: string[]
+    metadata?: Record<string, unknown>
+    token?: string
+}): Promise<{ id?: string; url?: string; success: boolean; error?: string }> {
+    return {
+        success: false,
+        error: "YouTube scheduled publishing is not supported. YouTube requires a video file for publishing, which cannot be provided via scheduled posts.",
+    }
+}
+
+export default { postToYouTube, uploadVideo, publish }
