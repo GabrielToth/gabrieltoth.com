@@ -36,6 +36,7 @@ export default getRequestConfig(async ({ locale }) => {
         minecraft,
         services,
         dashboard,
+        publish,
     ] = await Promise.all([
         loadJson(() => import(`@/i18n/${selectedLocale}/home.json`)),
         loadJson(() => import(`@/i18n/${selectedLocale}/landing.json`)),
@@ -53,6 +54,7 @@ export default getRequestConfig(async ({ locale }) => {
         loadJson(() => import(`@/i18n/${selectedLocale}/minecraft.json`)),
         loadJson(() => import(`@/i18n/${selectedLocale}/services.json`)),
         loadJson(() => import(`@/i18n/${selectedLocale}/dashboard.json`)),
+        loadJson(() => import(`@/i18n/${selectedLocale}/publish.json`)),
     ])
 
     const messages: MessagesRecord = {
@@ -70,6 +72,7 @@ export default getRequestConfig(async ({ locale }) => {
         minecraft,
         services,
         dashboard,
+        publish,
         layout: {
             header,
             footer: await loadJson(
