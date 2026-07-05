@@ -318,5 +318,22 @@
         "failedToStartYoutubeLinking": "Falha ao iniciar vinculação do YouTube",
         "noAuthUrl": "Nenhuma URL de autorização retornada",
         "failedToDisconnectYoutube": "Falha ao desconectar YouTube"
+    },
+    "channels": {
+        "channels": "Canais",
+        "description": "Gerencie todos os seus canais de mídia social conectados",
+        "connected": "Conectados ({count})",
+        "noConnected": "Nenhum canal conectado ainda",
+        "connectPrompt": "Conecte um canal abaixo para começar a publicar",
+        "onPlatform": "no {platform}",
+        "connectedSince": "Conectado desde {date}",
+        "reconnectRequired": "Reconexão necessária para novos recursos",
+        "updateNeeded": "Atualização necessária",
+        "connectedStatus": "Conectado",
+        "disconnect": "Desconectar",
+        "available": "Plataformas Disponíveis",
+        "notImplemented": "Não implementado",
+        "addAnother": "Adicionar Outro",
+        "connect": "Conectar"
     }
 }

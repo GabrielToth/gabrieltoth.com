@@ -317,5 +317,22 @@
         "failedToStartYoutubeLinking": "Fehler beim Starten der YouTube-Verknüpfung",
         "noAuthUrl": "Keine Autorisierungs-URL zurückgegeben",
         "failedToDisconnectYoutube": "Fehler beim Trennen von YouTube"
+    },
+    "channels": {
+        "channels": "Kanäle",
+        "description": "Verwalte alle deine verbundenen Social-Media-Kanäle",
+        "connected": "Verbunden ({count})",
+        "noConnected": "Noch keine Kanäle verbunden",
+        "connectPrompt": "Verbinde unten einen Kanal, um mit dem Veröffentlichen zu beginnen",
+        "onPlatform": "auf {platform}",
+        "connectedSince": "Verbunden seit {date}",
+        "reconnectRequired": "Wiederverbindung für neue Funktionen erforderlich",
+        "updateNeeded": "Aktualisierung erforderlich",
+        "connectedStatus": "Verbunden",
+        "disconnect": "Trennen",
+        "available": "Verfügbare Plattformen",
+        "notImplemented": "Nicht implementiert",
+        "addAnother": "Weiteren hinzufügen",
+        "connect": "Verbinden"
     }
 }
