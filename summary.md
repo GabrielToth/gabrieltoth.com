@@ -5,6 +5,18 @@ Manter o site pessoal funcional, seguro e atualizado.
 
 ## Progress
 
+### ✅ Fix: Autenticação via sessão em vez de x-user-id header (jul/2026)
+**Problema CRÍTICO:** 30+ API routes usavam `request.headers.get("x-user-id")` para autenticar, mas nenhum middleware setava este header. Resultado: toda chamada a `/api/networks/status` retornava 401. O front-end silenciosamente capturava o erro e usava dados hardcoded (`exampleNetworks`) mostrando Facebook/Instagram como "connected", Twitter como "expired", LinkedIn como "disconnected" — mesmo sem o usuário jamais ter conectado nada.
+
+**Solução:**
+- Todas as 30+ API routes agora usam `getServerSession(request)` que valida o cookie `auth_session` contra o banco de dados
+- `getSessionFromCookie()` corrigido para ler `"auth_session"` em vez de `"session"` (cookie name mismatch)
+- Traduções `xOfYSelected` corrigidas (usava `{networks}` mas componente passa `{total}`)
+- Testes de segurança atualizados para mockar `getServerSession`
+
+**Commits:**
+- `8fc31ab` — fix: replace x-user-id header auth with getServerSession for all API routes
+
 ### ✅ Fix: Login redirect para usuários autenticados (jul/2026)
 **Problema:** Usuários com sessão ativa que clicavam "Entrar" no header iam para `/signin` e viam o formulário de login, mesmo já estando logados (o dashboard funcionava direto).
 
@@ -32,12 +44,16 @@ Manter o site pessoal funcional, seguro e atualizado.
 - `src/lib/csrf.ts` — CSRF stateless HMAC
 - `src/middleware.ts` — CSRF token refresh + cookie set
 - `src/lib/db/schema/auth.sql` — auth schema
+- `src/lib/auth/session.ts` — session management (inclui getSessionFromCookie fix)
+- `src/lib/auth/get-server-session.ts` — server session helper
 - `src/app/[locale]/dashboard/page.tsx` — dashboard
 - `src/components/header.tsx` — header com "Entrar" button
+- `src/components/publish/NetworkSelector.tsx` — network selector (translation fix)
+- `src/components/publish/PostingInterface.tsx` — posting UI (fallback exampleNetworks bug)
 
 ## Testing
 ```bash
-npm test            # 226 tests
+npm test            # 6697/6705 tests (8 pre-existing failures unrelated)
 npm run test:e2e    # Playwright E2E
 ```
 
