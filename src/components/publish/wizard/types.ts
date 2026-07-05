@@ -1,22 +1,55 @@
-/** All data collected across wizard steps for YouTube publishing */
-export interface YouTubePublishData {
-    /** Selected platform (always "youtube") */
-    platform: "youtube"
+/** Platform definition */
+export interface PlatformInfo {
+    id: string
+    labelKey: string
+    descKey: string
+    icon: React.ReactNode
+    implemented: boolean
+    connected: boolean
+    /** Which metadata sections this platform supports */
+    features: PlatformFeature[]
+}
 
-    /** Selected YouTube channel IDs */
-    channelIds: string[]
+export type PlatformFeature =
+    | "text"
+    | "images"
+    | "video"
+    | "title"
+    | "tags"
+    | "audience_kids"
+    | "ai_generated"
+    | "paid_promotion"
+    | "monetization"
+    | "content_restrictions"
+    | "cards_end_screens"
+    | "privacy_schedule"
+    | "channel_selection"
+
+/** All data collected across wizard steps */
+export interface PublishWizardState {
+    /** Selected platforms with their channel selections */
+    platformSelections: PlatformSelection[]
 
     /** Storage mode (only local available) */
     storageMode: "local"
 
-    /** The video file to upload */
-    videoFile: File | null
+    /** Universal content */
+    content: {
+        text: string
+        images: File[]
+        videoFile: File | null
+    }
 
-    /** Video metadata */
-    metadata: YouTubeMetadata
+    /** Platform-specific metadata, keyed by platform id */
+    platformMetadata: Record<string, YouTubeMetadata>
 
     /** Processing state */
     processing: ProcessingState
+}
+
+export interface PlatformSelection {
+    platformId: string
+    channelIds: string[]
 }
 
 export interface YouTubeMetadata {
@@ -35,24 +68,39 @@ export interface YouTubeMetadata {
     scheduledTime: string
 }
 
+export interface PlatformResult {
+    platformId: string
+    success: boolean
+    videoId?: string
+    url?: string
+    error?: string
+}
+
 export type ProcessingState =
     | { status: "idle" }
     | { status: "queued" }
-    | { status: "uploading"; progress: number; speed: string }
-    | { status: "metadata" }
-    | { status: "publishing" }
-    | { status: "complete"; videoId: string; url: string }
-    | { status: "error"; message: string }
+    | {
+          status: "uploading"
+          platformId: string
+          progress: number
+          speed: string
+      }
+    | { status: "metadata"; platformId: string }
+    | { status: "publishing"; platformId: string }
+    | { status: "complete"; results: PlatformResult[] }
+    | { status: "partial"; results: PlatformResult[] }
+    | { status: "error"; message: string; platformId?: string }
 
 export interface YouTubeChannel {
     id: string
-    name: string
+    name: string // rename: channel title
+    title?: string // YouTube API returns "title"
     thumbnailUrl: string
     subscriberCount: number
     videoCount: number
 }
 
-export const DEFAULT_METADATA: YouTubeMetadata = {
+export const DEFAULT_YOUTUBE_METADATA: YouTubeMetadata = {
     title: "",
     description: "",
     tags: [],
@@ -66,4 +114,78 @@ export const DEFAULT_METADATA: YouTubeMetadata = {
     privacyStatus: "unlisted",
     scheduledDate: null,
     scheduledTime: "",
+}
+
+export const INITIAL_STATE: PublishWizardState = {
+    platformSelections: [],
+    storageMode: "local",
+    content: {
+        text: "",
+        images: [],
+        videoFile: null,
+    },
+    platformMetadata: {},
+    processing: { status: "idle" },
+}
+
+/** Get features that are exclusive to a specific platform (not universal) */
+export const PLATFORM_EXCLUSIVE_FEATURES: Record<
+    string,
+    { feature: PlatformFeature; labelKey: string; platformId: string }[]
+> = {
+    youtube: [
+        { feature: "title", labelKey: "step4.title", platformId: "youtube" },
+        {
+            feature: "tags",
+            labelKey: "step4.tags",
+            platformId: "youtube",
+        },
+        {
+            feature: "audience_kids",
+            labelKey: "step4.madeForKids",
+            platformId: "youtube",
+        },
+        {
+            feature: "ai_generated",
+            labelKey: "step4.aiGenerated",
+            platformId: "youtube",
+        },
+        {
+            feature: "paid_promotion",
+            labelKey: "step4.paidPromotion",
+            platformId: "youtube",
+        },
+        {
+            feature: "monetization",
+            labelKey: "step4.monetizationTitle",
+            platformId: "youtube",
+        },
+        {
+            feature: "content_restrictions",
+            labelKey: "step4.guidelinesTitle",
+            platformId: "youtube",
+        },
+        {
+            feature: "cards_end_screens",
+            labelKey: "step4.cards",
+            platformId: "youtube",
+        },
+        {
+            feature: "privacy_schedule",
+            labelKey: "step4.privacy",
+            platformId: "youtube",
+        },
+    ],
+    facebook: [
+        // Future: page selection, link preview, etc.
+    ],
+    instagram: [
+        // Future: carousel, reel, story, etc.
+    ],
+    twitter: [
+        // Future: poll, thread, etc.
+    ],
+    linkedin: [
+        // Future: article, company page, etc.
+    ],
 }

@@ -2,7 +2,9 @@
 
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
 import { useTranslations } from "next-intl"
+import { SiYoutube } from "@icons-pack/react-simple-icons"
 import {
     CheckCircle,
     Loader2,
@@ -10,14 +12,29 @@ import {
     Clock,
     Upload,
     ExternalLink,
+    XCircle,
 } from "lucide-react"
-import type { ProcessingState } from "./types"
+import type { ProcessingState, PlatformResult } from "./types"
 
 interface ProcessingStepProps {
     processing: ProcessingState
     onRetry: () => void
     onClose: () => void
     onGoToDashboard: () => void
+}
+
+/** Platform icons for results */
+const PLATFORM_ICONS: Record<string, React.ReactNode> = {
+    youtube: <SiYoutube className="h-4 w-4 text-red-600" />,
+}
+
+/** Platform display names */
+const PLATFORM_NAMES: Record<string, string> = {
+    youtube: "YouTube",
+    facebook: "Facebook",
+    instagram: "Instagram",
+    twitter: "Twitter",
+    linkedin: "LinkedIn",
 }
 
 export default function ProcessingStep({
@@ -27,6 +44,12 @@ export default function ProcessingStep({
     onGoToDashboard,
 }: ProcessingStepProps) {
     const t = useTranslations("publish")
+
+    const getResultsSummary = (results: PlatformResult[]) => {
+        const successCount = results.filter(r => r.success).length
+        const failCount = results.filter(r => !r.success).length
+        return `${successCount} publicado(s), ${failCount} falha(s)`
+    }
 
     return (
         <div className="space-y-6">
@@ -39,7 +62,7 @@ export default function ProcessingStep({
 
             <Card className="p-8">
                 <div className="flex flex-col items-center text-center">
-                    {/* State-specific content */}
+                    {/* Idle state */}
                     {processing.status === "idle" && (
                         <>
                             <Clock className="h-16 w-16 text-blue-500" />
@@ -55,6 +78,7 @@ export default function ProcessingStep({
                         </>
                     )}
 
+                    {/* Queued */}
                     {processing.status === "queued" && (
                         <>
                             <Loader2 className="h-16 w-16 animate-spin text-blue-500" />
@@ -67,6 +91,7 @@ export default function ProcessingStep({
                         </>
                     )}
 
+                    {/* Uploading - show per platform */}
                     {processing.status === "uploading" && (
                         <>
                             <Upload className="h-16 w-16 text-blue-500 animate-pulse" />
@@ -74,6 +99,15 @@ export default function ProcessingStep({
                                 {t("step5.processing")}
                             </h3>
                             <div className="mt-4 w-full max-w-xs">
+                                <div className="flex items-center justify-center gap-2 mb-2">
+                                    {PLATFORM_ICONS[processing.platformId] ||
+                                        null}
+                                    <span className="text-sm font-medium capitalize">
+                                        {PLATFORM_NAMES[
+                                            processing.platformId
+                                        ] || processing.platformId}
+                                    </span>
+                                </div>
                                 <div className="h-2 w-full overflow-hidden rounded-full bg-gray-200">
                                     <div
                                         className="h-full rounded-full bg-blue-500 transition-all duration-500"
@@ -88,30 +122,49 @@ export default function ProcessingStep({
                                     percent: processing.progress,
                                 })}
                             </p>
-                            <p className="text-xs text-gray-400">
-                                {processing.speed}
-                            </p>
+                            {processing.speed && (
+                                <p className="text-xs text-gray-400">
+                                    {processing.speed}
+                                </p>
+                            )}
                         </>
                     )}
 
+                    {/* Metadata */}
                     {processing.status === "metadata" && (
                         <>
                             <Loader2 className="h-16 w-16 animate-spin text-blue-500" />
                             <h3 className="mt-4 text-lg font-semibold">
                                 {t("step5.metadataStep")}
                             </h3>
+                            <div className="mt-2 flex items-center gap-2">
+                                {PLATFORM_ICONS[processing.platformId] || null}
+                                <span className="text-sm capitalize">
+                                    {PLATFORM_NAMES[processing.platformId] ||
+                                        processing.platformId}
+                                </span>
+                            </div>
                         </>
                     )}
 
+                    {/* Publishing */}
                     {processing.status === "publishing" && (
                         <>
                             <Loader2 className="h-16 w-16 animate-spin text-green-500" />
                             <h3 className="mt-4 text-lg font-semibold">
                                 {t("step5.publishStep")}
                             </h3>
+                            <div className="mt-2 flex items-center gap-2">
+                                {PLATFORM_ICONS[processing.platformId] || null}
+                                <span className="text-sm capitalize">
+                                    {PLATFORM_NAMES[processing.platformId] ||
+                                        processing.platformId}
+                                </span>
+                            </div>
                         </>
                     )}
 
+                    {/* Complete */}
                     {processing.status === "complete" && (
                         <>
                             <CheckCircle className="h-16 w-16 text-green-500" />
@@ -119,27 +172,96 @@ export default function ProcessingStep({
                                 {t("step5.complete")}
                             </h3>
                             <p className="mt-2 text-sm text-gray-500">
-                                {t("step5.completeDescription")}
+                                {getResultsSummary(processing.results)}
                             </p>
-                            {processing.url && (
-                                <Button
-                                    className="mt-4"
-                                    variant="outline"
-                                    asChild
-                                >
-                                    <a
-                                        href={processing.url}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
+                            {/* Per-platform results */}
+                            <div className="mt-4 w-full space-y-2">
+                                {processing.results.map(result => (
+                                    <div
+                                        key={result.platformId}
+                                        className="flex items-center justify-between rounded border p-3"
                                     >
-                                        <ExternalLink className="mr-2 h-4 w-4" />
-                                        {t("step5.viewOnYoutube")}
-                                    </a>
-                                </Button>
-                            )}
+                                        <div className="flex items-center gap-2">
+                                            {PLATFORM_ICONS[
+                                                result.platformId
+                                            ] || null}
+                                            <span className="text-sm font-medium capitalize">
+                                                {PLATFORM_NAMES[
+                                                    result.platformId
+                                                ] || result.platformId}
+                                            </span>
+                                        </div>
+                                        <div className="flex items-center gap-2">
+                                            {result.success ? (
+                                                <>
+                                                    <CheckCircle className="h-4 w-4 text-green-500" />
+                                                    {result.url && (
+                                                        <a
+                                                            href={result.url}
+                                                            target="_blank"
+                                                            rel="noopener noreferrer"
+                                                            className="text-blue-600 hover:underline"
+                                                        >
+                                                            <ExternalLink className="h-4 w-4" />
+                                                        </a>
+                                                    )}
+                                                </>
+                                            ) : (
+                                                <span className="flex items-center gap-1 text-xs text-red-500">
+                                                    <XCircle className="h-4 w-4" />
+                                                    {result.error || "Failed"}
+                                                </span>
+                                            )}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
                         </>
                     )}
 
+                    {/* Partial - some succeeded, some failed */}
+                    {processing.status === "partial" && (
+                        <>
+                            <AlertCircle className="h-16 w-16 text-amber-500" />
+                            <h3 className="mt-4 text-lg font-semibold text-amber-700">
+                                Publicação parcial
+                            </h3>
+                            <p className="mt-2 text-sm text-gray-500">
+                                {getResultsSummary(processing.results)}
+                            </p>
+                            <div className="mt-4 w-full space-y-2">
+                                {processing.results.map(result => (
+                                    <div
+                                        key={result.platformId}
+                                        className="flex items-center justify-between rounded border p-3"
+                                    >
+                                        <div className="flex items-center gap-2">
+                                            {PLATFORM_ICONS[
+                                                result.platformId
+                                            ] || null}
+                                            <span className="text-sm font-medium capitalize">
+                                                {PLATFORM_NAMES[
+                                                    result.platformId
+                                                ] || result.platformId}
+                                            </span>
+                                        </div>
+                                        <div className="flex items-center gap-2">
+                                            {result.success ? (
+                                                <CheckCircle className="h-4 w-4 text-green-500" />
+                                            ) : (
+                                                <span className="flex items-center gap-1 text-xs text-red-500">
+                                                    <XCircle className="h-4 w-4" />
+                                                    {result.error || "Failed"}
+                                                </span>
+                                            )}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </>
+                    )}
+
+                    {/* Error */}
                     {processing.status === "error" && (
                         <>
                             <AlertCircle className="h-16 w-16 text-red-500" />
@@ -150,6 +272,12 @@ export default function ProcessingStep({
                                 {processing.message ||
                                     t("step5.errorDescription")}
                             </p>
+                            {processing.platformId && (
+                                <Badge variant="outline" className="mt-2">
+                                    {PLATFORM_NAMES[processing.platformId] ||
+                                        processing.platformId}
+                                </Badge>
+                            )}
                         </>
                     )}
                 </div>
@@ -157,18 +285,21 @@ export default function ProcessingStep({
 
             {/* Actions */}
             <div className="flex justify-center gap-3 border-t pt-4 dark:border-gray-700">
-                {processing.status === "error" && (
+                {(processing.status === "error" ||
+                    processing.status === "partial") && (
                     <Button onClick={onRetry} variant="default">
                         {t("step5.retry")}
                     </Button>
                 )}
-                {processing.status === "complete" && (
+                {(processing.status === "complete" ||
+                    processing.status === "partial") && (
                     <Button onClick={onGoToDashboard} variant="default">
                         {t("step5.goToDashboard")}
                     </Button>
                 )}
                 {(processing.status === "error" ||
-                    processing.status === "complete") && (
+                    processing.status === "complete" ||
+                    processing.status === "partial") && (
                     <Button onClick={onClose} variant="outline">
                         {t("step5.close")}
                     </Button>
