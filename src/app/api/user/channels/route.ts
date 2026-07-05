@@ -1,5 +1,7 @@
 import { getServerSession } from "@/lib/auth/get-server-session"
 import { isScopeOutdated, getScopeVersion } from "@/lib/oauth/scope-versions"
+import { getOAuthManager } from "@/lib/oauth"
+import { getTokenStore } from "@/lib/token-store"
 import { createLogger } from "@/lib/logger"
 import { createClient } from "@supabase/supabase-js"
 import { NextRequest, NextResponse } from "next/server"
@@ -39,7 +41,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
                 .order("created_at", { ascending: false }),
             supabase
                 .from("oauth_tokens")
-                .select("platform, expires_at")
+                .select("platform, expires_at, refresh_token")
                 .eq("user_id", userId),
         ])
 
@@ -53,14 +55,16 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
         const socialNetworks = socialResult.data || []
         const tokens = tokensResult.data || []
 
-        const tokenMap = new Map(tokens.map(t => [t.platform, t]))
+        const oauthManager = getOAuthManager()
+        const tokenStore = getTokenStore()
 
-        const channels: SocialChannel[] = socialNetworks.map(sn => {
-            const token = tokenMap.get(sn.platform)
+        const channels: SocialChannel[] = []
+
+        for (const sn of socialNetworks) {
+            const token = tokens.find(t => t.platform === sn.platform)
             const isExpired = token?.expires_at
                 ? new Date(token.expires_at) < new Date()
                 : false
-            const isConnected = sn.status === "connected" && !isExpired
             const metadata = sn.metadata as Record<string, unknown> | null
             const storedScopeVersion = metadata?.scopeVersion as
                 | number
@@ -70,7 +74,61 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
                 | string
                 | undefined
 
-            return {
+            let isConnected = sn.status === "connected" && !isExpired
+            let needsReconnect = false
+
+            // If the token is expired BUT we have a refresh token, try to refresh
+            if (
+                sn.status === "connected" &&
+                isExpired &&
+                token?.refresh_token
+            ) {
+                try {
+                    const refreshed = await oauthManager.refreshAccessToken(
+                        sn.platform as any,
+                        token.refresh_token as string,
+                        userId
+                    )
+
+                    // Persist the new token
+                    await tokenStore.refreshToken(userId, sn.platform, {
+                        accessToken: refreshed.accessToken,
+                        refreshToken: refreshed.refreshToken,
+                        expiresAt: Date.now() + refreshed.expiresIn * 1000,
+                        platform: sn.platform,
+                        userId,
+                    })
+
+                    isConnected = true
+                    logger.info("Auto-refreshed token for platform", {
+                        platform: sn.platform,
+                        userId,
+                    })
+                } catch (refreshError) {
+                    logger.warn("Failed to auto-refresh token", {
+                        platform: sn.platform,
+                        userId,
+                        error:
+                            refreshError instanceof Error
+                                ? refreshError.message
+                                : String(refreshError),
+                    })
+                    isConnected = false
+                }
+            }
+
+            // Determine needsReconnect
+            if (isConnected) {
+                needsReconnect = isScopeOutdated(
+                    storedScopeVersion,
+                    sn.platform
+                )
+            } else if (sn.status === "connected" && isExpired) {
+                // Token expired and no refresh token or refresh failed
+                needsReconnect = true
+            }
+
+            channels.push({
                 id: sn.id,
                 platform: sn.platform,
                 accountId: sn.platform_user_id,
@@ -78,12 +136,10 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
                 isConnected,
                 thumbnailUrl: profileImageUrl,
                 connectedAt: sn.linked_at,
-                needsReconnect: isConnected
-                    ? isScopeOutdated(storedScopeVersion, sn.platform)
-                    : false,
+                needsReconnect,
                 currentScopeVersion: getScopeVersion(sn.platform),
-            }
-        })
+            })
+        }
 
         return NextResponse.json({ channels })
     } catch (error) {
