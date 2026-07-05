@@ -40,7 +40,8 @@
         "channelWarningTitle": "⚠️ Attention: Duplicate Content",
         "channelName": "Channel Name",
         "channelSubscribers": "Subscribers",
-        "channelVideos": "Videos"
+        "channelVideos": "Videos",
+        "connectedSince": "Connected {date}"
     },
     "step3": {
         "title": "Storage Mode",

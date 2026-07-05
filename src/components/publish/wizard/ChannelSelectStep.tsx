@@ -7,7 +7,7 @@ import { useTranslations } from "next-intl"
 import { SiYoutube, SiFacebook } from "@icons-pack/react-simple-icons"
 import { AlertTriangle, Loader2 } from "lucide-react"
 import { useEffect, useState } from "react"
-import type { PlatformSelection, YouTubeChannel as Channel } from "./types"
+import type { PlatformSelection } from "./types"
 
 interface ChannelSelectStepProps {
     platformSelections: PlatformSelection[]
@@ -16,16 +16,20 @@ interface ChannelSelectStepProps {
     onNext: () => void
 }
 
-/** Map platform to its channel fetch API endpoint */
-const CHANNEL_API: Record<string, string> = {
-    youtube: "/api/youtube/channels",
-    // facebook: "/api/facebook/pages",  // Future
-    // instagram: "/api/instagram/accounts",  // Future
+/** Response shape from GET /api/user/channels */
+interface SocialChannelResponse {
+    channels: SocialChannel[]
 }
 
-/** Map platform to its channel property name in response */
-const CHANNEL_RESPONSE_KEY: Record<string, string> = {
-    youtube: "channels",
+interface SocialChannel {
+    id: string
+    platform: string
+    accountId: string
+    accountName: string
+    isConnected: boolean
+    thumbnailUrl?: string
+    connectedAt?: string
+    needsReconnect?: boolean
 }
 
 /** Map platform to channel icon */
@@ -33,6 +37,9 @@ const CHANNEL_ICONS: Record<string, React.ReactNode> = {
     youtube: <SiYoutube className="h-5 w-5 text-red-500" />,
     facebook: <SiFacebook className="h-5 w-5 text-blue-600" />,
 }
+
+/** Platforms that require channel selection */
+const PLATFORMS_WITH_CHANNELS = new Set(["youtube", "facebook"])
 
 interface AvailableChannel {
     id: string
@@ -56,51 +63,55 @@ export default function ChannelSelectStep({
 
     // Determine which platforms need channel selection
     const platformsNeedingChannels = platformSelections.filter(s =>
-        CHANNEL_API.hasOwnProperty(s.platformId)
+        PLATFORMS_WITH_CHANNELS.has(s.platformId)
     )
 
     useEffect(() => {
         async function fetchAllChannels() {
             setLoading(true)
-            const results: Record<string, AvailableChannel[]> = {}
 
-            for (const sel of platformsNeedingChannels) {
-                try {
-                    const endpoint = CHANNEL_API[sel.platformId]
-                    if (!endpoint) continue
-
-                    const res = await fetch(endpoint)
-                    if (res.ok) {
-                        const data = await res.json()
-                        const key = CHANNEL_RESPONSE_KEY[sel.platformId]
-                        const rawChannels: Channel[] =
-                            data[key] ||
-                            data.channels ||
-                            data.data ||
-                            data ||
-                            []
-
-                        results[sel.platformId] = rawChannels.map(c => ({
-                            id: c.id,
-                            platformId: sel.platformId,
-                            name: c.name || c.title || "Unknown",
-                            thumbnailUrl: c.thumbnailUrl || "",
-                            metadata: formatChannelMeta(
-                                sel.platformId,
-                                c.subscriberCount,
-                                c.videoCount
-                            ),
-                        }))
-                    } else {
-                        results[sel.platformId] = []
-                    }
-                } catch {
-                    results[sel.platformId] = []
+            try {
+                const res = await fetch("/api/user/channels")
+                if (!res.ok) {
+                    setLoading(false)
+                    return
                 }
-            }
 
-            setChannelsByPlatform(results)
-            setLoading(false)
+                const data: SocialChannelResponse = await res.json()
+                const allChannels = data.channels || []
+
+                // Group connected channels by platform
+                const results: Record<string, AvailableChannel[]> = {}
+
+                for (const sel of platformsNeedingChannels) {
+                    const platformChannels = allChannels
+                        .filter(
+                            ch =>
+                                ch.platform === sel.platformId && ch.isConnected
+                        )
+                        .map(ch => ({
+                            id: ch.accountId,
+                            platformId: sel.platformId,
+                            name: ch.accountName,
+                            thumbnailUrl: ch.thumbnailUrl || "",
+                            metadata: ch.connectedAt
+                                ? t("step2.connectedSince", {
+                                      date: new Date(
+                                          ch.connectedAt
+                                      ).toLocaleDateString(),
+                                  })
+                                : "",
+                        }))
+
+                    results[sel.platformId] = platformChannels
+                }
+
+                setChannelsByPlatform(results)
+            } catch {
+                // API error — leave results empty
+            } finally {
+                setLoading(false)
+            }
         }
 
         if (platformsNeedingChannels.length > 0) {
@@ -108,7 +119,7 @@ export default function ChannelSelectStep({
         } else {
             setLoading(false)
         }
-    }, [platformsNeedingChannels.map(s => s.platformId).join(",")])
+    }, [platformsNeedingChannels.map(s => s.platformId).join(","), t])
 
     const toggleChannel = (platformId: string, channelId: string) => {
         const updated = platformSelections.map(sel => {
@@ -128,12 +139,6 @@ export default function ChannelSelectStep({
         )
     }
 
-    const formatNumber = (num: number): string => {
-        if (num >= 1_000_000) return (num / 1_000_000).toFixed(1) + "M"
-        if (num >= 1_000) return (num / 1_000).toFixed(1) + "K"
-        return num.toString()
-    }
-
     return (
         <div className="space-y-6">
             <div>
@@ -143,8 +148,8 @@ export default function ChannelSelectStep({
                 </p>
             </div>
 
-            {/* Duplicate content warning (shown for YouTube) */}
-            {platformSelections.some(s => s.platformId === "youtube") && (
+            {/* Duplicate content warning: only when 2+ channels on same platform */}
+            {platformSelections.some(s => s.channelIds.length >= 2) && (
                 <div className="rounded-lg border border-amber-200 bg-amber-50 p-4 dark:border-amber-800 dark:bg-amber-950/30">
                     <div className="flex items-start gap-3">
                         <AlertTriangle className="h-5 w-5 flex-shrink-0 text-amber-600 mt-0.5" />
@@ -207,7 +212,7 @@ export default function ChannelSelectStep({
                                                 variant="outline"
                                                 asChild
                                             >
-                                                <a href="/dashboard/settings/channels">
+                                                <a href="/dashboard/channels">
                                                     {t("step2.connectChannel")}
                                                 </a>
                                             </Button>
@@ -291,25 +296,4 @@ export default function ChannelSelectStep({
             </div>
         </div>
     )
-}
-
-function formatChannelMeta(
-    platformId: string,
-    subscriberCount?: number,
-    videoCount?: number
-): string {
-    const parts: string[] = []
-    if (platformId === "youtube") {
-        if (subscriberCount !== undefined)
-            parts.push(`${formatNum(subscriberCount)} subscribers`)
-        if (videoCount !== undefined)
-            parts.push(`${formatNum(videoCount)} videos`)
-    }
-    return parts.join(" · ") || ""
-}
-
-function formatNum(num: number): string {
-    if (num >= 1_000_000) return (num / 1_000_000).toFixed(1) + "M"
-    if (num >= 1_000) return (num / 1_000).toFixed(1) + "K"
-    return num.toString()
 }
