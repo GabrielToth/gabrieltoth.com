@@ -104,10 +104,10 @@ describe("CSRF Protection", () => {
 
             expect(token).toBeDefined()
             expect(typeof token).toBe("string")
-            expect(token.length).toBeGreaterThan(0)
+            expect((token as string).length).toBeGreaterThan(0)
 
             // The generated token should be valid for the session
-            const isValid = validateCsrfToken(sessionToken, token)
+            const isValid = validateCsrfToken(sessionToken, token as string)
             expect(isValid).toBe(true)
         })
 
