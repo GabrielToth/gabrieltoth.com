@@ -1,7 +1,7 @@
 "use client"
 
 import CalendarView from "@/components/publish/CalendarView"
-import PostingInterface from "@/components/publish/PostingInterface"
+import YouTubePublishWizard from "@/components/publish/wizard/YouTubePublishWizard"
 import { PostList } from "@/components/publish/PostList"
 import { Post } from "@/components/publish/PostCard"
 import { UniversalPostingButton } from "@/components/publish"
@@ -196,7 +196,7 @@ export default function PublishPage() {
             </div>
 
             {showPostingInterface && (
-                <PostingInterface
+                <YouTubePublishWizard
                     onClose={handleCloseInterface}
                     defaultDate={interfaceDate}
                 />
