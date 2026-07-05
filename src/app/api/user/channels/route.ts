@@ -12,6 +12,7 @@ export interface SocialChannel {
     accountId: string
     accountName: string
     isConnected: boolean
+    thumbnailUrl?: string
     connectedAt?: string
     needsReconnect?: boolean
     currentScopeVersion?: number
@@ -65,12 +66,17 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
                 | number
                 | undefined
 
+            const profileImageUrl = metadata?.profileImageUrl as
+                | string
+                | undefined
+
             return {
                 id: sn.id,
                 platform: sn.platform,
                 accountId: sn.platform_user_id,
                 accountName: sn.platform_username || sn.platform,
                 isConnected,
+                thumbnailUrl: profileImageUrl,
                 connectedAt: sn.linked_at,
                 needsReconnect: isConnected
                     ? isScopeOutdated(storedScopeVersion, sn.platform)

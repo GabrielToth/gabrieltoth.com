@@ -40,7 +40,8 @@
         "channelWarningTitle": "⚠️ Achtung: Doppelte Inhalte",
         "channelName": "Kanalname",
         "channelSubscribers": "Abonnenten",
-        "channelVideos": "Videos"
+        "channelVideos": "Videos",
+        "connectedSince": "Verbunden seit {date}"
     },
     "step3": {
         "title": "Speichermodus",

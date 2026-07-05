@@ -40,7 +40,8 @@
         "channelWarningTitle": "⚠️ Atenção: Conteúdo Duplicado",
         "channelName": "Nome do Canal",
         "channelSubscribers": "Inscritos",
-        "channelVideos": "Vídeos"
+        "channelVideos": "Vídeos",
+        "connectedSince": "Conectado desde {date}"
     },
     "step3": {
         "title": "Modo de Armazenamento",
