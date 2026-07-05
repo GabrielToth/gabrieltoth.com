@@ -169,18 +169,21 @@ export async function GET(
                 )
                 if (channelResponse.ok) {
                     const channelData = await channelResponse.json()
-                    const channel = channelData?.items?.[0]?.snippet
-                    if (channel) {
+                    const items = channelData?.items || []
+                    // Loop through ALL channels from the API (personal + brand accounts)
+                    for (const item of items) {
+                        const channel = item.snippet
+                        if (!channel) continue
                         await supabase.from("social_networks").upsert(
                             {
                                 user_id: userId,
                                 platform: "youtube",
-                                platform_user_id: channelData.items[0].id,
+                                platform_user_id: item.id,
                                 platform_username: channel.title,
                                 status: "connected",
                                 linked_at: new Date().toISOString(),
                                 metadata: {
-                                    channelId: channelData.items[0].id,
+                                    channelId: item.id,
                                     channelTitle: channel.title,
                                     channelDescription: channel.description,
                                     customUrl: channel.customUrl,
@@ -190,7 +193,21 @@ export async function GET(
                                 },
                                 updated_at: new Date().toISOString(),
                             },
-                            { onConflict: "user_id, platform" }
+                            {
+                                onConflict:
+                                    "user_id, platform, platform_user_id",
+                            }
+                        )
+                        logger.info("YouTube channel saved", {
+                            channelId: item.id,
+                            channelTitle: channel.title,
+                        })
+                    }
+
+                    if (items.length === 0) {
+                        logger.warn(
+                            "YouTube API returned no channels for authenticated user",
+                            { userId }
                         )
                     }
                 }
@@ -209,7 +226,9 @@ export async function GET(
                         },
                         updated_at: new Date().toISOString(),
                     },
-                    { onConflict: "user_id, platform" }
+                    {
+                        onConflict: "user_id, platform, platform_user_id",
+                    }
                 )
             }
         } catch (socialError) {
