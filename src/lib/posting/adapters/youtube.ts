@@ -1,6 +1,7 @@
 import { getValidYouTubeToken } from "@/lib/youtube/get-valid-token"
 import { createLogger } from "@/lib/logger"
 import { google } from "googleapis"
+import { Readable } from "stream"
 
 const logger = createLogger("YouTubeAdapter")
 
@@ -64,7 +65,7 @@ export async function uploadVideo(
                 },
             },
             media: {
-                body: videoBuffer,
+                body: Readable.from(videoBuffer),
                 mimeType,
             },
         })
