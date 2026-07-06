@@ -555,72 +555,16 @@ export default function YouTubeMetadataForm({
             <Card>
                 <CardHeader>
                     <CardTitle className="text-lg">
-                        {t("step4.guidelines")}
+                        {t("step4.adSuitability")}
                     </CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-3">
+                <CardContent>
                     <p className="text-xs text-gray-400">
-                        {t("step4.guidelinesHint")}
+                        {t("step4.adSuitabilityQuestion")}
                     </p>
-                    <div className="space-y-2">
-                        <label className="flex items-center gap-3 rounded border p-3 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-900">
-                            <input
-                                type="radio"
-                                name="restrictions"
-                                checked={
-                                    metadata.contentRestrictions === "none"
-                                }
-                                onChange={() =>
-                                    onMetadataChange({
-                                        ...metadata,
-                                        contentRestrictions: "none",
-                                    })
-                                }
-                                className="h-4 w-4"
-                            />
-                            <span className="text-sm">{t("step4.none")}</span>
-                        </label>
-                        <label className="flex items-center gap-3 rounded border p-3 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-900">
-                            <input
-                                type="radio"
-                                name="restrictions"
-                                checked={
-                                    metadata.contentRestrictions ===
-                                    "restricted"
-                                }
-                                onChange={() =>
-                                    onMetadataChange({
-                                        ...metadata,
-                                        contentRestrictions: "restricted",
-                                    })
-                                }
-                                className="h-4 w-4"
-                            />
-                            <span className="text-sm">
-                                {t("step4.restricted")}
-                            </span>
-                        </label>
-                        <label className="flex items-center gap-3 rounded border p-3 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-900">
-                            <input
-                                type="radio"
-                                name="restrictions"
-                                checked={
-                                    metadata.contentRestrictions ===
-                                    "educational"
-                                }
-                                onChange={() =>
-                                    onMetadataChange({
-                                        ...metadata,
-                                        contentRestrictions: "educational",
-                                    })
-                                }
-                                className="h-4 w-4"
-                            />
-                            <span className="text-sm">
-                                {t("step4.educational")}
-                            </span>
-                        </label>
-                    </div>
+                    <p className="mt-1 text-xs text-gray-400">
+                        {t("step4.adSuitabilityWhy")}
+                    </p>
                 </CardContent>
             </Card>
 

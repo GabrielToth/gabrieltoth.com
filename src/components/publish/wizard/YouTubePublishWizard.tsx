@@ -168,8 +168,8 @@ export default function YouTubePublishWizard({
                         meta.monetization ? "true" : "false"
                     )
                     formData.append(
-                        "contentRestrictions",
-                        meta.contentRestrictions
+                        "adSuitability",
+                        JSON.stringify(meta.adSuitability)
                     )
                     if (meta.linkedVideoStart) {
                         formData.append(
