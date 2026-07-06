@@ -167,7 +167,9 @@ describe("POST /api/platform/instagram/publish — Attack Matrix", () => {
             postId: "mock-media-id-123",
             url: "https://www.instagram.com/p/mock-media-id-123/",
         })
-        mockGetServerSession.mockResolvedValue({ user: { id: "test-user-123" } })
+        mockGetServerSession.mockResolvedValue({
+            user: { id: "test-user-123" },
+        })
     })
 
     afterEach(() => {

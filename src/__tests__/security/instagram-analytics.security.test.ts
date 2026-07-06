@@ -152,7 +152,9 @@ describe("GET /api/platform/instagram/analytics — Attack Matrix", () => {
             userId: "test-user-123",
         })
         mockGetValidInstagramToken.mockResolvedValue("mock-access-token")
-        mockGetServerSession.mockResolvedValue({ user: { id: "test-user-123" } })
+        mockGetServerSession.mockResolvedValue({
+            user: { id: "test-user-123" },
+        })
     })
 
     afterEach(() => {
@@ -416,7 +418,9 @@ describe("GET /api/platform/instagram/analytics — Attack Matrix", () => {
     // ── Row 17: IDOR ──
     describe("Row 17 — IDOR (access another user's analytics)", () => {
         it("should use session for authorization", async () => {
-            mockGetServerSession.mockResolvedValueOnce({ user: { id: "other-user-456" } })
+            mockGetServerSession.mockResolvedValueOnce({
+                user: { id: "other-user-456" },
+            })
             const request = makeGetRequest(
                 "http://localhost/api/platform/instagram/analytics"
             )

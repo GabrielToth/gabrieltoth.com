@@ -31,18 +31,21 @@ import { POST } from "@/app/api/oauth/disconnect/facebook/route"
 import { NextRequest } from "next/server"
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 
-const { mockGetToken, mockDeleteToken, mockRevokeToken, mockGetServerSession } = vi.hoisted(() => ({
-    mockGetToken: vi.fn().mockResolvedValue({
-        accessToken: "mock-access-token",
-        refreshToken: "mock-refresh-token",
-        expiresAt: Date.now() + 3600000,
-        platform: "facebook",
-        userId: "test-user-123",
-    }),
-    mockDeleteToken: vi.fn().mockResolvedValue(true),
-    mockRevokeToken: vi.fn().mockResolvedValue(true),
-    mockGetServerSession: vi.fn().mockResolvedValue({ user: { id: "test-user-123" } }),
-}))
+const { mockGetToken, mockDeleteToken, mockRevokeToken, mockGetServerSession } =
+    vi.hoisted(() => ({
+        mockGetToken: vi.fn().mockResolvedValue({
+            accessToken: "mock-access-token",
+            refreshToken: "mock-refresh-token",
+            expiresAt: Date.now() + 3600000,
+            platform: "facebook",
+            userId: "test-user-123",
+        }),
+        mockDeleteToken: vi.fn().mockResolvedValue(true),
+        mockRevokeToken: vi.fn().mockResolvedValue(true),
+        mockGetServerSession: vi
+            .fn()
+            .mockResolvedValue({ user: { id: "test-user-123" } }),
+    }))
 
 vi.hoisted(() => {
     process.env.NEXT_PUBLIC_SUPABASE_URL = ""
