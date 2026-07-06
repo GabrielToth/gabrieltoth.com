@@ -8,27 +8,43 @@ import {
     DialogHeader,
     DialogTitle,
 } from "@/components/ui/dialog"
-import { X } from "lucide-react"
+import {
+    AlertDialog,
+    AlertDialogContent,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogCancel,
+    AlertDialogAction,
+} from "@/components/ui/alert-dialog"
+import { Button } from "@/components/ui/button"
+import { X, Save, ArrowLeft, Trash2 } from "lucide-react"
 import ContentTypeSelect from "./ContentTypeSelect"
 import NetworkSelectStep from "./NetworkSelectStep"
 import ChannelSelectStep from "./ChannelSelectStep"
 import StorageModeStep from "./StorageModeStep"
 import ContentFormStep from "./ContentFormStep"
+import AdSuitabilityStep from "./AdSuitabilityStep"
+import VisibilityStep from "./VisibilityStep"
 import ProcessingStep from "./ProcessingStep"
-import type {
-    PublishWizardState,
-    PlatformSelection,
-    PlatformResult,
-    ContentType,
+import {
+    type PublishWizardState,
+    type PlatformSelection,
+    type PlatformResult,
+    type ContentType,
 } from "./types"
 import { INITIAL_STATE, DEFAULT_YOUTUBE_METADATA } from "./types"
+
+/** localStorage key for saving drafts */
+const DRAFT_STORAGE_KEY = "publish_wizard_draft"
 
 interface YouTubePublishWizardProps {
     onClose: () => void
     defaultDate?: Date
 }
 
-type WizardStep = 0 | 1 | 2 | 3 | 4 | 5
+type WizardStep = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7
 
 /** Map step index to step key for dynamic titles */
 const STEP_TITLE_KEYS: Record<number, string> = {
@@ -38,6 +54,8 @@ const STEP_TITLE_KEYS: Record<number, string> = {
     3: "step3.title",
     4: "step4.title",
     5: "step5.title",
+    6: "step6.title",
+    7: "step7.title",
 }
 
 export default function YouTubePublishWizard({
@@ -50,10 +68,113 @@ export default function YouTubePublishWizard({
     const [wizardState, setWizardState] =
         useState<PublishWizardState>(INITIAL_STATE)
 
+    // Close confirmation dialog
+    const [showCloseConfirm, setShowCloseConfirm] = useState(false)
+
     // Derive selected platform IDs
     const selectedPlatformIds = wizardState.platformSelections.map(
         s => s.platformId
     )
+
+    /** Check if the wizard has any meaningful content the user might lose */
+    const hasContent = (): boolean => {
+        const c = wizardState.content
+        const meta = wizardState.platformMetadata.youtube
+
+        // Has a file uploaded
+        if (c.videoFile || c.thumbnailFile || c.images.length > 0) return true
+
+        // Has text content
+        if (c.text.trim().length > 0) return true
+
+        // Has YouTube metadata filled in
+        if (meta) {
+            if (meta.title.trim().length > 0) return true
+            if (meta.description.trim().length > 0) return true
+            if (meta.tags.length > 0) return true
+        }
+
+        // Has platforms selected (beyond initial state)
+        if (wizardState.platformSelections.length > 0) return true
+
+        return false
+    }
+
+    /** Save a draft of the current state to localStorage */
+    const saveDraft = () => {
+        try {
+            const draft = {
+                contentType: wizardState.contentType,
+                platformSelections: wizardState.platformSelections,
+                storageMode: wizardState.storageMode,
+                text: wizardState.content.text,
+                platformMetadata: wizardState.platformMetadata,
+                currentStep,
+                savedAt: new Date().toISOString(),
+            }
+            localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(draft))
+        } catch {
+            // localStorage might be full — silently ignore
+        }
+    }
+
+    /** Try to restore a previously saved draft */
+    const restoreDraft = (): Partial<PublishWizardState> | null => {
+        try {
+            const raw = localStorage.getItem(DRAFT_STORAGE_KEY)
+            if (!raw) return null
+            const data = JSON.parse(raw)
+            // Only restore if saved within the last 24 hours
+            const savedAt = new Date(data.savedAt)
+            const now = new Date()
+            const hoursDiff =
+                (now.getTime() - savedAt.getTime()) / (1000 * 60 * 60)
+            if (hoursDiff > 24) {
+                localStorage.removeItem(DRAFT_STORAGE_KEY)
+                return null
+            }
+            return data
+        } catch {
+            return null
+        }
+    }
+
+    /** Clear the saved draft */
+    const clearDraft = () => {
+        try {
+            localStorage.removeItem(DRAFT_STORAGE_KEY)
+        } catch {
+            // ignore
+        }
+    }
+
+    /** Attempt to close — checks for content first */
+    const handleCloseAttempt = () => {
+        if (hasContent()) {
+            setShowCloseConfirm(true)
+        } else {
+            onClose()
+        }
+    }
+
+    /** Save as draft and close */
+    const handleSaveDraftAndClose = () => {
+        saveDraft()
+        setShowCloseConfirm(false)
+        onClose()
+    }
+
+    /** Discard everything and close */
+    const handleDiscardAndClose = () => {
+        clearDraft()
+        setShowCloseConfirm(false)
+        onClose()
+    }
+
+    /** Go back to editing (just dismiss the confirmation) */
+    const handleBackToEditing = () => {
+        setShowCloseConfirm(false)
+    }
 
     // Step 0: Content type selection
     const handleContentTypeChange = (type: ContentType) => {
@@ -289,7 +410,7 @@ export default function YouTubePublishWizard({
     }, [wizardState])
 
     const handleStartPublish = () => {
-        setCurrentStep(5)
+        setCurrentStep(7)
         handlePublish()
     }
 
@@ -298,7 +419,7 @@ export default function YouTubePublishWizard({
             ...prev,
             processing: { status: "idle" },
         }))
-        setCurrentStep(4)
+        setCurrentStep(6)
     }
 
     // Step titles
@@ -358,10 +479,28 @@ export default function YouTubePublishWizard({
                         state={wizardState}
                         onStateChange={setWizardState}
                         onBack={() => setCurrentStep(3)}
-                        onNext={handleStartPublish}
+                        onNext={() => setCurrentStep(5)}
                     />
                 )
             case 5:
+                return (
+                    <AdSuitabilityStep
+                        state={wizardState}
+                        onStateChange={setWizardState}
+                        onBack={() => setCurrentStep(4)}
+                        onNext={() => setCurrentStep(6)}
+                    />
+                )
+            case 6:
+                return (
+                    <VisibilityStep
+                        state={wizardState}
+                        onStateChange={setWizardState}
+                        onBack={() => setCurrentStep(5)}
+                        onNext={handleStartPublish}
+                    />
+                )
+            case 7:
                 return (
                     <ProcessingStep
                         processing={wizardState.processing}
@@ -375,62 +514,115 @@ export default function YouTubePublishWizard({
         }
     }
 
-    // Show first 5 steps in progress bar (0-4), skip step 5 (processing)
-    const progressSteps = [0, 1, 2, 3, 4]
-    const totalSteps = 6
+    // Show first 7 steps in progress bar (0-6), skip step 7 (processing)
+    const progressSteps = [0, 1, 2, 3, 4, 5, 6]
+    const totalSteps = 8
 
     return (
-        <Dialog open={true} onOpenChange={onClose}>
-            <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
-                <DialogHeader>
-                    <DialogTitle className="flex items-center gap-2">
-                        <span>{t("wizard.title")}</span>
-                        {currentStep < totalSteps && (
-                            <span className="text-sm font-normal text-gray-500">
-                                {t("wizard.step", {
-                                    current: currentStep + 1,
-                                    total: totalSteps,
-                                })}
-                            </span>
-                        )}
-                    </DialogTitle>
-                    <button
-                        onClick={onClose}
-                        className="absolute right-4 top-4 rounded-sm opacity-70 hover:opacity-100"
-                        aria-label="Close"
-                    >
-                        <X className="h-4 w-4" />
-                    </button>
-                </DialogHeader>
+        <>
+            <Dialog open={true} onOpenChange={handleCloseAttempt}>
+                <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+                    <DialogHeader>
+                        <DialogTitle className="flex items-center gap-2">
+                            <span>{t("wizard.title")}</span>
+                            {currentStep < totalSteps && (
+                                <span className="text-sm font-normal text-gray-500">
+                                    {t("wizard.step", {
+                                        current: currentStep + 1,
+                                        total: totalSteps,
+                                    })}
+                                </span>
+                            )}
+                        </DialogTitle>
+                        <button
+                            onClick={handleCloseAttempt}
+                            className="absolute right-4 top-4 rounded-sm opacity-70 hover:opacity-100"
+                            aria-label="Close"
+                        >
+                            <X className="h-4 w-4" />
+                        </button>
+                    </DialogHeader>
 
-                {/* Step progress bar */}
-                {currentStep <= 4 && (
-                    <div className="flex items-center gap-1 px-1">
-                        {progressSteps.map(step => (
-                            <div key={step} className="flex-1">
-                                <div
-                                    className={`h-1.5 rounded-full transition-colors ${
-                                        step <= currentStep
-                                            ? "bg-blue-500"
-                                            : "bg-gray-200 dark:bg-gray-700"
-                                    }`}
-                                />
-                                <p
-                                    className={`mt-1 text-xs truncate ${
-                                        step === currentStep
-                                            ? "font-medium text-blue-600 dark:text-blue-400"
-                                            : "text-gray-400"
-                                    }`}
+                    {/* Step progress bar */}
+                    {currentStep <= 6 && (
+                        <div className="flex items-center gap-1 px-1">
+                            {progressSteps.map(step => (
+                                <div key={step} className="flex-1">
+                                    <div
+                                        className={`h-1.5 rounded-full transition-colors ${
+                                            step <= currentStep
+                                                ? "bg-blue-500"
+                                                : "bg-gray-200 dark:bg-gray-700"
+                                        }`}
+                                    />
+                                    <p
+                                        className={`mt-1 text-xs truncate ${
+                                            step === currentStep
+                                                ? "font-medium text-blue-600 dark:text-blue-400"
+                                                : "text-gray-400"
+                                        }`}
+                                    >
+                                        {getStepTitle(step)}
+                                    </p>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+
+                    <div className="mt-4">{renderStep()}</div>
+                </DialogContent>
+            </Dialog>
+
+            {/* Close confirmation dialog */}
+            <AlertDialog
+                open={showCloseConfirm}
+                onOpenChange={setShowCloseConfirm}
+            >
+                <AlertDialogContent>
+                    <AlertDialogHeader>
+                        <AlertDialogTitle>
+                            {t("closeConfirm.title")}
+                        </AlertDialogTitle>
+                        <AlertDialogDescription>
+                            {t("closeConfirm.description")}
+                        </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter className="flex-col gap-2 sm:flex-row">
+                        <AlertDialogCancel asChild>
+                            <Button
+                                variant="outline"
+                                onClick={handleBackToEditing}
+                                className="gap-2"
+                            >
+                                <ArrowLeft className="h-4 w-4" />
+                                {t("closeConfirm.backToEditing")}
+                            </Button>
+                        </AlertDialogCancel>
+                        <div className="flex gap-2">
+                            <AlertDialogAction asChild>
+                                <Button
+                                    variant="secondary"
+                                    onClick={handleSaveDraftAndClose}
+                                    className="gap-2"
                                 >
-                                    {getStepTitle(step)}
-                                </p>
-                            </div>
-                        ))}
-                    </div>
-                )}
-
-                <div className="mt-4">{renderStep()}</div>
-            </DialogContent>
-        </Dialog>
+                                    <Save className="h-4 w-4" />
+                                    {t("closeConfirm.saveDraft")}
+                                </Button>
+                            </AlertDialogAction>
+                        <AlertDialogAction asChild>
+                            <Button
+                                variant="ghost"
+                                onClick={handleDiscardAndClose}
+                                className="gap-2 text-red-600 hover:bg-red-50 hover:text-red-700 dark:hover:bg-red-950/30"
+                            >
+                                    <Trash2 className="h-4 w-4" />
+                                    {t("closeConfirm.discard")}
+                                </Button>
+                            </AlertDialogAction>
+                        </div>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialog>
+        </>
     )
 }
