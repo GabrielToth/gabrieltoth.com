@@ -9,6 +9,7 @@ import {
     DialogTitle,
 } from "@/components/ui/dialog"
 import { X } from "lucide-react"
+import ContentTypeSelect from "./ContentTypeSelect"
 import NetworkSelectStep from "./NetworkSelectStep"
 import ChannelSelectStep from "./ChannelSelectStep"
 import StorageModeStep from "./StorageModeStep"
@@ -18,6 +19,7 @@ import type {
     PublishWizardState,
     PlatformSelection,
     PlatformResult,
+    ContentType,
 } from "./types"
 import { INITIAL_STATE, DEFAULT_YOUTUBE_METADATA } from "./types"
 
@@ -26,10 +28,11 @@ interface YouTubePublishWizardProps {
     defaultDate?: Date
 }
 
-type WizardStep = 1 | 2 | 3 | 4 | 5
+type WizardStep = 0 | 1 | 2 | 3 | 4 | 5
 
 /** Map step index to step key for dynamic titles */
 const STEP_TITLE_KEYS: Record<number, string> = {
+    0: "contentType.title",
     1: "step1.title",
     2: "step2.title",
     3: "step3.title",
@@ -43,7 +46,7 @@ export default function YouTubePublishWizard({
     const t = useTranslations("publish")
 
     // Wizard state
-    const [currentStep, setCurrentStep] = useState<WizardStep>(1)
+    const [currentStep, setCurrentStep] = useState<WizardStep>(0)
     const [wizardState, setWizardState] =
         useState<PublishWizardState>(INITIAL_STATE)
 
@@ -52,9 +55,17 @@ export default function YouTubePublishWizard({
         s => s.platformId
     )
 
+    // Step 0: Content type selection
+    const handleContentTypeChange = (type: ContentType) => {
+        // Reset platforms when content type changes
+        setWizardState({
+            ...INITIAL_STATE,
+            contentType: type,
+        })
+    }
+
     // Step 1: Network selection
     const handlePlatformsChange = (platforms: string[]) => {
-        // Convert string[] to PlatformSelection[], preserving existing channel selections
         const existing = wizardState.platformSelections
         const updated: PlatformSelection[] = platforms.map(id => {
             const found = existing.find(e => e.platformId === id)
@@ -70,7 +81,7 @@ export default function YouTubePublishWizard({
             delete metadata[id]
         }
 
-        // Add default YouTube metadata if YouTube is selected and doesn't have it yet
+        // Add default YouTube metadata if YouTube is selected
         if (platforms.includes("youtube") && !metadata.youtube) {
             metadata.youtube = { ...DEFAULT_YOUTUBE_METADATA }
         }
@@ -97,7 +108,10 @@ export default function YouTubePublishWizard({
         for (const sel of wizardState.platformSelections) {
             const platformId = sel.platformId
 
-            if (platformId === "youtube") {
+            if (
+                platformId === "youtube" &&
+                wizardState.contentType === "video"
+            ) {
                 // Upload video to YouTube
                 setWizardState(prev => ({
                     ...prev,
@@ -167,6 +181,14 @@ export default function YouTubePublishWizard({
                         formData.append("linkedVideoEnd", meta.linkedVideoEnd)
                     }
 
+                    // Attach thumbnail if provided
+                    if (wizardState.content.thumbnailFile) {
+                        formData.append(
+                            "thumbnail",
+                            wizardState.content.thumbnailFile
+                        )
+                    }
+
                     // Update progress
                     setWizardState(prev => ({
                         ...prev,
@@ -207,7 +229,6 @@ export default function YouTubePublishWizard({
                         },
                     }))
 
-                    // Small delay for UX
                     await new Promise(r => setTimeout(r, 500))
 
                     const result = await res.json()
@@ -228,7 +249,7 @@ export default function YouTubePublishWizard({
                     })
                 }
             } else {
-                // Future: handle Facebook, Instagram, etc.
+                // Future: handle other platforms and post type
                 results.push({
                     platformId,
                     success: false,
@@ -280,7 +301,7 @@ export default function YouTubePublishWizard({
         setCurrentStep(4)
     }
 
-    // Step titles (dynamic based on selected platforms)
+    // Step titles
     const getStepTitle = (step: number): string => {
         const key = STEP_TITLE_KEYS[step]
         if (!key) return ""
@@ -289,13 +310,21 @@ export default function YouTubePublishWizard({
 
     const renderStep = () => {
         switch (currentStep) {
+            case 0:
+                return (
+                    <ContentTypeSelect
+                        selectedType={wizardState.contentType}
+                        onSelect={handleContentTypeChange}
+                        onNext={() => setCurrentStep(1)}
+                    />
+                )
             case 1:
                 return (
                     <NetworkSelectStep
                         selectedPlatforms={selectedPlatformIds}
                         onPlatformsChange={handlePlatformsChange}
+                        contentType={wizardState.contentType}
                         onNext={() => {
-                            // Skip Step 2 if no platform needs channel selection
                             const needsChannels =
                                 wizardState.platformSelections.some(s =>
                                     ["youtube", "facebook"].includes(
@@ -346,8 +375,9 @@ export default function YouTubePublishWizard({
         }
     }
 
-    const totalSteps = 5
-    const progressSteps = [1, 2, 3, 4]
+    // Show first 5 steps in progress bar (0-4), skip step 5 (processing)
+    const progressSteps = [0, 1, 2, 3, 4]
+    const totalSteps = 6
 
     return (
         <Dialog open={true} onOpenChange={onClose}>
@@ -355,10 +385,10 @@ export default function YouTubePublishWizard({
                 <DialogHeader>
                     <DialogTitle className="flex items-center gap-2">
                         <span>{t("wizard.title")}</span>
-                        {currentStep <= totalSteps && (
+                        {currentStep < totalSteps && (
                             <span className="text-sm font-normal text-gray-500">
                                 {t("wizard.step", {
-                                    current: currentStep,
+                                    current: currentStep + 1,
                                     total: totalSteps,
                                 })}
                             </span>

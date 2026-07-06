@@ -1,3 +1,32 @@
+/** Content type: Post (text+images) or Video (video+thumbnail) */
+export type ContentType = "post" | "video"
+
+/** Platforms that support each content type */
+export const CONTENT_TYPE_PLATFORMS: Record<ContentType, string[]> = {
+    post: [
+        "youtube",
+        "facebook",
+        "instagram",
+        "twitter",
+        "linkedin",
+        "tiktok",
+        "kick",
+        "twitch",
+        "trovo",
+        "kwai",
+    ],
+    video: [
+        "youtube",
+        "facebook",
+        "instagram",
+        "tiktok",
+        "kick",
+        "twitch",
+        "trovo",
+        "kwai",
+    ],
+}
+
 /** Platform definition */
 export interface PlatformInfo {
     id: string
@@ -27,6 +56,9 @@ export type PlatformFeature =
 
 /** All data collected across wizard steps */
 export interface PublishWizardState {
+    /** Content type: Post (text+images) or Video (video+thumbnail) */
+    contentType: ContentType
+
     /** Selected platforms with their channel selections */
     platformSelections: PlatformSelection[]
 
@@ -38,6 +70,7 @@ export interface PublishWizardState {
         text: string
         images: File[]
         videoFile: File | null
+        thumbnailFile: File | null
     }
 
     /** Platform-specific metadata, keyed by platform id */
@@ -117,12 +150,14 @@ export const DEFAULT_YOUTUBE_METADATA: YouTubeMetadata = {
 }
 
 export const INITIAL_STATE: PublishWizardState = {
+    contentType: "post",
     platformSelections: [],
     storageMode: "local",
     content: {
         text: "",
         images: [],
         videoFile: null,
+        thumbnailFile: null,
     },
     platformMetadata: {},
     processing: { status: "idle" },

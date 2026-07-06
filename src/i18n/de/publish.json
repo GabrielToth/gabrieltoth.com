@@ -10,6 +10,18 @@
         "success": "Video erfolgreich veröffentlicht!",
         "error": "Fehler beim Veröffentlichen. Bitte versuche es erneut."
     },
+    "contentType": {
+        "title": "Inhaltstyp",
+        "description": "Wähle den Inhaltstyp, den du veröffentlichen möchtest",
+        "post": {
+            "label": "Beitrag",
+            "description": "Text mit Bildern für soziale Netzwerke"
+        },
+        "video": {
+            "label": "Video",
+            "description": "Video-Upload mit Miniaturansichten und Metadaten"
+        }
+    },
     "step1": {
         "title": "Soziales Netzwerk auswählen",
         "description": "Wähle aus, auf welchem sozialen Netzwerk du veröffentlichen möchtest",
@@ -64,6 +76,16 @@
         "selectedFile": "{name} ({size})",
         "removeFile": "Datei entfernen",
         "fileRequired": "Wähle eine Videodatei aus, um fortzufahren",
+        "allPlatforms": "Alle Plattformen",
+        "contentVideo": "Video-Inhalt",
+        "contentPost": "Beitragsinhalt",
+        "text": "Text",
+        "textVideoPlaceholder": "Gib deine Videobeschreibung ein (plattformübergreifend geteilt)",
+        "textPostPlaceholder": "Gib deinen Beitragstext ein",
+        "textRequired": "Füge Text oder Bilder hinzu, um fortzufahren",
+        "images": "Bilder",
+        "browseImage": "Bild Durchsuchen",
+        "thumbnailUploaded": "Das oben ausgewählte Vorschaubild wird verwendet. Du kannst es nach der Veröffentlichung im YouTube Studio anpassen.",
         "basicInfo": "Basisdaten",
         "title": "Titel",
         "titlePlaceholder": "Gib deinen Videotitel ein",
