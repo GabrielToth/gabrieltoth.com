@@ -149,7 +149,9 @@ describe("POST /api/oauth/disconnect/instagram — Attack Matrix", () => {
             userId: "test-user-123",
         })
         mockDeleteToken.mockResolvedValue(true)
-        mockGetServerSession.mockResolvedValue({ user: { id: "test-user-123" } })
+        mockGetServerSession.mockResolvedValue({
+            user: { id: "test-user-123" },
+        })
     })
 
     afterEach(() => {
@@ -628,7 +630,9 @@ describe("POST /api/oauth/disconnect/instagram — Attack Matrix", () => {
         })
 
         it("should disconnect for any userId from session (auth middleware enforces session)", async () => {
-            mockGetServerSession.mockResolvedValueOnce({ user: { id: "other-user-456" } })
+            mockGetServerSession.mockResolvedValueOnce({
+                user: { id: "other-user-456" },
+            })
             mockGetToken.mockResolvedValue({
                 accessToken: "other-user-token",
                 refreshToken: "other-refresh-token",

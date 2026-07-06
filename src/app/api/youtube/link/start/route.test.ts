@@ -114,7 +114,9 @@ describe("POST /api/youtube/link/start", () => {
             RESEND_FROM_NAME: "Test",
             TOKEN_ENCRYPTION_KEY: "a".repeat(64),
         }))
-        mockGetServerSession.mockResolvedValue({ user: { id: "test-user-123" } })
+        mockGetServerSession.mockResolvedValue({
+            user: { id: "test-user-123" },
+        })
         mockRequest = {
             headers: new Map(),
         }

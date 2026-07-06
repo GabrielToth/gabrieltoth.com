@@ -281,7 +281,7 @@ export function withCache<T>(
 /**
  * Debounce function for performance optimization
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function debounce<T extends (...args: any[]) => any>(
     fn: T,
@@ -304,7 +304,7 @@ export function debounce<T extends (...args: any[]) => any>(
 /**
  * Throttle function for performance optimization
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function throttle<T extends (...args: any[]) => any>(
     fn: T,
@@ -526,8 +526,6 @@ export const queryOptimizer = new QueryOptimizer()
  * Performance monitoring middleware
  */
 export function createPerformanceMiddleware() {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return (req: any, res: any, next: any) => {
         const start = performance.now()

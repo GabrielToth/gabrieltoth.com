@@ -88,9 +88,7 @@ export class OAuthManager {
         // YouTube (uses same Google Cloud OAuth credentials as Google Sign-In)
         // Prefer GOOGLE_CLIENT_ID/SECRET since they're more likely to be up-to-date
         const youtubeClientId =
-            process.env.GOOGLE_CLIENT_ID ||
-            process.env.YOUTUBE_CLIENT_ID ||
-            ""
+            process.env.GOOGLE_CLIENT_ID || process.env.YOUTUBE_CLIENT_ID || ""
         const youtubeClientSecret =
             process.env.GOOGLE_CLIENT_SECRET ||
             process.env.YOUTUBE_CLIENT_SECRET ||

@@ -186,7 +186,9 @@ function makeDeleteRouteRequest(
 describe("GET /api/platform/instagram/comments — Attack Matrix", () => {
     beforeEach(() => {
         vi.clearAllMocks()
-        mockGetServerSession.mockResolvedValue({ user: { id: "test-user-123" } })
+        mockGetServerSession.mockResolvedValue({
+            user: { id: "test-user-123" },
+        })
     })
     afterEach(() => {
         vi.clearAllMocks()
@@ -324,10 +326,10 @@ describe("GET /api/platform/instagram/comments — Attack Matrix", () => {
 
     describe("Row 17 — IDOR", () => {
         it("should allow any userId to list comments (authorized per user)", async () => {
-            mockGetServerSession.mockResolvedValueOnce({ user: { id: "other-user-456" } })
-            const request = makeGetRequest(
-                { media_id: "123" }
-            )
+            mockGetServerSession.mockResolvedValueOnce({
+                user: { id: "other-user-456" },
+            })
+            const request = makeGetRequest({ media_id: "123" })
             const response = await GET(request)
             // Each user sees their own linked account's comments
             expect([200, 404, 500]).toContain(response.status)
@@ -347,7 +349,9 @@ describe("POST /api/platform/instagram/comments — Attack Matrix", () => {
     beforeEach(() => {
         vi.clearAllMocks()
         mockReplyToComment.mockResolvedValue({ id: "mock-reply-id-123" })
-        mockGetServerSession.mockResolvedValue({ user: { id: "test-user-123" } })
+        mockGetServerSession.mockResolvedValue({
+            user: { id: "test-user-123" },
+        })
     })
 
     afterEach(() => {
@@ -644,7 +648,9 @@ describe("POST /api/platform/instagram/comments — Attack Matrix", () => {
 
     describe("Row 17 — IDOR", () => {
         it("should allow reply from any userId (per-user auth)", async () => {
-            mockGetServerSession.mockResolvedValueOnce({ user: { id: "other-user-789" } })
+            mockGetServerSession.mockResolvedValueOnce({
+                user: { id: "other-user-789" },
+            })
             const request = makePostRequest(validReply)
             const response = await POST(request)
             expect([201, 404, 500]).toContain(response.status)
@@ -679,7 +685,9 @@ describe("DELETE /api/platform/instagram/comments/{id} — Attack Matrix", () =>
     beforeEach(() => {
         vi.clearAllMocks()
         mockDeleteComment.mockResolvedValue(undefined)
-        mockGetServerSession.mockResolvedValue({ user: { id: "test-user-123" } })
+        mockGetServerSession.mockResolvedValue({
+            user: { id: "test-user-123" },
+        })
     })
 
     afterEach(() => {
@@ -893,7 +901,9 @@ describe("DELETE /api/platform/instagram/comments/{id} — Attack Matrix", () =>
 
     describe("Row 17 — IDOR", () => {
         it("should allow delete from any userId (per-user auth)", async () => {
-            mockGetServerSession.mockResolvedValueOnce({ user: { id: "other-user-789" } })
+            mockGetServerSession.mockResolvedValueOnce({
+                user: { id: "other-user-789" },
+            })
             const request = makeDeleteRouteRequest("c-123")
             const response = await DELETE(request, {
                 params: Promise.resolve({ id: "c-123" }),

@@ -144,7 +144,9 @@ describe("POST /api/oauth/disconnect/kick — Attack Matrix", () => {
             platform: "kick",
         })
         mockDeleteToken.mockResolvedValue(undefined)
-        mockGetServerSession.mockResolvedValue({ user: { id: "test-user-123" } })
+        mockGetServerSession.mockResolvedValue({
+            user: { id: "test-user-123" },
+        })
     })
 
     afterEach(() => {

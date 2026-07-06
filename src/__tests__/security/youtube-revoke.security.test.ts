@@ -169,7 +169,9 @@ describe("POST /api/youtube/link/revoke — Attack Matrix", () => {
             userId: "test-user-123",
         })
         mockDeleteToken.mockResolvedValue(true)
-        mockGetServerSession.mockResolvedValue({ user: { id: "test-user-123" } })
+        mockGetServerSession.mockResolvedValue({
+            user: { id: "test-user-123" },
+        })
     })
 
     afterEach(() => {
@@ -630,7 +632,9 @@ describe("POST /api/youtube/link/revoke — Attack Matrix", () => {
     // ── Row 17: IDOR ──
     describe("Row 17 — IDOR (access other user's channel)", () => {
         it("should only revoke own channel (userId from session is used)", async () => {
-            mockGetServerSession.mockResolvedValueOnce({ user: { id: "other-user-456" } })
+            mockGetServerSession.mockResolvedValueOnce({
+                user: { id: "other-user-456" },
+            })
             const request = makePostRequest(
                 "http://localhost/api/youtube/link/revoke",
                 {},

@@ -106,7 +106,9 @@ function makePost(
 describe("POST /api/platform/facebook/publish — Attack Matrix", () => {
     beforeEach(() => {
         vi.clearAllMocks()
-        mockGetServerSession.mockResolvedValue({ user: { id: "test-user-123" } })
+        mockGetServerSession.mockResolvedValue({
+            user: { id: "test-user-123" },
+        })
     })
     afterEach(() => vi.clearAllMocks())
 
