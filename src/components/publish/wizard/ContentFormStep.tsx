@@ -29,7 +29,13 @@ import type {
     YouTubeMetadata,
     PlatformSelection,
 } from "./types"
-import { DEFAULT_YOUTUBE_METADATA, PLATFORM_EXCLUSIVE_FEATURES } from "./types"
+import {
+    DEFAULT_YOUTUBE_METADATA,
+    PLATFORM_EXCLUSIVE_FEATURES,
+    PLATFORM_VIDEO_LIMITS,
+    getCompatibleVideoLimit,
+    getPlatformsExceedingLimit,
+} from "./types"
 
 interface ContentFormStepProps {
     state: PublishWizardState
@@ -82,6 +88,13 @@ export default function ContentFormStep({
     const selectedPlatformIds = state.platformSelections.map(s => s.platformId)
     const hasYouTube = selectedPlatformIds.includes("youtube")
 
+    // Video size limit: lowest among selected platforms
+    const compatibleLimit = getCompatibleVideoLimit(selectedPlatformIds)
+    const videoFile = state.content.videoFile
+    const exceedingPlatforms = videoFile
+        ? getPlatformsExceedingLimit(selectedPlatformIds, videoFile.size)
+        : []
+
     // YouTube metadata helper
     const youtubeMeta =
         state.platformMetadata.youtube || DEFAULT_YOUTUBE_METADATA
@@ -99,9 +112,19 @@ export default function ContentFormStep({
     const validate = (): boolean => {
         const errs: StepError = {}
 
-        // Video content type: required video file
+        // Video content type: required video file + size check
         if (isVideo && !state.content.videoFile) {
             errs.videoFile = t("step4.fileRequired")
+        }
+        if (
+            isVideo &&
+            state.content.videoFile &&
+            compatibleLimit > 0 &&
+            state.content.videoFile.size > compatibleLimit
+        ) {
+            errs.videoFile = t("step4.fileTooLargeForPlatforms", {
+                limit: formatBytes(compatibleLimit),
+            })
         }
 
         // Post content type: needs at least text or images
@@ -375,9 +398,15 @@ export default function ContentFormStep({
                                     <p className="text-sm text-gray-600 dark:text-gray-400">
                                         {t("step4.dropzone")}
                                     </p>
-                                    <p className="text-xs text-gray-400">
-                                        {t("step4.maxSize")}
-                                    </p>
+                                    {compatibleLimit > 0 && (
+                                        <p className="text-xs text-gray-400">
+                                            {t("step4.maxSizeDynamic", {
+                                                limit: formatBytes(
+                                                    compatibleLimit
+                                                ),
+                                            })}
+                                        </p>
+                                    )}
                                     <Button
                                         type="button"
                                         variant="outline"
@@ -419,6 +448,34 @@ export default function ContentFormStep({
                                     </button>
                                 </div>
                             )}
+
+                            {/* Platform incompatibility warnings */}
+                            {exceedingPlatforms.length > 0 && (
+                                <div className="space-y-1.5 rounded-lg border border-amber-200 bg-amber-50 p-3 dark:border-amber-800 dark:bg-amber-950/20">
+                                    <p className="flex items-center gap-1 text-xs font-medium text-amber-800 dark:text-amber-300">
+                                        <AlertCircle className="h-3.5 w-3.5" />
+                                        {t("step4.incompatiblePlatforms")}
+                                    </p>
+                                    <ul className="list-inside list-disc space-y-0.5 text-xs text-amber-700 dark:text-amber-400">
+                                        {exceedingPlatforms.map(p => (
+                                            <li key={p.id}>
+                                                {t("step4.platformExceeded", {
+                                                    platform:
+                                                        PLATFORM_LABEL_KEYS[
+                                                            p.id
+                                                        ] ??
+                                                        p.id
+                                                            .charAt(0)
+                                                            .toUpperCase() +
+                                                            p.id.slice(1),
+                                                    limit: formatBytes(p.limit),
+                                                })}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            )}
+
                             <input
                                 ref={fileInputRef}
                                 type="file"
