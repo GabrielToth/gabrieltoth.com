@@ -54,8 +54,10 @@ export default function VideoUploadStep({
                 },
             })
             setErrors({})
+            // Auto-advance: user already uploaded the video, no need to stay on this step
+            onNext()
         },
-        [state, onStateChange, t]
+        [state, onStateChange, onNext, t]
     )
 
     const handleVideoDrop = useCallback(
@@ -87,18 +89,6 @@ export default function VideoUploadStep({
         })
         setErrors({})
     }, [state, onStateChange])
-
-    const validate = (): boolean => {
-        if (!state.content.videoFile) {
-            setErrors({ videoFile: t("videoUpload.fileRequired") })
-            return false
-        }
-        return true
-    }
-
-    const handleNext = () => {
-        if (validate()) onNext()
-    }
 
     return (
         <div className="space-y-6">
@@ -168,15 +158,6 @@ export default function VideoUploadStep({
                     </div>
                 )}
 
-                {/* Auto-fill title hint */}
-                {videoFile && state.content.autoFillTitle && (
-                    <p className="text-sm text-gray-500 italic">
-                        {t("videoUpload.autoFillTitle", {
-                            title: state.content.autoFillTitle,
-                        })}
-                    </p>
-                )}
-
                 {/* Error message */}
                 {errors.videoFile && (
                     <p className="flex items-center gap-1 text-xs text-red-500">
@@ -194,12 +175,11 @@ export default function VideoUploadStep({
                 />
             </div>
 
-            {/* Navigation */}
+            {/* Navigation — only Back, auto-advances after upload */}
             <div className="flex justify-between border-t pt-4 dark:border-gray-700">
                 <Button onClick={onBack} variant="outline">
                     {t("wizard.back")}
                 </Button>
-                <Button onClick={handleNext}>{t("wizard.next")}</Button>
             </div>
         </div>
     )
