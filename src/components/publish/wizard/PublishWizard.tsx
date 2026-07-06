@@ -18,7 +18,6 @@ import {
     AlertDialogCancel,
     AlertDialogAction,
 } from "@/components/ui/alert-dialog"
-import { Button } from "@/components/ui/button"
 import { X, Save, ArrowLeft, Trash2 } from "lucide-react"
 import ContentTypeSelect from "./ContentTypeSelect"
 import NetworkSelectStep from "./NetworkSelectStep"
@@ -608,38 +607,27 @@ export default function PublishWizard({ onClose }: PublishWizardProps) {
                         </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter className="flex-col gap-2 sm:flex-row">
-                        <AlertDialogCancel asChild>
-                            <Button
-                                variant="outline"
-                                onClick={handleBackToEditing}
-                                className="gap-2"
-                            >
-                                <ArrowLeft className="h-4 w-4" />
-                                {t("closeConfirm.backToEditing")}
-                            </Button>
+                        <AlertDialogCancel
+                            onClick={handleBackToEditing}
+                            className="gap-2"
+                        >
+                            <ArrowLeft className="h-4 w-4" />
+                            {t("closeConfirm.backToEditing")}
                         </AlertDialogCancel>
-                        <div className="flex gap-2">
-                            <AlertDialogAction asChild>
-                                <Button
-                                    variant="secondary"
-                                    onClick={handleSaveDraftAndClose}
-                                    className="gap-2"
-                                >
-                                    <Save className="h-4 w-4" />
-                                    {t("closeConfirm.saveDraft")}
-                                </Button>
-                            </AlertDialogAction>
-                            <AlertDialogAction asChild>
-                                <Button
-                                    variant="ghost"
-                                    onClick={handleDiscardAndClose}
-                                    className="gap-2 text-red-600 hover:bg-red-50 hover:text-red-700 dark:hover:bg-red-950/30"
-                                >
-                                    <Trash2 className="h-4 w-4" />
-                                    {t("closeConfirm.discard")}
-                                </Button>
-                            </AlertDialogAction>
-                        </div>
+                        <AlertDialogAction
+                            onClick={handleSaveDraftAndClose}
+                            className="gap-2"
+                        >
+                            <Save className="h-4 w-4" />
+                            {t("closeConfirm.saveDraft")}
+                        </AlertDialogAction>
+                        <AlertDialogAction
+                            onClick={handleDiscardAndClose}
+                            className="gap-2 bg-red-600 hover:bg-red-700 text-white"
+                        >
+                            <Trash2 className="h-4 w-4" />
+                            {t("closeConfirm.discard")}
+                        </AlertDialogAction>
                     </AlertDialogFooter>
                 </AlertDialogContent>
             </AlertDialog>
