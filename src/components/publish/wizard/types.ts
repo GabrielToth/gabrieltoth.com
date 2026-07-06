@@ -72,6 +72,8 @@ export interface PublishWizardState {
         images: File[]
         videoFile: File | null
         thumbnailFile: File | null
+        /** Auto-filled title extracted from video filename (minus extension). Used to pre-fill YouTube title. */
+        autoFillTitle: string
     }
 
     /** Platform-specific metadata, keyed by platform id */
@@ -209,6 +211,7 @@ export const INITIAL_STATE: PublishWizardState = {
         images: [],
         videoFile: null,
         thumbnailFile: null,
+        autoFillTitle: "",
     },
     platformMetadata: {},
     processing: { status: "idle" },

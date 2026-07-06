@@ -58,6 +58,17 @@ jobs:
 
             - name: Build
               run: npm run build
+              env:
+                  NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+                  SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+                  PEPPER_SECRET: ${{ secrets.PEPPER_SECRET }}
+                  DATABASE_URL: ${{ secrets.DATABASE_URL }}
+                  DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+                  JWT_SECRET: ${{ secrets.JWT_SECRET }}
+                  NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
+                  TOKEN_ENCRYPTION_KEY: ${{ secrets.TOKEN_ENCRYPTION_KEY }}
+                  GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+                  GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
 
     test-suite:
         runs-on: ubuntu-latest

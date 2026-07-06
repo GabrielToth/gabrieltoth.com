@@ -382,6 +382,17 @@
         "uploadComplete": "Upload abgeschlossen",
         "uploadFailed": "Upload fehlgeschlagen. Bitte versuche es erneut."
     },
+    "videoUpload": {
+        "title": "Video Hochladen",
+        "description": "Wähle die Videodatei zum Hochladen aus",
+        "dropzone": "Video hierher ziehen oder klicken zum Auswählen",
+        "browse": "Dateien Durchsuchen",
+        "maxSize": "Kompatible maximale Größe: {limit}",
+        "selectedFile": "{name} ({size})",
+        "removeFile": "Datei entfernen",
+        "fileRequired": "Bitte wähle eine Videodatei aus, um fortzufahren",
+        "autoFillTitle": "Titel automatisch aus Dateinamen übernommen: \"{title}\""
+    },
     "billingSummary": {
         "title": "Abrechnungsübersicht",
         "baseFee": "Grundgebühr (nicht erstattbar)",

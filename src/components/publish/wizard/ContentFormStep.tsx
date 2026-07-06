@@ -8,22 +8,10 @@ import { Textarea } from "@/components/ui/textarea"
 import { Badge } from "@/components/ui/badge"
 import { useTranslations } from "next-intl"
 import { SiYoutube } from "@icons-pack/react-simple-icons"
-import {
-    Upload,
-    FileVideo,
-    Image,
-    AlertCircle,
-    X,
-    FileImage,
-} from "lucide-react"
+import { FileVideo, Image, AlertCircle, X, FileImage } from "lucide-react"
 import { useCallback, useRef, useState } from "react"
 import type { PublishWizardState, YouTubeMetadata } from "./types"
-import {
-    DEFAULT_YOUTUBE_METADATA,
-    PLATFORM_VIDEO_LIMITS,
-    getCompatibleVideoLimit,
-    getPlatformsExceedingLimit,
-} from "./types"
+import { DEFAULT_YOUTUBE_METADATA } from "./types"
 import TagInput from "./TagInput"
 
 interface ContentFormStepProps {
@@ -35,27 +23,6 @@ interface ContentFormStepProps {
 
 type StepError = Record<string, string>
 
-/** Map platform id to its display name key */
-const PLATFORM_LABEL_KEYS: Record<string, string> = {
-    youtube: "YouTube",
-    facebook: "Facebook",
-    instagram: "Instagram",
-    twitter: "Twitter",
-    linkedin: "LinkedIn",
-}
-
-/** Map platform id to its icon component */
-const PLATFORM_ICONS: Record<string, React.ReactNode> = {
-    youtube: <SiYoutube className="h-4 w-4 text-red-600" />,
-}
-
-function formatBytes(bytes: number): string {
-    if (bytes >= 1024 * 1024 * 1024)
-        return `${(bytes / (1024 * 1024 * 1024)).toFixed(1)}GB`
-    if (bytes >= 1024 * 1024) return `${(bytes / (1024 * 1024)).toFixed(0)}MB`
-    return `${(bytes / 1024).toFixed(0)}KB`
-}
-
 export default function ContentFormStep({
     state,
     onStateChange,
@@ -63,10 +30,8 @@ export default function ContentFormStep({
     onNext,
 }: ContentFormStepProps) {
     const t = useTranslations("publish")
-    const fileInputRef = useRef<HTMLInputElement>(null)
     const imageInputRef = useRef<HTMLInputElement>(null)
     const thumbnailInputRef = useRef<HTMLInputElement>(null)
-    const [dragOver, setDragOver] = useState(false)
     const [thumbnailDragOver, setThumbnailDragOver] = useState(false)
     const [errors, setErrors] = useState<StepError>({})
 
@@ -76,13 +41,6 @@ export default function ContentFormStep({
     // Determine which platforms are selected
     const selectedPlatformIds = state.platformSelections.map(s => s.platformId)
     const hasYouTube = selectedPlatformIds.includes("youtube")
-
-    // Video size limit: lowest among selected platforms
-    const compatibleLimit = getCompatibleVideoLimit(selectedPlatformIds)
-    const videoFile = state.content.videoFile
-    const exceedingPlatforms = videoFile
-        ? getPlatformsExceedingLimit(selectedPlatformIds, videoFile.size)
-        : []
 
     // YouTube metadata helper
     const youtubeMeta =
@@ -100,21 +58,6 @@ export default function ContentFormStep({
     // Validation
     const validate = (): boolean => {
         const errs: StepError = {}
-
-        // Video content type: required video file + size check
-        if (isVideo && !state.content.videoFile) {
-            errs.videoFile = t("step4.fileRequired")
-        }
-        if (
-            isVideo &&
-            state.content.videoFile &&
-            compatibleLimit > 0 &&
-            state.content.videoFile.size > compatibleLimit
-        ) {
-            errs.videoFile = t("step4.fileTooLargeForPlatforms", {
-                limit: formatBytes(compatibleLimit),
-            })
-        }
 
         // Post content type: needs at least text or images
         if (
@@ -152,45 +95,6 @@ export default function ContentFormStep({
             onNext()
         }
     }
-
-    // Video file handlers
-    const handleVideoDrop = useCallback(
-        (e: React.DragEvent) => {
-            e.preventDefault()
-            setDragOver(false)
-            const file = e.dataTransfer.files?.[0]
-            if (file && file.type.startsWith("video/")) {
-                onStateChange({
-                    ...state,
-                    content: { ...state.content, videoFile: file },
-                })
-                setErrors(prev => {
-                    const next = { ...prev }
-                    delete next.videoFile
-                    return next
-                })
-            }
-        },
-        [state, onStateChange]
-    )
-
-    const handleVideoChange = useCallback(
-        (e: React.ChangeEvent<HTMLInputElement>) => {
-            const file = e.target.files?.[0]
-            if (file && file.type.startsWith("video/")) {
-                onStateChange({
-                    ...state,
-                    content: { ...state.content, videoFile: file },
-                })
-                setErrors(prev => {
-                    const next = { ...prev }
-                    delete next.videoFile
-                    return next
-                })
-            }
-        },
-        [state, onStateChange]
-    )
 
     // Thumbnail file handlers
     const handleThumbnailDrop = useCallback(
@@ -281,7 +185,7 @@ export default function ContentFormStep({
                     {/* Text — always shown */}
                     <div className="space-y-2">
                         <Label htmlFor="universal-text">
-                            {t("step4.text")}
+                            {isVideo ? t("step4.description") : t("step4.text")}
                             {isPost && !state.content.images.length && (
                                 <span className="ml-2 text-xs text-red-500">
                                     *
@@ -345,130 +249,6 @@ export default function ContentFormStep({
                                         </div>
                                     ))}
                                 </div>
-                            )}
-                        </div>
-                    )}
-
-                    {/* Video file — only for Video content type */}
-                    {isVideo && (
-                        <div className="space-y-2">
-                            <Label>
-                                {t("step4.videoFile")}
-                                <span className="ml-2 text-xs text-red-500">
-                                    *
-                                </span>
-                            </Label>
-                            {!state.content.videoFile ? (
-                                <div
-                                    onDragOver={e => {
-                                        e.preventDefault()
-                                        setDragOver(true)
-                                    }}
-                                    onDragLeave={() => setDragOver(false)}
-                                    onDrop={handleVideoDrop}
-                                    onClick={() =>
-                                        fileInputRef.current?.click()
-                                    }
-                                    className={`flex cursor-pointer flex-col items-center gap-3 rounded-lg border-2 border-dashed p-6 transition-colors ${
-                                        dragOver
-                                            ? "border-blue-500 bg-blue-50 dark:bg-blue-950/30"
-                                            : "border-gray-300 hover:border-gray-400 dark:border-gray-600"
-                                    }`}
-                                >
-                                    <Upload className="h-8 w-8 text-gray-400" />
-                                    <p className="text-sm text-gray-600 dark:text-gray-400">
-                                        {t("step4.dropzone")}
-                                    </p>
-                                    {compatibleLimit > 0 && (
-                                        <p className="text-xs text-gray-400">
-                                            {t("step4.maxSizeDynamic", {
-                                                limit: formatBytes(
-                                                    compatibleLimit
-                                                ),
-                                            })}
-                                        </p>
-                                    )}
-                                    <Button
-                                        type="button"
-                                        variant="outline"
-                                        size="sm"
-                                        onClick={e => {
-                                            e.stopPropagation()
-                                            fileInputRef.current?.click()
-                                        }}
-                                    >
-                                        {t("step4.browse")}
-                                    </Button>
-                                </div>
-                            ) : (
-                                <div className="flex items-center gap-4 rounded-lg border bg-gray-50 p-3 dark:bg-gray-900">
-                                    <FileVideo className="h-6 w-6 text-blue-500" />
-                                    <div className="flex-1 min-w-0">
-                                        <p className="text-sm font-medium truncate">
-                                            {state.content.videoFile.name}
-                                        </p>
-                                        <p className="text-xs text-gray-500">
-                                            {formatBytes(
-                                                state.content.videoFile.size
-                                            )}
-                                        </p>
-                                    </div>
-                                    <button
-                                        onClick={() =>
-                                            onStateChange({
-                                                ...state,
-                                                content: {
-                                                    ...state.content,
-                                                    videoFile: null,
-                                                },
-                                            })
-                                        }
-                                        className="rounded-full p-1 text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700"
-                                    >
-                                        <X className="h-4 w-4" />
-                                    </button>
-                                </div>
-                            )}
-
-                            {/* Platform incompatibility warnings */}
-                            {exceedingPlatforms.length > 0 && (
-                                <div className="space-y-1.5 rounded-lg border border-amber-200 bg-amber-50 p-3 dark:border-amber-800 dark:bg-amber-950/20">
-                                    <p className="flex items-center gap-1 text-xs font-medium text-amber-800 dark:text-amber-300">
-                                        <AlertCircle className="h-3.5 w-3.5" />
-                                        {t("step4.incompatiblePlatforms")}
-                                    </p>
-                                    <ul className="list-inside list-disc space-y-0.5 text-xs text-amber-700 dark:text-amber-400">
-                                        {exceedingPlatforms.map(p => (
-                                            <li key={p.id}>
-                                                {t("step4.platformExceeded", {
-                                                    platform:
-                                                        PLATFORM_LABEL_KEYS[
-                                                            p.id
-                                                        ] ??
-                                                        p.id
-                                                            .charAt(0)
-                                                            .toUpperCase() +
-                                                            p.id.slice(1),
-                                                    limit: formatBytes(p.limit),
-                                                })}
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </div>
-                            )}
-
-                            <input
-                                ref={fileInputRef}
-                                type="file"
-                                accept="video/*"
-                                className="hidden"
-                                onChange={handleVideoChange}
-                            />
-                            {errors.videoFile && (
-                                <p className="flex items-center gap-1 text-xs text-red-500">
-                                    <AlertCircle className="h-3 w-3" />
-                                    {errors.videoFile}
-                                </p>
                             )}
                         </div>
                     )}
