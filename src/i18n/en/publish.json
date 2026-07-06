@@ -10,6 +10,18 @@
         "success": "Video published successfully!",
         "error": "Error publishing. Please try again."
     },
+    "contentType": {
+        "title": "Content Type",
+        "description": "Choose the type of content you want to publish",
+        "post": {
+            "label": "Post",
+            "description": "Text with images for social networks"
+        },
+        "video": {
+            "label": "Video",
+            "description": "Video upload with thumbnails and metadata"
+        }
+    },
     "step1": {
         "title": "Select Social Network",
         "description": "Choose which social network to publish to",
@@ -64,6 +76,16 @@
         "selectedFile": "{name} ({size})",
         "removeFile": "Remove file",
         "fileRequired": "Select a video file to continue",
+        "allPlatforms": "All platforms",
+        "contentVideo": "Video Content",
+        "contentPost": "Post Content",
+        "text": "Text",
+        "textVideoPlaceholder": "Enter your video description (shared across platforms)",
+        "textPostPlaceholder": "Enter your post text",
+        "textRequired": "Add text or images to continue",
+        "images": "Images",
+        "browseImage": "Browse Image",
+        "thumbnailUploaded": "The thumbnail selected above will be used. You can customize after publishing in YouTube Studio.",
         "basicInfo": "Basic Information",
         "title": "Title",
         "titlePlaceholder": "Enter your video title",

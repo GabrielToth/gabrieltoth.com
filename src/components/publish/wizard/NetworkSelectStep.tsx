@@ -12,12 +12,14 @@ import {
 import { FaLinkedin } from "react-icons/fa6"
 import { useTranslations } from "next-intl"
 import { CheckCircle, Lock, XCircle, AlertCircle } from "lucide-react"
-import type { PlatformInfo } from "./types"
+import type { PlatformInfo, ContentType } from "./types"
+import { CONTENT_TYPE_PLATFORMS } from "./types"
 
 interface NetworkSelectStepProps {
     selectedPlatforms: string[]
     onPlatformsChange: (platforms: string[]) => void
     onNext: () => void
+    contentType: ContentType
 }
 
 const NETWORKS: PlatformInfo[] = [
@@ -85,8 +87,13 @@ export default function NetworkSelectStep({
     selectedPlatforms,
     onPlatformsChange,
     onNext,
+    contentType,
 }: NetworkSelectStepProps) {
     const t = useTranslations("publish")
+
+    // Filter platforms by content type compatibility
+    const compatibleIds = CONTENT_TYPE_PLATFORMS[contentType] || []
+    const filteredNetworks = NETWORKS.filter(n => compatibleIds.includes(n.id))
 
     const togglePlatform = (platformId: string) => {
         if (selectedPlatforms.includes(platformId)) {
@@ -117,7 +124,7 @@ export default function NetworkSelectStep({
             </div>
 
             <div className="grid gap-4">
-                {NETWORKS.map(network => {
+                {filteredNetworks.map(network => {
                     const isSelected = selectedPlatforms.includes(network.id)
                     const implemented = network.implemented
 

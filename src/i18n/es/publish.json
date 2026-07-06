@@ -10,6 +10,18 @@
         "success": "¡Video publicado con éxito!",
         "error": "Error al publicar. Intenta de nuevo."
     },
+    "contentType": {
+        "title": "Tipo de Contenido",
+        "description": "Elige el tipo de contenido que deseas publicar",
+        "post": {
+            "label": "Publicación",
+            "description": "Texto con imágenes para redes sociales"
+        },
+        "video": {
+            "label": "Video",
+            "description": "Subida de video con miniaturas y metadatos"
+        }
+    },
     "step1": {
         "title": "Seleccionar Red Social",
         "description": "Elige a qué red social deseas publicar",
@@ -64,6 +76,16 @@
         "selectedFile": "{name} ({size})",
         "removeFile": "Eliminar archivo",
         "fileRequired": "Selecciona un archivo de video para continuar",
+        "allPlatforms": "Todas las plataformas",
+        "contentVideo": "Contenido del Video",
+        "contentPost": "Contenido de la Publicación",
+        "text": "Texto",
+        "textVideoPlaceholder": "Ingresa la descripción de tu video (compartida entre plataformas)",
+        "textPostPlaceholder": "Ingresa el texto de tu publicación",
+        "textRequired": "Agrega texto o imágenes para continuar",
+        "images": "Imágenes",
+        "browseImage": "Buscar Imagen",
+        "thumbnailUploaded": "La miniatura seleccionada arriba se utilizará. Puedes personalizar después de publicar en YouTube Studio.",
         "basicInfo": "Información Básica",
         "title": "Título",
         "titlePlaceholder": "Ingresa el título de tu video",
