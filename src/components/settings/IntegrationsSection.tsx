@@ -83,7 +83,7 @@ export const IntegrationsSection: React.FC<IntegrationsSectionProps> = ({
                 {/* Connected Integrations */}
                 {connectedIntegrations.length > 0 && (
                     <div className="space-y-4">
-                        <h3 className="text-sm font-semibold text-gray-900">
+                        <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100">
                             {t("connectedApps", {
                                 count: connectedIntegrations.length,
                             })}
@@ -92,7 +92,7 @@ export const IntegrationsSection: React.FC<IntegrationsSectionProps> = ({
                             {connectedIntegrations.map(integration => (
                                 <div
                                     key={integration.id}
-                                    className="rounded-lg border border-gray-200 p-4"
+                                    className="rounded-lg border border-gray-200 p-4 dark:border-gray-700"
                                 >
                                     <div className="flex items-start justify-between">
                                         <div className="flex items-center gap-3">
@@ -103,11 +103,11 @@ export const IntegrationsSection: React.FC<IntegrationsSectionProps> = ({
                                                 size={24}
                                             />
                                             <div>
-                                                <p className="font-medium text-gray-900">
+                                                <p className="font-medium text-gray-900 dark:text-gray-100">
                                                     {integration.name}
                                                 </p>
                                                 {integration.connectedAt && (
-                                                    <p className="text-xs text-gray-500">
+                                                    <p className="text-xs text-gray-500 dark:text-gray-400">
                                                         {t("connectedOn")}{" "}
                                                         {new Date(
                                                             integration.connectedAt
@@ -116,7 +116,7 @@ export const IntegrationsSection: React.FC<IntegrationsSectionProps> = ({
                                                 )}
                                             </div>
                                         </div>
-                                        <span className="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800">
+                                        <span className="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800 dark:bg-green-900/30 dark:text-green-300">
                                             {t("connected")}
                                         </span>
                                     </div>
@@ -138,7 +138,7 @@ export const IntegrationsSection: React.FC<IntegrationsSectionProps> = ({
                                                 <Button
                                                     size="sm"
                                                     variant="outline"
-                                                    className="text-red-600 hover:bg-red-50"
+                                                    className="text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-950/30"
                                                     onClick={() =>
                                                         handleConfirmDisconnect(
                                                             integration.id
@@ -159,7 +159,7 @@ export const IntegrationsSection: React.FC<IntegrationsSectionProps> = ({
                                             <Button
                                                 size="sm"
                                                 variant="outline"
-                                                className="w-full text-red-600 hover:bg-red-50"
+                                                className="w-full text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-950/30"
                                                 onClick={() =>
                                                     handleDisconnectClick(
                                                         integration.id
@@ -179,7 +179,7 @@ export const IntegrationsSection: React.FC<IntegrationsSectionProps> = ({
                 {/* Available Integrations */}
                 {availableIntegrations.length > 0 && (
                     <div className="space-y-4">
-                        <h3 className="text-sm font-semibold text-gray-900">
+                        <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100">
                             {t("availableApps", {
                                 count: availableIntegrations.length,
                             })}
@@ -188,7 +188,7 @@ export const IntegrationsSection: React.FC<IntegrationsSectionProps> = ({
                             {availableIntegrations.map(integration => (
                                 <div
                                     key={integration.id}
-                                    className="rounded-lg border border-gray-200 p-4 opacity-60"
+                                    className="rounded-lg border border-gray-200 p-4 opacity-60 dark:border-gray-700"
                                 >
                                     <div className="flex items-start justify-between">
                                         <div className="flex items-center gap-3">
@@ -199,15 +199,15 @@ export const IntegrationsSection: React.FC<IntegrationsSectionProps> = ({
                                                 size={24}
                                             />
                                             <div>
-                                                <p className="font-medium text-gray-900">
+                                                <p className="font-medium text-gray-900 dark:text-gray-100">
                                                     {integration.name}
                                                 </p>
-                                                <p className="text-xs text-gray-500">
+                                                <p className="text-xs text-gray-500 dark:text-gray-400">
                                                     {t("notConnected")}
                                                 </p>
                                             </div>
                                         </div>
-                                        <span className="inline-flex items-center rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-800">
+                                        <span className="inline-flex items-center rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-800 dark:bg-gray-800 dark:text-gray-200">
                                             {t("available")}
                                         </span>
                                     </div>
