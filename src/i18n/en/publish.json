@@ -382,6 +382,17 @@
         "uploadComplete": "Upload complete",
         "uploadFailed": "Upload failed. Please try again."
     },
+    "videoUpload": {
+        "title": "Upload Video",
+        "description": "Select the video file to upload",
+        "dropzone": "Drag & drop video file here, or click to select",
+        "browse": "Browse Files",
+        "maxSize": "Compatible max size: {limit}",
+        "selectedFile": "{name} ({size})",
+        "removeFile": "Remove file",
+        "fileRequired": "Please select a video file to continue",
+        "autoFillTitle": "Title auto-filled from filename: \"{title}\""
+    },
     "billingSummary": {
         "title": "Billing Summary",
         "baseFee": "Base fee (non-refundable)",

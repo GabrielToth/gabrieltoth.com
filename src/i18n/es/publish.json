@@ -382,6 +382,17 @@
         "uploadComplete": "Subida completa",
         "uploadFailed": "Error al subir. Intenta de nuevo."
     },
+    "videoUpload": {
+        "title": "Subir Video",
+        "description": "Selecciona el archivo de video para subir",
+        "dropzone": "Arrastra el video aquí o haz clic para seleccionar",
+        "browse": "Buscar Archivos",
+        "maxSize": "Tamaño máximo compatible: {limit}",
+        "selectedFile": "{name} ({size})",
+        "removeFile": "Eliminar archivo",
+        "fileRequired": "Selecciona un archivo de video para continuar",
+        "autoFillTitle": "Título auto-completado del nombre del archivo: \"{title}\""
+    },
     "billingSummary": {
         "title": "Resumen de Facturación",
         "baseFee": "Tarifa base (no reembolsable)",

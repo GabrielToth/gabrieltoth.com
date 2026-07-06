@@ -24,6 +24,7 @@ import ContentTypeSelect from "./ContentTypeSelect"
 import NetworkSelectStep from "./NetworkSelectStep"
 import ChannelSelectStep from "./ChannelSelectStep"
 import StorageModeStep from "./StorageModeStep"
+import VideoUploadStep from "./VideoUploadStep"
 import ContentFormStep from "./ContentFormStep"
 import AdSuitabilityStep from "./AdSuitabilityStep"
 import VisibilityStep from "./VisibilityStep"
@@ -44,18 +45,19 @@ interface PublishWizardProps {
     defaultDate?: Date
 }
 
-type WizardStep = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7
+type WizardStep = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8
 
 /** Map step index to step key for dynamic titles */
 const STEP_TITLE_KEYS: Record<number, string> = {
     0: "contentType.title",
-    1: "step1.title",
-    2: "step2.title",
-    3: "step3.title",
-    4: "step4.title",
-    5: "step5.title",
-    6: "step6.title",
-    7: "step7.title",
+    1: "videoUpload.title",
+    2: "step1.title",
+    3: "step2.title",
+    4: "step3.title",
+    5: "step4.title",
+    6: "step5.title",
+    7: "step6.title",
+    8: "step7.title",
 }
 
 export default function PublishWizard({ onClose }: PublishWizardProps) {
@@ -202,7 +204,10 @@ export default function PublishWizard({ onClose }: PublishWizardProps) {
 
         // Add default YouTube metadata if YouTube is selected
         if (platforms.includes("youtube") && !metadata.youtube) {
-            metadata.youtube = { ...DEFAULT_YOUTUBE_METADATA }
+            metadata.youtube = {
+                ...DEFAULT_YOUTUBE_METADATA,
+                title: wizardState.content.autoFillTitle || "",
+            }
         }
 
         setWizardState({
@@ -408,7 +413,7 @@ export default function PublishWizard({ onClose }: PublishWizardProps) {
     }, [wizardState])
 
     const handleStartPublish = () => {
-        setCurrentStep(7)
+        setCurrentStep(8)
         handlePublish()
     }
 
@@ -417,7 +422,7 @@ export default function PublishWizard({ onClose }: PublishWizardProps) {
             ...prev,
             processing: { status: "idle" },
         }))
-        setCurrentStep(6)
+        setCurrentStep(7)
     }
 
     // Step titles
@@ -434,15 +439,33 @@ export default function PublishWizard({ onClose }: PublishWizardProps) {
                     <ContentTypeSelect
                         selectedType={wizardState.contentType}
                         onSelect={handleContentTypeChange}
-                        onNext={() => setCurrentStep(1)}
+                        onNext={() =>
+                            setCurrentStep(
+                                wizardState.contentType === "video" ? 1 : 2
+                            )
+                        }
                     />
                 )
             case 1:
+                return (
+                    <VideoUploadStep
+                        state={wizardState}
+                        onStateChange={setWizardState}
+                        onBack={() => setCurrentStep(0)}
+                        onNext={() => setCurrentStep(2)}
+                    />
+                )
+            case 2:
                 return (
                     <NetworkSelectStep
                         selectedPlatforms={selectedPlatformIds}
                         onPlatformsChange={handlePlatformsChange}
                         contentType={wizardState.contentType}
+                        onBack={() =>
+                            setCurrentStep(
+                                wizardState.contentType === "video" ? 1 : 0
+                            )
+                        }
                         onNext={() => {
                             const needsChannels =
                                 wizardState.platformSelections.some(s =>
@@ -450,39 +473,30 @@ export default function PublishWizard({ onClose }: PublishWizardProps) {
                                         s.platformId
                                     )
                                 )
-                            setCurrentStep(needsChannels ? 2 : 3)
+                            setCurrentStep(needsChannels ? 3 : 4)
                         }}
-                    />
-                )
-            case 2:
-                return (
-                    <ChannelSelectStep
-                        platformSelections={wizardState.platformSelections}
-                        onSelectionsChange={handleSelectionsChange}
-                        onBack={() => setCurrentStep(1)}
-                        onNext={() => setCurrentStep(3)}
                     />
                 )
             case 3:
                 return (
-                    <StorageModeStep
-                        selectedMode={wizardState.storageMode}
+                    <ChannelSelectStep
+                        platformSelections={wizardState.platformSelections}
+                        onSelectionsChange={handleSelectionsChange}
                         onBack={() => setCurrentStep(2)}
                         onNext={() => setCurrentStep(4)}
                     />
                 )
             case 4:
                 return (
-                    <ContentFormStep
-                        state={wizardState}
-                        onStateChange={setWizardState}
+                    <StorageModeStep
+                        selectedMode={wizardState.storageMode}
                         onBack={() => setCurrentStep(3)}
                         onNext={() => setCurrentStep(5)}
                     />
                 )
             case 5:
                 return (
-                    <AdSuitabilityStep
+                    <ContentFormStep
                         state={wizardState}
                         onStateChange={setWizardState}
                         onBack={() => setCurrentStep(4)}
@@ -491,14 +505,23 @@ export default function PublishWizard({ onClose }: PublishWizardProps) {
                 )
             case 6:
                 return (
-                    <VisibilityStep
+                    <AdSuitabilityStep
                         state={wizardState}
                         onStateChange={setWizardState}
                         onBack={() => setCurrentStep(5)}
-                        onNext={handleStartPublish}
+                        onNext={() => setCurrentStep(7)}
                     />
                 )
             case 7:
+                return (
+                    <VisibilityStep
+                        state={wizardState}
+                        onStateChange={setWizardState}
+                        onBack={() => setCurrentStep(6)}
+                        onNext={handleStartPublish}
+                    />
+                )
+            case 8:
                 return (
                     <ProcessingStep
                         processing={wizardState.processing}
@@ -512,9 +535,9 @@ export default function PublishWizard({ onClose }: PublishWizardProps) {
         }
     }
 
-    // Show first 7 steps in progress bar (0-6), skip step 7 (processing)
-    const progressSteps = [0, 1, 2, 3, 4, 5, 6]
-    const totalSteps = 8
+    // Show first 8 steps in progress bar (0-7), skip step 8 (processing)
+    const progressSteps = [0, 1, 2, 3, 4, 5, 6, 7]
+    const totalSteps = 9
 
     return (
         <>
@@ -542,7 +565,7 @@ export default function PublishWizard({ onClose }: PublishWizardProps) {
                     </DialogHeader>
 
                     {/* Step progress bar — only shows title for current step */}
-                    {currentStep <= 6 && (
+                    {currentStep <= 7 && (
                         <div className="flex items-center gap-1 px-1 flex-shrink-0">
                             {progressSteps.map(step => (
                                 <div key={step} className="flex-1">

@@ -18,6 +18,7 @@ import { CONTENT_TYPE_PLATFORMS } from "./types"
 interface NetworkSelectStepProps {
     selectedPlatforms: string[]
     onPlatformsChange: (platforms: string[]) => void
+    onBack: () => void
     onNext: () => void
     contentType: ContentType
 }
@@ -86,6 +87,7 @@ const NETWORKS: PlatformInfo[] = [
 export default function NetworkSelectStep({
     selectedPlatforms,
     onPlatformsChange,
+    onBack,
     onNext,
     contentType,
 }: NetworkSelectStepProps) {
@@ -208,7 +210,10 @@ export default function NetworkSelectStep({
             </div>
 
             {/* Navigation */}
-            <div className="flex justify-end border-t pt-4 dark:border-gray-700">
+            <div className="flex justify-between border-t pt-4 dark:border-gray-700">
+                <Button onClick={onBack} variant="outline">
+                    {t("wizard.back")}
+                </Button>
                 <Button
                     onClick={onNext}
                     disabled={selectedPlatforms.length === 0}
