@@ -5,13 +5,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select"
 import { Badge } from "@/components/ui/badge"
 import { useTranslations } from "next-intl"
 import { SiYoutube } from "@icons-pack/react-simple-icons"
@@ -24,21 +17,14 @@ import {
     FileImage,
 } from "lucide-react"
 import { useCallback, useRef, useState } from "react"
-import type {
-    PublishWizardState,
-    YouTubeMetadata,
-    PlatformSelection,
-} from "./types"
+import type { PublishWizardState, YouTubeMetadata } from "./types"
 import {
     DEFAULT_YOUTUBE_METADATA,
-    DEFAULT_AD_SUITABILITY,
-    PLATFORM_EXCLUSIVE_FEATURES,
     PLATFORM_VIDEO_LIMITS,
     getCompatibleVideoLimit,
     getPlatformsExceedingLimit,
-    AD_SUITABILITY_CATEGORIES,
-    type AdSuitability,
 } from "./types"
+import TagInput from "./TagInput"
 
 interface ContentFormStepProps {
     state: PublishWizardState
@@ -111,19 +97,6 @@ export default function ContentFormStep({
         })
     }
 
-    // Ad Suitability helper
-    const setAdSuitability = (
-        category: keyof AdSuitability,
-        value: 0 | 1 | 2
-    ) => {
-        setYouTubeMeta({
-            adSuitability: {
-                ...youtubeMeta.adSuitability,
-                [category]: value,
-            },
-        })
-    }
-
     // Validation
     const validate = (): boolean => {
         const errs: StepError = {}
@@ -162,8 +135,12 @@ export default function ContentFormStep({
         if (hasYouTube && youtubeMeta.description.length > 5000) {
             errs.youtube_description = t("step4.descriptionMax")
         }
-        if (hasYouTube && youtubeMeta.tags.length > 30) {
-            errs.youtube_tags = t("step4.tagsMax")
+        // Tags limit: 500 chars total (YouTube's limit, not 30 tags)
+        if (hasYouTube) {
+            const tagsTotalChars = youtubeMeta.tags.join(",").length
+            if (tagsTotalChars > 500) {
+                errs.youtube_tags = t("step4.tagsMax")
+            }
         }
 
         setErrors(errs)
@@ -270,20 +247,8 @@ export default function ContentFormStep({
     }
 
     // Tags handler
-    const handleTagsChange = (raw: string) => {
-        const tags = raw
-            .split(",")
-            .map(t => t.trim())
-            .filter(Boolean)
-            .slice(0, 30)
-        let total = 0
-        const limited: string[] = []
-        for (const tag of tags) {
-            if (total + tag.length + 1 > 500) break
-            limited.push(tag)
-            total += tag.length + 1
-        }
-        setYouTubeMeta({ tags: limited })
+    const handleTagsChange = (tags: string[]) => {
+        setYouTubeMeta({ tags })
     }
 
     return (
@@ -668,599 +633,33 @@ export default function ContentFormStep({
                                 </div>
                             </div>
 
-                            <div className="rounded bg-gray-50 p-3 text-xs text-gray-500 dark:bg-gray-900">
-                                {isVideo
-                                    ? t("step4.thumbnailUploaded")
-                                    : t("step4.thumbnailHint")}
-                            </div>
-
+                            {/* Tags — YouTube-style input */}
                             <div className="space-y-2">
                                 <Label htmlFor="yt-tags">
                                     {t("step4.tags")}
                                 </Label>
-                                <Input
-                                    id="yt-tags"
-                                    value={youtubeMeta.tags.join(", ")}
-                                    onChange={e =>
-                                        handleTagsChange(e.target.value)
-                                    }
+                                <TagInput
+                                    tags={youtubeMeta.tags}
+                                    onChange={handleTagsChange}
                                     placeholder={t("step4.tagsPlaceholder")}
+                                    maxChars={500}
                                 />
-                                <div className="flex justify-between text-xs text-gray-400">
-                                    <span>{t("step4.tagsHint")}</span>
-                                    <span>
-                                        {youtubeMeta.tags.length}/30 tags
-                                    </span>
-                                </div>
                                 {errors.youtube_tags && (
-                                    <span className="text-xs text-red-500">
+                                    <p className="flex items-center gap-1 text-xs text-red-500">
+                                        <AlertCircle className="h-3 w-3" />
                                         {errors.youtube_tags}
-                                    </span>
+                                    </p>
                                 )}
                             </div>
                         </CardContent>
                     </Card>
 
-                    {/* Audience */}
-                    <Card className="border-l-4 border-l-red-500">
-                        <CardHeader>
-                            <CardTitle className="flex items-center gap-2 text-lg">
-                                <SiYoutube className="h-5 w-5 text-red-600" />
-                                {t("step4.audience")}
-                                <Badge
-                                    variant="secondary"
-                                    className="ml-auto text-xs"
-                                >
-                                    <SiYoutube className="mr-1 h-3 w-3" />
-                                    YouTube
-                                </Badge>
-                            </CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            <div className="space-y-3">
-                                <Label>{t("step4.madeForKids")}</Label>
-                                <div className="flex gap-4">
-                                    <label className="flex items-center gap-2 cursor-pointer">
-                                        <input
-                                            type="radio"
-                                            name="madeForKids"
-                                            checked={!youtubeMeta.madeForKids}
-                                            onChange={() =>
-                                                setYouTubeMeta({
-                                                    madeForKids: false,
-                                                })
-                                            }
-                                            className="h-4 w-4"
-                                        />
-                                        <span className="text-sm">
-                                            {t("step4.madeForKidsNo")}
-                                        </span>
-                                    </label>
-                                    <label className="flex items-center gap-2 cursor-pointer">
-                                        <input
-                                            type="radio"
-                                            name="madeForKids"
-                                            checked={youtubeMeta.madeForKids}
-                                            onChange={() =>
-                                                setYouTubeMeta({
-                                                    madeForKids: true,
-                                                })
-                                            }
-                                            className="h-4 w-4"
-                                        />
-                                        <span className="text-sm">
-                                            {t("step4.madeForKidsYes")}
-                                        </span>
-                                    </label>
-                                </div>
-                                <p className="text-xs text-gray-400">
-                                    {t("step4.madeForKidsHint")}
-                                </p>
-                            </div>
-                        </CardContent>
-                    </Card>
-
-                    {/* Content: AI, Paid Promotion */}
-                    <Card className="border-l-4 border-l-red-500">
-                        <CardHeader>
-                            <CardTitle className="flex items-center gap-2 text-lg">
-                                <SiYoutube className="h-5 w-5 text-red-600" />
-                                {t("step4.content")}
-                                <Badge
-                                    variant="secondary"
-                                    className="ml-auto text-xs"
-                                >
-                                    <SiYoutube className="mr-1 h-3 w-3" />
-                                    YouTube
-                                </Badge>
-                            </CardTitle>
-                        </CardHeader>
-                        <CardContent className="space-y-4">
-                            <div className="space-y-3">
-                                <Label>{t("step4.aiGenerated")}</Label>
-                                <div className="flex gap-4">
-                                    <label className="flex items-center gap-2 cursor-pointer">
-                                        <input
-                                            type="radio"
-                                            name="aiGenerated"
-                                            checked={!youtubeMeta.aiGenerated}
-                                            onChange={() =>
-                                                setYouTubeMeta({
-                                                    aiGenerated: false,
-                                                })
-                                            }
-                                            className="h-4 w-4"
-                                        />
-                                        <span className="text-sm">
-                                            {t("step4.aiGeneratedNo")}
-                                        </span>
-                                    </label>
-                                    <label className="flex items-center gap-2 cursor-pointer">
-                                        <input
-                                            type="radio"
-                                            name="aiGenerated"
-                                            checked={youtubeMeta.aiGenerated}
-                                            onChange={() =>
-                                                setYouTubeMeta({
-                                                    aiGenerated: true,
-                                                })
-                                            }
-                                            className="h-4 w-4"
-                                        />
-                                        <span className="text-sm">
-                                            {t("step4.aiGeneratedYes")}
-                                        </span>
-                                    </label>
-                                </div>
-                                <p className="text-xs text-gray-400">
-                                    {t("step4.aiGeneratedHint")}
-                                </p>
-                            </div>
-                            <div className="space-y-3">
-                                <Label>{t("step4.paidPromotion")}</Label>
-                                <div className="flex gap-4">
-                                    <label className="flex items-center gap-2 cursor-pointer">
-                                        <input
-                                            type="radio"
-                                            name="paidPromotion"
-                                            checked={!youtubeMeta.paidPromotion}
-                                            onChange={() =>
-                                                setYouTubeMeta({
-                                                    paidPromotion: false,
-                                                })
-                                            }
-                                            className="h-4 w-4"
-                                        />
-                                        <span className="text-sm">
-                                            {t("step4.paidPromotionNo")}
-                                        </span>
-                                    </label>
-                                    <label className="flex items-center gap-2 cursor-pointer">
-                                        <input
-                                            type="radio"
-                                            name="paidPromotion"
-                                            checked={youtubeMeta.paidPromotion}
-                                            onChange={() =>
-                                                setYouTubeMeta({
-                                                    paidPromotion: true,
-                                                })
-                                            }
-                                            className="h-4 w-4"
-                                        />
-                                        <span className="text-sm">
-                                            {t("step4.paidPromotionYes")}
-                                        </span>
-                                    </label>
-                                </div>
-                                <p className="text-xs text-gray-400">
-                                    {t("step4.paidPromotionHint")}
-                                </p>
-                            </div>
-                        </CardContent>
-                    </Card>
-
-                    {/* Monetization */}
-                    <Card className="border-l-4 border-l-red-500">
-                        <CardHeader>
-                            <CardTitle className="flex items-center gap-2 text-lg">
-                                <SiYoutube className="h-5 w-5 text-red-600" />
-                                {t("step4.monetization")}
-                                <Badge
-                                    variant="secondary"
-                                    className="ml-auto text-xs"
-                                >
-                                    <SiYoutube className="mr-1 h-3 w-3" />
-                                    YouTube
-                                </Badge>
-                            </CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            <div className="space-y-3">
-                                <Label>{t("step4.monetizationTitle")}</Label>
-                                <div className="flex gap-4">
-                                    <label className="flex items-center gap-2 cursor-pointer">
-                                        <input
-                                            type="radio"
-                                            name="monetization"
-                                            checked={youtubeMeta.monetization}
-                                            onChange={() =>
-                                                setYouTubeMeta({
-                                                    monetization: true,
-                                                })
-                                            }
-                                            className="h-4 w-4"
-                                        />
-                                        <span className="text-sm">
-                                            {t("step4.monetizationYes")}
-                                        </span>
-                                    </label>
-                                    <label className="flex items-center gap-2 cursor-pointer">
-                                        <input
-                                            type="radio"
-                                            name="monetization"
-                                            checked={!youtubeMeta.monetization}
-                                            onChange={() =>
-                                                setYouTubeMeta({
-                                                    monetization: false,
-                                                })
-                                            }
-                                            className="h-4 w-4"
-                                        />
-                                        <span className="text-sm">
-                                            {t("step4.monetizationNo")}
-                                        </span>
-                                    </label>
-                                </div>
-                                <p className="text-xs text-gray-400">
-                                    {t("step4.monetizationHint")}
-                                </p>
-                            </div>
-                        </CardContent>
-                    </Card>
-
-                    {/* Ad Suitability — mirrors YouTube Studio's full questionnaire */}
-                    <Card className="border-l-4 border-l-red-500">
-                        <CardHeader>
-                            <CardTitle className="flex items-center gap-2 text-lg">
-                                <SiYoutube className="h-5 w-5 text-red-600" />
-                                {t("step4.adSuitability")}
-                                <Badge
-                                    variant="secondary"
-                                    className="ml-auto text-xs"
-                                >
-                                    <SiYoutube className="mr-1 h-3 w-3" />
-                                    YouTube
-                                </Badge>
-                            </CardTitle>
-                        </CardHeader>
-                        <CardContent className="space-y-6">
-                            <p className="text-sm text-gray-600 dark:text-gray-400">
-                                {t("step4.adSuitabilityQuestion")}
-                            </p>
-                            <p className="text-xs text-gray-400">
-                                {t("step4.adSuitabilityWhy")}
-                            </p>
-
-                            <div className="space-y-6">
-                                {AD_SUITABILITY_CATEGORIES.map(cat => (
-                                    <div
-                                        key={cat.key}
-                                        className="rounded-lg border p-4"
-                                    >
-                                        <p className="mb-3 text-sm font-medium">
-                                            {t(`step4.adCat_${cat.key}_title`)}
-                                        </p>
-                                        <div className="space-y-2">
-                                            {Array.from(
-                                                { length: cat.levels },
-                                                (_, idx) => {
-                                                    const level = idx as
-                                                        | 0
-                                                        | 1
-                                                        | 2
-                                                    const isSelected =
-                                                        youtubeMeta
-                                                            .adSuitability[
-                                                            cat.key
-                                                        ] === level
-                                                    return (
-                                                        <label
-                                                            key={level}
-                                                            className={`flex cursor-pointer items-start gap-3 rounded border p-3 transition-colors ${
-                                                                isSelected
-                                                                    ? "border-blue-300 bg-blue-50 dark:border-blue-700 dark:bg-blue-950/20"
-                                                                    : "hover:bg-gray-50 dark:hover:bg-gray-900"
-                                                            }`}
-                                                        >
-                                                            <input
-                                                                type="radio"
-                                                                name={`ads-${cat.key}`}
-                                                                checked={
-                                                                    isSelected
-                                                                }
-                                                                onChange={() =>
-                                                                    setAdSuitability(
-                                                                        cat.key,
-                                                                        level
-                                                                    )
-                                                                }
-                                                                className="mt-0.5 h-4 w-4 shrink-0"
-                                                            />
-                                                            <div className="min-w-0">
-                                                                <p className="text-sm font-medium">
-                                                                    {t(
-                                                                        `step4.adCat_${cat.key}_l${level}_label`
-                                                                    )}
-                                                                </p>
-                                                                <p className="mt-0.5 text-xs text-gray-500 dark:text-gray-400">
-                                                                    {t(
-                                                                        `step4.adCat_${cat.key}_l${level}_desc`
-                                                                    )}
-                                                                </p>
-                                                            </div>
-                                                        </label>
-                                                    )
-                                                }
-                                            )}
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-
-                            {/* None of the above */}
-                            <div className="border-t pt-4 dark:border-gray-700">
-                                <label
-                                    className={`flex cursor-pointer items-center gap-3 rounded-lg border p-4 transition-colors ${
-                                        Object.values(
-                                            youtubeMeta.adSuitability
-                                        ).every(v => v === 0)
-                                            ? "border-green-300 bg-green-50 dark:border-green-700 dark:bg-green-950/20"
-                                            : "hover:bg-gray-50 dark:hover:bg-gray-900"
-                                    }`}
-                                >
-                                    <input
-                                        type="radio"
-                                        name="ads-none-of-the-above"
-                                        checked={Object.values(
-                                            youtubeMeta.adSuitability
-                                        ).every(v => v === 0)}
-                                        onChange={() => {
-                                            // Reset all categories to 0
-                                            const reset = {
-                                                ...DEFAULT_AD_SUITABILITY,
-                                            }
-                                            setYouTubeMeta({
-                                                adSuitability: reset,
-                                            })
-                                        }}
-                                        className="h-4 w-4 shrink-0"
-                                    />
-                                    <div>
-                                        <p className="text-sm font-medium">
-                                            {t("step4.adSuitabilityNone")}
-                                        </p>
-                                    </div>
-                                </label>
-                            </div>
-                        </CardContent>
-                    </Card>
-
-                    {/* Cards and End Screens */}
-                    <Card className="border-l-4 border-l-red-500">
-                        <CardHeader>
-                            <CardTitle className="flex items-center gap-2 text-lg">
-                                <SiYoutube className="h-5 w-5 text-red-600" />
-                                {t("step4.cards")}
-                                <Badge
-                                    variant="secondary"
-                                    className="ml-auto text-xs"
-                                >
-                                    <SiYoutube className="mr-1 h-3 w-3" />
-                                    YouTube
-                                </Badge>
-                            </CardTitle>
-                        </CardHeader>
-                        <CardContent className="space-y-4">
-                            <p className="text-xs text-gray-400">
-                                {t("step4.cardsHint")}
-                            </p>
-                            <div className="space-y-3">
-                                <div>
-                                    <Label htmlFor="yt-link-start">
-                                        {t("step4.addVideoStart")}
-                                    </Label>
-                                    <Input
-                                        id="yt-link-start"
-                                        value={youtubeMeta.linkedVideoStart}
-                                        onChange={e =>
-                                            setYouTubeMeta({
-                                                linkedVideoStart:
-                                                    e.target.value,
-                                            })
-                                        }
-                                        placeholder={t(
-                                            "step4.videoUrlPlaceholder"
-                                        )}
-                                        className="mt-1"
-                                    />
-                                </div>
-                                <div>
-                                    <Label htmlFor="yt-link-end">
-                                        {t("step4.addVideoEnd")}
-                                    </Label>
-                                    <Input
-                                        id="yt-link-end"
-                                        value={youtubeMeta.linkedVideoEnd}
-                                        onChange={e =>
-                                            setYouTubeMeta({
-                                                linkedVideoEnd: e.target.value,
-                                            })
-                                        }
-                                        placeholder={t(
-                                            "step4.videoUrlPlaceholder"
-                                        )}
-                                        className="mt-1"
-                                    />
-                                </div>
-                            </div>
-                        </CardContent>
-                    </Card>
-
-                    {/* Privacy and Scheduling */}
-                    <Card className="border-l-4 border-l-red-500">
-                        <CardHeader>
-                            <CardTitle className="flex items-center gap-2 text-lg">
-                                <SiYoutube className="h-5 w-5 text-red-600" />
-                                {t("step4.privacy")}
-                                <Badge
-                                    variant="secondary"
-                                    className="ml-auto text-xs"
-                                >
-                                    <SiYoutube className="mr-1 h-3 w-3" />
-                                    YouTube
-                                </Badge>
-                            </CardTitle>
-                        </CardHeader>
-                        <CardContent className="space-y-4">
-                            <div className="space-y-2">
-                                <Label>{t("step4.privacyStatus")}</Label>
-                                <Select
-                                    value={youtubeMeta.privacyStatus}
-                                    onValueChange={(
-                                        v: "public" | "unlisted" | "private"
-                                    ) => setYouTubeMeta({ privacyStatus: v })}
-                                >
-                                    <SelectTrigger>
-                                        <SelectValue />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectItem value="public">
-                                            {t("step4.public")}
-                                        </SelectItem>
-                                        <SelectItem value="unlisted">
-                                            {t("step4.unlisted")}
-                                        </SelectItem>
-                                        <SelectItem value="private">
-                                            {t("step4.private")}
-                                        </SelectItem>
-                                    </SelectContent>
-                                </Select>
-                            </div>
-
-                            <div className="space-y-3 border-t pt-3 dark:border-gray-700">
-                                <div className="flex gap-4">
-                                    <label className="flex items-center gap-2 cursor-pointer">
-                                        <input
-                                            type="radio"
-                                            name="scheduleType"
-                                            checked={!youtubeMeta.scheduledDate}
-                                            onChange={() =>
-                                                setYouTubeMeta({
-                                                    scheduledDate: null,
-                                                })
-                                            }
-                                            className="h-4 w-4"
-                                        />
-                                        <span className="text-sm">
-                                            {t("step4.scheduleNow")}
-                                        </span>
-                                    </label>
-                                    <label className="flex items-center gap-2 cursor-pointer">
-                                        <input
-                                            type="radio"
-                                            name="scheduleType"
-                                            checked={
-                                                youtubeMeta.scheduledDate !==
-                                                null
-                                            }
-                                            onChange={() => {
-                                                const tomorrow = new Date()
-                                                tomorrow.setDate(
-                                                    tomorrow.getDate() + 1
-                                                )
-                                                tomorrow.setHours(10, 0, 0, 0)
-                                                setYouTubeMeta({
-                                                    scheduledDate: tomorrow,
-                                                    scheduledTime: "10:00",
-                                                })
-                                            }}
-                                            className="h-4 w-4"
-                                        />
-                                        <span className="text-sm">
-                                            {t("step4.scheduleLater")}
-                                        </span>
-                                    </label>
-                                </div>
-
-                                {youtubeMeta.scheduledDate && (
-                                    <div className="grid grid-cols-2 gap-3">
-                                        <div>
-                                            <Label htmlFor="yt-schedule-date">
-                                                {t("step4.scheduleDate")}
-                                            </Label>
-                                            <Input
-                                                id="yt-schedule-date"
-                                                type="date"
-                                                value={
-                                                    youtubeMeta.scheduledDate
-                                                        .toISOString()
-                                                        .split("T")[0]
-                                                }
-                                                onChange={e => {
-                                                    const dateVal =
-                                                        e.target.value
-                                                    const d = dateVal
-                                                        ? new Date(
-                                                              dateVal +
-                                                                  "T" +
-                                                                  (youtubeMeta.scheduledTime ||
-                                                                      "10:00")
-                                                          )
-                                                        : null
-                                                    setYouTubeMeta({
-                                                        scheduledDate: d,
-                                                    })
-                                                }}
-                                                className="mt-1"
-                                            />
-                                        </div>
-                                        <div>
-                                            <Label htmlFor="yt-schedule-time">
-                                                {t("step4.scheduleTime")}
-                                            </Label>
-                                            <Input
-                                                id="yt-schedule-time"
-                                                type="time"
-                                                value={
-                                                    youtubeMeta.scheduledTime
-                                                }
-                                                onChange={e =>
-                                                    setYouTubeMeta({
-                                                        scheduledTime:
-                                                            e.target.value,
-                                                    })
-                                                }
-                                                className="mt-1"
-                                            />
-                                        </div>
-                                    </div>
-                                )}
-
-                                {youtubeMeta.scheduledDate && (
-                                    <div className="rounded bg-amber-50 p-3 text-xs text-amber-700 dark:bg-amber-950/30 dark:text-amber-400">
-                                        {t("step4.scheduleWarning")}
-                                    </div>
-                                )}
-                            </div>
-                        </CardContent>
-                    </Card>
+                    {/* Future: Facebook-specific section */}
+                    {/* Future: Instagram-specific section */}
+                    {/* Future: Twitter-specific section */}
+                    {/* Future: LinkedIn-specific section */}
                 </>
             )}
-
-            {/* Future: Facebook-specific section */}
-            {/* Future: Instagram-specific section */}
-            {/* Future: Twitter-specific section */}
-            {/* Future: LinkedIn-specific section */}
 
             {/* Navigation */}
             <div className="flex justify-between border-t pt-4 dark:border-gray-700">

@@ -54,9 +54,9 @@ export default function ProcessingStep({
     return (
         <div className="space-y-6">
             <div>
-                <h2 className="text-xl font-semibold">{t("step5.title")}</h2>
+                <h2 className="text-xl font-semibold">{t("step7.title")}</h2>
                 <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                    {t("step5.description")}
+                    {t("step7.description")}
                 </p>
             </div>
 
@@ -67,13 +67,13 @@ export default function ProcessingStep({
                         <>
                             <Clock className="h-16 w-16 text-blue-500" />
                             <h3 className="mt-4 text-lg font-semibold">
-                                {t("step5.queued")}
+                                {t("step7.queued")}
                             </h3>
                             <p className="mt-2 text-sm text-gray-500">
-                                {t("step5.queuedDescription")}
+                                {t("step7.queuedDescription")}
                             </p>
                             <p className="mt-4 text-xs text-gray-400 italic">
-                                {t("step5.waitingForYou")}
+                                {t("step7.waitingForYou")}
                             </p>
                         </>
                     )}
@@ -83,10 +83,10 @@ export default function ProcessingStep({
                         <>
                             <Loader2 className="h-16 w-16 animate-spin text-blue-500" />
                             <h3 className="mt-4 text-lg font-semibold">
-                                {t("step5.queued")}
+                                {t("step7.queued")}
                             </h3>
                             <p className="mt-2 text-sm text-gray-500">
-                                {t("step5.queuedDescription")}
+                                {t("step7.queuedDescription")}
                             </p>
                         </>
                     )}
@@ -96,7 +96,7 @@ export default function ProcessingStep({
                         <>
                             <Upload className="h-16 w-16 text-blue-500 animate-pulse" />
                             <h3 className="mt-4 text-lg font-semibold">
-                                {t("step5.processing")}
+                                {t("step7.processing")}
                             </h3>
                             <div className="mt-4 w-full max-w-xs">
                                 <div className="flex items-center justify-center gap-2 mb-2">
@@ -118,7 +118,7 @@ export default function ProcessingStep({
                                 </div>
                             </div>
                             <p className="mt-2 text-sm text-gray-500">
-                                {t("step5.uploadProgress", {
+                                {t("step7.uploadProgress", {
                                     percent: processing.progress,
                                 })}
                             </p>
@@ -135,7 +135,7 @@ export default function ProcessingStep({
                         <>
                             <Loader2 className="h-16 w-16 animate-spin text-blue-500" />
                             <h3 className="mt-4 text-lg font-semibold">
-                                {t("step5.metadataStep")}
+                                {t("step7.metadataStep")}
                             </h3>
                             <div className="mt-2 flex items-center gap-2">
                                 {PLATFORM_ICONS[processing.platformId] || null}
@@ -152,7 +152,7 @@ export default function ProcessingStep({
                         <>
                             <Loader2 className="h-16 w-16 animate-spin text-green-500" />
                             <h3 className="mt-4 text-lg font-semibold">
-                                {t("step5.publishStep")}
+                                {t("step7.publishStep")}
                             </h3>
                             <div className="mt-2 flex items-center gap-2">
                                 {PLATFORM_ICONS[processing.platformId] || null}
@@ -169,7 +169,7 @@ export default function ProcessingStep({
                         <>
                             <CheckCircle className="h-16 w-16 text-green-500" />
                             <h3 className="mt-4 text-lg font-semibold text-green-700">
-                                {t("step5.complete")}
+                                {t("step7.complete")}
                             </h3>
                             <p className="mt-2 text-sm text-gray-500">
                                 {getResultsSummary(processing.results)}
@@ -266,11 +266,11 @@ export default function ProcessingStep({
                         <>
                             <AlertCircle className="h-16 w-16 text-red-500" />
                             <h3 className="mt-4 text-lg font-semibold text-red-700">
-                                {t("step5.error")}
+                                {t("step7.error")}
                             </h3>
                             <p className="mt-2 text-sm text-gray-500">
                                 {processing.message ||
-                                    t("step5.errorDescription")}
+                                    t("step7.errorDescription")}
                             </p>
                             {processing.platformId && (
                                 <Badge variant="outline" className="mt-2">
@@ -288,20 +288,20 @@ export default function ProcessingStep({
                 {(processing.status === "error" ||
                     processing.status === "partial") && (
                     <Button onClick={onRetry} variant="default">
-                        {t("step5.retry")}
+                        {t("step7.retry")}
                     </Button>
                 )}
                 {(processing.status === "complete" ||
                     processing.status === "partial") && (
                     <Button onClick={onGoToDashboard} variant="default">
-                        {t("step5.goToDashboard")}
+                        {t("step7.goToDashboard")}
                     </Button>
                 )}
                 {(processing.status === "error" ||
                     processing.status === "complete" ||
                     processing.status === "partial") && (
                     <Button onClick={onClose} variant="outline">
-                        {t("step5.close")}
+                        {t("step7.close")}
                     </Button>
                 )}
             </div>
