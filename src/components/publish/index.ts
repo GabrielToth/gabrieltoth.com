@@ -28,7 +28,7 @@ export { default as PostingScheduler } from "./PostingScheduler"
 
 export { default as ContentCreator } from "./ContentCreator"
 
-export { default as PostingInterface } from "./PostingInterface"
+export { default as PublishWizard } from "./wizard/PublishWizard"
 
 export { default as VideoUploader } from "./VideoUploader"
 export { default as BillingSummaryCard } from "./BillingSummaryCard"

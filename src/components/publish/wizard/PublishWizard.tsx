@@ -39,7 +39,7 @@ import { INITIAL_STATE, DEFAULT_YOUTUBE_METADATA } from "./types"
 /** localStorage key for saving drafts */
 const DRAFT_STORAGE_KEY = "publish_wizard_draft"
 
-interface YouTubePublishWizardProps {
+interface PublishWizardProps {
     onClose: () => void
     defaultDate?: Date
 }
@@ -58,9 +58,7 @@ const STEP_TITLE_KEYS: Record<number, string> = {
     7: "step7.title",
 }
 
-export default function YouTubePublishWizard({
-    onClose,
-}: YouTubePublishWizardProps) {
+export default function PublishWizard({ onClose }: PublishWizardProps) {
     const t = useTranslations("publish")
 
     // Wizard state
@@ -609,12 +607,12 @@ export default function YouTubePublishWizard({
                                     {t("closeConfirm.saveDraft")}
                                 </Button>
                             </AlertDialogAction>
-                        <AlertDialogAction asChild>
-                            <Button
-                                variant="ghost"
-                                onClick={handleDiscardAndClose}
-                                className="gap-2 text-red-600 hover:bg-red-50 hover:text-red-700 dark:hover:bg-red-950/30"
-                            >
+                            <AlertDialogAction asChild>
+                                <Button
+                                    variant="ghost"
+                                    onClick={handleDiscardAndClose}
+                                    className="gap-2 text-red-600 hover:bg-red-50 hover:text-red-700 dark:hover:bg-red-950/30"
+                                >
                                     <Trash2 className="h-4 w-4" />
                                     {t("closeConfirm.discard")}
                                 </Button>
