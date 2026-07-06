@@ -2,10 +2,6 @@ import { fireEvent, render, screen } from "@testing-library/react"
 import { describe, expect, it, vi } from "vitest"
 import UniversalPostingButton from "./UniversalPostingButton"
 
-vi.mock("./PostingInterface", () => ({
-    default: () => null,
-}))
-
 function getPostingButton() {
     return screen.getByRole("button", { name: /networks linked/i })
 }

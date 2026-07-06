@@ -1,7 +1,7 @@
 "use client"
 
 import CalendarView from "@/components/publish/CalendarView"
-import PostingInterface from "@/components/publish/PostingInterface"
+import PublishWizard from "@/components/publish/wizard/PublishWizard"
 import { PostList } from "@/components/publish/PostList"
 import { Post } from "@/components/publish/PostCard"
 import { UniversalPostingButton } from "@/components/publish"
@@ -36,7 +36,7 @@ export default function PublishPage() {
     const [isLoading, setIsLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
     const [selectedDate, setSelectedDate] = useState<Date | null>(null)
-    const [showPostingInterface, setShowPostingInterface] = useState(false)
+    const [showPublishWizard, setShowPublishWizard] = useState(false)
     const [interfaceDate, setInterfaceDate] = useState<Date | undefined>()
 
     const fetchPosts = useCallback(async () => {
@@ -91,23 +91,23 @@ export default function PublishPage() {
     const handleSelectDate = useCallback((date: Date) => {
         setSelectedDate(date)
         setInterfaceDate(date)
-        setShowPostingInterface(true)
+        setShowPublishWizard(true)
     }, [])
 
     const handleCloseInterface = useCallback(() => {
-        setShowPostingInterface(false)
+        setShowPublishWizard(false)
         setInterfaceDate(undefined)
         fetchPosts()
     }, [fetchPosts])
 
     const handleNewPost = useCallback(() => {
         setInterfaceDate(undefined)
-        setShowPostingInterface(true)
+        setShowPublishWizard(true)
     }, [])
 
     const handleEditPost = useCallback((post: Post) => {
         setInterfaceDate(post.scheduledAt)
-        setShowPostingInterface(true)
+        setShowPublishWizard(true)
     }, [])
 
     const handleDeletePost = useCallback(
@@ -197,8 +197,8 @@ export default function PublishPage() {
                 />
             </div>
 
-            {showPostingInterface && (
-                <PostingInterface
+            {showPublishWizard && (
+                <PublishWizard
                     onClose={handleCloseInterface}
                     defaultDate={interfaceDate}
                 />
