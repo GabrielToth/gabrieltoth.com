@@ -111,6 +111,7 @@
         "tagsPlaceholder": "Tags durch Kommas getrennt eingeben",
         "tagsHint": "Füge Tags hinzu, um die Auffindbarkeit deines Videos zu verbessern",
         "tagsMax": "Maximal 30 Tags, insgesamt 500 Zeichen",
+        "noCompatibleFields": "Keine Felder sind mit den ausgewählten Plattformen kompatibel",
         "audience": "Zielgruppe",
         "madeForKids": "Ist dieses Video für Kinder gemacht?",
         "madeForKidsYes": "Ja, es ist für Kinder gemacht",

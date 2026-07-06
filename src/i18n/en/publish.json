@@ -111,6 +111,7 @@
         "tagsPlaceholder": "Enter comma-separated tags",
         "tagsHint": "Add tags to help viewers discover your video",
         "tagsMax": "Maximum 30 tags, 500 characters total",
+        "noCompatibleFields": "No fields are compatible with the selected platforms",
         "audience": "Audience",
         "madeForKids": "Is this video made for children?",
         "madeForKidsYes": "Yes, it's made for kids",

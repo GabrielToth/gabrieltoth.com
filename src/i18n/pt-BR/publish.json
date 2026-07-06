@@ -111,6 +111,7 @@
         "tagsPlaceholder": "Digite tags separadas por vírgula",
         "tagsHint": "Adicione tags para ajudar na descoberta do seu vídeo",
         "tagsMax": "Máximo 30 tags, 500 caracteres no total",
+        "noCompatibleFields": "Nenhum campo é compatível com as plataformas selecionadas",
         "audience": "Público",
         "madeForKids": "Este vídeo é feito para crianças?",
         "madeForKidsYes": "Sim, é feito para crianças",

@@ -111,6 +111,7 @@
         "tagsPlaceholder": "Ingresa etiquetas separadas por comas",
         "tagsHint": "Añade etiquetas para ayudar al descubrimiento de tu video",
         "tagsMax": "Máximo 30 etiquetas, 500 caracteres en total",
+        "noCompatibleFields": "Ningún campo es compatible con las plataformas seleccionadas",
         "audience": "Audiencia",
         "madeForKids": "¿Este video está hecho para niños?",
         "madeForKidsYes": "Sí, está hecho para niños",
