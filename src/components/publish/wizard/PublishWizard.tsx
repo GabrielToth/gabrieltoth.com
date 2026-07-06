@@ -519,8 +519,8 @@ export default function PublishWizard({ onClose }: PublishWizardProps) {
     return (
         <>
             <Dialog open={true} onOpenChange={handleCloseAttempt}>
-                <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
-                    <DialogHeader>
+                <DialogContent className="max-w-3xl max-h-[90vh] flex flex-col">
+                    <DialogHeader className="flex-shrink-0">
                         <DialogTitle className="flex items-center gap-2">
                             <span>{t("wizard.title")}</span>
                             {currentStep < totalSteps && (
@@ -541,9 +541,9 @@ export default function PublishWizard({ onClose }: PublishWizardProps) {
                         </button>
                     </DialogHeader>
 
-                    {/* Step progress bar */}
+                    {/* Step progress bar — only shows title for current step */}
                     {currentStep <= 6 && (
-                        <div className="flex items-center gap-1 px-1">
+                        <div className="flex items-center gap-1 px-1 flex-shrink-0">
                             {progressSteps.map(step => (
                                 <div key={step} className="flex-1">
                                     <div
@@ -553,21 +553,20 @@ export default function PublishWizard({ onClose }: PublishWizardProps) {
                                                 : "bg-gray-200 dark:bg-gray-700"
                                         }`}
                                     />
-                                    <p
-                                        className={`mt-1 text-xs truncate ${
-                                            step === currentStep
-                                                ? "font-medium text-blue-600 dark:text-blue-400"
-                                                : "text-gray-400"
-                                        }`}
-                                    >
-                                        {getStepTitle(step)}
-                                    </p>
+                                    {step === currentStep && (
+                                        <p className="mt-1 text-xs font-medium text-blue-600 dark:text-blue-400 truncate">
+                                            {getStepTitle(step)}
+                                        </p>
+                                    )}
                                 </div>
                             ))}
                         </div>
                     )}
 
-                    <div className="mt-4">{renderStep()}</div>
+                    {/* Scrollable step content — header and progress bar stay fixed */}
+                    <div className="flex-1 min-h-0 overflow-y-auto mt-4">
+                        {renderStep()}
+                    </div>
                 </DialogContent>
             </Dialog>
 
