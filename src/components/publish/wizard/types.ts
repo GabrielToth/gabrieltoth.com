@@ -50,6 +50,7 @@ export type PlatformFeature =
     | "paid_promotion"
     | "monetization"
     | "content_restrictions"
+    | "ad_suitability"
     | "cards_end_screens"
     | "privacy_schedule"
     | "channel_selection"
@@ -85,6 +86,21 @@ export interface PlatformSelection {
     channelIds: string[]
 }
 
+/** YouTube Ad Suitability — mirrors the exact categories and levels from YouTube Studio */
+export interface AdSuitability {
+    inappropriateLanguage: 0 | 1 | 2
+    adultContent: 0 | 1 | 2
+    violence: 0 | 1 | 2
+    shockingContent: 0 | 1 | 2
+    harmfulActs: 0 | 1 | 2
+    recreationalDrugs: 0 | 1 | 2
+    dishonestBehavior: 0 | 1
+    hatefulContent: 0 | 1 | 2
+    firearms: 0 | 1 | 2
+    sensitiveEvents: 0 | 1
+    controversialIssues: 0 | 1 | 2
+}
+
 export interface YouTubeMetadata {
     title: string
     description: string
@@ -93,13 +109,48 @@ export interface YouTubeMetadata {
     aiGenerated: boolean
     paidPromotion: boolean
     monetization: boolean
-    contentRestrictions: "none" | "restricted" | "educational"
+    adSuitability: AdSuitability
     linkedVideoStart: string
     linkedVideoEnd: string
     privacyStatus: "public" | "unlisted" | "private"
     scheduledDate: Date | null
     scheduledTime: string
 }
+
+export const DEFAULT_AD_SUITABILITY: AdSuitability = {
+    inappropriateLanguage: 0,
+    adultContent: 0,
+    violence: 0,
+    shockingContent: 0,
+    harmfulActs: 0,
+    recreationalDrugs: 0,
+    dishonestBehavior: 0,
+    hatefulContent: 0,
+    firearms: 0,
+    sensitiveEvents: 0,
+    controversialIssues: 0,
+}
+
+/** Ad Suitability category definition for rendering the form */
+export interface AdSuitabilityCategoryDef {
+    key: keyof AdSuitability
+    levels: 2 | 3
+}
+
+/** Ordered list of all Ad Suitability categories in the same order as YouTube Studio */
+export const AD_SUITABILITY_CATEGORIES: AdSuitabilityCategoryDef[] = [
+    { key: "inappropriateLanguage", levels: 3 },
+    { key: "adultContent", levels: 3 },
+    { key: "violence", levels: 3 },
+    { key: "shockingContent", levels: 3 },
+    { key: "harmfulActs", levels: 3 },
+    { key: "recreationalDrugs", levels: 3 },
+    { key: "dishonestBehavior", levels: 2 },
+    { key: "hatefulContent", levels: 3 },
+    { key: "firearms", levels: 3 },
+    { key: "sensitiveEvents", levels: 2 },
+    { key: "controversialIssues", levels: 3 },
+]
 
 export interface PlatformResult {
     platformId: string
@@ -141,7 +192,7 @@ export const DEFAULT_YOUTUBE_METADATA: YouTubeMetadata = {
     aiGenerated: false,
     paidPromotion: false,
     monetization: true,
-    contentRestrictions: "none",
+    adSuitability: { ...DEFAULT_AD_SUITABILITY },
     linkedVideoStart: "",
     linkedVideoEnd: "",
     privacyStatus: "unlisted",
@@ -241,8 +292,8 @@ export const PLATFORM_EXCLUSIVE_FEATURES: Record<
             platformId: "youtube",
         },
         {
-            feature: "content_restrictions",
-            labelKey: "step4.guidelinesTitle",
+            feature: "ad_suitability",
+            labelKey: "step4.adSuitability",
             platformId: "youtube",
         },
         {

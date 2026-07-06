@@ -31,10 +31,13 @@ import type {
 } from "./types"
 import {
     DEFAULT_YOUTUBE_METADATA,
+    DEFAULT_AD_SUITABILITY,
     PLATFORM_EXCLUSIVE_FEATURES,
     PLATFORM_VIDEO_LIMITS,
     getCompatibleVideoLimit,
     getPlatformsExceedingLimit,
+    AD_SUITABILITY_CATEGORIES,
+    type AdSuitability,
 } from "./types"
 
 interface ContentFormStepProps {
@@ -104,6 +107,19 @@ export default function ContentFormStep({
             platformMetadata: {
                 ...state.platformMetadata,
                 youtube: { ...youtubeMeta, ...update },
+            },
+        })
+    }
+
+    // Ad Suitability helper
+    const setAdSuitability = (
+        category: keyof AdSuitability,
+        value: 0 | 1 | 2
+    ) => {
+        setYouTubeMeta({
+            adSuitability: {
+                ...youtubeMeta.adSuitability,
+                [category]: value,
             },
         })
     }
@@ -902,12 +918,12 @@ export default function ContentFormStep({
                         </CardContent>
                     </Card>
 
-                    {/* Content Guidelines */}
+                    {/* Ad Suitability — mirrors YouTube Studio's full questionnaire */}
                     <Card className="border-l-4 border-l-red-500">
                         <CardHeader>
                             <CardTitle className="flex items-center gap-2 text-lg">
                                 <SiYoutube className="h-5 w-5 text-red-600" />
-                                {t("step4.guidelines")}
+                                {t("step4.adSuitability")}
                                 <Badge
                                     variant="secondary"
                                     className="ml-auto text-xs"
@@ -917,43 +933,114 @@ export default function ContentFormStep({
                                 </Badge>
                             </CardTitle>
                         </CardHeader>
-                        <CardContent className="space-y-3">
-                            <p className="text-xs text-gray-400">
-                                {t("step4.guidelinesHint")}
+                        <CardContent className="space-y-6">
+                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                                {t("step4.adSuitabilityQuestion")}
                             </p>
-                            <div className="space-y-2">
-                                {(
-                                    [
-                                        "none",
-                                        "restricted",
-                                        "educational",
-                                    ] as const
-                                ).map(type => (
-                                    <label
-                                        key={type}
-                                        className="flex items-center gap-3 rounded border p-3 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-900"
+                            <p className="text-xs text-gray-400">
+                                {t("step4.adSuitabilityWhy")}
+                            </p>
+
+                            <div className="space-y-6">
+                                {AD_SUITABILITY_CATEGORIES.map(cat => (
+                                    <div
+                                        key={cat.key}
+                                        className="rounded-lg border p-4"
                                     >
-                                        <input
-                                            type="radio"
-                                            name="restrictions"
-                                            checked={
-                                                youtubeMeta.contentRestrictions ===
-                                                type
-                                            }
-                                            onChange={() =>
-                                                setYouTubeMeta({
-                                                    contentRestrictions: type,
-                                                })
-                                            }
-                                            className="h-4 w-4"
-                                        />
-                                        <span className="text-sm">
-                                            {t(
-                                                `step4.${type === "none" ? "none" : type}`
+                                        <p className="mb-3 text-sm font-medium">
+                                            {t(`step4.adCat_${cat.key}_title`)}
+                                        </p>
+                                        <div className="space-y-2">
+                                            {Array.from(
+                                                { length: cat.levels },
+                                                (_, idx) => {
+                                                    const level = idx as
+                                                        | 0
+                                                        | 1
+                                                        | 2
+                                                    const isSelected =
+                                                        youtubeMeta
+                                                            .adSuitability[
+                                                            cat.key
+                                                        ] === level
+                                                    return (
+                                                        <label
+                                                            key={level}
+                                                            className={`flex cursor-pointer items-start gap-3 rounded border p-3 transition-colors ${
+                                                                isSelected
+                                                                    ? "border-blue-300 bg-blue-50 dark:border-blue-700 dark:bg-blue-950/20"
+                                                                    : "hover:bg-gray-50 dark:hover:bg-gray-900"
+                                                            }`}
+                                                        >
+                                                            <input
+                                                                type="radio"
+                                                                name={`ads-${cat.key}`}
+                                                                checked={
+                                                                    isSelected
+                                                                }
+                                                                onChange={() =>
+                                                                    setAdSuitability(
+                                                                        cat.key,
+                                                                        level
+                                                                    )
+                                                                }
+                                                                className="mt-0.5 h-4 w-4 shrink-0"
+                                                            />
+                                                            <div className="min-w-0">
+                                                                <p className="text-sm font-medium">
+                                                                    {t(
+                                                                        `step4.adCat_${cat.key}_l${level}_label`
+                                                                    )}
+                                                                </p>
+                                                                <p className="mt-0.5 text-xs text-gray-500 dark:text-gray-400">
+                                                                    {t(
+                                                                        `step4.adCat_${cat.key}_l${level}_desc`
+                                                                    )}
+                                                                </p>
+                                                            </div>
+                                                        </label>
+                                                    )
+                                                }
                                             )}
-                                        </span>
-                                    </label>
+                                        </div>
+                                    </div>
                                 ))}
+                            </div>
+
+                            {/* None of the above */}
+                            <div className="border-t pt-4 dark:border-gray-700">
+                                <label
+                                    className={`flex cursor-pointer items-center gap-3 rounded-lg border p-4 transition-colors ${
+                                        Object.values(
+                                            youtubeMeta.adSuitability
+                                        ).every(v => v === 0)
+                                            ? "border-green-300 bg-green-50 dark:border-green-700 dark:bg-green-950/20"
+                                            : "hover:bg-gray-50 dark:hover:bg-gray-900"
+                                    }`}
+                                >
+                                    <input
+                                        type="radio"
+                                        name="ads-none-of-the-above"
+                                        checked={Object.values(
+                                            youtubeMeta.adSuitability
+                                        ).every(v => v === 0)}
+                                        onChange={() => {
+                                            // Reset all categories to 0
+                                            const reset = {
+                                                ...DEFAULT_AD_SUITABILITY,
+                                            }
+                                            setYouTubeMeta({
+                                                adSuitability: reset,
+                                            })
+                                        }}
+                                        className="h-4 w-4 shrink-0"
+                                    />
+                                    <div>
+                                        <p className="text-sm font-medium">
+                                            {t("step4.adSuitabilityNone")}
+                                        </p>
+                                    </div>
+                                </label>
                             </div>
                         </CardContent>
                     </Card>
