@@ -200,7 +200,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
                                 type="file"
                                 accept="image/*"
                                 onChange={handlePhotoUpload}
-                                className="block w-full text-xs sm:text-sm text-gray-500 file:mr-4 file:rounded-md file:border-0 file:bg-blue-50 file:px-3 file:sm:px-4 file:py-2 file:text-xs file:sm:text-sm file:font-semibold file:text-blue-700 hover:file:bg-blue-100"
+                                className="block w-full text-xs sm:text-sm text-gray-500 file:mr-4 file:rounded-md file:border-0 file:bg-blue-50 file:px-3 file:sm:px-4 file:py-2 file:text-xs file:sm:text-sm file:font-semibold file:text-blue-700 hover:file:bg-blue-100 dark:text-gray-400 dark:file:bg-blue-950/50 dark:file:text-blue-300 dark:hover:file:bg-blue-950/70"
                             />
                         </div>
                     </div>
@@ -209,7 +209,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
                     <div className="space-y-2">
                         <label
                             htmlFor="name"
-                            className="block text-sm font-medium text-gray-700"
+                            className="block text-sm font-medium text-gray-700 dark:text-gray-300"
                         >
                             {t("fullName")}
                         </label>
@@ -227,7 +227,10 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
                             }
                         />
                         {errors.name && (
-                            <p id="name-error" className="text-sm text-red-600">
+                            <p
+                                id="name-error"
+                                className="text-sm text-red-600 dark:text-red-400"
+                            >
                                 {errors.name}
                             </p>
                         )}
@@ -237,7 +240,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
                     <div className="space-y-2">
                         <label
                             htmlFor="email"
-                            className="block text-sm font-medium text-gray-700"
+                            className="block text-sm font-medium text-gray-700 dark:text-gray-300"
                         >
                             {t("emailAddress")}
                         </label>
@@ -257,7 +260,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
                         {errors.email && (
                             <p
                                 id="email-error"
-                                className="text-sm text-red-600"
+                                className="text-sm text-red-600 dark:text-red-400"
                             >
                                 {errors.email}
                             </p>

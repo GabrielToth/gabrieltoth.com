@@ -104,20 +104,20 @@ export default function UserPreferences({
         <div className="space-y-6 rounded-lg border p-4">
             <div className="space-y-2">
                 <h3 className="font-semibold">{t("userPreferences")}</h3>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-gray-600 dark:text-gray-300">
                     {t("userPreferencesDescription")}
                 </p>
             </div>
 
             {error && (
-                <div className="flex items-center gap-2 rounded-lg bg-red-50 p-3 text-red-800">
+                <div className="flex items-center gap-2 rounded-lg bg-red-50 p-3 text-red-800 dark:bg-red-950/30 dark:text-red-300">
                     <AlertCircle className="h-5 w-5 flex-shrink-0" />
                     <p className="text-sm">{error}</p>
                 </div>
             )}
 
             {isSaved && (
-                <div className="flex items-center gap-2 rounded-lg bg-green-50 p-3 text-green-800">
+                <div className="flex items-center gap-2 rounded-lg bg-green-50 p-3 text-green-800 dark:bg-green-900/30 dark:text-green-300">
                     <CheckCircle className="h-5 w-5 flex-shrink-0" />
                     <p className="text-sm">{t("preferencesSaved")}</p>
                 </div>
@@ -162,7 +162,7 @@ export default function UserPreferences({
                             })
                         }
                     />
-                    <p className="text-xs text-gray-600">
+                    <p className="text-xs text-gray-600 dark:text-gray-400">
                         {t("retryDescription")}
                     </p>
                 </div>
@@ -186,7 +186,7 @@ export default function UserPreferences({
 
             <div className="space-y-4 border-b pb-4">
                 <h4 className="font-medium">{t("privacySettings")}</h4>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-gray-600 dark:text-gray-300">
                     {t("privacyDescription")}
                 </p>
 
@@ -235,7 +235,7 @@ export default function UserPreferences({
 
             <div className="space-y-4 border-b pb-4">
                 <h4 className="font-medium">{t("importExport")}</h4>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-gray-600 dark:text-gray-300">
                     {t("importExportDescription")}
                 </p>
 

@@ -97,13 +97,13 @@ export const BillingSection: React.FC<BillingSectionProps> = ({
     const getStatusColor = (status: string): string => {
         switch (status) {
             case "paid":
-                return "bg-green-100 text-green-800"
+                return "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300"
             case "pending":
-                return "bg-yellow-100 text-yellow-800"
+                return "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300"
             case "failed":
-                return "bg-red-100 text-red-800"
+                return "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300"
             default:
-                return "bg-gray-100 text-gray-800"
+                return "bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200"
         }
     }
 
@@ -117,22 +117,22 @@ export const BillingSection: React.FC<BillingSectionProps> = ({
                 </CardHeader>
                 <CardContent className="space-y-6">
                     {/* Plan Details */}
-                    <div className="rounded-lg border border-blue-200 bg-blue-50 p-6">
+                    <div className="rounded-lg border border-blue-200 bg-blue-50 p-6 dark:border-blue-800 dark:bg-blue-950/30">
                         <div className="flex items-start justify-between">
                             <div>
-                                <h3 className="text-2xl font-bold text-gray-900">
+                                <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
                                     {t("planValue", { plan: billing.plan }) ||
                                         billing.plan + " " + t("plan")}
                                 </h3>
-                                <p className="mt-2 text-sm text-gray-600">
+                                <p className="mt-2 text-sm text-gray-600 dark:text-gray-300">
                                     {t("youAreOnPlan", { plan: billing.plan })}
                                 </p>
                             </div>
                             <div className="text-right">
-                                <p className="text-3xl font-bold text-gray-900">
+                                <p className="text-3xl font-bold text-gray-900 dark:text-gray-100">
                                     {formatCurrency(billing.price)}
                                 </p>
-                                <p className="text-sm text-gray-600">
+                                <p className="text-sm text-gray-600 dark:text-gray-300">
                                     {t("perMonth")}
                                 </p>
                             </div>
@@ -140,10 +140,10 @@ export const BillingSection: React.FC<BillingSectionProps> = ({
 
                         {/* Plan Features */}
                         <div className="mt-6 space-y-2">
-                            <p className="text-sm font-medium text-gray-900">
+                            <p className="text-sm font-medium text-gray-900 dark:text-gray-100">
                                 {t("planIncludes")}:
                             </p>
-                            <ul className="space-y-1 text-sm text-gray-700">
+                            <ul className="space-y-1 text-sm text-gray-700 dark:text-gray-300">
                                 <li>✓ {t("unlimitedPosts")}</li>
                                 <li>
                                     ✓ {t("connectedChannels", { count: 5 })}
@@ -154,10 +154,10 @@ export const BillingSection: React.FC<BillingSectionProps> = ({
                         </div>
 
                         {/* Next Billing Date */}
-                        <div className="mt-6 border-t border-blue-200 pt-4">
-                            <p className="text-sm text-gray-600">
+                        <div className="mt-6 border-t border-blue-200 pt-4 dark:border-blue-800">
+                            <p className="text-sm text-gray-600 dark:text-gray-300">
                                 {t("nextBillingDate")}
-                                <span className="font-medium text-gray-900">
+                                <span className="font-medium text-gray-900 dark:text-gray-100">
                                     {formatDate(billing.nextBillingDate)}
                                 </span>
                             </p>
@@ -189,17 +189,17 @@ export const BillingSection: React.FC<BillingSectionProps> = ({
                         <div className="overflow-x-auto">
                             <table className="w-full">
                                 <thead>
-                                    <tr className="border-b border-gray-200">
-                                        <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900">
+                                    <tr className="border-b border-gray-200 dark:border-gray-700">
+                                        <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-gray-100">
                                             {t("date")}
                                         </th>
-                                        <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900">
+                                        <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-gray-100">
                                             {t("amount")}
                                         </th>
-                                        <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900">
+                                        <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-gray-100">
                                             {t("status")}
                                         </th>
-                                        <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900">
+                                        <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-gray-100">
                                             {t("action")}
                                         </th>
                                     </tr>
@@ -208,12 +208,12 @@ export const BillingSection: React.FC<BillingSectionProps> = ({
                                     {billing.invoices.map(invoice => (
                                         <tr
                                             key={invoice.id}
-                                            className="border-b border-gray-100 hover:bg-gray-50"
+                                            className="border-b border-gray-100 hover:bg-gray-50 dark:border-gray-800 dark:hover:bg-gray-900/50"
                                         >
-                                            <td className="px-4 py-3 text-sm text-gray-900">
+                                            <td className="px-4 py-3 text-sm text-gray-900 dark:text-gray-100">
                                                 {formatDate(invoice.date)}
                                             </td>
-                                            <td className="px-4 py-3 text-sm font-medium text-gray-900">
+                                            <td className="px-4 py-3 text-sm font-medium text-gray-900 dark:text-gray-100">
                                                 {formatCurrency(invoice.amount)}
                                             </td>
                                             <td className="px-4 py-3">
@@ -254,8 +254,8 @@ export const BillingSection: React.FC<BillingSectionProps> = ({
                             </table>
                         </div>
                     ) : (
-                        <div className="rounded-lg bg-gray-50 p-8 text-center">
-                            <p className="text-sm text-gray-600">
+                        <div className="rounded-lg bg-gray-50 p-8 text-center dark:bg-gray-900/50">
+                            <p className="text-sm text-gray-600 dark:text-gray-400">
                                 {t("noInvoices")}
                             </p>
                         </div>

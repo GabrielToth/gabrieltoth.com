@@ -233,12 +233,12 @@ export const SecuritySection: React.FC<SecuritySectionProps> = ({ user }) => {
                 <CardContent className="space-y-4">
                     <div className="flex items-center justify-between">
                         <div>
-                            <p className="font-medium text-gray-900">
+                            <p className="font-medium text-gray-900 dark:text-gray-100">
                                 {twoFactorEnabled
                                     ? t("twoFactorEnabled")
                                     : t("twoFactorDisabled")}
                             </p>
-                            <p className="text-sm text-gray-600">
+                            <p className="text-sm text-gray-600 dark:text-gray-300">
                                 {twoFactorEnabled
                                     ? t("twoFactorProtected")
                                     : t("twoFactorEnablePrompt")}
@@ -255,11 +255,11 @@ export const SecuritySection: React.FC<SecuritySectionProps> = ({ user }) => {
 
                     {/* 2FA Setup Instructions */}
                     {showTwoFactorSetup && !twoFactorEnabled && (
-                        <div className="space-y-4 rounded-lg bg-blue-50 p-4">
-                            <p className="text-sm font-medium text-blue-900">
+                        <div className="space-y-4 rounded-lg bg-blue-50 p-4 dark:bg-blue-950/30">
+                            <p className="text-sm font-medium text-blue-900 dark:text-blue-200">
                                 {t("setup2FA")}
                             </p>
-                            <ol className="space-y-2 text-sm text-blue-800">
+                            <ol className="space-y-2 text-sm text-blue-800 dark:text-blue-300">
                                 <li>
                                     1. Download an authenticator app (Google
                                     Authenticator, Authy, etc.)
@@ -273,13 +273,13 @@ export const SecuritySection: React.FC<SecuritySectionProps> = ({ user }) => {
                                     confirm
                                 </li>
                             </ol>
-                            <div className="flex justify-center rounded-lg bg-white p-4">
-                                <div className="h-32 w-32 bg-gray-200" />
+                            <div className="flex justify-center rounded-lg bg-white p-4 dark:bg-gray-800">
+                                <div className="h-32 w-32 bg-gray-200 dark:bg-gray-700" />
                             </div>
                             <div className="space-y-2">
                                 <label
                                     htmlFor="2fa-code"
-                                    className="block text-sm font-medium text-blue-900"
+                                    className="block text-sm font-medium text-blue-900 dark:text-blue-200"
                                 >
                                     {t("enter6DigitCode")}
                                 </label>
@@ -320,7 +320,7 @@ export const SecuritySection: React.FC<SecuritySectionProps> = ({ user }) => {
                 </CardHeader>
                 <CardContent className="space-y-4">
                     {passwordSuccess && (
-                        <div className="rounded-md bg-green-50 p-4 text-sm text-green-700">
+                        <div className="rounded-md bg-green-50 p-4 text-sm text-green-700 dark:bg-green-900/30 dark:text-green-300">
                             {passwordSuccess}
                         </div>
                     )}
@@ -341,7 +341,7 @@ export const SecuritySection: React.FC<SecuritySectionProps> = ({ user }) => {
                             <div className="space-y-2">
                                 <label
                                     htmlFor="currentPassword"
-                                    className="block text-sm font-medium text-gray-700"
+                                    className="block text-sm font-medium text-gray-700 dark:text-gray-300"
                                 >
                                     {t("currentPassword")}
                                 </label>
@@ -365,7 +365,7 @@ export const SecuritySection: React.FC<SecuritySectionProps> = ({ user }) => {
                                 {passwordErrors.currentPassword && (
                                     <p
                                         id="currentPassword-error"
-                                        className="text-sm text-red-600"
+                                        className="text-sm text-red-600 dark:text-red-400"
                                     >
                                         {passwordErrors.currentPassword}
                                     </p>
@@ -376,7 +376,7 @@ export const SecuritySection: React.FC<SecuritySectionProps> = ({ user }) => {
                             <div className="space-y-2">
                                 <label
                                     htmlFor="newPassword"
-                                    className="block text-sm font-medium text-gray-700"
+                                    className="block text-sm font-medium text-gray-700 dark:text-gray-300"
                                 >
                                     {t("newPassword")}
                                 </label>
@@ -398,7 +398,7 @@ export const SecuritySection: React.FC<SecuritySectionProps> = ({ user }) => {
                                 {passwordErrors.newPassword && (
                                     <p
                                         id="newPassword-error"
-                                        className="text-sm text-red-600"
+                                        className="text-sm text-red-600 dark:text-red-400"
                                     >
                                         {passwordErrors.newPassword}
                                     </p>
@@ -406,8 +406,8 @@ export const SecuritySection: React.FC<SecuritySectionProps> = ({ user }) => {
 
                                 {/* Password Requirements */}
                                 {passwordForm.newPassword && (
-                                    <div className="space-y-2 rounded-lg bg-gray-50 p-3">
-                                        <p className="text-xs font-medium text-gray-700">
+                                    <div className="space-y-2 rounded-lg bg-gray-50 p-3 dark:bg-gray-900/50">
+                                        <p className="text-xs font-medium text-gray-700 dark:text-gray-300">
                                             {t("passwordRequirements")}:
                                         </p>
                                         <ul className="space-y-1">
@@ -417,8 +417,8 @@ export const SecuritySection: React.FC<SecuritySectionProps> = ({ user }) => {
                                                         key={idx}
                                                         className={`text-xs ${
                                                             req.met
-                                                                ? "text-green-600"
-                                                                : "text-gray-600"
+                                                                ? "text-green-600 dark:text-green-400"
+                                                                : "text-gray-600 dark:text-gray-400"
                                                         }`}
                                                     >
                                                         {req.met ? "✓" : "○"}{" "}
@@ -435,7 +435,7 @@ export const SecuritySection: React.FC<SecuritySectionProps> = ({ user }) => {
                             <div className="space-y-2">
                                 <label
                                     htmlFor="confirmPassword"
-                                    className="block text-sm font-medium text-gray-700"
+                                    className="block text-sm font-medium text-gray-700 dark:text-gray-300"
                                 >
                                     {t("confirmPassword")}
                                 </label>
@@ -459,7 +459,7 @@ export const SecuritySection: React.FC<SecuritySectionProps> = ({ user }) => {
                                 {passwordErrors.confirmPassword && (
                                     <p
                                         id="confirmPassword-error"
-                                        className="text-sm text-red-600"
+                                        className="text-sm text-red-600 dark:text-red-400"
                                     >
                                         {passwordErrors.confirmPassword}
                                     </p>

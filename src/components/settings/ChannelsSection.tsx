@@ -181,21 +181,21 @@ export const ChannelsSection: React.FC<ChannelsSectionProps> = ({
             </CardHeader>
             <CardContent className="space-y-6">
                 {/* YouTube Connect Card */}
-                <div className="rounded-lg border border-gray-200 p-4">
+                <div className="rounded-lg border border-gray-200 p-4 dark:border-gray-700">
                     <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3">
                             <DynamicIcon name="Youtube" size={32} />
                             <div>
-                                <p className="font-medium text-gray-900">
+                                <p className="font-medium text-gray-900 dark:text-gray-100">
                                     YouTube
                                 </p>
                                 {youtubeChannel?.isConnected ? (
                                     <>
-                                        <p className="text-sm text-gray-600">
+                                        <p className="text-sm text-gray-600 dark:text-gray-300">
                                             {youtubeChannel.accountName}
                                         </p>
                                         {youtubeChannel.connectedAt && (
-                                            <p className="text-xs text-gray-500">
+                                            <p className="text-xs text-gray-500 dark:text-gray-400">
                                                 {t("youtube.connectedSince")}{" "}
                                                 {new Date(
                                                     youtubeChannel.connectedAt
@@ -203,7 +203,7 @@ export const ChannelsSection: React.FC<ChannelsSectionProps> = ({
                                             </p>
                                         )}
                                         {youtubeChannel.needsReconnect && (
-                                            <p className="mt-1 text-xs text-amber-600">
+                                            <p className="mt-1 text-xs text-amber-600 dark:text-amber-400">
                                                 Disconnect and reconnect to
                                                 enable analytics & monetization
                                                 features
@@ -211,7 +211,7 @@ export const ChannelsSection: React.FC<ChannelsSectionProps> = ({
                                         )}
                                     </>
                                 ) : (
-                                    <p className="text-sm text-gray-500">
+                                    <p className="text-sm text-gray-500 dark:text-gray-400">
                                         {t("youtube.noChannel")}
                                     </p>
                                 )}
@@ -219,12 +219,12 @@ export const ChannelsSection: React.FC<ChannelsSectionProps> = ({
                         </div>
                         {youtubeChannel?.isConnected ? (
                             <div className="flex items-center gap-2">
-                                <span className="inline-flex items-center rounded-full bg-green-100 px-3 py-1 text-xs font-medium text-green-800">
+                                <span className="inline-flex items-center rounded-full bg-green-100 px-3 py-1 text-xs font-medium text-green-800 dark:bg-green-900/30 dark:text-green-300">
                                     {t("youtube.connected")}
                                 </span>
                                 {youtubeChannel.needsReconnect && (
                                     <span
-                                        className="inline-flex items-center rounded-full bg-amber-100 px-3 py-1 text-xs font-medium text-amber-800 cursor-help"
+                                        className="inline-flex items-center rounded-full bg-amber-100 px-3 py-1 text-xs font-medium text-amber-800 cursor-help dark:bg-amber-900/30 dark:text-amber-300"
                                         title="New scopes required: disconnect and reconnect to access analytics, members, and affiliates data"
                                     >
                                         Reconnect needed
@@ -244,7 +244,7 @@ export const ChannelsSection: React.FC<ChannelsSectionProps> = ({
                                         <Button
                                             size="sm"
                                             variant="outline"
-                                            className="text-red-600 hover:bg-red-50"
+                                            className="text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-950/30"
                                             onClick={() =>
                                                 handlePlatformDisconnect(
                                                     youtubeChannel.id,
@@ -268,7 +268,7 @@ export const ChannelsSection: React.FC<ChannelsSectionProps> = ({
                                     <Button
                                         size="sm"
                                         variant="outline"
-                                        className="text-red-600 hover:bg-red-50"
+                                        className="text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-950/30"
                                         onClick={() =>
                                             handleDisconnectClick(
                                                 youtubeChannel.id
@@ -297,7 +297,7 @@ export const ChannelsSection: React.FC<ChannelsSectionProps> = ({
                 {/* Other Connected Channels */}
                 {nonYoutubeConnected.length > 0 && (
                     <div className="space-y-4">
-                        <h3 className="text-sm font-semibold text-gray-900">
+                        <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100">
                             {t("youtube.connected")} (
                             {nonYoutubeConnected.length})
                         </h3>
@@ -305,7 +305,7 @@ export const ChannelsSection: React.FC<ChannelsSectionProps> = ({
                             {nonYoutubeConnected.map(channel => (
                                 <div
                                     key={channel.id}
-                                    className="flex items-center justify-between rounded-lg border border-gray-200 p-4"
+                                    className="flex items-center justify-between rounded-lg border border-gray-200 p-4 dark:border-gray-700"
                                 >
                                     <div className="flex items-center gap-3">
                                         <DynamicIcon
@@ -317,16 +317,16 @@ export const ChannelsSection: React.FC<ChannelsSectionProps> = ({
                                             size={24}
                                         />
                                         <div>
-                                            <p className="font-medium text-gray-900">
+                                            <p className="font-medium text-gray-900 dark:text-gray-100">
                                                 {getPlatformName(
                                                     channel.platform
                                                 )}
                                             </p>
-                                            <p className="text-sm text-gray-600">
+                                            <p className="text-sm text-gray-600 dark:text-gray-300">
                                                 {channel.accountName}
                                             </p>
                                             {channel.connectedAt && (
-                                                <p className="text-xs text-gray-500">
+                                                <p className="text-xs text-gray-500 dark:text-gray-400">
                                                     {t(
                                                         "youtube.connectedSince"
                                                     )}{" "}
@@ -338,12 +338,12 @@ export const ChannelsSection: React.FC<ChannelsSectionProps> = ({
                                         </div>
                                     </div>
                                     <div className="flex items-center gap-2">
-                                        <span className="inline-flex items-center rounded-full bg-green-100 px-3 py-1 text-xs font-medium text-green-800">
+                                        <span className="inline-flex items-center rounded-full bg-green-100 px-3 py-1 text-xs font-medium text-green-800 dark:bg-green-900/30 dark:text-green-300">
                                             {t("youtube.connected")}
                                         </span>
                                         {channel.needsReconnect && (
                                             <span
-                                                className="inline-flex items-center rounded-full bg-amber-100 px-3 py-1 text-xs font-medium text-amber-800 cursor-help"
+                                                className="inline-flex items-center rounded-full bg-amber-100 px-3 py-1 text-xs font-medium text-amber-800 cursor-help dark:bg-amber-900/30 dark:text-amber-300"
                                                 title="New scopes required: disconnect and reconnect to access new features"
                                             >
                                                 Reconnect needed
@@ -365,7 +365,7 @@ export const ChannelsSection: React.FC<ChannelsSectionProps> = ({
                                                 <Button
                                                     size="sm"
                                                     variant="outline"
-                                                    className="text-red-600 hover:bg-red-50"
+                                                    className="text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-950/30"
                                                     onClick={() =>
                                                         handlePlatformDisconnect(
                                                             channel.id,
@@ -391,7 +391,7 @@ export const ChannelsSection: React.FC<ChannelsSectionProps> = ({
                                             <Button
                                                 size="sm"
                                                 variant="outline"
-                                                className="text-red-600 hover:bg-red-50"
+                                                className="text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-950/30"
                                                 onClick={() =>
                                                     handleDisconnectClick(
                                                         channel.id
@@ -411,7 +411,7 @@ export const ChannelsSection: React.FC<ChannelsSectionProps> = ({
                 {/* Other Available Channels */}
                 {nonYoutubeDisconnected.length > 0 && (
                     <div className="space-y-4">
-                        <h3 className="text-sm font-semibold text-gray-900">
+                        <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100">
                             {t("youtube.notConnected")} (
                             {nonYoutubeDisconnected.length})
                         </h3>
@@ -419,7 +419,7 @@ export const ChannelsSection: React.FC<ChannelsSectionProps> = ({
                             {nonYoutubeDisconnected.map(channel => (
                                 <div
                                     key={channel.id}
-                                    className="flex items-center justify-between rounded-lg border border-gray-200 p-4"
+                                    className="flex items-center justify-between rounded-lg border border-gray-200 p-4 dark:border-gray-700"
                                 >
                                     <div className="flex items-center gap-3">
                                         <DynamicIcon
@@ -431,12 +431,12 @@ export const ChannelsSection: React.FC<ChannelsSectionProps> = ({
                                             size={24}
                                         />
                                         <div>
-                                            <p className="font-medium text-gray-900">
+                                            <p className="font-medium text-gray-900 dark:text-gray-100">
                                                 {getPlatformName(
                                                     channel.platform
                                                 )}
                                             </p>
-                                            <p className="text-sm text-gray-600">
+                                            <p className="text-sm text-gray-600 dark:text-gray-300">
                                                 {t("youtube.notConnected")}
                                             </p>
                                         </div>
