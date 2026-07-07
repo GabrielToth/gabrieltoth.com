@@ -67,12 +67,10 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
                 : false
             const metadata = sn.metadata as Record<string, unknown> | null
             const storedScopeVersion = metadata?.scopeVersion as
-                | number
-                | undefined
+                number | undefined
 
             const profileImageUrl = metadata?.profileImageUrl as
-                | string
-                | undefined
+                string | undefined
 
             let isConnected = sn.status === "connected" && !isExpired
             let needsReconnect = false

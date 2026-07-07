@@ -15,11 +15,7 @@ const logger = createLogger("OAuthManager")
  * Supported OAuth platforms
  */
 export type OAuthPlatform =
-    | "youtube"
-    | "facebook"
-    | "instagram"
-    | "twitter"
-    | "linkedin"
+    "youtube" | "facebook" | "instagram" | "twitter" | "linkedin"
 
 /**
  * OAuth configuration for a platform

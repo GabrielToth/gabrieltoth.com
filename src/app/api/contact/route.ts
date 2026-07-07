@@ -126,8 +126,7 @@ export async function POST(request: NextRequest) {
                     subject: String(form.get("subject") || ""),
                     message: String(form.get("message") || ""),
                     locale: String(form.get("locale") || "pt-BR") as
-                        | "en"
-                        | "pt-BR",
+                        "en" | "pt-BR",
                     turnstileToken: String(
                         form.get("cf-turnstile-response") || ""
                     ),

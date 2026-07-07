@@ -1,9 +1,7 @@
 import { sendDiscordNotification } from "@/lib/discord"
 
 export type UserAuditEvent =
-    | "user_registered"
-    | "user_login"
-    | "platform_linked"
+    "user_registered" | "user_login" | "platform_linked"
 
 export interface UserAuditPayload {
     email?: string

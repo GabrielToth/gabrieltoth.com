@@ -384,10 +384,7 @@ export async function GET(
         // Get authorization code and provider from query parameters
         const code = request.nextUrl.searchParams.get("code")
         const provider = request.nextUrl.searchParams.get("provider") as
-            | "google"
-            | "facebook"
-            | "tiktok"
-            | null
+            "google" | "facebook" | "tiktok" | null
 
         // Validate authorization code
         if (!code) {
