@@ -1,12 +1,16 @@
 /**
  * OAuth Manager Tests
  * Tests for OAuth authentication across multiple platforms
+ *
+ * Note: validateState() now uses HMAC-signed state tokens (via state-signer.ts)
+ * instead of cache-based lookups. Return type changed from boolean to
+ * { valid: boolean; locale?: string }.
  */
 
 import { OAuthManager, getOAuthManager, resetOAuthManager } from "@/lib/oauth"
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 
-// Mock cache manager
+// Mock cache manager (still used by getOAuthStatus)
 vi.mock("@/lib/cache", () => ({
     CacheManager: {
         set: vi.fn().mockResolvedValue(true),
@@ -20,6 +24,37 @@ vi.mock("@/lib/cache", () => ({
         OAUTH_TOKEN: 3600,
     },
 }))
+
+// Mock state signer for controlled testing of HMAC-signed state
+vi.mock("@/lib/oauth/state-signer", () => {
+    let nonceCounter = 0
+    return {
+        generateState: vi
+            .fn()
+            .mockImplementation(
+                (userId: string, platform: string, locale?: string) => {
+                    const payload = {
+                        userId,
+                        platform,
+                        nonce: `test-nonce-${nonceCounter++}`,
+                        iat: Date.now(),
+                        locale,
+                    }
+                    const payloadBase64 = Buffer.from(
+                        JSON.stringify(payload)
+                    ).toString("base64url")
+                    const sigBase64 = Buffer.from(
+                        "fake-hmac-signature"
+                    ).toString("base64url")
+                    return {
+                        token: `${payloadBase64}.${sigBase64}`,
+                        payload,
+                    }
+                }
+            ),
+        verifyState: vi.fn(),
+    }
+})
 
 describe("OAuthManager", () => {
     let manager: OAuthManager
@@ -111,68 +146,117 @@ describe("OAuthManager", () => {
             expect(result1.state).not.toBe(result2.state)
         })
 
-        it("should store state in cache", async () => {
-            const { CacheManager } = await import("@/lib/cache")
-            await manager.generateAuthorizationUrl("youtube", "user123")
+        it("should return state in HMAC token format", async () => {
+            const result = await manager.generateAuthorizationUrl(
+                "youtube",
+                "user123"
+            )
 
-            expect(CacheManager.set).toHaveBeenCalled()
+            // HMAC format: base64url(payload).base64url(signature)
+            const parts = result.state.split(".")
+            expect(parts).toHaveLength(2)
+            expect(parts[0]).toMatch(/^[A-Za-z0-9_-]+$/)
+            expect(parts[1]).toMatch(/^[A-Za-z0-9_-]+$/)
         })
     })
 
     describe("validateState", () => {
         it("should validate matching state", async () => {
-            const { CacheManager } = await import("@/lib/cache")
-            const testState = "test-state-123"
-
-            vi.mocked(CacheManager.get).mockResolvedValueOnce(testState)
-
-            const result = await manager.validateState(
-                "youtube",
-                "user123",
-                testState
-            )
-
-            expect(result).toBe(true)
-        })
-
-        it("should reject non-matching state", async () => {
-            const { CacheManager } = await import("@/lib/cache")
-            const storedState = "stored-state-123"
-            const providedState = "different-state-456"
-
-            vi.mocked(CacheManager.get).mockResolvedValueOnce(storedState)
+            const { verifyState } = await import("@/lib/oauth/state-signer")
+            vi.mocked(verifyState).mockReturnValueOnce({
+                valid: true,
+                payload: {
+                    userId: "user123",
+                    platform: "youtube",
+                    nonce: "test-nonce",
+                    iat: Date.now(),
+                },
+            })
 
             const result = await manager.validateState(
                 "youtube",
                 "user123",
-                providedState
+                "valid-state-token"
             )
 
-            expect(result).toBe(false)
+            expect(result).toEqual({ valid: true })
         })
 
-        it("should return false when state not found in cache", async () => {
-            const { CacheManager } = await import("@/lib/cache")
-            vi.mocked(CacheManager.get).mockResolvedValueOnce(null)
+        it("should reject platform mismatch", async () => {
+            const { verifyState } = await import("@/lib/oauth/state-signer")
+            vi.mocked(verifyState).mockReturnValueOnce({
+                valid: true,
+                payload: {
+                    userId: "user123",
+                    platform: "youtube",
+                    nonce: "test-nonce",
+                    iat: Date.now(),
+                },
+            })
+
+            const result = await manager.validateState(
+                "facebook", // different platform than what's in the token
+                "user123",
+                "valid-state-token"
+            )
+
+            expect(result).toEqual({ valid: false })
+        })
+
+        it("should return false for invalid signature", async () => {
+            const { verifyState } = await import("@/lib/oauth/state-signer")
+            vi.mocked(verifyState).mockReturnValueOnce({
+                valid: false,
+                payload: null,
+                error: "Invalid state signature",
+            })
 
             const result = await manager.validateState(
                 "youtube",
                 "user123",
-                "any-state"
+                "tampered-state-token"
             )
 
-            expect(result).toBe(false)
+            expect(result).toEqual({ valid: false })
         })
 
-        it("should delete state from cache after validation", async () => {
-            const { CacheManager } = await import("@/lib/cache")
-            const testState = "test-state-123"
+        it("should return false for expired state token", async () => {
+            const { verifyState } = await import("@/lib/oauth/state-signer")
+            vi.mocked(verifyState).mockReturnValueOnce({
+                valid: false,
+                payload: null,
+                error: "State token expired",
+            })
 
-            vi.mocked(CacheManager.get).mockResolvedValueOnce(testState)
+            const result = await manager.validateState(
+                "youtube",
+                "user123",
+                "expired-state-token"
+            )
 
-            await manager.validateState("youtube", "user123", testState)
+            expect(result).toEqual({ valid: false })
+        })
 
-            expect(CacheManager.delete).toHaveBeenCalled()
+        it("should propagate locale from valid state", async () => {
+            const { verifyState } = await import("@/lib/oauth/state-signer")
+            vi.mocked(verifyState).mockReturnValueOnce({
+                valid: true,
+                payload: {
+                    userId: "user123",
+                    platform: "youtube",
+                    nonce: "test-nonce",
+                    iat: Date.now(),
+                    locale: "en",
+                },
+            })
+
+            const result = await manager.validateState(
+                "youtube",
+                "user123",
+                "valid-state-token-with-locale"
+            )
+
+            expect(result).toEqual({ valid: true, locale: "en" })
         })
     })
 
