@@ -371,6 +371,83 @@ export default function PublishWizard({ onClose }: PublishWizardProps) {
                                 : "Unknown error",
                     })
                 }
+            } else if (platformId === "facebook") {
+                // Post text to Facebook page feed
+                setWizardState(prev => ({
+                    ...prev,
+                    processing: {
+                        status: "uploading",
+                        platformId: "facebook",
+                        progress: 0,
+                        speed: "0 KB/s",
+                    },
+                }))
+
+                try {
+                    const pageId = sel.channelIds[0]
+                    if (!pageId) {
+                        results.push({
+                            platformId: "facebook",
+                            success: false,
+                            error: "No Facebook page selected",
+                        })
+                        continue
+                    }
+
+                    const message = wizardState.content.text
+                    if (!message.trim()) {
+                        results.push({
+                            platformId: "facebook",
+                            success: false,
+                            error: "No message content",
+                        })
+                        continue
+                    }
+
+                    setWizardState(prev => ({
+                        ...prev,
+                        processing: {
+                            status: "publishing",
+                            platformId: "facebook",
+                        },
+                    }))
+
+                    const res = await fetch("/api/platform/facebook/publish", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({
+                            pageId,
+                            message,
+                        }),
+                    })
+
+                    if (!res.ok) {
+                        const data = await res.json()
+                        throw new Error(
+                            data.message ||
+                                data.error ||
+                                "Failed to publish to Facebook"
+                        )
+                    }
+
+                    const result = await res.json()
+                    results.push({
+                        platformId: "facebook",
+                        success: true,
+                        url: result.url,
+                    })
+                } catch (err) {
+                    results.push({
+                        platformId: "facebook",
+                        success: false,
+                        error:
+                            err instanceof Error
+                                ? err.message
+                                : "Unknown error",
+                    })
+                }
             } else {
                 // Future: handle other platforms and post type
                 results.push({
