@@ -1,16 +1,24 @@
 /**
  * OAuth Manager Tests
- * Tests for OAuth authentication across multiple platforms
+ * Tests OAuth authentication across multiple platforms using HMAC state signing.
  *
- * Note: validateState() now uses HMAC-signed state tokens (via state-signer.ts)
- * instead of cache-based lookups. Return type changed from boolean to
- * { valid: boolean; locale?: string }.
+ * Mocks state-signer for deterministic state tokens.
+ * Coverage: All OAuthManager methods and branches.
  */
 
 import { OAuthManager, getOAuthManager, resetOAuthManager } from "@/lib/oauth"
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 
-// Mock cache manager (still used by getOAuthStatus)
+// Mock state-signer for deterministic testing
+const mockGenerateState = vi.fn()
+const mockVerifyState = vi.fn()
+
+vi.mock("@/lib/oauth/state-signer", () => ({
+    generateState: (...args: unknown[]) => mockGenerateState(...args),
+    verifyState: (...args: unknown[]) => mockVerifyState(...args),
+}))
+
+// Mock cache (for getOAuthStatus which still uses CacheManager)
 vi.mock("@/lib/cache", () => ({
     CacheManager: {
         set: vi.fn().mockResolvedValue(true),
@@ -25,37 +33,6 @@ vi.mock("@/lib/cache", () => ({
     },
 }))
 
-// Mock state signer for controlled testing of HMAC-signed state
-vi.mock("@/lib/oauth/state-signer", () => {
-    let nonceCounter = 0
-    return {
-        generateState: vi
-            .fn()
-            .mockImplementation(
-                (userId: string, platform: string, locale?: string) => {
-                    const payload = {
-                        userId,
-                        platform,
-                        nonce: `test-nonce-${nonceCounter++}`,
-                        iat: Date.now(),
-                        locale,
-                    }
-                    const payloadBase64 = Buffer.from(
-                        JSON.stringify(payload)
-                    ).toString("base64url")
-                    const sigBase64 = Buffer.from(
-                        "fake-hmac-signature"
-                    ).toString("base64url")
-                    return {
-                        token: `${payloadBase64}.${sigBase64}`,
-                        payload,
-                    }
-                }
-            ),
-        verifyState: vi.fn(),
-    }
-})
-
 describe("OAuthManager", () => {
     let manager: OAuthManager
     const originalEnv = { ...process.env }
@@ -66,42 +43,90 @@ describe("OAuthManager", () => {
         process.env.YOUTUBE_CLIENT_SECRET = "test-youtube-client-secret"
         process.env.YOUTUBE_REDIRECT_URI =
             "http://localhost:3000/api/oauth/callback/youtube"
+        process.env.FACEBOOK_APP_ID = "test-facebook-app-id"
+        process.env.FACEBOOK_APP_SECRET = "test-facebook-app-secret"
+        process.env.FACEBOOK_REDIRECT_URI =
+            "http://localhost:3000/api/oauth/callback/facebook"
+
+        // Ensure unconfigured platforms stay unconfigured
+        delete process.env.INSTAGRAM_APP_ID
+        delete process.env.INSTAGRAM_APP_SECRET
+        delete process.env.TWITTER_CLIENT_ID
+        delete process.env.TWITTER_CLIENT_SECRET
+        delete process.env.LINKEDIN_CLIENT_ID
+        delete process.env.LINKEDIN_CLIENT_SECRET
 
         resetOAuthManager()
         manager = new OAuthManager()
+
+        // Reset mocks
+        mockGenerateState.mockReset()
+        mockVerifyState.mockReset()
     })
 
     afterEach(() => {
         vi.clearAllMocks()
-        // Restore original environment
         process.env = { ...originalEnv }
     })
 
     describe("getSupportedPlatforms", () => {
         it("should return list of configured platforms", () => {
             const platforms = manager.getSupportedPlatforms()
-            expect(platforms).toContain("youtube")
             expect(Array.isArray(platforms)).toBe(true)
+            expect(platforms).toContain("youtube")
+            expect(platforms).toContain("facebook")
         })
 
-        it("should include YouTube when configured", () => {
+        it("should not include unconfigured platforms", () => {
+            // Only YouTube and Facebook are configured
             const platforms = manager.getSupportedPlatforms()
-            expect(platforms).toContain("youtube")
+            expect(platforms).not.toContain("twitter")
+            expect(platforms).not.toContain("linkedin")
         })
     })
 
     describe("isPlatformConfigured", () => {
         it("should return true for configured platform", () => {
             expect(manager.isPlatformConfigured("youtube")).toBe(true)
+            expect(manager.isPlatformConfigured("facebook")).toBe(true)
         })
 
         it("should return false for unconfigured platform", () => {
-            expect(manager.isPlatformConfigured("facebook")).toBe(false)
+            expect(manager.isPlatformConfigured("twitter")).toBe(false)
+            expect(manager.isPlatformConfigured("instagram")).toBe(false)
         })
     })
 
     describe("generateAuthorizationUrl", () => {
-        it("should generate authorization URL for YouTube", async () => {
+        const mockStateToken = "mock-state-token.abc123signature"
+
+        beforeEach(() => {
+            mockGenerateState.mockReturnValue({
+                token: mockStateToken,
+                payload: {
+                    userId: "user123",
+                    platform: "youtube",
+                    nonce: "test-nonce",
+                    iat: Date.now(),
+                },
+            })
+        })
+
+        it("should call generateState with correct parameters", async () => {
+            await manager.generateAuthorizationUrl(
+                "youtube",
+                "user123",
+                "pt-BR"
+            )
+
+            expect(mockGenerateState).toHaveBeenCalledWith(
+                "user123",
+                "youtube",
+                "pt-BR"
+            )
+        })
+
+        it("should return correct URL format for YouTube", async () => {
             const result = await manager.generateAuthorizationUrl(
                 "youtube",
                 "user123"
@@ -113,24 +138,48 @@ describe("OAuthManager", () => {
             expect(result.authorizationUrl).toContain("client_id=")
             expect(result.authorizationUrl).toContain("redirect_uri=")
             expect(result.authorizationUrl).toContain("scope=")
-            expect(result.state).toBeDefined()
-            expect(result.platform).toBe("youtube")
+            expect(result.authorizationUrl).toContain("state=")
+            expect(result.authorizationUrl).toContain("access_type=offline")
+            expect(result.authorizationUrl).toContain("prompt=consent")
         })
 
-        it("should include offline access for YouTube", async () => {
+        it("should return correct URL format for Facebook", async () => {
+            mockGenerateState.mockReturnValue({
+                token: "fb-state-token.signature",
+                payload: {
+                    userId: "user123",
+                    platform: "facebook",
+                    nonce: "fb-nonce",
+                    iat: Date.now(),
+                },
+            })
+
+            const result = await manager.generateAuthorizationUrl(
+                "facebook",
+                "user123"
+            )
+
+            expect(result.authorizationUrl).toContain(
+                "https://www.facebook.com/v18.0/dialog/oauth"
+            )
+            expect(result.authorizationUrl).toContain("display=popup")
+            expect(result.authorizationUrl).toContain("client_id=")
+            expect(result.platform).toBe("facebook")
+        })
+
+        it("should store the state in the response", async () => {
             const result = await manager.generateAuthorizationUrl(
                 "youtube",
                 "user123"
             )
 
-            expect(result.authorizationUrl).toContain("access_type=offline")
-            expect(result.authorizationUrl).toContain("prompt=consent")
+            expect(result.state).toBe(mockStateToken)
         })
 
-        it("should throw error for unconfigured platform", async () => {
+        it("should throw for unconfigured platform", async () => {
             await expect(
-                manager.generateAuthorizationUrl("facebook", "user123")
-            ).rejects.toThrow("Platform facebook is not configured")
+                manager.generateAuthorizationUrl("twitter", "user123")
+            ).rejects.toThrow("Platform twitter is not configured")
         })
 
         it("should generate unique state for each call", async () => {
@@ -161,14 +210,13 @@ describe("OAuthManager", () => {
     })
 
     describe("validateState", () => {
-        it("should validate matching state", async () => {
-            const { verifyState } = await import("@/lib/oauth/state-signer")
-            vi.mocked(verifyState).mockReturnValueOnce({
+        it("should return { valid: true } when verifyState succeeds with matching payload", async () => {
+            mockVerifyState.mockReturnValue({
                 valid: true,
                 payload: {
                     userId: "user123",
                     platform: "youtube",
-                    nonce: "test-nonce",
+                    nonce: "nonce-1",
                     iat: Date.now(),
                 },
             })
@@ -182,30 +230,29 @@ describe("OAuthManager", () => {
             expect(result).toEqual({ valid: true })
         })
 
-        it("should reject platform mismatch", async () => {
-            const { verifyState } = await import("@/lib/oauth/state-signer")
-            vi.mocked(verifyState).mockReturnValueOnce({
+        it("should return { valid: true, locale } when locale is in payload", async () => {
+            mockVerifyState.mockReturnValue({
                 valid: true,
                 payload: {
                     userId: "user123",
                     platform: "youtube",
-                    nonce: "test-nonce",
+                    nonce: "nonce-1",
                     iat: Date.now(),
+                    locale: "pt-BR",
                 },
             })
 
             const result = await manager.validateState(
-                "facebook", // different platform than what's in the token
+                "youtube",
                 "user123",
                 "valid-state-token"
             )
 
-            expect(result).toEqual({ valid: false })
+            expect(result).toEqual({ valid: true, locale: "pt-BR" })
         })
 
-        it("should return false for invalid signature", async () => {
-            const { verifyState } = await import("@/lib/oauth/state-signer")
-            vi.mocked(verifyState).mockReturnValueOnce({
+        it("should return { valid: false } when verifyState fails", async () => {
+            mockVerifyState.mockReturnValue({
                 valid: false,
                 payload: null,
                 error: "Invalid state signature",
@@ -214,111 +261,235 @@ describe("OAuthManager", () => {
             const result = await manager.validateState(
                 "youtube",
                 "user123",
-                "tampered-state-token"
+                "invalid-signature"
             )
 
             expect(result).toEqual({ valid: false })
         })
 
-        it("should return false for expired state token", async () => {
-            const { verifyState } = await import("@/lib/oauth/state-signer")
-            vi.mocked(verifyState).mockReturnValueOnce({
-                valid: false,
-                payload: null,
-                error: "State token expired",
-            })
-
-            const result = await manager.validateState(
-                "youtube",
-                "user123",
-                "expired-state-token"
-            )
-
-            expect(result).toEqual({ valid: false })
-        })
-
-        it("should propagate locale from valid state", async () => {
-            const { verifyState } = await import("@/lib/oauth/state-signer")
-            vi.mocked(verifyState).mockReturnValueOnce({
+        it("should return { valid: false } when userId does not match", async () => {
+            mockVerifyState.mockReturnValue({
                 valid: true,
                 payload: {
-                    userId: "user123",
+                    userId: "different-user",
                     platform: "youtube",
-                    nonce: "test-nonce",
+                    nonce: "nonce-1",
                     iat: Date.now(),
-                    locale: "en",
                 },
             })
 
             const result = await manager.validateState(
                 "youtube",
                 "user123",
-                "valid-state-token-with-locale"
+                "valid-state"
             )
 
-            expect(result).toEqual({ valid: true, locale: "en" })
+            expect(result).toEqual({ valid: false })
+        })
+
+        it("should return { valid: false } when platform does not match", async () => {
+            mockVerifyState.mockReturnValue({
+                valid: true,
+                payload: {
+                    userId: "user123",
+                    platform: "facebook",
+                    nonce: "nonce-1",
+                    iat: Date.now(),
+                },
+            })
+
+            const result = await manager.validateState(
+                "youtube",
+                "user123",
+                "valid-state"
+            )
+
+            expect(result).toEqual({ valid: false })
+        })
+
+        it("should handle errors thrown from verifyState gracefully", async () => {
+            mockVerifyState.mockImplementation(() => {
+                throw new Error("Unexpected error")
+            })
+
+            const result = await manager.validateState(
+                "youtube",
+                "user123",
+                "some-state"
+            )
+
+            expect(result).toEqual({ valid: false })
+        })
+    })
+
+    describe("getOAuthStatus", () => {
+        it("should return status array with all supported platforms", async () => {
+            const { CacheManager } = await import("@/lib/cache")
+            vi.mocked(CacheManager.get).mockResolvedValue(null)
+
+            const statuses = await manager.getOAuthStatus("user123")
+
+            expect(Array.isArray(statuses)).toBe(true)
+            expect(statuses.length).toBeGreaterThan(0)
+        })
+
+        it("should include platform, connected, and expired fields", async () => {
+            const statuses = await manager.getOAuthStatus("user123")
+
+            for (const status of statuses) {
+                expect(status).toHaveProperty("platform")
+                expect(status).toHaveProperty("connected")
+                expect(status).toHaveProperty("expired")
+            }
+        })
+
+        it("should return cached status when available", async () => {
+            const { CacheManager } = await import("@/lib/cache")
+            const cachedStatus = {
+                platform: "youtube" as const,
+                connected: true,
+                expired: false,
+                linkedAt: Date.now(),
+                expiresAt: Date.now() + 3600000,
+            }
+            vi.mocked(CacheManager.get).mockResolvedValue(cachedStatus)
+
+            const statuses = await manager.getOAuthStatus("user123")
+
+            const youtubeStatus = statuses.find(s => s.platform === "youtube")
+            expect(youtubeStatus?.connected).toBe(true)
+            expect(youtubeStatus?.linkedAt).toBeDefined()
         })
     })
 
     describe("exchangeCodeForToken", () => {
-        it("should throw error for unconfigured platform", async () => {
+        it("should throw for unconfigured platform", async () => {
             await expect(
-                manager.exchangeCodeForToken("facebook", "auth-code", "user123")
-            ).rejects.toThrow("Platform facebook is not configured")
+                manager.exchangeCodeForToken("twitter", "auth-code", "user123")
+            ).rejects.toThrow("Platform twitter is not configured")
         })
 
-        it("should handle token exchange errors", async () => {
+        it("should throw when API returns error", async () => {
             global.fetch = vi.fn().mockResolvedValueOnce({
                 ok: false,
                 json: async () => ({
-                    error: "invalid_code",
-                    error_description: "Authorization code is invalid",
+                    error: "invalid_grant",
+                    error_description: "Authorization code expired",
                 }),
             })
 
             await expect(
                 manager.exchangeCodeForToken(
                     "youtube",
-                    "invalid-code",
+                    "expired-code",
                     "user123"
                 )
             ).rejects.toThrow("Token exchange failed")
         })
+
+        it("should return OAuthTokenResponse on success", async () => {
+            global.fetch = vi.fn().mockResolvedValueOnce({
+                ok: true,
+                json: async () => ({
+                    access_token: "ya29.new-token",
+                    refresh_token: "1//refresh-token",
+                    expires_in: 3600,
+                    token_type: "Bearer",
+                    scope: "youtube.upload email",
+                }),
+            })
+
+            const result = await manager.exchangeCodeForToken(
+                "youtube",
+                "valid-code",
+                "user123"
+            )
+
+            expect(result.accessToken).toBe("ya29.new-token")
+            expect(result.refreshToken).toBe("1//refresh-token")
+            expect(result.expiresIn).toBe(3600)
+            expect(result.platform).toBe("youtube")
+            expect(result.userId).toBe("user123")
+            expect(result.linkedAt).toBeGreaterThan(0)
+        })
     })
 
     describe("refreshAccessToken", () => {
-        it("should throw error for unconfigured platform", async () => {
+        it("should throw for unconfigured platform", async () => {
             await expect(
                 manager.refreshAccessToken(
-                    "facebook",
+                    "twitter",
                     "refresh-token",
                     "user123"
                 )
-            ).rejects.toThrow("Platform facebook is not configured")
+            ).rejects.toThrow("Platform twitter is not configured")
         })
 
-        it("should handle token refresh errors", async () => {
+        it("should throw when API returns error", async () => {
             global.fetch = vi.fn().mockResolvedValueOnce({
                 ok: false,
                 json: async () => ({
                     error: "invalid_grant",
-                    error_description: "Refresh token is invalid",
+                    error_description: "Refresh token revoked",
                 }),
             })
 
             await expect(
                 manager.refreshAccessToken(
                     "youtube",
-                    "invalid-refresh-token",
+                    "invalid-refresh",
                     "user123"
                 )
             ).rejects.toThrow("Token refresh failed")
+        })
+
+        it("should return new OAuthTokenResponse on success", async () => {
+            global.fetch = vi.fn().mockResolvedValueOnce({
+                ok: true,
+                json: async () => ({
+                    access_token: "ya29.new-access",
+                    refresh_token: "1//new-refresh",
+                    expires_in: 3600,
+                    token_type: "Bearer",
+                    scope: "youtube.upload",
+                }),
+            })
+
+            const result = await manager.refreshAccessToken(
+                "youtube",
+                "valid-refresh",
+                "user123"
+            )
+
+            expect(result.accessToken).toBe("ya29.new-access")
+            expect(result.refreshToken).toBe("1//new-refresh")
+            expect(result.platform).toBe("youtube")
+            expect(result.userId).toBe("user123")
+        })
+
+        it("should use old refresh token when new one is not returned", async () => {
+            global.fetch = vi.fn().mockResolvedValueOnce({
+                ok: true,
+                json: async () => ({
+                    access_token: "ya29.new-access",
+                    expires_in: 3600,
+                    token_type: "Bearer",
+                    scope: "youtube.upload",
+                }),
+            })
+
+            const result = await manager.refreshAccessToken(
+                "youtube",
+                "original-refresh",
+                "user123"
+            )
+
+            expect(result.refreshToken).toBe("original-refresh")
         })
     })
 
     describe("revokeToken", () => {
         it("should return false for platform without revoke URL", async () => {
-            // Facebook doesn't have a revoke URL configured
             const result = await manager.revokeToken(
                 "facebook",
                 "access-token",
@@ -328,7 +499,7 @@ describe("OAuthManager", () => {
             expect(result).toBe(false)
         })
 
-        it("should handle revocation errors gracefully", async () => {
+        it("should return false when API call fails", async () => {
             global.fetch = vi.fn().mockResolvedValueOnce({
                 ok: false,
                 status: 400,
@@ -342,24 +513,33 @@ describe("OAuthManager", () => {
 
             expect(result).toBe(false)
         })
-    })
 
-    describe("getOAuthStatus", () => {
-        it("should return status for all platforms", async () => {
-            const statuses = await manager.getOAuthStatus("user123")
+        it("should return true on successful revocation", async () => {
+            global.fetch = vi.fn().mockResolvedValueOnce({
+                ok: true,
+            })
 
-            expect(Array.isArray(statuses)).toBe(true)
-            expect(statuses.length).toBeGreaterThan(0)
+            const result = await manager.revokeToken(
+                "youtube",
+                "access-token",
+                "user123"
+            )
+
+            expect(result).toBe(true)
         })
 
-        it("should include platform in status", async () => {
-            const statuses = await manager.getOAuthStatus("user123")
+        it("should handle network errors gracefully", async () => {
+            global.fetch = vi
+                .fn()
+                .mockRejectedValueOnce(new Error("Network error"))
 
-            for (const status of statuses) {
-                expect(status.platform).toBeDefined()
-                expect(status.connected).toBeDefined()
-                expect(status.expired).toBeDefined()
-            }
+            const result = await manager.revokeToken(
+                "youtube",
+                "access-token",
+                "user123"
+            )
+
+            expect(result).toBe(false)
         })
     })
 
@@ -384,23 +564,6 @@ describe("OAuthManager", () => {
             const manager2 = getOAuthManager()
 
             expect(manager1).not.toBe(manager2)
-        })
-    })
-
-    describe("Platform Configuration", () => {
-        it("should configure YouTube with correct scopes", () => {
-            const platforms = manager.getSupportedPlatforms()
-            expect(platforms).toContain("youtube")
-        })
-
-        it("should use environment variables for configuration", () => {
-            process.env.YOUTUBE_CLIENT_ID = "custom-client-id"
-            process.env.YOUTUBE_CLIENT_SECRET = "custom-secret"
-            process.env.YOUTUBE_REDIRECT_URI = "http://localhost:3000/callback"
-
-            resetOAuthManager()
-            const newManager = new OAuthManager()
-            expect(newManager.isPlatformConfigured("youtube")).toBe(true)
         })
     })
 })
