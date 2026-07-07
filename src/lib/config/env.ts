@@ -59,6 +59,9 @@ export interface EnvironmentConfig {
 
     // Token Encryption
     TOKEN_ENCRYPTION_KEY: string
+
+    // OAuth State Signing Secret
+    OAUTH_STATE_SECRET: string
 }
 
 const BASE_REQUIRED = ["DATABASE_URL", "DISCORD_WEBHOOK_URL"] as const
@@ -69,6 +72,7 @@ const YOUTUBE_REQUIRED = [
     "YOUTUBE_CLIENT_SECRET",
     "YOUTUBE_REDIRECT_URI",
     "TOKEN_ENCRYPTION_KEY",
+    "OAUTH_STATE_SECRET",
 ] as const
 
 function parseConfig(): EnvironmentConfig {
@@ -110,6 +114,7 @@ function parseConfig(): EnvironmentConfig {
             "noreply@gabrieltoth.com",
         RESEND_FROM_NAME: process.env.RESEND_FROM_NAME ?? "Gabriel Toth",
         TOKEN_ENCRYPTION_KEY: process.env.TOKEN_ENCRYPTION_KEY ?? "",
+        OAUTH_STATE_SECRET: process.env.OAUTH_STATE_SECRET ?? "",
     }
 }
 

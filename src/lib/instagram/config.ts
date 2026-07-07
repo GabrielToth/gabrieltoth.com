@@ -140,6 +140,7 @@ export function getInstagramConfig(env?: EnvironmentConfig): InstagramConfig {
                 "noreply@gabrieltoth.com",
             RESEND_FROM_NAME: process.env.RESEND_FROM_NAME ?? "Gabriel Toth",
             TOKEN_ENCRYPTION_KEY: process.env.TOKEN_ENCRYPTION_KEY ?? "",
+            OAUTH_STATE_SECRET: process.env.OAUTH_STATE_SECRET ?? "",
         }
 
         configInstance = createInstagramConfig(resolvedEnv)
