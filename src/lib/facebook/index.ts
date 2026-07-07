@@ -23,9 +23,12 @@ export {
     postToPageFeed,
     postToGroupFeed,
     getPagePosts,
+    postVideoToPageFeed,
     type FacebookPost,
     type FacebookPostResult,
     type PostToPageFeedOptions,
+    type PostVideoToPageFeedOptions,
+    type FacebookVideoPostResult,
 } from "./posts"
 
 export {

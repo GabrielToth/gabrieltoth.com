@@ -107,6 +107,74 @@ export async function postToGroupFeed(
     return response.json()
 }
 
+export interface PostVideoToPageFeedOptions {
+    title?: string
+    description: string
+    fileUrl: string
+    published?: boolean
+    scheduledPublishTime?: number
+    thumb?: string
+}
+
+export interface FacebookVideoPostResult {
+    id: string
+    postId?: string
+}
+
+/**
+ * Post a video to a Facebook Page feed.
+ *
+ * Facebook Graph API: POST /{page-id}/videos
+ * - fileUrl: URL of the video file to publish (Facebook fetches it)
+ * - description: Video description/caption
+ * - title: Optional video title
+ * - published: Whether to publish immediately (default: true)
+ * - scheduledPublishTime: Unix timestamp for scheduled publishing
+ * - thumb: URL for custom thumbnail
+ */
+export async function postVideoToPageFeed(
+    pageAccessToken: string,
+    pageId: string,
+    options: PostVideoToPageFeedOptions
+): Promise<FacebookVideoPostResult> {
+    const params = new URLSearchParams({
+        access_token: pageAccessToken,
+        file_url: options.fileUrl,
+        description: options.description,
+    })
+
+    if (options.title) params.set("title", options.title)
+    if (options.thumb) params.set("thumb", options.thumb)
+    if (options.published === false) {
+        params.set("published", "false")
+        if (options.scheduledPublishTime) {
+            params.set(
+                "scheduled_publish_time",
+                String(options.scheduledPublishTime)
+            )
+        }
+    }
+
+    const url = `${GRAPH_API_BASE}/${API_VERSION}/${pageId}/videos`
+
+    const response = await fetch(url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: params.toString(),
+    })
+
+    if (!response.ok) {
+        const error = await response.json()
+        throw new Error(
+            error.error?.message || "Failed to post video to Facebook Page"
+        )
+    }
+
+    return response.json()
+}
+
 export async function getPagePosts(
     pageAccessToken: string,
     pageId: string,
