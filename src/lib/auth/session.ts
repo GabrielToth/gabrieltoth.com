@@ -390,7 +390,7 @@ export function generateRememberMeToken(): string {
  * This function:
  * 1. Validates the token
  * 2. Sets a secure HTTP-Only cookie with 1-hour expiration
- * 3. Includes Secure and SameSite=Strict flags
+ * 3. Includes Secure and SameSite=Lax flags
  *
  * @param token - The session token to store
  * @throws Error if token is invalid or cookie setting fails
@@ -432,7 +432,7 @@ export async function storeSessionToken(token: string): Promise<void> {
  * This function:
  * 1. Validates the token
  * 2. Sets a secure HTTP-Only cookie with 30-day expiration
- * 3. Includes Secure and SameSite=Strict flags
+ * 3. Includes Secure and SameSite=Lax flags
  *
  * @param token - The Remember Me token to store
  * @throws Error if token is invalid or cookie setting fails
