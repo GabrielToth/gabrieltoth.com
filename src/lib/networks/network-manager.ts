@@ -15,11 +15,7 @@ const logger = createLogger("NetworkManager")
  * Supported social media platforms
  */
 export type SocialPlatform =
-    | "youtube"
-    | "facebook"
-    | "instagram"
-    | "twitter"
-    | "linkedin"
+    "youtube" | "facebook" | "instagram" | "twitter" | "linkedin"
 
 /**
  * Network status

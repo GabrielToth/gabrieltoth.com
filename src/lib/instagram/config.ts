@@ -102,9 +102,7 @@ export function getInstagramConfig(env?: EnvironmentConfig): InstagramConfig {
         const resolvedEnv: EnvironmentConfig = env || {
             NODE_ENV:
                 (process.env.NODE_ENV as
-                    | "development"
-                    | "production"
-                    | "test") ?? "development",
+                    "development" | "production" | "test") ?? "development",
             DEBUG: process.env.DEBUG === "true",
             PORT: parseInt(process.env.PORT ?? "4000", 10),
             DATABASE_URL: process.env.DATABASE_URL ?? "",

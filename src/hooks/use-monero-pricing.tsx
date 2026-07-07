@@ -57,8 +57,7 @@ export function MoneroPricingProvider({
         // Currency and conversion logic by locale (from i18n)
         const localesMap = { en, "pt-BR": pt, es, de } as const
         const ns = localesMap[locale as keyof typeof localesMap] as unknown as
-            | ChannelManagementNs
-            | undefined
+            ChannelManagementNs | undefined
         const currency =
             (ns?.moneroToggle as MoneroToggleConfig | undefined)
                 ?.currencySymbol ?? "R$"

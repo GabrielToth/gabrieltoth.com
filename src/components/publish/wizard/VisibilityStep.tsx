@@ -39,7 +39,8 @@ export default function VisibilityStep({
     )
 
     const youtubeMeta: YouTubeMetadata =
-        state.platformMetadata.youtube || DEFAULT_YOUTUBE_METADATA
+        (state.platformMetadata.youtube as YouTubeMetadata | undefined) ||
+        DEFAULT_YOUTUBE_METADATA
 
     const setYouTubeMeta = (update: Partial<YouTubeMetadata>) => {
         onStateChange({

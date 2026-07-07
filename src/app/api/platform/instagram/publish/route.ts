@@ -115,8 +115,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         const imageUrl = body.imageUrl as string | undefined
         const videoUrl = body.videoUrl as string | undefined
         const carouselItems = body.carouselItems as
-            | Array<{ type: "image" | "video"; url: string }>
-            | undefined
+            Array<{ type: "image" | "video"; url: string }> | undefined
 
         if (!imageUrl && !videoUrl && !carouselItems) {
             return NextResponse.json(

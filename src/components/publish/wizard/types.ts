@@ -77,7 +77,7 @@ export interface PublishWizardState {
     }
 
     /** Platform-specific metadata, keyed by platform id */
-    platformMetadata: Record<string, YouTubeMetadata>
+    platformMetadata: Record<string, YouTubeMetadata | FacebookMetadata>
 
     /** Processing state */
     processing: ProcessingState
@@ -101,6 +101,11 @@ export interface AdSuitability {
     firearms: 0 | 1 | 2
     sensitiveEvents: 0 | 1
     controversialIssues: 0 | 1 | 2
+}
+
+export interface FacebookMetadata {
+    description: string
+    tags: string[]
 }
 
 export interface YouTubeMetadata {
@@ -200,6 +205,11 @@ export const DEFAULT_YOUTUBE_METADATA: YouTubeMetadata = {
     privacyStatus: "unlisted",
     scheduledDate: null,
     scheduledTime: "",
+}
+
+export const DEFAULT_FACEBOOK_METADATA: FacebookMetadata = {
+    description: "",
+    tags: [],
 }
 
 export const INITIAL_STATE: PublishWizardState = {

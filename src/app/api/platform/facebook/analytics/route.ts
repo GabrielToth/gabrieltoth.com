@@ -89,11 +89,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
 
         const period =
             (searchParams.get("period") as
-                | "day"
-                | "week"
-                | "days_28"
-                | "month"
-                | "lifetime") || "day"
+                "day" | "week" | "days_28" | "month" | "lifetime") || "day"
 
         const since = searchParams.get("since") || undefined
         const until = searchParams.get("until") || undefined

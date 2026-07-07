@@ -71,8 +71,7 @@ interface CAPTCHAConfig {
 function loadCAPTCHAConfig(): CAPTCHAConfig {
     const secretKey = process.env.CAPTCHA_SECRET_KEY
     const provider = (process.env.CAPTCHA_PROVIDER || "cloudflare") as
-        | "cloudflare"
-        | "google"
+        "cloudflare" | "google"
     const tokenExpirationMinutes = parseInt(
         process.env.CAPTCHA_TOKEN_EXPIRATION_MINUTES || "5",
         10
@@ -374,6 +373,5 @@ export function isCAPTCHAConfigured(): boolean {
  */
 export function getCAPTCHAProvider(): "cloudflare" | "google" {
     return (process.env.CAPTCHA_PROVIDER || "cloudflare") as
-        | "cloudflare"
-        | "google"
+        "cloudflare" | "google"
 }

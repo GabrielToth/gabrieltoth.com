@@ -149,9 +149,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
             title: body.title as string | undefined,
             description: body.description as string | undefined,
             status: body.status as
-                | "LIVE_NOW"
-                | "SCHEDULED_UNPUBLISHED"
-                | undefined,
+                "LIVE_NOW" | "SCHEDULED_UNPUBLISHED" | undefined,
             plannedStartTime: body.plannedStartTime as number | undefined,
             contentType: body.contentType as "VIDEO" | "GAME" | undefined,
         })

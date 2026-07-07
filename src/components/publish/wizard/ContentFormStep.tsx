@@ -14,8 +14,12 @@ import {
 } from "@icons-pack/react-simple-icons"
 import { AlertCircle, X, FileImage } from "lucide-react"
 import { useCallback, useRef, useState } from "react"
-import type { PublishWizardState, YouTubeMetadata } from "./types"
-import { DEFAULT_YOUTUBE_METADATA } from "./types"
+import type {
+    PublishWizardState,
+    YouTubeMetadata,
+    FacebookMetadata,
+} from "./types"
+import { DEFAULT_YOUTUBE_METADATA, DEFAULT_FACEBOOK_METADATA } from "./types"
 import TagInput from "./TagInput"
 
 interface ContentFormStepProps {
@@ -87,6 +91,7 @@ export default function ContentFormStep({
 
     const selectedPlatformIds = state.platformSelections.map(s => s.platformId)
     const hasYouTube = selectedPlatformIds.includes("youtube")
+    const hasFacebook = selectedPlatformIds.includes("facebook")
 
     /** Get visible fields for current content type, filtered by selected platforms */
     const visibleFields = (
@@ -100,13 +105,28 @@ export default function ContentFormStep({
 
     // YouTube metadata helper
     const youtubeMeta: YouTubeMetadata =
-        state.platformMetadata.youtube || DEFAULT_YOUTUBE_METADATA
+        (state.platformMetadata.youtube as YouTubeMetadata | undefined) ||
+        DEFAULT_YOUTUBE_METADATA
     const setYouTubeMeta = (update: Partial<YouTubeMetadata>) => {
         onStateChange({
             ...state,
             platformMetadata: {
                 ...state.platformMetadata,
                 youtube: { ...youtubeMeta, ...update },
+            },
+        })
+    }
+
+    // Facebook metadata helper
+    const facebookMeta: FacebookMetadata =
+        (state.platformMetadata.facebook as FacebookMetadata | undefined) ||
+        DEFAULT_FACEBOOK_METADATA
+    const setFacebookMeta = (update: Partial<FacebookMetadata>) => {
+        onStateChange({
+            ...state,
+            platformMetadata: {
+                ...state.platformMetadata,
+                facebook: { ...facebookMeta, ...update },
             },
         })
     }
@@ -138,6 +158,13 @@ export default function ContentFormStep({
             const tagsTotalChars = youtubeMeta.tags.join(",").length
             if (tagsTotalChars > 500) {
                 errs.youtube_tags = t("step4.tagsMax")
+            }
+        }
+
+        // Facebook fields
+        if (hasFacebook) {
+            if (facebookMeta.description.length > 5000) {
+                errs.facebook_description = t("step4.descriptionMax")
             }
         }
 
@@ -338,11 +365,13 @@ export default function ContentFormStep({
                         <Textarea
                             id="yt-description"
                             value={youtubeMeta.description}
-                            onChange={e =>
-                                setYouTubeMeta({
-                                    description: e.target.value.slice(0, 5000),
-                                })
-                            }
+                            onChange={e => {
+                                const desc = e.target.value.slice(0, 5000)
+                                setYouTubeMeta({ description: desc })
+                                if (hasFacebook) {
+                                    setFacebookMeta({ description: desc })
+                                }
+                            }}
                             placeholder={t("step4.descriptionPlaceholder")}
                             className="min-h-20 resize-none"
                             maxLength={5000}
@@ -355,6 +384,11 @@ export default function ContentFormStep({
                             {errors.youtube_description && (
                                 <span className="text-red-500">
                                     {errors.youtube_description}
+                                </span>
+                            )}
+                            {errors.facebook_description && (
+                                <span className="text-red-500">
+                                    {errors.facebook_description}
                                 </span>
                             )}
                         </div>
