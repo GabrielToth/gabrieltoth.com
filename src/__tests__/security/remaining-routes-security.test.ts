@@ -341,7 +341,7 @@ vi.mock("@/lib/oauth", () => ({
             linkedAt: Date.now(),
             expiresIn: 3600,
         }),
-        validateState: vi.fn().mockResolvedValue(true),
+        validateState: vi.fn().mockResolvedValue({ valid: true }),
         revokeToken: vi.fn().mockResolvedValue(true),
     }),
 }))
