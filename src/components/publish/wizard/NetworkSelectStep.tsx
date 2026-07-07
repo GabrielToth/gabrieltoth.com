@@ -51,8 +51,8 @@ const NETWORKS: PlatformInfo[] = [
         labelKey: "step1.facebook",
         descKey: "step1.facebookDesc",
         icon: <SiFacebook className="h-6 w-6 text-blue-600" />,
-        implemented: false,
-        connected: false,
+        implemented: true,
+        connected: true,
         features: ["text", "images", "channel_selection"],
     },
     {
