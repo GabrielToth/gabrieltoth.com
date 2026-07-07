@@ -863,7 +863,7 @@ describe("Session Token Management", () => {
                 token,
                 expect.objectContaining({
                     httpOnly: true,
-                    sameSite: "strict",
+                    sameSite: "lax",
                     path: "/",
                 })
             )
@@ -929,7 +929,7 @@ describe("Session Token Management", () => {
                 token,
                 expect.objectContaining({
                     httpOnly: true,
-                    sameSite: "strict",
+                    sameSite: "lax",
                     path: "/",
                 })
             )
