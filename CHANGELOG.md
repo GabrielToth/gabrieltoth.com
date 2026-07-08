@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **TikTok publishing**: Full TikTok publishing end-to-end — NetworkSelect entry, metadata types, background processor, adapter barrel export, API route validation, publish status endpoint, content adapter config. ([#197](https://github.com/GabrielToth/gabrieltoth.com/issues/197), [#198](https://github.com/GabrielToth/gabrieltoth.com/pull/198))
 - **Instagram publishing**: Full Instagram publishing support — background processor now calls real adapter instead of mock, barrel export added. ([#194](https://github.com/GabrielToth/gabrieltoth.com/issues/194), [#195](https://github.com/GabrielToth/gabrieltoth.com/pull/195))
 - **Draft management UI**: Post history with draft indicators (grayed-out cards), calendar shows gray dots for drafts and blue for scheduled/published. API-based draft CRUD replaces localStorage. ([#185](https://github.com/GabrielToth/gabrieltoth.com/issues/185), [#191](https://github.com/GabrielToth/gabrieltoth.com/pull/191))
 - **YouTube members-only visibility**: Added members-only option and scheduled publishing (publishAt) for YouTube videos. ([#180](https://github.com/GabrielToth/gabrieltoth.com/issues/180), [#186](https://github.com/GabrielToth/gabrieltoth.com/pull/186))
