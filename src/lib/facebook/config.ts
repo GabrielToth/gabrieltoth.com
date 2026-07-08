@@ -36,16 +36,17 @@ const DEFAULT_SCOPES = [
 
 /**
  * Create Facebook config.
- * Falls back to INSTAGRAM_APP_ID/SECRET/REDIRECT_URI when Facebook-specific
- * env vars are not set, since both Facebook and Instagram use the same
- * Meta/Facebook App under the hood.
+ * NOTE: FACEBOOK_APP_ID and INSTAGRAM_APP_ID are DIFFERENT IDs.
+ * FACEBOOK_APP_ID = the main Facebook App ID (from developers.facebook.com)
+ * INSTAGRAM_APP_ID = the Instagram-specific App ID within that Facebook App.
+ * They are NOT interchangeable. Facebook must use FACEBOOK_APP_ID.
  */
 export function createFacebookConfig(env: EnvironmentConfig): FacebookConfig {
     return {
         oauth: {
-            appId: env.FACEBOOK_APP_ID || env.INSTAGRAM_APP_ID,
-            appSecret: env.FACEBOOK_APP_SECRET || env.INSTAGRAM_APP_SECRET,
-            redirectUri: env.FACEBOOK_REDIRECT_URI || env.INSTAGRAM_REDIRECT_URI,
+            appId: env.FACEBOOK_APP_ID,
+            appSecret: env.FACEBOOK_APP_SECRET,
+            redirectUri: env.FACEBOOK_REDIRECT_URI,
             scopes: DEFAULT_SCOPES,
             apiVersion: "v22.0",
         },
