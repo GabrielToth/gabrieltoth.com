@@ -18,3 +18,9 @@ export {
     type ConflictDetectionResult,
     type ConflictType,
 } from "./conflict-detector"
+
+export { postToInstagram } from "./adapters/instagram"
+export type {
+    InstagramPostConfig,
+    InstagramPostResult,
+} from "./adapters/instagram"
