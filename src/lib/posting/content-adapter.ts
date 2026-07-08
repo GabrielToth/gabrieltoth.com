@@ -89,6 +89,18 @@ const PLATFORM_CONFIGS: Record<SocialPlatform, PlatformConfig> = {
         supportsAltText: true,
         supportsDescription: true,
     },
+    tiktok: {
+        maxCharacters: 2200,
+        maxImageSize: 20 * 1024 * 1024, // 20MB
+        supportedImageFormats: ["jpg", "jpeg", "png"],
+        supportsVideo: true,
+        supportsLinks: false,
+        supportsHashtags: true,
+        supportsMentions: true,
+        supportsEmojis: true,
+        supportsAltText: false,
+        supportsDescription: true,
+    },
 }
 
 /**

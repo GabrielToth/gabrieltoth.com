@@ -176,15 +176,18 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         const membersOnly = formData.get("membersOnly")?.toString() === "true"
 
         // Extract publishAt for scheduled publishing
-        const publishAt = formData.get("publishAt")?.toString().trim() || undefined
+        const publishAt =
+            formData.get("publishAt")?.toString().trim() || undefined
 
         // When membersOnly is true, enforce privacyStatus as "private"
-        const effectivePrivacy: "public" | "unlisted" | "private" =
-            membersOnly ? "private" : privacyStatus
+        const effectivePrivacy: "public" | "unlisted" | "private" = membersOnly
+            ? "private"
+            : privacyStatus
 
         // When publishAt is provided, enforce privacyStatus as "private" (YouTube requirement)
-        const finalPrivacy: "public" | "unlisted" | "private" =
-            publishAt ? "private" : effectivePrivacy
+        const finalPrivacy: "public" | "unlisted" | "private" = publishAt
+            ? "private"
+            : effectivePrivacy
 
         // Extract tags
         const tagsRaw = formData.get("tags")?.toString().trim() || ""

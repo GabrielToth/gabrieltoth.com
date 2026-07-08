@@ -12,6 +12,7 @@ const VALID_PLATFORMS: SocialPlatform[] = [
     "instagram",
     "twitter",
     "linkedin",
+    "tiktok",
 ]
 
 export async function GET(request: NextRequest): Promise<NextResponse> {

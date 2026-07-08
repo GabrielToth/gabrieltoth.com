@@ -8,6 +8,7 @@ import {
     SiYoutube,
     SiFacebook,
     SiInstagram,
+    SiTiktok,
     SiX,
 } from "@icons-pack/react-simple-icons"
 import { FaLinkedin } from "react-icons/fa6"
@@ -88,6 +89,13 @@ const BASE_NETWORKS: PlatformInfo[] = [
         descKey: "step1.linkedinDesc",
         icon: <FaLinkedin className="h-6 w-6 text-blue-700" />,
         features: ["text", "images"],
+    },
+    {
+        id: "tiktok",
+        labelKey: "step1.tiktok",
+        descKey: "step1.tiktokDesc",
+        icon: <SiTiktok className="h-6 w-6 text-black dark:text-white" />,
+        features: ["video"],
     },
 ]
 

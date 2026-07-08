@@ -42,6 +42,8 @@
         "twitterDesc": "Post tweets with media",
         "linkedin": "LinkedIn",
         "linkedinDesc": "Share professional content",
+        "tiktok": "TikTok",
+        "tiktokDesc": "Short-form videos",
         "accountCount": "{count} linked account(s)",
         "noAccounts": "No accounts linked",
         "youtubeRecommended": "We recommend starting with YouTube as it's the only fully functional platform at the moment."
