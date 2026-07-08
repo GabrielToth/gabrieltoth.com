@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- **Facebook and TikTok OAuth**: Fixed 500 error "Environment configuration is required" — added `process.env` fallback to config singletons so they work in serverless without explicit env parameter. Facebook also falls back to Instagram's app credentials. ([#200](https://github.com/GabrielToth/gabrieltoth.com/pull/200))
+
 ### Added
 - **TikTok publishing**: Full TikTok publishing end-to-end — NetworkSelect entry, metadata types, background processor, adapter barrel export, API route validation, publish status endpoint, content adapter config. ([#197](https://github.com/GabrielToth/gabrieltoth.com/issues/197), [#198](https://github.com/GabrielToth/gabrieltoth.com/pull/198))
 - **Instagram publishing**: Full Instagram publishing support — background processor now calls real adapter instead of mock, barrel export added. ([#194](https://github.com/GabrielToth/gabrieltoth.com/issues/194), [#195](https://github.com/GabrielToth/gabrieltoth.com/pull/195))
