@@ -147,6 +147,7 @@ export class BackgroundProcessor {
             network: string
             success: boolean
             externalId?: string
+            error?: string | null
         }> = []
         for (const network of publication.networks) {
             try {
@@ -168,6 +169,38 @@ export class BackgroundProcessor {
                         network: network.platform,
                         success: result.success,
                         externalId: result.postId,
+                    })
+                } else if (network.platform === "instagram") {
+                    const { postToInstagram } =
+                        await import("@/lib/posting/adapters/instagram")
+                    const { getNetworkManager } = await import("@/lib/networks")
+
+                    const networkManager = getNetworkManager()
+                    const igNetwork = await networkManager.getNetwork(
+                        publication.userId,
+                        "instagram"
+                    )
+
+                    if (!igNetwork) {
+                        results.push({
+                            network: network.platform,
+                            success: false,
+                            error: "Instagram account is not linked",
+                        })
+                        continue
+                    }
+
+                    const result = await postToInstagram({
+                        userId: publication.userId,
+                        accountId: igNetwork.platformUserId,
+                        caption: publication.content,
+                    })
+
+                    results.push({
+                        network: network.platform,
+                        success: result.success,
+                        externalId: result.postId,
+                        error: result.error || undefined,
                     })
                 } else {
                     results.push({
