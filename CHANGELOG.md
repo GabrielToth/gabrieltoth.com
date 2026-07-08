@@ -7,9 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- **Instagram publishing**: Full Instagram publishing support — background processor now calls real adapter instead of mock, barrel export added. ([#194](https://github.com/GabrielToth/gabrieltoth.com/issues/194), [#195](https://github.com/GabrielToth/gabrieltoth.com/pull/195))
+- **Draft management UI**: Post history with draft indicators (grayed-out cards), calendar shows gray dots for drafts and blue for scheduled/published. API-based draft CRUD replaces localStorage. ([#185](https://github.com/GabrielToth/gabrieltoth.com/issues/185), [#191](https://github.com/GabrielToth/gabrieltoth.com/pull/191))
+- **YouTube members-only visibility**: Added members-only option and scheduled publishing (publishAt) for YouTube videos. ([#180](https://github.com/GabrielToth/gabrieltoth.com/issues/180), [#186](https://github.com/GabrielToth/gabrieltoth.com/pull/186))
+
+### Changed
+- **Network select**: Now shows actual linked account count per platform instead of hardcoded "implemented"/"connected" booleans. Platforms with 0 accounts appear grayed out. ([#183](https://github.com/GabrielToth/gabrieltoth.com/issues/183), [#189](https://github.com/GabrielToth/gabrieltoth.com/pull/189))
+- **Publish wizard title**: Changed from "Publish to YouTube" to generic "Publish" across all 4 locales. ([#181](https://github.com/GabrielToth/gabrieltoth.com/issues/181), [#187](https://github.com/GabrielToth/gabrieltoth.com/pull/187))
+
 ### Fixed
-- **OAuth authorize routes**: Fixed "Conectar Canais" (Connect Channels) buttons not working. Replaced `x-user-id` header check with session-cookie-based authentication using `getServerSession()`. ([#100](https://github.com/GabrielToth/gabrieltoth.com/issues/100), [#102](https://github.com/GabrielToth/gabrieltoth.com/pull/102))
-- **Database migration**: Created missing `scheduled_posts`, `scheduled_post_networks`, `publication_history`, and `scheduled_post_media` tables that were defined in schema.sql but never applied to production. Fixes GET /api/posts/ 500 error. ([#101](https://github.com/GabrielToth/gabrieltoth.com/issues/101), [#103](https://github.com/GabrielToth/gabrieltoth.com/pull/103))
+- **Step navigation bug**: Added Next button to VideoUploadStep when navigating back with existing video, fixing blocked progression. ([#182](https://github.com/GabrielToth/gabrieltoth.com/issues/182), [#193](https://github.com/GabrielToth/gabrieltoth.com/pull/193))
+- **Dark mode readability**: Added `dark:text-white` to PublishContainer title and `dark:text-gray-400` to descriptions. ([#184](https://github.com/GabrielToth/gabrieltoth.com/issues/184), [#190](https://github.com/GabrielToth/gabrieltoth.com/pull/190))
 
 ## [1.16.0] - 2026-06-30
 
