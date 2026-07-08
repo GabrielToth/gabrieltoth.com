@@ -153,10 +153,10 @@ export const PublishContainer: React.FC<PublishContainerProps> = ({
             {/* Header */}
             <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                 <div>
-                    <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
+                    <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">
                         {t("title")}
                     </h1>
-                    <p className="mt-1 text-xs sm:text-sm text-gray-600">
+                    <p className="mt-1 text-xs sm:text-sm text-gray-600 dark:text-gray-400">
                         {t("description")}
                     </p>
                 </div>
@@ -173,7 +173,7 @@ export const PublishContainer: React.FC<PublishContainerProps> = ({
 
             {/* Post Count */}
             {!isLoading && !error && sortedPosts.length > 0 && (
-                <div className="text-xs sm:text-sm text-gray-600">
+                <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
                     {t("postCount", {
                         shown: sortedPosts.length,
                         total: posts.length,
