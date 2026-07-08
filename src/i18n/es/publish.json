@@ -42,6 +42,8 @@
         "twitterDesc": "Publica tweets con contenido multimedia",
         "linkedin": "LinkedIn",
         "linkedinDesc": "Comparte contenido profesional",
+        "tiktok": "TikTok",
+        "tiktokDesc": "Videos cortos",
         "accountCount": "{count} cuenta(s) vinculada(s)",
         "noAccounts": "Ninguna cuenta vinculada",
         "youtubeRecommended": "Recomendamos empezar con YouTube, ya que es la única plataforma totalmente funcional actualmente."

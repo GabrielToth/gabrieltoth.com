@@ -202,6 +202,38 @@ export class BackgroundProcessor {
                         externalId: result.postId,
                         error: result.error || undefined,
                     })
+                } else if (network.platform === "tiktok") {
+                    const { postToTikTok } =
+                        await import("@/lib/posting/adapters/tiktok")
+                    const { getNetworkManager } = await import("@/lib/networks")
+
+                    const networkManager = getNetworkManager()
+                    const ttNetwork = await networkManager.getNetwork(
+                        publication.userId,
+                        "tiktok"
+                    )
+
+                    if (!ttNetwork) {
+                        results.push({
+                            network: network.platform,
+                            success: false,
+                            error: "TikTok account is not linked",
+                        })
+                        continue
+                    }
+
+                    const result = await postToTikTok({
+                        userId: publication.userId,
+                        title: publication.content,
+                        source: "FILE_UPLOAD",
+                    })
+
+                    results.push({
+                        network: network.platform,
+                        success: result.success,
+                        externalId: result.publishId || undefined,
+                        error: result.error || undefined,
+                    })
                 } else {
                     results.push({
                         network: network.platform,

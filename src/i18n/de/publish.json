@@ -42,6 +42,8 @@
         "twitterDesc": "Tweets mit Medien posten",
         "linkedin": "LinkedIn",
         "linkedinDesc": "Professionelle Inhalte teilen",
+        "tiktok": "TikTok",
+        "tiktokDesc": "Kurzvideos",
         "accountCount": "{count} Konto/Konten verknüpft",
         "noAccounts": "Keine Konten verknüpft",
         "youtubeRecommended": "Wir empfehlen, mit YouTube zu beginnen, da es derzeit die einzige voll funktionsfähige Plattform ist."

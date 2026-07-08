@@ -15,7 +15,7 @@ const logger = createLogger("NetworkManager")
  * Supported social media platforms
  */
 export type SocialPlatform =
-    "youtube" | "facebook" | "instagram" | "twitter" | "linkedin"
+    "youtube" | "facebook" | "instagram" | "twitter" | "linkedin" | "tiktok"
 
 /**
  * Network status
@@ -343,6 +343,7 @@ export class NetworkManager {
                 instagram: "disconnected",
                 twitter: "disconnected",
                 linkedin: "disconnected",
+                tiktok: "disconnected",
             }
 
             for (const network of networks) {

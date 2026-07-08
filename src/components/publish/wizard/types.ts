@@ -76,7 +76,10 @@ export interface PublishWizardState {
     }
 
     /** Platform-specific metadata, keyed by platform id */
-    platformMetadata: Record<string, YouTubeMetadata | FacebookMetadata>
+    platformMetadata: Record<
+        string,
+        YouTubeMetadata | FacebookMetadata | TikTokMetadata
+    >
 
     /** Processing state */
     processing: ProcessingState
@@ -103,6 +106,11 @@ export interface AdSuitability {
 }
 
 export interface FacebookMetadata {
+    description: string
+    tags: string[]
+}
+
+export interface TikTokMetadata {
     description: string
     tags: string[]
 }
@@ -211,6 +219,11 @@ export const DEFAULT_YOUTUBE_METADATA: YouTubeMetadata = {
 }
 
 export const DEFAULT_FACEBOOK_METADATA: FacebookMetadata = {
+    description: "",
+    tags: [],
+}
+
+export const DEFAULT_TIKTOK_METADATA: TikTokMetadata = {
     description: "",
     tags: [],
 }
@@ -335,4 +348,5 @@ export const PLATFORM_EXCLUSIVE_FEATURES: Record<
     linkedin: [
         // Future: article, company page, etc.
     ],
+    tiktok: [{ feature: "tags", labelKey: "step4.tags", platformId: "tiktok" }],
 }

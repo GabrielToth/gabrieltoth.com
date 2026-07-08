@@ -398,7 +398,10 @@ export default function VisibilityStep({
                                 }
                                 className="h-4 w-4 rounded border-gray-300"
                             />
-                            <Label htmlFor="membersOnly" className="cursor-pointer">
+                            <Label
+                                htmlFor="membersOnly"
+                                className="cursor-pointer"
+                            >
                                 {t("step6.membersOnly")}
                             </Label>
                         </div>

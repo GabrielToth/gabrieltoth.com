@@ -54,6 +54,7 @@ const FIELD_PLATFORMS: Record<string, string[]> = {
     thumbnail: ["youtube"],
     text: ["facebook", "instagram"],
     images: ["facebook", "instagram"],
+    tiktok: ["text", "tags"],
 }
 
 /** Platform badge row — shows icons for each compatible platform */

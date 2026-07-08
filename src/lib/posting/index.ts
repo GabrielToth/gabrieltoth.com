@@ -24,3 +24,6 @@ export type {
     InstagramPostConfig,
     InstagramPostResult,
 } from "./adapters/instagram"
+
+export { postToTikTok } from "./adapters/tiktok"
+export type { TikTokPostConfig, TikTokPostResult } from "./adapters/tiktok"
