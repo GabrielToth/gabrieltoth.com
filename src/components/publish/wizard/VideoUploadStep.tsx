@@ -175,11 +175,14 @@ export default function VideoUploadStep({
                 />
             </div>
 
-            {/* Navigation — only Back, auto-advances after upload */}
+            {/* Navigation — Back always shown, Next visible when video already in state */}
             <div className="flex justify-between border-t pt-4 dark:border-gray-700">
                 <Button onClick={onBack} variant="outline">
                     {t("wizard.back")}
                 </Button>
+                {videoFile && (
+                    <Button onClick={onNext}>{t("wizard.next")}</Button>
+                )}
             </div>
         </div>
     )
