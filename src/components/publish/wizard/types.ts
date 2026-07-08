@@ -120,6 +120,8 @@ export interface YouTubeMetadata {
     linkedVideoStart: string
     linkedVideoEnd: string
     privacyStatus: "public" | "unlisted" | "private"
+    membersOnly: boolean
+    publishAt: string | null // ISO 8601 string for scheduled publish
     scheduledDate: Date | null
     scheduledTime: string
 }
@@ -203,6 +205,8 @@ export const DEFAULT_YOUTUBE_METADATA: YouTubeMetadata = {
     linkedVideoStart: "",
     linkedVideoEnd: "",
     privacyStatus: "unlisted",
+    membersOnly: false,
+    publishAt: null,
     scheduledDate: null,
     scheduledTime: "",
 }

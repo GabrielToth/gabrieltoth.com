@@ -10,6 +10,8 @@ export interface YouTubePostConfig {
     description: string
     tags?: string[]
     privacyStatus: "public" | "unlisted" | "private"
+    membersOnly?: boolean
+    publishAt?: string // ISO 8601 date for scheduled publishing
     categoryId?: string
     madeForKids?: boolean
 }
@@ -48,6 +50,16 @@ export async function uploadVideo(
 
         const youtube = google.youtube({ version: "v3", auth })
 
+        // Determine effective privacy status
+        // When membersOnly is true or publishAt is set, YouTube requires "private"
+        let effectivePrivacy = config.privacyStatus
+        if (config.membersOnly) {
+            effectivePrivacy = "private"
+        }
+        if (config.publishAt) {
+            effectivePrivacy = "private"
+        }
+
         const res = await youtube.videos.insert({
             part: ["snippet", "status"],
             notifySubscribers: false,
@@ -59,7 +71,8 @@ export async function uploadVideo(
                     categoryId: config.categoryId || "22",
                 },
                 status: {
-                    privacyStatus: config.privacyStatus,
+                    privacyStatus: effectivePrivacy,
+                    publishAt: config.publishAt,
                     madeForKids: config.madeForKids ?? false,
                     selfDeclaredMadeForKids: config.madeForKids ?? false,
                 },
@@ -106,6 +119,7 @@ export async function postToYouTube(
  * Queue-compatible publish method.
  * Matches the interface expected by PublicationQueue.
  * YouTube only supports video uploads - use uploadVideo for actual publishing.
+ * This function is kept for interface compatibility and provides guidance.
  */
 export async function publish(config: {
     content: string
@@ -115,7 +129,7 @@ export async function publish(config: {
 }): Promise<{ id?: string; url?: string; success: boolean; error?: string }> {
     return {
         success: false,
-        error: "YouTube scheduled publishing is not supported. YouTube requires a video file for publishing, which cannot be provided via scheduled posts.",
+        error: "YouTube only supports video uploads via the video upload wizard. Please use the upload endpoint with a video file to publish to YouTube.",
     }
 }
 
