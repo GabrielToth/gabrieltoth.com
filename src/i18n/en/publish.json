@@ -1,6 +1,6 @@
 {
     "wizard": {
-        "title": "Publish to YouTube",
+        "title": "Publish",
         "step": "Step {current} of {total}",
         "next": "Next",
         "back": "Back",
