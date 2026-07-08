@@ -11,7 +11,7 @@ export interface Post {
     content: string
     scheduledAt: Date
     publishedAt?: Date
-    status: "scheduled" | "published" | "failed"
+    status: "draft" | "scheduled" | "published" | "failed"
     channels: string[]
     errorMessage?: string
     createdAt: Date
@@ -46,9 +46,12 @@ export const PostCard: React.FC<PostCardProps> = ({
     const isPublished = post.status === "published"
     const isFailed = post.status === "failed"
     const isScheduled = post.status === "scheduled"
+    const isDraft = post.status === "draft"
 
     const getStatusColor = (status: string) => {
         switch (status) {
+            case "draft":
+                return "bg-gray-300 text-gray-700 dark:bg-gray-600 dark:text-gray-200"
             case "scheduled":
                 return "bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-300"
             case "published":
@@ -59,6 +62,10 @@ export const PostCard: React.FC<PostCardProps> = ({
                 return "bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300"
         }
     }
+
+    const cardClassName = isDraft
+        ? "hover:shadow-md transition-shadow dark:border-gray-700 opacity-60 grayscale-[0.3]"
+        : "hover:shadow-md transition-shadow dark:border-gray-700"
 
     const formatDate = (date: Date) => {
         return new Intl.DateTimeFormat("en-US", {
@@ -71,7 +78,7 @@ export const PostCard: React.FC<PostCardProps> = ({
     }
 
     return (
-        <Card className="hover:shadow-md transition-shadow dark:border-gray-700">
+        <Card className={cardClassName}>
             <CardContent className="p-3 sm:p-4">
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
                     {/* Post Content */}
@@ -108,6 +115,11 @@ export const PostCard: React.FC<PostCardProps> = ({
 
                         {/* Date and Error Info */}
                         <div className="mt-3 text-xs text-gray-600 dark:text-gray-400 space-y-1">
+                            {isDraft && (
+                                <p className="text-gray-500 dark:text-gray-500 italic">
+                                    {t("draftStatus")}
+                                </p>
+                            )}
                             {isPublished && post.publishedAt && (
                                 <p>
                                     {t("published")}
@@ -135,14 +147,14 @@ export const PostCard: React.FC<PostCardProps> = ({
                             variant={isPublished ? "ghost" : "outline"}
                             size="sm"
                             onClick={() => onEdit(post)}
-                            disabled={isPublished}
+                            disabled={isPublished && !isDraft}
                             title={
-                                isPublished
+                                isPublished && !isDraft
                                     ? t("cannotEditPublished")
                                     : t("edit")
                             }
                             className={`min-h-10 min-w-10 ${
-                                isPublished
+                                isPublished && !isDraft
                                     ? "opacity-50 cursor-not-allowed"
                                     : ""
                             }`}
