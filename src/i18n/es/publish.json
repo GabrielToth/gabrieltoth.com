@@ -42,9 +42,8 @@
         "twitterDesc": "Publica tweets con contenido multimedia",
         "linkedin": "LinkedIn",
         "linkedinDesc": "Comparte contenido profesional",
-        "notImplemented": "No implementado",
-        "disconnected": "Desconectado",
-        "implemented": "Implementado",
+        "accountCount": "{count} cuenta(s) vinculada(s)",
+        "noAccounts": "Ninguna cuenta vinculada",
         "youtubeRecommended": "Recomendamos empezar con YouTube, ya que es la única plataforma totalmente funcional actualmente."
     },
     "step2": {
@@ -71,7 +70,8 @@
         "cloud": "Almacenamiento en la Nube",
         "cloudDescription": "El video se enviaría a nuestros servidores antes de la publicación. Esta opción estará disponible pronto.",
         "cloudUnavailable": "No disponible — el almacenamiento en la nube requiere actualización de infraestructura",
-        "localSelected": "Local seleccionado"
+        "localSelected": "Local seleccionado",
+        "notAvailable": "No disponible"
     },
     "step4": {
         "title": "Detalles del Video",
