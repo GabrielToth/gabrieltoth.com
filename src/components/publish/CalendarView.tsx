@@ -23,6 +23,7 @@ import CalendarDay from "./CalendarDay"
 export interface CalendarPost {
     id: string
     scheduledTime: number
+    status?: string
 }
 
 export interface CalendarViewProps {
@@ -64,11 +65,15 @@ export default function CalendarView({
 
     const postDays = useMemo(() => {
         const map = new Map<string, number>()
+        const draftMap = new Map<string, number>()
         for (const post of posts) {
             const dateKey = format(new Date(post.scheduledTime), "yyyy-MM-dd")
             map.set(dateKey, (map.get(dateKey) || 0) + 1)
+            if (post.status === "draft") {
+                draftMap.set(dateKey, (draftMap.get(dateKey) || 0) + 1)
+            }
         }
-        return map
+        return { all: map, drafts: draftMap }
     }, [posts])
 
     const goToPrevMonth = useCallback(
@@ -138,7 +143,8 @@ export default function CalendarView({
                 {weeks.map((week, weekIdx) =>
                     week.map((day, dayIdx) => {
                         const dateKey = format(day, "yyyy-MM-dd")
-                        const count = postDays.get(dateKey) || 0
+                        const count = postDays.all.get(dateKey) || 0
+                        const draftCount = postDays.drafts.get(dateKey) || 0
                         const today = isToday(day)
                         const currentMonth = isSameMonth(day, monthStart)
 
@@ -149,6 +155,7 @@ export default function CalendarView({
                                 isCurrentMonth={currentMonth}
                                 isToday={today}
                                 postCount={count}
+                                draftCount={draftCount}
                                 isWeekend={
                                     day.getDay() === 0 || day.getDay() === 6
                                 }
@@ -163,6 +170,10 @@ export default function CalendarView({
                 <div className="flex items-center gap-1">
                     <span className="inline-block h-2 w-2 rounded-full bg-blue-500" />
                     <span>{t("hasScheduledPosts")}</span>
+                </div>
+                <div className="flex items-center gap-1">
+                    <span className="inline-block h-2 w-2 rounded-full bg-gray-400 dark:bg-gray-500" />
+                    <span>{t("hasDrafts")}</span>
                 </div>
                 {selectedDate && (
                     <div className="flex items-center gap-1 text-blue-700 dark:text-blue-400">

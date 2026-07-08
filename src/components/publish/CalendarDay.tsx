@@ -8,6 +8,7 @@ export interface CalendarDayProps {
     isCurrentMonth: boolean
     isToday: boolean
     postCount: number
+    draftCount?: number
     isWeekend?: boolean
     onSelect: () => void
 }
@@ -17,6 +18,7 @@ export default function CalendarDay({
     isCurrentMonth,
     isToday,
     postCount,
+    draftCount = 0,
     isWeekend = false,
     onSelect,
 }: CalendarDayProps) {
@@ -25,6 +27,9 @@ export default function CalendarDay({
     if (!isCurrentMonth) {
         return <div className="h-10 sm:h-14" />
     }
+
+    const onlyDrafts = postCount > 0 && draftCount === postCount
+    const hasNonDrafts = postCount > 0 && draftCount < postCount
 
     return (
         <button
@@ -41,7 +46,13 @@ export default function CalendarDay({
         >
             <span>{day}</span>
             {postCount > 0 && (
-                <span className="absolute -bottom-0.5 left-1/2 h-1.5 w-1.5 -translate-x-1/2 rounded-full bg-blue-500" />
+                <span
+                    className={cn(
+                        "absolute -bottom-0.5 left-1/2 h-1.5 w-1.5 -translate-x-1/2 rounded-full",
+                        onlyDrafts && "bg-gray-400 dark:bg-gray-500",
+                        hasNonDrafts && "bg-blue-500"
+                    )}
+                />
             )}
         </button>
     )

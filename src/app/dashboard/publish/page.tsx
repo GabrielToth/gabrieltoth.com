@@ -57,8 +57,8 @@ export default function PublishPage() {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const mapped: Post[] = (data.posts || []).map((p: any) => ({
                 id: p.id,
-                title: p.content.slice(0, 80),
-                content: p.content,
+                title: (p.content || "").slice(0, 80),
+                content: p.content || "",
                 scheduledAt: new Date(p.scheduledTime),
                 publishedAt: p.publishedAt
                     ? new Date(p.publishedAt)
@@ -68,7 +68,9 @@ export default function PublishPage() {
                         ? "published"
                         : p.status === "failed"
                           ? "failed"
-                          : "scheduled",
+                          : p.status === "draft"
+                            ? "draft"
+                            : "scheduled",
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 channels: (p.networks || []).map((n: any) =>
                     typeof n === "string" ? n : n.platform || ""
@@ -138,10 +140,11 @@ export default function PublishPage() {
     const calendarPosts = useMemo(
         () =>
             posts
-                .filter(p => p.status === "scheduled")
+                .filter(p => p.status === "scheduled" || p.status === "draft")
                 .map(p => ({
                     id: p.id,
                     scheduledTime: p.scheduledAt.getTime(),
+                    status: p.status,
                 })),
         [posts]
     )
