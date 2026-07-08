@@ -1,6 +1,6 @@
 {
     "wizard": {
-        "title": "Auf YouTube veröffentlichen",
+        "title": "Veröffentlichen",
         "step": "Schritt {current} von {total}",
         "next": "Weiter",
         "back": "Zurück",

@@ -79,10 +79,8 @@ export default function PublishWizard({ onClose }: PublishWizardProps) {
     /** Check if the wizard has any meaningful content the user might lose */
     const hasContent = (): boolean => {
         const c = wizardState.content
-        const meta =
-            wizardState.platformMetadata.youtube as
-                | YouTubeMetadata
-                | undefined
+        const meta = wizardState.platformMetadata.youtube as
+            YouTubeMetadata | undefined
 
         // Has a file uploaded
         if (c.videoFile || c.thumbnailFile || c.images.length > 0) return true
@@ -261,10 +259,8 @@ export default function PublishWizard({ onClose }: PublishWizardProps) {
                         continue
                     }
 
-                    const meta =
-                        wizardState.platformMetadata.youtube as
-                            | YouTubeMetadata
-                            | undefined
+                    const meta = wizardState.platformMetadata.youtube as
+                        YouTubeMetadata | undefined
                     if (!meta) {
                         results.push({
                             platformId: "youtube",
