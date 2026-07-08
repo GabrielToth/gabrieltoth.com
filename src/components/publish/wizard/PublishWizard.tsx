@@ -1,6 +1,6 @@
 "use client"
 
-import { useCallback, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { useTranslations } from "next-intl"
 import {
     Dialog,
@@ -67,6 +67,8 @@ export default function PublishWizard({ onClose }: PublishWizardProps) {
     const [currentStep, setCurrentStep] = useState<WizardStep>(0)
     const [wizardState, setWizardState] =
         useState<PublishWizardState>(INITIAL_STATE)
+    const [draftId, setDraftId] = useState<string | null>(null)
+    const [draftRestored, setDraftRestored] = useState(false)
 
     // Close confirmation dialog
     const [showCloseConfirm, setShowCloseConfirm] = useState(false)
@@ -79,10 +81,8 @@ export default function PublishWizard({ onClose }: PublishWizardProps) {
     /** Check if the wizard has any meaningful content the user might lose */
     const hasContent = (): boolean => {
         const c = wizardState.content
-        const meta =
-            wizardState.platformMetadata.youtube as
-                | YouTubeMetadata
-                | undefined
+        const meta = wizardState.platformMetadata.youtube as
+            YouTubeMetadata | undefined
 
         // Has a file uploaded
         if (c.videoFile || c.thumbnailFile || c.images.length > 0) return true
@@ -103,8 +103,50 @@ export default function PublishWizard({ onClose }: PublishWizardProps) {
         return false
     }
 
-    /** Save a draft of the current state to localStorage */
-    const saveDraft = () => {
+    /** Save draft to API with localStorage fallback */
+    const saveDraft = async () => {
+        try {
+            const platforms = wizardState.platformSelections.map(
+                s => s.platformId
+            )
+            const body = {
+                content: wizardState.content.text || "",
+                scheduledTime: Date.now() + 86400000,
+                platforms: platforms.length > 0 ? platforms : ["youtube"],
+                mediaType:
+                    wizardState.contentType === "video" ? "video" : "text",
+                status: "draft",
+            }
+
+            if (draftId) {
+                // Update existing draft via PUT
+                await fetch(`/api/posts/${draftId}`, {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        content: body.content,
+                        status: "draft",
+                    }),
+                })
+            } else {
+                // Create new draft via POST
+                const res = await fetch("/api/posts", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(body),
+                })
+                if (res.ok) {
+                    const data = await res.json()
+                    if (data.post?.id) {
+                        setDraftId(data.post.id)
+                    }
+                }
+            }
+        } catch {
+            // API failed — fallback will handle it
+        }
+
+        // localStorage fallback (always saves locally as backup)
         try {
             const draft = {
                 contentType: wizardState.contentType,
@@ -113,6 +155,7 @@ export default function PublishWizard({ onClose }: PublishWizardProps) {
                 text: wizardState.content.text,
                 platformMetadata: wizardState.platformMetadata,
                 currentStep,
+                draftId,
                 savedAt: new Date().toISOString(),
             }
             localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(draft))
@@ -121,29 +164,72 @@ export default function PublishWizard({ onClose }: PublishWizardProps) {
         }
     }
 
-    /** Try to restore a previously saved draft */
-    const restoreDraft = (): Partial<PublishWizardState> | null => {
-        try {
-            const raw = localStorage.getItem(DRAFT_STORAGE_KEY)
-            if (!raw) return null
-            const data = JSON.parse(raw)
-            // Only restore if saved within the last 24 hours
-            const savedAt = new Date(data.savedAt)
-            const now = new Date()
-            const hoursDiff =
-                (now.getTime() - savedAt.getTime()) / (1000 * 60 * 60)
-            if (hoursDiff > 24) {
-                localStorage.removeItem(DRAFT_STORAGE_KEY)
+    /** Try to restore a previously saved draft (API first, then localStorage) */
+    const restoreDraft =
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        async (): Promise<any> => {
+            // Try API first: fetch most recent draft from server
+            try {
+                const res = await fetch("/api/posts")
+                if (res.ok) {
+                    const data = await res.json()
+                    const draftPosts = (data.posts || []).filter(
+                        (p: { status: string }) => p.status === "draft"
+                    )
+                    if (draftPosts.length > 0) {
+                        // Sort by createdAt descending, take the latest
+                        draftPosts.sort(
+                            (
+                                a: { createdAt: string },
+                                b: { createdAt: string }
+                            ) =>
+                                new Date(b.createdAt).getTime() -
+                                new Date(a.createdAt).getTime()
+                        )
+                        const latestDraft = draftPosts[0]
+                        setDraftId(latestDraft.id)
+                        return {
+                            text: latestDraft.content || "",
+                        }
+                    }
+                }
+            } catch {
+                // API failed — fallback to localStorage
+            }
+
+            // localStorage fallback
+            try {
+                const raw = localStorage.getItem(DRAFT_STORAGE_KEY)
+                if (!raw) return null
+                const data = JSON.parse(raw)
+                // Only restore if saved within the last 24 hours
+                const savedAt = new Date(data.savedAt)
+                const now = new Date()
+                const hoursDiff =
+                    (now.getTime() - savedAt.getTime()) / (1000 * 60 * 60)
+                if (hoursDiff > 24) {
+                    localStorage.removeItem(DRAFT_STORAGE_KEY)
+                    return null
+                }
+                if (data.draftId) {
+                    setDraftId(data.draftId)
+                }
+                return data
+            } catch {
                 return null
             }
-            return data
-        } catch {
-            return null
         }
-    }
 
-    /** Clear the saved draft */
-    const clearDraft = () => {
+    /** Clear the saved draft (API + localStorage) */
+    const clearDraft = async () => {
+        if (draftId) {
+            try {
+                await fetch(`/api/posts/${draftId}`, { method: "DELETE" })
+            } catch {
+                // Ignore API errors during cleanup
+            }
+            setDraftId(null)
+        }
         try {
             localStorage.removeItem(DRAFT_STORAGE_KEY)
         } catch {
@@ -161,15 +247,15 @@ export default function PublishWizard({ onClose }: PublishWizardProps) {
     }
 
     /** Save as draft and close */
-    const handleSaveDraftAndClose = () => {
-        saveDraft()
+    const handleSaveDraftAndClose = async () => {
+        await saveDraft()
         setShowCloseConfirm(false)
         onClose()
     }
 
     /** Discard everything and close */
-    const handleDiscardAndClose = () => {
-        clearDraft()
+    const handleDiscardAndClose = async () => {
+        await clearDraft()
         setShowCloseConfirm(false)
         onClose()
     }
@@ -178,6 +264,27 @@ export default function PublishWizard({ onClose }: PublishWizardProps) {
     const handleBackToEditing = () => {
         setShowCloseConfirm(false)
     }
+
+    // Restore draft on mount
+    useEffect(() => {
+        if (!draftRestored) {
+            restoreDraft().then(data => {
+                if (data) {
+                    setWizardState(prev => ({
+                        ...prev,
+                        content: {
+                            ...prev.content,
+                            text: data.text || prev.content.text,
+                        },
+                    }))
+                    if (data.currentStep !== undefined) {
+                        setCurrentStep(data.currentStep as WizardStep)
+                    }
+                }
+                setDraftRestored(true)
+            })
+        }
+    }, [draftRestored])
 
     // Step 0: Content type selection
     const handleContentTypeChange = (type: ContentType) => {
@@ -261,10 +368,8 @@ export default function PublishWizard({ onClose }: PublishWizardProps) {
                         continue
                     }
 
-                    const meta =
-                        wizardState.platformMetadata.youtube as
-                            | YouTubeMetadata
-                            | undefined
+                    const meta = wizardState.platformMetadata.youtube as
+                        YouTubeMetadata | undefined
                     if (!meta) {
                         results.push({
                             platformId: "youtube",
@@ -470,6 +575,8 @@ export default function PublishWizard({ onClose }: PublishWizardProps) {
         const allFailed = results.every(r => !r.success)
 
         if (allSuccess) {
+            // Clear draft on successful publish
+            await clearDraft()
             setWizardState(prev => ({
                 ...prev,
                 processing: { status: "complete", results },
@@ -493,7 +600,7 @@ export default function PublishWizard({ onClose }: PublishWizardProps) {
                 processing: { status: "partial", results },
             }))
         }
-    }, [wizardState])
+    }, [wizardState, clearDraft])
 
     const handleStartPublish = () => {
         setCurrentStep(8)

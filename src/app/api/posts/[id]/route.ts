@@ -27,7 +27,13 @@ export async function PUT(
             )
         }
 
-        const allowedKeys = new Set(["content", "scheduledTime"])
+        const allowedKeys = new Set([
+            "content",
+            "scheduledTime",
+            "status",
+            "platforms",
+            "mediaType",
+        ])
         for (const key of Object.keys(body)) {
             if (!allowedKeys.has(key)) {
                 return NextResponse.json(
@@ -46,20 +52,23 @@ export async function PUT(
             )
         }
 
-        if (existing.status !== "pending") {
+        const isDraft = existing.status === "draft"
+        if (!isDraft && existing.status !== "pending") {
             return NextResponse.json(
-                { error: "Only pending posts can be updated" },
+                { error: "Only pending or draft posts can be updated" },
                 { status: 400 }
             )
         }
 
         const content = body.content as string | undefined
         const scheduledTime = body.scheduledTime as number | undefined
+        const newStatus = body.status as string | undefined
+        const platforms = body.platforms as string[] | undefined
 
         if (content !== undefined) {
-            if (typeof content !== "string" || !content.trim()) {
+            if (typeof content !== "string") {
                 return NextResponse.json(
-                    { error: "content must be a non-empty string" },
+                    { error: "content must be a string" },
                     { status: 400 }
                 )
             }
@@ -94,10 +103,33 @@ export async function PUT(
             }
         }
 
+        if (newStatus !== undefined) {
+            const validStatuses = ["draft", "pending"]
+            if (!validStatuses.includes(newStatus)) {
+                return NextResponse.json(
+                    { error: "status must be 'draft' or 'pending'" },
+                    { status: 400 }
+                )
+            }
+        }
+
+        if (platforms !== undefined) {
+            if (!Array.isArray(platforms)) {
+                return NextResponse.json(
+                    { error: "platforms must be an array" },
+                    { status: 400 }
+                )
+            }
+        }
+
         logger.info("Updating scheduled post", {
             userId: session.user.id,
             postId: id,
-            updates: { content: !!content, scheduledTime: !!scheduledTime },
+            updates: {
+                content: !!content,
+                scheduledTime: !!scheduledTime,
+                newStatus: !!newStatus,
+            },
         })
 
         // Update via Supabase directly (PublicationQueue doesn't have an update method)
@@ -113,6 +145,7 @@ export async function PUT(
         if (content !== undefined) updates.content = content
         if (scheduledTime !== undefined)
             updates.scheduled_time = new Date(scheduledTime)
+        if (newStatus !== undefined) updates.status = newStatus
 
         const { error: updateError } = await supabase
             .from("scheduled_posts")

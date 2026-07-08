@@ -413,6 +413,15 @@
         "resolution": "Resolução máxima: {resolution}",
         "selectPlatform": "Selecione as plataformas alvo para ver requisitos"
     },
+    "draftStatus": "Rascunho (não publicado ainda)",
+    "hasDrafts": "Tem rascunhos",
+    "history": {
+        "all": "Todos",
+        "drafts": "Rascunhos",
+        "scheduled": "Agendados",
+        "published": "Publicados",
+        "failed": "Falhou"
+    },
     "storageMode": {
         "title": "Modo de Armazenamento",
         "cloud": "Armazenamento em Nuvem",

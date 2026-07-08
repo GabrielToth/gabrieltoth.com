@@ -34,14 +34,18 @@ export async function createPost(
     post: Omit<Post, "id" | "createdAt">
 ): Promise<Post> {
     try {
+        const body: Record<string, unknown> = {
+            content: post.content,
+            scheduledTime: post.scheduledAt.getTime(),
+            platforms: post.channels,
+        }
+        if (post.status) {
+            body.status = post.status
+        }
         const res = await fetch("/api/posts", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                content: post.content,
-                scheduledTime: post.scheduledAt.getTime(),
-                platforms: post.channels,
-            }),
+            body: JSON.stringify(body),
         })
         if (!res.ok) {
             const data = await res.json()
@@ -112,7 +116,9 @@ function mapScheduledPostToPost(p: any): Post {
                 ? "published"
                 : p.status === "failed"
                   ? "failed"
-                  : "scheduled",
+                  : p.status === "draft"
+                    ? "draft"
+                    : "scheduled",
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         channels: (p.networks || []).map((n: any) =>
             typeof n === "string" ? n : n.platform || ""

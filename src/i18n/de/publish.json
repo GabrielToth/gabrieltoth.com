@@ -413,6 +413,15 @@
         "resolution": "Maximale Auflösung: {resolution}",
         "selectPlatform": "Wähle Zielplattformen für die Anforderungen"
     },
+    "draftStatus": "Entwurf (noch nicht veröffentlicht)",
+    "hasDrafts": "Hat Entwürfe",
+    "history": {
+        "all": "Alle",
+        "drafts": "Entwürfe",
+        "scheduled": "Geplant",
+        "published": "Veröffentlicht",
+        "failed": "Fehlgeschlagen"
+    },
     "storageMode": {
         "title": "Speichermodus",
         "cloud": "Cloud-Speicher",

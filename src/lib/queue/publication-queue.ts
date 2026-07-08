@@ -21,7 +21,7 @@ export interface ScheduledPost {
     mediaType: "text" | "video"
     mediaId?: string
     scheduledTime: number
-    status: "pending" | "processing" | "published" | "failed"
+    status: "draft" | "pending" | "processing" | "published" | "failed"
     retryCount: number
     lastRetryAt?: number
     errorMessage?: string
@@ -70,6 +70,74 @@ export class PublicationQueue {
         process.env.NEXT_PUBLIC_SUPABASE_URL || "",
         process.env.SUPABASE_SERVICE_ROLE_KEY || ""
     )
+
+    /**
+     * Create a draft post
+     */
+    async createDraft(
+        userId: string,
+        content: string,
+        platforms: SocialPlatform[],
+        mediaType: "text" | "video" = "text",
+        _mediaId?: string
+    ): Promise<ScheduledPost> {
+        try {
+            const now = Date.now()
+
+            const { data: post, error: postError } = await this.supabase
+                .from("scheduled_posts")
+                .insert({
+                    user_id: userId,
+                    content,
+                    media_type: mediaType,
+                    scheduled_time: new Date(),
+                    status: "draft",
+                    created_at: new Date(now),
+                    updated_at: new Date(now),
+                })
+                .select()
+                .single()
+
+            if (postError) {
+                throw new Error(`Database error: ${postError.message}`)
+            }
+
+            const networkEntries = platforms.map(platform => ({
+                post_id: post.id,
+                platform,
+                status: "pending" as const,
+                created_at: new Date(now),
+                updated_at: new Date(now),
+            }))
+
+            if (networkEntries.length > 0) {
+                const { error: networkError } = await this.supabase
+                    .from("scheduled_post_networks")
+                    .insert(networkEntries)
+
+                if (networkError) {
+                    throw new Error(`Database error: ${networkError.message}`)
+                }
+            }
+
+            await CacheManager.delete(CACHE_KEYS.PUBLICATION_QUEUE(userId))
+
+            logger.info("Draft post created", {
+                userId,
+                postId: post.id,
+                platforms,
+                mediaType,
+            })
+
+            return this.mapDatabaseToScheduledPost(post, platforms)
+        } catch (error) {
+            logger.error("Failed to create draft post", {
+                userId,
+                error: error instanceof Error ? error.message : String(error),
+            })
+            throw error
+        }
+    }
 
     /**
      * Create a scheduled post
@@ -246,7 +314,8 @@ export class PublicationQueue {
             const { data: posts, error } = await this.supabase
                 .from("scheduled_posts")
                 .select("*")
-                .eq("status", "pending")
+                .in("status", ["pending"])
+                .neq("status", "draft")
                 .lte("scheduled_time", now)
                 .order("scheduled_time", { ascending: true })
                 .limit(100)
@@ -289,7 +358,7 @@ export class PublicationQueue {
      */
     async updatePostStatus(
         postId: string,
-        status: "pending" | "processing" | "published" | "failed"
+        status: "draft" | "pending" | "processing" | "published" | "failed"
     ): Promise<void> {
         try {
             const { error } = await this.supabase
