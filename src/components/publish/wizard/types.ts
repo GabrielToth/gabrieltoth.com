@@ -33,8 +33,7 @@ export interface PlatformInfo {
     labelKey: string
     descKey: string
     icon: React.ReactNode
-    implemented: boolean
-    connected: boolean
+    channelCount?: number
     /** Which metadata sections this platform supports */
     features: PlatformFeature[]
 }

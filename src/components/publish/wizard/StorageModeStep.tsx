@@ -76,7 +76,7 @@ export default function StorageModeStep({
                                 </h3>
                                 <span className="inline-flex items-center gap-1 rounded-full bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-600 dark:bg-gray-800 dark:text-gray-400">
                                     <Lock className="h-3 w-3" />
-                                    {t("step1.notImplemented")}
+                                    {t("step3.notAvailable")}
                                 </span>
                             </div>
                             <p className="mt-1 text-sm text-gray-500">
