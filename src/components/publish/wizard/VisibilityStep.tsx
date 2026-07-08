@@ -384,6 +384,29 @@ export default function VisibilityStep({
                         </Select>
                     </div>
 
+                    {/* Members-only toggle */}
+                    <div className="space-y-3 border-t pt-3 dark:border-gray-700">
+                        <div className="flex items-center gap-2">
+                            <input
+                                type="checkbox"
+                                id="membersOnly"
+                                checked={youtubeMeta.membersOnly}
+                                onChange={e =>
+                                    setYouTubeMeta({
+                                        membersOnly: e.target.checked,
+                                    })
+                                }
+                                className="h-4 w-4 rounded border-gray-300"
+                            />
+                            <Label htmlFor="membersOnly" className="cursor-pointer">
+                                {t("step6.membersOnly")}
+                            </Label>
+                        </div>
+                        <p className="text-xs text-gray-400 ml-6">
+                            {t("step6.membersOnlyHint")}
+                        </p>
+                    </div>
+
                     {/* Schedule type */}
                     <div className="space-y-3 border-t pt-3 dark:border-gray-700">
                         <div className="flex gap-4">

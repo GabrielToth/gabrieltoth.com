@@ -301,6 +301,26 @@ export default function PublishWizard({ onClose }: PublishWizardProps) {
                         "adSuitability",
                         JSON.stringify(meta.adSuitability)
                     )
+                    formData.append(
+                        "membersOnly",
+                        meta.membersOnly ? "true" : "false"
+                    )
+
+                    // Compute publishAt from scheduledDate + scheduledTime
+                    if (meta.scheduledDate && meta.scheduledTime) {
+                        const scheduledDateTime = new Date(meta.scheduledDate)
+                        const [hours, minutes] = meta.scheduledTime
+                            .split(":")
+                            .map(Number)
+                        if (!isNaN(hours) && !isNaN(minutes)) {
+                            scheduledDateTime.setHours(hours, minutes, 0, 0)
+                            formData.append(
+                                "publishAt",
+                                scheduledDateTime.toISOString()
+                            )
+                        }
+                    }
+
                     if (meta.linkedVideoStart) {
                         formData.append(
                             "linkedVideoStart",
