@@ -415,6 +415,15 @@
         "resolution": "Max resolution: {resolution}",
         "selectPlatform": "Select target platforms to see upload requirements"
     },
+    "draftStatus": "Draft (not yet published)",
+    "hasDrafts": "Has drafts",
+    "history": {
+        "all": "All",
+        "drafts": "Drafts",
+        "scheduled": "Scheduled",
+        "published": "Published",
+        "failed": "Failed"
+    },
     "storageMode": {
         "title": "Storage Mode",
         "cloud": "Cloud Storage",

@@ -72,6 +72,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
             "scheduledTime",
             "platforms",
             "mediaType",
+            "status",
         ])
         for (const key of Object.keys(body)) {
             if (!allowedKeys.has(key)) {
@@ -86,15 +87,100 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         const scheduledTime = body.scheduledTime as number | undefined
         const platforms = body.platforms as string[] | undefined
         const mediaType = (body.mediaType as string) || "text"
+        const status = (body.status as string) || "pending"
 
-        if (!content || typeof content !== "string" || !content.trim()) {
-            return NextResponse.json(
-                { error: "content is required and must be a non-empty string" },
-                { status: 400 }
+        const isDraft = status === "draft"
+
+        if (!isDraft) {
+            if (!content || typeof content !== "string" || !content.trim()) {
+                return NextResponse.json(
+                    {
+                        error: "content is required and must be a non-empty string",
+                    },
+                    { status: 400 }
+                )
+            }
+
+            if (content.length > 100000) {
+                return NextResponse.json(
+                    {
+                        error: "content exceeds maximum length of 100000 characters",
+                    },
+                    { status: 400 }
+                )
+            }
+
+            if (!scheduledTime || typeof scheduledTime !== "number") {
+                return NextResponse.json(
+                    { error: "scheduledTime is required and must be a number" },
+                    { status: 400 }
+                )
+            }
+
+            if (scheduledTime < Date.now()) {
+                return NextResponse.json(
+                    { error: "scheduledTime must be in the future" },
+                    { status: 400 }
+                )
+            }
+
+            if (scheduledTime > Date.now() + 365 * 24 * 60 * 60 * 1000) {
+                return NextResponse.json(
+                    {
+                        error: "scheduledTime cannot be more than 365 days in the future",
+                    },
+                    { status: 400 }
+                )
+            }
+
+            if (!Array.isArray(platforms) || platforms.length === 0) {
+                return NextResponse.json(
+                    {
+                        error: "platforms is required and must be a non-empty array",
+                    },
+                    { status: 400 }
+                )
+            }
+
+            for (const p of platforms) {
+                if (!VALID_PLATFORMS.includes(p as SocialPlatform)) {
+                    return NextResponse.json(
+                        {
+                            error: `Invalid platform: ${p}. Valid platforms: ${VALID_PLATFORMS.join(", ")}`,
+                        },
+                        { status: 400 }
+                    )
+                }
+            }
+
+            if (mediaType !== "text" && mediaType !== "video") {
+                return NextResponse.json(
+                    { error: "mediaType must be 'text' or 'video'" },
+                    { status: 400 }
+                )
+            }
+
+            logger.info("Creating scheduled post", {
+                userId: session.user.id,
+                platforms,
+                scheduledTime,
+                mediaType,
+            })
+
+            const queue = getPublicationQueue()
+            const post = await queue.createScheduledPost(
+                session.user.id,
+                content,
+                scheduledTime,
+                platforms as SocialPlatform[],
+                mediaType as "text" | "video"
             )
+
+            return NextResponse.json({ post }, { status: 201 })
         }
 
-        if (content.length > 100000) {
+        // Draft creation — relaxed validation
+        if (content && typeof content === "string" && content.length > 100000) {
             return NextResponse.json(
                 {
                     error: "content exceeds maximum length of 100000 characters",
@@ -103,21 +189,11 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
             )
         }
 
-        if (!scheduledTime || typeof scheduledTime !== "number") {
-            return NextResponse.json(
-                { error: "scheduledTime is required and must be a number" },
-                { status: 400 }
-            )
-        }
-
-        if (scheduledTime < Date.now()) {
-            return NextResponse.json(
-                { error: "scheduledTime must be in the future" },
-                { status: 400 }
-            )
-        }
-
-        if (scheduledTime > Date.now() + 365 * 24 * 60 * 60 * 1000) {
+        if (
+            scheduledTime !== undefined &&
+            (typeof scheduledTime !== "number" ||
+                scheduledTime > Date.now() + 365 * 24 * 60 * 60 * 1000)
+        ) {
             return NextResponse.json(
                 {
                     error: "scheduledTime cannot be more than 365 days in the future",
@@ -126,23 +202,22 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
             )
         }
 
-        if (!Array.isArray(platforms) || platforms.length === 0) {
-            return NextResponse.json(
-                {
-                    error: "platforms is required and must be a non-empty array",
-                },
-                { status: 400 }
-            )
-        }
-
-        for (const p of platforms) {
-            if (!VALID_PLATFORMS.includes(p as SocialPlatform)) {
+        if (platforms !== undefined) {
+            if (!Array.isArray(platforms)) {
                 return NextResponse.json(
-                    {
-                        error: `Invalid platform: ${p}. Valid platforms: ${VALID_PLATFORMS.join(", ")}`,
-                    },
+                    { error: "platforms must be an array" },
                     { status: 400 }
                 )
+            }
+            for (const p of platforms) {
+                if (!VALID_PLATFORMS.includes(p as SocialPlatform)) {
+                    return NextResponse.json(
+                        {
+                            error: `Invalid platform: ${p}. Valid platforms: ${VALID_PLATFORMS.join(", ")}`,
+                        },
+                        { status: 400 }
+                    )
+                }
             }
         }
 
@@ -153,19 +228,17 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
             )
         }
 
-        logger.info("Creating scheduled post", {
+        logger.info("Creating draft post", {
             userId: session.user.id,
             platforms,
-            scheduledTime,
             mediaType,
         })
 
         const queue = getPublicationQueue()
-        const post = await queue.createScheduledPost(
+        const post = await queue.createDraft(
             session.user.id,
-            content,
-            scheduledTime,
-            platforms as SocialPlatform[],
+            content || "",
+            (platforms || []) as SocialPlatform[],
             mediaType as "text" | "video"
         )
 
