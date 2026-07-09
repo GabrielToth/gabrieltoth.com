@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Fixed
+- **TikTok token response format**: TikTok's `/v2/oauth/token/` wraps tokens in nested `data.data` object. Added `normalizeTokenResponse()` helper that checks both flat and wrapped formats. ([#215](https://github.com/GabrielToth/gabrieltoth.com/issues/215), [#218](https://github.com/GabrielToth/gabrieltoth.com/pull/218))
+- **Facebook OAuth redirect URI**: Error 1349168 "URL bloqueada" — production redirect URI needs to be whitelisted in Meta Developer Portal > Facebook Login > Settings. ([#216](https://github.com/GabrielToth/gabrieltoth.com/issues/216))
+- **Instagram OAuth redirect URI**: Same redirect URI whitelist issue. OAuth permanently blocked without CNPJ for Meta Advanced Access. Bypass via `INSTAGRAM_PAGE_ACCESS_TOKEN` env var is already implemented. ([#217](https://github.com/GabrielToth/gabrieltoth.com/issues/217))
 - **Facebook and TikTok OAuth**: Fixed 500 error "Environment configuration is required" — added `process.env` fallback to config singletons so they work in serverless without explicit env parameter. Facebook also falls back to Instagram's app credentials. ([#200](https://github.com/GabrielToth/gabrieltoth.com/pull/200))
 
 ### Added
