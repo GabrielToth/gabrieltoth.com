@@ -20,8 +20,8 @@ import {
  */
 function getSessionToken(request: NextRequest): string | null {
     return (
-        request.cookies.get("session")?.value ||
         request.cookies.get("auth_session")?.value ||
+        request.cookies.get("session")?.value ||
         null
     )
 }
