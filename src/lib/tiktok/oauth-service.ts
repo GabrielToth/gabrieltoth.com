@@ -222,47 +222,84 @@ export class TikTokOAuthService extends BaseService {
 
         const params = new URLSearchParams({ fields })
 
-        const response = await fetch(
-            `${this.apiBase}/user/info/?${params.toString()}`,
-            {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`,
-                },
+        const maxRetries = 3
+        let lastError: unknown
+
+        for (let attempt = 0; attempt < maxRetries; attempt++) {
+            if (attempt > 0) {
+                const delay = Math.min(1000 * 2 ** attempt, 4000)
+                await new Promise(resolve => setTimeout(resolve, delay))
             }
-        )
 
-        if (!response.ok) {
-            const error = await response.json()
-            this.logger.warn("Failed to get TikTok user info", {
-                error: error.error?.message || error.error_description,
-            })
-            return null
+            try {
+                const response = await fetch(
+                    `${this.apiBase}/user/info/?${params.toString()}`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${accessToken}`,
+                        },
+                    }
+                )
+
+                if (response.ok) {
+                    const data = await response.json()
+
+                    if (!data.data?.user) {
+                        this.logger.warn("No TikTok user data returned")
+                        return null
+                    }
+
+                    const user = data.data.user
+
+                    return {
+                        openId: user.open_id,
+                        unionId: user.union_id,
+                        displayName: user.display_name,
+                        avatarUrl: user.avatar_url,
+                        avatarUrl100: user.avatar_url_100,
+                        avatarLargeUrl: user.avatar_large_url,
+                        bioDescription: user.bio_description,
+                        isVerified: user.is_verified,
+                        username: user.username,
+                        followerCount: user.follower_count,
+                        followingCount: user.following_count,
+                        likesCount: user.likes_count,
+                        videoCount: user.video_count,
+                    }
+                }
+
+                const errorBody = await response.json()
+                lastError = errorBody
+                this.logger.warn(
+                    "Failed to get TikTok user info (will retry)",
+                    {
+                        attempt: attempt + 1,
+                        status: response.status,
+                        error:
+                            errorBody.error?.message ||
+                            errorBody.error_description ||
+                            JSON.stringify(errorBody),
+                    }
+                )
+            } catch (err) {
+                lastError = err
+                this.logger.warn(
+                    "TikTok user info request failed (will retry)",
+                    {
+                        attempt: attempt + 1,
+                        error: err instanceof Error ? err.message : String(err),
+                    }
+                )
+            }
         }
 
-        const data = await response.json()
-
-        if (!data.data?.user) {
-            this.logger.warn("No TikTok user data returned")
-            return null
-        }
-
-        const user = data.data.user
-
-        return {
-            openId: user.open_id,
-            unionId: user.union_id,
-            displayName: user.display_name,
-            avatarUrl: user.avatar_url,
-            avatarUrl100: user.avatar_url_100,
-            avatarLargeUrl: user.avatar_large_url,
-            bioDescription: user.bio_description,
-            isVerified: user.is_verified,
-            username: user.username,
-            followerCount: user.follower_count,
-            followingCount: user.following_count,
-            likesCount: user.likes_count,
-            videoCount: user.video_count,
-        }
+        this.logger.error("Failed to get TikTok user info after retries", {
+            error:
+                lastError instanceof Error
+                    ? lastError.message
+                    : JSON.stringify(lastError),
+        })
+        return null
     }
 
     async getVideoList(
