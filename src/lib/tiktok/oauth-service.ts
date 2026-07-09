@@ -89,6 +89,57 @@ export class TikTokOAuthService extends BaseService {
         return { authorizationUrl, state }
     }
 
+    /**
+     * Normalize TikTok token response to handle both flat and wrapped formats.
+     *
+     * TikTok sometimes wraps the token response in a `data` object (consistent with
+     * their other API endpoints like getUserInfo which reads `data.data.user`):
+     *   - Flat (per docs):  { access_token: "...", open_id: "...", ... }
+     *   - Wrapped (observed): { data: { access_token: "...", open_id: "...", ... } }
+     *
+     * This helper checks both formats and throws if neither has access_token.
+     */
+    private normalizeTokenResponse(
+        responseData: Record<string, unknown>,
+        context: string
+    ): {
+        accessToken: string
+        refreshToken: string
+        expiresIn: number
+        tokenType: string
+        openId?: string
+    } {
+        // Try flat format first, fall back to wrapped data.data format
+        const source = responseData.access_token
+            ? responseData
+            : (responseData.data as Record<string, unknown> | undefined) || {}
+
+        if (!source.access_token) {
+            this.logger.error(
+                `TikTok token response missing access_token (${context})`,
+                {
+                    responseKeys: Object.keys(responseData),
+                    hasDataWrapper: "data" in responseData,
+                    rawPreview: JSON.stringify(responseData).substring(0, 500),
+                }
+            )
+            throw new ServiceError(
+                "TOKEN_PARSE_FAILED",
+                `TikTok returned no access_token in response (${context})`,
+                400,
+                { responseData: JSON.stringify(responseData) }
+            )
+        }
+
+        return {
+            accessToken: source.access_token as string,
+            refreshToken: (source.refresh_token as string) || "",
+            expiresIn: (source.expires_in as number) || 86400,
+            tokenType: (source.token_type as string) || "bearer",
+            openId: source.open_id as string | undefined,
+        }
+    }
+
     async exchangeCodeForToken(code: string): Promise<OAuthTokenResponse> {
         this.assertReady()
 
@@ -120,28 +171,23 @@ export class TikTokOAuthService extends BaseService {
             )
         }
 
+        const normalized = this.normalizeTokenResponse(
+            data,
+            "exchangeCodeForToken"
+        )
+
         this.logger.info("TikTok authorization code exchanged for token", {
-            hasAccessToken: !!data.access_token,
-            hasRefreshToken: !!data.refresh_token,
-            expiresIn: data.expires_in,
-            hasOpenId: !!data.open_id,
-            scope: data.scope,
+            hasAccessToken: true,
+            hasRefreshToken: !!normalized.refreshToken,
+            expiresIn: normalized.expiresIn,
+            hasOpenId: !!normalized.openId,
         })
 
-        if (!data.access_token) {
-            throw new ServiceError(
-                "TOKEN_EXCHANGE_FAILED",
-                "TikTok returned no access_token in response",
-                400,
-                { responseData: JSON.stringify(data) }
-            )
-        }
-
         return {
-            accessToken: data.access_token,
-            refreshToken: data.refresh_token || "",
-            expiresIn: data.expires_in || 86400,
-            tokenType: data.token_type || "bearer",
+            accessToken: normalized.accessToken,
+            refreshToken: normalized.refreshToken,
+            expiresIn: normalized.expiresIn,
+            tokenType: normalized.tokenType,
         }
     }
 
@@ -177,13 +223,18 @@ export class TikTokOAuthService extends BaseService {
             )
         }
 
-        this.logger.info("TikTok access token refreshed")
+        const normalized = this.normalizeTokenResponse(data, "refreshToken")
+
+        this.logger.info("TikTok access token refreshed", {
+            hasAccessToken: true,
+            hasOpenId: !!normalized.openId,
+        })
 
         return {
-            accessToken: data.access_token,
-            refreshToken: data.refresh_token,
-            expiresIn: data.expires_in || 86400,
-            tokenType: data.token_type || "bearer",
+            accessToken: normalized.accessToken,
+            refreshToken: normalized.refreshToken,
+            expiresIn: normalized.expiresIn,
+            tokenType: normalized.tokenType,
         }
     }
 
