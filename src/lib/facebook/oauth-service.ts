@@ -319,6 +319,12 @@ export class FacebookOAuthService extends BaseService {
         pageId: string,
         userAccessToken: string
     ): Promise<string | null> {
+        const envToken = process.env.FACEBOOK_PAGE_ACCESS_TOKEN
+        const envPageId = process.env.FACEBOOK_PAGE_ID
+        if (envToken && envPageId && envPageId === pageId) {
+            return envToken
+        }
+
         this.assertReady()
 
         try {

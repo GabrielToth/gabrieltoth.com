@@ -47,6 +47,10 @@ function createValidEnv(): EnvironmentConfig {
         FACEBOOK_REDIRECT_URI:
             "http://localhost:3000/api/oauth/callback/facebook",
         FACEBOOK_WEBHOOK_VERIFY_TOKEN: "test-verify-token",
+        FACEBOOK_PAGE_ID: "",
+        FACEBOOK_PAGE_ACCESS_TOKEN: "",
+        INSTAGRAM_BUSINESS_ACCOUNT_ID: "",
+        INSTAGRAM_PAGE_ACCESS_TOKEN: "",
         TOKEN_ENCRYPTION_KEY: "a".repeat(64), // 64 character hex string
     }
 }
