@@ -2,6 +2,14 @@
 
 > This document tracks completed work and planned future work for the project.
 
+## ✅ Completed — July 2026 Cycle
+
+| Item | Issue | PR | Status |
+|------|-------|----|--------|
+| Fix TikTok OAuth token response format — nested `data.data` wrapping | [#215](https://github.com/GabrielToth/gabrieltoth.com/issues/215) | [#218](https://github.com/GabrielToth/gabrieltoth.com/pull/218) | ✅ **MERGED** — Added `normalizeTokenResponse()` helper |
+| Document Facebook redirect URI whitelist requirement | [#216](https://github.com/GabrielToth/gabrieltoth.com/issues/216) | — | 📋 **Config-only** — User must add URIs in Meta Developer Portal |
+| Document Instagram OAuth bypass (CNPJ limitation) | [#217](https://github.com/GabrielToth/gabrieltoth.com/issues/217) | — | 📋 **Config-only** — Bypass via `INSTAGRAM_PAGE_ACCESS_TOKEN` env var |
+
 ## ✅ Completed — June 2026 Cycle
 
 | Item | Issue | PR | Status |
@@ -13,6 +21,11 @@
 | Superseded: Middleware `x-user-id` header injection | — | — | ⏭️ Superseded by session-cookie approach |
 
 ## 🔜 Next Up
+
+### Manual Config (User Action Required)
+
+- [ ] **Add redirect URIs** to Meta Developer Portal > Facebook Login > Settings (Issue [#216](https://github.com/GabrielToth/gabrieltoth.com/issues/216))
+- [ ] **Set up Instagram Business Account** or use `INSTAGRAM_PAGE_ACCESS_TOKEN` env var bypass (Issue [#217](https://github.com/GabrielToth/gabrieltoth.com/issues/217))
 
 ### Merge & Release
 
@@ -26,9 +39,12 @@
 - [ ] Add test coverage for OAuth authorize routes (NextAuth `getServerSession` path)
 - [ ] Add integration test for `POST /api/posts` with valid session
 - [ ] Add test for `GET /api/posts` after migration (verify tables exist)
+- [ ] Add unit tests for `normalizeTokenResponse()` helper (TikTok OAuth)
+- [ ] Write actual vitest test files — framework is configured but no tests exist
 
 ### Infrastructure
 
+- [ ] Change CI test suite from `continue-on-error: true` to blocking once test coverage is established
 - [ ] Add status check / CI to ensure DB migrations are run in preview deployments
 - [ ] Document OAuth flow for future maintainers (session vs. header approach)
 

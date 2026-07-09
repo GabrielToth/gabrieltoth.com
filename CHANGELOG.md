@@ -8,6 +8,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Fixed
+- (no unreleased changes)
+
+## [1.21.2] - 2026-07-09
+
+### Fixed
 - **TikTok token response format**: TikTok's `/v2/oauth/token/` wraps tokens in nested `data.data` object. Added `normalizeTokenResponse()` helper that checks both flat and wrapped formats. ([#215](https://github.com/GabrielToth/gabrieltoth.com/issues/215), [#218](https://github.com/GabrielToth/gabrieltoth.com/pull/218))
 - **Facebook OAuth redirect URI**: Error 1349168 "URL bloqueada" — production redirect URI needs to be whitelisted in Meta Developer Portal > Facebook Login > Settings. ([#216](https://github.com/GabrielToth/gabrieltoth.com/issues/216))
 - **Instagram OAuth redirect URI**: Same redirect URI whitelist issue. OAuth permanently blocked without CNPJ for Meta Advanced Access. Bypass via `INSTAGRAM_PAGE_ACCESS_TOKEN` env var is already implemented. ([#217](https://github.com/GabrielToth/gabrieltoth.com/issues/217))
