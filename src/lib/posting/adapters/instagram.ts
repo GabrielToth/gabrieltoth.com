@@ -45,7 +45,7 @@ function getApiVersion(): string {
         const config = getInstagramConfig()
         return config.oauth.apiVersion
     } catch {
-        return "v22.0"
+        return "v25.0"
     }
 }
 

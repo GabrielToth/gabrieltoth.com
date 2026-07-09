@@ -41,7 +41,7 @@ export async function getComments(
         before?: string
     }
 ): Promise<InstagramCommentsResponse> {
-    const apiVersion = options?.apiVersion ?? "v22.0"
+    const apiVersion = options?.apiVersion ?? "v25.0"
 
     const params = new URLSearchParams({
         access_token: accessToken,
@@ -72,7 +72,7 @@ export async function replyToComment(
     commentId: string,
     message: string
 ): Promise<{ id: string }> {
-    const apiVersion = "v22.0"
+    const apiVersion = "v25.0"
 
     const params = new URLSearchParams({
         access_token: accessToken,
@@ -102,7 +102,7 @@ export async function hideComment(
     igUserId: string,
     commentId: string
 ): Promise<void> {
-    const apiVersion = "v22.0"
+    const apiVersion = "v25.0"
 
     const params = new URLSearchParams({
         access_token: accessToken,
@@ -130,7 +130,7 @@ export async function deleteComment(
     igUserId: string,
     commentId: string
 ): Promise<void> {
-    const apiVersion = "v22.0"
+    const apiVersion = "v25.0"
 
     const url = `${GRAPH_API_BASE}/${apiVersion}/${commentId}?access_token=${accessToken}`
 

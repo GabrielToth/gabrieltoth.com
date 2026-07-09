@@ -8,7 +8,7 @@
  * Response:
  * {
  *   "success": true,
- *   "authorizationUrl": "https://www.facebook.com/v22.0/dialog/oauth?...",
+ *   "authorizationUrl": "https://www.facebook.com/v25.0/dialog/oauth?...",
  *   "state": "base64payload.base64signature"
  * }
  */

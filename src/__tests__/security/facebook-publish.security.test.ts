@@ -55,7 +55,7 @@ vi.mock("@/lib/facebook/config", () => ({
             appSecret: "test-app-secret",
             redirectUri: "http://localhost:3000/api/oauth/callback/facebook",
             scopes: [],
-            apiVersion: "v22.0",
+            apiVersion: "v25.0",
         },
         rateLimit: {
             linkingAttemptsPerHour: 5,

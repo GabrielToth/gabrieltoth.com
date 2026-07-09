@@ -57,7 +57,7 @@ vi.mock("@/lib/facebook/config", () => ({
                 "pages_manage_engagement",
                 "public_profile",
             ],
-            apiVersion: "v22.0",
+            apiVersion: "v25.0",
         },
         rateLimit: {
             linkingAttemptsPerHour: 5,

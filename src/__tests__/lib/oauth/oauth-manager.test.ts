@@ -160,7 +160,7 @@ describe("OAuthManager", () => {
             )
 
             expect(result.authorizationUrl).toContain(
-                "https://www.facebook.com/v22.0/dialog/oauth"
+                "https://www.facebook.com/v25.0/dialog/oauth"
             )
             expect(result.authorizationUrl).toContain("display=popup")
             expect(result.authorizationUrl).toContain("client_id=")
