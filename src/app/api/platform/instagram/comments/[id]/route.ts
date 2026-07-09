@@ -59,19 +59,6 @@ export async function DELETE(
         }
 
         const tokenStore = getTokenStore()
-        const storedToken = await tokenStore.getToken(userId, "instagram")
-
-        if (!storedToken) {
-            return NextResponse.json(
-                {
-                    success: false,
-                    error: "INSTAGRAM_NOT_LINKED",
-                    message: "Instagram account is not linked",
-                },
-                { status: 404 }
-            )
-        }
-
         const config = getInstagramConfig()
         const oauthService = getInstagramOAuthService(config)
         await oauthService.initialize()

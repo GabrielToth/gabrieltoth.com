@@ -11,6 +11,11 @@ export async function getValidFacebookToken(
         oauthService?: FacebookOAuthService
     }
 ): Promise<string | null> {
+    const envToken = process.env.FACEBOOK_PAGE_ACCESS_TOKEN
+    if (envToken) {
+        return envToken
+    }
+
     const tokenStore = options?.tokenStore ?? getTokenStore()
 
     const stored = await tokenStore.getToken(userId, "facebook")

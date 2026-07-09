@@ -134,6 +134,13 @@ export function getFacebookConfig(env?: EnvironmentConfig): FacebookConfig {
             FACEBOOK_REDIRECT_URI: process.env.FACEBOOK_REDIRECT_URI ?? "",
             FACEBOOK_WEBHOOK_VERIFY_TOKEN:
                 process.env.FACEBOOK_WEBHOOK_VERIFY_TOKEN ?? "",
+            FACEBOOK_PAGE_ID: process.env.FACEBOOK_PAGE_ID ?? "",
+            FACEBOOK_PAGE_ACCESS_TOKEN:
+                process.env.FACEBOOK_PAGE_ACCESS_TOKEN ?? "",
+            INSTAGRAM_BUSINESS_ACCOUNT_ID:
+                process.env.INSTAGRAM_BUSINESS_ACCOUNT_ID ?? "",
+            INSTAGRAM_PAGE_ACCESS_TOKEN:
+                process.env.INSTAGRAM_PAGE_ACCESS_TOKEN ?? "",
             EMAIL_FROM: process.env.EMAIL_FROM ?? "noreply@gabrieltoth.com",
             RESEND_API_KEY: process.env.RESEND_API_KEY ?? "",
             RESEND_FROM_EMAIL:

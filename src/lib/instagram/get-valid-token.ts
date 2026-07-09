@@ -24,6 +24,11 @@ export async function getValidInstagramToken(
         oauthService?: InstagramOAuthService
     }
 ): Promise<string | null> {
+    const envToken = process.env.INSTAGRAM_PAGE_ACCESS_TOKEN
+    if (envToken) {
+        return envToken
+    }
+
     const tokenStore = options?.tokenStore ?? getTokenStore()
 
     const stored = await tokenStore.getToken(userId, "instagram")

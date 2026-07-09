@@ -49,6 +49,14 @@ export interface EnvironmentConfig {
     // Facebook Webhook (Meta verification handshake)
     FACEBOOK_WEBHOOK_VERIFY_TOKEN: string
 
+    // Facebook Page Access Token (bypass OAuth — from Graph API Explorer)
+    FACEBOOK_PAGE_ID: string
+    FACEBOOK_PAGE_ACCESS_TOKEN: string
+
+    // Instagram Business Account Token (bypass OAuth — from Graph API Explorer)
+    INSTAGRAM_BUSINESS_ACCOUNT_ID: string
+    INSTAGRAM_PAGE_ACCESS_TOKEN: string
+
     // Email via Supabase Auth (configured in Supabase Dashboard SMTP)
     EMAIL_FROM: string
 
@@ -106,6 +114,13 @@ function parseConfig(): EnvironmentConfig {
         FACEBOOK_REDIRECT_URI: process.env.FACEBOOK_REDIRECT_URI ?? "",
         FACEBOOK_WEBHOOK_VERIFY_TOKEN:
             process.env.FACEBOOK_WEBHOOK_VERIFY_TOKEN ?? "",
+        FACEBOOK_PAGE_ID: process.env.FACEBOOK_PAGE_ID ?? "",
+        FACEBOOK_PAGE_ACCESS_TOKEN:
+            process.env.FACEBOOK_PAGE_ACCESS_TOKEN ?? "",
+        INSTAGRAM_BUSINESS_ACCOUNT_ID:
+            process.env.INSTAGRAM_BUSINESS_ACCOUNT_ID ?? "",
+        INSTAGRAM_PAGE_ACCESS_TOKEN:
+            process.env.INSTAGRAM_PAGE_ACCESS_TOKEN ?? "",
         EMAIL_FROM: process.env.EMAIL_FROM ?? "noreply@gabrieltoth.com",
         RESEND_API_KEY: process.env.RESEND_API_KEY ?? "",
         RESEND_FROM_EMAIL:
