@@ -87,6 +87,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
 
         logger.info("TikTok authorization code exchanged successfully", {
             userId,
+            hasAccessToken: !!tokenResponse.accessToken,
         })
 
         const tiktokUser = await oauthService.getUserInfo(
@@ -174,10 +175,18 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
         )
     } catch (error) {
         const err = error instanceof Error ? error : new Error(String(error))
-        logger.error("Failed to complete TikTok linking", err)
+        logger.error("Failed to complete TikTok linking", {
+            error: err.message,
+            stack: err.stack?.slice(0, 500),
+        })
+
+        const errorMsg = encodeURIComponent(err.message.slice(0, 100))
 
         return NextResponse.redirect(
-            new URL("/dashboard?tiktok=error&reason=server_error", request.url)
+            new URL(
+                `/dashboard?tiktok=error&reason=${errorMsg}`,
+                request.url
+            )
         )
     }
 }

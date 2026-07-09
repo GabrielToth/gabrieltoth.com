@@ -10,13 +10,28 @@ function DashboardRedirect() {
     const router = useRouter()
     const searchParams = useSearchParams()
     const youtubeParam = searchParams.get("youtube")
+    const tiktokParam = searchParams.get("tiktok")
+    const tiktokReason = searchParams.get("reason")
 
     useEffect(() => {
+        if (tiktokParam) {
+            // Log TikTok OAuth result
+            if (tiktokParam === "success") {
+                console.log("TikTok OAuth success - redirecting to channels")
+                router.push(`/${locale}/dashboard/channels`)
+            } else {
+                console.log("TikTok OAuth error:", tiktokReason || "unknown")
+                alert(`TikTok: ${tiktokReason || "Erro desconhecido"}`)
+                router.push(`/${locale}/dashboard/publish`)
+            }
+            return
+        }
+
         const target = youtubeParam
             ? `/${locale}/dashboard/publish?youtube=${encodeURIComponent(youtubeParam)}`
             : `/${locale}/dashboard/publish`
         router.push(target)
-    }, [router, youtubeParam, locale])
+    }, [router, youtubeParam, locale, tiktokParam, tiktokReason])
 
     return (
         <div className="flex h-screen items-center justify-center">
