@@ -45,7 +45,7 @@ export function createInstagramConfig(env: EnvironmentConfig): InstagramConfig {
             appSecret: env.INSTAGRAM_APP_SECRET,
             redirectUri: env.INSTAGRAM_REDIRECT_URI,
             scopes: DEFAULT_SCOPES,
-            apiVersion: "v22.0",
+            apiVersion: "v25.0",
         },
         rateLimit: {
             linkingAttemptsPerHour: 5,

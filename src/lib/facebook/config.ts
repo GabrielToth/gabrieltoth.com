@@ -48,7 +48,7 @@ export function createFacebookConfig(env: EnvironmentConfig): FacebookConfig {
             appSecret: env.FACEBOOK_APP_SECRET,
             redirectUri: env.FACEBOOK_REDIRECT_URI,
             scopes: DEFAULT_SCOPES,
-            apiVersion: "v22.0",
+            apiVersion: "v25.0",
         },
         rateLimit: {
             linkingAttemptsPerHour: 5,

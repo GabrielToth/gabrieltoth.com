@@ -67,7 +67,7 @@ describe("Facebook Posting Adapter", () => {
                 redirectUri:
                     "http://localhost:3000/api/oauth/callback/facebook",
                 scopes: ["pages_manage_posts"],
-                apiVersion: "v22.0",
+                apiVersion: "v25.0",
             },
             rateLimit: {
                 linkingAttemptsPerHour: 5,

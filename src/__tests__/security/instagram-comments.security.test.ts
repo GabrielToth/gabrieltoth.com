@@ -72,7 +72,7 @@ vi.mock("@/lib/instagram/config", () => ({
                 "instagram_business_manage_messages",
                 "pages_manage_metadata",
             ],
-            apiVersion: "v22.0",
+            apiVersion: "v25.0",
         },
         rateLimit: { linkingAttemptsPerHour: 5, publishAttemptsPerHour: 10 },
         security: { tokenExpiryBufferMs: 5 * 60 * 1000 },

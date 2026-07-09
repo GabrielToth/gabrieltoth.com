@@ -56,7 +56,7 @@ async function exchangeCodeForToken(
         // Provider-specific token endpoints
         const tokenEndpoints: Record<string, string> = {
             google: "https://oauth2.googleapis.com/token",
-            facebook: "https://graph.facebook.com/v22.0/oauth/access_token",
+            facebook: "https://graph.facebook.com/v25.0/oauth/access_token",
             tiktok: "https://open-api.tiktok.com/oauth/access_token/",
         }
 

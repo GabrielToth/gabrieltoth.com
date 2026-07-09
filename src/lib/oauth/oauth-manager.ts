@@ -124,8 +124,8 @@ export class OAuthManager {
                     "pages_read_engagement",
                     "pages_manage_metadata",
                 ],
-                authorizationUrl: "https://www.facebook.com/v22.0/dialog/oauth",
-                tokenUrl: "https://graph.facebook.com/v22.0/oauth/access_token",
+                authorizationUrl: "https://www.facebook.com/v25.0/dialog/oauth",
+                tokenUrl: "https://graph.facebook.com/v25.0/oauth/access_token",
             })
         }
 
@@ -144,8 +144,8 @@ export class OAuthManager {
                     "instagram_business_manage_messages",
                     "pages_manage_metadata",
                 ],
-                authorizationUrl: "https://www.facebook.com/v22.0/dialog/oauth",
-                tokenUrl: "https://graph.facebook.com/v22.0/oauth/access_token",
+                authorizationUrl: "https://www.facebook.com/v25.0/dialog/oauth",
+                tokenUrl: "https://graph.facebook.com/v25.0/oauth/access_token",
             })
         }
 

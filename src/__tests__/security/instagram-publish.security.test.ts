@@ -72,7 +72,7 @@ vi.mock("@/lib/instagram/config", () => ({
                 "pages_show_list",
                 "pages_read_engagement",
             ],
-            apiVersion: "v22.0",
+            apiVersion: "v25.0",
         },
         rateLimit: {
             linkingAttemptsPerHour: 5,
