@@ -120,11 +120,26 @@ export class TikTokOAuthService extends BaseService {
             )
         }
 
-        this.logger.info("TikTok authorization code exchanged for token")
+        this.logger.info("TikTok authorization code exchanged for token", {
+            hasAccessToken: !!data.access_token,
+            hasRefreshToken: !!data.refresh_token,
+            expiresIn: data.expires_in,
+            hasOpenId: !!data.open_id,
+            scope: data.scope,
+        })
+
+        if (!data.access_token) {
+            throw new ServiceError(
+                "TOKEN_EXCHANGE_FAILED",
+                "TikTok returned no access_token in response",
+                400,
+                { responseData: JSON.stringify(data) }
+            )
+        }
 
         return {
             accessToken: data.access_token,
-            refreshToken: data.refresh_token,
+            refreshToken: data.refresh_token || "",
             expiresIn: data.expires_in || 86400,
             tokenType: data.token_type || "bearer",
         }
@@ -202,6 +217,13 @@ export class TikTokOAuthService extends BaseService {
 
     async getUserInfo(accessToken: string): Promise<TikTokUser | null> {
         this.assertReady()
+
+        if (!accessToken) {
+            this.logger.error(
+                "Cannot get TikTok user info: no access token provided"
+            )
+            return null
+        }
 
         const fields = [
             "open_id",
