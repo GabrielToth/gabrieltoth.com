@@ -1,3 +1,4 @@
+import { BfcacheReload } from "@/components/bfcache-reload"
 import PerformanceMonitor from "@/components/analytics/performance-monitor"
 import WebVitalsReport from "@/components/analytics/web-vitals"
 import { ThemeProvider } from "@/components/theme/theme-provider"
@@ -41,6 +42,7 @@ export default function RootLayout({
         <html suppressHydrationWarning className="dark">
             <body>
                 <ThemeProvider>
+                    <BfcacheReload />
                     <div
                         className={`${geistSans.variable} ${geistMono.variable} antialiased font-sans`}
                     >
