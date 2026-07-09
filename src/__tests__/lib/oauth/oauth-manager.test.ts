@@ -160,7 +160,7 @@ describe("OAuthManager", () => {
             )
 
             expect(result.authorizationUrl).toContain(
-                "https://www.facebook.com/v18.0/dialog/oauth"
+                "https://www.facebook.com/v22.0/dialog/oauth"
             )
             expect(result.authorizationUrl).toContain("display=popup")
             expect(result.authorizationUrl).toContain("client_id=")
@@ -183,6 +183,26 @@ describe("OAuthManager", () => {
         })
 
         it("should generate unique state for each call", async () => {
+            mockGenerateState
+                .mockReturnValueOnce({
+                    token: "state-1.signature1",
+                    payload: {
+                        userId: "user123",
+                        platform: "youtube",
+                        nonce: "nonce1",
+                        iat: Date.now(),
+                    },
+                })
+                .mockReturnValueOnce({
+                    token: "state-2.signature2",
+                    payload: {
+                        userId: "user123",
+                        platform: "youtube",
+                        nonce: "nonce2",
+                        iat: Date.now(),
+                    },
+                })
+
             const result1 = await manager.generateAuthorizationUrl(
                 "youtube",
                 "user123"

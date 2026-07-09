@@ -124,8 +124,8 @@ export class OAuthManager {
                     "pages_read_engagement",
                     "pages_manage_metadata",
                 ],
-                authorizationUrl: "https://www.facebook.com/v18.0/dialog/oauth",
-                tokenUrl: "https://graph.facebook.com/v18.0/oauth/access_token",
+                authorizationUrl: "https://www.facebook.com/v22.0/dialog/oauth",
+                tokenUrl: "https://graph.facebook.com/v22.0/oauth/access_token",
             })
         }
 
