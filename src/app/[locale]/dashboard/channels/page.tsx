@@ -22,10 +22,10 @@ interface ConnectedChannel {
 /** All available platforms */
 const ALL_PLATFORMS = [
     { id: "youtube", name: "YouTube", implemented: true },
-    { id: "facebook", name: "Facebook", implemented: false },
-    { id: "instagram", name: "Instagram", implemented: false },
+    { id: "facebook", name: "Facebook", implemented: true },
+    { id: "instagram", name: "Instagram", implemented: true },
+    { id: "tiktok", name: "TikTok", implemented: true },
     { id: "twitter", name: "Twitter/X", implemented: false },
-    { id: "tiktok", name: "TikTok", implemented: false },
     { id: "linkedin", name: "LinkedIn", implemented: false },
     { id: "kick", name: "Kick", implemented: false },
     { id: "twitch", name: "Twitch", implemented: false },
