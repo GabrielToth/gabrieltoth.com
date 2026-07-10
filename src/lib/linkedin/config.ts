@@ -1,48 +1,51 @@
+/**
+ * LinkedIn OAuth Configuration
+ * Centralizes all configuration for LinkedIn OAuth 2.0, token management, and publishing.
+ */
+
 import { EnvironmentConfig } from "../config/env"
 
-export interface TikTokOAuthConfig {
-    clientKey: string
+export interface LinkedInOAuthConfig {
+    clientId: string
     clientSecret: string
     redirectUri: string
     scopes: string[]
     apiVersion: string
 }
 
-export interface TikTokRateLimitConfig {
-    linkingAttemptsPerHour: number
-    publishAttemptsPerHour: number
-}
-
-export interface TikTokSecurityConfig {
-    tokenExpiryBufferMs: number
-}
-
-export interface TikTokConfig {
-    oauth: TikTokOAuthConfig
-    rateLimit: TikTokRateLimitConfig
-    security: TikTokSecurityConfig
+export interface LinkedInConfig {
+    oauth: LinkedInOAuthConfig
+    rateLimit: {
+        linkingAttemptsPerHour: number
+        publishAttemptsPerHour: number
+    }
+    security: {
+        tokenExpiryBufferMs: number
+    }
 }
 
 const DEFAULT_SCOPES = [
-    "user.info.basic",
-    "user.info.profile",
-    "user.info.stats",
-    "video.list",
-    "video.publish",
+    "w_member_social",
+    "r_liteprofile",
+    "r_emailaddress",
+    "w_organization_social",
+    "openid",
+    "profile",
+    "email",
 ]
 
-export function createTikTokConfig(env: EnvironmentConfig): TikTokConfig {
+export function createLinkedInConfig(env: EnvironmentConfig): LinkedInConfig {
     return {
         oauth: {
-            clientKey: env.TIKTOK_CLIENT_KEY,
-            clientSecret: env.TIKTOK_CLIENT_SECRET,
-            redirectUri: env.TIKTOK_REDIRECT_URI,
+            clientId: env.LINKEDIN_CLIENT_ID,
+            clientSecret: env.LINKEDIN_CLIENT_SECRET,
+            redirectUri: env.LINKEDIN_REDIRECT_URI,
             scopes: DEFAULT_SCOPES,
             apiVersion: "v2",
         },
         rateLimit: {
             linkingAttemptsPerHour: 5,
-            publishAttemptsPerHour: 6,
+            publishAttemptsPerHour: 10,
         },
         security: {
             tokenExpiryBufferMs: 5 * 60 * 1000,
@@ -50,20 +53,20 @@ export function createTikTokConfig(env: EnvironmentConfig): TikTokConfig {
     }
 }
 
-export function validateTikTokConfig(config: TikTokConfig): {
+export function validateLinkedInConfig(config: LinkedInConfig): {
     isValid: boolean
     errors: string[]
 } {
     const errors: string[] = []
 
-    if (!config.oauth.clientKey) {
-        errors.push("TikTok Client Key is required")
+    if (!config.oauth.clientId) {
+        errors.push("LinkedIn Client ID is required")
     }
     if (!config.oauth.clientSecret) {
-        errors.push("TikTok Client Secret is required")
+        errors.push("LinkedIn Client Secret is required")
     }
     if (!config.oauth.redirectUri) {
-        errors.push("TikTok redirect URI is required")
+        errors.push("LinkedIn redirect URI is required")
     }
 
     if (config.rateLimit.linkingAttemptsPerHour < 1) {
@@ -79,18 +82,14 @@ export function validateTikTokConfig(config: TikTokConfig): {
     }
 }
 
-let configInstance: TikTokConfig | null = null
+let configInstance: LinkedInConfig | null = null
 
 /**
- * Get or initialize the TikTok configuration singleton.
- * Reads TikTok-specific env vars from `process.env` directly
+ * Get or initialize the LinkedIn configuration singleton.
+ * Reads LinkedIn-specific env vars from `process.env` directly
  * when no `env` parameter is provided (self-sufficient in serverless).
- *
- * Never silently falls back to a default value — if a required var is
- * missing, the validation step throws a clear error telling the user
- * which env var to set in the Vercel Dashboard.
  */
-export function getTikTokConfig(env?: EnvironmentConfig): TikTokConfig {
+export function getLinkedInConfig(env?: EnvironmentConfig): LinkedInConfig {
     if (!configInstance) {
         const resolvedEnv: EnvironmentConfig = env || {
             NODE_ENV:
@@ -118,9 +117,6 @@ export function getTikTokConfig(env?: EnvironmentConfig): TikTokConfig {
             TIKTOK_CLIENT_KEY: process.env.TIKTOK_CLIENT_KEY ?? "",
             TIKTOK_CLIENT_SECRET: process.env.TIKTOK_CLIENT_SECRET ?? "",
             TIKTOK_REDIRECT_URI: process.env.TIKTOK_REDIRECT_URI ?? "",
-            TWITTER_CLIENT_ID: process.env.TWITTER_CLIENT_ID ?? "",
-            TWITTER_CLIENT_SECRET: process.env.TWITTER_CLIENT_SECRET ?? "",
-            TWITTER_REDIRECT_URI: process.env.TWITTER_REDIRECT_URI ?? "",
             LINKEDIN_CLIENT_ID: process.env.LINKEDIN_CLIENT_ID ?? "",
             LINKEDIN_CLIENT_SECRET: process.env.LINKEDIN_CLIENT_SECRET ?? "",
             LINKEDIN_REDIRECT_URI: process.env.LINKEDIN_REDIRECT_URI ?? "",
@@ -147,12 +143,12 @@ export function getTikTokConfig(env?: EnvironmentConfig): TikTokConfig {
             OAUTH_STATE_SECRET: process.env.OAUTH_STATE_SECRET ?? "",
         }
 
-        configInstance = createTikTokConfig(resolvedEnv)
+        configInstance = createLinkedInConfig(resolvedEnv)
 
-        const validation = validateTikTokConfig(configInstance)
+        const validation = validateLinkedInConfig(configInstance)
         if (!validation.isValid) {
             throw new Error(
-                `Cannot initialize TikTok OAuth: ${validation.errors.join("; ")}. ` +
+                `Cannot initialize LinkedIn OAuth: ${validation.errors.join("; ")}. ` +
                     `Set the missing variable(s) in your Vercel Dashboard and redeploy.`
             )
         }
@@ -161,6 +157,6 @@ export function getTikTokConfig(env?: EnvironmentConfig): TikTokConfig {
     return configInstance
 }
 
-export function resetTikTokConfig(): void {
+export function resetLinkedInConfig(): void {
     configInstance = null
 }

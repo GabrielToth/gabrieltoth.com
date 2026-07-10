@@ -135,7 +135,15 @@ export class OAuthManager {
                 redirectUri:
                     process.env.LINKEDIN_REDIRECT_URI ||
                     "http://localhost:3000/api/oauth/callback/linkedin",
-                scopes: ["w_member_social", "r_liteprofile", "r_emailaddress"],
+                scopes: [
+                    "w_member_social",
+                    "r_liteprofile",
+                    "r_emailaddress",
+                    "w_organization_social",
+                    "openid",
+                    "profile",
+                    "email",
+                ],
                 authorizationUrl:
                     "https://www.linkedin.com/oauth/v2/authorization",
                 tokenUrl: "https://www.linkedin.com/oauth/v2/accessToken",

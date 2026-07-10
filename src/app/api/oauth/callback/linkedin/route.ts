@@ -1,13 +1,18 @@
+/**
+ * LinkedIn OAuth Callback Endpoint
+ * GET /api/oauth/callback/linkedin
+ * Handles OAuth 2.0 callback and token exchange for LinkedIn
+ */
+
 import { createLogger } from "@/lib/logger"
-import { getTikTokConfig } from "@/lib/tiktok/config"
-import { getTikTokOAuthService } from "@/lib/tiktok/oauth-service"
+import { getLinkedInConfig, getLinkedInOAuthService } from "@/lib/linkedin"
 import { getTokenStore } from "@/lib/token-store"
 import { getScopeVersion } from "@/lib/oauth/scope-versions"
 import { verifyState } from "@/lib/oauth/state-signer"
 import { createClient } from "@supabase/supabase-js"
 import { NextRequest, NextResponse } from "next/server"
 
-const logger = createLogger("TikTokCallbackEndpoint")
+const logger = createLogger("LinkedInCallbackEndpoint")
 
 export async function GET(request: NextRequest): Promise<NextResponse> {
     try {
@@ -15,52 +20,51 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
         const code = searchParams.get("code")
         const state = searchParams.get("state")
         const oauthError = searchParams.get("error")
+        const errorDescription = searchParams.get("error_description")
 
         if (oauthError) {
-            logger.warn("TikTok OAuth error from TikTok", {
+            logger.warn("LinkedIn OAuth error from provider", {
                 error: oauthError,
+                errorDescription,
             })
             return NextResponse.redirect(
                 new URL(
-                    `/dashboard?tiktok=error&reason=${oauthError}`,
+                    `/dashboard?linkedin=error&reason=${oauthError}`,
                     request.url
                 )
             )
         }
 
         if (!code) {
-            logger.warn("Missing authorization code in TikTok callback")
+            logger.warn("Missing authorization code in LinkedIn callback")
             return NextResponse.redirect(
                 new URL(
-                    "/dashboard?tiktok=error&reason=missing_params",
+                    "/dashboard?linkedin=error&reason=missing_params",
                     request.url
                 )
             )
         }
 
         if (!state) {
-            logger.warn("Missing state parameter in TikTok callback")
+            logger.warn("Missing state parameter in LinkedIn callback")
             return NextResponse.redirect(
                 new URL(
-                    "/dashboard?tiktok=error&reason=missing_params",
+                    "/dashboard?linkedin=error&reason=missing_params",
                     request.url
                 )
             )
         }
 
-        const config = getTikTokConfig()
-        const oauthService = getTikTokOAuthService(config)
-        await oauthService.initialize()
-
+        // Verify the HMAC-signed state
         const verification = verifyState(state)
 
         if (!verification.valid || !verification.payload) {
-            logger.warn("Invalid or expired TikTok state parameter", {
+            logger.warn("Invalid or expired LinkedIn state parameter", {
                 error: verification.error,
             })
             return NextResponse.redirect(
                 new URL(
-                    "/dashboard?tiktok=error&reason=invalid_state",
+                    "/dashboard?linkedin=error&reason=invalid_state",
                     request.url
                 )
             )
@@ -68,88 +72,99 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
 
         const userId = verification.payload.userId
 
-        if (verification.payload.platform !== "tiktok") {
+        if (verification.payload.platform !== "linkedin") {
             logger.warn(
-                "TikTok callback received state for different platform",
+                "LinkedIn callback received state for different platform",
                 { platform: verification.payload.platform }
             )
             return NextResponse.redirect(
                 new URL(
-                    "/dashboard?tiktok=error&reason=invalid_state",
+                    "/dashboard?linkedin=error&reason=invalid_state",
                     request.url
                 )
             )
         }
 
-        logger.info("TikTok state parameter validated via HMAC", { userId })
+        logger.info("LinkedIn state parameter validated via HMAC", { userId })
 
+        const config = getLinkedInConfig()
+        const oauthService = getLinkedInOAuthService(config)
+        await oauthService.initialize()
+
+        // Exchange authorization code for token
         const tokenResponse = await oauthService.exchangeCodeForToken(code)
 
-        logger.info("TikTok authorization code exchanged successfully", {
+        logger.info("LinkedIn authorization code exchanged successfully", {
             userId,
             hasAccessToken: !!tokenResponse.accessToken,
+            hasRefreshToken: !!tokenResponse.refreshToken,
         })
 
-        const tiktokUser = await oauthService.getUserInfo(
+        // Get LinkedIn user info for display name and ID
+        const linkedInUser = await oauthService.getUserInfo(
             tokenResponse.accessToken
         )
 
-        if (!tiktokUser) {
-            logger.warn("Failed to retrieve TikTok user info", { userId })
+        if (!linkedInUser) {
+            logger.warn("Failed to retrieve LinkedIn user info", { userId })
             return NextResponse.redirect(
                 new URL(
-                    "/dashboard?tiktok=error&reason=user_info_failed",
+                    "/dashboard?linkedin=error&reason=user_info_failed",
                     request.url
                 )
             )
         }
 
-        logger.info("TikTok user retrieved", {
+        logger.info("LinkedIn user retrieved", {
             userId,
-            openId: tiktokUser.openId,
-            displayName: tiktokUser.displayName,
+            linkedInSub: linkedInUser.sub,
+            name: linkedInUser.name,
         })
 
         const expiresAt = tokenResponse.expiresIn
             ? Date.now() + tokenResponse.expiresIn * 1000
             : undefined
 
+        // Store token securely
         const tokenStore = getTokenStore()
         await tokenStore.storeToken({
             accessToken: tokenResponse.accessToken,
             refreshToken: tokenResponse.refreshToken,
             expiresAt,
-            platform: "tiktok",
+            platform: "linkedin",
             userId,
         })
 
-        logger.info("TikTok user token stored successfully", { userId })
+        logger.info("LinkedIn user token stored successfully", { userId })
 
+        // Save to social_networks so channel appears in dashboard
         const supabase = createClient(
             process.env.NEXT_PUBLIC_SUPABASE_URL || "",
             process.env.SUPABASE_SERVICE_ROLE_KEY || ""
         )
+
+        const displayName =
+            linkedInUser.name || linkedInUser.email || "linkedin"
 
         const { error: socialError } = await supabase
             .from("social_networks")
             .upsert(
                 {
                     user_id: userId,
-                    platform: "tiktok",
-                    platform_user_id: tiktokUser.openId,
-                    platform_username: tiktokUser.displayName,
+                    platform: "linkedin",
+                    platform_user_id: linkedInUser.sub,
+                    platform_username: displayName,
                     status: "connected",
                     linked_at: new Date().toISOString(),
                     metadata: {
-                        openId: tiktokUser.openId,
-                        unionId: tiktokUser.unionId,
-                        username: tiktokUser.username,
-                        avatarUrl: tiktokUser.avatarUrl,
-                        followerCount: tiktokUser.followerCount,
-                        followingCount: tiktokUser.followingCount,
-                        videoCount: tiktokUser.videoCount,
-                        isVerified: tiktokUser.isVerified,
-                        scopeVersion: getScopeVersion("tiktok"),
+                        linkedInSub: linkedInUser.sub,
+                        name: linkedInUser.name,
+                        givenName: linkedInUser.givenName,
+                        familyName: linkedInUser.familyName,
+                        email: linkedInUser.email,
+                        picture: linkedInUser.picture,
+                        locale: linkedInUser.locale,
+                        scopeVersion: getScopeVersion("linkedin"),
                     },
                     updated_at: new Date().toISOString(),
                 },
@@ -159,23 +174,23 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
             )
 
         if (socialError) {
-            logger.error("Failed to upsert TikTok social_networks record", {
+            logger.error("Failed to upsert LinkedIn social_networks record", {
                 userId,
                 error: socialError.message,
             })
         }
 
-        logger.info("TikTok account linked successfully", {
+        logger.info("LinkedIn account linked successfully", {
             userId,
-            openId: tiktokUser.openId,
+            linkedInSub: linkedInUser.sub,
         })
 
         return NextResponse.redirect(
-            new URL("/dashboard?tiktok=success", request.url)
+            new URL("/dashboard?linkedin=success", request.url)
         )
     } catch (error) {
         const err = error instanceof Error ? error : new Error(String(error))
-        logger.error("Failed to complete TikTok linking", {
+        logger.error("Failed to complete LinkedIn linking", {
             error: err.message,
             stack: err.stack?.slice(0, 500),
         })
@@ -183,7 +198,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
         const errorMsg = encodeURIComponent(err.message.slice(0, 100))
 
         return NextResponse.redirect(
-            new URL(`/dashboard?tiktok=error&reason=${errorMsg}`, request.url)
+            new URL(`/dashboard?linkedin=error&reason=${errorMsg}`, request.url)
         )
     }
 }
