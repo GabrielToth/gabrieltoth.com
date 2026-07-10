@@ -207,6 +207,7 @@ export default function ChannelsPage() {
     }, {})
 
     return (
+        <>
         <div className="space-y-6">
             <div>
                 <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
@@ -409,50 +410,50 @@ export default function ChannelsPage() {
             </section>
         </div>
 
-            {/* Confirmation Dialog */}
-            <Dialog
-                open={!!confirmDialog}
-                onOpenChange={open => {
-                    if (!open) setConfirmDialog(null)
-                }}
-            >
-                <DialogContent>
-                    <DialogHeader>
-                        <DialogTitle>
-                            {locale === "pt-BR"
-                                ? "Atenção"
-                                : locale === "es"
-                                  ? "Atención"
-                                  : "Attention"}
-                        </DialogTitle>
-                        <DialogDescription>
-                            {confirmDialog?.message}
-                        </DialogDescription>
-                    </DialogHeader>
-                    <DialogFooter>
-                        <Button
-                            variant="outline"
-                            onClick={() => setConfirmDialog(null)}
-                        >
-                            {locale === "pt-BR"
-                                ? "Cancelar"
-                                : locale === "es"
-                                  ? "Cancelar"
-                                  : "Cancel"}
-                        </Button>
-                        <Button
-                            variant="default"
-                            onClick={confirmDialog?.onConfirm}
-                        >
-                            {locale === "pt-BR"
-                                ? "Continuar"
-                                : locale === "es"
-                                  ? "Continuar"
-                                  : "Continue"}
-                        </Button>
-                    </DialogFooter>
-                </DialogContent>
-            </Dialog>
-        </div>
+        {/* Confirmation Dialog */}
+        <Dialog
+            open={!!confirmDialog}
+            onOpenChange={open => {
+                if (!open) setConfirmDialog(null)
+            }}
+        >
+            <DialogContent>
+                <DialogHeader>
+                    <DialogTitle>
+                        {locale === "pt-BR"
+                            ? "Atenção"
+                            : locale === "es"
+                              ? "Atención"
+                              : "Attention"}
+                    </DialogTitle>
+                    <DialogDescription>
+                        {confirmDialog?.message}
+                    </DialogDescription>
+                </DialogHeader>
+                <DialogFooter>
+                    <Button
+                        variant="outline"
+                        onClick={() => setConfirmDialog(null)}
+                    >
+                        {locale === "pt-BR"
+                            ? "Cancelar"
+                            : locale === "es"
+                              ? "Cancelar"
+                              : "Cancel"}
+                    </Button>
+                    <Button
+                        variant="default"
+                        onClick={confirmDialog?.onConfirm}
+                    >
+                        {locale === "pt-BR"
+                            ? "Continuar"
+                            : locale === "es"
+                              ? "Continuar"
+                              : "Continue"}
+                    </Button>
+                </DialogFooter>
+            </DialogContent>
+        </Dialog>
+    </>
     )
 }
