@@ -115,17 +115,18 @@ export class TikTokOAuthService extends BaseService {
             : (responseData.data as Record<string, unknown> | undefined) || {}
 
         if (!source.access_token) {
+            const rawPreview = JSON.stringify(responseData).substring(0, 500)
             this.logger.error(
                 `TikTok token response missing access_token (${context})`,
                 {
                     responseKeys: Object.keys(responseData),
                     hasDataWrapper: "data" in responseData,
-                    rawPreview: JSON.stringify(responseData).substring(0, 500),
+                    rawPreview,
                 }
             )
             throw new ServiceError(
                 "TOKEN_PARSE_FAILED",
-                `TikTok returned no access_token in response (${context})`,
+                `TikTok returned no access_token. Response keys: ${Object.keys(responseData).join(", ")}. Raw: ${rawPreview.slice(0, 200)}`,
                 400,
                 { responseData: JSON.stringify(responseData) }
             )
@@ -160,16 +161,36 @@ export class TikTokOAuthService extends BaseService {
             body: params.toString(),
         })
 
-        const data = await response.json()
+        const text = await response.text()
+        let data: Record<string, unknown> = {}
+        try {
+            data = JSON.parse(text)
+        } catch {
+            throw new ServiceError(
+                "TOKEN_EXCHANGE_FAILED",
+                `Invalid JSON response from TikTok: ${text.slice(0, 500)}`,
+                400,
+                { rawResponse: text.slice(0, 1000) }
+            )
+        }
 
         if (!response.ok) {
             throw new ServiceError(
                 "TOKEN_EXCHANGE_FAILED",
-                `Failed to exchange code for token: ${data.error_description || data.error || "Unknown"}`,
+                `Failed to exchange code for token (HTTP ${response.status}): ${data.error_description || data.error || (data as any).message || "Unknown"}`,
                 400,
-                { error: data }
+                { error: data, rawResponse: text.slice(0, 1000) }
             )
         }
+
+        // Log the raw response for debugging
+        this.logger.info("TikTok token exchange response", {
+            responseKeys: Object.keys(data),
+            hasAccessToken: "access_token" in data,
+            hasData: "data" in data,
+            openIdPresent: "open_id" in data,
+            rawPreview: text.slice(0, 300),
+        })
 
         const normalized = this.normalizeTokenResponse(
             data,
