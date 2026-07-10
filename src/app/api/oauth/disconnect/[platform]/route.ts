@@ -10,6 +10,7 @@ import { createLogger } from "@/lib/logger"
 import { getOAuthManager } from "@/lib/oauth"
 import { rateLimitByKey } from "@/lib/rate-limit"
 import { getTokenStore } from "@/lib/token-store"
+import { createClient } from "@supabase/supabase-js"
 import { NextRequest, NextResponse } from "next/server"
 
 const logger = createLogger("OAuthDisconnectEndpoint")
@@ -90,6 +91,39 @@ export async function POST(
 
         // Delete the token from local storage
         await tokenStore.deleteToken(userId, platform)
+
+        // Update social_networks record to disconnected
+        try {
+            const supabase = createClient(
+                process.env.NEXT_PUBLIC_SUPABASE_URL || "",
+                process.env.SUPABASE_SERVICE_ROLE_KEY || ""
+            )
+            const { error: socialError } = await supabase
+                .from("social_networks")
+                .update({
+                    status: "disconnected",
+                    updated_at: new Date().toISOString(),
+                })
+                .eq("user_id", userId)
+                .eq("platform", platform)
+
+            if (socialError) {
+                logger.warn("Failed to update social_networks status", {
+                    platform,
+                    userId,
+                    error: socialError.message,
+                })
+            }
+        } catch (socialError) {
+            logger.warn("Failed to update social_networks status", {
+                platform,
+                userId,
+                error:
+                    socialError instanceof Error
+                        ? socialError.message
+                        : String(socialError),
+            })
+        }
 
         logger.info("OAuth token disconnected successfully", {
             platform,

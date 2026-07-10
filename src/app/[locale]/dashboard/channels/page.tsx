@@ -3,6 +3,14 @@
 import { DynamicIcon } from "@/components/ui/dynamic-icon"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+} from "@/components/ui/dialog"
 import { logger } from "@/lib/logger"
 import { useTranslations } from "next-intl"
 import { useParams } from "next/navigation"
@@ -57,6 +65,10 @@ export default function ChannelsPage() {
         null
     )
     const [disconnectingId, setDisconnectingId] = useState<string | null>(null)
+    const [confirmDialog, setConfirmDialog] = useState<{
+        message: string
+        onConfirm: () => void
+    } | null>(null)
 
     const fetchChannels = useCallback(async () => {
         try {
@@ -83,6 +95,33 @@ export default function ChannelsPage() {
 
     const handleConnect = async (platform: string) => {
         if (connectingPlatform) return
+
+        // TikTok only supports one connected account per user (no account selector in OAuth)
+        if (platform === "tiktok") {
+            const connectedTikTok = channels.find(
+                ch => ch.platform === "tiktok" && ch.isConnected
+            )
+            if (connectedTikTok) {
+                setConfirmDialog({
+                    message:
+                        locale === "pt-BR"
+                            ? "Você já tem uma conta do TikTok conectada. Para conectar uma conta diferente, desconecte a atual primeiro. O TikTok OAuth não permite selecionar outra conta durante a autorização."
+                            : locale === "es"
+                              ? "Ya tienes una cuenta de TikTok conectada. Para conectar una cuenta diferente, primero desconecta la actual. La OAuth de TikTok no permite seleccionar otra cuenta durante la autorización."
+                              : "You already have a TikTok account connected. To connect a different account, disconnect the current one first. TikTok OAuth does not allow selecting another account during authorization.",
+                    onConfirm: async () => {
+                        setConfirmDialog(null)
+                        await startConnect(platform)
+                    },
+                })
+                return
+            }
+        }
+
+        await startConnect(platform)
+    }
+
+    const startConnect = async (platform: string) => {
         setConnectingPlatform(platform)
         try {
             const response = await fetch(`/api/oauth/authorize/${platform}`, {
@@ -368,6 +407,52 @@ export default function ChannelsPage() {
                     })}
                 </div>
             </section>
+        </div>
+
+            {/* Confirmation Dialog */}
+            <Dialog
+                open={!!confirmDialog}
+                onOpenChange={open => {
+                    if (!open) setConfirmDialog(null)
+                }}
+            >
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>
+                            {locale === "pt-BR"
+                                ? "Atenção"
+                                : locale === "es"
+                                  ? "Atención"
+                                  : "Attention"}
+                        </DialogTitle>
+                        <DialogDescription>
+                            {confirmDialog?.message}
+                        </DialogDescription>
+                    </DialogHeader>
+                    <DialogFooter>
+                        <Button
+                            variant="outline"
+                            onClick={() => setConfirmDialog(null)}
+                        >
+                            {locale === "pt-BR"
+                                ? "Cancelar"
+                                : locale === "es"
+                                  ? "Cancelar"
+                                  : "Cancel"}
+                        </Button>
+                        <Button
+                            variant="default"
+                            onClick={confirmDialog?.onConfirm}
+                        >
+                            {locale === "pt-BR"
+                                ? "Continuar"
+                                : locale === "es"
+                                  ? "Continuar"
+                                  : "Continue"}
+                        </Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
         </div>
     )
 }
