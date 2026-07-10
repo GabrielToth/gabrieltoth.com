@@ -187,10 +187,24 @@ export class TikTokOAuthService extends BaseService {
         this.logger.info("TikTok token exchange response", {
             responseKeys: Object.keys(data),
             hasAccessToken: "access_token" in data,
+            hasError: "error" in data,
+            errorValue: data.error,
             hasData: "data" in data,
             openIdPresent: "open_id" in data,
             rawPreview: text.slice(0, 300),
         })
+
+        // TikTok sometimes returns HTTP 200 with an error payload:
+        // {"error": "invalid_grant", "error_description": "..."}
+        if (data.error) {
+            const desc = (data as any).error_description || (data as any).message || "Unknown error"
+            throw new ServiceError(
+                "TOKEN_EXCHANGE_FAILED",
+                `TikTok API error: ${data.error as string} - ${desc}`,
+                400,
+                { error: data, rawResponse: text.slice(0, 1000) }
+            )
+        }
 
         const normalized = this.normalizeTokenResponse(
             data,
