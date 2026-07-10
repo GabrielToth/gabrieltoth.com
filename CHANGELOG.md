@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- **Twitter/X OAuth 2.0 PKCE Integration**: Full OAuth 2.0 authorization code flow with Proof Key for Code Exchange (PKCE S256) for Twitter/X API v2. New `src/lib/twitter/` module with config, OAuth service (code_challenge/code_verifier generation, token exchange, secure storage), token refresh helper, and user-level posting adapter. API routes at `/api/oauth/authorize/twitter` and `/api/oauth/callback/twitter`. Twitter/X now uses user-level OAuth tokens instead of the previous Bearer token approach. ([#221](https://github.com/GabrielToth/gabrieltoth.com/issues/221))
+- **LinkedIn OAuth 2.0 Integration**: Full OAuth 2.0 authorization code flow for LinkedIn with user-level token management. New `src/lib/linkedin/` module with config (scopes: `w_member_social`, `r_liteprofile`, `r_emailaddress`, `w_organization_social`, `openid`, `profile`, `email`), OAuth service (authorize URL generation, token exchange, refresh, revoke, user info), and token refresh helper. API routes at `/api/oauth/authorize/linkedin` and `/api/oauth/callback/linkedin`. Posting adapter rewritten to use user-level OAuth tokens from the token store with UGC post API fallback, replacing the previous static `LINKEDIN_ACCESS_TOKEN` environment variable approach. Environment variables `LINKEDIN_CLIENT_ID`, `LINKEDIN_CLIENT_SECRET`, and `LINKEDIN_REDIRECT_URI` added. ([#222](https://github.com/GabrielToth/gabrieltoth.com/issues/222), [#224](https://github.com/GabrielToth/gabrieltoth.com/pull/224))
+
 ### Fixed
 - (no unreleased changes)
 
