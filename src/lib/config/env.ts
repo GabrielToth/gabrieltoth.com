@@ -46,6 +46,11 @@ export interface EnvironmentConfig {
     TWITTER_CLIENT_SECRET: string
     TWITTER_REDIRECT_URI: string
 
+    // LinkedIn OAuth (LinkedIn account linking)
+    LINKEDIN_CLIENT_ID: string
+    LINKEDIN_CLIENT_SECRET: string
+    LINKEDIN_REDIRECT_URI: string
+
     // Facebook OAuth (Facebook Page linking)
     FACEBOOK_APP_ID: string
     FACEBOOK_APP_SECRET: string
@@ -117,6 +122,9 @@ function parseConfig(): EnvironmentConfig {
         TWITTER_CLIENT_ID: process.env.TWITTER_CLIENT_ID ?? "",
         TWITTER_CLIENT_SECRET: process.env.TWITTER_CLIENT_SECRET ?? "",
         TWITTER_REDIRECT_URI: process.env.TWITTER_REDIRECT_URI ?? "",
+        LINKEDIN_CLIENT_ID: process.env.LINKEDIN_CLIENT_ID ?? "",
+        LINKEDIN_CLIENT_SECRET: process.env.LINKEDIN_CLIENT_SECRET ?? "",
+        LINKEDIN_REDIRECT_URI: process.env.LINKEDIN_REDIRECT_URI ?? "",
         FACEBOOK_APP_ID: process.env.FACEBOOK_APP_ID ?? "",
         FACEBOOK_APP_SECRET: process.env.FACEBOOK_APP_SECRET ?? "",
         FACEBOOK_REDIRECT_URI: process.env.FACEBOOK_REDIRECT_URI ?? "",

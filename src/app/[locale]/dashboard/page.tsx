@@ -23,12 +23,18 @@ function DashboardRedirect() {
                 console.log("TikTok OAuth success")
                 setTiktokMsg("✅ TikTok conectado com sucesso!")
                 setIsError(false)
-                setTimeout(() => router.push(`/${locale}/dashboard/channels`), 1500)
+                setTimeout(
+                    () => router.push(`/${locale}/dashboard/channels`),
+                    1500
+                )
             } else {
                 console.log("TikTok OAuth error:", msg)
                 setTiktokMsg(`❌ TikTok: ${decodeURIComponent(msg)}`)
                 setIsError(true)
-                setTimeout(() => router.push(`/${locale}/dashboard/publish`), 5000)
+                setTimeout(
+                    () => router.push(`/${locale}/dashboard/publish`),
+                    5000
+                )
             }
             return
         }
@@ -41,16 +47,32 @@ function DashboardRedirect() {
 
     if (tiktokMsg) {
         return (
-            <div style={{
-                display: "flex", flexDirection: "column", alignItems: "center",
-                justifyContent: "center", height: "60vh", padding: "2rem"
-            }}>
-                <div style={{
-                    padding: "2rem", borderRadius: "8px", maxWidth: "600px",
-                    background: isError ? "#fff0f0" : "#f0fff0",
-                    border: `2px solid ${isError ? "#ff4444" : "#44bb44"}`
-                }}>
-                    <pre style={{ whiteSpace: "pre-wrap", wordBreak: "break-all", fontSize: "14px" }}>
+            <div
+                style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    height: "60vh",
+                    padding: "2rem",
+                }}
+            >
+                <div
+                    style={{
+                        padding: "2rem",
+                        borderRadius: "8px",
+                        maxWidth: "600px",
+                        background: isError ? "#fff0f0" : "#f0fff0",
+                        border: `2px solid ${isError ? "#ff4444" : "#44bb44"}`,
+                    }}
+                >
+                    <pre
+                        style={{
+                            whiteSpace: "pre-wrap",
+                            wordBreak: "break-all",
+                            fontSize: "14px",
+                        }}
+                    >
                         {tiktokMsg}
                     </pre>
                 </div>

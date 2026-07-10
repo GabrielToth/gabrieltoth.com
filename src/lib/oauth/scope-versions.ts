@@ -19,7 +19,7 @@ export const CURRENT_SCOPE_VERSIONS: Record<string, number> = {
     tiktok: 1, // v1 = initial video.publish, user.info.basic
     kick: 1, // v1 = initial user:read, channel:read, chat:write
     twitter: 1, // v1 = initial tweet.write, tweet.read
-    linkedin: 1, // v1 = initial w_member_social
+    linkedin: 2, // v2 = added w_organization_social, openid, profile, email scopes
 }
 
 /**

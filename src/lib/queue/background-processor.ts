@@ -163,8 +163,8 @@ export class BackgroundProcessor {
                     })
                 } else if (network.platform === "linkedin") {
                     const result = await postToLinkedIn({
+                        userId: publication.userId,
                         text: publication.content,
-                        personId: publication.userId,
                     })
                     results.push({
                         network: network.platform,

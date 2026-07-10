@@ -30,3 +30,9 @@ export type { TikTokPostConfig, TikTokPostResult } from "./adapters/tiktok"
 
 export { postToTwitter } from "./adapters/twitter"
 export type { TwitterPostConfig, TwitterPostResult } from "./adapters/twitter"
+
+export { postToLinkedIn } from "./adapters/linkedin"
+export type {
+    LinkedInPostConfig,
+    LinkedInPostResult,
+} from "./adapters/linkedin"

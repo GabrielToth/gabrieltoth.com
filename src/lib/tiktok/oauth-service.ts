@@ -197,7 +197,10 @@ export class TikTokOAuthService extends BaseService {
         // TikTok sometimes returns HTTP 200 with an error payload:
         // {"error": "invalid_grant", "error_description": "..."}
         if (data.error) {
-            const desc = (data as any).error_description || (data as any).message || "Unknown error"
+            const desc =
+                (data as any).error_description ||
+                (data as any).message ||
+                "Unknown error"
             throw new ServiceError(
                 "TOKEN_EXCHANGE_FAILED",
                 `TikTok API error: ${data.error as string} - ${desc}`,
