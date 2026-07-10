@@ -27,3 +27,6 @@ export type {
 
 export { postToTikTok } from "./adapters/tiktok"
 export type { TikTokPostConfig, TikTokPostResult } from "./adapters/tiktok"
+
+export { postToTwitter } from "./adapters/twitter"
+export type { TwitterPostConfig, TwitterPostResult } from "./adapters/twitter"

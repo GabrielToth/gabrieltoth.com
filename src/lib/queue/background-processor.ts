@@ -153,6 +153,7 @@ export class BackgroundProcessor {
             try {
                 if (network.platform === "twitter") {
                     const result = await postToTwitter({
+                        userId: publication.userId,
                         text: publication.content,
                     })
                     results.push({
