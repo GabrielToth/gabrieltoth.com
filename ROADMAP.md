@@ -6,6 +6,8 @@
 
 | Item | Issue | PR | Status |
 |------|-------|----|--------|
+| Twitter/X OAuth 2.0 PKCE Integration | [#221](https://github.com/GabrielToth/gabrieltoth.com/issues/221) | [#223](https://github.com/GabrielToth/gabrieltoth.com/pull/223) | ✅ **MERGED & DEPLOYED** |
+| LinkedIn OAuth 2.0 Integration | [#222](https://github.com/GabrielToth/gabrieltoth.com/issues/222) | [#224](https://github.com/GabrielToth/gabrieltoth.com/pull/224) | ✅ **MERGED & DEPLOYED** |
 | Fix TikTok OAuth token response format — nested `data.data` wrapping | [#215](https://github.com/GabrielToth/gabrieltoth.com/issues/215) | [#218](https://github.com/GabrielToth/gabrieltoth.com/pull/218) | ✅ **MERGED** — Added `normalizeTokenResponse()` helper |
 | Document Facebook redirect URI whitelist requirement | [#216](https://github.com/GabrielToth/gabrieltoth.com/issues/216) | — | 📋 **Config-only** — User must add URIs in Meta Developer Portal |
 | Document Instagram OAuth bypass (CNPJ limitation) | [#217](https://github.com/GabrielToth/gabrieltoth.com/issues/217) | — | 📋 **Config-only** — Bypass via `INSTAGRAM_PAGE_ACCESS_TOKEN` env var |
