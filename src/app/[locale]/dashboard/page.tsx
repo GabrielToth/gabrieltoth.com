@@ -2,7 +2,7 @@
 
 import { useLocale, useTranslations } from "next-intl"
 import { useRouter, useSearchParams } from "next/navigation"
-import { Suspense, useEffect } from "react"
+import { Suspense, useEffect, useState } from "react"
 
 function DashboardRedirect() {
     const t = useTranslations("dashboard.common")
@@ -13,16 +13,22 @@ function DashboardRedirect() {
     const tiktokParam = searchParams.get("tiktok")
     const tiktokReason = searchParams.get("reason")
 
+    const [tiktokMsg, setTiktokMsg] = useState<string | null>(null)
+    const [isError, setIsError] = useState(false)
+
     useEffect(() => {
         if (tiktokParam) {
-            // Log TikTok OAuth result
+            const msg = tiktokReason || "unknown"
             if (tiktokParam === "success") {
-                console.log("TikTok OAuth success - redirecting to channels")
-                router.push(`/${locale}/dashboard/channels`)
+                console.log("TikTok OAuth success")
+                setTiktokMsg("✅ TikTok conectado com sucesso!")
+                setIsError(false)
+                setTimeout(() => router.push(`/${locale}/dashboard/channels`), 1500)
             } else {
-                console.log("TikTok OAuth error:", tiktokReason || "unknown")
-                alert(`TikTok: ${tiktokReason || "Erro desconhecido"}`)
-                router.push(`/${locale}/dashboard/publish`)
+                console.log("TikTok OAuth error:", msg)
+                setTiktokMsg(`❌ TikTok: ${decodeURIComponent(msg)}`)
+                setIsError(true)
+                setTimeout(() => router.push(`/${locale}/dashboard/publish`), 5000)
             }
             return
         }
@@ -32,6 +38,25 @@ function DashboardRedirect() {
             : `/${locale}/dashboard/publish`
         router.push(target)
     }, [router, youtubeParam, locale, tiktokParam, tiktokReason])
+
+    if (tiktokMsg) {
+        return (
+            <div style={{
+                display: "flex", flexDirection: "column", alignItems: "center",
+                justifyContent: "center", height: "60vh", padding: "2rem"
+            }}>
+                <div style={{
+                    padding: "2rem", borderRadius: "8px", maxWidth: "600px",
+                    background: isError ? "#fff0f0" : "#f0fff0",
+                    border: `2px solid ${isError ? "#ff4444" : "#44bb44"}`
+                }}>
+                    <pre style={{ whiteSpace: "pre-wrap", wordBreak: "break-all", fontSize: "14px" }}>
+                        {tiktokMsg}
+                    </pre>
+                </div>
+            </div>
+        )
+    }
 
     return (
         <div className="flex h-screen items-center justify-center">
