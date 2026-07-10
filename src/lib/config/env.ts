@@ -41,6 +41,11 @@ export interface EnvironmentConfig {
     TIKTOK_CLIENT_SECRET: string
     TIKTOK_REDIRECT_URI: string
 
+    // Twitter/X OAuth (Twitter account linking)
+    TWITTER_CLIENT_ID: string
+    TWITTER_CLIENT_SECRET: string
+    TWITTER_REDIRECT_URI: string
+
     // Facebook OAuth (Facebook Page linking)
     FACEBOOK_APP_ID: string
     FACEBOOK_APP_SECRET: string
@@ -109,6 +114,9 @@ function parseConfig(): EnvironmentConfig {
         TIKTOK_CLIENT_KEY: process.env.TIKTOK_CLIENT_KEY ?? "",
         TIKTOK_CLIENT_SECRET: process.env.TIKTOK_CLIENT_SECRET ?? "",
         TIKTOK_REDIRECT_URI: process.env.TIKTOK_REDIRECT_URI ?? "",
+        TWITTER_CLIENT_ID: process.env.TWITTER_CLIENT_ID ?? "",
+        TWITTER_CLIENT_SECRET: process.env.TWITTER_CLIENT_SECRET ?? "",
+        TWITTER_REDIRECT_URI: process.env.TWITTER_REDIRECT_URI ?? "",
         FACEBOOK_APP_ID: process.env.FACEBOOK_APP_ID ?? "",
         FACEBOOK_APP_SECRET: process.env.FACEBOOK_APP_SECRET ?? "",
         FACEBOOK_REDIRECT_URI: process.env.FACEBOOK_REDIRECT_URI ?? "",

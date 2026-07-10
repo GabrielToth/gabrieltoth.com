@@ -1,59 +1,48 @@
+/**
+ * Twitter/X OAuth Configuration
+ * Centralizes all configuration for Twitter OAuth 2.0 PKCE, token management, and publishing.
+ */
+
 import { EnvironmentConfig } from "../config/env"
 
-export interface FacebookOAuthConfig {
-    appId: string
-    appSecret: string
+export interface TwitterOAuthConfig {
+    clientId: string
+    clientSecret: string
     redirectUri: string
     scopes: string[]
     apiVersion: string
 }
 
-export interface FacebookRateLimitConfig {
-    linkingAttemptsPerHour: number
-    publishAttemptsPerHour: number
-    liveAttemptsPerHour: number
-}
-
-export interface FacebookSecurityConfig {
-    tokenExpiryBufferMs: number
-}
-
-export interface FacebookConfig {
-    oauth: FacebookOAuthConfig
-    rateLimit: FacebookRateLimitConfig
-    security: FacebookSecurityConfig
+export interface TwitterConfig {
+    oauth: TwitterOAuthConfig
+    rateLimit: {
+        linkingAttemptsPerHour: number
+        publishAttemptsPerHour: number
+    }
+    security: {
+        tokenExpiryBufferMs: number
+    }
 }
 
 const DEFAULT_SCOPES = [
-    "pages_show_list",
-    "pages_read_engagement",
-    "pages_manage_posts",
-    "pages_manage_metadata",
-    "pages_read_user_content",
-    "pages_manage_engagement",
-    "public_profile",
+    "tweet.read",
+    "tweet.write",
+    "users.read",
+    "offline.access",
 ]
 
-/**
- * Create Facebook config.
- * NOTE: FACEBOOK_APP_ID and INSTAGRAM_APP_ID are DIFFERENT IDs.
- * FACEBOOK_APP_ID = the main Facebook App ID (from developers.facebook.com)
- * INSTAGRAM_APP_ID = the Instagram-specific App ID within that Facebook App.
- * They are NOT interchangeable. Facebook must use FACEBOOK_APP_ID.
- */
-export function createFacebookConfig(env: EnvironmentConfig): FacebookConfig {
+export function createTwitterConfig(env: EnvironmentConfig): TwitterConfig {
     return {
         oauth: {
-            appId: env.FACEBOOK_APP_ID,
-            appSecret: env.FACEBOOK_APP_SECRET,
-            redirectUri: env.FACEBOOK_REDIRECT_URI,
+            clientId: env.TWITTER_CLIENT_ID,
+            clientSecret: env.TWITTER_CLIENT_SECRET,
+            redirectUri: env.TWITTER_REDIRECT_URI,
             scopes: DEFAULT_SCOPES,
-            apiVersion: "v25.0",
+            apiVersion: "2",
         },
         rateLimit: {
             linkingAttemptsPerHour: 5,
             publishAttemptsPerHour: 10,
-            liveAttemptsPerHour: 5,
         },
         security: {
             tokenExpiryBufferMs: 5 * 60 * 1000,
@@ -61,20 +50,20 @@ export function createFacebookConfig(env: EnvironmentConfig): FacebookConfig {
     }
 }
 
-export function validateFacebookConfig(config: FacebookConfig): {
+export function validateTwitterConfig(config: TwitterConfig): {
     isValid: boolean
     errors: string[]
 } {
     const errors: string[] = []
 
-    if (!config.oauth.appId) {
-        errors.push("Facebook App ID is required")
+    if (!config.oauth.clientId) {
+        errors.push("Twitter Client ID is required")
     }
-    if (!config.oauth.appSecret) {
-        errors.push("Facebook App Secret is required")
+    if (!config.oauth.clientSecret) {
+        errors.push("Twitter Client Secret is required")
     }
     if (!config.oauth.redirectUri) {
-        errors.push("Facebook redirect URI is required")
+        errors.push("Twitter redirect URI is required")
     }
 
     if (config.rateLimit.linkingAttemptsPerHour < 1) {
@@ -90,18 +79,14 @@ export function validateFacebookConfig(config: FacebookConfig): {
     }
 }
 
-let configInstance: FacebookConfig | null = null
+let configInstance: TwitterConfig | null = null
 
 /**
- * Get or initialize the Facebook configuration singleton.
- * Reads the 3 Facebook-specific env vars from `process.env` directly
+ * Get or initialize the Twitter configuration singleton.
+ * Reads Twitter-specific env vars from `process.env` directly
  * when no `env` parameter is provided (self-sufficient in serverless).
- *
- * Never silently falls back to a default value — if a required var is
- * missing, the validation step throws a clear error telling the user
- * which env var to set in the Vercel Dashboard.
  */
-export function getFacebookConfig(env?: EnvironmentConfig): FacebookConfig {
+export function getTwitterConfig(env?: EnvironmentConfig): TwitterConfig {
     if (!configInstance) {
         const resolvedEnv: EnvironmentConfig = env || {
             NODE_ENV:
@@ -155,12 +140,12 @@ export function getFacebookConfig(env?: EnvironmentConfig): FacebookConfig {
             OAUTH_STATE_SECRET: process.env.OAUTH_STATE_SECRET ?? "",
         }
 
-        configInstance = createFacebookConfig(resolvedEnv)
+        configInstance = createTwitterConfig(resolvedEnv)
 
-        const validation = validateFacebookConfig(configInstance)
+        const validation = validateTwitterConfig(configInstance)
         if (!validation.isValid) {
             throw new Error(
-                `Cannot initialize Facebook OAuth: ${validation.errors.join("; ")}. ` +
+                `Cannot initialize Twitter OAuth: ${validation.errors.join("; ")}. ` +
                     `Set the missing variable(s) in your Vercel Dashboard and redeploy.`
             )
         }
@@ -169,6 +154,6 @@ export function getFacebookConfig(env?: EnvironmentConfig): FacebookConfig {
     return configInstance
 }
 
-export function resetFacebookConfig(): void {
+export function resetTwitterConfig(): void {
     configInstance = null
 }

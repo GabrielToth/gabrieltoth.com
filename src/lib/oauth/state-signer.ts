@@ -27,6 +27,7 @@ export interface StatePayload {
     iat: number
     locale?: string
     redirectTo?: string
+    codeVerifier?: string
 }
 
 export interface SignedState {
@@ -42,7 +43,8 @@ export function generateState(
     userId: string,
     platform: string,
     locale?: string,
-    redirectTo?: string
+    redirectTo?: string,
+    codeVerifier?: string
 ): SignedState {
     const key = getSigningKey()
     if (!key) {
@@ -58,6 +60,7 @@ export function generateState(
         iat: Date.now(),
         locale,
         redirectTo,
+        codeVerifier,
     }
 
     const payloadJson = JSON.stringify(payload)

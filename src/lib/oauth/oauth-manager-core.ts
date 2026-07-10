@@ -36,9 +36,7 @@ export class OAuthManager {
         // YouTube (uses same Google Cloud OAuth credentials as Google Sign-In)
         // Prefer GOOGLE_CLIENT_ID/SECRET since they're more likely to be up-to-date
         const youtubeClientId =
-            process.env.GOOGLE_CLIENT_ID ||
-            process.env.YOUTUBE_CLIENT_ID ||
-            ""
+            process.env.GOOGLE_CLIENT_ID || process.env.YOUTUBE_CLIENT_ID || ""
         const youtubeClientSecret =
             process.env.GOOGLE_CLIENT_SECRET ||
             process.env.YOUTUBE_CLIENT_SECRET ||
@@ -78,18 +76,13 @@ export class OAuthManager {
                     "pages_read_engagement",
                     "pages_manage_metadata",
                 ],
-                authorizationUrl:
-                    "https://www.facebook.com/v25.0/dialog/oauth",
-                tokenUrl:
-                    "https://graph.facebook.com/v25.0/oauth/access_token",
+                authorizationUrl: "https://www.facebook.com/v25.0/dialog/oauth",
+                tokenUrl: "https://graph.facebook.com/v25.0/oauth/access_token",
             })
         }
 
         // Instagram (via Facebook Graph API for Business/Creator accounts)
-        if (
-            process.env.INSTAGRAM_APP_ID &&
-            process.env.INSTAGRAM_APP_SECRET
-        ) {
+        if (process.env.INSTAGRAM_APP_ID && process.env.INSTAGRAM_APP_SECRET) {
             this.configs.set("instagram", {
                 clientId: process.env.INSTAGRAM_APP_ID,
                 clientSecret: process.env.INSTAGRAM_APP_SECRET,
@@ -103,10 +96,8 @@ export class OAuthManager {
                     "instagram_business_manage_messages",
                     "pages_manage_metadata",
                 ],
-                authorizationUrl:
-                    "https://www.facebook.com/v25.0/dialog/oauth",
-                tokenUrl:
-                    "https://graph.facebook.com/v25.0/oauth/access_token",
+                authorizationUrl: "https://www.facebook.com/v25.0/dialog/oauth",
+                tokenUrl: "https://graph.facebook.com/v25.0/oauth/access_token",
             })
         }
 
@@ -121,9 +112,13 @@ export class OAuthManager {
                 redirectUri:
                     process.env.TWITTER_REDIRECT_URI ||
                     "http://localhost:3000/api/oauth/callback/twitter",
-                scopes: ["tweet.write", "tweet.read", "users.read"],
-                authorizationUrl:
-                    "https://twitter.com/i/oauth2/authorize",
+                scopes: [
+                    "tweet.write",
+                    "tweet.read",
+                    "users.read",
+                    "offline.access",
+                ],
+                authorizationUrl: "https://twitter.com/i/oauth2/authorize",
                 tokenUrl: "https://api.twitter.com/2/oauth2/token",
                 revokeUrl: "https://api.twitter.com/2/oauth2/revoke",
             })
@@ -140,15 +135,10 @@ export class OAuthManager {
                 redirectUri:
                     process.env.LINKEDIN_REDIRECT_URI ||
                     "http://localhost:3000/api/oauth/callback/linkedin",
-                scopes: [
-                    "w_member_social",
-                    "r_liteprofile",
-                    "r_emailaddress",
-                ],
+                scopes: ["w_member_social", "r_liteprofile", "r_emailaddress"],
                 authorizationUrl:
                     "https://www.linkedin.com/oauth/v2/authorization",
-                tokenUrl:
-                    "https://www.linkedin.com/oauth/v2/accessToken",
+                tokenUrl: "https://www.linkedin.com/oauth/v2/accessToken",
                 revokeUrl: "https://www.linkedin.com/oauth/v2/revoke",
             })
         }
@@ -231,9 +221,7 @@ export class OAuthManager {
             logger.error("Failed to generate authorization URL", {
                 data: { platform, userId },
                 error:
-                    error instanceof Error
-                        ? error
-                        : new Error(String(error)),
+                    error instanceof Error ? error : new Error(String(error)),
             })
             throw error
         }
@@ -284,10 +272,7 @@ export class OAuthManager {
             logger.error("State validation failed", {
                 platform,
                 userId,
-                error:
-                    error instanceof Error
-                        ? error.message
-                        : String(error),
+                error: error instanceof Error ? error.message : String(error),
             })
             return { valid: false }
         }
@@ -351,17 +336,11 @@ export class OAuthManager {
 
             return tokenResponse
         } catch (error) {
-            logger.error(
-                "Failed to exchange authorization code for token",
-                {
-                    platform,
-                    userId,
-                    error:
-                        error instanceof Error
-                            ? error.message
-                            : String(error),
-                }
-            )
+            logger.error("Failed to exchange authorization code for token", {
+                platform,
+                userId,
+                error: error instanceof Error ? error.message : String(error),
+            })
             throw error
         }
     }
@@ -423,9 +402,7 @@ export class OAuthManager {
             logger.error("Failed to refresh access token", {
                 data: { platform, userId },
                 error:
-                    error instanceof Error
-                        ? error
-                        : new Error(String(error)),
+                    error instanceof Error ? error : new Error(String(error)),
             })
             throw error
         }
@@ -476,10 +453,7 @@ export class OAuthManager {
             logger.error("Error revoking token", {
                 platform,
                 userId,
-                error:
-                    error instanceof Error
-                        ? error.message
-                        : String(error),
+                error: error instanceof Error ? error.message : String(error),
             })
             return false
         }
@@ -494,8 +468,7 @@ export class OAuthManager {
 
         for (const platform of this.getSupportedPlatforms()) {
             const statusKey = CACHE_KEYS.OAUTH_STATUS(userId)
-            const cachedStatus =
-                await CacheManager.get<OAuthStatus>(statusKey)
+            const cachedStatus = await CacheManager.get<OAuthStatus>(statusKey)
 
             if (cachedStatus) {
                 statuses.push(cachedStatus)
