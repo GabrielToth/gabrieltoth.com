@@ -66,6 +66,25 @@ export async function POST(
                 platform,
                 userId,
             })
+
+            // Still clean up social_networks in case it's stale
+            try {
+                const supabase = createClient(
+                    process.env.NEXT_PUBLIC_SUPABASE_URL || "",
+                    process.env.SUPABASE_SERVICE_ROLE_KEY || ""
+                )
+                await supabase
+                    .from("social_networks")
+                    .update({
+                        status: "disconnected",
+                        updated_at: new Date().toISOString(),
+                    })
+                    .eq("user_id", userId)
+                    .eq("platform", platform)
+            } catch {
+                // Ignore cleanup errors — token is already gone
+            }
+
             return NextResponse.json(
                 { error: "No token found for this platform" },
                 { status: 404 }
