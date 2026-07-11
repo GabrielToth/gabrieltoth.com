@@ -309,7 +309,7 @@ export class PublicationQueue {
      */
     async getPostsReadyForPublication(): Promise<ScheduledPost[]> {
         try {
-            const now = new Date()
+            const now = new Date().toISOString()
 
             const { data: posts, error } = await this.supabase
                 .from("scheduled_posts")
