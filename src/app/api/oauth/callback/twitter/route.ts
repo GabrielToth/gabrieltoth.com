@@ -114,6 +114,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
 
         const config = getTwitterConfig()
         const oauthService = new TwitterOAuth1Service(config)
+        await oauthService.initialize()
 
         // Exchange request token + verifier for access token
         const accessToken = await oauthService.getAccessToken(

@@ -39,6 +39,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
         const config = getTwitterConfig()
         const oauthService = new TwitterOAuth1Service(config)
+        await oauthService.initialize()
 
         // Step 1: Get OAuth 1.0a request token
         const requestToken = await oauthService.getRequestToken()
