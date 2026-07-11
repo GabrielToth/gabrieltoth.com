@@ -58,19 +58,16 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
             process.env.SUPABASE_SERVICE_ROLE_KEY || ""
         )
 
-        // Upsert: if same oauth_token (shouldn't happen but handle gracefully)
+        // Insert OAuth session for callback lookup
         const { error: dbError } = await supabase
             .from("oauth_sessions")
-            .upsert(
-                {
-                    oauth_token: requestToken.oauthToken,
-                    oauth_token_secret: requestToken.oauthTokenSecret,
-                    user_id: userId,
-                    platform: "twitter",
-                    created_at: new Date().toISOString(),
-                },
-                { onConflict: "oauth_token" }
-            )
+            .insert({
+                oauth_token: requestToken.oauthToken,
+                oauth_token_secret: requestToken.oauthTokenSecret,
+                user_id: userId,
+                platform: "twitter",
+                created_at: new Date().toISOString(),
+            })
 
         if (dbError) {
             logger.error("Failed to store OAuth session", {
