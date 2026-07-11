@@ -86,7 +86,9 @@ function generateAuthHeader(
     consumerSecret: string,
     oauthToken: string = "",
     oauthTokenSecret: string = "",
-    extraParams: Record<string, string> = {}
+    extraParams: Record<string, string> = {},
+    /** Parameters that should be in the signature but NOT in the Authorization header (e.g. body params for v1.1) */
+    bodyParams: Record<string, string> = {}
 ): string {
     const oauthParams: Record<string, string> = {
         oauth_consumer_key: consumerKey,
@@ -108,7 +110,8 @@ function generateAuthHeader(
         queryParams[k] = v
     })
 
-    const sigParams = { ...oauthParams, ...queryParams }
+    // Signature includes OAuth params + URL query params + body params
+    const sigParams = { ...oauthParams, ...queryParams, ...bodyParams }
 
     const signature = generateSignature(
         method,
@@ -120,6 +123,8 @@ function generateAuthHeader(
 
     oauthParams.oauth_signature = signature
 
+    // The Authorization header should ONLY contain OAuth-specific params,
+    // NOT body params or other protocol params
     const headerParts = Object.entries(oauthParams)
         .map(([k, v]) => `${percentEncode(k)}="${percentEncode(v)}"`)
 
@@ -207,51 +212,105 @@ export async function postToTwitter(
             body.reply_settings = config.replySettings
         }
 
-        // Make OAuth 1.0a signed request to X API v2
-        const apiUrl = "https://api.twitter.com/2/tweets"
-        const authHeader = generateAuthHeader(
+        // Try API v1.1 first (legacy endpoint, works without Project enrollment),
+        // then fall back to v2 if v1.1 fails
+        const apiUrlV1 = "https://api.twitter.com/1.1/statuses/update.json"
+        const apiUrlV2 = "https://api.twitter.com/2/tweets"
+
+        // Try v1.1 first (legacy endpoint, works without Project enrollment)
+        // For v1.1, the body param (status) must be in the signature
+        // but NOT in the Authorization header
+        const authHeaderV1 = generateAuthHeader(
             "POST",
-            apiUrl,
+            apiUrlV1,
+            consumerKey,
+            consumerSecret,
+            oauthToken,
+            oauthTokenSecret,
+            {}, // extraParams for header
+            { status: config.text } // bodyParams for signature only
+        )
+
+        const v1Body = new URLSearchParams({ status: config.text }).toString()
+
+        const responseV1 = await fetch(apiUrlV1, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+                Authorization: authHeaderV1,
+            },
+            body: v1Body,
+        })
+
+        if (responseV1.ok) {
+            const dataV1 = await responseV1.json()
+            const tweetId = dataV1.id_str
+
+            logger.info("Tweet posted successfully (v1.1)", {
+                tweetId,
+                userId: config.userId,
+            })
+
+            return {
+                success: true,
+                tweetId,
+                url: tweetId
+                    ? `https://twitter.com/user/status/${tweetId}`
+                    : undefined,
+            }
+        }
+
+        const v1Error = await responseV1.text()
+        logger.warn("Twitter v1.1 API failed, trying v2", {
+            status: responseV1.status,
+            error: v1Error,
+        })
+
+        // Fall back to v2
+        const authHeaderV2 = generateAuthHeader(
+            "POST",
+            apiUrlV2,
             consumerKey,
             consumerSecret,
             oauthToken,
             oauthTokenSecret
         )
 
-        const response = await fetch(apiUrl, {
+        const responseV2 = await fetch(apiUrlV2, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                Authorization: authHeader,
+                Authorization: authHeaderV2,
             },
             body: JSON.stringify(body),
         })
 
-        if (!response.ok) {
-            const errorBody = await response.text()
-            logger.error("Twitter API error", {
-                status: response.status,
-                body: errorBody,
+        if (!responseV2.ok) {
+            const errorBody = await responseV2.text()
+            logger.error("Twitter API error (both v1.1 and v2 failed)", {
+                status: responseV2.status,
+                v1Error: v1Error.substring(0, 200),
+                v2Error: errorBody.substring(0, 200),
             })
             return {
                 success: false,
-                error: `Twitter API returned ${response.status}: ${errorBody}`,
+                error: `Twitter API returned ${responseV2.status}: ${errorBody}`,
             }
         }
 
-        const data = await response.json()
-        const tweetId = data.data?.id
+        const dataV2 = await responseV2.json()
+        const tweetIdV2 = dataV2.data?.id
 
-        logger.info("Tweet posted successfully", {
-            tweetId,
+        logger.info("Tweet posted successfully (v2)", {
+            tweetId: tweetIdV2,
             userId: config.userId,
         })
 
         return {
             success: true,
-            tweetId,
-            url: tweetId
-                ? `https://twitter.com/user/status/${tweetId}`
+            tweetId: tweetIdV2,
+            url: tweetIdV2
+                ? `https://twitter.com/user/status/${tweetIdV2}`
                 : undefined,
         }
     } catch (error) {
