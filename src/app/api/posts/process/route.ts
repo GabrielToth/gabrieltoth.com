@@ -6,7 +6,7 @@
  * Can be called via cron job (e.g. cron-job.org) every minute.
  */
 import { NextRequest, NextResponse } from "next/server"
-import { getServerSession } from "@/lib/auth/session"
+import { getServerSession } from "@/lib/auth/get-server-session"
 import { getPublicationQueue } from "@/lib/queue/publication-queue"
 import { BackgroundProcessor } from "@/lib/queue/background-processor"
 
