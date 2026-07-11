@@ -321,10 +321,21 @@ export class TwitterOAuth1Service extends BaseService {
             )
             return data.data
         } catch (err) {
+            const errMsg = err instanceof Error ? err.message : String(err)
+            const errCode = err instanceof ServiceError ? err.code : "UNKNOWN"
+            const errStatus = err instanceof ServiceError ? err.statusCode : 500
             this.logger.error("Failed to get Twitter user info", {
-                error: err instanceof Error ? err.message : String(err),
+                error: errMsg,
+                code: errCode,
+                statusCode: errStatus,
+                tokenPreview: oauthToken.substring(0, 8),
             })
-            return null
+            // Re-throw for better error propagation to the callback route
+            throw new ServiceError(
+                "USER_INFO_FAILED",
+                `Twitter user info request failed (${errStatus}): ${errMsg}`,
+                errStatus
+            )
         }
     }
 }

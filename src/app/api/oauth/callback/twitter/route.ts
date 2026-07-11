@@ -130,7 +130,12 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
         )
 
         if (!twitterUser) {
-            logger.warn("Failed to retrieve Twitter user info", { userId })
+            logger.error("Failed to retrieve Twitter user info", {
+                userId,
+                screenName: accessToken.screenName,
+                twitterUserId: accessToken.userId,
+            })
+            // Try to get the error from the re-thrown ServiceError
             return NextResponse.redirect(
                 new URL(
                     "/dashboard?twitter=error&reason=user_info_failed",
