@@ -1,29 +1,29 @@
 /**
- * Lazy Twitter token refresh — refreshes expired tokens on demand.
+ * Get valid Twitter OAuth 1.0a token.
  *
- * Twitter access tokens last 2 hours by default. Refresh tokens are
- * long-lived. This helper checks expiry and refreshes if needed.
+ * OAuth 1.0a tokens don't expire (they're long-lived).
+ * This helper simply retrieves the stored token and returns it.
+ * No refresh flow is needed.
  *
  * Usage:
  *   const token = await getValidTwitterToken(userId)
  *   if (!token) { /* user has not linked Twitter *\/ }
- *   // use `token` to call Twitter API v2
+ *   // use `token` to call Twitter adapter (which handles OAuth 1.0a signing)
+ *
+ * NOTE: For OAuth 1.0a, the returned string is the oauth_token.
+ * The oauth_token_secret (needed for signing) is stored as refreshToken
+ * and must be retrieved separately by the adapter.
  */
 
 import { createLogger } from "@/lib/logger"
 import { getTokenStore } from "@/lib/token-store"
-import { TwitterOAuthService } from "./oauth-service"
 
 const logger = createLogger("GetValidTwitterToken")
 
 export async function getValidTwitterToken(
-    userId: string,
-    options?: {
-        tokenStore?: ReturnType<typeof getTokenStore>
-        oauthService?: TwitterOAuthService
-    }
-): Promise<string | null> {
-    const tokenStore = options?.tokenStore ?? getTokenStore()
+    userId: string
+): Promise<{ oauthToken: string; oauthTokenSecret: string } | null> {
+    const tokenStore = getTokenStore()
 
     const stored = await tokenStore.getToken(userId, "twitter")
 
@@ -32,55 +32,16 @@ export async function getValidTwitterToken(
         return null
     }
 
-    // If no expiry or still valid, return as-is
-    if (!stored.expiresAt || stored.expiresAt > Date.now()) {
-        return stored.accessToken
-    }
+    // OAuth 1.0a tokens:
+    //   stored.accessToken = oauth_token
+    //   stored.refreshToken = oauth_token_secret
+    const oauthToken = stored.accessToken
+    const oauthTokenSecret = stored.refreshToken || ""
 
-    if (!stored.refreshToken) {
-        logger.warn("Twitter token expired and has no refresh token", {
-            userId,
-        })
+    if (!oauthToken || !oauthTokenSecret) {
+        logger.warn("Incomplete Twitter OAuth 1.0a token", { userId })
         return null
     }
 
-    logger.info("Twitter token expired, refreshing", { userId })
-
-    const oauthService = options?.oauthService
-
-    if (!oauthService) {
-        logger.error("OAuth service not provided for token refresh", { userId })
-        return null
-    }
-
-    await oauthService.initialize()
-
-    try {
-        const refreshed = await oauthService.refreshAccessToken(
-            stored.refreshToken
-        )
-
-        const newExpiresAt = refreshed.expiresIn
-            ? Date.now() + refreshed.expiresIn * 1000
-            : undefined
-
-        await tokenStore.refreshToken(userId, "twitter", {
-            accessToken: refreshed.accessToken,
-            refreshToken: refreshed.refreshToken,
-            expiresAt: newExpiresAt,
-            platform: "twitter",
-            userId,
-        })
-
-        logger.info("Twitter token refreshed successfully", { userId })
-
-        return refreshed.accessToken
-    } catch (error) {
-        const message = error instanceof Error ? error.message : String(error)
-        logger.error("Failed to refresh Twitter token", {
-            userId,
-            error: message,
-        })
-        return null
-    }
+    return { oauthToken, oauthTokenSecret }
 }

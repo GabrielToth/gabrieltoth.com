@@ -1,12 +1,20 @@
 /**
- * Twitter Posting Adapter
- * Handles posting content to Twitter/X using user-level OAuth tokens
+ * Twitter/X Posting Adapter
+ * Posting to X API v2 using OAuth 1.0a (HMAC-SHA1 signed requests)
+ *
+ * OAuth 2.0 PKCE is not available for apps created in the new
+ * X Developer Console. OAuth 1.0a is used instead.
+ *
+ * Token storage:
+ *   - accessToken (stored) = oauth_token (permanent, doesn't expire)
+ *   - refreshToken (stored) = oauth_token_secret (needed for signing)
+ *   - consumerKey + consumerSecret = from config (TWITTER_CLIENT_ID/SECRET env vars)
  */
 
+import crypto from "crypto"
 import { createLogger } from "@/lib/logger"
 import { getTwitterConfig } from "@/lib/twitter/config"
-import { getTwitterOAuthService } from "@/lib/twitter/oauth-service"
-import { getValidTwitterToken } from "@/lib/twitter/get-valid-token"
+import { getTokenStore } from "@/lib/token-store"
 
 const logger = createLogger("TwitterAdapter")
 
@@ -27,7 +35,99 @@ export interface TwitterPostResult {
 }
 
 /**
- * Post content to Twitter/X using the user's OAuth token
+ * Percent-encode per RFC 3986 (required by OAuth 1.0a).
+ */
+function percentEncode(str: string): string {
+    return encodeURIComponent(str)
+        .replace(/[!'()*]/g, c =>
+            "%" + c.charCodeAt(0).toString(16).toUpperCase()
+        )
+}
+
+/**
+ * Generate OAuth 1.0a HMAC-SHA1 signature.
+ */
+function generateSignature(
+    method: string,
+    baseUrl: string,
+    params: Record<string, string>,
+    consumerSecret: string,
+    tokenSecret: string = ""
+): string {
+    const paramEntries = Object.entries(params)
+        .map(([k, v]) => [percentEncode(k), percentEncode(v)])
+        .sort((a, b) =>
+            a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0
+        )
+
+    const paramString = paramEntries.map(([k, v]) => `${k}=${v}`).join("&")
+
+    const signatureBase = [
+        method.toUpperCase(),
+        percentEncode(baseUrl),
+        percentEncode(paramString),
+    ].join("&")
+
+    const signingKey =
+        `${percentEncode(consumerSecret)}&${percentEncode(tokenSecret)}`
+
+    const hmac = crypto.createHmac("sha1", signingKey)
+    hmac.update(signatureBase)
+    return hmac.digest("base64")
+}
+
+/**
+ * Generate OAuth 1.0a Authorization header for an API request.
+ */
+function generateAuthHeader(
+    method: string,
+    url: string,
+    consumerKey: string,
+    consumerSecret: string,
+    oauthToken: string = "",
+    oauthTokenSecret: string = "",
+    extraParams: Record<string, string> = {}
+): string {
+    const oauthParams: Record<string, string> = {
+        oauth_consumer_key: consumerKey,
+        oauth_nonce: crypto.randomBytes(16).toString("hex"),
+        oauth_signature_method: "HMAC-SHA1",
+        oauth_timestamp: Math.floor(Date.now() / 1000).toString(),
+        oauth_version: "1.0",
+        ...extraParams,
+    }
+
+    if (oauthToken) {
+        oauthParams.oauth_token = oauthToken
+    }
+
+    // Collect query params from URL for signature
+    const urlObj = new URL(url)
+    const queryParams: Record<string, string> = {}
+    urlObj.searchParams.forEach((v, k) => {
+        queryParams[k] = v
+    })
+
+    const sigParams = { ...oauthParams, ...queryParams }
+
+    const signature = generateSignature(
+        method,
+        urlObj.origin + urlObj.pathname,
+        sigParams,
+        consumerSecret,
+        oauthTokenSecret
+    )
+
+    oauthParams.oauth_signature = signature
+
+    const headerParts = Object.entries(oauthParams)
+        .map(([k, v]) => `${percentEncode(k)}="${percentEncode(v)}"`)
+
+    return `OAuth ${headerParts.join(", ")}`
+}
+
+/**
+ * Post content to Twitter/X using OAuth 1.0a signed requests.
  */
 export async function postToTwitter(
     config: TwitterPostConfig
@@ -55,21 +155,35 @@ export async function postToTwitter(
             }
         }
 
-        // Get valid OAuth token for this user
-        const ttConfig = getTwitterConfig()
-        const oauthService = getTwitterOAuthService(ttConfig)
-        await oauthService.initialize()
+        // Get stored OAuth 1.0a tokens
+        const tokenStore = getTokenStore()
+        const stored = await tokenStore.getToken(config.userId, "twitter")
 
-        const accessToken = await getValidTwitterToken(config.userId, {
-            oauthService,
-        })
-
-        if (!accessToken) {
+        if (!stored) {
             return {
                 success: false,
-                error: "Twitter account is not linked. Please connect your Twitter account first.",
+                error:
+                    "Twitter account is not linked. Please connect your Twitter account first.",
             }
         }
+
+        // OAuth 1.0a tokens:
+        //   accessToken = oauth_token
+        //   refreshToken = oauth_token_secret
+        const oauthToken = stored.accessToken
+        const oauthTokenSecret = stored.refreshToken || ""
+
+        if (!oauthToken || !oauthTokenSecret) {
+            return {
+                success: false,
+                error: "Twitter token is incomplete. Please reconnect your Twitter account.",
+            }
+        }
+
+        // Get consumer credentials from config
+        const ttConfig = getTwitterConfig()
+        const consumerKey = ttConfig.oauth.clientId
+        const consumerSecret = ttConfig.oauth.clientSecret
 
         // Build tweet body
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -93,11 +207,22 @@ export async function postToTwitter(
             body.reply_settings = config.replySettings
         }
 
-        const response = await fetch("https://api.twitter.com/2/tweets", {
+        // Make OAuth 1.0a signed request to X API v2
+        const apiUrl = "https://api.twitter.com/2/tweets"
+        const authHeader = generateAuthHeader(
+            "POST",
+            apiUrl,
+            consumerKey,
+            consumerSecret,
+            oauthToken,
+            oauthTokenSecret
+        )
+
+        const response = await fetch(apiUrl, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${accessToken}`,
+                Authorization: authHeader,
             },
             body: JSON.stringify(body),
         })
