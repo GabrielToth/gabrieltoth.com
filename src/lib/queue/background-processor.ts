@@ -120,9 +120,11 @@ export class BackgroundProcessor {
             if (allSucceeded) {
                 await this.queue.markAsPublished(publication.id)
             } else if (allFailed) {
+                // Include the first error message for diagnosis
+                const firstError = results.find(r => r.error)?.error || "All networks failed"
                 await this.queue.markAsFailed(
                     publication.id,
-                    "All networks failed"
+                    firstError
                 )
             } else {
                 await this.queue.markAsPartiallyPublished(
@@ -160,6 +162,7 @@ export class BackgroundProcessor {
                         network: network.platform,
                         success: result.success,
                         externalId: result.tweetId,
+                        error: result.error || undefined,
                     })
                 } else if (network.platform === "linkedin") {
                     const result = await postToLinkedIn({
@@ -170,6 +173,7 @@ export class BackgroundProcessor {
                         network: network.platform,
                         success: result.success,
                         externalId: result.postId,
+                        error: result.error || undefined,
                     })
                 } else if (network.platform === "instagram") {
                     const { postToInstagram } =
