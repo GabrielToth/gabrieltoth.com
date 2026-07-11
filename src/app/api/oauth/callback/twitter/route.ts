@@ -6,7 +6,12 @@
  * OAuth 1.0a parameters (from X):
  *   - oauth_token: The request token
  *   - oauth_verifier: The verification code
- *   - state: Base64url-encoded JSON with { userId, oauthToken, oauthTokenSecret }
+ *
+ * State management: In OAuth 1.0a, the callback URL is registered during
+ * the request token step and cannot include dynamic query params (unlike
+ * OAuth 2.0's state parameter). Instead, we store the OAuth session
+ * (oauthToken -> userId + oauthTokenSecret) in Supabase during the
+ * authorize step and look it up by oauth_token on callback.
  *
  * NOTE: OAuth 2.0 PKCE is not available for apps created in the new
  * X Developer Console (console.x.com). OAuth 1.0a is used instead.
@@ -21,12 +26,6 @@ import { createClient } from "@supabase/supabase-js"
 import { NextRequest, NextResponse } from "next/server"
 
 const logger = createLogger("TwitterCallbackEndpoint")
-
-interface OAuth1State {
-    userId: string
-    oauthToken: string
-    oauthTokenSecret: string
-}
 
 export async function GET(request: NextRequest): Promise<NextResponse> {
     try {
@@ -56,61 +55,57 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
             )
         }
 
-        // Parse state from query parameter (base64url-encoded JSON)
-        const stateParam = searchParams.get("state")
-        if (!stateParam) {
-            logger.warn("Missing state parameter in Twitter callback")
-            return NextResponse.redirect(
-                new URL(
-                    "/dashboard?twitter=error&reason=missing_params",
-                    request.url
-                )
-            )
-        }
+        // Look up OAuth session from Supabase by oauth_token
+        // During authorize step, we stored { oauthToken, oauthTokenSecret, userId }
+        const supabase = createClient(
+            process.env.NEXT_PUBLIC_SUPABASE_URL || "",
+            process.env.SUPABASE_SERVICE_ROLE_KEY || ""
+        )
 
-        let state: OAuth1State
-        try {
-            const decoded = Buffer.from(stateParam, "base64url").toString(
-                "utf-8"
-            )
-            state = JSON.parse(decoded)
-        } catch {
-            logger.warn("Invalid state format in Twitter callback")
-            return NextResponse.redirect(
-                new URL(
-                    "/dashboard?twitter=error&reason=invalid_state",
-                    request.url
-                )
-            )
-        }
+        const { data: sessionData, error: sessionError } = await supabase
+            .from("oauth_sessions")
+            .select("oauth_token_secret, user_id")
+            .eq("oauth_token", oauthToken)
+            .eq("platform", "twitter")
+            .single()
 
-        const { userId, oauthToken: storedToken, oauthTokenSecret } = state
-
-        if (!userId || !storedToken || !oauthTokenSecret) {
-            logger.warn("Incomplete state payload in Twitter callback")
-            return NextResponse.redirect(
-                new URL(
-                    "/dashboard?twitter=error&reason=invalid_state",
-                    request.url
-                )
-            )
-        }
-
-        // Verify the oauth_token matches
-        if (storedToken !== oauthToken) {
-            logger.warn("OAuth token mismatch in Twitter callback", {
-                expected: storedToken?.substring(0, 10),
-                received: oauthToken.substring(0, 10),
+        if (sessionError || !sessionData) {
+            logger.warn("OAuth session not found in callback", {
+                oauthToken: oauthToken.substring(0, 10),
+                error: sessionError?.message || "No session found",
             })
             return NextResponse.redirect(
                 new URL(
-                    "/dashboard?twitter=error&reason=token_mismatch",
+                    "/dashboard?twitter=error&reason=session_not_found",
                     request.url
                 )
             )
         }
 
-        logger.info("Twitter OAuth 1.0a state validated", { userId })
+        const { oauth_token_secret: oauthTokenSecret, user_id: userId } =
+            sessionData
+
+        if (!oauthTokenSecret || !userId) {
+            logger.warn("Incomplete OAuth session data", {
+                oauthToken: oauthToken.substring(0, 10),
+                hasSecret: !!oauthTokenSecret,
+                hasUserId: !!userId,
+            })
+            return NextResponse.redirect(
+                new URL(
+                    "/dashboard?twitter=error&reason=invalid_session",
+                    request.url
+                )
+            )
+        }
+
+        // Clean up the session immediately to prevent replay attacks
+        await supabase
+            .from("oauth_sessions")
+            .delete()
+            .eq("oauth_token", oauthToken)
+
+        logger.info("Twitter OAuth 1.0a session validated", { userId })
 
         const config = getTwitterConfig()
         const oauthService = new TwitterOAuth1Service(config)
@@ -169,11 +164,6 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
         logger.info("Twitter user token stored successfully", { userId })
 
         // Save to social_networks so channel appears in dashboard
-        const supabase = createClient(
-            process.env.NEXT_PUBLIC_SUPABASE_URL || "",
-            process.env.SUPABASE_SERVICE_ROLE_KEY || ""
-        )
-
         const { error: socialError } = await supabase
             .from("social_networks")
             .upsert(
