@@ -121,35 +121,41 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
         logger.info("Twitter OAuth 1.0a access token obtained", {
             userId,
             screenName: accessToken.screenName,
+            twitterUserId: accessToken.userId,
         })
 
-        // Get Twitter user info for display name and ID
-        const twitterUser = await oauthService.getUserInfo(
-            accessToken.oauthToken,
-            accessToken.oauthTokenSecret
-        )
+        // Attempt to get extended Twitter user info (display name, profile image).
+        // This may fail with 403 for apps created in the new X Developer Console
+        // (OAuth 1.0a + /2/users/me requires OAuth 2.0 scopes that aren't available).
+        // The access token exchange already gives us user_id and screen_name,
+        // so this is non-fatal.
+        let displayName = accessToken.screenName
+        let profileImageUrl: string | undefined
+        let twitterId = accessToken.userId
 
-        if (!twitterUser) {
-            logger.error("Failed to retrieve Twitter user info", {
-                userId,
-                screenName: accessToken.screenName,
-                twitterUserId: accessToken.userId,
-            })
-            // Try to get the error from the re-thrown ServiceError
-            return NextResponse.redirect(
-                new URL(
-                    "/dashboard?twitter=error&reason=user_info_failed",
-                    request.url
-                )
+        try {
+            const twitterUser = await oauthService.getUserInfo(
+                accessToken.oauthToken,
+                accessToken.oauthTokenSecret
             )
+            if (twitterUser) {
+                displayName = twitterUser.name || twitterUser.username
+                profileImageUrl = twitterUser.profileImageUrl
+                twitterId = twitterUser.id || accessToken.userId
+                logger.info("Extended Twitter user info retrieved", {
+                    userId,
+                    twitterId,
+                    displayName,
+                })
+            }
+        } catch (userInfoErr) {
+            // Non-fatal: use access token data as fallback
+            logger.warn("Could not retrieve extended Twitter user info", {
+                userId,
+                error: userInfoErr instanceof Error ? userInfoErr.message : String(userInfoErr),
+                fallback: { screenName: accessToken.screenName, userId: accessToken.userId },
+            })
         }
-
-        logger.info("Twitter user retrieved", {
-            userId,
-            twitterId: twitterUser.id,
-            username: twitterUser.username,
-            name: twitterUser.name,
-        })
 
         // Store tokens securely
         // OAuth 1.0a tokens:
@@ -175,15 +181,15 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
                 {
                     user_id: userId,
                     platform: "twitter",
-                    platform_user_id: twitterUser.id,
+                    platform_user_id: twitterId,
                     platform_username: `@${accessToken.screenName}`,
                     status: "connected",
                     linked_at: new Date().toISOString(),
                     metadata: {
-                        twitterId: twitterUser.id,
-                        name: twitterUser.name,
+                        twitterId,
+                        name: displayName,
                         username: accessToken.screenName,
-                        profileImageUrl: twitterUser.profileImageUrl,
+                        profileImageUrl: profileImageUrl || null,
                         scopeVersion: getScopeVersion("twitter"),
                     },
                     updated_at: new Date().toISOString(),
@@ -202,7 +208,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
 
         logger.info("Twitter/X account linked successfully", {
             userId,
-            twitterId: twitterUser.id,
+            twitterId,
         })
 
         return NextResponse.redirect(

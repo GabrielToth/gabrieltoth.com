@@ -330,12 +330,7 @@ export class TwitterOAuth1Service extends BaseService {
                 statusCode: errStatus,
                 tokenPreview: oauthToken.substring(0, 8),
             })
-            // Re-throw for better error propagation to the callback route
-            throw new ServiceError(
-                "USER_INFO_FAILED",
-                `Twitter user info request failed (${errStatus}): ${errMsg}`,
-                errStatus
-            )
+            return null
         }
     }
 }
