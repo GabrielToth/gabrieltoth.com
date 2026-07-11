@@ -24,11 +24,18 @@ export interface LinkedInConfig {
     }
 }
 
+/**
+ * Valid scopes for LinkedIn Standalone App:
+ * - w_member_social: Create, modify, and delete posts on your behalf
+ * - openid: Use your name and photo (OpenID Connect)
+ * - profile: Use your name and photo
+ * - email: Use the primary email address
+ *
+ * NOTE: r_liteprofile and r_emailaddress are legacy v2 scopes that are no longer
+ * valid for new apps. w_organization_social requires an Organization-level app.
+ */
 const DEFAULT_SCOPES = [
     "w_member_social",
-    "r_liteprofile",
-    "r_emailaddress",
-    "w_organization_social",
     "openid",
     "profile",
     "email",

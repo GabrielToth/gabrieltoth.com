@@ -135,11 +135,11 @@ export class OAuthManager {
                 redirectUri:
                     process.env.LINKEDIN_REDIRECT_URI ||
                     "http://localhost:3000/api/oauth/callback/linkedin",
+                // Valid scopes for LinkedIn Standalone App:
+                // w_member_social, openid, profile, email
+                // NOTE: r_liteprofile, r_emailaddress, w_organization_social are invalid
                 scopes: [
                     "w_member_social",
-                    "r_liteprofile",
-                    "r_emailaddress",
-                    "w_organization_social",
                     "openid",
                     "profile",
                     "email",
