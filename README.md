@@ -137,6 +137,8 @@ npm run clean            # Clean build files
 
 | Platform | Local Dev | Production | Setup | Cost |
 |----------|-----------|------------|-------|------|
+| **Twitch** | ✅ Works | ✅ Works | [Tutorial](#twitch) | Free |
+| **Kick** | ✅ Works | ✅ Works | [Tutorial](#kick) | Free |
 | **LinkedIn** | ✅ Works | ✅ Works | [Tutorial](#linkedin) | Free |
 | **YouTube** | ✅ Works | ✅ Works | [Tutorial](#youtube) | Free |
 | **TikTok** | ✅ Works | ✅ Works | [Tutorial](#tiktok) | Free |
@@ -146,6 +148,8 @@ npm run clean            # Clean build files
 
 ### 📌 Important Notes
 
+- **Twitch**: Standard OAuth 2.0 authorization code flow. Works fully in both local and production with a free Twitch Developer Application.
+- **Kick**: OAuth 2.1 authorization code flow with PKCE (Proof Key for Code Exchange). Works fully in both local and production with a free Kick Developer Application.
 - **Twitter/X**: The X API v2 requires **Pay Per Use** enrollment. Each post consumes credits (~$0.015/credit, ~2 credits per post). You need to purchase credits on [console.x.com](https://console.x.com) for posting to work. See setup tutorial below.
 - **Facebook/Instagram**: Require a **CNPJ** (Brazilian business ID) for Meta's **Advanced Access** (needed for publishing in production). In local development you can use `FACEBOOK_PAGE_ACCESS_TOKEN` and `INSTAGRAM_PAGE_ACCESS_TOKEN` env vars as a bypass.
 - **LinkedIn, YouTube, TikTok**: Work fully in both local and production with proper OAuth credentials.
@@ -232,6 +236,12 @@ Full documentation is on the [GitHub Wiki](https://github.com/GabrielToth/gabrie
 - `GOOGLE_CLIENT_SECRET` - Google OAuth client secret
 - `NEXT_PUBLIC_GOOGLE_CLIENT_ID` - Google OAuth client ID (client-side)
 - `NEXT_PUBLIC_GOOGLE_REDIRECT_URI` - Google OAuth redirect URI
+- `TWITCH_CLIENT_ID` - Twitch OAuth client ID
+- `TWITCH_CLIENT_SECRET` - Twitch OAuth client secret
+- `TWITCH_REDIRECT_URI` - Twitch OAuth redirect URI
+- `KICK_CLIENT_ID` - Kick OAuth client ID
+- `KICK_CLIENT_SECRET` - Kick OAuth client secret
+- `KICK_REDIRECT_URI` - Kick OAuth redirect URI
 
 #### Third-Party Services
 
@@ -414,6 +424,42 @@ TWITTER_REDIRECT_URI=http://localhost:3000/api/oauth/callback/twitter
 2. Purchase credits (minimum purchase applies)
 3. Each text-only post costs ~$0.015 (1 credit)
 4. Posts with links cost ~$0.20 (13 credits)
+
+---
+
+### Twitch
+
+**Status**: ✅ Works locally and in production (free)
+
+1. **Go to** [Twitch Developer Portal](https://dev.twitch.tv/console)
+2. **Create an application**: Click "Register Your Application" → Name it → Set OAuth Redirect URL
+3. **Get credentials**: Copy `Client ID` and generate a `Client Secret`
+4. **Set redirect URI**: Add `http://localhost:3000/api/oauth/callback/twitch`
+5. **Configure in `.env.local`**:
+   ```env
+   TWITCH_CLIENT_ID=your-client-id
+   TWITCH_CLIENT_SECRET=your-client-secret
+   TWITCH_REDIRECT_URI=http://localhost:3000/api/oauth/callback/twitch
+   ```
+
+---
+
+### Kick
+
+**Status**: ✅ Works locally and in production (free)
+
+> ⚠️ Kick uses OAuth 2.1 with PKCE. The PKCE flow is handled automatically by the application — no additional configuration needed.
+
+1. **Go to** [Kick Developer Portal](https://dev.kick.com/apps)
+2. **Create an application**: Click "Create App" → Fill in details
+3. **Get credentials**: Copy `Client ID` and `Client Secret`
+4. **Set redirect URI**: Add `http://localhost:3000/api/oauth/callback/kick`
+5. **Configure in `.env.local`**:
+   ```env
+   KICK_CLIENT_ID=your-client-id
+   KICK_CLIENT_SECRET=your-client-secret
+   KICK_REDIRECT_URI=http://localhost:3000/api/oauth/callback/kick
+   ```
 
 ---
 

@@ -40,6 +40,14 @@ Sempre use `--value "..."` explicitamente.
 | `TIKTOK_CLIENT_SECRET` | Empty — needs real value |
 | `TIKTOK_REDIRECT_URI` | `https://www.gabrieltoth.com/api/oauth/callback/tiktok` |
 
+### Twitch
+
+| Var | Status |
+|-----|--------|
+| `TWITCH_CLIENT_ID` | Empty — needs real value |
+| `TWITCH_CLIENT_SECRET` | Empty — needs real value |
+| `TWITCH_REDIRECT_URI` | `https://www.gabrieltoth.com/api/oauth/callback/twitch` |
+
 ### Kick
 
 | Var | Status |
@@ -75,6 +83,7 @@ Todos os outros componentes (`facebook/config.ts`, `instagram/config.ts`, `tikto
 | Facebook | **Específica** | `facebook/route.ts` |
 | Instagram | **Específica** | `instagram/route.ts` |
 | TikTok | **Específica** | `tiktok/route.ts` |
+| Twitch | **Específica** | `twitch/route.ts` |
 | Kick | **Específica** | `kick/route.ts` |
 
 No Next.js App Router, rotas específicas têm precedência sobre rotas dinâmicas `[platform]`.
@@ -104,6 +113,7 @@ Arquivo: `src/lib/oauth/scope-versions.ts`
 | facebook | 1 |
 | instagram | 1 |
 | tiktok | 1 |
+| twitch | 1 |
 | kick | 1 |
 | twitter | 1 |
 | linkedin | 1 |
