@@ -104,7 +104,10 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
             userId,
         })
 
-        const tokenResponse = await oauthService.exchangeCodeForToken(code)
+        const tokenResponse = await oauthService.exchangeCodeForToken(
+            code,
+            verification.payload.codeVerifier
+        )
 
         logger.info("Kick authorization code exchanged successfully", {
             userId,

@@ -158,6 +158,161 @@ async function fetchKickStream(
     }
 }
 
+async function fetchYouTubeLive(
+    accessToken: string,
+    channelId: string
+): Promise<Partial<PlatformStreamInfo>> {
+    try {
+        // Check for active live broadcast via YouTube Data API v3
+        const response = await fetch(
+            `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${channelId}&eventType=live&type=video`,
+            {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            }
+        )
+
+        if (!response.ok) {
+            logger.warn("YouTube live fetch failed", {
+                status: response.status,
+            })
+            return {}
+        }
+
+        const data = await response.json()
+        if (!data.items || data.items.length === 0) {
+            return { isLive: false }
+        }
+
+        const liveItem = data.items[0]
+        const snippet = liveItem.snippet
+
+        // Get live stream details for viewer count
+        let viewerCount = 0
+        try {
+            const videoResponse = await fetch(
+                `https://www.googleapis.com/youtube/v3/videos?part=liveStreamingDetails&id=${liveItem.id.videoId}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                    },
+                }
+            )
+            if (videoResponse.ok) {
+                const videoData = await videoResponse.json()
+                if (videoData.items?.[0]?.liveStreamingDetails) {
+                    viewerCount = parseInt(
+                        videoData.items[0].liveStreamingDetails
+                            .concurrentViewers || "0",
+                        10
+                    )
+                }
+            }
+        } catch {
+            // viewer count is optional
+        }
+
+        return {
+            isLive: true,
+            viewerCount,
+            title: snippet.title,
+            gameName: snippet.channelTitle,
+            startedAt: snippet.publishTime,
+            displayName: snippet.channelTitle,
+            profileImageUrl: snippet.thumbnails?.default?.url || null,
+            username: snippet.channelTitle,
+        }
+    } catch (error) {
+        logger.error("YouTube live fetch failed", { error })
+        return {}
+    }
+}
+
+async function fetchFacebookLive(
+    pageAccessToken: string,
+    pageId: string
+): Promise<Partial<PlatformStreamInfo>> {
+    try {
+        // Facebook Graph API: get live videos for a page
+        const response = await fetch(
+            `https://graph.facebook.com/v25.0/${pageId}/live_videos?fields=id,title,status,creation_time,stream_url,viewer_count&access_token=${pageAccessToken}`
+        )
+
+        if (!response.ok) {
+            logger.warn("Facebook live fetch failed", {
+                status: response.status,
+            })
+            return {}
+        }
+
+        const data = await response.json()
+        if (!data.data || data.data.length === 0) {
+            return { isLive: false }
+        }
+
+        // Find the first LIVE video (not VOD)
+        const liveVideo = data.data.find(
+            (v: { status: string }) => v.status === "LIVE"
+        )
+        if (!liveVideo) return { isLive: false }
+
+        return {
+            isLive: true,
+            viewerCount: liveVideo.viewer_count || 0,
+            title: liveVideo.title || "Facebook Live",
+            gameName: "Facebook Live",
+            startedAt: liveVideo.creation_time || null,
+            displayName: "Facebook Page",
+        }
+    } catch (error) {
+        logger.error("Facebook live fetch failed", { error })
+        return {}
+    }
+}
+
+async function fetchInstagramLive(
+    pageAccessToken: string,
+    businessAccountId: string
+): Promise<Partial<PlatformStreamInfo>> {
+    try {
+        // Instagram Graph API: check for live media
+        const response = await fetch(
+            `https://graph.facebook.com/v25.0/${businessAccountId}/media?fields=id,media_type,media_url,caption,timestamp,username&access_token=${pageAccessToken}`
+        )
+
+        if (!response.ok) {
+            logger.warn("Instagram live fetch failed", {
+                status: response.status,
+            })
+            return {}
+        }
+
+        const data = await response.json()
+        if (!data.data || data.data.length === 0) {
+            return { isLive: false }
+        }
+
+        // Find LIVE media type
+        const liveMedia = data.data.find(
+            (m: { media_type: string }) => m.media_type === "LIVE"
+        )
+        if (!liveMedia) return { isLive: false }
+
+        return {
+            isLive: true,
+            viewerCount: 0, // Instagram API doesn't expose viewer count for live
+            title: liveMedia.caption || "Instagram Live",
+            gameName: "Instagram Live",
+            startedAt: liveMedia.timestamp || null,
+            displayName: liveMedia.username || "Instagram User",
+        }
+    } catch (error) {
+        logger.error("Instagram live fetch failed", { error })
+        return {}
+    }
+}
+
 export async function GET(request: NextRequest): Promise<NextResponse> {
     try {
         const session = await getServerSession(request)
@@ -178,7 +333,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
         const { data: networks, error } = await supabase
             .from("social_networks")
             .select("*")
-            .in("platform", ["twitch", "kick"])
+            .in("platform", ["youtube", "facebook", "instagram", "twitch", "kick"])
             .eq("user_id", userId)
             .eq("status", "connected")
 
@@ -213,21 +368,78 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
             }
 
             const accessToken = network.access_token
+            const pageAccessToken =
+                network.metadata?.page_access_token || accessToken
 
-            if (network.platform === "twitch" && accessToken) {
-                const twitchData = await fetchTwitchStream(
-                    accessToken,
-                    network.provider_user_id || network.platform_user_id
-                )
-                platforms.push({ ...baseInfo, ...twitchData })
-            } else if (network.platform === "kick" && accessToken) {
-                const kickData = await fetchKickStream(
-                    accessToken,
-                    network.platform_username || ""
-                )
-                platforms.push({ ...baseInfo, ...kickData })
-            } else {
-                platforms.push(baseInfo)
+            switch (network.platform) {
+                case "twitch":
+                    if (accessToken) {
+                        const twitchData = await fetchTwitchStream(
+                            accessToken,
+                            network.provider_user_id ||
+                                network.platform_user_id
+                        )
+                        platforms.push({ ...baseInfo, ...twitchData })
+                    } else {
+                        platforms.push(baseInfo)
+                    }
+                    break
+
+                case "kick":
+                    if (accessToken) {
+                        const kickData = await fetchKickStream(
+                            accessToken,
+                            network.platform_username || ""
+                        )
+                        platforms.push({ ...baseInfo, ...kickData })
+                    } else {
+                        platforms.push(baseInfo)
+                    }
+                    break
+
+                case "youtube":
+                    if (accessToken) {
+                        const youtubeData = await fetchYouTubeLive(
+                            accessToken,
+                            network.platform_user_id || ""
+                        )
+                        platforms.push({ ...baseInfo, ...youtubeData })
+                    } else {
+                        platforms.push(baseInfo)
+                    }
+                    break
+
+                case "facebook":
+                    if (pageAccessToken) {
+                        const fbData = await fetchFacebookLive(
+                            pageAccessToken,
+                            network.metadata?.page_id ||
+                                network.platform_user_id ||
+                                ""
+                        )
+                        platforms.push({ ...baseInfo, ...fbData })
+                    } else {
+                        platforms.push(baseInfo)
+                    }
+                    break
+
+                case "instagram":
+                    if (pageAccessToken) {
+                        const igData = await fetchInstagramLive(
+                            pageAccessToken,
+                            network.metadata
+                                ?.instagram_business_account_id ||
+                                network.platform_user_id ||
+                                ""
+                        )
+                        platforms.push({ ...baseInfo, ...igData })
+                    } else {
+                        platforms.push(baseInfo)
+                    }
+                    break
+
+                default:
+                    platforms.push(baseInfo)
             }
         }
 

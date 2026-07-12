@@ -37,11 +37,20 @@ export class KickOAuthService extends BaseService {
     generateAuthorizationUrl(userId: string): {
         authorizationUrl: string
         state: string
+        codeVerifier: string
+        codeChallenge: string
     } {
         this.assertReady()
 
         try {
             const state = crypto.randomBytes(32).toString("hex")
+
+            // Generate PKCE code verifier and challenge (OAuth 2.1 / Kick requirement)
+            const codeVerifier = crypto.randomBytes(32).toString("base64url")
+            const codeChallenge = crypto
+                .createHash("sha256")
+                .update(codeVerifier)
+                .digest("base64url")
 
             const params = new URLSearchParams({
                 client_id: this.config.oauth.clientId,
@@ -49,6 +58,8 @@ export class KickOAuthService extends BaseService {
                 response_type: "code",
                 scope: this.config.oauth.scopes.join(" "),
                 state: state,
+                code_challenge: codeChallenge,
+                code_challenge_method: "S256",
             })
 
             const authorizationUrl = `${this.config.oauthAuthorizeUrl}?${params.toString()}`
@@ -60,6 +71,8 @@ export class KickOAuthService extends BaseService {
             return {
                 authorizationUrl,
                 state,
+                codeVerifier,
+                codeChallenge,
             }
         } catch (error) {
             throw this.handleError(
@@ -70,7 +83,10 @@ export class KickOAuthService extends BaseService {
         }
     }
 
-    async exchangeCodeForToken(code: string): Promise<OAuthTokenResponse> {
+    async exchangeCodeForToken(
+        code: string,
+        codeVerifier?: string
+    ): Promise<OAuthTokenResponse> {
         this.assertReady()
 
         try {
@@ -81,6 +97,11 @@ export class KickOAuthService extends BaseService {
                 grant_type: "authorization_code",
                 redirect_uri: this.config.oauth.redirectUri,
             })
+
+            // PKCE: send code_verifier if provided (Kick OAuth 2.1 requirement)
+            if (codeVerifier) {
+                params.append("code_verifier", codeVerifier)
+            }
 
             const response = await fetch(this.config.oauthTokenUrl, {
                 method: "POST",

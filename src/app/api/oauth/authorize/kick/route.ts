@@ -13,6 +13,7 @@
  * }
  */
 
+import crypto from "crypto"
 import { getServerSession } from "@/lib/auth/get-server-session"
 import { createLogger } from "@/lib/logger"
 import { getKickConfig } from "@/lib/kick/config"
@@ -47,7 +48,14 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         const oauthService = getKickOAuthService(config)
         await oauthService.initialize()
 
-        const signedState = generateState(userId, "kick")
+        // Generate PKCE code_verifier + code_challenge and store verifier in HMAC state
+        const codeVerifier = crypto.randomBytes(32).toString("base64url")
+        const codeChallenge = crypto
+            .createHash("sha256")
+            .update(codeVerifier)
+            .digest("base64url")
+
+        const signedState = generateState(userId, "kick", undefined, undefined, codeVerifier)
 
         const params = new URLSearchParams({
             client_id: config.oauth.clientId,
@@ -55,6 +63,8 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
             response_type: "code",
             scope: config.oauth.scopes.join(" "),
             state: signedState.token,
+            code_challenge: codeChallenge,
+            code_challenge_method: "S256",
         })
 
         const authorizationUrl = `${config.oauthAuthorizeUrl}?${params.toString()}`
