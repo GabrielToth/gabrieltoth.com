@@ -1,14 +1,17 @@
 /**
  * Live Dashboard Page
  * Real-time stream management for Twitch and Kick
- * Shows viewer count, uptime, title, game, and unified chat
+ * Shows viewer count, uptime, title, game, unified chat, and stream scheduling
  */
 
 "use client"
 
-import { UnifiedChat } from "@/components/dashboard/live/unified-chat"
+import { CountdownTimer } from "@/components/dashboard/live/countdown-timer"
+import { GoLiveButton } from "@/components/dashboard/live/go-live-button"
+import { StreamScheduler } from "@/components/dashboard/live/stream-scheduler"
 import { StreamStatusCard } from "@/components/dashboard/live/stream-status-card"
 import { StreamTitleEditor } from "@/components/dashboard/live/stream-title-editor"
+import { UnifiedChat } from "@/components/dashboard/live/unified-chat"
 import { useLocale, useTranslations } from "next-intl"
 import { useEffect, useState } from "react"
 
@@ -24,6 +27,21 @@ interface LivePlatform {
     startedAt: string | null
 }
 
+interface ScheduledStream {
+    id: string
+    userId: string
+    platform: string[]
+    title: string
+    description: string
+    scheduledStartTime: string
+    durationMinutes: number
+    status: string
+    notificationMethods: string[]
+    notificationSent: boolean
+    createdAt: string
+    updatedAt: string
+}
+
 export default function LiveDashboardPage() {
     const t = useTranslations("dashboard.live")
     const locale = useLocale()
@@ -31,19 +49,25 @@ export default function LiveDashboardPage() {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
     const [activePlatform, setActivePlatform] = useState<string>("twitch")
-    const [refreshInterval, setRefreshInterval] =
-        useState<ReturnType<typeof setInterval> | null>(null)
+    const [upcomingStreams, setUpcomingStreams] = useState<ScheduledStream[]>(
+        []
+    )
+    const [showScheduler, setShowScheduler] = useState(false)
 
     useEffect(() => {
         fetchStatus()
+        fetchUpcomingStreams()
 
         // Auto-refresh every 30 seconds
-        const interval = setInterval(fetchStatus, 30000)
-        setRefreshInterval(interval)
+        const interval = setInterval(() => {
+            fetchStatus()
+            fetchUpcomingStreams()
+        }, 30000)
 
         return () => {
             if (interval) clearInterval(interval)
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     async function fetchStatus() {
@@ -61,6 +85,30 @@ export default function LiveDashboardPage() {
             setError(err instanceof Error ? err.message : "Unknown error")
         } finally {
             setLoading(false)
+        }
+    }
+
+    async function fetchUpcomingStreams() {
+        try {
+            const response = await fetch("/api/streams/schedule")
+            if (!response.ok) return
+            const data = await response.json()
+            if (data.success) {
+                // Only show streams starting within the next 2 hours
+                const now = Date.now()
+                const twoHours = 2 * 60 * 60 * 1000
+                const upcoming = (data.data as ScheduledStream[]).filter(
+                    (s: ScheduledStream) => {
+                        const startTime = new Date(
+                            s.scheduledStartTime
+                        ).getTime()
+                        return startTime > now && startTime < now + twoHours
+                    }
+                )
+                setUpcomingStreams(upcoming)
+            }
+        } catch {
+            // Silently fail - this is auxiliary
         }
     }
 
@@ -107,9 +155,8 @@ export default function LiveDashboardPage() {
         )
     }
 
-    const currentPlatform = platforms.find(
-        p => p.platform === activePlatform
-    ) || platforms[0]
+    const currentPlatform =
+        platforms.find(p => p.platform === activePlatform) || platforms[0]
 
     return (
         <div className="space-y-6">
@@ -117,7 +164,17 @@ export default function LiveDashboardPage() {
                 <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
                     {t("title")}
                 </h1>
-                <div className="flex gap-2">
+                <div className="flex items-center gap-2">
+                    <button
+                        onClick={() => setShowScheduler(!showScheduler)}
+                        className={`rounded-md px-4 py-2 text-sm font-medium transition-colors ${
+                            showScheduler
+                                ? "bg-blue-600 text-white"
+                                : "bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-300"
+                        }`}
+                    >
+                        {t("scheduledStreams")}
+                    </button>
                     {platforms.map(p => (
                         <button
                             key={p.platform}
@@ -136,6 +193,52 @@ export default function LiveDashboardPage() {
                     ))}
                 </div>
             </div>
+
+            {/* Upcoming Streams Countdown */}
+            {upcomingStreams.length > 0 && (
+                <div className="rounded-lg border border-blue-200 bg-blue-50 p-4 dark:border-blue-800 dark:bg-blue-950/30">
+                    <h2 className="mb-3 text-lg font-semibold text-blue-900 dark:text-blue-200">
+                        {t("countdown")}
+                    </h2>
+                    <div className="space-y-3">
+                        {upcomingStreams.map(stream => (
+                            <div
+                                key={stream.id}
+                                className="flex items-center justify-between rounded-md bg-white p-3 dark:bg-gray-800"
+                            >
+                                <div className="min-w-0 flex-1">
+                                    <p className="truncate text-sm font-medium text-gray-900 dark:text-white">
+                                        {stream.title}
+                                    </p>
+                                    <p className="text-xs text-gray-500">
+                                        {stream.platform.join(", ")}
+                                    </p>
+                                </div>
+                                <div className="mx-4">
+                                    <CountdownTimer
+                                        targetTime={stream.scheduledStartTime}
+                                        compact
+                                        onExpired={fetchUpcomingStreams}
+                                    />
+                                </div>
+                                <GoLiveButton
+                                    scheduleId={stream.id}
+                                    platform={stream.platform[0]}
+                                    isLive={false}
+                                    onStatusChange={fetchUpcomingStreams}
+                                />
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
+
+            {/* Stream Scheduler (togglable) */}
+            {showScheduler && (
+                <div className="rounded-lg border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-900">
+                    <StreamScheduler />
+                </div>
+            )}
 
             {/* Stream Status Cards */}
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">

@@ -799,7 +799,70 @@ GROUP BY email, old_algorithm, new_algorithm
 ORDER BY latest_migration DESC;
 
 -- ============================================================================
--- 28. CLEANUP FUNCTIONS (testing/development)
+-- 28. SCHEDULED STREAMS TABLE
+-- ============================================================================
+-- Stores user-scheduled live streams with platform selection, timing,
+-- and notification preferences. Supports Twitch and Kick platforms.
+
+CREATE TABLE IF NOT EXISTS public.scheduled_streams (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  user_id UUID NOT NULL REFERENCES public.users(id) ON DELETE CASCADE,
+  platform TEXT[] NOT NULL DEFAULT '{twitch,kick}',
+  title TEXT NOT NULL,
+  description TEXT DEFAULT '',
+  scheduled_start_time TIMESTAMPTZ NOT NULL,
+  duration_minutes INTEGER DEFAULT 60,
+  status TEXT NOT NULL DEFAULT 'scheduled'
+    CHECK (status IN ('scheduled', 'cancelled', 'live', 'completed')),
+  notification_methods TEXT[] DEFAULT '{discord}',
+  notification_sent BOOLEAN DEFAULT FALSE,
+  created_at TIMESTAMPTZ DEFAULT NOW() NOT NULL,
+  updated_at TIMESTAMPTZ DEFAULT NOW() NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_scheduled_streams_user_status
+  ON public.scheduled_streams(user_id, status);
+
+CREATE INDEX IF NOT EXISTS idx_scheduled_streams_start_time
+  ON public.scheduled_streams(scheduled_start_time)
+  WHERE status = 'scheduled';
+
+ALTER TABLE public.scheduled_streams ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY IF NOT EXISTS "Users can view own scheduled streams"
+  ON public.scheduled_streams FOR SELECT
+  USING (user_id = auth.uid());
+
+CREATE POLICY IF NOT EXISTS "Users can create own scheduled streams"
+  ON public.scheduled_streams FOR INSERT
+  WITH CHECK (user_id = auth.uid());
+
+CREATE POLICY IF NOT EXISTS "Users can update own scheduled streams"
+  ON public.scheduled_streams FOR UPDATE
+  USING (user_id = auth.uid())
+  WITH CHECK (user_id = auth.uid());
+
+CREATE POLICY IF NOT EXISTS "Users can delete own scheduled streams"
+  ON public.scheduled_streams FOR DELETE
+  USING (user_id = auth.uid());
+
+CREATE OR REPLACE FUNCTION update_scheduled_streams_updated_at()
+RETURNS TRIGGER AS $$
+BEGIN
+  NEW.updated_at = NOW();
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+DROP TRIGGER IF EXISTS trigger_update_scheduled_streams_updated_at
+  ON public.scheduled_streams;
+CREATE TRIGGER trigger_update_scheduled_streams_updated_at
+  BEFORE UPDATE ON public.scheduled_streams
+  FOR EACH ROW
+  EXECUTE FUNCTION update_scheduled_streams_updated_at();
+
+-- ============================================================================
+-- 29. CLEANUP FUNCTIONS (testing/development)
 -- ============================================================================
 
 CREATE OR REPLACE FUNCTION cleanup_all_users()
@@ -831,6 +894,7 @@ BEGIN
   DELETE FROM public.scheduled_post_networks;
   DELETE FROM public.publication_history;
   DELETE FROM public.scheduled_posts;
+  DELETE FROM public.scheduled_streams;
   DELETE FROM public.network_groups;
   DELETE FROM public.group_networks;
   DELETE FROM public.pricing_config;
@@ -842,7 +906,7 @@ END;
 $$ LANGUAGE plpgsql;
 
 -- ============================================================================
--- 29. COMMENTS FOR DOCUMENTATION
+-- 30. COMMENTS FOR DOCUMENTATION
 -- ============================================================================
 
 COMMENT ON TABLE public.users IS 'Unified user accounts: Argon2id password + OAuth providers';
@@ -857,3 +921,8 @@ COMMENT ON TABLE public.registration_sessions IS 'Multi-step registration sessio
 COMMENT ON TABLE public.credit_transactions IS 'Credit purchase and usage history';
 COMMENT ON TABLE public.metering_logs IS 'Raw infrastructure consumption data';
 COMMENT ON TABLE public.pricing_config IS 'Per-unit pricing for metered resources';
+COMMENT ON TABLE public.scheduled_streams IS 'User-scheduled live streams with platform, timing, and notification settings';
+COMMENT ON COLUMN public.scheduled_streams.platform IS 'Array of platforms for the stream (twitch, kick)';
+COMMENT ON COLUMN public.scheduled_streams.status IS 'Current status: scheduled, cancelled, live, completed';
+COMMENT ON COLUMN public.scheduled_streams.notification_methods IS 'Array of notification channels (discord, telegram)';
+COMMENT ON COLUMN public.scheduled_streams.notification_sent IS 'Whether notification has been sent for this stream';
