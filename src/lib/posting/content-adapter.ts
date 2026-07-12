@@ -101,6 +101,30 @@ const PLATFORM_CONFIGS: Record<SocialPlatform, PlatformConfig> = {
         supportsAltText: false,
         supportsDescription: true,
     },
+    twitch: {
+        maxCharacters: 500,
+        maxImageSize: 10 * 1024 * 1024, // 10MB
+        supportedImageFormats: ["jpg", "jpeg", "png", "gif", "webp"],
+        supportsVideo: true,
+        supportsLinks: true,
+        supportsHashtags: false,
+        supportsMentions: true,
+        supportsEmojis: true,
+        supportsAltText: false,
+        supportsDescription: true,
+    },
+    kick: {
+        maxCharacters: 500,
+        maxImageSize: 16 * 1024 * 1024, // 16MB
+        supportedImageFormats: ["jpg", "jpeg", "png", "gif", "webp"],
+        supportsVideo: true,
+        supportsLinks: true,
+        supportsHashtags: false,
+        supportsMentions: true,
+        supportsEmojis: true,
+        supportsAltText: false,
+        supportsDescription: true,
+    },
 }
 
 /**

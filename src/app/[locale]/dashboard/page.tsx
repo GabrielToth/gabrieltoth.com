@@ -12,25 +12,84 @@ function DashboardRedirect() {
     const youtubeParam = searchParams.get("youtube")
     const tiktokParam = searchParams.get("tiktok")
     const tiktokReason = searchParams.get("reason")
+    const twitchParam = searchParams.get("twitch")
+    const kickParam = searchParams.get("kick")
 
-    const [tiktokMsg, setTiktokMsg] = useState<string | null>(null)
-    const [isError, setIsError] = useState(false)
+    const [oauthMsg, setOauthMsg] = useState<{
+        text: string
+        isError: boolean
+    } | null>(null)
 
     useEffect(() => {
+        // TikTok OAuth response
         if (tiktokParam) {
             const msg = tiktokReason || "unknown"
             if (tiktokParam === "success") {
                 console.log("TikTok OAuth success")
-                setTiktokMsg("✅ TikTok conectado com sucesso!")
-                setIsError(false)
+                setOauthMsg({
+                    text: "✅ TikTok connected successfully!",
+                    isError: false,
+                })
                 setTimeout(
                     () => router.push(`/${locale}/dashboard/channels`),
                     1500
                 )
             } else {
                 console.log("TikTok OAuth error:", msg)
-                setTiktokMsg(`❌ TikTok: ${decodeURIComponent(msg)}`)
-                setIsError(true)
+                setOauthMsg({
+                    text: `❌ TikTok: ${decodeURIComponent(msg)}`,
+                    isError: true,
+                })
+                setTimeout(
+                    () => router.push(`/${locale}/dashboard/publish`),
+                    5000
+                )
+            }
+            return
+        }
+
+        // Twitch OAuth response
+        if (twitchParam) {
+            if (twitchParam === "success") {
+                setOauthMsg({
+                    text: "✅ Twitch connected successfully!",
+                    isError: false,
+                })
+                setTimeout(
+                    () => router.push(`/${locale}/dashboard/live`),
+                    1500
+                )
+            } else {
+                const msg = searchParams.get("error") || "unknown"
+                setOauthMsg({
+                    text: `❌ Twitch: ${decodeURIComponent(msg)}`,
+                    isError: true,
+                })
+                setTimeout(
+                    () => router.push(`/${locale}/dashboard/live`),
+                    5000
+                )
+            }
+            return
+        }
+
+        // Kick OAuth response
+        if (kickParam) {
+            if (kickParam === "success") {
+                setOauthMsg({
+                    text: "✅ Kick connected successfully!",
+                    isError: false,
+                })
+                setTimeout(
+                    () => router.push(`/${locale}/dashboard/live`),
+                    1500
+                )
+            } else {
+                const msg = searchParams.get("error") || "unknown"
+                setOauthMsg({
+                    text: `❌ Kick: ${decodeURIComponent(msg)}`,
+                    isError: true,
+                })
                 setTimeout(
                     () => router.push(`/${locale}/dashboard/publish`),
                     5000
@@ -43,9 +102,9 @@ function DashboardRedirect() {
             ? `/${locale}/dashboard/publish?youtube=${encodeURIComponent(youtubeParam)}`
             : `/${locale}/dashboard/publish`
         router.push(target)
-    }, [router, youtubeParam, locale, tiktokParam, tiktokReason])
+    }, [router, youtubeParam, locale, tiktokParam, tiktokReason, twitchParam, kickParam, searchParams])
 
-    if (tiktokMsg) {
+    if (oauthMsg) {
         return (
             <div
                 style={{
@@ -62,8 +121,8 @@ function DashboardRedirect() {
                         padding: "2rem",
                         borderRadius: "8px",
                         maxWidth: "600px",
-                        background: isError ? "#fff0f0" : "#f0fff0",
-                        border: `2px solid ${isError ? "#ff4444" : "#44bb44"}`,
+                        background: oauthMsg.isError ? "#fff0f0" : "#f0fff0",
+                        border: `2px solid ${oauthMsg.isError ? "#ff4444" : "#44bb44"}`,
                     }}
                 >
                     <pre
@@ -73,7 +132,7 @@ function DashboardRedirect() {
                             fontSize: "14px",
                         }}
                     >
-                        {tiktokMsg}
+                        {oauthMsg.text}
                     </pre>
                 </div>
             </div>

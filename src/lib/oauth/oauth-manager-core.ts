@@ -151,6 +151,50 @@ export class OAuthManager {
             })
         }
 
+        // Kick
+        if (process.env.KICK_CLIENT_ID && process.env.KICK_CLIENT_SECRET) {
+            this.configs.set("kick", {
+                clientId: process.env.KICK_CLIENT_ID,
+                clientSecret: process.env.KICK_CLIENT_SECRET,
+                redirectUri:
+                    process.env.KICK_REDIRECT_URI ||
+                    "http://localhost:3000/api/oauth/callback/kick",
+                scopes: [
+                    "user:read",
+                    "channel:read",
+                    "channel:write",
+                    "chat:write",
+                    "moderation:read",
+                    "moderation:write",
+                ],
+                authorizationUrl: "https://id.kick.com/oauth/authorize",
+                tokenUrl: "https://id.kick.com/oauth/token",
+                revokeUrl: "https://id.kick.com/oauth/revoke",
+            })
+        }
+
+        // Twitch
+        if (process.env.TWITCH_CLIENT_ID && process.env.TWITCH_CLIENT_SECRET) {
+            this.configs.set("twitch", {
+                clientId: process.env.TWITCH_CLIENT_ID,
+                clientSecret: process.env.TWITCH_CLIENT_SECRET,
+                redirectUri:
+                    process.env.TWITCH_REDIRECT_URI ||
+                    "http://localhost:3000/api/oauth/callback/twitch",
+                scopes: [
+                    "user:read",
+                    "channel:read",
+                    "channel:manage",
+                    "chat:read",
+                    "chat:edit",
+                    "moderator:manage",
+                ],
+                authorizationUrl: "https://id.twitch.tv/oauth2/authorize",
+                tokenUrl: "https://id.twitch.tv/oauth2/token",
+                revokeUrl: "https://id.twitch.tv/oauth2/revoke",
+            })
+        }
+
         logger.info("OAuth configurations initialized", {
             platforms: Array.from(this.configs.keys()),
         })

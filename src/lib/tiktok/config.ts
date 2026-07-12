@@ -145,6 +145,12 @@ export function getTikTokConfig(env?: EnvironmentConfig): TikTokConfig {
             RESEND_FROM_NAME: process.env.RESEND_FROM_NAME ?? "Gabriel Toth",
             TOKEN_ENCRYPTION_KEY: process.env.TOKEN_ENCRYPTION_KEY ?? "",
             OAUTH_STATE_SECRET: process.env.OAUTH_STATE_SECRET ?? "",
+            TWITCH_CLIENT_ID: process.env.TWITCH_CLIENT_ID ?? "",
+            TWITCH_CLIENT_SECRET: process.env.TWITCH_CLIENT_SECRET ?? "",
+            TWITCH_REDIRECT_URI: process.env.TWITCH_REDIRECT_URI ?? "",
+            KICK_CLIENT_ID: process.env.KICK_CLIENT_ID ?? "",
+            KICK_CLIENT_SECRET: process.env.KICK_CLIENT_SECRET ?? "",
+            KICK_REDIRECT_URI: process.env.KICK_REDIRECT_URI ?? "",
         }
 
         configInstance = createTikTokConfig(resolvedEnv)

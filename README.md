@@ -133,6 +133,25 @@ npm run clean            # Clean build files
 
 ---
 
+## 🌐 Social Network Status
+
+| Platform | Local Dev | Production | Setup | Cost |
+|----------|-----------|------------|-------|------|
+| **LinkedIn** | ✅ Works | ✅ Works | [Tutorial](#linkedin) | Free |
+| **YouTube** | ✅ Works | ✅ Works | [Tutorial](#youtube) | Free |
+| **TikTok** | ✅ Works | ✅ Works | [Tutorial](#tiktok) | Free |
+| **Twitter/X** | ✅ Local only | ❌ Requires credits | [Tutorial](#twitterx) | ~$0.03/post (X API credits) |
+| **Facebook** | ✅ Local only | ❌ Requires CNPJ | [Tutorial](#facebook) | Free (requires Meta Business acc.) |
+| **Instagram** | ✅ Local only | ❌ Requires CNPJ | [Tutorial](#instagram) | Free (requires Meta Business acc.) |
+
+### 📌 Important Notes
+
+- **Twitter/X**: The X API v2 requires **Pay Per Use** enrollment. Each post consumes credits (~$0.015/credit, ~2 credits per post). You need to purchase credits on [console.x.com](https://console.x.com) for posting to work. See setup tutorial below.
+- **Facebook/Instagram**: Require a **CNPJ** (Brazilian business ID) for Meta's **Advanced Access** (needed for publishing in production). In local development you can use `FACEBOOK_PAGE_ACCESS_TOKEN` and `INSTAGRAM_PAGE_ACCESS_TOKEN` env vars as a bypass.
+- **LinkedIn, YouTube, TikTok**: Work fully in both local and production with proper OAuth credentials.
+
+---
+
 ## ⚡ Tech Stack
 
 - **Framework**: Next.js 16 (App Router)
@@ -255,6 +274,198 @@ The application supports both cloud and local deployment:
 - Use app-specific passwords for SMTP (not your main password)
 - Rotate `SMTP_PASSWORD` regularly
 - Use strong, unique passwords for all services
+
+---
+
+## 🔑 Social Network Setup Tutorials
+
+Each network requires its own developer app and credentials. Follow the tutorial for the networks you want to use.
+
+---
+
+### LinkedIn
+
+**Status**: ✅ Works locally and in production (free)
+
+1. **Go to** [LinkedIn Developer Portal](https://www.linkedin.com/developers/)
+2. **Create an app**: Click "Create app" → Name it → Select your LinkedIn page → Upload logo
+3. **Get credentials**: Go to "Auth" tab → Copy `Client ID` and `Client Secret`
+4. **Set redirect URI**: Add `http://localhost:3000/api/oauth/callback/linkedin`
+5. **Configure in `.env.local`**:
+   ```env
+   LINKEDIN_CLIENT_ID=your-client-id
+   LINKEDIN_CLIENT_SECRET=your-client-secret
+   LINKEDIN_REDIRECT_URI=http://localhost:3000/api/oauth/callback/linkedin
+   ```
+
+---
+
+### YouTube
+
+**Status**: ✅ Works locally and in production (free)
+
+YouTube uses the **same Google Cloud OAuth credentials** as Google Sign-In — you just need to enable the YouTube Data API.
+
+1. **Go to** [Google Cloud Console](https://console.cloud.google.com/)
+2. **Select your project** (or create one)
+3. **Enable YouTube Data API v3**: APIs & Services → Library → Search "YouTube Data API v3" → Enable
+4. **Edit your OAuth 2.0 Client**: APIs & Services → Credentials → Click your Web client → Add redirect URIs:
+   - `http://localhost:3000/api/oauth/callback/youtube`
+5. **Configure in `.env.local`** (same values as Google OAuth):
+   ```env
+   YOUTUBE_CLIENT_ID=your-google-client-id
+   YOUTUBE_CLIENT_SECRET=your-google-client-secret
+   YOUTUBE_REDIRECT_URI=http://localhost:3000/api/oauth/callback/youtube
+   ```
+
+---
+
+### TikTok
+
+**Status**: ✅ Works locally and in production (free)
+
+1. **Go to** [TikTok Developers](https://developers.tiktok.com/)
+2. **Create an app**: Click "Create App" → Fill in details → Submit for review (automatic for basic scopes)
+3. **Get credentials**: Go to "App Settings" → Copy `Client Key` and `Client Secret`
+4. **Set redirect URI**: Add `http://localhost:3000/api/oauth/callback/tiktok`
+5. **Configure in `.env.local`**:
+   ```env
+   TIKTOK_CLIENT_KEY=your-client-key
+   TIKTOK_CLIENT_SECRET=your-client-secret
+   TIKTOK_REDIRECT_URI=http://localhost:3000/api/oauth/callback/tiktok
+   ```
+
+---
+
+### Twitter/X
+
+**Status**: ✅ Local only — requires **Pay Per Use** credits (~$0.03/post)
+
+> ⚠️ **Important**: X API v2 requires the app to be enrolled in a **Pay Per Use** project. The legacy free tier for posting was discontinued in February 2026. Each post costs credits (~$0.015/credit, ~2 credits per post).
+
+#### Step 1: Create a Developer Account
+
+1. **Go to** [console.x.com](https://console.x.com)
+2. **Sign up** for a developer account (you need an X/Twitter account)
+3. **Accept** the Developer Agreement
+4. **Select** the **Pay Per Use** plan (this requires adding a payment method)
+
+#### Step 2: Get the Organization ID
+
+1. In the console, your URL will be: `https://console.x.com/accounts/{orgId}/...`
+2. Copy the `{orgId}` number from the URL
+
+#### Step 3: Create an App via API
+
+Since the console UI creates standalone apps (not attached to projects), use the API:
+
+```bash
+# Get your auth cookie from the browser console:
+# 1. Open chrome dev tools on console.x.com
+# 2. Type: document.cookie
+# 3. Copy the auth cookie
+
+# Create the app with project enrollment:
+curl -X POST "https://console.x.com/api/client-applications" \
+  -H "Content-Type: application/json" \
+  -H "Cookie: your-auth-cookie" \
+  -d '{
+    "appName": "my-app-name",
+    "projectId": "your-pay-per-use-project-id",
+    "enrollmentId": "your-pay-per-use-enrollment-id",
+    "stage": "development"
+  }'
+```
+
+> To find your `projectId` and `enrollmentId`, call:
+> ```bash
+> curl "https://console.x.com/api/accounts/{orgId}/projects"
+> curl "https://console.x.com/api/accounts/{orgId}/structured-enrollments"
+> ```
+
+#### Step 4: Assign App to Project
+
+```bash
+curl -X POST "https://console.x.com/api/accounts/{orgId}/projects/{projectId}/client-applications/{appId}/connected" \
+  -H "Content-Type: application/json" \
+  -H "Cookie: your-auth-cookie" \
+  -d '{"environment": "development"}'
+```
+
+#### Step 5: Get OAuth 1.0a Keys
+
+1. Go to your app page in the console
+2. Under "Keys and Tokens", generate:
+   - **API Key** → `TWITTER_CLIENT_ID`
+   - **API Key Secret** → `TWITTER_CLIENT_SECRET`
+   - **Access Token** → `TWITTER_ACCESS_TOKEN` (optional — users get their own via OAuth)
+
+#### Step 6: Configure in `.env.local`
+
+```env
+TWITTER_CLIENT_ID=your-consumer-key
+TWITTER_CLIENT_SECRET=your-consumer-secret
+TWITTER_REDIRECT_URI=http://localhost:3000/api/oauth/callback/twitter
+```
+
+#### Step 7: Purchase Credits
+
+1. Go to [console.x.com billing](https://console.x.com/accounts/{orgId}/billing/credits)
+2. Purchase credits (minimum purchase applies)
+3. Each text-only post costs ~$0.015 (1 credit)
+4. Posts with links cost ~$0.20 (13 credits)
+
+---
+
+### Facebook
+
+**Status**: ✅ Local only — requires **CNPJ** for production
+
+> ⚠️ Facebook publishing requires Meta's **Advanced Access** for `pages_manage_posts` permission. This requires a **CNPJ** (Brazilian business ID) or equivalent business verification.
+
+#### Local Development Setup (Bypass)
+
+For local testing, use a long-lived Page Access Token:
+
+1. **Go to** [developers.facebook.com](https://developers.facebook.com/)
+2. **Create or select** a Facebook App
+3. **Get credentials**: App Settings → Basic → Copy `App ID` and `App Secret`
+4. **Get a Page Access Token** via [Graph API Explorer](https://developers.facebook.com/tools/explorer/):
+   - Select your app
+   - Request `pages_manage_posts` + `pages_read_engagement`
+   - Click "Get Token" → Authorize
+   - Call `GET /me/accounts` to get your Page ID and Page Access Token
+5. **Configure in `.env.local`**:
+   ```env
+   FACEBOOK_APP_ID=your-app-id
+   FACEBOOK_APP_SECRET=your-app-secret
+   FACEBOOK_REDIRECT_URI=http://localhost:3000/api/oauth/callback/facebook
+   FACEBOOK_PAGE_ID=your-page-id
+   FACEBOOK_PAGE_ACCESS_TOKEN=your-long-lived-token
+   ```
+
+---
+
+### Instagram
+
+**Status**: ✅ Local only — requires **CNPJ** for production
+
+> ⚠️ Instagram publishing requires the same Meta Advanced Access as Facebook, which needs a **CNPJ**. For local testing, use the long-lived access token bypass.
+
+#### Local Development Setup (Bypass)
+
+1. **Prerequisites**: A Facebook Page connected to an Instagram Business/Creator account
+2. **Get your Instagram Business Account ID**:
+   - In Graph API Explorer, call: `GET /{fb-page-id}?fields=instagram_business_account`
+   - Copy the returned `instagram_business_account` ID
+3. **Configure in `.env.local`** (uses the same Meta app as Facebook):
+   ```env
+   INSTAGRAM_APP_ID=your-facebook-app-id
+   INSTAGRAM_APP_SECRET=your-facebook-app-secret
+   INSTAGRAM_REDIRECT_URI=http://localhost:3000/api/oauth/callback/instagram
+   INSTAGRAM_BUSINESS_ACCOUNT_ID=your-ig-business-id
+   INSTAGRAM_PAGE_ACCESS_TOKEN=your-long-lived-fb-token
+   ```
 
 ---
 

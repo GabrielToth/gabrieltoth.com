@@ -28,16 +28,16 @@ interface ConnectedChannel {
 }
 
 /** All available platforms */
+// localOnly = only works in local development (no production OAuth app review)
 const ALL_PLATFORMS = [
     { id: "youtube", name: "YouTube", implemented: true },
-    { id: "facebook", name: "Facebook", implemented: true },
-    { id: "instagram", name: "Instagram", implemented: true },
     { id: "tiktok", name: "TikTok", implemented: true },
+    { id: "twitch", name: "Twitch", implemented: true },
+    { id: "kick", name: "Kick", implemented: true },
+    { id: "facebook", name: "Facebook", implemented: true, localOnly: true },
+    { id: "instagram", name: "Instagram", implemented: true, localOnly: true },
     { id: "twitter", name: "Twitter/X", implemented: false },
     { id: "linkedin", name: "LinkedIn", implemented: false },
-    { id: "kick", name: "Kick", implemented: false },
-    { id: "twitch", name: "Twitch", implemented: false },
-    { id: "trovo", name: "Trovo", implemented: false },
     { id: "kwai", name: "Kwai", implemented: false },
 ] as const
 
@@ -50,7 +50,6 @@ const PLATFORM_ICONS: Record<string, string> = {
     linkedin: "Linkedin",
     kick: "Kick",
     twitch: "Twitch",
-    trovo: "Trovo",
     kwai: "Kwai",
 }
 
@@ -358,7 +357,7 @@ export default function ChannelsPage() {
                                                 <p className="font-medium text-gray-900 dark:text-white">
                                                     {platform.name}
                                                 </p>
-                                                {!platform.implemented && (
+                                                {!platform.implemented ? (
                                                     <Badge
                                                         variant="secondary"
                                                         className="mt-0.5 text-xs"
@@ -367,7 +366,16 @@ export default function ChannelsPage() {
                                                             "channels.notImplemented"
                                                         )}
                                                     </Badge>
-                                                )}
+                                                ) : (platform as any).localOnly ? (
+                                                    <Badge
+                                                        variant="outline"
+                                                        className="mt-0.5 text-xs border-amber-300 text-amber-700 bg-amber-50 dark:border-amber-700 dark:text-amber-400 dark:bg-amber-950/30"
+                                                    >
+                                                        {t(
+                                                            "channels.localOnly"
+                                                        )}
+                                                    </Badge>
+                                                ) : null}
                                             </div>
                                         </div>
                                         <Button

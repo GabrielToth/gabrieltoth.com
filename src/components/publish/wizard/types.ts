@@ -12,7 +12,6 @@ export const CONTENT_TYPE_PLATFORMS: Record<ContentType, string[]> = {
         "tiktok",
         "kick",
         "twitch",
-        "trovo",
         "kwai",
     ],
     video: [
@@ -22,7 +21,6 @@ export const CONTENT_TYPE_PLATFORMS: Record<ContentType, string[]> = {
         "tiktok",
         "kick",
         "twitch",
-        "trovo",
         "kwai",
     ],
 }
@@ -257,7 +255,6 @@ export const PLATFORM_VIDEO_LIMITS: Record<string, number> = {
     tiktok: 512 * 1024 * 1024, // 512 MB
     kick: 16 * 1024 * 1024 * 1024, // 16 GB
     twitch: 10 * 1024 * 1024 * 1024, // 10 GB
-    trovo: 500 * 1024 * 1024, // 500 MB
     kwai: 200 * 1024 * 1024, // 200 MB
 }
 

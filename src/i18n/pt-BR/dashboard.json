@@ -1,6 +1,7 @@
 {
     "sidebar": {
         "publish": "Publicar",
+        "live": "Ao Vivo",
         "insights": "Insights",
         "channels": "Canais",
         "settings": "Configurações",
@@ -319,6 +320,17 @@
         "noAuthUrl": "Nenhuma URL de autorização retornada",
         "failedToDisconnectYoutube": "Falha ao desconectar YouTube"
     },
+    "live": {
+        "title": "Painel Ao Vivo",
+        "description": "Gerencie suas transmissões ao vivo no Twitch e Kick",
+        "loading": "Carregando status das transmissões...",
+        "error": "Falha ao carregar dados das transmissões",
+        "retry": "Tentar novamente",
+        "noPlatforms": "Nenhuma plataforma ao vivo conectada. Conecte Twitch ou Kick para começar.",
+        "connectPlatforms": "Conectar Plataformas",
+        "streamSettings": "Configurações de Stream",
+        "unifiedChat": "Chat Unificado"
+    },
     "channels": {
         "channels": "Canais",
         "description": "Gerencie todos os seus canais de mídia social conectados",
@@ -333,6 +345,7 @@
         "disconnect": "Desconectar",
         "available": "Plataformas Disponíveis",
         "notImplemented": "Não implementado",
+        "localOnly": "Apenas local",
         "addAnother": "Adicionar Outro",
         "connect": "Conectar"
     }

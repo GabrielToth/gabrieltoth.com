@@ -67,6 +67,16 @@ export interface EnvironmentConfig {
     INSTAGRAM_BUSINESS_ACCOUNT_ID: string
     INSTAGRAM_PAGE_ACCESS_TOKEN: string
 
+    // Twitch OAuth (Twitch account linking)
+    TWITCH_CLIENT_ID: string
+    TWITCH_CLIENT_SECRET: string
+    TWITCH_REDIRECT_URI: string
+
+    // Kick OAuth (Kick account linking)
+    KICK_CLIENT_ID: string
+    KICK_CLIENT_SECRET: string
+    KICK_REDIRECT_URI: string
+
     // Email via Supabase Auth (configured in Supabase Dashboard SMTP)
     EMAIL_FROM: string
 
@@ -137,6 +147,12 @@ function parseConfig(): EnvironmentConfig {
             process.env.INSTAGRAM_BUSINESS_ACCOUNT_ID ?? "",
         INSTAGRAM_PAGE_ACCESS_TOKEN:
             process.env.INSTAGRAM_PAGE_ACCESS_TOKEN ?? "",
+        TWITCH_CLIENT_ID: process.env.TWITCH_CLIENT_ID ?? "",
+        TWITCH_CLIENT_SECRET: process.env.TWITCH_CLIENT_SECRET ?? "",
+        TWITCH_REDIRECT_URI: process.env.TWITCH_REDIRECT_URI ?? "",
+        KICK_CLIENT_ID: process.env.KICK_CLIENT_ID ?? "",
+        KICK_CLIENT_SECRET: process.env.KICK_CLIENT_SECRET ?? "",
+        KICK_REDIRECT_URI: process.env.KICK_REDIRECT_URI ?? "",
         EMAIL_FROM: process.env.EMAIL_FROM ?? "noreply@gabrieltoth.com",
         RESEND_API_KEY: process.env.RESEND_API_KEY ?? "",
         RESEND_FROM_EMAIL:

@@ -17,6 +17,7 @@ export const CURRENT_SCOPE_VERSIONS: Record<string, number> = {
     facebook: 1, // v1 = initial pages_manage_posts, pages_read_engagement
     instagram: 1, // v1 = initial instagram_basic, instagram_content_publish
     tiktok: 1, // v1 = initial video.publish, user.info.basic
+    twitch: 1, // v1 = initial user:read, channel:read, chat:read, chat:edit
     kick: 1, // v1 = initial user:read, channel:read, chat:write
     twitter: 1, // v1 = initial tweet.write, tweet.read
     linkedin: 2, // v2 = added w_organization_social, openid, profile, email scopes

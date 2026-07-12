@@ -30,6 +30,7 @@ const VALID_PLATFORMS = new Set([
     "linkedin",
     "twitch",
     "tiktok",
+    "kick",
 ])
 
 const logger = createLogger("ConnectChannel")
