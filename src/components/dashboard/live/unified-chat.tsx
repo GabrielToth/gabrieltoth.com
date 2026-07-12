@@ -1,26 +1,13 @@
 /**
  * UnifiedChat Component
  * Displays combined chat feed from multiple platforms (Twitch + Kick)
- * Allows sending messages and basic moderation
+ * Uses SSE backend for real-time messages. Send remains simulated.
  */
 
 "use client"
 
-import { useState, useRef, useEffect } from "react"
-
-interface ChatMessage {
-    id: string
-    platform: string
-    username: string
-    displayName: string
-    content: string
-    timestamp: number
-    badges: string[]
-    isBroadcaster?: boolean
-    isModerator?: boolean
-    isSubscriber?: boolean
-    isAction?: boolean
-}
+import { useChatSSE } from "@/hooks/use-chat-sse"
+import { useRef, useEffect, useState } from "react"
 
 interface UnifiedChatProps {
     platforms: string[]
@@ -28,32 +15,12 @@ interface UnifiedChatProps {
 }
 
 export function UnifiedChat({ platforms }: UnifiedChatProps) {
-    const [messages, setMessages] = useState<ChatMessage[]>([])
+    const { messages, isConnected, error } = useChatSSE(platforms)
     const [input, setInput] = useState("")
-    const [connected, setConnected] = useState(false)
-    const [selectedPlatform, setSelectedPlatform] = useState(platforms[0] || "twitch")
+    const [selectedPlatform, setSelectedPlatform] = useState(
+        platforms[0] || "twitch"
+    )
     const messagesEndRef = useRef<HTMLDivElement>(null)
-
-    // Simulated connection (in production, connects to WebSocket/SSE backend)
-    useEffect(() => {
-        setConnected(true)
-
-        // Add simulated welcome messages
-        const welcome: ChatMessage = {
-            id: "welcome",
-            platform: "system",
-            username: "system",
-            displayName: "System",
-            content: "Chat connected. Waiting for messages...",
-            timestamp: Date.now(),
-            badges: [],
-        }
-        setMessages([welcome])
-
-        return () => {
-            setConnected(false)
-        }
-    }, [])
 
     // Auto-scroll to bottom on new messages
     useEffect(() => {
@@ -63,45 +30,28 @@ export function UnifiedChat({ platforms }: UnifiedChatProps) {
     const handleSend = async () => {
         if (!input.trim()) return
 
-        const message: ChatMessage = {
-            id: `msg-${Date.now()}`,
-            platform: selectedPlatform,
-            username: "ogabrieltoth",
-            displayName: "GabrielToth",
-            content: input.trim(),
-            timestamp: Date.now(),
-            badges: ["broadcaster"],
-            isBroadcaster: true,
-        }
-
-        setMessages(prev => [...prev, message])
+        // Simulated send — POST endpoint not yet implemented
         setInput("")
-
-        // In production, this would send via API:
-        // await fetch(`/api/chat/send`, { method: 'POST', body: JSON.stringify({ platform, roomId, message }) })
     }
 
-    const handleTimeout = (username: string) => {
-        const timeoutMsg: ChatMessage = {
-            id: `timeout-${Date.now()}`,
-            platform: "system",
-            username: "system",
-            displayName: "System",
-            content: `/timeout ${username} 1s`,
-            timestamp: Date.now(),
-            badges: [],
-        }
-        setMessages(prev => [...prev, timeoutMsg])
-
-        // In production: await fetch(`/api/chat/timeout`, { method: 'POST', body: ... })
+    const handleTimeout = (_username: string) => {
+        // Simulated timeout — POST endpoint not yet implemented
     }
 
-    const getPlatformBadge = (platform: string): { color: string; label: string } => {
+    const getPlatformBadge = (
+        platform: string
+    ): { color: string; label: string } => {
         switch (platform) {
             case "twitch":
                 return { color: "#9146FF", label: "Twitch" }
             case "kick":
                 return { color: "#53FC18", label: "Kick" }
+            case "youtube":
+                return { color: "#FF0000", label: "YouTube" }
+            case "facebook":
+                return { color: "#1877F2", label: "Facebook" }
+            case "instagram":
+                return { color: "#E4405F", label: "Instagram" }
             default:
                 return { color: "#6B7280", label: platform }
         }
@@ -128,7 +78,17 @@ export function UnifiedChat({ platforms }: UnifiedChatProps) {
                                 : "bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400"
                         }`}
                     >
-                        {platform === "twitch" ? "Twitch" : "Kick"}
+                        {platform === "twitch"
+                            ? "Twitch"
+                            : platform === "kick"
+                              ? "Kick"
+                              : platform === "youtube"
+                                ? "YouTube"
+                                : platform === "facebook"
+                                  ? "Facebook"
+                                  : platform === "instagram"
+                                    ? "Instagram"
+                                    : platform}
                     </button>
                 ))}
             </div>
@@ -137,10 +97,15 @@ export function UnifiedChat({ platforms }: UnifiedChatProps) {
             <div className="flex items-center gap-2 mb-3 text-xs text-gray-500">
                 <span
                     className={`inline-block h-2 w-2 rounded-full ${
-                        connected ? "bg-green-500" : "bg-red-500"
+                        isConnected ? "bg-green-500" : "bg-red-500"
                     }`}
                 />
-                {connected ? "Connected" : "Disconnected"}
+                {isConnected ? "Connected" : "Disconnected"}
+                {error && (
+                    <span className="text-red-500 ml-2">
+                        {error.platform}: {error.error}
+                    </span>
+                )}
             </div>
 
             {/* Messages */}
@@ -161,12 +126,15 @@ export function UnifiedChat({ platforms }: UnifiedChatProps) {
 
                             {/* Badges */}
                             <div className="flex gap-0.5 shrink-0">
-                                {msg.isBroadcaster && (
-                                    <span className="text-xs" title="Broadcaster">
+                                {msg.user.isBroadcaster && (
+                                    <span
+                                        className="text-xs"
+                                        title="Broadcaster"
+                                    >
                                         👑
                                     </span>
                                 )}
-                                {msg.isModerator && (
+                                {msg.user.isModerator && (
                                     <span className="text-xs" title="Moderator">
                                         🛡️
                                     </span>
@@ -176,14 +144,14 @@ export function UnifiedChat({ platforms }: UnifiedChatProps) {
                             {/* Username */}
                             <span
                                 className={`text-sm font-medium shrink-0 ${
-                                    msg.isBroadcaster
+                                    msg.user.isBroadcaster
                                         ? "text-purple-600"
-                                        : msg.isModerator
+                                        : msg.user.isModerator
                                           ? "text-green-600"
                                           : "text-gray-900 dark:text-white"
                                 }`}
                             >
-                                {msg.displayName}
+                                {msg.user.displayName}
                             </span>
 
                             {/* Message content */}
@@ -201,10 +169,10 @@ export function UnifiedChat({ platforms }: UnifiedChatProps) {
                                     {formatTime(msg.timestamp)}
                                 </span>
                                 {msg.platform !== "system" &&
-                                    msg.username !== "ogabrieltoth" && (
+                                    msg.user.username !== "ogabrieltoth" && (
                                         <button
                                             onClick={() =>
-                                                handleTimeout(msg.username)
+                                                handleTimeout(msg.user.username)
                                             }
                                             className="text-xs text-red-500 hover:text-red-700"
                                             title="Timeout 1s"
