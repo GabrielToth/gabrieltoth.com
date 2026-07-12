@@ -29,14 +29,17 @@ export interface TwitchConfig {
 }
 
 const DEFAULT_SCOPES = [
-    "user:read",
-    "channel:read",
-    "channel:manage",
     "chat:read",
     "chat:edit",
-    "moderator:manage",
-    "user:read:broadcast",
+    "moderation:read",
+    "moderator:manage:banned_users",
+    "moderator:manage:announcements",
+    "moderator:manage:chat_messages",
+    "channel:manage:broadcast",
+    "channel:read:subscriptions",
     "channel:moderate",
+    "user:read:broadcast",
+    "user:read:email",
     "whispers:read",
     "whispers:edit",
 ]
