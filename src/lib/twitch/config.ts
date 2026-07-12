@@ -42,6 +42,7 @@ const DEFAULT_SCOPES = [
     "user:read:email",
     "whispers:read",
     "whispers:edit",
+    "channel:read:stream_key",
 ]
 
 export function createTwitchConfig(): TwitchConfig {
