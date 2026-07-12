@@ -13,7 +13,7 @@ import {
     FaYoutube,
 } from "react-icons/fa"
 import { SiKick } from "react-icons/si"
-import { MdLiveTv, MdVideocam } from "react-icons/md"
+import { MdVideocam } from "react-icons/md"
 
 export type IconName =
     | keyof typeof LucideIcons
@@ -28,7 +28,6 @@ export type IconName =
     | "Linkedin"
     | "Kick"
     | "Twitch"
-    | "Trovo"
     | "Kwai"
 
 export const getIconByName = (name: IconName): LucideIcon | IconType => {
@@ -44,7 +43,6 @@ export const getIconByName = (name: IconName): LucideIcon | IconType => {
     if (name === "Linkedin") return FaLinkedin
     if (name === "Kick") return SiKick
     if (name === "Twitch") return FaTwitch
-    if (name === "Trovo") return MdLiveTv
     if (name === "Kwai") return MdVideocam
 
     // Handle Lucide icons

@@ -48,9 +48,7 @@ export function generatePersonStructuredData(
             "https://www.linkedin.com/in/ogabrieltoth",
             "https://www.instagram.com/ogabrieltoth",
             "https://kick.com/ogabrieltoth",
-            "https://trovo.live/ogabrieltoth",
             "https://dlive.tv/ogabrieltoth",
-            "https://odysee.com/@ogabrieltoth",
         ],
         jobTitle:
             locale === "pt-BR"
@@ -151,9 +149,7 @@ export function generateOrganizationStructuredData(
             "https://www.linkedin.com/in/ogabrieltoth",
             "https://www.instagram.com/ogabrieltoth",
             "https://kick.com/ogabrieltoth",
-            "https://trovo.live/ogabrieltoth",
             "https://dlive.tv/ogabrieltoth",
-            "https://odysee.com/@ogabrieltoth",
         ],
         description:
             locale === "pt-BR"

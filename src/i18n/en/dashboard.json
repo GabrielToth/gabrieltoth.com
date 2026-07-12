@@ -1,6 +1,7 @@
 {
     "sidebar": {
         "publish": "Publish",
+        "live": "Live",
         "insights": "Insights",
         "channels": "Channels",
         "settings": "Settings",
@@ -318,6 +319,17 @@
         "noAuthUrl": "No authorization URL returned",
         "failedToDisconnectYoutube": "Failed to disconnect YouTube"
     },
+    "live": {
+        "title": "Live Dashboard",
+        "description": "Manage your live streams on Twitch and Kick",
+        "loading": "Loading stream status...",
+        "error": "Failed to load stream data",
+        "retry": "Retry",
+        "noPlatforms": "No live platforms connected. Connect Twitch or Kick to get started.",
+        "connectPlatforms": "Connect Platforms",
+        "streamSettings": "Stream Settings",
+        "unifiedChat": "Unified Chat"
+    },
     "channels": {
         "channels": "Channels",
         "description": "Manage all your connected social media channels",
@@ -332,6 +344,7 @@
         "disconnect": "Disconnect",
         "available": "Available Platforms",
         "notImplemented": "Not implemented",
+        "localOnly": "Local only",
         "addAnother": "Add Another",
         "connect": "Connect"
     }

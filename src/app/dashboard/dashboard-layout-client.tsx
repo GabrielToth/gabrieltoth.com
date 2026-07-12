@@ -5,7 +5,7 @@ import { useTranslations } from "next-intl"
 import { useParams, usePathname, useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 
-type DashboardTab = "publish" | "insights" | "channels" | "settings"
+type DashboardTab = "publish" | "live" | "insights" | "channels" | "settings"
 
 export default function DashboardClientLayout({
     children,
@@ -28,6 +28,8 @@ export default function DashboardClientLayout({
             setActiveTab("publish")
         } else if (pathname.includes("/dashboard/insights")) {
             setActiveTab("insights")
+        } else if (pathname.includes("/dashboard/live")) {
+            setActiveTab("live")
         } else if (pathname.includes("/dashboard/channels")) {
             setActiveTab("channels")
         } else if (pathname.includes("/dashboard/settings")) {
