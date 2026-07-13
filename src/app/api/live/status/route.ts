@@ -29,18 +29,15 @@ async function fetchTwitchStream(
     userId: string
 ): Promise<Partial<PlatformStreamInfo>> {
     try {
-        const tokenResponse = await fetch(
-            "https://id.twitch.tv/oauth2/token",
-            {
-                method: "POST",
-                headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                body: new URLSearchParams({
-                    client_id: process.env.TWITCH_CLIENT_ID || "",
-                    client_secret: process.env.TWITCH_CLIENT_SECRET || "",
-                    grant_type: "client_credentials",
-                }),
-            }
-        )
+        const tokenResponse = await fetch("https://id.twitch.tv/oauth2/token", {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: new URLSearchParams({
+                client_id: process.env.TWITCH_CLIENT_ID || "",
+                client_secret: process.env.TWITCH_CLIENT_SECRET || "",
+                grant_type: "client_credentials",
+            }),
+        })
 
         if (!tokenResponse.ok) {
             logger.warn("Twitch app token fetch failed", {
@@ -140,8 +137,7 @@ async function fetchKickStream(
         if (!channel) return {}
 
         const isLive =
-            channel.livestream?.is_live === true ||
-            channel.is_live === true
+            channel.livestream?.is_live === true || channel.is_live === true
 
         return {
             isLive,
@@ -333,7 +329,13 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
         const { data: networks, error } = await supabase
             .from("social_networks")
             .select("*")
-            .in("platform", ["youtube", "facebook", "instagram", "twitch", "kick"])
+            .in("platform", [
+                "youtube",
+                "facebook",
+                "instagram",
+                "twitch",
+                "kick",
+            ])
             .eq("user_id", userId)
             .eq("status", "connected")
 
@@ -358,8 +360,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
                     network.metadata?.displayName ||
                     network.platform_username ||
                     "",
-                profileImageUrl:
-                    network.metadata?.profileImageUrl || null,
+                profileImageUrl: network.metadata?.profileImageUrl || null,
                 isLive: false,
                 viewerCount: 0,
                 title: "",
@@ -376,8 +377,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
                     if (accessToken) {
                         const twitchData = await fetchTwitchStream(
                             accessToken,
-                            network.provider_user_id ||
-                                network.platform_user_id
+                            network.provider_user_id || network.platform_user_id
                         )
                         platforms.push({ ...baseInfo, ...twitchData })
                     } else {
@@ -427,8 +427,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
                     if (pageAccessToken) {
                         const igData = await fetchInstagramLive(
                             pageAccessToken,
-                            network.metadata
-                                ?.instagram_business_account_id ||
+                            network.metadata?.instagram_business_account_id ||
                                 network.platform_user_id ||
                                 ""
                         )

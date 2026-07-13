@@ -55,7 +55,13 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
             .update(codeVerifier)
             .digest("base64url")
 
-        const signedState = generateState(userId, "kick", undefined, undefined, codeVerifier)
+        const signedState = generateState(
+            userId,
+            "kick",
+            undefined,
+            undefined,
+            codeVerifier
+        )
 
         const params = new URLSearchParams({
             client_id: config.oauth.clientId,

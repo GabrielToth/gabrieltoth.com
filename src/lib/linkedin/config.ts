@@ -34,12 +34,7 @@ export interface LinkedInConfig {
  * NOTE: r_liteprofile and r_emailaddress are legacy v2 scopes that are no longer
  * valid for new apps. w_organization_social requires an Organization-level app.
  */
-const DEFAULT_SCOPES = [
-    "w_member_social",
-    "openid",
-    "profile",
-    "email",
-]
+const DEFAULT_SCOPES = ["w_member_social", "openid", "profile", "email"]
 
 export function createLinkedInConfig(env: EnvironmentConfig): LinkedInConfig {
     return {
