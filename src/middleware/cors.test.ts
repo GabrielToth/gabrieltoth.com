@@ -78,6 +78,7 @@ describe("CORS Middleware", () => {
                 },
                 session: {} as any,
                 logging: {} as any,
+                notifications: { telegramBotToken: "", telegramChatId: "" },
             })
             const config = getConfig()
 
@@ -115,6 +116,7 @@ describe("CORS Middleware", () => {
                 },
                 session: {} as any,
                 logging: {} as any,
+                notifications: { telegramBotToken: "", telegramChatId: "" },
             })
             const config = getConfig()
 
@@ -152,6 +154,7 @@ describe("CORS Middleware", () => {
                 },
                 session: {} as any,
                 logging: {} as any,
+                notifications: { telegramBotToken: "", telegramChatId: "" },
             })
             const config = getConfig()
 
@@ -195,6 +198,7 @@ describe("CORS Middleware", () => {
                 },
                 session: {} as any,
                 logging: {} as any,
+                notifications: { telegramBotToken: "", telegramChatId: "" },
             })
 
             const request = createRequest({
@@ -244,6 +248,7 @@ describe("CORS Middleware", () => {
                 },
                 session: {} as any,
                 logging: {} as any,
+                notifications: { telegramBotToken: "", telegramChatId: "" },
             })
 
             const request = createRequest({
@@ -289,6 +294,7 @@ describe("CORS Middleware", () => {
                 },
                 session: {} as any,
                 logging: {} as any,
+                notifications: { telegramBotToken: "", telegramChatId: "" },
             })
 
             const request = createRequest({
@@ -337,6 +343,7 @@ describe("CORS Middleware", () => {
                 },
                 session: {} as any,
                 logging: {} as any,
+                notifications: { telegramBotToken: "", telegramChatId: "" },
             })
 
             const handler = vi
@@ -385,6 +392,7 @@ describe("CORS Middleware", () => {
                 },
                 session: {} as any,
                 logging: {} as any,
+                notifications: { telegramBotToken: "", telegramChatId: "" },
             })
 
             const handler = vi.fn()
@@ -432,6 +440,7 @@ describe("CORS Middleware", () => {
                 },
                 session: {} as any,
                 logging: {} as any,
+                notifications: { telegramBotToken: "", telegramChatId: "" },
             })
 
             const handler = vi
@@ -480,6 +489,7 @@ describe("CORS Middleware", () => {
                 },
                 session: {} as any,
                 logging: {} as any,
+                notifications: { telegramBotToken: "", telegramChatId: "" },
             })
 
             const handler = vi
@@ -521,3 +531,4 @@ describe("CORS Middleware", () => {
         })
     })
 })
+

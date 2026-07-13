@@ -57,6 +57,7 @@ describe("Security Headers Middleware (src/middleware/)", () => {
                 security: {} as any,
                 session: {} as any,
                 logging: {} as any,
+                notifications: { telegramBotToken: "", telegramChatId: "" },
             })
 
             const response = new NextResponse("test")
@@ -91,6 +92,7 @@ describe("Security Headers Middleware (src/middleware/)", () => {
                 security: {} as any,
                 session: {} as any,
                 logging: {} as any,
+                notifications: { telegramBotToken: "", telegramChatId: "" },
             })
 
             const response = new NextResponse("test")
@@ -116,6 +118,7 @@ describe("Security Headers Middleware (src/middleware/)", () => {
                 security: {} as any,
                 session: {} as any,
                 logging: {} as any,
+                notifications: { telegramBotToken: "", telegramChatId: "" },
             })
 
             const response = new NextResponse("test")
@@ -155,6 +158,7 @@ describe("Security Headers Middleware (src/middleware/)", () => {
                 security: {} as any,
                 session: {} as any,
                 logging: {} as any,
+                notifications: { telegramBotToken: "", telegramChatId: "" },
             })
 
             const request = new NextRequest("http://localhost:3000/dashboard")
@@ -187,6 +191,7 @@ describe("Security Headers Middleware (src/middleware/)", () => {
                 security: {} as any,
                 session: {} as any,
                 logging: {} as any,
+                notifications: { telegramBotToken: "", telegramChatId: "" },
             })
 
             const headers = getSecurityHeadersObject()
@@ -220,6 +225,7 @@ describe("Security Headers Middleware (src/middleware/)", () => {
                 security: {} as any,
                 session: {} as any,
                 logging: {} as any,
+                notifications: { telegramBotToken: "", telegramChatId: "" },
             })
 
             const headers = getSecurityHeadersObject()
@@ -252,6 +258,7 @@ describe("Security Headers Middleware (src/middleware/)", () => {
                 security: {} as any,
                 session: {} as any,
                 logging: {} as any,
+                notifications: { telegramBotToken: "", telegramChatId: "" },
             })
 
             const handler = vi
@@ -284,6 +291,7 @@ describe("Security Headers Middleware (src/middleware/)", () => {
                 security: {} as any,
                 session: {} as any,
                 logging: {} as any,
+                notifications: { telegramBotToken: "", telegramChatId: "" },
             })
 
             const handler = vi
@@ -473,3 +481,4 @@ describe("Security Headers Middleware (src/middleware/)", () => {
         })
     })
 })
+

@@ -60,6 +60,10 @@ export interface EnvironmentConfiguration {
         format: "json" | "text"
         auditLogRetention: number
     }
+    notifications: {
+        telegramBotToken: string
+        telegramChatId: string
+    }
 }
 
 export function getEnvironmentConfiguration(): EnvironmentConfiguration {
@@ -92,6 +96,7 @@ export function getEnvironmentConfiguration(): EnvironmentConfiguration {
         security: getSecurityConfiguration(isProduction, appUrl),
         session: getSessionConfiguration(),
         logging: getLoggingConfiguration(isDevelopment),
+        notifications: getNotificationsConfiguration(),
     }
 }
 
@@ -222,6 +227,13 @@ function getLoggingConfiguration(
         level: isDevelopment ? "debug" : "info",
         format: isDevelopment ? "text" : "json",
         auditLogRetention: 90,
+    }
+}
+
+function getNotificationsConfiguration(): EnvironmentConfiguration["notifications"] {
+    return {
+        telegramBotToken: process.env.TELEGRAM_BOT_TOKEN || "",
+        telegramChatId: process.env.TELEGRAM_CHAT_ID || "",
     }
 }
 
