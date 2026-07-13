@@ -31,7 +31,9 @@ export function UnifiedChat({ platforms }: UnifiedChatProps) {
     const [messages, setMessages] = useState<ChatMessage[]>([])
     const [input, setInput] = useState("")
     const [connected, setConnected] = useState(false)
-    const [selectedPlatform, setSelectedPlatform] = useState(platforms[0] || "twitch")
+    const [selectedPlatform, setSelectedPlatform] = useState(
+        platforms[0] || "twitch"
+    )
     const messagesEndRef = useRef<HTMLDivElement>(null)
 
     // Simulated connection (in production, connects to WebSocket/SSE backend)
@@ -96,7 +98,9 @@ export function UnifiedChat({ platforms }: UnifiedChatProps) {
         // In production: await fetch(`/api/chat/timeout`, { method: 'POST', body: ... })
     }
 
-    const getPlatformBadge = (platform: string): { color: string; label: string } => {
+    const getPlatformBadge = (
+        platform: string
+    ): { color: string; label: string } => {
         switch (platform) {
             case "twitch":
                 return { color: "#9146FF", label: "Twitch" }
@@ -162,7 +166,10 @@ export function UnifiedChat({ platforms }: UnifiedChatProps) {
                             {/* Badges */}
                             <div className="flex gap-0.5 shrink-0">
                                 {msg.isBroadcaster && (
-                                    <span className="text-xs" title="Broadcaster">
+                                    <span
+                                        className="text-xs"
+                                        title="Broadcaster"
+                                    >
                                         👑
                                     </span>
                                 )}

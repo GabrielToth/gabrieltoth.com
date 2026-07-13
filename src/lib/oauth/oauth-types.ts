@@ -8,7 +8,14 @@
  * Supported OAuth platforms
  */
 export type OAuthPlatform =
-    "youtube" | "facebook" | "instagram" | "twitter" | "linkedin" | "tiktok" | "twitch" | "kick"
+    | "youtube"
+    | "facebook"
+    | "instagram"
+    | "twitter"
+    | "linkedin"
+    | "tiktok"
+    | "twitch"
+    | "kick"
 
 /**
  * OAuth configuration for a platform

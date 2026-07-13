@@ -49,8 +49,9 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
         const signedState = generateState(userId, "twitch")
 
-        const { authorizationUrl } =
-            oauthService.generateAuthorizationUrl(signedState.token)
+        const { authorizationUrl } = oauthService.generateAuthorizationUrl(
+            signedState.token
+        )
 
         logger.info("Twitch authorization URL generated (HMAC state)", {
             userId,

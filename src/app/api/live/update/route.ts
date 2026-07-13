@@ -34,18 +34,15 @@ async function updateTwitchStream(
             body.game_id = gameId
         }
 
-        const response = await fetch(
-            "https://api.twitch.tv/helix/channels",
-            {
-                method: "PATCH",
-                headers: {
-                    Authorization: `Bearer ${accessToken}`,
-                    "Client-Id": clientId,
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(body),
-            }
-        )
+        const response = await fetch("https://api.twitch.tv/helix/channels", {
+            method: "PATCH",
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+                "Client-Id": clientId,
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(body),
+        })
 
         if (!response.ok) {
             const errorBody = await response.text()

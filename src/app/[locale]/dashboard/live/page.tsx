@@ -31,8 +31,9 @@ export default function LiveDashboardPage() {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
     const [activePlatform, setActivePlatform] = useState<string>("twitch")
-    const [refreshInterval, setRefreshInterval] =
-        useState<ReturnType<typeof setInterval> | null>(null)
+    const [refreshInterval, setRefreshInterval] = useState<ReturnType<
+        typeof setInterval
+    > | null>(null)
 
     useEffect(() => {
         fetchStatus()
@@ -107,9 +108,8 @@ export default function LiveDashboardPage() {
         )
     }
 
-    const currentPlatform = platforms.find(
-        p => p.platform === activePlatform
-    ) || platforms[0]
+    const currentPlatform =
+        platforms.find(p => p.platform === activePlatform) || platforms[0]
 
     return (
         <div className="space-y-6">

@@ -86,8 +86,9 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         // We do NOT include state in the URL because OAuth 1.0a callback
         // URL is fixed during request token step. Instead, we stored the
         // session in the DB keyed by oauth_token.
-        const authorizeUrl =
-            oauthService.generateAuthorizationUrl(requestToken.oauthToken)
+        const authorizeUrl = oauthService.generateAuthorizationUrl(
+            requestToken.oauthToken
+        )
 
         logger.info("Twitter OAuth 1.0a authorization URL generated", {
             userId,

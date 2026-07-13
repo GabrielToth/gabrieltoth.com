@@ -53,7 +53,8 @@ function createValidEnv(): EnvironmentConfig {
         INSTAGRAM_PAGE_ACCESS_TOKEN: "",
         TWITTER_CLIENT_ID: "tw-test-id",
         TWITTER_CLIENT_SECRET: "tw-test-secret",
-        TWITTER_REDIRECT_URI: "http://localhost:3000/api/oauth/callback/twitter",
+        TWITTER_REDIRECT_URI:
+            "http://localhost:3000/api/oauth/callback/twitter",
         OAUTH_STATE_SECRET: "a".repeat(64), // 64 character hex string
         TOKEN_ENCRYPTION_KEY: "a".repeat(64), // 64 character hex string
     }

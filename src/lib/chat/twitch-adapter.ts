@@ -35,7 +35,14 @@ export class TwitchChatAdapter implements ChatAdapter {
         platform: "twitch",
         enabled: true,
         maxMessageLength: 500,
-        commands: ["/me", "/timeout", "/ban", "/unban", "/slow", "/subscribers"],
+        commands: [
+            "/me",
+            "/timeout",
+            "/ban",
+            "/unban",
+            "/slow",
+            "/subscribers",
+        ],
     }
 
     private connections: Map<string, TwitchConnection> = new Map()
@@ -94,9 +101,7 @@ export class TwitchChatAdapter implements ChatAdapter {
 
                         // Respond to IRC PING
                         if (line.startsWith("PING")) {
-                            socket.write(
-                                `PONG ${line.substring(5)}\r\n`
-                            )
+                            socket.write(`PONG ${line.substring(5)}\r\n`)
                         }
 
                         // Connected successfully
@@ -228,10 +233,7 @@ export class TwitchChatAdapter implements ChatAdapter {
     /**
      * Get message history (from stored messages)
      */
-    async getHistory(
-        _roomId: string,
-        limit?: number
-    ): Promise<ChatMessage[]> {
+    async getHistory(_roomId: string, limit?: number): Promise<ChatMessage[]> {
         // In a real implementation, this would fetch from Twitch's chat history API
         // or local storage. For now, return empty.
         logger.debug("Twitch chat history requested (not yet implemented)", {
@@ -291,12 +293,12 @@ export class TwitchChatAdapter implements ChatAdapter {
                     platform: "twitch",
                     user: {
                         id: parsedTags["user-id"] || "unknown",
-                        username: parsedTags["display-name"]?.toLowerCase() || "unknown",
+                        username:
+                            parsedTags["display-name"]?.toLowerCase() ||
+                            "unknown",
                         displayName: parsedTags["display-name"] || "Unknown",
                         platform: "twitch",
-                        badges: this.parseBadges(
-                            parsedTags["badges"] || ""
-                        ),
+                        badges: this.parseBadges(parsedTags["badges"] || ""),
                         isBroadcaster:
                             parsedTags["badges"]?.includes("broadcaster") ||
                             false,
@@ -306,8 +308,7 @@ export class TwitchChatAdapter implements ChatAdapter {
                         isSubscriber:
                             parsedTags["badges"]?.includes("subscriber") ||
                             false,
-                        isVip:
-                            parsedTags["badges"]?.includes("vip") || false,
+                        isVip: parsedTags["badges"]?.includes("vip") || false,
                     },
                     content,
                     type: "text",
@@ -360,7 +361,6 @@ export class TwitchChatAdapter implements ChatAdapter {
     private parseIrcTags(tagString: string): Record<string, string> {
         const tags: Record<string, string> = {}
         for (const tag of tagString.split(";")) {
-
             const [key, value] = tag.split("=")
             if (key) {
                 tags[key] = value ? value.replace(/\\s/g, " ") : ""
