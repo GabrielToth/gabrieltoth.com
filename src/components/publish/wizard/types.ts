@@ -1,6 +1,9 @@
 /** Content type: Post (text+images) or Video (video+thumbnail) */
 export type ContentType = "post" | "video"
 
+/** Wizard step index (0-8) */
+export type WizardStep = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8
+
 /** Platforms that support each content type */
 export const CONTENT_TYPE_PLATFORMS: Record<ContentType, string[]> = {
     post: [
