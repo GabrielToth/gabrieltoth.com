@@ -68,29 +68,22 @@ export function UnifiedChat({ platforms }: UnifiedChatProps) {
         <div className="flex flex-col h-[500px]">
             {/* Platform selector */}
             <div className="flex gap-1 mb-3">
-                {platforms.map(platform => (
-                    <button
-                        key={platform}
-                        onClick={() => setSelectedPlatform(platform)}
-                        className={`rounded-md px-3 py-1 text-xs font-medium transition-colors ${
-                            selectedPlatform === platform
-                                ? "bg-blue-600 text-white"
-                                : "bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400"
-                        }`}
-                    >
-                        {platform === "twitch"
-                            ? "Twitch"
-                            : platform === "kick"
-                              ? "Kick"
-                              : platform === "youtube"
-                                ? "YouTube"
-                                : platform === "facebook"
-                                  ? "Facebook"
-                                  : platform === "instagram"
-                                    ? "Instagram"
-                                    : platform}
-                    </button>
-                ))}
+                {platforms.map(platform => {
+                    const badge = getPlatformBadge(platform)
+                    return (
+                        <button
+                            key={platform}
+                            onClick={() => setSelectedPlatform(platform)}
+                            className={`rounded-md px-3 py-1 text-xs font-medium transition-colors ${
+                                selectedPlatform === platform
+                                    ? "bg-blue-600 text-white"
+                                    : "bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400"
+                            }`}
+                        >
+                            {badge.label}
+                        </button>
+                    )
+                })}
             </div>
 
             {/* Connection status */}
