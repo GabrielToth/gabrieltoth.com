@@ -34,9 +34,6 @@ const DEFAULT_SCOPES = [
     "events:subscribe",
     "moderation:read",
     "moderation:write",
-    "channel_points:read",
-    "channel_points:write",
-    "kick:read",
 ]
 
 export function createKickConfig(): KickConfig {
@@ -46,7 +43,9 @@ export function createKickConfig(): KickConfig {
             clientSecret: process.env.KICK_CLIENT_SECRET || "",
             redirectUri:
                 process.env.KICK_REDIRECT_URI ||
-                "https://www.gabrieltoth.com/api/oauth/callback/kick",
+                (process.env.VERCEL_ENV === "production" && process.env.VERCEL_PROJECT_PRODUCTION_URL
+                    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}/api/oauth/callback/kick`
+                    : "http://localhost:3000/api/oauth/callback/kick"),
             scopes: DEFAULT_SCOPES,
         },
         apiBaseUrl: "https://api.kick.com",

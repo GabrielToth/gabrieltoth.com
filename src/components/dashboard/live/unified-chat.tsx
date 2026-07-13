@@ -102,6 +102,12 @@ export function UnifiedChat({ platforms }: UnifiedChatProps) {
                 return { color: "#9146FF", label: "Twitch" }
             case "kick":
                 return { color: "#53FC18", label: "Kick" }
+            case "youtube":
+                return { color: "#FF0000", label: "YouTube" }
+            case "facebook":
+                return { color: "#1877F2", label: "Facebook" }
+            case "instagram":
+                return { color: "#E4405F", label: "Instagram" }
             default:
                 return { color: "#6B7280", label: platform }
         }
@@ -118,19 +124,22 @@ export function UnifiedChat({ platforms }: UnifiedChatProps) {
         <div className="flex flex-col h-[500px]">
             {/* Platform selector */}
             <div className="flex gap-1 mb-3">
-                {platforms.map(platform => (
-                    <button
-                        key={platform}
-                        onClick={() => setSelectedPlatform(platform)}
-                        className={`rounded-md px-3 py-1 text-xs font-medium transition-colors ${
-                            selectedPlatform === platform
-                                ? "bg-blue-600 text-white"
-                                : "bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400"
-                        }`}
-                    >
-                        {platform === "twitch" ? "Twitch" : "Kick"}
-                    </button>
-                ))}
+                {platforms.map(platform => {
+                    const badge = getPlatformBadge(platform)
+                    return (
+                        <button
+                            key={platform}
+                            onClick={() => setSelectedPlatform(platform)}
+                            className={`rounded-md px-3 py-1 text-xs font-medium transition-colors ${
+                                selectedPlatform === platform
+                                    ? "bg-blue-600 text-white"
+                                    : "bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400"
+                            }`}
+                        >
+                            {badge.label}
+                        </button>
+                    )
+                })}
             </div>
 
             {/* Connection status */}
