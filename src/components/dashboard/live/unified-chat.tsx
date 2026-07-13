@@ -31,7 +31,9 @@ export function UnifiedChat({ platforms }: UnifiedChatProps) {
     const [messages, setMessages] = useState<ChatMessage[]>([])
     const [input, setInput] = useState("")
     const [connected, setConnected] = useState(false)
-    const [selectedPlatform, setSelectedPlatform] = useState(platforms[0] || "twitch")
+    const [selectedPlatform, setSelectedPlatform] = useState(
+        platforms[0] || "twitch"
+    )
     const messagesEndRef = useRef<HTMLDivElement>(null)
 
     // Simulated connection (in production, connects to WebSocket/SSE backend)
@@ -96,12 +98,20 @@ export function UnifiedChat({ platforms }: UnifiedChatProps) {
         // In production: await fetch(`/api/chat/timeout`, { method: 'POST', body: ... })
     }
 
-    const getPlatformBadge = (platform: string): { color: string; label: string } => {
+    const getPlatformBadge = (
+        platform: string
+    ): { color: string; label: string } => {
         switch (platform) {
             case "twitch":
                 return { color: "#9146FF", label: "Twitch" }
             case "kick":
                 return { color: "#53FC18", label: "Kick" }
+            case "youtube":
+                return { color: "#FF0000", label: "YouTube" }
+            case "facebook":
+                return { color: "#1877F2", label: "Facebook" }
+            case "instagram":
+                return { color: "#E4405F", label: "Instagram" }
             default:
                 return { color: "#6B7280", label: platform }
         }
@@ -128,7 +138,17 @@ export function UnifiedChat({ platforms }: UnifiedChatProps) {
                                 : "bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400"
                         }`}
                     >
-                        {platform === "twitch" ? "Twitch" : "Kick"}
+                        {platform === "twitch"
+                            ? "Twitch"
+                            : platform === "kick"
+                              ? "Kick"
+                              : platform === "youtube"
+                                ? "YouTube"
+                                : platform === "facebook"
+                                  ? "Facebook"
+                                  : platform === "instagram"
+                                    ? "Instagram"
+                                    : platform}
                     </button>
                 ))}
             </div>
@@ -162,7 +182,10 @@ export function UnifiedChat({ platforms }: UnifiedChatProps) {
                             {/* Badges */}
                             <div className="flex gap-0.5 shrink-0">
                                 {msg.isBroadcaster && (
-                                    <span className="text-xs" title="Broadcaster">
+                                    <span
+                                        className="text-xs"
+                                        title="Broadcaster"
+                                    >
                                         👑
                                     </span>
                                 )}
