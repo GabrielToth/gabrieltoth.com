@@ -35,6 +35,10 @@ export interface TwitchChannel {
     contentClassificationLabels: string[]
 }
 
+export interface TwitchStreamKey {
+    streamKey: string
+}
+
 export interface TwitchStream {
     id: string
     userId: string
@@ -311,6 +315,51 @@ export class TwitchOAuthService {
             thumbnailUrl: stream.thumbnail_url,
             tagIds: stream.tag_ids || [],
             isMature: stream.is_mature,
+        }
+    }
+
+    /**
+     * Get stream key from Twitch
+     * Requires channel:read:stream_key scope
+     */
+    async getStreamKey(
+        accessToken: string,
+        broadcasterId: string
+    ): Promise<TwitchStreamKey | null> {
+        const params = new URLSearchParams({
+            broadcaster_id: broadcasterId,
+        })
+
+        const response = await fetch(
+            `${this.config.apiBaseUrl}/streams/key?${params.toString()}`,
+            {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                    "Client-Id": this.config.oauth.clientId,
+                },
+            }
+        )
+
+        if (response.status === 403) {
+            logger.warn("Missing scope: channel:read:stream_key", {
+                status: response.status,
+                broadcasterId,
+            })
+            return null
+        }
+
+        if (!response.ok) {
+            logger.error("Failed to get Twitch stream key", {
+                status: response.status,
+            })
+            return null
+        }
+
+        const data = await response.json()
+        if (!data.data || data.data.length === 0) return null
+
+        return {
+            streamKey: data.data[0].stream_key,
         }
     }
 

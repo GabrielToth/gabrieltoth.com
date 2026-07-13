@@ -6,6 +6,7 @@
 
 "use client"
 
+import { StreamKeyCard } from "@/components/dashboard/live/stream-key-card"
 import { UnifiedChat } from "@/components/dashboard/live/unified-chat"
 import { StreamStatusCard } from "@/components/dashboard/live/stream-status-card"
 import { StreamTitleEditor } from "@/components/dashboard/live/stream-title-editor"
@@ -179,6 +180,9 @@ export default function LiveDashboardPage() {
                     />
                 </div>
             </div>
+
+            {/* Stream Key */}
+            <StreamKeyCard platform={activePlatform} />
         </div>
     )
 }

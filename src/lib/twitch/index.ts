@@ -20,6 +20,7 @@ export type {
     TwitchUser,
     TwitchChannel,
     TwitchStream,
+    TwitchStreamKey,
     AuthorizationUrlResponse,
     OAuthTokenResponse,
 } from "./oauth-service"
