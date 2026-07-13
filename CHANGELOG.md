@@ -5,33 +5,54 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.23.0] - 2026-07-12
+## [1.24.0] - 2026-07-12
+
+### Added
+- **YouTube, Facebook, Instagram Live Chat Adapters**: HTTP-polling ChatAdapter implementations for YouTube (Data API v3), Facebook (Graph API), and Instagram (Graph API) with seen-ID deduplication. ([#241](https://github.com/GabrielToth/gabrieltoth.com/pull/241), Closes [#228](https://github.com/GabrielToth/gabrieltoth.com/issues/228))
+- **SSE Backend for Real-Time Unified Chat**: Server-Sent Events endpoint at `GET /api/live/chat/stream` with MessageAggregator, ConnectionStore, SSEManager, and React `useChatSSE` hook. Replaces simulated messages with real-time platform chat. ([#242](https://github.com/GabrielToth/gabrieltoth.com/pull/242), Closes [#229](https://github.com/GabrielToth/gabrieltoth.com/issues/229)) — DRAFT
+- **Stream Key Management UI**: `StreamKeyCard` component with masked display, show/hide toggle, copy-to-clipboard. Twitch auto-fetches via Helix API, Kick uses manual entry with localStorage. ([#243](https://github.com/GabrielToth/gabrieltoth.com/pull/243), Closes [#230](https://github.com/GabrielToth/gabrieltoth.com/issues/230))
+- **Scheduled Streams with Discord/Telegram Notifications**: `scheduled_streams` DB table with RLS, CRUD service, API endpoints, Discord/Telegram notifiers, StreamScheduler/CountdownTimer/GoLiveButton components. Full i18n. ([#244](https://github.com/GabrielToth/gabrieltoth.com/pull/244), Closes [#231](https://github.com/GabrielToth/gabrieltoth.com/issues/231)) — DRAFT
+- **npm Dependency Updates**: TypeScript 6.0.3 → 7.0.2, ESLint 9.39.5 → 10.7.0, markdownlint-cli2 0.22.1 → 0.23.0, plus 16+ within-range updates. ([#247](https://github.com/GabrielToth/gabrieltoth.com/pull/247), Closes [#234](https://github.com/GabrielToth/gabrieltoth.com/issues/234)) — DRAFT
+
+### Changed
+- **Refactor session.ts** (904 lines → 3 modules): Split into session-core, session-tokens, session-remember-me with barrel re-export. +24 tests. ([#248](https://github.com/GabrielToth/gabrieltoth.com/pull/248), Closes [#235](https://github.com/GabrielToth/gabrieltoth.com/issues/235)) — DRAFT
+- **Refactor PublishWizard.tsx** (847 lines → 180 lines): Extracted usePublishDraft/usePublishExecution hooks, CloseConfirmDialog, StepProgressBar. 26 new tests. ([#249](https://github.com/GabrielToth/gabrieltoth.com/pull/249), Closes [#236](https://github.com/GabrielToth/gabrieltoth.com/issues/236))
+- **Refactor YouTubeMetadataForm.tsx** (766 lines → 7 section components): VideoUpload, BasicInfo, Audience, ContentDisclosure, Monetization, CardsEndScreens, PrivacySchedule. 23 new tests. ([#250](https://github.com/GabrielToth/gabrieltoth.com/pull/250), Closes [#237](https://github.com/GabrielToth/gabrieltoth.com/issues/237))
+
+### Test
+- **139 tests for live streaming**: Covering Twitch/Kick OAuth, chat adapters, and live dashboard UI. ([#245](https://github.com/GabrielToth/gabrieltoth.com/pull/245), Closes [#232](https://github.com/GabrielToth/gabrieltoth.com/issues/232))
+- **27 tests for TikTok OAuth**: Token exchange, refresh, revocation, normalization. ([#251](https://github.com/GabrielToth/gabrieltoth.com/pull/251), Closes [#238](https://github.com/GabrielToth/gabrieltoth.com/issues/238))
+
+### Docs
+- **READMEs for live streaming modules**: Twitch OAuth, Kick PKCE OAuth, ChatAdapter pattern, Live Dashboard components. ([#246](https://github.com/GabrielToth/gabrieltoth.com/pull/246), Closes [#233](https://github.com/GabrielToth/gabrieltoth.com/issues/233))
+- **OAuth flow architecture docs**: Covers all 7 platforms, AES-256-GCM encryption, HMAC state signing. ([#253](https://github.com/GabrielToth/gabrieltoth.com/pull/253), Closes [#240](https://github.com/GabrielToth/gabrieltoth.com/issues/240))
+
+### Fixed
+- **CI tests now blocking**: Removed `continue-on-error: true` from CI. Test failures block the pipeline. ([#252](https://github.com/GabrielToth/gabrieltoth.com/pull/252), Closes [#239](https://github.com/GabrielToth/gabrieltoth.com/issues/239))
+
+## [1.23.0] - 2026-07-10
 
 ### Added
 - **Twitch OAuth 2.0 Integration**: Full OAuth 2.0 authorization code flow for Twitch with user-level token management. New `src/lib/twitch/` module with config (scopes: `chat`, `moderation`, `channel:manage:broadcast`, `user:read:broadcast`, `user:read:email`, `whispers`), OAuth service (authorize URL generation, token exchange, refresh, revoke), and barrel export. API routes at `/api/oauth/authorize/twitch`, `/api/oauth/callback/twitch`, and `/api/oauth/disconnect/twitch`. ([#225](https://github.com/GabrielToth/gabrieltoth.com/issues/225), [#226](https://github.com/GabrielToth/gabrieltoth.com/pull/226))
-- **Kick OAuth 2.1 Integration with PKCE**: Full OAuth 2.1 authorization code flow with Proof Key for Code Exchange (PKCE S256) for Kick. New configuration with scopes: `user:read`, `channel:read`, `channel:write`, `chat:write`, `moderation`, `channel_points`. API routes at `/api/oauth/authorize/kick`, `/api/oauth/callback/kick`, and `/api/oauth/disconnect/kick`. ([#225](https://github.com/GabrielToth/gabrieltoth.com/issues/225), [#226](https://github.com/GabrielToth/gabrieltoth.com/pull/226))
-- **Twitch IRC Chat Adapter**: Real-time Twitch chat via IRC protocol. New `src/lib/chat/twitch-adapter.ts` for receiving and sending chat messages. ([#225](https://github.com/GabrielToth/gabrieltoth.com/issues/225), [#226](https://github.com/GabrielToth/gabrieltoth.com/pull/226))
-- **Kick WebSocket Chat Adapter**: Real-time Kick chat via WebSocket protocol. New `src/lib/chat/kick-adapter.ts` for receiving and sending chat messages. ([#225](https://github.com/GabrielToth/gabrieltoth.com/issues/225), [#226](https://github.com/GabrielToth/gabrieltoth.com/pull/226))
-- **Live Dashboard Page**: New live streaming management page with `StreamStatusCard`, `StreamTitleEditor`, and `UnifiedChat` components. Accessible via "Live" nav item in sidebar. ([#225](https://github.com/GabrielToth/gabrieltoth.com/issues/225), [#226](https://github.com/GabrielToth/gabrieltoth.com/pull/226))
-- **Live Status API endpoints**: `/api/live/status` and `/api/live/update` for real-time stream state management. ([#225](https://github.com/GabrielToth/gabrieltoth.com/issues/225), [#226](https://github.com/GabrielToth/gabrieltoth.com/pull/226))
-- **YouTube live status support**: Live stream detection via YouTube Data API v3. ([#227](https://github.com/GabrielToth/gabrieltoth.com/pull/227))
-- **Facebook live status support**: Live stream detection via Facebook Graph API. ([#227](https://github.com/GabrielToth/gabrieltoth.com/pull/227))
-- **Instagram live status support**: Live stream detection via Instagram Graph API. ([#227](https://github.com/GabrielToth/gabrieltoth.com/pull/227))
-- **"twitch" and "kick" added to types**: Both added to `SocialPlatform` and `OAuthPlatform` type unions across the platform system. ([#225](https://github.com/GabrielToth/gabrieltoth.com/issues/225), [#226](https://github.com/GabrielToth/gabrieltoth.com/pull/226))
-- **Dashboard redirect OAuth params**: Dashboard now handles `?twitch=` and `?kick=` query parameters for OAuth callback redirects. ([#225](https://github.com/GabrielToth/gabrieltoth.com/issues/225), [#226](https://github.com/GabrielToth/gabrieltoth.com/pull/226))
-- **Translation keys**: Added i18n strings for all live/streaming features across all 4 locales (en, pt-BR, es, de). ([#225](https://github.com/GabrielToth/gabrieltoth.com/issues/225), [#226](https://github.com/GabrielToth/gabrieltoth.com/pull/226))
-- **Environment variables**: Added `TWITCH_CLIENT_ID`, `TWITCH_CLIENT_SECRET`, `TWITCH_REDIRECT_URI`, `KICK_CLIENT_ID`, `KICK_CLIENT_SECRET`, and `KICK_REDIRECT_URI` to `env.ts` and all platform configs. ([#225](https://github.com/GabrielToth/gabrieltoth.com/issues/225), [#226](https://github.com/GabrielToth/gabrieltoth.com/pull/226))
+- **Kick OAuth 2.1 Integration with PKCE**: Full OAuth 2.1 authorization code flow with Proof Key for Code Exchange (PKCE S256) for Kick. API routes at `/api/oauth/authorize/kick`, `/api/oauth/callback/kick`, `/api/oauth/disconnect/kick`. ([#225](https://github.com/GabrielToth/gabrieltoth.com/issues/225), [#226](https://github.com/GabrielToth/gabrieltoth.com/pull/226))
+- **Twitch IRC Chat Adapter**: Real-time Twitch chat via IRC protocol. ([#225](https://github.com/GabrielToth/gabrieltoth.com/issues/225), [#226](https://github.com/GabrielToth/gabrieltoth.com/pull/226))
+- **Kick WebSocket Chat Adapter**: Real-time Kick chat via WebSocket protocol with auto-reconnect. ([#225](https://github.com/GabrielToth/gabrieltoth.com/issues/225), [#226](https://github.com/GabrielToth/gabrieltoth.com/pull/226))
+- **Live Dashboard Page**: Live streaming management with StreamStatusCard, StreamTitleEditor, UnifiedChat. "Live" nav item in sidebar. ([#225](https://github.com/GabrielToth/gabrieltoth.com/issues/225), [#226](https://github.com/GabrielToth/gabrieltoth.com/pull/226))
+- **Live Status API endpoints**: `/api/live/status` and `/api/live/update`. ([#225](https://github.com/GabrielToth/gabrieltoth.com/issues/225), [#226](https://github.com/GabrielToth/gabrieltoth.com/pull/226))
+- **YouTube/Facebook/Instagram live status**: Live stream detection via Data API v3 and Graph API. ([#227](https://github.com/GabrielToth/gabrieltoth.com/pull/227))
+- **"twitch" and "kick" added to SocialPlatform/OAuthPlatform types**. ([#225](https://github.com/GabrielToth/gabrieltoth.com/issues/225), [#226](https://github.com/GabrielToth/gabrieltoth.com/pull/226))
+- **Dashboard OAuth redirect params**: Handles `?twitch=` and `?kick=` query parameters. ([#225](https://github.com/GabrielToth/gabrieltoth.com/issues/225), [#226](https://github.com/GabrielToth/gabrieltoth.com/pull/226))
+- **i18n keys**: All 4 locales for live/streaming features. ([#225](https://github.com/GabrielToth/gabrieltoth.com/issues/225), [#226](https://github.com/GabrielToth/gabrieltoth.com/pull/226))
+- **Environment variables**: TWITCH_* and KICK_* env vars added. ([#225](https://github.com/GabrielToth/gabrieltoth.com/issues/225), [#226](https://github.com/GabrielToth/gabrieltoth.com/pull/226))
 
 ### Changed
-- **Facebook/Instagram marked as `localOnly`**: Meta Advanced Access requires CNPJ for production publishing. Both platforms set to `localOnly: true` in platform configs. ([#225](https://github.com/GabrielToth/gabrieltoth.com/issues/225), [#226](https://github.com/GabrielToth/gabrieltoth.com/pull/226))
-- **Twitch/Kick marked as `implemented: true`**: Both platforms fully enabled in production. ([#225](https://github.com/GabrielToth/gabrieltoth.com/issues/225), [#226](https://github.com/GabrielToth/gabrieltoth.com/pull/226))
-- **Trovo removed entirely**: Removed from wizard types, icons, SEO metadata, and channels page (4 files). ([#225](https://github.com/GabrielToth/gabrieltoth.com/issues/225), [#226](https://github.com/GabrielToth/gabrieltoth.com/pull/226))
-- **Kick added to channels VALID_PLATFORMS**: Kick now available in channel connect/disconnect API routes. ([#225](https://github.com/GabrielToth/gabrieltoth.com/issues/225), [#226](https://github.com/GabrielToth/gabrieltoth.com/pull/226))
-- **"Live" nav item added to Sidebar**: New navigation entry with `dashboard-layout-client` type support. ([#225](https://github.com/GabrielToth/gabrieltoth.com/issues/225), [#226](https://github.com/GabrielToth/gabrieltoth.com/pull/226))
+- **Facebook/Instagram marked as localOnly**: Meta Advanced Access requires CNPJ. ([#225](https://github.com/GabrielToth/gabrieltoth.com/issues/225), [#226](https://github.com/GabrielToth/gabrieltoth.com/pull/226))
+- **Twitch/Kick marked as implemented: true**. ([#225](https://github.com/GabrielToth/gabrieltoth.com/issues/225), [#226](https://github.com/GabrielToth/gabrieltoth.com/pull/226))
+- **Trovo removed**: Removed from wizard types, icons, SEO, channels page. ([#225](https://github.com/GabrielToth/gabrieltoth.com/issues/225), [#226](https://github.com/GabrielToth/gabrieltoth.com/pull/226))
 
 ### Fixed
-- **Twitch OAuth scopes corrected**: 7 invalid scopes removed and replaced with valid Twitch API scopes (`chat`, `moderation`, `channel:manage:broadcast`, `user:read:broadcast`, `user:read:email`, `whispers`). ([#227](https://github.com/GabrielToth/gabrieltoth.com/pull/227))
-- **Kick OAuth now uses PKCE**: Added `code_verifier` and `code_challenge` (S256) for OAuth 2.1 compliance. ([#227](https://github.com/GabrielToth/gabrieltoth.com/pull/227))
+- **Twitch OAuth scopes corrected**: 7 invalid scopes replaced. ([#227](https://github.com/GabrielToth/gabrieltoth.com/pull/227))
+- **Kick PKCE added**: code_verifier + code_challenge S256 for OAuth 2.1. ([#227](https://github.com/GabrielToth/gabrieltoth.com/pull/227))
 
 ## [1.22.0] - 2026-07-10
 
