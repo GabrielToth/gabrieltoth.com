@@ -43,10 +43,10 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
         }
 
         if (!oauthToken || !oauthVerifier) {
-            logger.warn(
-                "Missing OAuth 1.0a parameters in Twitter callback",
-                { hasToken: !!oauthToken, hasVerifier: !!oauthVerifier }
-            )
+            logger.warn("Missing OAuth 1.0a parameters in Twitter callback", {
+                hasToken: !!oauthToken,
+                hasVerifier: !!oauthVerifier,
+            })
             return NextResponse.redirect(
                 new URL(
                     "/dashboard?twitter=error&reason=missing_params",
@@ -152,8 +152,14 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
             // Non-fatal: use access token data as fallback
             logger.warn("Could not retrieve extended Twitter user info", {
                 userId,
-                error: userInfoErr instanceof Error ? userInfoErr.message : String(userInfoErr),
-                fallback: { screenName: accessToken.screenName, userId: accessToken.userId },
+                error:
+                    userInfoErr instanceof Error
+                        ? userInfoErr.message
+                        : String(userInfoErr),
+                fallback: {
+                    screenName: accessToken.screenName,
+                    userId: accessToken.userId,
+                },
             })
         }
 

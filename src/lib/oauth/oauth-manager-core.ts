@@ -138,12 +138,7 @@ export class OAuthManager {
                 // Valid scopes for LinkedIn Standalone App:
                 // w_member_social, openid, profile, email
                 // NOTE: r_liteprofile, r_emailaddress, w_organization_social are invalid
-                scopes: [
-                    "w_member_social",
-                    "openid",
-                    "profile",
-                    "email",
-                ],
+                scopes: ["w_member_social", "openid", "profile", "email"],
                 authorizationUrl:
                     "https://www.linkedin.com/oauth/v2/authorization",
                 tokenUrl: "https://www.linkedin.com/oauth/v2/accessToken",

@@ -43,10 +43,10 @@ export interface TwitterPostResult {
  * Percent-encode per RFC 3986 (required by OAuth 1.0a).
  */
 function percentEncode(str: string): string {
-    return encodeURIComponent(str)
-        .replace(/[!'()*]/g, c =>
-            "%" + c.charCodeAt(0).toString(16).toUpperCase()
-        )
+    return encodeURIComponent(str).replace(
+        /[!'()*]/g,
+        c => "%" + c.charCodeAt(0).toString(16).toUpperCase()
+    )
 }
 
 /**
@@ -61,9 +61,7 @@ function generateSignature(
 ): string {
     const paramEntries = Object.entries(params)
         .map(([k, v]) => [percentEncode(k), percentEncode(v)])
-        .sort((a, b) =>
-            a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0
-        )
+        .sort((a, b) => (a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0))
 
     const paramString = paramEntries.map(([k, v]) => `${k}=${v}`).join("&")
 
@@ -73,8 +71,7 @@ function generateSignature(
         percentEncode(paramString),
     ].join("&")
 
-    const signingKey =
-        `${percentEncode(consumerSecret)}&${percentEncode(tokenSecret)}`
+    const signingKey = `${percentEncode(consumerSecret)}&${percentEncode(tokenSecret)}`
 
     const hmac = crypto.createHmac("sha1", signingKey)
     hmac.update(signatureBase)
@@ -123,8 +120,9 @@ function generateAuthHeader(
 
     oauthParams.oauth_signature = signature
 
-    const headerParts = Object.entries(oauthParams)
-        .map(([k, v]) => `${percentEncode(k)}="${percentEncode(v)}"`)
+    const headerParts = Object.entries(oauthParams).map(
+        ([k, v]) => `${percentEncode(k)}="${percentEncode(v)}"`
+    )
 
     return `OAuth ${headerParts.join(", ")}`
 }
@@ -165,8 +163,7 @@ export async function postToTwitter(
         if (!stored) {
             return {
                 success: false,
-                error:
-                    "Twitter account is not linked. Please connect your Twitter account first.",
+                error: "Twitter account is not linked. Please connect your Twitter account first.",
             }
         }
 

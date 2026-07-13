@@ -366,7 +366,8 @@ export default function ChannelsPage() {
                                                             "channels.notImplemented"
                                                         )}
                                                     </Badge>
-                                                ) : (platform as any).localOnly ? (
+                                                ) : (platform as any)
+                                                      .localOnly ? (
                                                     <Badge
                                                         variant="outline"
                                                         className="mt-0.5 text-xs border-amber-300 text-amber-700 bg-amber-50 dark:border-amber-700 dark:text-amber-400 dark:bg-amber-950/30"

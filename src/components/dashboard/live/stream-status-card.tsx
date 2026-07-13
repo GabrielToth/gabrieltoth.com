@@ -43,9 +43,7 @@ export function StreamStatusCard({
         <div
             className="rounded-lg border p-4 transition-shadow hover:shadow-md"
             style={{
-                borderColor: isLive
-                    ? getPlatformColor()
-                    : "rgb(229, 231, 235)",
+                borderColor: isLive ? getPlatformColor() : "rgb(229, 231, 235)",
                 borderLeftWidth: "4px",
                 borderLeftColor: isLive ? getPlatformColor() : undefined,
             }}

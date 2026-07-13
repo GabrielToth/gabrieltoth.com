@@ -55,20 +55,14 @@ function DashboardRedirect() {
                     text: "✅ Twitch connected successfully!",
                     isError: false,
                 })
-                setTimeout(
-                    () => router.push(`/${locale}/dashboard/live`),
-                    1500
-                )
+                setTimeout(() => router.push(`/${locale}/dashboard/live`), 1500)
             } else {
                 const msg = searchParams.get("error") || "unknown"
                 setOauthMsg({
                     text: `❌ Twitch: ${decodeURIComponent(msg)}`,
                     isError: true,
                 })
-                setTimeout(
-                    () => router.push(`/${locale}/dashboard/live`),
-                    5000
-                )
+                setTimeout(() => router.push(`/${locale}/dashboard/live`), 5000)
             }
             return
         }
@@ -80,10 +74,7 @@ function DashboardRedirect() {
                     text: "✅ Kick connected successfully!",
                     isError: false,
                 })
-                setTimeout(
-                    () => router.push(`/${locale}/dashboard/live`),
-                    1500
-                )
+                setTimeout(() => router.push(`/${locale}/dashboard/live`), 1500)
             } else {
                 const msg = searchParams.get("error") || "unknown"
                 setOauthMsg({
@@ -102,7 +93,16 @@ function DashboardRedirect() {
             ? `/${locale}/dashboard/publish?youtube=${encodeURIComponent(youtubeParam)}`
             : `/${locale}/dashboard/publish`
         router.push(target)
-    }, [router, youtubeParam, locale, tiktokParam, tiktokReason, twitchParam, kickParam, searchParams])
+    }, [
+        router,
+        youtubeParam,
+        locale,
+        tiktokParam,
+        tiktokReason,
+        twitchParam,
+        kickParam,
+        searchParams,
+    ])
 
     if (oauthMsg) {
         return (

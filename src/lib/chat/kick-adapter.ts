@@ -226,10 +226,7 @@ export class KickChatAdapter implements ChatAdapter {
     /**
      * Get message history
      */
-    async getHistory(
-        _roomId: string,
-        limit?: number
-    ): Promise<ChatMessage[]> {
+    async getHistory(_roomId: string, limit?: number): Promise<ChatMessage[]> {
         logger.debug("Kick chat history requested (not yet implemented)", {
             limit,
         })
@@ -284,10 +281,7 @@ export class KickChatAdapter implements ChatAdapter {
     /**
      * Handle an incoming WebSocket message
      */
-    private handleWsMessage(
-        roomId: string,
-        wsMessage: KickWsMessage
-    ): void {
+    private handleWsMessage(roomId: string, wsMessage: KickWsMessage): void {
         try {
             switch (wsMessage.event) {
                 case "message":
@@ -333,8 +327,7 @@ export class KickChatAdapter implements ChatAdapter {
         if (!data) return
 
         const message: ChatMessage = {
-            id:
-                `kick-${(data.id as string) || `${Date.now()}-${Math.random().toString(36).substring(2, 8)}`}`,
+            id: `kick-${(data.id as string) || `${Date.now()}-${Math.random().toString(36).substring(2, 8)}`}`,
             channelId: roomId,
             platform: "kick",
             user: {
