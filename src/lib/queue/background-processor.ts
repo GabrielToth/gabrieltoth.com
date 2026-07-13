@@ -121,11 +121,9 @@ export class BackgroundProcessor {
                 await this.queue.markAsPublished(publication.id)
             } else if (allFailed) {
                 // Include the first error message for diagnosis
-                const firstError = results.find(r => r.error)?.error || "All networks failed"
-                await this.queue.markAsFailed(
-                    publication.id,
-                    firstError
-                )
+                const firstError =
+                    results.find(r => r.error)?.error || "All networks failed"
+                await this.queue.markAsFailed(publication.id, firstError)
             } else {
                 await this.queue.markAsPartiallyPublished(
                     publication.id,

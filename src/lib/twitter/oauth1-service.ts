@@ -1,13 +1,13 @@
 /**
  * Twitter/X OAuth 1.0a Service
- * 
+ *
  * OAuth 1.0a flow for X API v2 posting:
  * 1. POST /oauth/request_token → request token + secret
  * 2. Redirect to /oauth/authenticate?oauth_token=...
  * 3. Callback → oauth_token + oauth_verifier
  * 4. POST /oauth/access_token → access token + secret
  * 5. Sign API requests with OAuth 1.0a HMAC-SHA1
- * 
+ *
  * Why OAuth 1.0a instead of 2.0 PKCE?
  * The new X Developer Console (console.x.com) does not support
  * configuring OAuth 2.0 for newly created apps (feature flag
@@ -40,9 +40,11 @@ export interface TwitterUser {
 }
 
 export class TwitterOAuth1Service extends BaseService {
-    private readonly requestTokenUrl = "https://api.twitter.com/oauth/request_token"
+    private readonly requestTokenUrl =
+        "https://api.twitter.com/oauth/request_token"
     private readonly authorizeUrl = "https://api.twitter.com/oauth/authenticate"
-    private readonly accessTokenUrl = "https://api.twitter.com/oauth/access_token"
+    private readonly accessTokenUrl =
+        "https://api.twitter.com/oauth/access_token"
     private readonly apiBase = "https://api.twitter.com/2"
 
     constructor(private config: TwitterConfig) {
@@ -80,8 +82,10 @@ export class TwitterOAuth1Service extends BaseService {
     }
 
     private percentEncode(str: string): string {
-        return encodeURIComponent(str)
-            .replace(/[!'()*]/g, c => "%" + c.charCodeAt(0).toString(16).toUpperCase())
+        return encodeURIComponent(str).replace(
+            /[!'()*]/g,
+            c => "%" + c.charCodeAt(0).toString(16).toUpperCase()
+        )
     }
 
     /**
@@ -130,8 +134,9 @@ export class TwitterOAuth1Service extends BaseService {
 
         oauthParams.oauth_signature = signature
 
-        const headerParts = Object.entries(oauthParams)
-            .map(([k, v]) => `${this.percentEncode(k)}="${this.percentEncode(v)}"`)
+        const headerParts = Object.entries(oauthParams).map(
+            ([k, v]) => `${this.percentEncode(k)}="${this.percentEncode(v)}"`
+        )
 
         return `OAuth ${headerParts.join(", ")}`
     }
@@ -177,7 +182,8 @@ export class TwitterOAuth1Service extends BaseService {
         return {
             oauthToken: params.get("oauth_token") || "",
             oauthTokenSecret: params.get("oauth_token_secret") || "",
-            oauthCallbackConfirmed: params.get("oauth_callback_confirmed") === "true",
+            oauthCallbackConfirmed:
+                params.get("oauth_callback_confirmed") === "true",
         }
     }
 
@@ -274,7 +280,7 @@ export class TwitterOAuth1Service extends BaseService {
         )
 
         fetchOptions.headers = {
-            ...fetchOptions.headers as Record<string, string>,
+            ...(fetchOptions.headers as Record<string, string>),
             Authorization: authHeader,
         }
 
@@ -285,7 +291,9 @@ export class TwitterOAuth1Service extends BaseService {
             let errorData: Record<string, unknown> = {}
             try {
                 errorData = JSON.parse(text)
-            } catch { /* ignore */ }
+            } catch {
+                /* ignore */
+            }
             throw new ServiceError(
                 "API_REQUEST_FAILED",
                 `X API request failed (${response.status}): ${text.slice(0, 500)}`,
@@ -337,7 +345,9 @@ export class TwitterOAuth1Service extends BaseService {
 
 let oauth1ServiceInstance: TwitterOAuth1Service | null = null
 
-export function getTwitterOAuth1Service(config: TwitterConfig): TwitterOAuth1Service {
+export function getTwitterOAuth1Service(
+    config: TwitterConfig
+): TwitterOAuth1Service {
     if (!oauth1ServiceInstance) {
         oauth1ServiceInstance = new TwitterOAuth1Service(config)
     }

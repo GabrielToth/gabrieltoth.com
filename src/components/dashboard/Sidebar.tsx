@@ -10,7 +10,9 @@ import React, { useState } from "react"
 
 export interface SidebarProps {
     activeTab: "publish" | "insights" | "channels" | "settings" | "live"
-    onTabChange: (tab: "publish" | "insights" | "channels" | "settings" | "live") => void
+    onTabChange: (
+        tab: "publish" | "insights" | "channels" | "settings" | "live"
+    ) => void
     isOpen?: boolean
     onClose?: () => void
     organization?: {
