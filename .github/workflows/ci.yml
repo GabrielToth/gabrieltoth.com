@@ -73,8 +73,7 @@ jobs:
     test-suite:
         runs-on: ubuntu-latest
         name: Test Suite
-        # Tests are optional - don't block deployment if they fail
-        continue-on-error: true
+        needs: [quality-check]
 
         steps:
             - name: Checkout
@@ -91,5 +90,3 @@ jobs:
 
             - name: Run Tests
               run: npm run test
-              # Don't fail the workflow if tests fail
-              continue-on-error: true
