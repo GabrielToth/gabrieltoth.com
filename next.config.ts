@@ -14,8 +14,6 @@ const nextConfig: NextConfig = {
     env: {
         NEXT_PUBLIC_DEBUG: process.env.DEBUG === "true" ? "true" : "false",
     },
-    // Standalone output for minimal container size
-    output: "standalone",
     trailingSlash: true,
     generateEtags: false,
     typescript: {
