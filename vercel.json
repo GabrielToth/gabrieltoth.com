@@ -2,5 +2,23 @@
     "buildCommand": "npm run build",
     "outputDirectory": ".next",
     "framework": "nextjs",
-    "regions": ["sfo1"]
+    "regions": ["sfo1"],
+    "headers": [
+        {
+            "source": "/api/(.*)",
+            "headers": [
+                {
+                    "key": "Cache-Control",
+                    "value": "no-cache, no-store, must-revalidate"
+                }
+            ]
+        }
+    ],
+    "redirects": [
+        {
+            "source": "/old-path",
+            "destination": "/new-path",
+            "permanent": true
+        }
+    ]
 }
