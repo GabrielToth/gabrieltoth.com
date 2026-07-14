@@ -42,7 +42,7 @@
                     "db:types:local":  "supabase gen types typescript --local \u003e src/types/supabase.ts",
                     "db:migrate":  "powershell -File scripts/apply-migration.ps1 local",
                     "db:migrate:remote":  "powershell -File scripts/apply-migration.ps1 remote",
-                    "build":  "next build"
+                    "build":  "next build 2\u003e\u00261"
                 },
     "devDependencies":  {
                             "@chromatic-com/storybook":  "^5.2.1",
