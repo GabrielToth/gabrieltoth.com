@@ -255,8 +255,9 @@ export function generateSeoConfig(options: SeoConfigOptions) {
         de: "Full Stack Entwickler und Datenwissenschaftler mit Spezialisierung auf React, Next.js, TypeScript, Node.js und KI/ML-Technologien. Professionelle Webentwicklung und digitale Beratung.",
     }
 
-    const defaultTitle = titleByLocale[locale]
-    const defaultDescription = descriptionByLocale[locale]
+    const defaultTitle = titleByLocale[locale] ?? titleByLocale["en"]
+    const defaultDescription =
+        descriptionByLocale[locale] ?? descriptionByLocale["en"]
 
     const pageTitle = title || defaultTitle
     const pageDescription = description || defaultDescription
@@ -353,7 +354,7 @@ export function generateSeoConfig(options: SeoConfigOptions) {
         ],
     }
 
-    const defaultKeywords = keywordsByLocale[locale]
+    const defaultKeywords = keywordsByLocale[locale] ?? []
 
     const allKeywords = [...new Set([...defaultKeywords, ...keywords])]
 
