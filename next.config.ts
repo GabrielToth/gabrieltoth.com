@@ -18,9 +18,6 @@ const nextConfig: NextConfig = {
     output: "standalone",
     trailingSlash: true,
     generateEtags: false,
-    typescript: {
-        ignoreBuildErrors: true,
-    },
     reactStrictMode: false,
     experimental: {
         // forceSwcTransforms: true, // Removed: Turbopack doesn't support this option
