@@ -481,4 +481,3 @@ describe("Security Headers Middleware (src/middleware/)", () => {
         })
     })
 })
-

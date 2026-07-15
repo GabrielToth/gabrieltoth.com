@@ -78,8 +78,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
             }
 
             const broadcasterId =
-                network.metadata?.userId ||
-                network.platform_user_id
+                network.metadata?.userId || network.platform_user_id
 
             if (!broadcasterId) {
                 logger.warn("No Twitch broadcaster ID found", { userId })

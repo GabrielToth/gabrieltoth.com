@@ -52,7 +52,8 @@ export function createTwitchConfig(): TwitchConfig {
             clientSecret: process.env.TWITCH_CLIENT_SECRET || "",
             redirectUri:
                 process.env.TWITCH_REDIRECT_URI ||
-                (process.env.VERCEL_ENV === "production" && process.env.VERCEL_PROJECT_PRODUCTION_URL
+                (process.env.VERCEL_ENV === "production" &&
+                process.env.VERCEL_PROJECT_PRODUCTION_URL
                     ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}/api/oauth/callback/twitch`
                     : "http://localhost:3000/api/oauth/callback/twitch"),
             scopes: DEFAULT_SCOPES,

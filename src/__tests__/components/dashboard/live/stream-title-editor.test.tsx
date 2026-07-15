@@ -31,7 +31,9 @@ describe("StreamTitleEditor", () => {
         expect(titleInput).toBeInTheDocument()
         expect(titleInput).toHaveValue("My Current Title")
 
-        const gameInput = screen.getByPlaceholderText("Enter game or category...")
+        const gameInput = screen.getByPlaceholderText(
+            "Enter game or category..."
+        )
         expect(gameInput).toBeInTheDocument()
         expect(gameInput).toHaveValue("Just Chatting")
     })
@@ -95,7 +97,9 @@ describe("StreamTitleEditor", () => {
         await waitFor(() => {
             expect(screen.getByText("Stream updated!")).toBeInTheDocument()
         })
-        expect(screen.getByText("Stream updated!")).toHaveClass("text-green-600")
+        expect(screen.getByText("Stream updated!")).toHaveClass(
+            "text-green-600"
+        )
     })
 
     it("shows error message on API error response", async () => {
