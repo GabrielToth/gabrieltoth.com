@@ -93,7 +93,7 @@ describe("TwitchChatAdapter", () => {
                 call[0]?.includes("JOIN #")
             )
             expect(joinCall).toBeTruthy()
-            expect(joinCall[0]).toBe("JOIN #testchannel\r\n")
+            expect(joinCall![0]).toBe("JOIN #testchannel\r\n")
         })
 
         it("does not reconnect if already connected", async () => {
@@ -106,10 +106,7 @@ describe("TwitchChatAdapter", () => {
         })
 
         it("rejects on connection timeout", async () => {
-            const connectPromise = adapter.connect(
-                "timeoutchannel",
-                "token"
-            )
+            const connectPromise = adapter.connect("timeoutchannel", "token")
 
             // Advance past the 10s timeout
             await vi.advanceTimersByTimeAsync(11000)
@@ -146,7 +143,7 @@ describe("TwitchChatAdapter", () => {
             socket.emit(
                 "data",
                 Buffer.from(
-                    '@badges=moderator/1;color=#FF0000;display-name=TestUser;emotes=;id=abc-123;mod=1;user-id=456;user-type=mod :testuser!testuser@testuser.tmi.twitch.tv PRIVMSG #testchannel :Hello world!\r\n'
+                    "@badges=moderator/1;color=#FF0000;display-name=TestUser;emotes=;id=abc-123;mod=1;user-id=456;user-type=mod :testuser!testuser@testuser.tmi.twitch.tv PRIVMSG #testchannel :Hello world!\r\n"
                 )
             )
 
@@ -170,7 +167,7 @@ describe("TwitchChatAdapter", () => {
             socket.emit(
                 "data",
                 Buffer.from(
-                    '@system-msg=subscribed :tmi.twitch.tv USERNOTICE #testchannel :Someone just subscribed!\r\n'
+                    "@system-msg=subscribed :tmi.twitch.tv USERNOTICE #testchannel :Someone just subscribed!\r\n"
                 )
             )
 
@@ -202,8 +199,8 @@ describe("TwitchChatAdapter", () => {
                 isAction: true,
             })
 
-            const actionCall = socket.write.mock.calls.find(
-                (call: string[]) => call[0]?.includes("ACTION")
+            const actionCall = socket.write.mock.calls.find((call: string[]) =>
+                call[0]?.includes("ACTION")
             )
             expect(actionCall).toBeTruthy()
         })
@@ -253,9 +250,7 @@ describe("TwitchChatAdapter", () => {
         })
 
         it("handles disconnect when not connected gracefully", async () => {
-            await expect(
-                adapter.disconnect("unknown")
-            ).resolves.not.toThrow()
+            await expect(adapter.disconnect("unknown")).resolves.not.toThrow()
         })
     })
 

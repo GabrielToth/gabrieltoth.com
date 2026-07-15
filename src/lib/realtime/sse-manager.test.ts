@@ -35,7 +35,10 @@ vi.mock("./connection-store", () => {
         destroy: vi.fn(),
     }
 
-    return { connectionStore: mockConnectionStore, Connection: {} as Connection }
+    return {
+        connectionStore: mockConnectionStore,
+        Connection: {} as Connection,
+    }
 })
 
 // Mock logger
@@ -65,11 +68,17 @@ describe("SSEManager", () => {
         it("should return a response with SSE headers", async () => {
             const { createSSEStream } = await import("./sse-manager")
 
-            const request = new Request("http://localhost:3000/api/live/chat/stream", {
-                signal: new AbortController().signal,
-            })
+            const request = new Request(
+                "http://localhost:3000/api/live/chat/stream",
+                {
+                    signal: new AbortController().signal,
+                }
+            )
 
-            const { response, connectionId } = createSSEStream(request, "user-1")
+            const { response, connectionId } = createSSEStream(
+                request,
+                "user-1"
+            )
 
             expect(response.headers.get("Content-Type")).toBe(
                 "text/event-stream"
@@ -85,9 +94,12 @@ describe("SSEManager", () => {
         it("should add connection to store", async () => {
             const { createSSEStream } = await import("./sse-manager")
 
-            const request = new Request("http://localhost:3000/api/live/chat/stream", {
-                signal: new AbortController().signal,
-            })
+            const request = new Request(
+                "http://localhost:3000/api/live/chat/stream",
+                {
+                    signal: new AbortController().signal,
+                }
+            )
 
             createSSEStream(request, "user-1")
 
@@ -103,9 +115,12 @@ describe("SSEManager", () => {
             const { createSSEStream } = await import("./sse-manager")
             const controller = new AbortController()
 
-            const request = new Request("http://localhost:3000/api/live/chat/stream", {
-                signal: controller.signal,
-            })
+            const request = new Request(
+                "http://localhost:3000/api/live/chat/stream",
+                {
+                    signal: controller.signal,
+                }
+            )
 
             createSSEStream(request, "user-1")
 
@@ -141,7 +156,9 @@ describe("SSEManager", () => {
             vi.mocked(connectionStore.getConnectionsByUser).mockReturnValue([
                 {
                     id: "conn-1",
-                    controller: { close: mockClose } as unknown as ReadableStreamDefaultController<Uint8Array>,
+                    controller: {
+                        close: mockClose,
+                    } as unknown as ReadableStreamDefaultController<Uint8Array>,
                     createdAt: Date.now(),
                     lastHeartbeat: Date.now(),
                 },

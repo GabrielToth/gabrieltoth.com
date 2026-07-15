@@ -99,12 +99,13 @@ vi.mock("@/lib/twitch/oauth-service", () => ({
 
 import { getTwitchOAuthService } from "@/lib/twitch/oauth-service"
 import { GET } from "./route"
+import { NextRequest } from "next/server"
 
-function createMockRequest(platform?: string): Request {
+function createMockRequest(platform?: string): NextRequest {
     const url = platform
         ? `http://localhost:3000/api/live/stream-key?platform=${platform}`
         : "http://localhost:3000/api/live/stream-key"
-    return new Request(url)
+    return new NextRequest(url)
 }
 
 describe("Stream Key Endpoint", () => {

@@ -1,9 +1,7 @@
 {
     "extends": "./tsconfig.json",
     "compilerOptions": {
-        "baseUrl": ".",
         "noEmit": true,
-        "ignoreDeprecations": "6.0",
         "paths": {
             "@/*": ["./src/*"]
         },

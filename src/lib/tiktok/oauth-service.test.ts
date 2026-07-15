@@ -41,6 +41,14 @@ const mockConfig: TikTokConfig = {
         clientSecret: "test-client-secret",
         redirectUri: "https://example.com/callback",
         scopes: ["user.info.basic"],
+        apiVersion: "v2",
+    },
+    rateLimit: {
+        linkingAttemptsPerHour: 5,
+        publishAttemptsPerHour: 10,
+    },
+    security: {
+        tokenExpiryBufferMs: 300000,
     },
 }
 
@@ -66,7 +74,9 @@ describe("TikTokOAuthService", () => {
             expect(result.authorizationUrl).toContain(
                 "https://www.tiktok.com/v2/auth/authorize/"
             )
-            expect(result.authorizationUrl).toContain("client_key=test-client-key")
+            expect(result.authorizationUrl).toContain(
+                "client_key=test-client-key"
+            )
             expect(result.state).toBeTruthy()
             expect(typeof result.state).toBe("string")
         })
@@ -192,10 +202,9 @@ describe("TikTokOAuthService", () => {
 
         it("throws ServiceError on failed refresh", async () => {
             vi.spyOn(globalThis, "fetch").mockResolvedValue(
-                new Response(
-                    JSON.stringify({ error: "invalid_grant" }),
-                    { status: 400 }
-                )
+                new Response(JSON.stringify({ error: "invalid_grant" }), {
+                    status: 400,
+                })
             )
 
             await expect(
@@ -273,10 +282,9 @@ describe("TikTokOAuthService", () => {
 
         it("returns null when response lacks user data", async () => {
             vi.spyOn(globalThis, "fetch").mockResolvedValue(
-                new Response(
-                    JSON.stringify({ data: { user: null } }),
-                    { status: 200 }
-                )
+                new Response(JSON.stringify({ data: { user: null } }), {
+                    status: 200,
+                })
             )
 
             const user = await service.getUserInfo("valid-token")

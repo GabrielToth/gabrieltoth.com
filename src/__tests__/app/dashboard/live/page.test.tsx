@@ -39,18 +39,14 @@ describe("LiveDashboardPage", () => {
         render(<LiveDashboardPage />)
 
         // Should show a loading spinner with translation text
-        expect(
-            screen.getByText("Loading stream status...")
-        ).toBeInTheDocument()
+        expect(screen.getByText("Loading stream status...")).toBeInTheDocument()
     })
 
     it("fetches live status from /api/live/status on mount", async () => {
-        const fetchSpy = vi
-            .spyOn(globalThis, "fetch")
-            .mockResolvedValue({
-                ok: true,
-                json: async () => mockLiveData,
-            } as Response)
+        const fetchSpy = vi.spyOn(globalThis, "fetch").mockResolvedValue({
+            ok: true,
+            json: async () => mockLiveData,
+        } as Response)
 
         render(<LiveDashboardPage />)
 

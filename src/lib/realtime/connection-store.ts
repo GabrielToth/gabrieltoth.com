@@ -34,7 +34,10 @@ class ConnectionStore {
             this.connections.set(userId, new Map())
         }
         this.connections.get(userId)!.set(connection.id, connection)
-        logger.debug("Connection added", { userId, connectionId: connection.id })
+        logger.debug("Connection added", {
+            userId,
+            connectionId: connection.id,
+        })
     }
 
     /**
@@ -95,7 +98,10 @@ class ConnectionStore {
         let removedCount = 0
 
         for (const [userId, userConnections] of this.connections.entries()) {
-            for (const [connectionId, connection] of userConnections.entries()) {
+            for (const [
+                connectionId,
+                connection,
+            ] of userConnections.entries()) {
                 if (now - connection.lastHeartbeat > STALE_CONNECTION_MS) {
                     try {
                         connection.controller.close()
@@ -157,7 +163,10 @@ class ConnectionStore {
      */
     private startCleanup(): void {
         if (this.cleanupTimer) return
-        this.cleanupTimer = setInterval(() => this.cleanup(), CLEANUP_INTERVAL_MS)
+        this.cleanupTimer = setInterval(
+            () => this.cleanup(),
+            CLEANUP_INTERVAL_MS
+        )
     }
 
     /**

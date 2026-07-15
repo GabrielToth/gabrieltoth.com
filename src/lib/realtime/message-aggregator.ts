@@ -101,7 +101,8 @@ export class MessageAggregator {
                     connected: true,
                 })
             } catch (error) {
-                const errorMsg = error instanceof Error ? error.message : String(error)
+                const errorMsg =
+                    error instanceof Error ? error.message : String(error)
                 logger.error("Failed to start platform adapter", {
                     userId: this.userId,
                     platform,

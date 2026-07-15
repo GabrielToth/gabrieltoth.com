@@ -11,6 +11,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 describe("UnifiedChat", () => {
     const defaultProps = {
         platforms: ["twitch", "kick"],
+        activePlatform: "twitch",
     }
 
     beforeEach(() => {

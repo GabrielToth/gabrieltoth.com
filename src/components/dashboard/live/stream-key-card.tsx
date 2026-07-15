@@ -250,7 +250,9 @@ export function StreamKeyCard({ platform }: StreamKeyCardProps) {
                         <button
                             onClick={() => setRevealed(!revealed)}
                             className="rounded-md border border-gray-300 p-2 text-gray-600 hover:bg-gray-100 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-800"
-                            title={revealed ? "Hide stream key" : "Show stream key"}
+                            title={
+                                revealed ? "Hide stream key" : "Show stream key"
+                            }
                         >
                             {revealed ? (
                                 /* Eye-off icon */

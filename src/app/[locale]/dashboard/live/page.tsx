@@ -186,7 +186,17 @@ export default function LiveDashboardPage() {
                                     : "bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-300"
                             }`}
                         >
-                            {p.platform === "twitch" ? "Twitch" : p.platform === "kick" ? "Kick" : p.platform === "youtube" ? "YouTube" : p.platform === "facebook" ? "Facebook" : p.platform === "instagram" ? "Instagram" : p.platform}
+                            {p.platform === "twitch"
+                                ? "Twitch"
+                                : p.platform === "kick"
+                                  ? "Kick"
+                                  : p.platform === "youtube"
+                                    ? "YouTube"
+                                    : p.platform === "facebook"
+                                      ? "Facebook"
+                                      : p.platform === "instagram"
+                                        ? "Instagram"
+                                        : p.platform}
                             {p.isLive && (
                                 <span className="ml-2 inline-block h-2 w-2 rounded-full bg-red-500 animate-pulse" />
                             )}
