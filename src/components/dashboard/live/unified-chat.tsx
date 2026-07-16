@@ -1,18 +1,21 @@
 /**
  * UnifiedChat Component
  * Displays combined chat feed from multiple platforms (Twitch + Kick)
- * Uses SSE backend for real-time messages. Send remains simulated.
+ * Uses SSE backend for real-time messages.
  */
 
 "use client"
 
 import { useChatSSE } from "@/hooks/use-chat-sse"
+import { createLogger } from "@/lib/logger"
 import { useRef, useEffect, useState } from "react"
 
 interface UnifiedChatProps {
     platforms: string[]
     activePlatform: string
 }
+
+const logger = createLogger("UnifiedChat")
 
 export function UnifiedChat({ platforms }: UnifiedChatProps) {
     const { messages, isConnected, error } = useChatSSE(platforms)
@@ -28,10 +31,35 @@ export function UnifiedChat({ platforms }: UnifiedChatProps) {
     }, [messages])
 
     const handleSend = async () => {
-        if (!input.trim()) return
+        const text = input.trim()
+        if (!text) return
 
-        // Simulated send — POST endpoint not yet implemented
-        setInput("")
+        try {
+            const res = await fetch("/api/live/chat/send", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    platform: selectedPlatform,
+                    message: text,
+                }),
+            })
+
+            if (!res.ok) {
+                const err = await res.json()
+                logger.error("Failed to send message", {
+                    platform: selectedPlatform,
+                    error: err.error,
+                })
+                return
+            }
+
+            setInput("")
+        } catch (error) {
+            logger.error("Failed to send message", {
+                platform: selectedPlatform,
+                error: String(error),
+            })
+        }
     }
 
     const handleTimeout = (_username: string) => {
