@@ -3,7 +3,7 @@ import { createLogger } from "@/lib/logger"
 import { createClient } from "@supabase/supabase-js"
 import { NextRequest, NextResponse } from "next/server"
 import { getTokenStore } from "@/lib/token-store"
-import { TwitchChatAdapter } from "@/lib/chat"
+import { MessageAggregator } from "@/lib/realtime/message-aggregator"
 
 const logger = createLogger("ChatSendEndpoint")
 
@@ -64,13 +64,13 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
             )
         }
 
-        const adapter = new TwitchChatAdapter()
-        try {
-            await adapter.connect(network.platform_username, stored.accessToken)
-            await adapter.sendMessage(network.platform_username, message)
-        } finally {
-            await adapter.disconnect(network.platform_username)
-        }
+        await MessageAggregator.sendMessage(
+            userId,
+            "twitch",
+            network.platform_username,
+            message,
+            stored.accessToken
+        )
 
         return NextResponse.json({ success: true })
     } catch (error) {

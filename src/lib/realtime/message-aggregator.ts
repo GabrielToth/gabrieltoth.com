@@ -249,6 +249,39 @@ export class MessageAggregator {
     }
 
     /**
+     * Send a message using an active platform adapter
+     * Falls back to a temporary connection if no active adapter exists
+     */
+    static async sendMessage(
+        userId: string,
+        platform: ChatPlatform,
+        channelName: string,
+        message: string,
+        token: string
+    ): Promise<void> {
+        // Prefer active adapter from running aggregator
+        const aggregator = MessageAggregator.instances.get(userId)
+        if (aggregator?.started) {
+            const entry = aggregator.adapters.get(platform)
+            if (entry && entry.adapter) {
+                await entry.adapter.sendMessage(channelName, message)
+                return
+            }
+        }
+
+        // Fallback: temporary connection
+        const adapter = new TwitchChatAdapter()
+        try {
+            await adapter.connect(channelName, token)
+            // Wait briefly so the IRC connection stabilizes after JOIN
+            await new Promise(r => setTimeout(r, 600))
+            await adapter.sendMessage(channelName, message)
+        } finally {
+            await adapter.disconnect(channelName)
+        }
+    }
+
+    /**
      * Check if the aggregator is currently running
      */
     isRunning(): boolean {
