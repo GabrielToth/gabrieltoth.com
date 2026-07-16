@@ -59,6 +59,7 @@ export function UnifiedChat({ platforms }: UnifiedChatProps) {
     const [historyIndex, setHistoryIndex] = useState(-1)
     const [showCommands, setShowCommands] = useState(false)
     const [selectedCmd, setSelectedCmd] = useState(0)
+    const [sending, setSending] = useState(false)
     const historyRef = useRef<string[]>([])
     const messagesEndRef = useRef<HTMLDivElement>(null)
 
@@ -69,8 +70,9 @@ export function UnifiedChat({ platforms }: UnifiedChatProps) {
 
     const handleSend = useCallback(async () => {
         const text = input.trim()
-        if (!text) return
+        if (!text || sending) return
 
+        setSending(true)
         try {
             const res = await fetch("/api/live/chat/send", {
                 method: "POST",
@@ -118,8 +120,10 @@ export function UnifiedChat({ platforms }: UnifiedChatProps) {
                 platform: selectedPlatform,
                 error: String(error),
             })
+        } finally {
+            setSending(false)
         }
-    }, [input, selectedPlatform, addMessage])
+    }, [input, selectedPlatform, addMessage, sending])
 
     const handleKeyDown = useCallback(
         (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -161,7 +165,7 @@ export function UnifiedChat({ platforms }: UnifiedChatProps) {
             if (e.key === "Tab" && showCommands) {
                 e.preventDefault()
                 const cmd = COMMANDS[selectedCmd]
-                setInput(cmd.usage.split(" ")[0] + " ")
+                setInput(cmd.name + " ")
                 setShowCommands(false)
                 return
             }
@@ -346,19 +350,26 @@ export function UnifiedChat({ platforms }: UnifiedChatProps) {
                             <button
                                 key={cmd.name}
                                 onClick={() => {
-                                    setInput(cmd.usage.split(" ")[0] + " ")
+                                    setInput(cmd.name + " ")
                                     setShowCommands(false)
                                 }}
-                                className={`flex w-full items-center gap-2 px-3 py-2 text-left text-sm hover:bg-gray-100 dark:hover:bg-gray-700 ${
+                                className={`flex w-full items-center gap-3 px-3 py-2 text-left text-sm hover:bg-gray-100 dark:hover:bg-gray-700 ${
                                     i === selectedCmd
                                         ? "bg-gray-100 dark:bg-gray-700"
                                         : ""
                                 }`}
                             >
-                                <span className="font-mono font-medium text-purple-600 dark:text-purple-400">
-                                    {cmd.name}
-                                </span>
-                                <span className="text-xs text-gray-500">
+                                <div className="flex flex-col min-w-0">
+                                    <span className="font-mono font-medium text-purple-600 dark:text-purple-400">
+                                        {cmd.name}
+                                    </span>
+                                    <span className="text-[11px] text-gray-400 truncate">
+                                        {cmd.usage
+                                            .replace(/&lt;/g, "<")
+                                            .replace(/&gt;/g, ">")}
+                                    </span>
+                                </div>
+                                <span className="text-xs text-gray-500 ml-auto shrink-0">
                                     {cmd.description}
                                 </span>
                             </button>

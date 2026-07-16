@@ -147,6 +147,38 @@ export class TwitchChatAdapter implements ChatAdapter {
     }
 
     /**
+     * Wait for the JOIN to be acknowledged by the server (366 end-of-names)
+     */
+    async waitForJoin(roomId: string, timeoutMs: number = 5000): Promise<void> {
+        const connection = this.connections.get(roomId)
+        if (!connection || !connection.socket) return
+
+        return new Promise(resolve => {
+            const timer = setTimeout(() => {
+                connection.socket.removeListener("data", onData)
+                resolve()
+            }, timeoutMs)
+
+            const onData = (data: Buffer) => {
+                const lines = data.toString().split("\r\n").filter(Boolean)
+                for (const line of lines) {
+                    if (
+                        line.includes(`366 ${connection.username} #${roomId}`) ||
+                        line.includes(`366 `) && line.includes(`#${roomId}`)
+                    ) {
+                        clearTimeout(timer)
+                        connection.socket.removeListener("data", onData)
+                        resolve()
+                        return
+                    }
+                }
+            }
+
+            connection.socket.on("data", onData)
+        })
+    }
+
+    /**
      * Disconnect from a Twitch chat room
      */
     async disconnect(roomId: string): Promise<void> {

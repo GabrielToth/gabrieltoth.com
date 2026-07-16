@@ -269,12 +269,11 @@ export class MessageAggregator {
             }
         }
 
-        // Fallback: temporary connection
+        // Fallback: temporary connection with full JOIN confirmation
         const adapter = new TwitchChatAdapter()
         try {
             await adapter.connect(channelName, token)
-            // Wait briefly so the IRC connection stabilizes after JOIN
-            await new Promise(r => setTimeout(r, 600))
+            await adapter.waitForJoin(channelName)
             await adapter.sendMessage(channelName, message)
         } finally {
             await adapter.disconnect(channelName)
