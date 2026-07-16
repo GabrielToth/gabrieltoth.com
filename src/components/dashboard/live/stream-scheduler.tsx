@@ -6,7 +6,7 @@
 "use client"
 
 import { useTranslations } from "next-intl"
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 
 interface ScheduledStream {
     id: string
@@ -57,8 +57,12 @@ export function StreamScheduler() {
     const [validationErrors, setValidationErrors] = useState<
         Record<string, string>
     >({})
+    const lastFetch = useRef(0)
 
     const fetchSchedules = useCallback(async () => {
+        const now = Date.now()
+        if (now - lastFetch.current < 15000) return
+        lastFetch.current = now
         try {
             const response = await fetch("/api/streams/schedule")
             if (!response.ok) throw new Error("Failed to fetch schedules")
