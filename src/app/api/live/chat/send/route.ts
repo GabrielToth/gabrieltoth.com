@@ -10,7 +10,10 @@ const logger = createLogger("ChatSendEndpoint")
 
 interface CommandHandler {
     pattern: RegExp
-    handler: (args: RegExpExecArray, api: HelixApi) => Promise<{ ok: boolean; twitchStatus?: number; twitchError?: string }>
+    handler: (
+        args: RegExpExecArray,
+        api: HelixApi
+    ) => Promise<{ ok: boolean; twitchStatus?: number; twitchError?: string }>
 }
 
 interface HelixApi {
@@ -63,7 +66,8 @@ async function execHelix(
         let twitchError: string | undefined
         try {
             const errBody = await response.json()
-            twitchError = errBody.message || errBody.error || response.statusText
+            twitchError =
+                errBody.message || errBody.error || response.statusText
         } catch {
             twitchError = response.statusText
         }
@@ -79,42 +83,151 @@ const COMMANDS: CommandHandler[] = [
         handler: async (args, api) => {
             const targetUsername = args[1]
             const duration = args[2] ? parseInt(args[2]) : 600
-            const targetId = await lookupUserId(targetUsername, api.accessToken, api.clientId)
-            if (!targetId) return { ok: false, twitchStatus: 404, twitchError: "User not found" }
-            const data: Record<string, unknown> = { user_id: targetId, reason: args[3] || "" }
+            const targetId = await lookupUserId(
+                targetUsername,
+                api.accessToken,
+                api.clientId
+            )
+            if (!targetId)
+                return {
+                    ok: false,
+                    twitchStatus: 404,
+                    twitchError: "User not found",
+                }
+            const data: Record<string, unknown> = {
+                user_id: targetId,
+                reason: args[3] || "",
+            }
             if (duration) data.duration = duration
-            return execHelix(api, "POST", `/moderation/bans?broadcaster_id=${api.broadcasterId}&moderator_id=${api.moderatorId}`, { data })
+            return execHelix(
+                api,
+                "POST",
+                `/moderation/bans?broadcaster_id=${api.broadcasterId}&moderator_id=${api.moderatorId}`,
+                { data }
+            )
         },
     },
     {
         pattern: /^\/ban\s+(\S+)(?:\s+(.+))?$/i,
         handler: async (args, api) => {
             const targetUsername = args[1]
-            const targetId = await lookupUserId(targetUsername, api.accessToken, api.clientId)
-            if (!targetId) return { ok: false, twitchStatus: 404, twitchError: "User not found" }
-            return execHelix(api, "POST", `/moderation/bans?broadcaster_id=${api.broadcasterId}&moderator_id=${api.moderatorId}`, { data: { user_id: targetId, reason: args[2] || "" } })
+            const targetId = await lookupUserId(
+                targetUsername,
+                api.accessToken,
+                api.clientId
+            )
+            if (!targetId)
+                return {
+                    ok: false,
+                    twitchStatus: 404,
+                    twitchError: "User not found",
+                }
+            return execHelix(
+                api,
+                "POST",
+                `/moderation/bans?broadcaster_id=${api.broadcasterId}&moderator_id=${api.moderatorId}`,
+                { data: { user_id: targetId, reason: args[2] || "" } }
+            )
         },
     },
     {
         pattern: /^\/unban\s+(\S+)$/i,
         handler: async (args, api) => {
             const targetUsername = args[1]
-            const targetId = await lookupUserId(targetUsername, api.accessToken, api.clientId)
-            if (!targetId) return { ok: false, twitchStatus: 404, twitchError: "User not found" }
-            return execHelix(api, "DELETE", `/moderation/bans?broadcaster_id=${api.broadcasterId}&moderator_id=${api.moderatorId}&user_id=${targetId}`)
+            const targetId = await lookupUserId(
+                targetUsername,
+                api.accessToken,
+                api.clientId
+            )
+            if (!targetId)
+                return {
+                    ok: false,
+                    twitchStatus: 404,
+                    twitchError: "User not found",
+                }
+            return execHelix(
+                api,
+                "DELETE",
+                `/moderation/bans?broadcaster_id=${api.broadcasterId}&moderator_id=${api.moderatorId}&user_id=${targetId}`
+            )
         },
     },
+    // /slow [seconds] or /slow off
     {
-        pattern: /^\/slow(?:\s+(\d+))?$/i,
+        pattern: /^\/slow(?: (\d+|off))?$/i,
         handler: async (args, api) => {
-            const seconds = args[1] ? parseInt(args[1]) : 30
-            return execHelix(api, "PATCH", `/chat/settings?broadcaster_id=${api.broadcasterId}&moderator_id=${api.moderatorId}`, { slow_mode: true, slow_mode_wait_time: seconds })
+            const raw = args[1]
+            if (!raw || raw === "off") {
+                return execHelix(
+                    api,
+                    "PATCH",
+                    `/chat/settings?broadcaster_id=${api.broadcasterId}&moderator_id=${api.moderatorId}`,
+                    { slow_mode: false }
+                )
+            }
+            const seconds = Math.max(3, parseInt(raw))
+            return execHelix(
+                api,
+                "PATCH",
+                `/chat/settings?broadcaster_id=${api.broadcasterId}&moderator_id=${api.moderatorId}`,
+                { slow_mode: true, slow_mode_wait_time: seconds }
+            )
+        },
+    },
+    // Subscribers mode — all aliases, enable/disable
+    {
+        pattern: /^\/subscribersoff$/i,
+        handler: async (_args, api) => {
+            return execHelix(
+                api,
+                "PATCH",
+                `/chat/settings?broadcaster_id=${api.broadcasterId}&moderator_id=${api.moderatorId}`,
+                { subscriber_mode: false }
+            )
         },
     },
     {
-        pattern: /^\/subscribers$/i,
+        pattern: /^\/subon$/i,
         handler: async (_args, api) => {
-            return execHelix(api, "PATCH", `/chat/settings?broadcaster_id=${api.broadcasterId}&moderator_id=${api.moderatorId}`, { subscriber_mode: true })
+            return execHelix(
+                api,
+                "PATCH",
+                `/chat/settings?broadcaster_id=${api.broadcasterId}&moderator_id=${api.moderatorId}`,
+                { subscriber_mode: true }
+            )
+        },
+    },
+    {
+        pattern: /^\/suboff$/i,
+        handler: async (_args, api) => {
+            return execHelix(
+                api,
+                "PATCH",
+                `/chat/settings?broadcaster_id=${api.broadcasterId}&moderator_id=${api.moderatorId}`,
+                { subscriber_mode: false }
+            )
+        },
+    },
+    {
+        pattern: /^\/sub(?:scriber)?\s+(on|off)$/i,
+        handler: async (args, api) => {
+            return execHelix(
+                api,
+                "PATCH",
+                `/chat/settings?broadcaster_id=${api.broadcasterId}&moderator_id=${api.moderatorId}`,
+                { subscriber_mode: args[1] === "on" }
+            )
+        },
+    },
+    {
+        pattern: /^\/(?:subonly|subscribersonly|subscribers)$/i,
+        handler: async (_args, api) => {
+            return execHelix(
+                api,
+                "PATCH",
+                `/chat/settings?broadcaster_id=${api.broadcasterId}&moderator_id=${api.moderatorId}`,
+                { subscriber_mode: true }
+            )
         },
     },
 ]
@@ -122,7 +235,11 @@ const COMMANDS: CommandHandler[] = [
 async function tryHelixCommand(
     message: string,
     api: HelixApi
-): Promise<{ ok: boolean; twitchStatus?: number; twitchError?: string } | null> {
+): Promise<{
+    ok: boolean
+    twitchStatus?: number
+    twitchError?: string
+} | null> {
     for (const cmd of COMMANDS) {
         const match = cmd.pattern.exec(message)
         if (match) {
@@ -205,12 +322,21 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
             }
             if (helixResult.twitchStatus === 403) {
                 return NextResponse.json(
-                    { success: false, error: "MISSING_SCOPE", message: "Twitch token missing required scope. Reconnect your Twitch account in Settings." },
+                    {
+                        success: false,
+                        error: "MISSING_SCOPE",
+                        message:
+                            "Twitch token missing required scope. Reconnect your Twitch account in Settings.",
+                    },
                     { status: 403 }
                 )
             }
             return NextResponse.json(
-                { success: false, error: "MOD_COMMAND_FAILED", message: helixResult.twitchError || "Twitch API error" },
+                {
+                    success: false,
+                    error: "MOD_COMMAND_FAILED",
+                    message: helixResult.twitchError || "Twitch API error",
+                },
                 { status: 500 }
             )
         }
