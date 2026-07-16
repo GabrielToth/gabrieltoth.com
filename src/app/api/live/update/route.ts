@@ -72,7 +72,7 @@ async function updateKickStream(
 ): Promise<{ success: boolean; error?: string }> {
     try {
         const response = await fetch(
-            "https://api.kick.com/api/v2/channels/me",
+            "https://api.kick.com/public/v1/channels",
             {
                 method: "PATCH",
                 headers: {
@@ -80,7 +80,7 @@ async function updateKickStream(
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    title,
+                    stream_title: title,
                 }),
             }
         )
