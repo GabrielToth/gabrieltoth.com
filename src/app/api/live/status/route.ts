@@ -112,9 +112,8 @@ async function fetchKickStream(
     username: string
 ): Promise<Partial<PlatformStreamInfo>> {
     try {
-        // Kick API v2: get channel info
         const channelResponse = await fetch(
-            `https://api.kick.com/api/v2/channels/${username}`,
+            `https://api.kick.com/public/v1/channels?slug[]=${username}`,
             {
                 headers: {
                     Authorization: `Bearer ${accessToken}`,
@@ -131,21 +130,20 @@ async function fetchKickStream(
         }
 
         const channelData = await channelResponse.json()
-        const channel = channelData.data || channelData.channel
+        const channel = channelData.data?.[0]
 
         if (!channel) return {}
 
-        const isLive =
-            channel.livestream?.is_live === true || channel.is_live === true
+        const isLive = channel.stream?.is_live === true
 
         return {
             isLive,
-            viewerCount: channel.livestream?.viewer_count || 0,
-            title: channel.livestream?.session_title || "",
-            gameName: channel.livestream?.category?.name || "",
-            startedAt: channel.livestream?.started_at || null,
-            displayName: channel.user?.name || channel.name || username,
-            profileImageUrl: channel.user?.profile_picture || null,
+            viewerCount: channel.stream?.viewer_count || 0,
+            title: channel.stream_title || "",
+            gameName: channel.category?.name || "",
+            startedAt: channel.stream?.start_time || null,
+            displayName: username,
+            profileImageUrl: channel.banner_picture || null,
         }
     } catch (error) {
         logger.error("Kick stream fetch failed", { error })
