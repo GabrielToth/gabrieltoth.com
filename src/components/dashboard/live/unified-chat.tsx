@@ -39,7 +39,7 @@ const COMMANDS = [
     {
         name: "/slow",
         description: "Slow mode on/off",
-        usage: "/slow [seconds] | /slow off",
+        usage: "/slow [seconds] | /slow on | /slow off | /slowon | /slowoff",
     },
     {
         name: "/subscribers",

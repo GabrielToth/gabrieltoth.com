@@ -18,7 +18,7 @@ export const CURRENT_SCOPE_VERSIONS: Record<string, number> = {
     instagram: 1, // v1 = initial instagram_basic, instagram_content_publish
     tiktok: 1, // v1 = initial video.publish, user.info.basic
     twitch: 2, // v2 = added moderator:manage:chat_settings for Helix chat settings API
-    kick: 1, // v1 = initial user:read, channel:read, chat:write
+    kick: 2, // v2 = removed streamkey:read, moderation:ban, moderation:chat_message:manage (not enabled on Kick app)
     twitter: 1, // v1 = initial tweet.write, tweet.read
     linkedin: 2, // v2 = added w_organization_social, openid, profile, email scopes
 }
