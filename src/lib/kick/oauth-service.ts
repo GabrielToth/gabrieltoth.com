@@ -190,7 +190,7 @@ export class KickOAuthService extends BaseService {
 
         try {
             const response = await fetch(
-                `${this.config.apiBaseUrl}/api/v2/users`,
+                `${this.config.apiBaseUrl}/public/v1/users`,
                 {
                     headers: {
                         Authorization: `Bearer ${accessToken}`,
@@ -210,9 +210,9 @@ export class KickOAuthService extends BaseService {
 
             return {
                 userId: String(user.user_id || user.id),
-                username: user.username || user.name,
+                username: user.name || user.username,
                 email: user.email,
-                profilePictureUrl: user.profile_picture_url || user.avatar,
+                profilePictureUrl: user.profile_picture || user.avatar,
             }
         } catch (error) {
             this.logger.error(
@@ -228,7 +228,7 @@ export class KickOAuthService extends BaseService {
 
         try {
             const response = await fetch(
-                `${this.config.apiBaseUrl}/api/v2/channels`,
+                `${this.config.apiBaseUrl}/public/v1/channels`,
                 {
                     headers: {
                         Authorization: `Bearer ${accessToken}`,
@@ -247,11 +247,11 @@ export class KickOAuthService extends BaseService {
             const channel = data.data?.[0] || data
 
             return {
-                id: String(channel.channel_id || channel.id),
-                name: channel.name || channel.title,
+                id: String(channel.broadcaster_user_id || channel.id),
+                name: channel.stream_title || channel.name || "",
                 slug: channel.slug || "",
-                followersCount: channel.followers_count || 0,
-                isLive: channel.live || false,
+                followersCount: 0,
+                isLive: channel.stream?.is_live ?? false,
             }
         } catch (error) {
             this.logger.error(
