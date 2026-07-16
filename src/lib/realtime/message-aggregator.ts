@@ -29,6 +29,8 @@ const ADAPTER_REGISTRY: Record<ChatPlatform, () => ChatAdapter> = {
 }
 
 export class MessageAggregator {
+    private static instances = new Map<string, MessageAggregator>()
+
     private userId: string
     private platforms: ChatPlatform[]
     private platformConnect: PlatformConnectInfo
@@ -53,6 +55,16 @@ export class MessageAggregator {
             logger.debug("Aggregator already started", { userId: this.userId })
             return
         }
+
+        // Stop any existing aggregator for this user to prevent duplicates
+        const existing = MessageAggregator.instances.get(this.userId)
+        if (existing && existing !== this) {
+            logger.info("Stopping previous aggregator for user", {
+                userId: this.userId,
+            })
+            await existing.stop()
+        }
+        MessageAggregator.instances.set(this.userId, this)
 
         this.started = true
         logger.info("Starting message aggregator", {
@@ -181,6 +193,12 @@ export class MessageAggregator {
         }
 
         this.adapters.clear()
+
+        // Remove from registry if this is the current instance
+        if (MessageAggregator.instances.get(this.userId) === this) {
+            MessageAggregator.instances.delete(this.userId)
+        }
+
         logger.info("Message aggregator stopped", { userId: this.userId })
     }
 

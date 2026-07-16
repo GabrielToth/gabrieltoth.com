@@ -94,7 +94,10 @@ export function useChatSSE(_platforms: string[]): UseChatSSEReturn {
             if (!mountedRef.current) return
             try {
                 const message: SSEChatMessage = JSON.parse(event.data)
-                setMessages(prev => [...prev, message])
+                setMessages(prev => {
+                    if (prev.some(m => m.id === message.id)) return prev
+                    return [...prev, message]
+                })
             } catch (parseError) {
                 logger.warn("Failed to parse SSE message", {
                     error: String(parseError),
