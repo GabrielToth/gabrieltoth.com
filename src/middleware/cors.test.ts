@@ -531,4 +531,3 @@ describe("CORS Middleware", () => {
         })
     })
 })
-

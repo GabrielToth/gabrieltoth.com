@@ -42,8 +42,10 @@ interface MockEventSource {
 }
 
 // Track event listeners per EventSource instance
-const eventListeners: Map<MockEventSource, Map<string, Set<EventListenerCallback>>> =
-    new Map()
+const eventListeners: Map<
+    MockEventSource,
+    Map<string, Set<EventListenerCallback>>
+> = new Map()
 let currentEventSource: MockEventSource | null = null
 let eventSourceConstructorCalls: string[] = []
 

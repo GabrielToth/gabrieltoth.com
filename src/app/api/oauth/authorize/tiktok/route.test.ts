@@ -68,7 +68,9 @@ describe("POST /api/oauth/authorize/tiktok", () => {
 
     beforeEach(() => {
         vi.clearAllMocks()
-        mockGetServerSession.mockResolvedValue({ user: { id: "test-user-123" } })
+        mockGetServerSession.mockResolvedValue({
+            user: { id: "test-user-123" },
+        })
         mockGenerateState.mockReturnValue({
             token: "signed-state-token-abc123",
             payload: {
@@ -98,10 +100,16 @@ describe("POST /api/oauth/authorize/tiktok", () => {
             state: "signed-state-token-abc123",
         })
         expect(data.authorizationUrl).toContain("client_key=test-client-key")
-        expect(data.authorizationUrl).toContain("redirect_uri=https%3A%2F%2Fexample.com%2Fcallback")
-        expect(data.authorizationUrl).toContain("state=signed-state-token-abc123")
+        expect(data.authorizationUrl).toContain(
+            "redirect_uri=https%3A%2F%2Fexample.com%2Fcallback"
+        )
+        expect(data.authorizationUrl).toContain(
+            "state=signed-state-token-abc123"
+        )
         expect(data.authorizationUrl).toContain("response_type=code")
-        expect(data.authorizationUrl).toContain("scope=user.info.basic%2Cuser.info.profile")
+        expect(data.authorizationUrl).toContain(
+            "scope=user.info.basic%2Cuser.info.profile"
+        )
     })
 
     it("returns 401 when user is not authenticated", async () => {

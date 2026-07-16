@@ -146,6 +146,26 @@ export class OAuthManager {
             })
         }
 
+        // TikTok
+        if (process.env.TIKTOK_CLIENT_KEY && process.env.TIKTOK_CLIENT_SECRET) {
+            this.configs.set("tiktok", {
+                clientId: process.env.TIKTOK_CLIENT_KEY,
+                clientSecret: process.env.TIKTOK_CLIENT_SECRET,
+                redirectUri:
+                    process.env.TIKTOK_REDIRECT_URI ||
+                    "http://localhost:3000/api/oauth/callback/tiktok",
+                scopes: [
+                    "user.info.basic",
+                    "user.info.profile",
+                    "user.info.stats",
+                    "video.list",
+                    "video.publish",
+                ],
+                authorizationUrl: "https://www.tiktok.com/v2/auth/authorize",
+                tokenUrl: "https://open.tiktokapis.com/v2/oauth/token/",
+            })
+        }
+
         // Kick
         if (process.env.KICK_CLIENT_ID && process.env.KICK_CLIENT_SECRET) {
             this.configs.set("kick", {
@@ -159,8 +179,8 @@ export class OAuthManager {
                     "channel:read",
                     "channel:write",
                     "chat:write",
-                    "moderation:read",
-                    "moderation:write",
+                    "moderation:ban",
+                    "moderation:chat_message:manage",
                 ],
                 authorizationUrl: "https://id.kick.com/oauth/authorize",
                 tokenUrl: "https://id.kick.com/oauth/token",

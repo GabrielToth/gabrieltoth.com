@@ -32,8 +32,8 @@ const DEFAULT_SCOPES = [
     "streamkey:read",
     "chat:write",
     "events:subscribe",
-    "moderation:read",
-    "moderation:write",
+    "moderation:ban",
+    "moderation:chat_message:manage",
 ]
 
 export function createKickConfig(): KickConfig {
@@ -43,7 +43,8 @@ export function createKickConfig(): KickConfig {
             clientSecret: process.env.KICK_CLIENT_SECRET || "",
             redirectUri:
                 process.env.KICK_REDIRECT_URI ||
-                (process.env.VERCEL_ENV === "production" && process.env.VERCEL_PROJECT_PRODUCTION_URL
+                (process.env.VERCEL_ENV === "production" &&
+                process.env.VERCEL_PROJECT_PRODUCTION_URL
                     ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}/api/oauth/callback/kick`
                     : "http://localhost:3000/api/oauth/callback/kick"),
             scopes: DEFAULT_SCOPES,

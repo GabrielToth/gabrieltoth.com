@@ -60,9 +60,7 @@ interface UseChatSSEReturn {
 const MAX_RECONNECT_DELAY_MS = 30_000
 const INITIAL_RECONNECT_DELAY_MS = 1_000
 
-export function useChatSSE(
-    _platforms: string[]
-): UseChatSSEReturn {
+export function useChatSSE(_platforms: string[]): UseChatSSEReturn {
     const [messages, setMessages] = useState<SSEChatMessage[]>([])
     const [statuses, setStatuses] = useState<PlatformStatus[]>([])
     const [isConnected, setIsConnected] = useState(false)

@@ -335,6 +335,8 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
                 "instagram",
                 "twitch",
                 "kick",
+                "tiktok",
+                "twitter",
             ])
             .eq("user_id", userId)
             .eq("status", "connected")
@@ -435,6 +437,11 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
                     } else {
                         platforms.push(baseInfo)
                     }
+                    break
+
+                case "tiktok":
+                case "twitter":
+                    platforms.push(baseInfo)
                     break
 
                 default:

@@ -36,7 +36,7 @@ const ALL_PLATFORMS = [
     { id: "kick", name: "Kick", implemented: true },
     { id: "facebook", name: "Facebook", implemented: true, localOnly: true },
     { id: "instagram", name: "Instagram", implemented: true, localOnly: true },
-    { id: "twitter", name: "Twitter/X", implemented: false },
+    { id: "twitter", name: "Twitter/X", implemented: true },
     { id: "linkedin", name: "LinkedIn", implemented: false },
     { id: "kwai", name: "Kwai", implemented: false },
 ] as const
