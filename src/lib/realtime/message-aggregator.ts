@@ -258,14 +258,14 @@ export class MessageAggregator {
         channelName: string,
         message: string,
         token: string
-    ): Promise<void> {
+    ): Promise<boolean> {
         // Prefer active adapter from running aggregator
         const aggregator = MessageAggregator.instances.get(userId)
         if (aggregator?.started) {
             const entry = aggregator.adapters.get(platform)
             if (entry && entry.adapter) {
                 await entry.adapter.sendMessage(channelName, message)
-                return
+                return true
             }
         }
 
@@ -278,6 +278,7 @@ export class MessageAggregator {
         } finally {
             await adapter.disconnect(channelName)
         }
+        return false
     }
 
     /**

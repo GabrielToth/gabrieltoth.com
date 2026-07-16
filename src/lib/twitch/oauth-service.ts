@@ -541,7 +541,7 @@ export class TwitchOAuthService {
             non_moderator_chat_delay_duration?: number
         }
     ): Promise<boolean> {
-        const body = { data: settings as Record<string, unknown> }
+        const body = settings as Record<string, unknown>
 
         const params = new URLSearchParams({
             broadcaster_id: broadcasterId,

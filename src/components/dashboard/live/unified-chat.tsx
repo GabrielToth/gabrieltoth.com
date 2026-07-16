@@ -104,25 +104,30 @@ export function UnifiedChat({ platforms }: UnifiedChatProps) {
                 return
             }
 
-            // Inject sent message into feed locally since Twitch echo
-            // goes to the temp connection (not the SSE IRC connection)
-            addMessage({
-                id: `send-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`,
-                channelId: selectedPlatform,
-                platform: selectedPlatform,
-                user: {
-                    id: "self",
-                    username: "ogabrieltoth",
-                    displayName: "ogabrieltoth",
+            const data = await res.json()
+
+            // Only inject locally if the message was sent via temp connection
+            // (no active aggregator to receive the Twitch echo via SSE).
+            // When sentViaActive is true, the echo arrives via SSE.
+            if (!data.sentViaActive) {
+                addMessage({
+                    id: `send-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`,
+                    channelId: selectedPlatform,
                     platform: selectedPlatform,
-                    badges: [],
-                    isBroadcaster: true,
-                },
-                content: text,
-                type: "text",
-                timestamp: Date.now(),
-                isAction: text.startsWith("/me "),
-            })
+                    user: {
+                        id: "self",
+                        username: "ogabrieltoth",
+                        displayName: "ogabrieltoth",
+                        platform: selectedPlatform,
+                        badges: [],
+                        isBroadcaster: true,
+                    },
+                    content: text,
+                    type: "text",
+                    timestamp: Date.now(),
+                    isAction: text.startsWith("/me "),
+                })
+            }
 
             historyRef.current.push(text)
             setInput("")

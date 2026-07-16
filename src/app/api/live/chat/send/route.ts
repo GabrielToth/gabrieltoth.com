@@ -108,13 +108,13 @@ const COMMANDS: CommandHandler[] = [
         pattern: /^\/slow(?:\s+(\d+))?$/i,
         handler: async (args, api) => {
             const seconds = args[1] ? parseInt(args[1]) : 30
-            return execHelix(api, "PATCH", `/chat/settings?broadcaster_id=${api.broadcasterId}&moderator_id=${api.moderatorId}`, { data: { slow_mode: true, slow_mode_wait_time: seconds } })
+            return execHelix(api, "PATCH", `/chat/settings?broadcaster_id=${api.broadcasterId}&moderator_id=${api.moderatorId}`, { slow_mode: true, slow_mode_wait_time: seconds })
         },
     },
     {
         pattern: /^\/subscribers$/i,
         handler: async (_args, api) => {
-            return execHelix(api, "PATCH", `/chat/settings?broadcaster_id=${api.broadcasterId}&moderator_id=${api.moderatorId}`, { data: { subscriber_mode: true } })
+            return execHelix(api, "PATCH", `/chat/settings?broadcaster_id=${api.broadcasterId}&moderator_id=${api.moderatorId}`, { subscriber_mode: true })
         },
     },
 ]
@@ -216,7 +216,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         }
 
         // Fallback to IRC for regular messages and /me
-        await MessageAggregator.sendMessage(
+        const sentViaActive = await MessageAggregator.sendMessage(
             userId,
             "twitch",
             network.platform_username,
@@ -224,7 +224,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
             stored.accessToken
         )
 
-        return NextResponse.json({ success: true })
+        return NextResponse.json({ success: true, sentViaActive })
     } catch (error) {
         const err = error instanceof Error ? error : new Error(String(error))
         logger.error("Chat send failed", err)
