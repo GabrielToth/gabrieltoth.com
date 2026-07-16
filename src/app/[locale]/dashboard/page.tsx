@@ -76,7 +76,10 @@ function DashboardRedirect() {
                 })
                 setTimeout(() => router.push(`/${locale}/dashboard/live`), 1500)
             } else {
-                const msg = searchParams.get("error") || "unknown"
+                const msg =
+                    searchParams.get("reason") ||
+                    searchParams.get("error") ||
+                    "unknown"
                 setOauthMsg({
                     text: `❌ Kick: ${decodeURIComponent(msg)}`,
                     isError: true,
