@@ -38,13 +38,13 @@ const COMMANDS = [
     },
     {
         name: "/slow",
-        description: "Enable slow mode",
-        usage: "/slow [seconds]",
+        description: "Slow mode on/off",
+        usage: "/slow [seconds] | /slow off",
     },
     {
         name: "/subscribers",
-        description: "Enable subscribers-only mode",
-        usage: "/subscribers",
+        description: "Subscribers-only on/off",
+        usage: "/subscribers | /subscribersoff | /subon | /suboff | /sub on | /sub off | /subonly | /subscribersonly | /subscriber on | /subscriber off",
     },
 ]
 
@@ -95,7 +95,13 @@ export function UnifiedChat({ platforms }: UnifiedChatProps) {
                         id: `error-${Date.now()}`,
                         channelId: selectedPlatform,
                         platform: "system",
-                        user: { id: "system", username: "system", displayName: "System", platform: "system", badges: [] },
+                        user: {
+                            id: "system",
+                            username: "system",
+                            displayName: "System",
+                            platform: "system",
+                            badges: [],
+                        },
                         content: `⚠️ ${err.message}`,
                         type: "system",
                         timestamp: Date.now(),
