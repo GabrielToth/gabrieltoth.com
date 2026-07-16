@@ -434,6 +434,146 @@ export class TwitchOAuthService {
     }
 
     /**
+     * Ban or timeout a user in a channel
+     * Requires moderator:manage:banned_users scope
+     */
+    async banUser(
+        accessToken: string,
+        broadcasterId: string,
+        moderatorId: string,
+        targetUserId: string,
+        options?: { duration?: number; reason?: string }
+    ): Promise<boolean> {
+        const data: Record<string, unknown> = {
+            user_id: targetUserId,
+            reason: options?.reason || "",
+        }
+        if (options?.duration) {
+            data.duration = options.duration
+        }
+        const body = { data }
+
+        const params = new URLSearchParams({
+            broadcaster_id: broadcasterId,
+            moderator_id: moderatorId,
+        })
+
+        const response = await fetch(
+            `${this.config.apiBaseUrl}/moderation/bans?${params.toString()}`,
+            {
+                method: "POST",
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                    "Client-Id": this.config.oauth.clientId,
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(body),
+            }
+        )
+
+        if (!response.ok) {
+            const errorText = await response.text()
+            logger.error("Twitch ban user failed", {
+                status: response.status,
+                error: errorText,
+            })
+            return false
+        }
+
+        return true
+    }
+
+    /**
+     * Unban a user in a channel
+     * Requires moderator:manage:banned_users scope
+     */
+    async unbanUser(
+        accessToken: string,
+        broadcasterId: string,
+        moderatorId: string,
+        targetUserId: string
+    ): Promise<boolean> {
+        const params = new URLSearchParams({
+            broadcaster_id: broadcasterId,
+            moderator_id: moderatorId,
+            user_id: targetUserId,
+        })
+
+        const response = await fetch(
+            `${this.config.apiBaseUrl}/moderation/bans?${params.toString()}`,
+            {
+                method: "DELETE",
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                    "Client-Id": this.config.oauth.clientId,
+                },
+            }
+        )
+
+        if (!response.ok) {
+            const errorText = await response.text()
+            logger.error("Twitch unban user failed", {
+                status: response.status,
+                error: errorText,
+            })
+            return false
+        }
+
+        return true
+    }
+
+    /**
+     * Update chat settings (slow mode, subscribers-only, etc.)
+     * Requires moderator:manage:chat_settings scope
+     */
+    async updateChatSettings(
+        accessToken: string,
+        broadcasterId: string,
+        moderatorId: string,
+        settings: {
+            slow_mode?: boolean
+            slow_mode_wait_time?: number
+            subscriber_mode?: boolean
+            emote_mode?: boolean
+            follower_mode?: boolean
+            follower_mode_duration?: number
+            non_moderator_chat_delay?: boolean
+            non_moderator_chat_delay_duration?: number
+        }
+    ): Promise<boolean> {
+        const body = { data: settings as Record<string, unknown> }
+
+        const params = new URLSearchParams({
+            broadcaster_id: broadcasterId,
+            moderator_id: moderatorId,
+        })
+
+        const response = await fetch(
+            `${this.config.apiBaseUrl}/chat/settings?${params.toString()}`,
+            {
+                method: "PATCH",
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                    "Client-Id": this.config.oauth.clientId,
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(body),
+            }
+        )
+
+        if (!response.ok) {
+            const errorText = await response.text()
+            logger.error("Twitch update chat settings failed", {
+                status: response.status,
+                error: errorText,
+            })
+            return false
+        }
+
+        return true
+    }
+
+    /**
      * Get the top games (categories) from Twitch for stream category selection
      */
     async getTopGames(

@@ -35,6 +35,7 @@ const DEFAULT_SCOPES = [
     "moderator:manage:banned_users",
     "moderator:manage:announcements",
     "moderator:manage:chat_messages",
+    "moderator:manage:chat_settings",
     "channel:manage:broadcast",
     "channel:read:subscriptions",
     "channel:moderate",
