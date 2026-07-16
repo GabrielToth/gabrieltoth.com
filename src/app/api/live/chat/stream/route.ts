@@ -71,30 +71,24 @@ export async function GET(request: NextRequest): Promise<Response> {
                     channelName: network.platform_username || plat,
                 }
 
-                // Fetch OAuth token for Twitch (required for IRC authentication)
-                if (plat === "twitch") {
-                    try {
-                        const tokenStore = getTokenStore()
-                        const stored = await tokenStore.getToken(
-                            userId,
-                            "twitch"
-                        )
-                        if (stored?.accessToken) {
-                            info.token = stored.accessToken
-                            logger.debug(
-                                "Twitch OAuth token retrieved for chat",
-                                { userId }
-                            )
-                        }
-                    } catch (tokenErr) {
-                        logger.warn(
-                            "Failed to retrieve Twitch token for chat",
-                            {
-                                userId,
-                                error: String(tokenErr),
-                            }
+                try {
+                    const tokenStore = getTokenStore()
+                    const stored = await tokenStore.getToken(userId, plat)
+                    if (stored?.accessToken) {
+                        info.token = stored.accessToken
+                        logger.debug(
+                            `${plat} OAuth token retrieved for chat`,
+                            { userId }
                         )
                     }
+                } catch (tokenErr) {
+                    logger.warn(
+                        `Failed to retrieve ${plat} token for chat`,
+                        {
+                            userId,
+                            error: String(tokenErr),
+                        }
+                    )
                 }
 
                 platformConnect[plat] = info
