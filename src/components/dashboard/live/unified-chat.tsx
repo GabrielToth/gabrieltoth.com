@@ -8,12 +8,45 @@
 
 import { useChatSSE } from "@/hooks/use-chat-sse"
 import { createLogger } from "@/lib/logger"
-import { useRef, useEffect, useState } from "react"
+import { useCallback, useRef, useEffect, useState } from "react"
 
 interface UnifiedChatProps {
     platforms: string[]
     activePlatform: string
 }
+
+const COMMANDS = [
+    {
+        name: "/timeout",
+        description: "Timeout a user",
+        usage: "/timeout &lt;username&gt; [duration] [reason]",
+    },
+    {
+        name: "/ban",
+        description: "Ban a user",
+        usage: "/ban &lt;username&gt; [reason]",
+    },
+    {
+        name: "/unban",
+        description: "Unban a user",
+        usage: "/unban &lt;username&gt;",
+    },
+    {
+        name: "/me",
+        description: "Send an action message",
+        usage: "/me &lt;message&gt;",
+    },
+    {
+        name: "/slow",
+        description: "Enable slow mode",
+        usage: "/slow [seconds]",
+    },
+    {
+        name: "/subscribers",
+        description: "Enable subscribers-only mode",
+        usage: "/subscribers",
+    },
+]
 
 const logger = createLogger("UnifiedChat")
 
@@ -23,6 +56,10 @@ export function UnifiedChat({ platforms }: UnifiedChatProps) {
     const [selectedPlatform, setSelectedPlatform] = useState(
         platforms[0] || "twitch"
     )
+    const [historyIndex, setHistoryIndex] = useState(-1)
+    const [showCommands, setShowCommands] = useState(false)
+    const [selectedCmd, setSelectedCmd] = useState(0)
+    const historyRef = useRef<string[]>([])
     const messagesEndRef = useRef<HTMLDivElement>(null)
 
     // Auto-scroll to bottom on new messages
@@ -30,7 +67,7 @@ export function UnifiedChat({ platforms }: UnifiedChatProps) {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
     }, [messages])
 
-    const handleSend = async () => {
+    const handleSend = useCallback(async () => {
         const text = input.trim()
         if (!text) return
 
@@ -53,18 +90,89 @@ export function UnifiedChat({ platforms }: UnifiedChatProps) {
                 return
             }
 
+            historyRef.current.push(text)
             setInput("")
+            setHistoryIndex(-1)
         } catch (error) {
             logger.error("Failed to send message", {
                 platform: selectedPlatform,
                 error: String(error),
             })
         }
-    }
+    }, [input, selectedPlatform])
 
-    const handleTimeout = (_username: string) => {
-        // Simulated timeout — POST endpoint not yet implemented
-    }
+    const handleKeyDown = useCallback(
+        (e: React.KeyboardEvent<HTMLInputElement>) => {
+            if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault()
+                setShowCommands(false)
+                handleSend()
+                return
+            }
+
+            if (e.key === "ArrowUp") {
+                e.preventDefault()
+                const history = historyRef.current
+                if (history.length === 0) return
+                const newIndex =
+                    historyIndex === -1
+                        ? history.length - 1
+                        : Math.max(0, historyIndex - 1)
+                setHistoryIndex(newIndex)
+                setInput(history[newIndex])
+                return
+            }
+
+            if (e.key === "ArrowDown") {
+                e.preventDefault()
+                const history = historyRef.current
+                if (historyIndex === -1) return
+                const newIndex = historyIndex + 1
+                if (newIndex >= history.length) {
+                    setHistoryIndex(-1)
+                    setInput("")
+                } else {
+                    setHistoryIndex(newIndex)
+                    setInput(history[newIndex])
+                }
+                return
+            }
+
+            if (e.key === "Tab" && showCommands) {
+                e.preventDefault()
+                const cmd = COMMANDS[selectedCmd]
+                setInput(cmd.usage.split(" ")[0] + " ")
+                setShowCommands(false)
+                return
+            }
+
+            if (e.key === "Escape") {
+                setShowCommands(false)
+                return
+            }
+        },
+        [handleSend, historyIndex, showCommands, selectedCmd]
+    )
+
+    const handleInputChange = useCallback((value: string) => {
+        setInput(value)
+        setHistoryIndex(-1)
+
+        if (value === "/") {
+            setShowCommands(true)
+            setSelectedCmd(0)
+        } else if (value.startsWith("/") && !value.includes(" ")) {
+            const match = COMMANDS.findIndex(c => c.name.startsWith(value))
+            if (match >= 0) {
+                setShowCommands(true)
+                setSelectedCmd(match)
+            } else {
+                setShowCommands(false)
+            }
+        } else {
+            setShowCommands(false)
+        }
+    }, [])
 
     const getPlatformBadge = (
         platform: string
@@ -193,7 +301,9 @@ export function UnifiedChat({ platforms }: UnifiedChatProps) {
                                     msg.user.username !== "ogabrieltoth" && (
                                         <button
                                             onClick={() =>
-                                                handleTimeout(msg.user.username)
+                                                setInput(
+                                                    `/timeout ${msg.user.username} 1 `
+                                                )
                                             }
                                             className="text-xs text-red-500 hover:text-red-700"
                                             title="Timeout 1s"
@@ -208,18 +318,42 @@ export function UnifiedChat({ platforms }: UnifiedChatProps) {
                 <div ref={messagesEndRef} />
             </div>
 
+            {/* Command suggestions */}
+            {showCommands && (
+                <div className="relative mb-1">
+                    <div className="absolute bottom-0 left-0 w-full rounded-md border bg-white shadow-lg dark:border-gray-700 dark:bg-gray-800 z-10">
+                        {COMMANDS.map((cmd, i) => (
+                            <button
+                                key={cmd.name}
+                                onClick={() => {
+                                    setInput(cmd.usage.split(" ")[0] + " ")
+                                    setShowCommands(false)
+                                }}
+                                className={`flex w-full items-center gap-2 px-3 py-2 text-left text-sm hover:bg-gray-100 dark:hover:bg-gray-700 ${
+                                    i === selectedCmd
+                                        ? "bg-gray-100 dark:bg-gray-700"
+                                        : ""
+                                }`}
+                            >
+                                <span className="font-mono font-medium text-purple-600 dark:text-purple-400">
+                                    {cmd.name}
+                                </span>
+                                <span className="text-xs text-gray-500">
+                                    {cmd.description}
+                                </span>
+                            </button>
+                        ))}
+                    </div>
+                </div>
+            )}
+
             {/* Input area */}
-            <div className="flex gap-2 mt-3">
+            <div className="flex gap-2 mt-3 relative">
                 <input
                     type="text"
                     value={input}
-                    onChange={e => setInput(e.target.value)}
-                    onKeyDown={e => {
-                        if (e.key === "Enter" && !e.shiftKey) {
-                            e.preventDefault()
-                            handleSend()
-                        }
-                    }}
+                    onChange={e => handleInputChange(e.target.value)}
+                    onKeyDown={handleKeyDown}
                     placeholder={`Send message to ${selectedPlatform}...`}
                     className="flex-1 rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
                     maxLength={500}
@@ -236,24 +370,18 @@ export function UnifiedChat({ platforms }: UnifiedChatProps) {
             {/* Quick commands */}
             <div className="flex gap-1 mt-2">
                 <span className="text-xs text-gray-400 mr-1">Quick:</span>
-                <button
-                    onClick={() => setInput("/timeout ")}
-                    className="rounded bg-gray-100 px-2 py-0.5 text-xs text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400"
-                >
-                    /timeout
-                </button>
-                <button
-                    onClick={() => setInput("/ban ")}
-                    className="rounded bg-gray-100 px-2 py-0.5 text-xs text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400"
-                >
-                    /ban
-                </button>
-                <button
-                    onClick={() => setInput("/me ")}
-                    className="rounded bg-gray-100 px-2 py-0.5 text-xs text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400"
-                >
-                    /me
-                </button>
+                {COMMANDS.map(cmd => (
+                    <button
+                        key={cmd.name}
+                        onClick={() => {
+                            setInput(cmd.name + " ")
+                            setShowCommands(true)
+                        }}
+                        className="rounded bg-gray-100 px-2 py-0.5 text-xs text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400"
+                    >
+                        {cmd.name}
+                    </button>
+                ))}
             </div>
         </div>
     )
