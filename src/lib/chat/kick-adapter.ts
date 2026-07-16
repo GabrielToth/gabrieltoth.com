@@ -1,11 +1,3 @@
-/**
- * Kick Chat Adapter
- * WebSocket-based chat adapter for Kick (wss://ws.kick.com)
- * Implements the ChatAdapter interface for multi-platform unified chat.
- *
- * Note: Uses Node.js WebSocket — only works in Node.js runtime.
- */
-
 import { createLogger } from "../logger"
 import type {
     ChatAdapter,
@@ -18,20 +10,68 @@ import type {
 
 const logger = createLogger("KickChatAdapter")
 
+const PUSHER_APP_KEY = "32cbd69e4b950bf97679"
+const PUSHER_CLUSTER = "us2"
+const PUSHER_URL = `wss://ws-${PUSHER_CLUSTER}.pusher.com/app/${PUSHER_APP_KEY}?protocol=7&client=js&version=8.4.0-rc2&flash=false`
+
 interface KickMessageHandler {
     (message: ChatMessage): void
 }
 
-interface KickChatConnection {
+interface KickConnection {
     roomId: string
     ws: WebSocket
     connected: boolean
-    channelId: string
+    channelName: string
+    chatroomId: number | null
+    broadcasterUserId: string | null
+    oauthToken: string
+    pingInterval: ReturnType<typeof setInterval> | null
 }
 
-interface KickWsMessage {
+interface PusherEvent {
     event: string
-    data?: Record<string, unknown>
+    channel?: string
+    data?: string
+}
+
+async function getChatroomId(
+    channelName: string,
+    token: string
+): Promise<{ chatroomId: number; broadcasterUserId: string } | null> {
+    try {
+        const response = await fetch(
+            `https://kick.com/api/v2/channels/${channelName}`,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "User-Agent":
+                        "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:135.0) Gecko/20100101 Firefox/135.0",
+                    Accept: "application/json",
+                },
+            }
+        )
+
+        if (!response.ok) {
+            logger.warn("Kick internal channel API failed", {
+                status: response.status,
+            })
+            return null
+        }
+
+        const data = await response.json()
+        const chatroomId = data.chatroom?.id || null
+        const broadcasterUserId = String(data.user?.id || data.id || "")
+
+        if (chatroomId) {
+            return { chatroomId, broadcasterUserId }
+        }
+
+        return null
+    } catch (error) {
+        logger.warn("Failed to get Kick chatroom ID", { error })
+        return null
+    }
 }
 
 export class KickChatAdapter implements ChatAdapter {
@@ -40,10 +80,10 @@ export class KickChatAdapter implements ChatAdapter {
         platform: "kick",
         enabled: true,
         maxMessageLength: 500,
-        commands: ["/timeout", "/ban", "/unban", "/slow", "/followers"],
+        commands: [],
     }
 
-    private connections: Map<string, KickChatConnection> = new Map()
+    private connections: Map<string, KickConnection> = new Map()
     private messageHandlers: Map<string, Set<KickMessageHandler>> = new Map()
     private errorHandlers: Set<(error: Error) => void> = new Set()
     private reconnectTimers: Map<string, ReturnType<typeof setTimeout>> =
@@ -52,9 +92,6 @@ export class KickChatAdapter implements ChatAdapter {
     private readonly MAX_RECONNECT_ATTEMPTS = 5
     private readonly RECONNECT_DELAY_MS = 3000
 
-    /**
-     * Connect to a Kick chat room
-     */
     async connect(roomId: string, token: string): Promise<void> {
         if (this.connections.has(roomId)) {
             logger.debug("Already connected to Kick room", { roomId })
@@ -62,15 +99,27 @@ export class KickChatAdapter implements ChatAdapter {
         }
 
         try {
-            const wsUrl = `wss://ws.kick.com?token=${token}`
+            const channelInfo = await getChatroomId(roomId, token)
+            const chatroomId = channelInfo?.chatroomId || null
+            const broadcasterUserId = channelInfo?.broadcasterUserId || ""
 
-            const ws = new WebSocket(wsUrl)
+            if (!chatroomId) {
+                logger.warn(
+                    "No chatroom ID found, Kick receive will be unavailable",
+                    { roomId }
+                )
+            }
 
-            const connection: KickChatConnection = {
+            const ws = new WebSocket(PUSHER_URL)
+            const connection: KickConnection = {
                 roomId,
                 ws,
                 connected: false,
-                channelId: roomId,
+                channelName: roomId,
+                chatroomId,
+                broadcasterUserId,
+                oauthToken: token,
+                pingInterval: null,
             }
 
             this.connections.set(roomId, connection)
@@ -80,56 +129,95 @@ export class KickChatAdapter implements ChatAdapter {
                     if (!connection.connected) {
                         ws.close()
                         this.connections.delete(roomId)
-                        reject(new Error("Kick WebSocket connection timeout"))
+                        reject(new Error("Kick Pusher connection timeout"))
                     }
-                }, 10000)
+                }, 15000)
 
                 ws.onopen = () => {
                     clearTimeout(timeout)
-                    connection.connected = true
-
-                    // Subscribe to chat channel
-                    this.sendWsMessage(ws, "join", {
-                        channel: roomId,
-                    })
-
-                    logger.info("Connected to Kick chat", { roomId })
-                    resolve()
                 }
 
                 ws.onmessage = (event: MessageEvent) => {
                     try {
-                        const message: KickWsMessage = JSON.parse(event.data)
-                        this.handleWsMessage(roomId, message)
-                    } catch (parseError) {
-                        logger.warn("Failed to parse Kick WS message", {
-                            error: String(parseError),
-                        })
+                        const pusherEvent: PusherEvent = JSON.parse(event.data)
+
+                        switch (pusherEvent.event) {
+                            case "pusher:connection_established":
+                                connection.connected = true
+                                if (chatroomId) {
+                                    this.subscribeToChatroom(ws, chatroomId)
+                                    connection.pingInterval = setInterval(
+                                        () => {
+                                            ws.send(
+                                                JSON.stringify({
+                                                    event: "pusher:ping",
+                                                    data: {},
+                                                })
+                                            )
+                                        },
+                                        60000
+                                    )
+                                }
+                                logger.info("Connected to Kick Pusher", {
+                                    roomId,
+                                })
+                                resolve()
+                                break
+
+                            case "pusher:ping":
+                                ws.send(
+                                    JSON.stringify({
+                                        event: "pusher:pong",
+                                        data: {},
+                                    })
+                                )
+                                break
+
+                            case "pusher:error":
+                                logger.error("Kick Pusher error", {
+                                    data: pusherEvent.data,
+                                })
+                                break
+
+                            default:
+                                if (
+                                    pusherEvent.event.startsWith(
+                                        "App\\Events\\"
+                                    ) ||
+                                    pusherEvent.event === "ChatMessageEvent"
+                                ) {
+                                    this.handlePusherData(
+                                        roomId,
+                                        pusherEvent
+                                    )
+                                }
+                        }
+                    } catch {
+                        // non-JSON messages are ignored
                     }
                 }
 
-                ws.onerror = (error: Event) => {
+                ws.onerror = () => {
                     clearTimeout(timeout)
-                    const err = new Error(
-                        `Kick WebSocket error: ${JSON.stringify(error)}`
-                    )
+                    const err = new Error("Kick Pusher connection failed")
                     this.notifyError(err)
                     reject(err)
                 }
 
                 ws.onclose = () => {
                     connection.connected = false
+                    if (connection.pingInterval) {
+                        clearInterval(connection.pingInterval)
+                    }
                     this.connections.delete(roomId)
-                    logger.info("Disconnected from Kick chat", { roomId })
-
-                    // Attempt reconnection
+                    logger.info("Disconnected from Kick Pusher", { roomId })
                     this.scheduleReconnect(roomId, token)
                 }
             })
         } catch (error) {
             const err =
                 error instanceof Error ? error : new Error(String(error))
-            logger.error("Failed to connect to Kick", {
+            logger.error("Failed to connect to Kick Pusher", {
                 roomId,
                 error: err.message,
             })
@@ -137,11 +225,80 @@ export class KickChatAdapter implements ChatAdapter {
         }
     }
 
-    /**
-     * Disconnect from a Kick chat room
-     */
+    private subscribeToChatroom(ws: WebSocket, chatroomId: number): void {
+        ws.send(
+            JSON.stringify({
+                event: "pusher:subscribe",
+                data: {
+                    auth: "",
+                    channel: `chatrooms.${chatroomId}.v2`,
+                },
+            })
+        )
+        logger.debug("Subscribed to Kick chatroom", { chatroomId })
+    }
+
+    private handlePusherData(roomId: string, event: PusherEvent): void {
+        if (!event.data) return
+
+        try {
+            const payload =
+                typeof event.data === "string"
+                    ? JSON.parse(event.data)
+                    : event.data
+
+            if (!payload || payload.type === "system_message") return
+
+            const sender = payload.sender || payload.user || {}
+            const message: ChatMessage = {
+                id:
+                    `kick-${payload.id || `${Date.now()}-${Math.random().toString(36).substring(2, 8)}`}`,
+                channelId: roomId,
+                platform: "kick",
+                user: {
+                    id: String(sender.id || payload.user_id || "unknown"),
+                    username:
+                        String(
+                            sender.username || payload.username || "unknown"
+                        ).toLowerCase(),
+                    displayName:
+                        String(
+                            sender.username ||
+                                payload.username ||
+                                sender.name ||
+                                "Unknown"
+                        ),
+                    platform: "kick",
+                    badges: [],
+                    isBroadcaster:
+                        sender.is_broadcaster === true ||
+                        payload.is_broadcaster === true,
+                    isModerator:
+                        sender.is_moderator === true ||
+                        payload.is_moderator === true,
+                    isSubscriber:
+                        sender.is_subscriber === true ||
+                        payload.is_subscriber === true,
+                    isVip: sender.is_vip === true || payload.is_vip === true,
+                },
+                content: String(
+                    payload.content || payload.message || ""
+                ),
+                type: "text",
+                timestamp: payload.created_at
+                    ? new Date(payload.created_at).getTime()
+                    : Date.now(),
+            }
+
+            this.notifyMessageHandlers(roomId, message)
+        } catch (error) {
+            logger.warn("Failed to parse Kick Pusher message", {
+                error: String(error),
+            })
+        }
+    }
+
     async disconnect(roomId: string): Promise<void> {
-        // Clear any pending reconnect
         const reconnectTimer = this.reconnectTimers.get(roomId)
         if (reconnectTimer) {
             clearTimeout(reconnectTimer)
@@ -155,10 +312,11 @@ export class KickChatAdapter implements ChatAdapter {
             return
         }
 
+        if (connection.pingInterval) {
+            clearInterval(connection.pingInterval)
+        }
+
         try {
-            this.sendWsMessage(connection.ws, "leave", {
-                channel: roomId,
-            })
             connection.ws.close()
         } catch (error) {
             logger.warn("Error disconnecting from Kick", {
@@ -172,16 +330,13 @@ export class KickChatAdapter implements ChatAdapter {
         logger.info("Disconnected from Kick room", { roomId })
     }
 
-    /**
-     * Send a message to a Kick chat room
-     */
     async sendMessage(
         roomId: string,
         message: string,
         _options?: SendMessageOptions
     ): Promise<string> {
         const connection = this.connections.get(roomId)
-        if (!connection || !connection.connected) {
+        if (!connection) {
             throw new Error(`Not connected to Kick room: ${roomId}`)
         }
 
@@ -193,24 +348,60 @@ export class KickChatAdapter implements ChatAdapter {
 
         const messageId = `${Date.now()}-${Math.random().toString(36).substring(2, 8)}`
 
-        this.sendWsMessage(connection.ws, "send_message", {
-            channel: roomId,
+        if (!connection.oauthToken) {
+            throw new Error("No OAuth token available for sending Kick messages")
+        }
+
+        const body: Record<string, unknown> = {
             content: message,
-            id: messageId,
-        })
+        }
 
-        logger.debug("Message sent to Kick", {
-            roomId,
-            messageId,
-            length: message.length,
-        })
+        if (connection.broadcasterUserId) {
+            body.broadcaster_user_id = connection.broadcasterUserId
+        }
 
-        return messageId
+        try {
+            const response = await fetch(
+                "https://api.kick.com/public/v1/chat",
+                {
+                    method: "POST",
+                    headers: {
+                        Authorization: `Bearer ${connection.oauthToken}`,
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(body),
+                }
+            )
+
+            if (!response.ok) {
+                const errorBody = await response.text()
+                logger.error("Kick send message failed", {
+                    status: response.status,
+                    body: errorBody,
+                })
+                throw new Error(
+                    `Kick API error (${response.status}): ${errorBody}`
+                )
+            }
+
+            logger.debug("Message sent to Kick", {
+                roomId,
+                messageId,
+                length: message.length,
+            })
+
+            return messageId
+        } catch (error) {
+            const err =
+                error instanceof Error ? error : new Error(String(error))
+            logger.error("Failed to send Kick message", {
+                roomId,
+                error: err.message,
+            })
+            throw err
+        }
     }
 
-    /**
-     * Get room info
-     */
     async getRoom(roomId: string): Promise<ChatRoom | null> {
         const connection = this.connections.get(roomId)
         if (!connection) return null
@@ -223,9 +414,6 @@ export class KickChatAdapter implements ChatAdapter {
         }
     }
 
-    /**
-     * Get message history
-     */
     async getHistory(_roomId: string, limit?: number): Promise<ChatMessage[]> {
         logger.debug("Kick chat history requested (not yet implemented)", {
             limit,
@@ -233,9 +421,6 @@ export class KickChatAdapter implements ChatAdapter {
         return []
     }
 
-    /**
-     * Register a message handler for a room
-     */
     onMessage(
         roomId: string,
         handler: (message: ChatMessage) => void
@@ -251,9 +436,6 @@ export class KickChatAdapter implements ChatAdapter {
         }
     }
 
-    /**
-     * Register an error handler
-     */
     onError(handler: (error: Error) => void): () => void {
         this.errorHandlers.add(handler)
         return () => {
@@ -261,148 +443,6 @@ export class KickChatAdapter implements ChatAdapter {
         }
     }
 
-    /**
-     * Send a JSON message via WebSocket
-     */
-    private sendWsMessage(
-        ws: WebSocket,
-        event: string,
-        data?: Record<string, unknown>
-    ): void {
-        if (ws.readyState !== WebSocket.OPEN) {
-            logger.warn("Cannot send message, WebSocket not open", { event })
-            return
-        }
-
-        const message: KickWsMessage = { event, data }
-        ws.send(JSON.stringify(message))
-    }
-
-    /**
-     * Handle an incoming WebSocket message
-     */
-    private handleWsMessage(roomId: string, wsMessage: KickWsMessage): void {
-        try {
-            switch (wsMessage.event) {
-                case "message":
-                    this.handleChatMessage(roomId, wsMessage.data)
-                    break
-                case "user_joined":
-                    this.handleSystemEvent(roomId, wsMessage.data, "join")
-                    break
-                case "user_left":
-                    this.handleSystemEvent(roomId, wsMessage.data, "leave")
-                    break
-                case "subscription":
-                    this.handleSystemEvent(
-                        roomId,
-                        wsMessage.data,
-                        "subscription"
-                    )
-                    break
-                case "error":
-                    logger.error("Kick WS error event", {
-                        data: wsMessage.data,
-                    })
-                    break
-                default:
-                    logger.debug("Unhandled Kick WS event", {
-                        event: wsMessage.event,
-                    })
-            }
-        } catch (error) {
-            logger.warn("Failed to handle Kick WS message", {
-                error: String(error),
-            })
-        }
-    }
-
-    /**
-     * Handle a chat message event
-     */
-    private handleChatMessage(
-        roomId: string,
-        data?: Record<string, unknown>
-    ): void {
-        if (!data) return
-
-        const message: ChatMessage = {
-            id: `kick-${(data.id as string) || `${Date.now()}-${Math.random().toString(36).substring(2, 8)}`}`,
-            channelId: roomId,
-            platform: "kick",
-            user: {
-                id: (data.user_id as string) || "unknown",
-                username:
-                    ((data.sender as Record<string, unknown>)
-                        ?.username as string) || "unknown",
-                displayName:
-                    ((data.sender as Record<string, unknown>)
-                        ?.username as string) || "Unknown",
-                platform: "kick",
-                badges: [],
-                isBroadcaster: (data.is_broadcaster as boolean) || false,
-                isModerator: (data.is_moderator as boolean) || false,
-                isSubscriber: (data.is_subscriber as boolean) || false,
-                isVip: (data.is_vip as boolean) || false,
-            },
-            content: (data.content as string) || "",
-            type: "text",
-            timestamp: (data.created_at as number) || Date.now(),
-        }
-
-        this.notifyMessageHandlers(roomId, message)
-    }
-
-    /**
-     * Handle a system event (join, leave, subscription)
-     */
-    private handleSystemEvent(
-        roomId: string,
-        data?: Record<string, unknown>,
-        eventType?: string
-    ): void {
-        if (!data) return
-
-        const username =
-            (data.username as string) ||
-            ((data.user as Record<string, unknown>)?.username as string) ||
-            "Unknown"
-
-        let content = ""
-        switch (eventType) {
-            case "join":
-                content = `${username} joined the chat`
-                break
-            case "leave":
-                content = `${username} left the chat`
-                break
-            case "subscription":
-                content = `${username} subscribed!`
-                break
-        }
-
-        const message: ChatMessage = {
-            id: `kick-sys-${Date.now()}`,
-            channelId: roomId,
-            platform: "kick",
-            user: {
-                id: "system",
-                username: "kick",
-                displayName: "Kick",
-                platform: "kick",
-                badges: [],
-            },
-            content,
-            type: "system",
-            timestamp: Date.now(),
-        }
-
-        this.notifyMessageHandlers(roomId, message)
-    }
-
-    /**
-     * Schedule reconnection on disconnect
-     */
     private scheduleReconnect(roomId: string, token: string): void {
         const attempts = this.reconnectAttempts.get(roomId) || 0
 
@@ -413,7 +453,6 @@ export class KickChatAdapter implements ChatAdapter {
         }
 
         this.reconnectAttempts.set(roomId, attempts + 1)
-
         const delay = this.RECONNECT_DELAY_MS * Math.pow(2, attempts)
 
         logger.info("Scheduling Kick reconnect", {
@@ -435,9 +474,6 @@ export class KickChatAdapter implements ChatAdapter {
         this.reconnectTimers.set(roomId, timer)
     }
 
-    /**
-     * Notify all message handlers for a room
-     */
     private notifyMessageHandlers(roomId: string, message: ChatMessage): void {
         const handlers = this.messageHandlers.get(roomId)
         if (handlers) {
@@ -454,9 +490,6 @@ export class KickChatAdapter implements ChatAdapter {
         }
     }
 
-    /**
-     * Notify all error handlers
-     */
     private notifyError(error: Error): void {
         for (const handler of this.errorHandlers) {
             try {
