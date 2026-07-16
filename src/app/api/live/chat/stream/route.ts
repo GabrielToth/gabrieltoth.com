@@ -11,6 +11,7 @@ import { createClient } from "@supabase/supabase-js"
 import { NextRequest } from "next/server"
 import { MessageAggregator } from "@/lib/realtime/message-aggregator"
 import { createSSEStream, closeConnections } from "@/lib/realtime/sse-manager"
+import { getTokenStore } from "@/lib/token-store"
 
 const logger = createLogger("ChatStreamEndpoint")
 
@@ -61,14 +62,42 @@ export async function GET(request: NextRequest): Promise<Response> {
 
         // Determine which platforms the user has connected and their channel names
         const platformConnect: Partial<
-            Record<"twitch" | "kick", { channelName: string }>
+            Record<"twitch" | "kick", { channelName: string; token?: string }>
         > = {}
         for (const network of networks || []) {
             const plat = network.platform as "twitch" | "kick"
             if (plat === "twitch" || plat === "kick") {
-                platformConnect[plat] = {
+                const info: { channelName: string; token?: string } = {
                     channelName: network.platform_username || plat,
                 }
+
+                // Fetch OAuth token for Twitch (required for IRC authentication)
+                if (plat === "twitch") {
+                    try {
+                        const tokenStore = getTokenStore()
+                        const stored = await tokenStore.getToken(
+                            userId,
+                            "twitch"
+                        )
+                        if (stored?.accessToken) {
+                            info.token = stored.accessToken
+                            logger.debug(
+                                "Twitch OAuth token retrieved for chat",
+                                { userId }
+                            )
+                        }
+                    } catch (tokenErr) {
+                        logger.warn(
+                            "Failed to retrieve Twitch token for chat",
+                            {
+                                userId,
+                                error: String(tokenErr),
+                            }
+                        )
+                    }
+                }
+
+                platformConnect[plat] = info
             }
         }
 
