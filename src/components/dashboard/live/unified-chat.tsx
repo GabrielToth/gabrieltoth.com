@@ -88,7 +88,19 @@ export function UnifiedChat({ platforms }: UnifiedChatProps) {
                 logger.error("Failed to send message", {
                     platform: selectedPlatform,
                     error: err.error,
+                    message: err.message,
                 })
+                if (err.error === "MISSING_SCOPE") {
+                    addMessage({
+                        id: `error-${Date.now()}`,
+                        channelId: selectedPlatform,
+                        platform: "system",
+                        user: { id: "system", username: "system", displayName: "System", platform: "system", badges: [] },
+                        content: `⚠️ ${err.message}`,
+                        type: "system",
+                        timestamp: Date.now(),
+                    })
+                }
                 return
             }
 
