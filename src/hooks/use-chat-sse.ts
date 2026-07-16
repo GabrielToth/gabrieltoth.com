@@ -60,6 +60,7 @@ interface UseChatSSEReturn {
 
 const MAX_RECONNECT_DELAY_MS = 30_000
 const INITIAL_RECONNECT_DELAY_MS = 1_000
+const DEDUP_WINDOW_MS = 3_000
 
 export function useChatSSE(_platforms: string[]): UseChatSSEReturn {
     const [messages, setMessages] = useState<SSEChatMessage[]>([])
@@ -97,6 +98,20 @@ export function useChatSSE(_platforms: string[]): UseChatSSEReturn {
                 const message: SSEChatMessage = JSON.parse(event.data)
                 setMessages(prev => {
                     if (prev.some(m => m.id === message.id)) return prev
+                    // Dedup by content+user+channel within a short window
+                    // to catch echoes of locally-injected self-sent messages.
+                    if (
+                        prev.some(
+                            m =>
+                                m.user.id === message.user.id &&
+                                m.content === message.content &&
+                                m.channelId === message.channelId &&
+                                Math.abs(m.timestamp - message.timestamp) <
+                                    DEDUP_WINDOW_MS
+                        )
+                    ) {
+                        return prev
+                    }
                     return [...prev, message]
                 })
             } catch (parseError) {
