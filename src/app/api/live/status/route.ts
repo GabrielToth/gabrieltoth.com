@@ -25,7 +25,6 @@ interface PlatformStreamInfo {
 }
 
 async function fetchTwitchStream(
-    accessToken: string,
     userId: string
 ): Promise<Partial<PlatformStreamInfo>> {
     try {
@@ -376,15 +375,10 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
 
             switch (network.platform) {
                 case "twitch":
-                    if (accessToken) {
-                        const twitchData = await fetchTwitchStream(
-                            accessToken,
-                            network.provider_user_id || network.platform_user_id
-                        )
-                        platforms.push({ ...baseInfo, ...twitchData })
-                    } else {
-                        platforms.push(baseInfo)
-                    }
+                    const twitchData = await fetchTwitchStream(
+                        network.provider_user_id || network.platform_user_id
+                    )
+                    platforms.push({ ...baseInfo, ...twitchData })
                     break
 
                 case "kick":

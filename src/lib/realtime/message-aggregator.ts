@@ -14,6 +14,10 @@ const logger = createLogger("MessageAggregator")
 
 type ChatPlatform = "twitch" | "kick"
 
+type PlatformConnectInfo = Partial<
+    Record<ChatPlatform, { channelName: string }>
+>
+
 interface PlatformAdapterEntry {
     adapter: ChatAdapter
     cleanupFns: Array<() => void>
@@ -27,17 +31,18 @@ const ADAPTER_REGISTRY: Record<ChatPlatform, () => ChatAdapter> = {
 export class MessageAggregator {
     private userId: string
     private platforms: ChatPlatform[]
+    private platformConnect: PlatformConnectInfo
     private adapters: Map<ChatPlatform, PlatformAdapterEntry> = new Map()
     private started = false
-    private roomId: string
 
-    constructor(userId: string, platforms: ChatPlatform[]) {
+    constructor(userId: string, platformConnect: PlatformConnectInfo) {
+        const platforms = Object.keys(platformConnect) as ChatPlatform[]
         if (platforms.length === 0) {
             throw new Error("At least one platform must be configured")
         }
         this.userId = userId
         this.platforms = platforms
-        this.roomId = userId // Use userId as the chat room identifier
+        this.platformConnect = platformConnect
     }
 
     /**
@@ -66,14 +71,22 @@ export class MessageAggregator {
                 }
 
                 const adapter = factory()
+                const connectInfo = this.platformConnect[platform]
                 const entry: PlatformAdapterEntry = {
                     adapter,
                     cleanupFns: [],
                 }
 
-                // Register message handler
+                if (!connectInfo) {
+                    logger.warn("No connect info for platform", { platform })
+                    continue
+                }
+
+                const channelName = connectInfo.channelName
+
+                // Register message handler with channel name
                 const unsubMessage = adapter.onMessage(
-                    this.roomId,
+                    channelName,
                     (message: ChatMessage) => {
                         this.handleMessage(message)
                     }
@@ -88,8 +101,8 @@ export class MessageAggregator {
 
                 this.adapters.set(platform, entry)
 
-                // Connect to the platform chat
-                await adapter.connect(this.roomId, "")
+                // Connect to the platform chat with actual channel name
+                await adapter.connect(channelName, "")
                 logger.info("Connected to platform chat", {
                     userId: this.userId,
                     platform,
@@ -150,7 +163,9 @@ export class MessageAggregator {
 
             // Disconnect adapter
             try {
-                await entry.adapter.disconnect(this.roomId)
+                const connectInfo = this.platformConnect[platform]
+                if (!connectInfo) continue
+                await entry.adapter.disconnect(connectInfo.channelName)
             } catch (error) {
                 logger.warn("Failed to disconnect adapter", {
                     platform,
