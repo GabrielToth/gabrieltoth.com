@@ -110,30 +110,27 @@ export function UnifiedChat({ platforms }: UnifiedChatProps) {
                 return
             }
 
-            const data = await res.json()
+            await res.json()
 
-            // Only inject locally if the message was sent via temp connection
-            // (no active aggregator to receive the Twitch echo via SSE).
-            // When sentViaActive is true, the echo arrives via SSE.
-            if (!data.sentViaActive) {
-                addMessage({
-                    id: `send-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`,
-                    channelId: selectedPlatform,
+            // Always inject locally for instant feedback. The SSE echo arrives
+            // asynchronously and is deduplicated by content+user in useChatSSE.
+            addMessage({
+                id: `send-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`,
+                channelId: selectedPlatform,
+                platform: selectedPlatform,
+                user: {
+                    id: "self",
+                    username: "ogabrieltoth",
+                    displayName: "ogabrieltoth",
                     platform: selectedPlatform,
-                    user: {
-                        id: "self",
-                        username: "ogabrieltoth",
-                        displayName: "ogabrieltoth",
-                        platform: selectedPlatform,
-                        badges: [],
-                        isBroadcaster: true,
-                    },
-                    content: text,
-                    type: "text",
-                    timestamp: Date.now(),
-                    isAction: text.startsWith("/me "),
-                })
-            }
+                    badges: [],
+                    isBroadcaster: true,
+                },
+                content: text,
+                type: "text",
+                timestamp: Date.now(),
+                isAction: text.startsWith("/me "),
+            })
 
             historyRef.current.push(text)
             setInput("")
