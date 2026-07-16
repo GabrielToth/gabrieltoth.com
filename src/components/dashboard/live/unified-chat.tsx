@@ -51,7 +51,7 @@ const COMMANDS = [
 const logger = createLogger("UnifiedChat")
 
 export function UnifiedChat({ platforms }: UnifiedChatProps) {
-    const { messages, isConnected, error } = useChatSSE(platforms)
+    const { messages, isConnected, error, addMessage } = useChatSSE(platforms)
     const [input, setInput] = useState("")
     const [selectedPlatform, setSelectedPlatform] = useState(
         platforms[0] || "twitch"
@@ -90,6 +90,26 @@ export function UnifiedChat({ platforms }: UnifiedChatProps) {
                 return
             }
 
+            // Inject sent message into feed locally since Twitch echo
+            // goes to the temp connection (not the SSE IRC connection)
+            addMessage({
+                id: `send-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`,
+                channelId: selectedPlatform,
+                platform: selectedPlatform,
+                user: {
+                    id: "self",
+                    username: "ogabrieltoth",
+                    displayName: "ogabrieltoth",
+                    platform: selectedPlatform,
+                    badges: [],
+                    isBroadcaster: true,
+                },
+                content: text,
+                type: "text",
+                timestamp: Date.now(),
+                isAction: text.startsWith("/me "),
+            })
+
             historyRef.current.push(text)
             setInput("")
             setHistoryIndex(-1)
@@ -99,7 +119,7 @@ export function UnifiedChat({ platforms }: UnifiedChatProps) {
                 error: String(error),
             })
         }
-    }, [input, selectedPlatform])
+    }, [input, selectedPlatform, addMessage])
 
     const handleKeyDown = useCallback(
         (e: React.KeyboardEvent<HTMLInputElement>) => {

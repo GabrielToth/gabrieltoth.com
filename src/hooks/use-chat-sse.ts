@@ -55,6 +55,7 @@ interface UseChatSSEReturn {
     statuses: PlatformStatus[]
     isConnected: boolean
     error: SSEError | null
+    addMessage: (message: SSEChatMessage) => void
 }
 
 const MAX_RECONNECT_DELAY_MS = 30_000
@@ -188,10 +189,18 @@ export function useChatSSE(_platforms: string[]): UseChatSSEReturn {
         }
     }, [connect])
 
+    const addMessage = useCallback((message: SSEChatMessage) => {
+        setMessages(prev => {
+            if (prev.some(m => m.id === message.id)) return prev
+            return [...prev, message]
+        })
+    }, [])
+
     return {
         messages,
         statuses,
         isConnected,
         error,
+        addMessage,
     }
 }
