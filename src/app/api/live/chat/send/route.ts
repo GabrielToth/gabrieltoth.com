@@ -152,12 +152,20 @@ const COMMANDS: CommandHandler[] = [
             )
         },
     },
-    // /slow [seconds] or /slow off
+    // /slow [seconds], /slow on|off, /slowon, /slowoff
     {
-        pattern: /^\/slow(?: (\d+|off))?$/i,
+        pattern: /^\/slow(?: (?:(\d+)|on|off))?$/i,
         handler: async (args, api) => {
             const raw = args[1]
-            if (!raw || raw === "off") {
+            if (!raw || raw === "on") {
+                return execHelix(
+                    api,
+                    "PATCH",
+                    `/chat/settings?broadcaster_id=${api.broadcasterId}&moderator_id=${api.moderatorId}`,
+                    { slow_mode: true, slow_mode_wait_time: 30 }
+                )
+            }
+            if (raw === "off") {
                 return execHelix(
                     api,
                     "PATCH",
@@ -171,6 +179,28 @@ const COMMANDS: CommandHandler[] = [
                 "PATCH",
                 `/chat/settings?broadcaster_id=${api.broadcasterId}&moderator_id=${api.moderatorId}`,
                 { slow_mode: true, slow_mode_wait_time: seconds }
+            )
+        },
+    },
+    {
+        pattern: /^\/slowon$/i,
+        handler: async (_args, api) => {
+            return execHelix(
+                api,
+                "PATCH",
+                `/chat/settings?broadcaster_id=${api.broadcasterId}&moderator_id=${api.moderatorId}`,
+                { slow_mode: true, slow_mode_wait_time: 30 }
+            )
+        },
+    },
+    {
+        pattern: /^\/slowoff$/i,
+        handler: async (_args, api) => {
+            return execHelix(
+                api,
+                "PATCH",
+                `/chat/settings?broadcaster_id=${api.broadcasterId}&moderator_id=${api.moderatorId}`,
+                { slow_mode: false }
             )
         },
     },

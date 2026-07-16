@@ -29,11 +29,8 @@ const DEFAULT_SCOPES = [
     "user:read",
     "channel:read",
     "channel:write",
-    "streamkey:read",
     "chat:write",
     "events:subscribe",
-    "moderation:ban",
-    "moderation:chat_message:manage",
 ]
 
 export function createKickConfig(): KickConfig {
