@@ -38,7 +38,7 @@ export async function GET(request: NextRequest): Promise<Response> {
         const { data: networks, error } = await supabase
             .from("social_networks")
             .select("*")
-            .in("platform", ["twitch", "kick"])
+            .in("platform", ["twitch", "kick", "tiktok", "twitter"])
             .eq("user_id", userId)
             .eq("status", "connected")
 

@@ -170,7 +170,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
                     updated_at: new Date().toISOString(),
                 },
                 {
-                    onConflict: "user_id, platform",
+                    onConflict: "user_id, platform, platform_user_id",
                 }
             )
 
