@@ -59,14 +59,20 @@ export async function GET(request: NextRequest): Promise<Response> {
             )
         }
 
-        // Determine which platforms the user has connected
-        const platforms: Array<"twitch" | "kick"> = []
+        // Determine which platforms the user has connected and their channel names
+        const platformConnect: Partial<
+            Record<"twitch" | "kick", { channelName: string }>
+        > = {}
         for (const network of networks || []) {
-            if (network.platform === "twitch" || network.platform === "kick") {
-                platforms.push(network.platform)
+            const plat = network.platform as "twitch" | "kick"
+            if (plat === "twitch" || plat === "kick") {
+                platformConnect[plat] = {
+                    channelName: network.platform_username || plat,
+                }
             }
         }
 
+        const platforms = Object.keys(platformConnect)
         if (platforms.length === 0) {
             return new Response(
                 JSON.stringify({
@@ -85,7 +91,7 @@ export async function GET(request: NextRequest): Promise<Response> {
         const { response, connectionId } = createSSEStream(request, userId)
 
         // Start message aggregator
-        const aggregator = new MessageAggregator(userId, platforms)
+        const aggregator = new MessageAggregator(userId, platformConnect)
         aggregator.start().catch(err => {
             logger.error("Aggregator failed to start", {
                 userId,
