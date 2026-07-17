@@ -315,6 +315,21 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
                 )
             }
 
+            const { data: kickNetwork } = await supabase
+                .from("social_networks")
+                .select("metadata")
+                .eq("user_id", userId)
+                .eq("platform", "kick")
+                .eq("status", "connected")
+                .single()
+
+            const broadcasterUserId = kickNetwork?.metadata?.channelId
+
+            const body: Record<string, unknown> = { content: message }
+            if (broadcasterUserId) {
+                body.broadcaster_user_id = broadcasterUserId
+            }
+
             const response = await fetch(
                 "https://api.kick.com/public/v1/chat",
                 {
@@ -323,7 +338,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
                         Authorization: `Bearer ${stored.accessToken}`,
                         "Content-Type": "application/json",
                     },
-                    body: JSON.stringify({ content: message }),
+                    body: JSON.stringify(body),
                 }
             )
 

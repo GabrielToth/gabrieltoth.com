@@ -79,6 +79,55 @@ interface UpdateRequest {
     game_id?: string
 }
 
+async function resolveTwitchGameId(
+    gameInput: string,
+    clientId: string,
+    accessToken: string
+): Promise<string | null> {
+    const params = new URLSearchParams({ query: gameInput, first: "1" })
+    try {
+        const response = await fetch(
+            `https://api.twitch.tv/helix/search/categories?${params.toString()}`,
+            {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                    "Client-Id": clientId,
+                },
+            }
+        )
+        if (!response.ok) return null
+        const data = await response.json()
+        return data.data?.[0]?.id || null
+    } catch {
+        return null
+    }
+}
+
+async function resolveKickGameId(
+    gameInput: string,
+    accessToken: string
+): Promise<string | null> {
+    try {
+        const params = new URLSearchParams({
+            query: gameInput,
+            limit: "1",
+        })
+        const response = await fetch(
+            `https://api.kick.com/public/v1/categories?${params.toString()}`,
+            {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            }
+        )
+        if (!response.ok) return null
+        const data = await response.json()
+        return data.data?.[0]?.id || null
+    } catch {
+        return null
+    }
+}
+
 async function forceRefreshAccessToken(
     userId: string,
     platform: string
@@ -288,6 +337,25 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
             )
         }
 
+        let resolvedGameId: string | undefined = game_id
+        if (game_id && !/^\d+$/.test(game_id)) {
+            if (platform === "twitch") {
+                resolvedGameId = (await resolveTwitchGameId(
+                    game_id,
+                    process.env.TWITCH_CLIENT_ID || "",
+                    accessToken
+                )) ?? undefined
+            } else {
+                resolvedGameId = (await resolveKickGameId(game_id, accessToken)) ?? undefined
+            }
+            if (!resolvedGameId) {
+                logger.warn("Could not resolve game name to ID, skipping game_id", {
+                    input: game_id,
+                    platform,
+                })
+            }
+        }
+
         let result: { success: boolean; error?: string }
 
         if (platform === "twitch") {
@@ -295,7 +363,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
                 accessToken,
                 networks.provider_user_id || networks.platform_user_id,
                 title,
-                game_id
+                resolvedGameId
             )
         } else {
             result = await updateKickStream(accessToken, title)

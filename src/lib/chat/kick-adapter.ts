@@ -38,6 +38,7 @@ interface PusherEvent {
 async function getChatroomId(
     channelName: string
 ): Promise<{ chatroomId: number; broadcasterUserId: string } | null> {
+    // Try internal JSON API first
     try {
         const response = await fetch(
             `https://kick.com/api/v2/channels/${channelName}`,
@@ -46,28 +47,73 @@ async function getChatroomId(
                     "User-Agent":
                         "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:135.0) Gecko/20100101 Firefox/135.0",
                     Accept: "application/json",
+                    Referer: "https://kick.com/",
                 },
             }
         )
 
-        if (!response.ok) {
-            logger.warn("Kick internal channel API failed", {
-                status: response.status,
+        if (response.ok) {
+            const data = await response.json()
+            const chatroomId = data.chatroom?.id || null
+            const broadcasterUserId = String(data.user?.id || data.id || "")
+            if (chatroomId) {
+                return { chatroomId, broadcasterUserId }
+            }
+        }
+    } catch {
+        // fall through to HTML scrape
+    }
+
+    // Fallback: scrape channel page for chatroom ID in embedded data
+    try {
+        const pageResponse = await fetch(
+            `https://kick.com/${channelName}`,
+            {
+                headers: {
+                    "User-Agent":
+                        "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:135.0) Gecko/20100101 Firefox/135.0",
+                    Accept: "text/html,application/xhtml+xml",
+                    "Accept-Language": "en-US,en;q=0.5",
+                },
+            }
+        )
+
+        if (!pageResponse.ok) {
+            logger.warn("Kick channel page fetch failed", {
+                status: pageResponse.status,
             })
             return null
         }
 
-        const data = await response.json()
-        const chatroomId = data.chatroom?.id || null
-        const broadcasterUserId = String(data.user?.id || data.id || "")
+        const html = await pageResponse.text()
 
-        if (chatroomId) {
-            return { chatroomId, broadcasterUserId }
+        // Try to find chatroom ID in embedded JSON data
+        const chatroomMatch = html.match(
+            /"chatroom"\s*:\s*\{\s*"id"\s*:\s*(\d+)/i
+        )
+        const userMatch = html.match(/"id"\s*:\s*(\d+)/)
+
+        if (chatroomMatch) {
+            return {
+                chatroomId: parseInt(chatroomMatch[1], 10),
+                broadcasterUserId: userMatch ? userMatch[1] : "",
+            }
+        }
+
+        // Try alternative patterns
+        const altMatch = html.match(
+            /chatroom[_-]?id[^"]*["']?\s*[:=]\s*["']?(\d+)/i
+        )
+        if (altMatch) {
+            return {
+                chatroomId: parseInt(altMatch[1], 10),
+                broadcasterUserId: "",
+            }
         }
 
         return null
     } catch (error) {
-        logger.warn("Failed to get Kick chatroom ID", { error })
+        logger.warn("Failed to scrape Kick chatroom ID", { error })
         return null
     }
 }
