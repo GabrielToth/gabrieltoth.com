@@ -141,6 +141,27 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
             ? Date.now() + tokenResponse.expiresIn * 1000
             : undefined
 
+        let chatroomId: number | null = null
+        try {
+            const chatroomRes = await fetch(
+                `https://kick.com/api/v2/channels/${channel.slug}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${tokenResponse.accessToken}`,
+                        "User-Agent":
+                            "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:135.0) Gecko/20100101 Firefox/135.0",
+                        Accept: "application/json",
+                    },
+                }
+            )
+            if (chatroomRes.ok) {
+                const chatroomData = await chatroomRes.json()
+                chatroomId = chatroomData.chatroom?.id || null
+            }
+        } catch {
+            // chatroom ID is optional; can be resolved later via adapter
+        }
+
         const tokenStore = getTokenStore()
         await tokenStore.storeToken({
             accessToken: tokenResponse.accessToken,
@@ -150,12 +171,26 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
             userId,
         })
 
-        logger.info("Kick OAuth tokens stored successfully", { userId })
+        logger.info("Kick OAuth tokens stored successfully", { userId, chatroomId })
 
         const supabase = createClient(
             process.env.NEXT_PUBLIC_SUPABASE_URL || "",
             process.env.SUPABASE_SERVICE_ROLE_KEY || ""
         )
+
+        const metadata: Record<string, unknown> = {
+            userId: user.userId,
+            username: user.username,
+            email: user.email,
+            profilePictureUrl: user.profilePictureUrl,
+            channelId: channel.id,
+            channelName: channel.name,
+            channelSlug: channel.slug,
+            scopeVersion: getScopeVersion("kick"),
+        }
+        if (chatroomId) {
+            metadata.chatroomId = chatroomId
+        }
 
         const { error: socialError } = await supabase
             .from("social_networks")
@@ -167,16 +202,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
                     platform_username: user.username,
                     status: "connected",
                     linked_at: new Date().toISOString(),
-                    metadata: {
-                        userId: user.userId,
-                        username: user.username,
-                        email: user.email,
-                        profilePictureUrl: user.profilePictureUrl,
-                        channelId: channel.id,
-                        channelName: channel.name,
-                        channelSlug: channel.slug,
-                        scopeVersion: getScopeVersion("kick"),
-                    },
+                    metadata,
                     updated_at: new Date().toISOString(),
                 },
                 {

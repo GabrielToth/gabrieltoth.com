@@ -1,4 +1,5 @@
 import { createLogger } from "../logger"
+import { createClient } from "@supabase/supabase-js"
 import type {
     ChatAdapter,
     ChatAdapterConfig,
@@ -95,8 +96,39 @@ export class KickChatAdapter implements ChatAdapter {
             return
         }
 
+        // Try to find a cached chatroom ID in the database metadata
+        let channelInfo: { chatroomId: number; broadcasterUserId: string } | null = null
         try {
-            const channelInfo = await getChatroomId(roomId, token)
+            const supabase = createClient(
+                process.env.NEXT_PUBLIC_SUPABASE_URL || "",
+                process.env.SUPABASE_SERVICE_ROLE_KEY || ""
+            )
+            const { data: network } = await supabase
+                .from("social_networks")
+                .select("metadata")
+                .eq("platform_username", roomId)
+                .eq("platform", "kick")
+                .eq("status", "connected")
+                .single()
+            if (network?.metadata?.chatroomId) {
+                channelInfo = {
+                    chatroomId: network.metadata.chatroomId,
+                    broadcasterUserId: String(network.metadata.channelId || network.metadata.userId || ""),
+                }
+                logger.info("Using cached chatroom ID from metadata", {
+                    roomId,
+                    chatroomId: channelInfo.chatroomId,
+                })
+            }
+        } catch {
+            // fall through to API resolve
+        }
+
+        if (!channelInfo) {
+            channelInfo = await getChatroomId(roomId, token)
+        }
+
+        try {
             const chatroomId = channelInfo?.chatroomId || null
             const broadcasterUserId = channelInfo?.broadcasterUserId || ""
 
