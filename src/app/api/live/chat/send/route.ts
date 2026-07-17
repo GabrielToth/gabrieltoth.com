@@ -325,9 +325,12 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
             const broadcasterUserId = kickNetwork?.metadata?.channelId
 
-            const body: Record<string, unknown> = { content: message }
+            const body: Record<string, unknown> = {
+                content: message,
+                type: "user",
+            }
             if (broadcasterUserId) {
-                body.broadcaster_user_id = broadcasterUserId
+                body.broadcaster_user_id = parseInt(String(broadcasterUserId), 10)
             }
 
             const response = await fetch(

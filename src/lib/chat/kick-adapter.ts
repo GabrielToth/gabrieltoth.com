@@ -36,20 +36,24 @@ interface PusherEvent {
 }
 
 async function getChatroomId(
-    channelName: string
+    channelName: string,
+    oauthToken?: string
 ): Promise<{ chatroomId: number; broadcasterUserId: string } | null> {
-    // Try internal JSON API first
+    // Try internal JSON API with OAuth token
     try {
+        const headers: Record<string, string> = {
+            "User-Agent":
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:135.0) Gecko/20100101 Firefox/135.0",
+            Accept: "application/json",
+            Referer: "https://kick.com/",
+        }
+        if (oauthToken) {
+            headers["Authorization"] = `Bearer ${oauthToken}`
+        }
+
         const response = await fetch(
             `https://kick.com/api/v2/channels/${channelName}`,
-            {
-                headers: {
-                    "User-Agent":
-                        "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:135.0) Gecko/20100101 Firefox/135.0",
-                    Accept: "application/json",
-                    Referer: "https://kick.com/",
-                },
-            }
+            { headers }
         )
 
         if (response.ok) {
@@ -61,61 +65,10 @@ async function getChatroomId(
             }
         }
     } catch {
-        // fall through to HTML scrape
+        // fall through
     }
 
-    // Fallback: scrape channel page for chatroom ID in embedded data
-    try {
-        const pageResponse = await fetch(
-            `https://kick.com/${channelName}`,
-            {
-                headers: {
-                    "User-Agent":
-                        "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:135.0) Gecko/20100101 Firefox/135.0",
-                    Accept: "text/html,application/xhtml+xml",
-                    "Accept-Language": "en-US,en;q=0.5",
-                },
-            }
-        )
-
-        if (!pageResponse.ok) {
-            logger.warn("Kick channel page fetch failed", {
-                status: pageResponse.status,
-            })
-            return null
-        }
-
-        const html = await pageResponse.text()
-
-        // Try to find chatroom ID in embedded JSON data
-        const chatroomMatch = html.match(
-            /"chatroom"\s*:\s*\{\s*"id"\s*:\s*(\d+)/i
-        )
-        const userMatch = html.match(/"id"\s*:\s*(\d+)/)
-
-        if (chatroomMatch) {
-            return {
-                chatroomId: parseInt(chatroomMatch[1], 10),
-                broadcasterUserId: userMatch ? userMatch[1] : "",
-            }
-        }
-
-        // Try alternative patterns
-        const altMatch = html.match(
-            /chatroom[_-]?id[^"]*["']?\s*[:=]\s*["']?(\d+)/i
-        )
-        if (altMatch) {
-            return {
-                chatroomId: parseInt(altMatch[1], 10),
-                broadcasterUserId: "",
-            }
-        }
-
-        return null
-    } catch (error) {
-        logger.warn("Failed to scrape Kick chatroom ID", { error })
-        return null
-    }
+    return null
 }
 
 export class KickChatAdapter implements ChatAdapter {
@@ -143,7 +96,7 @@ export class KickChatAdapter implements ChatAdapter {
         }
 
         try {
-            const channelInfo = await getChatroomId(roomId)
+            const channelInfo = await getChatroomId(roomId, token)
             const chatroomId = channelInfo?.chatroomId || null
             const broadcasterUserId = channelInfo?.broadcasterUserId || ""
 
@@ -392,10 +345,11 @@ export class KickChatAdapter implements ChatAdapter {
 
         const body: Record<string, unknown> = {
             content: message,
+            type: "user",
         }
 
         if (connection.broadcasterUserId) {
-            body.broadcaster_user_id = connection.broadcasterUserId
+            body.broadcaster_user_id = parseInt(connection.broadcasterUserId, 10)
         }
 
         try {
