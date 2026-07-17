@@ -7,10 +7,58 @@
 
 import { getServerSession } from "@/lib/auth/get-server-session"
 import { createLogger } from "@/lib/logger"
+import { getKickConfig } from "@/lib/kick/config"
+import { getKickOAuthService } from "@/lib/kick/oauth-service"
+import { getTokenStore } from "@/lib/token-store"
 import { createClient } from "@supabase/supabase-js"
 import { NextRequest, NextResponse } from "next/server"
 
 const logger = createLogger("LiveStatusEndpoint")
+
+async function getValidAccessToken(
+    userId: string,
+    platform: string
+): Promise<string | null> {
+    const tokenStore = getTokenStore()
+    const storedToken = await tokenStore.getToken(userId, platform)
+
+    if (!storedToken) {
+        return null
+    }
+
+    if (!storedToken.expiresAt || storedToken.expiresAt > Date.now()) {
+        return storedToken.accessToken
+    }
+
+    if (!storedToken.refreshToken) {
+        return null
+    }
+
+    try {
+        const config = getKickConfig()
+        const oauthService = getKickOAuthService(config)
+        await oauthService.initialize()
+        const refreshed = await oauthService.refreshAccessToken(storedToken.refreshToken)
+
+        const expiresAt = Date.now() + refreshed.expiresIn * 1000
+        await tokenStore.refreshToken(userId, platform, {
+            accessToken: refreshed.accessToken,
+            refreshToken: refreshed.refreshToken,
+            expiresAt,
+            platform,
+            userId,
+        })
+
+        return refreshed.accessToken
+    } catch (error) {
+        logger.error("Token refresh failed", {
+            userId,
+            platform,
+            error: error instanceof Error ? error.message : String(error),
+        })
+        return null
+    }
+}
 
 interface PlatformStreamInfo {
     platform: string
@@ -379,10 +427,14 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
                     platforms.push({ ...baseInfo, ...twitchData })
                     break
 
-                case "kick":
-                    if (accessToken) {
+                case "kick": {
+                    const kickToken = await getValidAccessToken(
+                        userId,
+                        "kick"
+                    )
+                    if (kickToken) {
                         const kickData = await fetchKickStream(
-                            accessToken,
+                            kickToken,
                             network.platform_username || ""
                         )
                         platforms.push({ ...baseInfo, ...kickData })
@@ -390,6 +442,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
                         platforms.push(baseInfo)
                     }
                     break
+                }
 
                 case "youtube":
                     if (accessToken) {

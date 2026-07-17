@@ -6,10 +6,72 @@
 
 import { getServerSession } from "@/lib/auth/get-server-session"
 import { createLogger } from "@/lib/logger"
+import { getKickConfig } from "@/lib/kick/config"
+import { getKickOAuthService } from "@/lib/kick/oauth-service"
+import { getTokenStore } from "@/lib/token-store"
+import { getTwitchConfig } from "@/lib/twitch/config"
+import { getTwitchOAuthService } from "@/lib/twitch/oauth-service"
 import { createClient } from "@supabase/supabase-js"
 import { NextRequest, NextResponse } from "next/server"
 
 const logger = createLogger("LiveUpdateEndpoint")
+
+async function getValidAccessToken(
+    userId: string,
+    platform: string
+): Promise<{ accessToken: string; error?: string }> {
+    const tokenStore = getTokenStore()
+    const storedToken = await tokenStore.getToken(userId, platform)
+
+    if (!storedToken) {
+        return { accessToken: "", error: "NO_TOKEN" }
+    }
+
+    if (!storedToken.expiresAt || storedToken.expiresAt > Date.now()) {
+        return { accessToken: storedToken.accessToken }
+    }
+
+    if (!storedToken.refreshToken) {
+        return { accessToken: "", error: "EXPIRED_NO_REFRESH" }
+    }
+
+    try {
+        let refreshed: { accessToken: string; refreshToken?: string; expiresIn: number }
+
+        if (platform === "twitch") {
+            const config = getTwitchConfig()
+            const oauthService = getTwitchOAuthService(config)
+            await oauthService.initialize()
+            refreshed = await oauthService.refreshAccessToken(storedToken.refreshToken)
+        } else if (platform === "kick") {
+            const config = getKickConfig()
+            const oauthService = getKickOAuthService(config)
+            await oauthService.initialize()
+            refreshed = await oauthService.refreshAccessToken(storedToken.refreshToken)
+        } else {
+            return { accessToken: storedToken.accessToken, error: "UNSUPPORTED_PLATFORM" }
+        }
+
+        const expiresAt = Date.now() + refreshed.expiresIn * 1000
+        await tokenStore.refreshToken(userId, platform, {
+            accessToken: refreshed.accessToken,
+            refreshToken: refreshed.refreshToken,
+            expiresAt,
+            platform,
+            userId,
+        })
+
+        logger.info("Token refreshed for platform", { userId, platform })
+        return { accessToken: refreshed.accessToken }
+    } catch (error) {
+        logger.error("Token refresh failed", {
+            userId,
+            platform,
+            error: error instanceof Error ? error.message : String(error),
+        })
+        return { accessToken: "", error: "TOKEN_REFRESH_FAILED" }
+    }
+}
 
 interface UpdateRequest {
     platform: string
@@ -159,7 +221,25 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
             )
         }
 
-        const accessToken = networks.access_token
+        const { accessToken, error: tokenError } = await getValidAccessToken(
+            session.user.id,
+            platform
+        )
+
+        if (!accessToken) {
+            return NextResponse.json(
+                {
+                    success: false,
+                    error: tokenError === "TOKEN_REFRESH_FAILED"
+                        ? "TOKEN_REFRESH_FAILED"
+                        : tokenError === "EXPIRED_NO_REFRESH"
+                        ? "TOKEN_EXPIRED"
+                        : "PLATFORM_NOT_CONNECTED",
+                },
+                { status: 401 }
+            )
+        }
+
         let result: { success: boolean; error?: string }
 
         if (platform === "twitch") {
