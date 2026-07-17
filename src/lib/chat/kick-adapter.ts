@@ -96,8 +96,9 @@ export class KickChatAdapter implements ChatAdapter {
             return
         }
 
-        // Try to find a cached chatroom ID in the database metadata
         let channelInfo: { chatroomId: number; broadcasterUserId: string } | null = null
+
+        // 1) Try cached chatroomId or channelId from metadata
         try {
             const supabase = createClient(
                 process.env.NEXT_PUBLIC_SUPABASE_URL || "",
@@ -110,20 +111,24 @@ export class KickChatAdapter implements ChatAdapter {
                 .eq("platform", "kick")
                 .eq("status", "connected")
                 .single()
-            if (network?.metadata?.chatroomId) {
-                channelInfo = {
-                    chatroomId: network.metadata.chatroomId,
-                    broadcasterUserId: String(network.metadata.channelId || network.metadata.userId || ""),
+            if (network?.metadata) {
+                const m = network.metadata
+                const id = m.chatroomId || parseInt(String(m.channelId || m.userId || "0"), 10)
+                if (id && !isNaN(id)) {
+                    channelInfo = {
+                        chatroomId: id,
+                        broadcasterUserId: String(m.channelId || m.userId || ""),
+                    }
+                    logger.info("Using cached ID from metadata as chatroom ID", {
+                        roomId, chatroomId: id, source: m.chatroomId ? "chatroomId" : "channelId",
+                    })
                 }
-                logger.info("Using cached chatroom ID from metadata", {
-                    roomId,
-                    chatroomId: channelInfo.chatroomId,
-                })
             }
         } catch {
-            // fall through to API resolve
+            // fall through
         }
 
+        // 2) Try internal API with OAuth token
         if (!channelInfo) {
             channelInfo = await getChatroomId(roomId, token)
         }
