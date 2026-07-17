@@ -79,6 +79,54 @@ interface UpdateRequest {
     game_id?: string
 }
 
+async function forceRefreshAccessToken(
+    userId: string,
+    platform: string
+): Promise<string | null> {
+    const tokenStore = getTokenStore()
+    const storedToken = await tokenStore.getToken(userId, platform)
+
+    if (!storedToken?.refreshToken) {
+        return null
+    }
+
+    try {
+        let refreshed: { accessToken: string; refreshToken?: string; expiresIn: number }
+
+        if (platform === "twitch") {
+            const config = getTwitchConfig()
+            const oauthService = getTwitchOAuthService(config)
+            await oauthService.initialize()
+            refreshed = await oauthService.refreshAccessToken(storedToken.refreshToken)
+        } else if (platform === "kick") {
+            const config = getKickConfig()
+            const oauthService = getKickOAuthService(config)
+            await oauthService.initialize()
+            refreshed = await oauthService.refreshAccessToken(storedToken.refreshToken)
+        } else {
+            return null
+        }
+
+        const expiresAt = Date.now() + refreshed.expiresIn * 1000
+        await tokenStore.refreshToken(userId, platform, {
+            accessToken: refreshed.accessToken,
+            refreshToken: refreshed.refreshToken,
+            expiresAt,
+            platform,
+            userId,
+        })
+
+        return refreshed.accessToken
+    } catch (error) {
+        logger.error("Forced token refresh failed", {
+            userId,
+            platform,
+            error: error instanceof Error ? error.message : String(error),
+        })
+        return null
+    }
+}
+
 async function updateTwitchStream(
     accessToken: string,
     userId: string,
@@ -251,6 +299,36 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
             )
         } else {
             result = await updateKickStream(accessToken, title)
+        }
+
+        if (!result.success && result.error?.includes("(401)")) {
+            logger.info("API returned 401, attempting token refresh and retry", {
+                platform,
+                userId: session.user.id,
+            })
+
+            const refreshed = await forceRefreshAccessToken(
+                session.user.id,
+                platform
+            )
+
+            if (refreshed) {
+                if (platform === "twitch") {
+                    result = await updateTwitchStream(
+                        refreshed,
+                        networks.provider_user_id || networks.platform_user_id,
+                        title,
+                        game_id
+                    )
+                } else {
+                    result = await updateKickStream(refreshed, title)
+                }
+
+                logger.info("Retry after token refresh completed", {
+                    platform,
+                    success: result.success,
+                })
+            }
         }
 
         return NextResponse.json(result, {
