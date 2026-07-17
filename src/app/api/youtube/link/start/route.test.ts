@@ -33,7 +33,7 @@ const mockGetServerSession = vi.hoisted(() =>
 )
 
 vi.mock("@/lib/config/env", () => ({
-    validateYouTubeEnv: mockValidateEnv,
+    validateEnv: mockValidateEnv,
 }))
 
 vi.mock("@/lib/auth/get-server-session", () => ({

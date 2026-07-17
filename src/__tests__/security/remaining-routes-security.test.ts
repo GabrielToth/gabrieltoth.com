@@ -428,7 +428,7 @@ vi.mock("@/lib/pix", () => ({
 }))
 
 vi.mock("@/lib/config/env", () => ({
-    validateYouTubeEnv: vi.fn().mockReturnValue({
+    validateEnv: vi.fn().mockReturnValue({
         REDIS_URL: "redis://localhost:6379",
         YOUTUBE_CLIENT_ID: "mock-client-id",
         YOUTUBE_CLIENT_SECRET: "mock-client-secret",

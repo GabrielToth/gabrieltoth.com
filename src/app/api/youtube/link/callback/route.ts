@@ -9,7 +9,7 @@
  * - Input validation on code and state parameters
  */
 
-import { validateYouTubeEnv } from "@/lib/config/env"
+import { validateEnv } from "@/lib/config/env"
 import { createLogger } from "@/lib/logger"
 import { getYouTubeChannelLinkingConfig } from "@/lib/youtube/config"
 import { getYouTubeOAuthService } from "@/lib/youtube/oauth-service"
@@ -78,7 +78,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
             userId,
         })
 
-        const env = validateYouTubeEnv()
+        const env = validateEnv()
         const config = getYouTubeChannelLinkingConfig(env)
         const oauthService = getYouTubeOAuthService(config)
         await oauthService.initialize()

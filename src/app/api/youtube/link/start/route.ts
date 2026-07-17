@@ -5,7 +5,7 @@
  */
 
 import { getServerSession } from "@/lib/auth/get-server-session"
-import { validateYouTubeEnv } from "@/lib/config/env"
+import { validateEnv } from "@/lib/config/env"
 import { createLogger } from "@/lib/logger"
 import { getYouTubeChannelLinkingConfig } from "@/lib/youtube/config"
 import { getYouTubeOAuthService } from "@/lib/youtube/oauth-service"
@@ -33,7 +33,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
         logger.info("Linking initiation requested", { userId })
 
-        const env = validateYouTubeEnv()
+        const env = validateEnv()
         const config = getYouTubeChannelLinkingConfig(env)
 
         const oauthService = getYouTubeOAuthService(config)

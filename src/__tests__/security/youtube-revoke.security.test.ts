@@ -48,7 +48,7 @@ const mockGetServerSession = vi.hoisted(() =>
 )
 
 vi.mock("@/lib/config/env", () => ({
-    validateYouTubeEnv: () => ({
+    validateEnv: () => ({
         REDIS_URL: "redis://localhost:6379",
         YOUTUBE_CLIENT_ID: "test-client-id",
         YOUTUBE_CLIENT_SECRET: "test-client-secret",
