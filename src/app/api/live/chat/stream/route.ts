@@ -76,19 +76,15 @@ export async function GET(request: NextRequest): Promise<Response> {
                     const stored = await tokenStore.getToken(userId, plat)
                     if (stored?.accessToken) {
                         info.token = stored.accessToken
-                        logger.debug(
-                            `${plat} OAuth token retrieved for chat`,
-                            { userId }
-                        )
+                        logger.debug(`${plat} OAuth token retrieved for chat`, {
+                            userId,
+                        })
                     }
                 } catch (tokenErr) {
-                    logger.warn(
-                        `Failed to retrieve ${plat} token for chat`,
-                        {
-                            userId,
-                            error: String(tokenErr),
-                        }
-                    )
+                    logger.warn(`Failed to retrieve ${plat} token for chat`, {
+                        userId,
+                        error: String(tokenErr),
+                    })
                 }
 
                 platformConnect[plat] = info

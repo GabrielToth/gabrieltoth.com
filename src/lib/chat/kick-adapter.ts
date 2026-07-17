@@ -186,10 +186,7 @@ export class KickChatAdapter implements ChatAdapter {
                                     ) ||
                                     pusherEvent.event === "ChatMessageEvent"
                                 ) {
-                                    this.handlePusherData(
-                                        roomId,
-                                        pusherEvent
-                                    )
+                                    this.handlePusherData(roomId, pusherEvent)
                                 }
                         }
                     } catch {
@@ -251,23 +248,20 @@ export class KickChatAdapter implements ChatAdapter {
 
             const sender = payload.sender || payload.user || {}
             const message: ChatMessage = {
-                id:
-                    `kick-${payload.id || `${Date.now()}-${Math.random().toString(36).substring(2, 8)}`}`,
+                id: `kick-${payload.id || `${Date.now()}-${Math.random().toString(36).substring(2, 8)}`}`,
                 channelId: roomId,
                 platform: "kick",
                 user: {
                     id: String(sender.id || payload.user_id || "unknown"),
-                    username:
-                        String(
-                            sender.username || payload.username || "unknown"
-                        ).toLowerCase(),
-                    displayName:
-                        String(
-                            sender.username ||
-                                payload.username ||
-                                sender.name ||
-                                "Unknown"
-                        ),
+                    username: String(
+                        sender.username || payload.username || "unknown"
+                    ).toLowerCase(),
+                    displayName: String(
+                        sender.username ||
+                            payload.username ||
+                            sender.name ||
+                            "Unknown"
+                    ),
                     platform: "kick",
                     badges: [],
                     isBroadcaster:
@@ -281,9 +275,7 @@ export class KickChatAdapter implements ChatAdapter {
                         payload.is_subscriber === true,
                     isVip: sender.is_vip === true || payload.is_vip === true,
                 },
-                content: String(
-                    payload.content || payload.message || ""
-                ),
+                content: String(payload.content || payload.message || ""),
                 type: "text",
                 timestamp: payload.created_at
                     ? new Date(payload.created_at).getTime()
@@ -349,7 +341,9 @@ export class KickChatAdapter implements ChatAdapter {
         const messageId = `${Date.now()}-${Math.random().toString(36).substring(2, 8)}`
 
         if (!connection.oauthToken) {
-            throw new Error("No OAuth token available for sending Kick messages")
+            throw new Error(
+                "No OAuth token available for sending Kick messages"
+            )
         }
 
         const body: Record<string, unknown> = {

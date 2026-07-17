@@ -163,8 +163,10 @@ export class TwitchChatAdapter implements ChatAdapter {
                 const lines = data.toString().split("\r\n").filter(Boolean)
                 for (const line of lines) {
                     if (
-                        line.includes(`366 ${connection.username} #${roomId}`) ||
-                        line.includes(`366 `) && line.includes(`#${roomId}`)
+                        line.includes(
+                            `366 ${connection.username} #${roomId}`
+                        ) ||
+                        (line.includes(`366 `) && line.includes(`#${roomId}`))
                     ) {
                         clearTimeout(timer)
                         connection.socket.removeListener("data", onData)
