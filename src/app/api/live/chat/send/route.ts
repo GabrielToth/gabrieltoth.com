@@ -300,17 +300,54 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
             )
         }
 
+        const supabase = createClient(
+            process.env.NEXT_PUBLIC_SUPABASE_URL || "",
+            process.env.SUPABASE_SERVICE_ROLE_KEY || ""
+        )
+
+        if (platform === "kick") {
+            const tokenStore = getTokenStore()
+            const stored = await tokenStore.getToken(userId, "kick")
+            if (!stored?.accessToken) {
+                return NextResponse.json(
+                    { success: false, error: "NO_TOKEN" },
+                    { status: 400 }
+                )
+            }
+
+            const response = await fetch(
+                "https://api.kick.com/public/v1/chat",
+                {
+                    method: "POST",
+                    headers: {
+                        Authorization: `Bearer ${stored.accessToken}`,
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ content: message }),
+                }
+            )
+
+            if (!response.ok) {
+                const errorBody = await response.text()
+                logger.error("Kick send message failed", {
+                    status: response.status,
+                    body: errorBody,
+                })
+                return NextResponse.json(
+                    { success: false, error: "KICK_SEND_FAILED" },
+                    { status: 500 }
+                )
+            }
+
+            return NextResponse.json({ success: true })
+        }
+
         if (platform !== "twitch") {
             return NextResponse.json(
                 { success: false, error: "UNSUPPORTED_PLATFORM" },
                 { status: 400 }
             )
         }
-
-        const supabase = createClient(
-            process.env.NEXT_PUBLIC_SUPABASE_URL || "",
-            process.env.SUPABASE_SERVICE_ROLE_KEY || ""
-        )
 
         const { data: network } = await supabase
             .from("social_networks")

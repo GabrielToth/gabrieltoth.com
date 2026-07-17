@@ -36,15 +36,13 @@ interface PusherEvent {
 }
 
 async function getChatroomId(
-    channelName: string,
-    token: string
+    channelName: string
 ): Promise<{ chatroomId: number; broadcasterUserId: string } | null> {
     try {
         const response = await fetch(
             `https://kick.com/api/v2/channels/${channelName}`,
             {
                 headers: {
-                    Authorization: `Bearer ${token}`,
                     "User-Agent":
                         "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:135.0) Gecko/20100101 Firefox/135.0",
                     Accept: "application/json",
@@ -99,7 +97,7 @@ export class KickChatAdapter implements ChatAdapter {
         }
 
         try {
-            const channelInfo = await getChatroomId(roomId, token)
+            const channelInfo = await getChatroomId(roomId)
             const chatroomId = channelInfo?.chatroomId || null
             const broadcasterUserId = channelInfo?.broadcasterUserId || ""
 
