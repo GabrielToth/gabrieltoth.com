@@ -175,53 +175,60 @@ export class KickChatAdapter implements ChatAdapter {
                     try {
                         const pusherEvent: PusherEvent = JSON.parse(event.data)
 
-                        switch (pusherEvent.event) {
-                            case "pusher:connection_established":
-                                connection.connected = true
-                                if (chatroomId) {
-                                    this.subscribeToChatroom(ws, chatroomId)
-                                    connection.pingInterval = setInterval(
-                                        () => {
-                                            ws.send(
-                                                JSON.stringify({
-                                                    event: "pusher:ping",
-                                                    data: {},
-                                                })
-                                            )
-                                        },
-                                        60000
-                                    )
-                                }
-                                logger.info("Connected to Kick Pusher", {
-                                    roomId,
-                                })
-                                resolve()
-                                break
-
-                            case "pusher:ping":
-                                ws.send(
-                                    JSON.stringify({
-                                        event: "pusher:pong",
-                                        data: {},
-                                    })
+                        if (pusherEvent.event === "pusher:connection_established") {
+                            connection.connected = true
+                            logger.info("Pusher connected, subscribing to chatroom", {
+                                roomId, chatroomId,
+                            })
+                            if (chatroomId) {
+                                this.subscribeToChatroom(ws, chatroomId)
+                                connection.pingInterval = setInterval(
+                                    () => {
+                                        ws.send(
+                                            JSON.stringify({
+                                                event: "pusher:ping",
+                                                data: {},
+                                            })
+                                        )
+                                    },
+                                    60000
                                 )
-                                break
+                            }
+                            resolve()
+                            return
+                        }
 
-                            case "pusher:error":
-                                logger.error("Kick Pusher error", {
-                                    data: pusherEvent.data,
+                        if (pusherEvent.event === "pusher:ping") {
+                            ws.send(
+                                JSON.stringify({
+                                    event: "pusher:pong",
+                                    data: {},
                                 })
-                                break
+                            )
+                            return
+                        }
 
-                            default:
-                                if (
-                                    pusherEvent.event.startsWith(
-                                        "App\\Events\\"
-                                    ) ||
-                                    pusherEvent.event === "ChatMessageEvent"
-                                ) {
-                                    this.handlePusherData(roomId, pusherEvent)
-                                }
+                        if (pusherEvent.event === "pusher:error") {
+                            logger.error("Kick Pusher error", {
+                                data: pusherEvent.data,
+                            })
+                            return
+                        }
+
+                        // Log ALL non-system pusher events for debugging
+                        if (!pusherEvent.event.startsWith("pusher:")) {
+                            logger.debug("Pusher event received", {
+                                roomId,
+                                event: pusherEvent.event,
+                                hasData: !!pusherEvent.data,
+                            })
+                        }
+
+                        if (
+                            pusherEvent.event.startsWith("App\\Events\\") ||
+                            pusherEvent.event === "ChatMessageEvent"
+                        ) {
+                            this.handlePusherData(roomId, pusherEvent)
                         }
                     } catch {
                         // non-JSON messages are ignored

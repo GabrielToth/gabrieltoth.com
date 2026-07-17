@@ -141,26 +141,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
             ? Date.now() + tokenResponse.expiresIn * 1000
             : undefined
 
-        let chatroomId: number | null = null
-        try {
-            const chatroomRes = await fetch(
-                `https://kick.com/api/v2/channels/${channel.slug}`,
-                {
-                    headers: {
-                        Authorization: `Bearer ${tokenResponse.accessToken}`,
-                        "User-Agent":
-                            "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:135.0) Gecko/20100101 Firefox/135.0",
-                        Accept: "application/json",
-                    },
-                }
-            )
-            if (chatroomRes.ok) {
-                const chatroomData = await chatroomRes.json()
-                chatroomId = chatroomData.chatroom?.id || null
-            }
-        } catch {
-            // chatroom ID is optional; can be resolved later via adapter
-        }
+        const chatroomIdFromApi = channel.chatroomId || null
 
         const tokenStore = getTokenStore()
         await tokenStore.storeToken({
@@ -171,7 +152,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
             userId,
         })
 
-        logger.info("Kick OAuth tokens stored successfully", { userId, chatroomId })
+        logger.info("Kick OAuth tokens stored successfully", { userId, chatroomId: chatroomIdFromApi })
 
         const supabase = createClient(
             process.env.NEXT_PUBLIC_SUPABASE_URL || "",
@@ -188,8 +169,8 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
             channelSlug: channel.slug,
             scopeVersion: getScopeVersion("kick"),
         }
-        if (chatroomId) {
-            metadata.chatroomId = chatroomId
+        if (chatroomIdFromApi) {
+            metadata.chatroomId = chatroomIdFromApi
         }
 
         const { error: socialError } = await supabase

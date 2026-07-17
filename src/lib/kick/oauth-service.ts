@@ -27,6 +27,7 @@ export interface KickChannel {
     slug: string
     followersCount: number
     isLive: boolean
+    chatroomId?: number
 }
 
 export class KickOAuthService extends BaseService {
@@ -246,12 +247,23 @@ export class KickOAuthService extends BaseService {
             const data = await response.json()
             const channel = data.data?.[0] || data
 
+            const chatroomId = channel.chatroom?.id
+                ? parseInt(String(channel.chatroom.id), 10)
+                : undefined
+
+            this.logger.debug("Kick channel API raw data", {
+                hasChatroom: !!channel.chatroom,
+                chatroomId,
+                keys: Object.keys(channel).join(","),
+            })
+
             return {
                 id: String(channel.broadcaster_user_id || channel.id),
                 name: channel.stream_title || channel.name || "",
                 slug: channel.slug || "",
                 followersCount: 0,
                 isLive: channel.stream?.is_live ?? false,
+                chatroomId,
             }
         } catch (error) {
             this.logger.error(
