@@ -360,6 +360,82 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
             return NextResponse.json({ success: true })
         }
 
+        if (platform === "youtube") {
+            const tokenStore = getTokenStore()
+            const stored = await tokenStore.getToken(userId, "youtube")
+            if (!stored?.accessToken) {
+                return NextResponse.json(
+                    { success: false, error: "NO_TOKEN" },
+                    { status: 400 }
+                )
+            }
+
+            // Find the active live broadcast to get liveChatId
+            const broadcastResponse = await fetch(
+                "https://www.googleapis.com/youtube/v3/liveBroadcasts?part=snippet,status&mine=true",
+                {
+                    headers: {
+                        Authorization: `Bearer ${stored.accessToken}`,
+                    },
+                }
+            )
+
+            if (!broadcastResponse.ok) {
+                return NextResponse.json(
+                    { success: false, error: "YOUTUBE_API_ERROR" },
+                    { status: 500 }
+                )
+            }
+
+            const broadcastData = await broadcastResponse.json()
+            const activeBroadcast = broadcastData.items?.find(
+                (item: { status?: { lifeCycleStatus?: string } }) =>
+                    item.status?.lifeCycleStatus === "live"
+            )
+            const liveChatId = activeBroadcast?.snippet?.liveChatId
+
+            if (!liveChatId) {
+                return NextResponse.json(
+                    { success: false, error: "NO_LIVE_CHAT" },
+                    { status: 400 }
+                )
+            }
+
+            const response = await fetch(
+                "https://www.googleapis.com/youtube/v3/liveChat/messages?part=snippet",
+                {
+                    method: "POST",
+                    headers: {
+                        Authorization: `Bearer ${stored.accessToken}`,
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        snippet: {
+                            liveChatId,
+                            type: "textMessageEvent",
+                            textMessageDetails: {
+                                messageText: message,
+                            },
+                        },
+                    }),
+                }
+            )
+
+            if (!response.ok) {
+                const errorBody = await response.text()
+                logger.error("YouTube send message failed", {
+                    status: response.status,
+                    body: errorBody,
+                })
+                return NextResponse.json(
+                    { success: false, error: "YOUTUBE_SEND_FAILED" },
+                    { status: 500 }
+                )
+            }
+
+            return NextResponse.json({ success: true })
+        }
+
         if (platform !== "twitch") {
             return NextResponse.json(
                 { success: false, error: "UNSUPPORTED_PLATFORM" },

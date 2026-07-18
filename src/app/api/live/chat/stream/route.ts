@@ -39,7 +39,7 @@ export async function GET(request: NextRequest): Promise<Response> {
         const { data: networks, error } = await supabase
             .from("social_networks")
             .select("*")
-            .in("platform", ["twitch", "kick", "tiktok", "twitter"])
+            .in("platform", ["twitch", "kick", "youtube", "tiktok", "twitter"])
             .eq("user_id", userId)
             .eq("status", "connected")
 
@@ -62,11 +62,11 @@ export async function GET(request: NextRequest): Promise<Response> {
 
         // Determine which platforms the user has connected and their channel names
         const platformConnect: Partial<
-            Record<"twitch" | "kick", { channelName: string; token?: string }>
+            Record<"twitch" | "kick" | "youtube", { channelName: string; token?: string }>
         > = {}
         for (const network of networks || []) {
-            const plat = network.platform as "twitch" | "kick"
-            if (plat === "twitch" || plat === "kick") {
+            const plat = network.platform as "twitch" | "kick" | "youtube"
+            if (plat === "twitch" || plat === "kick" || plat === "youtube") {
                 const info: { channelName: string; token?: string } = {
                     channelName: network.platform_username || plat,
                 }
@@ -97,7 +97,7 @@ export async function GET(request: NextRequest): Promise<Response> {
                 JSON.stringify({
                     success: false,
                     error: "NO_PLATFORMS",
-                    message: "No Twitch or Kick platforms connected",
+                    message: "No Twitch, Kick, or YouTube platforms connected",
                 }),
                 {
                     status: 400,

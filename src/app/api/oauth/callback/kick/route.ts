@@ -159,6 +159,14 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
             process.env.SUPABASE_SERVICE_ROLE_KEY || ""
         )
 
+        // Preserve existing chatroomId if the public API doesn't return one
+        const { data: existingNetwork } = await supabase
+            .from("social_networks")
+            .select("metadata")
+            .eq("user_id", userId)
+            .eq("platform", "kick")
+            .single()
+
         const metadata: Record<string, unknown> = {
             userId: user.userId,
             username: user.username,
@@ -171,6 +179,8 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
         }
         if (chatroomIdFromApi) {
             metadata.chatroomId = chatroomIdFromApi
+        } else if (existingNetwork?.metadata?.chatroomId) {
+            metadata.chatroomId = existingNetwork.metadata.chatroomId
         }
 
         const { error: socialError } = await supabase

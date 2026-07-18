@@ -109,18 +109,16 @@ export class KickChatAdapter implements ChatAdapter {
                 .select("metadata")
                 .eq("platform_username", roomId)
                 .eq("platform", "kick")
-                .eq("status", "connected")
                 .single()
             if (network?.metadata) {
                 const m = network.metadata
-                const id = m.chatroomId || parseInt(String(m.channelId || m.userId || "0"), 10)
-                if (id && !isNaN(id)) {
+                if (m.chatroomId) {
                     channelInfo = {
-                        chatroomId: id,
+                        chatroomId: m.chatroomId,
                         broadcasterUserId: String(m.channelId || m.userId || ""),
                     }
-                    logger.info("Using cached ID from metadata as chatroom ID", {
-                        roomId, chatroomId: id, source: m.chatroomId ? "chatroomId" : "channelId",
+                    logger.info("Using cached chatroom ID from metadata", {
+                        roomId, chatroomId: m.chatroomId,
                     })
                 }
             }

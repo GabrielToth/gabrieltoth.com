@@ -6,13 +6,13 @@
  */
 
 import { createLogger } from "@/lib/logger"
-import { KickChatAdapter, TwitchChatAdapter } from "@/lib/chat"
+import { KickChatAdapter, TwitchChatAdapter, YouTubeLiveChatAdapter } from "@/lib/chat"
 import type { ChatAdapter, ChatMessage } from "@/lib/chat/types"
 import { sendEvent } from "./sse-manager"
 
 const logger = createLogger("MessageAggregator")
 
-type ChatPlatform = "twitch" | "kick"
+type ChatPlatform = "twitch" | "kick" | "youtube"
 
 type PlatformConnectInfo = Partial<
     Record<ChatPlatform, { channelName: string; token?: string }>
@@ -26,6 +26,7 @@ interface PlatformAdapterEntry {
 const ADAPTER_REGISTRY: Record<ChatPlatform, () => ChatAdapter> = {
     twitch: () => new TwitchChatAdapter(),
     kick: () => new KickChatAdapter(),
+    youtube: () => new YouTubeLiveChatAdapter(),
 }
 
 export class MessageAggregator {
@@ -269,14 +270,16 @@ export class MessageAggregator {
             }
         }
 
-        // Fallback: temporary connection with full JOIN confirmation
-        const adapter = new TwitchChatAdapter()
-        try {
-            await adapter.connect(channelName, token)
-            await adapter.waitForJoin(channelName)
-            await adapter.sendMessage(channelName, message)
-        } finally {
-            await adapter.disconnect(channelName)
+        // Fallback: temporary connection using the platform's adapter
+        const FactoryClass = ADAPTER_REGISTRY[platform]
+        if (FactoryClass) {
+            const adapter = FactoryClass()
+            try {
+                await adapter.connect(channelName, token)
+                await adapter.sendMessage(channelName, message)
+            } finally {
+                await adapter.disconnect(channelName)
+            }
         }
         return false
     }

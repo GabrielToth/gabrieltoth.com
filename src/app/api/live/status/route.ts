@@ -444,10 +444,12 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
                     break
                 }
 
-                case "youtube":
-                    if (accessToken) {
+                case "youtube": {
+                    const ytToken = await getTokenStore().getToken(userId, "youtube")
+                    const ytAccessToken = ytToken?.accessToken || null
+                    if (ytAccessToken) {
                         const youtubeData = await fetchYouTubeLive(
-                            accessToken,
+                            ytAccessToken,
                             network.platform_user_id || ""
                         )
                         platforms.push({ ...baseInfo, ...youtubeData })
@@ -455,6 +457,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
                         platforms.push(baseInfo)
                     }
                     break
+                }
 
                 case "facebook":
                     if (pageAccessToken) {

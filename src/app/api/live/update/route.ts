@@ -11,6 +11,9 @@ import { getKickOAuthService } from "@/lib/kick/oauth-service"
 import { getTokenStore } from "@/lib/token-store"
 import { getTwitchConfig } from "@/lib/twitch/config"
 import { getTwitchOAuthService } from "@/lib/twitch/oauth-service"
+import { getYouTubeOAuthService } from "@/lib/youtube/oauth-service"
+import { getYouTubeChannelLinkingConfig } from "@/lib/youtube/config"
+import { validateEnv } from "@/lib/config/env"
 import { createClient } from "@supabase/supabase-js"
 import { NextRequest, NextResponse } from "next/server"
 
@@ -48,6 +51,11 @@ async function getValidAccessToken(
             const oauthService = getKickOAuthService(config)
             await oauthService.initialize()
             refreshed = await oauthService.refreshAccessToken(storedToken.refreshToken)
+        } else if (platform === "youtube") {
+            const ytConfig = getYouTubeChannelLinkingConfig(validateEnv())
+            const ytOAuthService = getYouTubeOAuthService(ytConfig)
+            await ytOAuthService.initialize()
+            refreshed = await ytOAuthService.refreshAccessToken(storedToken.refreshToken)
         } else {
             return { accessToken: storedToken.accessToken, error: "UNSUPPORTED_PLATFORM" }
         }
@@ -152,6 +160,11 @@ async function forceRefreshAccessToken(
             const oauthService = getKickOAuthService(config)
             await oauthService.initialize()
             refreshed = await oauthService.refreshAccessToken(storedToken.refreshToken)
+        } else if (platform === "youtube") {
+            const ytConfig = getYouTubeChannelLinkingConfig(validateEnv())
+            const ytOAuthService = getYouTubeOAuthService(ytConfig)
+            await ytOAuthService.initialize()
+            refreshed = await ytOAuthService.refreshAccessToken(storedToken.refreshToken)
         } else {
             return null
         }
@@ -266,6 +279,76 @@ async function updateKickStream(
     }
 }
 
+async function updateYouTubeStream(
+    accessToken: string,
+    title: string,
+    gameId?: string
+): Promise<{ success: boolean; error?: string }> {
+    try {
+        // Find active broadcast
+        const broadcastResponse = await fetch(
+            "https://www.googleapis.com/youtube/v3/liveBroadcasts?part=snippet,status&mine=true",
+            {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            }
+        )
+
+        if (!broadcastResponse.ok) {
+            return {
+                success: false,
+                error: `YouTube API error (${broadcastResponse.status})`,
+            }
+        }
+
+        const broadcastData = await broadcastResponse.json()
+        const broadcast = broadcastData.items?.[0]
+        if (!broadcast) {
+            return { success: false, error: "No active broadcast found" }
+        }
+
+        const updateBody: Record<string, unknown> = {
+            id: broadcast.id,
+            snippet: {
+                title,
+            },
+        }
+
+        const response = await fetch(
+            "https://www.googleapis.com/youtube/v3/liveBroadcasts?part=snippet,status",
+            {
+                method: "PUT",
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(updateBody),
+            }
+        )
+
+        if (!response.ok) {
+            const errorBody = await response.text()
+            logger.error("YouTube stream update failed", {
+                status: response.status,
+                body: errorBody,
+            })
+            return {
+                success: false,
+                error: `YouTube API error (${response.status}): ${errorBody}`,
+            }
+        }
+
+        return { success: true }
+    } catch (error) {
+        logger.error("YouTube stream update exception", { error })
+        return {
+            success: false,
+            error: error instanceof Error ? error.message : "Unknown error",
+        }
+    }
+}
+
 export async function POST(request: NextRequest): Promise<NextResponse> {
     try {
         const session = await getServerSession(request)
@@ -286,7 +369,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
             )
         }
 
-        if (!["twitch", "kick"].includes(platform)) {
+        if (!["twitch", "kick", "youtube"].includes(platform)) {
             return NextResponse.json(
                 { success: false, error: "INVALID_PLATFORM" },
                 { status: 400 }
@@ -365,8 +448,10 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
                 title,
                 resolvedGameId
             )
-        } else {
+        } else if (platform === "kick") {
             result = await updateKickStream(accessToken, title)
+        } else {
+            result = await updateYouTubeStream(accessToken, title, resolvedGameId)
         }
 
         if (!result.success && result.error?.includes("(401)")) {
@@ -388,8 +473,10 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
                         title,
                         game_id
                     )
-                } else {
+                } else if (platform === "kick") {
                     result = await updateKickStream(refreshed, title)
+                } else {
+                    result = await updateYouTubeStream(refreshed, title, resolvedGameId)
                 }
 
                 logger.info("Retry after token refresh completed", {
