@@ -158,58 +158,25 @@ export async function GET(
             )
 
             if (normalizedPlatform === "youtube") {
-                // Fetch YouTube channel info using the access token
-                const channelResponse = await fetch(
-                    "https://www.googleapis.com/youtube/v3/channels?part=snippet&mine=true",
-                    {
-                        headers: {
-                            Authorization: `Bearer ${tokenResponse.accessToken}`,
-                        },
-                    }
-                )
-                if (channelResponse.ok) {
-                    const channelData = await channelResponse.json()
-                    const items = channelData?.items || []
-                    // Loop through ALL channels from the API (personal + brand accounts)
-                    for (const item of items) {
-                        const channel = item.snippet
-                        if (!channel) continue
-                        await supabase.from("social_networks").upsert(
-                            {
-                                user_id: userId,
-                                platform: "youtube",
-                                platform_user_id: item.id,
-                                platform_username: channel.title,
-                                status: "connected",
-                                linked_at: new Date().toISOString(),
-                                metadata: {
-                                    channelId: item.id,
-                                    channelTitle: channel.title,
-                                    channelDescription: channel.description,
-                                    customUrl: channel.customUrl,
-                                    profileImageUrl:
-                                        channel.thumbnails?.default?.url,
-                                    scopeVersion: getScopeVersion("youtube"),
-                                },
-                                updated_at: new Date().toISOString(),
-                            },
-                            {
-                                onConflict:
-                                    "user_id, platform, platform_user_id",
-                            }
-                        )
-                        logger.info("YouTube channel saved", {
-                            channelId: item.id,
-                            channelTitle: channel.title,
-                        })
-                    }
+                // Update existing YouTube rows to connected (bypass YouTube API which may be blocked/quota-exceeded)
+                const { error: updateError } = await supabase
+                    .from("social_networks")
+                    .update({
+                        status: "connected",
+                        updated_at: new Date().toISOString(),
+                    })
+                    .eq("user_id", userId)
+                    .eq("platform", "youtube")
 
-                    if (items.length === 0) {
-                        logger.warn(
-                            "YouTube API returned no channels for authenticated user",
-                            { userId }
-                        )
-                    }
+                if (updateError) {
+                    logger.warn("Failed to update YouTube social_networks", {
+                        userId,
+                        error: updateError.message,
+                    })
+                } else {
+                    logger.info("YouTube social_networks set to connected", {
+                        userId,
+                    })
                 }
             } else {
                 // Other platforms: save minimal record

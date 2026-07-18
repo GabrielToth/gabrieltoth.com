@@ -14,6 +14,7 @@ import { getTwitchOAuthService } from "@/lib/twitch/oauth-service"
 import { getYouTubeOAuthService } from "@/lib/youtube/oauth-service"
 import { getYouTubeChannelLinkingConfig } from "@/lib/youtube/config"
 import { validateEnv } from "@/lib/config/env"
+import { isTerminalTokenError, markAccountDisconnected } from "@/lib/auth/token-health"
 import { createClient } from "@supabase/supabase-js"
 import { NextRequest, NextResponse } from "next/server"
 
@@ -72,11 +73,15 @@ async function getValidAccessToken(
         logger.info("Token refreshed for platform", { userId, platform })
         return { accessToken: refreshed.accessToken }
     } catch (error) {
+        const errMsg = error instanceof Error ? error.message : String(error)
         logger.error("Token refresh failed", {
             userId,
             platform,
-            error: error instanceof Error ? error.message : String(error),
+            error: errMsg,
         })
+        if (platform === "youtube" && isTerminalTokenError(errMsg)) {
+            await markAccountDisconnected(userId, "youtube").catch(() => {})
+        }
         return { accessToken: "", error: "TOKEN_REFRESH_FAILED" }
     }
 }
@@ -180,11 +185,15 @@ async function forceRefreshAccessToken(
 
         return refreshed.accessToken
     } catch (error) {
+        const errMsg = error instanceof Error ? error.message : String(error)
         logger.error("Forced token refresh failed", {
             userId,
             platform,
-            error: error instanceof Error ? error.message : String(error),
+            error: errMsg,
         })
+        if (platform === "youtube" && isTerminalTokenError(errMsg)) {
+            await markAccountDisconnected(userId, "youtube").catch(() => {})
+        }
         return null
     }
 }

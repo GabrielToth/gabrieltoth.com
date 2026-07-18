@@ -390,7 +390,12 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
                     })
                     stored = await tokenStore.getToken(userId, "youtube")
                 } catch (err) {
-                    logger.error("YouTube token refresh failed", { error: String(err) })
+                    const errMsg = err instanceof Error ? err.message : String(err)
+                    logger.error("YouTube token refresh failed", { error: errMsg })
+                    const { isTerminalTokenError, markAccountDisconnected } = await import("@/lib/auth/token-health")
+                    if (isTerminalTokenError(errMsg)) {
+                        await markAccountDisconnected(userId, "youtube").catch(() => {})
+                    }
                     return NextResponse.json(
                         { success: false, error: "TOKEN_REFRESH_FAILED" },
                         { status: 401 }
