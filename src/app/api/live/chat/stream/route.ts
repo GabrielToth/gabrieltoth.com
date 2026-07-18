@@ -65,15 +65,15 @@ export async function GET(request: NextRequest): Promise<Response> {
         const platformConnect: Partial<
             Record<"twitch" | "kick" | "youtube", { channelName: string; token?: string }>
         > = {}
+        let youtubeProcessed = false
         for (const network of networks || []) {
             const plat = network.platform as "twitch" | "kick" | "youtube"
             if (plat === "twitch" || plat === "kick" || plat === "youtube") {
-                // Skip YouTube channels without chatroomId to avoid API quota waste
+                // Only process YouTube once (user may have 2 channels, but liveBroadcasts?mine=true
+                // returns broadcasts for ALL channels — one connection is enough)
                 if (plat === "youtube") {
-                    const meta = network.metadata as Record<string, unknown> | null
-                    if (!meta?.chatroomId) {
-                        continue
-                    }
+                    if (youtubeProcessed) continue
+                    youtubeProcessed = true
                 }
                 const info: { channelName: string; token?: string } = {
                     channelName: network.platform_username || plat,
