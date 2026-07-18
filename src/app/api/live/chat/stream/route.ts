@@ -73,7 +73,28 @@ export async function GET(request: NextRequest): Promise<Response> {
 
                 try {
                     const tokenStore = getTokenStore()
-                    const stored = await tokenStore.getToken(userId, plat)
+                    let stored = await tokenStore.getToken(userId, plat)
+
+                    // Auto-refresh expired YouTube token
+                    if (plat === "youtube" && stored?.refreshToken && stored.expiresAt && stored.expiresAt < Date.now()) {
+                        const { getYouTubeOAuthService } = await import("@/lib/youtube/oauth-service")
+                        const { getYouTubeChannelLinkingConfig } = await import("@/lib/youtube/config")
+                        const { validateEnv } = await import("@/lib/config/env")
+                        const ytConfig = getYouTubeChannelLinkingConfig(validateEnv())
+                        const ytOAuth = getYouTubeOAuthService(ytConfig)
+                        await ytOAuth.initialize()
+                        const refreshed = await ytOAuth.refreshAccessToken(stored.refreshToken)
+                        const expiresAt = Date.now() + refreshed.expiresIn * 1000
+                        await tokenStore.refreshToken(userId, "youtube", {
+                            accessToken: refreshed.accessToken,
+                            refreshToken: refreshed.refreshToken,
+                            expiresAt,
+                            platform: "youtube",
+                            userId,
+                        })
+                        stored = await tokenStore.getToken(userId, "youtube")
+                    }
+
                     if (stored?.accessToken) {
                         info.token = stored.accessToken
                         logger.debug(`${plat} OAuth token retrieved for chat`, {

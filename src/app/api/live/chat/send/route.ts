@@ -362,7 +362,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
         if (platform === "youtube") {
             const tokenStore = getTokenStore()
-            const stored = await tokenStore.getToken(userId, "youtube")
+            let stored = await tokenStore.getToken(userId, "youtube")
             if (!stored?.accessToken) {
                 return NextResponse.json(
                     { success: false, error: "NO_TOKEN" },
@@ -370,12 +370,49 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
                 )
             }
 
+            // Auto-refresh expired token
+            if (stored.refreshToken && stored.expiresAt && stored.expiresAt < Date.now()) {
+                try {
+                    const { getYouTubeOAuthService } = await import("@/lib/youtube/oauth-service")
+                    const { getYouTubeChannelLinkingConfig } = await import("@/lib/youtube/config")
+                    const { validateEnv } = await import("@/lib/config/env")
+                    const ytConfig = getYouTubeChannelLinkingConfig(validateEnv())
+                    const ytOAuth = getYouTubeOAuthService(ytConfig)
+                    await ytOAuth.initialize()
+                    const refreshed = await ytOAuth.refreshAccessToken(stored.refreshToken)
+                    const expiresAt = Date.now() + refreshed.expiresIn * 1000
+                    await tokenStore.refreshToken(userId, "youtube", {
+                        accessToken: refreshed.accessToken,
+                        refreshToken: refreshed.refreshToken,
+                        expiresAt,
+                        platform: "youtube",
+                        userId,
+                    })
+                    stored = await tokenStore.getToken(userId, "youtube")
+                } catch (err) {
+                    logger.error("YouTube token refresh failed", { error: String(err) })
+                    return NextResponse.json(
+                        { success: false, error: "TOKEN_REFRESH_FAILED" },
+                        { status: 401 }
+                    )
+                }
+            }
+
+            if (!stored?.accessToken) {
+                return NextResponse.json(
+                    { success: false, error: "NO_TOKEN" },
+                    { status: 400 }
+                )
+            }
+
+            const ytAccessToken = stored.accessToken
+
             // Find the active live broadcast to get liveChatId
             const broadcastResponse = await fetch(
                 "https://www.googleapis.com/youtube/v3/liveBroadcasts?part=snippet,status&mine=true",
                 {
                     headers: {
-                        Authorization: `Bearer ${stored.accessToken}`,
+                        Authorization: `Bearer ${ytAccessToken}`,
                     },
                 }
             )
@@ -406,7 +443,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
                 {
                     method: "POST",
                     headers: {
-                        Authorization: `Bearer ${stored.accessToken}`,
+                        Authorization: `Bearer ${ytAccessToken}`,
                         "Content-Type": "application/json",
                     },
                     body: JSON.stringify({

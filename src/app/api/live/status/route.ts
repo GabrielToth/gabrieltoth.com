@@ -10,6 +10,9 @@ import { createLogger } from "@/lib/logger"
 import { getKickConfig } from "@/lib/kick/config"
 import { getKickOAuthService } from "@/lib/kick/oauth-service"
 import { getTokenStore } from "@/lib/token-store"
+import { getYouTubeOAuthService } from "@/lib/youtube/oauth-service"
+import { getYouTubeChannelLinkingConfig } from "@/lib/youtube/config"
+import { validateEnv } from "@/lib/config/env"
 import { createClient } from "@supabase/supabase-js"
 import { NextRequest, NextResponse } from "next/server"
 
@@ -35,10 +38,19 @@ async function getValidAccessToken(
     }
 
     try {
-        const config = getKickConfig()
-        const oauthService = getKickOAuthService(config)
-        await oauthService.initialize()
-        const refreshed = await oauthService.refreshAccessToken(storedToken.refreshToken)
+        let refreshed: { accessToken: string; refreshToken?: string; expiresIn: number }
+
+        if (platform === "youtube") {
+            const ytConfig = getYouTubeChannelLinkingConfig(validateEnv())
+            const ytOAuthService = getYouTubeOAuthService(ytConfig)
+            await ytOAuthService.initialize()
+            refreshed = await ytOAuthService.refreshAccessToken(storedToken.refreshToken)
+        } else {
+            const config = getKickConfig()
+            const oauthService = getKickOAuthService(config)
+            await oauthService.initialize()
+            refreshed = await oauthService.refreshAccessToken(storedToken.refreshToken)
+        }
 
         const expiresAt = Date.now() + refreshed.expiresIn * 1000
         await tokenStore.refreshToken(userId, platform, {
@@ -445,8 +457,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
                 }
 
                 case "youtube": {
-                    const ytToken = await getTokenStore().getToken(userId, "youtube")
-                    const ytAccessToken = ytToken?.accessToken || null
+                    const ytAccessToken = await getValidAccessToken(userId, "youtube")
                     if (ytAccessToken) {
                         const youtubeData = await fetchYouTubeLive(
                             ytAccessToken,
