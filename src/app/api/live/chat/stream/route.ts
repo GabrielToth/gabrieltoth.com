@@ -12,6 +12,7 @@ import { NextRequest } from "next/server"
 import { MessageAggregator } from "@/lib/realtime/message-aggregator"
 import { createSSEStream, closeConnections } from "@/lib/realtime/sse-manager"
 import { getTokenStore } from "@/lib/token-store"
+import { isTerminalTokenError, markAccountDisconnected } from "@/lib/auth/token-health"
 
 const logger = createLogger("ChatStreamEndpoint")
 
@@ -77,22 +78,30 @@ export async function GET(request: NextRequest): Promise<Response> {
 
                     // Auto-refresh expired YouTube token
                     if (plat === "youtube" && stored?.refreshToken && stored.expiresAt && stored.expiresAt < Date.now()) {
-                        const { getYouTubeOAuthService } = await import("@/lib/youtube/oauth-service")
-                        const { getYouTubeChannelLinkingConfig } = await import("@/lib/youtube/config")
-                        const { validateEnv } = await import("@/lib/config/env")
-                        const ytConfig = getYouTubeChannelLinkingConfig(validateEnv())
-                        const ytOAuth = getYouTubeOAuthService(ytConfig)
-                        await ytOAuth.initialize()
-                        const refreshed = await ytOAuth.refreshAccessToken(stored.refreshToken)
-                        const expiresAt = Date.now() + refreshed.expiresIn * 1000
-                        await tokenStore.refreshToken(userId, "youtube", {
-                            accessToken: refreshed.accessToken,
-                            refreshToken: refreshed.refreshToken,
-                            expiresAt,
-                            platform: "youtube",
-                            userId,
-                        })
-                        stored = await tokenStore.getToken(userId, "youtube")
+                        try {
+                            const { getYouTubeOAuthService } = await import("@/lib/youtube/oauth-service")
+                            const { getYouTubeChannelLinkingConfig } = await import("@/lib/youtube/config")
+                            const { validateEnv } = await import("@/lib/config/env")
+                            const ytConfig = getYouTubeChannelLinkingConfig(validateEnv())
+                            const ytOAuth = getYouTubeOAuthService(ytConfig)
+                            await ytOAuth.initialize()
+                            const refreshed = await ytOAuth.refreshAccessToken(stored.refreshToken)
+                            const expiresAt = Date.now() + refreshed.expiresIn * 1000
+                            await tokenStore.refreshToken(userId, "youtube", {
+                                accessToken: refreshed.accessToken,
+                                refreshToken: refreshed.refreshToken,
+                                expiresAt,
+                                platform: "youtube",
+                                userId,
+                            })
+                            stored = await tokenStore.getToken(userId, "youtube")
+                        } catch (err) {
+                            const errMsg = err instanceof Error ? err.message : String(err)
+                            logger.error("YouTube token auto-refresh failed in stream", { userId, error: errMsg })
+                            if (isTerminalTokenError(errMsg)) {
+                                await markAccountDisconnected(userId, "youtube").catch(() => {})
+                            }
+                        }
                     }
 
                     if (stored?.accessToken) {

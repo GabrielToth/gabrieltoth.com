@@ -13,6 +13,7 @@ import { getTokenStore } from "@/lib/token-store"
 import { getYouTubeOAuthService } from "@/lib/youtube/oauth-service"
 import { getYouTubeChannelLinkingConfig } from "@/lib/youtube/config"
 import { validateEnv } from "@/lib/config/env"
+import { isTerminalTokenError, markAccountDisconnected } from "@/lib/auth/token-health"
 import { createClient } from "@supabase/supabase-js"
 import { NextRequest, NextResponse } from "next/server"
 
@@ -63,11 +64,15 @@ async function getValidAccessToken(
 
         return refreshed.accessToken
     } catch (error) {
+        const errorMsg = error instanceof Error ? error.message : String(error)
         logger.error("Token refresh failed", {
             userId,
             platform,
-            error: error instanceof Error ? error.message : String(error),
+            error: errorMsg,
         })
+        if (isTerminalTokenError(errorMsg)) {
+            await markAccountDisconnected(userId, platform).catch(() => {})
+        }
         return null
     }
 }
