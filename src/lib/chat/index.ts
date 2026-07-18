@@ -6,6 +6,7 @@
 export { TwitchChatAdapter } from "./twitch-adapter"
 export { KickChatAdapter } from "./kick-adapter"
 export { YouTubeLiveChatAdapter } from "./youtube-live-chat-adapter"
+export { YouTubeRelayChatAdapter } from "./youtube-relay-adapter"
 export { FacebookLiveChatAdapter } from "./facebook-live-chat-adapter"
 export { InstagramLiveChatAdapter } from "./instagram-live-chat-adapter"
 export type {
