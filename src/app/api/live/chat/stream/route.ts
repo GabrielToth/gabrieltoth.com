@@ -68,6 +68,13 @@ export async function GET(request: NextRequest): Promise<Response> {
         for (const network of networks || []) {
             const plat = network.platform as "twitch" | "kick" | "youtube"
             if (plat === "twitch" || plat === "kick" || plat === "youtube") {
+                // Skip YouTube channels without chatroomId to avoid API quota waste
+                if (plat === "youtube") {
+                    const meta = network.metadata as Record<string, unknown> | null
+                    if (!meta?.chatroomId) {
+                        continue
+                    }
+                }
                 const info: { channelName: string; token?: string } = {
                     channelName: network.platform_username || plat,
                 }

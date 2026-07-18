@@ -461,19 +461,10 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
                     break
                 }
 
-                case "youtube": {
-                    const ytAccessToken = await getValidAccessToken(userId, "youtube")
-                    if (ytAccessToken) {
-                        const youtubeData = await fetchYouTubeLive(
-                            ytAccessToken,
-                            network.platform_user_id || ""
-                        )
-                        platforms.push({ ...baseInfo, ...youtubeData })
-                    } else {
-                        platforms.push(baseInfo)
-                    }
+                case "youtube":
+                    // Skip YouTube API calls to preserve quota (search endpoint costs 100 units each)
+                    platforms.push(baseInfo)
                     break
-                }
 
                 case "facebook":
                     if (pageAccessToken) {
