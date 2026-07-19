@@ -85,7 +85,7 @@ export default function VideoUploader({
     if (!selectedPlatforms || selectedPlatforms.length === 0) {
         return (
             <Card className="border-dashed">
-                <CardContent className="flex flex-col items-center gap-4 py-8 text-center text-gray-500">
+                <CardContent className="flex flex-col items-center gap-4 py-8 text-center text-muted-foreground">
                     <Upload className="h-8 w-8" />
                     <p className="text-sm">
                         {t("videoUploader.selectPlatformFirst")}
@@ -114,15 +114,15 @@ export default function VideoUploader({
                     onClick={() => inputRef.current?.click()}
                     className={`flex cursor-pointer flex-col items-center gap-4 rounded-lg border-2 border-dashed p-8 transition-colors ${
                         dragOver
-                            ? "border-blue-500 bg-blue-50"
-                            : "border-gray-300 hover:border-gray-400"
+                            ? "border-primary bg-primary/5"
+                            : "border-input hover:border-border"
                     } ${disabled ? "cursor-not-allowed opacity-50" : ""}`}
                 >
-                    <Upload className="h-10 w-10 text-gray-400" />
-                    <p className="text-sm text-gray-600">
+                    <Upload className="h-10 w-10 text-muted-foreground" />
+                    <p className="text-sm text-muted-foreground">
                         {t("videoUploader.dropzone")}
                     </p>
-                    <p className="text-xs text-gray-400">
+                    <p className="text-xs text-muted-foreground">
                         {t("videoUploader.maxSize", {
                             size: formatBytes(maxSizeBytes),
                         })}

@@ -41,7 +41,7 @@ export default function PlatformLimitIndicator({
     if (platforms.length === 0) {
         return (
             <Card>
-                <CardContent className="flex flex-col items-center gap-4 py-8 text-center text-gray-500">
+                <CardContent className="flex flex-col items-center gap-4 py-8 text-center text-muted-foreground">
                     <Info className="h-8 w-8" />
                     <p className="text-sm">
                         {t("platformLimit.selectPlatform")}
@@ -78,13 +78,13 @@ export default function PlatformLimitIndicator({
                             className={`rounded-lg border p-3 ${
                                 exceedsSize || exceedsDuration
                                     ? "border-red-200 bg-red-50"
-                                    : "border-gray-200"
+                                    : "border-border"
                             }`}
                         >
                             <h4 className="mb-2 font-medium capitalize">
                                 {platform}
                             </h4>
-                            <div className="space-y-1 text-sm text-gray-600">
+                            <div className="space-y-1 text-sm text-muted-foreground">
                                 <p>
                                     {t("platformLimit.maxSize")}:{" "}
                                     {formatBytes(limits.maxFileSizeBytes)}

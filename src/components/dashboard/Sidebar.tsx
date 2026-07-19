@@ -144,9 +144,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
     ] as const
 
     const STATUS_DOT: Record<ChannelStatus, { color: string; label: string }> = {
-        connected: { color: "bg-green-500", label: "Connected" },
-        disconnected: { color: "bg-gray-300 dark:bg-gray-600", label: "Disconnected" },
-        attention: { color: "bg-red-500", label: "Needs attention" },
+        connected: { color: "bg-success", label: "Connected" },
+        disconnected: { color: "bg-muted", label: "Disconnected" },
+        attention: { color: "bg-error", label: "Needs attention" },
     }
 
     return (
@@ -154,17 +154,17 @@ export const Sidebar: React.FC<SidebarProps> = ({
             {/* Desktop Sidebar */}
             <aside
                 className={cn(
-                    "hidden w-60 flex-col border-r border-gray-200 bg-white md:flex dark:border-gray-800 dark:bg-gray-900",
+                    "hidden w-60 flex-col border-r border-border bg-card md:flex dark:border-border dark:bg-background",
                     "overflow-y-auto"
                 )}
             >
                 {/* Logo Section */}
-                <div className="flex items-center justify-between border-b border-gray-200 dark:border-gray-800 px-4 py-6">
+                <div className="flex items-center justify-between border-b border-border px-4 py-6">
                     <div className="flex items-center">
-                        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-600 text-white font-bold">
+                        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary text-primary-foreground font-bold">
                             D
                         </div>
-                        <span className="ml-3 text-lg font-semibold text-gray-900 dark:text-white">
+                        <span className="ml-3 text-lg font-semibold text-foreground">
                             {lt("dashboard")}
                         </span>
                     </div>
@@ -183,8 +183,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
                             className={cn(
                                 "w-full rounded-lg px-4 py-3 text-left text-sm font-medium transition-colors min-h-11",
                                 activeTab === item.id
-                                    ? "bg-blue-50 text-blue-600 dark:bg-blue-950 dark:text-blue-400"
-                                    : "text-gray-700 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-800"
+                                    ? "bg-primary/5 text-primary dark:bg-primary/10 dark:text-primary"
+                                    : "text-foreground hover:bg-muted dark:text-foreground dark:hover:bg-accent"
                             )}
                             aria-current={
                                 activeTab === item.id ? "page" : undefined
@@ -197,12 +197,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 </nav>
 
                 {/* Connect Channels Section */}
-                <div className="border-t border-gray-200 dark:border-gray-800 px-6 py-4">
-                    <h3 className="mb-3 text-xs font-semibold uppercase tracking-wide text-gray-600 dark:text-gray-400">
+                <div className="border-t border-border dark:border-border px-6 py-4">
+                    <h3 className="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground dark:text-muted-foreground">
                         {t("connectChannels")}
                     </h3>
                     {connectionError && (
-                        <div className="mb-3 rounded-md bg-red-50 p-2 text-xs text-red-600 dark:bg-red-950 dark:text-red-400">
+                        <div className="mb-3 rounded-md bg-error-bg p-2 text-xs text-error">
                             {connectionError}
                         </div>
                     )}
@@ -211,7 +211,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                             <button
                                 key={channel.id}
                                 onClick={() => handleChannelConnect(channel.id)}
-                                className="flex h-11 w-11 items-center justify-center rounded-lg border border-gray-200 bg-white text-sm font-medium text-gray-600 hover:border-blue-300 hover:bg-blue-50 hover:text-blue-600 transition-colors min-h-11 min-w-11 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-blue-950/50 dark:hover:text-blue-400"
+                                className="flex h-11 w-11 items-center justify-center rounded-lg border border-border bg-card text-sm font-medium text-muted-foreground hover:border-primary/50 hover:bg-primary/5 hover:text-primary transition-colors min-h-11 min-w-11 dark:border-border dark:bg-card dark:text-muted-foreground dark:hover:bg-primary/20 dark:hover:text-primary"
                                 title={channel.name}
                                 aria-label={lt("connectChannel", {
                                     channel: channel.name,
@@ -225,26 +225,26 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 </div>
 
                 {/* Organization Info */}
-                <div className="border-t border-gray-200 dark:border-gray-800 px-6 py-4">
-                    <div className="rounded-lg bg-gray-50 p-3 dark:bg-gray-800">
-                        <p className="text-xs font-semibold text-gray-600 dark:text-gray-400">
+                <div className="border-t border-border dark:border-border px-6 py-4">
+                    <div className="rounded-lg bg-muted p-3 dark:bg-card">
+                        <p className="text-xs font-semibold text-muted-foreground dark:text-muted-foreground">
                             {lt("organization")}
                         </p>
-                        <p className="mt-1 text-sm font-medium text-gray-900 dark:text-white">
+                        <p className="mt-1 text-sm font-medium text-foreground dark:text-foreground">
                             {organization.name}
                         </p>
-                        <p className="mt-1 text-xs text-gray-600 dark:text-gray-400 capitalize">
+                        <p className="mt-1 text-xs text-muted-foreground dark:text-muted-foreground capitalize">
                             {t("plan." + organization.plan)}
                         </p>
                     </div>
                 </div>
 
                 {/* Logout Button */}
-                <div className="border-t border-gray-200 dark:border-gray-800 px-3 py-4">
+                <div className="border-t border-border dark:border-border px-3 py-4">
                     <Button
                         onClick={onLogout}
                         variant="ghost"
-                        className="w-full justify-start text-gray-700 hover:bg-gray-100 hover:text-gray-900 min-h-11 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-white"
+                        className="w-full justify-start text-foreground hover:bg-muted hover:text-foreground min-h-11 dark:text-foreground dark:hover:bg-accent dark:hover:text-foreground"
                     >
                         <span className="mr-2">🚪</span>
                         {t("logout")}
@@ -255,17 +255,17 @@ export const Sidebar: React.FC<SidebarProps> = ({
             {/* Mobile Sidebar */}
             <aside
                 className={cn(
-                    "fixed inset-y-0 left-0 z-40 w-60 flex-col border-r border-gray-200 bg-white transition-transform duration-300 ease-in-out md:hidden overflow-y-auto dark:border-gray-800 dark:bg-gray-900",
+                    "fixed inset-y-0 left-0 z-40 w-60 flex-col border-r border-border bg-card transition-transform duration-300 ease-in-out md:hidden overflow-y-auto dark:border-border dark:bg-background",
                     isOpen ? "translate-x-0" : "-translate-x-full"
                 )}
             >
                 {/* Close Button */}
-                <div className="flex items-center justify-between border-b border-gray-200 dark:border-gray-800 px-6 py-4">
+                <div className="flex items-center justify-between border-b border-border px-6 py-4">
                     <div className="flex items-center">
-                        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-600 text-white font-bold">
+                        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary text-primary-foreground font-bold">
                             D
                         </div>
-                        <span className="ml-3 text-lg font-semibold text-gray-900 dark:text-white">
+                        <span className="ml-3 text-lg font-semibold text-foreground">
                             {lt("dashboard")}
                         </span>
                     </div>
@@ -273,7 +273,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                         <NotificationBell />
                         <button
                             onClick={onClose}
-                            className="rounded-md p-2 text-gray-600 hover:bg-gray-100 min-h-11 min-w-11 dark:text-gray-400 dark:hover:bg-gray-800"
+                            className="rounded-md p-2 text-muted-foreground hover:bg-muted min-h-11 min-w-11 dark:text-muted-foreground dark:hover:bg-accent"
                             aria-label={lt("closeSidebar")}
                         >
                             <svg
@@ -302,8 +302,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
                             className={cn(
                                 "w-full rounded-lg px-4 py-3 text-left text-base font-medium transition-colors min-h-11",
                                 activeTab === item.id
-                                    ? "bg-blue-50 text-blue-600 dark:bg-blue-950 dark:text-blue-400"
-                                    : "text-gray-700 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-800"
+                                    ? "bg-primary/5 text-primary dark:bg-primary/10 dark:text-primary"
+                                    : "text-foreground hover:bg-muted dark:text-foreground dark:hover:bg-accent"
                             )}
                             aria-current={
                                 activeTab === item.id ? "page" : undefined
@@ -316,7 +316,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 </nav>
 
                 {/* Language & Theme (mobile only) */}
-                <div className="border-t border-gray-200 dark:border-gray-800 px-6 py-4">
+                <div className="border-t border-border dark:border-border px-6 py-4">
                     <div className="flex items-center justify-between gap-2">
                         <LanguageSelector variant="default" />
                         <ThemeToggleClient />
@@ -324,12 +324,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 </div>
 
                     {/* Connect Channels Section */}
-                <div className="border-t border-gray-200 dark:border-gray-800 px-6 py-4">
-                    <h3 className="mb-3 text-xs font-semibold uppercase tracking-wide text-gray-600 dark:text-gray-400">
+                <div className="border-t border-border dark:border-border px-6 py-4">
+                    <h3 className="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground dark:text-muted-foreground">
                         {t("connectChannels")}
                     </h3>
                     {connectionError && (
-                        <div className="mb-3 rounded-md bg-red-50 p-2 text-xs text-red-600 dark:bg-red-950 dark:text-red-400">
+                        <div className="mb-3 rounded-md bg-error-bg p-2 text-xs text-error">
                             {connectionError}
                         </div>
                     )}
@@ -341,7 +341,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                                 <div key={channel.id} className="relative inline-flex">
                                     <button
                                         onClick={() => handleChannelConnect(channel.id)}
-                                        className="flex h-11 w-11 items-center justify-center rounded-lg border border-gray-200 bg-white text-sm font-medium text-gray-600 hover:border-blue-300 hover:bg-blue-50 hover:text-blue-600 transition-colors min-h-11 min-w-11 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-blue-950/50 dark:hover:text-blue-400"
+                                        className="flex h-11 w-11 items-center justify-center rounded-lg border border-border bg-card text-sm font-medium text-muted-foreground hover:border-primary/50 hover:bg-primary/5 hover:text-primary transition-colors min-h-11 min-w-11 dark:border-border dark:bg-card dark:text-muted-foreground dark:hover:bg-primary/20 dark:hover:text-primary"
                                         title={channel.name}
                                         aria-label={lt("connectChannel", {
                                             channel: channel.name,
@@ -353,7 +353,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                                     {dot && (
                                         <span
                                             className={cn(
-                                                "absolute -right-0.5 -top-0.5 h-2.5 w-2.5 rounded-full border-2 border-white dark:border-gray-900",
+                                                "absolute -right-0.5 -top-0.5 h-2.5 w-2.5 rounded-full border-2 border-card dark:border-background",
                                                 dot.color
                                             )}
                                             title={dot.label}
@@ -366,26 +366,26 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 </div>
 
                 {/* Organization Info */}
-                <div className="border-t border-gray-200 dark:border-gray-800 px-6 py-4">
-                    <div className="rounded-lg bg-gray-50 p-3 dark:bg-gray-800">
-                        <p className="text-xs font-semibold text-gray-600 dark:text-gray-400">
+                <div className="border-t border-border dark:border-border px-6 py-4">
+                    <div className="rounded-lg bg-muted p-3 dark:bg-card">
+                        <p className="text-xs font-semibold text-muted-foreground dark:text-muted-foreground">
                             {lt("organization")}
                         </p>
-                        <p className="mt-1 text-sm font-medium text-gray-900 dark:text-white">
+                        <p className="mt-1 text-sm font-medium text-foreground dark:text-foreground">
                             {organization.name}
                         </p>
-                        <p className="mt-1 text-xs text-gray-600 dark:text-gray-400 capitalize">
+                        <p className="mt-1 text-xs text-muted-foreground dark:text-muted-foreground capitalize">
                             {t("plan." + organization.plan)}
                         </p>
                     </div>
                 </div>
 
                 {/* Logout Button */}
-                <div className="border-t border-gray-200 dark:border-gray-800 px-3 py-4">
+                <div className="border-t border-border dark:border-border px-3 py-4">
                     <Button
                         onClick={onLogout}
                         variant="ghost"
-                        className="w-full justify-start text-gray-700 hover:bg-gray-100 hover:text-gray-900 min-h-11 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-white"
+                        className="w-full justify-start text-foreground hover:bg-muted hover:text-foreground min-h-11 dark:text-foreground dark:hover:bg-accent dark:hover:text-foreground"
                     >
                         <span className="mr-2">🚪</span>
                         {t("logout")}

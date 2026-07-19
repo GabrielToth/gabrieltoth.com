@@ -87,7 +87,7 @@ export function PersonalDataForm({
             <div>
                 <label
                     htmlFor="name"
-                    className="block text-sm sm:text-base font-medium text-gray-100 dark:text-gray-100 mb-2"
+                    className="block text-sm sm:text-base font-medium text-foreground dark:text-foreground mb-2"
                 >
                     Full Name
                 </label>
@@ -103,8 +103,8 @@ export function PersonalDataForm({
                             ? "border-red-500 focus:ring-red-200 dark:border-red-400 dark:focus:ring-red-900"
                             : nameValidation.isValid && name
                               ? "border-green-500 focus:ring-green-200 dark:border-green-400 dark:focus:ring-green-900"
-                              : "border-gray-300 dark:border-gray-600 focus:ring-blue-200 dark:focus:ring-blue-900"
-                    } bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100`}
+                              : "border-input dark:border-input focus:ring-ring dark:focus:ring-ring"
+                    } bg-card text-foreground dark:text-foreground`}
                     aria-label="Full name"
                     aria-describedby={nameError ? "name-error" : undefined}
                     required
@@ -129,7 +129,7 @@ export function PersonalDataForm({
             <div>
                 <label
                     htmlFor="birthDate"
-                    className="block text-sm sm:text-base font-medium text-gray-100 dark:text-gray-100 mb-2"
+                    className="block text-sm sm:text-base font-medium text-foreground dark:text-foreground mb-2"
                 >
                     Birth Date
                 </label>
@@ -147,8 +147,8 @@ export function PersonalDataForm({
                                 ageValidation.isValid &&
                                 birthDate
                               ? "border-green-500 focus:ring-green-200 dark:border-green-400 dark:focus:ring-green-900"
-                              : "border-gray-300 dark:border-gray-600 focus:ring-blue-200 dark:focus:ring-blue-900"
-                    } bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100`}
+                              : "border-input dark:border-input focus:ring-ring dark:focus:ring-ring"
+                    } bg-card text-foreground dark:text-foreground`}
                     aria-label="Birth date"
                     aria-describedby={
                         birthDateError ? "birthDate-error" : "birthDate-hint"
@@ -173,7 +173,7 @@ export function PersonalDataForm({
                     )}
                 <p
                     id="birthDate-hint"
-                    className="mt-2 text-xs text-gray-500 dark:text-gray-400"
+                    className="mt-2 text-xs text-muted-foreground dark:text-muted-foreground"
                 >
                     Format: DD/MM/YYYY (e.g., 15/03/1990). You must be at least
                     13 years old.
@@ -184,7 +184,7 @@ export function PersonalDataForm({
             <div>
                 <label
                     htmlFor="phone"
-                    className="block text-sm sm:text-base font-medium text-gray-100 dark:text-gray-100 mb-2"
+                    className="block text-sm sm:text-base font-medium text-foreground dark:text-foreground mb-2"
                 >
                     Phone Number
                 </label>
@@ -200,8 +200,8 @@ export function PersonalDataForm({
                             ? "border-red-500 focus:ring-red-200 dark:border-red-400 dark:focus:ring-red-900"
                             : phoneValidation.isValid && phone
                               ? "border-green-500 focus:ring-green-200 dark:border-green-400 dark:focus:ring-green-900"
-                              : "border-gray-300 dark:border-gray-600 focus:ring-blue-200 dark:focus:ring-blue-900"
-                    } bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100`}
+                              : "border-input dark:border-input focus:ring-ring dark:focus:ring-ring"
+                    } bg-card text-foreground dark:text-foreground`}
                     aria-label="Phone number"
                     aria-describedby={phoneError ? "phone-error" : "phone-hint"}
                     required
@@ -222,7 +222,7 @@ export function PersonalDataForm({
                 )}
                 <p
                     id="phone-hint"
-                    className="mt-2 text-xs text-gray-500 dark:text-gray-400"
+                    className="mt-2 text-xs text-muted-foreground dark:text-muted-foreground"
                 >
                     Supports international formats (e.g., +1 555 123 4567, +55
                     11 98765-4321)

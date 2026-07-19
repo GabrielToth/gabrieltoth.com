@@ -26,7 +26,7 @@ export default function CardsEndScreensSection({
                 <CardTitle className="text-lg">{t("step4.cards")}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-                <p className="text-xs text-gray-400">{t("step4.cardsHint")}</p>
+                <p className="text-xs text-muted-foreground">{t("step4.cardsHint")}</p>
                 <div className="space-y-3">
                     <div>
                         <Label htmlFor="video-link-start">

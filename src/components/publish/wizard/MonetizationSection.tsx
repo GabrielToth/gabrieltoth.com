@@ -51,7 +51,7 @@ export default function MonetizationSection({
                             </span>
                         </label>
                     </div>
-                    <p className="text-xs text-gray-400">
+                    <p className="text-xs text-muted-foreground">
                         {t("step4.monetizationHint")}
                     </p>
                 </div>

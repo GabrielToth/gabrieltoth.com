@@ -154,7 +154,7 @@ export default function TagInput({
     return (
         <div className="space-y-2">
             <div
-                className={`flex min-h-10 flex-wrap items-center gap-1.5 rounded-md border bg-white px-3 py-2 text-sm ring-offset-white focus-within:ring-2 focus-within:ring-neutral-950 focus-within:ring-offset-2 dark:bg-neutral-950 dark:ring-offset-neutral-950 dark:focus-within:ring-neutral-300 ${
+                className={`flex min-h-10 flex-wrap items-center gap-1.5 rounded-md border bg-white px-3 py-2 text-sm ring-offset-background focus-within:ring-2 focus-within:ring-neutral-950 focus-within:ring-offset-2 dark:bg-neutral-950 dark:ring-offset-neutral-950 dark:focus-within:ring-neutral-300 ${
                     disabled ? "cursor-not-allowed opacity-50" : ""
                 } ${
                     isAtLimit
@@ -166,7 +166,7 @@ export default function TagInput({
                 {tags.map((tag, index) => (
                     <div
                         key={`${tag}-${index}`}
-                        className="group inline-flex items-center gap-1 rounded-md bg-blue-100 px-2 py-0.5 text-sm text-blue-800 transition-colors hover:bg-blue-200 dark:bg-blue-900/40 dark:text-blue-200 dark:hover:bg-blue-800/50"
+                        className="group inline-flex items-center gap-1 rounded-md bg-primary/10 px-2 py-0.5 text-sm text-primary transition-colors hover:bg-primary/20 dark:bg-primary/20 dark:text-primary dark:hover:bg-primary/20"
                     >
                         {editingIndex === index ? (
                             <input
@@ -193,7 +193,7 @@ export default function TagInput({
                                 <button
                                     type="button"
                                     onClick={() => removeTag(index)}
-                                    className="ml-0.5 rounded-full p-0.5 text-blue-600 hover:bg-blue-300 hover:text-blue-900 dark:text-blue-300 dark:hover:bg-blue-700 dark:hover:text-blue-100"
+                                    className="ml-0.5 rounded-full p-0.5 text-primary hover:bg-blue-300 hover:text-primary dark:text-primary dark:hover:bg-primary dark:hover:text-blue-100"
                                     aria-label={`Remove tag "${tag}"`}
                                 >
                                     <X className="h-3 w-3" />

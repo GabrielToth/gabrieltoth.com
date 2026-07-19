@@ -33,15 +33,15 @@ export default function StorageModeToggle({
                         disabled={disabled}
                         className={`flex flex-col items-center gap-2 rounded-lg border-2 p-4 text-center transition-colors ${
                             mode === "cloud"
-                                ? "border-blue-500 bg-blue-50 text-blue-700"
-                                : "border-gray-200 text-gray-600 hover:border-gray-300"
+                                ? "border-primary bg-primary/5 text-primary"
+                                : "border-border text-muted-foreground hover:border-input"
                         } ${disabled ? "cursor-not-allowed opacity-50" : "cursor-pointer"}`}
                     >
                         <Cloud className="h-8 w-8" />
                         <span className="text-sm font-medium">
                             {t("storageMode.cloud")}
                         </span>
-                        <span className="text-xs text-gray-500">
+                        <span className="text-xs text-muted-foreground">
                             {t("storageMode.cloudDescription")}
                         </span>
                     </button>
@@ -52,15 +52,15 @@ export default function StorageModeToggle({
                         disabled={disabled}
                         className={`flex flex-col items-center gap-2 rounded-lg border-2 p-4 text-center transition-colors ${
                             mode === "local"
-                                ? "border-blue-500 bg-blue-50 text-blue-700"
-                                : "border-gray-200 text-gray-600 hover:border-gray-300"
+                                ? "border-primary bg-primary/5 text-primary"
+                                : "border-border text-muted-foreground hover:border-input"
                         } ${disabled ? "cursor-not-allowed opacity-50" : "cursor-pointer"}`}
                     >
                         <Laptop className="h-8 w-8" />
                         <span className="text-sm font-medium">
                             {t("storageMode.local")}
                         </span>
-                        <span className="text-xs text-gray-500">
+                        <span className="text-xs text-muted-foreground">
                             {t("storageMode.localDescription")}
                         </span>
                     </button>

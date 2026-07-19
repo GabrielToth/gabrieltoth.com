@@ -69,15 +69,15 @@ export default function ContactSection() {
     }
 
     return (
-        <section id="contact" className="py-20 bg-white dark:bg-gray-900">
+        <section id="contact" className="py-20 bg-card dark:bg-background">
             <div className="container mx-auto px-4">
                 <div className="max-w-4xl mx-auto">
                     {/* Section Header */}
                     <div className="text-center mb-12">
-                        <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+                        <h2 className="text-3xl sm:text-4xl font-bold text-foreground dark:text-foreground mb-4">
                             {t("title")}
                         </h2>
-                        <p className="text-lg text-gray-600 dark:text-gray-300">
+                        <p className="text-lg text-muted-foreground dark:text-foreground">
                             {t("subtitle")}
                         </p>
                     </div>
@@ -88,7 +88,7 @@ export default function ContactSection() {
                             <div className="space-y-4">
                                 <a
                                     href={`mailto:${t("contactEmail")}`}
-                                    className="flex items-center space-x-3 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                                    className="flex items-center space-x-3 text-muted-foreground dark:text-foreground hover:text-primary dark:hover:text-primary transition-colors"
                                 >
                                     <Mail className="h-5 w-5" />
                                     <span>{t("contactEmail")}</span>
@@ -98,7 +98,7 @@ export default function ContactSection() {
                                     href="https://calendly.com/gabrieltoth"
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="flex items-center space-x-3 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                                    className="flex items-center space-x-3 text-muted-foreground dark:text-foreground hover:text-primary dark:hover:text-primary transition-colors"
                                 >
                                     <Calendar className="h-5 w-5" />
                                     <span>{t("scheduleCall")}</span>
@@ -108,7 +108,7 @@ export default function ContactSection() {
                                     href={t("resumeUrl")}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="flex items-center space-x-3 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                                    className="flex items-center space-x-3 text-muted-foreground dark:text-foreground hover:text-primary dark:hover:text-primary transition-colors"
                                 >
                                     <Download className="h-5 w-5" />
                                     <span>{t("downloadResume")}</span>
@@ -117,33 +117,33 @@ export default function ContactSection() {
 
                             {/* Services */}
                             <div>
-                                <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+                                <h3 className="text-xl font-semibold text-foreground dark:text-foreground mb-4">
                                     {t("services.title")}
                                 </h3>
                                 <div className="space-y-4">
                                     <div>
-                                        <h4 className="font-medium text-gray-800 dark:text-gray-200">
+                                        <h4 className="font-medium text-foreground dark:text-muted-foreground">
                                             {t("services.dataScience.title")}
                                         </h4>
-                                        <p className="text-gray-600 dark:text-gray-400 text-sm">
+                                        <p className="text-muted-foreground dark:text-muted-foreground text-sm">
                                             {t(
                                                 "services.dataScience.description"
                                             )}
                                         </p>
                                     </div>
                                     <div>
-                                        <h4 className="font-medium text-gray-800 dark:text-gray-200">
+                                        <h4 className="font-medium text-foreground dark:text-muted-foreground">
                                             {t("services.webDev.title")}
                                         </h4>
-                                        <p className="text-gray-600 dark:text-gray-400 text-sm">
+                                        <p className="text-muted-foreground dark:text-muted-foreground text-sm">
                                             {t("services.webDev.description")}
                                         </p>
                                     </div>
                                     <div>
-                                        <h4 className="font-medium text-gray-800 dark:text-gray-200">
+                                        <h4 className="font-medium text-foreground dark:text-muted-foreground">
                                             {t("services.consulting.title")}
                                         </h4>
-                                        <p className="text-gray-600 dark:text-gray-400 text-sm">
+                                        <p className="text-muted-foreground dark:text-muted-foreground text-sm">
                                             {t(
                                                 "services.consulting.description"
                                             )}
@@ -154,7 +154,7 @@ export default function ContactSection() {
 
                             {/* Availability */}
                             <div>
-                                <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+                                <h3 className="text-xl font-semibold text-foreground dark:text-foreground mb-4">
                                     {t("availability.title")}
                                 </h3>
                                 <div className="space-y-2">
@@ -162,13 +162,13 @@ export default function ContactSection() {
                                         <div className="w-2 h-2 rounded-full bg-green-600 dark:bg-green-400" />
                                         <span>{t("availability.current")}</span>
                                     </div>
-                                    <div className="flex items-center space-x-2 text-gray-600 dark:text-gray-400">
+                                    <div className="flex items-center space-x-2 text-muted-foreground dark:text-muted-foreground">
                                         <Clock className="h-4 w-4" />
                                         <span>
                                             {t("availability.response")}
                                         </span>
                                     </div>
-                                    <div className="text-gray-600 dark:text-gray-400">
+                                    <div className="text-muted-foreground dark:text-muted-foreground">
                                         {t("availability.timezone")}
                                     </div>
                                 </div>
@@ -176,7 +176,7 @@ export default function ContactSection() {
 
                             {/* Social Links */}
                             <div>
-                                <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+                                <h3 className="text-xl font-semibold text-foreground dark:text-foreground mb-4">
                                     {t("followMe")}
                                 </h3>
                                 <div className="flex space-x-4">
@@ -184,7 +184,7 @@ export default function ContactSection() {
                                         href="https://github.com/gabrieltoth"
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100"
+                                        className="text-muted-foreground dark:text-muted-foreground hover:text-foreground dark:hover:text-foreground"
                                         aria-label="GitHub"
                                         title="GitHub"
                                     >
@@ -194,7 +194,7 @@ export default function ContactSection() {
                                         href="https://linkedin.com/in/OGabrielToth"
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100"
+                                        className="text-muted-foreground dark:text-muted-foreground hover:text-foreground dark:hover:text-foreground"
                                         aria-label="LinkedIn"
                                         title="LinkedIn"
                                     >
@@ -204,7 +204,7 @@ export default function ContactSection() {
                                         href="https://youtube.com/@ogabrieltoth"
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100"
+                                        className="text-muted-foreground dark:text-muted-foreground hover:text-foreground dark:hover:text-foreground"
                                         aria-label="YouTube"
                                         title="YouTube"
                                     >
@@ -223,7 +223,7 @@ export default function ContactSection() {
                             <div>
                                 <label
                                     htmlFor="name"
-                                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                                    className="block text-sm font-medium text-foreground dark:text-foreground mb-1"
                                 >
                                     {t("form.name")}
                                 </label>
@@ -232,7 +232,7 @@ export default function ContactSection() {
                                     name="name"
                                     id="name"
                                     required
-                                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-600 dark:focus:ring-purple-400 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                                    className="w-full px-4 py-2 border border-input dark:border-input rounded-lg focus:ring-2 focus:ring-purple-600 dark:focus:ring-purple-400 focus:border-transparent bg-card text-foreground dark:text-foreground"
                                     data-testid="contact-name"
                                 />
                             </div>
@@ -251,7 +251,7 @@ export default function ContactSection() {
                             <div>
                                 <label
                                     htmlFor="email"
-                                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                                    className="block text-sm font-medium text-foreground dark:text-foreground mb-1"
                                 >
                                     {t("form.email")}
                                 </label>
@@ -261,7 +261,7 @@ export default function ContactSection() {
                                     id="email"
                                     required
                                     placeholder={t("form.emailPlaceholder")}
-                                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-600 dark:focus:ring-purple-400 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                                    className="w-full px-4 py-2 border border-input dark:border-input rounded-lg focus:ring-2 focus:ring-purple-600 dark:focus:ring-purple-400 focus:border-transparent bg-card text-foreground dark:text-foreground"
                                     data-testid="contact-email"
                                 />
                             </div>
@@ -269,7 +269,7 @@ export default function ContactSection() {
                             <div>
                                 <label
                                     htmlFor="subject"
-                                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                                    className="block text-sm font-medium text-foreground dark:text-foreground mb-1"
                                 >
                                     {t("form.subject")}
                                 </label>
@@ -278,7 +278,7 @@ export default function ContactSection() {
                                     name="subject"
                                     id="subject"
                                     required
-                                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-600 dark:focus:ring-purple-400 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                                    className="w-full px-4 py-2 border border-input dark:border-input rounded-lg focus:ring-2 focus:ring-purple-600 dark:focus:ring-purple-400 focus:border-transparent bg-card text-foreground dark:text-foreground"
                                     data-testid="contact-subject"
                                 />
                             </div>
@@ -286,7 +286,7 @@ export default function ContactSection() {
                             <div>
                                 <label
                                     htmlFor="message"
-                                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                                    className="block text-sm font-medium text-foreground dark:text-foreground mb-1"
                                 >
                                     {t("form.message")}
                                 </label>
@@ -296,7 +296,7 @@ export default function ContactSection() {
                                     rows={4}
                                     required
                                     placeholder={t("form.messagePlaceholder")}
-                                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-600 dark:focus:ring-purple-400 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                                    className="w-full px-4 py-2 border border-input dark:border-input rounded-lg focus:ring-2 focus:ring-purple-600 dark:focus:ring-purple-400 focus:border-transparent bg-card text-foreground dark:text-foreground"
                                     data-testid="contact-message"
                                 />
                             </div>
@@ -304,7 +304,7 @@ export default function ContactSection() {
                             <button
                                 type="submit"
                                 disabled={isSubmitting}
-                                className="w-full px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white font-medium rounded-lg shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300"
+                                className="w-full px-6 py-3 bg-primary text-white font-medium rounded-lg shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300"
                                 data-testid="contact-submit"
                             >
                                 {isSubmitting

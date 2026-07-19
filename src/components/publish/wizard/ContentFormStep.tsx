@@ -37,10 +37,10 @@ const PLATFORM_ICONS: Record<
     { Icon: React.ComponentType<{ className?: string }>; color: string }
 > = {
     youtube: { Icon: SiYoutube, color: "text-red-600" },
-    facebook: { Icon: SiFacebook, color: "text-blue-600" },
+    facebook: { Icon: SiFacebook, color: "text-primary" },
     instagram: { Icon: SiInstagram, color: "text-pink-600" },
-    tiktok: { Icon: SiTiktok, color: "text-gray-900 dark:text-gray-100" },
-    twitter: { Icon: SiX, color: "text-gray-700 dark:text-gray-300" },
+    tiktok: { Icon: SiTiktok, color: "text-foreground dark:text-foreground" },
+    twitter: { Icon: SiX, color: "text-foreground dark:text-foreground" },
 }
 
 /**
@@ -240,7 +240,7 @@ export default function ContentFormStep({
         <div className="space-y-6">
             <div>
                 <h2 className="text-xl font-semibold">{t("step4.title")}</h2>
-                <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                <p className="mt-1 text-sm text-muted-foreground dark:text-muted-foreground">
                     {t("step4.description")}
                 </p>
             </div>
@@ -340,7 +340,7 @@ export default function ContentFormStep({
                             placeholder={t("step4.titlePlaceholder")}
                             maxLength={100}
                         />
-                        <div className="flex justify-between text-xs text-gray-400">
+                        <div className="flex justify-between text-xs text-muted-foreground">
                             <span>
                                 {youtubeMeta.title.length}/100{" "}
                                 {t("step4.titleMax")}
@@ -377,7 +377,7 @@ export default function ContentFormStep({
                             className="min-h-20 resize-none"
                             maxLength={5000}
                         />
-                        <div className="flex justify-between text-xs text-gray-400">
+                        <div className="flex justify-between text-xs text-muted-foreground">
                             <span>
                                 {youtubeMeta.description.length}
                                 /5000 {t("step4.descriptionMax")}
@@ -440,12 +440,12 @@ export default function ContentFormStep({
                                 }
                                 className={`flex cursor-pointer flex-col items-center gap-2 rounded-lg border-2 border-dashed p-4 transition-colors ${
                                     thumbnailDragOver
-                                        ? "border-blue-500 bg-blue-50 dark:bg-blue-950/30"
-                                        : "border-gray-300 hover:border-gray-400 dark:border-gray-600"
+                                        ? "border-primary bg-primary/5 dark:bg-primary/10"
+                                        : "border-input hover:border-border dark:border-input"
                                 }`}
                             >
-                                <FileImage className="h-6 w-6 text-gray-400" />
-                                <p className="text-xs text-gray-600 dark:text-gray-400">
+                                <FileImage className="h-6 w-6 text-muted-foreground" />
+                                <p className="text-xs text-muted-foreground dark:text-muted-foreground">
                                     {t("step4.thumbnailHint")}
                                 </p>
                                 <Button
@@ -497,14 +497,14 @@ export default function ContentFormStep({
 
                 {/* No visible fields warning */}
                 {visibleFields.length === 0 && (
-                    <p className="py-8 text-center text-sm text-gray-500">
+                    <p className="py-8 text-center text-sm text-muted-foreground">
                         {t("step4.noCompatibleFields")}
                     </p>
                 )}
             </div>
 
             {/* Navigation */}
-            <div className="flex justify-between border-t pt-4 dark:border-gray-700">
+            <div className="flex justify-between border-t pt-4 dark:border-border">
                 <Button onClick={onBack} variant="outline">
                     {t("wizard.back")}
                 </Button>

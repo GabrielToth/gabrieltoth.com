@@ -94,7 +94,7 @@ export default function NetworkGroupManager({
             <div className="flex items-center justify-between">
                 <div className="space-y-1">
                     <h3 className="font-semibold">{t("networkGroups")}</h3>
-                    <p className="text-sm text-gray-600 dark:text-gray-300">
+                    <p className="text-sm text-muted-foreground dark:text-foreground">
                         {t("networkGroupsDescription")}
                     </p>
                 </div>
@@ -192,10 +192,10 @@ export default function NetworkGroupManager({
 
             {groups.length === 0 ? (
                 <div className="rounded-lg border border-dashed p-8 text-center">
-                    <p className="text-sm text-gray-600 dark:text-gray-300">
+                    <p className="text-sm text-muted-foreground dark:text-foreground">
                         {t("noGroups")}
                     </p>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                    <p className="text-xs text-muted-foreground dark:text-muted-foreground">
                         {t("createGroupPrompt")}
                     </p>
                 </div>
@@ -204,13 +204,13 @@ export default function NetworkGroupManager({
                     {groups.map(group => (
                         <div
                             key={group.id}
-                            className="flex items-center justify-between rounded-lg border p-3 hover:bg-gray-50 dark:hover:bg-gray-900/50"
+                            className="flex items-center justify-between rounded-lg border p-3 hover:bg-muted dark:hover:bg-background/50"
                         >
                             <div className="flex items-center gap-3 flex-1">
-                                <GripVertical className="h-4 w-4 text-gray-400 dark:text-gray-500" />
+                                <GripVertical className="h-4 w-4 text-muted-foreground dark:text-muted-foreground" />
                                 <div>
                                     <p className="font-medium">{group.name}</p>
-                                    <p className="text-xs text-gray-600 dark:text-gray-400">
+                                    <p className="text-xs text-muted-foreground dark:text-muted-foreground">
                                         {group.networkIds.length}{" "}
                                         {group.networkIds.length !== 1
                                             ? "networks"

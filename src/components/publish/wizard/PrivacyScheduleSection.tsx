@@ -85,7 +85,7 @@ export default function PrivacyScheduleSection({
 
                 {/* Schedule type */}
                 {allowSchedule && (
-                    <div className="space-y-3 border-t pt-3 dark:border-gray-700">
+                    <div className="space-y-3 border-t pt-3 dark:border-border">
                         <div className="flex gap-4">
                             <label className="flex items-center gap-2 cursor-pointer">
                                 <input

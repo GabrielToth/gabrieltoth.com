@@ -16,14 +16,14 @@ export const BenefitCard = ({
     iconName,
 }: BenefitCardProps) => {
     return (
-        <Card className="p-6 text-center backdrop-blur-sm bg-white/50 dark:bg-gray-900/50">
+        <Card className="p-6 text-center backdrop-blur-sm bg-white/50 dark:bg-background/50">
             <DynamicIcon
                 name={iconName}
                 size={48}
-                className="mx-auto mb-4 text-blue-600"
+                className="mx-auto mb-4 text-primary"
             />
             <h3 className="text-xl font-semibold mb-2">{title}</h3>
-            <p className="text-gray-600 dark:text-gray-300">{description}</p>
+            <p className="text-muted-foreground dark:text-foreground">{description}</p>
         </Card>
     )
 }

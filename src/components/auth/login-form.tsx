@@ -345,7 +345,7 @@ export function LoginForm({ locale }: LoginFormProps) {
                     checked={formData.rememberMe}
                     onChange={e => handleRememberMeChange(e.target.checked)}
                     disabled={isLoading}
-                    className="h-4 w-4 rounded border-gray-300 dark:border-gray-600 text-blue-600 focus:ring-blue-500 focus:ring-offset-0 cursor-pointer"
+                    className="h-4 w-4 rounded border-input dark:border-input text-primary focus:ring-ring focus:ring-offset-0 cursor-pointer"
                     aria-describedby="rememberMe-description"
                 />
                 <Label

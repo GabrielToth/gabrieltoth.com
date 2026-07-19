@@ -10,9 +10,9 @@ export default function LandingBenefitsSection() {
     }>
 
     return (
-        <section className="py-20 px-4 bg-white dark:bg-gray-900">
+        <section className="py-20 px-4 bg-card dark:bg-background">
             <div className="max-w-6xl mx-auto">
-                <h2 className="text-4xl font-bold text-center text-gray-900 dark:text-white mb-16">
+                <h2 className="text-4xl font-bold text-center text-foreground dark:text-foreground mb-16">
                     {t("benefits.title")}
                 </h2>
 
@@ -20,17 +20,17 @@ export default function LandingBenefitsSection() {
                     {benefits.map((benefit, index) => (
                         <div
                             key={index}
-                            className="p-6 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-gray-800 dark:to-gray-700 rounded-lg border border-blue-200 dark:border-gray-600"
+                            className="p-6 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-gray-800 dark:to-gray-700 rounded-lg border dark:border-white/10 dark:border-input"
                         >
-                            <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center mb-4">
+                            <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center mb-4">
                                 <span className="text-white font-bold text-lg">
                                     ✓
                                 </span>
                             </div>
-                            <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+                            <h3 className="text-xl font-semibold text-foreground dark:text-foreground mb-2">
                                 {benefit.title}
                             </h3>
-                            <p className="text-gray-600 dark:text-gray-400">
+                            <p className="text-muted-foreground dark:text-muted-foreground">
                                 {benefit.description}
                             </p>
                         </div>

@@ -24,7 +24,7 @@ const Breadcrumbs = ({
     items,
     className,
     hideHome = false,
-    separator = <ChevronRight className="h-4 w-4 text-gray-400" />,
+    separator = <ChevronRight className="h-4 w-4 text-muted-foreground" />,
 }: BreadcrumbsProps) => {
     const pathname = usePathname()
     const { locale } = useLocale()
@@ -86,7 +86,7 @@ const Breadcrumbs = ({
     return (
         <nav
             className={cn(
-                "flex items-center space-x-1 text-sm text-gray-500",
+                "flex items-center space-x-1 text-sm text-muted-foreground",
                 className
             )}
             aria-label="breadcrumb"
@@ -106,7 +106,7 @@ const Breadcrumbs = ({
 
                         {isLast ? (
                             <span
-                                className="font-medium text-gray-900 dark:text-gray-100"
+                                className="font-medium text-foreground dark:text-foreground"
                                 aria-current="page"
                             >
                                 {isHome && (
@@ -120,7 +120,7 @@ const Breadcrumbs = ({
                         ) : (
                             <Link
                                 href={item.href}
-                                className="hover:text-gray-700 dark:hover:text-gray-300 transition-colors duration-200 flex items-center"
+                                className="hover:text-foreground dark:hover:text-muted-foreground transition-colors duration-200 flex items-center"
                             >
                                 {isHome && (
                                     <Home

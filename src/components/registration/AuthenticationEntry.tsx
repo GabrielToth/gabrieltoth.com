@@ -19,7 +19,7 @@ export function AuthenticationEntry({
             <div className="w-full max-w-md">
                 {/* Logo/Branding */}
                 <div className="text-center mb-8">
-                    <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-600 rounded-lg mb-4">
+                    <div className="inline-flex items-center justify-center w-16 h-16 bg-primary rounded-lg mb-4">
                         <svg
                             className="w-8 h-8 text-white"
                             fill="currentColor"
@@ -37,7 +37,7 @@ export function AuthenticationEntry({
                     <h1 className="text-3xl sm:text-4xl font-bold text-white mb-2">
                         Create Account
                     </h1>
-                    <p className="text-slate-400 text-base sm:text-lg">
+                    <p className="text-muted-foreground text-base sm:text-lg">
                         Join us today and get started in just a few steps
                     </p>
                 </div>
@@ -107,7 +107,7 @@ export function AuthenticationEntry({
                 <div className="mt-8 text-center">
                     <Link
                         href="/login"
-                        className="text-slate-400 hover:text-slate-300 font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 rounded px-2 py-1"
+                        className="text-muted-foreground hover:text-foreground font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-ring rounded px-2 py-1"
                     >
                         Back to Login
                     </Link>
@@ -119,14 +119,14 @@ export function AuthenticationEntry({
                         By signing up, you agree to our{" "}
                         <a
                             href="/terms"
-                            className="text-blue-400 hover:text-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded"
+                            className="text-primary hover:text-blue-300 focus:outline-none focus:ring-2 focus:ring-ring rounded"
                         >
                             Terms of Service
                         </a>{" "}
                         and{" "}
                         <a
                             href="/privacy"
-                            className="text-blue-400 hover:text-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded"
+                            className="text-primary hover:text-blue-300 focus:outline-none focus:ring-2 focus:ring-ring rounded"
                         >
                             Privacy Policy
                         </a>

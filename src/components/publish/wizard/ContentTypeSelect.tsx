@@ -43,7 +43,7 @@ export default function ContentTypeSelect({
                 <h2 className="text-xl font-semibold">
                     {t("contentType.title")}
                 </h2>
-                <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                <p className="mt-1 text-sm text-muted-foreground dark:text-muted-foreground">
                     {t("contentType.description")}
                 </p>
             </div>
@@ -58,15 +58,15 @@ export default function ContentTypeSelect({
                             onClick={() => onSelect(ct.id)}
                             className={`flex flex-col items-center gap-3 rounded-xl border-2 p-6 text-center transition-all ${
                                 isSelected
-                                    ? "border-blue-500 bg-blue-50 ring-2 ring-blue-200 dark:border-blue-400 dark:bg-blue-950/20"
-                                    : "border-gray-200 bg-white hover:border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:hover:border-gray-600"
+                                    ? "border-primary bg-primary/5 ring-2 ring-blue-200 dark:border-primary dark:bg-primary/10/20"
+                                    : "border-border bg-white hover:border-input dark:border-border dark:bg-background dark:hover:border-input"
                             }`}
                         >
                             <div
                                 className={`flex h-16 w-16 items-center justify-center rounded-full ${
                                     isSelected
-                                        ? "bg-blue-100 text-blue-600 dark:bg-blue-900/50 dark:text-blue-400"
-                                        : "bg-gray-100 text-gray-500 dark:bg-gray-800 dark:text-gray-400"
+                                        ? "bg-primary/10 text-primary dark:bg-primary/10/50 dark:text-primary"
+                                        : "bg-muted text-muted-foreground dark:bg-card dark:text-muted-foreground"
                                 }`}
                             >
                                 {ct.icon}
@@ -75,13 +75,13 @@ export default function ContentTypeSelect({
                                 <p
                                     className={`text-lg font-semibold ${
                                         isSelected
-                                            ? "text-blue-700 dark:text-blue-300"
-                                            : "text-gray-900 dark:text-white"
+                                            ? "text-primary dark:text-primary"
+                                            : "text-foreground dark:text-foreground"
                                     }`}
                                 >
                                     {t(ct.labelKey)}
                                 </p>
-                                <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                                <p className="mt-1 text-sm text-muted-foreground dark:text-muted-foreground">
                                     {t(ct.descKey)}
                                 </p>
                             </div>
@@ -90,11 +90,11 @@ export default function ContentTypeSelect({
                 })}
             </div>
 
-            <div className="flex justify-end border-t pt-4 dark:border-gray-700">
+            <div className="flex justify-end border-t pt-4 dark:border-border">
                 <button
                     type="button"
                     onClick={onNext}
-                    className="rounded-lg bg-blue-600 px-6 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
+                    className="rounded-lg bg-primary px-6 py-2 text-sm font-medium text-white hover:bg-primary disabled:opacity-50"
                 >
                     {t("wizard.next")}
                 </button>

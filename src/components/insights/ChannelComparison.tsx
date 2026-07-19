@@ -87,7 +87,7 @@ export const ChannelComparison: React.FC<ChannelComparisonProps> = ({
 
     // Loading skeleton
     if (isLoading) {
-        return <div className="h-64 animate-pulse rounded-lg bg-gray-200" />
+        return <div className="h-64 animate-pulse rounded-lg bg-accent" />
     }
 
     // Error state
@@ -112,8 +112,8 @@ export const ChannelComparison: React.FC<ChannelComparisonProps> = ({
     // Empty state
     if (channels.length === 0) {
         return (
-            <div className="rounded-lg border border-gray-200 bg-gray-50 p-8 text-center">
-                <p className="text-sm text-gray-600">
+            <div className="rounded-lg border border-border bg-muted p-8 text-center">
+                <p className="text-sm text-muted-foreground">
                     No channels available for comparison. Connect social
                     channels to see data.
                 </p>
@@ -130,14 +130,14 @@ export const ChannelComparison: React.FC<ChannelComparisonProps> = ({
                 <div className="space-y-6">
                     {/* Channel Selection */}
                     <div>
-                        <h3 className="mb-3 text-xs sm:text-sm font-medium text-gray-700">
+                        <h3 className="mb-3 text-xs sm:text-sm font-medium text-foreground">
                             Select Channels to Compare
                         </h3>
                         <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3">
                             {channels.map(channel => (
                                 <label
                                     key={channel.id}
-                                    className="flex items-center gap-2 rounded-lg border border-gray-200 p-2 sm:p-3 hover:bg-gray-50 cursor-pointer min-h-11"
+                                    className="flex items-center gap-2 rounded-lg border border-border p-2 sm:p-3 hover:bg-muted cursor-pointer min-h-11"
                                 >
                                     <Checkbox
                                         checked={selectedChannels.includes(
@@ -147,10 +147,10 @@ export const ChannelComparison: React.FC<ChannelComparisonProps> = ({
                                             handleChannelToggle(channel.id)
                                         }
                                     />
-                                    <span className="text-xs sm:text-sm font-medium text-gray-700">
+                                    <span className="text-xs sm:text-sm font-medium text-foreground">
                                         {channel.accountName}
                                     </span>
-                                    <span className="text-xs text-gray-500">
+                                    <span className="text-xs text-muted-foreground">
                                         ({channel.platform})
                                     </span>
                                 </label>
@@ -161,14 +161,14 @@ export const ChannelComparison: React.FC<ChannelComparisonProps> = ({
                     {/* Comparison Table */}
                     {selectedChannels.length > 0 && metrics.length > 0 && (
                         <div>
-                            <h3 className="mb-3 text-xs sm:text-sm font-medium text-gray-700">
+                            <h3 className="mb-3 text-xs sm:text-sm font-medium text-foreground">
                                 Metrics Comparison
                             </h3>
                             <div className="overflow-x-auto -mx-4 sm:mx-0">
                                 <table className="w-full text-xs sm:text-sm">
                                     <thead>
-                                        <tr className="border-b border-gray-200">
-                                            <th className="px-3 sm:px-4 py-2 text-left font-medium text-gray-700">
+                                        <tr className="border-b border-border">
+                                            <th className="px-3 sm:px-4 py-2 text-left font-medium text-foreground">
                                                 Metric
                                             </th>
                                             {channels
@@ -180,12 +180,12 @@ export const ChannelComparison: React.FC<ChannelComparisonProps> = ({
                                                 .map(channel => (
                                                     <th
                                                         key={channel.id}
-                                                        className="px-3 sm:px-4 py-2 text-right font-medium text-gray-700"
+                                                        className="px-3 sm:px-4 py-2 text-right font-medium text-foreground"
                                                     >
                                                         {channel.accountName}
                                                     </th>
                                                 ))}
-                                            <th className="px-3 sm:px-4 py-2 text-right font-medium text-gray-700">
+                                            <th className="px-3 sm:px-4 py-2 text-right font-medium text-foreground">
                                                 Highest
                                             </th>
                                         </tr>
@@ -199,9 +199,9 @@ export const ChannelComparison: React.FC<ChannelComparisonProps> = ({
                                             return (
                                                 <tr
                                                     key={metric.id}
-                                                    className="border-b border-gray-100 hover:bg-gray-50"
+                                                    className="border-b border-gray-100 hover:bg-muted"
                                                 >
-                                                    <td className="px-3 sm:px-4 py-2 font-medium text-gray-900">
+                                                    <td className="px-3 sm:px-4 py-2 font-medium text-foreground">
                                                         {metric.name}
                                                     </td>
                                                     {channels
@@ -216,13 +216,13 @@ export const ChannelComparison: React.FC<ChannelComparisonProps> = ({
                                                                 className={`px-3 sm:px-4 py-2 text-right ${
                                                                     isHighest
                                                                         ? "bg-green-50 font-semibold text-green-700"
-                                                                        : "text-gray-900"
+                                                                        : "text-foreground"
                                                                 }`}
                                                             >
                                                                 {metric.value.toLocaleString()}
                                                             </td>
                                                         ))}
-                                                    <td className="px-3 sm:px-4 py-2 text-right font-semibold text-gray-900">
+                                                    <td className="px-3 sm:px-4 py-2 text-right font-semibold text-foreground">
                                                         {highestValues[
                                                             metric.id
                                                         ].toLocaleString()}
@@ -238,8 +238,8 @@ export const ChannelComparison: React.FC<ChannelComparisonProps> = ({
 
                     {/* Empty comparison state */}
                     {selectedChannels.length === 0 && (
-                        <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 text-center">
-                            <p className="text-sm text-gray-600">
+                        <div className="rounded-lg border border-border bg-muted p-4 text-center">
+                            <p className="text-sm text-muted-foreground">
                                 Select channels above to see comparison data
                             </p>
                         </div>

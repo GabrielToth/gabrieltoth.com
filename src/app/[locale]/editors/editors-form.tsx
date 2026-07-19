@@ -262,12 +262,12 @@ export default function ApplicationForm({
                 <div className="text-green-600 dark:text-green-400 mb-4">
                     <MessageSquare size={48} className="mx-auto" />
                 </div>
-                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+                <h3 className="text-2xl font-bold text-foreground dark:text-foreground mb-4">
                     {locale === "pt-BR"
                         ? "Application Submitted!"
                         : "Application Submitted!"}
                 </h3>
-                <p className="text-gray-600 dark:text-gray-300">
+                <p className="text-muted-foreground dark:text-foreground">
                     {locale === "pt-BR"
                         ? "Thank you! We'll review your application and get back to you soon."
                         : "Thank you! We'll review your application and get back to you soon."}
@@ -279,10 +279,10 @@ export default function ApplicationForm({
     return (
         <Card className="p-8 max-w-4xl mx-auto">
             <div className="text-center mb-8">
-                <h3 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+                <h3 className="text-3xl font-bold text-foreground dark:text-foreground mb-4">
                     {t.title}
                 </h3>
-                <p className="text-lg text-gray-600 dark:text-gray-300">
+                <p className="text-lg text-muted-foreground dark:text-foreground">
                     {t.subtitle}
                 </p>
             </div>
@@ -290,13 +290,13 @@ export default function ApplicationForm({
             <form onSubmit={handleSubmit} className="space-y-8">
                 {/* Personal Information */}
                 <div>
-                    <h4 className="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
+                    <h4 className="text-xl font-semibold text-foreground dark:text-foreground mb-4 flex items-center">
                         <User className="mr-2" size={20} />
                         {t.form.personalInfo}
                     </h4>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            <label className="block text-sm font-medium text-foreground dark:text-foreground mb-2">
                                 {t.form.name} *
                             </label>
                             <input
@@ -307,11 +307,11 @@ export default function ApplicationForm({
                                     handleInputChange("name", e.target.value)
                                 }
                                 placeholder={t.placeholders.name}
-                                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-800 dark:text-white"
+                                className="w-full px-4 py-3 border border-input dark:border-input rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent dark:bg-card dark:text-foreground"
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            <label className="block text-sm font-medium text-foreground dark:text-foreground mb-2">
                                 {t.form.email} *
                             </label>
                             <input
@@ -322,13 +322,13 @@ export default function ApplicationForm({
                                     handleInputChange("email", e.target.value)
                                 }
                                 placeholder={t.placeholders.email}
-                                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-800 dark:text-white"
+                                className="w-full px-4 py-3 border border-input dark:border-input rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent dark:bg-card dark:text-foreground"
                             />
                         </div>
                         {type === "editor-application" && (
                             <>
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    <label className="block text-sm font-medium text-foreground dark:text-foreground mb-2">
                                         {t.form.age}
                                     </label>
                                     <input
@@ -341,11 +341,11 @@ export default function ApplicationForm({
                                             )
                                         }
                                         placeholder={t.placeholders.age}
-                                        className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-800 dark:text-white"
+                                        className="w-full px-4 py-3 border border-input dark:border-input rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent dark:bg-card dark:text-foreground"
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    <label className="block text-sm font-medium text-foreground dark:text-foreground mb-2">
                                         {t.form.location}
                                     </label>
                                     <input
@@ -358,7 +358,7 @@ export default function ApplicationForm({
                                             )
                                         }
                                         placeholder={t.placeholders.location}
-                                        className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-800 dark:text-white"
+                                        className="w-full px-4 py-3 border border-input dark:border-input rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent dark:bg-card dark:text-foreground"
                                     />
                                 </div>
                             </>
@@ -369,13 +369,13 @@ export default function ApplicationForm({
                 {/* Channel Information or Editor Experience */}
                 {type === "channel-management" ? (
                     <div>
-                        <h4 className="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
+                        <h4 className="text-xl font-semibold text-foreground dark:text-foreground mb-4 flex items-center">
                             <SiYoutube className="mr-2" size={20} />
                             {t.form.channelInfo}
                         </h4>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                <label className="block text-sm font-medium text-foreground dark:text-foreground mb-2">
                                     {t.form.channelName} *
                                 </label>
                                 <input
@@ -389,11 +389,11 @@ export default function ApplicationForm({
                                         )
                                     }
                                     placeholder={t.placeholders.channelName}
-                                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-800 dark:text-white"
+                                    className="w-full px-4 py-3 border border-input dark:border-input rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent dark:bg-card dark:text-foreground"
                                 />
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                <label className="block text-sm font-medium text-foreground dark:text-foreground mb-2">
                                     {t.form.channelUrl} *
                                 </label>
                                 <input
@@ -407,11 +407,11 @@ export default function ApplicationForm({
                                         )
                                     }
                                     placeholder={t.placeholders.channelUrl}
-                                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-800 dark:text-white"
+                                    className="w-full px-4 py-3 border border-input dark:border-input rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent dark:bg-card dark:text-foreground"
                                 />
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                <label className="block text-sm font-medium text-foreground dark:text-foreground mb-2">
                                     {t.form.subscribers}
                                 </label>
                                 <input
@@ -424,11 +424,11 @@ export default function ApplicationForm({
                                         )
                                     }
                                     placeholder={t.placeholders.subscribers}
-                                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-800 dark:text-white"
+                                    className="w-full px-4 py-3 border border-input dark:border-input rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent dark:bg-card dark:text-foreground"
                                 />
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                <label className="block text-sm font-medium text-foreground dark:text-foreground mb-2">
                                     {t.form.monthlyViews}
                                 </label>
                                 <input
@@ -441,11 +441,11 @@ export default function ApplicationForm({
                                         )
                                     }
                                     placeholder={t.placeholders.monthlyViews}
-                                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-800 dark:text-white"
+                                    className="w-full px-4 py-3 border border-input dark:border-input rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent dark:bg-card dark:text-foreground"
                                 />
                             </div>
                             <div className="md:col-span-2">
-                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                <label className="block text-sm font-medium text-foreground dark:text-foreground mb-2">
                                     {t.form.currentRevenue}
                                 </label>
                                 <input
@@ -458,20 +458,20 @@ export default function ApplicationForm({
                                         )
                                     }
                                     placeholder={t.placeholders.currentRevenue}
-                                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-800 dark:text-white"
+                                    className="w-full px-4 py-3 border border-input dark:border-input rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent dark:bg-card dark:text-foreground"
                                 />
                             </div>
                         </div>
                     </div>
                 ) : (
                     <div>
-                        <h4 className="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
+                        <h4 className="text-xl font-semibold text-foreground dark:text-foreground mb-4 flex items-center">
                             <Edit3 className="mr-2" size={20} />
                             {t.form.experience}
                         </h4>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                <label className="block text-sm font-medium text-foreground dark:text-foreground mb-2">
                                     {t.form.experienceLevel} *
                                 </label>
                                 <select
@@ -484,7 +484,7 @@ export default function ApplicationForm({
                                         )
                                     }
                                     aria-label={t.form.experienceLevel}
-                                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-800 dark:text-white"
+                                    className="w-full px-4 py-3 border border-input dark:border-input rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent dark:bg-card dark:text-foreground"
                                 >
                                     <option value="">Select...</option>
                                     {t.options?.experienceLevel.map(level => (
@@ -495,7 +495,7 @@ export default function ApplicationForm({
                                 </select>
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                <label className="block text-sm font-medium text-foreground dark:text-foreground mb-2">
                                     {t.form.software}
                                 </label>
                                 <input
@@ -508,11 +508,11 @@ export default function ApplicationForm({
                                         )
                                     }
                                     placeholder={t.placeholders.software}
-                                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-800 dark:text-white"
+                                    className="w-full px-4 py-3 border border-input dark:border-input rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent dark:bg-card dark:text-foreground"
                                 />
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                <label className="block text-sm font-medium text-foreground dark:text-foreground mb-2">
                                     {t.form.portfolioUrl}
                                 </label>
                                 <input
@@ -525,11 +525,11 @@ export default function ApplicationForm({
                                         )
                                     }
                                     placeholder={t.placeholders.portfolioUrl}
-                                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-800 dark:text-white"
+                                    className="w-full px-4 py-3 border border-input dark:border-input rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent dark:bg-card dark:text-foreground"
                                 />
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                <label className="block text-sm font-medium text-foreground dark:text-foreground mb-2">
                                     {t.form.sampleWork}
                                 </label>
                                 <input
@@ -542,7 +542,7 @@ export default function ApplicationForm({
                                         )
                                     }
                                     placeholder={t.placeholders.sampleWork}
-                                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-800 dark:text-white"
+                                    className="w-full px-4 py-3 border border-input dark:border-input rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent dark:bg-card dark:text-foreground"
                                 />
                             </div>
                         </div>
@@ -551,7 +551,7 @@ export default function ApplicationForm({
 
                 {/* Goals/Availability Section */}
                 <div>
-                    <h4 className="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
+                    <h4 className="text-xl font-semibold text-foreground dark:text-foreground mb-4 flex items-center">
                         {type === "channel-management" ? (
                             <>
                                 <TrendingUp className="mr-2" size={20} />
@@ -568,7 +568,7 @@ export default function ApplicationForm({
                         {type === "channel-management" ? (
                             <>
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    <label className="block text-sm font-medium text-foreground dark:text-foreground mb-2">
                                         {t.form.mainGoal}
                                     </label>
                                     <textarea
@@ -581,11 +581,11 @@ export default function ApplicationForm({
                                         }
                                         placeholder={t.placeholders.mainGoal}
                                         rows={3}
-                                        className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-800 dark:text-white"
+                                        className="w-full px-4 py-3 border border-input dark:border-input rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent dark:bg-card dark:text-foreground"
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    <label className="block text-sm font-medium text-foreground dark:text-foreground mb-2">
                                         {t.form.biggestChallenge}
                                     </label>
                                     <textarea
@@ -600,11 +600,11 @@ export default function ApplicationForm({
                                             t.placeholders.biggestChallenge
                                         }
                                         rows={3}
-                                        className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-800 dark:text-white"
+                                        className="w-full px-4 py-3 border border-input dark:border-input rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent dark:bg-card dark:text-foreground"
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    <label className="block text-sm font-medium text-foreground dark:text-foreground mb-2">
                                         {t.form.expectedGrowth}
                                     </label>
                                     <input
@@ -619,11 +619,11 @@ export default function ApplicationForm({
                                         placeholder={
                                             t.placeholders.expectedGrowth
                                         }
-                                        className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-800 dark:text-white"
+                                        className="w-full px-4 py-3 border border-input dark:border-input rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent dark:bg-card dark:text-foreground"
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    <label className="block text-sm font-medium text-foreground dark:text-foreground mb-2">
                                         {t.form.budget}
                                     </label>
                                     <input
@@ -636,14 +636,14 @@ export default function ApplicationForm({
                                             )
                                         }
                                         placeholder={t.placeholders.budget}
-                                        className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-800 dark:text-white"
+                                        className="w-full px-4 py-3 border border-input dark:border-input rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent dark:bg-card dark:text-foreground"
                                     />
                                 </div>
                             </>
                         ) : (
                             <>
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    <label className="block text-sm font-medium text-foreground dark:text-foreground mb-2">
                                         {t.form.hoursPerWeek}
                                     </label>
                                     <input
@@ -658,11 +658,11 @@ export default function ApplicationForm({
                                         placeholder={
                                             t.placeholders.hoursPerWeek
                                         }
-                                        className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-800 dark:text-white"
+                                        className="w-full px-4 py-3 border border-input dark:border-input rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent dark:bg-card dark:text-foreground"
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    <label className="block text-sm font-medium text-foreground dark:text-foreground mb-2">
                                         {t.form.preferredContent}
                                     </label>
                                     <input
@@ -677,11 +677,11 @@ export default function ApplicationForm({
                                         placeholder={
                                             t.placeholders.preferredContent
                                         }
-                                        className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-800 dark:text-white"
+                                        className="w-full px-4 py-3 border border-input dark:border-input rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent dark:bg-card dark:text-foreground"
                                     />
                                 </div>
                                 <div className="md:col-span-2">
-                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    <label className="block text-sm font-medium text-foreground dark:text-foreground mb-2">
                                         {t.form.expectedRate}
                                     </label>
                                     <input
@@ -696,7 +696,7 @@ export default function ApplicationForm({
                                         placeholder={
                                             t.placeholders.expectedRate
                                         }
-                                        className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-800 dark:text-white"
+                                        className="w-full px-4 py-3 border border-input dark:border-input rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent dark:bg-card dark:text-foreground"
                                     />
                                 </div>
                             </>
@@ -706,7 +706,7 @@ export default function ApplicationForm({
 
                 {/* Additional Information */}
                 <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    <label className="block text-sm font-medium text-foreground dark:text-foreground mb-2">
                         {type === "channel-management"
                             ? t.form.additionalInfo
                             : t.form.whyJoin}
@@ -722,7 +722,7 @@ export default function ApplicationForm({
                                 : t.placeholders.whyJoin
                         }
                         rows={4}
-                        className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-800 dark:text-white"
+                        className="w-full px-4 py-3 border border-input dark:border-input rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent dark:bg-card dark:text-foreground"
                     />
                 </div>
 
@@ -732,7 +732,7 @@ export default function ApplicationForm({
                         disabled={
                             isSubmitting || !formData.name || !formData.email
                         }
-                        className="px-8 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="px-8 py-3 bg-primary text-white rounded-lg font-semibold hover:bg-primary transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                         {isSubmitting
                             ? locale === "pt-BR"

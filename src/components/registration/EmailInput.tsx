@@ -72,7 +72,7 @@ export function EmailInput({
         <div className="w-full">
             <label
                 htmlFor="email"
-                className="block text-sm sm:text-base font-medium text-gray-100 dark:text-gray-100 mb-2"
+                className="block text-sm sm:text-base font-medium text-foreground dark:text-foreground mb-2"
             >
                 Email Address
             </label>
@@ -89,8 +89,8 @@ export function EmailInput({
                             ? "border-red-500 focus:ring-red-200 dark:border-red-400 dark:focus:ring-red-900"
                             : isAvailable
                               ? "border-green-500 focus:ring-green-200 dark:border-green-400 dark:focus:ring-green-900"
-                              : "border-gray-300 dark:border-gray-600 focus:ring-blue-200 dark:focus:ring-blue-900"
-                    } ${disabled ? "bg-gray-100 dark:bg-gray-700 cursor-not-allowed" : "bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"}`}
+                              : "border-input dark:border-input focus:ring-ring dark:focus:ring-ring"
+                    } ${disabled ? "bg-muted dark:bg-muted cursor-not-allowed" : "bg-card text-foreground dark:text-foreground"}`}
                     aria-label="Email address"
                     aria-describedby={
                         error
@@ -103,7 +103,7 @@ export function EmailInput({
                 />
                 {isChecking && (
                     <div className="absolute right-3 top-1/2 -translate-y-1/2">
-                        <div className="animate-spin h-5 w-5 border-2 border-blue-500 dark:border-blue-400 border-t-transparent rounded-full" />
+                        <div className="animate-spin h-5 w-5 border-2 border-primary dark:border-primary border-t-transparent rounded-full" />
                     </div>
                 )}
                 {isAvailable && !isChecking && (

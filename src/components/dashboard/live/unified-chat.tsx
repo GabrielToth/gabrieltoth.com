@@ -276,8 +276,8 @@ export function UnifiedChat({ platforms }: UnifiedChatProps) {
                             onClick={() => setSelectedPlatform(platform)}
                             className={`rounded-md px-3 py-1 text-xs font-medium transition-colors ${
                                 selectedPlatform === platform
-                                    ? "bg-blue-600 text-white"
-                                    : "bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400"
+                                    ? "bg-primary text-primary-foreground"
+                                    : "bg-muted text-muted-foreground hover:bg-accent"
                             }`}
                         >
                             {badge.label}
@@ -287,28 +287,28 @@ export function UnifiedChat({ platforms }: UnifiedChatProps) {
             </div>
 
             {/* Connection status */}
-            <div className="flex items-center gap-2 mb-3 text-xs text-gray-500">
+            <div className="flex items-center gap-2 mb-3 text-xs text-muted-foreground">
                 <span
                     className={`inline-block h-2 w-2 rounded-full ${
-                        relay.isConnected ? "bg-green-500" : sse.isConnected ? "bg-yellow-500" : "bg-red-500"
+                        relay.isConnected ? "bg-success" : sse.isConnected ? "bg-warning" : "bg-error"
                     }`}
                 />
                 {statusText}
                 {(sse.error || relay.error) && (
-                    <span className="text-red-500 ml-2">
+                    <span className="text-error ml-2">
                         {relay.error || `${sse.error?.platform}: ${sse.error?.error}`}
                     </span>
                 )}
             </div>
 
             {/* Messages */}
-            <div className="flex-1 overflow-y-auto space-y-1 bg-gray-50 dark:bg-gray-800/50 rounded-lg p-3">
+            <div className="flex-1 overflow-y-auto space-y-1 bg-muted dark:bg-card/50 rounded-lg p-3">
                 {allMessages.map(msg => {
                     const badge = getPlatformBadge(msg.platform)
                     return (
                         <div
                             key={msg.id}
-                            className="group flex items-start gap-2 px-2 py-1 rounded hover:bg-gray-100 dark:hover:bg-gray-800"
+                            className="group flex items-start gap-2 px-2 py-1 rounded hover:bg-muted dark:hover:bg-accent"
                         >
                             {/* Platform indicator */}
                             <span
@@ -338,17 +338,17 @@ export function UnifiedChat({ platforms }: UnifiedChatProps) {
                             <span
                                 className={`text-sm font-medium shrink-0 ${
                                     msg.user.isBroadcaster
-                                        ? "text-purple-600"
+                                        ? "text-primary"
                                         : msg.user.isModerator
-                                          ? "text-green-600"
-                                          : "text-gray-900 dark:text-white"
+                                          ? "text-success"
+                                          : "text-foreground dark:text-foreground"
                                 }`}
                             >
                                 {msg.user.displayName}
                             </span>
 
                             {/* Message content */}
-                            <span className="text-sm text-gray-700 dark:text-gray-300 break-words flex-1">
+                            <span className="text-sm text-foreground dark:text-foreground break-words flex-1">
                                 {msg.isAction ? (
                                     <em>{msg.content}</em>
                                 ) : (
@@ -358,7 +358,7 @@ export function UnifiedChat({ platforms }: UnifiedChatProps) {
 
                             {/* Time + actions */}
                             <div className="flex items-center gap-1 shrink-0 opacity-0 group-hover:opacity-100 transition-opacity">
-                                <span className="text-xs text-gray-400">
+                                <span className="text-xs text-muted-foreground">
                                     {formatTime(msg.timestamp)}
                                 </span>
                                 {msg.platform !== "system" &&
@@ -369,7 +369,7 @@ export function UnifiedChat({ platforms }: UnifiedChatProps) {
                                                     `/timeout ${msg.user.username} 1 `
                                                 )
                                             }
-                                            className="text-xs text-red-500 hover:text-red-700"
+                                            className="text-xs text-error hover:text-error/80"
                                             title="Timeout 1s"
                                         >
                                             ⏱️
@@ -385,7 +385,7 @@ export function UnifiedChat({ platforms }: UnifiedChatProps) {
             {/* Command suggestions */}
             {showCommands && (
                 <div className="relative mb-1">
-                    <div className="absolute bottom-0 left-0 w-full rounded-md border bg-white shadow-lg dark:border-gray-700 dark:bg-gray-800 z-10">
+                    <div className="absolute bottom-0 left-0 w-full rounded-md border border-border bg-card shadow-lg z-10">
                         {COMMANDS.map((cmd, i) => (
                             <button
                                 key={cmd.name}
@@ -393,23 +393,23 @@ export function UnifiedChat({ platforms }: UnifiedChatProps) {
                                     setInput(cmd.name + " ")
                                     setShowCommands(false)
                                 }}
-                                className={`flex w-full items-center gap-3 px-3 py-2 text-left text-sm hover:bg-gray-100 dark:hover:bg-gray-700 ${
+                                className={`flex w-full items-center gap-3 px-3 py-2 text-left text-sm hover:bg-muted dark:hover:bg-accent ${
                                     i === selectedCmd
-                                        ? "bg-gray-100 dark:bg-gray-700"
+                                        ? "bg-muted dark:bg-muted"
                                         : ""
                                 }`}
                             >
                                 <div className="flex flex-col min-w-0">
-                                    <span className="font-mono font-medium text-purple-600 dark:text-purple-400">
+                                    <span className="font-mono font-medium text-primary">
                                         {cmd.name}
                                     </span>
-                                    <span className="text-[11px] text-gray-400 truncate">
+                                    <span className="text-[11px] text-muted-foreground truncate">
                                         {cmd.usage
                                             .replace(/&lt;/g, "<")
                                             .replace(/&gt;/g, ">")}
                                     </span>
                                 </div>
-                                <span className="text-xs text-gray-500 ml-auto shrink-0">
+                                <span className="text-xs text-muted-foreground ml-auto shrink-0">
                                     {cmd.description}
                                 </span>
                             </button>
@@ -426,13 +426,13 @@ export function UnifiedChat({ platforms }: UnifiedChatProps) {
                     onChange={e => handleInputChange(e.target.value)}
                     onKeyDown={handleKeyDown}
                     placeholder={`Send message to ${selectedPlatform}...`}
-                    className="flex-1 rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+                    className="flex-1 rounded-md border border-input px-3 py-2 text-sm text-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-ring"
                     maxLength={500}
                 />
                 <button
                     onClick={handleSend}
                     disabled={!input.trim()}
-                    className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
+                    className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground disabled:cursor-not-allowed disabled:opacity-50"
                 >
                     Send
                 </button>
@@ -440,7 +440,7 @@ export function UnifiedChat({ platforms }: UnifiedChatProps) {
 
             {/* Quick commands */}
             <div className="flex gap-1 mt-2">
-                <span className="text-xs text-gray-400 mr-1">Quick:</span>
+                <span className="text-xs text-muted-foreground mr-1">Quick:</span>
                 {COMMANDS.map(cmd => (
                     <button
                         key={cmd.name}
@@ -448,7 +448,7 @@ export function UnifiedChat({ platforms }: UnifiedChatProps) {
                             setInput(cmd.name + " ")
                             setShowCommands(true)
                         }}
-                        className="rounded bg-gray-100 px-2 py-0.5 text-xs text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400"
+                        className="rounded bg-muted px-2 py-0.5 text-xs text-muted-foreground hover:bg-accent"
                     >
                         {cmd.name}
                     </button>

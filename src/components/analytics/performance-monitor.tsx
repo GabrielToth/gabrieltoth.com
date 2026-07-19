@@ -99,7 +99,7 @@ const PerformanceMonitor = ({
             {/* Toggle Button */}
             <button
                 onClick={() => setIsVisible(!isVisible)}
-                className="fixed bottom-4 right-4 z-50 bg-blue-600 text-white p-3 rounded-full shadow-lg hover:bg-blue-700 transition-colors"
+                className="fixed bottom-4 right-4 z-50 bg-primary text-white p-3 rounded-full shadow-lg hover:bg-primary transition-colors"
                 title="Performance Monitor"
             >
                 📊
@@ -107,14 +107,14 @@ const PerformanceMonitor = ({
 
             {/* Performance Panel */}
             {isVisible && (
-                <div className="fixed bottom-16 right-4 z-50 bg-white dark:bg-gray-800 rounded-lg shadow-xl p-4 min-w-[280px] border border-gray-200 dark:border-gray-700">
+                <div className="fixed bottom-16 right-4 z-50 bg-card rounded-lg shadow-xl p-4 min-w-[280px] border border-border dark:border-border">
                     <div className="flex justify-between items-center mb-3">
-                        <h3 className="font-bold text-gray-900 dark:text-white">
+                        <h3 className="font-bold text-foreground dark:text-foreground">
                             Performance Metrics
                         </h3>
                         <button
                             onClick={() => setIsVisible(false)}
-                            className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                            className="text-muted-foreground hover:text-foreground dark:text-muted-foreground dark:hover:text-muted-foreground"
                         >
                             ✕
                         </button>
@@ -122,8 +122,8 @@ const PerformanceMonitor = ({
 
                     <div className="space-y-2 text-sm">
                         {/* Core Web Vitals */}
-                        <div className="border-b border-gray-200 dark:border-gray-600 pb-2">
-                            <h4 className="font-semibold text-gray-700 dark:text-gray-300 mb-1">
+                        <div className="border-b border-border dark:border-input pb-2">
+                            <h4 className="font-semibold text-foreground dark:text-foreground mb-1">
                                 Core Web Vitals
                             </h4>
                             {metrics.lcp && (
@@ -182,13 +182,13 @@ const PerformanceMonitor = ({
 
                         {/* Resource Metrics */}
                         <div>
-                            <h4 className="font-semibold text-gray-700 dark:text-gray-300 mb-1">
+                            <h4 className="font-semibold text-foreground dark:text-foreground mb-1">
                                 Resources
                             </h4>
                             {metrics.resourceCount && (
                                 <div className="flex justify-between">
                                     <span>Count:</span>
-                                    <span className="text-blue-600">
+                                    <span className="text-primary">
                                         {formatMetric(
                                             "resourceCount",
                                             metrics.resourceCount
@@ -199,7 +199,7 @@ const PerformanceMonitor = ({
                             {metrics.bundleSize && (
                                 <div className="flex justify-between">
                                     <span>Size:</span>
-                                    <span className="text-blue-600">
+                                    <span className="text-primary">
                                         {formatMetric(
                                             "bundleSize",
                                             metrics.bundleSize
@@ -211,7 +211,7 @@ const PerformanceMonitor = ({
                     </div>
 
                     {/* Legend */}
-                    <div className="mt-3 pt-2 border-t border-gray-200 dark:border-gray-600">
+                    <div className="mt-3 pt-2 border-t border-border dark:border-input">
                         <div className="flex justify-between text-xs">
                             <span className="text-green-500">● Good</span>
                             <span className="text-yellow-500">

@@ -81,7 +81,7 @@ export const ChannelGraphs: React.FC<ChannelGraphsProps> = ({
                 {[1, 2].map(i => (
                     <div
                         key={i}
-                        className="h-64 animate-pulse rounded-lg bg-gray-200"
+                        className="h-64 animate-pulse rounded-lg bg-accent"
                     />
                 ))}
             </div>
@@ -110,8 +110,8 @@ export const ChannelGraphs: React.FC<ChannelGraphsProps> = ({
     // Empty state
     if (channels.length === 0 || data.length === 0) {
         return (
-            <div className="rounded-lg border border-gray-200 bg-gray-50 p-8 text-center">
-                <p className="text-sm text-gray-600">
+            <div className="rounded-lg border border-border bg-muted p-8 text-center">
+                <p className="text-sm text-muted-foreground">
                     No graph data available. Connect social channels to see
                     performance trends.
                 </p>
@@ -154,41 +154,41 @@ export const ChannelGraphs: React.FC<ChannelGraphsProps> = ({
                             <div className="space-y-4">
                                 {/* Stats Summary */}
                                 <div className="grid grid-cols-2 gap-2 sm:gap-4 sm:grid-cols-4">
-                                    <div className="rounded-lg bg-blue-50 p-2 sm:p-3">
-                                        <p className="text-xs text-gray-600">
+                                    <div className="rounded-lg bg-primary/5 p-2 sm:p-3">
+                                        <p className="text-xs text-muted-foreground">
                                             Avg Followers
                                         </p>
-                                        <p className="text-base sm:text-lg font-semibold text-gray-900">
+                                        <p className="text-base sm:text-lg font-semibold text-foreground">
                                             {Math.round(
                                                 avgFollowers
                                             ).toLocaleString()}
                                         </p>
                                     </div>
                                     <div className="rounded-lg bg-green-50 p-2 sm:p-3">
-                                        <p className="text-xs text-gray-600">
+                                        <p className="text-xs text-muted-foreground">
                                             Avg Engagement
                                         </p>
-                                        <p className="text-base sm:text-lg font-semibold text-gray-900">
+                                        <p className="text-base sm:text-lg font-semibold text-foreground">
                                             {Math.round(
                                                 avgEngagement
                                             ).toLocaleString()}
                                         </p>
                                     </div>
                                     <div className="rounded-lg bg-purple-50 p-2 sm:p-3">
-                                        <p className="text-xs text-gray-600">
+                                        <p className="text-xs text-muted-foreground">
                                             Avg Reach
                                         </p>
-                                        <p className="text-base sm:text-lg font-semibold text-gray-900">
+                                        <p className="text-base sm:text-lg font-semibold text-foreground">
                                             {Math.round(
                                                 avgReach
                                             ).toLocaleString()}
                                         </p>
                                     </div>
                                     <div className="rounded-lg bg-orange-50 p-2 sm:p-3">
-                                        <p className="text-xs text-gray-600">
+                                        <p className="text-xs text-muted-foreground">
                                             Avg Impressions
                                         </p>
-                                        <p className="text-base sm:text-lg font-semibold text-gray-900">
+                                        <p className="text-base sm:text-lg font-semibold text-foreground">
                                             {Math.round(
                                                 avgImpressions
                                             ).toLocaleString()}
@@ -200,20 +200,20 @@ export const ChannelGraphs: React.FC<ChannelGraphsProps> = ({
                                 <div className="overflow-x-auto -mx-4 sm:mx-0">
                                     <table className="w-full text-xs sm:text-sm">
                                         <thead>
-                                            <tr className="border-b border-gray-200">
-                                                <th className="px-3 sm:px-4 py-2 text-left font-medium text-gray-700">
+                                            <tr className="border-b border-border">
+                                                <th className="px-3 sm:px-4 py-2 text-left font-medium text-foreground">
                                                     Date
                                                 </th>
-                                                <th className="px-3 sm:px-4 py-2 text-right font-medium text-gray-700">
+                                                <th className="px-3 sm:px-4 py-2 text-right font-medium text-foreground">
                                                     Followers
                                                 </th>
-                                                <th className="px-3 sm:px-4 py-2 text-right font-medium text-gray-700">
+                                                <th className="px-3 sm:px-4 py-2 text-right font-medium text-foreground">
                                                     Engagement
                                                 </th>
-                                                <th className="px-3 sm:px-4 py-2 text-right font-medium text-gray-700">
+                                                <th className="px-3 sm:px-4 py-2 text-right font-medium text-foreground">
                                                     Reach
                                                 </th>
-                                                <th className="px-3 sm:px-4 py-2 text-right font-medium text-gray-700">
+                                                <th className="px-3 sm:px-4 py-2 text-right font-medium text-foreground">
                                                     Impressions
                                                 </th>
                                             </tr>
@@ -225,29 +225,29 @@ export const ChannelGraphs: React.FC<ChannelGraphsProps> = ({
                                                 .map((row, idx) => (
                                                     <tr
                                                         key={idx}
-                                                        className="border-b border-gray-100 hover:bg-gray-50"
+                                                        className="border-b border-gray-100 hover:bg-muted"
                                                     >
-                                                        <td className="px-3 sm:px-4 py-2 text-gray-900">
+                                                        <td className="px-3 sm:px-4 py-2 text-foreground">
                                                             {row.date}
                                                         </td>
-                                                        <td className="px-3 sm:px-4 py-2 text-right text-gray-900">
+                                                        <td className="px-3 sm:px-4 py-2 text-right text-foreground">
                                                             {(
                                                                 row.followers ||
                                                                 0
                                                             ).toLocaleString()}
                                                         </td>
-                                                        <td className="px-3 sm:px-4 py-2 text-right text-gray-900">
+                                                        <td className="px-3 sm:px-4 py-2 text-right text-foreground">
                                                             {(
                                                                 row.engagement ||
                                                                 0
                                                             ).toLocaleString()}
                                                         </td>
-                                                        <td className="px-3 sm:px-4 py-2 text-right text-gray-900">
+                                                        <td className="px-3 sm:px-4 py-2 text-right text-foreground">
                                                             {(
                                                                 row.reach || 0
                                                             ).toLocaleString()}
                                                         </td>
-                                                        <td className="px-3 sm:px-4 py-2 text-right text-gray-900">
+                                                        <td className="px-3 sm:px-4 py-2 text-right text-foreground">
                                                             {(
                                                                 row.impressions ||
                                                                 0

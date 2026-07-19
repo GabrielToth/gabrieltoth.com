@@ -122,7 +122,7 @@ export function GoogleOAuthPersonalInfo({
                 <h2 className="text-2xl font-bold text-white mb-2">
                     Complete Your Profile
                 </h2>
-                <p className="text-gray-400">
+                <p className="text-muted-foreground">
                     We've pre-filled your name from Google. Please provide your
                     birth date and phone number.
                 </p>
@@ -134,7 +134,7 @@ export function GoogleOAuthPersonalInfo({
                 <div>
                     <label
                         htmlFor="fullName"
-                        className="block text-sm font-medium text-gray-200 mb-2"
+                        className="block text-sm font-medium text-muted-foreground mb-2"
                     >
                         Full Name
                     </label>
@@ -144,12 +144,12 @@ export function GoogleOAuthPersonalInfo({
                         value={fullName}
                         onChange={e => setFullName(e.target.value)}
                         placeholder="John Doe"
-                        className={`w-full px-4 py-3 bg-gray-800 border rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 transition-all ${
+                        className={`w-full px-4 py-3 bg-card border rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 transition-all ${
                             nameError
                                 ? "border-red-500 focus:ring-red-500"
                                 : nameValidation.isValid && fullName
                                   ? "border-green-500 focus:ring-green-500"
-                                  : "border-gray-700 focus:ring-blue-500"
+                                  : "border-border focus:ring-ring"
                         }`}
                         aria-label="Full name"
                         aria-describedby={
@@ -169,7 +169,7 @@ export function GoogleOAuthPersonalInfo({
                             ✓ Valid name
                         </p>
                     )}
-                    <p className="mt-1 text-xs text-gray-500">
+                    <p className="mt-1 text-xs text-muted-foreground">
                         Pre-filled from your Google account. You can edit this
                         if needed.
                     </p>
@@ -179,7 +179,7 @@ export function GoogleOAuthPersonalInfo({
                 <div>
                     <label
                         htmlFor="birthDate"
-                        className="block text-sm font-medium text-gray-200 mb-2"
+                        className="block text-sm font-medium text-muted-foreground mb-2"
                     >
                         Birth Date
                     </label>
@@ -189,14 +189,14 @@ export function GoogleOAuthPersonalInfo({
                         value={birthDate}
                         onChange={e => setBirthDate(e.target.value)}
                         placeholder="DD/MM/YYYY"
-                        className={`w-full px-4 py-3 bg-gray-800 border rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 transition-all ${
+                        className={`w-full px-4 py-3 bg-card border rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 transition-all ${
                             birthDateError
                                 ? "border-red-500 focus:ring-red-500"
                                 : birthDateFormatValidation.isValid &&
                                     ageValidation.isValid &&
                                     birthDate
                                   ? "border-green-500 focus:ring-green-500"
-                                  : "border-gray-700 focus:ring-blue-500"
+                                  : "border-border focus:ring-ring"
                         }`}
                         aria-label="Birth date"
                         aria-describedby={
@@ -218,7 +218,7 @@ export function GoogleOAuthPersonalInfo({
                                 ✓ Valid birth date
                             </p>
                         )}
-                    <p className="mt-1 text-xs text-gray-500">
+                    <p className="mt-1 text-xs text-muted-foreground">
                         Format: DD/MM/YYYY (e.g., 15/03/1990). You must be at
                         least 13 years old.
                     </p>
@@ -228,7 +228,7 @@ export function GoogleOAuthPersonalInfo({
                 <div>
                     <label
                         htmlFor="phone"
-                        className="block text-sm font-medium text-gray-200 mb-2"
+                        className="block text-sm font-medium text-muted-foreground mb-2"
                     >
                         Phone Number
                     </label>
@@ -238,12 +238,12 @@ export function GoogleOAuthPersonalInfo({
                         value={phone}
                         onChange={e => setPhone(e.target.value)}
                         placeholder="+1 (555) 123-4567"
-                        className={`w-full px-4 py-3 bg-gray-800 border rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 transition-all ${
+                        className={`w-full px-4 py-3 bg-card border rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 transition-all ${
                             phoneError
                                 ? "border-red-500 focus:ring-red-500"
                                 : phoneValidation.isValid && phone
                                   ? "border-green-500 focus:ring-green-500"
-                                  : "border-gray-700 focus:ring-blue-500"
+                                  : "border-border focus:ring-ring"
                         }`}
                         aria-label="Phone number"
                         aria-describedby={
@@ -263,7 +263,7 @@ export function GoogleOAuthPersonalInfo({
                             ✓ Valid phone ({normalizedPhone})
                         </p>
                     )}
-                    <p className="mt-1 text-xs text-gray-500">
+                    <p className="mt-1 text-xs text-muted-foreground">
                         Supports international formats (e.g., +1 555 123 4567,
                         +55 11 98765-4321)
                     </p>
@@ -276,7 +276,7 @@ export function GoogleOAuthPersonalInfo({
                 <button
                     onClick={handleNext}
                     disabled={!isFormValid}
-                    className="w-full px-6 py-3 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-600 disabled:opacity-50 text-white font-semibold rounded-lg transition-colors disabled:cursor-not-allowed"
+                    className="w-full px-6 py-3 bg-primary hover:bg-primary disabled:bg-primary disabled:opacity-50 text-white font-semibold rounded-lg transition-colors disabled:cursor-not-allowed"
                     aria-label="Proceed to next step"
                 >
                     Next
@@ -285,7 +285,7 @@ export function GoogleOAuthPersonalInfo({
                 {/* Back Button */}
                 <button
                     onClick={onBack}
-                    className="w-full px-6 py-3 bg-gray-700 hover:bg-gray-600 text-white font-semibold rounded-lg transition-colors"
+                    className="w-full px-6 py-3 bg-muted hover:bg-muted text-white font-semibold rounded-lg transition-colors"
                     aria-label="Go back to previous step"
                 >
                     Back
@@ -293,7 +293,7 @@ export function GoogleOAuthPersonalInfo({
             </div>
 
             {/* Info Text */}
-            <p className="text-xs text-gray-500 text-center">
+            <p className="text-xs text-muted-foreground text-center">
                 Your information is secure and will only be used to create your
                 account.
             </p>

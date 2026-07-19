@@ -123,8 +123,8 @@ export default function TurnstileWidget({
             )}
 
             {isLoading && (
-                <div className="mb-4 p-4 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg flex items-center justify-center min-h-[78px]">
-                    <div className="text-gray-600 dark:text-gray-400 text-sm">
+                <div className="mb-4 p-4 bg-muted dark:bg-card border border-input dark:border-input rounded-lg flex items-center justify-center min-h-[78px]">
+                    <div className="text-muted-foreground dark:text-muted-foreground text-sm">
                         Loading security verification...
                     </div>
                 </div>

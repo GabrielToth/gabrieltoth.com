@@ -54,7 +54,7 @@ export default function ContentDisclosureSection({
                             </span>
                         </label>
                     </div>
-                    <p className="text-xs text-gray-400">
+                    <p className="text-xs text-muted-foreground">
                         {t("step4.aiGeneratedHint")}
                     </p>
                 </div>
@@ -88,7 +88,7 @@ export default function ContentDisclosureSection({
                             </span>
                         </label>
                     </div>
-                    <p className="text-xs text-gray-400">
+                    <p className="text-xs text-muted-foreground">
                         {t("step4.paidPromotionHint")}
                     </p>
                 </div>

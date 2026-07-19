@@ -26,13 +26,13 @@ function PricingToggleClient({ locale }: PricingToggleProps) {
 
     return (
         <div className="flex items-center justify-center mb-12">
-            <div className="bg-gray-100 dark:bg-gray-800 p-1 rounded-lg flex">
+            <div className="bg-muted dark:bg-card p-1 rounded-lg flex">
                 <button
                     onClick={toggleMoneroPrice}
                     className={`px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 flex items-center gap-2 ${
                         showMoneroPrice
                             ? "bg-orange-500 text-white shadow-md"
-                            : "text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200"
+                            : "text-muted-foreground dark:text-muted-foreground hover:text-foreground dark:hover:text-muted-foreground"
                     }`}
                 >
                     <span className="text-orange-400">₽</span>
@@ -47,8 +47,8 @@ function PricingToggleClient({ locale }: PricingToggleProps) {
                     onClick={toggleMoneroPrice}
                     className={`px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 flex items-center gap-2 ${
                         !showMoneroPrice
-                            ? "bg-blue-500 text-white shadow-md"
-                            : "text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200"
+                            ? "bg-primary/50 text-white shadow-md"
+                            : "text-muted-foreground dark:text-muted-foreground hover:text-foreground dark:hover:text-muted-foreground"
                     }`}
                 >
                     <DollarSign className="w-4 h-4" />
@@ -72,7 +72,7 @@ function PricingToggleFallback({ locale }: PricingToggleProps) {
 
     return (
         <div className="flex items-center justify-center mb-12">
-            <div className="bg-gray-100 dark:bg-gray-800 p-1 rounded-lg flex">
+            <div className="bg-muted dark:bg-card p-1 rounded-lg flex">
                 <div className="px-4 py-2 rounded-md text-sm font-medium bg-orange-500 text-white shadow-md flex items-center gap-2">
                     <span className="text-orange-100">₽</span>
                     Monero
@@ -80,7 +80,7 @@ function PricingToggleFallback({ locale }: PricingToggleProps) {
                         50% OFF
                     </span>
                 </div>
-                <div className="px-4 py-2 rounded-md text-sm font-medium text-gray-600 dark:text-gray-400 flex items-center gap-2">
+                <div className="px-4 py-2 rounded-md text-sm font-medium text-muted-foreground dark:text-muted-foreground flex items-center gap-2">
                     <DollarSign className="w-4 h-4" />
                     {cardLabel}
                 </div>

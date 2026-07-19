@@ -113,7 +113,7 @@ export default function PublicationHistory({
             case "pending":
                 return "bg-yellow-100 text-yellow-800"
             default:
-                return "bg-gray-100 text-gray-800"
+                return "bg-muted text-foreground"
         }
     }
 
@@ -121,7 +121,7 @@ export default function PublicationHistory({
         <div className="space-y-4 rounded-lg border p-4">
             <div className="space-y-2">
                 <h3 className="font-semibold">Publication History</h3>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-muted-foreground">
                     View and manage your published posts
                 </p>
             </div>
@@ -180,7 +180,7 @@ export default function PublicationHistory({
 
             {paginatedPublications.length === 0 ? (
                 <div className="rounded-lg border border-dashed p-8 text-center">
-                    <p className="text-sm text-gray-600">
+                    <p className="text-sm text-muted-foreground">
                         No publications found
                     </p>
                 </div>
@@ -190,7 +190,7 @@ export default function PublicationHistory({
                         <Dialog key={pub.id}>
                             <DialogTrigger asChild>
                                 <div
-                                    className="cursor-pointer rounded-lg border p-3 hover:bg-gray-50 transition"
+                                    className="cursor-pointer rounded-lg border p-3 hover:bg-muted transition"
                                     onClick={() => setSelectedPublication(pub)}
                                 >
                                     <div className="flex items-start justify-between gap-3">
@@ -198,7 +198,7 @@ export default function PublicationHistory({
                                             <p className="font-medium line-clamp-2">
                                                 {pub.content}
                                             </p>
-                                            <p className="text-xs text-gray-600 mt-1">
+                                            <p className="text-xs text-muted-foreground mt-1">
                                                 {format(
                                                     pub.publishedAt,
                                                     "PPP p"
@@ -242,7 +242,7 @@ export default function PublicationHistory({
                                         <h4 className="font-medium mb-2">
                                             Content
                                         </h4>
-                                        <p className="text-sm text-gray-700 line-clamp-4">
+                                        <p className="text-sm text-foreground line-clamp-4">
                                             {pub.content}
                                         </p>
                                     </div>
@@ -284,7 +284,7 @@ export default function PublicationHistory({
                                                                 }
                                                                 target="_blank"
                                                                 rel="noopener noreferrer"
-                                                                className="text-blue-600 hover:text-blue-700"
+                                                                className="text-primary hover:text-primary"
                                                             >
                                                                 <ExternalLink className="h-4 w-4" />
                                                             </a>
@@ -317,7 +317,7 @@ export default function PublicationHistory({
 
             {totalPages > 1 && (
                 <div className="flex items-center justify-between border-t pt-3">
-                    <p className="text-sm text-gray-600">
+                    <p className="text-sm text-muted-foreground">
                         Page {currentPage} of {totalPages}
                     </p>
                     <div className="flex gap-2">

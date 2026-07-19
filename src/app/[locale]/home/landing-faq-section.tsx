@@ -12,9 +12,9 @@ export default function LandingFaqSection() {
     const [openIndex, setOpenIndex] = useState<number | null>(0)
 
     return (
-        <section className="py-20 px-4 bg-white dark:bg-gray-900">
+        <section className="py-20 px-4 bg-card dark:bg-background">
             <div className="max-w-3xl mx-auto">
-                <h2 className="text-4xl font-bold text-center text-gray-900 dark:text-white mb-16">
+                <h2 className="text-4xl font-bold text-center text-foreground dark:text-foreground mb-16">
                     {t("faq.title")}
                 </h2>
 
@@ -22,7 +22,7 @@ export default function LandingFaqSection() {
                     {faqs.map((faq, index) => (
                         <div
                             key={index}
-                            className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden"
+                            className="border border-border dark:border-border rounded-lg overflow-hidden"
                         >
                             <button
                                 onClick={() =>
@@ -30,13 +30,13 @@ export default function LandingFaqSection() {
                                         openIndex === index ? null : index
                                     )
                                 }
-                                className="w-full px-6 py-4 bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center justify-between transition-colors"
+                                className="w-full px-6 py-4 bg-muted dark:bg-card hover:bg-muted dark:hover:bg-accent flex items-center justify-between transition-colors"
                             >
-                                <span className="font-semibold text-gray-900 dark:text-white text-left">
+                                <span className="font-semibold text-foreground dark:text-foreground text-left">
                                     {faq.question}
                                 </span>
                                 <span
-                                    className={`text-blue-600 dark:text-blue-400 transition-transform ${
+                                    className={`text-primary dark:text-primary transition-transform ${
                                         openIndex === index ? "rotate-180" : ""
                                     }`}
                                 >
@@ -44,8 +44,8 @@ export default function LandingFaqSection() {
                                 </span>
                             </button>
                             {openIndex === index && (
-                                <div className="px-6 py-4 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700">
-                                    <p className="text-gray-600 dark:text-gray-400">
+                                <div className="px-6 py-4 bg-card dark:bg-background border-t border-border dark:border-border">
+                                    <p className="text-muted-foreground dark:text-muted-foreground">
                                         {faq.answer}
                                     </p>
                                 </div>

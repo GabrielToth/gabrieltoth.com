@@ -150,10 +150,10 @@ export default function PublishPage() {
         <div className="space-y-6">
             <div className="flex items-center justify-between">
                 <div>
-                    <h1 className="text-3xl font-bold text-gray-900">
+                    <h1 className="text-3xl font-bold text-foreground">
                         {t("title")}
                     </h1>
-                    <p className="mt-2 text-gray-600">{t("description")}</p>
+                    <p className="mt-2 text-muted-foreground">{t("description")}</p>
                 </div>
                 <UniversalPostingButton
                     linkedNetworksCount={3}
@@ -169,7 +169,7 @@ export default function PublishPage() {
 
             <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                    <h2 className="text-lg font-semibold text-gray-900">
+                    <h2 className="text-lg font-semibold text-foreground">
                         {selectedDate
                             ? t("postsFor", {
                                   date: format(selectedDate, "MMM d, yyyy"),
@@ -179,7 +179,7 @@ export default function PublishPage() {
                     {selectedDate && (
                         <button
                             onClick={() => setSelectedDate(null)}
-                            className="text-sm text-blue-600 hover:underline"
+                            className="text-sm text-primary hover:underline"
                         >
                             {t("clearFilter")}
                         </button>

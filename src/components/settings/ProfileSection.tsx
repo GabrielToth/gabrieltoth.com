@@ -185,7 +185,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
 
                     {/* Profile Photo */}
                     <div className="space-y-2">
-                        <label className="block text-sm font-medium text-gray-700">
+                        <label className="block text-sm font-medium text-foreground">
                             {t("profilePhoto")}
                         </label>
                         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
@@ -200,7 +200,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
                                 type="file"
                                 accept="image/*"
                                 onChange={handlePhotoUpload}
-                                className="block w-full text-xs sm:text-sm text-gray-500 file:mr-4 file:rounded-md file:border-0 file:bg-blue-50 file:px-3 file:sm:px-4 file:py-2 file:text-xs file:sm:text-sm file:font-semibold file:text-blue-700 hover:file:bg-blue-100 dark:text-gray-400 dark:file:bg-blue-950/50 dark:file:text-blue-300 dark:hover:file:bg-blue-950/70"
+                                className="block w-full text-xs sm:text-sm text-muted-foreground file:mr-4 file:rounded-md file:border-0 file:bg-primary/5 file:px-3 file:sm:px-4 file:py-2 file:text-xs file:sm:text-sm file:font-semibold file:text-primary hover:file:bg-primary/10 dark:text-muted-foreground dark:file:bg-primary/10 dark:file:text-primary dark:hover:file:bg-primary/20"
                             />
                         </div>
                     </div>
@@ -209,7 +209,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
                     <div className="space-y-2">
                         <label
                             htmlFor="name"
-                            className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                            className="block text-sm font-medium text-foreground dark:text-foreground"
                         >
                             {t("fullName")}
                         </label>
@@ -240,7 +240,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
                     <div className="space-y-2">
                         <label
                             htmlFor="email"
-                            className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                            className="block text-sm font-medium text-foreground dark:text-foreground"
                         >
                             {t("emailAddress")}
                         </label>
@@ -272,7 +272,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
                         <Button
                             type="submit"
                             disabled={isLoading || isSaving}
-                            className="bg-blue-600 hover:bg-blue-700"
+                            className="bg-primary hover:bg-primary"
                         >
                             {isSaving ? t("saving") : t("saveChanges")}
                         </Button>

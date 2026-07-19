@@ -13,15 +13,15 @@ export default function InsightsPage() {
     return (
         <div className="space-y-6">
             <div>
-                <h1 className="text-3xl font-bold text-gray-900">
+                <h1 className="text-3xl font-bold text-foreground">
                     {t("title")}
                 </h1>
-                <p className="mt-2 text-gray-600">{t("description")}</p>
+                <p className="mt-2 text-muted-foreground">{t("description")}</p>
             </div>
 
             {/* Placeholder for InsightsContainer component */}
-            <div className="rounded-lg border border-gray-200 bg-white p-8 text-center">
-                <p className="text-gray-500">{t("comingSoon")}</p>
+            <div className="rounded-lg border border-border bg-white p-8 text-center">
+                <p className="text-muted-foreground">{t("comingSoon")}</p>
             </div>
         </div>
     )

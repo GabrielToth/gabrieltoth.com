@@ -62,11 +62,11 @@ export default function PasswordStrength({ password }: PasswordStrengthProps) {
         <div className="space-y-3">
             {/* Strength Indicator */}
             <div className="flex items-center gap-2">
-                <div className="flex-1 h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                <div className="flex-1 h-2 bg-accent dark:bg-muted rounded-full overflow-hidden">
                     <div
                         className={`h-full transition-all duration-300 ${
                             metCount === 0
-                                ? "w-0 bg-gray-300"
+                                ? "w-0 bg-accent"
                                 : metCount <= 2
                                   ? "w-1/3 bg-red-500"
                                   : metCount <= 4
@@ -79,7 +79,7 @@ export default function PasswordStrength({ password }: PasswordStrengthProps) {
                     className={`text-xs font-semibold ${
                         allRequirementsMet
                             ? "text-green-600 dark:text-green-400"
-                            : "text-gray-600 dark:text-gray-400"
+                            : "text-muted-foreground dark:text-muted-foreground"
                     }`}
                 >
                     {metCount}/{requirements.length}
@@ -98,7 +98,7 @@ export default function PasswordStrength({ password }: PasswordStrengthProps) {
                             className={`flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center transition-all duration-300 ${
                                 requirement.met
                                     ? "bg-green-100 dark:bg-green-900/30"
-                                    : "bg-gray-100 dark:bg-gray-800"
+                                    : "bg-muted dark:bg-card"
                             }`}
                         >
                             {requirement.met ? (
@@ -115,7 +115,7 @@ export default function PasswordStrength({ password }: PasswordStrengthProps) {
                                     />
                                 </svg>
                             ) : (
-                                <div className="w-1.5 h-1.5 bg-gray-400 dark:bg-gray-600 rounded-full" />
+                                <div className="w-1.5 h-1.5 bg-muted dark:bg-muted rounded-full" />
                             )}
                         </div>
 
@@ -124,7 +124,7 @@ export default function PasswordStrength({ password }: PasswordStrengthProps) {
                             className={`transition-colors duration-300 ${
                                 requirement.met
                                     ? "text-green-700 dark:text-green-300"
-                                    : "text-gray-600 dark:text-gray-400"
+                                    : "text-muted-foreground dark:text-muted-foreground"
                             }`}
                         >
                             {requirement.label}

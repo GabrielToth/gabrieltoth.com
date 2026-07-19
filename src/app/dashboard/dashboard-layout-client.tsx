@@ -47,10 +47,10 @@ export default function DashboardClientLayout({
 
     if (isLoading) {
         return (
-            <div className="flex h-screen items-center justify-center bg-white dark:bg-gray-950">
+            <div className="flex h-screen items-center justify-center bg-card dark:bg-background">
                 <div className="text-center">
-                    <div className="mb-4 inline-block h-8 w-8 animate-spin rounded-full border-4 border-gray-200 border-t-blue-500 dark:border-gray-700"></div>
-                    <p className="text-gray-600 dark:text-gray-400">
+                    <div className="mb-4 inline-block h-8 w-8 animate-spin rounded-full border-4 border-border border-t-blue-500 dark:border-border"></div>
+                    <p className="text-muted-foreground dark:text-muted-foreground">
                         {t("loading")}
                     </p>
                 </div>

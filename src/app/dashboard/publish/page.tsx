@@ -153,10 +153,10 @@ export default function PublishPage() {
         <div className="space-y-6">
             <div className="flex items-center justify-between">
                 <div>
-                    <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+                    <h1 className="text-3xl font-bold text-foreground dark:text-foreground">
                         {t("title")}
                     </h1>
-                    <p className="mt-2 text-gray-600 dark:text-gray-400">
+                    <p className="mt-2 text-muted-foreground dark:text-muted-foreground">
                         {t("description")}
                     </p>
                 </div>
@@ -174,7 +174,7 @@ export default function PublishPage() {
 
             <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                    <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+                    <h2 className="text-lg font-semibold text-foreground dark:text-foreground">
                         {selectedDate
                             ? t("postsFor", {
                                   date: format(selectedDate, "MMM d, yyyy"),
@@ -184,7 +184,7 @@ export default function PublishPage() {
                     {selectedDate && (
                         <button
                             onClick={() => setSelectedDate(null)}
-                            className="text-sm text-blue-600 hover:underline dark:text-blue-400"
+                            className="text-sm text-primary hover:underline dark:text-primary"
                         >
                             {t("clearFilter")}
                         </button>

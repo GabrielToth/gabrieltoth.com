@@ -11,7 +11,7 @@ export default async function Footer({ locale }: FooterProps) {
     const tHome = await getTranslations({ locale, namespace: "home.contact" })
 
     return (
-        <footer className="bg-gray-900 text-white">
+        <footer className="bg-background text-white">
             {/* Data Transparency Banner */}
             <div className="bg-blue-900 py-4 px-4 sm:px-6 lg:px-8">
                 <div className="max-w-7xl mx-auto">
@@ -35,14 +35,14 @@ export default async function Footer({ locale }: FooterProps) {
                             <h3 className="text-lg font-bold mb-4">
                                 Gabriel Toth Gonçalves
                             </h3>
-                            <p className="text-gray-400 text-sm leading-relaxed">
+                            <p className="text-muted-foreground text-sm leading-relaxed">
                                 {t("companyDescription")}
                             </p>
                         </div>
 
                         {/* Services */}
                         <div>
-                            <h4 className="text-sm font-semibold text-gray-300 uppercase tracking-wider mb-4">
+                            <h4 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-4">
                                 {t("links.services.title")}
                             </h4>
                             <ul className="space-y-2">
@@ -77,7 +77,7 @@ export default async function Footer({ locale }: FooterProps) {
                                     <li key={index}>
                                         <Link
                                             href={item.href}
-                                            className="text-gray-400 hover:text-white transition-colors text-sm"
+                                            className="text-muted-foreground hover:text-white transition-colors text-sm"
                                         >
                                             {item.name}
                                         </Link>
@@ -88,7 +88,7 @@ export default async function Footer({ locale }: FooterProps) {
 
                         {/* Legal */}
                         <div>
-                            <h4 className="text-sm font-semibold text-gray-300 uppercase tracking-wider mb-4">
+                            <h4 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-4">
                                 {t("links.legal.title")}
                             </h4>
                             <ul className="space-y-2">
@@ -105,7 +105,7 @@ export default async function Footer({ locale }: FooterProps) {
                                     <li key={index}>
                                         <Link
                                             href={item.href}
-                                            className="text-gray-400 hover:text-white transition-colors text-sm"
+                                            className="text-muted-foreground hover:text-white transition-colors text-sm"
                                         >
                                             {item.name}
                                         </Link>
@@ -116,7 +116,7 @@ export default async function Footer({ locale }: FooterProps) {
 
                         {/* Contact */}
                         <div>
-                            <h4 className="text-sm font-semibold text-gray-300 uppercase tracking-wider mb-4">
+                            <h4 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-4">
                                 {t("links.contact.title")}
                             </h4>
                             <ul className="space-y-2">
@@ -145,14 +145,14 @@ export default async function Footer({ locale }: FooterProps) {
                                                 href={item.href}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
-                                                className="text-gray-400 hover:text-white transition-colors text-sm"
+                                                className="text-muted-foreground hover:text-white transition-colors text-sm"
                                             >
                                                 {item.name}
                                             </a>
                                         ) : (
                                             <Link
                                                 href={item.href}
-                                                className="text-gray-400 hover:text-white transition-colors text-sm"
+                                                className="text-muted-foreground hover:text-white transition-colors text-sm"
                                             >
                                                 {item.name}
                                             </Link>
@@ -164,22 +164,22 @@ export default async function Footer({ locale }: FooterProps) {
                     </div>
 
                     {/* Bottom Bar */}
-                    <div className="mt-12 pt-8 border-t border-gray-800">
+                    <div className="mt-12 pt-8 border-t border-border">
                         <div className="text-center">
-                            <p className="text-gray-400 text-sm">
+                            <p className="text-muted-foreground text-sm">
                                 © 2025 Gabriel Toth Gonçalves. {t("rights")}
                             </p>
-                            <div className="mt-2 flex justify-center space-x-4 text-xs text-gray-500">
+                            <div className="mt-2 flex justify-center space-x-4 text-xs text-muted-foreground">
                                 <Link
                                     href={`/${locale}/privacy-policy`}
-                                    className="hover:text-gray-300"
+                                    className="hover:text-muted-foreground"
                                 >
                                     {t("short.privacy")}
                                 </Link>
                                 <span>•</span>
                                 <Link
                                     href={`/${locale}/terms-of-service`}
-                                    className="hover:text-gray-300"
+                                    className="hover:text-muted-foreground"
                                 >
                                     {t("short.terms")}
                                 </Link>

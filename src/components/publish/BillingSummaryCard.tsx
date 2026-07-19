@@ -37,7 +37,7 @@ export default function BillingSummaryCard({
                     <>
                         <div className="flex justify-between">
                             <span>{t("billingSummary.cloudStorage")}</span>
-                            <span className="text-xs text-gray-500">
+                            <span className="text-xs text-muted-foreground">
                                 {t("billingSummary.cancelRefund", {
                                     amount:
                                         refundOnCancel?.toFixed(2) ?? "0.00",
@@ -45,12 +45,12 @@ export default function BillingSummaryCard({
                             </span>
                         </div>
 
-                        <div className="flex justify-between text-gray-600">
+                        <div className="flex justify-between text-muted-foreground">
                             <span>{t("billingSummary.baseFee")}</span>
                             <span>{breakdown.baseFee.toFixed(2)} cr</span>
                         </div>
 
-                        <div className="flex justify-between text-gray-600">
+                        <div className="flex justify-between text-muted-foreground">
                             <span>
                                 {t("billingSummary.storageCost", {
                                     days: breakdown.storageDays,
@@ -68,13 +68,13 @@ export default function BillingSummaryCard({
                             </span>
                         </div>
 
-                        <div className="flex justify-between text-gray-600">
+                        <div className="flex justify-between text-muted-foreground">
                             <span>{t("billingSummary.bandwidthCost")}</span>
                             <span>{breakdown.bandwidthCost.toFixed(2)} cr</span>
                         </div>
                     </>
                 ) : (
-                    <div className="flex justify-between text-gray-600">
+                    <div className="flex justify-between text-muted-foreground">
                         <span>{t("billingSummary.localStorage")}</span>
                         <span>0 cr</span>
                     </div>

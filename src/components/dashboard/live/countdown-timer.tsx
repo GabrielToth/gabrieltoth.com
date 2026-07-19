@@ -90,7 +90,7 @@ export function CountdownTimer({
     if (compact) {
         return (
             <div className="text-center">
-                <span className="font-mono text-sm font-medium text-gray-700 dark:text-gray-300">
+                <span className="font-mono text-sm font-medium text-foreground dark:text-foreground">
                     {timeRemaining.hours > 0 && `${timeRemaining.hours}h `}
                     {timeRemaining.minutes}m {timeRemaining.seconds}s
                 </span>
@@ -103,29 +103,29 @@ export function CountdownTimer({
             <div className="flex items-center justify-center gap-4">
                 {timeRemaining.days > 0 && (
                     <div className="text-center">
-                        <div className="text-3xl font-bold text-gray-900 dark:text-white">
+                        <div className="text-3xl font-bold text-foreground dark:text-foreground">
                             {timeRemaining.days}
                         </div>
-                        <div className="text-xs text-gray-500">days</div>
+                        <div className="text-xs text-muted-foreground">days</div>
                     </div>
                 )}
                 <div className="text-center">
-                    <div className="text-3xl font-bold text-gray-900 dark:text-white">
+                    <div className="text-3xl font-bold text-foreground dark:text-foreground">
                         {String(timeRemaining.hours).padStart(2, "0")}
                     </div>
-                    <div className="text-xs text-gray-500">hours</div>
+                    <div className="text-xs text-muted-foreground">hours</div>
                 </div>
                 <div className="text-center">
-                    <div className="text-3xl font-bold text-gray-900 dark:text-white">
+                    <div className="text-3xl font-bold text-foreground dark:text-foreground">
                         {String(timeRemaining.minutes).padStart(2, "0")}
                     </div>
-                    <div className="text-xs text-gray-500">min</div>
+                    <div className="text-xs text-muted-foreground">min</div>
                 </div>
                 <div className="text-center">
-                    <div className="text-3xl font-bold text-gray-900 dark:text-white">
+                    <div className="text-3xl font-bold text-foreground dark:text-foreground">
                         {String(timeRemaining.seconds).padStart(2, "0")}
                     </div>
-                    <div className="text-xs text-gray-500">sec</div>
+                    <div className="text-xs text-muted-foreground">sec</div>
                 </div>
             </div>
         </div>

@@ -51,21 +51,21 @@ export const PostCard: React.FC<PostCardProps> = ({
     const getStatusColor = (status: string) => {
         switch (status) {
             case "draft":
-                return "bg-gray-300 text-gray-700 dark:bg-gray-600 dark:text-gray-200"
+                return "bg-accent text-foreground dark:bg-muted dark:text-muted-foreground"
             case "scheduled":
-                return "bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-300"
+                return "bg-primary/10 text-primary dark:bg-primary/10/50 dark:text-primary"
             case "published":
                 return "bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-300"
             case "failed":
                 return "bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-300"
             default:
-                return "bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300"
+                return "bg-muted text-foreground dark:bg-muted dark:text-foreground"
         }
     }
 
     const cardClassName = isDraft
-        ? "hover:shadow-md transition-shadow dark:border-gray-700 opacity-60 grayscale-[0.3]"
-        : "hover:shadow-md transition-shadow dark:border-gray-700"
+        ? "hover:shadow-md transition-shadow dark:border-border opacity-60 grayscale-[0.3]"
+        : "hover:shadow-md transition-shadow dark:border-border"
 
     const formatDate = (date: Date) => {
         return new Intl.DateTimeFormat("en-US", {
@@ -84,12 +84,12 @@ export const PostCard: React.FC<PostCardProps> = ({
                     {/* Post Content */}
                     <div className="flex-1 min-w-0">
                         {/* Title */}
-                        <h3 className="font-semibold text-gray-900 truncate text-base sm:text-base dark:text-white">
+                        <h3 className="font-semibold text-foreground truncate text-base sm:text-base dark:text-foreground">
                             {post.title}
                         </h3>
 
                         {/* Content Preview */}
-                        <p className="mt-1 text-sm text-gray-600 line-clamp-2 dark:text-gray-300">
+                        <p className="mt-1 text-sm text-muted-foreground line-clamp-2 dark:text-foreground">
                             {post.content}
                         </p>
 
@@ -106,7 +106,7 @@ export const PostCard: React.FC<PostCardProps> = ({
                             {post.channels.map(channel => (
                                 <span
                                     key={channel}
-                                    className="inline-flex items-center rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-800 capitalize dark:bg-gray-700 dark:text-gray-300"
+                                    className="inline-flex items-center rounded-full bg-muted px-2.5 py-0.5 text-xs font-medium text-foreground capitalize dark:bg-muted dark:text-foreground"
                                 >
                                     {channel}
                                 </span>
@@ -114,9 +114,9 @@ export const PostCard: React.FC<PostCardProps> = ({
                         </div>
 
                         {/* Date and Error Info */}
-                        <div className="mt-3 text-xs text-gray-600 dark:text-gray-400 space-y-1">
+                        <div className="mt-3 text-xs text-muted-foreground dark:text-muted-foreground space-y-1">
                             {isDraft && (
-                                <p className="text-gray-500 dark:text-gray-500 italic">
+                                <p className="text-muted-foreground dark:text-muted-foreground italic">
                                     {t("draftStatus")}
                                 </p>
                             )}

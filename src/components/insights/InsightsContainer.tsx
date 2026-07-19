@@ -223,10 +223,10 @@ export const InsightsContainer: React.FC<InsightsContainerProps> = ({
             {/* Header */}
             <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                 <div>
-                    <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
+                    <h1 className="text-2xl sm:text-3xl font-bold text-foreground">
                         Insights
                     </h1>
-                    <p className="mt-1 text-xs sm:text-sm text-gray-600">
+                    <p className="mt-1 text-xs sm:text-sm text-muted-foreground">
                         Track your social media performance and analytics
                     </p>
                 </div>

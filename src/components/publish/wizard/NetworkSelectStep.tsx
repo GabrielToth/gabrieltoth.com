@@ -66,7 +66,7 @@ const BASE_NETWORKS: PlatformInfo[] = [
         id: "facebook",
         labelKey: "step1.facebook",
         descKey: "step1.facebookDesc",
-        icon: <SiFacebook className="h-6 w-6 text-blue-600" />,
+        icon: <SiFacebook className="h-6 w-6 text-primary" />,
         features: ["text", "images", "channel_selection"],
     },
     {
@@ -80,21 +80,21 @@ const BASE_NETWORKS: PlatformInfo[] = [
         id: "twitter",
         labelKey: "step1.twitter",
         descKey: "step1.twitterDesc",
-        icon: <SiX className="h-6 w-6 text-gray-800 dark:text-gray-200" />,
+        icon: <SiX className="h-6 w-6 text-foreground dark:text-muted-foreground" />,
         features: ["text", "images"],
     },
     {
         id: "linkedin",
         labelKey: "step1.linkedin",
         descKey: "step1.linkedinDesc",
-        icon: <FaLinkedin className="h-6 w-6 text-blue-700" />,
+        icon: <FaLinkedin className="h-6 w-6 text-primary" />,
         features: ["text", "images"],
     },
     {
         id: "tiktok",
         labelKey: "step1.tiktok",
         descKey: "step1.tiktokDesc",
-        icon: <SiTiktok className="h-6 w-6 text-black dark:text-white" />,
+        icon: <SiTiktok className="h-6 w-6 text-black dark:text-foreground" />,
         features: ["video"],
     },
 ]
@@ -175,12 +175,12 @@ export default function NetworkSelectStep({
         <div className="space-y-6">
             <div>
                 <h2 className="text-xl font-semibold">{t("step1.title")}</h2>
-                <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                <p className="mt-1 text-sm text-muted-foreground dark:text-muted-foreground">
                     {t("step1.description")}
                 </p>
             </div>
 
-            <div className="rounded-lg bg-blue-50 p-4 text-sm text-blue-800 dark:bg-blue-950/30 dark:text-blue-300">
+            <div className="rounded-lg bg-primary/5 p-4 text-sm text-primary dark:bg-primary/10 dark:text-primary">
                 <div className="flex items-start gap-2">
                     <AlertCircle className="mt-0.5 h-4 w-4 flex-shrink-0" />
                     <span>{t("step1.youtubeRecommended")}</span>
@@ -190,8 +190,8 @@ export default function NetworkSelectStep({
             {/* Loading state */}
             {loading && (
                 <div className="flex items-center justify-center py-8">
-                    <Loader2 className="h-6 w-6 animate-spin text-gray-400" />
-                    <span className="ml-2 text-sm text-gray-500">
+                    <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+                    <span className="ml-2 text-sm text-muted-foreground">
                         {t("step2.loadingChannels")}
                     </span>
                 </div>
@@ -220,8 +220,8 @@ export default function NetworkSelectStep({
                                     !available
                                         ? "cursor-not-allowed opacity-60"
                                         : isSelected
-                                          ? "border-2 border-blue-500 ring-2 ring-blue-500/20"
-                                          : "cursor-pointer border hover:border-blue-300 hover:shadow-sm dark:hover:border-blue-700"
+                                          ? "border-2 border-primary ring-2 ring-ring/20"
+                                          : "cursor-pointer border hover:border-primary/50 hover:shadow-sm dark:hover:border-border"
                                 }`}
                                 onClick={() => {
                                     if (available) {
@@ -269,12 +269,12 @@ export default function NetworkSelectStep({
                                                     </span>
                                                 )}
                                             {network.channelCount === 0 && (
-                                                <span className="inline-flex items-center gap-1 rounded-full bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-600 dark:bg-gray-800 dark:text-gray-400">
+                                                <span className="inline-flex items-center gap-1 rounded-full bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground dark:bg-card dark:text-muted-foreground">
                                                     {t("step1.noAccounts")}
                                                 </span>
                                             )}
                                         </div>
-                                        <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                                        <p className="mt-1 text-sm text-muted-foreground dark:text-muted-foreground">
                                             {t(network.descKey)}
                                         </p>
 
@@ -283,7 +283,7 @@ export default function NetworkSelectStep({
                                             {network.features.map(feat => (
                                                 <span
                                                     key={feat}
-                                                    className="inline-flex items-center rounded bg-gray-100 px-1.5 py-0.5 text-[10px] text-gray-600 dark:bg-gray-800 dark:text-gray-400"
+                                                    className="inline-flex items-center rounded bg-muted px-1.5 py-0.5 text-[10px] text-muted-foreground dark:bg-card dark:text-muted-foreground"
                                                 >
                                                     {feat_label(feat, t)}
                                                 </span>
@@ -298,7 +298,7 @@ export default function NetworkSelectStep({
             )}
 
             {/* Navigation */}
-            <div className="flex justify-between border-t pt-4 dark:border-gray-700">
+            <div className="flex justify-between border-t pt-4 dark:border-border">
                 <Button onClick={onBack} variant="outline">
                     {t("wizard.back")}
                 </Button>

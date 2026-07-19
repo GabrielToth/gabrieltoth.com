@@ -332,7 +332,7 @@ export default function CreditsPage() {
                                     className={`shrink-0 font-bold px-1.5 py-0.5 rounded text-[10px] ${
                                         route.method === "GET"
                                             ? "bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-400"
-                                            : "bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-400"
+                                            : "bg-primary/10 text-primary dark:bg-primary/10 dark:text-primary"
                                     }`}
                                 >
                                     {route.method}

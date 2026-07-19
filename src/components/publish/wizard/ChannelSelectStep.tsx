@@ -35,7 +35,7 @@ interface SocialChannel {
 /** Map platform to channel icon */
 const CHANNEL_ICONS: Record<string, React.ReactNode> = {
     youtube: <SiYoutube className="h-5 w-5 text-red-500" />,
-    facebook: <SiFacebook className="h-5 w-5 text-blue-600" />,
+    facebook: <SiFacebook className="h-5 w-5 text-primary" />,
 }
 
 /** Platforms that require channel selection */
@@ -143,7 +143,7 @@ export default function ChannelSelectStep({
         <div className="space-y-6">
             <div>
                 <h2 className="text-xl font-semibold">{t("step2.title")}</h2>
-                <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                <p className="mt-1 text-sm text-muted-foreground dark:text-muted-foreground">
                     {t("step2.description")}
                 </p>
             </div>
@@ -168,14 +168,14 @@ export default function ChannelSelectStep({
             {/* Loading */}
             {loading ? (
                 <div className="flex items-center justify-center py-12">
-                    <Loader2 className="h-6 w-6 animate-spin text-gray-400" />
-                    <span className="ml-2 text-sm text-gray-500">
+                    <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+                    <span className="ml-2 text-sm text-muted-foreground">
                         {t("step2.loadingChannels")}
                     </span>
                 </div>
             ) : platformsNeedingChannels.length === 0 ? (
                 /* No platforms need channel selection → skip */
-                <div className="py-8 text-center text-sm text-gray-500">
+                <div className="py-8 text-center text-sm text-muted-foreground">
                     No channel selection needed for selected platforms.
                 </div>
             ) : (
@@ -193,7 +193,7 @@ export default function ChannelSelectStep({
                                     <h3 className="font-semibold capitalize">
                                         {sel.platformId}
                                     </h3>
-                                    <span className="text-xs text-gray-400">
+                                    <span className="text-xs text-muted-foreground">
                                         {t("step2.channelCount", {
                                             count: selectedIds.length,
                                         })}
@@ -202,7 +202,7 @@ export default function ChannelSelectStep({
 
                                 {channels.length === 0 ? (
                                     <Card className="p-6 text-center">
-                                        <p className="text-sm text-gray-500">
+                                        <p className="text-sm text-muted-foreground">
                                             {t("step2.noChannels")}
                                         </p>
                                         {sel.platformId === "youtube" && (
@@ -227,7 +227,7 @@ export default function ChannelSelectStep({
                                                     selectedIds.includes(
                                                         channel.id
                                                     )
-                                                        ? "border-blue-400 ring-1 ring-blue-400 dark:border-blue-600"
+                                                        ? "border-primary ring-1 ring-blue-400 dark:border-border"
                                                         : ""
                                                 }`}
                                             >
@@ -247,7 +247,7 @@ export default function ChannelSelectStep({
                                                             )
                                                         }
                                                     />
-                                                    <div className="h-10 w-10 flex-shrink-0 overflow-hidden rounded-full bg-gray-200">
+                                                    <div className="h-10 w-10 flex-shrink-0 overflow-hidden rounded-full bg-accent">
                                                         {channel.thumbnailUrl ? (
                                                             <img
                                                                 src={
@@ -262,7 +262,7 @@ export default function ChannelSelectStep({
                                                             CHANNEL_ICONS[
                                                                 sel.platformId
                                                             ] || (
-                                                                <div className="flex h-full w-full items-center justify-center text-gray-400">
+                                                                <div className="flex h-full w-full items-center justify-center text-muted-foreground">
                                                                     ?
                                                                 </div>
                                                             )
@@ -272,7 +272,7 @@ export default function ChannelSelectStep({
                                                         <p className="font-medium truncate">
                                                             {channel.name}
                                                         </p>
-                                                        <p className="text-xs text-gray-500">
+                                                        <p className="text-xs text-muted-foreground">
                                                             {channel.metadata}
                                                         </p>
                                                     </div>
@@ -288,7 +288,7 @@ export default function ChannelSelectStep({
             )}
 
             {/* Navigation */}
-            <div className="flex justify-between border-t pt-4 dark:border-gray-700">
+            <div className="flex justify-between border-t pt-4 dark:border-border">
                 <Button onClick={onBack} variant="outline">
                     {t("wizard.back")}
                 </Button>

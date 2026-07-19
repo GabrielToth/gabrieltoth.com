@@ -38,11 +38,11 @@ export default function LanguageSelector({
                 data-testid="language-selector"
             >
                 <Globe
-                    className="text-gray-700 dark:text-gray-300"
+                    className="text-foreground dark:text-foreground"
                     size={16}
                     data-lucide="globe"
                 />
-                <span className="min-w-[20px] text-gray-700 dark:text-gray-300">
+                <span className="min-w-[20px] text-foreground dark:text-foreground">
                     EN
                 </span>
             </div>
@@ -52,24 +52,24 @@ export default function LanguageSelector({
     const variants = {
         default: {
             container: "relative inline-block",
-            button: "flex items-center space-x-2 px-3 py-2 border border-gray-200 dark:border-gray-700 rounded-md text-sm font-medium bg-white dark:bg-gray-800 text-gray-700 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors",
+            button: "flex items-center space-x-2 px-3 py-2 border border-border dark:border-border rounded-md text-sm font-medium bg-card text-foreground dark:text-foreground hover:bg-muted dark:hover:bg-accent transition-colors",
             dropdown:
-                "absolute right-0 mt-2 w-32 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md shadow-lg z-50",
-            option: "block w-full px-4 py-2 text-sm text-left text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors",
+                "absolute right-0 mt-2 w-32 bg-card border border-border dark:border-border rounded-md shadow-lg z-50",
+            option: "block w-full px-4 py-2 text-sm text-left text-foreground dark:text-muted-foreground hover:bg-muted dark:hover:bg-accent transition-colors",
         },
         header: {
             container: "relative inline-block",
-            button: "flex items-center space-x-1 text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white transition-colors",
+            button: "flex items-center space-x-1 text-sm font-medium text-foreground dark:text-muted-foreground hover:text-foreground dark:hover:text-foreground transition-colors",
             dropdown:
-                "absolute right-0 mt-2 w-32 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md shadow-lg z-50",
-            option: "block w-full px-4 py-2 text-sm text-left text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors",
+                "absolute right-0 mt-2 w-32 bg-card border border-border dark:border-border rounded-md shadow-lg z-50",
+            option: "block w-full px-4 py-2 text-sm text-left text-foreground dark:text-muted-foreground hover:bg-muted dark:hover:bg-accent transition-colors",
         },
         footer: {
             container: "relative inline-block",
-            button: "flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors",
+            button: "flex items-center space-x-2 text-sm text-muted-foreground dark:text-muted-foreground hover:text-foreground dark:hover:text-foreground transition-colors",
             dropdown:
-                "absolute bottom-full right-0 mb-2 w-32 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md shadow-lg z-50",
-            option: "block w-full px-4 py-2 text-sm text-left text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors",
+                "absolute bottom-full right-0 mb-2 w-32 bg-card border border-border dark:border-border rounded-md shadow-lg z-50",
+            option: "block w-full px-4 py-2 text-sm text-left text-foreground dark:text-muted-foreground hover:bg-muted dark:hover:bg-accent transition-colors",
         },
     }
 
@@ -91,11 +91,11 @@ export default function LanguageSelector({
                 aria-label="Select language"
             >
                 <Globe
-                    className="text-gray-700 dark:text-gray-300"
+                    className="text-foreground dark:text-foreground"
                     size={16}
                     data-lucide="globe"
                 />
-                <span className="min-w-[20px] text-gray-700 dark:text-gray-300">
+                <span className="min-w-[20px] text-foreground dark:text-foreground">
                     {localeNamesShort[locale]}
                 </span>
             </Button>
@@ -128,7 +128,7 @@ export default function LanguageSelector({
                                 }}
                                 className={`${currentVariant.option} ${
                                     loc === locale
-                                        ? "text-blue-600 dark:text-blue-400 font-medium"
+                                        ? "text-primary dark:text-primary font-medium"
                                         : ""
                                 }`}
                                 data-testid={`language-selector-option-${loc}`}
@@ -142,7 +142,7 @@ export default function LanguageSelector({
                         ))}
                         {includeThemeToggle && (
                             <>
-                                <div className="h-px w-full bg-gray-200 dark:bg-gray-700 my-1" />
+                                <div className="h-px w-full bg-accent dark:bg-muted my-1" />
                                 <button
                                     onClick={() => {
                                         toggleTheme()

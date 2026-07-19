@@ -29,8 +29,8 @@ export function ProgressIndicator({
                                     index < currentStep
                                         ? "bg-green-500 text-white"
                                         : index === currentStep
-                                          ? "bg-blue-500 text-white ring-4 ring-blue-200 dark:ring-blue-900"
-                                          : "bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-400"
+                                          ? "bg-primary/50 text-white ring-4 ring-blue-200 dark:ring-blue-900"
+                                          : "bg-accent dark:bg-muted text-muted-foreground dark:text-muted-foreground"
                                 }`}
                                 aria-current={
                                     index === currentStep ? "step" : undefined
@@ -41,8 +41,8 @@ export function ProgressIndicator({
                             <p
                                 className={`mt-2 text-sm font-medium ${
                                     index <= currentStep
-                                        ? "text-gray-900 dark:text-gray-100"
-                                        : "text-gray-500 dark:text-gray-400"
+                                        ? "text-foreground dark:text-foreground"
+                                        : "text-muted-foreground dark:text-muted-foreground"
                                 }`}
                             >
                                 {step}
@@ -53,7 +53,7 @@ export function ProgressIndicator({
                                 className={`flex-1 h-1 mt-6 ${
                                     index < currentStep
                                         ? "bg-green-500"
-                                        : "bg-gray-200 dark:bg-gray-700"
+                                        : "bg-accent dark:bg-muted"
                                 }`}
                             />
                         )}
@@ -64,16 +64,16 @@ export function ProgressIndicator({
             {/* Mobile: Vertical layout */}
             <div className="md:hidden w-full">
                 <div className="flex items-center justify-between mb-4">
-                    <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                    <span className="text-sm font-medium text-muted-foreground dark:text-muted-foreground">
                         Step {currentStep + 1} of {totalSteps}
                     </span>
-                    <span className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                    <span className="text-sm font-medium text-foreground dark:text-foreground">
                         {steps[currentStep]}
                     </span>
                 </div>
-                <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                <div className="w-full bg-accent dark:bg-muted rounded-full h-2">
                     <div
-                        className="bg-blue-500 h-2 rounded-full transition-all duration-300"
+                        className="bg-primary/50 h-2 rounded-full transition-all duration-300"
                         style={{
                             width: `${((currentStep + 1) / totalSteps) * 100}%`,
                         }}

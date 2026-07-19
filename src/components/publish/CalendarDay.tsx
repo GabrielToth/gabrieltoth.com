@@ -36,11 +36,11 @@ export default function CalendarDay({
             onClick={onSelect}
             className={cn(
                 "relative flex h-10 sm:h-14 flex-col items-center justify-center rounded-lg text-sm transition-colors",
-                "hover:bg-blue-50 hover:text-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 dark:hover:bg-blue-950/50 dark:hover:text-blue-400",
-                isWeekend && "text-gray-500 dark:text-gray-500",
+                "hover:bg-primary/5 hover:text-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-ring dark:hover:bg-primary/20 dark:hover:text-primary",
+                isWeekend && "text-muted-foreground dark:text-muted-foreground",
                 isToday &&
-                    "bg-blue-100 font-semibold text-blue-700 ring-2 ring-blue-300 dark:bg-blue-900 dark:text-blue-300 dark:ring-blue-700",
-                !isToday && "text-gray-900 dark:text-gray-200"
+                    "bg-primary/10 font-semibold text-primary ring-2 ring-ring dark:bg-primary/10 dark:text-primary dark:ring-ring",
+                !isToday && "text-foreground dark:text-muted-foreground"
             )}
             aria-label={`${day}${postCount > 0 ? `, ${postCount} ${postCount !== 1 ? "posts" : "post"}` : ""}`}
         >
@@ -49,8 +49,8 @@ export default function CalendarDay({
                 <span
                     className={cn(
                         "absolute -bottom-0.5 left-1/2 h-1.5 w-1.5 -translate-x-1/2 rounded-full",
-                        onlyDrafts && "bg-gray-400 dark:bg-gray-500",
-                        hasNonDrafts && "bg-blue-500"
+                        onlyDrafts && "bg-muted dark:bg-muted0",
+                        hasNonDrafts && "bg-primary/50"
                     )}
                 />
             )}

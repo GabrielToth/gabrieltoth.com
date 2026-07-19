@@ -50,10 +50,10 @@ export default function Step3Verification({
         <div className="space-y-6">
             {/* Step Title */}
             <div>
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                <h2 className="text-2xl font-bold text-foreground dark:text-foreground mb-2">
                     {t("completeAccount.step3.title")}
                 </h2>
-                <p className="text-gray-600 dark:text-gray-400">
+                <p className="text-muted-foreground dark:text-muted-foreground">
                     {t("completeAccount.step3.description")}
                 </p>
             </div>
@@ -64,7 +64,7 @@ export default function Step3Verification({
                     <img
                         src={prefilledData.picture}
                         alt={editedData.name}
-                        className="w-20 h-20 rounded-full border-4 border-blue-200 dark:border-blue-800 object-cover"
+                        className="w-20 h-20 rounded-full border-4 dark:border-white/10 dark:border-border object-cover"
                     />
                 </div>
             )}
@@ -93,8 +93,8 @@ export default function Step3Verification({
             />
 
             {/* Info Message */}
-            <div className="p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
-                <p className="text-sm text-blue-800 dark:text-blue-200">
+            <div className="p-4 bg-primary/5 dark:bg-primary/10 border dark:border-white/10 dark:border-border rounded-lg">
+                <p className="text-sm text-primary dark:text-primary">
                     {t("completeAccount.step3.info")}
                 </p>
             </div>
@@ -113,7 +113,7 @@ export default function Step3Verification({
                 <button
                     onClick={onBack}
                     disabled={isLoading}
-                    className="flex-1 px-4 py-3 bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white rounded-md hover:bg-gray-300 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
+                    className="flex-1 px-4 py-3 bg-accent dark:bg-muted text-foreground dark:text-foreground rounded-md hover:bg-accent dark:hover:bg-muted disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
                 >
                     {t("completeAccount.back")}
                 </button>

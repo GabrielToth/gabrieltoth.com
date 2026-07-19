@@ -87,31 +87,6 @@ export default function PCOptimizationView({
                     </div>
                 </div>
             </section>
-                        </a>
-                    </div>
-
-                    {/* Stats */}
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto">
-                        {heroStats.map((stat, index) => (
-                            <div key={index} className="text-center">
-                                <div className="text-3xl md:text-4xl font-black text-primary mb-2">
-                                    {stat.value}
-                                </div>
-                                <div className="text-muted-foreground text-sm">
-                                    {stat.label}
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-
-                {/* Scroll Animation */}
-                <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
-                    <div className="w-6 h-10 border-2 border-border rounded-full flex justify-center">
-                        <div className="w-1 h-3 bg-muted rounded-full mt-2 animate-bounce"></div>
-                    </div>
-                </div>
-            </section>
 
             {/* Features Section */}
             <section className="py-24 bg-gradient-to-b from-black to-gray-900">

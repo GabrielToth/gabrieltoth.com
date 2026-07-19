@@ -57,10 +57,10 @@ export function StreamStatusCard({
                         {platform === "twitch" ? "T" : "K"}
                     </div>
                     <div>
-                        <h3 className="font-semibold text-gray-900 dark:text-white">
+                        <h3 className="font-semibold text-foreground dark:text-foreground">
                             {displayName}
                         </h3>
-                        <p className="text-sm text-gray-500 capitalize">
+                        <p className="text-sm text-muted-foreground capitalize">
                             {platform}
                         </p>
                     </div>
@@ -77,27 +77,27 @@ export function StreamStatusCard({
 
             <div className="mt-4 grid grid-cols-3 gap-4">
                 <div className="text-center">
-                    <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                    <p className="text-2xl font-bold text-foreground dark:text-foreground">
                         {isLive ? viewerCount.toLocaleString() : "—"}
                     </p>
-                    <p className="text-xs text-gray-500">Viewers</p>
+                    <p className="text-xs text-muted-foreground">Viewers</p>
                 </div>
                 <div className="text-center">
-                    <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                    <p className="text-2xl font-bold text-foreground dark:text-foreground">
                         {isLive ? getUptime() : "—"}
                     </p>
-                    <p className="text-xs text-gray-500">Uptime</p>
+                    <p className="text-xs text-muted-foreground">Uptime</p>
                 </div>
                 <div className="text-center">
-                    <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                    <p className="text-2xl font-bold text-foreground dark:text-foreground">
                         {gameName || "—"}
                     </p>
-                    <p className="text-xs text-gray-500">Game</p>
+                    <p className="text-xs text-muted-foreground">Game</p>
                 </div>
             </div>
 
             {title && (
-                <p className="mt-3 truncate text-sm text-gray-600 dark:text-gray-400">
+                <p className="mt-3 truncate text-sm text-muted-foreground dark:text-muted-foreground">
                     {title}
                 </p>
             )}

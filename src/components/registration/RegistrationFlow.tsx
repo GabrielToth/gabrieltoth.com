@@ -307,7 +307,7 @@ export function RegistrationFlow() {
     if (registration.sessionExpired) {
         return (
             <div className="flex items-center justify-center pt-20 pb-12 px-4">
-                <div className="max-w-md w-full bg-white dark:bg-gray-800 rounded-lg shadow-xl p-8 text-center border border-gray-200 dark:border-gray-700">
+                <div className="max-w-md w-full bg-card rounded-lg shadow-xl p-8 text-center border border-border dark:border-border">
                     <div className="mb-4 flex justify-center">
                         <div className="w-16 h-16 bg-red-100 dark:bg-red-900 rounded-full flex items-center justify-center">
                             <svg
@@ -323,16 +323,16 @@ export function RegistrationFlow() {
                             </svg>
                         </div>
                     </div>
-                    <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                    <h2 className="text-2xl font-bold text-foreground dark:text-foreground mb-2">
                         Session Expired
                     </h2>
-                    <p className="text-gray-600 dark:text-gray-400 mb-6">
+                    <p className="text-muted-foreground dark:text-muted-foreground mb-6">
                         Your registration session has expired. Please start
                         over.
                     </p>
                     <a
                         href="/register"
-                        className="inline-block px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors"
+                        className="inline-block px-6 py-2 bg-primary hover:bg-primary text-white font-medium rounded-lg transition-colors"
                     >
                         Start Over
                     </a>
@@ -581,11 +581,11 @@ export function RegistrationFlow() {
     return (
         <div className="flex items-center justify-center pt-20 pb-12 px-4">
             <div className="w-full max-w-md">
-                <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-8 border border-gray-200 dark:border-gray-700">
-                    <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2 text-center">
+                <div className="bg-card rounded-lg shadow-xl p-8 border border-border dark:border-border">
+                    <h1 className="text-3xl font-bold text-foreground dark:text-foreground mb-2 text-center">
                         Create Account
                     </h1>
-                    <p className="text-gray-600 dark:text-gray-400 text-center mb-6">
+                    <p className="text-muted-foreground dark:text-muted-foreground text-center mb-6">
                         Join us today and get started in just a few steps
                     </p>
 
@@ -595,11 +595,11 @@ export function RegistrationFlow() {
                         isLoading={registration.isSubmitting}
                     />
 
-                    <p className="text-center text-gray-600 dark:text-gray-400 mt-6">
+                    <p className="text-center text-muted-foreground dark:text-muted-foreground mt-6">
                         Already have an account?{" "}
                         <a
                             href="/login"
-                            className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium"
+                            className="text-primary dark:text-primary hover:text-primary dark:hover:text-primary font-medium"
                         >
                             Sign in
                         </a>

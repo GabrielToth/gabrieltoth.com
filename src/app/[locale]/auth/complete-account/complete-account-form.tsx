@@ -193,7 +193,7 @@ export default function CompleteAccountForm({
                 <div className="text-center">
                     <a
                         href={`/${locale}/login`}
-                        className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 text-sm font-medium"
+                        className="text-primary dark:text-primary hover:text-primary dark:hover:text-primary text-sm font-medium"
                     >
                         {t("completeAccount.backToLogin")}
                     </a>

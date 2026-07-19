@@ -50,7 +50,7 @@ export default function BasicInfoSection({
                         placeholder={t("step4.titlePlaceholder")}
                         maxLength={100}
                     />
-                    <div className="flex justify-between text-xs text-gray-400">
+                    <div className="flex justify-between text-xs text-muted-foreground">
                         <span>
                             {title.length}/100 {t("step4.titleMax")}
                         </span>
@@ -75,7 +75,7 @@ export default function BasicInfoSection({
                         className="min-h-24 resize-none"
                         maxLength={5000}
                     />
-                    <div className="flex justify-between text-xs text-gray-400">
+                    <div className="flex justify-between text-xs text-muted-foreground">
                         <span>
                             {description.length}/5000{" "}
                             {t("step4.descriptionMax")}
@@ -89,7 +89,7 @@ export default function BasicInfoSection({
                 </div>
 
                 {/* Thumbnail hint */}
-                <div className="rounded bg-gray-50 p-3 text-xs text-gray-500 dark:bg-gray-900">
+                <div className="rounded bg-muted p-3 text-xs text-muted-foreground dark:bg-background">
                     {t("step4.thumbnailHint")}
                 </div>
 
@@ -102,7 +102,7 @@ export default function BasicInfoSection({
                         onChange={e => onTagsChange(e.target.value)}
                         placeholder={t("step4.tagsPlaceholder")}
                     />
-                    <div className="flex justify-between text-xs text-gray-400">
+                    <div className="flex justify-between text-xs text-muted-foreground">
                         <span>{t("step4.tagsHint")}</span>
                         <span>{tags.length}/30 tags</span>
                     </div>

@@ -23,20 +23,20 @@ export default function DataSummary({ title, data, onEdit }: DataSummaryProps) {
     return (
         <div className="space-y-4">
             <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                <h3 className="text-lg font-semibold text-foreground dark:text-foreground">
                     {title}
                 </h3>
                 {onEdit && (
                     <button
                         onClick={onEdit}
-                        className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 text-sm font-medium"
+                        className="text-primary dark:text-primary hover:text-primary dark:hover:text-primary text-sm font-medium"
                     >
                         {t("completeAccount.step3.edit")}
                     </button>
                 )}
             </div>
 
-            <div className="space-y-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4">
+            <div className="space-y-3 bg-muted dark:bg-card/50 rounded-lg p-4">
                 {Object.entries(data).map(([key, value]) => {
                     if (!value) return null
 
@@ -45,10 +45,10 @@ export default function DataSummary({ title, data, onEdit }: DataSummaryProps) {
                             key={key}
                             className="flex justify-between items-start gap-4"
                         >
-                            <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                            <span className="text-sm font-medium text-muted-foreground dark:text-muted-foreground">
                                 {key}
                             </span>
-                            <span className="text-sm text-gray-900 dark:text-white text-right break-words">
+                            <span className="text-sm text-foreground dark:text-foreground text-right break-words">
                                 {key.toLowerCase().includes("password")
                                     ? "••••••••"
                                     : value}

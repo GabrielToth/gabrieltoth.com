@@ -52,7 +52,7 @@ export const ChannelConnector: React.FC<ChannelConnectorProps> = ({
 
     return (
         <div className={cn("space-y-3", className)}>
-            <h3 className="text-xs font-semibold uppercase tracking-wide text-gray-500">
+            <h3 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                 {st("connectChannels")}
             </h3>
             <div className="grid grid-cols-3 gap-2 sm:grid-cols-5">
@@ -67,10 +67,10 @@ export const ChannelConnector: React.FC<ChannelConnectorProps> = ({
                             onClick={() => handleChannelClick(channel)}
                             className={cn(
                                 "relative flex h-12 w-12 items-center justify-center rounded-lg border-2 transition-all",
-                                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2",
+                                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
                                 channel.isConnected
-                                    ? "border-blue-500 bg-blue-50 text-blue-600 hover:bg-blue-100"
-                                    : "border-gray-200 bg-white text-gray-600 hover:border-blue-300 hover:bg-blue-50 hover:text-blue-600"
+                                    ? "border-primary bg-primary/5 text-primary hover:bg-primary/10"
+                                    : "border-border bg-white text-muted-foreground hover:border-primary/50 hover:bg-primary/5 hover:text-primary"
                             )}
                             title={channel.name}
                             aria-label={`${channel.name} - ${channel.isConnected ? lt("connected") : lt("disconnected")}`}
@@ -100,7 +100,7 @@ export const ChannelConnector: React.FC<ChannelConnectorProps> = ({
 
                         {/* Tooltip */}
                         {hoveredChannel === channel.id && (
-                            <div className="absolute bottom-full left-1/2 mb-2 -translate-x-1/2 whitespace-nowrap rounded-md bg-gray-900 px-2 py-1 text-xs text-white">
+                            <div className="absolute bottom-full left-1/2 mb-2 -translate-x-1/2 whitespace-nowrap rounded-md bg-background px-2 py-1 text-xs text-white">
                                 {channel.name}
                                 <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-900" />
                             </div>
@@ -110,7 +110,7 @@ export const ChannelConnector: React.FC<ChannelConnectorProps> = ({
             </div>
 
             {/* Connection Status Summary */}
-            <div className="text-xs text-gray-500">
+            <div className="text-xs text-muted-foreground">
                 {lt("channelsConnected", {
                     count: channels.filter(c => c.isConnected).length,
                     total: channels.length,

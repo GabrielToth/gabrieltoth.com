@@ -339,7 +339,7 @@ export default function PostingInterface({
 
                     {isLoadingNetworks ? (
                         <div className="flex items-center justify-center py-8">
-                            <Loader2 className="h-6 w-6 animate-spin text-gray-400 dark:text-gray-500" />
+                            <Loader2 className="h-6 w-6 animate-spin text-muted-foreground dark:text-muted-foreground" />
                         </div>
                     ) : (
                         <NetworkSelector
@@ -371,7 +371,7 @@ export default function PostingInterface({
                         defaultDate={defaultDate}
                     />
 
-                    <div className="flex gap-2 border-t pt-4 dark:border-gray-700">
+                    <div className="flex gap-2 border-t pt-4 dark:border-border">
                         <Button
                             onClick={onClose}
                             variant="outline"

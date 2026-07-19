@@ -97,7 +97,7 @@ export function GoLiveButton({
                 <span className="text-xs text-red-500">{error}</span>
                 <button
                     onClick={() => setError(null)}
-                    className="text-xs text-blue-500 hover:text-blue-600"
+                    className="text-xs text-primary hover:text-primary"
                 >
                     Dismiss
                 </button>

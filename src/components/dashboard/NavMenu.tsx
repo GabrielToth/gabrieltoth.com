@@ -46,10 +46,10 @@ export const NavMenu: React.FC<NavMenuProps> = ({
                     onClick={() => onItemClick(item.id)}
                     className={cn(
                         "flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium transition-colors",
-                        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2",
+                        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
                         activeItem === item.id
-                            ? "bg-blue-50 text-blue-600 dark:bg-blue-950 dark:text-blue-400"
-                            : "text-gray-700 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-800"
+                            ? "bg-primary/5 text-primary dark:bg-primary/10 dark:text-primary"
+                            : "text-foreground hover:bg-muted dark:text-foreground dark:hover:bg-accent"
                     )}
                     aria-current={activeItem === item.id ? "page" : undefined}
                     aria-label={item.label}

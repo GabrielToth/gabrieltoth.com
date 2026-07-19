@@ -131,7 +131,7 @@ export default function ContentCreator({
         <div className="space-y-4 rounded-lg border p-4">
             <div className="space-y-2">
                 <h3 className="font-semibold">{t("createContent")}</h3>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-muted-foreground">
                     {t("contentDescription")}
                 </p>
             </div>
@@ -139,7 +139,7 @@ export default function ContentCreator({
             <div className="space-y-2">
                 <Label htmlFor="content-textarea">{t("content")}</Label>
                 <div className="space-y-2">
-                    <div className="flex gap-1 rounded border bg-gray-50 p-2">
+                    <div className="flex gap-1 rounded border bg-muted p-2">
                         <Button
                             size="sm"
                             variant="ghost"
@@ -193,7 +193,7 @@ export default function ContentCreator({
                             className={`text-sm ${
                                 isOverLimit
                                     ? "text-red-600 font-semibold"
-                                    : "text-gray-600"
+                                    : "text-muted-foreground"
                             }`}
                             aria-live="polite"
                         >

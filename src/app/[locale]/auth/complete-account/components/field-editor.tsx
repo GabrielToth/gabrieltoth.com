@@ -59,7 +59,7 @@ export default function FieldEditor({
 
     return (
         <div className="space-y-2">
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+            <label className="block text-sm font-medium text-foreground dark:text-foreground">
                 {label}
             </label>
 
@@ -84,7 +84,7 @@ export default function FieldEditor({
                 <button
                     onClick={handleSave}
                     disabled={isLoading || editValue === value}
-                    className="flex-1 px-4 py-2 bg-blue-600 dark:bg-blue-500 text-white rounded-md hover:bg-blue-700 dark:hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium"
+                    className="flex-1 px-4 py-2 bg-primary dark:bg-primary text-white rounded-md hover:bg-primary dark:hover:bg-primary disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium"
                 >
                     {isLoading
                         ? t("completeAccount.saving")
@@ -93,7 +93,7 @@ export default function FieldEditor({
                 <button
                     onClick={handleCancel}
                     disabled={isLoading}
-                    className="flex-1 px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white rounded-md hover:bg-gray-300 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium"
+                    className="flex-1 px-4 py-2 bg-accent dark:bg-muted text-foreground dark:text-foreground rounded-md hover:bg-accent dark:hover:bg-muted disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium"
                 >
                     {t("completeAccount.cancel")}
                 </button>

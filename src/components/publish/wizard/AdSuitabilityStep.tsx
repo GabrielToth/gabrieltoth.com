@@ -68,16 +68,16 @@ export default function AdSuitabilityStep({
                     <h2 className="text-xl font-semibold">
                         {t("step5.title")}
                     </h2>
-                    <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                    <p className="mt-1 text-sm text-muted-foreground dark:text-muted-foreground">
                         {t("step5.description")}
                     </p>
                 </div>
                 <Card>
-                    <CardContent className="py-8 text-center text-sm text-gray-500">
+                    <CardContent className="py-8 text-center text-sm text-muted-foreground">
                         {t("step5.noYouTube")}
                     </CardContent>
                 </Card>
-                <div className="flex justify-between border-t pt-4 dark:border-gray-700">
+                <div className="flex justify-between border-t pt-4 dark:border-border">
                     <Button onClick={onBack} variant="outline">
                         {t("wizard.back")}
                     </Button>
@@ -91,7 +91,7 @@ export default function AdSuitabilityStep({
         <div className="space-y-6">
             <div>
                 <h2 className="text-xl font-semibold">{t("step5.title")}</h2>
-                <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                <p className="mt-1 text-sm text-muted-foreground dark:text-muted-foreground">
                     {t("step5.description")}
                 </p>
             </div>
@@ -109,10 +109,10 @@ export default function AdSuitabilityStep({
                     </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-6">
-                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                    <p className="text-sm text-muted-foreground dark:text-muted-foreground">
                         {t("step5.adSuitabilityQuestion")}
                     </p>
-                    <p className="text-xs text-gray-400">
+                    <p className="text-xs text-muted-foreground">
                         {t("step5.adSuitabilityWhy")}
                     </p>
 
@@ -120,9 +120,9 @@ export default function AdSuitabilityStep({
                         {AD_SUITABILITY_CATEGORIES.map(cat => (
                             <div
                                 key={cat.key}
-                                className="rounded-lg border p-4 dark:border-gray-700"
+                                className="rounded-lg border p-4 dark:border-border"
                             >
-                                <p className="mb-3 text-sm font-medium text-gray-900 dark:text-gray-100">
+                                <p className="mb-3 text-sm font-medium text-foreground dark:text-foreground">
                                     {t(`step5.adCat_${cat.key}_title`)}
                                 </p>
                                 <div className="space-y-2">
@@ -139,8 +139,8 @@ export default function AdSuitabilityStep({
                                                     key={level}
                                                     className={`flex cursor-pointer items-start gap-3 rounded border p-3 transition-colors ${
                                                         isSelected
-                                                            ? "border-blue-300 bg-blue-50 dark:border-blue-700 dark:bg-blue-950/20"
-                                                            : "hover:bg-gray-50 dark:hover:bg-gray-900 dark:border-gray-700"
+                                                            ? "border-primary/50 bg-primary/5 dark:border-border dark:bg-primary/10/20"
+                                                            : "hover:bg-muted dark:hover:bg-background dark:border-border"
                                                     }`}
                                                 >
                                                     <input
@@ -156,12 +156,12 @@ export default function AdSuitabilityStep({
                                                         className="mt-0.5 h-4 w-4 shrink-0"
                                                     />
                                                     <div className="min-w-0">
-                                                        <p className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                                                        <p className="text-sm font-medium text-foreground dark:text-foreground">
                                                             {t(
                                                                 `step5.adCat_${cat.key}_l${level}_label`
                                                             )}
                                                         </p>
-                                                        <p className="mt-0.5 text-xs text-gray-500 dark:text-gray-400">
+                                                        <p className="mt-0.5 text-xs text-muted-foreground dark:text-muted-foreground">
                                                             {t(
                                                                 `step5.adCat_${cat.key}_l${level}_desc`
                                                             )}
@@ -177,14 +177,14 @@ export default function AdSuitabilityStep({
                     </div>
 
                     {/* None of the above */}
-                    <div className="border-t pt-4 dark:border-gray-700">
+                    <div className="border-t pt-4 dark:border-border">
                         <label
                             className={`flex cursor-pointer items-center gap-3 rounded-lg border p-4 transition-colors ${
                                 Object.values(youtubeMeta.adSuitability).every(
                                     v => v === 0
                                 )
                                     ? "border-green-300 bg-green-50 dark:border-green-700 dark:bg-green-950/20"
-                                    : "hover:bg-gray-50 dark:hover:bg-gray-900 dark:border-gray-700"
+                                    : "hover:bg-muted dark:hover:bg-background dark:border-border"
                             }`}
                         >
                             <input
@@ -203,10 +203,10 @@ export default function AdSuitabilityStep({
                                 className="h-4 w-4 shrink-0"
                             />
                             <div>
-                                <p className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                                <p className="text-sm font-medium text-foreground dark:text-foreground">
                                     {t("step5.adNone")}
                                 </p>
-                                <p className="text-xs text-gray-500 dark:text-gray-400">
+                                <p className="text-xs text-muted-foreground dark:text-muted-foreground">
                                     {t("step5.adNoneDesc")}
                                 </p>
                             </div>
@@ -216,7 +216,7 @@ export default function AdSuitabilityStep({
             </Card>
 
             {/* Navigation */}
-            <div className="flex justify-between border-t pt-4 dark:border-gray-700">
+            <div className="flex justify-between border-t pt-4 dark:border-border">
                 <Button onClick={onBack} variant="outline">
                     {t("wizard.back")}
                 </Button>

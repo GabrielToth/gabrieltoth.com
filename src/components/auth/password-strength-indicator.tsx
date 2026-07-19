@@ -67,7 +67,7 @@ export function PasswordStrengthIndicator({
     const metCount = criteria.filter(c => c.met).length
     const strength = useMemo(() => {
         if (metCount === 0)
-            return { level: 0, label: "No password", color: "bg-gray-300" }
+            return { level: 0, label: "No password", color: "bg-accent" }
         if (metCount === 1)
             return { level: 1, label: "Very weak", color: "bg-red-500" }
         if (metCount === 2)
@@ -87,7 +87,7 @@ export function PasswordStrengthIndicator({
             {password && (
                 <div className="space-y-1">
                     <div className="flex items-center justify-between">
-                        <span className="text-xs font-medium text-gray-600 dark:text-gray-400">
+                        <span className="text-xs font-medium text-muted-foreground dark:text-muted-foreground">
                             Password Strength
                         </span>
                         <span
@@ -102,7 +102,7 @@ export function PasswordStrengthIndicator({
                             {strength.label}
                         </span>
                     </div>
-                    <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                    <div className="h-2 bg-accent dark:bg-muted rounded-full overflow-hidden">
                         <div
                             className={`h-full transition-all duration-300 ${strength.color}`}
                             style={{ width: `${(strength.level / 5) * 100}%` }}
@@ -114,7 +114,7 @@ export function PasswordStrengthIndicator({
             {/* Criteria List */}
             {showCriteria && password && (
                 <div className="space-y-2">
-                    <p className="text-xs font-medium text-gray-600 dark:text-gray-400">
+                    <p className="text-xs font-medium text-muted-foreground dark:text-muted-foreground">
                         Password Requirements:
                     </p>
                     <ul className="space-y-1.5">
@@ -124,7 +124,7 @@ export function PasswordStrengthIndicator({
                                 className={`flex items-center gap-2 text-xs transition-colors ${
                                     criterion.met
                                         ? "text-green-600 dark:text-green-400"
-                                        : "text-gray-500 dark:text-gray-400"
+                                        : "text-muted-foreground dark:text-muted-foreground"
                                 }`}
                             >
                                 {criterion.met ? (
@@ -145,7 +145,7 @@ export function PasswordStrengthIndicator({
                     className={`text-xs font-medium transition-colors ${
                         isValid
                             ? "text-green-600 dark:text-green-400"
-                            : "text-gray-500 dark:text-gray-400"
+                            : "text-muted-foreground dark:text-muted-foreground"
                     }`}
                 >
                     {isValid ? "✓ Password meets all requirements" : ""}

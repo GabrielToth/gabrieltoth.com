@@ -42,12 +42,12 @@ export const PostList: React.FC<PostListProps> = ({
                     <Card key={i} className="animate-pulse">
                         <CardContent className="p-4">
                             <div className="space-y-3">
-                                <div className="h-4 bg-gray-200 rounded w-3/4 dark:bg-gray-700" />
-                                <div className="h-3 bg-gray-200 rounded w-full dark:bg-gray-700" />
-                                <div className="h-3 bg-gray-200 rounded w-2/3 dark:bg-gray-700" />
+                                <div className="h-4 bg-accent rounded w-3/4 dark:bg-muted" />
+                                <div className="h-3 bg-accent rounded w-full dark:bg-muted" />
+                                <div className="h-3 bg-accent rounded w-2/3 dark:bg-muted" />
                                 <div className="flex gap-2 pt-2">
-                                    <div className="h-6 bg-gray-200 rounded-full w-20 dark:bg-gray-700" />
-                                    <div className="h-6 bg-gray-200 rounded-full w-24 dark:bg-gray-700" />
+                                    <div className="h-6 bg-accent rounded-full w-20 dark:bg-muted" />
+                                    <div className="h-6 bg-accent rounded-full w-24 dark:bg-muted" />
                                 </div>
                             </div>
                         </CardContent>
@@ -90,10 +90,10 @@ export const PostList: React.FC<PostListProps> = ({
         return (
             <Card>
                 <CardContent className="p-8 text-center">
-                    <p className="text-gray-600 dark:text-gray-300">
+                    <p className="text-muted-foreground dark:text-foreground">
                         {t("noPostsFound")}
                     </p>
-                    <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                    <p className="mt-1 text-sm text-muted-foreground dark:text-muted-foreground">
                         {t("createFirstPost")}
                     </p>
                 </CardContent>

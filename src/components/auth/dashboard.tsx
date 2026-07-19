@@ -37,7 +37,7 @@ export function Dashboard() {
     if (isLoading) {
         return (
             <div className="flex items-center justify-center min-h-screen">
-                <p className="text-gray-600">Loading...</p>
+                <p className="text-muted-foreground">Loading...</p>
             </div>
         )
     }
@@ -47,17 +47,17 @@ export function Dashboard() {
     }
 
     return (
-        <div className="min-h-screen bg-gray-50">
+        <div className="min-h-screen bg-muted">
             <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
                 <div className="rounded-lg bg-white shadow">
-                    <div className="border-b border-gray-200 px-6 py-4">
-                        <h1 className="text-2xl font-bold text-gray-900">
+                    <div className="border-b border-border px-6 py-4">
+                        <h1 className="text-2xl font-bold text-foreground">
                             Dashboard
                         </h1>
                     </div>
 
                     <div className="px-6 py-8">
-                        <div className="mb-8 rounded-lg bg-blue-50 p-6">
+                        <div className="mb-8 rounded-lg bg-primary/5 p-6">
                             <div className="flex items-center gap-4">
                                 {user.google_picture && (
                                     <img
@@ -67,10 +67,10 @@ export function Dashboard() {
                                     />
                                 )}
                                 <div>
-                                    <h2 className="text-lg font-semibold text-gray-900">
+                                    <h2 className="text-lg font-semibold text-foreground">
                                         Welcome, {user.google_name}!
                                     </h2>
-                                    <p className="text-gray-700">
+                                    <p className="text-foreground">
                                         {user.google_email}
                                     </p>
                                 </div>
@@ -78,7 +78,7 @@ export function Dashboard() {
                         </div>
 
                         <div className="space-y-4">
-                            <h3 className="text-lg font-semibold text-gray-900">
+                            <h3 className="text-lg font-semibold text-foreground">
                                 Account Actions
                             </h3>
                             <GoogleLogoutButton />

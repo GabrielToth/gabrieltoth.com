@@ -261,7 +261,7 @@ export default function PublishWizard({ onClose }: PublishWizardProps) {
                         <DialogTitle className="flex items-center gap-2">
                             <span>{t("wizard.title")}</span>
                             {currentStep < TOTAL_STEPS && (
-                                <span className="text-sm font-normal text-gray-500">
+                                <span className="text-sm font-normal text-muted-foreground">
                                     {t("wizard.step", {
                                         current: currentStep + 1,
                                         total: TOTAL_STEPS,

@@ -83,7 +83,7 @@ export const IntegrationsSection: React.FC<IntegrationsSectionProps> = ({
                 {/* Connected Integrations */}
                 {connectedIntegrations.length > 0 && (
                     <div className="space-y-4">
-                        <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100">
+                        <h3 className="text-sm font-semibold text-foreground dark:text-foreground">
                             {t("connectedApps", {
                                 count: connectedIntegrations.length,
                             })}
@@ -92,7 +92,7 @@ export const IntegrationsSection: React.FC<IntegrationsSectionProps> = ({
                             {connectedIntegrations.map(integration => (
                                 <div
                                     key={integration.id}
-                                    className="rounded-lg border border-gray-200 p-4 dark:border-gray-700"
+                                    className="rounded-lg border border-border p-4 dark:border-border"
                                 >
                                     <div className="flex items-start justify-between">
                                         <div className="flex items-center gap-3">
@@ -103,11 +103,11 @@ export const IntegrationsSection: React.FC<IntegrationsSectionProps> = ({
                                                 size={24}
                                             />
                                             <div>
-                                                <p className="font-medium text-gray-900 dark:text-gray-100">
+                                                <p className="font-medium text-foreground dark:text-foreground">
                                                     {integration.name}
                                                 </p>
                                                 {integration.connectedAt && (
-                                                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                                                    <p className="text-xs text-muted-foreground dark:text-muted-foreground">
                                                         {t("connectedOn")}{" "}
                                                         {new Date(
                                                             integration.connectedAt
@@ -179,7 +179,7 @@ export const IntegrationsSection: React.FC<IntegrationsSectionProps> = ({
                 {/* Available Integrations */}
                 {availableIntegrations.length > 0 && (
                     <div className="space-y-4">
-                        <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100">
+                        <h3 className="text-sm font-semibold text-foreground dark:text-foreground">
                             {t("availableApps", {
                                 count: availableIntegrations.length,
                             })}
@@ -188,7 +188,7 @@ export const IntegrationsSection: React.FC<IntegrationsSectionProps> = ({
                             {availableIntegrations.map(integration => (
                                 <div
                                     key={integration.id}
-                                    className="rounded-lg border border-gray-200 p-4 opacity-60 dark:border-gray-700"
+                                    className="rounded-lg border border-border p-4 opacity-60 dark:border-border"
                                 >
                                     <div className="flex items-start justify-between">
                                         <div className="flex items-center gap-3">
@@ -199,15 +199,15 @@ export const IntegrationsSection: React.FC<IntegrationsSectionProps> = ({
                                                 size={24}
                                             />
                                             <div>
-                                                <p className="font-medium text-gray-900 dark:text-gray-100">
+                                                <p className="font-medium text-foreground dark:text-foreground">
                                                     {integration.name}
                                                 </p>
-                                                <p className="text-xs text-gray-500 dark:text-gray-400">
+                                                <p className="text-xs text-muted-foreground dark:text-muted-foreground">
                                                     {t("notConnected")}
                                                 </p>
                                             </div>
                                         </div>
-                                        <span className="inline-flex items-center rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-800 dark:bg-gray-800 dark:text-gray-200">
+                                        <span className="inline-flex items-center rounded-full bg-muted px-2.5 py-0.5 text-xs font-medium text-foreground dark:bg-card dark:text-muted-foreground">
                                             {t("available")}
                                         </span>
                                     </div>
@@ -221,7 +221,7 @@ export const IntegrationsSection: React.FC<IntegrationsSectionProps> = ({
                 <div className="flex justify-end">
                     <Button
                         onClick={onConnect}
-                        className="bg-blue-600 hover:bg-blue-700"
+                        className="bg-primary hover:bg-primary"
                     >
                         {t("addIntegration")}
                     </Button>

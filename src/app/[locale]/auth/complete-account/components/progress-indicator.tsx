@@ -33,9 +33,9 @@ export default function ProgressIndicator({
     return (
         <div className="space-y-4">
             {/* Progress Bar */}
-            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 overflow-hidden">
+            <div className="w-full bg-accent dark:bg-muted rounded-full h-2 overflow-hidden">
                 <div
-                    className="bg-blue-600 dark:bg-blue-500 h-full transition-all duration-300 ease-out"
+                    className="bg-primary dark:bg-primary h-full transition-all duration-300 ease-out"
                     style={{ width: `${progressPercentage}%` }}
                     role="progressbar"
                     aria-valuenow={currentStep}
@@ -61,10 +61,10 @@ export default function ProgressIndicator({
                             <div
                                 className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold text-sm transition-all duration-300 ${
                                     isCurrent
-                                        ? "bg-blue-600 dark:bg-blue-500 text-white ring-2 ring-blue-300 dark:ring-blue-400"
+                                        ? "bg-primary dark:bg-primary text-white ring-2 ring-ring dark:ring-blue-400"
                                         : isCompleted
                                           ? "bg-green-600 dark:bg-green-500 text-white"
-                                          : "bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-400"
+                                          : "bg-accent dark:bg-muted text-muted-foreground dark:text-muted-foreground"
                                 }`}
                                 aria-current={isCurrent ? "step" : undefined}
                             >
@@ -90,10 +90,10 @@ export default function ProgressIndicator({
                             <p
                                 className={`text-xs font-medium mt-2 text-center max-w-[80px] ${
                                     isCurrent
-                                        ? "text-blue-600 dark:text-blue-400"
+                                        ? "text-primary dark:text-primary"
                                         : isCompleted
                                           ? "text-green-600 dark:text-green-400"
-                                          : "text-gray-600 dark:text-gray-400"
+                                          : "text-muted-foreground dark:text-muted-foreground"
                                 }`}
                             >
                                 {step}
@@ -105,7 +105,7 @@ export default function ProgressIndicator({
                                     className={`absolute w-12 h-0.5 top-5 left-1/2 ml-6 ${
                                         isCompleted
                                             ? "bg-green-600 dark:bg-green-500"
-                                            : "bg-gray-200 dark:bg-gray-700"
+                                            : "bg-accent dark:bg-muted"
                                     }`}
                                     aria-hidden="true"
                                 />
@@ -116,7 +116,7 @@ export default function ProgressIndicator({
             </div>
 
             {/* Step Counter */}
-            <div className="text-center text-sm text-gray-600 dark:text-gray-400">
+            <div className="text-center text-sm text-muted-foreground dark:text-muted-foreground">
                 {t("completeAccount.step")} {currentStep}{" "}
                 {t("completeAccount.of")} {totalSteps}
             </div>

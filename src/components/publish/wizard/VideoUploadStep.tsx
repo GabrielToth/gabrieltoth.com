@@ -96,7 +96,7 @@ export default function VideoUploadStep({
                 <h2 className="text-xl font-semibold">
                     {t("videoUpload.title")}
                 </h2>
-                <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                <p className="mt-1 text-sm text-muted-foreground dark:text-muted-foreground">
                     {t("videoUpload.description")}
                 </p>
             </div>
@@ -114,12 +114,12 @@ export default function VideoUploadStep({
                         onClick={() => fileInputRef.current?.click()}
                         className={`flex cursor-pointer flex-col items-center gap-3 rounded-lg border-2 border-dashed p-8 transition-colors ${
                             dragOver
-                                ? "border-blue-500 bg-blue-50 dark:bg-blue-950/30"
-                                : "border-gray-300 hover:border-gray-400 dark:border-gray-600"
+                                ? "border-primary bg-primary/5 dark:bg-primary/10"
+                                : "border-input hover:border-border dark:border-input"
                         }`}
                     >
-                        <Upload className="h-10 w-10 text-gray-400" />
-                        <p className="text-sm text-gray-600 dark:text-gray-400">
+                        <Upload className="h-10 w-10 text-muted-foreground" />
+                        <p className="text-sm text-muted-foreground dark:text-muted-foreground">
                             {t("videoUpload.dropzone")}
                         </p>
                         <Button
@@ -135,13 +135,13 @@ export default function VideoUploadStep({
                         </Button>
                     </div>
                 ) : (
-                    <div className="flex items-center gap-4 rounded-lg border bg-gray-50 p-4 dark:bg-gray-900">
-                        <FileVideo className="h-8 w-8 text-blue-500" />
+                    <div className="flex items-center gap-4 rounded-lg border bg-muted p-4 dark:bg-background">
+                        <FileVideo className="h-8 w-8 text-primary" />
                         <div className="flex-1 min-w-0">
                             <p className="text-sm font-medium truncate">
                                 {videoFile.name}
                             </p>
-                            <p className="text-xs text-gray-500">
+                            <p className="text-xs text-muted-foreground">
                                 {t("videoUpload.selectedFile", {
                                     name: videoFile.name,
                                     size: formatBytes(videoFile.size),
@@ -150,7 +150,7 @@ export default function VideoUploadStep({
                         </div>
                         <button
                             onClick={removeFile}
-                            className="rounded-full p-1.5 text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700"
+                            className="rounded-full p-1.5 text-muted-foreground hover:bg-accent dark:hover:bg-accent"
                             aria-label="Remove file"
                         >
                             <X className="h-4 w-4" />
@@ -176,7 +176,7 @@ export default function VideoUploadStep({
             </div>
 
             {/* Navigation — Back always shown, Next visible when video already in state */}
-            <div className="flex justify-between border-t pt-4 dark:border-gray-700">
+            <div className="flex justify-between border-t pt-4 dark:border-border">
                 <Button onClick={onBack} variant="outline">
                     {t("wizard.back")}
                 </Button>

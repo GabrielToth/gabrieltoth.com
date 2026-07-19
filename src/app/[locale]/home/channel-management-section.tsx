@@ -367,11 +367,11 @@ export default function ChannelManagementSection({
     return (
         <section
             id="channel-management"
-            className="py-24 bg-gradient-to-br from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20"
+            className="py-24 bg-gradient-to-br from-primary/5 to-primary/5 dark:from-primary/10 dark:to-blue-900/20"
         >
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="text-center mb-16">
-                    <div className="inline-flex items-center px-4 py-2 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-sm font-medium mb-8">
+                    <div className="inline-flex items-center px-4 py-2 rounded-full bg-primary/10 dark:bg-primary/10 text-primary dark:text-primary text-sm font-medium mb-8">
                         🚀{" "}
                         {locale === "pt-BR"
                             ? "ViraTrend - Consultoria Especializada"
@@ -381,15 +381,15 @@ export default function ChannelManagementSection({
                                 ? "ViraTrend - Spezialisierte Beratung"
                                 : "ViraTrend - Specialized Consulting"}
                     </div>
-                    <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-                        <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                    <h2 className="text-3xl sm:text-4xl font-bold text-foreground dark:text-foreground mb-4">
+                        <span className="text-foreground">
                             ViraTrend
                         </span>
                     </h2>
-                    <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto mb-8">
+                    <p className="text-lg text-muted-foreground dark:text-foreground max-w-2xl mx-auto mb-8">
                         {t.subtitle}
                     </p>
-                    <p className="text-gray-700 dark:text-gray-300 max-w-4xl mx-auto leading-relaxed">
+                    <p className="text-foreground dark:text-foreground max-w-4xl mx-auto leading-relaxed">
                         {t.description}
                     </p>
                 </div>
@@ -399,12 +399,12 @@ export default function ChannelManagementSection({
                     {t.stats.map((stat, index) => (
                         <div
                             key={index}
-                            className="text-center bg-white dark:bg-gray-900 rounded-2xl p-8 shadow-lg"
+                            className="text-center bg-card dark:bg-background rounded-2xl p-8 shadow-lg"
                         >
-                            <div className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-2">
+                            <div className="text-3xl font-bold text-primary dark:text-primary mb-2">
                                 {stat.value}
                             </div>
-                            <div className="text-gray-600 dark:text-gray-300">
+                            <div className="text-muted-foreground dark:text-foreground">
                                 {stat.label}
                             </div>
                         </div>
@@ -413,54 +413,54 @@ export default function ChannelManagementSection({
 
                 {/* Features */}
                 <div className="mb-16">
-                    <h3 className="text-2xl font-bold text-center text-gray-900 dark:text-white mb-12">
+                    <h3 className="text-2xl font-bold text-center text-foreground dark:text-foreground mb-12">
                         {t.features.title}
                     </h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                        <div className="bg-white dark:bg-gray-900 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow">
-                            <div className="bg-blue-100 dark:bg-blue-900 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
-                                <BarChart3 className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+                        <div className="bg-card dark:bg-background rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow">
+                            <div className="bg-primary/10 dark:bg-primary/10 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                                <BarChart3 className="w-6 h-6 text-primary dark:text-primary" />
                             </div>
-                            <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                            <h4 className="text-lg font-semibold text-foreground dark:text-foreground mb-2">
                                 {t.features.analytics.title}
                             </h4>
-                            <p className="text-gray-600 dark:text-gray-300 text-sm">
+                            <p className="text-muted-foreground dark:text-foreground text-sm">
                                 {t.features.analytics.description}
                             </p>
                         </div>
 
-                        <div className="bg-white dark:bg-gray-900 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow">
+                        <div className="bg-card dark:bg-background rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow">
                             <div className="bg-green-100 dark:bg-green-900 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
                                 <Play className="w-6 h-6 text-green-600 dark:text-green-400" />
                             </div>
-                            <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                            <h4 className="text-lg font-semibold text-foreground dark:text-foreground mb-2">
                                 {t.features.optimization.title}
                             </h4>
-                            <p className="text-gray-600 dark:text-gray-300 text-sm">
+                            <p className="text-muted-foreground dark:text-foreground text-sm">
                                 {t.features.optimization.description}
                             </p>
                         </div>
 
-                        <div className="bg-white dark:bg-gray-900 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow">
+                        <div className="bg-card dark:bg-background rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow">
                             <div className="bg-purple-100 dark:bg-purple-900 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
-                                <TrendingUp className="w-6 h-6 text-purple-600 dark:text-purple-400" />
+                                <TrendingUp className="w-6 h-6 text-primary dark:text-purple-400" />
                             </div>
-                            <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                            <h4 className="text-lg font-semibold text-foreground dark:text-foreground mb-2">
                                 {t.features.growth.title}
                             </h4>
-                            <p className="text-gray-600 dark:text-gray-300 text-sm">
+                            <p className="text-muted-foreground dark:text-foreground text-sm">
                                 {t.features.growth.description}
                             </p>
                         </div>
 
-                        <div className="bg-white dark:bg-gray-900 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow">
+                        <div className="bg-card dark:bg-background rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow">
                             <div className="bg-yellow-100 dark:bg-yellow-900 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
                                 <Users className="w-6 h-6 text-yellow-600 dark:text-yellow-400" />
                             </div>
-                            <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                            <h4 className="text-lg font-semibold text-foreground dark:text-foreground mb-2">
                                 {t.features.monetization.title}
                             </h4>
-                            <p className="text-gray-600 dark:text-gray-300 text-sm">
+                            <p className="text-muted-foreground dark:text-foreground text-sm">
                                 {t.features.monetization.description}
                             </p>
                         </div>
@@ -469,10 +469,10 @@ export default function ChannelManagementSection({
 
                 {/* Results */}
                 <div className="mb-16">
-                    <h3 className="text-2xl font-bold text-center text-gray-900 dark:text-white mb-4">
+                    <h3 className="text-2xl font-bold text-center text-foreground dark:text-foreground mb-4">
                         {t.results.title}
                     </h3>
-                    <p className="text-center text-gray-600 dark:text-gray-300 mb-12">
+                    <p className="text-center text-muted-foreground dark:text-foreground mb-12">
                         {t.results.subtitle}
                     </p>
 
@@ -480,22 +480,22 @@ export default function ChannelManagementSection({
                         {t.results.cases.map((caseStudy, index) => (
                             <div
                                 key={index}
-                                className="bg-white dark:bg-gray-900 rounded-2xl p-8 shadow-lg"
+                                className="bg-card dark:bg-background rounded-2xl p-8 shadow-lg"
                             >
-                                <h4 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
+                                <h4 className="text-xl font-bold text-foreground dark:text-foreground mb-2">
                                     {caseStudy.channel}
                                 </h4>
-                                <p className="text-gray-600 dark:text-gray-300 text-sm mb-6">
+                                <p className="text-muted-foreground dark:text-foreground text-sm mb-6">
                                     {caseStudy.description}
                                 </p>
 
                                 <div className="grid grid-cols-3 gap-4">
                                     {caseStudy.metrics.map((metric, idx) => (
                                         <div key={idx} className="text-center">
-                                            <div className="text-2xl font-bold text-blue-600 dark:text-blue-400 mb-1">
+                                            <div className="text-2xl font-bold text-primary dark:text-primary mb-1">
                                                 {metric.value}
                                             </div>
-                                            <div className="text-sm text-gray-600 dark:text-gray-300">
+                                            <div className="text-sm text-muted-foreground dark:text-foreground">
                                                 {metric.label}
                                             </div>
                                         </div>
@@ -508,15 +508,15 @@ export default function ChannelManagementSection({
 
                 {/* CTA */}
                 <div className="text-center">
-                    <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+                    <h3 className="text-2xl font-bold text-foreground dark:text-foreground mb-4">
                         {t.cta.title}
                     </h3>
-                    <p className="text-gray-600 dark:text-gray-300 mb-8 max-w-2xl mx-auto">
+                    <p className="text-muted-foreground dark:text-foreground mb-8 max-w-2xl mx-auto">
                         {t.cta.description}
                     </p>
                     <Link
                         href={`/${locale}/channel-management`}
-                        className="inline-flex items-center space-x-2 bg-blue-600 text-white px-8 py-4 rounded-lg hover:bg-blue-700 transition-colors font-medium text-lg"
+                        className="inline-flex items-center space-x-2 bg-primary text-white px-8 py-4 rounded-lg hover:bg-primary transition-colors font-medium text-lg"
                     >
                         <Users size={20} />
                         <span>{t.cta.button}</span>

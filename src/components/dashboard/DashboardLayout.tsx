@@ -86,7 +86,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
     }
 
     return (
-        <div className="flex h-screen bg-white dark:bg-gray-950">
+        <div className="flex h-screen bg-card dark:bg-background">
             {/* Sidebar */}
             <Sidebar
                 activeTab={activeTab}
@@ -108,10 +108,10 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
             {/* Main content area */}
             <main className="flex-1 overflow-auto">
                 {/* Mobile header with hamburger */}
-                <div className="sticky top-0 z-20 flex items-center justify-between border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950 px-3 py-3 sm:px-4 md:hidden">
+                <div className="sticky top-0 z-20 flex items-center justify-between border-b border-border dark:border-border bg-card dark:bg-background px-3 py-3 sm:px-4 md:hidden">
                     <button
                         onClick={() => setSidebarOpen(!sidebarOpen)}
-                        className="inline-flex items-center justify-center rounded-md p-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 min-h-10 min-w-10"
+                        className="inline-flex items-center justify-center rounded-md p-2 text-muted-foreground dark:text-muted-foreground hover:bg-muted dark:hover:bg-accent focus:outline-none focus:ring-2 focus:ring-ring min-h-10 min-w-10"
                         aria-label={t("toggleSidebar")}
                         aria-expanded={sidebarOpen}
                     >
@@ -129,14 +129,14 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                             />
                         </svg>
                     </button>
-                    <span className="text-xs sm:text-sm font-medium text-gray-900 dark:text-white">
+                    <span className="text-xs sm:text-sm font-medium text-foreground dark:text-foreground">
                         {t("dashboard")}
                     </span>
                 </div>
 
                 {/* Logout error message */}
                 {logoutError && (
-                    <div className="mx-3 mt-3 sm:mx-4 sm:mt-4 md:mx-6 md:mt-6 rounded-md bg-red-50 dark:bg-red-950/30 p-3 text-sm text-red-800 dark:text-red-400">
+                    <div className="mx-3 mt-3 sm:mx-4 sm:mt-4 md:mx-6 md:mt-6 rounded-md bg-error-bg p-3 text-sm text-error">
                         {logoutError}
                     </div>
                 )}

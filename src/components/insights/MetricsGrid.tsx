@@ -50,7 +50,7 @@ export const MetricsGrid: React.FC<MetricsGridProps> = ({
                 {[1, 2, 3, 4].map(i => (
                     <div
                         key={i}
-                        className="h-32 animate-pulse rounded-lg bg-gray-200"
+                        className="h-32 animate-pulse rounded-lg bg-accent"
                     />
                 ))}
             </div>
@@ -79,8 +79,8 @@ export const MetricsGrid: React.FC<MetricsGridProps> = ({
     // Empty state
     if (metrics.length === 0) {
         return (
-            <div className="rounded-lg border border-gray-200 bg-gray-50 p-8 text-center">
-                <p className="text-sm text-gray-600">
+            <div className="rounded-lg border border-border bg-muted p-8 text-center">
+                <p className="text-sm text-muted-foreground">
                     No metrics available. Connect social channels to see data.
                 </p>
             </div>

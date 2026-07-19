@@ -56,10 +56,10 @@ export const MetricCard: React.FC<MetricCardProps> = ({ metric }) => {
         <Card className="overflow-hidden">
             <CardHeader className="pb-2 sm:pb-3">
                 <div className="flex items-center justify-between">
-                    <CardTitle className="text-xs sm:text-sm font-medium text-gray-600">
+                    <CardTitle className="text-xs sm:text-sm font-medium text-muted-foreground">
                         {metric.name}
                     </CardTitle>
-                    <div className="rounded-lg bg-blue-50 p-2 text-blue-600">
+                    <div className="rounded-lg bg-primary/5 p-2 text-primary">
                         {getIconComponent(metric.icon)}
                     </div>
                 </div>
@@ -67,7 +67,7 @@ export const MetricCard: React.FC<MetricCardProps> = ({ metric }) => {
             <CardContent>
                 <div className="space-y-2">
                     {/* Value */}
-                    <div className="text-2xl sm:text-3xl font-bold text-gray-900">
+                    <div className="text-2xl sm:text-3xl font-bold text-foreground">
                         {metric.value.toLocaleString()}
                     </div>
 

@@ -173,7 +173,7 @@ export default function ChannelsPage() {
     if (isLoading) {
         return (
             <div className="flex items-center justify-center py-20">
-                <div className="h-8 w-8 animate-spin rounded-full border-4 border-gray-200 border-t-blue-500 dark:border-gray-700 dark:border-t-blue-500" />
+                <div className="h-8 w-8 animate-spin rounded-full border-4 border-border border-t-blue-500 dark:border-border dark:border-t-blue-500" />
             </div>
         )
     }
@@ -209,10 +209,10 @@ export default function ChannelsPage() {
         <>
             <div className="space-y-6">
                 <div>
-                    <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+                    <h1 className="text-2xl font-bold text-foreground dark:text-foreground">
                         {t("channels.channels")}
                     </h1>
-                    <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                    <p className="mt-1 text-sm text-muted-foreground dark:text-muted-foreground">
                         {t("channels.description")}
                     </p>
                 </div>
@@ -220,18 +220,18 @@ export default function ChannelsPage() {
                 {/* Connected Channels */}
                 <section>
                     <div className="flex items-center justify-between mb-4">
-                        <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+                        <h2 className="text-lg font-semibold text-foreground dark:text-foreground">
                             {t("channels.connected", {
                                 count: connectedChannels.length,
                             })}
                         </h2>
                     </div>
                     {connectedChannels.length === 0 ? (
-                        <div className="rounded-lg border-2 border-dashed border-gray-200 p-8 text-center dark:border-gray-700">
-                            <p className="text-gray-500 dark:text-gray-400">
+                        <div className="rounded-lg border-2 border-dashed border-border p-8 text-center dark:border-border">
+                            <p className="text-muted-foreground dark:text-muted-foreground">
                                 {t("channels.noConnected")}
                             </p>
-                            <p className="mt-1 text-sm text-gray-400 dark:text-gray-500">
+                            <p className="mt-1 text-sm text-muted-foreground dark:text-muted-foreground">
                                 {t("channels.connectPrompt")}
                             </p>
                         </div>
@@ -240,10 +240,10 @@ export default function ChannelsPage() {
                             {connectedChannels.map(channel => (
                                 <div
                                     key={channel.id}
-                                    className="flex items-center justify-between rounded-lg border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-900"
+                                    className="flex items-center justify-between rounded-lg border border-border bg-white p-4 dark:border-border dark:bg-background"
                                 >
                                     <div className="flex items-center gap-4">
-                                        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gray-100 dark:bg-gray-800">
+                                        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-muted dark:bg-card">
                                             <DynamicIcon
                                                 name={
                                                     PLATFORM_ICONS[
@@ -254,10 +254,10 @@ export default function ChannelsPage() {
                                             />
                                         </div>
                                         <div>
-                                            <p className="font-medium text-gray-900 dark:text-white">
+                                            <p className="font-medium text-foreground dark:text-foreground">
                                                 {channel.accountName}
                                             </p>
-                                            <p className="text-sm text-gray-500 dark:text-gray-400">
+                                            <p className="text-sm text-muted-foreground dark:text-muted-foreground">
                                                 {t("channels.onPlatform", {
                                                     platform:
                                                         ALL_PLATFORMS.find(
@@ -269,7 +269,7 @@ export default function ChannelsPage() {
                                                 })}
                                             </p>
                                             {channel.connectedAt && (
-                                                <p className="text-xs text-gray-500 dark:text-gray-500">
+                                                <p className="text-xs text-muted-foreground dark:text-muted-foreground">
                                                     {t(
                                                         "channels.connectedSince",
                                                         {
@@ -326,7 +326,7 @@ export default function ChannelsPage() {
                 {/* Available Platforms — ALL platforms always visible */}
                 <section>
                     <div className="flex items-center justify-between mb-4">
-                        <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+                        <h2 className="text-lg font-semibold text-foreground dark:text-foreground">
                             {t("channels.available")}
                         </h2>
                     </div>
@@ -339,11 +339,11 @@ export default function ChannelsPage() {
                             return (
                                 <div
                                     key={platform.id}
-                                    className="flex flex-col rounded-lg border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-900"
+                                    className="flex flex-col rounded-lg border border-border bg-white p-4 dark:border-border dark:bg-background"
                                 >
                                     <div className="flex items-center justify-between">
                                         <div className="flex items-center gap-3">
-                                            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gray-100 dark:bg-gray-800">
+                                            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-muted dark:bg-card">
                                                 <DynamicIcon
                                                     name={
                                                         PLATFORM_ICONS[
@@ -354,7 +354,7 @@ export default function ChannelsPage() {
                                                 />
                                             </div>
                                             <div>
-                                                <p className="font-medium text-gray-900 dark:text-white">
+                                                <p className="font-medium text-foreground dark:text-foreground">
                                                     {platform.name}
                                                 </p>
                                                 {!platform.implemented ? (
@@ -399,13 +399,13 @@ export default function ChannelsPage() {
 
                                     {/* Show connected accounts for this platform */}
                                     {connectedList.length > 0 && (
-                                        <div className="mt-3 space-y-1.5 border-t border-gray-100 pt-3 dark:border-gray-700">
+                                        <div className="mt-3 space-y-1.5 border-t border-gray-100 pt-3 dark:border-border">
                                             {connectedList.map(ch => (
                                                 <div
                                                     key={ch.id}
                                                     className="flex items-center justify-between text-sm"
                                                 >
-                                                    <span className="truncate text-gray-700 dark:text-gray-300">
+                                                    <span className="truncate text-foreground dark:text-foreground">
                                                         {ch.accountName}
                                                     </span>
                                                     <span className="ml-2 flex-shrink-0 text-xs text-green-600">

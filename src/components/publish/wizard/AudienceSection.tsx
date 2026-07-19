@@ -49,7 +49,7 @@ export default function AudienceSection({
                             </span>
                         </label>
                     </div>
-                    <p className="text-xs text-gray-400">
+                    <p className="text-xs text-muted-foreground">
                         {t("step4.madeForKidsHint")}
                     </p>
                 </div>

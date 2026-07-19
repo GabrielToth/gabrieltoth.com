@@ -19,7 +19,7 @@ export default async function PCOptimizationPage({ params }: PageProps) {
 
     return (
         <>
-            <main className="min-h-screen bg-white dark:bg-gray-900 relative">
+            <main className="min-h-screen bg-card dark:bg-background relative">
                 <StructuredData
                     locale={locale}
                     type="all"

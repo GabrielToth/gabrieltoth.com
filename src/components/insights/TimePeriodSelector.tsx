@@ -36,7 +36,7 @@ export const TimePeriodSelector: React.FC<TimePeriodSelectorProps> = ({
 
     return (
         <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-2">
-            <span className="text-xs sm:text-sm font-medium text-gray-700">
+            <span className="text-xs sm:text-sm font-medium text-foreground">
                 Time Period:
             </span>
             <div className="flex flex-wrap gap-2">
@@ -52,8 +52,8 @@ export const TimePeriodSelector: React.FC<TimePeriodSelectorProps> = ({
                         onClick={() => onPeriodChange(period.value)}
                         className={`text-xs sm:text-sm min-h-10 ${
                             selectedPeriod === period.value
-                                ? "bg-blue-600 text-white hover:bg-blue-700"
-                                : "border-gray-300 text-gray-700 hover:bg-gray-50"
+                                ? "bg-primary text-white hover:bg-primary"
+                                : "border-input text-foreground hover:bg-muted"
                         }`}
                     >
                         {period.label}

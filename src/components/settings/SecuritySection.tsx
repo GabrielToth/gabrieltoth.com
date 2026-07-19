@@ -233,12 +233,12 @@ export const SecuritySection: React.FC<SecuritySectionProps> = ({ user }) => {
                 <CardContent className="space-y-4">
                     <div className="flex items-center justify-between">
                         <div>
-                            <p className="font-medium text-gray-900 dark:text-gray-100">
+                            <p className="font-medium text-foreground dark:text-foreground">
                                 {twoFactorEnabled
                                     ? t("twoFactorEnabled")
                                     : t("twoFactorDisabled")}
                             </p>
-                            <p className="text-sm text-gray-600 dark:text-gray-300">
+                            <p className="text-sm text-muted-foreground dark:text-foreground">
                                 {twoFactorEnabled
                                     ? t("twoFactorProtected")
                                     : t("twoFactorEnablePrompt")}
@@ -255,11 +255,11 @@ export const SecuritySection: React.FC<SecuritySectionProps> = ({ user }) => {
 
                     {/* 2FA Setup Instructions */}
                     {showTwoFactorSetup && !twoFactorEnabled && (
-                        <div className="space-y-4 rounded-lg bg-blue-50 p-4 dark:bg-blue-950/30">
-                            <p className="text-sm font-medium text-blue-900 dark:text-blue-200">
+                        <div className="space-y-4 rounded-lg bg-primary/5 p-4 dark:bg-primary/10">
+                            <p className="text-sm font-medium text-primary dark:text-primary">
                                 {t("setup2FA")}
                             </p>
-                            <ol className="space-y-2 text-sm text-blue-800 dark:text-blue-300">
+                            <ol className="space-y-2 text-sm text-primary dark:text-primary">
                                 <li>
                                     1. Download an authenticator app (Google
                                     Authenticator, Authy, etc.)
@@ -273,13 +273,13 @@ export const SecuritySection: React.FC<SecuritySectionProps> = ({ user }) => {
                                     confirm
                                 </li>
                             </ol>
-                            <div className="flex justify-center rounded-lg bg-white p-4 dark:bg-gray-800">
-                                <div className="h-32 w-32 bg-gray-200 dark:bg-gray-700" />
+                            <div className="flex justify-center rounded-lg bg-white p-4 dark:bg-card">
+                                <div className="h-32 w-32 bg-accent dark:bg-muted" />
                             </div>
                             <div className="space-y-2">
                                 <label
                                     htmlFor="2fa-code"
-                                    className="block text-sm font-medium text-blue-900 dark:text-blue-200"
+                                    className="block text-sm font-medium text-primary dark:text-primary"
                                 >
                                     {t("enter6DigitCode")}
                                 </label>
@@ -300,7 +300,7 @@ export const SecuritySection: React.FC<SecuritySectionProps> = ({ user }) => {
                                 </Button>
                                 <Button
                                     onClick={handleTwoFactorSetup}
-                                    className="bg-blue-600 hover:bg-blue-700"
+                                    className="bg-primary hover:bg-primary"
                                 >
                                     {t("confirmAndEnable")}
                                 </Button>
@@ -341,7 +341,7 @@ export const SecuritySection: React.FC<SecuritySectionProps> = ({ user }) => {
                             <div className="space-y-2">
                                 <label
                                     htmlFor="currentPassword"
-                                    className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                                    className="block text-sm font-medium text-foreground dark:text-foreground"
                                 >
                                     {t("currentPassword")}
                                 </label>
@@ -376,7 +376,7 @@ export const SecuritySection: React.FC<SecuritySectionProps> = ({ user }) => {
                             <div className="space-y-2">
                                 <label
                                     htmlFor="newPassword"
-                                    className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                                    className="block text-sm font-medium text-foreground dark:text-foreground"
                                 >
                                     {t("newPassword")}
                                 </label>
@@ -406,8 +406,8 @@ export const SecuritySection: React.FC<SecuritySectionProps> = ({ user }) => {
 
                                 {/* Password Requirements */}
                                 {passwordForm.newPassword && (
-                                    <div className="space-y-2 rounded-lg bg-gray-50 p-3 dark:bg-gray-900/50">
-                                        <p className="text-xs font-medium text-gray-700 dark:text-gray-300">
+                                    <div className="space-y-2 rounded-lg bg-muted p-3 dark:bg-background/50">
+                                        <p className="text-xs font-medium text-foreground dark:text-foreground">
                                             {t("passwordRequirements")}:
                                         </p>
                                         <ul className="space-y-1">
@@ -418,7 +418,7 @@ export const SecuritySection: React.FC<SecuritySectionProps> = ({ user }) => {
                                                         className={`text-xs ${
                                                             req.met
                                                                 ? "text-green-600 dark:text-green-400"
-                                                                : "text-gray-600 dark:text-gray-400"
+                                                                : "text-muted-foreground dark:text-muted-foreground"
                                                         }`}
                                                     >
                                                         {req.met ? "✓" : "○"}{" "}
@@ -435,7 +435,7 @@ export const SecuritySection: React.FC<SecuritySectionProps> = ({ user }) => {
                             <div className="space-y-2">
                                 <label
                                     htmlFor="confirmPassword"
-                                    className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                                    className="block text-sm font-medium text-foreground dark:text-foreground"
                                 >
                                     {t("confirmPassword")}
                                 </label>
@@ -487,7 +487,7 @@ export const SecuritySection: React.FC<SecuritySectionProps> = ({ user }) => {
                                 <Button
                                     type="submit"
                                     disabled={isChangingPassword}
-                                    className="bg-blue-600 hover:bg-blue-700"
+                                    className="bg-primary hover:bg-primary"
                                 >
                                     {isChangingPassword
                                         ? t("changing")

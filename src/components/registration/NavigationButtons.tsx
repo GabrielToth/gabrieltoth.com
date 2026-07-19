@@ -27,7 +27,7 @@ export function NavigationButtons({
                 <button
                     onClick={onBack}
                     disabled={backDisabled || isLoading}
-                    className="px-4 sm:px-6 py-3 sm:py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-medium rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px] sm:min-h-auto text-base sm:text-sm"
+                    className="px-4 sm:px-6 py-3 sm:py-2 border border-input dark:border-input text-foreground dark:text-foreground font-medium rounded-lg hover:bg-muted dark:hover:bg-accent transition-colors disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px] sm:min-h-auto text-base sm:text-sm"
                     aria-label="Go back to previous step"
                 >
                     Back
@@ -51,7 +51,7 @@ export function NavigationButtons({
                 <button
                     onClick={onNext}
                     disabled={nextDisabled || isLoading}
-                    className="px-4 sm:px-6 py-3 sm:py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 min-h-[44px] sm:min-h-auto text-base sm:text-sm"
+                    className="px-4 sm:px-6 py-3 sm:py-2 bg-primary hover:bg-primary text-white font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 min-h-[44px] sm:min-h-auto text-base sm:text-sm"
                     aria-label={nextLabel}
                 >
                     {isLoading && (

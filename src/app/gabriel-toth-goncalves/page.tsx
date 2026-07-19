@@ -89,7 +89,7 @@ export default async function AboutPage({ params }: AboutPageProps) {
                 customData={homepageStructuredData}
             />
 
-            <main className="min-h-screen bg-white dark:bg-gray-900">
+            <main className="min-h-screen bg-card dark:bg-background">
                 <AboutSection params={{ locale }} />
                 <ProjectsSection />
                 <ChannelManagementSection params={{ locale }} />

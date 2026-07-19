@@ -67,11 +67,11 @@ export function PasswordSetup({
                 <div className="mb-3 space-y-1">
                     <label
                         htmlFor="password"
-                        className="block text-sm sm:text-base font-medium text-gray-100 dark:text-gray-100"
+                        className="block text-sm sm:text-base font-medium text-foreground dark:text-foreground"
                     >
                         Password
                     </label>
-                    <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 font-medium">
+                    <p className="text-xs sm:text-sm text-muted-foreground dark:text-muted-foreground font-medium">
                         Required: 8+ characters, uppercase, lowercase, number,
                         special character (!@#$%^&*)
                     </p>
@@ -89,8 +89,8 @@ export function PasswordSetup({
                                 ? "border-red-500 focus:ring-red-200 dark:border-red-400 dark:focus:ring-red-900"
                                 : value && validation.isValid
                                   ? "border-green-500 focus:ring-green-200 dark:border-green-400 dark:focus:ring-green-900"
-                                  : "border-gray-300 dark:border-gray-600 focus:ring-blue-200 dark:focus:ring-blue-900"
-                        } bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100`}
+                                  : "border-input dark:border-input focus:ring-ring dark:focus:ring-ring"
+                        } bg-card text-foreground dark:text-foreground`}
                         aria-label="Password"
                         aria-describedby="password-requirements"
                         aria-invalid={Boolean(value && !validation.isValid)}
@@ -98,7 +98,7 @@ export function PasswordSetup({
                     <button
                         type="button"
                         onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 text-sm font-medium min-h-[44px] min-w-[44px] flex items-center justify-center"
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground dark:text-muted-foreground hover:text-foreground dark:hover:text-muted-foreground text-sm font-medium min-h-[44px] min-w-[44px] flex items-center justify-center"
                         aria-label={
                             showPassword ? "Hide password" : "Show password"
                         }
@@ -128,7 +128,7 @@ export function PasswordSetup({
             {value && (
                 <div className="space-y-2">
                     <div className="flex items-center gap-2">
-                        <div className="flex-1 bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                        <div className="flex-1 bg-accent dark:bg-muted rounded-full h-2">
                             <div
                                 className={`h-2 rounded-full transition-all ${
                                     strength.strength === "weak"
@@ -141,11 +141,11 @@ export function PasswordSetup({
                                 }`}
                             />
                         </div>
-                        <span className="text-sm font-medium capitalize text-gray-900 dark:text-gray-100">
+                        <span className="text-sm font-medium capitalize text-foreground dark:text-foreground">
                             {strength.strength}
                         </span>
                     </div>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                    <p className="text-sm text-muted-foreground dark:text-muted-foreground">
                         {strength.feedback}
                     </p>
                 </div>
@@ -158,11 +158,11 @@ export function PasswordSetup({
                         ? "bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800"
                         : value && !validation.isValid
                           ? "bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800"
-                          : "bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600"
+                          : "bg-muted dark:bg-muted border border-border dark:border-input"
                 }`}
             >
                 <p
-                    className="text-sm font-medium text-gray-900 dark:text-gray-100"
+                    className="text-sm font-medium text-foreground dark:text-foreground"
                     id="password-requirements"
                 >
                     Password Requirements:
@@ -172,7 +172,7 @@ export function PasswordSetup({
                         className={`transition-colors ${
                             validation.requirements.minLength
                                 ? "text-green-600 dark:text-green-400 font-medium"
-                                : "text-gray-600 dark:text-gray-400"
+                                : "text-muted-foreground dark:text-muted-foreground"
                         }`}
                         role="listitem"
                     >
@@ -183,7 +183,7 @@ export function PasswordSetup({
                         className={`transition-colors ${
                             validation.requirements.hasUppercase
                                 ? "text-green-600 dark:text-green-400 font-medium"
-                                : "text-gray-600 dark:text-gray-400"
+                                : "text-muted-foreground dark:text-muted-foreground"
                         }`}
                         role="listitem"
                     >
@@ -194,7 +194,7 @@ export function PasswordSetup({
                         className={`transition-colors ${
                             validation.requirements.hasLowercase
                                 ? "text-green-600 dark:text-green-400 font-medium"
-                                : "text-gray-600 dark:text-gray-400"
+                                : "text-muted-foreground dark:text-muted-foreground"
                         }`}
                         role="listitem"
                     >
@@ -205,7 +205,7 @@ export function PasswordSetup({
                         className={`transition-colors ${
                             validation.requirements.hasNumber
                                 ? "text-green-600 dark:text-green-400 font-medium"
-                                : "text-gray-600 dark:text-gray-400"
+                                : "text-muted-foreground dark:text-muted-foreground"
                         }`}
                         role="listitem"
                     >
@@ -216,7 +216,7 @@ export function PasswordSetup({
                         className={`transition-colors ${
                             validation.requirements.hasSpecial
                                 ? "text-green-600 dark:text-green-400 font-medium"
-                                : "text-gray-600 dark:text-gray-400"
+                                : "text-muted-foreground dark:text-muted-foreground"
                         }`}
                         role="listitem"
                     >
@@ -230,7 +230,7 @@ export function PasswordSetup({
             <div>
                 <label
                     htmlFor="confirm"
-                    className="block text-sm sm:text-base font-medium text-gray-100 dark:text-gray-100 mb-2"
+                    className="block text-sm sm:text-base font-medium text-foreground dark:text-foreground mb-2"
                 >
                     Confirm Password
                 </label>
@@ -249,15 +249,15 @@ export function PasswordSetup({
                                     passwordsMatch &&
                                     validation.isValid
                                   ? "border-green-500 focus:ring-green-200 dark:border-green-400 dark:focus:ring-green-900"
-                                  : "border-gray-300 dark:border-gray-600 focus:ring-blue-200 dark:focus:ring-blue-900"
-                        } bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100`}
+                                  : "border-input dark:border-input focus:ring-ring dark:focus:ring-ring"
+                        } bg-card text-foreground dark:text-foreground`}
                         aria-label="Confirm password"
                         aria-invalid={Boolean(confirmValue && !passwordsMatch)}
                     />
                     <button
                         type="button"
                         onClick={() => setShowConfirm(!showConfirm)}
-                        className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 text-sm font-medium min-h-[44px] min-w-[44px] flex items-center justify-center"
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground dark:text-muted-foreground hover:text-foreground dark:hover:text-muted-foreground text-sm font-medium min-h-[44px] min-w-[44px] flex items-center justify-center"
                         aria-label={
                             showConfirm ? "Hide password" : "Show password"
                         }

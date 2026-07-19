@@ -68,7 +68,7 @@ export function StreamTitleEditor({
     return (
         <div className="space-y-4">
             <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-foreground dark:text-foreground mb-1">
                     Stream Title
                 </label>
                 <input
@@ -76,20 +76,20 @@ export function StreamTitleEditor({
                     value={title}
                     onChange={e => setTitle(e.target.value)}
                     maxLength={140}
-                    className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+                    className="w-full rounded-md border border-input px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-ring dark:border-border dark:bg-card dark:text-foreground"
                     placeholder="Enter stream title..."
                 />
             </div>
 
             <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-foreground dark:text-foreground mb-1">
                     Game / Category
                 </label>
                 <input
                     type="text"
                     value={game}
                     onChange={e => setGame(e.target.value)}
-                    className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+                    className="w-full rounded-md border border-input px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-ring dark:border-border dark:bg-card dark:text-foreground"
                     placeholder="Enter game or category..."
                 />
             </div>
@@ -97,7 +97,7 @@ export function StreamTitleEditor({
             <button
                 onClick={handleSave}
                 disabled={saving}
-                className="w-full rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
+                className="w-full rounded-md bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-primary disabled:cursor-not-allowed disabled:opacity-50"
             >
                 {saving ? "Saving..." : "Update Stream"}
             </button>

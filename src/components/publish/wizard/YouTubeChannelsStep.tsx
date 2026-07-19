@@ -62,7 +62,7 @@ export default function YouTubeChannelsStep({
         <div className="space-y-6">
             <div>
                 <h2 className="text-xl font-semibold">{t("step2.title")}</h2>
-                <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                <p className="mt-1 text-sm text-muted-foreground dark:text-muted-foreground">
                     {t("step2.description")}
                 </p>
             </div>
@@ -85,8 +85,8 @@ export default function YouTubeChannelsStep({
             {/* Loading */}
             {loading ? (
                 <div className="flex items-center justify-center py-12">
-                    <Loader2 className="h-6 w-6 animate-spin text-gray-400" />
-                    <span className="ml-2 text-sm text-gray-500">
+                    <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+                    <span className="ml-2 text-sm text-muted-foreground">
                         {t("step2.loadingChannels")}
                     </span>
                 </div>
@@ -106,7 +106,7 @@ export default function YouTubeChannelsStep({
             ) : (
                 /* Channel list */
                 <div className="space-y-3">
-                    <p className="text-sm text-gray-500">
+                    <p className="text-sm text-muted-foreground">
                         {t("step2.channelCount", {
                             count: selectedChannelIds.length,
                         })}
@@ -116,7 +116,7 @@ export default function YouTubeChannelsStep({
                             key={channel.id}
                             className={`transition-all ${
                                 selectedChannelIds.includes(channel.id)
-                                    ? "border-blue-400 ring-1 ring-blue-400 dark:border-blue-600"
+                                    ? "border-primary ring-1 ring-blue-400 dark:border-border"
                                     : ""
                             }`}
                         >
@@ -133,7 +133,7 @@ export default function YouTubeChannelsStep({
                                         toggleChannel(channel.id)
                                     }
                                 />
-                                <div className="h-10 w-10 flex-shrink-0 overflow-hidden rounded-full bg-gray-200">
+                                <div className="h-10 w-10 flex-shrink-0 overflow-hidden rounded-full bg-accent">
                                     {channel.thumbnailUrl ? (
                                         <img
                                             src={channel.thumbnailUrl}
@@ -148,7 +148,7 @@ export default function YouTubeChannelsStep({
                                     <p className="font-medium truncate">
                                         {channel.name}
                                     </p>
-                                    <p className="text-xs text-gray-500">
+                                    <p className="text-xs text-muted-foreground">
                                         {formatNumber(channel.subscriberCount)}{" "}
                                         {t("step2.channelSubscribers")} ·{" "}
                                         {formatNumber(channel.videoCount)}{" "}
@@ -162,7 +162,7 @@ export default function YouTubeChannelsStep({
             )}
 
             {/* Navigation */}
-            <div className="flex justify-between border-t pt-4 dark:border-gray-700">
+            <div className="flex justify-between border-t pt-4 dark:border-border">
                 <Button onClick={onBack} variant="outline">
                     {t("wizard.back")}
                 </Button>

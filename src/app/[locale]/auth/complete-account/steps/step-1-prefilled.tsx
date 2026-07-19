@@ -62,10 +62,10 @@ export default function Step1Prefilled({
         <div className="space-y-6">
             {/* Step Title */}
             <div>
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                <h2 className="text-2xl font-bold text-foreground dark:text-foreground mb-2">
                     {t("completeAccount.step1.title")}
                 </h2>
-                <p className="text-gray-600 dark:text-gray-400">
+                <p className="text-muted-foreground dark:text-muted-foreground">
                     {t("completeAccount.step1.description")}
                 </p>
             </div>
@@ -76,7 +76,7 @@ export default function Step1Prefilled({
                     <img
                         src={prefilledData.picture}
                         alt={prefilledData.name}
-                        className="w-24 h-24 rounded-full border-4 border-blue-200 dark:border-blue-800 object-cover"
+                        className="w-24 h-24 rounded-full border-4 dark:border-white/10 dark:border-border object-cover"
                     />
                 </div>
             )}
@@ -99,16 +99,16 @@ export default function Step1Prefilled({
                     />
                 ) : (
                     <div className="space-y-2">
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                        <label className="block text-sm font-medium text-foreground dark:text-foreground">
                             {t("completeAccount.step1.email")}
                         </label>
-                        <div className="flex items-center justify-between gap-2 p-3 bg-gray-50 dark:bg-gray-800 rounded-md border border-gray-200 dark:border-gray-700">
-                            <span className="text-gray-900 dark:text-white">
+                        <div className="flex items-center justify-between gap-2 p-3 bg-muted dark:bg-card rounded-md border border-border dark:border-border">
+                            <span className="text-foreground dark:text-foreground">
                                 {editedData.email}
                             </span>
                             <button
                                 onClick={() => handleEditField("email")}
-                                className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 text-sm font-medium"
+                                className="text-primary dark:text-primary hover:text-primary dark:hover:text-primary text-sm font-medium"
                             >
                                 {t("completeAccount.step1.edit")}
                             </button>
@@ -134,16 +134,16 @@ export default function Step1Prefilled({
                     />
                 ) : (
                     <div className="space-y-2">
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                        <label className="block text-sm font-medium text-foreground dark:text-foreground">
                             {t("completeAccount.step1.name")}
                         </label>
-                        <div className="flex items-center justify-between gap-2 p-3 bg-gray-50 dark:bg-gray-800 rounded-md border border-gray-200 dark:border-gray-700">
-                            <span className="text-gray-900 dark:text-white">
+                        <div className="flex items-center justify-between gap-2 p-3 bg-muted dark:bg-card rounded-md border border-border dark:border-border">
+                            <span className="text-foreground dark:text-foreground">
                                 {editedData.name}
                             </span>
                             <button
                                 onClick={() => handleEditField("name")}
-                                className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 text-sm font-medium"
+                                className="text-primary dark:text-primary hover:text-primary dark:hover:text-primary text-sm font-medium"
                             >
                                 {t("completeAccount.step1.edit")}
                             </button>
@@ -161,7 +161,7 @@ export default function Step1Prefilled({
             <button
                 onClick={onContinue}
                 disabled={isLoading}
-                className="w-full px-4 py-3 bg-blue-600 dark:bg-blue-500 text-white rounded-md hover:bg-blue-700 dark:hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
+                className="w-full px-4 py-3 bg-primary dark:bg-primary text-white rounded-md hover:bg-primary dark:hover:bg-primary disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
             >
                 {isLoading
                     ? t("completeAccount.loading")

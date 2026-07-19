@@ -209,8 +209,8 @@ export function StreamScheduler() {
     return (
         <div className="space-y-6">
             {/* New Schedule Form */}
-            <div className="rounded-lg border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-900">
-                <h3 className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">
+            <div className="rounded-lg border border-border bg-white p-4 dark:border-border dark:bg-background">
+                <h3 className="mb-4 text-lg font-semibold text-foreground dark:text-foreground">
                     {t("newSchedule")}
                 </h3>
 
@@ -219,7 +219,7 @@ export function StreamScheduler() {
                     <div>
                         <label
                             htmlFor="stream-title"
-                            className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                            className="block text-sm font-medium text-foreground dark:text-foreground"
                         >
                             {t("title")}
                         </label>
@@ -234,10 +234,10 @@ export function StreamScheduler() {
                                 }))
                             }
                             maxLength={140}
-                            className={`mt-1 block w-full rounded-md border px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:bg-gray-800 dark:text-white ${
+                            className={`mt-1 block w-full rounded-md border px-3 py-2 text-sm shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-ring dark:bg-card dark:text-foreground ${
                                 validationErrors.title
                                     ? "border-red-500"
-                                    : "border-gray-300 dark:border-gray-600"
+                                    : "border-input dark:border-input"
                             }`}
                             placeholder={t("title")}
                         />
@@ -246,14 +246,14 @@ export function StreamScheduler() {
                                 {validationErrors.title}
                             </p>
                         )}
-                        <p className="mt-1 text-xs text-gray-400">
+                        <p className="mt-1 text-xs text-muted-foreground">
                             {formData.title.length}/140
                         </p>
                     </div>
 
                     {/* Platform Selection */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                        <label className="block text-sm font-medium text-foreground dark:text-foreground">
                             {t("platform")}
                         </label>
                         <div className="mt-2 flex gap-4">
@@ -270,9 +270,9 @@ export function StreamScheduler() {
                                         onChange={() =>
                                             togglePlatform(platform)
                                         }
-                                        className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                                        className="h-4 w-4 rounded border-input text-primary focus:ring-ring"
                                     />
-                                    <span className="text-sm text-gray-700 dark:text-gray-300 capitalize">
+                                    <span className="text-sm text-foreground dark:text-foreground capitalize">
                                         {platform}
                                     </span>
                                 </label>
@@ -289,7 +289,7 @@ export function StreamScheduler() {
                     <div>
                         <label
                             htmlFor="stream-start-time"
-                            className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                            className="block text-sm font-medium text-foreground dark:text-foreground"
                         >
                             {t("scheduledStart")}
                         </label>
@@ -304,10 +304,10 @@ export function StreamScheduler() {
                                 }))
                             }
                             min={getMinDateTime()}
-                            className={`mt-1 block w-full rounded-md border px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:bg-gray-800 dark:text-white ${
+                            className={`mt-1 block w-full rounded-md border px-3 py-2 text-sm shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-ring dark:bg-card dark:text-foreground ${
                                 validationErrors.scheduledStartTime
                                     ? "border-red-500"
-                                    : "border-gray-300 dark:border-gray-600"
+                                    : "border-input dark:border-input"
                             }`}
                         />
                         {validationErrors.scheduledStartTime && (
@@ -321,7 +321,7 @@ export function StreamScheduler() {
                     <div>
                         <label
                             htmlFor="stream-duration"
-                            className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                            className="block text-sm font-medium text-foreground dark:text-foreground"
                         >
                             {t("duration")}
                         </label>
@@ -337,7 +337,7 @@ export function StreamScheduler() {
                                     ),
                                 }))
                             }
-                            className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
+                            className="mt-1 block w-full rounded-md border border-input px-3 py-2 text-sm shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-ring dark:border-input dark:bg-card dark:text-foreground"
                         >
                             {DURATION_OPTIONS.map(duration => (
                                 <option key={duration} value={duration}>
@@ -353,7 +353,7 @@ export function StreamScheduler() {
                     <div>
                         <label
                             htmlFor="stream-description"
-                            className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                            className="block text-sm font-medium text-foreground dark:text-foreground"
                         >
                             {t("description")}
                         </label>
@@ -368,10 +368,10 @@ export function StreamScheduler() {
                             }
                             maxLength={500}
                             rows={3}
-                            className={`mt-1 block w-full rounded-md border px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:bg-gray-800 dark:text-white ${
+                            className={`mt-1 block w-full rounded-md border px-3 py-2 text-sm shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-ring dark:bg-card dark:text-foreground ${
                                 validationErrors.description
                                     ? "border-red-500"
-                                    : "border-gray-300 dark:border-gray-600"
+                                    : "border-input dark:border-input"
                             }`}
                             placeholder={t("description")}
                         />
@@ -384,7 +384,7 @@ export function StreamScheduler() {
 
                     {/* Notification Methods */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                        <label className="block text-sm font-medium text-foreground dark:text-foreground">
                             {t("notificationMethods")}
                         </label>
                         <div className="mt-2 flex gap-4">
@@ -401,9 +401,9 @@ export function StreamScheduler() {
                                         onChange={() =>
                                             toggleNotificationMethod(method)
                                         }
-                                        className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                                        className="h-4 w-4 rounded border-input text-primary focus:ring-ring"
                                     />
-                                    <span className="text-sm text-gray-700 dark:text-gray-300 capitalize">
+                                    <span className="text-sm text-foreground dark:text-foreground capitalize">
                                         {method === "discord"
                                             ? t("discord")
                                             : t("telegram")}
@@ -422,7 +422,7 @@ export function StreamScheduler() {
                     <button
                         type="submit"
                         disabled={submitting}
-                        className="inline-flex items-center rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="inline-flex items-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-primary focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                         {submitting ? (
                             <>
@@ -437,17 +437,17 @@ export function StreamScheduler() {
             </div>
 
             {/* Upcoming Schedules */}
-            <div className="rounded-lg border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-900">
-                <h3 className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">
+            <div className="rounded-lg border border-border bg-white p-4 dark:border-border dark:bg-background">
+                <h3 className="mb-4 text-lg font-semibold text-foreground dark:text-foreground">
                     {t("upcomingStreams")}
                 </h3>
 
                 {loading ? (
                     <div className="flex items-center justify-center py-8">
-                        <div className="h-8 w-8 animate-spin rounded-full border-4 border-gray-200 border-t-blue-500"></div>
+                        <div className="h-8 w-8 animate-spin rounded-full border-4 border-border border-t-blue-500"></div>
                     </div>
                 ) : schedules.length === 0 ? (
-                    <p className="py-4 text-center text-sm text-gray-500">
+                    <p className="py-4 text-center text-sm text-muted-foreground">
                         {t("noScheduledStreams")}
                     </p>
                 ) : (
@@ -455,13 +455,13 @@ export function StreamScheduler() {
                         {schedules.map(schedule => (
                             <div
                                 key={schedule.id}
-                                className="flex items-center justify-between rounded-md border border-gray-100 p-3 dark:border-gray-700"
+                                className="flex items-center justify-between rounded-md border border-gray-100 p-3 dark:border-border"
                             >
                                 <div className="min-w-0 flex-1">
-                                    <p className="truncate text-sm font-medium text-gray-900 dark:text-white">
+                                    <p className="truncate text-sm font-medium text-foreground dark:text-foreground">
                                         {schedule.title}
                                     </p>
-                                    <p className="text-xs text-gray-500">
+                                    <p className="text-xs text-muted-foreground">
                                         {new Date(
                                             schedule.scheduledStartTime
                                         ).toLocaleString()}{" "}

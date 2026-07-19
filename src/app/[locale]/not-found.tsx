@@ -51,16 +51,16 @@ export default function LocaleNotFound() {
     /* c8 ignore start */
     if (!mounted) {
         return (
-            <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 dark:from-gray-900 dark:to-blue-900 flex items-center justify-center px-4">
+            <div className="min-h-screen bg-background dark:from-gray-900 dark:to-blue-900 flex items-center justify-center px-4">
                 <div className="max-w-4xl mx-auto text-center">
                     <div className="mb-12">
-                        <h1 className="text-8xl font-bold text-blue-600 dark:text-blue-400 mb-4">
+                        <h1 className="text-8xl font-bold text-primary dark:text-primary mb-4">
                             404
                         </h1>
-                        <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+                        <h2 className="text-3xl font-bold text-foreground dark:text-foreground mb-4">
                             Page Not Found
                         </h2>
-                        <p className="text-lg text-gray-600 dark:text-gray-300 mb-8">
+                        <p className="text-lg text-muted-foreground dark:text-foreground mb-8">
                             Loading...
                         </p>
                     </div>
@@ -177,17 +177,17 @@ export default function LocaleNotFound() {
     ]
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 dark:from-gray-900 dark:to-blue-900 flex items-center justify-center px-4">
+        <div className="min-h-screen bg-background dark:from-gray-900 dark:to-blue-900 flex items-center justify-center px-4">
             <div className="max-w-4xl mx-auto text-center">
                 {/* Error Section */}
                 <div className="mb-12">
-                    <h1 className="text-8xl font-bold text-blue-600 dark:text-blue-400 mb-4">
+                    <h1 className="text-8xl font-bold text-primary dark:text-primary mb-4">
                         404
                     </h1>
-                    <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+                    <h2 className="text-3xl font-bold text-foreground dark:text-foreground mb-4">
                         {content.title}
                     </h2>
-                    <p className="text-lg text-gray-600 dark:text-gray-300 mb-8">
+                    <p className="text-lg text-muted-foreground dark:text-foreground mb-8">
                         {content.subtitle}
                     </p>
                 </div>
@@ -197,17 +197,17 @@ export default function LocaleNotFound() {
                     {products.map((product, index) => (
                         <div
                             key={index}
-                            className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg hover:shadow-xl transition-shadow"
+                            className="bg-card rounded-lg p-6 shadow-lg hover:shadow-xl transition-shadow"
                         >
-                            <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+                            <h3 className="text-xl font-semibold text-foreground dark:text-foreground mb-2">
                                 {product.title}
                             </h3>
-                            <p className="text-gray-600 dark:text-gray-300 mb-4 text-sm">
+                            <p className="text-muted-foreground dark:text-foreground mb-4 text-sm">
                                 {product.description}
                             </p>
                             <Link
                                 href={product.href}
-                                className="inline-flex items-center justify-center px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors w-full"
+                                className="inline-flex items-center justify-center px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:bg-primary transition-colors w-full"
                             >
                                 <span>{content.viewButton}</span>
                                 <ExternalLink className="ml-2" size={14} />
@@ -220,7 +220,7 @@ export default function LocaleNotFound() {
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                     <Link
                         href={`/${locale}`}
-                        className="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors"
+                        className="inline-flex items-center px-6 py-3 bg-primary text-white rounded-lg font-medium hover:bg-primary transition-colors"
                     >
                         <Home className="mr-2" size={20} />
                         {content.homeButton}
@@ -230,7 +230,7 @@ export default function LocaleNotFound() {
                             /* c8 ignore next */
                             window.history.back()
                         }}
-                        className="inline-flex items-center px-6 py-3 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg font-medium hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+                        className="inline-flex items-center px-6 py-3 border border-input dark:border-input text-foreground dark:text-foreground rounded-lg font-medium hover:bg-muted dark:hover:bg-accent transition-colors"
                     >
                         <ArrowLeft className="mr-2" size={20} />
                         {content.backButton}
@@ -238,7 +238,7 @@ export default function LocaleNotFound() {
                 </div>
 
                 {/* Help Text */}
-                <div className="mt-8 text-sm text-gray-500 dark:text-gray-400">
+                <div className="mt-8 text-sm text-muted-foreground dark:text-muted-foreground">
                     <p>{content.contactText}</p>
                 </div>
             </div>

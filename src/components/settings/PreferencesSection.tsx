@@ -129,10 +129,10 @@ export const PreferencesSection: React.FC<PreferencesSectionProps> = ({
                 {/* Notifications Toggle */}
                 <div className="flex items-center justify-between">
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                        <label className="block text-sm font-medium text-foreground dark:text-foreground">
                             {t("notifications")}
                         </label>
-                        <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                        <p className="mt-1 text-sm text-muted-foreground dark:text-muted-foreground">
                             {t("notificationsDescription")}
                         </p>
                     </div>
@@ -151,7 +151,7 @@ export const PreferencesSection: React.FC<PreferencesSectionProps> = ({
                 <div className="space-y-2">
                     <label
                         htmlFor="language"
-                        className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                        className="block text-sm font-medium text-foreground dark:text-foreground"
                     >
                         {t("language")}
                     </label>
@@ -177,7 +177,7 @@ export const PreferencesSection: React.FC<PreferencesSectionProps> = ({
                             </SelectItem>
                         </SelectContent>
                     </Select>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                    <p className="text-xs text-muted-foreground dark:text-muted-foreground">
                         {t("languageDescription")}
                     </p>
                 </div>
@@ -186,7 +186,7 @@ export const PreferencesSection: React.FC<PreferencesSectionProps> = ({
                 <div className="space-y-2">
                     <label
                         htmlFor="theme"
-                        className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                        className="block text-sm font-medium text-foreground dark:text-foreground"
                     >
                         {t("theme")}
                     </label>
@@ -205,7 +205,7 @@ export const PreferencesSection: React.FC<PreferencesSectionProps> = ({
                             </SelectItem>
                         </SelectContent>
                     </Select>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                    <p className="text-xs text-muted-foreground dark:text-muted-foreground">
                         {t("themeDescription")}
                     </p>
                 </div>
@@ -214,7 +214,7 @@ export const PreferencesSection: React.FC<PreferencesSectionProps> = ({
                 <div className="space-y-2">
                     <label
                         htmlFor="timezone"
-                        className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                        className="block text-sm font-medium text-foreground dark:text-foreground"
                     >
                         {t("timezone")}
                     </label>
@@ -245,13 +245,13 @@ export const PreferencesSection: React.FC<PreferencesSectionProps> = ({
                             ))}
                         </SelectContent>
                     </Select>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                    <p className="text-xs text-muted-foreground dark:text-muted-foreground">
                         {t("timezoneDescription")}
                     </p>
                 </div>
 
                 {/* Info Message */}
-                <div className="rounded-md bg-blue-50 p-4 text-sm text-blue-700 dark:bg-blue-950/30 dark:text-blue-300">
+                <div className="rounded-md bg-primary/5 p-4 text-sm text-primary dark:bg-primary/10 dark:text-primary">
                     {t("preferencesSavedAutomatically")}
                 </div>
             </CardContent>

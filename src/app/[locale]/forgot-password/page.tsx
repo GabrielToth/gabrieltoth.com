@@ -34,24 +34,24 @@ export default async function ForgotPasswordPage({
 
     return (
         <>
-            <main className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 dark:from-gray-900 dark:to-blue-900">
+            <main className="min-h-screen bg-background dark:from-gray-900 dark:to-blue-900">
                 <div className="flex items-center justify-center min-h-screen pt-20 pb-12 px-4">
                     <div className="w-full max-w-md">
-                        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-8 border border-gray-200 dark:border-gray-700">
-                            <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2 text-center">
+                        <div className="bg-card rounded-lg shadow-xl p-8 border border-border dark:border-border">
+                            <h1 className="text-3xl font-bold text-foreground dark:text-foreground mb-2 text-center">
                                 {t("forgotPassword.title")}
                             </h1>
-                            <p className="text-gray-600 dark:text-gray-400 text-center mb-6">
+                            <p className="text-muted-foreground dark:text-muted-foreground text-center mb-6">
                                 {t("forgotPassword.subtitle")}
                             </p>
 
                             <ForgotPasswordForm locale={locale} />
 
-                            <p className="text-center text-gray-600 dark:text-gray-400 mt-6">
+                            <p className="text-center text-muted-foreground dark:text-muted-foreground mt-6">
                                 {t("forgotPassword.rememberPassword")}{" "}
                                 <Link
                                     href={`/${locale}/login`}
-                                    className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium"
+                                    className="text-primary dark:text-primary hover:text-primary dark:hover:text-primary font-medium"
                                 >
                                     {t("forgotPassword.loginLink")}
                                 </Link>

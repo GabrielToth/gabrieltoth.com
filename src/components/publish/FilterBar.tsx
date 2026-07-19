@@ -50,16 +50,16 @@ export const FilterBar: React.FC<FilterBarProps> = ({
     const connectedChannels = channels.filter(c => c.isConnected)
 
     return (
-        <div className="rounded-lg border border-gray-200 bg-white p-3 sm:p-4">
+        <div className="rounded-lg border border-border bg-white p-3 sm:p-4">
             <div className="flex flex-col gap-3 sm:gap-4">
                 {/* Header with title and selected count */}
                 <div className="flex items-center justify-between">
                     <div>
-                        <label className="block text-sm font-medium text-gray-900">
+                        <label className="block text-sm font-medium text-foreground">
                             {t("filterByChannel")}
                         </label>
                         {selectedChannels.length > 0 && (
-                            <p className="mt-1 text-xs text-gray-500">
+                            <p className="mt-1 text-xs text-muted-foreground">
                                 {t("filtersApplied", {
                                     count: selectedChannels.length,
                                 })}
@@ -79,8 +79,8 @@ export const FilterBar: React.FC<FilterBarProps> = ({
                                 }
                                 className={`inline-flex items-center rounded-full px-3 py-2 text-xs sm:text-sm font-medium transition-colors min-h-10 ${
                                     selectedChannels.includes(channel.platform)
-                                        ? "bg-blue-100 text-blue-700 ring-2 ring-blue-300"
-                                        : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                                        ? "bg-primary/10 text-primary ring-2 ring-ring"
+                                        : "bg-muted text-foreground hover:bg-accent"
                                 }`}
                                 aria-pressed={selectedChannels.includes(
                                     channel.platform
@@ -95,7 +95,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
                             </button>
                         ))
                     ) : (
-                        <p className="text-sm text-gray-500">
+                        <p className="text-sm text-muted-foreground">
                             {t("noConnectedChannels")}
                         </p>
                     )}
@@ -108,7 +108,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
                             variant="ghost"
                             size="sm"
                             onClick={handleClearAll}
-                            className="text-blue-600 hover:text-blue-700 hover:bg-blue-50 min-h-10"
+                            className="text-primary hover:text-primary hover:bg-primary/5 min-h-10"
                         >
                             {t("clearAllFilters")}
                         </Button>

@@ -109,7 +109,7 @@ export default function NetworkSelector({
 
     const statusColors: Record<string, string> = {
         connected: "bg-green-100 text-green-800",
-        disconnected: "bg-gray-100 text-gray-800",
+        disconnected: "bg-muted text-foreground",
         expired: "bg-red-100 text-red-800",
     }
 
@@ -123,7 +123,7 @@ export default function NetworkSelector({
         <div className="space-y-4 rounded-lg border p-4">
             <div className="space-y-2">
                 <h3 className="font-semibold">{t("selectNetworks")}</h3>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-muted-foreground">
                     {t("xOfYSelected", {
                         selected: selectedNetworkIds.length,
                         total: networks.length,
@@ -160,14 +160,14 @@ export default function NetworkSelector({
 
                     <button
                         onClick={onSelectAll}
-                        className="text-sm text-blue-600 hover:underline"
+                        className="text-sm text-primary hover:underline"
                         aria-label={t("selectAll")}
                     >
                         {t("selectAll")}
                     </button>
                     <button
                         onClick={onDeselectAll}
-                        className="text-sm text-blue-600 hover:underline"
+                        className="text-sm text-primary hover:underline"
                         aria-label={t("deselectAll")}
                     >
                         {t("deselectAll")}
@@ -210,7 +210,7 @@ export default function NetworkSelector({
                                 >
                                     {group.name}
                                 </label>
-                                <span className="text-xs text-gray-500">
+                                <span className="text-xs text-muted-foreground">
                                     ({group.networkIds.length})
                                 </span>
                             </div>
@@ -222,7 +222,7 @@ export default function NetworkSelector({
             <div className="space-y-2 border-t pt-3">
                 <h4 className="text-sm font-medium">{t("networks")}</h4>
                 {filteredNetworks.length === 0 ? (
-                    <p className="text-sm text-gray-500">
+                    <p className="text-sm text-muted-foreground">
                         {t("noNetworksFound")}
                     </p>
                 ) : (
@@ -230,7 +230,7 @@ export default function NetworkSelector({
                         {filteredNetworks.map(network => (
                             <div
                                 key={network.id}
-                                className="flex items-center gap-3 rounded p-2 hover:bg-gray-50"
+                                className="flex items-center gap-3 rounded p-2 hover:bg-muted"
                             >
                                 <Checkbox
                                     id={`network-${network.id}`}

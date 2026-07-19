@@ -29,7 +29,7 @@ export default async function ChannelManagementPage({ params }: PageProps) {
                 faqs={faqs}
             />
 
-            <main className="min-h-screen bg-white dark:bg-gray-900 relative">
+            <main className="min-h-screen bg-card dark:bg-background relative">
                 <ChannelManagementView locale={locale} />
 
                 {/* Breadcrumbs overlay */}

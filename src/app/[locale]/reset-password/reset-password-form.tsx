@@ -155,14 +155,14 @@ export default function ResetPasswordForm({
             )}
 
             <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-foreground dark:text-foreground mb-2">
                     {t("resetPassword.password")}
                 </label>
                 <input
                     type="password"
                     value={formData.password}
                     onChange={e => handlePasswordChange(e.target.value)}
-                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-600 dark:focus:ring-blue-500"
+                    className="w-full px-4 py-2 border border-input dark:border-input rounded-lg bg-card dark:bg-muted text-foreground dark:text-foreground focus:outline-none focus:ring-2 focus:ring-ring dark:focus:ring-ring"
                     placeholder={t("resetPassword.passwordPlaceholder")}
                     required
                     disabled={isLoading}
@@ -176,14 +176,14 @@ export default function ResetPasswordForm({
             </div>
 
             <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-foreground dark:text-foreground mb-2">
                     {t("resetPassword.confirmPassword")}
                 </label>
                 <input
                     type="password"
                     value={formData.confirmPassword}
                     onChange={e => handleConfirmPasswordChange(e.target.value)}
-                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-600 dark:focus:ring-blue-500"
+                    className="w-full px-4 py-2 border border-input dark:border-input rounded-lg bg-card dark:bg-muted text-foreground dark:text-foreground focus:outline-none focus:ring-2 focus:ring-ring dark:focus:ring-ring"
                     placeholder={t("resetPassword.confirmPasswordPlaceholder")}
                     required
                     disabled={isLoading}
@@ -199,7 +199,7 @@ export default function ResetPasswordForm({
             <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full px-4 py-3 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full px-4 py-3 bg-primary hover:bg-primary dark:bg-primary dark:hover:bg-primary text-white rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
                 {isLoading
                     ? t("resetPassword.loading")

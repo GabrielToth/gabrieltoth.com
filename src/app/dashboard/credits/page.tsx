@@ -146,7 +146,7 @@ export default function CreditsPage() {
                     <ArrowLeft className="h-5 w-5" />
                 </Link>
                 <div>
-                    <h1 className="text-2xl font-bold flex items-center gap-2 dark:text-white">
+                    <h1 className="text-2xl font-bold flex items-center gap-2 dark:text-foreground">
                         <Coins className="h-6 w-6" />
                         {t("title")}
                     </h1>
@@ -332,7 +332,7 @@ export default function CreditsPage() {
                                     className={`shrink-0 font-bold px-1.5 py-0.5 rounded text-[10px] ${
                                         route.method === "GET"
                                             ? "bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-400"
-                                            : "bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-400"
+                                            : "bg-primary/10 text-primary dark:bg-primary/10 dark:text-primary"
                                     }`}
                                 >
                                     {route.method}

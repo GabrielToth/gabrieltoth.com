@@ -55,7 +55,7 @@ export default function ProcessingStep({
         <div className="space-y-6">
             <div>
                 <h2 className="text-xl font-semibold">{t("step7.title")}</h2>
-                <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                <p className="mt-1 text-sm text-muted-foreground dark:text-muted-foreground">
                     {t("step7.description")}
                 </p>
             </div>
@@ -65,14 +65,14 @@ export default function ProcessingStep({
                     {/* Idle state */}
                     {processing.status === "idle" && (
                         <>
-                            <Clock className="h-16 w-16 text-blue-500" />
+                            <Clock className="h-16 w-16 text-primary" />
                             <h3 className="mt-4 text-lg font-semibold">
                                 {t("step7.queued")}
                             </h3>
-                            <p className="mt-2 text-sm text-gray-500">
+                            <p className="mt-2 text-sm text-muted-foreground">
                                 {t("step7.queuedDescription")}
                             </p>
-                            <p className="mt-4 text-xs text-gray-400 italic">
+                            <p className="mt-4 text-xs text-muted-foreground italic">
                                 {t("step7.waitingForYou")}
                             </p>
                         </>
@@ -81,11 +81,11 @@ export default function ProcessingStep({
                     {/* Queued */}
                     {processing.status === "queued" && (
                         <>
-                            <Loader2 className="h-16 w-16 animate-spin text-blue-500" />
+                            <Loader2 className="h-16 w-16 animate-spin text-primary" />
                             <h3 className="mt-4 text-lg font-semibold">
                                 {t("step7.queued")}
                             </h3>
-                            <p className="mt-2 text-sm text-gray-500">
+                            <p className="mt-2 text-sm text-muted-foreground">
                                 {t("step7.queuedDescription")}
                             </p>
                         </>
@@ -94,7 +94,7 @@ export default function ProcessingStep({
                     {/* Uploading - show per platform */}
                     {processing.status === "uploading" && (
                         <>
-                            <Upload className="h-16 w-16 text-blue-500 animate-pulse" />
+                            <Upload className="h-16 w-16 text-primary animate-pulse" />
                             <h3 className="mt-4 text-lg font-semibold">
                                 {t("step7.processing")}
                             </h3>
@@ -108,22 +108,22 @@ export default function ProcessingStep({
                                         ] || processing.platformId}
                                     </span>
                                 </div>
-                                <div className="h-2 w-full overflow-hidden rounded-full bg-gray-200">
+                                <div className="h-2 w-full overflow-hidden rounded-full bg-accent">
                                     <div
-                                        className="h-full rounded-full bg-blue-500 transition-all duration-500"
+                                        className="h-full rounded-full bg-primary/50 transition-all duration-500"
                                         style={{
                                             width: `${processing.progress}%`,
                                         }}
                                     />
                                 </div>
                             </div>
-                            <p className="mt-2 text-sm text-gray-500">
+                            <p className="mt-2 text-sm text-muted-foreground">
                                 {t("step7.uploadProgress", {
                                     percent: processing.progress,
                                 })}
                             </p>
                             {processing.speed && (
-                                <p className="text-xs text-gray-400">
+                                <p className="text-xs text-muted-foreground">
                                     {processing.speed}
                                 </p>
                             )}
@@ -133,7 +133,7 @@ export default function ProcessingStep({
                     {/* Metadata */}
                     {processing.status === "metadata" && (
                         <>
-                            <Loader2 className="h-16 w-16 animate-spin text-blue-500" />
+                            <Loader2 className="h-16 w-16 animate-spin text-primary" />
                             <h3 className="mt-4 text-lg font-semibold">
                                 {t("step7.metadataStep")}
                             </h3>
@@ -171,7 +171,7 @@ export default function ProcessingStep({
                             <h3 className="mt-4 text-lg font-semibold text-green-700">
                                 {t("step7.complete")}
                             </h3>
-                            <p className="mt-2 text-sm text-gray-500">
+                            <p className="mt-2 text-sm text-muted-foreground">
                                 {getResultsSummary(processing.results)}
                             </p>
                             {/* Per-platform results */}
@@ -200,7 +200,7 @@ export default function ProcessingStep({
                                                             href={result.url}
                                                             target="_blank"
                                                             rel="noopener noreferrer"
-                                                            className="text-blue-600 hover:underline"
+                                                            className="text-primary hover:underline"
                                                         >
                                                             <ExternalLink className="h-4 w-4" />
                                                         </a>
@@ -226,7 +226,7 @@ export default function ProcessingStep({
                             <h3 className="mt-4 text-lg font-semibold text-amber-700">
                                 Publicação parcial
                             </h3>
-                            <p className="mt-2 text-sm text-gray-500">
+                            <p className="mt-2 text-sm text-muted-foreground">
                                 {getResultsSummary(processing.results)}
                             </p>
                             <div className="mt-4 w-full space-y-2">
@@ -268,7 +268,7 @@ export default function ProcessingStep({
                             <h3 className="mt-4 text-lg font-semibold text-red-700">
                                 {t("step7.error")}
                             </h3>
-                            <p className="mt-2 text-sm text-gray-500">
+                            <p className="mt-2 text-sm text-muted-foreground">
                                 {processing.message ||
                                     t("step7.errorDescription")}
                             </p>
@@ -284,7 +284,7 @@ export default function ProcessingStep({
             </Card>
 
             {/* Actions */}
-            <div className="flex justify-center gap-3 border-t pt-4 dark:border-gray-700">
+            <div className="flex justify-center gap-3 border-t pt-4 dark:border-border">
                 {(processing.status === "error" ||
                     processing.status === "partial") && (
                     <Button onClick={onRetry} variant="default">

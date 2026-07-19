@@ -213,7 +213,7 @@ export default function UnifiedSignInForm({
                     <button
                         onClick={handleGoogleLogin}
                         disabled={isLoading}
-                        className="w-full h-12 px-4 bg-white dark:bg-gray-100 hover:bg-gray-50 dark:hover:bg-gray-200 text-gray-900 dark:text-gray-900 rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 border border-gray-200 dark:border-gray-300"
+                        className="w-full h-12 px-4 bg-card dark:bg-muted hover:bg-muted dark:hover:bg-accent text-foreground dark:text-foreground rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 border border-border dark:border-input"
                     >
                         <FaGoogle size={20} />
                         {mode === "signin"
@@ -225,7 +225,7 @@ export default function UnifiedSignInForm({
                     <button
                         onClick={handleSSO}
                         disabled={isLoading}
-                        className="w-full h-12 px-4 bg-gray-800 dark:bg-gray-700 hover:bg-gray-900 dark:hover:bg-gray-600 text-white rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                        className="w-full h-12 px-4 bg-card dark:bg-muted hover:bg-background dark:hover:bg-muted text-white rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                     >
                         <LockKeyhole size={20} />
                         {mode === "signin"
@@ -237,7 +237,7 @@ export default function UnifiedSignInForm({
                     <button
                         onClick={() => setStep("email")}
                         disabled={isLoading}
-                        className="w-full h-12 px-4 border-2 border-blue-600 dark:border-blue-500 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                        className="w-full h-12 px-4 border-2 border-blue-600 dark:border-primary text-primary dark:text-primary hover:bg-primary/5 dark:hover:bg-primary/10 rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                     >
                         <FaEnvelope size={20} />
                         {mode === "signin"
@@ -251,18 +251,18 @@ export default function UnifiedSignInForm({
                             type="checkbox"
                             checked={rememberMe}
                             onChange={e => setRememberMe(e.target.checked)}
-                            className="rounded border-gray-300 dark:border-gray-600 text-blue-600 focus:ring-blue-500"
+                            className="rounded border-input dark:border-input text-primary focus:ring-ring"
                             disabled={isLoading}
                         />
-                        <span className="text-sm text-gray-600 dark:text-gray-400">
+                        <span className="text-sm text-muted-foreground dark:text-muted-foreground">
                             {t("login.rememberMe")}
                         </span>
                     </label>
 
                     {/* Create Account Link */}
-                    <div className="mt-6 pt-6 border-t border-gray-300 dark:border-gray-600 text-center">
+                    <div className="mt-6 pt-6 border-t border-input dark:border-input text-center">
                         {mode === "signin" ? (
-                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                            <p className="text-sm text-muted-foreground dark:text-muted-foreground">
                                 {t("signin.noAccount")}{" "}
                                 <button
                                     type="button"
@@ -270,13 +270,13 @@ export default function UnifiedSignInForm({
                                         handleModeChange("signup")
                                         setError(null)
                                     }}
-                                    className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium"
+                                    className="text-primary dark:text-primary hover:text-primary dark:hover:text-primary font-medium"
                                 >
                                     {t("signin.createAccount")}
                                 </button>
                             </p>
                         ) : (
-                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                            <p className="text-sm text-muted-foreground dark:text-muted-foreground">
                                 {t("signin.haveAccount")}{" "}
                                 <button
                                     type="button"
@@ -285,7 +285,7 @@ export default function UnifiedSignInForm({
                                         setStep("buttons")
                                         setError(null)
                                     }}
-                                    className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium"
+                                    className="text-primary dark:text-primary hover:text-primary dark:hover:text-primary font-medium"
                                 >
                                     {t("signin.signIn")}
                                 </button>
@@ -305,20 +305,20 @@ export default function UnifiedSignInForm({
                             setEmail("")
                             setError(null)
                         }}
-                        className="mb-4 text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 flex items-center gap-1"
+                        className="mb-4 text-sm text-primary dark:text-primary hover:text-primary dark:hover:text-primary flex items-center gap-1"
                     >
                         ← {t("register.back")}
                     </button>
 
                     {mode === "signin" ? (
                         <>
-                            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
+                            <h3 className="text-lg font-medium text-foreground dark:text-foreground mb-4">
                                 {t("signin.email")}
                             </h3>
                         </>
                     ) : (
                         <>
-                            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
+                            <h3 className="text-lg font-medium text-foreground dark:text-foreground mb-4">
                                 {t("register.email")}
                             </h3>
                         </>
@@ -332,14 +332,14 @@ export default function UnifiedSignInForm({
                         )}
 
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            <label className="block text-sm font-medium text-foreground dark:text-foreground mb-2">
                                 {t("signin.email")}
                             </label>
                             <input
                                 type="email"
                                 value={email}
                                 onChange={e => setEmail(e.target.value)}
-                                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-600 dark:focus:ring-blue-500"
+                                className="w-full px-4 py-2 border border-input dark:border-input rounded-lg bg-card dark:bg-muted text-foreground dark:text-foreground focus:outline-none focus:ring-2 focus:ring-ring dark:focus:ring-ring"
                                 placeholder={t("signin.emailPlaceholder")}
                                 required
                                 disabled={isLoading}
@@ -349,7 +349,7 @@ export default function UnifiedSignInForm({
                         <button
                             type="submit"
                             disabled={isLoading}
-                            className="w-full px-4 py-3 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="w-full px-4 py-3 bg-primary hover:bg-primary dark:bg-primary dark:hover:bg-primary text-white rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             {isLoading
                                 ? t("signin.loading")
@@ -358,9 +358,9 @@ export default function UnifiedSignInForm({
                     </form>
 
                     {/* Toggle between Sign In and Sign Up */}
-                    <div className="mt-6 pt-6 border-t border-gray-300 dark:border-gray-600 text-center">
+                    <div className="mt-6 pt-6 border-t border-input dark:border-input text-center">
                         {mode === "signin" ? (
-                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                            <p className="text-sm text-muted-foreground dark:text-muted-foreground">
                                 {t("signin.noAccount")}{" "}
                                 <button
                                     type="button"
@@ -368,13 +368,13 @@ export default function UnifiedSignInForm({
                                         handleModeChange("signup")
                                         setError(null)
                                     }}
-                                    className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium"
+                                    className="text-primary dark:text-primary hover:text-primary dark:hover:text-primary font-medium"
                                 >
                                     {t("signin.createAccount")}
                                 </button>
                             </p>
                         ) : (
-                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                            <p className="text-sm text-muted-foreground dark:text-muted-foreground">
                                 {t("signin.haveAccount")}{" "}
                                 <button
                                     type="button"
@@ -382,7 +382,7 @@ export default function UnifiedSignInForm({
                                         handleModeChange("signin")
                                         setError(null)
                                     }}
-                                    className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium"
+                                    className="text-primary dark:text-primary hover:text-primary dark:hover:text-primary font-medium"
                                 >
                                     {t("signin.signIn")}
                                 </button>
@@ -391,14 +391,14 @@ export default function UnifiedSignInForm({
                     </div>
 
                     {/* SSO Option */}
-                    <div className="mt-6 pt-6 border-t border-gray-300 dark:border-gray-600">
-                        <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+                    <div className="mt-6 pt-6 border-t border-input dark:border-input">
+                        <p className="text-sm text-muted-foreground dark:text-muted-foreground mb-3">
                             {t("signin.ssoDescription")}
                         </p>
                         <button
                             onClick={handleSSO}
                             disabled={isLoading || !email}
-                            className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium"
+                            className="w-full px-4 py-2 border border-input dark:border-input rounded-lg text-foreground dark:text-foreground hover:bg-muted dark:hover:bg-accent transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium"
                         >
                             {mode === "signin"
                                 ? t("signin.sso")
@@ -420,7 +420,7 @@ export default function UnifiedSignInForm({
                             setPassword("")
                             setError(null)
                         }}
-                        className="mb-4 text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 flex items-center gap-1"
+                        className="mb-4 text-sm text-primary dark:text-primary hover:text-primary dark:hover:text-primary flex items-center gap-1"
                     >
                         ← {t("register.back")}
                     </button>
@@ -432,14 +432,14 @@ export default function UnifiedSignInForm({
                     )}
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        <label className="block text-sm font-medium text-foreground dark:text-foreground mb-2">
                             {t("signin.password")}
                         </label>
                         <input
                             type="password"
                             value={password}
                             onChange={e => setPassword(e.target.value)}
-                            className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-600 dark:focus:ring-blue-500"
+                            className="w-full px-4 py-2 border border-input dark:border-input rounded-lg bg-card dark:bg-muted text-foreground dark:text-foreground focus:outline-none focus:ring-2 focus:ring-ring dark:focus:ring-ring"
                             placeholder="••••••••"
                             required
                             disabled={isLoading}
@@ -454,13 +454,13 @@ export default function UnifiedSignInForm({
                                 setPassword("")
                                 setError(null)
                             }}
-                            className="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300"
+                            className="text-sm text-primary dark:text-primary hover:text-primary dark:hover:text-primary"
                         >
                             {t("signin.changeEmail")}
                         </button>
                         <Link
                             href={`/${locale}/forgot-password`}
-                            className="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300"
+                            className="text-sm text-primary dark:text-primary hover:text-primary dark:hover:text-primary"
                         >
                             {t("signin.forgotPassword")}
                         </Link>
@@ -472,10 +472,10 @@ export default function UnifiedSignInForm({
                             type="checkbox"
                             checked={rememberMe}
                             onChange={e => setRememberMe(e.target.checked)}
-                            className="rounded border-gray-300 dark:border-gray-600 text-blue-600 focus:ring-blue-500"
+                            className="rounded border-input dark:border-input text-primary focus:ring-ring"
                             disabled={isLoading}
                         />
-                        <span className="text-sm text-gray-600 dark:text-gray-400">
+                        <span className="text-sm text-muted-foreground dark:text-muted-foreground">
                             {t("login.rememberMe")}
                         </span>
                     </label>
@@ -483,7 +483,7 @@ export default function UnifiedSignInForm({
                     <button
                         type="submit"
                         disabled={isLoading}
-                        className="w-full px-4 py-3 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white rounded-lg font-medium transition-colors mt-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="w-full px-4 py-3 bg-primary hover:bg-primary dark:bg-primary dark:hover:bg-primary text-white rounded-lg font-medium transition-colors mt-2 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                         {isLoading ? t("signin.loading") : t("signin.signIn")}
                     </button>
@@ -497,7 +497,7 @@ export default function UnifiedSignInForm({
                             handleModeChange("signup")
                             setError(null)
                         }}
-                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors text-sm font-medium"
+                        className="w-full px-4 py-2 border border-input dark:border-input rounded-lg text-foreground dark:text-foreground hover:bg-muted dark:hover:bg-accent transition-colors text-sm font-medium"
                     >
                         {t("signin.createAccount")}
                     </button>
@@ -522,7 +522,7 @@ export default function UnifiedSignInForm({
                             setConfirmPassword("")
                             setError(null)
                         }}
-                        className="mb-4 text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 flex items-center gap-1"
+                        className="mb-4 text-sm text-primary dark:text-primary hover:text-primary dark:hover:text-primary flex items-center gap-1"
                     >
                         ← {t("register.back")}
                     </button>
@@ -534,14 +534,14 @@ export default function UnifiedSignInForm({
                     )}
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        <label className="block text-sm font-medium text-foreground dark:text-foreground mb-2">
                             {t("register.name")}
                         </label>
                         <input
                             type="text"
                             value={fullName}
                             onChange={e => setFullName(e.target.value)}
-                            className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-600 dark:focus:ring-blue-500"
+                            className="w-full px-4 py-2 border border-input dark:border-input rounded-lg bg-card dark:bg-muted text-foreground dark:text-foreground focus:outline-none focus:ring-2 focus:ring-ring dark:focus:ring-ring"
                             placeholder={t("register.namePlaceholder")}
                             required
                             disabled={isLoading}
@@ -549,32 +549,32 @@ export default function UnifiedSignInForm({
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        <label className="block text-sm font-medium text-foreground dark:text-foreground mb-2">
                             {t("signin.password")}
                         </label>
                         <input
                             type="password"
                             value={password}
                             onChange={e => setPassword(e.target.value)}
-                            className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-600 dark:focus:ring-blue-500"
+                            className="w-full px-4 py-2 border border-input dark:border-input rounded-lg bg-card dark:bg-muted text-foreground dark:text-foreground focus:outline-none focus:ring-2 focus:ring-ring dark:focus:ring-ring"
                             placeholder="••••••••"
                             required
                             disabled={isLoading}
                         />
-                        <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                        <p className="text-xs text-muted-foreground dark:text-muted-foreground mt-1">
                             {t("signin.passwordRequirement")}
                         </p>
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        <label className="block text-sm font-medium text-foreground dark:text-foreground mb-2">
                             {t("signin.confirmPassword")}
                         </label>
                         <input
                             type="password"
                             value={confirmPassword}
                             onChange={e => setConfirmPassword(e.target.value)}
-                            className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-600 dark:focus:ring-blue-500"
+                            className="w-full px-4 py-2 border border-input dark:border-input rounded-lg bg-card dark:bg-muted text-foreground dark:text-foreground focus:outline-none focus:ring-2 focus:ring-ring dark:focus:ring-ring"
                             placeholder="••••••••"
                             required
                             disabled={isLoading}
@@ -590,7 +590,7 @@ export default function UnifiedSignInForm({
                             setConfirmPassword("")
                             setError(null)
                         }}
-                        className="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300"
+                        className="text-sm text-primary dark:text-primary hover:text-primary dark:hover:text-primary"
                     >
                         {t("signin.changeEmail")}
                     </button>
@@ -598,7 +598,7 @@ export default function UnifiedSignInForm({
                     <button
                         type="submit"
                         disabled={isLoading}
-                        className="w-full px-4 py-3 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white rounded-lg font-medium transition-colors mt-6 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="w-full px-4 py-3 bg-primary hover:bg-primary dark:bg-primary dark:hover:bg-primary text-white rounded-lg font-medium transition-colors mt-6 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                         {isLoading
                             ? t("signin.loading")

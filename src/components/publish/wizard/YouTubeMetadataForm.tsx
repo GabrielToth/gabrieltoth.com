@@ -99,7 +99,7 @@ export default function YouTubeMetadataForm({
         <div className="space-y-6">
             <div>
                 <h2 className="text-xl font-semibold">{t("step4.title")}</h2>
-                <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                <p className="mt-1 text-sm text-muted-foreground dark:text-muted-foreground">
                     {t("step4.description")}
                 </p>
             </div>
@@ -187,7 +187,7 @@ export default function YouTubeMetadataForm({
             />
 
             {/* Navigation */}
-            <div className="flex justify-between border-t pt-4 dark:border-gray-700">
+            <div className="flex justify-between border-t pt-4 dark:border-border">
                 <Button onClick={onBack} variant="outline">
                     {t("wizard.back")}
                 </Button>
@@ -210,10 +210,10 @@ function CardPlaceholder({
     return (
         <div className="rounded-lg border p-4">
             <h3 className="font-semibold mb-2">{title}</h3>
-            <p className="text-sm text-gray-600 dark:text-gray-400">
+            <p className="text-sm text-muted-foreground dark:text-muted-foreground">
                 {description}
             </p>
-            <p className="mt-1 text-xs text-gray-400">{hint}</p>
+            <p className="mt-1 text-xs text-muted-foreground">{hint}</p>
         </div>
     )
 }

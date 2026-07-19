@@ -71,11 +71,11 @@ function CheckoutInner() {
                     )}
                     <div className="space-y-2">
                         <div className="font-medium">Copy & Paste code</div>
-                        <div className="text-xs break-all bg-gray-100 dark:bg-gray-900 p-2 rounded">
+                        <div className="text-xs break-all bg-muted dark:bg-background p-2 rounded">
                             {qr.copyPasteCode}
                         </div>
                         <button
-                            className="mt-2 px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700"
+                            className="mt-2 px-4 py-2 rounded bg-primary text-white hover:bg-primary"
                             onClick={() =>
                                 navigator.clipboard.writeText(qr.copyPasteCode)
                             }

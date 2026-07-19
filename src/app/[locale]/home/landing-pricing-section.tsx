@@ -20,12 +20,12 @@ export default function LandingPricingSection({
     }>
 
     return (
-        <section className="py-20 px-4 bg-gray-50 dark:bg-gray-800">
+        <section className="py-20 px-4 bg-muted dark:bg-card">
             <div className="max-w-6xl mx-auto">
-                <h2 className="text-4xl font-bold text-center text-gray-900 dark:text-white mb-4">
+                <h2 className="text-4xl font-bold text-center text-foreground dark:text-foreground mb-4">
                     {t("pricing.title")}
                 </h2>
-                <p className="text-center text-gray-600 dark:text-gray-400 mb-16 text-lg">
+                <p className="text-center text-muted-foreground dark:text-muted-foreground mb-16 text-lg">
                     {t("pricing.description")}
                 </p>
 
@@ -35,28 +35,28 @@ export default function LandingPricingSection({
                             key={index}
                             className={`rounded-lg overflow-hidden transition-transform hover:scale-105 ${
                                 plan.popular
-                                    ? "ring-2 ring-blue-600 transform scale-105"
-                                    : "border border-gray-200 dark:border-gray-700"
+                                    ? "ring-2 ring-ring transform scale-105"
+                                    : "border border-border dark:border-border"
                             } ${
                                 plan.popular
-                                    ? "bg-white dark:bg-gray-900"
-                                    : "bg-white dark:bg-gray-900"
+                                    ? "bg-card dark:bg-background"
+                                    : "bg-card dark:bg-background"
                             }`}
                         >
                             {plan.popular && (
-                                <div className="bg-blue-600 text-white text-center py-2 font-semibold">
+                                <div className="bg-primary text-white text-center py-2 font-semibold">
                                     Popular
                                 </div>
                             )}
                             <div className="p-8">
-                                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                                <h3 className="text-2xl font-bold text-foreground dark:text-foreground mb-2">
                                     {plan.name}
                                 </h3>
-                                <p className="text-gray-600 dark:text-gray-400 mb-4">
+                                <p className="text-muted-foreground dark:text-muted-foreground mb-4">
                                     {plan.description}
                                 </p>
                                 <div className="mb-6">
-                                    <span className="text-4xl font-bold text-gray-900 dark:text-white">
+                                    <span className="text-4xl font-bold text-foreground dark:text-foreground">
                                         {plan.price}
                                     </span>
                                 </div>
@@ -64,9 +64,9 @@ export default function LandingPricingSection({
                                     {plan.features.map((feature, fIndex) => (
                                         <li
                                             key={fIndex}
-                                            className="flex items-center text-gray-600 dark:text-gray-400"
+                                            className="flex items-center text-muted-foreground dark:text-muted-foreground"
                                         >
-                                            <span className="w-5 h-5 bg-blue-600 rounded-full flex items-center justify-center mr-3 flex-shrink-0">
+                                            <span className="w-5 h-5 bg-primary rounded-full flex items-center justify-center mr-3 flex-shrink-0">
                                                 <span className="text-white text-sm">
                                                     ✓
                                                 </span>
@@ -79,8 +79,8 @@ export default function LandingPricingSection({
                                     href={`/${locale}/login`}
                                     className={`w-full py-3 rounded-lg font-semibold transition-colors text-center block ${
                                         plan.popular
-                                            ? "bg-blue-600 hover:bg-blue-700 text-white"
-                                            : "bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-900 dark:text-white"
+                                            ? "bg-primary hover:bg-primary text-white"
+                                            : "bg-muted hover:bg-accent dark:bg-card dark:hover:bg-accent text-foreground dark:text-foreground"
                                     }`}
                                 >
                                     {t("hero.cta")}

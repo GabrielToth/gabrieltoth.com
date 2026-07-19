@@ -55,7 +55,7 @@ export default function MinecraftSubmenu({ locale }: MinecraftSubmenuProps) {
                     <h3 className="text-lg font-bold mb-2 text-white group-hover:text-[#10b981] transition-colors">
                         {category.label}
                     </h3>
-                    <p className="text-gray-400 text-sm line-clamp-2">
+                    <p className="text-muted-foreground text-sm line-clamp-2">
                         {category.description}
                     </p>
                 </Link>

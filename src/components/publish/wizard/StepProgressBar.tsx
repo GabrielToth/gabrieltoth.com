@@ -18,12 +18,12 @@ export default function StepProgressBar({
                     <div
                         className={`h-1.5 rounded-full transition-colors ${
                             step <= currentStep
-                                ? "bg-blue-500"
-                                : "bg-gray-200 dark:bg-gray-700"
+                                ? "bg-primary/50"
+                                : "bg-accent dark:bg-muted"
                         }`}
                     />
                     {step === currentStep && (
-                        <p className="mt-1 text-xs font-medium text-blue-600 dark:text-blue-400 truncate">
+                        <p className="mt-1 text-xs font-medium text-primary dark:text-primary truncate">
                             {getStepTitle(step)}
                         </p>
                     )}

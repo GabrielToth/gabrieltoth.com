@@ -27,10 +27,10 @@ const TYPE_STYLES = {
         border: "border-yellow-200 dark:border-yellow-800",
     },
     info: {
-        dot: "bg-blue-500",
-        bg: "bg-blue-50 dark:bg-blue-950/30",
-        text: "text-blue-800 dark:text-blue-400",
-        border: "border-blue-200 dark:border-blue-800",
+        dot: "bg-primary/50",
+        bg: "bg-primary/5 dark:bg-primary/10",
+        text: "text-primary dark:text-primary",
+        border: "dark:border-white/10 dark:border-border",
     },
 }
 
@@ -89,7 +89,7 @@ export function NotificationBell() {
         <div ref={dropdownRef} className="relative">
             <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="relative flex h-9 w-9 items-center justify-center rounded-lg text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800 transition-colors"
+                className="relative flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground hover:bg-muted dark:text-muted-foreground dark:hover:bg-accent transition-colors"
                 aria-label={`Notifications (${totalCount} unread)`}
             >
                 <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -102,19 +102,19 @@ export function NotificationBell() {
                 )}
                 {loading && (
                     <span className="absolute -right-0.5 -top-0.5 flex h-3 w-3 items-center justify-center">
-                        <span className="h-2 w-2 animate-ping rounded-full bg-gray-400" />
+                        <span className="h-2 w-2 animate-ping rounded-full bg-muted" />
                     </span>
                 )}
             </button>
 
             {isOpen && (
-                <div className="absolute right-0 top-full z-50 mt-2 w-80 rounded-xl border border-gray-200 bg-white shadow-lg dark:border-gray-700 dark:bg-gray-900">
-                    <div className="border-b border-gray-200 px-4 py-3 dark:border-gray-700">
-                        <h3 className="text-sm font-semibold text-gray-900 dark:text-white">
+                <div className="absolute right-0 top-full z-50 mt-2 w-80 rounded-xl border border-border bg-white shadow-lg dark:border-border dark:bg-background">
+                    <div className="border-b border-border px-4 py-3 dark:border-border">
+                        <h3 className="text-sm font-semibold text-foreground dark:text-foreground">
                             Notifications
                         </h3>
                         {hasNotifications && (
-                            <p className="text-xs text-gray-500 dark:text-gray-400">
+                            <p className="text-xs text-muted-foreground dark:text-muted-foreground">
                                 {errorCount > 0 && `${errorCount} error${errorCount > 1 ? "s" : ""}`}
                                 {errorCount > 0 && warningCount > 0 && " · "}
                                 {warningCount > 0 && `${warningCount} warning${warningCount > 1 ? "s" : ""}`}
@@ -124,8 +124,8 @@ export function NotificationBell() {
 
                     <div className="max-h-80 overflow-y-auto">
                         {notifications.length === 0 ? (
-                            <div className="px-4 py-8 text-center text-sm text-gray-500 dark:text-gray-400">
-                                <svg className="mx-auto mb-2 h-8 w-8 text-gray-300 dark:text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <div className="px-4 py-8 text-center text-sm text-muted-foreground dark:text-muted-foreground">
+                                <svg className="mx-auto mb-2 h-8 w-8 text-muted-foreground dark:text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
                                 All clear — no issues detected
@@ -137,7 +137,7 @@ export function NotificationBell() {
                                     <div
                                         key={notification.id}
                                         className={cn(
-                                            "border-b border-gray-100 px-4 py-3 last:border-b-0 dark:border-gray-800",
+                                            "border-b border-gray-100 px-4 py-3 last:border-b-0 dark:border-border",
                                             notification.type === "error" && "bg-red-50/50 dark:bg-red-950/20"
                                         )}
                                     >
@@ -148,17 +148,17 @@ export function NotificationBell() {
                                                     {notification.platform && (
                                                         <span className="text-xs">{PLATFORM_ICONS[notification.platform] || ""}</span>
                                                     )}
-                                                    <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
+                                                    <p className="text-sm font-medium text-foreground dark:text-foreground truncate">
                                                         {notification.title}
                                                     </p>
                                                 </div>
-                                                <p className="mt-0.5 text-xs text-gray-600 dark:text-gray-400">
+                                                <p className="mt-0.5 text-xs text-muted-foreground dark:text-muted-foreground">
                                                     {notification.message}
                                                 </p>
                                                 {notification.actionLabel && notification.actionHref && (
                                                     <a
                                                         href={notification.actionHref}
-                                                        className="mt-2 inline-block text-xs font-medium text-blue-600 hover:text-blue-500 dark:text-blue-400"
+                                                        className="mt-2 inline-block text-xs font-medium text-primary hover:text-primary dark:text-primary"
                                                         onClick={() => setIsOpen(false)}
                                                     >
                                                         {notification.actionLabel} →

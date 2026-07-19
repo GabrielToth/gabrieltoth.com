@@ -124,14 +124,14 @@ export default function Header() {
     }
 
     return (
-        <header className="fixed top-0 w-full bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 z-50">
+        <header className="fixed top-0 w-full bg-white/80 dark:bg-background/80 backdrop-blur-md border-b border-border dark:border-border z-50">
             <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between items-center h-16">
                     {/* Logo/Brand - Left */}
                     <div className="shrink-0">
                         <Link
                             href={getHomeLink()}
-                            className="text-xl font-bold text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                            className="text-xl font-bold text-foreground dark:text-foreground hover:text-primary dark:hover:text-primary transition-colors"
                             data-testid="nav-home"
                         >
                             Gabriel Toth Gonçalves
@@ -142,7 +142,7 @@ export default function Header() {
                     <nav className="hidden nav:flex items-center space-x-8 flex-1 justify-center">
                         <Link
                             href={getHomeLink()}
-                            className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
+                            className="text-foreground dark:text-foreground hover:text-foreground dark:hover:text-foreground transition-colors"
                             data-testid="nav-home-desktop"
                         >
                             {t("home")}
@@ -152,7 +152,7 @@ export default function Header() {
                             <Link
                                 key={link.href}
                                 href={link.href}
-                                className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
+                                className="text-foreground dark:text-foreground hover:text-foreground dark:hover:text-foreground transition-colors"
                                 data-testid={
                                     link.href.includes("gabriel-toth-goncalves")
                                         ? "nav-about"
@@ -172,14 +172,14 @@ export default function Header() {
                             <div className="flex items-center">
                                 <Link
                                     href={getLocalizedPath("minecraft", locale)}
-                                    className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
+                                    className="text-foreground dark:text-foreground hover:text-foreground dark:hover:text-foreground transition-colors"
                                     data-testid="minecraft-link"
                                 >
                                     {t("minecraft")}
                                 </Link>
                                 <button
                                     onClick={toggleMinecraft}
-                                    className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors ml-1 p-1"
+                                    className="text-foreground dark:text-foreground hover:text-foreground dark:hover:text-foreground transition-colors ml-1 p-1"
                                     data-testid="minecraft-dropdown-button"
                                     aria-label="Toggle Minecraft submenu"
                                 >
@@ -202,12 +202,12 @@ export default function Header() {
                             </div>
 
                             {isMinecraftOpen && (
-                                <div className="absolute top-full left-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg border border-gray-200 dark:border-gray-700">
+                                <div className="absolute top-full left-0 mt-2 w-48 bg-card rounded-md shadow-lg border border-border dark:border-border">
                                     {minecraftLinks.map(link => (
                                         <Link
                                             key={link.href}
                                             href={link.href}
-                                            className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                                            className="block px-4 py-2 text-sm text-foreground dark:text-foreground hover:bg-muted dark:hover:bg-accent transition-colors"
                                             onClick={() =>
                                                 setIsMinecraftOpen(false)
                                             }
@@ -233,14 +233,14 @@ export default function Header() {
                             <div className="flex items-center">
                                 <Link
                                     href={getLocalizedPath("services", locale)}
-                                    className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
+                                    className="text-foreground dark:text-foreground hover:text-foreground dark:hover:text-foreground transition-colors"
                                     data-testid="services-link"
                                 >
                                     {t("services")}
                                 </Link>
                                 <button
                                     onClick={toggleServices}
-                                    className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors ml-1 p-1"
+                                    className="text-foreground dark:text-foreground hover:text-foreground dark:hover:text-foreground transition-colors ml-1 p-1"
                                     data-testid="services-dropdown-button"
                                     aria-label="Toggle Services submenu"
                                 >
@@ -263,12 +263,12 @@ export default function Header() {
                             </div>
 
                             {isServicesOpen && (
-                                <div className="absolute top-full left-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg border border-gray-200 dark:border-gray-700">
+                                <div className="absolute top-full left-0 mt-2 w-48 bg-card rounded-md shadow-lg border border-border dark:border-border">
                                     {servicesLinks.map(link => (
                                         <Link
                                             key={link.href}
                                             href={link.href}
-                                            className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                                            className="block px-4 py-2 text-sm text-foreground dark:text-foreground hover:bg-muted dark:hover:bg-accent transition-colors"
                                             onClick={() =>
                                                 setIsServicesOpen(false)
                                             }
@@ -294,11 +294,11 @@ export default function Header() {
                                 <ThemeToggleClient />
                             </div>
 
-                            <div className="border-l border-gray-200 dark:border-gray-700 h-6"></div>
+                            <div className="border-l border-border dark:border-border h-6"></div>
 
                             <Link
                                 href={getLocalizedPath("login", locale)}
-                                className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md text-sm font-medium transition-colors"
+                                className="px-4 py-2 bg-primary text-primary-foreground rounded-md text-sm font-medium transition-colors"
                                 data-testid="nav-login"
                             >
                                 {t("login", {
@@ -313,7 +313,7 @@ export default function Header() {
                         >
                             <Link
                                 href={getLocalizedPath("about-me", locale)}
-                                className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
+                                className="text-foreground dark:text-foreground hover:text-foreground dark:hover:text-foreground transition-colors"
                                 data-testid="nav-about-mid"
                             >
                                 {t("about")}
@@ -326,14 +326,14 @@ export default function Header() {
                                             "services",
                                             locale
                                         )}
-                                        className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
+                                        className="text-foreground dark:text-foreground hover:text-foreground dark:hover:text-foreground transition-colors"
                                         data-testid="services-link-mid"
                                     >
                                         {t("services")}
                                     </Link>
                                     <button
                                         onClick={toggleServices}
-                                        className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors ml-1 p-1"
+                                        className="text-foreground dark:text-foreground hover:text-foreground dark:hover:text-foreground transition-colors ml-1 p-1"
                                         data-testid="services-dropdown-button-mid"
                                         aria-label="Toggle Services submenu"
                                     >
@@ -358,12 +358,12 @@ export default function Header() {
                                 </div>
 
                                 {isServicesOpen && (
-                                    <div className="absolute top-full right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg border border-gray-200 dark:border-gray-700 z-50">
+                                    <div className="absolute top-full right-0 mt-2 w-48 bg-card rounded-md shadow-lg border border-border dark:border-border z-50">
                                         {servicesLinks.map(link => (
                                             <Link
                                                 key={link.href}
                                                 href={link.href}
-                                                className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                                                className="block px-4 py-2 text-sm text-foreground dark:text-foreground hover:bg-muted dark:hover:bg-accent transition-colors"
                                                 onClick={() =>
                                                     setIsServicesOpen(false)
                                                 }
@@ -383,14 +383,14 @@ export default function Header() {
                                             "minecraft",
                                             locale
                                         )}
-                                        className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
+                                        className="text-foreground dark:text-foreground hover:text-foreground dark:hover:text-foreground transition-colors"
                                         data-testid="minecraft-link-mid"
                                     >
                                         {t("minecraft")}
                                     </Link>
                                     <button
                                         onClick={toggleMinecraft}
-                                        className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors ml-1 p-1"
+                                        className="text-foreground dark:text-foreground hover:text-foreground dark:hover:text-foreground transition-colors ml-1 p-1"
                                         data-testid="minecraft-dropdown-button-mid"
                                         aria-label="Toggle Minecraft submenu"
                                     >
@@ -415,12 +415,12 @@ export default function Header() {
                                 </div>
 
                                 {isMinecraftOpen && (
-                                    <div className="absolute top-full right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg border border-gray-200 dark:border-gray-700 z-50">
+                                    <div className="absolute top-full right-0 mt-2 w-48 bg-card rounded-md shadow-lg border border-border dark:border-border z-50">
                                         {minecraftLinks.map(link => (
                                             <Link
                                                 key={link.href}
                                                 href={link.href}
-                                                className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                                                className="block px-4 py-2 text-sm text-foreground dark:text-foreground hover:bg-muted dark:hover:bg-accent transition-colors"
                                                 onClick={() =>
                                                     setIsMinecraftOpen(false)
                                                 }
@@ -450,7 +450,7 @@ export default function Header() {
                         >
                             <Link
                                 href={getLocalizedPath("about-me", locale)}
-                                className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
+                                className="text-foreground dark:text-foreground hover:text-foreground dark:hover:text-foreground transition-colors"
                                 data-testid="nav-about-mid-sm"
                             >
                                 {t("about")}
@@ -463,14 +463,14 @@ export default function Header() {
                                             "services",
                                             locale
                                         )}
-                                        className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
+                                        className="text-foreground dark:text-foreground hover:text-foreground dark:hover:text-foreground transition-colors"
                                         data-testid="services-link-mid-sm"
                                     >
                                         {t("services")}
                                     </Link>
                                     <button
                                         onClick={toggleServices}
-                                        className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors ml-1 p-1"
+                                        className="text-foreground dark:text-foreground hover:text-foreground dark:hover:text-foreground transition-colors ml-1 p-1"
                                         data-testid="services-dropdown-button-mid-sm"
                                         aria-label="Toggle Services submenu"
                                     >
@@ -495,12 +495,12 @@ export default function Header() {
                                 </div>
 
                                 {isServicesOpen && (
-                                    <div className="absolute top-full right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg border border-gray-200 dark:border-gray-700 z-50">
+                                    <div className="absolute top-full right-0 mt-2 w-48 bg-card rounded-md shadow-lg border border-border dark:border-border z-50">
                                         {servicesLinks.map(link => (
                                             <Link
                                                 key={link.href}
                                                 href={link.href}
-                                                className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                                                className="block px-4 py-2 text-sm text-foreground dark:text-foreground hover:bg-muted dark:hover:bg-accent transition-colors"
                                                 onClick={() =>
                                                     setIsServicesOpen(false)
                                                 }
@@ -516,7 +516,7 @@ export default function Header() {
                         <div className="nav:hidden flex items-center">
                             <button
                                 onClick={toggleMobileMenu}
-                                className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
+                                className="text-foreground dark:text-foreground hover:text-foreground dark:hover:text-foreground"
                                 data-testid="mobile-menu-toggle"
                             >
                                 {isMobileMenuOpen ? (
@@ -532,12 +532,12 @@ export default function Header() {
                 {/* Mobile Navigation */}
                 {isMobileMenuOpen && (
                     <div
-                        className="nav:hidden py-4 border-t border-gray-200 dark:border-gray-700"
+                        className="nav:hidden py-4 border-t border-border dark:border-border"
                         data-testid="mobile-nav"
                     >
                         <div className="space-y-2">
                             {/* Mobile Language & Theme */}
-                            <div className="flex items-center justify-between py-2 px-3 border-b border-gray-200 dark:border-gray-700 mb-2">
+                            <div className="flex items-center justify-between py-2 px-3 border-b border-border dark:border-border mb-2">
                                 <LanguageSelector
                                     variant="header"
                                     includeThemeToggle={false}
@@ -548,7 +548,7 @@ export default function Header() {
 
                             <Link
                                 href={getHomeLink()}
-                                className="block px-3 py-2 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
+                                className="block px-3 py-2 text-foreground dark:text-foreground hover:text-foreground dark:hover:text-foreground transition-colors"
                                 onClick={() => setIsMobileMenuOpen(false)}
                                 data-testid="nav-home-mobile"
                             >
@@ -559,7 +559,7 @@ export default function Header() {
                                 <Link
                                     key={link.href}
                                     href={link.href}
-                                    className="block px-3 py-2 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
+                                    className="block px-3 py-2 text-foreground dark:text-foreground hover:text-foreground dark:hover:text-foreground transition-colors"
                                     onClick={() => setIsMobileMenuOpen(false)}
                                     data-testid={
                                         link.href.includes(
@@ -581,7 +581,7 @@ export default function Header() {
                             <div className="px-3 py-2">
                                 <Link
                                     href={getLocalizedPath("services", locale)}
-                                    className="text-gray-900 dark:text-white font-medium mb-2 block"
+                                    className="text-foreground dark:text-foreground font-medium mb-2 block"
                                     onClick={() => setIsMobileMenuOpen(false)}
                                     data-testid="nav-services-mobile"
                                 >
@@ -591,7 +591,7 @@ export default function Header() {
                                     <Link
                                         key={link.href}
                                         href={link.href}
-                                        className="block pl-4 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+                                        className="block pl-4 py-1 text-sm text-muted-foreground dark:text-muted-foreground hover:text-foreground dark:hover:text-foreground transition-colors"
                                         onClick={() =>
                                             setIsMobileMenuOpen(false)
                                         }
@@ -606,7 +606,7 @@ export default function Header() {
                             <div className="px-3 py-2">
                                 <Link
                                     href={getLocalizedPath("minecraft", locale)}
-                                    className="text-gray-900 dark:text-white font-medium mb-2 block"
+                                    className="text-foreground dark:text-foreground font-medium mb-2 block"
                                     onClick={() => setIsMobileMenuOpen(false)}
                                     data-testid="nav-minecraft-mobile"
                                 >
@@ -616,7 +616,7 @@ export default function Header() {
                                     <Link
                                         key={link.href}
                                         href={link.href}
-                                        className="block pl-4 py-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+                                        className="block pl-4 py-1 text-sm text-muted-foreground dark:text-muted-foreground hover:text-foreground dark:hover:text-foreground transition-colors"
                                         onClick={() =>
                                             setIsMobileMenuOpen(false)
                                         }
@@ -634,10 +634,10 @@ export default function Header() {
                             </div>
 
                             {/* Mobile Auth Button */}
-                            <div className="px-3 py-2 border-t border-gray-200 dark:border-gray-700 mt-2">
+                            <div className="px-3 py-2 border-t border-border dark:border-border mt-2">
                                 <Link
                                     href={getLocalizedPath("login", locale)}
-                                    className="block px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md text-sm font-medium transition-colors text-center"
+                                    className="block px-3 py-2 bg-primary text-primary-foreground rounded-md text-sm font-medium transition-colors text-center"
                                     onClick={() => setIsMobileMenuOpen(false)}
                                     data-testid="nav-login-mobile"
                                 >

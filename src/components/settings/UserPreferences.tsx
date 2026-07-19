@@ -104,7 +104,7 @@ export default function UserPreferences({
         <div className="space-y-6 rounded-lg border p-4">
             <div className="space-y-2">
                 <h3 className="font-semibold">{t("userPreferences")}</h3>
-                <p className="text-sm text-gray-600 dark:text-gray-300">
+                <p className="text-sm text-muted-foreground dark:text-foreground">
                     {t("userPreferencesDescription")}
                 </p>
             </div>
@@ -162,7 +162,7 @@ export default function UserPreferences({
                             })
                         }
                     />
-                    <p className="text-xs text-gray-600 dark:text-gray-400">
+                    <p className="text-xs text-muted-foreground dark:text-muted-foreground">
                         {t("retryDescription")}
                     </p>
                 </div>
@@ -186,7 +186,7 @@ export default function UserPreferences({
 
             <div className="space-y-4 border-b pb-4">
                 <h4 className="font-medium">{t("privacySettings")}</h4>
-                <p className="text-sm text-gray-600 dark:text-gray-300">
+                <p className="text-sm text-muted-foreground dark:text-foreground">
                     {t("privacyDescription")}
                 </p>
 
@@ -235,7 +235,7 @@ export default function UserPreferences({
 
             <div className="space-y-4 border-b pb-4">
                 <h4 className="font-medium">{t("importExport")}</h4>
-                <p className="text-sm text-gray-600 dark:text-gray-300">
+                <p className="text-sm text-muted-foreground dark:text-foreground">
                     {t("importExportDescription")}
                 </p>
 

@@ -50,14 +50,14 @@ export default async function PersonalityStepPage({ params }: StepProps) {
                 {isLast ? (
                     <Link
                         href={`/${locale}/personality-test/summary`}
-                        className="px-4 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700"
+                        className="px-4 py-2 rounded-md bg-primary text-white hover:bg-primary"
                     >
                         {t("steps.finish")}
                     </Link>
                 ) : (
                     <Link
                         href={`/${locale}/personality-test/step/${n + 1}`}
-                        className="px-4 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700"
+                        className="px-4 py-2 rounded-md bg-primary text-white hover:bg-primary"
                     >
                         {t("steps.next")}
                     </Link>

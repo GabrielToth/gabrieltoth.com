@@ -179,7 +179,7 @@ export default function PostingScheduler({
         <div className="space-y-4 rounded-lg border p-4">
             <div className="space-y-2">
                 <h3 className="font-semibold">{t("schedule")}</h3>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-muted-foreground">
                     {t("scheduleDescription")}
                 </p>
             </div>
@@ -261,14 +261,14 @@ export default function PostingScheduler({
                                 ))}
                             </SelectContent>
                         </Select>
-                        <p className="text-xs text-gray-500">
+                        <p className="text-xs text-muted-foreground">
                             {t("timezoneDescription")}
                         </p>
                     </div>
 
                     {previewTime && (
-                        <div className="rounded bg-blue-50 p-3">
-                            <p className="text-sm font-medium text-blue-900">
+                        <div className="rounded bg-primary/5 p-3">
+                            <p className="text-sm font-medium text-primary">
                                 {t("schedulePost")}: {previewTime}
                             </p>
                         </div>

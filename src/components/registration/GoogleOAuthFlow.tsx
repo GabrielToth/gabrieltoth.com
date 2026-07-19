@@ -204,12 +204,12 @@ export function GoogleOAuthFlow({
             <div className="w-full space-y-6">
                 <div className="text-center">
                     <div className="mb-4 flex justify-center">
-                        <div className="animate-spin h-8 w-8 border-4 border-blue-500 dark:border-blue-400 border-t-transparent rounded-full" />
+                        <div className="animate-spin h-8 w-8 border-4 border-primary dark:border-primary border-t-transparent rounded-full" />
                     </div>
                     <h2 className="text-xl font-semibold text-white mb-2">
                         Authorizing with Google
                     </h2>
-                    <p className="text-gray-400">
+                    <p className="text-muted-foreground">
                         Please wait while we complete your authorization...
                     </p>
                 </div>
@@ -225,7 +225,7 @@ export function GoogleOAuthFlow({
                 <h2 className="text-2xl font-bold text-white mb-2">
                     Sign up with Google
                 </h2>
-                <p className="text-gray-400">
+                <p className="text-muted-foreground">
                     Click the button below to authorize with your Google account
                 </p>
             </div>
@@ -241,12 +241,12 @@ export function GoogleOAuthFlow({
                 <button
                     onClick={handleStartOAuth}
                     disabled={isLoading}
-                    className="w-full px-6 py-3 sm:py-3 bg-white hover:bg-gray-100 disabled:bg-white disabled:opacity-50 text-gray-900 font-semibold rounded-lg transition-colors flex items-center justify-center gap-2 border border-gray-300 disabled:cursor-not-allowed min-h-[44px] text-base sm:text-sm"
+                    className="w-full px-6 py-3 sm:py-3 bg-white hover:bg-muted disabled:bg-white disabled:opacity-50 text-foreground font-semibold rounded-lg transition-colors flex items-center justify-center gap-2 border border-input disabled:cursor-not-allowed min-h-[44px] text-base sm:text-sm"
                     aria-label="Authorize with Google"
                 >
                     {isLoading ? (
                         <>
-                            <div className="animate-spin h-5 w-5 border-2 border-blue-500 border-t-transparent rounded-full" />
+                            <div className="animate-spin h-5 w-5 border-2 border-primary border-t-transparent rounded-full" />
                             <span>Authorizing...</span>
                         </>
                     ) : (
@@ -273,7 +273,7 @@ export function GoogleOAuthFlow({
                     <button
                         onClick={handleRetry}
                         disabled={isLoading}
-                        className="w-full px-6 py-3 sm:py-3 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-600 disabled:opacity-50 text-white font-semibold rounded-lg transition-colors disabled:cursor-not-allowed min-h-[44px] text-base sm:text-sm"
+                        className="w-full px-6 py-3 sm:py-3 bg-primary hover:bg-primary disabled:bg-primary disabled:opacity-50 text-white font-semibold rounded-lg transition-colors disabled:cursor-not-allowed min-h-[44px] text-base sm:text-sm"
                         aria-label="Try authorization again"
                     >
                         Try Again
@@ -284,7 +284,7 @@ export function GoogleOAuthFlow({
                 <button
                     onClick={onBack}
                     disabled={isLoading}
-                    className="w-full px-6 py-3 sm:py-3 bg-gray-700 hover:bg-gray-600 disabled:bg-gray-700 disabled:opacity-50 text-white font-semibold rounded-lg transition-colors disabled:cursor-not-allowed min-h-[44px] text-base sm:text-sm"
+                    className="w-full px-6 py-3 sm:py-3 bg-muted hover:bg-muted disabled:bg-muted disabled:opacity-50 text-white font-semibold rounded-lg transition-colors disabled:cursor-not-allowed min-h-[44px] text-base sm:text-sm"
                     aria-label="Go back to authentication method selection"
                 >
                     Back
@@ -292,7 +292,7 @@ export function GoogleOAuthFlow({
             </div>
 
             {/* Info Text */}
-            <p className="text-xs text-gray-500 text-center">
+            <p className="text-xs text-muted-foreground text-center">
                 We'll use your Google email and name to create your account.
                 You'll be able to add more information in the next step.
             </p>

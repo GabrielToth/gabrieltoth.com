@@ -74,15 +74,15 @@ export default function VideoUploadSection({
                         onClick={() => fileInputRef.current?.click()}
                         className={`flex cursor-pointer flex-col items-center gap-4 rounded-lg border-2 border-dashed p-8 transition-colors ${
                             dragOver
-                                ? "border-blue-500 bg-blue-50 dark:bg-blue-950/30"
-                                : "border-gray-300 hover:border-gray-400 dark:border-gray-600"
+                                ? "border-primary bg-primary/5 dark:bg-primary/10"
+                                : "border-input hover:border-border dark:border-input"
                         }`}
                     >
-                        <Upload className="h-10 w-10 text-gray-400" />
-                        <p className="text-sm text-gray-600 dark:text-gray-400">
+                        <Upload className="h-10 w-10 text-muted-foreground" />
+                        <p className="text-sm text-muted-foreground dark:text-muted-foreground">
                             {t("step4.dropzone")}
                         </p>
-                        <p className="text-xs text-gray-400">
+                        <p className="text-xs text-muted-foreground">
                             {t("step4.maxSize")}
                         </p>
                         <Button
@@ -98,19 +98,19 @@ export default function VideoUploadSection({
                         </Button>
                     </div>
                 ) : (
-                    <div className="flex items-center gap-4 rounded-lg border bg-gray-50 p-4 dark:bg-gray-900">
-                        <FileVideo className="h-8 w-8 text-blue-500" />
+                    <div className="flex items-center gap-4 rounded-lg border bg-muted p-4 dark:bg-background">
+                        <FileVideo className="h-8 w-8 text-primary" />
                         <div className="flex-1 min-w-0">
                             <p className="font-medium truncate">
                                 {videoFile.name}
                             </p>
-                            <p className="text-xs text-gray-500">
+                            <p className="text-xs text-muted-foreground">
                                 {formatBytes(videoFile.size)}
                             </p>
                         </div>
                         <button
                             onClick={() => onVideoFileChange(null)}
-                            className="rounded-full p-1 text-gray-400 hover:bg-gray-200 hover:text-gray-600 dark:hover:bg-gray-700"
+                            className="rounded-full p-1 text-muted-foreground hover:bg-accent hover:text-muted-foreground dark:hover:bg-accent"
                             aria-label={t("step4.removeFile")}
                         >
                             <X className="h-4 w-4" />

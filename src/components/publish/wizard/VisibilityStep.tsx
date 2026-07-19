@@ -72,16 +72,16 @@ export default function VisibilityStep({
                     <h2 className="text-xl font-semibold">
                         {t("step6.title")}
                     </h2>
-                    <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                    <p className="mt-1 text-sm text-muted-foreground dark:text-muted-foreground">
                         {t("step6.description")}
                     </p>
                 </div>
                 <Card>
-                    <CardContent className="py-8 text-center text-sm text-gray-500">
+                    <CardContent className="py-8 text-center text-sm text-muted-foreground">
                         {t("step6.noYouTube")}
                     </CardContent>
                 </Card>
-                <div className="flex justify-between border-t pt-4 dark:border-gray-700">
+                <div className="flex justify-between border-t pt-4 dark:border-border">
                     <Button onClick={onBack} variant="outline">
                         {t("wizard.back")}
                     </Button>
@@ -95,7 +95,7 @@ export default function VisibilityStep({
         <div className="space-y-6">
             <div>
                 <h2 className="text-xl font-semibold">{t("step6.title")}</h2>
-                <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                <p className="mt-1 text-sm text-muted-foreground dark:text-muted-foreground">
                     {t("step6.description")}
                 </p>
             </div>
@@ -126,7 +126,7 @@ export default function VisibilityStep({
                                     }
                                     className="h-4 w-4"
                                 />
-                                <span className="text-sm text-gray-900 dark:text-gray-100">
+                                <span className="text-sm text-foreground dark:text-foreground">
                                     {t("step6.madeForKidsNo")}
                                 </span>
                             </label>
@@ -140,12 +140,12 @@ export default function VisibilityStep({
                                     }
                                     className="h-4 w-4"
                                 />
-                                <span className="text-sm text-gray-900 dark:text-gray-100">
+                                <span className="text-sm text-foreground dark:text-foreground">
                                     {t("step6.madeForKidsYes")}
                                 </span>
                             </label>
                         </div>
-                        <p className="text-xs text-gray-400">
+                        <p className="text-xs text-muted-foreground">
                             {t("step6.madeForKidsHint")}
                         </p>
                     </div>
@@ -178,7 +178,7 @@ export default function VisibilityStep({
                                     }
                                     className="h-4 w-4"
                                 />
-                                <span className="text-sm text-gray-900 dark:text-gray-100">
+                                <span className="text-sm text-foreground dark:text-foreground">
                                     {t("step6.aiGeneratedNo")}
                                 </span>
                             </label>
@@ -192,12 +192,12 @@ export default function VisibilityStep({
                                     }
                                     className="h-4 w-4"
                                 />
-                                <span className="text-sm text-gray-900 dark:text-gray-100">
+                                <span className="text-sm text-foreground dark:text-foreground">
                                     {t("step6.aiGeneratedYes")}
                                 </span>
                             </label>
                         </div>
-                        <p className="text-xs text-gray-400">
+                        <p className="text-xs text-muted-foreground">
                             {t("step6.aiGeneratedHint")}
                         </p>
                     </div>
@@ -214,7 +214,7 @@ export default function VisibilityStep({
                                     }
                                     className="h-4 w-4"
                                 />
-                                <span className="text-sm text-gray-900 dark:text-gray-100">
+                                <span className="text-sm text-foreground dark:text-foreground">
                                     {t("step6.paidPromotionNo")}
                                 </span>
                             </label>
@@ -228,12 +228,12 @@ export default function VisibilityStep({
                                     }
                                     className="h-4 w-4"
                                 />
-                                <span className="text-sm text-gray-900 dark:text-gray-100">
+                                <span className="text-sm text-foreground dark:text-foreground">
                                     {t("step6.paidPromotionYes")}
                                 </span>
                             </label>
                         </div>
-                        <p className="text-xs text-gray-400">
+                        <p className="text-xs text-muted-foreground">
                             {t("step6.paidPromotionHint")}
                         </p>
                     </div>
@@ -266,7 +266,7 @@ export default function VisibilityStep({
                                     }
                                     className="h-4 w-4"
                                 />
-                                <span className="text-sm text-gray-900 dark:text-gray-100">
+                                <span className="text-sm text-foreground dark:text-foreground">
                                     {t("step6.monetizationYes")}
                                 </span>
                             </label>
@@ -280,12 +280,12 @@ export default function VisibilityStep({
                                     }
                                     className="h-4 w-4"
                                 />
-                                <span className="text-sm text-gray-900 dark:text-gray-100">
+                                <span className="text-sm text-foreground dark:text-foreground">
                                     {t("step6.monetizationNo")}
                                 </span>
                             </label>
                         </div>
-                        <p className="text-xs text-gray-400">
+                        <p className="text-xs text-muted-foreground">
                             {t("step6.monetizationHint")}
                         </p>
                     </div>
@@ -305,7 +305,7 @@ export default function VisibilityStep({
                     </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                    <p className="text-xs text-gray-400">
+                    <p className="text-xs text-muted-foreground">
                         {t("step6.cardsHint")}
                     </p>
                     <div className="space-y-3">
@@ -385,7 +385,7 @@ export default function VisibilityStep({
                     </div>
 
                     {/* Members-only toggle */}
-                    <div className="space-y-3 border-t pt-3 dark:border-gray-700">
+                    <div className="space-y-3 border-t pt-3 dark:border-border">
                         <div className="flex items-center gap-2">
                             <input
                                 type="checkbox"
@@ -396,7 +396,7 @@ export default function VisibilityStep({
                                         membersOnly: e.target.checked,
                                     })
                                 }
-                                className="h-4 w-4 rounded border-gray-300"
+                                className="h-4 w-4 rounded border-input"
                             />
                             <Label
                                 htmlFor="membersOnly"
@@ -405,13 +405,13 @@ export default function VisibilityStep({
                                 {t("step6.membersOnly")}
                             </Label>
                         </div>
-                        <p className="text-xs text-gray-400 ml-6">
+                        <p className="text-xs text-muted-foreground ml-6">
                             {t("step6.membersOnlyHint")}
                         </p>
                     </div>
 
                     {/* Schedule type */}
-                    <div className="space-y-3 border-t pt-3 dark:border-gray-700">
+                    <div className="space-y-3 border-t pt-3 dark:border-border">
                         <div className="flex gap-4">
                             <label className="flex items-center gap-2 cursor-pointer">
                                 <input
@@ -421,7 +421,7 @@ export default function VisibilityStep({
                                     onChange={() => setScheduleType("now")}
                                     className="h-4 w-4"
                                 />
-                                <span className="text-sm text-gray-900 dark:text-gray-100">
+                                <span className="text-sm text-foreground dark:text-foreground">
                                     {t("step6.scheduleNow")}
                                 </span>
                             </label>
@@ -433,7 +433,7 @@ export default function VisibilityStep({
                                     onChange={() => setScheduleType("later")}
                                     className="h-4 w-4"
                                 />
-                                <span className="text-sm text-gray-900 dark:text-gray-100">
+                                <span className="text-sm text-foreground dark:text-foreground">
                                     {t("step6.scheduleLater")}
                                 </span>
                             </label>
@@ -501,7 +501,7 @@ export default function VisibilityStep({
             </Card>
 
             {/* Navigation */}
-            <div className="flex justify-between border-t pt-4 dark:border-gray-700">
+            <div className="flex justify-between border-t pt-4 dark:border-border">
                 <Button onClick={onBack} variant="outline">
                     {t("wizard.back")}
                 </Button>

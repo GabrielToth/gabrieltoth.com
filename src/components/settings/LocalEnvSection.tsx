@@ -225,7 +225,7 @@ export function LocalEnvSection() {
                                     currentMode === "local_only" &&
                                         "text-amber-600",
                                     currentMode === "local_preferred" &&
-                                        "text-blue-600",
+                                        "text-primary",
                                     currentMode === "cloud_preferred" &&
                                         "text-green-600",
                                     currentMode === "cloud_only" &&

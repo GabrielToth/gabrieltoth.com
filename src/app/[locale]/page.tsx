@@ -32,7 +32,7 @@ export default async function HomePage({ params }: HomePageProps) {
 
     return (
         <>
-            <main className="min-h-screen bg-white dark:bg-gray-900">
+            <main className="min-h-screen bg-card dark:bg-background">
                 <LandingHeroSection locale={locale} />
                 <LandingFeaturesSection />
                 <LandingPlatformsSection />

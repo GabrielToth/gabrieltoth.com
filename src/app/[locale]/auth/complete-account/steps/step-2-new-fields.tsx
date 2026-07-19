@@ -51,10 +51,10 @@ export default function Step2NewFields({
         <div className="space-y-6">
             {/* Step Title */}
             <div>
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                <h2 className="text-2xl font-bold text-foreground dark:text-foreground mb-2">
                     {t("completeAccount.step2.title")}
                 </h2>
-                <p className="text-gray-600 dark:text-gray-400">
+                <p className="text-muted-foreground dark:text-muted-foreground">
                     {t("completeAccount.step2.description")}
                 </p>
             </div>
@@ -63,7 +63,7 @@ export default function Step2NewFields({
             <div className="space-y-6">
                 {/* Password Field */}
                 <div className="space-y-2">
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                    <label className="block text-sm font-medium text-foreground dark:text-foreground">
                         {t("completeAccount.step2.password")}
                     </label>
                     <Input
@@ -83,7 +83,7 @@ export default function Step2NewFields({
                                 : ""
                         }
                     />
-                    <p className="text-xs text-gray-600 dark:text-gray-400">
+                    <p className="text-xs text-muted-foreground dark:text-muted-foreground">
                         {t("completeAccount.step2.passwordHint")}
                     </p>
                     {errors.password && (
@@ -102,7 +102,7 @@ export default function Step2NewFields({
 
                 {/* Phone Number Field */}
                 <div className="space-y-2">
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                    <label className="block text-sm font-medium text-foreground dark:text-foreground">
                         {t("completeAccount.step2.phone")}
                     </label>
                     <Input
@@ -120,7 +120,7 @@ export default function Step2NewFields({
                                 : ""
                         }
                     />
-                    <p className="text-xs text-gray-600 dark:text-gray-400">
+                    <p className="text-xs text-muted-foreground dark:text-muted-foreground">
                         {t("completeAccount.step2.phoneHint")}
                     </p>
                     {errors.phone && (
@@ -132,7 +132,7 @@ export default function Step2NewFields({
 
                 {/* Birth Date Field */}
                 <div className="space-y-2">
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                    <label className="block text-sm font-medium text-foreground dark:text-foreground">
                         {t("completeAccount.step2.birthDate")}
                     </label>
                     <Input
@@ -149,7 +149,7 @@ export default function Step2NewFields({
                                 : ""
                         }
                     />
-                    <p className="text-xs text-gray-600 dark:text-gray-400">
+                    <p className="text-xs text-muted-foreground dark:text-muted-foreground">
                         {t("completeAccount.step2.birthDateHint")}
                     </p>
                     {errors.birthDate && (
@@ -165,14 +165,14 @@ export default function Step2NewFields({
                 <button
                     onClick={onBack}
                     disabled={isLoading}
-                    className="flex-1 px-4 py-3 bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white rounded-md hover:bg-gray-300 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
+                    className="flex-1 px-4 py-3 bg-accent dark:bg-muted text-foreground dark:text-foreground rounded-md hover:bg-accent dark:hover:bg-muted disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
                 >
                     {t("completeAccount.back")}
                 </button>
                 <button
                     onClick={onContinue}
                     disabled={isLoading || !isFormValid}
-                    className="flex-1 px-4 py-3 bg-blue-600 dark:bg-blue-500 text-white rounded-md hover:bg-blue-700 dark:hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
+                    className="flex-1 px-4 py-3 bg-primary dark:bg-primary text-white rounded-md hover:bg-primary dark:hover:bg-primary disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
                 >
                     {isLoading
                         ? t("completeAccount.loading")
