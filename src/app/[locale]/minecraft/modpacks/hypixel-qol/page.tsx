@@ -1,4 +1,5 @@
 import Footer from "@/components/layout/footer"
+import PageHeader from "@/components/layout/page-header"
 import { type Locale } from "@/lib/i18n"
 import { getLocalizedPath } from "@/lib/url-mapping"
 import { type Metadata } from "next"
@@ -34,17 +35,25 @@ export async function generateMetadata({
 export default async function HypixelQolPage({ params }: HypixelQolPageProps) {
     const { locale } = await params
     const t = await getTranslations({ locale, namespace: "minecraft" })
+    const tHero = await getTranslations({ locale, namespace: "minecraftHypixelQolPageHero" })
 
     return (
         <>
             <main className="min-h-screen bg-[#1a1a1a] text-white">
+                <PageHeader
+                    eyebrow={tHero("hero.badge")}
+                    title={tHero("hero.title")}
+                    subtitle={tHero("hero.subtitle")}
+                    className="bg-[#1a1a1a] dark:from-[#1a1a1a] dark:to-[#1a1a1a]"
+                />
+
                 {/* Navigation Menu */}
-                <section className="pt-24 pb-8 px-4 sm:px-6 lg:px-8 border-b border-neutral-700">
+                <section className="pb-8 px-4 sm:px-6 lg:px-8 border-b border-neutral-700 bg-[#1a1a1a]">
                     <div className="max-w-7xl mx-auto">
                         <div className="flex flex-wrap gap-4 mb-8">
                             <Link
                                 href={getLocalizedPath("minecraft", locale)}
-                                className="px-4 py-2 bg-[#2d2d2d] border border-neutral-700 rounded-lg hover:border-[#10b981] transition-all duration-200 text-gray-300 hover:text-[#10b981]"
+                                className="px-4 py-2 bg-[#2d2d2d] border border-neutral-700 rounded-lg hover:border-[#10b981] transition-all duration-200 text-muted-foreground hover:text-[#10b981]"
                             >
                                 ←{" "}
                                 {t("landing.title", {
@@ -56,20 +65,13 @@ export default async function HypixelQolPage({ params }: HypixelQolPageProps) {
                                     "minecraft-modpacks",
                                     locale
                                 )}
-                                className="px-4 py-2 bg-[#2d2d2d] border border-neutral-700 rounded-lg hover:border-[#10b981] transition-all duration-200 text-gray-300 hover:text-[#10b981]"
+                                className="px-4 py-2 bg-[#2d2d2d] border border-neutral-700 rounded-lg hover:border-[#10b981] transition-all duration-200 text-muted-foreground hover:text-[#10b981]"
                             >
                                 {t("landing.modpacksTitle", {
                                     defaultValue: "Modpacks",
                                 })}
                             </Link>
                         </div>
-
-                        <h1 className="text-4xl sm:text-5xl font-bold mb-4 text-[#10b981]">
-                            Hypixel QoL Modpack
-                        </h1>
-                        <p className="text-xl text-gray-300">
-                            Quality of life improvements for Minecraft gameplay
-                        </p>
                     </div>
                 </section>
 
@@ -80,16 +82,16 @@ export default async function HypixelQolPage({ params }: HypixelQolPageProps) {
                             <h2 className="text-3xl font-bold mb-6 text-[#10b981]">
                                 About This Modpack
                             </h2>
-                            <p className="text-gray-300 mb-4 text-lg leading-relaxed">
+                            <p className="text-muted-foreground mb-4 text-lg leading-relaxed">
                                 The Hypixel QoL modpack is designed to enhance
                                 your Minecraft experience with quality of life
                                 improvements while maintaining the vanilla feel
                                 of the game.
                             </p>
-                            <p className="text-gray-300 mb-4 text-lg leading-relaxed">
+                            <p className="text-muted-foreground mb-4 text-lg leading-relaxed">
                                 This modpack focuses on:
                             </p>
-                            <ul className="list-disc list-inside text-gray-300 space-y-2 mb-6">
+                            <ul className="list-disc list-inside text-muted-foreground space-y-2 mb-6">
                                 <li>Performance optimization</li>
                                 <li>Quality of life enhancements</li>
                                 <li>Better user interface</li>
@@ -100,7 +102,7 @@ export default async function HypixelQolPage({ params }: HypixelQolPageProps) {
                                 <h3 className="text-2xl font-bold mb-4 text-white">
                                     More Information
                                 </h3>
-                                <p className="text-gray-400">
+                                <p className="text-muted-foreground">
                                     More details about this modpack coming soon.
                                     Check back for updates!
                                 </p>
