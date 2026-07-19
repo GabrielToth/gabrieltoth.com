@@ -35,8 +35,6 @@ interface ServiceItem {
     price: number
 }
 
-import PageHeader from "@/components/layout/page-header"
-
 // Hero Section Component
 const HeroSection = ({ locale }: { locale: Locale }) => {
     const t = useTranslations("channelManagement")
