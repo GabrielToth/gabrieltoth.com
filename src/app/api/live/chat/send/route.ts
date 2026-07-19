@@ -328,6 +328,93 @@ async function sendTwitchMessage(
     return NextResponse.json({ success: true, sentViaActive })
 }
 
+async function sendYouTubeMessage(
+    userId: string,
+    message: string,
+    token: string
+): Promise<NextResponse> {
+    try {
+        const broadcastResponse = await fetch(
+            "https://www.googleapis.com/youtube/v3/liveBroadcasts?part=snippet,status&mine=true",
+            {
+                headers: { Authorization: `Bearer ${token}` },
+            }
+        )
+
+        if (!broadcastResponse.ok) {
+            const body = await broadcastResponse.text()
+            return NextResponse.json(
+                {
+                    success: false,
+                    error: "YOUTUBE_API_ERROR",
+                    message: `Failed to find live broadcast: ${broadcastResponse.status} ${body}`,
+                },
+                { status: 500 }
+            )
+        }
+
+        const broadcastData = await broadcastResponse.json()
+        const active = broadcastData.items?.find(
+            (item: { status?: { lifeCycleStatus?: string } }) =>
+                item.status?.lifeCycleStatus === "live"
+        )
+        const liveChatId = active?.snippet?.liveChatId
+
+        if (!liveChatId) {
+            return NextResponse.json(
+                {
+                    success: false,
+                    error: "NO_LIVE_BROADCAST",
+                    message: "No active YouTube live broadcast found",
+                },
+                { status: 400 }
+            )
+        }
+
+        const response = await fetch(
+            "https://www.googleapis.com/youtube/v3/liveChat/messages?part=snippet",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify({
+                    snippet: {
+                        liveChatId,
+                        type: "textMessageEvent",
+                        textMessageDetails: {
+                            messageText: message,
+                        },
+                    },
+                }),
+            }
+        )
+
+        if (!response.ok) {
+            const body = await response.text()
+            return NextResponse.json(
+                {
+                    success: false,
+                    error: "YOUTUBE_SEND_FAILED",
+                    message: `YouTube API error: ${response.status} ${body}`,
+                },
+                { status: 500 }
+            )
+        }
+
+        logger.info("YouTube message sent", { userId, liveChatId })
+        return NextResponse.json({ success: true })
+    } catch (error) {
+        const err = error instanceof Error ? error : new Error(String(error))
+        logger.error("YouTube send failed", err)
+        return NextResponse.json(
+            { success: false, error: "YOUTUBE_SEND_FAILED", message: err.message },
+            { status: 500 }
+        )
+    }
+}
+
 async function sendKickMessage(
     userId: string,
     channelName: string,
@@ -374,11 +461,23 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
             )
         }
 
-        if (platform !== "twitch" && platform !== "kick") {
+        if (platform !== "twitch" && platform !== "kick" && platform !== "youtube") {
             return NextResponse.json(
                 { success: false, error: "UNSUPPORTED_PLATFORM" },
                 { status: 400 }
             )
+        }
+
+        if (platform === "youtube") {
+            const tokenStore = getTokenStore()
+            const stored = await tokenStore.getToken(userId, "youtube")
+            if (!stored?.accessToken) {
+                return NextResponse.json(
+                    { success: false, error: "NO_TOKEN" },
+                    { status: 400 }
+                )
+            }
+            return sendYouTubeMessage(userId, message, stored.accessToken)
         }
 
         const supabase = createClient(

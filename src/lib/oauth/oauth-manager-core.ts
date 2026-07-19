@@ -241,7 +241,8 @@ export class OAuthManager {
     async generateAuthorizationUrl(
         platform: OAuthPlatform,
         userId: string,
-        locale?: string
+        locale?: string,
+        redirectTo?: string
     ): Promise<AuthorizationUrlResponse> {
         const config = this.configs.get(platform)
         if (!config) {
@@ -250,8 +251,8 @@ export class OAuthManager {
 
         try {
             // Generate HMAC-signed state token (no Redis needed)
-            // The state contains userId, platform, locale, and timestamp — signed with HMAC-SHA256
-            const signedState = generateState(userId, platform, locale)
+            // The state contains userId, platform, locale, redirectTo, and timestamp — signed with HMAC-SHA256
+            const signedState = generateState(userId, platform, locale, redirectTo)
             const state = signedState.token
 
             // Build authorization URL
@@ -306,7 +307,7 @@ export class OAuthManager {
         platform: string,
         userId: string,
         state: string
-    ): Promise<{ valid: boolean; locale?: string }> {
+    ): Promise<{ valid: boolean; locale?: string; redirectTo?: string }> {
         try {
             const result = verifyState(state)
 
@@ -338,7 +339,7 @@ export class OAuthManager {
                 return { valid: false }
             }
 
-            return { valid: true, locale: result.payload?.locale }
+            return { valid: true, locale: result.payload?.locale, redirectTo: result.payload?.redirectTo }
         } catch (error) {
             logger.error("State validation failed", {
                 platform,

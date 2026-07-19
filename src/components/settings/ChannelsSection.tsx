@@ -84,6 +84,7 @@ export const ChannelsSection: React.FC<ChannelsSectionProps> = ({
             const response = await fetch(`/api/oauth/authorize/${platform}`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ redirectTo: window.location.pathname }),
             })
             if (!response.ok) {
                 const data = await response.json()

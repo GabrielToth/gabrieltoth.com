@@ -12,7 +12,6 @@ import { NextRequest } from "next/server"
 import { MessageAggregator } from "@/lib/realtime/message-aggregator"
 import { createSSEStream, closeConnections } from "@/lib/realtime/sse-manager"
 import { getTokenStore } from "@/lib/token-store"
-import { isTerminalTokenError, markAccountDisconnected } from "@/lib/auth/token-health"
 
 const logger = createLogger("ChatStreamEndpoint")
 
@@ -63,71 +62,38 @@ export async function GET(request: NextRequest): Promise<Response> {
             )
         }
 
-        // Determine which platforms the user has connected and their channel names
+        // Determine which platforms the user has connected and their channel names.
+        // YouTube is handled separately via the relay WebSocket, not the SSE MessageAggregator.
         const platformConnect: Partial<
-            Record<"twitch" | "kick" | "youtube", { channelName: string; token?: string }>
+            Record<"twitch" | "kick", { channelName: string; token?: string }>
         > = {}
-        let youtubeProcessed = false
         for (const network of networks || []) {
-            const plat = network.platform as "twitch" | "kick" | "youtube"
-            if (plat === "twitch" || plat === "kick" || plat === "youtube") {
-                // Only process YouTube once (user may have 2 channels, but liveBroadcasts?mine=true
-                // returns broadcasts for ALL channels — one connection is enough)
-                if (plat === "youtube") {
-                    if (youtubeProcessed) continue
-                    youtubeProcessed = true
-                }
-                const info: { channelName: string; token?: string } = {
-                    channelName: network.platform_username || plat,
-                }
+            const plat = network.platform as string
+            if (plat !== "twitch" && plat !== "kick") continue
 
-                try {
-                    const tokenStore = getTokenStore()
-                    let stored = await tokenStore.getToken(userId, plat)
+            const key = plat as "twitch" | "kick"
+            const info: { channelName: string; token?: string } = {
+                channelName: network.platform_username || plat,
+            }
 
-                    // Auto-refresh expired YouTube token
-                    if (plat === "youtube" && stored?.refreshToken && stored.expiresAt && stored.expiresAt < Date.now()) {
-                        try {
-                            const { getYouTubeOAuthService } = await import("@/lib/youtube/oauth-service")
-                            const { getYouTubeChannelLinkingConfig } = await import("@/lib/youtube/config")
-                            const { validateEnv } = await import("@/lib/config/env")
-                            const ytConfig = getYouTubeChannelLinkingConfig(validateEnv())
-                            const ytOAuth = getYouTubeOAuthService(ytConfig)
-                            await ytOAuth.initialize()
-                            const refreshed = await ytOAuth.refreshAccessToken(stored.refreshToken)
-                            const expiresAt = Date.now() + refreshed.expiresIn * 1000
-                            await tokenStore.refreshToken(userId, "youtube", {
-                                accessToken: refreshed.accessToken,
-                                refreshToken: refreshed.refreshToken,
-                                expiresAt,
-                                platform: "youtube",
-                                userId,
-                            })
-                            stored = await tokenStore.getToken(userId, "youtube")
-                        } catch (err) {
-                            const errMsg = err instanceof Error ? err.message : String(err)
-                            logger.error("YouTube token auto-refresh failed in stream", { userId, error: errMsg })
-                            if (isTerminalTokenError(errMsg)) {
-                                await markAccountDisconnected(userId, "youtube").catch(() => {})
-                            }
-                        }
-                    }
+            try {
+                const tokenStore = getTokenStore()
+                const stored = await tokenStore.getToken(userId, key)
 
-                    if (stored?.accessToken) {
-                        info.token = stored.accessToken
-                        logger.debug(`${plat} OAuth token retrieved for chat`, {
-                            userId,
-                        })
-                    }
-                } catch (tokenErr) {
-                    logger.warn(`Failed to retrieve ${plat} token for chat`, {
+                if (stored?.accessToken) {
+                    info.token = stored.accessToken
+                    logger.debug(`${key} OAuth token retrieved for chat`, {
                         userId,
-                        error: String(tokenErr),
                     })
                 }
-
-                platformConnect[plat] = info
+            } catch (tokenErr) {
+                logger.warn(`Failed to retrieve ${key} token for chat`, {
+                    userId,
+                    error: String(tokenErr),
+                })
             }
+
+            platformConnect[key] = info
         }
 
         const platforms = Object.keys(platformConnect)

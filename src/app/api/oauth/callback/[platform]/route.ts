@@ -157,47 +157,23 @@ export async function GET(
                 process.env.SUPABASE_SERVICE_ROLE_KEY || ""
             )
 
-            if (normalizedPlatform === "youtube") {
-                // Update existing YouTube rows to connected (bypass YouTube API which may be blocked/quota-exceeded)
-                const { error: updateError } = await supabase
-                    .from("social_networks")
-                    .update({
-                        status: "connected",
-                        updated_at: new Date().toISOString(),
-                    })
-                    .eq("user_id", userId)
-                    .eq("platform", "youtube")
-
-                if (updateError) {
-                    logger.warn("Failed to update YouTube social_networks", {
-                        userId,
-                        error: updateError.message,
-                    })
-                } else {
-                    logger.info("YouTube social_networks set to connected", {
-                        userId,
-                    })
-                }
-            } else {
-                // Other platforms: save minimal record
-                await supabase.from("social_networks").upsert(
-                    {
-                        user_id: userId,
-                        platform: normalizedPlatform,
-                        platform_user_id: "",
-                        platform_username: normalizedPlatform,
-                        status: "connected",
-                        linked_at: new Date().toISOString(),
-                        metadata: {
-                            scopeVersion: getScopeVersion(normalizedPlatform),
-                        },
-                        updated_at: new Date().toISOString(),
+            await supabase.from("social_networks").upsert(
+                {
+                    user_id: userId,
+                    platform: normalizedPlatform,
+                    platform_user_id: "",
+                    platform_username: normalizedPlatform,
+                    status: "connected",
+                    linked_at: new Date().toISOString(),
+                    metadata: {
+                        scopeVersion: getScopeVersion(normalizedPlatform),
                     },
-                    {
-                        onConflict: "user_id, platform, platform_user_id",
-                    }
-                )
-            }
+                    updated_at: new Date().toISOString(),
+                },
+                {
+                    onConflict: "user_id, platform, platform_user_id",
+                }
+            )
         } catch (socialError) {
             logger.warn(
                 "Failed to save social_networks record, token already stored",
@@ -220,12 +196,11 @@ export async function GET(
             environment: getAuditEnvironment(),
         })
 
-        // Redirect back to channels page with correct locale
+        // Redirect back to original page (or fall back to channels page)
         const locale = stateResult.locale || "en"
-        const redirectUrl = new URL(
-            `/${locale}/dashboard/channels`,
-            request.nextUrl.origin
-        )
+        const redirectPath =
+            stateResult.redirectTo || `/${locale}/dashboard/channels`
+        const redirectUrl = new URL(redirectPath, request.nextUrl.origin)
         redirectUrl.searchParams.set("oauth_success", normalizedPlatform)
         return NextResponse.redirect(redirectUrl)
     } catch (error) {
