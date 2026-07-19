@@ -1,7 +1,7 @@
 {
-    "hero": {
-        "badge": "👋 Willkommen",
-        "title": "Entwickler, Unternehmer und Content Creator",
-        "subtitle": "Ich baue digitale Produkte, die Menschen helfen. Mit Leidenschaft für Code, Kreativität und innovative Lösungen."
-    }
+  "hero": {
+    "badge": "Channel-Management-Plattform",
+    "title": "Verwalten Sie Alle Ihre Streams an Einem Ort",
+    "subtitle": "Verbinden Sie YouTube, TikTok, Twitter, Instagram und andere Plattformen in einem einzigen Dashboard"
+  }
 }
