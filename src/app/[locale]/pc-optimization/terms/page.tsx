@@ -1,6 +1,8 @@
+import PageHeader from "@/components/layout/page-header"
 import StructuredData from "@/components/seo/structured-data"
 import Breadcrumbs from "@/components/ui/breadcrumbs"
 import { type Locale } from "@/lib/i18n"
+import { getTranslations } from "next-intl/server"
 import Link from "next/link"
 
 interface PageProps {
@@ -11,6 +13,7 @@ export { generateMetadata } from "./terms-metadata"
 
 export default async function PCOptimizationTermsPage({ params }: PageProps) {
     const { locale } = await params
+    const tHero = await getTranslations({ locale, namespace: "pcOptimizationTermsPageHero" })
 
     // Breadcrumbs
     const breadcrumbs = [
@@ -236,164 +239,165 @@ export default async function PCOptimizationTermsPage({ params }: PageProps) {
                 breadcrumbs={breadcrumbs}
             />
 
-            <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-12 px-4 sm:px-6 lg:px-8">
-                <div className="max-w-4xl mx-auto">
-                    <Breadcrumbs
-                        items={breadcrumbs.map((item, index) => ({
-                            name: item.name,
-                            href: item.url,
-                            current: index === breadcrumbs.length - 1,
-                        }))}
-                        className="mb-6"
-                    />
+            <main className="min-h-screen bg-muted dark:bg-background">
+                <PageHeader
+                    eyebrow={tHero("hero.badge")}
+                    title={tHero("hero.title")}
+                    subtitle={tHero("hero.subtitle")}
+                />
 
-                    <div className="bg-white dark:bg-gray-800 shadow-xl rounded-lg p-8">
-                        <div className="text-center mb-8">
-                            <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
-                                {content.title}
-                            </h1>
-                            <p className="text-lg text-gray-600 dark:text-gray-300">
-                                {content.subtitle}
-                            </p>
-                        </div>
+                <div className="py-12 px-4 sm:px-6 lg:px-8">
+                    <div className="max-w-4xl mx-auto">
+                        <Breadcrumbs
+                            items={breadcrumbs.map((item, index) => ({
+                                name: item.name,
+                                href: item.url,
+                                current: index === breadcrumbs.length - 1,
+                            }))}
+                            className="mb-6"
+                        />
 
-                        {/* General Terms */}
-                        <section className="mb-8">
-                            <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">
-                                {content.generalTerms.title}
-                            </h2>
-                            <div className="space-y-4">
-                                {content.generalTerms.items.map(
-                                    (item, index) => (
-                                        <div
-                                            key={index}
-                                            className="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg"
-                                        >
-                                            <p className="text-gray-700 dark:text-gray-300">
-                                                {item}
-                                            </p>
-                                        </div>
-                                    )
-                                )}
-                            </div>
-                        </section>
+                        <div className="bg-card shadow-xl rounded-lg p-8">
+                            <div className="space-y-12">
+                                {/* General Terms */}
+                                <section className="mb-8">
+                                    <h2 className="text-2xl font-semibold text-foreground dark:text-foreground mb-4">
+                                        {content.generalTerms.title}
+                                    </h2>
+                                    <div className="space-y-4">
+                                        {content.generalTerms.items.map(
+                                            (item, index) => (
+                                                <div
+                                                    key={index}
+                                                    className="p-4 bg-primary/5 dark:bg-primary/10 rounded-lg"
+                                                >
+                                                    <p className="text-foreground dark:text-foreground">
+                                                        {item}
+                                                    </p>
+                                                </div>
+                                            )
+                                        )}
+                                    </div>
+                                </section>
 
-                        {/* Warranties */}
-                        <section className="mb-8">
-                            <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">
-                                {content.warranties.title}
-                            </h2>
-                            <div className="space-y-3">
-                                {content.warranties.items.map((item, index) => (
-                                    <div
-                                        key={index}
-                                        className="flex items-start"
-                                    >
-                                        <span className="text-green-500 mr-2 mt-1">
-                                            ✓
-                                        </span>
-                                        <p className="text-gray-700 dark:text-gray-300">
-                                            {item}
+                                {/* Warranties */}
+                                <section className="mb-8">
+                                    <h2 className="text-2xl font-semibold text-foreground dark:text-foreground mb-4">
+                                        {content.warranties.title}
+                                    </h2>
+                                    <div className="space-y-3">
+                                        {content.warranties.items.map((item, index) => (
+                                            <div
+                                                key={index}
+                                                className="flex items-start"
+                                            >
+                                                <span className="text-green-500 mr-2 mt-1">
+                                                    ✓
+                                                </span>
+                                                <p className="text-foreground dark:text-foreground">
+                                                    {item}
+                                                </p>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </section>
+
+                                {/* Requirements */}
+                                <section className="mb-8">
+                                    <h2 className="text-2xl font-semibold text-foreground dark:text-foreground mb-4">
+                                        {content.requirements.title}
+                                    </h2>
+                                    <div className="space-y-3">
+                                        {content.requirements.items.map(
+                                            (item, index) => (
+                                                <div
+                                                    key={index}
+                                                    className="flex items-start"
+                                                >
+                                                    <span className="text-primary mr-2 mt-1">
+                                                        📋
+                                                    </span>
+                                                    <p className="text-foreground dark:text-foreground">
+                                                        {item}
+                                                    </p>
+                                                </div>
+                                            )
+                                        )}
+                                    </div>
+                                </section>
+
+                                {/* Warnings */}
+                                <section className="mb-8">
+                                    <h2 className="text-2xl font-semibold text-foreground dark:text-foreground mb-4">
+                                        {content.warnings.title}
+                                    </h2>
+                                    <div className="space-y-3">
+                                        {content.warnings.items.map((item, index) => (
+                                            <div
+                                                key={index}
+                                                className="p-4 bg-yellow-50 dark:bg-yellow-900/20 border-l-4 border-yellow-400"
+                                            >
+                                                <p className="text-foreground dark:text-foreground">
+                                                    {item}
+                                                </p>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </section>
+
+                                {/* Payment Terms */}
+                                <section className="mb-8">
+                                    <h2 className="text-2xl font-semibold text-foreground dark:text-foreground mb-4">
+                                        {content.payment.title}
+                                    </h2>
+                                    <div className="p-6 bg-green-50 dark:bg-green-900/20 rounded-lg">
+                                        <p className="text-foreground dark:text-foreground">
+                                            {content.payment.text}
                                         </p>
                                     </div>
-                                ))}
-                            </div>
-                        </section>
+                                </section>
 
-                        {/* Requirements */}
-                        <section className="mb-8">
-                            <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">
-                                {content.requirements.title}
-                            </h2>
-                            <div className="space-y-3">
-                                {content.requirements.items.map(
-                                    (item, index) => (
-                                        <div
-                                            key={index}
-                                            className="flex items-start"
-                                        >
-                                            <span className="text-blue-500 mr-2 mt-1">
-                                                📋
-                                            </span>
-                                            <p className="text-gray-700 dark:text-gray-300">
-                                                {item}
-                                            </p>
-                                        </div>
-                                    )
-                                )}
-                            </div>
-                        </section>
-
-                        {/* Warnings */}
-                        <section className="mb-8">
-                            <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">
-                                {content.warnings.title}
-                            </h2>
-                            <div className="space-y-3">
-                                {content.warnings.items.map((item, index) => (
-                                    <div
-                                        key={index}
-                                        className="p-4 bg-yellow-50 dark:bg-yellow-900/20 border-l-4 border-yellow-400"
-                                    >
-                                        <p className="text-gray-700 dark:text-gray-300">
-                                            {item}
+                                {/* Support */}
+                                <section className="mb-8">
+                                    <h2 className="text-2xl font-semibold text-foreground dark:text-foreground mb-4">
+                                        {content.support.title}
+                                    </h2>
+                                    <div className="p-6 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
+                                        <p className="text-foreground dark:text-foreground">
+                                            {content.support.text}
                                         </p>
                                     </div>
-                                ))}
-                            </div>
-                        </section>
+                                </section>
 
-                        {/* Payment Terms */}
-                        <section className="mb-8">
-                            <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">
-                                {content.payment.title}
-                            </h2>
-                            <div className="p-6 bg-green-50 dark:bg-green-900/20 rounded-lg">
-                                <p className="text-gray-700 dark:text-gray-300">
-                                    {content.payment.text}
-                                </p>
+                                {/* Footer */}
+                                <div className="border-t border-border dark:border-border pt-6 text-center">
+                                    <p className="text-sm text-muted-foreground dark:text-muted-foreground mb-4">
+                                        {locale === "pt-BR"
+                                            ? "Ao contratar nossos serviços, você concorda com todos os termos descritos acima."
+                                            : locale === "es"
+                                              ? "Al contratar nuestros servicios, acepta todos los términos descritos anteriormente."
+                                              : locale === "de"
+                                                ? "Mit der Beauftragung unserer Dienste akzeptieren Sie alle oben beschriebenen Bedingungen."
+                                                : "By hiring our services, you agree to all terms described above."}
+                                    </p>
+                                    <Link
+                                        href={`/${locale}/pc-optimization`}
+                                        className="inline-flex items-center px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary transition-colors"
+                                    >
+                                        {locale === "pt-BR"
+                                            ? "← Voltar para Otimização de PC"
+                                            : locale === "es"
+                                              ? "← Volver a Optimización de PC"
+                                              : locale === "de"
+                                                ? "← Zurück zur PC-Optimierung"
+                                                : "← Back to PC Optimization"}
+                                    </Link>
+                                </div>
                             </div>
-                        </section>
-
-                        {/* Support */}
-                        <section className="mb-8">
-                            <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">
-                                {content.support.title}
-                            </h2>
-                            <div className="p-6 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
-                                <p className="text-gray-700 dark:text-gray-300">
-                                    {content.support.text}
-                                </p>
-                            </div>
-                        </section>
-
-                        {/* Footer */}
-                        <div className="border-t border-gray-200 dark:border-gray-700 pt-6 text-center">
-                            <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
-                                {locale === "pt-BR"
-                                    ? "Ao contratar nossos serviços, você concorda com todos os termos descritos acima."
-                                    : locale === "es"
-                                      ? "Al contratar nuestros servicios, acepta todos los términos descritos anteriormente."
-                                      : locale === "de"
-                                        ? "Mit der Beauftragung unserer Dienste akzeptieren Sie alle oben beschriebenen Bedingungen."
-                                        : "By hiring our services, you agree to all terms described above."}
-                            </p>
-                            <Link
-                                href={`/${locale}/pc-optimization`}
-                                className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-                            >
-                                {locale === "pt-BR"
-                                    ? "← Voltar para Otimização de PC"
-                                    : locale === "es"
-                                      ? "← Volver a Optimización de PC"
-                                      : locale === "de"
-                                        ? "← Zurück zur PC-Optimierung"
-                                        : "← Back to PC Optimization"}
-                            </Link>
                         </div>
                     </div>
                 </div>
-            </div>
+            </main>
         </>
     )
 }
