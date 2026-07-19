@@ -1,0 +1,1 @@
+Start-Process -FilePath "C:\ProgramData\nvm\nodejs\node.exe" -ArgumentList "C:\relay\dist\relay-server.js" -WorkingDirectory "C:\relay" -NoNewWindow -RedirectStandardOutput "C:\relay\relay.log" -RedirectStandardError "C:\relay\relay.err"
