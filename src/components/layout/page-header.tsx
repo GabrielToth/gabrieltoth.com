@@ -1,10 +1,14 @@
 "use client"
 
+import { ReactNode } from "react"
+
 interface PageHeaderProps {
-    eyebrow: string
-    title: string
-    subtitle?: string
+    eyebrow: string | ReactNode
+    title: string | ReactNode
+    subtitle?: string | ReactNode
     className?: string
+    containerClassName?: string
+    children?: ReactNode
 }
 
 export default function PageHeader({
@@ -12,29 +16,36 @@ export default function PageHeader({
     title,
     subtitle,
     className = "",
+    containerClassName = "",
+    children,
 }: PageHeaderProps) {
     return (
-        <div className={`w-full py-16 md:py-24 ${className}`}>
-            <div className="flex flex-col items-center justify-center text-center space-y-4">
-                {/* Eyebrow text */}
-                <div className="inline-block">
-                    <span className="text-sm md:text-base font-semibold uppercase tracking-wider text-blue-600 dark:text-blue-400">
-                        {eyebrow}
-                    </span>
+        <section className={`w-full py-16 md:py-24 bg-muted dark:from-blue-900/20 dark:to-primary/10 ${className}`}>
+            <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center ${containerClassName}`}>
+                <div className="flex flex-col items-center justify-center space-y-4">
+                    {/* Eyebrow text - small uppercase */}
+                    <div className="inline-block">
+                        <div className="bg-primary/10 dark:bg-primary/10 text-primary dark:text-primary text-sm font-semibold px-4 py-2 rounded-full">
+                            {eyebrow}
+                        </div>
+                    </div>
+
+                    {/* Main title - fixed size, centered, consistent height */}
+                    <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground dark:text-foreground leading-tight max-w-5xl">
+                        {title}
+                    </h1>
+
+                    {/* Optional subtitle */}
+                    {subtitle && (
+                        <p className="text-xl text-muted-foreground dark:text-foreground max-w-3xl leading-relaxed">
+                            {subtitle}
+                        </p>
+                    )}
+
+                    {/* Optional children (CTA buttons, etc) */}
+                    {children}
                 </div>
-
-                {/* Main title - fixed size, centered */}
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-tight max-w-4xl">
-                    {title}
-                </h1>
-
-                {/* Optional subtitle */}
-                {subtitle && (
-                    <p className="text-lg md:text-xl text-muted-foreground max-w-2xl">
-                        {subtitle}
-                    </p>
-                )}
             </div>
-        </div>
+        </section>
     )
 }
