@@ -20,6 +20,63 @@ import { NextRequest, NextResponse } from "next/server"
 
 const logger = createLogger("OAuthCallbackEndpoint")
 
+interface YouTubeChannelInfo {
+    channelId: string
+    title: string
+    description: string
+    customUrl?: string
+    subscriberCount?: number
+    profileImageUrl?: string
+}
+
+async function fetchYouTubeChannelInfo(
+    accessToken: string
+): Promise<YouTubeChannelInfo | null> {
+    try {
+        const url = new URL("https://www.googleapis.com/youtube/v3/channels")
+        url.searchParams.set("part", "snippet,statistics")
+        url.searchParams.set("mine", "true")
+
+        const response = await fetch(url.toString(), {
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+                Accept: "application/json",
+            },
+            signal: AbortSignal.timeout(10000),
+        })
+
+        if (!response.ok) {
+            logger.warn("YouTube API request failed", {
+                status: response.status,
+            })
+            return null
+        }
+
+        const data = await response.json()
+        if (!data.items || data.items.length === 0) {
+            logger.warn("No YouTube channel found for the authenticated user")
+            return null
+        }
+
+        const channel = data.items[0]
+        return {
+            channelId: channel.id,
+            title: channel.snippet?.title || "",
+            description: channel.snippet?.description || "",
+            customUrl: channel.snippet?.customUrl,
+            subscriberCount: parseInt(
+                channel.statistics?.subscriberCount || "0"
+            ),
+            profileImageUrl: channel.snippet?.thumbnails?.default?.url,
+        }
+    } catch (error) {
+        logger.warn("Failed to fetch YouTube channel info", {
+            error: error instanceof Error ? error.message : String(error),
+        })
+        return null
+    }
+}
+
 /**
  * GET /api/oauth/callback/:platform
  * Handles OAuth callback and exchanges code for token
@@ -157,23 +214,84 @@ export async function GET(
                 process.env.SUPABASE_SERVICE_ROLE_KEY || ""
             )
 
-            await supabase.from("social_networks").upsert(
-                {
-                    user_id: userId,
-                    platform: normalizedPlatform,
-                    platform_user_id: "",
-                    platform_username: normalizedPlatform,
-                    status: "connected",
-                    linked_at: new Date().toISOString(),
-                    metadata: {
-                        scopeVersion: getScopeVersion(normalizedPlatform),
-                    },
-                    updated_at: new Date().toISOString(),
-                },
-                {
-                    onConflict: "user_id, platform, platform_user_id",
+            if (normalizedPlatform === "youtube") {
+                // Clean up any stale rows with empty platform_user_id
+                // (created by a previous buggy version of this callback)
+                await supabase
+                    .from("social_networks")
+                    .delete()
+                    .eq("user_id", userId)
+                    .eq("platform", "youtube")
+                    .eq("platform_user_id", "")
+
+                // Fetch real channel info from YouTube API
+                const channelInfo = await fetchYouTubeChannelInfo(
+                    tokenResponse.accessToken
+                )
+
+                if (channelInfo) {
+                    await supabase.from("social_networks").upsert(
+                        {
+                            user_id: userId,
+                            platform: "youtube",
+                            platform_user_id: channelInfo.channelId,
+                            platform_username: channelInfo.title,
+                            status: "connected",
+                            linked_at: new Date().toISOString(),
+                            metadata: {
+                                channelId: channelInfo.channelId,
+                                channelTitle: channelInfo.title,
+                                channelDescription: channelInfo.description,
+                                customUrl: channelInfo.customUrl,
+                                subscriberCount: channelInfo.subscriberCount,
+                                profileImageUrl: channelInfo.profileImageUrl,
+                                scopeVersion: getScopeVersion("youtube"),
+                            },
+                            updated_at: new Date().toISOString(),
+                        },
+                        {
+                            onConflict: "user_id, platform",
+                        }
+                    )
+                } else {
+                    // Fallback: save minimal record when YouTube API is unavailable
+                    await supabase.from("social_networks").upsert(
+                        {
+                            user_id: userId,
+                            platform: "youtube",
+                            platform_user_id: "",
+                            platform_username: "youtube",
+                            status: "connected",
+                            linked_at: new Date().toISOString(),
+                            metadata: {
+                                scopeVersion: getScopeVersion("youtube"),
+                            },
+                            updated_at: new Date().toISOString(),
+                        },
+                        {
+                            onConflict: "user_id, platform",
+                        }
+                    )
                 }
-            )
+            } else {
+                await supabase.from("social_networks").upsert(
+                    {
+                        user_id: userId,
+                        platform: normalizedPlatform,
+                        platform_user_id: "",
+                        platform_username: normalizedPlatform,
+                        status: "connected",
+                        linked_at: new Date().toISOString(),
+                        metadata: {
+                            scopeVersion: getScopeVersion(normalizedPlatform),
+                        },
+                        updated_at: new Date().toISOString(),
+                    },
+                    {
+                        onConflict: "user_id, platform, platform_user_id",
+                    }
+                )
+            }
         } catch (socialError) {
             logger.warn(
                 "Failed to save social_networks record, token already stored",
