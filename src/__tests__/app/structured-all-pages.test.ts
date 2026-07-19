@@ -43,8 +43,7 @@ async function ensureSchemasFromStructured(modPath: string) {
             mod.buildChannelManagementStructured ||
             mod.buildPCOptimizationStructured ||
             mod.buildPrivacyPolicyStructured ||
-            mod.buildTermsOfServiceStructured ||
-            mod.buildIQTestStructured
+            mod.buildTermsOfServiceStructured
 
         if (fn) {
             const res = await fn(locale)
@@ -84,11 +83,6 @@ describe("structured data presence on pages", () => {
     it("terms-of-service structured present", async () => {
         await ensureSchemasFromStructured(
             "@/app/[locale]/terms-of-service/terms-of-service-structured"
-        )
-    })
-    it("iq-test structured present", async () => {
-        await ensureSchemasFromStructured(
-            "@/app/[locale]/iq-test/iq-test-structured"
         )
     })
 })

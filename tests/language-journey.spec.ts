@@ -58,12 +58,12 @@ test.describe("language switching journey", () => {
     test("cycle through all 4 locales on deep page maintains URL path", async ({
         page,
     }) => {
-        await page.goto("/en/iq-test")
+        await page.goto("/en/channel-management")
 
         for (const locale of LOCALES) {
             await page.getByTestId("language-selector-button").first().click()
             await page.getByTestId(`language-selector-option-${locale}`).click()
-            await expect(page).toHaveURL(new RegExp(`/${locale}/iq-test`))
+            await expect(page).toHaveURL(new RegExp(`/${locale}/channel-management`))
         }
     })
 

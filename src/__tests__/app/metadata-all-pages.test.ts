@@ -78,19 +78,6 @@ describe("metadata for all core pages", () => {
         )
     })
 
-    it("iq-test landing", async () => {
-        const mod: any = await import("@/app/[locale]/iq-test/page")
-        const locales = ["en", "pt-BR", "es", "de"] as const
-        for (const locale of locales) {
-            const meta = await mod.generateMetadata({
-                params: Promise.resolve({ locale }),
-            } as any)
-            expect(meta.alternates?.canonical).toContain(
-                `/${locale === "en" ? "en" : locale}/iq-test/`
-            )
-        }
-    })
-
     it("services landing", async () => {
         const mod: any = await import("@/app/[locale]/services/page")
         const locales = ["en", "pt-BR", "es", "de"] as const

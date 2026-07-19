@@ -13,7 +13,6 @@ export async function generateServicesMetadata(
             "channel management",
             "pc optimization",
             "amazon affiliate",
-            "iq test",
             "personality test",
             "consulting",
         ],
