@@ -2,6 +2,7 @@
     "hero": {
         "badge": "⚡ Boost Your System",
         "title": "PC Optimization Services",
-        "subtitle": "Professional system optimization, performance tuning, and hardware recommendations to maximize your computer's potential."
+        "subtitle": "Professional system optimization, performance tuning, and hardware recommendations to maximize your computer's potential.",
+        "cta": "View Pricing"
     }
 }
