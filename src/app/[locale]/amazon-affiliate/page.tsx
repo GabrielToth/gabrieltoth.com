@@ -1,11 +1,14 @@
 "use client"
 
+import PageHeader from "@/components/layout/page-header"
 import { useLocale } from "@/hooks/use-locale"
 import { generateAmazonAffiliateLink } from "@/lib/amazon"
+import { useTranslations } from "next-intl"
 import { useState } from "react"
 
 export default function AmazonAffiliatePage() {
     const { locale: _locale } = useLocale()
+    const t = useTranslations("amazonAffiliate")
     const [inputUrl, setInputUrl] = useState("")
     const [affiliateUrl, setAffiliateUrl] = useState("")
     const [error, setError] = useState<string | null>(null)
@@ -32,26 +35,24 @@ export default function AmazonAffiliatePage() {
     }
 
     return (
-        <main className="min-h-screen bg-white dark:bg-gray-900 pt-24 px-4">
-            <div className="max-w-2xl mx-auto">
-                <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-                    Amazon Affiliate Link Generator
-                </h1>
-                <p className="text-sm text-gray-600 dark:text-gray-400 mb-6">
-                    Paste an Amazon product or search URL below and generate
-                    your affiliate link.
-                </p>
+        <main className="min-h-screen bg-card dark:bg-background">
+            <PageHeader
+                eyebrow={t("hero.badge")}
+                title={t("hero.title")}
+                subtitle={t("hero.subtitle")}
+            />
+            <div className="max-w-2xl mx-auto px-4 py-12">
                 <div className="space-y-3">
                     <input
                         type="url"
                         value={inputUrl}
                         onChange={e => setInputUrl(e.target.value)}
                         placeholder="https://www.amazon.com/dp/..."
-                        className="w-full border border-gray-300 dark:border-gray-700 rounded-md p-2 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+                        className="w-full border border-input dark:border-border rounded-md p-2 bg-card text-foreground dark:text-foreground"
                     />
                     <button
                         onClick={onGenerate}
-                        className="px-4 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700"
+                        className="px-4 py-2 rounded-md bg-primary text-white hover:bg-primary"
                     >
                         Generate
                     </button>
@@ -61,15 +62,15 @@ export default function AmazonAffiliatePage() {
                         </div>
                     )}
                     {affiliateUrl && (
-                        <div className="mt-4 p-3 rounded-md border border-gray-200 dark:border-gray-700">
-                            <div className="text-sm text-gray-700 dark:text-gray-300 break-all">
+                        <div className="mt-4 p-3 rounded-md border border-border dark:border-border">
+                            <div className="text-sm text-foreground dark:text-foreground break-all">
                                 {affiliateUrl}
                             </div>
                             <a
                                 href={affiliateUrl}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="inline-block mt-2 text-blue-600 hover:underline"
+                                className="inline-block mt-2 text-primary hover:underline"
                             >
                                 Open link ↗
                             </a>
