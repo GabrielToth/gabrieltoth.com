@@ -1,4 +1,5 @@
 import Footer from "@/components/layout/footer"
+import PageHeader from "@/components/layout/page-header"
 import { type Locale } from "@/lib/i18n"
 import { type Metadata } from "next"
 import { getTranslations } from "next-intl/server"
@@ -40,35 +41,27 @@ export async function generateMetadata({
 export default async function PluginsPage({ params }: PluginsPageProps) {
     const { locale } = await params
     const t = await getTranslations({ locale, namespace: "minecraft" })
+    const tHero = await getTranslations({ locale, namespace: "minecraftPluginsPageHero" })
 
     return (
         <>
             <main className="min-h-screen bg-[#1a1a1a] text-white">
-                {/* Hero Section */}
-                <section className="pt-24 pb-16 px-4 sm:px-6 lg:px-8">
-                    <div className="max-w-7xl mx-auto">
-                        <div className="text-center mb-12">
-                            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4 text-[#10b981]">
-                                {t("plugins.title", {
-                                    defaultValue: "Plugins",
-                                })}
-                            </h1>
-                            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-                                {t("plugins.subtitle", {
-                                    defaultValue:
-                                        "Minecraft server plugins and modifications",
-                                })}
-                            </p>
-                        </div>
+                <PageHeader
+                    eyebrow={tHero("hero.badge")}
+                    title={tHero("hero.title")}
+                    subtitle={tHero("hero.subtitle")}
+                    className="bg-[#1a1a1a] dark:from-[#1a1a1a] dark:to-[#1a1a1a]"
+                />
 
-                        {/* Coming Soon */}
+                <section className="py-12 px-4 sm:px-6 lg:px-8 bg-[#1a1a1a]">
+                    <div className="max-w-7xl mx-auto">
                         <div className="bg-[#242424] border border-neutral-700 rounded-lg p-12 max-w-4xl mx-auto text-center">
                             <h2 className="text-3xl font-bold mb-4 text-[#10b981]">
                                 {t("plugins.comingSoon", {
                                     defaultValue: "Coming Soon",
                                 })}
                             </h2>
-                            <p className="text-gray-300 text-lg">
+                            <p className="text-muted-foreground text-lg">
                                 {t("plugins.comingSoonText", {
                                     defaultValue:
                                         "This section is currently under development. Check back soon for updates!",
