@@ -1,4 +1,5 @@
 import Footer from "@/components/layout/footer"
+import PageHeader from "@/components/layout/page-header"
 import { type Locale } from "@/lib/i18n"
 import { getLocalizedPath } from "@/lib/url-mapping"
 import { type Metadata } from "next"
@@ -31,21 +32,20 @@ export async function generateMetadata({
 export default async function ModpacksPage({ params }: ModpacksPageProps) {
     const { locale } = await params
     const t = await getTranslations({ locale, namespace: "minecraft" })
+    const tHero = await getTranslations({ locale, namespace: "minecraftModpacksPageHero" })
 
     return (
         <>
             <main className="min-h-screen bg-[#1a1a1a] text-white">
-                <section className="pt-24 pb-16 px-4 sm:px-6 lg:px-8">
-                    <div className="max-w-7xl mx-auto">
-                        <div className="text-center mb-12">
-                            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4 text-[#10b981]">
-                                {t("landing.modpacksTitle")}
-                            </h1>
-                            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-                                {t("landing.modpacksDescription")}
-                            </p>
-                        </div>
+                <PageHeader
+                    eyebrow={tHero("hero.badge")}
+                    title={tHero("hero.title")}
+                    subtitle={tHero("hero.subtitle")}
+                    className="bg-[#1a1a1a] dark:from-[#1a1a1a] dark:to-[#1a1a1a]"
+                />
 
+                <section className="py-12 px-4 sm:px-6 lg:px-8 bg-[#1a1a1a]">
+                    <div className="max-w-7xl mx-auto">
                         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
                             <Link
                                 href={getLocalizedPath(
@@ -72,7 +72,7 @@ export default async function ModpacksPage({ params }: ModpacksPageProps) {
                                         />
                                     </svg>
                                 </div>
-                                <p className="text-gray-400">
+                                <p className="text-muted-foreground">
                                     Quality of Life modpack optimized for
                                     Hypixel
                                 </p>
