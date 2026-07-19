@@ -6,18 +6,13 @@
  */
 
 import { createLogger } from "@/lib/logger"
-import {
-    KickChatAdapter,
-    TwitchChatAdapter,
-    YouTubeLiveChatAdapter,
-    YouTubeRelayChatAdapter,
-} from "@/lib/chat"
+import { KickChatAdapter, TwitchChatAdapter } from "@/lib/chat"
 import type { ChatAdapter, ChatMessage } from "@/lib/chat/types"
 import { sendEvent } from "./sse-manager"
 
 const logger = createLogger("MessageAggregator")
 
-type ChatPlatform = "twitch" | "kick" | "youtube"
+type ChatPlatform = "twitch" | "kick"
 
 type PlatformConnectInfo = Partial<
     Record<ChatPlatform, { channelName: string; token?: string }>
@@ -28,15 +23,9 @@ interface PlatformAdapterEntry {
     cleanupFns: Array<() => void>
 }
 
-const USE_YOUTUBE_RELAY = !!process.env.YOUTUBE_RELAY_WS_URL
-
 const ADAPTER_REGISTRY: Record<ChatPlatform, () => ChatAdapter> = {
     twitch: () => new TwitchChatAdapter(),
     kick: () => new KickChatAdapter(),
-    youtube: () =>
-        USE_YOUTUBE_RELAY
-            ? new YouTubeRelayChatAdapter()
-            : new YouTubeLiveChatAdapter(),
 }
 
 export class MessageAggregator {
@@ -58,16 +47,12 @@ export class MessageAggregator {
         this.platformConnect = platformConnect
     }
 
-    /**
-     * Start listening on all configured platform adapters
-     */
     async start(): Promise<void> {
         if (this.started) {
             logger.debug("Aggregator already started", { userId: this.userId })
             return
         }
 
-        // Stop any existing aggregator for this user to prevent duplicates
         const existing = MessageAggregator.instances.get(this.userId)
         if (existing && existing !== this) {
             logger.info("Stopping previous aggregator for user", {
@@ -108,7 +93,6 @@ export class MessageAggregator {
                 const channelName = connectInfo.channelName
                 const token = connectInfo.token || ""
 
-                // Register message handler with channel name
                 const unsubMessage = adapter.onMessage(
                     channelName,
                     (message: ChatMessage) => {
@@ -117,7 +101,6 @@ export class MessageAggregator {
                 )
                 entry.cleanupFns.push(unsubMessage)
 
-                // Register error handler
                 const unsubError = adapter.onError((error: Error) => {
                     this.handleError(platform, error)
                 })
@@ -125,14 +108,12 @@ export class MessageAggregator {
 
                 this.adapters.set(platform, entry)
 
-                // Connect to the platform chat with actual channel name and token
                 await adapter.connect(channelName, token)
                 logger.info("Connected to platform chat", {
                     userId: this.userId,
                     platform,
                 })
 
-                // Send status update
                 sendEvent(this.userId, "status", {
                     platform,
                     connected: true,
@@ -163,9 +144,6 @@ export class MessageAggregator {
         }
     }
 
-    /**
-     * Stop all platform adapters and clean up
-     */
     async stop(): Promise<void> {
         if (!this.started) return
 
@@ -173,7 +151,6 @@ export class MessageAggregator {
         logger.info("Stopping message aggregator", { userId: this.userId })
 
         for (const [platform, entry] of this.adapters.entries()) {
-            // Run cleanup functions (unsubscribe handlers)
             for (const cleanup of entry.cleanupFns) {
                 try {
                     cleanup()
@@ -185,7 +162,6 @@ export class MessageAggregator {
                 }
             }
 
-            // Disconnect adapter
             try {
                 const connectInfo = this.platformConnect[platform]
                 if (!connectInfo) continue
@@ -205,7 +181,6 @@ export class MessageAggregator {
 
         this.adapters.clear()
 
-        // Remove from registry if this is the current instance
         if (MessageAggregator.instances.get(this.userId) === this) {
             MessageAggregator.instances.delete(this.userId)
         }
@@ -213,9 +188,6 @@ export class MessageAggregator {
         logger.info("Message aggregator stopped", { userId: this.userId })
     }
 
-    /**
-     * Handle an incoming chat message from any platform
-     */
     private handleMessage(message: ChatMessage): void {
         sendEvent(this.userId, "message", {
             id: message.id,
@@ -243,9 +215,6 @@ export class MessageAggregator {
         })
     }
 
-    /**
-     * Handle an error from a platform adapter
-     */
     private handleError(platform: ChatPlatform, error: Error): void {
         logger.error("Platform adapter error", {
             userId: this.userId,
@@ -259,10 +228,6 @@ export class MessageAggregator {
         })
     }
 
-    /**
-     * Send a message using an active platform adapter
-     * Falls back to a temporary connection if no active adapter exists
-     */
     static async sendMessage(
         userId: string,
         platform: ChatPlatform,
@@ -270,7 +235,6 @@ export class MessageAggregator {
         message: string,
         token: string
     ): Promise<boolean> {
-        // Prefer active adapter from running aggregator
         const aggregator = MessageAggregator.instances.get(userId)
         if (aggregator?.started) {
             const entry = aggregator.adapters.get(platform)
@@ -280,30 +244,28 @@ export class MessageAggregator {
             }
         }
 
-        // Fallback: temporary connection using the platform's adapter
-        const FactoryClass = ADAPTER_REGISTRY[platform]
-        if (FactoryClass) {
-            const adapter = FactoryClass()
-            try {
-                await adapter.connect(channelName, token)
-                await adapter.sendMessage(channelName, message)
-            } finally {
-                await adapter.disconnect(channelName)
+        const adapter =
+            platform === "twitch"
+                ? new TwitchChatAdapter()
+                : new KickChatAdapter()
+
+        try {
+            await adapter.connect(channelName, token)
+            if (platform === "twitch") {
+                const twitchAdapter = adapter as TwitchChatAdapter
+                await twitchAdapter.waitForJoin(channelName)
             }
+            await adapter.sendMessage(channelName, message)
+        } finally {
+            await adapter.disconnect(channelName)
         }
         return false
     }
 
-    /**
-     * Check if the aggregator is currently running
-     */
     isRunning(): boolean {
         return this.started
     }
 
-    /**
-     * Get the list of connected platforms
-     */
     getConnectedPlatforms(): ChatPlatform[] {
         return Array.from(this.adapters.keys())
     }

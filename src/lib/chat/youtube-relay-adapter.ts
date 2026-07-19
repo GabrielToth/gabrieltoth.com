@@ -20,12 +20,15 @@ interface YouTubeRelayMessageHandler {
     (message: ChatMessage): void
 }
 
+const MAX_RECONNECT_ATTEMPTS = 5
+
 interface YouTubeRelayConnection {
     roomId: string
     ws: WebSocket | null
     state: "disconnected" | "connecting" | "connected"
     oauthToken: string
     cleanupFns: Array<() => void>
+    everConnected: boolean
 }
 
 export class YouTubeRelayChatAdapter implements ChatAdapter {
@@ -54,6 +57,7 @@ export class YouTubeRelayChatAdapter implements ChatAdapter {
             state: "connecting",
             oauthToken: token,
             cleanupFns: [],
+            everConnected: false,
         }
 
         this.connections.set(roomId, connection)
@@ -94,6 +98,7 @@ export class YouTubeRelayChatAdapter implements ChatAdapter {
 
                         if (data.type === "connected") {
                             connection.state = "connected"
+                            connection.everConnected = true
                             logger.info("YouTube relay connection established", {
                                 roomId: connection.roomId,
                             })
@@ -157,7 +162,6 @@ export class YouTubeRelayChatAdapter implements ChatAdapter {
                 ws.onclose = () => {
                     connection.state = "disconnected"
                     connection.ws = null
-                    this.connections.delete(connection.roomId)
                     logger.info("YouTube relay WebSocket closed", {
                         roomId: connection.roomId,
                     })
@@ -180,7 +184,26 @@ export class YouTubeRelayChatAdapter implements ChatAdapter {
     private reconnectAttempts = new Map<string, number>()
 
     private scheduleReconnect(connection: YouTubeRelayConnection): void {
+        if (!connection.everConnected) {
+            logger.info("YouTube relay reconnect skipped — never connected", {
+                roomId: connection.roomId,
+            })
+            this.connections.delete(connection.roomId)
+            this.reconnectAttempts.delete(connection.roomId)
+            return
+        }
+
         const attempts = this.reconnectAttempts.get(connection.roomId) || 0
+        if (attempts >= MAX_RECONNECT_ATTEMPTS) {
+            logger.warn("YouTube relay max reconnect attempts reached", {
+                roomId: connection.roomId,
+                attempts,
+            })
+            this.connections.delete(connection.roomId)
+            this.reconnectAttempts.delete(connection.roomId)
+            return
+        }
+
         const delay = Math.min(
             RECONNECT_DELAY_MS * Math.pow(2, attempts),
             MAX_RECONNECT_DELAY_MS

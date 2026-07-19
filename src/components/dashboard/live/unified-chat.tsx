@@ -7,8 +7,9 @@
 "use client"
 
 import { useChatSSE } from "@/hooks/use-chat-sse"
+import { useRelayChat } from "@/hooks/use-relay-chat"
 import { createLogger } from "@/lib/logger"
-import { useCallback, useRef, useEffect, useState } from "react"
+import { useCallback, useRef, useEffect, useState, useMemo } from "react"
 
 interface UnifiedChatProps {
     platforms: string[]
@@ -51,7 +52,26 @@ const COMMANDS = [
 const logger = createLogger("UnifiedChat")
 
 export function UnifiedChat({ platforms }: UnifiedChatProps) {
-    const { messages, isConnected, error, addMessage } = useChatSSE(platforms)
+    const sse = useChatSSE(platforms)
+    const relay = useRelayChat()
+
+    const allMessages = useMemo(() => {
+        const seen = new Set<string>()
+        const merged = [...sse.messages]
+        for (const m of merged) seen.add(m.id)
+        for (const m of relay.messages) {
+            if (!seen.has(m.id)) {
+                merged.push(m)
+                seen.add(m.id)
+            }
+        }
+        merged.sort((a, b) => a.timestamp - b.timestamp)
+        return merged
+    }, [sse.messages, relay.messages])
+
+    const statusText = relay.isConnected
+        ? sse.isConnected ? "Connected" : "Relay (YouTube)"
+        : sse.isConnected ? "SSE (Twitch/Kick)" : "Disconnected"
     const [input, setInput] = useState("")
     const [selectedPlatform, setSelectedPlatform] = useState(
         platforms[0] || "twitch"
@@ -66,7 +86,7 @@ export function UnifiedChat({ platforms }: UnifiedChatProps) {
     // Auto-scroll to bottom on new messages
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
-    }, [messages])
+    }, [allMessages])
 
     const handleSend = useCallback(async () => {
         const text = input.trim()
@@ -91,7 +111,7 @@ export function UnifiedChat({ platforms }: UnifiedChatProps) {
                     message: err.message,
                 })
                 if (err.error === "MISSING_SCOPE") {
-                    addMessage({
+                    sse.addMessage({
                         id: `error-${Date.now()}`,
                         channelId: selectedPlatform,
                         platform: "system",
@@ -114,7 +134,7 @@ export function UnifiedChat({ platforms }: UnifiedChatProps) {
 
             // Always inject locally for instant feedback. The SSE echo arrives
             // asynchronously and is deduplicated by content+user in useChatSSE.
-            addMessage({
+            sse.addMessage({
                 id: `send-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`,
                 channelId: selectedPlatform,
                 platform: selectedPlatform,
@@ -143,7 +163,7 @@ export function UnifiedChat({ platforms }: UnifiedChatProps) {
         } finally {
             setSending(false)
         }
-    }, [input, selectedPlatform, addMessage, sending])
+    }, [input, selectedPlatform, sse, sending])
 
     const handleKeyDown = useCallback(
         (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -270,20 +290,20 @@ export function UnifiedChat({ platforms }: UnifiedChatProps) {
             <div className="flex items-center gap-2 mb-3 text-xs text-gray-500">
                 <span
                     className={`inline-block h-2 w-2 rounded-full ${
-                        isConnected ? "bg-green-500" : "bg-red-500"
+                        relay.isConnected ? "bg-green-500" : sse.isConnected ? "bg-yellow-500" : "bg-red-500"
                     }`}
                 />
-                {isConnected ? "Connected" : "Disconnected"}
-                {error && (
+                {statusText}
+                {(sse.error || relay.error) && (
                     <span className="text-red-500 ml-2">
-                        {error.platform}: {error.error}
+                        {relay.error || `${sse.error?.platform}: ${sse.error?.error}`}
                     </span>
                 )}
             </div>
 
             {/* Messages */}
             <div className="flex-1 overflow-y-auto space-y-1 bg-gray-50 dark:bg-gray-800/50 rounded-lg p-3">
-                {messages.map(msg => {
+                {allMessages.map(msg => {
                     const badge = getPlatformBadge(msg.platform)
                     return (
                         <div
