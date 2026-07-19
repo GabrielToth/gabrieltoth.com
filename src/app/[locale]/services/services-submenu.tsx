@@ -29,11 +29,6 @@ export default function ServicesSubmenu({ locale }: ServicesSubmenuProps) {
             description: t("landing.affiliateDescription"),
         },
         {
-            key: "iq-test",
-            label: t("landing.iqTestTitle"),
-            description: t("landing.iqTestDescription"),
-        },
-        {
             key: "personality-test",
             label: t("landing.personalityTestTitle"),
             description: t("landing.personalityTestDescription"),
@@ -47,12 +42,12 @@ export default function ServicesSubmenu({ locale }: ServicesSubmenuProps) {
                     key={category.key}
                     // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     href={getLocalizedPath(category.key as any, locale)}
-                    className="group bg-[#2d2d2d] border border-neutral-700 rounded-lg p-6 hover:border-blue-500 transition-all duration-200 hover:shadow-lg hover:shadow-blue-500/20"
+                    className="group bg-[#2d2d2d] border border-neutral-700 rounded-lg p-6 hover:border-primary transition-all duration-200 hover:shadow-lg hover:shadow-blue-500/20"
                 >
-                    <h3 className="text-lg font-bold mb-2 text-white group-hover:text-blue-400 transition-colors">
+                    <h3 className="text-lg font-bold mb-2 text-white group-hover:text-primary transition-colors">
                         {category.label}
                     </h3>
-                    <p className="text-gray-400 text-sm line-clamp-2">
+                    <p className="text-muted-foreground text-sm line-clamp-2">
                         {category.description}
                     </p>
                 </Link>
