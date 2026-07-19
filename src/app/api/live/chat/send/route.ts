@@ -8,6 +8,46 @@ import { getTwitchConfig } from "@/lib/twitch/config"
 
 const logger = createLogger("ChatSendEndpoint")
 
+interface LiveChatCacheEntry {
+    liveChatId: string
+    expiresAt: number
+}
+
+const liveChatIdCache = new Map<string, LiveChatCacheEntry>()
+const LIVE_CHAT_CACHE_TTL_MS = 120_000
+
+async function getCachedLiveChatId(
+    userId: string,
+    token: string
+): Promise<string | null> {
+    const cached = liveChatIdCache.get(userId)
+    if (cached && Date.now() < cached.expiresAt) {
+        return cached.liveChatId
+    }
+
+    const broadcastResponse = await fetch(
+        "https://www.googleapis.com/youtube/v3/liveBroadcasts?part=snippet,status&mine=true",
+        {
+            headers: { Authorization: `Bearer ${token}` },
+        }
+    )
+    if (!broadcastResponse.ok) return null
+
+    const broadcastData = await broadcastResponse.json()
+    const active = broadcastData.items?.find(
+        (item: { status?: { lifeCycleStatus?: string } }) =>
+            item.status?.lifeCycleStatus === "live"
+    )
+    const liveChatId = active?.snippet?.liveChatId
+    if (liveChatId) {
+        liveChatIdCache.set(userId, {
+            liveChatId,
+            expiresAt: Date.now() + LIVE_CHAT_CACHE_TTL_MS,
+        })
+    }
+    return liveChatId || null
+}
+
 interface CommandHandler {
     pattern: RegExp
     handler: (
@@ -334,31 +374,7 @@ async function sendYouTubeMessage(
     token: string
 ): Promise<NextResponse> {
     try {
-        const broadcastResponse = await fetch(
-            "https://www.googleapis.com/youtube/v3/liveBroadcasts?part=snippet,status&mine=true",
-            {
-                headers: { Authorization: `Bearer ${token}` },
-            }
-        )
-
-        if (!broadcastResponse.ok) {
-            const body = await broadcastResponse.text()
-            return NextResponse.json(
-                {
-                    success: false,
-                    error: "YOUTUBE_API_ERROR",
-                    message: `Failed to find live broadcast: ${broadcastResponse.status} ${body}`,
-                },
-                { status: 500 }
-            )
-        }
-
-        const broadcastData = await broadcastResponse.json()
-        const active = broadcastData.items?.find(
-            (item: { status?: { lifeCycleStatus?: string } }) =>
-                item.status?.lifeCycleStatus === "live"
-        )
-        const liveChatId = active?.snippet?.liveChatId
+        const liveChatId = await getCachedLiveChatId(userId, token)
 
         if (!liveChatId) {
             return NextResponse.json(
