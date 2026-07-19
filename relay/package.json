@@ -4,7 +4,7 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "build": "tsc",
+        "build": "tsc && node -e \"require('fs').cpSync('src/stream-list.proto','dist/stream-list.proto')\"",
         "start": "node dist/relay-server.js",
         "dev": "npx tsx watch src/relay-server.ts"
     },

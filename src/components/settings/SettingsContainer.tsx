@@ -332,6 +332,7 @@ export const SettingsContainer: React.FC<SettingsContainerProps> = ({
             const response = await fetch("/api/oauth/authorize/facebook", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ redirectTo: window.location.pathname }),
             })
             if (!response.ok) {
                 const data = await response.json()

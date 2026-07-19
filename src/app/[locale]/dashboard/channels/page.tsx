@@ -126,7 +126,7 @@ export default function ChannelsPage() {
             const response = await fetch(`/api/oauth/authorize/${platform}`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ locale }),
+                body: JSON.stringify({ locale, redirectTo: window.location.pathname }),
             })
             if (!response.ok) {
                 const data = await response.json()
