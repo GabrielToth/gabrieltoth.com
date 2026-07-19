@@ -1,5 +1,6 @@
 import ServicesSubmenu from "@/app/[locale]/services/services-submenu"
 import Footer from "@/components/layout/footer"
+import PageHeader from "@/components/layout/page-header"
 import { type Locale } from "@/lib/i18n"
 import { generateServicesMetadata } from "@/lib/metadata/services-metadata"
 import { getLocalizedPath } from "@/lib/url-mapping"
@@ -23,6 +24,7 @@ export async function generateMetadata({
 export default async function ServicesPage({ params }: ServicesPageProps) {
     const { locale } = await params
     const t = await getTranslations({ locale, namespace: "services" })
+    const tHero = await getTranslations({ locale, namespace: "servicesPageHero" })
 
     const services = [
         {
@@ -55,18 +57,15 @@ export default async function ServicesPage({ params }: ServicesPageProps) {
     return (
         <>
             <main className="min-h-screen bg-[#1a1a1a] text-white">
-                {/* Hero Section */}
-                <section className="pt-24 pb-16 px-4 sm:px-6 lg:px-8">
-                    <div className="max-w-7xl mx-auto">
-                        <div className="text-center mb-12">
-                            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4 text-[#3b82f6]">
-                                {t("landing.title")}
-                            </h1>
-                            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-                                {t("landing.subtitle")}
-                            </p>
-                        </div>
+                <PageHeader
+                    eyebrow={tHero("hero.badge")}
+                    title={tHero("hero.title")}
+                    subtitle={tHero("hero.subtitle")}
+                    className="bg-[#1a1a1a] dark:from-[#1a1a1a] dark:to-[#1a1a1a]"
+                />
 
+                <section className="py-12 px-4 sm:px-6 lg:px-8 bg-[#1a1a1a]">
+                    <div className="max-w-7xl mx-auto">
                         {/* Submenu */}
                         <div className="mb-16">
                             <ServicesSubmenu locale={locale} />
@@ -78,14 +77,14 @@ export default async function ServicesPage({ params }: ServicesPageProps) {
                                 <Link
                                     key={service.key}
                                     href={getLocalizedPath(service.key, locale)}
-                                    className="group bg-[#2d2d2d] border border-neutral-700 rounded-lg p-8 hover:border-blue-500 transition-all duration-200 hover:shadow-lg hover:shadow-blue-500/20"
+                                    className="group bg-[#2d2d2d] border border-neutral-700 rounded-lg p-8 hover:border-primary transition-all duration-200 hover:shadow-lg hover:shadow-blue-500/20"
                                 >
                                     <div className="flex items-center justify-between mb-4">
-                                        <h2 className="text-2xl font-bold text-white group-hover:text-blue-400 transition-colors">
+                                        <h2 className="text-2xl font-bold text-white group-hover:text-primary transition-colors">
                                             {t(service.titleKey)}
                                         </h2>
                                         <svg
-                                            className="w-6 h-6 text-blue-500 transform group-hover:translate-x-1 transition-transform"
+                                            className="w-6 h-6 text-primary transform group-hover:translate-x-1 transition-transform"
                                             fill="none"
                                             viewBox="0 0 24 24"
                                             stroke="currentColor"
@@ -98,7 +97,7 @@ export default async function ServicesPage({ params }: ServicesPageProps) {
                                             />
                                         </svg>
                                     </div>
-                                    <p className="text-gray-400">
+                                    <p className="text-muted-foreground">
                                         {t(service.descKey)}
                                     </p>
                                 </Link>
@@ -107,7 +106,7 @@ export default async function ServicesPage({ params }: ServicesPageProps) {
 
                         {/* Approach Section */}
                         <div className="bg-[#242424] border border-neutral-700 rounded-lg p-8 max-w-4xl mx-auto">
-                            <h2 className="text-3xl font-bold mb-6 text-blue-400">
+                            <h2 className="text-3xl font-bold mb-6 text-primary">
                                 {t("landing.approach.title")}
                             </h2>
 
@@ -116,7 +115,7 @@ export default async function ServicesPage({ params }: ServicesPageProps) {
                                     <h3 className="text-xl font-bold mb-3 text-white">
                                         {t("landing.approach.qualityFirst")}
                                     </h3>
-                                    <p className="text-gray-400 text-sm">
+                                    <p className="text-muted-foreground text-sm">
                                         {t("landing.approach.qualityFirstText")}
                                     </p>
                                 </div>
@@ -126,7 +125,7 @@ export default async function ServicesPage({ params }: ServicesPageProps) {
                                             "landing.approach.tailoredSolutions"
                                         )}
                                     </h3>
-                                    <p className="text-gray-400 text-sm">
+                                    <p className="text-muted-foreground text-sm">
                                         {t(
                                             "landing.approach.tailoredSolutionsText"
                                         )}
@@ -136,7 +135,7 @@ export default async function ServicesPage({ params }: ServicesPageProps) {
                                     <h3 className="text-xl font-bold mb-3 text-white">
                                         {t("landing.approach.resultsDriven")}
                                     </h3>
-                                    <p className="text-gray-400 text-sm">
+                                    <p className="text-muted-foreground text-sm">
                                         {t(
                                             "landing.approach.resultsDrivenText"
                                         )}
