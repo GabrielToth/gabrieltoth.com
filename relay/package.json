@@ -1,0 +1,26 @@
+{
+    "name": "gabrieltoth-relay",
+    "version": "1.0.0",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "build": "tsc",
+        "start": "node dist/relay-server.js",
+        "dev": "npx tsx watch src/relay-server.ts"
+    },
+    "dependencies": {
+        "@grpc/grpc-js": "^1.12.0",
+        "@grpc/proto-loader": "^0.7.13",
+        "ws": "^8.18.0",
+        "dotenv": "^16.4.5",
+        "jsonwebtoken": "^9.0.2",
+        "googleapis": "^173.0.0"
+    },
+    "devDependencies": {
+        "typescript": "^5.6.0",
+        "@types/node": "^22.0.0",
+        "@types/ws": "^8.5.10",
+        "@types/jsonwebtoken": "^9.0.6",
+        "tsx": "^4.19.0"
+    }
+}

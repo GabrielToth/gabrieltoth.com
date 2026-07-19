@@ -6,7 +6,12 @@
  */
 
 import { createLogger } from "@/lib/logger"
-import { KickChatAdapter, TwitchChatAdapter, YouTubeLiveChatAdapter } from "@/lib/chat"
+import {
+    KickChatAdapter,
+    TwitchChatAdapter,
+    YouTubeLiveChatAdapter,
+    YouTubeRelayChatAdapter,
+} from "@/lib/chat"
 import type { ChatAdapter, ChatMessage } from "@/lib/chat/types"
 import { sendEvent } from "./sse-manager"
 
@@ -23,10 +28,15 @@ interface PlatformAdapterEntry {
     cleanupFns: Array<() => void>
 }
 
+const USE_YOUTUBE_RELAY = !!process.env.YOUTUBE_RELAY_WS_URL
+
 const ADAPTER_REGISTRY: Record<ChatPlatform, () => ChatAdapter> = {
     twitch: () => new TwitchChatAdapter(),
     kick: () => new KickChatAdapter(),
-    youtube: () => new YouTubeLiveChatAdapter(),
+    youtube: () =>
+        USE_YOUTUBE_RELAY
+            ? new YouTubeRelayChatAdapter()
+            : new YouTubeLiveChatAdapter(),
 }
 
 export class MessageAggregator {

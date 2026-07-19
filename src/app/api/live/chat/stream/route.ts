@@ -16,6 +16,8 @@ import { isTerminalTokenError, markAccountDisconnected } from "@/lib/auth/token-
 
 const logger = createLogger("ChatStreamEndpoint")
 
+export const maxDuration = 300
+
 export async function GET(request: NextRequest): Promise<Response> {
     try {
         const session = await getServerSession(request)
