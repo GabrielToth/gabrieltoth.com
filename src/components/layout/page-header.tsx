@@ -37,7 +37,7 @@ export default function PageHeader({
 
                     {/* Optional subtitle */}
                     {subtitle && (
-                        <p className="text-xl text-muted-foreground dark:text-foreground max-w-3xl leading-relaxed">
+                        <p className="text-xl text-foreground max-w-3xl leading-relaxed">
                             {subtitle}
                         </p>
                     )}
