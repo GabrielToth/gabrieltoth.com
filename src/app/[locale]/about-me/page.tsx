@@ -3,6 +3,7 @@ import StructuredData from "@/components/seo/structured-data"
 import { type Locale } from "@/lib/i18n"
 import { generateSeoConfig } from "@/lib/seo"
 import { type Metadata } from "next"
+import AboutMeSection from "./about-me-section"
 import AboutSection from "../home/about-section"
 import ChannelManagementSection from "../home/channel-management-section"
 import ContactSection from "../home/contact-section"
@@ -57,7 +58,8 @@ export default async function AboutPage({ params }: AboutPageProps) {
     return (
         <>
             <StructuredData locale={locale} type="both" />
-            <main className="min-h-screen bg-white dark:bg-gray-900">
+            <main className="min-h-screen bg-card dark:bg-background">
+                <AboutMeSection locale={locale} />
                 <AboutSection params={{ locale }} />
                 <ChannelManagementSection params={{ locale }} />
                 <ProjectsSection />
