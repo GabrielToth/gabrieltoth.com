@@ -1,5 +1,6 @@
 import MinecraftSubmenu from "@/app/[locale]/minecraft/minecraft-submenu"
 import Footer from "@/components/layout/footer"
+import PageHeader from "@/components/layout/page-header"
 import { type Locale } from "@/lib/i18n"
 import { getLocalizedPath } from "@/lib/url-mapping"
 import { type Metadata } from "next"
@@ -41,22 +42,20 @@ export async function generateMetadata({
 export default async function MinecraftPage({ params }: MinecraftPageProps) {
     const { locale } = await params
     const t = await getTranslations({ locale, namespace: "minecraft" })
+    const tHero = await getTranslations({ locale, namespace: "minecraftPageHero" })
 
     return (
         <>
             <main className="min-h-screen bg-[#1a1a1a] text-white">
-                {/* Hero Section */}
-                <section className="pt-24 pb-16 px-4 sm:px-6 lg:px-8">
-                    <div className="max-w-7xl mx-auto">
-                        <div className="text-center mb-12">
-                            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4 text-[#10b981]">
-                                {t("landing.title")}
-                            </h1>
-                            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-                                {t("landing.subtitle")}
-                            </p>
-                        </div>
+                <PageHeader
+                    eyebrow={tHero("hero.badge")}
+                    title={tHero("hero.title")}
+                    subtitle={tHero("hero.subtitle")}
+                    className="bg-[#1a1a1a] dark:from-[#1a1a1a] dark:to-[#1a1a1a]"
+                />
 
+                <section className="py-12 px-4 sm:px-6 lg:px-8 bg-[#1a1a1a]">
+                    <div className="max-w-7xl mx-auto">
                         {/* Submenu */}
                         <div className="mb-16">
                             <MinecraftSubmenu locale={locale} />
@@ -90,7 +89,7 @@ export default async function MinecraftPage({ params }: MinecraftPageProps) {
                                         />
                                     </svg>
                                 </div>
-                                <p className="text-gray-400">
+                                <p className="text-muted-foreground">
                                     {t("landing.modpacksDescription")}
                                 </p>
                             </Link>
@@ -121,7 +120,7 @@ export default async function MinecraftPage({ params }: MinecraftPageProps) {
                                         />
                                     </svg>
                                 </div>
-                                <p className="text-gray-400">
+                                <p className="text-muted-foreground">
                                     {t("landing.modsDescription")}
                                 </p>
                             </Link>
@@ -141,25 +140,25 @@ export default async function MinecraftPage({ params }: MinecraftPageProps) {
                                             "My Minecraft Journey Since 2013",
                                     })}
                                 </h3>
-                                <p className="text-gray-300 mb-4 text-lg leading-relaxed">
+                                <p className="text-muted-foreground mb-4 text-lg leading-relaxed">
                                     {t("landing.journey.storyIntro", {
                                         defaultValue:
                                             "I've been playing Minecraft since 2013, thanks to a friend's recommendation. Initially skeptical about the game, I decided to give it a try a week after being introduced to it. What started as a casual test became a passion—today, Minecraft is my favorite game and a significant part of my gaming identity.",
                                     })}
                                 </p>
-                                <p className="text-gray-300 mb-4 text-lg leading-relaxed">
+                                <p className="text-muted-foreground mb-4 text-lg leading-relaxed">
                                     {t("landing.journey.modpacksPreference", {
                                         defaultValue:
                                             "My primary focus is on challenging modpacks where difficulty enhances the experience. I've extensively played the All The Mods series (both standard and Skyblock variants) and recently completed GregTech: New Horizon. I'm passionate about exploring harder modpacks and creating content around them. The main limitation is hardware—a dedicated graphics card would significantly expand my capabilities for streaming and content creation.",
                                     })}
                                 </p>
-                                <p className="text-gray-300 mb-4 text-lg leading-relaxed">
+                                <p className="text-muted-foreground mb-4 text-lg leading-relaxed">
                                     {t("landing.journey.hypixelSkyblock", {
                                         defaultValue:
                                             "Hypixel's Skyblock stands out as a unique experience. They've transformed the traditional Skyblock concept into a full RPG world with narrative elements, political systems, and meaningful incentives for complex, repetitive, and luck-dependent tasks. It's a masterclass in game design that goes far beyond standard Skyblock gameplay.",
                                     })}
                                 </p>
-                                <p className="text-gray-300 text-lg leading-relaxed">
+                                <p className="text-muted-foreground text-lg leading-relaxed">
                                     {t("landing.journey.futureGoals", {
                                         defaultValue:
                                             "My goals include creating comprehensive content about challenging modpacks, exploring emerging modpack ecosystems, and potentially developing my own modifications. I'm committed to sharing knowledge about optimization, progression strategies, and the technical aspects of modded Minecraft with the community.",
@@ -182,7 +181,7 @@ export default async function MinecraftPage({ params }: MinecraftPageProps) {
                                             defaultValue: "Modpacks",
                                         })}
                                     </h3>
-                                    <p className="text-gray-400 text-sm">
+                                    <p className="text-muted-foreground text-sm">
                                         {t("landing.journey.modpacksText", {
                                             defaultValue:
                                                 "Explore curated modpack recommendations, progression guides, and difficulty rankings for challenging gameplay experiences.",
@@ -203,7 +202,7 @@ export default async function MinecraftPage({ params }: MinecraftPageProps) {
                                             defaultValue: "Mods",
                                         })}
                                     </h3>
-                                    <p className="text-gray-400 text-sm">
+                                    <p className="text-muted-foreground text-sm">
                                         {t("landing.journey.modsText", {
                                             defaultValue:
                                                 "Discover individual mods that enhance gameplay, improve performance, and transform the Minecraft experience with new mechanics and content.",
@@ -224,7 +223,7 @@ export default async function MinecraftPage({ params }: MinecraftPageProps) {
                                             defaultValue: "Plugins",
                                         })}
                                     </h3>
-                                    <p className="text-gray-400 text-sm">
+                                    <p className="text-muted-foreground text-sm">
                                         {t("landing.journey.pluginsText", {
                                             defaultValue:
                                                 "Server plugins and modifications for enhanced multiplayer experiences, custom mechanics, and community-driven gameplay.",
