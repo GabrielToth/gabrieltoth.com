@@ -73,9 +73,9 @@
 /* Disabled Button */
 .button:disabled {
     background-color: var(--color-disabled);
-    color: var(--color-disabled-text);
+    color: var(--color-text);
     cursor: not-allowed;
-    opacity: 0.6;
+    opacity: 0.5;
 }
 
 /* Loading State */
