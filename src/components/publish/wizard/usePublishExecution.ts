@@ -5,6 +5,7 @@ import {
     type PublishWizardState,
     type PlatformResult,
     type YouTubeMetadata,
+    type MetaPublishMetadata,
     type WizardStep,
 } from "./types"
 
@@ -195,76 +196,131 @@ export default function usePublishExecution({
                                 : "Unknown error",
                     })
                 }
-            } else if (platformId === "facebook") {
-                // Post text to Facebook page feed
+            } else if (
+                platformId === "facebook" ||
+                platformId === "instagram"
+            ) {
                 setWizardState(prev => ({
                     ...prev,
                     processing: {
                         status: "uploading",
-                        platformId: "facebook",
+                        platformId,
                         progress: 0,
                         speed: "0 KB/s",
                     },
                 }))
 
                 try {
-                    const pageId = sel.channelIds[0]
-                    if (!pageId) {
+                    const metaMeta = wizardState.platformMetadata[
+                        "meta"
+                    ] as MetaPublishMetadata | undefined
+
+                    const description =
+                        wizardState.content.text || metaMeta?.description || ""
+                    const tags = metaMeta?.tags || []
+                    const videoSource = wizardState.metaVideoSource || "upload"
+                    const videoPath = wizardState.metaVideoPath || ""
+
+                    if (!description.trim() && !wizardState.content.videoFile) {
                         results.push({
-                            platformId: "facebook",
+                            platformId,
                             success: false,
-                            error: "No Facebook page selected",
+                            error: "No content or video provided",
                         })
                         continue
                     }
 
-                    const message = wizardState.content.text
-                    if (!message.trim()) {
-                        results.push({
-                            platformId: "facebook",
-                            success: false,
-                            error: "No message content",
-                        })
-                        continue
+                    // Collect all meta target platforms
+                    const metaPlatforms = wizardState.platformSelections
+                        .filter(
+                            s =>
+                                s.platformId === "facebook" ||
+                                s.platformId === "instagram"
+                        )
+                        .map(s => s.platformId as "facebook" | "instagram")
+
+                    // Create the task in Supabase
+                    const payload = {
+                        title: wizardState.content.autoFillTitle || "",
+                        description,
+                        hashtags: tags,
+                        platforms: metaPlatforms,
+                        channelIds: sel.channelIds,
+                        scheduleTime: null,
+                    }
+
+                    const taskRes = await fetch("/api/meta/publish", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            taskType:
+                                wizardState.contentType === "video"
+                                    ? "video"
+                                    : "post",
+                            videoSource,
+                            videoPath: videoSource === "smb" ? videoPath : null,
+                            videoOriginalName:
+                                wizardState.content.videoFile?.name || null,
+                            payload,
+                        }),
+                    })
+
+                    if (!taskRes.ok) {
+                        const data = await taskRes.json()
+                        throw new Error(
+                            data.error || "Failed to create publish task"
+                        )
+                    }
+
+                    const { task } = await taskRes.json() as { task: { id: string; status: string } }
+
+                    // If video source is 'upload', upload the video via tus
+                    if (
+                        videoSource === "upload" &&
+                        wizardState.content.videoFile
+                    ) {
+                        setWizardState(prev => ({
+                            ...prev,
+                            processing: {
+                                status: "uploading",
+                                platformId,
+                                progress: 10,
+                                speed: "0 KB/s",
+                            },
+                        }))
+
+                        await uploadViaTus(
+                            wizardState.content.videoFile,
+                            task.id
+                        )
                     }
 
                     setWizardState(prev => ({
                         ...prev,
                         processing: {
                             status: "publishing",
-                            platformId: "facebook",
+                            platformId,
                         },
                     }))
 
-                    const res = await fetch("/api/platform/facebook/publish", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify({
-                            pageId,
-                            message,
-                        }),
-                    })
+                    // Poll until task is completed or failed
+                    const finalTask = await pollTaskResult(task.id)
 
-                    if (!res.ok) {
-                        const data = await res.json()
+                    if (finalTask.status === "completed") {
+                        const r = finalTask.result as Record<string, string> | undefined
+                        results.push({
+                            platformId,
+                            success: true,
+                            url: r?.facebook_url || r?.instagram_url,
+                        })
+                    } else {
                         throw new Error(
-                            data.message ||
-                                data.error ||
-                                "Failed to publish to Facebook"
+                            finalTask.error_message || "Publishing failed"
                         )
                     }
-
-                    const result = await res.json()
-                    results.push({
-                        platformId: "facebook",
-                        success: true,
-                        url: result.url,
-                    })
                 } catch (err) {
                     results.push({
-                        platformId: "facebook",
+                        platformId,
                         success: false,
                         error:
                             err instanceof Error
@@ -333,4 +389,73 @@ export default function usePublishExecution({
         handleRetry,
         isPublishing: wizardState.processing.status !== "idle",
     }
+}
+
+async function uploadViaTus(file: File, taskId: string): Promise<void> {
+    const TUS_ENDPOINT =
+        process.env.NEXT_PUBLIC_META_TUS_ENDPOINT ||
+        "https://pub.gabrieltoth.com/upload"
+
+    return new Promise((resolve, reject) => {
+        const { Upload } = require("@tus/upload-js") as {
+            Upload: new (file: File, opts: Record<string, unknown>) => {
+                start: () => void
+                abort: () => void
+            }
+        }
+
+        const upload = new Upload(file, {
+            endpoint: TUS_ENDPOINT,
+            headers: {
+                Authorization: `Bearer ${taskId}`,
+            },
+            metadata: {
+                filename: file.name,
+                filetype: file.type,
+                taskId,
+            },
+            chunkSize: 5 * 1024 * 1024,
+            retryDelays: [0, 3000, 5000, 10000, 20000],
+            onError: (err: Error) => {
+                reject(err)
+            },
+            onProgress: (_bytesSent: number, _bytesTotal: number) => {
+                // could update progress via callback
+            },
+            onSuccess: () => {
+                resolve()
+            },
+        })
+
+        upload.start()
+    })
+}
+
+async function pollTaskResult(
+    taskId: string,
+    maxAttempts = 120,
+    intervalMs = 2000
+): Promise<{ status: string; result?: unknown; error_message?: string }> {
+    for (let i = 0; i < maxAttempts; i++) {
+        const res = await fetch(`/api/meta/publish?id=${taskId}`)
+        const { tasks } = await res.json()
+        const task = tasks?.[0]
+
+        if (!task) {
+            await new Promise(r => setTimeout(r, intervalMs))
+            continue
+        }
+
+        if (task.status === "completed") {
+            return { status: "completed", result: task.result }
+        }
+
+        if (task.status === "failed") {
+            return { status: "failed", error_message: task.error_message }
+        }
+
+        await new Promise(r => setTimeout(r, intervalMs))
+    }
+
+    return { status: "failed", error_message: "Timed out waiting for publish" }
 }
