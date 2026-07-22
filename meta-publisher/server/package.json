@@ -1,0 +1,19 @@
+{
+  "name": "meta-publisher-server",
+  "version": "1.0.0",
+  "private": true,
+  "description": "HTTP server on .203 that receives video uploads (tus) for Meta Business Suite publishing",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node --watch index.js"
+  },
+  "dependencies": {
+    "@tus/file-store": "^1.0.0",
+    "@tus/server": "^1.0.0",
+    "@supabase/supabase-js": "^2.49.4",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2"
+  }
+}

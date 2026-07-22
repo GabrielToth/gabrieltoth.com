@@ -79,8 +79,14 @@ export interface PublishWizardState {
     /** Platform-specific metadata, keyed by platform id */
     platformMetadata: Record<
         string,
-        YouTubeMetadata | FacebookMetadata | TikTokMetadata
+        YouTubeMetadata | FacebookMetadata | TikTokMetadata | MetaPublishMetadata
     >
+
+    /** Video source for Facebook/Instagram meta publishing */
+    metaVideoSource?: "smb" | "upload" | "local"
+
+    /** SMB path for meta video */
+    metaVideoPath?: string
 
     /** Processing state */
     processing: ProcessingState
@@ -109,6 +115,17 @@ export interface AdSuitability {
 export interface FacebookMetadata {
     description: string
     tags: string[]
+}
+
+export interface MetaPublishMetadata {
+    description: string
+    tags: string[]
+    /** Where the video file comes from */
+    videoSource?: "smb" | "upload" | "local"
+    /** SMB path (only when videoSource is 'smb') */
+    videoPath?: string
+    /** Target platforms */
+    platforms: ("facebook" | "instagram")[]
 }
 
 export interface TikTokMetadata {
@@ -227,6 +244,12 @@ export const DEFAULT_FACEBOOK_METADATA: FacebookMetadata = {
 export const DEFAULT_TIKTOK_METADATA: TikTokMetadata = {
     description: "",
     tags: [],
+}
+
+export const DEFAULT_META_METADATA: MetaPublishMetadata = {
+    description: "",
+    tags: [],
+    platforms: [],
 }
 
 export const INITIAL_STATE: PublishWizardState = {
