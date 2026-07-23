@@ -13,7 +13,9 @@
             "free": "Gratis",
             "pro": "Pro",
             "enterprise": "Enterprise"
-        }
+        },
+        "connected": "Conectado",
+        "disconnected": "Desconectado"
     },
     "youtube": {
         "connect": "Conectar YouTube",
@@ -47,7 +49,8 @@
         "connectChannel": "Conectar {channel}",
         "connected": "Conectado",
         "disconnected": "Desconectado",
-        "channelsConnected": "{count} de {total} canales conectados"
+        "channelsConnected": "{count} de {total} canales conectados",
+        "connectChannels": "Conectar Canales"
     },
     "publish": {
         "title": "Publicar",
@@ -132,7 +135,9 @@
         "scheduleDate": "Fecha",
         "scheduleTime": "Hora",
         "universalPosting": "Publicación Universal",
-        "universalPostingDesc": "Crea y programa contenido en múltiples redes"
+        "universalPostingDesc": "Crea y programa contenido en múltiples redes",
+        "hasDrafts": "Tiene borradores",
+        "draftStatus": "Borrador"
     },
     "insights": {
         "title": "Estadísticas",
@@ -317,7 +322,13 @@
         "savePreferences": "Guardar Preferencias",
         "failedToStartYoutubeLinking": "Error al iniciar vinculación de YouTube",
         "noAuthUrl": "No se devolvió ninguna URL de autorización",
-        "failedToDisconnectYoutube": "Error al desconectar YouTube"
+        "failedToDisconnectYoutube": "Error al desconectar YouTube",
+        "plan": "Plan",
+        "selectNetworks": "Seleccionar Redes",
+        "languageEnglish": "Inglés",
+        "languageFrench": "Francés",
+        "languagePortuguese": "Portugués",
+        "languageSpanish": "Español"
     },
     "live": {
         "title": "Panel En Vivo",

@@ -224,8 +224,8 @@
         "scheduleDate": "Publish Date",
         "scheduleTime": "Publish Time",
         "scheduleHint": "If you schedule and leave, the upload will process when you return",
-        "membersOnly": "Members-only video (upload as private, set members-only in YouTube Studio)",
-        "membersOnlyHint": "Members-only videos are uploaded as private. After uploading, go to YouTube Studio to enable the members-only visibility setting.",
+        "membersOnly": "Members Only",
+        "membersOnlyHint": "Only visible to channel members",
         "scheduleNow": "Publish now",
         "scheduleLater": "Schedule for later",
         "scheduleWarning": "If you schedule and close the browser, the video will be uploaded when you return and are logged in. Processing is local."

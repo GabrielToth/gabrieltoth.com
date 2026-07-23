@@ -13,7 +13,9 @@
             "free": "Kostenlos",
             "pro": "Pro",
             "enterprise": "Enterprise"
-        }
+        },
+        "connected": "Verbunden",
+        "disconnected": "Getrennt"
     },
     "youtube": {
         "connect": "YouTube verbinden",
@@ -47,7 +49,8 @@
         "connectChannel": "{channel} verbinden",
         "connected": "Verbunden",
         "disconnected": "Getrennt",
-        "channelsConnected": "{count} von {total} Kanälen verbunden"
+        "channelsConnected": "{count} von {total} Kanälen verbunden",
+        "connectChannels": "Kanäle verbinden"
     },
     "publish": {
         "title": "Veröffentlichen",
@@ -132,7 +135,9 @@
         "scheduleDate": "Datum",
         "scheduleTime": "Uhrzeit",
         "universalPosting": "Universelles Posting",
-        "universalPostingDesc": "Erstellen und planen Sie Inhalte für mehrere Netzwerke"
+        "universalPostingDesc": "Erstellen und planen Sie Inhalte für mehrere Netzwerke",
+        "hasDrafts": "Hat Entwürfe",
+        "draftStatus": "Entwurf"
     },
     "insights": {
         "title": "Einblicke",
@@ -317,7 +322,13 @@
         "savePreferences": "Einstellungen Speichern",
         "failedToStartYoutubeLinking": "Fehler beim Starten der YouTube-Verknüpfung",
         "noAuthUrl": "Keine Autorisierungs-URL zurückgegeben",
-        "failedToDisconnectYoutube": "Fehler beim Trennen von YouTube"
+        "failedToDisconnectYoutube": "Fehler beim Trennen von YouTube",
+        "plan": "Plan",
+        "selectNetworks": "Netzwerke auswählen",
+        "languageEnglish": "Englisch",
+        "languageFrench": "Französisch",
+        "languagePortuguese": "Portugiesisch",
+        "languageSpanish": "Spanisch"
     },
     "live": {
         "title": "Live-Dashboard",

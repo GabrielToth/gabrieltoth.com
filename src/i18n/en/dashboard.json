@@ -13,7 +13,9 @@
             "free": "Free",
             "pro": "Pro",
             "enterprise": "Enterprise"
-        }
+        },
+        "connected": "Connected",
+        "disconnected": "Disconnected"
     },
     "youtube": {
         "connect": "Connect YouTube",
@@ -47,7 +49,8 @@
         "connectChannel": "Connect {channel}",
         "connected": "Connected",
         "disconnected": "Disconnected",
-        "channelsConnected": "{count} of {total} channels connected"
+        "channelsConnected": "{count} of {total} channels connected",
+        "connectChannels": "Connect Channels"
     },
     "publish": {
         "title": "Publish",
@@ -132,7 +135,9 @@
         "scheduleDate": "Date",
         "scheduleTime": "Time",
         "universalPosting": "Universal Posting",
-        "universalPostingDesc": "Create and schedule content across multiple networks"
+        "universalPostingDesc": "Create and schedule content across multiple networks",
+        "hasDrafts": "Has drafts",
+        "draftStatus": "Draft"
     },
     "insights": {
         "title": "Insights",
@@ -317,7 +322,13 @@
         "savePreferences": "Save Preferences",
         "failedToStartYoutubeLinking": "Failed to start YouTube linking",
         "noAuthUrl": "No authorization URL returned",
-        "failedToDisconnectYoutube": "Failed to disconnect YouTube"
+        "failedToDisconnectYoutube": "Failed to disconnect YouTube",
+        "plan": "Plan",
+        "selectNetworks": "Select Networks",
+        "languageEnglish": "English",
+        "languageFrench": "French",
+        "languagePortuguese": "Portuguese",
+        "languageSpanish": "Spanish"
     },
     "live": {
         "title": "Live Dashboard",

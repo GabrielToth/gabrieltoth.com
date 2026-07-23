@@ -224,8 +224,8 @@
         "scheduleDate": "Fecha de Publicación",
         "scheduleTime": "Hora",
         "scheduleHint": "Si programas y cierras sesión, la subida se procesará cuando vuelvas",
-        "membersOnly": "Video solo para miembros (subir como privado, configurar en YouTube Studio)",
-        "membersOnlyHint": "Los videos solo para miembros se suben como privados. Después de subir, ve a YouTube Studio para activar la visibilidad solo para miembros.",
+        "membersOnly": "Solo Miembros",
+        "membersOnlyHint": "Visible solo para miembros del canal",
         "scheduleNow": "Publicar ahora",
         "scheduleLater": "Programar para después",
         "scheduleWarning": "Si programas y cierras el navegador, el video se subirá cuando regreses e inicies sesión. El procesamiento es local."

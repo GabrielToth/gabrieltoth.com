@@ -224,8 +224,8 @@
         "scheduleDate": "Data de Publicação",
         "scheduleTime": "Horário",
         "scheduleHint": "Se você programar e sair, o upload será processado quando você voltar",
-        "membersOnly": "Vídeo exclusivo para membros (enviar como privado, definir como exclusivo no YouTube Studio)",
-        "membersOnlyHint": "Vídeos exclusivos para membros são enviados como privados. Após o envio, vá ao YouTube Studio para ativar a visibilidade exclusiva para membros.",
+        "membersOnly": "Membros",
+        "membersOnlyHint": "Visível apenas para membros do canal",
         "scheduleNow": "Publicar agora",
         "scheduleLater": "Agendar para depois",
         "scheduleWarning": "Se você agendar e fechar o navegador, o vídeo será enviado quando você retornar e estiver logado. O processamento é local."

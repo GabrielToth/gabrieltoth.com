@@ -13,7 +13,9 @@
             "free": "Grátis",
             "pro": "Pro",
             "enterprise": "Enterprise"
-        }
+        },
+        "connected": "Conectado",
+        "disconnected": "Desconectado"
     },
     "youtube": {
         "connect": "Conectar YouTube",
@@ -47,7 +49,8 @@
         "connectChannel": "Conectar {channel}",
         "connected": "Conectado",
         "disconnected": "Desconectado",
-        "channelsConnected": "{count} de {total} canais conectados"
+        "channelsConnected": "{count} de {total} canais conectados",
+        "connectChannels": "Conectar Canais"
     },
     "publish": {
         "title": "Publicar",
@@ -132,7 +135,9 @@
         "scheduleDate": "Data",
         "scheduleTime": "Hora",
         "universalPosting": "Postagem Universal",
-        "universalPostingDesc": "Crie e agende conteúdo em múltiplas redes"
+        "universalPostingDesc": "Crie e agende conteúdo em múltiplas redes",
+        "hasDrafts": "Tem rascunhos",
+        "draftStatus": "Rascunho"
     },
     "insights": {
         "title": "Insights",
@@ -318,7 +323,13 @@
         "profile": "Perfil",
         "failedToStartYoutubeLinking": "Falha ao iniciar vinculação do YouTube",
         "noAuthUrl": "Nenhuma URL de autorização retornada",
-        "failedToDisconnectYoutube": "Falha ao desconectar YouTube"
+        "failedToDisconnectYoutube": "Falha ao desconectar YouTube",
+        "plan": "Plano",
+        "selectNetworks": "Selecionar Redes",
+        "languageEnglish": "Inglês",
+        "languageFrench": "Francês",
+        "languagePortuguese": "Português",
+        "languageSpanish": "Espanhol"
     },
     "live": {
         "title": "Painel Ao Vivo",

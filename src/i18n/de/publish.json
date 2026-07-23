@@ -224,8 +224,8 @@
         "scheduleDate": "Veröffentlichungsdatum",
         "scheduleTime": "Uhrzeit",
         "scheduleHint": "Wenn du planst und gehst, wird der Upload verarbeitet, wenn du zurückkommst",
-        "membersOnly": "Nur-Mitglieder-Video (als privat hochladen, Mitglieder-Sichtbarkeit im YouTube Studio aktivieren)",
-        "membersOnlyHint": "Nur-Mitglieder-Videos werden als privat hochgeladen. Gehe nach dem Hochladen ins YouTube Studio, um die Sichtbarkeit auf Nur-Mitglieder umzustellen.",
+        "membersOnly": "Nur Mitglieder",
+        "membersOnlyHint": "Nur für Kanalmitglieder sichtbar",
         "scheduleNow": "Jetzt veröffentlichen",
         "scheduleLater": "Für später planen",
         "scheduleWarning": "Wenn du planst und den Browser schließt, wird das Video hochgeladen, wenn du zurückkommst und eingeloggt bist. Die Verarbeitung erfolgt lokal."
