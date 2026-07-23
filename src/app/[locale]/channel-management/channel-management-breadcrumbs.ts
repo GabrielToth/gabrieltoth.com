@@ -1,21 +1,14 @@
+import { getTranslations } from "next-intl/server"
 import { type Locale } from "@/lib/i18n"
 
-export function getChannelManagementBreadcrumbs(locale: Locale) {
+export async function getChannelManagementBreadcrumbs(locale: Locale) {
     const base = "https://www.gabrieltoth.com"
     const localePath = locale === "en" ? "" : `/${locale}`
-
-    const servicesName =
-        locale === "pt-BR"
-            ? "Serviços"
-            : locale === "es"
-              ? "Servicios"
-              : locale === "de"
-                ? "Dienstleistungen"
-                : "Services"
+    const t = await getTranslations({ locale, namespace: "channelManagement" })
 
     return [
         {
-            name: servicesName,
+            name: t("breadcrumbs.services"),
             url: `${base}${localePath}`,
         },
         {

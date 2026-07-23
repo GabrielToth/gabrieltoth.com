@@ -268,7 +268,6 @@
         "downloading": "Baixando...",
         "download": "Baixar",
         "noInvoices": "Nenhuma fatura ainda. Sua primeira fatura aparecerá aqui.",
-        "integrations": "Integrações",
         "integrationsDescription": "Conecte aplicativos de terceiros para estender funcionalidades",
         "connectedApps": "Aplicativos Conectados ({count})",
         "availableApps": "Aplicativos Disponíveis ({count})",
@@ -320,7 +319,6 @@
         "importFile": "Importar arquivo de preferências",
         "resetToDefaults": "Restaurar Padrões",
         "savePreferences": "Salvar Preferências",
-        "profile": "Perfil",
         "failedToStartYoutubeLinking": "Falha ao iniciar vinculação do YouTube",
         "noAuthUrl": "Nenhuma URL de autorização retornada",
         "failedToDisconnectYoutube": "Falha ao desconectar YouTube",
@@ -332,8 +330,8 @@
         "languageSpanish": "Espanhol"
     },
     "live": {
-        "title": "Painel Ao Vivo",
-        "description": "Gerencie suas transmissões ao vivo no Twitch e Kick",
+        "title": "Título",
+        "description": "Descrição",
         "loading": "Carregando status das transmissões...",
         "error": "Falha ao carregar dados das transmissões",
         "retry": "Tentar novamente",
@@ -343,11 +341,9 @@
         "unifiedChat": "Chat Unificado",
         "scheduledStreams": "Transmissões Agendadas",
         "newSchedule": "Novo Agendamento",
-        "title": "Título",
         "platform": "Plataforma",
         "scheduledStart": "Início Agendado",
         "duration": "Duração",
-        "description": "Descrição",
         "notificationMethods": "Métodos de Notificação",
         "discord": "Discord",
         "telegram": "Telegram",
@@ -377,6 +373,10 @@
         "notImplemented": "Não implementado",
         "localOnly": "Apenas local",
         "addAnother": "Adicionar Outro",
-        "connect": "Conectar"
+        "connect": "Conectar",
+        "dialogTitle": "Atenção",
+        "dialogCancel": "Cancelar",
+        "dialogContinue": "Continuar",
+        "tiktokReconnectMessage": "Você já tem uma conta do TikTok conectada. Para conectar uma conta diferente, desconecte a atual primeiro. O TikTok OAuth não permite selecionar outra conta durante a autorização."
     }
 }

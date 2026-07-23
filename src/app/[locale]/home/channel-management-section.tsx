@@ -1,358 +1,7 @@
 import { type Locale } from "@/lib/i18n"
 import { BarChart3, Play, TrendingUp, Users } from "lucide-react"
 import Link from "next/link"
-
-const getTranslations = (locale: Locale) => {
-    return {
-        title:
-            locale === "pt-BR"
-                ? "Channel Management"
-                : locale === "es"
-                  ? "Gestión de Canales"
-                  : locale === "de"
-                    ? "Kanalverwaltung"
-                    : "Channel Management",
-        subtitle:
-            locale === "pt-BR"
-                ? "Transforme Seu Canal em uma Máquina de Crescimento"
-                : locale === "es"
-                  ? "Transforma tu canal en una máquina de crecimiento"
-                  : locale === "de"
-                    ? "Verwandle deinen Kanal in eine Wachstumsmaschine"
-                    : "Transform Your Channel into a Growth Machine",
-        description:
-            locale === "pt-BR"
-                ? "Specialized in analytics, content optimization and monetization strategies for YouTube. + 2M monthly views managed with proven results."
-                : locale === "es"
-                  ? "Especializado en analítica, optimización de contenido y estrategias de monetización para YouTube. Más de 2M de visualizaciones mensuales gestionadas con resultados comprobados."
-                  : locale === "de"
-                    ? "Spezialisiert auf Analytik, Inhaltsoptimierung und Monetarisierungsstrategien für YouTube. Über 2 Mio. monatliche Aufrufe mit nachgewiesenen Ergebnissen."
-                    : "Specialized in analytics, content optimization and monetization strategies for YouTube. + 2M monthly views managed with proven results.",
-        features: {
-            title:
-                locale === "pt-BR"
-                    ? "How I Can Help Your Channel"
-                    : locale === "es"
-                      ? "Cómo puedo ayudar a tu canal"
-                      : locale === "de"
-                        ? "Wie ich deinem Kanal helfen kann"
-                        : "How I Can Help Your Channel",
-            analytics: {
-                title:
-                    locale === "pt-BR"
-                        ? "Complete Performance Analysis"
-                        : locale === "es"
-                          ? "Análisis Completo de Rendimiento"
-                          : locale === "de"
-                            ? "Umfassende Leistungsanalyse"
-                            : "Complete Performance Analysis",
-                description:
-                    locale === "pt-BR"
-                        ? "Deep audit of your analytics with actionable insights for immediate optimization"
-                        : locale === "es"
-                          ? "Auditoría profunda de tus analíticas con insights accionables para optimización inmediata"
-                          : locale === "de"
-                            ? "Tiefgreifende Analyse Ihrer Analytics mit umsetzbaren Erkenntnissen für sofortige Optimierung"
-                            : "Deep audit of your analytics with actionable insights for immediate optimization",
-            },
-            optimization: {
-                title:
-                    locale === "pt-BR"
-                        ? "Content Strategy"
-                        : locale === "es"
-                          ? "Estrategia de Contenido"
-                          : locale === "de"
-                            ? "Content-Strategie"
-                            : "Content Strategy",
-                description:
-                    locale === "pt-BR"
-                        ? "Data-driven content strategy development to maximize reach and engagement"
-                        : locale === "es"
-                          ? "Desarrollo de estrategia de contenido basada en datos para maximizar alcance y engagement"
-                          : locale === "de"
-                            ? "Entwicklung einer datengesteuerten Content-Strategie zur Maximierung von Reichweite und Engagement"
-                            : "Data-driven content strategy development to maximize reach and engagement",
-            },
-            growth: {
-                title:
-                    locale === "pt-BR"
-                        ? "Growth Strategies"
-                        : locale === "es"
-                          ? "Estrategias de Crecimiento"
-                          : locale === "de"
-                            ? "Wachstumsstrategien"
-                            : "Growth Strategies",
-                description:
-                    locale === "pt-BR"
-                        ? "Custom plans for sustainable growth and engagement with focus on results"
-                        : locale === "es"
-                          ? "Planes personalizados para un crecimiento sostenible y engagement con foco en resultados"
-                          : locale === "de"
-                            ? "Individuelle Pläne für nachhaltiges Wachstum und Engagement mit Fokus auf Ergebnisse"
-                            : "Custom plans for sustainable growth and engagement with focus on results",
-            },
-            monetization: {
-                title:
-                    locale === "pt-BR"
-                        ? "Monetization Optimization"
-                        : locale === "es"
-                          ? "Optimización de Monetización"
-                          : locale === "de"
-                            ? "Monetarisierungsoptimierung"
-                            : "Monetization Optimization",
-                description:
-                    locale === "pt-BR"
-                        ? "Strategies to maximize revenue through multiple monetization channels"
-                        : locale === "es"
-                          ? "Estrategias para maximizar ingresos a través de múltiples canales de monetización"
-                          : locale === "de"
-                            ? "Strategien zur Maximierung der Einnahmen über mehrere Monetarisierungskanäle"
-                            : "Strategies to maximize revenue through multiple monetization channels",
-            },
-        },
-        results: {
-            title:
-                locale === "pt-BR"
-                    ? "Proven Results"
-                    : locale === "es"
-                      ? "Resultados Comprobados"
-                      : locale === "de"
-                        ? "Nachgewiesene Ergebnisse"
-                        : "Proven Results",
-            subtitle:
-                locale === "pt-BR"
-                    ? "Real growth cases"
-                    : locale === "es"
-                      ? "Casos reales de crecimiento"
-                      : locale === "de"
-                        ? "Reale Wachstumsfälle"
-                        : "Real growth cases",
-            cases: [
-                {
-                    channel: "WaveIGL",
-                    description:
-                        locale === "pt-BR"
-                            ? "Gaming channel managed by me"
-                            : locale === "es"
-                              ? "Canal de Gaming gestionado por mí"
-                              : locale === "de"
-                                ? "Gaming-Kanal, den ich verwalte"
-                                : "Gaming channel managed by me",
-                    metrics: [
-                        {
-                            label:
-                                locale === "pt-BR"
-                                    ? "Monthly views"
-                                    : locale === "es"
-                                      ? "Vistas mensuales"
-                                      : locale === "de"
-                                        ? "Monatliche Aufrufe"
-                                        : "Monthly views",
-                            value: "2M+",
-                        },
-                        {
-                            label:
-                                locale === "pt-BR"
-                                    ? "Growth"
-                                    : locale === "es"
-                                      ? "Crecimiento"
-                                      : locale === "de"
-                                        ? "Wachstum"
-                                        : "Growth",
-                            value: "400%",
-                        },
-                        {
-                            label: locale === "pt-BR" ? "Revenue" : "Revenue",
-                            value: "5x",
-                        },
-                    ],
-                },
-                {
-                    channel: "Gabriel Toth (inactive)",
-                    description:
-                        locale === "pt-BR"
-                            ? "My personal channel - Historical case"
-                            : locale === "es"
-                              ? "Mi canal personal - Caso histórico"
-                              : locale === "de"
-                                ? "Mein persönlicher Kanal - Historischer Fall"
-                                : "My personal channel - Historical case",
-                    metrics: [
-                        {
-                            label:
-                                locale === "pt-BR"
-                                    ? "Total views"
-                                    : locale === "es"
-                                      ? "Vistas totales"
-                                      : locale === "de"
-                                        ? "Gesamtaufrufe"
-                                        : "Total views",
-                            value: "1M+",
-                        },
-                        {
-                            label:
-                                locale === "pt-BR"
-                                    ? "Current subscribers"
-                                    : locale === "es"
-                                      ? "Suscriptores actuales"
-                                      : locale === "de"
-                                        ? "Aktuelle Abonnenten"
-                                        : "Current subscribers",
-                            value: "1.4K+",
-                        },
-                        {
-                            label:
-                                locale === "pt-BR"
-                                    ? "Views with <1K subs"
-                                    : locale === "es"
-                                      ? "Vistas con <1K subs"
-                                      : locale === "de"
-                                        ? "Aufrufe mit <1K Abos"
-                                        : "Views with <1K subs",
-                            value: "1M+",
-                        },
-                    ],
-                },
-            ],
-        },
-        cta: {
-            title:
-                locale === "pt-BR"
-                    ? "Ready to accelerate your growth?"
-                    : locale === "es"
-                      ? "¿Listo para acelerar tu crecimiento?"
-                      : locale === "de"
-                        ? "Bereit, dein Wachstum zu beschleunigen?"
-                        : "Ready to accelerate your growth?",
-            description:
-                locale === "pt-BR"
-                    ? "Request a personalized consultation and discover how to transform your channel"
-                    : locale === "es"
-                      ? "Solicita una consultoría personalizada y descubre cómo transformar tu canal"
-                      : locale === "de"
-                        ? "Fordere eine personalisierte Beratung an und entdecke, wie du deinen Kanal transformieren kannst"
-                        : "Request a personalized consultation and discover how to transform your channel",
-            button:
-                locale === "pt-BR"
-                    ? "Request Consultation"
-                    : locale === "es"
-                      ? "Solicitar Consultoría"
-                      : locale === "de"
-                        ? "Beratung anfordern"
-                        : "Request Consultation",
-        },
-        stats: [
-            {
-                value: "2M+",
-                label:
-                    locale === "pt-BR"
-                        ? "Monthly views managed"
-                        : locale === "es"
-                          ? "Vistas mensuales gestionadas"
-                          : locale === "de"
-                            ? "Verwaltete monatliche Aufrufe"
-                            : "Monthly views managed",
-            },
-            {
-                value: "300%",
-                label:
-                    locale === "pt-BR"
-                        ? "Average client growth"
-                        : locale === "es"
-                          ? "Crecimiento medio de clientes"
-                          : locale === "de"
-                            ? "Durchschnittliches Kundenwachstum"
-                            : "Average client growth",
-            },
-            {
-                value: "5+",
-                label:
-                    locale === "pt-BR"
-                        ? "Years of experience"
-                        : locale === "es"
-                          ? "Años de experiencia"
-                          : locale === "de"
-                            ? "Jahre Erfahrung"
-                            : "Years of experience",
-            },
-        ],
-        pricing: {
-            title:
-                locale === "pt-BR"
-                    ? "Consulting Plans"
-                    : locale === "es"
-                      ? "Planes de Consultoría"
-                      : locale === "de"
-                        ? "Beratungspläne"
-                        : "Consulting Plans",
-            express: {
-                name:
-                    locale === "pt-BR"
-                        ? "Express Analysis"
-                        : locale === "es"
-                          ? "Análisis Express"
-                          : locale === "de"
-                            ? "Express-Analyse"
-                            : "Express Analysis",
-                price: "R$ 497",
-                description:
-                    locale === "pt-BR"
-                        ? "Complete audit with detailed report"
-                        : locale === "es"
-                          ? "Auditoría completa con informe detallado"
-                          : locale === "de"
-                            ? "Umfassendes Audit mit detailliertem Bericht"
-                            : "Complete audit with detailed report",
-            },
-            complete: {
-                name:
-                    locale === "pt-BR"
-                        ? "Consultoria Completa"
-                        : locale === "es"
-                          ? "Consultoría Completa"
-                          : locale === "de"
-                            ? "Komplette Beratung"
-                            : "Complete Consulting",
-                price: "R$ 1.497",
-                description:
-                    locale === "pt-BR"
-                        ? "Estratégia + implementação + acompanhamento"
-                        : locale === "es"
-                          ? "Estrategia + implementación + seguimiento"
-                          : locale === "de"
-                            ? "Strategie + Umsetzung + Betreuung"
-                            : "Strategy + implementation + follow-up",
-                popular: true,
-            },
-            intensive: {
-                name:
-                    locale === "pt-BR"
-                        ? "Mentoria Intensiva"
-                        : locale === "es"
-                          ? "Mentoría Intensiva"
-                          : locale === "de"
-                            ? "Intensivbetreuung"
-                            : "Intensive Mentoring",
-                price:
-                    locale === "pt-BR"
-                        ? "Sob consulta"
-                        : locale === "es"
-                          ? "A consultar"
-                          : locale === "de"
-                            ? "Auf Anfrage"
-                            : "Quote on request",
-                description:
-                    locale === "pt-BR"
-                        ? "Acompanhamento mensal personalizado"
-                        : locale === "es"
-                          ? "Acompañamiento mensual personalizado"
-                          : locale === "de"
-                            ? "Personalisierte monatliche Betreuung"
-                            : "Personalized monthly follow-up",
-            },
-        },
-    }
-}
+import { useTranslations } from "next-intl"
 
 interface ChannelManagementSectionProps {
     params: { locale: Locale }
@@ -361,7 +10,8 @@ interface ChannelManagementSectionProps {
 export default function ChannelManagementSection({
     params: { locale },
 }: ChannelManagementSectionProps) {
-    const t = getTranslations(locale)
+    const t = useTranslations("home")
+    const tCM = useTranslations("channelManagement")
 
     /* c8 ignore start */
     return (
@@ -372,14 +22,7 @@ export default function ChannelManagementSection({
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="text-center mb-16">
                     <div className="inline-flex items-center px-4 py-2 rounded-full bg-primary/10 dark:bg-primary/10 text-primary dark:text-primary text-sm font-medium mb-8">
-                        🚀{" "}
-                        {locale === "pt-BR"
-                            ? "ViraTrend - Consultoria Especializada"
-                            : locale === "es"
-                              ? "ViraTrend - Consultoría Especializada"
-                              : locale === "de"
-                                ? "ViraTrend - Spezialisierte Beratung"
-                                : "ViraTrend - Specialized Consulting"}
+                        🚀 {tCM("hero.badge")}
                     </div>
                     <h2 className="text-3xl sm:text-4xl font-bold text-foreground dark:text-foreground mb-4">
                         <span className="text-foreground">
@@ -387,16 +30,16 @@ export default function ChannelManagementSection({
                         </span>
                     </h2>
                     <p className="text-lg text-muted-foreground dark:text-foreground max-w-2xl mx-auto mb-8">
-                        {t.subtitle}
+                        {t("channelManagement.subtitle")}
                     </p>
                     <p className="text-foreground dark:text-foreground max-w-4xl mx-auto leading-relaxed">
-                        {t.description}
+                        {t("channelManagement.description")}
                     </p>
                 </div>
 
                 {/* Stats */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-                    {t.stats.map((stat, index) => (
+                    {t.raw("channelManagement.stats").map((stat: { value: string; label: string }, index: number) => (
                         <div
                             key={index}
                             className="text-center bg-card dark:bg-background rounded-2xl p-8 shadow-lg"
@@ -414,7 +57,7 @@ export default function ChannelManagementSection({
                 {/* Features */}
                 <div className="mb-16">
                     <h3 className="text-2xl font-bold text-center text-foreground dark:text-foreground mb-12">
-                        {t.features.title}
+                        {t("channelManagement.features.title")}
                     </h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                         <div className="bg-card dark:bg-background rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow">
@@ -422,10 +65,10 @@ export default function ChannelManagementSection({
                                 <BarChart3 className="w-6 h-6 text-primary dark:text-primary" />
                             </div>
                             <h4 className="text-lg font-semibold text-foreground dark:text-foreground mb-2">
-                                {t.features.analytics.title}
+                                {t("channelManagement.features.analytics.title")}
                             </h4>
                             <p className="text-muted-foreground dark:text-foreground text-sm">
-                                {t.features.analytics.description}
+                                {t("channelManagement.features.analytics.description")}
                             </p>
                         </div>
 
@@ -434,10 +77,10 @@ export default function ChannelManagementSection({
                                 <Play className="w-6 h-6 text-green-600 dark:text-green-400" />
                             </div>
                             <h4 className="text-lg font-semibold text-foreground dark:text-foreground mb-2">
-                                {t.features.optimization.title}
+                                {t("channelManagement.features.optimization.title")}
                             </h4>
                             <p className="text-muted-foreground dark:text-foreground text-sm">
-                                {t.features.optimization.description}
+                                {t("channelManagement.features.optimization.description")}
                             </p>
                         </div>
 
@@ -446,10 +89,10 @@ export default function ChannelManagementSection({
                                 <TrendingUp className="w-6 h-6 text-primary dark:text-purple-400" />
                             </div>
                             <h4 className="text-lg font-semibold text-foreground dark:text-foreground mb-2">
-                                {t.features.growth.title}
+                                {t("channelManagement.features.growth.title")}
                             </h4>
                             <p className="text-muted-foreground dark:text-foreground text-sm">
-                                {t.features.growth.description}
+                                {t("channelManagement.features.growth.description")}
                             </p>
                         </div>
 
@@ -458,10 +101,10 @@ export default function ChannelManagementSection({
                                 <Users className="w-6 h-6 text-yellow-600 dark:text-yellow-400" />
                             </div>
                             <h4 className="text-lg font-semibold text-foreground dark:text-foreground mb-2">
-                                {t.features.monetization.title}
+                                {t("channelManagement.features.monetization.title")}
                             </h4>
                             <p className="text-muted-foreground dark:text-foreground text-sm">
-                                {t.features.monetization.description}
+                                {t("channelManagement.features.monetization.description")}
                             </p>
                         </div>
                     </div>
@@ -470,14 +113,14 @@ export default function ChannelManagementSection({
                 {/* Results */}
                 <div className="mb-16">
                     <h3 className="text-2xl font-bold text-center text-foreground dark:text-foreground mb-4">
-                        {t.results.title}
+                        {t("channelManagement.results.title")}
                     </h3>
                     <p className="text-center text-muted-foreground dark:text-foreground mb-12">
-                        {t.results.subtitle}
+                        {t("channelManagement.results.subtitle")}
                     </p>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        {t.results.cases.map((caseStudy, index) => (
+                        {t.raw("channelManagement.results.cases").map((caseStudy: { channel: string; description: string; metrics: { label: string; value: string }[] }, index: number) => (
                             <div
                                 key={index}
                                 className="bg-card dark:bg-background rounded-2xl p-8 shadow-lg"
@@ -509,17 +152,17 @@ export default function ChannelManagementSection({
                 {/* CTA */}
                 <div className="text-center">
                     <h3 className="text-2xl font-bold text-foreground dark:text-foreground mb-4">
-                        {t.cta.title}
+                        {t("channelManagement.cta.title")}
                     </h3>
                     <p className="text-muted-foreground dark:text-foreground mb-8 max-w-2xl mx-auto">
-                        {t.cta.description}
+                        {t("channelManagement.cta.description")}
                     </p>
                     <Link
                         href={`/${locale}/channel-management`}
                         className="inline-flex items-center space-x-2 bg-primary text-white px-8 py-4 rounded-lg hover:bg-primary transition-colors font-medium text-lg"
                     >
                         <Users size={20} />
-                        <span>{t.cta.button}</span>
+                        <span>{t("channelManagement.cta.button")}</span>
                     </Link>
                 </div>
             </div>

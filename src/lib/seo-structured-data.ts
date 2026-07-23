@@ -12,6 +12,25 @@ import {
     type StructuredDataWebsite,
 } from "./seo-types"
 
+import enSeo from "@/i18n/en/seo.json"
+import ptBrSeo from "@/i18n/pt-BR/seo.json"
+import esSeo from "@/i18n/es/seo.json"
+import deSeo from "@/i18n/de/seo.json"
+
+interface SeoMessages {
+    personDescription: string
+    personJobTitle: string
+    websiteDescription: string
+    organizationDescription: string
+}
+
+const seoMessages: Record<Locale, SeoMessages> = {
+    en: enSeo as SeoMessages,
+    "pt-BR": ptBrSeo as SeoMessages,
+    es: esSeo as SeoMessages,
+    de: deSeo as SeoMessages,
+}
+
 const SITE_URL = "https://www.gabrieltoth.com"
 const SITE_NAME = "Gabriel Toth Portfolio"
 const AUTHOR_NAME = "Gabriel Toth Gonçalves"
@@ -27,14 +46,7 @@ export function generatePersonStructuredData(
         "@type": "Person",
         name: "Gabriel Toth Gonçalves",
         alternateName: "Gabriel Toth",
-        description:
-            locale === "pt-BR"
-                ? "Desenvolvedor Full Stack e Cientista de Dados especializado em React, Next.js, TypeScript, Node.js e tecnologias de IA/ML"
-                : locale === "es"
-                  ? "Desarrollador Full Stack y Científico de Datos especializado en React, Next.js, TypeScript, Node.js y tecnologías de IA/ML"
-                  : locale === "de"
-                    ? "Full Stack Entwickler und Datenwissenschaftler spezialisiert auf React, Next.js, TypeScript, Node.js und KI/ML-Technologien"
-                    : "Full Stack Developer and Data Scientist specialized in React, Next.js, TypeScript, Node.js, and AI/ML technologies",
+        description: seoMessages[locale]?.personDescription ?? seoMessages.en.personDescription,
         url: SITE_URL,
         image: `${SITE_URL}/profile-image.jpg`,
         email: AUTHOR_EMAIL,
@@ -50,14 +62,7 @@ export function generatePersonStructuredData(
             "https://kick.com/ogabrieltoth",
             "https://dlive.tv/ogabrieltoth",
         ],
-        jobTitle:
-            locale === "pt-BR"
-                ? "Desenvolvedor Full Stack & Cientista de Dados"
-                : locale === "es"
-                  ? "Desarrollador Full Stack y Científico de Datos"
-                  : locale === "de"
-                    ? "Full Stack Entwickler & Datenwissenschaftler"
-                    : "Full Stack Developer & Data Scientist",
+        jobTitle: seoMessages[locale]?.personJobTitle ?? seoMessages.en.personJobTitle,
         worksFor: {
             "@type": "Organization",
             name: "Gabriel Toth Tech",
@@ -101,14 +106,7 @@ export function generateWebsiteStructuredData(
         name: SITE_NAME,
         alternateName: "Gabriel Toth",
         url: SITE_URL,
-        description:
-            locale === "pt-BR"
-                ? "Portfólio oficial de Gabriel Toth Gonçalves - Desenvolvedor Full Stack e Cientista de Dados especializado em tecnologias modernas"
-                : locale === "es"
-                  ? "Portafolio oficial de Gabriel Toth Gonçalves - Desarrollador Full Stack y Científico de Datos especializado en tecnologías modernas"
-                  : locale === "de"
-                    ? "Offizielles Portfolio von Gabriel Toth Gonçalves - Full Stack Entwickler und Datenwissenschaftler, spezialisiert auf moderne Technologien"
-                    : "Official portfolio of Gabriel Toth Gonçalves - Full Stack Developer and Data Scientist specialized in modern technologies",
+        description: seoMessages[locale]?.websiteDescription ?? seoMessages.en.websiteDescription,
         publisher: {
             "@type": "Person",
             name: AUTHOR_NAME,
@@ -151,14 +149,7 @@ export function generateOrganizationStructuredData(
             "https://kick.com/ogabrieltoth",
             "https://dlive.tv/ogabrieltoth",
         ],
-        description:
-            locale === "pt-BR"
-                ? "Empresa de tecnologia especializada em desenvolvimento web, ciência de dados e soluções de IA"
-                : locale === "es"
-                  ? "Empresa de tecnología especializada en desarrollo web, ciencia de datos y soluciones de IA"
-                  : locale === "de"
-                    ? "Technologieunternehmen, spezialisiert auf Webentwicklung, Data Science und KI-Lösungen"
-                    : "Technology company specialized in web development, data science and AI solutions",
+        description: seoMessages[locale]?.organizationDescription ?? seoMessages.en.organizationDescription,
     }
 }
 

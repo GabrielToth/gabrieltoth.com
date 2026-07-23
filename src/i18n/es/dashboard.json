@@ -268,7 +268,6 @@
         "downloading": "Descargando...",
         "download": "Descargar",
         "noInvoices": "Aún no hay facturas. Tu primera factura aparecerá aquí.",
-        "integrations": "Integraciones",
         "integrationsDescription": "Conecta aplicaciones de terceros para extender funcionalidades",
         "connectedApps": "Aplicaciones Conectadas ({count})",
         "availableApps": "Aplicaciones Disponibles ({count})",
@@ -331,8 +330,8 @@
         "languageSpanish": "Español"
     },
     "live": {
-        "title": "Panel En Vivo",
-        "description": "Gestiona tus transmisiones en vivo en Twitch y Kick",
+        "title": "Título",
+        "description": "Descripción",
         "loading": "Cargando estado de transmisiones...",
         "error": "Error al cargar datos de transmisión",
         "retry": "Reintentar",
@@ -342,11 +341,9 @@
         "unifiedChat": "Chat Unificado",
         "scheduledStreams": "Transmisiones Programadas",
         "newSchedule": "Nueva Programación",
-        "title": "Título",
         "platform": "Plataforma",
         "scheduledStart": "Inicio Programado",
         "duration": "Duración",
-        "description": "Descripción",
         "notificationMethods": "Métodos de Notificación",
         "discord": "Discord",
         "telegram": "Telegram",
@@ -376,6 +373,10 @@
         "notImplemented": "No implementado",
         "localOnly": "Solo local",
         "addAnother": "Agregar Otro",
-        "connect": "Conectar"
+        "connect": "Conectar",
+        "dialogTitle": "Atención",
+        "dialogCancel": "Cancelar",
+        "dialogContinue": "Continuar",
+        "tiktokReconnectMessage": "Ya tienes una cuenta de TikTok conectada. Para conectar una cuenta diferente, primero desconecta la actual. La OAuth de TikTok no permite seleccionar otra cuenta durante la autorización."
     }
 }

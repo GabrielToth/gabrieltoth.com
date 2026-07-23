@@ -149,7 +149,13 @@
                 "title": "Sistema SAT Fiscal - Website",
                 "description": "Website institucional para empresa especializada em soluções fiscais e contábeis. Desenvolvido com foco em apresentar serviços fiscais, gestão tributária e soluções empresariais de forma clara e profissional.",
                 "image": "/projects/sat-fiscal.jpg",
-                "tags": ["HTML", "CSS", "JavaScript", "SEO", "Design"],
+                "tags": [
+                    "HTML",
+                    "CSS",
+                    "JavaScript",
+                    "SEO",
+                    "Design"
+                ],
                 "liveUrl": "https://sistemasatfiscal.com.br",
                 "featured": true
             },
@@ -157,18 +163,23 @@
                 "title": "Softclever - Website",
                 "description": "Site empresarial desenvolvido em React para empresa de software, com design moderno e responsivo. Implementa seções para serviços, portfólio e contato, utilizando tecnologias como React, CSS moderno e otimizações de SEO.",
                 "image": "/projects/softclever.jpg",
-                "tags": ["React", "CSS", "JavaScript", "SEO"],
+                "tags": [
+                    "React",
+                    "CSS",
+                    "JavaScript",
+                    "SEO"
+                ],
                 "liveUrl": "https://softclever.com.br",
                 "githubUrl": "https://github.com/gabrieltoth/softclever"
             },
             {
                 "title": "Projeto WaveIGL",
-                "description": "Projeto educacional completo incluindo canal do YouTube com mais de 2 milh\u00f5es de visualiza\u00e7\u00f5es mensais, sistema de pagamentos integrado para investimentos e gest\u00e3o de canais. Inclui cria\u00e7\u00e3o de conte\u00fado sobre tecnologia, programa\u00e7\u00e3o e desenvolvimento de jogos.",
+                "description": "Projeto educacional completo incluindo canal do YouTube com mais de 2 milhões de visualizações mensais, sistema de pagamentos integrado para investimentos e gestão de canais. Inclui criação de conteúdo sobre tecnologia, programação e desenvolvimento de jogos.",
                 "image": "/projects/waveigl.jpg",
                 "tags": [
                     "YouTube",
-                    "Cria\u00e7\u00e3o de Conte\u00fado",
-                    "Integra\u00e7\u00e3o de Pagamentos",
+                    "Criação de Conteúdo",
+                    "Integração de Pagamentos",
                     "Next.js",
                     "Stripe",
                     "PIX"
@@ -179,7 +190,12 @@
                 "title": "PC Optimization Service",
                 "description": "Serviço especializado de otimização de PCs para gaming, com foco em maximizar performance em jogos e reduzir latência. Inclui configurações avançadas de sistema, otimização de hardware e software personalizado.",
                 "image": "/projects/pc-optimization.jpg",
-                "tags": ["Windows", "Gaming", "Performance", "Hardware"],
+                "tags": [
+                    "Windows",
+                    "Gaming",
+                    "Performance",
+                    "Hardware"
+                ],
                 "slug": "/pc-optimization"
             }
         ]
@@ -209,6 +225,111 @@
                     "@type": "Organization",
                     "name": "Gabriel Toth Tech"
                 }
+            }
+        }
+    },
+    "channelManagement": {
+        "badge": "ViraTrend - Consultoria Especializada",
+        "title": "Channel Management",
+        "subtitle": "Transforme Seu Canal em uma Máquina de Crescimento",
+        "description": "Specialized in analytics, content optimization and monetization strategies for YouTube. + 2M monthly views managed with proven results.",
+        "features": {
+            "title": "How I Can Help Your Channel",
+            "analytics": {
+                "title": "Complete Performance Analysis",
+                "description": "Deep audit of your analytics with actionable insights for immediate optimization"
+            },
+            "optimization": {
+                "title": "Content Strategy",
+                "description": "Data-driven content strategy development to maximize reach and engagement"
+            },
+            "growth": {
+                "title": "Growth Strategies",
+                "description": "Custom plans for sustainable growth and engagement with focus on results"
+            },
+            "monetization": {
+                "title": "Monetization Optimization",
+                "description": "Strategies to maximize revenue through multiple monetization channels"
+            }
+        },
+        "results": {
+            "title": "Resultados Comprovados",
+            "subtitle": "Casos reais de crescimento",
+            "cases": [
+                {
+                    "channel": "WaveIGL",
+                    "description": "Canal de Gaming gerenciado por mim",
+                    "metrics": [
+                        {
+                            "label": "Visualizações mensais",
+                            "value": "2M+"
+                        },
+                        {
+                            "label": "Crescimento",
+                            "value": "400%"
+                        },
+                        {
+                            "label": "Receita",
+                            "value": "5x"
+                        }
+                    ]
+                },
+                {
+                    "channel": "Gabriel Toth (inativo)",
+                    "description": "Meu canal pessoal - Caso histórico",
+                    "metrics": [
+                        {
+                            "label": "Total de visualizações",
+                            "value": "1M+"
+                        },
+                        {
+                            "label": "Inscritos atuais",
+                            "value": "1.4K+"
+                        },
+                        {
+                            "label": "Views com <1K inscritos",
+                            "value": "1M+"
+                        }
+                    ]
+                }
+            ]
+        },
+        "cta": {
+            "title": "Pronto para acelerar seu crescimento?",
+            "description": "Solicite uma consultoria personalizada e descubra como transformar seu canal",
+            "button": "Solicitar Consultoria"
+        },
+        "stats": [
+            {
+                "value": "2M+",
+                "label": "Visualizações mensais gerenciadas"
+            },
+            {
+                "value": "300%",
+                "label": "Crescimento médio de clientes"
+            },
+            {
+                "value": "5+",
+                "label": "Anos de experiência"
+            }
+        ],
+        "pricing": {
+            "title": "Planos de Consultoria",
+            "express": {
+                "name": "Análise Express",
+                "price": "R$ 497",
+                "description": "Auditoria completa com relatório detalhado"
+            },
+            "complete": {
+                "name": "Consultoria Completa",
+                "price": "R$ 1.497",
+                "description": "Estratégia + implementação + acompanhamento",
+                "popular": true
+            },
+            "intensive": {
+                "name": "Mentoria Intensiva",
+                "price": "Sob consulta",
+                "description": "Acompanhamento mensal personalizado"
             }
         }
     }

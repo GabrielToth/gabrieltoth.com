@@ -19,7 +19,7 @@ export async function buildEditorsStructured(locale: Locale): Promise<{
     /* c8 ignore next */
     const faqs = t.raw("faqs") as Array<{ question: string; answer: string }>
 
-    const breadcrumbs = getEditorsBreadcrumbs(locale)
+    const breadcrumbs = await getEditorsBreadcrumbs(locale)
 
     return { jobStructuredData, faqs, breadcrumbs }
 }

@@ -11,9 +11,18 @@
         "subtitle": "Be part of a global team of professional editors. Work on interesting projects with flexible schedules.",
         "cta": "Apply Now",
         "stats": [
-            { "number": "50+", "label": "Active editors" },
-            { "number": "100+", "label": "Projects per month" },
-            { "number": "24/7", "label": "Team support" }
+            {
+                "number": "50+",
+                "label": "Active editors"
+            },
+            {
+                "number": "100+",
+                "label": "Projects per month"
+            },
+            {
+                "number": "24/7",
+                "label": "Team support"
+            }
         ]
     },
     "about": {
@@ -23,10 +32,22 @@
         "experience": "Our platform connects you to global clients, ensuring a constant flow of interesting projects. You choose which projects to accept and set your own pace.",
         "passion": "We value creativity and quality. If you're detail-oriented, organized, and love video editing, we want you on our team.",
         "skills": [
-            { "name": "Video Editing", "iconName": "Video" },
-            { "name": "Motion Graphics", "iconName": "Wand2" },
-            { "name": "Color Grading", "iconName": "Palette" },
-            { "name": "Sound Design", "iconName": "Volume2" }
+            {
+                "name": "Video Editing",
+                "iconName": "Video"
+            },
+            {
+                "name": "Motion Graphics",
+                "iconName": "Wand2"
+            },
+            {
+                "name": "Color Grading",
+                "iconName": "Palette"
+            },
+            {
+                "name": "Sound Design",
+                "iconName": "Volume2"
+            }
         ]
     },
     "tools": {
@@ -275,5 +296,59 @@
             "question": "What is the selection process like?",
             "answer": "We analyze your portfolio, conduct a practical editing test and an interview to assess compatibility."
         }
-    ]
+    ],
+    "breadcrumbs": {
+        "services": "Services"
+    },
+    "submitting": "Submitting...",
+    "formSubmitted": {
+        "title": "Application Submitted!",
+        "description": "Thank you! We'll review your application and get back to you soon."
+    },
+    "form": {
+        "title": "Apply as Editor",
+        "subtitle": "Join our team of talented editors",
+        "personalInfo": "Personal Information",
+        "name": "Full name",
+        "email": "Email",
+        "age": "Age",
+        "location": "Location",
+        "experience": "Experience",
+        "experienceLevel": "Experience level",
+        "software": "Editing software",
+        "portfolio": "Portfolio",
+        "portfolioUrl": "Portfolio link",
+        "sampleWork": "Sample work",
+        "workStyle": "Work style",
+        "availability": "Availability",
+        "hoursPerWeek": "Hours per week",
+        "preferredContent": "Preferred content type",
+        "expectedRate": "Expected rate ($/hour)",
+        "motivation": "Motivation",
+        "whyJoin": "Why do you want to join?",
+        "submit": "Submit Application"
+    },
+    "placeholders": {
+        "name": "Your full name",
+        "email": "your@email.com",
+        "age": "Ex: 25",
+        "location": "City, State",
+        "software": "Ex: Adobe Premiere, After Effects, DaVinci...",
+        "portfolioUrl": "https://your-portfolio.com",
+        "sampleWork": "Link to video edited by you",
+        "hoursPerWeek": "Ex: 20",
+        "preferredContent": "Gaming, vlogs, educational...",
+        "expectedRate": "Ex: 50",
+        "whyJoin": "Tell us about your passion for editing and goals...",
+        "selectOption": "Select..."
+    },
+    "options": {
+        "experienceLevel": [
+            "Beginner",
+            "Intermediate",
+            "Advanced",
+            "Professional"
+        ]
+    },
+    "applicationTemplate": "Hi! I would like to apply for the video editor position.\n\n*APPLICATION FORM*\n\nFull Name:\nAge:\nPortfolio (links):\nEditing Experience (years) (no need to have):\n\n*Software Proficiency:*\n- Premiere Pro: (Basic/Intermediate/Advanced)\n- After Effects: (Basic/Intermediate/Advanced)\n- DaVinci Resolve: (Basic/Intermediate/Advanced)\n- Others:\n\nLooking forward to hearing back!"
 }

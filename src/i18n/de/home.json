@@ -149,7 +149,13 @@
                 "title": "Sistema SAT Fiscal - Website",
                 "description": "Unternehmenswebsite für ein Unternehmen, das auf steuerliche und buchhalterische Lösungen spezialisiert ist. Entwickelt mit dem Fokus, Steuerdienste, Steuerverwaltung und Unternehmenslösungen klar und professionell zu präsentieren.",
                 "image": "/projects/sat-fiscal.jpg",
-                "tags": ["HTML", "CSS", "JavaScript", "SEO", "Design"],
+                "tags": [
+                    "HTML",
+                    "CSS",
+                    "JavaScript",
+                    "SEO",
+                    "Design"
+                ],
                 "liveUrl": "https://sistemasatfiscal.com.br",
                 "featured": true
             },
@@ -157,7 +163,12 @@
                 "title": "Softclever - Website",
                 "description": "Unternehmenswebsite, entwickelt in React für ein Softwareunternehmen, mit modernem und responsivem Design. Implementiert Bereiche für Dienstleistungen, Portfolio und Kontakt und nutzt Technologien wie React, modernes CSS und SEO-Optimierungen.",
                 "image": "/projects/softclever.jpg",
-                "tags": ["React", "CSS", "JavaScript", "SEO"],
+                "tags": [
+                    "React",
+                    "CSS",
+                    "JavaScript",
+                    "SEO"
+                ],
                 "liveUrl": "https://softclever.com.br",
                 "githubUrl": "https://github.com/gabrieltoth/softclever"
             },
@@ -179,7 +190,12 @@
                 "title": "PC-Optimierungsservice",
                 "description": "Spezialisierter PC-Optimierungsservice für Gaming, der sich auf maximale Spielleistung und reduzierte Latenz konzentriert. Beinhaltet erweiterte Systemkonfigurationen, Hardware-Optimierung und maßgeschneiderte Software.",
                 "image": "/projects/pc-optimization.jpg",
-                "tags": ["Windows", "Gaming", "Leistung", "Hardware"],
+                "tags": [
+                    "Windows",
+                    "Gaming",
+                    "Leistung",
+                    "Hardware"
+                ],
                 "slug": "/pc-optimization"
             }
         ]
@@ -209,6 +225,111 @@
                     "@type": "Organization",
                     "name": "Gabriel Toth Tech"
                 }
+            }
+        }
+    },
+    "channelManagement": {
+        "badge": "ViraTrend - Spezialisierte Beratung",
+        "title": "Channel Management",
+        "subtitle": "Verwandle deinen Kanal in eine Wachstumsmaschine",
+        "description": "Specialized in analytics, content optimization and monetization strategies for YouTube. + 2M monthly views managed with proven results.",
+        "features": {
+            "title": "How I Can Help Your Channel",
+            "analytics": {
+                "title": "Complete Performance Analysis",
+                "description": "Deep audit of your analytics with actionable insights for immediate optimization"
+            },
+            "optimization": {
+                "title": "Content Strategy",
+                "description": "Data-driven content strategy development to maximize reach and engagement"
+            },
+            "growth": {
+                "title": "Growth Strategies",
+                "description": "Custom plans for sustainable growth and engagement with focus on results"
+            },
+            "monetization": {
+                "title": "Monetization Optimization",
+                "description": "Strategies to maximize revenue through multiple monetization channels"
+            }
+        },
+        "results": {
+            "title": "Nachgewiesene Ergebnisse",
+            "subtitle": "Reale Wachstumsfälle",
+            "cases": [
+                {
+                    "channel": "WaveIGL",
+                    "description": "Gaming-Kanal, den ich verwalte",
+                    "metrics": [
+                        {
+                            "label": "Monatliche Aufrufe",
+                            "value": "2M+"
+                        },
+                        {
+                            "label": "Wachstum",
+                            "value": "400%"
+                        },
+                        {
+                            "label": "Einnahmen",
+                            "value": "5x"
+                        }
+                    ]
+                },
+                {
+                    "channel": "Gabriel Toth (inaktiv)",
+                    "description": "Mein persönlicher Kanal - Historischer Fall",
+                    "metrics": [
+                        {
+                            "label": "Gesamtaufrufe",
+                            "value": "1M+"
+                        },
+                        {
+                            "label": "Aktuelle Abonnenten",
+                            "value": "1.4K+"
+                        },
+                        {
+                            "label": "Aufrufe mit <1K Abos",
+                            "value": "1M+"
+                        }
+                    ]
+                }
+            ]
+        },
+        "cta": {
+            "title": "Bereit, dein Wachstum zu beschleunigen?",
+            "description": "Fordere eine personalisierte Beratung an und entdecke, wie du deinen Kanal transformieren kannst",
+            "button": "Beratung anfordern"
+        },
+        "stats": [
+            {
+                "value": "2M+",
+                "label": "Verwaltete monatliche Aufrufe"
+            },
+            {
+                "value": "300%",
+                "label": "Durchschnittliches Kundenwachstum"
+            },
+            {
+                "value": "5+",
+                "label": "Jahre Erfahrung"
+            }
+        ],
+        "pricing": {
+            "title": "Beratungspläne",
+            "express": {
+                "name": "Express-Analyse",
+                "price": "R$ 497",
+                "description": "Umfassendes Audit mit detailliertem Bericht"
+            },
+            "complete": {
+                "name": "Komplette Beratung",
+                "price": "R$ 1.497",
+                "description": "Strategie + Umsetzung + Betreuung",
+                "popular": true
+            },
+            "intensive": {
+                "name": "Intensivbetreuung",
+                "price": "Auf Anfrage",
+                "description": "Personalisierte monatliche Betreuung"
             }
         }
     }

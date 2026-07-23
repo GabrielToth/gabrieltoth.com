@@ -14,7 +14,7 @@ export { generateMetadata } from "./pc-optimization-metadata"
 
 export default async function PCOptimizationPage({ params }: PageProps) {
     const { locale } = await params
-    const breadcrumbs = getPCOptimizationBreadcrumbs(locale)
+    const breadcrumbs = await getPCOptimizationBreadcrumbs(locale)
     const { howTo, offerCatalog } = await buildPCOptimizationStructured(locale)
 
     return (

@@ -192,6 +192,19 @@ function generateBreadcrumbsFromPath(
     return breadcrumbs
 }
 
+// Static imports for breadcrumb translations (non-React context)
+import enBreadcrumbs from "@/i18n/en/breadcrumbs.json"
+import ptBrBreadcrumbs from "@/i18n/pt-BR/breadcrumbs.json"
+import esBreadcrumbs from "@/i18n/es/breadcrumbs.json"
+import deBreadcrumbs from "@/i18n/de/breadcrumbs.json"
+
+const breadcrumbsMessages: Record<string, { home: string }> = {
+    en: enBreadcrumbs,
+    "pt-BR": ptBrBreadcrumbs,
+    es: esBreadcrumbs,
+    de: deBreadcrumbs,
+}
+
 // Export breadcrumb items for use in structured data
 export function getBreadcrumbsForStructuredData(
     pathname: string,
@@ -201,14 +214,8 @@ export function getBreadcrumbsForStructuredData(
     const noop = (key: string) => key
     const items = generateBreadcrumbsFromPath(pathname, locale, noop, noop)
 
-    const homeNames: Record<string, string> = {
-        "pt-BR": "Início",
-        es: "Inicio",
-        de: "Startseite",
-        en: "Home",
-    }
     const homeItem = {
-        name: homeNames[locale] || "Home",
+        name: breadcrumbsMessages[locale]?.home ?? "Home",
         url: `https://www.gabrieltoth.com/${locale}`,
     }
 

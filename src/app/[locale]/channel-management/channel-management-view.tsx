@@ -55,7 +55,9 @@ const HeroSection = ({ locale }: { locale: Locale }) => {
                             t("hero.cta"),
                             0,
                             false,
-                            locale
+                            t("whatsapp.paymentMethodCard"),
+                            t("whatsapp.currencySymbol"),
+                            t("whatsapp.template")
                         )}
                         target="_blank"
                         rel="noopener noreferrer"
@@ -468,7 +470,9 @@ const PricingSection = ({
                                         plan.name,
                                         pricing.current,
                                         pricing.isMonero,
-                                        locale
+                                        t("whatsapp.paymentMethodCard"),
+                                        t("whatsapp.currencySymbol"),
+                                        t("whatsapp.template")
                                     )}
                                     target="_blank"
                                     rel="noopener noreferrer"

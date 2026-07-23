@@ -10,7 +10,6 @@ import WhatsAppButton from "@/components/ui/whatsapp-button"
 import { type Locale } from "@/lib/i18n"
 import { type IconName } from "@/lib/icons"
 import { useTranslations } from "next-intl"
-import { getApplicationTemplate } from "./editors-whatsapp"
 // Removed SectionProps dependency; this file uses next-intl hooks directly
 
 interface SectionPropsWithLocale {
@@ -35,7 +34,7 @@ export const HeroSection = ({ locale }: SectionPropsWithLocale) => {
                 <div className="mt-8">
                     <WhatsAppButton
                         phoneNumber={whatsappNumber}
-                        message={getApplicationTemplate(locale as "en" | "pt-BR")}
+                        message={t("applicationTemplate")}
                         size="lg"
                         className="bg-primary hover:bg-primary hover:cursor-pointer text-white"
                     >
@@ -300,7 +299,7 @@ export const CTASection = ({ locale }: SectionPropsWithLocale) => {
                 <p className="text-lg mb-8">{t("cta.description")}</p>
                 <WhatsAppButton
                     phoneNumber={whatsappNumber}
-                    message={getApplicationTemplate(locale as "en" | "pt-BR")}
+                    message={t("applicationTemplate")}
                     size="lg"
                     variant="outline"
                     className="border-white text-primary bg-white hover:bg-primary hover:text-white"

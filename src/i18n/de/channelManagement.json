@@ -17,8 +17,14 @@
                 "number": "2M+",
                 "label": "Monatliche Aufrufe kombiniert (alle Plattformen)"
             },
-            { "number": "1M+", "label": "Aufrufe mit unter 1K Subs (Rekord)" },
-            { "number": "10+", "label": "Jahre Erfahrung (seit 2013)" }
+            {
+                "number": "1M+",
+                "label": "Aufrufe mit unter 1K Subs (Rekord)"
+            },
+            {
+                "number": "10+",
+                "label": "Jahre Erfahrung (seit 2013)"
+            }
         ]
     },
     "about": {
@@ -227,7 +233,7 @@
                     "Inklusive Editing: bis 600 Minuten/Monat"
                 ],
                 "popular": true,
-                "editingNote": "Priorit\u00e4ts-Editing mit schnellerer Bearbeitung"
+                "editingNote": "Prioritäts-Editing mit schnellerer Bearbeitung"
             },
             {
                 "name": "Wachstumspartnerschaft",
@@ -261,5 +267,53 @@
     "seo": {
         "title": "YouTube-Beratung & Kanalmanagement | Social Media Manager",
         "description": "Spezialisierte Beratung für Wachstum auf YouTube, Instagram, TikTok und Twitch. Kanalmanagement, Analytics und Monetarisierungsstrategien mit Gabriel Toth."
+    },
+    "breadcrumbs": {
+        "services": "Dienstleistungen"
+    },
+    "whatsapp": {
+        "paymentMethodCard": "Karte",
+        "currencySymbol": "$",
+        "template": "Hallo! Ich bin an der Kanalberatung interessiert.%0A%0A📋 Ausgewählter Plan: {planName}%0A💰 Preis: {currency} {price}%0A💳 Zahlungsmethode: {paymentMethod}%0A%0AName:%0AYouTube-Kanal:%0AIhr Hauptziel:%0AInhaltstyp:%0AVeröffentlichungshäufigkeit:%0A%0AIch freue mich auf Ihre Kontaktaufnahme!"
+    },
+    "submitting": "Senden...",
+    "formSubmitted": {
+        "title": "Bewerbung Gesendet!",
+        "description": "Vielen Dank! Wir werden Ihre Bewerbung prüfen und uns bald bei Ihnen melden."
+    },
+    "form": {
+        "title": "Kanalberatung Anfragen",
+        "subtitle": "Füllen Sie die Informationen Ihres Kanals für eine persönliche Analyse aus",
+        "personalInfo": "Persönliche Informationen",
+        "name": "Vollständiger Name",
+        "email": "E-Mail",
+        "channelInfo": "Kanalinformationen",
+        "channelName": "Kanalname",
+        "channelUrl": "Kanal-URL (YouTube)",
+        "subscribers": "Anzahl der Abonnenten",
+        "monthlyViews": "Monatliche Aufrufe",
+        "currentRevenue": "Aktuelles monatliches Einkommen ($)",
+        "goals": "Ziele und Herausforderungen",
+        "mainGoal": "Hauptziel",
+        "biggestChallenge": "Größte aktuelle Herausforderung",
+        "expectedGrowth": "Erwartetes Wachstum (%)",
+        "budget": "Beratungsbudget ($)",
+        "additionalInfo": "Zusätzliche Informationen",
+        "submit": "Beratung Anfordern"
+    },
+    "placeholders": {
+        "name": "Ihr vollständiger Name",
+        "email": "ihre@email.com",
+        "channelName": "Ihr Kanalname",
+        "channelUrl": "https://youtube.com/@ihrkanal",
+        "subscribers": "Bsp: 10000",
+        "monthlyViews": "Bsp: 100000",
+        "currentRevenue": "Bsp: 5000",
+        "mainGoal": "Bsp: Monetarisierung steigern, Publikum vergrößern...",
+        "biggestChallenge": "Bsp: Niedriges Engagement, stagnierende Aufrufe...",
+        "expectedGrowth": "Bsp: 200% in 6 Monaten",
+        "budget": "Bsp: 1500",
+        "additionalInfo": "Erzählen Sie uns mehr über Ihren Kanal und Ihre Bedürfnisse...",
+        "selectOption": "Auswählen..."
     }
 }

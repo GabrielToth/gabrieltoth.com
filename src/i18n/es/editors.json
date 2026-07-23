@@ -11,9 +11,18 @@
         "subtitle": "Forma parte de un equipo global de editores profesionales. Trabaja en proyectos interesantes con horarios flexibles.",
         "cta": "Aplicar Ahora",
         "stats": [
-            { "number": "50+", "label": "Editores activos" },
-            { "number": "100+", "label": "Proyectos por mes" },
-            { "number": "24/7", "label": "Soporte al equipo" }
+            {
+                "number": "50+",
+                "label": "Editores activos"
+            },
+            {
+                "number": "100+",
+                "label": "Proyectos por mes"
+            },
+            {
+                "number": "24/7",
+                "label": "Soporte al equipo"
+            }
         ]
     },
     "about": {
@@ -23,10 +32,22 @@
         "experience": "Nuestra plataforma te conecta con clientes globales, asegurando un flujo constante de proyectos interesantes. Tú eliges qué proyectos aceptar y defines tu propio ritmo.",
         "passion": "Valoramos la creatividad y calidad. Si eres detallista, organizado y amas la edición de videos, te queremos en nuestro equipo.",
         "skills": [
-            { "name": "Edición de Video", "iconName": "Video" },
-            { "name": "Motion Graphics", "iconName": "Wand2" },
-            { "name": "Color Grading", "iconName": "Palette" },
-            { "name": "Diseño de Sonido", "iconName": "Volume2" }
+            {
+                "name": "Edición de Video",
+                "iconName": "Video"
+            },
+            {
+                "name": "Motion Graphics",
+                "iconName": "Wand2"
+            },
+            {
+                "name": "Color Grading",
+                "iconName": "Palette"
+            },
+            {
+                "name": "Diseño de Sonido",
+                "iconName": "Volume2"
+            }
         ]
     },
     "tools": {
@@ -275,5 +296,59 @@
             "question": "¿Cómo es el proceso de selección?",
             "answer": "Analizamos tu portafolio, realizamos una prueba práctica de edición y una entrevista para evaluar la compatibilidad."
         }
-    ]
+    ],
+    "breadcrumbs": {
+        "services": "Servicios"
+    },
+    "submitting": "Enviando...",
+    "formSubmitted": {
+        "title": "¡Solicitud Enviada!",
+        "description": "¡Gracias! Revisaremos tu solicitud y te responderemos pronto."
+    },
+    "form": {
+        "title": "Aplicar como Editor",
+        "subtitle": "Únete a nuestro equipo de editores talentosos",
+        "personalInfo": "Información Personal",
+        "name": "Nombre completo",
+        "email": "Email",
+        "age": "Edad",
+        "location": "Ubicación",
+        "experience": "Experiencia",
+        "experienceLevel": "Nivel de experiencia",
+        "software": "Software de edición",
+        "portfolio": "Portafolio",
+        "portfolioUrl": "Enlace del portafolio",
+        "sampleWork": "Trabajo de muestra",
+        "workStyle": "Estilo de trabajo",
+        "availability": "Disponibilidad",
+        "hoursPerWeek": "Horas por semana",
+        "preferredContent": "Tipo de contenido preferido",
+        "expectedRate": "Tarifa esperada ($/hora)",
+        "motivation": "Motivación",
+        "whyJoin": "¿Por qué quieres unirte?",
+        "submit": "Enviar Aplicación"
+    },
+    "placeholders": {
+        "name": "Tu nombre completo",
+        "email": "tu@email.com",
+        "age": "Ej: 25",
+        "location": "Ciudad, Estado",
+        "software": "Ej: Adobe Premiere, After Effects, DaVinci...",
+        "portfolioUrl": "https://tu-portafolio.com",
+        "sampleWork": "Enlace a video editado por ti",
+        "hoursPerWeek": "Ej: 20",
+        "preferredContent": "Gaming, vlogs, educativo...",
+        "expectedRate": "Ej: 50",
+        "whyJoin": "Cuéntanos sobre tu pasión por la edición y tus objetivos...",
+        "selectOption": "Seleccionar..."
+    },
+    "options": {
+        "experienceLevel": [
+            "Principiante",
+            "Intermedio",
+            "Avanzado",
+            "Profesional"
+        ]
+    },
+    "applicationTemplate": "¡Hola! Me gustaría postularme para el puesto de editor de videos.\n\n*FORMULARIO DE SOLICITUD*\n\nNombre Completo:\nEdad:\nPortafolio (enlaces):\nExperiencia en edición (años) (no es necesario tener):\n\n*Software que domina:*\n- Premiere Pro: (Básico/Intermedio/Avanzado)\n- After Effects: (Básico/Intermedio/Avanzado)\n- DaVinci Resolve: (Básico/Intermedio/Avanzado)\n- Otros:\n\n¡Espero su respuesta!"
 }

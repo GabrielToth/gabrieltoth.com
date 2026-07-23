@@ -1,28 +1,18 @@
-import { Locale } from "@/lib/i18n"
+import { type Locale } from "@/lib/i18n"
+import { getTranslations } from "next-intl/server"
 
-export const getPCOptimizationBreadcrumbs = (locale: Locale) => {
+export const getPCOptimizationBreadcrumbs = async (locale: Locale) => {
+    const t = await getTranslations({ locale, namespace: "pcOptimization" })
+    const localeSegment = locale === "en" ? "" : `/${locale}`
+
     return [
         {
-            name:
-                locale === "pt-BR"
-                    ? "Serviços"
-                    : locale === "es"
-                      ? "Servicios"
-                      : locale === "de"
-                        ? "Dienstleistungen"
-                        : "Services",
-            url: `https://www.gabrieltoth.com${locale === "en" ? "" : `/${locale}`}`,
+            name: t("breadcrumbs.services"),
+            url: `https://www.gabrieltoth.com${localeSegment}`,
         },
         {
-            name:
-                locale === "pt-BR"
-                    ? "Otimização de PC"
-                    : locale === "es"
-                      ? "Optimización de PC"
-                      : locale === "de"
-                        ? "PC-Optimierung"
-                        : "PC Optimization",
-            url: `https://www.gabrieltoth.com${locale === "en" ? "" : `/${locale}`}/pc-optimization`,
+            name: t("breadcrumbs.pcOptimization"),
+            url: `https://www.gabrieltoth.com${localeSegment}/pc-optimization`,
         },
     ]
 }

@@ -21,7 +21,10 @@
                 "number": "1M+",
                 "label": "Vistas con menos de 1K subs (récord)"
             },
-            { "number": "10+", "label": "Años de experiencia (desde 2013)" }
+            {
+                "number": "10+",
+                "label": "Años de experiencia (desde 2013)"
+            }
         ]
     },
     "about": {
@@ -264,5 +267,53 @@
     "seo": {
         "title": "Consultoría de YouTube y Gestión de Canales | Social Media Manager",
         "description": "Consultoría especializada en el crecimiento de canales en YouTube, Instagram, TikTok y Twitch. Estrategias de social media manager, analítica y monetización con Gabriel Toth."
+    },
+    "breadcrumbs": {
+        "services": "Servicios"
+    },
+    "whatsapp": {
+        "paymentMethodCard": "Tarjeta",
+        "currencySymbol": "$",
+        "template": "¡Hola! Estoy interesado en la consultoría de canales.%0A%0A📋 Plan elegido: {planName}%0A💰 Precio: {currency} {price}%0A💳 Método de pago: {paymentMethod}%0A%0ANombre:%0ACanal de YouTube:%0ATu objetivo principal:%0ATipo de contenido:%0AFrecuencia de publicación:%0A%0A¡Espero su contacto!"
+    },
+    "submitting": "Enviando...",
+    "formSubmitted": {
+        "title": "¡Solicitud Enviada!",
+        "description": "¡Gracias! Revisaremos tu solicitud y te responderemos pronto."
+    },
+    "form": {
+        "title": "Solicitar Consultoría de Canal",
+        "subtitle": "Completa la información de tu canal para un análisis personalizado",
+        "personalInfo": "Información Personal",
+        "name": "Nombre completo",
+        "email": "Email",
+        "channelInfo": "Información del Canal",
+        "channelName": "Nombre del canal",
+        "channelUrl": "URL del canal (YouTube)",
+        "subscribers": "Número de suscriptores",
+        "monthlyViews": "Vistas mensuales",
+        "currentRevenue": "Ingresos mensuales actuales ($)",
+        "goals": "Metas y Desafíos",
+        "mainGoal": "Objetivo principal",
+        "biggestChallenge": "Mayor desafío actual",
+        "expectedGrowth": "Crecimiento esperado (%)",
+        "budget": "Presupuesto de consultoría ($)",
+        "additionalInfo": "Información adicional",
+        "submit": "Solicitar Consultoría"
+    },
+    "placeholders": {
+        "name": "Tu nombre completo",
+        "email": "tu@email.com",
+        "channelName": "Nombre de tu canal",
+        "channelUrl": "https://youtube.com/@tucanal",
+        "subscribers": "Ej: 10000",
+        "monthlyViews": "Ej: 100000",
+        "currentRevenue": "Ej: 5000",
+        "mainGoal": "Ej: Aumentar monetización, crecer audiencia...",
+        "biggestChallenge": "Ej: Bajo engagement, vistas estancadas...",
+        "expectedGrowth": "Ej: 200% en 6 meses",
+        "budget": "Ej: 1500",
+        "additionalInfo": "Cuéntanos más sobre tu canal y necesidades...",
+        "selectOption": "Seleccionar..."
     }
 }

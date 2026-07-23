@@ -149,7 +149,13 @@
                 "title": "Sistema SAT Fiscal - Website",
                 "description": "Institutional website for company specialized in fiscal and accounting solutions. Developed with focus on presenting fiscal services, tax management and business solutions in a clear and professional way.",
                 "image": "/projects/sat-fiscal.jpg",
-                "tags": ["HTML", "CSS", "JavaScript", "SEO", "Design"],
+                "tags": [
+                    "HTML",
+                    "CSS",
+                    "JavaScript",
+                    "SEO",
+                    "Design"
+                ],
                 "liveUrl": "https://sistemasatfiscal.com.br",
                 "featured": true
             },
@@ -157,7 +163,12 @@
                 "title": "Softclever - Website",
                 "description": "Corporate website developed in React for software company, with modern and responsive design. Implements sections for services, portfolio and contact, using technologies like React, modern CSS and SEO optimizations.",
                 "image": "/projects/softclever.jpg",
-                "tags": ["React", "CSS", "JavaScript", "SEO"],
+                "tags": [
+                    "React",
+                    "CSS",
+                    "JavaScript",
+                    "SEO"
+                ],
                 "liveUrl": "https://softclever.com.br",
                 "githubUrl": "https://github.com/gabrieltoth/softclever"
             },
@@ -179,7 +190,12 @@
                 "title": "PC Optimization Service",
                 "description": "Specialized PC optimization service for gaming, focused on maximizing game performance and reducing latency. Includes advanced system configurations, hardware optimization and custom software.",
                 "image": "/projects/pc-optimization.jpg",
-                "tags": ["Windows", "Gaming", "Performance", "Hardware"],
+                "tags": [
+                    "Windows",
+                    "Gaming",
+                    "Performance",
+                    "Hardware"
+                ],
                 "slug": "/pc-optimization"
             }
         ]
@@ -209,6 +225,111 @@
                     "@type": "Organization",
                     "name": "Gabriel Toth Tech"
                 }
+            }
+        }
+    },
+    "channelManagement": {
+        "badge": "ViraTrend - Specialized Consulting",
+        "title": "Channel Management",
+        "subtitle": "Transform Your Channel into a Growth Machine",
+        "description": "Specialized in analytics, content optimization and monetization strategies for YouTube. + 2M monthly views managed with proven results.",
+        "features": {
+            "title": "How I Can Help Your Channel",
+            "analytics": {
+                "title": "Complete Performance Analysis",
+                "description": "Deep audit of your analytics with actionable insights for immediate optimization"
+            },
+            "optimization": {
+                "title": "Content Strategy",
+                "description": "Data-driven content strategy development to maximize reach and engagement"
+            },
+            "growth": {
+                "title": "Growth Strategies",
+                "description": "Custom plans for sustainable growth and engagement with focus on results"
+            },
+            "monetization": {
+                "title": "Monetization Optimization",
+                "description": "Strategies to maximize revenue through multiple monetization channels"
+            }
+        },
+        "results": {
+            "title": "Proven Results",
+            "subtitle": "Real growth cases",
+            "cases": [
+                {
+                    "channel": "WaveIGL",
+                    "description": "Gaming channel managed by me",
+                    "metrics": [
+                        {
+                            "label": "Monthly views",
+                            "value": "2M+"
+                        },
+                        {
+                            "label": "Growth",
+                            "value": "400%"
+                        },
+                        {
+                            "label": "Revenue",
+                            "value": "5x"
+                        }
+                    ]
+                },
+                {
+                    "channel": "Gabriel Toth (inactive)",
+                    "description": "My personal channel - Historical case",
+                    "metrics": [
+                        {
+                            "label": "Total views",
+                            "value": "1M+"
+                        },
+                        {
+                            "label": "Current subscribers",
+                            "value": "1.4K+"
+                        },
+                        {
+                            "label": "Views with <1K subs",
+                            "value": "1M+"
+                        }
+                    ]
+                }
+            ]
+        },
+        "cta": {
+            "title": "Ready to accelerate your growth?",
+            "description": "Request a personalized consultation and discover how to transform your channel",
+            "button": "Request Consultation"
+        },
+        "stats": [
+            {
+                "value": "2M+",
+                "label": "Monthly views managed"
+            },
+            {
+                "value": "300%",
+                "label": "Average client growth"
+            },
+            {
+                "value": "5+",
+                "label": "Years of experience"
+            }
+        ],
+        "pricing": {
+            "title": "Consulting Plans",
+            "express": {
+                "name": "Express Analysis",
+                "price": "R$ 497",
+                "description": "Complete audit with detailed report"
+            },
+            "complete": {
+                "name": "Complete Consulting",
+                "price": "R$ 1.497",
+                "description": "Strategy + implementation + follow-up",
+                "popular": true
+            },
+            "intensive": {
+                "name": "Intensive Mentoring",
+                "price": "Quote on request",
+                "description": "Personalized monthly follow-up"
             }
         }
     }

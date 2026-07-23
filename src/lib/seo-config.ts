@@ -263,6 +263,20 @@ export function generateSeoConfig(options: SeoConfigOptions) {
     const pageDescription = description || defaultDescription
 
     // Enhanced keywords with semantic variations
+    const ogLocaleByLocale: Record<Locale, string> = {
+        "pt-BR": "pt_BR",
+        es: "es_ES",
+        de: "de_DE",
+        en: "en_US",
+    }
+
+    const writtenByLabelByLocale: Record<Locale, string> = {
+        "pt-BR": "Escrito por",
+        es: "Escrito por",
+        de: "Geschrieben von",
+        en: "Written by",
+    }
+
     const keywordsByLocale: Record<Locale, string[]> = {
         en: [
             "gabriel toth",
@@ -379,14 +393,7 @@ export function generateSeoConfig(options: SeoConfigOptions) {
             description: pageDescription,
             url: fullUrl,
             type: ogType,
-            locale:
-                locale === "pt-BR"
-                    ? "pt_BR"
-                    : locale === "es"
-                      ? "es_ES"
-                      : locale === "de"
-                        ? "de_DE"
-                        : "en_US",
+            locale: ogLocaleByLocale[locale] ?? ogLocaleByLocale["en"],
             alternateLocale: "en_US",
             images: [
                 {
@@ -419,13 +426,8 @@ export function generateSeoConfig(options: SeoConfigOptions) {
             {
                 name: "twitter:label1",
                 content:
-                    locale === "pt-BR"
-                        ? "Escrito por"
-                        : locale === "es"
-                          ? "Escrito por"
-                          : locale === "de"
-                            ? "Geschrieben von"
-                            : "Written by",
+                    writtenByLabelByLocale[locale] ??
+                    writtenByLabelByLocale["en"],
             },
             {
                 name: "twitter:data1",

@@ -102,25 +102,19 @@
     },
     "testimonials": {
         "title": "What Our Clients Say",
-        "subtitle": "Real results from those who trust ViraTrend",
+        "subtitle": "Real testimonials from creators who transformed their channels",
         "items": [
             {
-                "name": "Carlos Silva",
-                "channel": "TechTalks BR",
-                "content": "In 3 months applying ViraTrend strategies, my channel grew 300% in subscribers and 450% in views. Data analysis was fundamental!",
-                "result": "+300% growth"
+                "name": "João Silva",
+                "role": "YouTube Creator",
+                "content": "Gabriel helped me grow from 1K to 50K subscribers in just 6 months. His data-driven approach is incredible!",
+                "rating": 5
             },
             {
-                "name": "Ana Costa",
-                "channel": "Lifestyle Ana",
-                "content": "The consulting helped me finally understand how to monetize my content. In 2 months I already doubled my monthly revenue.",
-                "result": "+200% revenue"
-            },
-            {
-                "name": "João Santos",
-                "channel": "Gaming Zone",
-                "content": "The engagement strategies completely changed my channel. Now I have a much more active and engaged community.",
-                "result": "+500% engagement"
+                "name": "Maria Santos",
+                "role": "Content Creator",
+                "content": "The analytics insights completely changed how I create content. Now I know exactly what my audience wants.",
+                "rating": 5
             }
         ]
     },
@@ -264,24 +258,6 @@
             }
         ]
     },
-    "testimonials": {
-        "title": "What Our Clients Say",
-        "subtitle": "Real testimonials from creators who transformed their channels",
-        "items": [
-            {
-                "name": "João Silva",
-                "role": "YouTube Creator",
-                "content": "Gabriel helped me grow from 1K to 50K subscribers in just 6 months. His data-driven approach is incredible!",
-                "rating": 5
-            },
-            {
-                "name": "Maria Santos",
-                "role": "Content Creator",
-                "content": "The analytics insights completely changed how I create content. Now I know exactly what my audience wants.",
-                "rating": 5
-            }
-        ]
-    },
     "cta": {
         "title": "Ready to Transform Your Channel?",
         "subtitle": "Join the creators who are already growing with our strategies",
@@ -291,5 +267,53 @@
     "seo": {
         "title": "YouTube Consulting & Channel Management | Social Media Manager",
         "description": "Specialized consulting for YouTube, Instagram, TikTok and Twitch growth. Channel management, analytics and monetization strategies with Gabriel Toth."
+    },
+    "breadcrumbs": {
+        "services": "Services"
+    },
+    "whatsapp": {
+        "paymentMethodCard": "Card",
+        "currencySymbol": "$",
+        "template": "Hello! I'm interested in channel consulting.%0A%0A📋 Chosen plan: {planName}%0A💰 Price: {currency} {price}%0A💳 Payment method: {paymentMethod}%0A%0AName:%0AYouTube Channel:%0AYour main goal:%0AContent type:%0APosting frequency:%0A%0ALooking forward to hearing from you!"
+    },
+    "submitting": "Submitting...",
+    "formSubmitted": {
+        "title": "Application Submitted!",
+        "description": "Thank you! We'll review your application and get back to you soon."
+    },
+    "form": {
+        "title": "Request Channel Consulting",
+        "subtitle": "Fill in your channel information for a personalized analysis",
+        "personalInfo": "Personal Information",
+        "name": "Full name",
+        "email": "Email",
+        "channelInfo": "Channel Information",
+        "channelName": "Channel name",
+        "channelUrl": "Channel URL (YouTube)",
+        "subscribers": "Number of subscribers",
+        "monthlyViews": "Monthly views",
+        "currentRevenue": "Current monthly revenue ($)",
+        "goals": "Goals and Challenges",
+        "mainGoal": "Main goal",
+        "biggestChallenge": "Biggest current challenge",
+        "expectedGrowth": "Expected growth (%)",
+        "budget": "Consulting budget ($)",
+        "additionalInfo": "Additional information",
+        "submit": "Request Consulting"
+    },
+    "placeholders": {
+        "name": "Your full name",
+        "email": "your@email.com",
+        "channelName": "Your channel name",
+        "channelUrl": "https://youtube.com/@yourchannel",
+        "subscribers": "Ex: 10000",
+        "monthlyViews": "Ex: 100000",
+        "currentRevenue": "Ex: 5000",
+        "mainGoal": "Ex: Increase monetization, grow audience...",
+        "biggestChallenge": "Ex: Low engagement, stagnant views...",
+        "expectedGrowth": "Ex: 200% in 6 months",
+        "budget": "Ex: 1500",
+        "additionalInfo": "Tell us more about your channel and needs...",
+        "selectOption": "Select..."
     }
 }

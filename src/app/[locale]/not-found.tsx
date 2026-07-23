@@ -1,12 +1,14 @@
 "use client"
 
 import { ArrowLeft, ExternalLink, Home } from "lucide-react"
+import { useTranslations } from "next-intl"
 import Link from "next/link"
 import { useEffect, useState } from "react"
 
 export default function LocaleNotFound() {
     const [locale, setLocale] = useState<string>("en")
     const [mounted, setMounted] = useState(false)
+    const t = useTranslations("notFound")
 
     useEffect(() => {
         setMounted(true)
@@ -72,106 +74,29 @@ export default function LocaleNotFound() {
 
     /* c8 ignore start */
     const content = {
-        title:
-            locale === "pt-BR"
-                ? "Página Não Encontrada"
-                : locale === "es"
-                  ? "Página No Encontrada"
-                  : locale === "de"
-                    ? "Seite nicht gefunden"
-                    : "Page Not Found",
-        subtitle:
-            locale === "pt-BR"
-                ? "A página que você procura não existe, mas temos outras opções interessantes!"
-                : locale === "es"
-                  ? "La página que buscas no existe, ¡pero tenemos otras opciones interesantes!"
-                  : locale === "de"
-                    ? "Die gesuchte Seite existiert nicht, aber wir haben andere interessante Optionen!"
-                    : "The page you're looking for doesn't exist, but we have other interesting options!",
-        homeButton:
-            locale === "pt-BR"
-                ? "Página Inicial"
-                : locale === "es"
-                  ? "Página de Inicio"
-                  : locale === "de"
-                    ? "Startseite"
-                    : "Home Page",
-        backButton:
-            locale === "pt-BR"
-                ? "Voltar"
-                : locale === "es"
-                  ? "Volver"
-                  : locale === "de"
-                    ? "Zurück"
-                    : "Go Back",
-        contactText:
-            locale === "pt-BR"
-                ? "Se você acha que isso é um erro, entre em contato conosco."
-                : locale === "es"
-                  ? "Si crees que esto es un error, por favor contáctanos."
-                  : locale === "de"
-                    ? "Wenn Sie glauben, dass dies ein Fehler ist, kontaktieren Sie uns bitte."
-                    : "If you think this is an error, please contact us.",
-        viewButton:
-            locale === "pt-BR"
-                ? "Ver Página"
-                : locale === "es"
-                  ? "Ver Página"
-                  : locale === "de"
-                    ? "Seite ansehen"
-                    : "View Page",
+        title: t("title"),
+        subtitle: t("subtitle"),
+        homeButton: t("homeButton"),
+        backButton: t("backButton"),
+        contactText: t("contactText"),
+        viewButton: t("viewButton"),
     }
     /* c8 ignore stop */
 
     const products = [
         {
             title: "ViraTrend",
-            description:
-                locale === "pt-BR"
-                    ? "Consultoria especializada para crescimento digital"
-                    : locale === "es"
-                      ? "Consultoría especializada para crecimiento digital"
-                      : locale === "de"
-                        ? "Spezialisierte Beratung für digitales Wachstum"
-                        : "Specialized consulting for digital growth",
+            description: t("products.viraTrend.description"),
             href: `/${locale}/channel-management`,
         },
         {
-            title:
-                locale === "pt-BR"
-                    ? "Otimização de PC Gaming"
-                    : locale === "es"
-                      ? "Optimización de PC Gaming"
-                      : locale === "de"
-                        ? "PC-Gaming-Optimierung"
-                        : "PC Gaming Optimization",
-            description:
-                locale === "pt-BR"
-                    ? "Serviços de otimização para melhor performance"
-                    : locale === "es"
-                      ? "Servicios de optimización para un mejor rendimiento"
-                      : locale === "de"
-                        ? "Optimierungsdienste für bessere Leistung"
-                        : "Optimization services for better performance",
+            title: t("products.pcGamingOptimization.title"),
+            description: t("products.pcGamingOptimization.description"),
             href: `/${locale}/pc-optimization`,
         },
         {
-            title:
-                locale === "pt-BR"
-                    ? "Trabalhe Como Editor"
-                    : locale === "es"
-                      ? "Trabaja como Editor"
-                      : locale === "de"
-                        ? "Als Editor arbeiten"
-                        : "Work as Editor",
-            description:
-                locale === "pt-BR"
-                    ? "Ganhe 90% do AdSense editando vídeos"
-                    : locale === "es"
-                      ? "Gana el 90% de AdSense editando videos"
-                      : locale === "de"
-                        ? "Verdiene 90% der AdSense-Einnahmen durch Videobearbeitung"
-                        : "Earn 90% of AdSense editing videos",
+            title: t("products.workAsEditor.title"),
+            description: t("products.workAsEditor.description"),
             href: `/${locale}/editors`,
         },
     ]

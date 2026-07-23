@@ -1,0 +1,21 @@
+{
+    "title": "Page Not Found",
+    "subtitle": "The page you're looking for doesn't exist, but we have other interesting options!",
+    "homeButton": "Home Page",
+    "backButton": "Go Back",
+    "contactText": "If you think this is an error, please contact us.",
+    "viewButton": "View Page",
+    "products": {
+        "viraTrend": {
+            "description": "Specialized consulting for digital growth"
+        },
+        "pcGamingOptimization": {
+            "title": "PC Gaming Optimization",
+            "description": "Optimization services for better performance"
+        },
+        "workAsEditor": {
+            "title": "Work as Editor",
+            "description": "Earn 90% of AdSense editing videos"
+        }
+    }
+}

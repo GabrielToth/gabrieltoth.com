@@ -102,12 +102,7 @@ export default function ChannelsPage() {
             )
             if (connectedTikTok) {
                 setConfirmDialog({
-                    message:
-                        locale === "pt-BR"
-                            ? "Você já tem uma conta do TikTok conectada. Para conectar uma conta diferente, desconecte a atual primeiro. O TikTok OAuth não permite selecionar outra conta durante a autorização."
-                            : locale === "es"
-                              ? "Ya tienes una cuenta de TikTok conectada. Para conectar una cuenta diferente, primero desconecta la actual. La OAuth de TikTok no permite seleccionar otra cuenta durante la autorización."
-                              : "You already have a TikTok account connected. To connect a different account, disconnect the current one first. TikTok OAuth does not allow selecting another account during authorization.",
+                    message: t("channels.tiktokReconnectMessage"),
                     onConfirm: async () => {
                         setConfirmDialog(null)
                         await startConnect(platform)
@@ -434,11 +429,7 @@ export default function ChannelsPage() {
                 <DialogContent>
                     <DialogHeader>
                         <DialogTitle>
-                            {locale === "pt-BR"
-                                ? "Atenção"
-                                : locale === "es"
-                                  ? "Atención"
-                                  : "Attention"}
+                            {t("channels.dialogTitle")}
                         </DialogTitle>
                         <DialogDescription>
                             {confirmDialog?.message}
@@ -449,21 +440,13 @@ export default function ChannelsPage() {
                             variant="outline"
                             onClick={() => setConfirmDialog(null)}
                         >
-                            {locale === "pt-BR"
-                                ? "Cancelar"
-                                : locale === "es"
-                                  ? "Cancelar"
-                                  : "Cancel"}
+                            {t("channels.dialogCancel")}
                         </Button>
                         <Button
                             variant="default"
                             onClick={confirmDialog?.onConfirm}
                         >
-                            {locale === "pt-BR"
-                                ? "Continuar"
-                                : locale === "es"
-                                  ? "Continuar"
-                                  : "Continue"}
+                            {t("channels.dialogContinue")}
                         </Button>
                     </DialogFooter>
                 </DialogContent>

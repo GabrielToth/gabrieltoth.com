@@ -47,9 +47,12 @@ export default getRequestConfig(async ({ locale }) => {
         pcOptimizationPageHero,
         pcOptimizationTerms,
         pcOptimizationTermsPageHero,
+        pcOptimizationWhatsapp,
         privacyPageHero,
         servicesPageHero,
         termsOfServicePageHero,
+        error,
+        notFound,
     ] = await Promise.all([
         loadJson(() => import(`@/i18n/${selectedLocale}/home.json`)),
         loadJson(() => import(`@/i18n/${selectedLocale}/landing.json`)),
@@ -78,9 +81,12 @@ export default getRequestConfig(async ({ locale }) => {
         loadJson(() => import(`@/i18n/${selectedLocale}/pcOptimizationPageHero.json`)),
         loadJson(() => import(`@/i18n/${selectedLocale}/pcOptimizationTerms.json`)),
         loadJson(() => import(`@/i18n/${selectedLocale}/pcOptimizationTermsPageHero.json`)),
+        loadJson(() => import(`@/i18n/${selectedLocale}/pcOptimizationWhatsapp.json`)),
         loadJson(() => import(`@/i18n/${selectedLocale}/privacyPageHero.json`)),
         loadJson(() => import(`@/i18n/${selectedLocale}/servicesPageHero.json`)),
         loadJson(() => import(`@/i18n/${selectedLocale}/termsOfServicePageHero.json`)),
+        loadJson(() => import(`@/i18n/${selectedLocale}/error.json`)),
+        loadJson(() => import(`@/i18n/${selectedLocale}/notFound.json`)),
     ])
 
     const messages: MessagesRecord = {
@@ -109,9 +115,12 @@ export default getRequestConfig(async ({ locale }) => {
         pcOptimizationPageHero,
         pcOptimizationTerms,
         pcOptimizationTermsPageHero,
+        pcOptimizationWhatsapp,
         privacyPageHero,
         servicesPageHero,
         termsOfServicePageHero,
+        error,
+        notFound,
         layout: {
             header,
             footer: await loadJson(

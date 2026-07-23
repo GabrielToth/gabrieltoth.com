@@ -11,9 +11,18 @@
         "subtitle": "Sei Teil eines globalen Teams professioneller Editoren. Arbeite an interessanten Projekten mit flexiblen Arbeitszeiten.",
         "cta": "Jetzt Bewerben",
         "stats": [
-            { "number": "50+", "label": "Aktive Editoren" },
-            { "number": "100+", "label": "Projekte pro Monat" },
-            { "number": "24/7", "label": "Team-Support" }
+            {
+                "number": "50+",
+                "label": "Aktive Editoren"
+            },
+            {
+                "number": "100+",
+                "label": "Projekte pro Monat"
+            },
+            {
+                "number": "24/7",
+                "label": "Team-Support"
+            }
         ]
     },
     "about": {
@@ -23,10 +32,22 @@
         "experience": "Unsere Plattform verbindet Sie mit globalen Kunden und gewährleistet einen konstanten Fluss interessanter Projekte. Sie wählen, welche Projekte Sie annehmen und bestimmen Ihr eigenes Tempo.",
         "passion": "Wir schätzen Kreativität und Qualität. Wenn Sie detailorientiert, organisiert sind und Videobearbeitung lieben, wollen wir Sie in unserem Team.",
         "skills": [
-            { "name": "Videobearbeitung", "iconName": "Video" },
-            { "name": "Motion Graphics", "iconName": "Wand2" },
-            { "name": "Color Grading", "iconName": "Palette" },
-            { "name": "Sound Design", "iconName": "Volume2" }
+            {
+                "name": "Videobearbeitung",
+                "iconName": "Video"
+            },
+            {
+                "name": "Motion Graphics",
+                "iconName": "Wand2"
+            },
+            {
+                "name": "Color Grading",
+                "iconName": "Palette"
+            },
+            {
+                "name": "Sound Design",
+                "iconName": "Volume2"
+            }
         ]
     },
     "tools": {
@@ -275,5 +296,59 @@
             "question": "Wie läuft der Auswahlprozess ab?",
             "answer": "Wir analysieren Ihr Portfolio, führen einen praktischen Bearbeitungstest und ein Interview zur Beurteilung der Eignung durch."
         }
-    ]
+    ],
+    "breadcrumbs": {
+        "services": "Dienstleistungen"
+    },
+    "submitting": "Senden...",
+    "formSubmitted": {
+        "title": "Bewerbung Gesendet!",
+        "description": "Vielen Dank! Wir werden Ihre Bewerbung prüfen und uns bald bei Ihnen melden."
+    },
+    "form": {
+        "title": "Als Editor Bewerben",
+        "subtitle": "Treten Sie unserem Team talentierter Editoren bei",
+        "personalInfo": "Persönliche Informationen",
+        "name": "Vollständiger Name",
+        "email": "E-Mail",
+        "age": "Alter",
+        "location": "Standort",
+        "experience": "Erfahrung",
+        "experienceLevel": "Erfahrungsstufe",
+        "software": "Bearbeitungssoftware",
+        "portfolio": "Portfolio",
+        "portfolioUrl": "Portfolio-Link",
+        "sampleWork": "Beispielarbeit",
+        "workStyle": "Arbeitsstil",
+        "availability": "Verfügbarkeit",
+        "hoursPerWeek": "Stunden pro Woche",
+        "preferredContent": "Bevorzugter Inhaltstyp",
+        "expectedRate": "Erwarteter Satz ($/Stunde)",
+        "motivation": "Motivation",
+        "whyJoin": "Warum möchten Sie beitreten?",
+        "submit": "Bewerbung Einreichen"
+    },
+    "placeholders": {
+        "name": "Ihr vollständiger Name",
+        "email": "ihre@email.com",
+        "age": "Bsp: 25",
+        "location": "Stadt, Bundesland",
+        "software": "Bsp: Adobe Premiere, After Effects, DaVinci...",
+        "portfolioUrl": "https://ihr-portfolio.com",
+        "sampleWork": "Link zu einem von Ihnen bearbeiteten Video",
+        "hoursPerWeek": "Bsp: 20",
+        "preferredContent": "Gaming, Vlogs, Bildung...",
+        "expectedRate": "Bsp: 50",
+        "whyJoin": "Erzählen Sie uns von Ihrer Leidenschaft für die Bearbeitung...",
+        "selectOption": "Auswählen..."
+    },
+    "options": {
+        "experienceLevel": [
+            "Anfänger",
+            "Fortgeschritten",
+            "Erfahren",
+            "Profi"
+        ]
+    },
+    "applicationTemplate": "Hallo! Ich möchte mich für die Stelle als Video-Editor bewerben.\n\n*BEWERBUNGSFORMULAR*\n\nVollständiger Name:\nAlter:\nPortfolio (Links):\nBearbeitungserfahrung (Jahre) (nicht erforderlich):\n\n*Software-Kenntnisse:*\n- Premiere Pro: (Grundkenntnisse/Fortgeschritten/Erfahren)\n- After Effects: (Grundkenntnisse/Fortgeschritten/Erfahren)\n- DaVinci Resolve: (Grundkenntnisse/Fortgeschritten/Erfahren)\n- Andere:\n\nIch freue mich auf Ihre Rückmeldung!"
 }

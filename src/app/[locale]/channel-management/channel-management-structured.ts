@@ -49,7 +49,7 @@ export async function buildChannelManagementStructured(
         answer: item.answer,
     }))
 
-    const breadcrumbs = getChannelManagementBreadcrumbs(locale)
+    const breadcrumbs = await getChannelManagementBreadcrumbs(locale)
 
     const localeToCurrency: Record<string, string> = {
         "pt-BR": "BRL",

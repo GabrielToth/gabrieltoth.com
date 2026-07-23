@@ -1,0 +1,21 @@
+{
+    "title": "Seite nicht gefunden",
+    "subtitle": "Die gesuchte Seite existiert nicht, aber wir haben andere interessante Optionen!",
+    "homeButton": "Startseite",
+    "backButton": "Zurück",
+    "contactText": "Wenn Sie glauben, dass dies ein Fehler ist, kontaktieren Sie uns bitte.",
+    "viewButton": "Seite ansehen",
+    "products": {
+        "viraTrend": {
+            "description": "Spezialisierte Beratung für digitales Wachstum"
+        },
+        "pcGamingOptimization": {
+            "title": "PC-Gaming-Optimierung",
+            "description": "Optimierungsdienste für bessere Leistung"
+        },
+        "workAsEditor": {
+            "title": "Als Editor arbeiten",
+            "description": "Verdiene 90% der AdSense-Einnahmen durch Videobearbeitung"
+        }
+    }
+}

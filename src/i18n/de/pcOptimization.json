@@ -1,4 +1,8 @@
 {
+    "breadcrumbs": {
+        "services": "Dienstleistungen",
+        "pcOptimization": "PC-Optimierung"
+    },
     "moneroToggle": {
         "title": "Monero (XMR) Preise",
         "description": "Aktivieren Sie, um Preise mit 50% Rabatt mit Monero zu sehen",

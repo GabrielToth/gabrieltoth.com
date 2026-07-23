@@ -1,6 +1,7 @@
 "use client"
 
 import { Home } from "lucide-react"
+import { useTranslations } from "next-intl"
 import Link from "next/link"
 import { useParams } from "next/navigation"
 import { useEffect, useState } from "react"
@@ -15,6 +16,7 @@ export default function LocaleError({
     const params = useParams()
     const locale = (params?.locale as string) || "en"
     const [mounted, setMounted] = useState(false)
+    const t = useTranslations("error")
 
     useEffect(() => {
         setMounted(true)
@@ -38,46 +40,11 @@ export default function LocaleError({
     }
 
     const content = {
-        title:
-            locale === "pt-BR"
-                ? "Algo deu errado"
-                : locale === "es"
-                  ? "Algo salió mal"
-                  : locale === "de"
-                    ? "Etwas ist schief gelaufen"
-                    : "Something went wrong",
-        subtitle:
-            locale === "pt-BR"
-                ? "Encontramos um erro inesperado. Por favor, tente novamente ou volte para a página inicial."
-                : locale === "es"
-                  ? "Encontramos un error inesperado. Por favor, intente de nuevo o vuelva a la página de inicio."
-                  : locale === "de"
-                    ? "Wir sind auf einen unerwarteten Fehler gestoßen. Bitte versuchen Sie es erneut oder kehren Sie zur Startseite zurück."
-                    : "We encountered an unexpected error. Please try again or return to the home page.",
-        tryAgain:
-            locale === "pt-BR"
-                ? "Tentar Novamente"
-                : locale === "es"
-                  ? "Intentar de Nuevo"
-                  : locale === "de"
-                    ? "Erneut Versuchen"
-                    : "Try Again",
-        homeButton:
-            locale === "pt-BR"
-                ? "Página Inicial"
-                : locale === "es"
-                  ? "Página de Inicio"
-                  : locale === "de"
-                    ? "Startseite"
-                    : "Home Page",
-        contactText:
-            locale === "pt-BR"
-                ? "Se este problema persistir, entre em contato conosco para obter suporte."
-                : locale === "es"
-                  ? "Si este problema persiste, contáctenos para obtener soporte."
-                  : locale === "de"
-                    ? "Wenn dieses Problem weiterhin besteht, kontaktieren Sie uns bitte für Unterstützung."
-                    : "If this problem persists, please contact us for support.",
+        title: t("title"),
+        subtitle: t("subtitle"),
+        tryAgain: t("tryAgain"),
+        homeButton: t("homeButton"),
+        contactText: t("contactText"),
     }
 
     return (

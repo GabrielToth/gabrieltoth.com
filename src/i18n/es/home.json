@@ -149,7 +149,13 @@
                 "title": "Sistema SAT Fiscal - Sitio Web",
                 "description": "Sitio institucional para empresa especializada en soluciones fiscales y contables. Desarrollado con enfoque en presentar servicios fiscales, gestión tributaria y soluciones empresariales de forma clara y profesional.",
                 "image": "/projects/sat-fiscal.jpg",
-                "tags": ["HTML", "CSS", "JavaScript", "SEO", "Diseño"],
+                "tags": [
+                    "HTML",
+                    "CSS",
+                    "JavaScript",
+                    "SEO",
+                    "Diseño"
+                ],
                 "liveUrl": "https://sistemasatfiscal.com.br",
                 "featured": true
             },
@@ -157,7 +163,12 @@
                 "title": "Softclever - Sitio Web",
                 "description": "Sitio corporativo desarrollado en React para empresa de software, con diseño moderno y responsivo. Implementa secciones para servicios, portafolio y contacto, utilizando tecnologías como React, CSS moderno y optimizaciones de SEO.",
                 "image": "/projects/softclever.jpg",
-                "tags": ["React", "CSS", "JavaScript", "SEO"],
+                "tags": [
+                    "React",
+                    "CSS",
+                    "JavaScript",
+                    "SEO"
+                ],
                 "liveUrl": "https://softclever.com.br",
                 "githubUrl": "https://github.com/gabrieltoth/softclever"
             },
@@ -179,7 +190,12 @@
                 "title": "Servicio de Optimización de PC",
                 "description": "Servicio especializado de optimización de PC para gaming, enfocado en maximizar el rendimiento en juegos y reducir la latencia. Incluye configuraciones avanzadas del sistema, optimización de hardware y software personalizado.",
                 "image": "/projects/pc-optimization.jpg",
-                "tags": ["Windows", "Gaming", "Rendimiento", "Hardware"],
+                "tags": [
+                    "Windows",
+                    "Gaming",
+                    "Rendimiento",
+                    "Hardware"
+                ],
                 "slug": "/pc-optimization"
             }
         ]
@@ -209,6 +225,111 @@
                     "@type": "Organization",
                     "name": "Gabriel Toth Tech"
                 }
+            }
+        }
+    },
+    "channelManagement": {
+        "badge": "ViraTrend - Consultoría Especializada",
+        "title": "Channel Management",
+        "subtitle": "Transforma tu canal en una máquina de crecimiento",
+        "description": "Specialized in analytics, content optimization and monetization strategies for YouTube. + 2M monthly views managed with proven results.",
+        "features": {
+            "title": "How I Can Help Your Channel",
+            "analytics": {
+                "title": "Complete Performance Analysis",
+                "description": "Deep audit of your analytics with actionable insights for immediate optimization"
+            },
+            "optimization": {
+                "title": "Content Strategy",
+                "description": "Data-driven content strategy development to maximize reach and engagement"
+            },
+            "growth": {
+                "title": "Growth Strategies",
+                "description": "Custom plans for sustainable growth and engagement with focus on results"
+            },
+            "monetization": {
+                "title": "Monetization Optimization",
+                "description": "Strategies to maximize revenue through multiple monetization channels"
+            }
+        },
+        "results": {
+            "title": "Resultados Comprobados",
+            "subtitle": "Casos reales de crecimiento",
+            "cases": [
+                {
+                    "channel": "WaveIGL",
+                    "description": "Canal de Gaming gestionado por mí",
+                    "metrics": [
+                        {
+                            "label": "Vistas mensuales",
+                            "value": "2M+"
+                        },
+                        {
+                            "label": "Crecimiento",
+                            "value": "400%"
+                        },
+                        {
+                            "label": "Ingresos",
+                            "value": "5x"
+                        }
+                    ]
+                },
+                {
+                    "channel": "Gabriel Toth (inactivo)",
+                    "description": "Mi canal personal - Caso histórico",
+                    "metrics": [
+                        {
+                            "label": "Vistas totales",
+                            "value": "1M+"
+                        },
+                        {
+                            "label": "Suscriptores actuales",
+                            "value": "1.4K+"
+                        },
+                        {
+                            "label": "Vistas con <1K subs",
+                            "value": "1M+"
+                        }
+                    ]
+                }
+            ]
+        },
+        "cta": {
+            "title": "¿Listo para acelerar tu crecimiento?",
+            "description": "Solicita una consultoría personalizada y descubre cómo transformar tu canal",
+            "button": "Solicitar Consultoría"
+        },
+        "stats": [
+            {
+                "value": "2M+",
+                "label": "Vistas mensuales gestionadas"
+            },
+            {
+                "value": "300%",
+                "label": "Crecimiento medio de clientes"
+            },
+            {
+                "value": "5+",
+                "label": "Años de experiencia"
+            }
+        ],
+        "pricing": {
+            "title": "Planes de Consultoría",
+            "express": {
+                "name": "Análisis Express",
+                "price": "R$ 497",
+                "description": "Auditoría completa con informe detallado"
+            },
+            "complete": {
+                "name": "Consultoría Completa",
+                "price": "R$ 1.497",
+                "description": "Estrategia + implementación + seguimiento",
+                "popular": true
+            },
+            "intensive": {
+                "name": "Mentoría Intensiva",
+                "price": "A consultar",
+                "description": "Acompañamiento mensual personalizado"
             }
         }
     }

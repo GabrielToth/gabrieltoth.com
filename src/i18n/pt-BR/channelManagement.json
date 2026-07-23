@@ -21,7 +21,10 @@
                 "number": "1M+",
                 "label": "Views com menos de 1K subs (recorde)"
             },
-            { "number": "10+", "label": "Anos de experiência (desde 2013)" }
+            {
+                "number": "10+",
+                "label": "Anos de experiência (desde 2013)"
+            }
         ]
     },
     "about": {
@@ -99,25 +102,19 @@
     },
     "testimonials": {
         "title": "O Que Nossos Clientes Dizem",
-        "subtitle": "Depoimentos reais de quem confia no ViraTrend",
+        "subtitle": "Depoimentos reais de criadores que transformaram seus canais",
         "items": [
             {
-                "name": "Carlos Silva",
-                "channel": "TechTalks BR",
-                "content": "Em 3 meses aplicando as estratégias do ViraTrend, meu canal cresceu 300% em subscribers e 450% em views. A análise de dados foi fundamental!",
-                "result": "+300% crescimento"
+                "name": "João Silva",
+                "role": "Criador do YouTube",
+                "content": "Gabriel me ajudou a crescer de 1K para 50K inscritos em apenas 6 meses. Sua abordagem baseada em dados é incrível!",
+                "rating": 5
             },
             {
-                "name": "Ana Costa",
-                "channel": "Lifestyle Ana",
-                "content": "A consultoria me ajudou a entender finalmente como monetizar meu conteúdo. Em 2 meses já dobrei minha receita mensal.",
-                "result": "+200% receita"
-            },
-            {
-                "name": "João Santos",
-                "channel": "Gaming Zone",
-                "content": "As estratégias de engagement mudaram completamente meu canal. Agora tenho uma comunidade muito mais ativa e engajada.",
-                "result": "+500% engagement"
+                "name": "Maria Santos",
+                "role": "Criadora de Conteúdo",
+                "content": "Os insights de analytics mudaram completamente como eu crio conteúdo. Agora sei exatamente o que minha audiência quer.",
+                "rating": 5
             }
         ]
     },
@@ -255,24 +252,6 @@
             }
         ]
     },
-    "testimonials": {
-        "title": "O Que Nossos Clientes Dizem",
-        "subtitle": "Depoimentos reais de criadores que transformaram seus canais",
-        "items": [
-            {
-                "name": "João Silva",
-                "role": "Criador do YouTube",
-                "content": "Gabriel me ajudou a crescer de 1K para 50K inscritos em apenas 6 meses. Sua abordagem baseada em dados é incrível!",
-                "rating": 5
-            },
-            {
-                "name": "Maria Santos",
-                "role": "Criadora de Conteúdo",
-                "content": "Os insights de analytics mudaram completamente como eu crio conteúdo. Agora sei exatamente o que minha audiência quer.",
-                "rating": 5
-            }
-        ]
-    },
     "cta": {
         "title": "Pronto para Transformar Seu Canal?",
         "subtitle": "Junte-se aos criadores que já estão crescendo com nossas estratégias",
@@ -288,5 +267,53 @@
     "seo": {
         "title": "Consultoria de YouTube e Gestão de Canais | Social Media Manager",
         "description": "Consultoria especializada em crescimento de canais no YouTube, Instagram, TikTok e Twitch. Estratégias de social media manager, analytics e monetização com Gabriel Toth."
+    },
+    "breadcrumbs": {
+        "services": "Serviços"
+    },
+    "whatsapp": {
+        "paymentMethodCard": "PIX/Cartão",
+        "currencySymbol": "R$",
+        "template": "Olá! Tenho interesse na consultoria de canal.%0A%0A📋 Plano escolhido: {planName}%0A💰 Valor: {currency} {price}%0A💳 Forma de pagamento: {paymentMethod}%0A%0ANome:%0ACanal do YouTube:%0AQual seu principal objetivo:%0ATipo de conteúdo:%0AFrequência de postagem:%0A%0AAguardo o contato!"
+    },
+    "submitting": "Enviando...",
+    "formSubmitted": {
+        "title": "Inscrição Enviada!",
+        "description": "Obrigado! Revisaremos sua inscrição e entraremos em contato em breve."
+    },
+    "form": {
+        "title": "Solicitar Consultoria de Canal",
+        "subtitle": "Preencha as informações do seu canal para uma análise personalizada",
+        "personalInfo": "Informações Pessoais",
+        "name": "Nome completo",
+        "email": "Email",
+        "channelInfo": "Informações do Canal",
+        "channelName": "Nome do canal",
+        "channelUrl": "URL do canal (YouTube)",
+        "subscribers": "Número de inscritos",
+        "monthlyViews": "Visualizações mensais",
+        "currentRevenue": "Receita mensal atual (R$)",
+        "goals": "Metas e Desafios",
+        "mainGoal": "Objetivo principal",
+        "biggestChallenge": "Maior desafio atual",
+        "expectedGrowth": "Crescimento esperado (%)",
+        "budget": "Orçamento para consultoria (R$)",
+        "additionalInfo": "Informações adicionais",
+        "submit": "Solicitar Consultoria"
+    },
+    "placeholders": {
+        "name": "Seu nome completo",
+        "email": "seu@email.com",
+        "channelName": "Nome do seu canal",
+        "channelUrl": "https://youtube.com/@seucanal",
+        "subscribers": "Ex: 10000",
+        "monthlyViews": "Ex: 100000",
+        "currentRevenue": "Ex: 5000",
+        "mainGoal": "Ex: Aumentar monetização, crescer audiência...",
+        "biggestChallenge": "Ex: Baixo engajamento, views estagnadas...",
+        "expectedGrowth": "Ex: 200% em 6 meses",
+        "budget": "Ex: 1500",
+        "additionalInfo": "Conte mais sobre seu canal e necessidades...",
+        "selectOption": "Selecionar..."
     }
 }

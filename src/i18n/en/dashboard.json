@@ -268,7 +268,6 @@
         "downloading": "Downloading...",
         "download": "Download",
         "noInvoices": "No invoices yet. Your first invoice will appear here.",
-        "integrations": "Integrations",
         "integrationsDescription": "Connect third-party apps to extend functionality",
         "connectedApps": "Connected Apps ({count})",
         "availableApps": "Available Apps ({count})",
@@ -331,8 +330,8 @@
         "languageSpanish": "Spanish"
     },
     "live": {
-        "title": "Live Dashboard",
-        "description": "Manage your live streams on Twitch and Kick",
+        "title": "Title",
+        "description": "Description",
         "loading": "Loading stream status...",
         "error": "Failed to load stream data",
         "retry": "Retry",
@@ -342,11 +341,9 @@
         "unifiedChat": "Unified Chat",
         "scheduledStreams": "Scheduled Streams",
         "newSchedule": "New Schedule",
-        "title": "Title",
         "platform": "Platform",
         "scheduledStart": "Scheduled Start",
         "duration": "Duration",
-        "description": "Description",
         "notificationMethods": "Notification Methods",
         "discord": "Discord",
         "telegram": "Telegram",
@@ -376,6 +373,10 @@
         "notImplemented": "Not implemented",
         "localOnly": "Local only",
         "addAnother": "Add Another",
-        "connect": "Connect"
+        "connect": "Connect",
+        "dialogTitle": "Attention",
+        "dialogCancel": "Cancel",
+        "dialogContinue": "Continue",
+        "tiktokReconnectMessage": "You already have a TikTok account connected. To connect a different account, disconnect the current one first. TikTok OAuth does not allow selecting another account during authorization."
     }
 }

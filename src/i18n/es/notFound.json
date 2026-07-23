@@ -1,0 +1,21 @@
+{
+    "title": "Página No Encontrada",
+    "subtitle": "La página que buscas no existe, pero tenemos otras opciones interesantes!",
+    "homeButton": "Página de Inicio",
+    "backButton": "Volver",
+    "contactText": "Si crees que esto es un error, por favor contáctanos.",
+    "viewButton": "Ver Página",
+    "products": {
+        "viraTrend": {
+            "description": "Consultoría especializada para crecimiento digital"
+        },
+        "pcGamingOptimization": {
+            "title": "Optimización de PC Gaming",
+            "description": "Servicios de optimización para un mejor rendimiento"
+        },
+        "workAsEditor": {
+            "title": "Trabaja como Editor",
+            "description": "Gana el 90% de AdSense editando videos"
+        }
+    }
+}

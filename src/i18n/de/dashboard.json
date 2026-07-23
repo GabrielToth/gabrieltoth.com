@@ -268,7 +268,6 @@
         "downloading": "Herunterladen...",
         "download": "Herunterladen",
         "noInvoices": "Noch keine Rechnungen. Ihre erste Rechnung wird hier erscheinen.",
-        "integrations": "Integrationen",
         "integrationsDescription": "Verbinden Sie Drittanbieter-Apps zur Erweiterung der Funktionalität",
         "connectedApps": "Verbundene Apps ({count})",
         "availableApps": "Verfügbare Apps ({count})",
@@ -331,8 +330,8 @@
         "languageSpanish": "Spanisch"
     },
     "live": {
-        "title": "Live-Dashboard",
-        "description": "Verwalte deine Live-Streams auf Twitch und Kick",
+        "title": "Titel",
+        "description": "Beschreibung",
         "loading": "Lade Stream-Status...",
         "error": "Fehler beim Laden der Stream-Daten",
         "retry": "Wiederholen",
@@ -342,11 +341,9 @@
         "unifiedChat": "Unified Chat",
         "scheduledStreams": "Geplante Streams",
         "newSchedule": "Neue Planung",
-        "title": "Titel",
         "platform": "Plattform",
         "scheduledStart": "Geplanter Start",
         "duration": "Dauer",
-        "description": "Beschreibung",
         "notificationMethods": "Benachrichtigungsmethoden",
         "discord": "Discord",
         "telegram": "Telegram",
@@ -376,6 +373,10 @@
         "notImplemented": "Nicht implementiert",
         "localOnly": "Nur lokal",
         "addAnother": "Weiteres Hinzufügen",
-        "connect": "Verbinden"
+        "connect": "Verbinden",
+        "dialogTitle": "Achtung",
+        "dialogCancel": "Abbrechen",
+        "dialogContinue": "Fortfahren",
+        "tiktokReconnectMessage": "Sie haben bereits ein TikTok-Konto verbunden. Um ein anderes Konto zu verbinden, trennen Sie zuerst das aktuelle. TikTok OAuth erlaubt es nicht, während der Autorisierung ein anderes Konto auszuwählen."
     }
 }

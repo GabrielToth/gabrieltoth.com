@@ -6,216 +6,20 @@ import { type Locale } from "@/lib/i18n"
 import { SiYoutube } from "@icons-pack/react-simple-icons"
 import { Edit3, MessageSquare, TrendingUp, User, Users } from "lucide-react"
 import { useState } from "react"
+import { useTranslations } from "next-intl"
 
 interface ApplicationFormProps {
     locale: Locale
     type: "channel-management" | "editor-application"
 }
 
-const getTranslations = (locale: Locale, type: string) => {
-    /* c8 ignore start */
-    if (type === "channel-management") {
-        return {
-            title:
-                locale === "pt-BR"
-                    ? "Request Channel Consulting"
-                    : "Request Channel Consulting",
-            subtitle:
-                locale === "pt-BR"
-                    ? "Fill in your channel information for a personalized analysis"
-                    : "Fill in your channel information for a personalized analysis",
-            form: {
-                personalInfo:
-                    locale === "pt-BR"
-                        ? "Personal Information"
-                        : "Personal Information",
-                name: locale === "pt-BR" ? "Full name" : "Full name",
-                email: locale === "pt-BR" ? "Email" : "Email",
-                channelInfo:
-                    locale === "pt-BR"
-                        ? "Channel Information"
-                        : "Channel Information",
-                channelName:
-                    locale === "pt-BR" ? "Channel name" : "Channel name",
-                channelUrl:
-                    locale === "pt-BR"
-                        ? "Channel URL (YouTube)"
-                        : "Channel URL (YouTube)",
-                subscribers:
-                    locale === "pt-BR"
-                        ? "Number of subscribers"
-                        : "Number of subscribers",
-                monthlyViews:
-                    locale === "pt-BR" ? "Monthly views" : "Monthly views",
-                currentRevenue:
-                    locale === "pt-BR"
-                        ? "Current monthly revenue (R$)"
-                        : "Current monthly revenue (R$)",
-                goals:
-                    locale === "pt-BR"
-                        ? "Goals and Challenges"
-                        : "Goals and Challenges",
-                mainGoal: locale === "pt-BR" ? "Main goal" : "Main goal",
-                biggestChallenge:
-                    locale === "pt-BR"
-                        ? "Biggest current challenge"
-                        : "Biggest current challenge",
-                expectedGrowth:
-                    locale === "pt-BR"
-                        ? "Expected growth (%)"
-                        : "Expected growth (%)",
-                budget:
-                    locale === "pt-BR"
-                        ? "Consulting budget (R$)"
-                        : "Consulting budget (R$)",
-                additionalInfo:
-                    locale === "pt-BR"
-                        ? "Additional information"
-                        : "Additional information",
-                submit:
-                    locale === "pt-BR"
-                        ? "Request Consulting"
-                        : "Request Consulting",
-            },
-            placeholders: {
-                name: locale === "pt-BR" ? "Your full name" : "Your full name",
-                email: locale === "pt-BR" ? "your@email.com" : "your@email.com",
-                channelName:
-                    locale === "pt-BR"
-                        ? "Your channel name"
-                        : "Your channel name",
-                channelUrl:
-                    locale === "pt-BR"
-                        ? "https://youtube.com/@yourchannel"
-                        : "https://youtube.com/@yourchannel",
-                subscribers: locale === "pt-BR" ? "Ex: 10000" : "Ex: 10000",
-                monthlyViews: locale === "pt-BR" ? "Ex: 100000" : "Ex: 100000",
-                currentRevenue: locale === "pt-BR" ? "Ex: 5000" : "Ex: 5000",
-                mainGoal:
-                    locale === "pt-BR"
-                        ? "Ex: Increase monetization, grow audience..."
-                        : "Ex: Increase monetization, grow audience...",
-                biggestChallenge:
-                    locale === "pt-BR"
-                        ? "Ex: Low engagement, stagnant views..."
-                        : "Ex: Low engagement, stagnant views...",
-                expectedGrowth:
-                    locale === "pt-BR"
-                        ? "Ex: 200% in 6 months"
-                        : "Ex: 200% in 6 months",
-                budget: locale === "pt-BR" ? "Ex: 1500" : "Ex: 1500",
-                additionalInfo:
-                    locale === "pt-BR"
-                        ? "Tell us more about your channel and needs..."
-                        : "Tell us more about your channel and needs...",
-            },
-        }
-    } else {
-        return {
-            title: locale === "pt-BR" ? "Apply as Editor" : "Apply as Editor",
-            subtitle:
-                locale === "pt-BR"
-                    ? "Join our team of talented editors"
-                    : "Join our team of talented editors",
-            form: {
-                personalInfo:
-                    locale === "pt-BR"
-                        ? "Personal Information"
-                        : "Personal Information",
-                name: locale === "pt-BR" ? "Full name" : "Full name",
-                email: locale === "pt-BR" ? "Email" : "Email",
-                age: locale === "pt-BR" ? "Age" : "Age",
-                location: locale === "pt-BR" ? "Location" : "Location",
-                experience: locale === "pt-BR" ? "Experience" : "Experience",
-                experienceLevel:
-                    locale === "pt-BR"
-                        ? "Experience level"
-                        : "Experience level",
-                software:
-                    locale === "pt-BR"
-                        ? "Editing software"
-                        : "Editing software",
-                portfolio: locale === "pt-BR" ? "Portfolio" : "Portfolio",
-                portfolioUrl:
-                    locale === "pt-BR" ? "Portfolio link" : "Portfolio link",
-                sampleWork: locale === "pt-BR" ? "Sample work" : "Sample work",
-                workStyle: locale === "pt-BR" ? "Work style" : "Work style",
-                availability:
-                    locale === "pt-BR" ? "Availability" : "Availability",
-                hoursPerWeek:
-                    locale === "pt-BR" ? "Hours per week" : "Hours per week",
-                preferredContent:
-                    locale === "pt-BR"
-                        ? "Preferred content type"
-                        : "Preferred content type",
-                expectedRate:
-                    locale === "pt-BR"
-                        ? "Expected rate (R$/hour)"
-                        : "Expected rate (R$/hour)",
-                motivation: locale === "pt-BR" ? "Motivation" : "Motivation",
-                whyJoin:
-                    locale === "pt-BR"
-                        ? "Why do you want to join?"
-                        : "Why do you want to join?",
-                submit:
-                    locale === "pt-BR"
-                        ? "Submit Application"
-                        : "Submit Application",
-            },
-            placeholders: {
-                name: locale === "pt-BR" ? "Your full name" : "Your full name",
-                email: locale === "pt-BR" ? "your@email.com" : "your@email.com",
-                age: locale === "pt-BR" ? "Ex: 25" : "Ex: 25",
-                location: locale === "pt-BR" ? "City, State" : "City, State",
-                software:
-                    locale === "pt-BR"
-                        ? "Ex: Adobe Premiere, After Effects, DaVinci..."
-                        : "Ex: Adobe Premiere, After Effects, DaVinci...",
-                portfolioUrl:
-                    locale === "pt-BR"
-                        ? "https://your-portfolio.com"
-                        : "https://your-portfolio.com",
-                sampleWork:
-                    locale === "pt-BR"
-                        ? "Link to video edited by you"
-                        : "Link to video edited by you",
-                hoursPerWeek: locale === "pt-BR" ? "Ex: 20" : "Ex: 20",
-                preferredContent:
-                    locale === "pt-BR"
-                        ? "Gaming, vlogs, educational..."
-                        : "Gaming, vlogs, educational...",
-                expectedRate: locale === "pt-BR" ? "Ex: 50" : "Ex: 50",
-                whyJoin:
-                    locale === "pt-BR"
-                        ? "Tell us about your passion for editing and goals..."
-                        : "Tell us about your passion for editing and goals...",
-            },
-            options: {
-                experienceLevel:
-                    locale === "pt-BR"
-                        ? [
-                              "Beginner",
-                              "Intermediate",
-                              "Advanced",
-                              "Professional",
-                          ]
-                        : [
-                              "Beginner",
-                              "Intermediate",
-                              "Advanced",
-                              "Professional",
-                          ],
-            },
-        }
-    }
-    /* c8 ignore stop */
-}
-
 export default function ApplicationForm({
     locale,
     type,
 }: ApplicationFormProps) {
-    const t = getTranslations(locale, type)
+    const tCM = useTranslations("channelManagement")
+    const tEd = useTranslations("editors")
+    const t = type === "channel-management" ? tCM : tEd
     const [formData, setFormData] = useState<Record<string, string>>({})
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [isSubmitted, setIsSubmitted] = useState(false)
@@ -263,14 +67,10 @@ export default function ApplicationForm({
                     <MessageSquare size={48} className="mx-auto" />
                 </div>
                 <h3 className="text-2xl font-bold text-foreground dark:text-foreground mb-4">
-                    {locale === "pt-BR"
-                        ? "Application Submitted!"
-                        : "Application Submitted!"}
+                    {t("formSubmitted.title")}
                 </h3>
                 <p className="text-muted-foreground dark:text-foreground">
-                    {locale === "pt-BR"
-                        ? "Thank you! We'll review your application and get back to you soon."
-                        : "Thank you! We'll review your application and get back to you soon."}
+                    {t("formSubmitted.description")}
                 </p>
             </Card>
         )
@@ -280,10 +80,10 @@ export default function ApplicationForm({
         <Card className="p-8 max-w-4xl mx-auto">
             <div className="text-center mb-8">
                 <h3 className="text-3xl font-bold text-foreground dark:text-foreground mb-4">
-                    {t.title}
+                    {t("title")}
                 </h3>
                 <p className="text-lg text-muted-foreground dark:text-foreground">
-                    {t.subtitle}
+                    {t("subtitle")}
                 </p>
             </div>
 
@@ -292,12 +92,12 @@ export default function ApplicationForm({
                 <div>
                     <h4 className="text-xl font-semibold text-foreground dark:text-foreground mb-4 flex items-center">
                         <User className="mr-2" size={20} />
-                        {t.form.personalInfo}
+                        {t("form.personalInfo")}
                     </h4>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                             <label className="block text-sm font-medium text-foreground dark:text-foreground mb-2">
-                                {t.form.name} *
+                                {t("form.name")} *
                             </label>
                             <input
                                 type="text"
@@ -306,13 +106,13 @@ export default function ApplicationForm({
                                 onChange={e =>
                                     handleInputChange("name", e.target.value)
                                 }
-                                placeholder={t.placeholders.name}
+                                placeholder={t("placeholders.name")}
                                 className="w-full px-4 py-3 border border-input dark:border-input rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent dark:bg-card dark:text-foreground"
                             />
                         </div>
                         <div>
                             <label className="block text-sm font-medium text-foreground dark:text-foreground mb-2">
-                                {t.form.email} *
+                                {t("form.email")} *
                             </label>
                             <input
                                 type="email"
@@ -321,7 +121,7 @@ export default function ApplicationForm({
                                 onChange={e =>
                                     handleInputChange("email", e.target.value)
                                 }
-                                placeholder={t.placeholders.email}
+                                placeholder={t("placeholders.email")}
                                 className="w-full px-4 py-3 border border-input dark:border-input rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent dark:bg-card dark:text-foreground"
                             />
                         </div>
@@ -329,7 +129,7 @@ export default function ApplicationForm({
                             <>
                                 <div>
                                     <label className="block text-sm font-medium text-foreground dark:text-foreground mb-2">
-                                        {t.form.age}
+                                        {t("form.age")}
                                     </label>
                                     <input
                                         type="number"
@@ -340,13 +140,13 @@ export default function ApplicationForm({
                                                 e.target.value
                                             )
                                         }
-                                        placeholder={t.placeholders.age}
+                                        placeholder={t("placeholders.age")}
                                         className="w-full px-4 py-3 border border-input dark:border-input rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent dark:bg-card dark:text-foreground"
                                     />
                                 </div>
                                 <div>
                                     <label className="block text-sm font-medium text-foreground dark:text-foreground mb-2">
-                                        {t.form.location}
+                                        {t("form.location")}
                                     </label>
                                     <input
                                         type="text"
@@ -357,7 +157,7 @@ export default function ApplicationForm({
                                                 e.target.value
                                             )
                                         }
-                                        placeholder={t.placeholders.location}
+                                        placeholder={t("placeholders.location")}
                                         className="w-full px-4 py-3 border border-input dark:border-input rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent dark:bg-card dark:text-foreground"
                                     />
                                 </div>
@@ -371,12 +171,12 @@ export default function ApplicationForm({
                     <div>
                         <h4 className="text-xl font-semibold text-foreground dark:text-foreground mb-4 flex items-center">
                             <SiYoutube className="mr-2" size={20} />
-                            {t.form.channelInfo}
+                            {t("form.channelInfo")}
                         </h4>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
                                 <label className="block text-sm font-medium text-foreground dark:text-foreground mb-2">
-                                    {t.form.channelName} *
+                                    {t("form.channelName")} *
                                 </label>
                                 <input
                                     type="text"
@@ -388,13 +188,13 @@ export default function ApplicationForm({
                                             e.target.value
                                         )
                                     }
-                                    placeholder={t.placeholders.channelName}
+                                    placeholder={t("placeholders.channelName")}
                                     className="w-full px-4 py-3 border border-input dark:border-input rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent dark:bg-card dark:text-foreground"
                                 />
                             </div>
                             <div>
                                 <label className="block text-sm font-medium text-foreground dark:text-foreground mb-2">
-                                    {t.form.channelUrl} *
+                                    {t("form.channelUrl")} *
                                 </label>
                                 <input
                                     type="url"
@@ -406,13 +206,13 @@ export default function ApplicationForm({
                                             e.target.value
                                         )
                                     }
-                                    placeholder={t.placeholders.channelUrl}
+                                    placeholder={t("placeholders.channelUrl")}
                                     className="w-full px-4 py-3 border border-input dark:border-input rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent dark:bg-card dark:text-foreground"
                                 />
                             </div>
                             <div>
                                 <label className="block text-sm font-medium text-foreground dark:text-foreground mb-2">
-                                    {t.form.subscribers}
+                                    {t("form.subscribers")}
                                 </label>
                                 <input
                                     type="number"
@@ -423,13 +223,13 @@ export default function ApplicationForm({
                                             e.target.value
                                         )
                                     }
-                                    placeholder={t.placeholders.subscribers}
+                                    placeholder={t("placeholders.subscribers")}
                                     className="w-full px-4 py-3 border border-input dark:border-input rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent dark:bg-card dark:text-foreground"
                                 />
                             </div>
                             <div>
                                 <label className="block text-sm font-medium text-foreground dark:text-foreground mb-2">
-                                    {t.form.monthlyViews}
+                                    {t("form.monthlyViews")}
                                 </label>
                                 <input
                                     type="number"
@@ -440,13 +240,13 @@ export default function ApplicationForm({
                                             e.target.value
                                         )
                                     }
-                                    placeholder={t.placeholders.monthlyViews}
+                                    placeholder={t("placeholders.monthlyViews")}
                                     className="w-full px-4 py-3 border border-input dark:border-input rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent dark:bg-card dark:text-foreground"
                                 />
                             </div>
                             <div className="md:col-span-2">
                                 <label className="block text-sm font-medium text-foreground dark:text-foreground mb-2">
-                                    {t.form.currentRevenue}
+                                    {t("form.currentRevenue")}
                                 </label>
                                 <input
                                     type="number"
@@ -457,7 +257,7 @@ export default function ApplicationForm({
                                             e.target.value
                                         )
                                     }
-                                    placeholder={t.placeholders.currentRevenue}
+                                    placeholder={t("placeholders.currentRevenue")}
                                     className="w-full px-4 py-3 border border-input dark:border-input rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent dark:bg-card dark:text-foreground"
                                 />
                             </div>
@@ -467,12 +267,12 @@ export default function ApplicationForm({
                     <div>
                         <h4 className="text-xl font-semibold text-foreground dark:text-foreground mb-4 flex items-center">
                             <Edit3 className="mr-2" size={20} />
-                            {t.form.experience}
+                            {t("form.experience")}
                         </h4>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
                                 <label className="block text-sm font-medium text-foreground dark:text-foreground mb-2">
-                                    {t.form.experienceLevel} *
+                                    {t("form.experienceLevel")} *
                                 </label>
                                 <select
                                     required
@@ -483,11 +283,11 @@ export default function ApplicationForm({
                                             e.target.value
                                         )
                                     }
-                                    aria-label={t.form.experienceLevel}
+                                    aria-label={t("form.experienceLevel")}
                                     className="w-full px-4 py-3 border border-input dark:border-input rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent dark:bg-card dark:text-foreground"
                                 >
-                                    <option value="">Select...</option>
-                                    {t.options?.experienceLevel.map(level => (
+                                    <option value="">{t("placeholders.selectOption")}</option>
+                                    {(t.raw("options.experienceLevel") as string[]).map(level => (
                                         <option key={level} value={level}>
                                             {level}
                                         </option>
@@ -496,7 +296,7 @@ export default function ApplicationForm({
                             </div>
                             <div>
                                 <label className="block text-sm font-medium text-foreground dark:text-foreground mb-2">
-                                    {t.form.software}
+                                    {t("form.software")}
                                 </label>
                                 <input
                                     type="text"
@@ -507,13 +307,13 @@ export default function ApplicationForm({
                                             e.target.value
                                         )
                                     }
-                                    placeholder={t.placeholders.software}
+                                    placeholder={t("placeholders.software")}
                                     className="w-full px-4 py-3 border border-input dark:border-input rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent dark:bg-card dark:text-foreground"
                                 />
                             </div>
                             <div>
                                 <label className="block text-sm font-medium text-foreground dark:text-foreground mb-2">
-                                    {t.form.portfolioUrl}
+                                    {t("form.portfolioUrl")}
                                 </label>
                                 <input
                                     type="url"
@@ -524,13 +324,13 @@ export default function ApplicationForm({
                                             e.target.value
                                         )
                                     }
-                                    placeholder={t.placeholders.portfolioUrl}
+                                    placeholder={t("placeholders.portfolioUrl")}
                                     className="w-full px-4 py-3 border border-input dark:border-input rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent dark:bg-card dark:text-foreground"
                                 />
                             </div>
                             <div>
                                 <label className="block text-sm font-medium text-foreground dark:text-foreground mb-2">
-                                    {t.form.sampleWork}
+                                    {t("form.sampleWork")}
                                 </label>
                                 <input
                                     type="url"
@@ -541,7 +341,7 @@ export default function ApplicationForm({
                                             e.target.value
                                         )
                                     }
-                                    placeholder={t.placeholders.sampleWork}
+                                    placeholder={t("placeholders.sampleWork")}
                                     className="w-full px-4 py-3 border border-input dark:border-input rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent dark:bg-card dark:text-foreground"
                                 />
                             </div>
@@ -555,12 +355,12 @@ export default function ApplicationForm({
                         {type === "channel-management" ? (
                             <>
                                 <TrendingUp className="mr-2" size={20} />
-                                {t.form.goals}
+                                {t("form.goals")}
                             </>
                         ) : (
                             <>
                                 <Users className="mr-2" size={20} />
-                                {t.form.availability}
+                                {t("form.availability")}
                             </>
                         )}
                     </h4>
@@ -569,7 +369,7 @@ export default function ApplicationForm({
                             <>
                                 <div>
                                     <label className="block text-sm font-medium text-foreground dark:text-foreground mb-2">
-                                        {t.form.mainGoal}
+                                        {t("form.mainGoal")}
                                     </label>
                                     <textarea
                                         value={formData.mainGoal || ""}
@@ -579,14 +379,14 @@ export default function ApplicationForm({
                                                 e.target.value
                                             )
                                         }
-                                        placeholder={t.placeholders.mainGoal}
+                                        placeholder={t("placeholders.mainGoal")}
                                         rows={3}
                                         className="w-full px-4 py-3 border border-input dark:border-input rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent dark:bg-card dark:text-foreground"
                                     />
                                 </div>
                                 <div>
                                     <label className="block text-sm font-medium text-foreground dark:text-foreground mb-2">
-                                        {t.form.biggestChallenge}
+                                        {t("form.biggestChallenge")}
                                     </label>
                                     <textarea
                                         value={formData.biggestChallenge || ""}
@@ -597,7 +397,7 @@ export default function ApplicationForm({
                                             )
                                         }
                                         placeholder={
-                                            t.placeholders.biggestChallenge
+                                            t("placeholders.biggestChallenge")
                                         }
                                         rows={3}
                                         className="w-full px-4 py-3 border border-input dark:border-input rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent dark:bg-card dark:text-foreground"
@@ -605,7 +405,7 @@ export default function ApplicationForm({
                                 </div>
                                 <div>
                                     <label className="block text-sm font-medium text-foreground dark:text-foreground mb-2">
-                                        {t.form.expectedGrowth}
+                                        {t("form.expectedGrowth")}
                                     </label>
                                     <input
                                         type="text"
@@ -617,14 +417,14 @@ export default function ApplicationForm({
                                             )
                                         }
                                         placeholder={
-                                            t.placeholders.expectedGrowth
+                                            t("placeholders.expectedGrowth")
                                         }
                                         className="w-full px-4 py-3 border border-input dark:border-input rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent dark:bg-card dark:text-foreground"
                                     />
                                 </div>
                                 <div>
                                     <label className="block text-sm font-medium text-foreground dark:text-foreground mb-2">
-                                        {t.form.budget}
+                                        {t("form.budget")}
                                     </label>
                                     <input
                                         type="number"
@@ -635,7 +435,7 @@ export default function ApplicationForm({
                                                 e.target.value
                                             )
                                         }
-                                        placeholder={t.placeholders.budget}
+                                        placeholder={t("placeholders.budget")}
                                         className="w-full px-4 py-3 border border-input dark:border-input rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent dark:bg-card dark:text-foreground"
                                     />
                                 </div>
@@ -644,7 +444,7 @@ export default function ApplicationForm({
                             <>
                                 <div>
                                     <label className="block text-sm font-medium text-foreground dark:text-foreground mb-2">
-                                        {t.form.hoursPerWeek}
+                                        {t("form.hoursPerWeek")}
                                     </label>
                                     <input
                                         type="number"
@@ -656,14 +456,14 @@ export default function ApplicationForm({
                                             )
                                         }
                                         placeholder={
-                                            t.placeholders.hoursPerWeek
+                                            t("placeholders.hoursPerWeek")
                                         }
                                         className="w-full px-4 py-3 border border-input dark:border-input rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent dark:bg-card dark:text-foreground"
                                     />
                                 </div>
                                 <div>
                                     <label className="block text-sm font-medium text-foreground dark:text-foreground mb-2">
-                                        {t.form.preferredContent}
+                                        {t("form.preferredContent")}
                                     </label>
                                     <input
                                         type="text"
@@ -675,14 +475,14 @@ export default function ApplicationForm({
                                             )
                                         }
                                         placeholder={
-                                            t.placeholders.preferredContent
+                                            t("placeholders.preferredContent")
                                         }
                                         className="w-full px-4 py-3 border border-input dark:border-input rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent dark:bg-card dark:text-foreground"
                                     />
                                 </div>
                                 <div className="md:col-span-2">
                                     <label className="block text-sm font-medium text-foreground dark:text-foreground mb-2">
-                                        {t.form.expectedRate}
+                                        {t("form.expectedRate")}
                                     </label>
                                     <input
                                         type="number"
@@ -694,7 +494,7 @@ export default function ApplicationForm({
                                             )
                                         }
                                         placeholder={
-                                            t.placeholders.expectedRate
+                                            t("placeholders.expectedRate")
                                         }
                                         className="w-full px-4 py-3 border border-input dark:border-input rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent dark:bg-card dark:text-foreground"
                                     />
@@ -708,8 +508,8 @@ export default function ApplicationForm({
                 <div>
                     <label className="block text-sm font-medium text-foreground dark:text-foreground mb-2">
                         {type === "channel-management"
-                            ? t.form.additionalInfo
-                            : t.form.whyJoin}
+                            ? t("form.additionalInfo")
+                            : t("form.whyJoin")}
                     </label>
                     <textarea
                         value={formData.additionalInfo || ""}
@@ -718,8 +518,8 @@ export default function ApplicationForm({
                         }
                         placeholder={
                             type === "channel-management"
-                                ? t.placeholders.additionalInfo
-                                : t.placeholders.whyJoin
+                                ? t("placeholders.additionalInfo")
+                                : t("placeholders.whyJoin")
                         }
                         rows={4}
                         className="w-full px-4 py-3 border border-input dark:border-input rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent dark:bg-card dark:text-foreground"
@@ -735,10 +535,8 @@ export default function ApplicationForm({
                         className="px-8 py-3 bg-primary text-white rounded-lg font-semibold hover:bg-primary transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                         {isSubmitting
-                            ? locale === "pt-BR"
-                                ? "Enviando..."
-                                : "Submitting..."
-                            : t.form.submit}
+                            ? t("submitting")
+                            : t("form.submit")}
                     </Button>
                 </div>
             </form>
