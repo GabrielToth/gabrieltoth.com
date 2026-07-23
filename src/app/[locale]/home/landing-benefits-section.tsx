@@ -20,7 +20,7 @@ export default function LandingBenefitsSection() {
                     {benefits.map((benefit, index) => (
                         <div
                             key={index}
-                            className="p-6 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-gray-800 dark:to-gray-700 rounded-lg border dark:border-white/10 dark:border-input"
+                            className="p-6 bg-muted dark:bg-card rounded-lg border-border border"
                         >
                             <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center mb-4">
                                 <span className="text-white font-bold text-lg">
