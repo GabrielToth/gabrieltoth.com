@@ -52,7 +52,7 @@ export default function LanguageSelector({
     const variants = {
         default: {
             container: "relative inline-block",
-            button: "flex items-center space-x-2 px-3 py-2 border border-border dark:border-border rounded-md text-sm font-medium bg-card text-foreground dark:text-foreground hover:bg-muted dark:hover:bg-accent transition-colors",
+            button: "flex items-center space-x-2 px-3 py-2 border border-border dark:border-border rounded-full text-sm font-medium bg-card text-foreground dark:text-foreground hover:bg-muted dark:hover:bg-accent transition-colors",
             dropdown:
                 "absolute right-0 mt-2 w-32 bg-card border border-border dark:border-border rounded-md shadow-lg z-50",
             option: "block w-full px-4 py-2 text-sm text-left text-foreground dark:text-muted-foreground hover:bg-muted dark:hover:bg-accent transition-colors",

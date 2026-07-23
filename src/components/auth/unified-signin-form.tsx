@@ -213,7 +213,7 @@ export default function UnifiedSignInForm({
                     <button
                         onClick={handleGoogleLogin}
                         disabled={isLoading}
-                        className="w-full h-12 px-4 bg-card dark:bg-muted hover:bg-muted dark:hover:bg-accent text-foreground dark:text-foreground rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 border border-border dark:border-input"
+                        className="w-full h-12 px-4 bg-card dark:bg-muted hover:bg-muted dark:hover:bg-accent text-foreground dark:text-foreground rounded-full font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 border border-border dark:border-input"
                     >
                         <FaGoogle size={20} />
                         {mode === "signin"
@@ -225,7 +225,7 @@ export default function UnifiedSignInForm({
                     <button
                         onClick={handleSSO}
                         disabled={isLoading}
-                        className="w-full h-12 px-4 bg-card dark:bg-muted hover:bg-background dark:hover:bg-muted text-white rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                        className="w-full h-12 px-4 bg-card dark:bg-muted hover:bg-background dark:hover:bg-muted text-white rounded-full font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                     >
                         <LockKeyhole size={20} />
                         {mode === "signin"
@@ -237,7 +237,7 @@ export default function UnifiedSignInForm({
                     <button
                         onClick={() => setStep("email")}
                         disabled={isLoading}
-                        className="w-full h-12 px-4 border-2 border-blue-600 dark:border-primary text-primary dark:text-primary hover:bg-primary/5 dark:hover:bg-primary/10 rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                        className="w-full h-12 px-4 border-2 border-blue-600 dark:border-primary text-primary dark:text-primary hover:bg-primary/5 dark:hover:bg-primary/10 rounded-full font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                     >
                         <FaEnvelope size={20} />
                         {mode === "signin"
@@ -349,7 +349,7 @@ export default function UnifiedSignInForm({
                         <button
                             type="submit"
                             disabled={isLoading}
-                            className="w-full px-4 py-3 bg-primary hover:bg-primary dark:bg-primary dark:hover:bg-primary text-white rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="w-full px-4 py-3 bg-primary hover:bg-primary dark:bg-primary dark:hover:bg-primary text-white rounded-full font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             {isLoading
                                 ? t("signin.loading")
@@ -398,7 +398,7 @@ export default function UnifiedSignInForm({
                         <button
                             onClick={handleSSO}
                             disabled={isLoading || !email}
-                            className="w-full px-4 py-2 border border-input dark:border-input rounded-lg text-foreground dark:text-foreground hover:bg-muted dark:hover:bg-accent transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium"
+                            className="w-full px-4 py-2 border border-input dark:border-input rounded-full text-foreground dark:text-foreground hover:bg-muted dark:hover:bg-accent transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium"
                         >
                             {mode === "signin"
                                 ? t("signin.sso")
@@ -483,7 +483,7 @@ export default function UnifiedSignInForm({
                     <button
                         type="submit"
                         disabled={isLoading}
-                        className="w-full px-4 py-3 bg-primary hover:bg-primary dark:bg-primary dark:hover:bg-primary text-white rounded-lg font-medium transition-colors mt-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="w-full px-4 py-3 bg-primary hover:bg-primary dark:bg-primary dark:hover:bg-primary text-white rounded-full font-medium transition-colors mt-2 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                         {isLoading ? t("signin.loading") : t("signin.signIn")}
                     </button>
@@ -497,7 +497,7 @@ export default function UnifiedSignInForm({
                             handleModeChange("signup")
                             setError(null)
                         }}
-                        className="w-full px-4 py-2 border border-input dark:border-input rounded-lg text-foreground dark:text-foreground hover:bg-muted dark:hover:bg-accent transition-colors text-sm font-medium"
+                        className="w-full px-4 py-2 border border-input dark:border-input rounded-full text-foreground dark:text-foreground hover:bg-muted dark:hover:bg-accent transition-colors text-sm font-medium"
                     >
                         {t("signin.createAccount")}
                     </button>
@@ -598,7 +598,7 @@ export default function UnifiedSignInForm({
                     <button
                         type="submit"
                         disabled={isLoading}
-                        className="w-full px-4 py-3 bg-primary hover:bg-primary dark:bg-primary dark:hover:bg-primary text-white rounded-lg font-medium transition-colors mt-6 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="w-full px-4 py-3 bg-primary hover:bg-primary dark:bg-primary dark:hover:bg-primary text-white rounded-full font-medium transition-colors mt-6 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                         {isLoading
                             ? t("signin.loading")

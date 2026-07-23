@@ -116,7 +116,7 @@ export function GoogleLoginButton({
             <button
                 onClick={handleGoogleLogin}
                 disabled={isLoading}
-                className={`px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary disabled:opacity-50 disabled:cursor-not-allowed transition-colors ${className}`}
+                className={`px-4 py-2 bg-primary text-white rounded-full hover:bg-primary disabled:opacity-50 disabled:cursor-not-allowed transition-colors ${className}`}
             >
                 {isLoading ? loadingText : buttonText}
             </button>
