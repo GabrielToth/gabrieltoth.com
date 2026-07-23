@@ -1,0 +1,57 @@
+{
+    "breadcrumbs": {
+        "home": "Início",
+        "pcOptimization": "Otimização de PC",
+        "terms": "Termos"
+    },
+    "title": "Termos e Avisos Importantes – Otimização de Desempenho",
+    "subtitle": "Ao contratar os serviços de otimização de desempenho e ajustes avançados para computadores, o cliente declara estar ciente e de acordo com os seguintes pontos:",
+    "generalTerms": {
+        "title": "Termos Gerais de Otimização",
+        "items": [
+            "1. **Natureza dos Serviços**: Os serviços incluem ajustes de sistema, configurações de hardware/software, instalação de drivers, otimização de perfis de energia e configurações específicas para gaming ou trabalho.",
+            "2. **Tempo de Execução**: O processo completo pode levar de 2 a 6 horas, dependendo das configurações iniciais do sistema e dos objetivos específicos.",
+            "3. **Acesso Remoto**: Alguns ajustes podem ser realizados remotamente através de software especializado, sempre com autorização prévia do cliente.",
+            "4. **Documentação**: Todas as alterações realizadas serão documentadas e fornecidas ao cliente."
+        ]
+    },
+    "warranties": {
+        "title": "Garantias e Limitações",
+        "items": [
+            "• **Garantia de Serviço**: 30 dias para correção de problemas diretamente relacionados às otimizações realizadas.",
+            "• **Limite de Responsabilidade**: Não nos responsabilizamos por danos a hardware pré-existentes ou falhas não relacionadas aos ajustes realizados.",
+            "• **Compatibilidade**: Algumas otimizações podem não ser compatíveis com softwares específicos ou hardware muito antigo.",
+            "• **Performance**: Melhorias de performance variam conforme hardware disponível e uso pretendido."
+        ]
+    },
+    "requirements": {
+        "title": "Requisitos e Responsabilidades do Cliente",
+        "items": [
+            "• **Backup de Dados**: É recomendável realizar backup de dados importantes antes dos ajustes.",
+            "• **Informações do Sistema**: Fornecer informações precisas sobre hardware, software instalado e uso pretendido.",
+            "• **Acesso Administrativo**: Disponibilizar acesso de administrador ao sistema durante o processo.",
+            "• **Ambiente Adequado**: Garantir ambiente livre de vírus e malwares antes dos ajustes."
+        ]
+    },
+    "warnings": {
+        "title": "Avisos Importantes",
+        "items": [
+            "⚠️ **Overclocking**: Serviços de overclocking aumentam performance mas podem reduzir vida útil do hardware.",
+            "⚠️ **Configurações Experimentais**: Algumas configurações avançadas podem exigir reversão em caso de incompatibilidade.",
+            "⚠️ **Atualizações do Sistema**: Atualizações futuras do Windows podem reverter algumas otimizações.",
+            "⚠️ **Hardware Antigo**: Sistemas muito antigos podem ter limitações físicas que impedem certas otimizações."
+        ]
+    },
+    "payment": {
+        "title": "Condições de Pagamento",
+        "text": "O pagamento é realizado após a conclusão e aprovação dos serviços. Valores variam conforme complexidade e tempo necessário. Forma de pagamento: PIX, cartão de crédito ou outros métodos acordados previamente."
+    },
+    "support": {
+        "title": "Suporte Pós-Serviço",
+        "text": "Oferecemos suporte de 30 dias para esclarecimentos sobre as otimizações realizadas e correção de problemas relacionados. Suporte adicional pode ser contratado separadamente."
+    },
+    "footer": {
+        "agreement": "Ao contratar nossos serviços, você concorda com todos os termos descritos acima.",
+        "backLink": "← Voltar para Otimização de PC"
+    }
+}

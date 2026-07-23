@@ -1,18 +1,13 @@
 import { type Locale } from "@/lib/i18n"
+import { getTranslations } from "next-intl/server"
 
-export function getTermsOfServiceBreadcrumbs(locale: Locale) {
+export async function getTermsOfServiceBreadcrumbs(locale: Locale) {
     const base = "https://www.gabrieltoth.com"
     const localePath = locale === "en" ? "" : `/${locale}`
+    const t = await getTranslations({ locale, namespace: "termsOfService" })
     return [
         {
-            name:
-                locale === "pt-BR"
-                    ? "Termos de Serviço"
-                    : locale === "es"
-                      ? "Términos de Servicio"
-                      : locale === "de"
-                        ? "Nutzungsbedingungen"
-                        : "Terms of Service",
+            name: t("title"),
             url: `${base}${localePath}/terms-of-service`,
         },
     ]

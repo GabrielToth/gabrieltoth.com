@@ -10,7 +10,7 @@ export async function buildPrivacyPolicyStructured(locale: Locale): Promise<{
 }> {
     const t = await getTranslations({ locale, namespace: "privacyPolicy" })
 
-    const breadcrumbs = getPrivacyPolicyBreadcrumbs(locale)
+    const breadcrumbs = await getPrivacyPolicyBreadcrumbs(locale)
 
     const sections = t.raw("sections") as Array<{
         title: string

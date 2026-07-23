@@ -1,18 +1,13 @@
 import { type Locale } from "@/lib/i18n"
+import { getTranslations } from "next-intl/server"
 
-export function getPrivacyPolicyBreadcrumbs(locale: Locale) {
+export async function getPrivacyPolicyBreadcrumbs(locale: Locale) {
     const base = "https://www.gabrieltoth.com"
     const localePath = locale === "en" ? "" : `/${locale}`
+    const t = await getTranslations({ locale, namespace: "privacyPolicy" })
     return [
         {
-            name:
-                locale === "pt-BR"
-                    ? "Política de Privacidade"
-                    : locale === "es"
-                      ? "Política de Privacidad"
-                      : locale === "de"
-                        ? "Datenschutzrichtlinie"
-                        : "Privacy Policy",
+            name: t("title"),
             url: `${base}${localePath}/privacy-policy`,
         },
     ]

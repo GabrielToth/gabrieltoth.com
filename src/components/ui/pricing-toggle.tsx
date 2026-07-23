@@ -5,6 +5,7 @@ import { useMoneroPricing } from "@/hooks/use-monero-pricing"
 import { type Locale } from "@/lib/i18n"
 import { DollarSign } from "lucide-react"
 import dynamic from "next/dynamic"
+import { useTranslations } from "next-intl"
 import { useEffect, useState } from "react"
 
 interface PricingToggleProps {
@@ -14,15 +15,7 @@ interface PricingToggleProps {
 // Client-only component that uses the hook
 function PricingToggleClient({ locale }: PricingToggleProps) {
     const { showMoneroPrice, toggleMoneroPrice } = useMoneroPricing()
-
-    const cardLabel =
-        locale === "pt-BR"
-            ? "PIX/Cartão"
-            : locale === "es"
-              ? "Tarjeta"
-              : locale === "de"
-                ? "Karte"
-                : "Card"
+    const t = useTranslations("landing")
 
     return (
         <div className="flex items-center justify-center mb-12">
@@ -52,7 +45,7 @@ function PricingToggleClient({ locale }: PricingToggleProps) {
                     }`}
                 >
                     <DollarSign className="w-4 h-4" />
-                    {cardLabel}
+                    {t("pricingLabel")}
                 </button>
             </div>
         </div>
@@ -61,14 +54,7 @@ function PricingToggleClient({ locale }: PricingToggleProps) {
 
 // Fallback component for SSR
 function PricingToggleFallback({ locale }: PricingToggleProps) {
-    const cardLabel =
-        locale === "pt-BR"
-            ? "PIX/Cartão"
-            : locale === "es"
-              ? "Tarjeta"
-              : locale === "de"
-                ? "Karte"
-                : "Card"
+    const t = useTranslations("landing")
 
     return (
         <div className="flex items-center justify-center mb-12">
@@ -82,7 +68,7 @@ function PricingToggleFallback({ locale }: PricingToggleProps) {
                 </div>
                 <div className="px-4 py-2 rounded-md text-sm font-medium text-muted-foreground dark:text-muted-foreground flex items-center gap-2">
                     <DollarSign className="w-4 h-4" />
-                    {cardLabel}
+                    {t("pricingLabel")}
                 </div>
             </div>
         </div>

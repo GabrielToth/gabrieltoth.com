@@ -14,7 +14,7 @@ export async function buildTermsOfServiceStructured(locale: Locale): Promise<{
 }> {
     const t = await getTranslations({ locale, namespace: "termsOfService" })
 
-    const breadcrumbs = getTermsOfServiceBreadcrumbs(locale)
+    const breadcrumbs = await getTermsOfServiceBreadcrumbs(locale)
 
     const webPageStructuredData = {
         "@context": "https://schema.org",

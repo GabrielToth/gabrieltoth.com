@@ -1,0 +1,57 @@
+{
+    "breadcrumbs": {
+        "home": "Inicio",
+        "pcOptimization": "Optimización de PC",
+        "terms": "Términos"
+    },
+    "title": "Términos y Avisos Importantes – Optimización de Rendimiento",
+    "subtitle": "Al contratar servicios de optimización de rendimiento y ajustes avanzados, el cliente declara estar al tanto y de acuerdo con lo siguiente:",
+    "generalTerms": {
+        "title": "Términos Generales de Optimización",
+        "items": [
+            "1. **Naturaleza de los Servicios**: ...",
+            "2. **Tiempo de Ejecución**: ...",
+            "3. **Acceso Remoto**: ...",
+            "4. **Documentación**: ..."
+        ]
+    },
+    "warranties": {
+        "title": "Garantías y Limitaciones",
+        "items": [
+            "• **Garantía del Servicio**: ...",
+            "• **Límite de Responsabilidad**: ...",
+            "• **Compatibilidad**: ...",
+            "• **Rendimiento**: ..."
+        ]
+    },
+    "requirements": {
+        "title": "Requisitos y Responsabilidades del Cliente",
+        "items": [
+            "• **Copia de Seguridad de Datos**: ...",
+            "• **Información del Sistema**: ...",
+            "• **Acceso Administrativo**: ...",
+            "• **Entorno Adecuado**: ..."
+        ]
+    },
+    "warnings": {
+        "title": "Avisos Importantes",
+        "items": [
+            "⚠️ **Overclocking**: ...",
+            "⚠️ **Configuraciones Experimentales**: ...",
+            "⚠️ **Actualizaciones del Sistema**: ...",
+            "⚠️ **Hardware Antiguo**: ..."
+        ]
+    },
+    "payment": {
+        "title": "Términos de Pago",
+        "text": "El pago se realiza tras la finalización y aprobación del servicio. Los valores varían según la complejidad y el tiempo requerido. Métodos de pago: PIX, tarjeta de crédito u otros métodos previamente acordados."
+    },
+    "support": {
+        "title": "Soporte Postservicio",
+        "text": "Ofrecemos soporte de 30 días para aclaraciones sobre las optimizaciones realizadas y corrección de problemas relacionados. Un soporte adicional se puede contratar por separado."
+    },
+    "footer": {
+        "agreement": "Al contratar nuestros servicios, acepta todos los términos descritos anteriormente.",
+        "backLink": "← Volver a Optimización de PC"
+    }
+}
