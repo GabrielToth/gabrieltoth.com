@@ -250,7 +250,7 @@ export async function GET(
                             updated_at: new Date().toISOString(),
                         },
                         {
-                            onConflict: "user_id, platform",
+                            onConflict: "user_id, platform, platform_user_id",
                         }
                     )
                 } else {
@@ -269,7 +269,7 @@ export async function GET(
                             updated_at: new Date().toISOString(),
                         },
                         {
-                            onConflict: "user_id, platform",
+                            onConflict: "user_id, platform, platform_user_id",
                         }
                     )
                 }
