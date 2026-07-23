@@ -16,7 +16,6 @@ export function getAllPages(): Array<{
         { path: "/pc-optimization", priority: 0.8, changefreq: "monthly" },
         { path: "/pc-optimization/terms", priority: 0.3, changefreq: "yearly" },
         { path: "/amazon-affiliate", priority: 0.6, changefreq: "monthly" },
-        { path: "/personality-test", priority: 0.7, changefreq: "weekly" },
         { path: "/privacy-policy", priority: 0.3, changefreq: "yearly" },
         { path: "/terms-of-service", priority: 0.3, changefreq: "yearly" },
     ]

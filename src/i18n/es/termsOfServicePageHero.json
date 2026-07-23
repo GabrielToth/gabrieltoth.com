@@ -1,7 +1,7 @@
 {
     "hero": {
-        "badge": "⚖️ Términos Legales",
-        "title": "Términos de Servicio",
-        "subtitle": "Comprende las reglas y condiciones que rigen el uso de nuestros servicios."
+        "badge": ":scales: Terminos Legales",
+        "title": "Terminos de Servicio",
+        "subtitle": "Comprende las reglas, condiciones y el marco legal que rigen el uso de nuestros servicios."
     }
 }

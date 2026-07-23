@@ -26,12 +26,11 @@ const CATEGORIES = [
     { key: "channel-management" },
     { key: "pc-optimization" },
     { key: "amazon-affiliate" },
-    { key: "personality-test" },
 ]
 
 describe("ServicesSubmenu", () => {
     for (const locale of LOCALES) {
-        it(`renders all 4 categories for locale '${locale}'`, () => {
+        it(`renders all 3 categories for locale '${locale}'`, () => {
             render(
                 <NextIntlClientProvider
                     locale={locale}
@@ -41,7 +40,7 @@ describe("ServicesSubmenu", () => {
                 </NextIntlClientProvider>
             )
             const links = screen.getAllByRole("link")
-            expect(links).toHaveLength(4)
+            expect(links).toHaveLength(3)
         })
 
         it(`renders with correct structure for locale '${locale}'`, () => {
@@ -55,9 +54,9 @@ describe("ServicesSubmenu", () => {
             )
 
             const headings = container.querySelectorAll("h3")
-            expect(headings).toHaveLength(4)
+            expect(headings).toHaveLength(3)
             const paragraphs = container.querySelectorAll("p")
-            expect(paragraphs).toHaveLength(4)
+            expect(paragraphs).toHaveLength(3)
         })
 
         it(`all category links point to correct localized paths for '${locale}'`, () => {
@@ -89,9 +88,9 @@ describe("ServicesSubmenu", () => {
             )
 
             const headings = container.querySelectorAll("h3")
-            expect(headings).toHaveLength(4)
+            expect(headings).toHaveLength(3)
             const paragraphs = container.querySelectorAll("p")
-            expect(paragraphs).toHaveLength(4)
+            expect(paragraphs).toHaveLength(3)
         })
     }
 

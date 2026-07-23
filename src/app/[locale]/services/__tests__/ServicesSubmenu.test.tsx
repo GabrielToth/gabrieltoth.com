@@ -16,9 +16,7 @@ vi.mock("next-intl", () => ({
                 "landing.affiliateTitle": "Amazon Affiliate",
                 "landing.affiliateDescription":
                     "Affiliate marketing strategies",
-                "landing.personalityTestTitle": "Personality Test",
-                "landing.personalityTestDescription":
-                    "Psychological profiling tools",
+
             },
         }
 
@@ -43,7 +41,6 @@ describe("ServicesSubmenu", () => {
         { key: "channel-management", title: "ViraTrend" },
         { key: "pc-optimization", title: "PC Optimization" },
         { key: "amazon-affiliate", title: "Amazon Affiliate" },
-        { key: "personality-test", title: "Personality Test" },
     ] as const
 
     const locales = ["en", "pt-BR", "es", "de"] as const
@@ -60,11 +57,11 @@ describe("ServicesSubmenu", () => {
         }
     )
 
-    it.each(locales)("renders 4 links for locale '%s'", locale => {
+    it.each(locales)("renders 3 links for locale '%s'", locale => {
         render(<ServicesSubmenu locale={locale} />)
 
         const links = screen.getAllByRole("link")
-        expect(links).toHaveLength(4)
+        expect(links).toHaveLength(3)
     })
 
     it.each([
@@ -123,26 +120,5 @@ describe("ServicesSubmenu", () => {
         }
     )
 
-    it.each([
-        { locale: "en" as const, expected: "/en/personality-test" },
-        {
-            locale: "pt-BR" as const,
-            expected: "/pt-BR/teste-de-personalidade",
-        },
-        {
-            locale: "es" as const,
-            expected: "/es/prueba-de-personalidad",
-        },
-        { locale: "de" as const, expected: "/de/personlichkeitstest" },
-    ])(
-        "localizes personality-test link for '$locale'",
-        ({ locale, expected }) => {
-            render(<ServicesSubmenu locale={locale} />)
 
-            const links = screen.getAllByRole("link")
-            const link = links.find(l => l.getAttribute("href") === expected)
-            expect(link).toBeTruthy()
-            expect(link).toHaveAttribute("href", expected)
-        }
-    )
 })

@@ -13,7 +13,7 @@ export async function generateServicesMetadata(
             "channel management",
             "pc optimization",
             "amazon affiliate",
-            "personality test",
+
             "consulting",
         ],
         openGraph: {

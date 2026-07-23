@@ -18,8 +18,7 @@
         "channelManagement": "ViraTrend",
         "pcOptimization": "PC Optimization",
         "affiliate": "Amazon Affiliate",
-        "iqTest": "IQ Test",
-        "personalityTest": "Personality Test"
+        "iqTest": "IQ Test"
     },
     "minecraftDropdown": {
         "modpacks": "Modpacks",

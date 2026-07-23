@@ -47,11 +47,6 @@ export default async function ServicesPage({ params }: ServicesPageProps) {
             titleKey: "landing.iqTestTitle",
             descKey: "landing.iqTestDescription",
         },
-        {
-            key: "personality-test",
-            titleKey: "landing.personalityTestTitle",
-            descKey: "landing.personalityTestDescription",
-        },
     ]
 
     return (

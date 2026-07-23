@@ -74,13 +74,6 @@ export default function Header() {
             href: getLocalizedPath("iq-test", locale),
             label: t("servicesDropdown.iqTest"),
         },
-        {
-            key: "personality-test",
-            href: getLocalizedPath("personality-test", locale),
-            label: t("servicesDropdown.personalityTest", {
-                default: "Personality Test",
-            } as Record<string, string>),
-        },
     ]
 
     const getMinecraftLinks = () => [

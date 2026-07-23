@@ -1,7 +1,7 @@
 {
     "hero": {
-        "badge": "🔐 Tu Privacidad Importa",
-        "title": "Política de Privacidad",
-        "subtitle": "Aprende cómo recopilamos, utilizamos y protegemos tus datos personales."
+        "badge": ":closed_lock_with_key: Tu Privacidad Importa",
+        "title": "Politica de Privacidad",
+        "subtitle": "Aprende como recopilamos, utilizamos, protegemos y procesamos tus datos personales de acuerdo con la LGPD y el GDPR."
     }
 }

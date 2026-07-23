@@ -1,7 +1,7 @@
 {
     "hero": {
-        "badge": "🔐 Deine Privatsphäre Zählt",
+        "badge": ":closed_lock_with_key: Deine Privatsphaere Zaehlt",
         "title": "Datenschutzrichtlinie",
-        "subtitle": "Erfahre, wie wir deine persönlichen Daten sammeln, verwenden und schützen."
+        "subtitle": "Erfahre, wie wir deine persoenlichen Daten sammeln, verwenden, schuetzen und verarbeiten - in Uebereinstimmung mit LGPD und DSGVO."
     }
 }

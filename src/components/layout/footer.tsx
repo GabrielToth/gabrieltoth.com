@@ -63,12 +63,6 @@ export default async function Footer({ locale }: FooterProps) {
                                         ),
                                         href: `/${locale}/amazon-affiliate`,
                                     },
-                                    {
-                                        name: t(
-                                            "links.services.items.personalityTest"
-                                        ),
-                                        href: `/${locale}/personality-test`,
-                                    },
                                 ].map((item, index) => (
                                     <li key={index}>
                                         <Link

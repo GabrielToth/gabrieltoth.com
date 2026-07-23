@@ -28,11 +28,6 @@ export default function ServicesSubmenu({ locale }: ServicesSubmenuProps) {
             label: t("landing.affiliateTitle"),
             description: t("landing.affiliateDescription"),
         },
-        {
-            key: "personality-test",
-            label: t("landing.personalityTestTitle"),
-            description: t("landing.personalityTestDescription"),
-        },
     ]
 
     return (
