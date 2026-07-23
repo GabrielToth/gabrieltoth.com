@@ -102,12 +102,6 @@
         "subtitle": "Casos reales y logros a lo largo de 10+ años de experiencia",
         "items": [
             {
-                "name": "WaveIGL",
-                "role": "YouTube, Instagram, TikTok, Twitch y otras plataformas",
-                "content": "Desarrollé y gestiono todas las redes sociales de WaveIGL desde el inicio. Actualmente sumamos 2M+ de vistas mensuales distribuidas entre YouTube (400K), Instagram, TikTok, Twitch y otras plataformas. El proyecto crece consistentemente hace años.",
-                "rating": 5
-            },
-            {
                 "name": "Gabriel Toth (canal antiguo) - @oprimeirogabrieltoth",
                 "role": "Canal antiguo - Resultado extraordinario",
                 "content": "Uno de mis casos más impresionantes: conseguí más de 1 millón de visualizaciones en un canal con menos de 1000 suscriptores. Esto demuestra mi capacidad de crear contenido viral y entender profundamente los algoritmos.",
@@ -198,7 +192,9 @@
                     "Reunión de 1h para presentación",
                     "Lista de acciones prioritarias",
                     "Edición incluida: hasta 300 minutos/mes"
-                ]
+                ],
+                "popular": false,
+                "editingNote": "Edición profesional de video para maximizar el engagement"
             },
             {
                 "name": "Estrategia Completa",
@@ -211,7 +207,8 @@
                     "Soporte directo por WhatsApp",
                     "Edición incluida: hasta 600 minutos/mes"
                 ],
-                "popular": true
+                "popular": true,
+                "editingNote": "Edición prioritaria con entrega más rápida"
             },
             {
                 "name": "Sociedad de Crecimiento",
@@ -223,7 +220,9 @@
                     "Planificación del calendario de contenido",
                     "Gestión de comunidad",
                     "Edición incluida: ilimitada"
-                ]
+                ],
+                "popular": false,
+                "editingNote": "Soporte completo de producción con editor dedicado"
             }
         ],
         "note": "Todos los planes incluyen servicios profesionales de edición de video. La capacidad de edición varía por plan y puede ajustarse según tus necesidades."

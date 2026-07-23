@@ -6,12 +6,14 @@
     "channels": "Canais",
     "contact": "Contato",
     "language": "Idioma",
+    "editors": "Editores",
     "login": "Entrar",
     "register": "Registrar",
     "dashboard": "Painel",
     "menu": {
         "iqTest": "Teste de QI"
     },
+    "iqTest": "Teste de QI",
     "servicesDropdown": {
         "channelManagement": "ViraTrend",
         "pcOptimization": "Otimização de PC",

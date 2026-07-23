@@ -6,12 +6,14 @@
     "channels": "Canales",
     "contact": "Contacto",
     "language": "Idioma",
+    "editors": "Editores",
     "login": "Iniciar sesión",
     "register": "Registrarse",
     "dashboard": "Panel",
     "menu": {
         "iqTest": "Test de CI"
     },
+    "iqTest": "Test de CI",
     "servicesDropdown": {
         "channelManagement": "ViraTrend",
         "pcOptimization": "Optimización de PC",

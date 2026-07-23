@@ -6,12 +6,14 @@
     "channels": "Kanäle",
     "contact": "Kontakt",
     "language": "Sprache",
+    "editors": "Editoren",
     "login": "Anmelden",
     "register": "Registrieren",
     "dashboard": "Dashboard",
     "menu": {
         "iqTest": "IQ-Test"
     },
+    "iqTest": "IQ-Test",
     "servicesDropdown": {
         "channelManagement": "ViraTrend",
         "pcOptimization": "PC-Optimierung",

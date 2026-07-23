@@ -162,6 +162,20 @@
                 "githubUrl": "https://github.com/gabrieltoth/softclever"
             },
             {
+                "title": "WaveIGL Project",
+                "description": "Complete educational project including a YouTube channel with over 2 million monthly views, integrated payment system for investments, and channel management. Includes content creation about technology, programming, and game development.",
+                "image": "/projects/waveigl.jpg",
+                "tags": [
+                    "YouTube",
+                    "Content Creation",
+                    "Payment Integration",
+                    "Next.js",
+                    "Stripe",
+                    "PIX"
+                ],
+                "slug": "/waveigl-support"
+            },
+            {
                 "title": "PC Optimization Service",
                 "description": "Specialized PC optimization service for gaming, focused on maximizing game performance and reducing latency. Includes advanced system configurations, hardware optimization and custom software.",
                 "image": "/projects/pc-optimization.jpg",

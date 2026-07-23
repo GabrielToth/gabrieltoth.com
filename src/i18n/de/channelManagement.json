@@ -99,12 +99,6 @@
         "subtitle": "Echte Fälle und Erfolge aus über 10 Jahren Erfahrung",
         "items": [
             {
-                "name": "WaveIGL",
-                "role": "YouTube, Instagram, TikTok, Twitch und andere Plattformen",
-                "content": "Ich habe alle sozialen Netzwerke von WaveIGL seit Beginn entwickelt und verwaltet. Derzeit erreichen wir 2M+ monatliche Aufrufe verteilt über YouTube (400K), Instagram, TikTok, Twitch und weitere. Das Projekt wächst seit Jahren konstant.",
-                "rating": 5
-            },
-            {
                 "name": "Gabriel Toth (alter Kanal) - @oprimeirogabrieltoth",
                 "role": "Alter Kanal – Außergewöhnliches Ergebnis",
                 "content": "Einer meiner beeindruckendsten Fälle: Über 1 Million Aufrufe auf einem Kanal mit weniger als 1000 Abonnenten. Das zeigt meine Fähigkeit, viralen Content zu erstellen und Plattform-Algorithmen zu verstehen.",
@@ -217,7 +211,9 @@
                     "1-stündige Präsentation",
                     "Liste priorisierter Maßnahmen",
                     "Inklusive Editing: bis 300 Minuten/Monat"
-                ]
+                ],
+                "popular": false,
+                "editingNote": "Professionelles Video-Editing zur Maximierung des Engagements"
             },
             {
                 "name": "Komplette Strategie",
@@ -230,7 +226,8 @@
                     "Direkter Support via WhatsApp",
                     "Inklusive Editing: bis 600 Minuten/Monat"
                 ],
-                "popular": true
+                "popular": true,
+                "editingNote": "Priorit\u00e4ts-Editing mit schnellerer Bearbeitung"
             },
             {
                 "name": "Wachstumspartnerschaft",
@@ -242,7 +239,9 @@
                     "Redaktionskalender-Planung",
                     "Community-Management",
                     "Inklusive Editing: unbegrenzt"
-                ]
+                ],
+                "popular": false,
+                "editingNote": "Volle Produktionsunterstützung mit dediziertem Editor"
             }
         ],
         "note": "Alle Pläne beinhalten professionelle Video-Editing-Dienste. Die Editing-Kapazität variiert je nach Plan und kann angepasst werden."
