@@ -12,6 +12,33 @@ interface ContactFormData {
     turnstileToken?: string
 }
 
+const contactMessages: Record<string, Record<string, string>> = {
+    turnstileFailed: {
+        "pt-BR": "Falha na verificação anti-bot",
+        en: "Bot verification failed",
+    },
+    missingFields: {
+        "pt-BR": "Todos os campos são obrigatórios",
+        en: "All fields are required",
+    },
+    invalidEmail: {
+        "pt-BR": "Email inválido",
+        en: "Invalid email",
+    },
+    spamDetected: {
+        "pt-BR": "Conteúdo suspeito detectado",
+        en: "Suspicious content detected",
+    },
+    sentSuccess: {
+        "pt-BR": "Mensagem enviada com sucesso!",
+        en: "Message sent successfully!",
+    },
+}
+
+function ct(msg: string, locale: string): string {
+    return contactMessages[msg]?.[locale] ?? contactMessages[msg]?.en ?? msg
+}
+
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const RATE_LIMIT = { MAX_REQUESTS: 5, WINDOW_MS: 15 * 60 * 1000 }
 
@@ -152,10 +179,7 @@ export async function POST(request: NextRequest) {
         if (!turnstileResult.success) {
             return NextResponse.json(
                 {
-                    message:
-                        locale === "pt-BR"
-                            ? "Falha na verificação anti-bot"
-                            : "Bot verification failed",
+                    message: ct("turnstileFailed", locale),
                     error: "TURNSTILE_FAILED",
                 },
                 { status: 400 }
@@ -170,10 +194,7 @@ export async function POST(request: NextRequest) {
         ) {
             return NextResponse.json(
                 {
-                    message:
-                        locale === "pt-BR"
-                            ? "Todos os campos são obrigatórios"
-                            : "All fields are required",
+                    message: ct("missingFields", locale),
                     error: "MISSING_FIELDS",
                 },
                 { status: 400 }
@@ -183,8 +204,7 @@ export async function POST(request: NextRequest) {
         if (!validateEmail(email)) {
             return NextResponse.json(
                 {
-                    message:
-                        locale === "pt-BR" ? "Email inválido" : "Invalid email",
+                    message: ct("invalidEmail", locale),
                     error: "INVALID_EMAIL",
                 },
                 { status: 400 }
@@ -195,10 +215,7 @@ export async function POST(request: NextRequest) {
         if (containsSpam(fullText)) {
             return NextResponse.json(
                 {
-                    message:
-                        locale === "pt-BR"
-                            ? "Conteúdo suspeito detectado"
-                            : "Suspicious content detected",
+                    message: ct("spamDetected", locale),
                     error: "SPAM_DETECTED",
                 },
                 { status: 400 }
@@ -230,10 +247,7 @@ export async function POST(request: NextRequest) {
 
         return NextResponse.json(
             {
-                message:
-                    locale === "pt-BR"
-                        ? "Mensagem enviada com sucesso!"
-                        : "Message sent successfully!",
+                message: ct("sentSuccess", locale),
                 success: true,
             },
             { status: 200 }
