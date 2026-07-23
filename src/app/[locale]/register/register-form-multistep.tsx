@@ -178,7 +178,7 @@ export default function RegisterFormMultistep({
 
                 <button
                     onClick={() => setStep("email")}
-                    className="w-full px-4 py-3 bg-primary hover:bg-primary dark:bg-primary dark:hover:bg-primary text-white rounded-lg font-medium transition-colors"
+                    className="w-full px-4 py-3 bg-primary hover:bg-primary dark:bg-primary dark:hover:bg-primary text-white rounded-full font-medium transition-colors"
                 >
                     {t("register.emailButton")}
                 </button>
@@ -229,13 +229,13 @@ export default function RegisterFormMultistep({
                     <button
                         type="button"
                         onClick={handleBack}
-                        className="flex-1 px-4 py-2 border border-input dark:border-input text-foreground dark:text-foreground rounded-lg font-medium hover:bg-muted dark:hover:bg-accent transition-colors"
+                        className="flex-1 px-4 py-2 border border-input dark:border-input text-foreground dark:text-foreground rounded-full font-medium hover:bg-muted dark:hover:bg-accent transition-colors"
                     >
                         {t("register.back")}
                     </button>
                     <button
                         type="submit"
-                        className="flex-1 px-4 py-2 bg-primary hover:bg-primary dark:bg-primary dark:hover:bg-primary text-white rounded-lg font-medium transition-colors"
+                        className="flex-1 px-4 py-2 bg-primary hover:bg-primary dark:bg-primary dark:hover:bg-primary text-white rounded-full font-medium transition-colors"
                     >
                         {t("register.next")}
                     </button>
@@ -287,13 +287,13 @@ export default function RegisterFormMultistep({
                     <button
                         type="button"
                         onClick={handleBack}
-                        className="flex-1 px-4 py-2 border border-input dark:border-input text-foreground dark:text-foreground rounded-lg font-medium hover:bg-muted dark:hover:bg-accent transition-colors"
+                        className="flex-1 px-4 py-2 border border-input dark:border-input text-foreground dark:text-foreground rounded-full font-medium hover:bg-muted dark:hover:bg-accent transition-colors"
                     >
                         {t("register.back")}
                     </button>
                     <button
                         type="submit"
-                        className="flex-1 px-4 py-2 bg-primary hover:bg-primary dark:bg-primary dark:hover:bg-primary text-white rounded-lg font-medium transition-colors"
+                        className="flex-1 px-4 py-2 bg-primary hover:bg-primary dark:bg-primary dark:hover:bg-primary text-white rounded-full font-medium transition-colors"
                     >
                         {t("register.next")}
                     </button>
@@ -354,13 +354,13 @@ export default function RegisterFormMultistep({
                     <button
                         type="button"
                         onClick={handleBack}
-                        className="flex-1 px-4 py-2 border border-input dark:border-input text-foreground dark:text-foreground rounded-lg font-medium hover:bg-muted dark:hover:bg-accent transition-colors"
+                        className="flex-1 px-4 py-2 border border-input dark:border-input text-foreground dark:text-foreground rounded-full font-medium hover:bg-muted dark:hover:bg-accent transition-colors"
                     >
                         {t("register.back")}
                     </button>
                     <button
                         type="submit"
-                        className="flex-1 px-4 py-2 bg-primary hover:bg-primary dark:bg-primary dark:hover:bg-primary text-white rounded-lg font-medium transition-colors"
+                        className="flex-1 px-4 py-2 bg-primary hover:bg-primary dark:bg-primary dark:hover:bg-primary text-white rounded-full font-medium transition-colors"
                     >
                         {t("register.next")}
                     </button>
@@ -433,13 +433,13 @@ export default function RegisterFormMultistep({
                     <button
                         type="button"
                         onClick={handleBack}
-                        className="flex-1 px-4 py-2 border border-input dark:border-input text-foreground dark:text-foreground rounded-lg font-medium hover:bg-muted dark:hover:bg-accent transition-colors"
+                        className="flex-1 px-4 py-2 border border-input dark:border-input text-foreground dark:text-foreground rounded-full font-medium hover:bg-muted dark:hover:bg-accent transition-colors"
                     >
                         {t("register.back")}
                     </button>
                     <button
                         type="submit"
-                        className="flex-1 px-4 py-2 bg-primary hover:bg-primary dark:bg-primary dark:hover:bg-primary text-white rounded-lg font-medium transition-colors"
+                        className="flex-1 px-4 py-2 bg-primary hover:bg-primary dark:bg-primary dark:hover:bg-primary text-white rounded-full font-medium transition-colors"
                     >
                         {t("register.next")}
                     </button>
@@ -504,14 +504,14 @@ export default function RegisterFormMultistep({
                     <button
                         type="button"
                         onClick={handleBack}
-                        className="flex-1 px-4 py-2 border border-input dark:border-input text-foreground dark:text-foreground rounded-lg font-medium hover:bg-muted dark:hover:bg-accent transition-colors"
+                        className="flex-1 px-4 py-2 border border-input dark:border-input text-foreground dark:text-foreground rounded-full font-medium hover:bg-muted dark:hover:bg-accent transition-colors"
                     >
                         {t("register.back")}
                     </button>
                     <button
                         type="submit"
                         disabled={isLoading}
-                        className="flex-1 px-4 py-3 bg-primary hover:bg-primary dark:bg-primary dark:hover:bg-primary text-white rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="flex-1 px-4 py-3 bg-primary hover:bg-primary dark:bg-primary dark:hover:bg-primary text-white rounded-full font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                         {isLoading
                             ? t("register.loading")

@@ -77,7 +77,7 @@ export default function LandingPricingSection({
                                 </ul>
                                 <Link
                                     href={`/${locale}/login`}
-                                    className={`w-full py-3 rounded-lg font-semibold transition-colors text-center block ${
+                                    className={`w-full py-3 rounded-full font-semibold transition-colors text-center block ${
                                         plan.popular
                                             ? "bg-primary hover:bg-primary text-white"
                                             : "bg-muted hover:bg-accent dark:bg-card dark:hover:bg-accent text-foreground dark:text-foreground"

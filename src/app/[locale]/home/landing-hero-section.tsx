@@ -24,13 +24,13 @@ export default function LandingHeroSection({
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                     <Link
                         href={`/${locale}/login`}
-                        className="px-8 py-4 bg-primary hover:bg-primary text-white rounded-lg font-semibold transition-colors"
+                        className="px-8 py-4 bg-primary hover:bg-primary text-white rounded-full font-semibold transition-colors"
                     >
                         {t("hero.cta")}
                     </Link>
                     <Link
                         href={"#features"}
-                        className="px-8 py-4 border-2 border-blue-600 text-primary dark:text-primary hover:bg-primary/5 dark:hover:bg-accent rounded-lg font-semibold transition-colors"
+                        className="px-8 py-4 border-2 border-blue-600 text-primary dark:text-primary hover:bg-primary/5 dark:hover:bg-accent rounded-full font-semibold transition-colors"
                     >
                         Saiba Mais
                     </Link>

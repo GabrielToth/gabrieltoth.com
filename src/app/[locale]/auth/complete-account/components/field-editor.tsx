@@ -84,7 +84,7 @@ export default function FieldEditor({
                 <button
                     onClick={handleSave}
                     disabled={isLoading || editValue === value}
-                    className="flex-1 px-4 py-2 bg-primary dark:bg-primary text-white rounded-md hover:bg-primary dark:hover:bg-primary disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium"
+                    className="flex-1 px-4 py-2 bg-primary dark:bg-primary text-white rounded-full hover:bg-primary dark:hover:bg-primary disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium"
                 >
                     {isLoading
                         ? t("completeAccount.saving")
@@ -93,7 +93,7 @@ export default function FieldEditor({
                 <button
                     onClick={handleCancel}
                     disabled={isLoading}
-                    className="flex-1 px-4 py-2 bg-accent dark:bg-muted text-foreground dark:text-foreground rounded-md hover:bg-accent dark:hover:bg-muted disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium"
+                    className="flex-1 px-4 py-2 bg-accent dark:bg-muted text-foreground dark:text-foreground rounded-full hover:bg-accent dark:hover:bg-muted disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium"
                 >
                     {t("completeAccount.cancel")}
                 </button>

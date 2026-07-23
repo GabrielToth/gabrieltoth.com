@@ -113,14 +113,14 @@ export default function Step3Verification({
                 <button
                     onClick={onBack}
                     disabled={isLoading}
-                    className="flex-1 px-4 py-3 bg-accent dark:bg-muted text-foreground dark:text-foreground rounded-md hover:bg-accent dark:hover:bg-muted disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
+                    className="flex-1 px-4 py-3 bg-accent dark:bg-muted text-foreground dark:text-foreground rounded-full hover:bg-accent dark:hover:bg-muted disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
                 >
                     {t("completeAccount.back")}
                 </button>
                 <button
                     onClick={onSubmit}
                     disabled={isLoading}
-                    className="flex-1 px-4 py-3 bg-green-600 dark:bg-green-500 text-white rounded-md hover:bg-green-700 dark:hover:bg-green-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
+                    className="flex-1 px-4 py-3 bg-green-600 dark:bg-green-500 text-white rounded-full hover:bg-green-700 dark:hover:bg-green-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
                 >
                     {isLoading
                         ? t("completeAccount.loading")

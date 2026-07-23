@@ -79,7 +79,7 @@ export default function ProjectsSection() {
                                 <div className="flex space-x-3">
                                     <a
                                         href={project.liveUrl}
-                                        className="flex items-center space-x-2 bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary transition-colors text-sm font-medium"
+                                        className="flex items-center space-x-2 bg-primary text-white px-4 py-2 rounded-full hover:bg-primary transition-colors text-sm font-medium"
                                     >
                                         <ExternalLink size={16} />
                                         <span>{t("viewProject")}</span>
@@ -89,7 +89,7 @@ export default function ProjectsSection() {
                                             href={project.githubUrl}
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            className="flex items-center space-x-2 border border-border dark:border-border text-foreground dark:text-foreground px-4 py-2 rounded-lg hover:bg-muted dark:hover:bg-accent transition-colors text-sm font-medium"
+                                            className="flex items-center space-x-2 border border-border dark:border-border text-foreground dark:text-foreground px-4 py-2 rounded-full hover:bg-muted dark:hover:bg-accent transition-colors text-sm font-medium"
                                         >
                                             <Code2 size={16} />
                                             <span>{t("sourceCode")}</span>
@@ -105,7 +105,7 @@ export default function ProjectsSection() {
                     <div className="text-center mt-12">
                         <button
                             onClick={() => setShowAll(!showAll)}
-                            className="bg-muted dark:bg-card text-foreground dark:text-foreground px-6 py-3 rounded-lg hover:bg-accent dark:hover:bg-accent transition-colors font-medium"
+                            className="bg-muted dark:bg-card text-foreground dark:text-foreground px-6 py-3 rounded-full hover:bg-accent dark:hover:bg-accent transition-colors font-medium"
                         >
                             {showAll ? t("showLess") : t("showMore")}
                         </button>

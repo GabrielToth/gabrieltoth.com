@@ -59,7 +59,7 @@ const HeroSection = ({ locale }: { locale: Locale }) => {
                         )}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center px-8 py-4 bg-primary text-white rounded-lg font-semibold hover:bg-primary transition-colors text-lg"
+                        className="inline-flex items-center px-8 py-4 bg-primary text-white rounded-full font-semibold hover:bg-primary transition-colors text-lg"
                     >
                         <MessageCircle className="mr-2" size={20} />
                         {t("hero.cta")}
@@ -472,7 +472,7 @@ const PricingSection = ({
                                     )}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="w-full py-3 px-6 bg-primary text-white rounded-lg font-semibold hover:bg-primary transition-colors text-center block"
+                                    className="w-full py-3 px-6 bg-primary text-white rounded-full font-semibold hover:bg-primary transition-colors text-center block"
                                 >
                                     {t("pricing.cta")}
                                 </a>

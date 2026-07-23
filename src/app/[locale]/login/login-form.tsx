@@ -62,7 +62,7 @@ export default function LoginForm({ locale }: LoginFormProps) {
             <button
                 onClick={() => setShowEmailForm(!showEmailForm)}
                 disabled={isLoading}
-                className="w-full px-4 py-3 bg-accent hover:bg-accent dark:bg-muted dark:hover:bg-muted text-foreground dark:text-foreground rounded-lg font-medium transition-colors mb-6 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full px-4 py-3 bg-accent hover:bg-accent dark:bg-muted dark:hover:bg-muted text-foreground dark:text-foreground rounded-full font-medium transition-colors mb-6 disabled:opacity-50 disabled:cursor-not-allowed"
             >
                 {t("login.emailButton")}
             </button>
@@ -139,7 +139,7 @@ export default function LoginForm({ locale }: LoginFormProps) {
                     <button
                         type="submit"
                         disabled={isLoading}
-                        className="w-full px-4 py-3 bg-primary hover:bg-primary dark:bg-primary dark:hover:bg-primary text-white rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="w-full px-4 py-3 bg-primary hover:bg-primary dark:bg-primary dark:hover:bg-primary text-white rounded-full font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                         {isLoading ? t("login.loading") : t("login.button")}
                     </button>
@@ -159,7 +159,7 @@ export default function LoginForm({ locale }: LoginFormProps) {
 
             <Link
                 href={`/${locale}/register`}
-                className="w-full px-4 py-3 bg-primary hover:bg-primary dark:bg-primary dark:hover:bg-primary text-white rounded-lg font-medium transition-colors text-center block mb-6"
+                className="w-full px-4 py-3 bg-primary hover:bg-primary dark:bg-primary dark:hover:bg-primary text-white rounded-full font-medium transition-colors text-center block mb-6"
             >
                 {t("login.registerLink")}
             </Link>

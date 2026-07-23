@@ -207,7 +207,7 @@ export default function LocaleNotFound() {
                             </p>
                             <Link
                                 href={product.href}
-                                className="inline-flex items-center justify-center px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:bg-primary transition-colors w-full"
+                                className="inline-flex items-center justify-center px-4 py-2 bg-primary text-white rounded-full text-sm font-medium hover:bg-primary transition-colors w-full"
                             >
                                 <span>{content.viewButton}</span>
                                 <ExternalLink className="ml-2" size={14} />
@@ -220,7 +220,7 @@ export default function LocaleNotFound() {
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                     <Link
                         href={`/${locale}`}
-                        className="inline-flex items-center px-6 py-3 bg-primary text-white rounded-lg font-medium hover:bg-primary transition-colors"
+                        className="inline-flex items-center px-6 py-3 bg-primary text-white rounded-full font-medium hover:bg-primary transition-colors"
                     >
                         <Home className="mr-2" size={20} />
                         {content.homeButton}
@@ -230,7 +230,7 @@ export default function LocaleNotFound() {
                             /* c8 ignore next */
                             window.history.back()
                         }}
-                        className="inline-flex items-center px-6 py-3 border border-input dark:border-input text-foreground dark:text-foreground rounded-lg font-medium hover:bg-muted dark:hover:bg-accent transition-colors"
+                        className="inline-flex items-center px-6 py-3 border border-input dark:border-input text-foreground dark:text-foreground rounded-full font-medium hover:bg-muted dark:hover:bg-accent transition-colors"
                     >
                         <ArrowLeft className="mr-2" size={20} />
                         {content.backButton}

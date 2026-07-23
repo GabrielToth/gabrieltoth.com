@@ -60,13 +60,13 @@ export default function Error({
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                     <button
                         onClick={reset}
-                        className="inline-flex items-center px-6 py-3 bg-primary text-white rounded-lg font-medium hover:bg-primary transition-colors"
+                        className="inline-flex items-center px-6 py-3 bg-primary text-white rounded-full font-medium hover:bg-primary transition-colors"
                     >
                         Try Again
                     </button>
                     <Link
                         href="/"
-                        className="inline-flex items-center px-6 py-3 border border-input dark:border-input text-foreground dark:text-foreground rounded-lg font-medium hover:bg-muted dark:hover:bg-accent transition-colors"
+                        className="inline-flex items-center px-6 py-3 border border-input dark:border-input text-foreground dark:text-foreground rounded-full font-medium hover:bg-muted dark:hover:bg-accent transition-colors"
                     >
                         <Home className="mr-2" size={20} />
                         Home Page

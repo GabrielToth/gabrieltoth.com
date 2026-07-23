@@ -165,14 +165,14 @@ export default function Step2NewFields({
                 <button
                     onClick={onBack}
                     disabled={isLoading}
-                    className="flex-1 px-4 py-3 bg-accent dark:bg-muted text-foreground dark:text-foreground rounded-md hover:bg-accent dark:hover:bg-muted disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
+                    className="flex-1 px-4 py-3 bg-accent dark:bg-muted text-foreground dark:text-foreground rounded-full hover:bg-accent dark:hover:bg-muted disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
                 >
                     {t("completeAccount.back")}
                 </button>
                 <button
                     onClick={onContinue}
                     disabled={isLoading || !isFormValid}
-                    className="flex-1 px-4 py-3 bg-primary dark:bg-primary text-white rounded-md hover:bg-primary dark:hover:bg-primary disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
+                    className="flex-1 px-4 py-3 bg-primary dark:bg-primary text-white rounded-full hover:bg-primary dark:hover:bg-primary disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
                 >
                     {isLoading
                         ? t("completeAccount.loading")

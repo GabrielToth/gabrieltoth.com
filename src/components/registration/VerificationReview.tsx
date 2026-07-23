@@ -66,7 +66,7 @@ export function VerificationReview({
                         <button
                             onClick={() => onEdit(field.field)}
                             disabled={disabled}
-                            className="px-4 py-2 text-sm font-medium text-primary dark:text-primary hover:text-primary dark:hover:text-primary hover:bg-primary/5 dark:hover:bg-primary/10 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px] sm:min-h-auto flex items-center justify-center"
+                            className="px-4 py-2 text-sm font-medium text-primary dark:text-primary hover:text-primary dark:hover:text-primary hover:bg-primary/5 dark:hover:bg-primary/10 rounded-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px] sm:min-h-auto flex items-center justify-center"
                             aria-label={`Edit ${field.label}`}
                         >
                             Edit
@@ -85,7 +85,7 @@ export function VerificationReview({
             <button
                 onClick={onCreateAccount ?? (() => {})}
                 disabled={disabled}
-                className="w-full mt-6 px-4 py-3 text-base font-semibold text-white bg-primary hover:bg-primary rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px]"
+                className="w-full mt-6 px-4 py-3 text-base font-semibold text-white bg-primary hover:bg-primary rounded-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px]"
                 aria-label="Create Account"
             >
                 Create Account

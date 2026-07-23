@@ -21,7 +21,7 @@ export default function LandingCtaSection({ locale }: LandingCtaSectionProps) {
                 </p>
                 <Link
                     href={`/${locale}/login`}
-                    className="inline-block px-8 py-4 bg-white hover:bg-muted text-primary font-semibold rounded-lg transition-colors"
+                    className="inline-block px-8 py-4 bg-white hover:bg-muted text-primary font-semibold rounded-full transition-colors"
                 >
                     {t("cta.button")}
                 </Link>
