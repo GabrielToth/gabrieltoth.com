@@ -65,12 +65,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 if (res.ok) {
                     const data = await res.json()
                     const notifications = data.data || []
-                    const hasErrors = new Set(
+                    const hasErrors = new Set<string>(
                         notifications
                             .filter((n: { platform?: string; type: string }) => n.platform && n.type === "error")
                             .map((n: { platform: string }) => n.platform)
                     )
-                    const hasWarnings = new Set(
+                    const hasWarnings = new Set<string>(
                         notifications
                             .filter((n: { platform?: string; type: string }) => n.platform && n.type === "warning")
                             .map((n: { platform: string }) => n.platform)

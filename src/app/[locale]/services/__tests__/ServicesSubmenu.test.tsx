@@ -16,8 +16,6 @@ vi.mock("next-intl", () => ({
                 "landing.affiliateTitle": "Amazon Affiliate",
                 "landing.affiliateDescription":
                     "Affiliate marketing strategies",
-                "landing.iqTestTitle": "IQ Test",
-                "landing.iqTestDescription": "Cognitive assessment platform",
                 "landing.personalityTestTitle": "Personality Test",
                 "landing.personalityTestDescription":
                     "Psychological profiling tools",
@@ -45,14 +43,13 @@ describe("ServicesSubmenu", () => {
         { key: "channel-management", title: "ViraTrend" },
         { key: "pc-optimization", title: "PC Optimization" },
         { key: "amazon-affiliate", title: "Amazon Affiliate" },
-        { key: "iq-test", title: "IQ Test" },
         { key: "personality-test", title: "Personality Test" },
     ] as const
 
     const locales = ["en", "pt-BR", "es", "de"] as const
 
     it.each(locales)(
-        "renders all 5 service categories for locale '%s'",
+        "renders all service categories for locale '%s'",
         locale => {
             render(<ServicesSubmenu locale={locale} />)
 
@@ -63,11 +60,11 @@ describe("ServicesSubmenu", () => {
         }
     )
 
-    it.each(locales)("renders 5 links for locale '%s'", locale => {
+    it.each(locales)("renders 4 links for locale '%s'", locale => {
         render(<ServicesSubmenu locale={locale} />)
 
         const links = screen.getAllByRole("link")
-        expect(links).toHaveLength(5)
+        expect(links).toHaveLength(4)
     })
 
     it.each([
@@ -125,20 +122,6 @@ describe("ServicesSubmenu", () => {
             expect(link).toHaveAttribute("href", expected)
         }
     )
-
-    it.each([
-        { locale: "en" as const, expected: "/en/iq-test" },
-        { locale: "pt-BR" as const, expected: "/pt-BR/teste-de-qi" },
-        { locale: "es" as const, expected: "/es/prueba-de-ci" },
-        { locale: "de" as const, expected: "/de/iq-test" },
-    ])("localizes iq-test link for '$locale'", ({ locale, expected }) => {
-        render(<ServicesSubmenu locale={locale} />)
-
-        const links = screen.getAllByRole("link")
-        const link = links.find(l => l.getAttribute("href") === expected)
-        expect(link).toBeTruthy()
-        expect(link).toHaveAttribute("href", expected)
-    })
 
     it.each([
         { locale: "en" as const, expected: "/en/personality-test" },

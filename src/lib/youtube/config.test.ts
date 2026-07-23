@@ -55,6 +55,18 @@ function createValidEnv(): EnvironmentConfig {
         TWITTER_CLIENT_SECRET: "tw-test-secret",
         TWITTER_REDIRECT_URI:
             "http://localhost:3000/api/oauth/callback/twitter",
+        LINKEDIN_CLIENT_ID: "li-test-id",
+        LINKEDIN_CLIENT_SECRET: "li-test-secret",
+        LINKEDIN_REDIRECT_URI:
+            "http://localhost:3000/api/oauth/callback/linkedin",
+        TWITCH_CLIENT_ID: "ttv-test-id",
+        TWITCH_CLIENT_SECRET: "ttv-test-secret",
+        TWITCH_REDIRECT_URI:
+            "http://localhost:3000/api/oauth/callback/twitch",
+        KICK_CLIENT_ID: "kick-test-id",
+        KICK_CLIENT_SECRET: "kick-test-secret",
+        KICK_REDIRECT_URI:
+            "http://localhost:3000/api/oauth/callback/kick",
         OAUTH_STATE_SECRET: "a".repeat(64), // 64 character hex string
         TOKEN_ENCRYPTION_KEY: "a".repeat(64), // 64 character hex string
     }

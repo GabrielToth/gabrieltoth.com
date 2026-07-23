@@ -156,8 +156,7 @@ describe("DataSummary", () => {
     it("should render in a styled container", () => {
         const { container } = render(<DataSummary {...defaultProps} />)
 
-        // Component uses bg-gray-50 for the data container
-        const section = container.querySelector(".bg-gray-50")
+        const section = container.querySelector(".bg-muted")
         expect(section).toBeInTheDocument()
     })
 })

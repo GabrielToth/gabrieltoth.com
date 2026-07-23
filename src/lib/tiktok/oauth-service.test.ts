@@ -41,6 +41,14 @@ const mockConfig: TikTokConfig = {
         clientSecret: "test-client-secret",
         redirectUri: "https://example.com/callback",
         scopes: ["user.info.basic"],
+        apiVersion: "v2",
+    },
+    rateLimit: {
+        linkingAttemptsPerHour: 5,
+        publishAttemptsPerHour: 6,
+    },
+    security: {
+        tokenExpiryBufferMs: 5 * 60 * 1000,
     },
 }
 

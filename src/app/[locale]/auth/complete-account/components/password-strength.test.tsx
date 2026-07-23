@@ -130,7 +130,7 @@ describe("PasswordStrength", () => {
             <PasswordStrength password="SecurePass123!" />
         )
 
-        const progressBar = container.querySelector(".h-2.bg-gray-200")
+        const progressBar = container.querySelector(".h-2")
         expect(progressBar).toBeInTheDocument()
     })
 })

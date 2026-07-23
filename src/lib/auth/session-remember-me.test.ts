@@ -108,8 +108,6 @@ describe("Session Remember Me Token Management", () => {
                 token_hash: "generated-token-hash",
                 expires_at: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
                 created_at: new Date(),
-                ip_address: null,
-                user_agent: null,
             }
 
             vi.mocked(db.db.queryOne).mockResolvedValueOnce(expectedToken)
@@ -191,8 +189,6 @@ describe("Session Remember Me Token Management", () => {
                 token_hash: token,
                 expires_at: futureDate,
                 created_at: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000),
-                ip_address: null,
-                user_agent: null,
             }
 
             vi.mocked(db.db.queryOne).mockResolvedValueOnce(expectedToken)
@@ -221,8 +217,6 @@ describe("Session Remember Me Token Management", () => {
                 token_hash: token,
                 expires_at: pastDate,
                 created_at: new Date(Date.now() - 31 * 24 * 60 * 60 * 1000),
-                ip_address: null,
-                user_agent: null,
             }
 
             vi.mocked(db.db.queryOne).mockResolvedValueOnce(expiredToken)

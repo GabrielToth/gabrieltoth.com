@@ -397,7 +397,7 @@ async function uploadViaTus(file: File, taskId: string): Promise<void> {
         "https://pub.gabrieltoth.com/upload"
 
     return new Promise((resolve, reject) => {
-        const { Upload } = require("@tus/upload-js") as {
+        const { Upload } = require("tus-js-client") as {
             Upload: new (file: File, opts: Record<string, unknown>) => {
                 start: () => void
                 abort: () => void

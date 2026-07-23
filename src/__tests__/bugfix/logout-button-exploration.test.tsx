@@ -34,13 +34,17 @@ describe("Bug Condition Exploration - Logout Button Not Working", () => {
     let mockFetch: any
 
     beforeEach(() => {
-        // Clear all mocks before each test
         vi.clearAllMocks()
-
-        // Mock fetch globally
         mockFetch = vi.fn()
         global.fetch = mockFetch
     })
+
+    function mockNotifications() {
+        mockFetch.mockResolvedValueOnce({
+            ok: true,
+            json: async () => ({ data: [] }),
+        })
+    }
 
     describe("Property 1: Bug Condition - Logout Button Click Does Not Trigger Logout Flow", () => {
         it("should render logout button in sidebar", () => {
@@ -59,7 +63,7 @@ describe("Bug Condition Exploration - Logout Button Not Working", () => {
         })
 
         it("should send POST request to /api/auth/logout when logout button is clicked", async () => {
-            // Mock CSRF response first, then successful logout response
+            mockNotifications()
             mockFetch
                 .mockResolvedValueOnce({
                     ok: true,
@@ -105,7 +109,7 @@ describe("Bug Condition Exploration - Logout Button Not Working", () => {
         })
 
         it("should handle logout API error gracefully", async () => {
-            // Mock CSRF response first, then failed logout response
+            mockNotifications()
             mockFetch
                 .mockResolvedValueOnce({
                     ok: true,
@@ -143,7 +147,7 @@ describe("Bug Condition Exploration - Logout Button Not Working", () => {
         })
 
         it("should handle network errors during logout", async () => {
-            // Mock CSRF response first, then network error for logout
+            mockNotifications()
             mockFetch
                 .mockResolvedValueOnce({
                     ok: true,
@@ -178,7 +182,7 @@ describe("Bug Condition Exploration - Logout Button Not Working", () => {
         })
 
         it("should send correct headers in logout request", async () => {
-            // Mock CSRF response first, then successful logout response
+            mockNotifications()
             mockFetch
                 .mockResolvedValueOnce({
                     ok: true,

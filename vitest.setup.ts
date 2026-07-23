@@ -286,6 +286,48 @@ global.IntersectionObserver = class IntersectionObserver {
     unobserve() {}
 } as any
 
+// Mock EventSource for SSE tests
+class MockEventSource {
+    url: string
+    onopen: (() => void) | null = null
+    onmessage: ((event: MessageEvent) => void) | null = null
+    onerror: ((event: Event) => void) | null = null
+    readyState: number = 0
+    CONNECTING: number = 0
+    OPEN: number = 1
+    CLOSED: number = 2
+    private listeners: Map<string, Set<EventListener>> = new Map()
+
+    constructor(url: string) {
+        this.url = url
+    }
+
+    addEventListener(type: string, listener: EventListener) {
+        if (!this.listeners.has(type)) {
+            this.listeners.set(type, new Set())
+        }
+        this.listeners.get(type)!.add(listener)
+    }
+
+    removeEventListener(type: string, listener: EventListener) {
+        this.listeners.get(type)?.delete(listener)
+    }
+
+    dispatchEvent(event: Event): boolean {
+        const listeners = this.listeners.get(event.type)
+        if (listeners) {
+            listeners.forEach(l => l(event))
+        }
+        return true
+    }
+
+    close() {
+        this.readyState = this.CLOSED
+    }
+}
+
+; (global as any).EventSource = MockEventSource
+
 // Mock hasPointerCapture for Radix UI components
 if (typeof Element !== "undefined") {
     Element.prototype.hasPointerCapture = vi.fn().mockReturnValue(false)

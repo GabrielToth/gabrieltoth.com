@@ -72,17 +72,20 @@ describe("MessageAggregator", () => {
         mockDisconnect.mockResolvedValue(undefined)
     })
 
+    const twitchConnect = { twitch: { channelName: "test" } }
+    const kickConnect = { kick: { channelName: "test" } }
+
     describe("constructor", () => {
         it("should throw if no platforms provided", async () => {
             const { MessageAggregator } = await import("./message-aggregator")
-            expect(() => new MessageAggregator("user-1", [])).toThrow(
+            expect(() => new MessageAggregator("user-1", {})).toThrow(
                 "At least one platform must be configured"
             )
         })
 
         it("should create instance with platforms", async () => {
             const { MessageAggregator } = await import("./message-aggregator")
-            const aggregator = new MessageAggregator("user-1", ["twitch"])
+            const aggregator = new MessageAggregator("user-1", twitchConnect)
             expect(aggregator).toBeInstanceOf(MessageAggregator)
         })
     })
@@ -90,10 +93,10 @@ describe("MessageAggregator", () => {
     describe("start", () => {
         it("should connect to all configured platforms", async () => {
             const { MessageAggregator } = await import("./message-aggregator")
-            const aggregator = new MessageAggregator("user-1", [
-                "twitch",
-                "kick",
-            ])
+            const aggregator = new MessageAggregator("user-1", {
+                twitch: { channelName: "test" },
+                kick: { channelName: "test" },
+            })
 
             await aggregator.start()
 
@@ -102,7 +105,7 @@ describe("MessageAggregator", () => {
 
         it("should register message and error handlers", async () => {
             const { MessageAggregator } = await import("./message-aggregator")
-            const aggregator = new MessageAggregator("user-1", ["twitch"])
+            const aggregator = new MessageAggregator("user-1", twitchConnect)
 
             await aggregator.start()
 
@@ -112,7 +115,7 @@ describe("MessageAggregator", () => {
 
         it("should send status event for each platform", async () => {
             const { MessageAggregator } = await import("./message-aggregator")
-            const aggregator = new MessageAggregator("user-1", ["twitch"])
+            const aggregator = new MessageAggregator("user-1", twitchConnect)
 
             await aggregator.start()
 
@@ -126,7 +129,7 @@ describe("MessageAggregator", () => {
             mockConnect.mockRejectedValue(new Error("Connection refused"))
 
             const { MessageAggregator } = await import("./message-aggregator")
-            const aggregator = new MessageAggregator("user-1", ["twitch"])
+            const aggregator = new MessageAggregator("user-1", twitchConnect)
 
             await aggregator.start()
 
@@ -138,7 +141,7 @@ describe("MessageAggregator", () => {
 
         it("should not start twice", async () => {
             const { MessageAggregator } = await import("./message-aggregator")
-            const aggregator = new MessageAggregator("user-1", ["twitch"])
+            const aggregator = new MessageAggregator("user-1", twitchConnect)
 
             await aggregator.start()
             await aggregator.start()
@@ -151,7 +154,7 @@ describe("MessageAggregator", () => {
     describe("stop", () => {
         it("should disconnect all adapters", async () => {
             const { MessageAggregator } = await import("./message-aggregator")
-            const aggregator = new MessageAggregator("user-1", ["twitch"])
+            const aggregator = new MessageAggregator("user-1", twitchConnect)
 
             await aggregator.start()
             await aggregator.stop()
@@ -161,7 +164,7 @@ describe("MessageAggregator", () => {
 
         it("should send disconnected status events", async () => {
             const { MessageAggregator } = await import("./message-aggregator")
-            const aggregator = new MessageAggregator("user-1", ["twitch"])
+            const aggregator = new MessageAggregator("user-1", twitchConnect)
 
             await aggregator.start()
             await aggregator.stop()
@@ -174,7 +177,7 @@ describe("MessageAggregator", () => {
 
         it("should do nothing if not started", async () => {
             const { MessageAggregator } = await import("./message-aggregator")
-            const aggregator = new MessageAggregator("user-1", ["twitch"])
+            const aggregator = new MessageAggregator("user-1", twitchConnect)
 
             await aggregator.stop()
 
@@ -185,14 +188,14 @@ describe("MessageAggregator", () => {
     describe("isRunning", () => {
         it("should return false before start", async () => {
             const { MessageAggregator } = await import("./message-aggregator")
-            const aggregator = new MessageAggregator("user-1", ["twitch"])
+            const aggregator = new MessageAggregator("user-1", twitchConnect)
 
             expect(aggregator.isRunning()).toBe(false)
         })
 
         it("should return true after start", async () => {
             const { MessageAggregator } = await import("./message-aggregator")
-            const aggregator = new MessageAggregator("user-1", ["twitch"])
+            const aggregator = new MessageAggregator("user-1", twitchConnect)
 
             await aggregator.start()
 
@@ -201,7 +204,7 @@ describe("MessageAggregator", () => {
 
         it("should return false after stop", async () => {
             const { MessageAggregator } = await import("./message-aggregator")
-            const aggregator = new MessageAggregator("user-1", ["twitch"])
+            const aggregator = new MessageAggregator("user-1", twitchConnect)
 
             await aggregator.start()
             await aggregator.stop()
@@ -213,17 +216,17 @@ describe("MessageAggregator", () => {
     describe("getConnectedPlatforms", () => {
         it("should return empty array before start", async () => {
             const { MessageAggregator } = await import("./message-aggregator")
-            const aggregator = new MessageAggregator("user-1", ["twitch"])
+            const aggregator = new MessageAggregator("user-1", twitchConnect)
 
             expect(aggregator.getConnectedPlatforms()).toEqual([])
         })
 
         it("should return connected platforms after start", async () => {
             const { MessageAggregator } = await import("./message-aggregator")
-            const aggregator = new MessageAggregator("user-1", [
-                "twitch",
-                "kick",
-            ])
+            const aggregator = new MessageAggregator("user-1", {
+                twitch: { channelName: "test" },
+                kick: { channelName: "test" },
+            })
 
             await aggregator.start()
 

@@ -88,12 +88,11 @@ describe("TwitchChatAdapter", () => {
                 "CAP REQ :twitch.tv/commands\r\n"
             )
 
-            // After welcome, it should JOIN
             const joinCall = socket.write.mock.calls.find((call: string[]) =>
                 call[0]?.includes("JOIN #")
-            )
-            expect(joinCall).toBeTruthy()
-            expect(joinCall[0]).toBe("JOIN #testchannel\r\n")
+            ) as [string] | undefined
+            expect(joinCall).toBeDefined()
+            expect(joinCall![0]).toBe("JOIN #testchannel\r\n")
         })
 
         it("does not reconnect if already connected", async () => {
