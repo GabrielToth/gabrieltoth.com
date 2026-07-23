@@ -42,11 +42,6 @@ export default async function ServicesPage({ params }: ServicesPageProps) {
             titleKey: "landing.affiliateTitle",
             descKey: "landing.affiliateDescription",
         },
-        {
-            key: "iq-test",
-            titleKey: "landing.iqTestTitle",
-            descKey: "landing.iqTestDescription",
-        },
     ]
 
     return (

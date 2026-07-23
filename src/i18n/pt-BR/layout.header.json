@@ -10,15 +10,10 @@
     "login": "Entrar",
     "register": "Registrar",
     "dashboard": "Painel",
-    "menu": {
-        "iqTest": "Teste de QI"
-    },
-    "iqTest": "Teste de QI",
     "servicesDropdown": {
         "channelManagement": "ViraTrend",
         "pcOptimization": "Otimização de PC",
-        "affiliate": "Afiliados Amazon",
-        "iqTest": "Teste de QI"
+        "affiliate": "Afiliados Amazon"
     },
     "minecraftDropdown": {
         "modpacks": "Modpacks",

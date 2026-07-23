@@ -69,11 +69,7 @@ export default function Header() {
             href: getLocalizedPath("amazon-affiliate", locale),
             label: t("servicesDropdown.affiliate"),
         },
-        {
-            key: "iq-test",
-            href: getLocalizedPath("iq-test", locale),
-            label: t("servicesDropdown.iqTest"),
-        },
+
     ]
 
     const getMinecraftLinks = () => [

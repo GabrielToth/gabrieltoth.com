@@ -10,15 +10,10 @@
     "login": "Anmelden",
     "register": "Registrieren",
     "dashboard": "Dashboard",
-    "menu": {
-        "iqTest": "IQ-Test"
-    },
-    "iqTest": "IQ-Test",
     "servicesDropdown": {
         "channelManagement": "ViraTrend",
         "pcOptimization": "PC-Optimierung",
-        "affiliate": "Amazon-Partner",
-        "iqTest": "IQ-Test"
+        "affiliate": "Amazon-Partner"
     },
     "minecraftDropdown": {
         "modpacks": "Modpacks",

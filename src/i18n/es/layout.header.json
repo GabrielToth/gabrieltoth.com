@@ -10,15 +10,10 @@
     "login": "Iniciar sesión",
     "register": "Registrarse",
     "dashboard": "Panel",
-    "menu": {
-        "iqTest": "Test de CI"
-    },
-    "iqTest": "Test de CI",
     "servicesDropdown": {
         "channelManagement": "ViraTrend",
         "pcOptimization": "Optimización de PC",
-        "affiliate": "Afiliados de Amazon",
-        "iqTest": "Test de CI"
+        "affiliate": "Afiliados de Amazon"
     },
     "minecraftDropdown": {
         "modpacks": "Modpacks",
