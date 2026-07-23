@@ -127,7 +127,7 @@ describe("ServicesSubmenu", () => {
         links.forEach(link => {
             expect(link.className).toContain("group")
             expect(link.className).toContain("border-neutral-700")
-            expect(link.className).toContain("hover:border-blue-500")
+            expect(link.className).toContain("hover:border-primary")
         })
     })
 
