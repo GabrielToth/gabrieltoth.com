@@ -43,7 +43,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **"twitch" and "kick" added to SocialPlatform/OAuthPlatform types**. ([#225](https://github.com/GabrielToth/gabrieltoth.com/issues/225), [#226](https://github.com/GabrielToth/gabrieltoth.com/pull/226))
 - **Dashboard OAuth redirect params**: Handles `?twitch=` and `?kick=` query parameters. ([#225](https://github.com/GabrielToth/gabrieltoth.com/issues/225), [#226](https://github.com/GabrielToth/gabrieltoth.com/pull/226))
 - **i18n keys**: All 4 locales for live/streaming features. ([#225](https://github.com/GabrielToth/gabrieltoth.com/issues/225), [#226](https://github.com/GabrielToth/gabrieltoth.com/pull/226))
-- **Environment variables**: TWITCH_* and KICK_* env vars added. ([#225](https://github.com/GabrielToth/gabrieltoth.com/issues/225), [#226](https://github.com/GabrielToth/gabrieltoth.com/pull/226))
+- **Environment variables**: TWITCH_\* and KICK_\* env vars added. ([#225](https://github.com/GabrielToth/gabrieltoth.com/issues/225), [#226](https://github.com/GabrielToth/gabrieltoth.com/pull/226))
 
 ### Changed
 - **Facebook/Instagram marked as localOnly**: Meta Advanced Access requires CNPJ. ([#225](https://github.com/GabrielToth/gabrieltoth.com/issues/225), [#226](https://github.com/GabrielToth/gabrieltoth.com/pull/226))
@@ -78,7 +78,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Network select**: Now shows actual linked account count per platform instead of hardcoded "implemented"/"connected" booleans. Platforms with 0 accounts appear grayed out. ([#183](https://github.com/GabrielToth/gabrieltoth.com/issues/183), [#189](https://github.com/GabrielToth/gabrieltoth.com/pull/189))
 - **Publish wizard title**: Changed from "Publish to YouTube" to generic "Publish" across all 4 locales. ([#181](https://github.com/GabrielToth/gabrieltoth.com/issues/181), [#187](https://github.com/GabrielToth/gabrieltoth.com/pull/187))
 
-### Fixed
+### Fixed (Bug Fixes)
 - **Step navigation bug**: Added Next button to VideoUploadStep when navigating back with existing video, fixing blocked progression. ([#182](https://github.com/GabrielToth/gabrieltoth.com/issues/182), [#193](https://github.com/GabrielToth/gabrieltoth.com/pull/193))
 - **Dark mode readability**: Added `dark:text-white` to PublishContainer title and `dark:text-gray-400` to descriptions. ([#184](https://github.com/GabrielToth/gabrieltoth.com/issues/184), [#190](https://github.com/GabrielToth/gabrieltoth.com/pull/190))
 
