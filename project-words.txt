@@ -1433,3 +1433,10 @@ transaccion
 transformacion
 transmision
 Visualizacion
+Informacion
+Identificacion
+Analisis
+Prevencion
+Proteccion
+Eliminacion
+Visualizacion
