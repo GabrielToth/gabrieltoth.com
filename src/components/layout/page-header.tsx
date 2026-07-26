@@ -20,8 +20,12 @@ export default function PageHeader({
     children,
 }: PageHeaderProps) {
     return (
-        <section className={`w-full py-16 md:py-24 bg-muted dark:from-blue-900/20 dark:to-primary/10 ${className}`}>
-            <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center ${containerClassName}`}>
+        <section
+            className={`w-full py-16 md:py-24 bg-muted dark:from-blue-900/20 dark:to-primary/10 ${className}`}
+        >
+            <div
+                className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center ${containerClassName}`}
+            >
                 <div className="flex flex-col items-center justify-center space-y-4">
                     {/* Eyebrow text - small uppercase */}
                     <div className="inline-block">

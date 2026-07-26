@@ -149,13 +149,7 @@
                 "title": "Sistema SAT Fiscal - Website",
                 "description": "Website institucional para empresa especializada em soluções fiscais e contábeis. Desenvolvido com foco em apresentar serviços fiscais, gestão tributária e soluções empresariais de forma clara e profissional.",
                 "image": "/projects/sat-fiscal.jpg",
-                "tags": [
-                    "HTML",
-                    "CSS",
-                    "JavaScript",
-                    "SEO",
-                    "Design"
-                ],
+                "tags": ["HTML", "CSS", "JavaScript", "SEO", "Design"],
                 "liveUrl": "https://sistemasatfiscal.com.br",
                 "featured": true
             },
@@ -163,12 +157,7 @@
                 "title": "Softclever - Website",
                 "description": "Site empresarial desenvolvido em React para empresa de software, com design moderno e responsivo. Implementa seções para serviços, portfólio e contato, utilizando tecnologias como React, CSS moderno e otimizações de SEO.",
                 "image": "/projects/softclever.jpg",
-                "tags": [
-                    "React",
-                    "CSS",
-                    "JavaScript",
-                    "SEO"
-                ],
+                "tags": ["React", "CSS", "JavaScript", "SEO"],
                 "liveUrl": "https://softclever.com.br",
                 "githubUrl": "https://github.com/gabrieltoth/softclever"
             },
@@ -190,12 +179,7 @@
                 "title": "PC Optimization Service",
                 "description": "Serviço especializado de otimização de PCs para gaming, com foco em maximizar performance em jogos e reduzir latência. Inclui configurações avançadas de sistema, otimização de hardware e software personalizado.",
                 "image": "/projects/pc-optimization.jpg",
-                "tags": [
-                    "Windows",
-                    "Gaming",
-                    "Performance",
-                    "Hardware"
-                ],
+                "tags": ["Windows", "Gaming", "Performance", "Hardware"],
                 "slug": "/pc-optimization"
             }
         ]

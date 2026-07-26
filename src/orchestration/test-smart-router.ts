@@ -14,7 +14,9 @@ async function test() {
     // Test 2: Simple task
     console.log("━━━ Test 2: Simple Task ━━━")
     const start2 = Date.now()
-    const simple = await conductor.execute("Add a comment to the Conductor class")
+    const simple = await conductor.execute(
+        "Add a comment to the Conductor class"
+    )
     console.log(`✓ Completed in ${Date.now() - start2}ms`)
     console.log(`Result: ${simple.slice(0, 150)}...\n`)
 

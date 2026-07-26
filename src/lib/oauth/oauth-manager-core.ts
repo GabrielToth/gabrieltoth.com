@@ -252,7 +252,12 @@ export class OAuthManager {
         try {
             // Generate HMAC-signed state token (no Redis needed)
             // The state contains userId, platform, locale, redirectTo, and timestamp — signed with HMAC-SHA256
-            const signedState = generateState(userId, platform, locale, redirectTo)
+            const signedState = generateState(
+                userId,
+                platform,
+                locale,
+                redirectTo
+            )
             const state = signedState.token
 
             // Build authorization URL
@@ -339,7 +344,11 @@ export class OAuthManager {
                 return { valid: false }
             }
 
-            return { valid: true, locale: result.payload?.locale, redirectTo: result.payload?.redirectTo }
+            return {
+                valid: true,
+                locale: result.payload?.locale,
+                redirectTo: result.payload?.redirectTo,
+            }
         } catch (error) {
             logger.error("State validation failed", {
                 platform,

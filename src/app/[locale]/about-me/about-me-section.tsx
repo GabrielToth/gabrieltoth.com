@@ -6,9 +6,7 @@ interface AboutMeSectionProps {
     locale: Locale
 }
 
-export default async function AboutMeSection({
-    locale,
-}: AboutMeSectionProps) {
+export default async function AboutMeSection({ locale }: AboutMeSectionProps) {
     const t = await getTranslations({ locale, namespace: "aboutMe" })
 
     return (

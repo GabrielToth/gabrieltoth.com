@@ -27,6 +27,8 @@ async function main() {
 }
 
 main().catch(error => {
-    logger.error(`Fatal error: ${error instanceof Error ? error.message : String(error)}`)
+    logger.error(
+        `Fatal error: ${error instanceof Error ? error.message : String(error)}`
+    )
     process.exit(1)
 })

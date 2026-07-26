@@ -3,7 +3,10 @@ import { createLogger } from "@/lib/logger"
 import { createClient } from "@supabase/supabase-js"
 import { NextRequest, NextResponse } from "next/server"
 import { getTokenStore } from "@/lib/token-store"
-import { isTerminalTokenError, markAccountDisconnected } from "@/lib/auth/token-health"
+import {
+    isTerminalTokenError,
+    markAccountDisconnected,
+} from "@/lib/auth/token-health"
 import { MessageAggregator } from "@/lib/realtime/message-aggregator"
 import { getTwitchConfig } from "@/lib/twitch/config"
 
@@ -435,7 +438,11 @@ async function sendYouTubeMessage(
         const err = error instanceof Error ? error : new Error(String(error))
         logger.error("YouTube send failed", err)
         return NextResponse.json(
-            { success: false, error: "YOUTUBE_SEND_FAILED", message: err.message },
+            {
+                success: false,
+                error: "YOUTUBE_SEND_FAILED",
+                message: err.message,
+            },
             { status: 500 }
         )
     }
@@ -487,7 +494,11 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
             )
         }
 
-        if (platform !== "twitch" && platform !== "kick" && platform !== "youtube") {
+        if (
+            platform !== "twitch" &&
+            platform !== "kick" &&
+            platform !== "youtube"
+        ) {
             return NextResponse.json(
                 { success: false, error: "UNSUPPORTED_PLATFORM" },
                 { status: 400 }

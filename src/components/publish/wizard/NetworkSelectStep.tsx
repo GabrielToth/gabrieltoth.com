@@ -80,7 +80,9 @@ const BASE_NETWORKS: PlatformInfo[] = [
         id: "twitter",
         labelKey: "step1.twitter",
         descKey: "step1.twitterDesc",
-        icon: <SiX className="h-6 w-6 text-foreground dark:text-muted-foreground" />,
+        icon: (
+            <SiX className="h-6 w-6 text-foreground dark:text-muted-foreground" />
+        ),
         features: ["text", "images"],
     },
     {

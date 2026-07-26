@@ -56,7 +56,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
         null
     )
     const [connectionError, setConnectionError] = useState<string | null>(null)
-    const [channelStatuses, setChannelStatuses] = useState<Record<string, ChannelStatus>>({})
+    const [channelStatuses, setChannelStatuses] = useState<
+        Record<string, ChannelStatus>
+    >({})
 
     useEffect(() => {
         async function fetchStatuses() {
@@ -67,19 +69,27 @@ export const Sidebar: React.FC<SidebarProps> = ({
                     const notifications = data.data || []
                     const hasErrors = new Set<string>(
                         notifications
-                            .filter((n: { platform?: string; type: string }) => n.platform && n.type === "error")
+                            .filter(
+                                (n: { platform?: string; type: string }) =>
+                                    n.platform && n.type === "error"
+                            )
                             .map((n: { platform: string }) => n.platform)
                     )
                     const hasWarnings = new Set<string>(
                         notifications
-                            .filter((n: { platform?: string; type: string }) => n.platform && n.type === "warning")
+                            .filter(
+                                (n: { platform?: string; type: string }) =>
+                                    n.platform && n.type === "warning"
+                            )
                             .map((n: { platform: string }) => n.platform)
                     )
                     setChannelStatuses(prev => {
                         const updated = { ...prev }
-                        for (const plat of hasErrors) updated[plat] = "attention"
+                        for (const plat of hasErrors)
+                            updated[plat] = "attention"
                         for (const plat of hasWarnings) {
-                            if (!updated[plat] || updated[plat] !== "attention") updated[plat] = "attention"
+                            if (!updated[plat] || updated[plat] !== "attention")
+                                updated[plat] = "attention"
                         }
                         return updated
                     })
@@ -143,11 +153,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
         { id: "linkedin", name: "LinkedIn", icon: "in" },
     ] as const
 
-    const STATUS_DOT: Record<ChannelStatus, { color: string; label: string }> = {
-        connected: { color: "bg-success", label: "Connected" },
-        disconnected: { color: "bg-muted", label: "Disconnected" },
-        attention: { color: "bg-error", label: "Needs attention" },
-    }
+    const STATUS_DOT: Record<ChannelStatus, { color: string; label: string }> =
+        {
+            connected: { color: "bg-success", label: "Connected" },
+            disconnected: { color: "bg-muted", label: "Disconnected" },
+            attention: { color: "bg-error", label: "Needs attention" },
+        }
 
     return (
         <>
@@ -323,7 +334,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                     </div>
                 </div>
 
-                    {/* Connect Channels Section */}
+                {/* Connect Channels Section */}
                 <div className="border-t border-border dark:border-border px-6 py-4">
                     <h3 className="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground dark:text-muted-foreground">
                         {t("connectChannels")}
@@ -338,15 +349,22 @@ export const Sidebar: React.FC<SidebarProps> = ({
                             const status = channelStatuses[channel.id]
                             const dot = status ? STATUS_DOT[status] : null
                             return (
-                                <div key={channel.id} className="relative inline-flex">
+                                <div
+                                    key={channel.id}
+                                    className="relative inline-flex"
+                                >
                                     <button
-                                        onClick={() => handleChannelConnect(channel.id)}
+                                        onClick={() =>
+                                            handleChannelConnect(channel.id)
+                                        }
                                         className="flex h-11 w-11 items-center justify-center rounded-lg border border-border bg-card text-sm font-medium text-muted-foreground hover:border-primary/50 hover:bg-primary/5 hover:text-primary transition-colors min-h-11 min-w-11 dark:border-border dark:bg-card dark:text-muted-foreground dark:hover:bg-primary/20 dark:hover:text-primary"
                                         title={channel.name}
                                         aria-label={lt("connectChannel", {
                                             channel: channel.name,
                                         })}
-                                        disabled={connectingChannel === channel.id}
+                                        disabled={
+                                            connectingChannel === channel.id
+                                        }
                                     >
                                         {channel.icon}
                                     </button>
@@ -392,7 +410,6 @@ export const Sidebar: React.FC<SidebarProps> = ({
                     </Button>
                 </div>
             </aside>
-
         </>
     )
 }

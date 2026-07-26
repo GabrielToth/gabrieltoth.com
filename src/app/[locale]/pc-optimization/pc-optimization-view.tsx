@@ -283,7 +283,9 @@ export default function PCOptimizationView({
                         {t("cta.subtitle")}
                     </p>
                     <a
-                        href={generatePCOptimizationWhatsAppMessage(tw("message"))}
+                        href={generatePCOptimizationWhatsAppMessage(
+                            tw("message")
+                        )}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="inline-block px-8 py-4 bg-white text-primary hover:bg-muted rounded-lg font-semibold text-lg transition-all duration-300 transform hover:scale-105"

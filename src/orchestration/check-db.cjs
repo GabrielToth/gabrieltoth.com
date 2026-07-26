@@ -1,5 +1,7 @@
 const Database = require("better-sqlite3")
-const db = new Database("C:/Users/User/.omniroute/storage.sqlite", { readonly: true })
+const db = new Database("C:/Users/User/.omniroute/storage.sqlite", {
+    readonly: true,
+})
 
 try {
     const settings = db.prepare("SELECT key, value FROM settings").all()
@@ -12,7 +14,9 @@ try {
 }
 
 try {
-    const apiKeys = db.prepare("SELECT id, key_prefix, name FROM api_keys LIMIT 10").all()
+    const apiKeys = db
+        .prepare("SELECT id, key_prefix, name FROM api_keys LIMIT 10")
+        .all()
     console.log("\n=== API KEYS ===")
     if (apiKeys.length === 0) {
         console.log("No API keys found")

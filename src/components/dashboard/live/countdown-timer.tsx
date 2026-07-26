@@ -106,7 +106,9 @@ export function CountdownTimer({
                         <div className="text-3xl font-bold text-foreground dark:text-foreground">
                             {timeRemaining.days}
                         </div>
-                        <div className="text-xs text-muted-foreground">days</div>
+                        <div className="text-xs text-muted-foreground">
+                            days
+                        </div>
                     </div>
                 )}
                 <div className="text-center">

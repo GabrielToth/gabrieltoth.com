@@ -28,11 +28,13 @@ function isLanAddress(ip: string): boolean {
     return false
 }
 
-function isLocalRequest(info: { req: { socket: { remoteAddress?: string }; headers: Record<string, string | string[] | undefined> } }): boolean {
-    const remote = (info.req.socket.remoteAddress || "").replace(
-        /^::ffff:/,
-        ""
-    )
+function isLocalRequest(info: {
+    req: {
+        socket: { remoteAddress?: string }
+        headers: Record<string, string | string[] | undefined>
+    }
+}): boolean {
+    const remote = (info.req.socket.remoteAddress || "").replace(/^::ffff:/, "")
     const cfIp = (info.req.headers["cf-connecting-ip"] || "") as string
     if (isLanAddress(remote)) return true
     if (cfIp && isLanAddress(cfIp)) return true
@@ -151,7 +153,11 @@ wss.on("connection", (ws: WebSocket, req) => {
             const msg = JSON.parse(raw.toString())
 
             if (msg.type === "connect" && msg.platform === "youtube") {
-                await handleYouTubeConnect(clientInfo, msg.token, msg.liveChatId)
+                await handleYouTubeConnect(
+                    clientInfo,
+                    msg.token,
+                    msg.liveChatId
+                )
                 return
             }
 
@@ -206,7 +212,10 @@ async function handleYouTubeConnect(
     const relay = new YouTubeStreamListRelay(token)
 
     relay.on("connected", (liveChatId: string) => {
-        log("YouTube gRPC stream connected", { liveChatId, userId: client.userId })
+        log("YouTube gRPC stream connected", {
+            liveChatId,
+            userId: client.userId,
+        })
         youtubeRelays.set(client.userId, relay)
         client.platforms.set("youtube", {
             platform: "youtube",
@@ -226,7 +235,7 @@ async function handleYouTubeConnect(
         }
     })
 
-    relay.on("message", (msg) => {
+    relay.on("message", msg => {
         if (client.ws.readyState === WebSocket.OPEN) {
             client.ws.send(
                 JSON.stringify({
@@ -285,7 +294,10 @@ async function handleYouTubeConnect(
     })
 
     relay.on("error", (error: Error) => {
-        log("YouTube gRPC error", { error: error.message, userId: client.userId })
+        log("YouTube gRPC error", {
+            error: error.message,
+            userId: client.userId,
+        })
         if (client.ws.readyState === WebSocket.OPEN) {
             client.ws.send(
                 JSON.stringify({

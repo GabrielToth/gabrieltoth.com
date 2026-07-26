@@ -61,7 +61,9 @@ export class BugHunter {
         // Check if site is reachable before starting
         const isUp = await this.checkSiteHealth()
         if (!isUp) {
-            logger.error(`Site not reachable at ${this.baseUrl} - Bug Hunter will not start`)
+            logger.error(
+                `Site not reachable at ${this.baseUrl} - Bug Hunter will not start`
+            )
             logger.info("Start your dev server first: npm run dev")
             return
         }
@@ -103,9 +105,9 @@ export class BugHunter {
 
     private async checkSiteHealth(): Promise<boolean> {
         try {
-            const res = await fetch(this.baseUrl, { 
+            const res = await fetch(this.baseUrl, {
                 method: "HEAD",
-                signal: AbortSignal.timeout(5000)
+                signal: AbortSignal.timeout(5000),
             })
             return res.ok
         } catch {
@@ -339,10 +341,7 @@ export class BugHunter {
         await new Promise(resolve => setTimeout(resolve, 3000))
     }
 
-    private async checkResponsive(
-        page: Page,
-        sizes: number[]
-    ): Promise<void> {
+    private async checkResponsive(page: Page, sizes: number[]): Promise<void> {
         logger.info(`Check responsive for sizes: ${sizes.join(", ")}`)
 
         for (const width of sizes) {
@@ -424,9 +423,11 @@ export class BugHunter {
     private async testErrorBoundaries(page: Page): Promise<void> {
         logger.info("Test error boundaries")
 
-        await page.evaluate(() => {
-            throw new Error("Test error boundary")
-        }).catch(() => {})
+        await page
+            .evaluate(() => {
+                throw new Error("Test error boundary")
+            })
+            .catch(() => {})
 
         await new Promise(resolve => setTimeout(resolve, 2000))
     }
@@ -437,8 +438,8 @@ export class BugHunter {
         const inputs = await page.$$("input[type=email]")
         for (const input of inputs) {
             await input.type("invalid-email")
-            const form = await input.evaluateHandle(
-                el => (el as HTMLElement).closest("form")
+            const form = await input.evaluateHandle(el =>
+                (el as HTMLElement).closest("form")
             )
             if (form) {
                 try {
@@ -527,10 +528,10 @@ ${errorInfo.screenshot ? `\n**Screenshot:** ${errorInfo.screenshot}` : ""}
                 { cwd: process.cwd() }
             )
             logger.info(`✅ GitHub issue created: ${title}`)
-            } catch (error) {
-                logger.error(
-                    `Failed to create issue: ${error instanceof Error ? error.message : String(error)}`
-                )
+        } catch (error) {
+            logger.error(
+                `Failed to create issue: ${error instanceof Error ? error.message : String(error)}`
+            )
         }
     }
 }

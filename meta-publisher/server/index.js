@@ -49,7 +49,11 @@ const tusServer = new Server(fileStore, {
         const taskId = extractAuth(req)
         if (!taskId) {
             res.statusCode = 401
-            res.end(JSON.stringify({ error: "Missing or invalid Authorization header. Format: Bearer <taskId>" }))
+            res.end(
+                JSON.stringify({
+                    error: "Missing or invalid Authorization header. Format: Bearer <taskId>",
+                })
+            )
             return { completed: true }
         }
 
@@ -73,7 +77,11 @@ const tusServer = new Server(fileStore, {
 
         if (task.status !== "uploading") {
             res.statusCode = 400
-            res.end(JSON.stringify({ error: `Task is in '${task.status}' state, expected 'uploading'` }))
+            res.end(
+                JSON.stringify({
+                    error: `Task is in '${task.status}' state, expected 'uploading'`,
+                })
+            )
             return { completed: true }
         }
 

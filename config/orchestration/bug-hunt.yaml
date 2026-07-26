@@ -1,47 +1,47 @@
 bug_hunt:
-  - name: "page-cruiser"
-    schedule: "every 6h"
-    maxPages: 50
-    actions:
-      - type: "navigate"
-        url: "/"
-      - type: "navigate"
-        url: "/dashboard"
-      - type: "navigate"
-        url: "/dashboard/publish"
-      - type: "navigate"
-        url: "/dashboard/live"
-      - type: "navigate"
-        url: "/dashboard/channels"
-      - type: "click_all_links"
-      - type: "fill_random_forms"
-      - type: "check_console_errors"
-    onError:
-      - type: "screenshot"
-      - type: "capture_console"
-      - type: "create_issue"
+    - name: "page-cruiser"
+      schedule: "every 6h"
+      maxPages: 50
+      actions:
+          - type: "navigate"
+            url: "/"
+          - type: "navigate"
+            url: "/dashboard"
+          - type: "navigate"
+            url: "/dashboard/publish"
+          - type: "navigate"
+            url: "/dashboard/live"
+          - type: "navigate"
+            url: "/dashboard/channels"
+          - type: "click_all_links"
+          - type: "fill_random_forms"
+          - type: "check_console_errors"
+      onError:
+          - type: "screenshot"
+          - type: "capture_console"
+          - type: "create_issue"
 
-  - name: "ui-checker"
-    schedule: "every 24h"
-    maxPages: 20
-    actions:
-      - type: "check_responsive"
-        sizes: [375, 768, 1024, 1440]
-      - type: "check_contrast"
-      - type: "check_overlapping_elements"
-    onError:
-      - type: "screenshot"
-      - type: "create_issue"
+    - name: "ui-checker"
+      schedule: "every 24h"
+      maxPages: 20
+      actions:
+          - type: "check_responsive"
+            sizes: [375, 768, 1024, 1440]
+          - type: "check_contrast"
+          - type: "check_overlapping_elements"
+      onError:
+          - type: "screenshot"
+          - type: "create_issue"
 
-  - name: "edge-tester"
-    schedule: "every 12h"
-    maxPages: 10
-    actions:
-      - type: "test_empty_states"
-      - type: "test_error_boundaries"
-      - type: "test_input_validation"
-    onError:
-      - type: "screenshot"
-      - type: "capture_console"
-      - type: "capture_network_logs"
-      - type: "create_issue"
+    - name: "edge-tester"
+      schedule: "every 12h"
+      maxPages: 10
+      actions:
+          - type: "test_empty_states"
+          - type: "test_error_boundaries"
+          - type: "test_input_validation"
+      onError:
+          - type: "screenshot"
+          - type: "capture_console"
+          - type: "capture_network_logs"
+          - type: "create_issue"

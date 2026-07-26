@@ -20,7 +20,8 @@ const SUPABASE_URL = process.env.SUPABASE_URL
 const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY
 const POLL_INTERVAL = parseInt(process.env.POLL_INTERVAL, 10) || 10000
 const CHROME_PORT = parseInt(process.env.CHROME_PORT, 10) || 9222
-const PUBLISH_SCRIPT = process.env.PUBLISH_SCRIPT || path.join(__dirname, "publish-meta.js")
+const PUBLISH_SCRIPT =
+    process.env.PUBLISH_SCRIPT || path.join(__dirname, "publish-meta.js")
 const UPLOAD_DIR = process.env.UPLOAD_DIR || "C:\\meta-pub\\uploads"
 const LOG_DIR = process.env.LOG_DIR || path.join(__dirname, "logs")
 
@@ -45,7 +46,10 @@ function log(level, message, data) {
     const line = JSON.stringify(entry)
     console.log(line)
     fs.appendFileSync(
-        path.join(LOG_DIR, `worker-${new Date().toISOString().slice(0, 10)}.log`),
+        path.join(
+            LOG_DIR,
+            `worker-${new Date().toISOString().slice(0, 10)}.log`
+        ),
         line + "\n"
     )
 }
@@ -96,7 +100,9 @@ async function processTask(task) {
             maxBuffer: 10 * 1024 * 1024,
         })
 
-        const resultMatch = output.match(/---RESULT---\n([\s\S]*?)\n---END RESULT---/)
+        const resultMatch = output.match(
+            /---RESULT---\n([\s\S]*?)\n---END RESULT---/
+        )
         if (!resultMatch) {
             throw new Error("Could not parse script output")
         }

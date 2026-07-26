@@ -4,7 +4,10 @@ import { createClient } from "@supabase/supabase-js"
 import jwt from "jsonwebtoken"
 import { NextRequest } from "next/server"
 import { getTokenStore } from "@/lib/token-store"
-import { isTerminalTokenError, markAccountDisconnected } from "@/lib/auth/token-health"
+import {
+    isTerminalTokenError,
+    markAccountDisconnected,
+} from "@/lib/auth/token-health"
 
 const logger = createLogger("RelayTokenEndpoint")
 
@@ -22,7 +25,10 @@ export async function GET(request: NextRequest): Promise<Response> {
         if (!secret) {
             logger.error("Relay: JWT_SECRET not configured")
             return new Response(
-                JSON.stringify({ success: false, error: "SERVER_CONFIG_ERROR" }),
+                JSON.stringify({
+                    success: false,
+                    error: "SERVER_CONFIG_ERROR",
+                }),
                 { status: 500, headers: { "Content-Type": "application/json" } }
             )
         }
@@ -45,7 +51,10 @@ export async function GET(request: NextRequest): Promise<Response> {
             .eq("status", "connected")
             .in("platform", ["youtube", "twitch", "kick"])
 
-        const platforms: Record<string, { channelName: string; accessToken?: string }> = {}
+        const platforms: Record<
+            string,
+            { channelName: string; accessToken?: string }
+        > = {}
 
         for (const network of networks || []) {
             const plat = network.platform
@@ -57,16 +66,27 @@ export async function GET(request: NextRequest): Promise<Response> {
                 const tokenStore = getTokenStore()
                 let stored = await tokenStore.getToken(userId, plat)
 
-                if (plat === "youtube" && stored?.refreshToken && stored.expiresAt && stored.expiresAt < Date.now()) {
+                if (
+                    plat === "youtube" &&
+                    stored?.refreshToken &&
+                    stored.expiresAt &&
+                    stored.expiresAt < Date.now()
+                ) {
                     try {
-                        const { getYouTubeOAuthService } = await import("@/lib/youtube/oauth-service")
-                        const { getYouTubeChannelLinkingConfig } = await import("@/lib/youtube/config")
+                        const { getYouTubeOAuthService } =
+                            await import("@/lib/youtube/oauth-service")
+                        const { getYouTubeChannelLinkingConfig } =
+                            await import("@/lib/youtube/config")
                         const { validateEnv } = await import("@/lib/config/env")
-                        const config = getYouTubeChannelLinkingConfig(validateEnv())
+                        const config =
+                            getYouTubeChannelLinkingConfig(validateEnv())
                         const oauth = getYouTubeOAuthService(config)
                         await oauth.initialize()
-                        const refreshed = await oauth.refreshAccessToken(stored.refreshToken)
-                        const expiresAt = Date.now() + refreshed.expiresIn * 1000
+                        const refreshed = await oauth.refreshAccessToken(
+                            stored.refreshToken
+                        )
+                        const expiresAt =
+                            Date.now() + refreshed.expiresIn * 1000
                         await tokenStore.refreshToken(userId, "youtube", {
                             accessToken: refreshed.accessToken,
                             refreshToken: refreshed.refreshToken,
@@ -76,10 +96,17 @@ export async function GET(request: NextRequest): Promise<Response> {
                         })
                         stored = await tokenStore.getToken(userId, "youtube")
                     } catch (err) {
-                        const msg = err instanceof Error ? err.message : String(err)
-                        logger.error("YouTube token refresh failed", { userId, error: msg })
+                        const msg =
+                            err instanceof Error ? err.message : String(err)
+                        logger.error("YouTube token refresh failed", {
+                            userId,
+                            error: msg,
+                        })
                         if (isTerminalTokenError(msg)) {
-                            await markAccountDisconnected(userId, "youtube").catch(() => {})
+                            await markAccountDisconnected(
+                                userId,
+                                "youtube"
+                            ).catch(() => {})
                         }
                     }
                 }
@@ -88,7 +115,10 @@ export async function GET(request: NextRequest): Promise<Response> {
                     info.accessToken = stored.accessToken
                 }
             } catch (tokenErr) {
-                logger.warn(`Failed to retrieve ${plat} token`, { userId, error: String(tokenErr) })
+                logger.warn(`Failed to retrieve ${plat} token`, {
+                    userId,
+                    error: String(tokenErr),
+                })
             }
 
             platforms[plat] = info

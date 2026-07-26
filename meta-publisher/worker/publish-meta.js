@@ -97,7 +97,8 @@ async function publishVideo(page, task) {
 
     if (hashtags && Array.isArray(hashtags)) {
         const existingText = description || ""
-        const tagText = existingText + " " + hashtags.map(h => `#${h}`).join(" ")
+        const tagText =
+            existingText + " " + hashtags.map(h => `#${h}`).join(" ")
         await typeText(page, 'div[aria-label*="description" i]', tagText)
     }
 
@@ -128,7 +129,11 @@ async function publishPost(page, task) {
     await clickAndWait(page, 'span:has-text("Post")', 2000)
 
     if (description) {
-        await typeText(page, 'div[role="textbox"][aria-label*="post" i]', description)
+        await typeText(
+            page,
+            'div[role="textbox"][aria-label*="post" i]',
+            description
+        )
     }
 
     if (imagePaths && Array.isArray(imagePaths)) {
@@ -140,7 +145,9 @@ async function publishPost(page, task) {
 
     if (hashtags && Array.isArray(hashtags)) {
         const tagText = " " + hashtags.map(h => `#${h}`).join(" ")
-        const textbox = await page.$('div[role="textbox"][aria-label*="post" i]')
+        const textbox = await page.$(
+            'div[role="textbox"][aria-label*="post" i]'
+        )
         if (textbox) {
             await textbox.type(tagText, { delay: 30 })
         }

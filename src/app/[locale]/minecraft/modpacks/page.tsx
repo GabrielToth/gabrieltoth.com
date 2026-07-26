@@ -32,7 +32,10 @@ export async function generateMetadata({
 export default async function ModpacksPage({ params }: ModpacksPageProps) {
     const { locale } = await params
     const t = await getTranslations({ locale, namespace: "minecraft" })
-    const tHero = await getTranslations({ locale, namespace: "minecraftModpacksPageHero" })
+    const tHero = await getTranslations({
+        locale,
+        namespace: "minecraftModpacksPageHero",
+    })
 
     return (
         <>

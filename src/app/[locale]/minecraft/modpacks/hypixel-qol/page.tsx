@@ -35,7 +35,10 @@ export async function generateMetadata({
 export default async function HypixelQolPage({ params }: HypixelQolPageProps) {
     const { locale } = await params
     const t = await getTranslations({ locale, namespace: "minecraft" })
-    const tHero = await getTranslations({ locale, namespace: "minecraftHypixelQolPageHero" })
+    const tHero = await getTranslations({
+        locale,
+        namespace: "minecraftHypixelQolPageHero",
+    })
 
     return (
         <>

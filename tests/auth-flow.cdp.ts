@@ -9,15 +9,29 @@ const BASE = "https://www.gabrieltoth.com"
 const CHROME = "C:/Program Files/Google/Chrome/Application/chrome.exe"
 
 function question(query: string): Promise<string> {
-    const rl = readline.createInterface({ input: process.stdin, output: process.stdout })
-    return new Promise((resolve) => rl.question(query, (a) => { rl.close(); resolve(a) }))
+    const rl = readline.createInterface({
+        input: process.stdin,
+        output: process.stdout,
+    })
+    return new Promise(resolve =>
+        rl.question(query, a => {
+            rl.close()
+            resolve(a)
+        })
+    )
 }
 
 async function httpGet(url: string): Promise<boolean> {
-    return new Promise((resolve) => {
-        const req = http.get(url, (res) => { res.resume(); resolve(res.statusCode === 200) })
+    return new Promise(resolve => {
+        const req = http.get(url, res => {
+            res.resume()
+            resolve(res.statusCode === 200)
+        })
         req.on("error", () => resolve(false))
-        req.setTimeout(2000, () => { req.destroy(); resolve(false) })
+        req.setTimeout(2000, () => {
+            req.destroy()
+            resolve(false)
+        })
     })
 }
 
@@ -33,12 +47,14 @@ async function main() {
     console.log("=== Auth Flow E2E (your REAL Chrome) ===\n")
 
     // Phase 0: Check if Chrome already has CDP running
-    const alreadyRunning = await httpGet(`http://127.0.0.1:${CDP_PORT}/json/version`)
+    const alreadyRunning = await httpGet(
+        `http://127.0.0.1:${CDP_PORT}/json/version`
+    )
 
     if (!alreadyRunning) {
         const answer = await question(
             "This will KILL all existing Chrome windows and restart with remote debugging.\n" +
-            "Save your work in other tabs first. Continue? (y/N): "
+                "Save your work in other tabs first. Continue? (y/N): "
         )
         if (answer.toLowerCase() !== "y") {
             console.log("Aborted.")
@@ -46,14 +62,22 @@ async function main() {
         }
 
         console.log("\nKilling Chrome and restarting with remote debugging...")
-        try { execSync("taskkill /F /IM chrome.exe /T", { stdio: "pipe" }) } catch { /* ok */ }
+        try {
+            execSync("taskkill /F /IM chrome.exe /T", { stdio: "pipe" })
+        } catch {
+            /* ok */
+        }
         await setTimeout(2000)
 
-        const proc = spawn(CHROME, [
-            `--remote-debugging-port=${CDP_PORT}`,
-            "--no-first-run",
-            "--no-default-browser-check",
-        ], { stdio: "ignore", detached: true })
+        const proc = spawn(
+            CHROME,
+            [
+                `--remote-debugging-port=${CDP_PORT}`,
+                "--no-first-run",
+                "--no-default-browser-check",
+            ],
+            { stdio: "ignore", detached: true }
+        )
         proc.unref()
 
         await waitForChrome(CDP_PORT)
@@ -69,7 +93,9 @@ async function main() {
 
     // Connect via CDP
     console.log("[2/7] Connecting to your Chrome...")
-    const browser = await chromium.connectOverCDP(`http://127.0.0.1:${CDP_PORT}`)
+    const browser = await chromium.connectOverCDP(
+        `http://127.0.0.1:${CDP_PORT}`
+    )
     const ctx = browser.contexts()[0]
     const page = await ctx.newPage()
     console.log("  Connected.\n")
@@ -111,7 +137,7 @@ async function main() {
     console.log("=== Done ===")
 }
 
-main().catch((err) => {
+main().catch(err => {
     console.error("Error:", err)
     process.exit(1)
 })

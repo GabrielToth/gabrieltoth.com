@@ -14,7 +14,10 @@ import { getTwitchOAuthService } from "@/lib/twitch/oauth-service"
 import { getYouTubeOAuthService } from "@/lib/youtube/oauth-service"
 import { getYouTubeChannelLinkingConfig } from "@/lib/youtube/config"
 import { validateEnv } from "@/lib/config/env"
-import { isTerminalTokenError, markAccountDisconnected } from "@/lib/auth/token-health"
+import {
+    isTerminalTokenError,
+    markAccountDisconnected,
+} from "@/lib/auth/token-health"
 import { createClient } from "@supabase/supabase-js"
 import { NextRequest, NextResponse } from "next/server"
 
@@ -40,25 +43,38 @@ async function getValidAccessToken(
     }
 
     try {
-        let refreshed: { accessToken: string; refreshToken?: string; expiresIn: number }
+        let refreshed: {
+            accessToken: string
+            refreshToken?: string
+            expiresIn: number
+        }
 
         if (platform === "twitch") {
             const config = getTwitchConfig()
             const oauthService = getTwitchOAuthService(config)
             await oauthService.initialize()
-            refreshed = await oauthService.refreshAccessToken(storedToken.refreshToken)
+            refreshed = await oauthService.refreshAccessToken(
+                storedToken.refreshToken
+            )
         } else if (platform === "kick") {
             const config = getKickConfig()
             const oauthService = getKickOAuthService(config)
             await oauthService.initialize()
-            refreshed = await oauthService.refreshAccessToken(storedToken.refreshToken)
+            refreshed = await oauthService.refreshAccessToken(
+                storedToken.refreshToken
+            )
         } else if (platform === "youtube") {
             const ytConfig = getYouTubeChannelLinkingConfig(validateEnv())
             const ytOAuthService = getYouTubeOAuthService(ytConfig)
             await ytOAuthService.initialize()
-            refreshed = await ytOAuthService.refreshAccessToken(storedToken.refreshToken)
+            refreshed = await ytOAuthService.refreshAccessToken(
+                storedToken.refreshToken
+            )
         } else {
-            return { accessToken: storedToken.accessToken, error: "UNSUPPORTED_PLATFORM" }
+            return {
+                accessToken: storedToken.accessToken,
+                error: "UNSUPPORTED_PLATFORM",
+            }
         }
 
         const expiresAt = Date.now() + refreshed.expiresIn * 1000
@@ -153,23 +169,33 @@ async function forceRefreshAccessToken(
     }
 
     try {
-        let refreshed: { accessToken: string; refreshToken?: string; expiresIn: number }
+        let refreshed: {
+            accessToken: string
+            refreshToken?: string
+            expiresIn: number
+        }
 
         if (platform === "twitch") {
             const config = getTwitchConfig()
             const oauthService = getTwitchOAuthService(config)
             await oauthService.initialize()
-            refreshed = await oauthService.refreshAccessToken(storedToken.refreshToken)
+            refreshed = await oauthService.refreshAccessToken(
+                storedToken.refreshToken
+            )
         } else if (platform === "kick") {
             const config = getKickConfig()
             const oauthService = getKickOAuthService(config)
             await oauthService.initialize()
-            refreshed = await oauthService.refreshAccessToken(storedToken.refreshToken)
+            refreshed = await oauthService.refreshAccessToken(
+                storedToken.refreshToken
+            )
         } else if (platform === "youtube") {
             const ytConfig = getYouTubeChannelLinkingConfig(validateEnv())
             const ytOAuthService = getYouTubeOAuthService(ytConfig)
             await ytOAuthService.initialize()
-            refreshed = await ytOAuthService.refreshAccessToken(storedToken.refreshToken)
+            refreshed = await ytOAuthService.refreshAccessToken(
+                storedToken.refreshToken
+            )
         } else {
             return null
         }
@@ -419,11 +445,12 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
             return NextResponse.json(
                 {
                     success: false,
-                    error: tokenError === "TOKEN_REFRESH_FAILED"
-                        ? "TOKEN_REFRESH_FAILED"
-                        : tokenError === "EXPIRED_NO_REFRESH"
-                        ? "TOKEN_EXPIRED"
-                        : "PLATFORM_NOT_CONNECTED",
+                    error:
+                        tokenError === "TOKEN_REFRESH_FAILED"
+                            ? "TOKEN_REFRESH_FAILED"
+                            : tokenError === "EXPIRED_NO_REFRESH"
+                              ? "TOKEN_EXPIRED"
+                              : "PLATFORM_NOT_CONNECTED",
                 },
                 { status: 401 }
             )
@@ -432,19 +459,24 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         let resolvedGameId: string | undefined = game_id
         if (game_id && !/^\d+$/.test(game_id)) {
             if (platform === "twitch") {
-                resolvedGameId = (await resolveTwitchGameId(
-                    game_id,
-                    process.env.TWITCH_CLIENT_ID || "",
-                    accessToken
-                )) ?? undefined
+                resolvedGameId =
+                    (await resolveTwitchGameId(
+                        game_id,
+                        process.env.TWITCH_CLIENT_ID || "",
+                        accessToken
+                    )) ?? undefined
             } else {
-                resolvedGameId = (await resolveKickGameId(game_id, accessToken)) ?? undefined
+                resolvedGameId =
+                    (await resolveKickGameId(game_id, accessToken)) ?? undefined
             }
             if (!resolvedGameId) {
-                logger.warn("Could not resolve game name to ID, skipping game_id", {
-                    input: game_id,
-                    platform,
-                })
+                logger.warn(
+                    "Could not resolve game name to ID, skipping game_id",
+                    {
+                        input: game_id,
+                        platform,
+                    }
+                )
             }
         }
 
@@ -460,14 +492,21 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         } else if (platform === "kick") {
             result = await updateKickStream(accessToken, title)
         } else {
-            result = await updateYouTubeStream(accessToken, title, resolvedGameId)
+            result = await updateYouTubeStream(
+                accessToken,
+                title,
+                resolvedGameId
+            )
         }
 
         if (!result.success && result.error?.includes("(401)")) {
-            logger.info("API returned 401, attempting token refresh and retry", {
-                platform,
-                userId: session.user.id,
-            })
+            logger.info(
+                "API returned 401, attempting token refresh and retry",
+                {
+                    platform,
+                    userId: session.user.id,
+                }
+            )
 
             const refreshed = await forceRefreshAccessToken(
                 session.user.id,
@@ -485,7 +524,11 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
                 } else if (platform === "kick") {
                     result = await updateKickStream(refreshed, title)
                 } else {
-                    result = await updateYouTubeStream(refreshed, title, resolvedGameId)
+                    result = await updateYouTubeStream(
+                        refreshed,
+                        title,
+                        resolvedGameId
+                    )
                 }
 
                 logger.info("Retry after token refresh completed", {

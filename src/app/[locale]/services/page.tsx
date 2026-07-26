@@ -24,7 +24,10 @@ export async function generateMetadata({
 export default async function ServicesPage({ params }: ServicesPageProps) {
     const { locale } = await params
     const t = await getTranslations({ locale, namespace: "services" })
-    const tHero = await getTranslations({ locale, namespace: "servicesPageHero" })
+    const tHero = await getTranslations({
+        locale,
+        namespace: "servicesPageHero",
+    })
 
     const services = [
         {

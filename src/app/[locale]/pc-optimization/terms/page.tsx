@@ -13,8 +13,14 @@ export { generateMetadata } from "./terms-metadata"
 
 export default async function PCOptimizationTermsPage({ params }: PageProps) {
     const { locale } = await params
-    const t = await getTranslations({ locale, namespace: "pcOptimizationTerms" })
-    const tHero = await getTranslations({ locale, namespace: "pcOptimizationTermsPageHero" })
+    const t = await getTranslations({
+        locale,
+        namespace: "pcOptimizationTerms",
+    })
+    const tHero = await getTranslations({
+        locale,
+        namespace: "pcOptimizationTermsPageHero",
+    })
 
     const localePrefix = locale === "en" ? "" : `/${locale}`
 

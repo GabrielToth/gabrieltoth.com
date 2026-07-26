@@ -65,7 +65,10 @@ export class Conductor {
         logger.info("Conductor initialized")
     }
 
-    async execute(input: string, context?: Record<string, unknown>): Promise<string> {
+    async execute(
+        input: string,
+        context?: Record<string, unknown>
+    ): Promise<string> {
         const requestType = await this.classifyRequest(input)
         logger.info(`Request classified as: ${requestType}`)
 
@@ -111,7 +114,9 @@ export class Conductor {
         return result
     }
 
-    private async classifyRequest(input: string): Promise<"question" | "simple" | "complex"> {
+    private async classifyRequest(
+        input: string
+    ): Promise<"question" | "simple" | "complex"> {
         const prompt = `Classify this request into exactly one category:
 
 "${input}"
@@ -123,7 +128,9 @@ Categories:
 
 Reply with ONLY one word: question, simple, or complex`
 
-        const decomposerConfig = this.workerConfigs.find(c => c.type === "decompose")
+        const decomposerConfig = this.workerConfigs.find(
+            c => c.type === "decompose"
+        )
         if (!decomposerConfig) throw new Error("No decompose worker config")
 
         const worker = new Worker(decomposerConfig)
@@ -156,7 +163,9 @@ Reply with ONLY one word: question, simple, or complex`
 
     private async answerQuestion(input: string): Promise<string> {
         logger.info("Answering question directly")
-        const docsConfig = this.workerConfigs.find(c => c.type === "documentation")
+        const docsConfig = this.workerConfigs.find(
+            c => c.type === "documentation"
+        )
         if (!docsConfig) throw new Error("No documentation worker config")
 
         const worker = new Worker(docsConfig)
@@ -215,7 +224,11 @@ Reply with ONLY one word: question, simple, or complex`
 
     private detectTaskType(input: string): Task["type"] {
         const lower = input.toLowerCase()
-        if (lower.includes("doc") || lower.includes("readme") || lower.includes("comment")) {
+        if (
+            lower.includes("doc") ||
+            lower.includes("readme") ||
+            lower.includes("comment")
+        ) {
             return "documentation"
         }
         if (lower.includes("test") || lower.includes("spec")) {
@@ -282,15 +295,19 @@ Reply with ONLY one word: question, simple, or complex`
             throw new Error("Failed to decompose workflow")
         }
 
-        logger.debug(`Decompose result: ${decomposeResult.result.slice(0, 500)}`)
+        logger.debug(
+            `Decompose result: ${decomposeResult.result.slice(0, 500)}`
+        )
 
-        let decomposed: { steps: Array<{
-            id: string
-            type: string
-            deps: string[]
-            prompt: string
-            estimatedOutputTokens: number
-        }> }
+        let decomposed: {
+            steps: Array<{
+                id: string
+                type: string
+                deps: string[]
+                prompt: string
+                estimatedOutputTokens: number
+            }>
+        }
         try {
             const jsonMatch = decomposeResult.result.match(/\{[\s\S]*\}/)
             if (!jsonMatch) {
@@ -299,7 +316,9 @@ Reply with ONLY one word: question, simple, or complex`
             decomposed = JSON.parse(jsonMatch[0])
         } catch (error) {
             logger.error(`Failed to parse: ${decomposeResult.result}`)
-            throw new Error(`Failed to parse decomposed workflow: ${error instanceof Error ? error.message : String(error)}`)
+            throw new Error(
+                `Failed to parse decomposed workflow: ${error instanceof Error ? error.message : String(error)}`
+            )
         }
 
         const tasks: Task[] = decomposed.steps.map(step => ({

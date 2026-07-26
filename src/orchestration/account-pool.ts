@@ -14,10 +14,7 @@ export class AccountPool {
         logger.info(`Loaded ${this.accounts.size} accounts`)
     }
 
-    selectAccount(
-        provider: string,
-        model: string
-    ): AccountConfig | null {
+    selectAccount(provider: string, model: string): AccountConfig | null {
         const candidates = Array.from(this.accounts.values()).filter(
             acc =>
                 acc.provider === provider &&

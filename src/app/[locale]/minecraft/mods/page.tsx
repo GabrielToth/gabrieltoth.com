@@ -32,7 +32,10 @@ export async function generateMetadata({
 export default async function ModsPage({ params }: ModsPageProps) {
     const { locale } = await params
     const t = await getTranslations({ locale, namespace: "minecraft" })
-    const tHero = await getTranslations({ locale, namespace: "minecraftModsPageHero" })
+    const tHero = await getTranslations({
+        locale,
+        namespace: "minecraftModsPageHero",
+    })
 
     return (
         <>
@@ -46,7 +49,6 @@ export default async function ModsPage({ params }: ModsPageProps) {
 
                 <section className="py-12 px-4 sm:px-6 lg:px-8 bg-[#1a1a1a]">
                     <div className="max-w-7xl mx-auto">
-
                         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
                             <div className="bg-[#2d2d2d] border border-neutral-700 rounded-lg p-6">
                                 <h2 className="text-2xl font-bold text-white mb-4">

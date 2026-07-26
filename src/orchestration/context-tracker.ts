@@ -87,7 +87,7 @@ export class ContextTracker {
             .map(depId => {
                 const output = this.taskOutputs.get(depId)
                 if (!output) return null
-                
+
                 const tokens = this.estimateTokens(output)
                 if (tokens > 2000) {
                     return `[${depId}] (compressed)\n${this.compressOutput(output, 2000)}`
@@ -95,7 +95,7 @@ export class ContextTracker {
                 return `[${depId}]\n${output}`
             })
             .filter(Boolean)
-        
+
         return contexts.join("\n\n")
     }
 

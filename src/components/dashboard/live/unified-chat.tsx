@@ -70,8 +70,12 @@ export function UnifiedChat({ platforms }: UnifiedChatProps) {
     }, [sse.messages, relay.messages])
 
     const statusText = relay.isConnected
-        ? sse.isConnected ? "Connected" : "Relay (YouTube)"
-        : sse.isConnected ? "SSE (Twitch/Kick)" : "Disconnected"
+        ? sse.isConnected
+            ? "Connected"
+            : "Relay (YouTube)"
+        : sse.isConnected
+          ? "SSE (Twitch/Kick)"
+          : "Disconnected"
     const [input, setInput] = useState("")
     const [selectedPlatform, setSelectedPlatform] = useState(
         platforms[0] || "twitch"
@@ -126,7 +130,10 @@ export function UnifiedChat({ platforms }: UnifiedChatProps) {
                         type: "system",
                         timestamp: Date.now(),
                     })
-                } else if (err.error === "YOUTUBE_SEND_FAILED" || err.message?.includes("YouTube API error")) {
+                } else if (
+                    err.error === "YOUTUBE_SEND_FAILED" ||
+                    err.message?.includes("YouTube API error")
+                ) {
                     sse.addMessage({
                         id: `auth-error-${Date.now()}`,
                         channelId: selectedPlatform,
@@ -306,13 +313,18 @@ export function UnifiedChat({ platforms }: UnifiedChatProps) {
             <div className="flex items-center gap-2 mb-3 text-xs text-muted-foreground">
                 <span
                     className={`inline-block h-2 w-2 rounded-full ${
-                        relay.isConnected ? "bg-success" : sse.isConnected ? "bg-warning" : "bg-error"
+                        relay.isConnected
+                            ? "bg-success"
+                            : sse.isConnected
+                              ? "bg-warning"
+                              : "bg-error"
                     }`}
                 />
                 {statusText}
                 {(sse.error || relay.error) && (
                     <span className="text-error ml-2">
-                        {relay.error || `${sse.error?.platform}: ${sse.error?.error}`}
+                        {relay.error ||
+                            `${sse.error?.platform}: ${sse.error?.error}`}
                     </span>
                 )}
             </div>
@@ -456,7 +468,9 @@ export function UnifiedChat({ platforms }: UnifiedChatProps) {
 
             {/* Quick commands */}
             <div className="flex gap-1 mt-2">
-                <span className="text-xs text-muted-foreground mr-1">Quick:</span>
+                <span className="text-xs text-muted-foreground mr-1">
+                    Quick:
+                </span>
                 {COMMANDS.map(cmd => (
                     <button
                         key={cmd.name}

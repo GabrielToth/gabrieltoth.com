@@ -58,7 +58,8 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
             }
         }
 
-        const secret = process.env.OAUTH_STATE_SECRET || process.env.TOKEN_ENCRYPTION_KEY
+        const secret =
+            process.env.OAUTH_STATE_SECRET || process.env.TOKEN_ENCRYPTION_KEY
         if (!secret) {
             logger.error("No signing secret configured")
             return NextResponse.json(

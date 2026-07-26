@@ -53,7 +53,9 @@ export function useRelayChat(): UseRelayChatReturn {
     const reconnectTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
     const mountedRef = useRef(true)
     const tokenRef = useRef<string>("")
-    const platformsRef = useRef<Record<string, { channelName: string; accessToken?: string }>>({})
+    const platformsRef = useRef<
+        Record<string, { channelName: string; accessToken?: string }>
+    >({})
     const tokenTimerRef = useRef<ReturnType<typeof setInterval> | null>(null)
     const connectRef = useRef<() => void>(() => {})
 
@@ -63,17 +65,23 @@ export function useRelayChat(): UseRelayChatReturn {
         try {
             const res = await fetch("/api/auth/relay-token")
             if (!res.ok) {
-                throw new Error(`Failed to fetch relay credentials: ${res.status}`)
+                throw new Error(
+                    `Failed to fetch relay credentials: ${res.status}`
+                )
             }
             const data = await res.json()
             if (!data.success) {
-                throw new Error(data.error || "Failed to fetch relay credentials")
+                throw new Error(
+                    data.error || "Failed to fetch relay credentials"
+                )
             }
             tokenRef.current = data.token
             platformsRef.current = data.platforms || {}
             return true
         } catch (err) {
-            logger.error("Failed to fetch relay credentials", { error: String(err) })
+            logger.error("Failed to fetch relay credentials", {
+                error: String(err),
+            })
             return false
         }
     }, [])
@@ -81,11 +89,13 @@ export function useRelayChat(): UseRelayChatReturn {
     const sendConnectMessage = useCallback((ws: WebSocket) => {
         for (const [platform, info] of Object.entries(platformsRef.current)) {
             if (info.accessToken) {
-                ws.send(JSON.stringify({
-                    type: "connect",
-                    platform,
-                    token: info.accessToken,
-                }))
+                ws.send(
+                    JSON.stringify({
+                        type: "connect",
+                        platform,
+                        token: info.accessToken,
+                    })
+                )
                 logger.debug("Sent relay connect", { platform })
             }
         }
@@ -151,13 +161,17 @@ export function useRelayChat(): UseRelayChatReturn {
                     const data = JSON.parse(event.data as string)
 
                     if (data.type === "connected") {
-                        logger.info("Relay connection established", { userId: data.data?.userId })
+                        logger.info("Relay connection established", {
+                            userId: data.data?.userId,
+                        })
                         return
                     }
 
                     if (data.type === "status") {
                         setStatuses(prev => {
-                            const existing = prev.findIndex(s => s.platform === data.platform)
+                            const existing = prev.findIndex(
+                                s => s.platform === data.platform
+                            )
                             const entry: RelayPlatformStatus = {
                                 platform: data.platform,
                                 connected: data.connected,
@@ -211,7 +225,9 @@ export function useRelayChat(): UseRelayChatReturn {
                 scheduleReconnect()
             }
         } catch (err) {
-            logger.error("Relay WebSocket connect error", { error: String(err) })
+            logger.error("Relay WebSocket connect error", {
+                error: String(err),
+            })
             setError(String(err))
             scheduleReconnect()
         }

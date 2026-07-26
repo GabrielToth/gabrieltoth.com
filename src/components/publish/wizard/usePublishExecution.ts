@@ -211,9 +211,8 @@ export default function usePublishExecution({
                 }))
 
                 try {
-                    const metaMeta = wizardState.platformMetadata[
-                        "meta"
-                    ] as MetaPublishMetadata | undefined
+                    const metaMeta = wizardState.platformMetadata["meta"] as
+                        MetaPublishMetadata | undefined
 
                     const description =
                         wizardState.content.text || metaMeta?.description || ""
@@ -272,7 +271,9 @@ export default function usePublishExecution({
                         )
                     }
 
-                    const { task } = await taskRes.json() as { task: { id: string; status: string } }
+                    const { task } = (await taskRes.json()) as {
+                        task: { id: string; status: string }
+                    }
 
                     // If video source is 'upload', upload the video via tus
                     if (
@@ -307,7 +308,8 @@ export default function usePublishExecution({
                     const finalTask = await pollTaskResult(task.id)
 
                     if (finalTask.status === "completed") {
-                        const r = finalTask.result as Record<string, string> | undefined
+                        const r = finalTask.result as
+                            Record<string, string> | undefined
                         results.push({
                             platformId,
                             success: true,
@@ -398,7 +400,10 @@ async function uploadViaTus(file: File, taskId: string): Promise<void> {
 
     return new Promise((resolve, reject) => {
         const { Upload } = require("tus-js-client") as {
-            Upload: new (file: File, opts: Record<string, unknown>) => {
+            Upload: new (
+                file: File,
+                opts: Record<string, unknown>
+            ) => {
                 start: () => void
                 abort: () => void
             }

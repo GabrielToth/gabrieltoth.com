@@ -79,7 +79,10 @@ export interface PublishWizardState {
     /** Platform-specific metadata, keyed by platform id */
     platformMetadata: Record<
         string,
-        YouTubeMetadata | FacebookMetadata | TikTokMetadata | MetaPublishMetadata
+        | YouTubeMetadata
+        | FacebookMetadata
+        | TikTokMetadata
+        | MetaPublishMetadata
     >
 
     /** Video source for Facebook/Instagram meta publishing */

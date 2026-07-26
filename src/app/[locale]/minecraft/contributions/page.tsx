@@ -42,7 +42,10 @@ export default async function ContributionsPage({
 }: ContributionsPageProps) {
     const { locale } = await params
     const t = await getTranslations({ locale, namespace: "minecraft" })
-    const tHero = await getTranslations({ locale, namespace: "minecraftContributionsPageHero" })
+    const tHero = await getTranslations({
+        locale,
+        namespace: "minecraftContributionsPageHero",
+    })
 
     return (
         <>

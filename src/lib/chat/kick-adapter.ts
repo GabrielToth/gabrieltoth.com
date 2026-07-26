@@ -96,7 +96,10 @@ export class KickChatAdapter implements ChatAdapter {
             return
         }
 
-        let channelInfo: { chatroomId: number; broadcasterUserId: string } | null = null
+        let channelInfo: {
+            chatroomId: number
+            broadcasterUserId: string
+        } | null = null
 
         // 1) Try cached chatroomId or channelId from metadata
         try {
@@ -115,10 +118,13 @@ export class KickChatAdapter implements ChatAdapter {
                 if (m.chatroomId) {
                     channelInfo = {
                         chatroomId: m.chatroomId,
-                        broadcasterUserId: String(m.channelId || m.userId || ""),
+                        broadcasterUserId: String(
+                            m.channelId || m.userId || ""
+                        ),
                     }
                     logger.info("Using cached chatroom ID from metadata", {
-                        roomId, chatroomId: m.chatroomId,
+                        roomId,
+                        chatroomId: m.chatroomId,
                     })
                 }
             }
@@ -173,24 +179,28 @@ export class KickChatAdapter implements ChatAdapter {
                     try {
                         const pusherEvent: PusherEvent = JSON.parse(event.data)
 
-                        if (pusherEvent.event === "pusher:connection_established") {
+                        if (
+                            pusherEvent.event ===
+                            "pusher:connection_established"
+                        ) {
                             connection.connected = true
-                            logger.info("Pusher connected, subscribing to chatroom", {
-                                roomId, chatroomId,
-                            })
+                            logger.info(
+                                "Pusher connected, subscribing to chatroom",
+                                {
+                                    roomId,
+                                    chatroomId,
+                                }
+                            )
                             if (chatroomId) {
                                 this.subscribeToChatroom(ws, chatroomId)
-                                connection.pingInterval = setInterval(
-                                    () => {
-                                        ws.send(
-                                            JSON.stringify({
-                                                event: "pusher:ping",
-                                                data: {},
-                                            })
-                                        )
-                                    },
-                                    60000
-                                )
+                                connection.pingInterval = setInterval(() => {
+                                    ws.send(
+                                        JSON.stringify({
+                                            event: "pusher:ping",
+                                            data: {},
+                                        })
+                                    )
+                                }, 60000)
                             }
                             resolve()
                             return
@@ -391,7 +401,10 @@ export class KickChatAdapter implements ChatAdapter {
         }
 
         if (connection.broadcasterUserId) {
-            body.broadcaster_user_id = parseInt(connection.broadcasterUserId, 10)
+            body.broadcaster_user_id = parseInt(
+                connection.broadcasterUserId,
+                10
+            )
         }
 
         try {

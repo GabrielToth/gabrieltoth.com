@@ -25,9 +25,7 @@ export default function ChannelManagementSection({
                         🚀 {tCM("hero.badge")}
                     </div>
                     <h2 className="text-3xl sm:text-4xl font-bold text-foreground dark:text-foreground mb-4">
-                        <span className="text-foreground">
-                            ViraTrend
-                        </span>
+                        <span className="text-foreground">ViraTrend</span>
                     </h2>
                     <p className="text-lg text-muted-foreground dark:text-foreground max-w-2xl mx-auto mb-8">
                         {t("channelManagement.subtitle")}
@@ -39,19 +37,26 @@ export default function ChannelManagementSection({
 
                 {/* Stats */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-                    {t.raw("channelManagement.stats").map((stat: { value: string; label: string }, index: number) => (
-                        <div
-                            key={index}
-                            className="text-center bg-card dark:bg-background rounded-2xl p-8 shadow-lg"
-                        >
-                            <div className="text-3xl font-bold text-primary dark:text-primary mb-2">
-                                {stat.value}
-                            </div>
-                            <div className="text-muted-foreground dark:text-foreground">
-                                {stat.label}
-                            </div>
-                        </div>
-                    ))}
+                    {t
+                        .raw("channelManagement.stats")
+                        .map(
+                            (
+                                stat: { value: string; label: string },
+                                index: number
+                            ) => (
+                                <div
+                                    key={index}
+                                    className="text-center bg-card dark:bg-background rounded-2xl p-8 shadow-lg"
+                                >
+                                    <div className="text-3xl font-bold text-primary dark:text-primary mb-2">
+                                        {stat.value}
+                                    </div>
+                                    <div className="text-muted-foreground dark:text-foreground">
+                                        {stat.label}
+                                    </div>
+                                </div>
+                            )
+                        )}
                 </div>
 
                 {/* Features */}
@@ -65,10 +70,14 @@ export default function ChannelManagementSection({
                                 <BarChart3 className="w-6 h-6 text-primary dark:text-primary" />
                             </div>
                             <h4 className="text-lg font-semibold text-foreground dark:text-foreground mb-2">
-                                {t("channelManagement.features.analytics.title")}
+                                {t(
+                                    "channelManagement.features.analytics.title"
+                                )}
                             </h4>
                             <p className="text-muted-foreground dark:text-foreground text-sm">
-                                {t("channelManagement.features.analytics.description")}
+                                {t(
+                                    "channelManagement.features.analytics.description"
+                                )}
                             </p>
                         </div>
 
@@ -77,10 +86,14 @@ export default function ChannelManagementSection({
                                 <Play className="w-6 h-6 text-green-600 dark:text-green-400" />
                             </div>
                             <h4 className="text-lg font-semibold text-foreground dark:text-foreground mb-2">
-                                {t("channelManagement.features.optimization.title")}
+                                {t(
+                                    "channelManagement.features.optimization.title"
+                                )}
                             </h4>
                             <p className="text-muted-foreground dark:text-foreground text-sm">
-                                {t("channelManagement.features.optimization.description")}
+                                {t(
+                                    "channelManagement.features.optimization.description"
+                                )}
                             </p>
                         </div>
 
@@ -92,7 +105,9 @@ export default function ChannelManagementSection({
                                 {t("channelManagement.features.growth.title")}
                             </h4>
                             <p className="text-muted-foreground dark:text-foreground text-sm">
-                                {t("channelManagement.features.growth.description")}
+                                {t(
+                                    "channelManagement.features.growth.description"
+                                )}
                             </p>
                         </div>
 
@@ -101,10 +116,14 @@ export default function ChannelManagementSection({
                                 <Users className="w-6 h-6 text-yellow-600 dark:text-yellow-400" />
                             </div>
                             <h4 className="text-lg font-semibold text-foreground dark:text-foreground mb-2">
-                                {t("channelManagement.features.monetization.title")}
+                                {t(
+                                    "channelManagement.features.monetization.title"
+                                )}
                             </h4>
                             <p className="text-muted-foreground dark:text-foreground text-sm">
-                                {t("channelManagement.features.monetization.description")}
+                                {t(
+                                    "channelManagement.features.monetization.description"
+                                )}
                             </p>
                         </div>
                     </div>
@@ -120,32 +139,49 @@ export default function ChannelManagementSection({
                     </p>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        {t.raw("channelManagement.results.cases").map((caseStudy: { channel: string; description: string; metrics: { label: string; value: string }[] }, index: number) => (
-                            <div
-                                key={index}
-                                className="bg-card dark:bg-background rounded-2xl p-8 shadow-lg"
-                            >
-                                <h4 className="text-xl font-bold text-foreground dark:text-foreground mb-2">
-                                    {caseStudy.channel}
-                                </h4>
-                                <p className="text-muted-foreground dark:text-foreground text-sm mb-6">
-                                    {caseStudy.description}
-                                </p>
+                        {t.raw("channelManagement.results.cases").map(
+                            (
+                                caseStudy: {
+                                    channel: string
+                                    description: string
+                                    metrics: {
+                                        label: string
+                                        value: string
+                                    }[]
+                                },
+                                index: number
+                            ) => (
+                                <div
+                                    key={index}
+                                    className="bg-card dark:bg-background rounded-2xl p-8 shadow-lg"
+                                >
+                                    <h4 className="text-xl font-bold text-foreground dark:text-foreground mb-2">
+                                        {caseStudy.channel}
+                                    </h4>
+                                    <p className="text-muted-foreground dark:text-foreground text-sm mb-6">
+                                        {caseStudy.description}
+                                    </p>
 
-                                <div className="grid grid-cols-3 gap-4">
-                                    {caseStudy.metrics.map((metric, idx) => (
-                                        <div key={idx} className="text-center">
-                                            <div className="text-2xl font-bold text-primary dark:text-primary mb-1">
-                                                {metric.value}
-                                            </div>
-                                            <div className="text-sm text-muted-foreground dark:text-foreground">
-                                                {metric.label}
-                                            </div>
-                                        </div>
-                                    ))}
+                                    <div className="grid grid-cols-3 gap-4">
+                                        {caseStudy.metrics.map(
+                                            (metric, idx) => (
+                                                <div
+                                                    key={idx}
+                                                    className="text-center"
+                                                >
+                                                    <div className="text-2xl font-bold text-primary dark:text-primary mb-1">
+                                                        {metric.value}
+                                                    </div>
+                                                    <div className="text-sm text-muted-foreground dark:text-foreground">
+                                                        {metric.label}
+                                                    </div>
+                                                </div>
+                                            )
+                                        )}
+                                    </div>
                                 </div>
-                            </div>
-                        ))}
+                            )
+                        )}
                     </div>
                 </div>
 
