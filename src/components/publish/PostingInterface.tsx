@@ -147,7 +147,7 @@ export default function PostingInterface({
         setSelectedNetworkIds([])
     }, [])
 
-    const handlePublish = async () => {
+    const _handlePublish = async () => {
         setError("")
         setSuccess(false)
 
