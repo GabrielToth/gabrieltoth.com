@@ -35,6 +35,7 @@
         "src/**/translations/**",
         "src/app/[locale]/privacy-policy/page.tsx",
         "src/app/[locale]/terms-of-service/page.tsx",
+        "src/orchestration/**",
         "node_modules/**",
         ".next/**",
         "dist/**",
