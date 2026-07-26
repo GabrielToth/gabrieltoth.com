@@ -1,0 +1,60 @@
+task_types:
+  decompose:
+    combo: "cheap-decompose"
+    max_tokens: 4096
+    priority: 1
+    context_limit: 1000000
+
+  documentation:
+    combo: "cheap-docs"
+    max_tokens: 8192
+    priority: 2
+    context_limit: 1000000
+
+  test:
+    combo: "cheap-tests"
+    max_tokens: 8192
+    priority: 3
+    context_limit: 1000000
+
+  code:
+    combo: "premium-code"
+    max_tokens: 16384
+    priority: 4
+    context_limit: 200000
+
+  review:
+    combo: "premium-review"
+    max_tokens: 8192
+    priority: 5
+    context_limit: 200000
+
+  merge:
+    combo: "cheap-docs"
+    max_tokens: 4096
+    priority: 6
+    context_limit: 1000000
+
+  research:
+    combo: "cheap-docs"
+    max_tokens: 8192
+    priority: 2
+    context_limit: 1000000
+
+  analyze:
+    combo: "premium-code"
+    max_tokens: 8192
+    priority: 3
+    context_limit: 200000
+
+  fix:
+    combo: "premium-code"
+    max_tokens: 12288
+    priority: 4
+    context_limit: 200000
+
+  bug-hunt:
+    combo: "cheap-decompose"
+    max_tokens: 4096
+    priority: 1
+    context_limit: 1000000

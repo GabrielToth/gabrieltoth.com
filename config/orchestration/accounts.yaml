@@ -1,0 +1,21 @@
+accounts:
+  - provider: "agy"
+    accountId: "agy-1"
+    models:
+      - "gemini-3.6-flash-low"
+      - "gemini-3.6-flash-medium"
+      - "gemini-3.6-flash-high"
+    usedTokens: 0
+    tokenLimit: 1000000000
+    status: "ok"
+
+  - provider: "kiro"
+    accountId: "kiro-1"
+    models:
+      - "claude-sonnet-4.5"
+      - "claude-haiku-4.5"
+      - "deepseek-3.2"
+      - "gpt-5.6-sol"
+    usedTokens: 0
+    tokenLimit: 20000000
+    status: "ok"

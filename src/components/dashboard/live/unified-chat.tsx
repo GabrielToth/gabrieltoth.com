@@ -126,6 +126,22 @@ export function UnifiedChat({ platforms }: UnifiedChatProps) {
                         type: "system",
                         timestamp: Date.now(),
                     })
+                } else if (err.error === "YOUTUBE_SEND_FAILED" || err.message?.includes("YouTube API error")) {
+                    sse.addMessage({
+                        id: `auth-error-${Date.now()}`,
+                        channelId: selectedPlatform,
+                        platform: "system",
+                        user: {
+                            id: "system",
+                            username: "system",
+                            displayName: "System",
+                            platform: "system",
+                            badges: [],
+                        },
+                        content: `🔴 YouTube authentication failed — please reconnect your account in Settings > Channels`,
+                        type: "system",
+                        timestamp: Date.now(),
+                    })
                 }
                 return
             }

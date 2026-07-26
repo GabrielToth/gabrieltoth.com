@@ -3,6 +3,7 @@ import { createLogger } from "@/lib/logger"
 import { createClient } from "@supabase/supabase-js"
 import { NextRequest, NextResponse } from "next/server"
 import { getTokenStore } from "@/lib/token-store"
+import { isTerminalTokenError, markAccountDisconnected } from "@/lib/auth/token-health"
 import { MessageAggregator } from "@/lib/realtime/message-aggregator"
 import { getTwitchConfig } from "@/lib/twitch/config"
 
@@ -31,7 +32,12 @@ async function getCachedLiveChatId(
             headers: { Authorization: `Bearer ${token}` },
         }
     )
-    if (!broadcastResponse.ok) return null
+    if (!broadcastResponse.ok) {
+        if (broadcastResponse.status === 401) {
+            await markAccountDisconnected(userId, "youtube").catch(() => {})
+        }
+        return null
+    }
 
     const broadcastData = await broadcastResponse.json()
     const active = broadcastData.items?.find(
@@ -409,11 +415,15 @@ async function sendYouTubeMessage(
 
         if (!response.ok) {
             const body = await response.text()
+            const errMsg = `YouTube API error: ${response.status} ${body}`
+            if (response.status === 401 || isTerminalTokenError(errMsg)) {
+                await markAccountDisconnected(userId, "youtube").catch(() => {})
+            }
             return NextResponse.json(
                 {
                     success: false,
                     error: "YOUTUBE_SEND_FAILED",
-                    message: `YouTube API error: ${response.status} ${body}`,
+                    message: errMsg,
                 },
                 { status: 500 }
             )

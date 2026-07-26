@@ -42,6 +42,8 @@
         "db:types:local": "supabase gen types typescript --local > src/types/supabase.ts",
         "db:migrate": "powershell -File scripts/apply-migration.ps1 local",
         "db:migrate:remote": "powershell -File scripts/apply-migration.ps1 remote",
+        "i18n:check-params": "node scripts/i18n/check-params.mjs",
+        "i18n:check-params:report": "node scripts/i18n/check-params.mjs --report",
         "build": "next build"
     },
     "devDependencies": {
@@ -147,6 +149,7 @@
         "node-cron": "^4.6.0",
         "node-domexception": "^2.0.2",
         "pg": "^8.22.0",
+        "puppeteer": "^25.3.0",
         "qrcode": "^1.5.4",
         "qrcode.react": "^4.2.0",
         "react": "^19.2.7",
