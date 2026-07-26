@@ -1,0 +1,11 @@
+[
+  {
+    "action": "{\"type\":\"check_responsive\",\"sizes\":[375,768,1024,1440]}",
+    "error": "page.waitForTimeout is not a function",
+    "consoleLogs": [],
+    "networkLogs": [],
+    "url": "about:blank",
+    "timestamp": 1785062177412,
+    "screenshot": "C:\\Users\\User\\Documents\\Github\\gabrieltoth.com\\bug-reports\\screenshot-1785062177412.png"
+  }
+]

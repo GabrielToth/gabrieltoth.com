@@ -70,7 +70,7 @@ async function createCombos() {
                 }
             }
         } catch (error) {
-            console.error(`❌ Error creating ${combo.id}:`, error.message)
+            console.error(`❌ Error creating ${combo.id}:`, error instanceof Error ? error.message : String(error))
         }
     }
 

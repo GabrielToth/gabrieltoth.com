@@ -167,8 +167,8 @@ export class BugHunter {
                 }
             })
 
-            page.on("pageerror", error => {
-                const msg = `Page error: ${error.message}`
+            page.on("pageerror", (error: unknown) => {
+                const msg = `Page error: ${error instanceof Error ? error.message : String(error)}`
                 consoleLogs.push(msg)
                 logger.error(msg)
             })
@@ -527,10 +527,10 @@ ${errorInfo.screenshot ? `\n**Screenshot:** ${errorInfo.screenshot}` : ""}
                 { cwd: process.cwd() }
             )
             logger.info(`✅ GitHub issue created: ${title}`)
-        } catch (error) {
-            logger.error(
-                `Failed to create issue: ${error instanceof Error ? error.message : String(error)}`
-            )
+            } catch (error) {
+                logger.error(
+                    `Failed to create issue: ${error instanceof Error ? error.message : String(error)}`
+                )
         }
     }
 }
