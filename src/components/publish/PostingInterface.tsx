@@ -147,7 +147,7 @@ export default function PostingInterface({
         setSelectedNetworkIds([])
     }, [])
 
-    const handlePublish = async () => {
+    const _handlePublish = async () => {
         setError("")
         setSuccess(false)
 
@@ -381,7 +381,7 @@ export default function PostingInterface({
                             {t("cancel")}
                         </Button>
                         <Button
-                            onClick={handlePublish}
+                            onClick={_handlePublish}
                             disabled={
                                 isSubmitting || selectedNetworkIds.length === 0
                             }
