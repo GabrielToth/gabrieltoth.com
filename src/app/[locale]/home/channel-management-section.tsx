@@ -139,51 +139,49 @@ export default function ChannelManagementSection({
                     </p>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        {t
-                            .raw("channelManagement.results.cases")
-                            .map(
-                                (
-                                    caseStudy: {
-                                        channel: string
-                                        description: string
-                                        metrics: {
-                                            label: string
-                                            value: string
-                                        }[]
-                                    },
-                                    index: number
-                                ) => (
-                                    <div
-                                        key={index}
-                                        className="bg-card dark:bg-background rounded-2xl p-8 shadow-lg"
-                                    >
-                                        <h4 className="text-xl font-bold text-foreground dark:text-foreground mb-2">
-                                            {caseStudy.channel}
-                                        </h4>
-                                        <p className="text-muted-foreground dark:text-foreground text-sm mb-6">
-                                            {caseStudy.description}
-                                        </p>
+                        {t.raw("channelManagement.results.cases").map(
+                            (
+                                caseStudy: {
+                                    channel: string
+                                    description: string
+                                    metrics: {
+                                        label: string
+                                        value: string
+                                    }[]
+                                },
+                                index: number
+                            ) => (
+                                <div
+                                    key={index}
+                                    className="bg-card dark:bg-background rounded-2xl p-8 shadow-lg"
+                                >
+                                    <h4 className="text-xl font-bold text-foreground dark:text-foreground mb-2">
+                                        {caseStudy.channel}
+                                    </h4>
+                                    <p className="text-muted-foreground dark:text-foreground text-sm mb-6">
+                                        {caseStudy.description}
+                                    </p>
 
-                                        <div className="grid grid-cols-3 gap-4">
-                                            {caseStudy.metrics.map(
-                                                (metric, idx) => (
-                                                    <div
-                                                        key={idx}
-                                                        className="text-center"
-                                                    >
-                                                        <div className="text-2xl font-bold text-primary dark:text-primary mb-1">
-                                                            {metric.value}
-                                                        </div>
-                                                        <div className="text-sm text-muted-foreground dark:text-foreground">
-                                                            {metric.label}
-                                                        </div>
+                                    <div className="grid grid-cols-3 gap-4">
+                                        {caseStudy.metrics.map(
+                                            (metric, idx) => (
+                                                <div
+                                                    key={idx}
+                                                    className="text-center"
+                                                >
+                                                    <div className="text-2xl font-bold text-primary dark:text-primary mb-1">
+                                                        {metric.value}
                                                     </div>
-                                                )
-                                            )}
-                                        </div>
+                                                    <div className="text-sm text-muted-foreground dark:text-foreground">
+                                                        {metric.label}
+                                                    </div>
+                                                </div>
+                                            )
+                                        )}
                                     </div>
-                                )
-                            )}
+                                </div>
+                            )
+                        )}
                     </div>
                 </div>
 
