@@ -119,9 +119,7 @@ export class YouTubeStreamListRelay extends EventEmitter {
 
         if (!response.ok) {
             const body = await response.text()
-            throw new Error(
-                `YouTube API error (${response.status}): ${body}`
-            )
+            throw new Error(`YouTube API error (${response.status}): ${body}`)
         }
 
         const data = await response.json()
@@ -144,17 +142,14 @@ export class YouTubeStreamListRelay extends EventEmitter {
             includeDirs: [path.dirname(PROTO_PATH)],
         })
 
-        const proto = grpc.loadPackageDefinition(
-            packageDefinition
-        ) as any
+        const proto = grpc.loadPackageDefinition(packageDefinition) as any
 
         const channelCredentials = grpc.ChannelCredentials.createSsl()
 
-        this.client =
-            new proto.youtube.api.v3.V3DataLiveChatMessageService(
-                YOUTUBE_API_ENDPOINT,
-                channelCredentials
-            )
+        this.client = new proto.youtube.api.v3.V3DataLiveChatMessageService(
+            YOUTUBE_API_ENDPOINT,
+            channelCredentials
+        )
 
         const metadata = new grpc.Metadata()
         metadata.add("authorization", `Bearer ${this.token}`)
@@ -164,9 +159,7 @@ export class YouTubeStreamListRelay extends EventEmitter {
             live_chat_id: liveChatId,
             part: ["snippet", "authorDetails"],
             max_results: INITIAL_PAGE_SIZE,
-            ...(this.lastPageToken
-                ? { page_token: this.lastPageToken }
-                : {}),
+            ...(this.lastPageToken ? { page_token: this.lastPageToken } : {}),
         }
 
         this.call = this.client.StreamList(request, metadata)
@@ -201,7 +194,8 @@ export class YouTubeStreamListRelay extends EventEmitter {
 
         this.call.on("error", (error: grpc.ServiceError) => {
             this.call = null
-            const errMsg = error.details || error.message || "Unknown gRPC error"
+            const errMsg =
+                error.details || error.message || "Unknown gRPC error"
             const isTerminal =
                 error.code === grpc.status.PERMISSION_DENIED ||
                 error.code === grpc.status.NOT_FOUND ||
@@ -246,9 +240,7 @@ export class YouTubeStreamListRelay extends EventEmitter {
             } catch (error) {
                 this.emit(
                     "error",
-                    error instanceof Error
-                        ? error
-                        : new Error(String(error))
+                    error instanceof Error ? error : new Error(String(error))
                 )
                 if (!this.destroyed) this.scheduleReconnect(liveChatId)
             }
@@ -270,10 +262,7 @@ export class YouTubeStreamListRelay extends EventEmitter {
         }
     }
 
-    private toChatMessage(
-        channelId: string,
-        raw: any
-    ): YouTubeMessage {
+    private toChatMessage(channelId: string, raw: any): YouTubeMessage {
         const snippet = raw.snippet || {}
         const author = raw.author_details || {}
 
@@ -341,8 +330,7 @@ export class YouTubeStreamListRelay extends EventEmitter {
             platform: "youtube",
             user: {
                 id: author.channel_id || "unknown",
-                username:
-                    author.display_name?.toLowerCase() || "unknown",
+                username: author.display_name?.toLowerCase() || "unknown",
                 displayName: author.display_name || "Unknown",
                 platform: "youtube",
                 badges,

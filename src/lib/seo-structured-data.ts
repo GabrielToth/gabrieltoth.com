@@ -46,7 +46,9 @@ export function generatePersonStructuredData(
         "@type": "Person",
         name: "Gabriel Toth Gonçalves",
         alternateName: "Gabriel Toth",
-        description: seoMessages[locale]?.personDescription ?? seoMessages.en.personDescription,
+        description:
+            seoMessages[locale]?.personDescription ??
+            seoMessages.en.personDescription,
         url: SITE_URL,
         image: `${SITE_URL}/profile-image.jpg`,
         email: AUTHOR_EMAIL,
@@ -62,7 +64,9 @@ export function generatePersonStructuredData(
             "https://kick.com/ogabrieltoth",
             "https://dlive.tv/ogabrieltoth",
         ],
-        jobTitle: seoMessages[locale]?.personJobTitle ?? seoMessages.en.personJobTitle,
+        jobTitle:
+            seoMessages[locale]?.personJobTitle ??
+            seoMessages.en.personJobTitle,
         worksFor: {
             "@type": "Organization",
             name: "Gabriel Toth Tech",
@@ -106,7 +110,9 @@ export function generateWebsiteStructuredData(
         name: SITE_NAME,
         alternateName: "Gabriel Toth",
         url: SITE_URL,
-        description: seoMessages[locale]?.websiteDescription ?? seoMessages.en.websiteDescription,
+        description:
+            seoMessages[locale]?.websiteDescription ??
+            seoMessages.en.websiteDescription,
         publisher: {
             "@type": "Person",
             name: AUTHOR_NAME,
@@ -149,7 +155,9 @@ export function generateOrganizationStructuredData(
             "https://kick.com/ogabrieltoth",
             "https://dlive.tv/ogabrieltoth",
         ],
-        description: seoMessages[locale]?.organizationDescription ?? seoMessages.en.organizationDescription,
+        description:
+            seoMessages[locale]?.organizationDescription ??
+            seoMessages.en.organizationDescription,
     }
 }
 

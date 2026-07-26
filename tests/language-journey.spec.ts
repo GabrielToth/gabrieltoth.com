@@ -63,7 +63,9 @@ test.describe("language switching journey", () => {
         for (const locale of LOCALES) {
             await page.getByTestId("language-selector-button").first().click()
             await page.getByTestId(`language-selector-option-${locale}`).click()
-            await expect(page).toHaveURL(new RegExp(`/${locale}/channel-management`))
+            await expect(page).toHaveURL(
+                new RegExp(`/${locale}/channel-management`)
+            )
         }
     })
 

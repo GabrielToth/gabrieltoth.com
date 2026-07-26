@@ -90,7 +90,9 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
                 email: user?.email,
             })
             return NextResponse.json(
-                { error: "Forbidden: you are not authorized to use this feature" },
+                {
+                    error: "Forbidden: you are not authorized to use this feature",
+                },
                 { status: 403 }
             )
         }

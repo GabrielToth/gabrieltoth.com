@@ -23,7 +23,10 @@ export default async function TermsOfServicePage({
     const { locale } = await params
     const { breadcrumbs, webPageStructuredData, content } =
         await buildTermsOfServiceStructured(locale)
-    const tHero = await getTranslations({ locale, namespace: "termsOfServicePageHero" })
+    const tHero = await getTranslations({
+        locale,
+        namespace: "termsOfServicePageHero",
+    })
     const typed: TermsContent = content
 
     return (

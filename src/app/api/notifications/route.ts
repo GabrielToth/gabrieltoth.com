@@ -58,7 +58,10 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
             }
 
             // Check for permanently failed tokens (disconnected after terminal error)
-            if (network.status === "disconnected" && network.metadata?.previousStatus === "connected") {
+            if (
+                network.status === "disconnected" &&
+                network.metadata?.previousStatus === "connected"
+            ) {
                 notifications.push({
                     id: `reconnect-${plat}`,
                     type: "error",

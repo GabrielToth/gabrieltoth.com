@@ -68,7 +68,9 @@ export function useChatWS(_platforms: string[]): UseChatWSReturn {
     const tokenRef = useRef<string | null>(null)
     const reconnectAttemptRef = useRef(0)
     const reconnectTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
-    const tokenFetchTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+    const tokenFetchTimerRef = useRef<ReturnType<typeof setTimeout> | null>(
+        null
+    )
     const mountedRef = useRef(true)
 
     const fetchToken = useCallback(async (): Promise<string | null> => {
@@ -143,16 +145,22 @@ export function useChatWS(_platforms: string[]): UseChatWSReturn {
 
                     case "message": {
                         const msg: SSEChatMessage = {
-                            id: data.id || `${data.platform}-${data.timestamp}-${Math.random().toString(36).slice(2, 8)}`,
+                            id:
+                                data.id ||
+                                `${data.platform}-${data.timestamp}-${Math.random().toString(36).slice(2, 8)}`,
                             channelId: data.channel || "",
                             platform: data.platform || "unknown",
                             user: {
                                 id: data.user?.id || "",
                                 username: data.user?.username || "unknown",
-                                displayName: data.user?.displayName || data.user?.username || "Unknown",
+                                displayName:
+                                    data.user?.displayName ||
+                                    data.user?.username ||
+                                    "Unknown",
                                 platform: data.platform || "unknown",
                                 badges: data.user?.badges || [],
-                                isBroadcaster: data.user?.isBroadcaster || false,
+                                isBroadcaster:
+                                    data.user?.isBroadcaster || false,
                                 isModerator: data.user?.isModerator || false,
                                 isSubscriber: data.user?.isSubscriber || false,
                                 isVip: data.user?.isVip || false,
@@ -170,7 +178,8 @@ export function useChatWS(_platforms: string[]): UseChatWSReturn {
                                         m.user.id === msg.user.id &&
                                         m.content === msg.content &&
                                         m.channelId === msg.channelId &&
-                                        Math.abs(m.timestamp - msg.timestamp) < DEDUP_WINDOW_MS
+                                        Math.abs(m.timestamp - msg.timestamp) <
+                                            DEDUP_WINDOW_MS
                                 )
                             ) {
                                 return prev
@@ -186,7 +195,9 @@ export function useChatWS(_platforms: string[]): UseChatWSReturn {
                             connected: data.connected ?? false,
                         }
                         setStatuses(prev => {
-                            const existing = prev.findIndex(s => s.platform === status.platform)
+                            const existing = prev.findIndex(
+                                s => s.platform === status.platform
+                            )
                             if (existing >= 0) {
                                 const updated = [...prev]
                                 updated[existing] = status
@@ -200,13 +211,16 @@ export function useChatWS(_platforms: string[]): UseChatWSReturn {
                     case "error": {
                         setError({
                             platform: data.platform || "unknown",
-                            error: data.error || data.message || "Unknown error",
+                            error:
+                                data.error || data.message || "Unknown error",
                         })
                         break
                     }
                 }
             } catch (parseError) {
-                logger.warn("Failed to parse WS message", { error: String(parseError) })
+                logger.warn("Failed to parse WS message", {
+                    error: String(parseError),
+                })
             }
         }
 

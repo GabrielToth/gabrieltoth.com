@@ -102,7 +102,9 @@ export class Worker {
         const base = `You are a specialized worker for ${taskType} tasks. Execute the task completely without asking for permission or suggesting phased approaches. Complete the entire task in one response.`
 
         if (Object.keys(depsOutput).length > 0) {
-            return `${base}\n\nYou have access to outputs from previous tasks:\n${Object.entries(depsOutput)
+            return `${base}\n\nYou have access to outputs from previous tasks:\n${Object.entries(
+                depsOutput
+            )
                 .map(([id, output]) => `[${id}]:\n${output}`)
                 .join("\n\n")}`
         }
@@ -117,7 +119,8 @@ export class Worker {
         let prompt = task.prompt
 
         if (Object.keys(depsOutput).length > 0) {
-            prompt += "\n\nUse the outputs from previous tasks provided in the system message."
+            prompt +=
+                "\n\nUse the outputs from previous tasks provided in the system message."
         }
 
         prompt +=

@@ -326,7 +326,7 @@ class MockEventSource {
     }
 }
 
-; (global as any).EventSource = MockEventSource
+;(global as any).EventSource = MockEventSource
 
 // Mock hasPointerCapture for Radix UI components
 if (typeof Element !== "undefined") {

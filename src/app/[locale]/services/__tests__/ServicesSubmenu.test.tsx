@@ -16,7 +16,6 @@ vi.mock("next-intl", () => ({
                 "landing.affiliateTitle": "Amazon Affiliate",
                 "landing.affiliateDescription":
                     "Affiliate marketing strategies",
-
             },
         }
 
@@ -119,6 +118,4 @@ describe("ServicesSubmenu", () => {
             expect(link).toHaveAttribute("href", expected)
         }
     )
-
-
 })

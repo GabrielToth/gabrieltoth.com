@@ -11,11 +11,7 @@ export type TaskType =
     | "bug-hunt"
 
 export type TaskStatus =
-    | "pending"
-    | "running"
-    | "completed"
-    | "failed"
-    | "retrying"
+    "pending" | "running" | "completed" | "failed" | "retrying"
 
 export type RetryStrategy =
     | "same_model"

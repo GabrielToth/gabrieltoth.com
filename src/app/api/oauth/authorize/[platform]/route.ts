@@ -65,7 +65,8 @@ export async function POST(
         } catch {
             // Not JSON body, try query params
             locale = request.nextUrl.searchParams.get("locale") || undefined
-            redirectTo = request.nextUrl.searchParams.get("redirectTo") || undefined
+            redirectTo =
+                request.nextUrl.searchParams.get("redirectTo") || undefined
         }
 
         // Validate platform

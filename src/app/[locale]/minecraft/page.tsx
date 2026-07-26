@@ -42,7 +42,10 @@ export async function generateMetadata({
 export default async function MinecraftPage({ params }: MinecraftPageProps) {
     const { locale } = await params
     const t = await getTranslations({ locale, namespace: "minecraft" })
-    const tHero = await getTranslations({ locale, namespace: "minecraftPageHero" })
+    const tHero = await getTranslations({
+        locale,
+        namespace: "minecraftPageHero",
+    })
 
     return (
         <>

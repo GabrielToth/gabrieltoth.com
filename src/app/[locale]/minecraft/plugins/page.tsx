@@ -41,7 +41,10 @@ export async function generateMetadata({
 export default async function PluginsPage({ params }: PluginsPageProps) {
     const { locale } = await params
     const t = await getTranslations({ locale, namespace: "minecraft" })
-    const tHero = await getTranslations({ locale, namespace: "minecraftPluginsPageHero" })
+    const tHero = await getTranslations({
+        locale,
+        namespace: "minecraftPluginsPageHero",
+    })
 
     return (
         <>

@@ -65,9 +65,7 @@ export class YouTubeRelayChatAdapter implements ChatAdapter {
         return this.connectToRelay(connection)
     }
 
-    private connectToRelay(
-        connection: YouTubeRelayConnection
-    ): Promise<void> {
+    private connectToRelay(connection: YouTubeRelayConnection): Promise<void> {
         return new Promise((resolve, reject) => {
             const timeout = setTimeout(() => {
                 if (connection.state !== "connected") {
@@ -99,9 +97,12 @@ export class YouTubeRelayChatAdapter implements ChatAdapter {
                         if (data.type === "connected") {
                             connection.state = "connected"
                             connection.everConnected = true
-                            logger.info("YouTube relay connection established", {
-                                roomId: connection.roomId,
-                            })
+                            logger.info(
+                                "YouTube relay connection established",
+                                {
+                                    roomId: connection.roomId,
+                                }
+                            )
                             resolve()
                             return
                         }
@@ -116,7 +117,8 @@ export class YouTubeRelayChatAdapter implements ChatAdapter {
                             if (!data.connected) {
                                 this.notifyError(
                                     new Error(
-                                        data.reason || "YouTube relay disconnected"
+                                        data.reason ||
+                                            "YouTube relay disconnected"
                                     )
                                 )
                             }
@@ -124,8 +126,14 @@ export class YouTubeRelayChatAdapter implements ChatAdapter {
                         }
 
                         if (data.event === "youtube:message") {
-                            const message = this.toChatMessage(connection.roomId, data)
-                            this.notifyMessageHandlers(connection.roomId, message)
+                            const message = this.toChatMessage(
+                                connection.roomId,
+                                data
+                            )
+                            this.notifyMessageHandlers(
+                                connection.roomId,
+                                message
+                            )
                             return
                         }
 
@@ -172,9 +180,7 @@ export class YouTubeRelayChatAdapter implements ChatAdapter {
                 connection.state = "disconnected"
                 this.connections.delete(connection.roomId)
                 const err =
-                    error instanceof Error
-                        ? error
-                        : new Error(String(error))
+                    error instanceof Error ? error : new Error(String(error))
                 this.notifyError(err)
                 reject(err)
             }
@@ -218,7 +224,7 @@ export class YouTubeRelayChatAdapter implements ChatAdapter {
 
         setTimeout(() => {
             if (this.connections.has(connection.roomId)) {
-                this.connectToRelay(connection).catch((err) => {
+                this.connectToRelay(connection).catch(err => {
                     logger.error("YouTube relay reconnect failed", {
                         error: String(err),
                     })
@@ -267,7 +273,8 @@ export class YouTubeRelayChatAdapter implements ChatAdapter {
 
         const messageId = `${Date.now()}-${Math.random().toString(36).substring(2, 8)}`
 
-        const url = "https://www.googleapis.com/youtube/v3/liveChat/messages?part=snippet"
+        const url =
+            "https://www.googleapis.com/youtube/v3/liveChat/messages?part=snippet"
 
         const liveChatResponse = await fetch(
             "https://www.googleapis.com/youtube/v3/liveBroadcasts?part=snippet,status&mine=true",
@@ -292,7 +299,9 @@ export class YouTubeRelayChatAdapter implements ChatAdapter {
         const liveChatId = activeBroadcast?.snippet?.liveChatId
 
         if (!liveChatId) {
-            throw new Error("No active YouTube live broadcast found for sending")
+            throw new Error(
+                "No active YouTube live broadcast found for sending"
+            )
         }
 
         const response = await fetch(url, {
@@ -340,10 +349,7 @@ export class YouTubeRelayChatAdapter implements ChatAdapter {
         }
     }
 
-    async getHistory(
-        _roomId: string,
-        _limit?: number
-    ): Promise<ChatMessage[]> {
+    async getHistory(_roomId: string, _limit?: number): Promise<ChatMessage[]> {
         return []
     }
 
@@ -369,10 +375,7 @@ export class YouTubeRelayChatAdapter implements ChatAdapter {
         }
     }
 
-    private toChatMessage(
-        channelId: string,
-        data: any
-    ): ChatMessage {
+    private toChatMessage(channelId: string, data: any): ChatMessage {
         const user: ChatUser = {
             id: data.user?.id || "unknown",
             username: data.user?.username || "unknown",
@@ -407,10 +410,7 @@ export class YouTubeRelayChatAdapter implements ChatAdapter {
         }
     }
 
-    private notifyMessageHandlers(
-        roomId: string,
-        message: ChatMessage
-    ): void {
+    private notifyMessageHandlers(roomId: string, message: ChatMessage): void {
         const handlers = this.messageHandlers.get(roomId)
         if (handlers) {
             for (const handler of handlers) {

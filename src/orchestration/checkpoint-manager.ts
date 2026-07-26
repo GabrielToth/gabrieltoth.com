@@ -9,7 +9,11 @@ export class CheckpointManager {
     private checkpointDir: string
 
     constructor() {
-        this.checkpointDir = join(process.cwd(), ".orchestration", "checkpoints")
+        this.checkpointDir = join(
+            process.cwd(),
+            ".orchestration",
+            "checkpoints"
+        )
         if (!existsSync(this.checkpointDir)) {
             mkdirSync(this.checkpointDir, { recursive: true })
         }
@@ -40,7 +44,7 @@ export class CheckpointManager {
 
     listIncomplete(): string[] {
         if (!existsSync(this.checkpointDir)) return []
-        
+
         const files = require("fs").readdirSync(this.checkpointDir)
         return files
             .filter((f: string) => f.endsWith(".json"))

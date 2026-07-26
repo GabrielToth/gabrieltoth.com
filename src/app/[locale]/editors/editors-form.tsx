@@ -257,7 +257,9 @@ export default function ApplicationForm({
                                             e.target.value
                                         )
                                     }
-                                    placeholder={t("placeholders.currentRevenue")}
+                                    placeholder={t(
+                                        "placeholders.currentRevenue"
+                                    )}
                                     className="w-full px-4 py-3 border border-input dark:border-input rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent dark:bg-card dark:text-foreground"
                                 />
                             </div>
@@ -286,8 +288,14 @@ export default function ApplicationForm({
                                     aria-label={t("form.experienceLevel")}
                                     className="w-full px-4 py-3 border border-input dark:border-input rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent dark:bg-card dark:text-foreground"
                                 >
-                                    <option value="">{t("placeholders.selectOption")}</option>
-                                    {(t.raw("options.experienceLevel") as string[]).map(level => (
+                                    <option value="">
+                                        {t("placeholders.selectOption")}
+                                    </option>
+                                    {(
+                                        t.raw(
+                                            "options.experienceLevel"
+                                        ) as string[]
+                                    ).map(level => (
                                         <option key={level} value={level}>
                                             {level}
                                         </option>
@@ -396,9 +404,9 @@ export default function ApplicationForm({
                                                 e.target.value
                                             )
                                         }
-                                        placeholder={
-                                            t("placeholders.biggestChallenge")
-                                        }
+                                        placeholder={t(
+                                            "placeholders.biggestChallenge"
+                                        )}
                                         rows={3}
                                         className="w-full px-4 py-3 border border-input dark:border-input rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent dark:bg-card dark:text-foreground"
                                     />
@@ -416,9 +424,9 @@ export default function ApplicationForm({
                                                 e.target.value
                                             )
                                         }
-                                        placeholder={
-                                            t("placeholders.expectedGrowth")
-                                        }
+                                        placeholder={t(
+                                            "placeholders.expectedGrowth"
+                                        )}
                                         className="w-full px-4 py-3 border border-input dark:border-input rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent dark:bg-card dark:text-foreground"
                                     />
                                 </div>
@@ -455,9 +463,9 @@ export default function ApplicationForm({
                                                 e.target.value
                                             )
                                         }
-                                        placeholder={
-                                            t("placeholders.hoursPerWeek")
-                                        }
+                                        placeholder={t(
+                                            "placeholders.hoursPerWeek"
+                                        )}
                                         className="w-full px-4 py-3 border border-input dark:border-input rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent dark:bg-card dark:text-foreground"
                                     />
                                 </div>
@@ -474,9 +482,9 @@ export default function ApplicationForm({
                                                 e.target.value
                                             )
                                         }
-                                        placeholder={
-                                            t("placeholders.preferredContent")
-                                        }
+                                        placeholder={t(
+                                            "placeholders.preferredContent"
+                                        )}
                                         className="w-full px-4 py-3 border border-input dark:border-input rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent dark:bg-card dark:text-foreground"
                                     />
                                 </div>
@@ -493,9 +501,9 @@ export default function ApplicationForm({
                                                 e.target.value
                                             )
                                         }
-                                        placeholder={
-                                            t("placeholders.expectedRate")
-                                        }
+                                        placeholder={t(
+                                            "placeholders.expectedRate"
+                                        )}
                                         className="w-full px-4 py-3 border border-input dark:border-input rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent dark:bg-card dark:text-foreground"
                                     />
                                 </div>
@@ -534,9 +542,7 @@ export default function ApplicationForm({
                         }
                         className="px-8 py-3 bg-primary text-white rounded-lg font-semibold hover:bg-primary transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                        {isSubmitting
-                            ? t("submitting")
-                            : t("form.submit")}
+                        {isSubmitting ? t("submitting") : t("form.submit")}
                     </Button>
                 </div>
             </form>

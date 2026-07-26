@@ -72,19 +72,56 @@ export default getRequestConfig(async ({ locale }) => {
         loadJson(() => import(`@/i18n/${selectedLocale}/aboutMe.json`)),
         loadJson(() => import(`@/i18n/${selectedLocale}/amazonAffiliate.json`)),
         loadJson(() => import(`@/i18n/${selectedLocale}/homePageHero.json`)),
-        loadJson(() => import(`@/i18n/${selectedLocale}/minecraftPageHero.json`)),
-        loadJson(() => import(`@/i18n/${selectedLocale}/minecraftContributionsPageHero.json`)),
-        loadJson(() => import(`@/i18n/${selectedLocale}/minecraftHypixelQolPageHero.json`)),
-        loadJson(() => import(`@/i18n/${selectedLocale}/minecraftModpacksPageHero.json`)),
-        loadJson(() => import(`@/i18n/${selectedLocale}/minecraftModsPageHero.json`)),
-        loadJson(() => import(`@/i18n/${selectedLocale}/minecraftPluginsPageHero.json`)),
-        loadJson(() => import(`@/i18n/${selectedLocale}/pcOptimizationPageHero.json`)),
-        loadJson(() => import(`@/i18n/${selectedLocale}/pcOptimizationTerms.json`)),
-        loadJson(() => import(`@/i18n/${selectedLocale}/pcOptimizationTermsPageHero.json`)),
-        loadJson(() => import(`@/i18n/${selectedLocale}/pcOptimizationWhatsapp.json`)),
+        loadJson(
+            () => import(`@/i18n/${selectedLocale}/minecraftPageHero.json`)
+        ),
+        loadJson(
+            () =>
+                import(
+                    `@/i18n/${selectedLocale}/minecraftContributionsPageHero.json`
+                )
+        ),
+        loadJson(
+            () =>
+                import(
+                    `@/i18n/${selectedLocale}/minecraftHypixelQolPageHero.json`
+                )
+        ),
+        loadJson(
+            () =>
+                import(
+                    `@/i18n/${selectedLocale}/minecraftModpacksPageHero.json`
+                )
+        ),
+        loadJson(
+            () => import(`@/i18n/${selectedLocale}/minecraftModsPageHero.json`)
+        ),
+        loadJson(
+            () =>
+                import(`@/i18n/${selectedLocale}/minecraftPluginsPageHero.json`)
+        ),
+        loadJson(
+            () => import(`@/i18n/${selectedLocale}/pcOptimizationPageHero.json`)
+        ),
+        loadJson(
+            () => import(`@/i18n/${selectedLocale}/pcOptimizationTerms.json`)
+        ),
+        loadJson(
+            () =>
+                import(
+                    `@/i18n/${selectedLocale}/pcOptimizationTermsPageHero.json`
+                )
+        ),
+        loadJson(
+            () => import(`@/i18n/${selectedLocale}/pcOptimizationWhatsapp.json`)
+        ),
         loadJson(() => import(`@/i18n/${selectedLocale}/privacyPageHero.json`)),
-        loadJson(() => import(`@/i18n/${selectedLocale}/servicesPageHero.json`)),
-        loadJson(() => import(`@/i18n/${selectedLocale}/termsOfServicePageHero.json`)),
+        loadJson(
+            () => import(`@/i18n/${selectedLocale}/servicesPageHero.json`)
+        ),
+        loadJson(
+            () => import(`@/i18n/${selectedLocale}/termsOfServicePageHero.json`)
+        ),
         loadJson(() => import(`@/i18n/${selectedLocale}/error.json`)),
         loadJson(() => import(`@/i18n/${selectedLocale}/notFound.json`)),
     ])

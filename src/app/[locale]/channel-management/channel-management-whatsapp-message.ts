@@ -6,9 +6,7 @@ export const generateWhatsAppMessage = (
     currencySymbol: string,
     template: string
 ) => {
-    const paymentMethod = isMonero
-        ? "Monero (XMR)"
-        : paymentMethodCard
+    const paymentMethod = isMonero ? "Monero (XMR)" : paymentMethodCard
     const baseMessage = template
         .replace("{planName}", planName)
         .replace("{currency}", currencySymbol)

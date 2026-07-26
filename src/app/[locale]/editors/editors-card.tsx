@@ -23,7 +23,9 @@ export const BenefitCard = ({
                 className="mx-auto mb-4 text-primary"
             />
             <h3 className="text-xl font-semibold mb-2">{title}</h3>
-            <p className="text-muted-foreground dark:text-foreground">{description}</p>
+            <p className="text-muted-foreground dark:text-foreground">
+                {description}
+            </p>
         </Card>
     )
 }

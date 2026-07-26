@@ -28,9 +28,7 @@ export class DAGExecutor {
         contextTracker: ContextTracker,
         accountPool: AccountPool
     ) {
-        this.workerConfigs = new Map(
-            workerConfigs.map(c => [c.type, c])
-        )
+        this.workerConfigs = new Map(workerConfigs.map(c => [c.type, c]))
         this.contextTracker = contextTracker
         this.accountPool = accountPool
         this.workers = new Map()
@@ -87,7 +85,7 @@ export class DAGExecutor {
                     try {
                         await this.executeTask(task, dag)
                         completed.add(task.id)
-                        
+
                         // Save checkpoint after each completed task
                         this.checkpointManager.save(dag)
                     } catch (error) {
@@ -100,7 +98,7 @@ export class DAGExecutor {
                             error instanceof Error
                                 ? error.message
                                 : String(error)
-                        
+
                         // Save checkpoint on failure too
                         this.checkpointManager.save(dag)
                     }
@@ -148,7 +146,9 @@ export class DAGExecutor {
 
         // Inject relevant context from dependencies into task prompt
         if (task.deps.length > 0) {
-            const contextSummary = this.contextTracker.getRelevantContext(task.deps)
+            const contextSummary = this.contextTracker.getRelevantContext(
+                task.deps
+            )
             if (contextSummary) {
                 task.prompt = `${task.prompt}\n\n## Context from dependencies:\n${contextSummary}`
             }
@@ -186,7 +186,10 @@ export class DAGExecutor {
             task.retryCount = retry
 
             if (retry > 0) {
-                const strategy = RETRY_STRATEGIES[Math.min(retry - 1, RETRY_STRATEGIES.length - 1)]
+                const strategy =
+                    RETRY_STRATEGIES[
+                        Math.min(retry - 1, RETRY_STRATEGIES.length - 1)
+                    ]
                 task.retryStrategy = strategy
                 logger.info(
                     `Retrying task ${task.id} (attempt ${retry}/${MAX_RETRIES}) with strategy: ${strategy}`
@@ -228,9 +231,7 @@ export class DAGExecutor {
                 }
             } catch (error) {
                 lastError =
-                    error instanceof Error
-                        ? error
-                        : new Error(String(error))
+                    error instanceof Error ? error : new Error(String(error))
             }
 
             if (retry < MAX_RETRIES) {

@@ -23,7 +23,10 @@ export default async function PrivacyPolicyPage({
     const { breadcrumbs, webPageStructuredData, sections } =
         await buildPrivacyPolicyStructured(locale)
     const t = await getTranslations({ locale, namespace: "privacyPolicy" })
-    const tHero = await getTranslations({ locale, namespace: "privacyPageHero" })
+    const tHero = await getTranslations({
+        locale,
+        namespace: "privacyPageHero",
+    })
 
     return (
         <>

@@ -13,7 +13,10 @@ import { getTokenStore } from "@/lib/token-store"
 import { getYouTubeOAuthService } from "@/lib/youtube/oauth-service"
 import { getYouTubeChannelLinkingConfig } from "@/lib/youtube/config"
 import { validateEnv } from "@/lib/config/env"
-import { isTerminalTokenError, markAccountDisconnected } from "@/lib/auth/token-health"
+import {
+    isTerminalTokenError,
+    markAccountDisconnected,
+} from "@/lib/auth/token-health"
 import { createClient } from "@supabase/supabase-js"
 import { NextRequest, NextResponse } from "next/server"
 
@@ -39,18 +42,26 @@ async function getValidAccessToken(
     }
 
     try {
-        let refreshed: { accessToken: string; refreshToken?: string; expiresIn: number }
+        let refreshed: {
+            accessToken: string
+            refreshToken?: string
+            expiresIn: number
+        }
 
         if (platform === "youtube") {
             const ytConfig = getYouTubeChannelLinkingConfig(validateEnv())
             const ytOAuthService = getYouTubeOAuthService(ytConfig)
             await ytOAuthService.initialize()
-            refreshed = await ytOAuthService.refreshAccessToken(storedToken.refreshToken)
+            refreshed = await ytOAuthService.refreshAccessToken(
+                storedToken.refreshToken
+            )
         } else {
             const config = getKickConfig()
             const oauthService = getKickOAuthService(config)
             await oauthService.initialize()
-            refreshed = await oauthService.refreshAccessToken(storedToken.refreshToken)
+            refreshed = await oauthService.refreshAccessToken(
+                storedToken.refreshToken
+            )
         }
 
         const expiresAt = Date.now() + refreshed.expiresIn * 1000
@@ -445,10 +456,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
                     break
 
                 case "kick": {
-                    const kickToken = await getValidAccessToken(
-                        userId,
-                        "kick"
-                    )
+                    const kickToken = await getValidAccessToken(userId, "kick")
                     if (kickToken) {
                         const kickData = await fetchKickStream(
                             kickToken,

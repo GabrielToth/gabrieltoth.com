@@ -1,83 +1,83 @@
 accounts:
-  - provider: "antigravity"
-    accountId: "gabrieltothgoncalves@gmail.com"
-    connectionId: "18ea98d5-7451-4d22-bcc2-4b31675f1835"
-    models:
-      - "agemini-3.6-flash-low"
-      - "agemini-3.6-flash-medium"
-      - "agemini-3.6-flash-high"
-    usedTokens: 0
-    tokenLimit: 1000000000
-    status: "ok"
+    - provider: "antigravity"
+      accountId: "gabrieltothgoncalves@gmail.com"
+      connectionId: "18ea98d5-7451-4d22-bcc2-4b31675f1835"
+      models:
+          - "agemini-3.6-flash-low"
+          - "agemini-3.6-flash-medium"
+          - "agemini-3.6-flash-high"
+      usedTokens: 0
+      tokenLimit: 1000000000
+      status: "ok"
 
-  - provider: "kiro"
-    accountId: "GTG"
-    connectionId: "465a5ec7-6180-4e3c-856b-fc8f28ce7d2b"
-    models:
-      - "kr/claude-sonnet-4.5"
-      - "kr/claude-haiku-4.5"
-      - "kr/deepseek-3.2"
-      - "kr/gpt-5.6-sol"
-    usedTokens: 0
-    tokenLimit: 20000000
-    status: "ok"
+    - provider: "kiro"
+      accountId: "GTG"
+      connectionId: "465a5ec7-6180-4e3c-856b-fc8f28ce7d2b"
+      models:
+          - "kr/claude-sonnet-4.5"
+          - "kr/claude-haiku-4.5"
+          - "kr/deepseek-3.2"
+          - "kr/gpt-5.6-sol"
+      usedTokens: 0
+      tokenLimit: 20000000
+      status: "ok"
 
-  - provider: "kiro"
-    accountId: "GTG3"
-    connectionId: "8b80b4c9-7693-48a0-8d56-5786088b4391"
-    models:
-      - "kr/claude-sonnet-4.5"
-      - "kr/claude-haiku-4.5"
-      - "kr/deepseek-3.2"
-      - "kr/gpt-5.6-sol"
-    usedTokens: 0
-    tokenLimit: 20000000
-    status: "ok"
+    - provider: "kiro"
+      accountId: "GTG3"
+      connectionId: "8b80b4c9-7693-48a0-8d56-5786088b4391"
+      models:
+          - "kr/claude-sonnet-4.5"
+          - "kr/claude-haiku-4.5"
+          - "kr/deepseek-3.2"
+          - "kr/gpt-5.6-sol"
+      usedTokens: 0
+      tokenLimit: 20000000
+      status: "ok"
 
-  - provider: "kiro"
-    accountId: "GTG4"
-    connectionId: "e8e9444b-a06a-49d4-af3e-55f61c065f45"
-    models:
-      - "kr/claude-sonnet-4.5"
-      - "kr/claude-haiku-4.5"
-      - "kr/deepseek-3.2"
-      - "kr/gpt-5.6-sol"
-    usedTokens: 0
-    tokenLimit: 20000000
-    status: "ok"
+    - provider: "kiro"
+      accountId: "GTG4"
+      connectionId: "e8e9444b-a06a-49d4-af3e-55f61c065f45"
+      models:
+          - "kr/claude-sonnet-4.5"
+          - "kr/claude-haiku-4.5"
+          - "kr/deepseek-3.2"
+          - "kr/gpt-5.6-sol"
+      usedTokens: 0
+      tokenLimit: 20000000
+      status: "ok"
 
-  - provider: "kiro"
-    accountId: "GTG5"
-    connectionId: "f01c5c1b-f7cf-4487-b49d-56aae0f273e6"
-    models:
-      - "kr/claude-sonnet-4.5"
-      - "kr/claude-haiku-4.5"
-      - "kr/deepseek-3.2"
-      - "kr/gpt-5.6-sol"
-    usedTokens: 0
-    tokenLimit: 20000000
-    status: "ok"
+    - provider: "kiro"
+      accountId: "GTG5"
+      connectionId: "f01c5c1b-f7cf-4487-b49d-56aae0f273e6"
+      models:
+          - "kr/claude-sonnet-4.5"
+          - "kr/claude-haiku-4.5"
+          - "kr/deepseek-3.2"
+          - "kr/gpt-5.6-sol"
+      usedTokens: 0
+      tokenLimit: 20000000
+      status: "ok"
 
-  - provider: "kiro"
-    accountId: "Cheats"
-    connectionId: "72968c8d-8a25-4853-9d74-9091357b70f8"
-    models:
-      - "kr/claude-sonnet-4.5"
-      - "kr/claude-haiku-4.5"
-      - "kr/deepseek-3.2"
-      - "kr/gpt-5.6-sol"
-    usedTokens: 0
-    tokenLimit: 20000000
-    status: "ok"
+    - provider: "kiro"
+      accountId: "Cheats"
+      connectionId: "72968c8d-8a25-4853-9d74-9091357b70f8"
+      models:
+          - "kr/claude-sonnet-4.5"
+          - "kr/claude-haiku-4.5"
+          - "kr/deepseek-3.2"
+          - "kr/gpt-5.6-sol"
+      usedTokens: 0
+      tokenLimit: 20000000
+      status: "ok"
 
-  - provider: "kiro"
-    accountId: "zCheats"
-    connectionId: "8a660df1-8ec7-4749-a0e7-9a4b7da845b8"
-    models:
-      - "kr/claude-sonnet-4.5"
-      - "kr/claude-haiku-4.5"
-      - "kr/deepseek-3.2"
-      - "kr/gpt-5.6-sol"
-    usedTokens: 0
-    tokenLimit: 20000000
-    status: "ok"
+    - provider: "kiro"
+      accountId: "zCheats"
+      connectionId: "8a660df1-8ec7-4749-a0e7-9a4b7da845b8"
+      models:
+          - "kr/claude-sonnet-4.5"
+          - "kr/claude-haiku-4.5"
+          - "kr/deepseek-3.2"
+          - "kr/gpt-5.6-sol"
+      usedTokens: 0
+      tokenLimit: 20000000
+      status: "ok"

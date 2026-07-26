@@ -1,76 +1,76 @@
 implement:
-  description: "Implement feature from specification"
-  steps:
-    - id: "decompose"
-      type: "decompose"
-      deps: []
+    description: "Implement feature from specification"
+    steps:
+        - id: "decompose"
+          type: "decompose"
+          deps: []
 
-    - id: "document"
-      type: "documentation"
-      deps: ["decompose"]
+        - id: "document"
+          type: "documentation"
+          deps: ["decompose"]
 
-    - id: "test"
-      type: "test"
-      deps: ["decompose"]
+        - id: "test"
+          type: "test"
+          deps: ["decompose"]
 
-    - id: "code"
-      type: "code"
-      deps: ["document", "test"]
+        - id: "code"
+          type: "code"
+          deps: ["document", "test"]
 
-    - id: "review"
-      type: "review"
-      deps: ["code", "document", "test"]
+        - id: "review"
+          type: "review"
+          deps: ["code", "document", "test"]
 
-    - id: "merge"
-      type: "merge"
-      deps: ["review"]
+        - id: "merge"
+          type: "merge"
+          deps: ["review"]
 
 fix-bug:
-  description: "Fix a bug"
-  steps:
-    - id: "decompose"
-      type: "decompose"
-      deps: []
+    description: "Fix a bug"
+    steps:
+        - id: "decompose"
+          type: "decompose"
+          deps: []
 
-    - id: "analyze"
-      type: "analyze"
-      deps: ["decompose"]
+        - id: "analyze"
+          type: "analyze"
+          deps: ["decompose"]
 
-    - id: "fix"
-      type: "fix"
-      deps: ["analyze"]
+        - id: "fix"
+          type: "fix"
+          deps: ["analyze"]
 
-    - id: "test"
-      type: "test"
-      deps: ["fix"]
+        - id: "test"
+          type: "test"
+          deps: ["fix"]
 
-    - id: "review"
-      type: "review"
-      deps: ["fix", "test"]
+        - id: "review"
+          type: "review"
+          deps: ["fix", "test"]
 
-    - id: "merge"
-      type: "merge"
-      deps: ["review"]
+        - id: "merge"
+          type: "merge"
+          deps: ["review"]
 
 research:
-  description: "Research a topic"
-  steps:
-    - id: "decompose"
-      type: "decompose"
-      deps: []
+    description: "Research a topic"
+    steps:
+        - id: "decompose"
+          type: "decompose"
+          deps: []
 
-    - id: "research-1"
-      type: "research"
-      deps: ["decompose"]
+        - id: "research-1"
+          type: "research"
+          deps: ["decompose"]
 
-    - id: "research-2"
-      type: "research"
-      deps: ["decompose"]
+        - id: "research-2"
+          type: "research"
+          deps: ["decompose"]
 
-    - id: "research-3"
-      type: "research"
-      deps: ["decompose"]
+        - id: "research-3"
+          type: "research"
+          deps: ["decompose"]
 
-    - id: "merge"
-      type: "merge"
-      deps: ["research-1", "research-2", "research-3"]
+        - id: "merge"
+          type: "merge"
+          deps: ["research-1", "research-2", "research-3"]

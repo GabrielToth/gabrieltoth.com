@@ -152,7 +152,10 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
             userId,
         })
 
-        logger.info("Kick OAuth tokens stored successfully", { userId, chatroomId: chatroomIdFromApi })
+        logger.info("Kick OAuth tokens stored successfully", {
+            userId,
+            chatroomId: chatroomIdFromApi,
+        })
 
         const supabase = createClient(
             process.env.NEXT_PUBLIC_SUPABASE_URL || "",
