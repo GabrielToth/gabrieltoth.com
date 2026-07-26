@@ -22,7 +22,8 @@ describe("Environment Configuration", () => {
         YOUTUBE_REDIRECT_URI: "http://localhost:3000/api/auth/youtube/callback",
         INSTAGRAM_APP_ID: "test_instagram_id",
         INSTAGRAM_APP_SECRET: "test_instagram_secret",
-        INSTAGRAM_REDIRECT_URI: "http://localhost:3000/api/auth/instagram/callback",
+        INSTAGRAM_REDIRECT_URI:
+            "http://localhost:3000/api/auth/instagram/callback",
         INSTAGRAM_WEBHOOK_VERIFY_TOKEN: "test_instagram_verify",
         TIKTOK_CLIENT_KEY: "test_tiktok_key",
         TIKTOK_CLIENT_SECRET: "test_tiktok_secret",
@@ -32,10 +33,12 @@ describe("Environment Configuration", () => {
         TWITTER_REDIRECT_URI: "http://localhost:3000/api/auth/twitter/callback",
         LINKEDIN_CLIENT_ID: "test_linkedin_id",
         LINKEDIN_CLIENT_SECRET: "test_linkedin_secret",
-        LINKEDIN_REDIRECT_URI: "http://localhost:3000/api/auth/linkedin/callback",
+        LINKEDIN_REDIRECT_URI:
+            "http://localhost:3000/api/auth/linkedin/callback",
         FACEBOOK_APP_ID: "test_facebook_id",
         FACEBOOK_APP_SECRET: "test_facebook_secret",
-        FACEBOOK_REDIRECT_URI: "http://localhost:3000/api/auth/facebook/callback",
+        FACEBOOK_REDIRECT_URI:
+            "http://localhost:3000/api/auth/facebook/callback",
         FACEBOOK_WEBHOOK_VERIFY_TOKEN: "test_facebook_verify",
         FACEBOOK_PAGE_ID: "test_page_id",
         FACEBOOK_PAGE_ACCESS_TOKEN: "test_page_token",
@@ -51,8 +54,10 @@ describe("Environment Configuration", () => {
         RESEND_API_KEY: "re_test_key",
         RESEND_FROM_EMAIL: "noreply@example.com",
         RESEND_FROM_NAME: "Test App",
-        TOKEN_ENCRYPTION_KEY: "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
-        OAUTH_STATE_SECRET: "test_state_secret_minimum_32_chars_long_for_security",
+        TOKEN_ENCRYPTION_KEY:
+            "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+        OAUTH_STATE_SECRET:
+            "test_state_secret_minimum_32_chars_long_for_security",
         NEXT_PUBLIC_SUPABASE_URL: "http://localhost:54321",
         NEXT_PUBLIC_SUPABASE_ANON_KEY: "test_anon_key",
         NODE_ENV: "test",
