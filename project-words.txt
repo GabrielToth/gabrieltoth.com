@@ -1440,3 +1440,7 @@ Prevencion
 Proteccion
 Eliminacion
 Visualizacion
+resolucion
+correccion
+configuracion
+jurisdiccion
