@@ -13,7 +13,7 @@ interface PricingToggleProps {
 }
 
 // Client-only component that uses the hook
-function PricingToggleClient({ locale }: PricingToggleProps) {
+function PricingToggleClient({ locale: _locale }: PricingToggleProps) {
     const { showMoneroPrice, toggleMoneroPrice } = useMoneroPricing()
     const t = useTranslations("landing")
 
@@ -53,7 +53,7 @@ function PricingToggleClient({ locale }: PricingToggleProps) {
 }
 
 // Fallback component for SSR
-function PricingToggleFallback({ locale }: PricingToggleProps) {
+function PricingToggleFallback({ locale: _locale }: PricingToggleProps) {
     const t = useTranslations("landing")
 
     return (

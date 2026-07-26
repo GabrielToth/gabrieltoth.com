@@ -125,7 +125,7 @@ export default function PublishPage() {
                 console.error("Failed to delete post:", err)
             }
         },
-        [fetchPosts]
+        [fetchPosts, t]
     )
 
     const filteredPosts = useMemo(() => {

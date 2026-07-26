@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 
 interface TurnstileWidgetProps {
     onTokenChange: (token: string | null) => void
@@ -22,46 +22,7 @@ export default function TurnstileWidget({
     const [error, setError] = useState<string | null>(null)
     const widgetIdRef = useRef<string | null>(null)
 
-    useEffect(() => {
-        // Load Cloudflare Turnstile script
-        const scriptId = "turnstile-script"
-
-        // Check if script already exists
-        if (document.getElementById(scriptId)) {
-            renderWidget()
-            return
-        }
-
-        const script = document.createElement("script")
-        script.id = scriptId
-        script.src = "https://challenges.cloudflare.com/turnstile/v0/api.js"
-        script.async = true
-        script.defer = true
-
-        script.onload = () => {
-            renderWidget()
-        }
-
-        script.onerror = () => {
-            setError("Failed to load CAPTCHA widget")
-            setIsLoading(false)
-        }
-
-        document.head.appendChild(script)
-
-        return () => {
-            // Cleanup: remove rendered widget if component unmounts
-            if (widgetIdRef.current && window.turnstile) {
-                try {
-                    window.turnstile.remove(widgetIdRef.current)
-                } catch (err) {
-                    console.warn("Error removing Turnstile widget:", err)
-                }
-            }
-        }
-    }, [])
-
-    const renderWidget = () => {
+    const renderWidget = useCallback(() => {
         if (!containerRef.current) {
             setError("Container reference not found")
             setIsLoading(false)
@@ -112,7 +73,46 @@ export default function TurnstileWidget({
             setError("Failed to render CAPTCHA widget")
             setIsLoading(false)
         }
-    }
+    }, [onTokenChange, theme, size, language])
+
+    useEffect(() => {
+        // Load Cloudflare Turnstile script
+        const scriptId = "turnstile-script"
+
+        // Check if script already exists
+        if (document.getElementById(scriptId)) {
+            renderWidget()
+            return
+        }
+
+        const script = document.createElement("script")
+        script.id = scriptId
+        script.src = "https://challenges.cloudflare.com/turnstile/v0/api.js"
+        script.async = true
+        script.defer = true
+
+        script.onload = () => {
+            renderWidget()
+        }
+
+        script.onerror = () => {
+            setError("Failed to load CAPTCHA widget")
+            setIsLoading(false)
+        }
+
+        document.head.appendChild(script)
+
+        return () => {
+            // Cleanup: remove rendered widget if component unmounts
+            if (widgetIdRef.current && window.turnstile) {
+                try {
+                    window.turnstile.remove(widgetIdRef.current)
+                } catch (err) {
+                    console.warn("Error removing Turnstile widget:", err)
+                }
+            }
+        }
+    }, [renderWidget])
 
     return (
         <div className={`w-full ${className}`}>

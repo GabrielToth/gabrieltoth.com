@@ -336,7 +336,7 @@ export class BugHunter {
         }
     }
 
-    private async checkConsoleErrors(page: Page): Promise<void> {
+    private async checkConsoleErrors(_page: Page): Promise<void> {
         logger.info("Check console errors")
         await new Promise(resolve => setTimeout(resolve, 3000))
     }
@@ -416,7 +416,7 @@ export class BugHunter {
         }
     }
 
-    private async testEmptyStates(page: Page): Promise<void> {
+    private async testEmptyStates(_page: Page): Promise<void> {
         logger.info("Test empty states")
     }
 
@@ -441,10 +441,13 @@ export class BugHunter {
             const form = await input.evaluateHandle(el =>
                 (el as HTMLElement).closest("form")
             )
-            if (form) {
+            const formElement = form.asElement()
+            if (formElement) {
                 try {
                     await Promise.race([
-                        (form as any).click(),
+                        (
+                            formElement as unknown as import("playwright").ElementHandle<Element>
+                        ).click(),
                         new Promise(resolve => setTimeout(resolve, 1000)),
                     ])
                 } catch {}

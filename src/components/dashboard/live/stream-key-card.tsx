@@ -221,7 +221,7 @@ export function StreamKeyCard({ platform }: StreamKeyCardProps) {
         )
     }
 
-    const displayKey =
+    const _displayKey =
         platform === "twitch"
             ? fetchState.key || ""
             : revealed

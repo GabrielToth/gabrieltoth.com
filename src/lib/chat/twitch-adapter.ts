@@ -12,7 +12,6 @@ import type {
     ChatAdapterConfig,
     ChatMessage,
     ChatRoom,
-    ChatUser,
     SendMessageOptions,
 } from "./types"
 

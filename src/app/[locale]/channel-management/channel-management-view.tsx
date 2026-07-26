@@ -36,7 +36,7 @@ interface ServiceItem {
 }
 
 // Hero Section Component
-const HeroSection = ({ locale }: { locale: Locale }) => {
+const HeroSection = ({ locale: _locale }: { locale: Locale }) => {
     const t = useTranslations("channelManagement")
     const stats = t.raw("hero.stats") as Array<{
         number: string

@@ -1,7 +1,6 @@
 "use client"
 
 import PageHeader from "@/components/layout/page-header"
-import { Zap } from "lucide-react"
 import { useTranslations } from "next-intl"
 
 interface PCOptimizationHeroProps {
@@ -9,7 +8,7 @@ interface PCOptimizationHeroProps {
 }
 
 export default function PCOptimizationHero({
-    locale,
+    locale: _locale,
 }: PCOptimizationHeroProps) {
     const tHero = useTranslations("pcOptimizationPageHero")
 

@@ -1,6 +1,7 @@
 "use client"
 
 import { DynamicIcon } from "@/components/ui/dynamic-icon"
+import type { IconName } from "@/lib/icons"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import {
@@ -246,7 +247,7 @@ export default function ChannelsPage() {
                                                 name={
                                                     PLATFORM_ICONS[
                                                         channel.platform
-                                                    ] as any
+                                                    ] as IconName
                                                 }
                                                 size={24}
                                             />
@@ -346,7 +347,7 @@ export default function ChannelsPage() {
                                                     name={
                                                         PLATFORM_ICONS[
                                                             platform.id
-                                                        ] as any
+                                                        ] as IconName
                                                     }
                                                     size={24}
                                                 />
@@ -364,8 +365,11 @@ export default function ChannelsPage() {
                                                             "channels.notImplemented"
                                                         )}
                                                     </Badge>
-                                                ) : (platform as any)
-                                                      .localOnly ? (
+                                                ) : (
+                                                      platform as {
+                                                          localOnly?: boolean
+                                                      }
+                                                  ).localOnly ? (
                                                     <Badge
                                                         variant="outline"
                                                         className="mt-0.5 text-xs border-amber-300 text-amber-700 bg-amber-50 dark:border-amber-700 dark:text-amber-400 dark:bg-amber-950/30"

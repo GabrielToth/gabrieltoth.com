@@ -56,7 +56,7 @@ const WS_URL = "wss://ws.gabrieltoth.com"
 const MAX_RECONNECT_DELAY_MS = 30_000
 const INITIAL_RECONNECT_DELAY_MS = 1_000
 const DEDUP_WINDOW_MS = 3_000
-const TOKEN_REFRESH_BEFORE_MS = 60_000
+const _TOKEN_REFRESH_BEFORE_MS = 60_000
 
 export function useChatWS(_platforms: string[]): UseChatWSReturn {
     const [messages, setMessages] = useState<SSEChatMessage[]>([])
@@ -93,6 +93,8 @@ export function useChatWS(_platforms: string[]): UseChatWSReturn {
             return null
         }
     }, [])
+
+    const scheduleReconnectRef = useRef<() => void>(() => {})
 
     const connect = useCallback(async () => {
         if (!mountedRef.current) return
@@ -228,7 +230,7 @@ export function useChatWS(_platforms: string[]): UseChatWSReturn {
             if (!mountedRef.current) return
             setIsConnected(false)
             tokenRef.current = null
-            scheduleReconnect()
+            scheduleReconnectRef.current()
         }
 
         ws.onerror = () => {
@@ -236,18 +238,23 @@ export function useChatWS(_platforms: string[]): UseChatWSReturn {
         }
     }, [fetchToken])
 
-    const scheduleReconnect = useCallback(() => {
-        if (!mountedRef.current) return
-        const attempt = reconnectAttemptRef.current
-        const delay = Math.min(
-            INITIAL_RECONNECT_DELAY_MS * Math.pow(2, attempt),
-            MAX_RECONNECT_DELAY_MS
-        )
-        logger.debug("Scheduling WS reconnect", { attempt: attempt + 1, delay })
-        reconnectTimerRef.current = setTimeout(() => {
-            reconnectAttemptRef.current++
-            connect()
-        }, delay)
+    useEffect(() => {
+        scheduleReconnectRef.current = () => {
+            if (!mountedRef.current) return
+            const attempt = reconnectAttemptRef.current
+            const delay = Math.min(
+                INITIAL_RECONNECT_DELAY_MS * Math.pow(2, attempt),
+                MAX_RECONNECT_DELAY_MS
+            )
+            logger.debug("Scheduling WS reconnect", {
+                attempt: attempt + 1,
+                delay,
+            })
+            reconnectTimerRef.current = setTimeout(() => {
+                reconnectAttemptRef.current++
+                connect()
+            }, delay)
+        }
     }, [connect])
 
     useEffect(() => {

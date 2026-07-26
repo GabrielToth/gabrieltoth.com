@@ -2,10 +2,8 @@
 
 import { BenefitCard } from "@/app/[locale]/editors/editors-card"
 import PageHeader from "@/components/layout/page-header"
-import { Badge } from "@/components/ui/badge"
 import { Card } from "@/components/ui/card"
 import { DynamicIcon } from "@/components/ui/dynamic-icon"
-import LanguageSelector from "@/components/ui/language-selector"
 import WhatsAppButton from "@/components/ui/whatsapp-button"
 import { type Locale } from "@/lib/i18n"
 import { type IconName } from "@/lib/icons"
@@ -16,7 +14,7 @@ interface SectionPropsWithLocale {
     locale: Locale
 }
 
-export const HeroSection = ({ locale }: SectionPropsWithLocale) => {
+export const HeroSection = ({ locale: _locale }: SectionPropsWithLocale) => {
     const t = useTranslations("editors")
     const stats = t.raw("hero.stats") as Array<{
         number: string
@@ -288,7 +286,7 @@ export const BenefitsSection = () => {
     )
 }
 
-export const CTASection = ({ locale }: SectionPropsWithLocale) => {
+export const CTASection = ({ locale: _locale }: SectionPropsWithLocale) => {
     const t = useTranslations("editors")
     const whatsappNumber = "5511993313606"
 

@@ -79,7 +79,7 @@ export const useGoogleAuth = (
             setIsLoading(false)
             onError(error)
         }
-    }, [onSuccess, onError])
+    }, [onError])
 
     return {
         handleGoogleClick,

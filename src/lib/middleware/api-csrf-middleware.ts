@@ -9,7 +9,6 @@ import { logger } from "@/lib/logger"
 import { NextRequest, NextResponse } from "next/server"
 import {
     generateCsrfTokenForSession,
-    getCsrfToken,
     invalidateCsrfToken,
     validateCsrfToken,
 } from "./csrf-protection"

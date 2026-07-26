@@ -319,7 +319,7 @@ export default function NetworkSelectStep({
 function feat_label(
     feat: string,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    t: any
+    _t: any
 ): string {
     const labels: Record<string, string> = {
         text: "📝 Texto",

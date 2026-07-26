@@ -49,6 +49,14 @@ interface Schedule {
 /** Platforms that require video content instead of text */
 const VIDEO_REQUIRED_PLATFORMS = new Set(["youtube"])
 
+const exampleNetworks: Network[] = [
+    { id: "1", platform: "youtube", status: "connected" },
+    { id: "2", platform: "facebook", status: "connected" },
+    { id: "3", platform: "instagram", status: "connected" },
+    { id: "4", platform: "twitter", status: "expired" },
+    { id: "5", platform: "linkedin", status: "disconnected" },
+]
+
 export default function PostingInterface({
     onClose,
     defaultDate,
@@ -106,14 +114,6 @@ export default function PostingInterface({
         }
         loadNetworks()
     }, [])
-
-    const exampleNetworks: Network[] = [
-        { id: "1", platform: "youtube", status: "connected" },
-        { id: "2", platform: "facebook", status: "connected" },
-        { id: "3", platform: "instagram", status: "connected" },
-        { id: "4", platform: "twitter", status: "expired" },
-        { id: "5", platform: "linkedin", status: "disconnected" },
-    ]
 
     /** Get the set of selected platform names */
     const selectedPlatforms = selectedNetworkIds

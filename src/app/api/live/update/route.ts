@@ -317,7 +317,7 @@ async function updateKickStream(
 async function updateYouTubeStream(
     accessToken: string,
     title: string,
-    gameId?: string
+    _gameId?: string
 ): Promise<{ success: boolean; error?: string }> {
     try {
         // Find active broadcast

@@ -29,7 +29,7 @@ vi.mock("@/components/auth/turnstile-widget", () => {
     }) => {
         useEffect(() => {
             onTokenChange("test-turnstile-token")
-        }, [])
+        }, [onTokenChange])
         return <div data-testid="turnstile-mock" />
     }
     return { default: TurnstileMock }

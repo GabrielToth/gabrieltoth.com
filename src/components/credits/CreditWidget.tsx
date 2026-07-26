@@ -46,7 +46,7 @@ export function CreditWidget() {
             }
         }
         load()
-    }, [])
+    }, [t])
 
     if (loading) {
         return (

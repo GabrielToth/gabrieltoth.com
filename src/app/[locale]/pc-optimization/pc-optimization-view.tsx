@@ -5,15 +5,7 @@ import LanguageSelectorWrapper from "@/components/layout/language-selector-wrapp
 import PricingToggle from "@/components/ui/pricing-toggle"
 import { useMoneroPricing } from "@/hooks/use-monero-pricing"
 import { type Locale } from "@/lib/i18n"
-import {
-    CheckCircle,
-    Cpu,
-    Gamepad2,
-    Monitor,
-    Shield,
-    Star,
-    Zap,
-} from "lucide-react"
+import { CheckCircle, Cpu, Gamepad2, Monitor, Shield, Star } from "lucide-react"
 import { useTranslations } from "next-intl"
 import { generatePCOptimizationWhatsAppMessage } from "./pc-optimization-whatsapp"
 

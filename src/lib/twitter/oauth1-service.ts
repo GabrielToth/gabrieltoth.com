@@ -113,7 +113,7 @@ export class TwitterOAuth1Service extends BaseService {
             oauthParams.oauth_token = oauthToken
         }
 
-        const allParams = { ...oauthParams, ...extraParams }
+        const _allParams = { ...oauthParams, ...extraParams }
 
         // For signature, we need to parse URL params too
         const urlObj = new URL(url)

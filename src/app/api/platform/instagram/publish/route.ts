@@ -52,7 +52,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
             )
         }
 
-        const tokenStore = getTokenStore()
+        const _tokenStore = getTokenStore()
         let body: Record<string, unknown>
         try {
             body = await request.json()

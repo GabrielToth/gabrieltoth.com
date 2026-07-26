@@ -177,7 +177,7 @@ export class TikTokOAuthService extends BaseService {
         if (!response.ok) {
             throw new ServiceError(
                 "TOKEN_EXCHANGE_FAILED",
-                `Failed to exchange code for token (HTTP ${response.status}): ${data.error_description || data.error || (data as any).message || "Unknown"}`,
+                `Failed to exchange code for token (HTTP ${response.status}): ${data.error_description || data.error || data.message || "Unknown"}`,
                 400,
                 { error: data, rawResponse: text.slice(0, 1000) }
             )
@@ -198,9 +198,7 @@ export class TikTokOAuthService extends BaseService {
         // {"error": "invalid_grant", "error_description": "..."}
         if (data.error) {
             const desc =
-                (data as any).error_description ||
-                (data as any).message ||
-                "Unknown error"
+                data.error_description || data.message || "Unknown error"
             throw new ServiceError(
                 "TOKEN_EXCHANGE_FAILED",
                 `TikTok API error: ${data.error as string} - ${desc}`,

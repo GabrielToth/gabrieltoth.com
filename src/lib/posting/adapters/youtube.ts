@@ -121,7 +121,7 @@ export async function postToYouTube(
  * YouTube only supports video uploads - use uploadVideo for actual publishing.
  * This function is kept for interface compatibility and provides guidance.
  */
-export async function publish(config: {
+export async function publish(_config: {
     content: string
     images?: string[]
     metadata?: Record<string, unknown>

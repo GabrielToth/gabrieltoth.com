@@ -1,6 +1,6 @@
 import { getServerSession } from "@/lib/auth/get-server-session"
 import { isScopeOutdated, getScopeVersion } from "@/lib/oauth/scope-versions"
-import { getOAuthManager } from "@/lib/oauth"
+import { getOAuthManager, type OAuthPlatform } from "@/lib/oauth"
 import { getTokenStore } from "@/lib/token-store"
 import { createLogger } from "@/lib/logger"
 import { createClient } from "@supabase/supabase-js"
@@ -83,7 +83,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
             ) {
                 try {
                     const refreshed = await oauthManager.refreshAccessToken(
-                        sn.platform as any,
+                        sn.platform as OAuthPlatform,
                         token.refresh_token as string,
                         userId
                     )

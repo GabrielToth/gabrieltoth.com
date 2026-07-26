@@ -23,11 +23,16 @@ async function runCommand(
             maxBuffer: 50 * 1024 * 1024,
         })
         return { success: true, output }
-    } catch (error: any) {
+    } catch (error: unknown) {
+        const err = error as {
+            stdout?: string
+            stderr?: string
+            message?: string
+        }
         return {
             success: false,
-            output: error.stdout || "",
-            error: error.stderr || error.message,
+            output: err.stdout || "",
+            error: err.stderr || err.message,
         }
     }
 }
@@ -69,7 +74,7 @@ async function main() {
     for (const task of remainingTasks) {
         log(`\n[${task.id}] ${task.name}`)
         try {
-            const result = await conductor.execute(task.description)
+            const _result = await conductor.execute(task.description)
             log(`✅ ${task.id} completed`)
         } catch (error) {
             log(
@@ -145,7 +150,13 @@ async function main() {
         { name: "Test coverage", cmd: "npm run test:coverage" },
     ]
 
-    const testResults: any[] = []
+    interface TestResult {
+        name: string
+        passed: boolean
+        output: string
+    }
+
+    const testResults: TestResult[] = []
 
     for (const step of testSteps) {
         log(`\n→ ${step.name}...`)

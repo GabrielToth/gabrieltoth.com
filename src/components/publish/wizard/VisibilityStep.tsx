@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/select"
 import { SiYoutube } from "@icons-pack/react-simple-icons"
 import { useTranslations } from "next-intl"
-import { useState, useEffect } from "react"
+import { useCallback, useState, useEffect } from "react"
 import type { PublishWizardState, YouTubeMetadata } from "./types"
 import { DEFAULT_YOUTUBE_METADATA } from "./types"
 
@@ -42,15 +42,18 @@ export default function VisibilityStep({
         (state.platformMetadata.youtube as YouTubeMetadata | undefined) ||
         DEFAULT_YOUTUBE_METADATA
 
-    const setYouTubeMeta = (update: Partial<YouTubeMetadata>) => {
-        onStateChange({
-            ...state,
-            platformMetadata: {
-                ...state.platformMetadata,
-                youtube: { ...youtubeMeta, ...update },
-            },
-        })
-    }
+    const setYouTubeMeta = useCallback(
+        (update: Partial<YouTubeMetadata>) => {
+            onStateChange({
+                ...state,
+                platformMetadata: {
+                    ...state.platformMetadata,
+                    youtube: { ...youtubeMeta, ...update },
+                },
+            })
+        },
+        [onStateChange, state, youtubeMeta]
+    )
 
     // Set default schedule time to tomorrow at 10am if switching to schedule
     useEffect(() => {
@@ -63,7 +66,7 @@ export default function VisibilityStep({
                 scheduledTime: "10:00",
             })
         }
-    }, [scheduleType])
+    }, [scheduleType, setYouTubeMeta, youtubeMeta.scheduledDate])
 
     if (!hasYouTube) {
         return (

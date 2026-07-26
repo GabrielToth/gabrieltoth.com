@@ -1,6 +1,5 @@
 "use client"
 
-import { Input } from "@/components/ui/input"
 import { X, PencilLine } from "lucide-react"
 import { useRef, useState, useCallback, useEffect } from "react"
 
@@ -25,7 +24,7 @@ export default function TagInput({
     const inputRef = useRef<HTMLInputElement>(null)
     const editInputRef = useRef<HTMLInputElement>(null)
 
-    const totalChars = tags.join("").length + tags.length - 1 // commas between
+    const _totalChars = tags.join("").length + tags.length - 1 // commas between
     const charsUsed = tags.length > 0 ? tags.join(",").length : 0
     const isAtLimit = charsUsed >= maxChars
 
@@ -78,7 +77,7 @@ export default function TagInput({
         if (newTag) {
             const newTags = [...tags]
             // Check total chars would be within limit
-            const oldChars = tags.join(",").length
+            const _oldChars = tags.join(",").length
             const newCharsList = [...tags]
             newCharsList[editingIndex] = newTag
             const newCharsTotal = newCharsList.join(",").length

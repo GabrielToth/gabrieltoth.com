@@ -14,7 +14,7 @@ interface ApplicationFormProps {
 }
 
 export default function ApplicationForm({
-    locale,
+    locale: _locale,
     type,
 }: ApplicationFormProps) {
     const tCM = useTranslations("channelManagement")

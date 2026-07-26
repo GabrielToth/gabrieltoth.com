@@ -119,7 +119,7 @@ export default function ChannelSelectStep({
         } else {
             setLoading(false)
         }
-    }, [platformsNeedingChannels.map(s => s.platformId).join(","), t])
+    }, [platformsNeedingChannels, t])
 
     const toggleChannel = (platformId: string, channelId: string) => {
         const updated = platformSelections.map(sel => {

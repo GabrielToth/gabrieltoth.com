@@ -75,13 +75,16 @@ export default function PublishWizard({ onClose }: PublishWizardProps) {
     })
 
     // Publish orchestration
-    const { handlePublish, handleStartPublish, handleRetry } =
-        usePublishExecution({
-            wizardState,
-            setWizardState,
-            setCurrentStep,
-            clearDraft,
-        })
+    const {
+        handlePublish: _handlePublish,
+        handleStartPublish,
+        handleRetry,
+    } = usePublishExecution({
+        wizardState,
+        setWizardState,
+        setCurrentStep,
+        clearDraft,
+    })
 
     // Derive selected platform IDs
     const selectedPlatformIds = wizardState.platformSelections.map(

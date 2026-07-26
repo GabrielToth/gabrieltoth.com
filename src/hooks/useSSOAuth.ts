@@ -80,7 +80,7 @@ export const useSSOAuth = (
             setIsLoading(false)
             onError(error)
         }
-    }, [onSuccess, onError])
+    }, [onError])
 
     return {
         handleSSOClick,

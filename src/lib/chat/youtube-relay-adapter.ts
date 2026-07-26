@@ -3,6 +3,7 @@ import type {
     ChatAdapter,
     ChatAdapterConfig,
     ChatMessage,
+    ChatMessageType,
     ChatRoom,
     ChatUser,
     SendMessageOptions,
@@ -375,19 +376,37 @@ export class YouTubeRelayChatAdapter implements ChatAdapter {
         }
     }
 
-    private toChatMessage(channelId: string, data: any): ChatMessage {
+    private toChatMessage(channelId: string, data: unknown): ChatMessage {
+        const msg = data as {
+            id?: string
+            content?: string
+            msgType?: string
+            type?: string
+            timestamp?: number
+            isAction?: boolean
+            user?: {
+                id?: string
+                username?: string
+                displayName?: string
+                badges?: Array<{ id: string; label: string; imageUrl: string }>
+                isBroadcaster?: boolean
+                isModerator?: boolean
+                isSubscriber?: boolean
+                isVerified?: boolean
+            }
+        }
         const user: ChatUser = {
-            id: data.user?.id || "unknown",
-            username: data.user?.username || "unknown",
-            displayName: data.user?.displayName || "Unknown",
+            id: msg.user?.id || "unknown",
+            username: msg.user?.username || "unknown",
+            displayName: msg.user?.displayName || "Unknown",
             platform: "youtube",
-            badges: data.user?.badges || [],
-            isBroadcaster: data.user?.isBroadcaster || false,
-            isModerator: data.user?.isModerator || false,
-            isSubscriber: data.user?.isSubscriber || false,
+            badges: msg.user?.badges || [],
+            isBroadcaster: msg.user?.isBroadcaster || false,
+            isModerator: msg.user?.isModerator || false,
+            isSubscriber: msg.user?.isSubscriber || false,
         }
 
-        if (data.user?.isVerified) {
+        if (msg.user?.isVerified) {
             user.badges = [
                 ...user.badges,
                 {
@@ -399,14 +418,14 @@ export class YouTubeRelayChatAdapter implements ChatAdapter {
         }
 
         return {
-            id: data.id || `youtube-${Date.now()}`,
+            id: msg.id || `youtube-${Date.now()}`,
             channelId,
             platform: "youtube",
             user,
-            content: data.content || "",
-            type: data.msgType || data.type || "text",
-            timestamp: data.timestamp || Date.now(),
-            isAction: data.isAction || false,
+            content: msg.content || "",
+            type: (msg.msgType || msg.type || "text") as ChatMessageType,
+            timestamp: msg.timestamp || Date.now(),
+            isAction: msg.isAction || false,
         }
     }
 

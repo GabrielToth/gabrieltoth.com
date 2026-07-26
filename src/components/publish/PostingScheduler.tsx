@@ -142,7 +142,7 @@ export default function PostingScheduler({
         } catch {
             return ""
         }
-    }, [scheduleType, selectedDate, selectedTime, selectedTimezone])
+    }, [scheduleType, selectedDate, selectedTime, selectedTimezone, t])
 
     const handleScheduleChange = () => {
         if (scheduleType === "immediate") {
