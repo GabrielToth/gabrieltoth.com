@@ -13,6 +13,7 @@
         "type-check": "tsc --noEmit && tsc --noEmit -p tsconfig.test.json",
         "spell-check": "cspell \"src/**/*.{ts,tsx,js,jsx,md,json}\"",
         "spell-check:fix": "cspell \"src/**/*.{ts,tsx,js,jsx,md,json}\" --fix",
+        "i18n:validate": "node scripts/validate-i18n.js",
         "test": "vitest --run --passWithNoTests",
         "test:unit": "vitest --run --passWithNoTests",
         "test:watch": "vitest --watch",
