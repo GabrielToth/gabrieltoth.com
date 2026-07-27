@@ -1,406 +1,230 @@
 #!/usr/bin/env node
-/**
- * gabrieltoth.com — i18n parameter coverage & consistency validator (CI gate).
- *
- * Deterministically checks that every translation key in all target locale files
- * matches the exact interpolation / template parameters declared in `en.json` (source).
- *
- * Prevents runtime errors caused by missing, extra, or renamed placeholders
- * (e.g. `{credentials}` vs `{count}`, `{actor}` vs `{name}`) when switching languages.
- *
- * Supported parameter formats:
- *   - ICU MessageFormat: `{count}`, `{name}`, `{date, dateTime}`, `{count, plural, ...}`
- *   - next-intl format: same as ICU MessageFormat
- *
- * Usage:
- *   node scripts/i18n/check-params.mjs                     # Default: strict check
- *   node scripts/i18n/check-params.mjs --threshold=100    # Require 100% parameter match
- *   node scripts/i18n/check-params.mjs --report           # Detailed tabular report
- *   node scripts/i18n/check-params.mjs --json             # Machine-readable JSON output
- *
- * Exits 1 if any parameter mismatch is detected or if coverage < threshold.
- */
 
-import { promises as fs, existsSync } from "node:fs"
-import path from "node:path"
-import process from "node:process"
-import { fileURLToPath } from "node:url"
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
-const SCRIPT_DIR = path.dirname(fileURLToPath(import.meta.url))
-const ROOT = path.resolve(SCRIPT_DIR, "..", "..")
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-const DEFAULT_TARGETS = [
-    { name: "UI Messages", dir: path.join(ROOT, "src", "i18n", "messages") },
-]
+const I18N_DIR = path.resolve(__dirname, '../../src/i18n');
+const LOCALES = ['en', 'pt-BR', 'es', 'de', 'fr'];
 
-const SOURCE_LOCALE = "en"
+// Common English words that should NOT appear in non-EN locales
+const ENGLISH_WORDS = [
+    'Sign In', 'Sign Up', 'Login', 'Register', 'Email', 'Password',
+    'Dashboard', 'Settings', 'Profile', 'Logout', 'Home', 'About',
+    'Services', 'Contact', 'Search', 'Filter', 'Sort', 'Edit',
+    'Delete', 'Cancel', 'Save', 'Submit', 'Continue', 'Back', 'Next',
+    'Previous', 'Loading', 'Success', 'Error', 'Warning'
+];
 
-function parseArgs(argv) {
-    const opts = { threshold: 100, report: false, json: false, strict: true }
-    for (const arg of argv.slice(2)) {
-        if (arg.startsWith("--threshold=")) {
-            opts.threshold = Number(arg.slice(12))
-        } else if (arg === "--report") {
-            opts.report = true
-        } else if (arg === "--json") {
-            opts.json = true
-        } else if (arg === "--warn") {
-            opts.strict = false
-        } else if (arg === "--help" || arg === "-h") {
-            console.log(
-                [
-                    "Usage: node scripts/i18n/check-params.mjs [options]",
-                    "",
-                    "  --threshold=<n>   Minimum parameter matching coverage % required (default 100)",
-                    "  --report          Print detailed per-locale parameter mismatch report",
-                    "  --json            Emit machine-readable JSON summary to stdout",
-                    "  --warn            Print warnings but exit 0 on mismatch",
-                ].join("\n")
-            )
-            process.exit(0)
+// Files that are allowed to have EN content (legal docs requiring professional translation)
+const ALLOWED_EN_FILES = [
+    'privacyPolicy.json',
+    'termsOfService.json',
+    'pcOptimizationTerms.json'
+];
+
+function getAllFiles(dir, locale) {
+    const localeDir = path.join(dir, locale);
+    const files = [];
+    
+    function traverse(currentPath) {
+        const entries = fs.readdirSync(currentPath, { withFileTypes: true });
+        for (const entry of entries) {
+            const fullPath = path.join(currentPath, entry.name);
+            if (entry.isDirectory()) {
+                traverse(fullPath);
+            } else if (entry.name.endsWith('.json')) {
+                files.push(fullPath);
+            }
         }
     }
-    if (
-        !Number.isFinite(opts.threshold) ||
-        opts.threshold < 0 ||
-        opts.threshold > 100
-    ) {
-        throw new Error(`Invalid --threshold value: ${opts.threshold}`)
-    }
-    return opts
+    
+    traverse(localeDir);
+    return files;
 }
 
-/**
- * Deterministically extracts top-level parameter identifiers from an ICU template string.
- * Correctly ignores sub-branches in plural/select blocks (e.g. `{count, plural, one {} other {s}}` -> `['count']`).
- */
-export function extractIcuParams(text) {
-    if (typeof text !== "string") return new Set()
-    const params = new Set()
+function extractParameters(str) {
+    if (typeof str !== 'string') return [];
+    const matches = str.match(/\{[^}]+\}/g);
+    return matches ? matches.sort() : [];
+}
 
-    function parse(str) {
-        let depth = 0
-        let start = -1
-        for (let i = 0; i < str.length; i++) {
-            if (str[i] === "{") {
-                if (depth === 0) start = i
-                depth++
-            } else if (str[i] === "}") {
-                depth--
-                if (depth === 0 && start !== -1) {
-                    const content = str.slice(start + 1, i)
-                    const commaIdx = content.indexOf(",")
-                    const spaceIdx = content.search(/\s/)
-                    let endIdx = content.length
-                    if (
-                        commaIdx !== -1 &&
-                        (spaceIdx === -1 || commaIdx < spaceIdx)
-                    ) {
-                        endIdx = commaIdx
-                    } else if (spaceIdx !== -1) {
-                        endIdx = spaceIdx
-                    }
+function collectAllParameters(obj, params = new Set()) {
+    if (typeof obj === 'string') {
+        extractParameters(obj).forEach(p => params.add(p));
+    } else if (Array.isArray(obj)) {
+        obj.forEach(item => collectAllParameters(item, params));
+    } else if (typeof obj === 'object' && obj !== null) {
+        Object.values(obj).forEach(value => collectAllParameters(value, params));
+    }
+    return params;
+}
 
-                    let paramName = content.slice(0, endIdx).trim()
-                    paramName = paramName
-                        .replace(/^\{+/, "")
-                        .replace(/\}+$/, "")
-                        .trim()
+function hasEnglishContent(obj, fileName) {
+    // Skip legal docs
+    if (ALLOWED_EN_FILES.includes(path.basename(fileName))) {
+        return null;
+    }
+    
+    const violations = [];
+    
+    function check(value, keyPath = '') {
+        if (typeof value === 'string') {
+            for (const word of ENGLISH_WORDS) {
+                // Check for exact word match (word boundaries)
+                const regex = new RegExp(`\\b${word}\\b`, 'i');
+                if (regex.test(value)) {
+                    violations.push({
+                        key: keyPath,
+                        value: value.substring(0, 100),
+                        word: word
+                    });
+                }
+            }
+        } else if (Array.isArray(value)) {
+            value.forEach((item, index) => check(item, `${keyPath}[${index}]`));
+        } else if (typeof value === 'object' && value !== null) {
+            Object.entries(value).forEach(([key, val]) => {
+                check(val, keyPath ? `${keyPath}.${key}` : key);
+            });
+        }
+    }
+    
+    check(obj);
+    return violations.length > 0 ? violations : null;
+}
 
-                    if (paramName && /^[a-zA-Z0-9_-]+$/.test(paramName)) {
-                        params.add(paramName)
-                    }
-                    start = -1
+console.log('================================================================================');
+console.log('gabrieltoth.com i18n Parameter Consistency & Translation Coverage Report');
+console.log('================================================================================\n');
+
+let allTestsPassed = true;
+const results = {};
+
+// Test 1: Parameter Consistency
+console.log('📋 Test 1: Parameter Consistency\n');
+
+for (const locale of LOCALES) {
+    const files = getAllFiles(I18N_DIR, locale);
+    results[locale] = { files: files.length, issues: [] };
+    
+    for (const filePath of files) {
+        const content = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+        const params = collectAllParameters(content);
+        
+        // Compare with EN version
+        if (locale !== 'en') {
+            const relativePath = filePath.replace(path.join(I18N_DIR, locale), '');
+            const enPath = path.join(I18N_DIR, 'en', relativePath);
+            
+            if (fs.existsSync(enPath)) {
+                const enContent = JSON.parse(fs.readFileSync(enPath, 'utf8'));
+                const enParams = collectAllParameters(enContent);
+                
+                const paramsArray = Array.from(params).sort();
+                const enParamsArray = Array.from(enParams).sort();
+                
+                if (JSON.stringify(paramsArray) !== JSON.stringify(enParamsArray)) {
+                    const missing = enParamsArray.filter(p => !paramsArray.includes(p));
+                    const extra = paramsArray.filter(p => !enParamsArray.includes(p));
+                    
+                    results[locale].issues.push({
+                        file: path.basename(filePath),
+                        type: 'parameter-mismatch',
+                        missing,
+                        extra
+                    });
+                    allTestsPassed = false;
                 }
             }
         }
     }
-
-    parse(text)
-    return params
 }
 
-function flattenKeys(obj, prefix = "") {
-    const res = {}
-    for (const [k, v] of Object.entries(obj)) {
-        const full = prefix ? `${prefix}.${k}` : k
-        if (v !== null && typeof v === "object" && !Array.isArray(v)) {
-            Object.assign(res, flattenKeys(v, full))
-        } else if (typeof v === "string") {
-            res[full] = v
+// Test 2: Translation Coverage (non-EN locales should not have English content)
+console.log('📋 Test 2: Translation Coverage (English Content Detection)\n');
+
+const translationIssues = {};
+
+for (const locale of LOCALES) {
+    if (locale === 'en') continue; // Skip English
+    
+    translationIssues[locale] = [];
+    const files = getAllFiles(I18N_DIR, locale);
+    
+    for (const filePath of files) {
+        const content = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+        const violations = hasEnglishContent(content, filePath);
+        
+        if (violations) {
+            translationIssues[locale].push({
+                file: path.relative(I18N_DIR, filePath),
+                violations: violations.slice(0, 5) // Show first 5 violations
+            });
+            allTestsPassed = false;
         }
-    }
-    return res
-}
-
-function pad(str, width) {
-    const s = String(str)
-    return s.length >= width ? s : s + " ".repeat(width - s.length)
-}
-
-function padLeft(str, width) {
-    const s = String(str)
-    return s.length >= width ? s : " ".repeat(width - s.length) + s
-}
-
-async function auditTree(targetGroup, opts) {
-    const dirPath = targetGroup.dir
-    const enFile = path.join(dirPath, `${SOURCE_LOCALE}.json`)
-    if (!existsSync(enFile)) {
-        return {
-            name: targetGroup.name,
-            error: `Missing source locale file: ${enFile}`,
-        }
-    }
-
-    const enJson = JSON.parse(await fs.readFile(enFile, "utf8"))
-    const enFlat = flattenKeys(enJson)
-    const enParams = {}
-    for (const [key, text] of Object.entries(enFlat)) {
-        const params = extractIcuParams(text)
-        if (params.size > 0) {
-            enParams[key] = params
-        }
-    }
-
-    const totalEnParamsCount = Object.keys(enParams).length
-    const files = (await fs.readdir(dirPath))
-        .filter(f => f.endsWith(".json") && f !== `${SOURCE_LOCALE}.json`)
-        .sort()
-
-    const localeResults = []
-
-    for (const f of files) {
-        const locale = f.replace(".json", "")
-        const filePath = path.join(dirPath, f)
-        let targetFlat = {}
-        try {
-            targetFlat = flattenKeys(
-                JSON.parse(await fs.readFile(filePath, "utf8"))
-            )
-        } catch (err) {
-            localeResults.push({
-                locale,
-                totalEnParams: totalEnParamsCount,
-                checked: 0,
-                mismatches: [],
-                coverage: 0,
-                parseError: err.message,
-            })
-            continue
-        }
-
-        let checkedCount = 0
-        const mismatches = []
-
-        for (const [key, enSet] of Object.entries(enParams)) {
-            const targetText = targetFlat[key]
-            if (typeof targetText !== "string") continue
-
-            checkedCount++
-            const targetSet = extractIcuParams(targetText)
-            const enSorted = Array.from(enSet).sort()
-            const targetSorted = Array.from(targetSet).sort()
-
-            const enStr = enSorted.join(",")
-            const targetStr = targetSorted.join(",")
-
-            if (enStr !== targetStr) {
-                const missing = enSorted.filter(p => !targetSet.has(p))
-                const extra = targetSorted.filter(p => !enSet.has(p))
-                mismatches.push({
-                    key,
-                    enParams: enSorted,
-                    targetParams: targetSorted,
-                    missing,
-                    extra,
-                    enText: enFlat[key],
-                    targetText,
-                })
-            }
-        }
-
-        const matchedCount = checkedCount - mismatches.length
-        const coverage =
-            checkedCount === 0 ? 100 : (matchedCount / checkedCount) * 100
-
-        localeResults.push({
-            locale,
-            totalEnParams: totalEnParamsCount,
-            checked: checkedCount,
-            matched: matchedCount,
-            mismatchCount: mismatches.length,
-            mismatches,
-            coverage,
-        })
-    }
-
-    return {
-        name: targetGroup.name,
-        dir: dirPath,
-        totalEnParamsCount,
-        localesCount: files.length,
-        localeResults,
     }
 }
 
-async function main() {
-    const opts = parseArgs(process.argv)
-    const groups = []
+// Print Results
+console.log('================================================================================');
+console.log('RESULTS');
+console.log('================================================================================\n');
 
-    for (const group of DEFAULT_TARGETS) {
-        if (existsSync(group.dir)) {
-            const res = await auditTree(group, opts)
-            groups.push(res)
-        }
-    }
-
-    let globalFailures = 0
-    const jsonReport = {
-        threshold: opts.threshold,
-        strict: opts.strict,
-        ok: true,
-        groups: [],
-    }
-
-    for (const g of groups) {
-        if (g.error) {
-            jsonReport.ok = false
-            globalFailures++
-            continue
-        }
-
-        const groupFailures = g.localeResults.filter(
-            r => r.mismatchCount > 0 || r.coverage < opts.threshold
-        )
-        if (groupFailures.length > 0) {
-            globalFailures += groupFailures.length
-        }
-
-        jsonReport.groups.push({
-            name: g.name,
-            totalEnParamsKeys: g.totalEnParamsCount,
-            localesChecked: g.localesCount,
-            ok: groupFailures.length === 0,
-            results: g.localeResults.map(r => ({
-                locale: r.locale,
-                checked: r.checked,
-                matched: r.matched,
-                mismatchCount: r.mismatchCount,
-                coveragePct: Number(r.coverage.toFixed(2)),
-                mismatches: r.mismatches.map(m => ({
-                    key: m.key,
-                    expected: m.enParams,
-                    received: m.targetParams,
-                    missing: m.missing,
-                    extra: m.extra,
-                })),
-            })),
-        })
-    }
-
-    jsonReport.ok = globalFailures === 0
-
-    if (opts.json) {
-        process.stdout.write(JSON.stringify(jsonReport, null, 2) + "\n")
-        if (!jsonReport.ok && opts.strict) process.exit(1)
-        return
-    }
-
-    // Human-readable console output
-    console.log(
-        "================================================================================"
-    )
-    console.log("gabrieltoth.com i18n Parameter Consistency & Coverage Report")
-    console.log(
-        "================================================================================"
-    )
-
-    for (const g of groups) {
-        if (g.error) {
-            console.error(`[FAIL] ${g.name}: ${g.error}`)
-            continue
-        }
-
-        console.log(
-            `\n--- ${g.name} (${g.localesCount} locales, ${g.totalEnParamsCount} EN parameterized keys) ---`
-        )
-        const localeW = Math.max(
-            8,
-            ...g.localeResults.map(r => r.locale.length)
-        )
-
-        const header =
-            pad("locale", localeW) +
-            "  " +
-            padLeft("coverage", 10) +
-            "  " +
-            padLeft("matched", 8) +
-            "  " +
-            padLeft("mismatches", 11) +
-            "  " +
-            padLeft("checked", 8)
-        console.log(header)
-        console.log("-".repeat(header.length))
-
-        for (const r of g.localeResults) {
-            const pct = `${r.coverage.toFixed(1)}%`
-            const statusMarker =
-                r.mismatchCount > 0 || r.coverage < opts.threshold
-                    ? " ✗ FAIL"
-                    : " ✓ OK"
-            console.log(
-                pad(r.locale, localeW) +
-                    "  " +
-                    padLeft(pct, 10) +
-                    "  " +
-                    padLeft(r.matched, 8) +
-                    "  " +
-                    padLeft(r.mismatchCount, 11) +
-                    "  " +
-                    padLeft(r.checked, 8) +
-                    statusMarker
-            )
-
-            if (opts.report && r.mismatches.length > 0) {
-                for (const m of r.mismatches) {
-                    console.log(`    ↳ Key: "${m.key}"`)
-                    console.log(
-                        `       Expected (EN): [${m.enParams.join(", ")}]`
-                    )
-                    console.log(
-                        `       Found (${r.locale}):  [${m.targetParams.join(", ")}]`
-                    )
-                    if (m.missing.length > 0)
-                        console.log(
-                            `       Missing:      [${m.missing.join(", ")}]`
-                        )
-                    if (m.extra.length > 0)
-                        console.log(
-                            `       Extra:        [${m.extra.join(", ")}]`
-                        )
-                }
-            }
-        }
-    }
-
-    console.log(
-        "\n================================================================================"
-    )
-    if (globalFailures > 0) {
-        console.error(
-            `[FAIL] i18n Parameter Verification Failed: ${globalFailures} locale mismatch issue(s).`
-        )
-        console.error("Run with --report for key-by-key breakdown.")
-        if (opts.strict) process.exit(1)
+// Parameter Consistency Results
+console.log('✅ Parameter Consistency:');
+let paramIssues = 0;
+for (const [locale, data] of Object.entries(results)) {
+    if (data.issues.length > 0) {
+        console.log(`\n❌ ${locale.toUpperCase()}: ${data.issues.length} file(s) with parameter mismatches`);
+        data.issues.forEach(issue => {
+            console.log(`   - ${issue.file}`);
+            if (issue.missing.length) console.log(`     Missing: ${issue.missing.join(', ')}`);
+            if (issue.extra.length) console.log(`     Extra: ${issue.extra.join(', ')}`);
+        });
+        paramIssues += data.issues.length;
     } else {
-        console.log(
-            "[PASS] 100% i18n Parameter Consistency Verified across all locales!"
-        )
+        console.log(`   ✓ ${locale.toUpperCase()}: All ${data.files} files consistent`);
     }
 }
 
-main().catch(err => {
-    console.error("[FATAL]", err)
-    process.exit(1)
-})
+// Translation Coverage Results
+console.log('\n✅ Translation Coverage:');
+let translationIssuesCount = 0;
+for (const [locale, issues] of Object.entries(translationIssues)) {
+    if (issues.length > 0) {
+        console.log(`\n❌ ${locale.toUpperCase()}: ${issues.length} file(s) with English content detected`);
+        issues.forEach(issue => {
+            console.log(`   - ${issue.file}`);
+            issue.violations.slice(0, 3).forEach(v => {
+                console.log(`     • "${v.word}" found in: ${v.key}`);
+            });
+            if (issue.violations.length > 3) {
+                console.log(`     ... and ${issue.violations.length - 3} more`);
+            }
+        });
+        translationIssuesCount += issues.length;
+    } else {
+        console.log(`   ✓ ${locale.toUpperCase()}: No English content detected`);
+    }
+}
+
+console.log('\n================================================================================');
+
+if (allTestsPassed) {
+    console.log('[PASS] 100% i18n Parameter Consistency & Translation Coverage Verified!');
+    process.exit(0);
+} else {
+    console.log(`[FAIL] Found issues:`);
+    if (paramIssues > 0) {
+        console.log(`  - ${paramIssues} parameter consistency issue(s)`);
+    }
+    if (translationIssuesCount > 0) {
+        console.log(`  - ${translationIssuesCount} file(s) with English content in non-EN locales`);
+    }
+    console.log('\nPlease fix the issues above before deploying.');
+    process.exit(1);
+}
