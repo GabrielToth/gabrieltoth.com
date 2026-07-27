@@ -245,6 +245,7 @@ export function generateSeoConfig(options: SeoConfigOptions) {
             "Gabriel Toth Gonçalves - Desenvolvedor Full Stack & Cientista de Dados",
         es: "Gabriel Toth Gonçalves - Desarrollador Full Stack y Científico de Datos",
         de: "Gabriel Toth Gonçalves - Full Stack Entwickler & Datenwissenschaftler",
+        fr: "Gabriel Toth Gonçalves - Développeur Full Stack & Data Scientist",
     }
 
     const descriptionByLocale: Record<Locale, string> = {
@@ -253,6 +254,7 @@ export function generateSeoConfig(options: SeoConfigOptions) {
             "Desenvolvedor Full Stack e Cientista de Dados especialista em React, Next.js, TypeScript, Node.js e tecnologias de IA/ML. Serviços profissionais de desenvolvimento web e consultoria digital.",
         es: "Desarrollador Full Stack y Científico de Datos especializado en React, Next.js, TypeScript, Node.js y tecnologías de IA/ML. Servicios profesionales de desarrollo web y consultoría digital.",
         de: "Full Stack Entwickler und Datenwissenschaftler mit Spezialisierung auf React, Next.js, TypeScript, Node.js und KI/ML-Technologien. Professionelle Webentwicklung und digitale Beratung.",
+        fr: "Développeur Full Stack et Data Scientist spécialisé en React, Next.js, TypeScript, Node.js, et technologies IA/ML. Services professionnels de développement web et conseil numérique.",
     }
 
     const defaultTitle = titleByLocale[locale] ?? titleByLocale["en"]
@@ -268,6 +270,7 @@ export function generateSeoConfig(options: SeoConfigOptions) {
         es: "es_ES",
         de: "de_DE",
         en: "en_US",
+        fr: "fr_FR",
     }
 
     const writtenByLabelByLocale: Record<Locale, string> = {
@@ -275,6 +278,7 @@ export function generateSeoConfig(options: SeoConfigOptions) {
         es: "Escrito por",
         de: "Geschrieben von",
         en: "Written by",
+        fr: "Écrit par",
     }
 
     const keywordsByLocale: Record<Locale, string[]> = {
@@ -321,6 +325,27 @@ export function generateSeoConfig(options: SeoConfigOptions) {
             "serviços web",
             "otimização de performance",
             "seo técnico",
+        ],
+        fr: [
+            "gabriel toth",
+            "développeur full stack",
+            "data scientist",
+            "react",
+            "nextjs",
+            "typescript",
+            "nodejs",
+            "intelligence artificielle",
+            "machine learning",
+            "développement web",
+            "conseil numérique",
+            "développeur javascript",
+            "python",
+            "data science",
+            "développeur freelance",
+            "portfolio développeur",
+            "services web",
+            "optimisation de performance",
+            "seo technique",
         ],
         es: [
             "gabriel toth",

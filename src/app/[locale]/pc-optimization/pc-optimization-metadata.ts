@@ -22,27 +22,30 @@ export async function generateMetadata({
         locale = localeParam as Locale
     }
 
-    const titles = {
+    const titles: Record<Locale, string> = {
         "pt-BR": "Otimização de PC Gaming - Máxima Performance - Gabriel Toth",
         en: "Gaming PC Optimization - Maximum Performance - Gabriel Toth",
         es: "Optimización de PC Gaming - Máximo Rendimiento - Gabriel Toth",
         de: "Gaming PC Optimierung - Maximale Leistung - Gabriel Toth",
+        fr: "Optimisation de PC Gaming - Performance Maximale - Gabriel Toth",
     }
 
-    const descriptions = {
+    const descriptions: Record<Locale, string> = {
         "pt-BR":
             "Desbloqueie o verdadeiro potencial do seu PC gaming! Otimização profissional para mais FPS, menos lag e performance máxima em todos os jogos.",
         en: "Unlock your gaming PC's true potential! Professional optimization for more FPS, less lag and maximum performance in all games.",
         es: "¡Desbloquea el verdadero potencial de tu PC gaming! Optimización profesional para más FPS, menos lag y rendimiento máximo en todos los juegos.",
         de: "Entfesseln Sie das wahre Potenzial Ihres Gaming-PCs! Professionelle Optimierung für mehr FPS, weniger Lag und maximale Leistung in allen Spielen.",
+        fr: "Libérez le vrai potentiel de votre PC gamer ! Optimisation professionnelle pour plus de FPS, moins de lag et une performance maximale dans tous les jeux.",
     }
 
-    const keywords = {
+    const keywords: Record<Locale, string> = {
         "pt-BR":
             "otimização pc gaming, mais fps, menos lag, performance gaming, otimização windows, overclocking, gabriel toth, pc gamer, melhoria performance",
         en: "gaming pc optimization, more fps, less lag, gaming performance, windows optimization, overclocking, gabriel toth, gaming pc, performance improvement",
         es: "optimización pc gaming, más fps, menos lag, rendimiento gaming, optimización windows, overclocking, gabriel toth, pc gaming, mejora rendimiento",
         de: "gaming pc optimierung, mehr fps, weniger lag, gaming leistung, windows optimierung, overclocking, gabriel toth, gaming pc, leistungsverbesserung",
+        fr: "optimisation pc gaming, plus de fps, moins de lag, performance gaming, optimisation windows, overclocking, gabriel toth, pc gamer, amélioration performance",
     }
 
     const title = titles[locale] || titles.en
@@ -83,6 +86,7 @@ export async function generateMetadata({
                 "pt-BR": "https://www.gabrieltoth.com/pt-BR/pc-optimization/",
                 es: "https://www.gabrieltoth.com/es/pc-optimization/",
                 de: "https://www.gabrieltoth.com/de/pc-optimization/",
+                fr: "https://www.gabrieltoth.com/fr/pc-optimization/",
                 "x-default":
                     "https://www.gabrieltoth.com/pt-BR/pc-optimization/",
             },

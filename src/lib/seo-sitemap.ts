@@ -61,6 +61,7 @@ Sitemap: ${SITE_URL}/sitemap-en.xml
 Sitemap: ${SITE_URL}/sitemap-pt-BR.xml
 Sitemap: ${SITE_URL}/sitemap-es.xml
 Sitemap: ${SITE_URL}/sitemap-de.xml
+Sitemap: ${SITE_URL}/sitemap-fr.xml
 
 # Host
 Host: www.gabrieltoth.com`

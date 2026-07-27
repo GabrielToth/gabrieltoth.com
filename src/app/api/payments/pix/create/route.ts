@@ -1,9 +1,17 @@
 import { ordersDb as db } from "@/lib/orders-store"
 import { generatePixQR, generateTrackingCode } from "@/lib/pix"
+import { buildClientKey, rateLimitByKey } from "@/lib/rate-limit"
 import { NextRequest, NextResponse } from "next/server"
 
 export async function POST(req: NextRequest) {
     try {
+        const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "127.0.0.1"
+        const key = buildClientKey({ ip, path: "/api/payments/pix/create" })
+        const rl = await rateLimitByKey(key)
+        if (!rl.success) {
+            return NextResponse.json({ error: "Too many requests" }, { status: 429 })
+        }
+
         const { serviceType, amount, whatsappNumber } = await req.json()
 
         // Validate required fields
