@@ -1,55 +1,64 @@
 {
-    "compilerOptions": {
-        "target": "ES2017",
-        "lib": ["dom", "dom.iterable", "esnext"],
-        "allowJs": true,
-        "skipLibCheck": true,
-        "strict": true,
-        "noEmit": true,
-        "esModuleInterop": true,
-        "module": "esnext",
-        "moduleResolution": "bundler",
-        "resolveJsonModule": true,
-        "isolatedModules": true,
-        "jsx": "react-jsx",
-        "incremental": true,
-        "plugins": [
-            {
-                "name": "next"
-            }
-        ],
-        "paths": {
-            "@/*": ["./src/*"]
-        },
-        "types": ["node", "vitest/globals"]
-    },
-    "include": [
-        "next-env.d.ts",
-        "src/**/*.ts",
-        "src/**/*.tsx",
-        ".next/types/**/*.ts",
-        ".next/dev/types/**/*.ts"
+  "compilerOptions": {
+    "target": "ES2017",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
     ],
-    "exclude": [
-        "node_modules",
-        "src/**/*.spec.ts",
-        "src/**/*.spec.tsx",
-        "src/**/*.test.ts",
-        "src/**/*.test.tsx",
-        "src/__tests__/**",
-        "vitest.setup.ts",
-        "vitest.config.ts",
-        "**/*.stories.ts",
-        "**/*.stories.tsx",
-        "src/stories",
-        "src/stories/**",
-        "stories",
-        "stories/**",
-        "src/lib/cron",
-        "src/lib/cron/**",
-        "scripts/**",
-        "src/test-utils/**",
-        "tests/**",
-        "src/lib/observability"
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ]
+    },
+    "types": [
+      "node",
+      "vitest/globals"
     ]
+  },
+  "include": [
+    "next-env.d.ts",
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    ".next/types/**/*.ts",
+    ".next/dev/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "src/**/*.spec.ts",
+    "src/**/*.spec.tsx",
+    "src/**/*.test.ts",
+    "src/**/*.test.tsx",
+    "src/__tests__/**",
+    "vitest.setup.ts",
+    "vitest.config.ts",
+    "**/*.stories.ts",
+    "**/*.stories.tsx",
+    "src/stories",
+    "src/stories/**",
+    "stories",
+    "stories/**",
+    "src/lib/cron",
+    "src/lib/cron/**",
+    "scripts/**",
+    "src/test-utils/**",
+    "tests/**",
+    "src/lib/observability"
+  ]
 }
