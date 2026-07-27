@@ -21,6 +21,10 @@ export async function GET() {
         <loc>https://www.gabrieltoth.com/sitemap-de.xml</loc>
         <lastmod>${lastmod}</lastmod>
     </sitemap>
+    <sitemap>
+        <loc>https://www.gabrieltoth.com/sitemap-fr.xml</loc>
+        <lastmod>${lastmod}</lastmod>
+    </sitemap>
 </sitemapindex>`
 
     return new Response(sitemap, {

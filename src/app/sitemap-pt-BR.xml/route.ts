@@ -14,6 +14,7 @@ export async function GET() {
             const enUrl = `${SITE_URL}/en${path}/`.replace(/\/+$/, "/")
             const esUrl = `${SITE_URL}/es${path}/`.replace(/\/+$/, "/")
             const deUrl = `${SITE_URL}/de${path}/`.replace(/\/+$/, "/")
+            const frUrl = `${SITE_URL}/fr${path}/`.replace(/\/+$/, "/")
 
             return `
     <url>
@@ -25,6 +26,7 @@ export async function GET() {
         <xhtml:link rel="alternate" hreflang="pt-BR" href="${fullUrl}" />
         <xhtml:link rel="alternate" hreflang="es" href="${esUrl}" />
         <xhtml:link rel="alternate" hreflang="de" href="${deUrl}" />
+        <xhtml:link rel="alternate" hreflang="fr" href="${frUrl}" />
         <xhtml:link rel="alternate" hreflang="x-default" href="${fullUrl}" />
     </url>`
         })

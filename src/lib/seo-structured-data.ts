@@ -16,6 +16,7 @@ import enSeo from "@/i18n/en/seo.json"
 import ptBrSeo from "@/i18n/pt-BR/seo.json"
 import esSeo from "@/i18n/es/seo.json"
 import deSeo from "@/i18n/de/seo.json"
+import frSeo from "@/i18n/fr/seo.json"
 
 interface SeoMessages {
     personDescription: string
@@ -29,6 +30,7 @@ const seoMessages: Record<Locale, SeoMessages> = {
     "pt-BR": ptBrSeo as SeoMessages,
     es: esSeo as SeoMessages,
     de: deSeo as SeoMessages,
+    fr: frSeo as SeoMessages,
 }
 
 const SITE_URL = "https://www.gabrieltoth.com"

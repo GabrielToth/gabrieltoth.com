@@ -47,10 +47,7 @@ export default getRequestConfig(async ({ locale }) => {
         pcOptimizationPageHero,
         pcOptimizationTerms,
         pcOptimizationTermsPageHero,
-<<<<<<< Updated upstream
         pcOptimizationWhatsapp,
-=======
->>>>>>> Stashed changes
         privacyPageHero,
         servicesPageHero,
         termsOfServicePageHero,
@@ -75,7 +72,6 @@ export default getRequestConfig(async ({ locale }) => {
         loadJson(() => import(`@/i18n/${selectedLocale}/aboutMe.json`)),
         loadJson(() => import(`@/i18n/${selectedLocale}/amazonAffiliate.json`)),
         loadJson(() => import(`@/i18n/${selectedLocale}/homePageHero.json`)),
-<<<<<<< Updated upstream
         loadJson(
             () => import(`@/i18n/${selectedLocale}/minecraftPageHero.json`)
         ),
@@ -119,16 +115,6 @@ export default getRequestConfig(async ({ locale }) => {
         loadJson(
             () => import(`@/i18n/${selectedLocale}/pcOptimizationWhatsapp.json`)
         ),
-=======
-        loadJson(() => import(`@/i18n/${selectedLocale}/minecraftPageHero.json`)),
-        loadJson(() => import(`@/i18n/${selectedLocale}/minecraftContributionsPageHero.json`)),
-        loadJson(() => import(`@/i18n/${selectedLocale}/minecraftHypixelQolPageHero.json`)),
-        loadJson(() => import(`@/i18n/${selectedLocale}/minecraftModpacksPageHero.json`)),
-        loadJson(() => import(`@/i18n/${selectedLocale}/minecraftModsPageHero.json`)),
-        loadJson(() => import(`@/i18n/${selectedLocale}/minecraftPluginsPageHero.json`)),
-        loadJson(() => import(`@/i18n/${selectedLocale}/pcOptimizationPageHero.json`)),
-        loadJson(() => import(`@/i18n/${selectedLocale}/pcOptimizationTermsPageHero.json`)),
->>>>>>> Stashed changes
         loadJson(() => import(`@/i18n/${selectedLocale}/privacyPageHero.json`)),
         loadJson(
             () => import(`@/i18n/${selectedLocale}/servicesPageHero.json`)
@@ -166,10 +152,7 @@ export default getRequestConfig(async ({ locale }) => {
         pcOptimizationPageHero,
         pcOptimizationTerms,
         pcOptimizationTermsPageHero,
-<<<<<<< Updated upstream
         pcOptimizationWhatsapp,
-=======
->>>>>>> Stashed changes
         privacyPageHero,
         servicesPageHero,
         termsOfServicePageHero,

@@ -74,6 +74,24 @@ const urlMapping: Record<Locale, Record<string, string>> = {
         "minecraft-plugins": "minecraft/plugins",
         "minecraft-contributions": "minecraft/beitrage",
     },
+    fr: {
+        "about-me": "a-propos-de-moi",
+        "channel-management": "gestion-de-chaine",
+        editors: "editeurs",
+        "pc-optimization": "optimisation-de-pc",
+        "amazon-affiliate": "affiliation-amazon",
+        "privacy-policy": "politique-de-confidentialite",
+        "terms-of-service": "conditions-d-utilisation",
+        login: "connexion",
+        register: "s-inscrire",
+        payments: "paiements",
+        services: "services",
+        minecraft: "minecraft",
+        "minecraft-modpacks": "minecraft/modpacks",
+        "minecraft-mods": "minecraft/mods",
+        "minecraft-plugins": "minecraft/plugins",
+        "minecraft-contributions": "minecraft/contributions",
+    },
 }
 
 /**
