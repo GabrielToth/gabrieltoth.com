@@ -1,7 +1,7 @@
 {
     "hero": {
-        "badge": ":closed_lock_with_key: Your Privacy Matters",
-        "title": "Privacy Policy",
-        "subtitle": "Learn how we collect, use, protect, and process your personal data in accordance with LGPD and GDPR regulations."
+        "badge": "🔒 Confidentialité",
+        "title": "Politique de confidentialité",
+        "subtitle": "Transparence totale sur la collecte et l'utilisation de vos données."
     }
 }

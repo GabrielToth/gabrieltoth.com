@@ -1,7 +1,7 @@
 {
     "hero": {
-        "badge": ":scales: Legal Terms",
-        "title": "Terms of Service",
-        "subtitle": "Understanding the rules, conditions, and legal framework that govern your use of our services."
+        "badge": "📜 Conditions",
+        "title": "Conditions d'utilisation",
+        "subtitle": "Règles et conditions d'utilisation de nos services."
     }
 }

@@ -1,7 +1,7 @@
 {
     "hero": {
-        "badge": "⚙️ Server Plugins",
-        "title": "Minecraft Plugins",
-        "subtitle": "Server plugins and modifications for enhanced gameplay, from quality of life improvements to gameplay-changing mechanics."
+        "badge": "🔌 Plugins serveur",
+        "title": "Plugins Minecraft",
+        "subtitle": "Plugins Spigot/Paper pour serveurs Minecraft performants et fonctionnels."
     }
 }

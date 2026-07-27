@@ -1,23 +1,23 @@
 {
     "landing": {
         "title": "Services",
-        "subtitle": "Professional solutions for your digital needs",
-        "description": "From channel management to custom development, I offer a range of services to help you grow your online presence and achieve your goals.",
-        "chooseCategory": "Choose a service",
+        "subtitle": "Solutions professionnelles pour vos besoins numériques",
+        "description": "De la gestion de chaînes au développement personnalisé, j'offre une gamme de services pour vous aider à développer votre présence en ligne et atteindre vos objectifs.",
+        "chooseCategory": "Choisir un service",
         "channelManagementTitle": "ViraTrend",
-        "channelManagementDescription": "Social media management and content strategy for creators and businesses",
-        "pcOptimizationTitle": "PC Optimization",
-        "pcOptimizationDescription": "Performance tuning, hardware recommendations, and system optimization",
-        "affiliateTitle": "Amazon Affiliate",
-        "affiliateDescription": "Affiliate marketing strategies and niche site development",
+        "channelManagementDescription": "Gestion des réseaux sociaux et stratégie de contenu pour créateurs et entreprises",
+        "pcOptimizationTitle": "Optimisation PC",
+        "pcOptimizationDescription": "Réglage des performances, recommandations matérielles et optimisation système",
+        "affiliateTitle": "Affiliation Amazon",
+        "affiliateDescription": "Stratégies de marketing d'affiliation et développement de sites de niche",
         "approach": {
-            "title": "My Approach",
-            "qualityFirst": "Quality First",
-            "qualityFirstText": "Quality is at the core of everything I deliver. Each service undergoes rigorous testing and refinement before reaching you.",
-            "tailoredSolutions": "Tailored Solutions",
-            "tailoredSolutionsText": "No two projects are the same. I take time to understand your unique needs and craft solutions that fit perfectly.",
-            "resultsDriven": "Results Driven",
-            "resultsDrivenText": "Every service is designed with measurable outcomes in mind, ensuring you see real value from our collaboration."
+            "title": "Mon approche",
+            "qualityFirst": "Qualité d'abord",
+            "qualityFirstText": "La qualité est au cœur de tout ce que je livre. Chaque service subit des tests rigoureux et un perfectionnement avant de vous parvenir.",
+            "tailoredSolutions": "Solutions sur mesure",
+            "tailoredSolutionsText": "Aucun projet n'est identique. Je prends le temps de comprendre vos besoins uniques et de créer des solutions qui conviennent parfaitement.",
+            "resultsDriven": "Axé sur les résultats",
+            "resultsDrivenText": "Chaque service est conçu avec des résultats mesurables à l'esprit, vous garantissant une valeur réelle de notre collaboration."
         }
     }
 }
