@@ -15,22 +15,22 @@ interface Notification {
 
 const TYPE_STYLES = {
     error: {
-        dot: "bg-red-500",
-        bg: "bg-red-50 dark:bg-red-950/30",
-        text: "text-red-800 dark:text-red-400",
-        border: "border-red-200 dark:border-red-800",
+        dot: "bg-error",
+        bg: "bg-error-bg",
+        text: "text-error",
+        border: "border-error/30",
     },
     warning: {
-        dot: "bg-yellow-500",
-        bg: "bg-yellow-50 dark:bg-yellow-950/30",
-        text: "text-yellow-800 dark:text-yellow-400",
-        border: "border-yellow-200 dark:border-yellow-800",
+        dot: "bg-warning",
+        bg: "bg-warning-bg",
+        text: "text-warning",
+        border: "border-warning/30",
     },
     info: {
         dot: "bg-primary/50",
-        bg: "bg-primary/5 dark:bg-primary/10",
-        text: "text-primary dark:text-primary",
-        border: "dark:border-white/10 dark:border-border",
+        bg: "bg-primary/5",
+        text: "text-primary",
+        border: "border-primary/10",
     },
 }
 
@@ -93,7 +93,7 @@ export function NotificationBell() {
         <div ref={dropdownRef} className="relative">
             <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="relative flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground hover:bg-muted dark:text-muted-foreground dark:hover:bg-accent transition-colors"
+                className="relative flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground hover:bg-muted transition-colors"
                 aria-label={`Notifications (${totalCount} unread)`}
             >
                 <svg
@@ -110,7 +110,7 @@ export function NotificationBell() {
                     />
                 </svg>
                 {hasNotifications && (
-                    <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-red-500 px-1 text-[10px] font-bold text-white">
+                    <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-error px-1 text-[10px] font-bold text-primary-foreground">
                         {totalCount > 9 ? "9+" : totalCount}
                     </span>
                 )}
@@ -122,6 +122,7 @@ export function NotificationBell() {
             </button>
 
             {isOpen && (
+<<<<<<< Updated upstream
                 <div className="absolute left-0 top-full z-50 mt-2 w-80 max-w-[calc(100vw-1rem)] rounded-xl border border-border bg-white shadow-lg dark:border-border dark:bg-background">
                     <div className="border-b border-border px-4 py-3 dark:border-border">
                         <h3 className="text-sm font-semibold text-foreground dark:text-foreground">
@@ -131,6 +132,16 @@ export function NotificationBell() {
                             <p className="text-xs text-muted-foreground dark:text-muted-foreground">
                                 {errorCount > 0 &&
                                     `${errorCount} error${errorCount > 1 ? "s" : ""}`}
+=======
+                <div className="absolute right-0 top-full z-50 mt-2 w-80 rounded-xl border border-border bg-card shadow-lg">
+                    <div className="border-b border-border px-4 py-3">
+                        <h3 className="text-sm font-semibold text-foreground">
+                            Notifications
+                        </h3>
+                        {hasNotifications && (
+                            <p className="text-xs text-muted-foreground">
+                                {errorCount > 0 && `${errorCount} error${errorCount > 1 ? "s" : ""}`}
+>>>>>>> Stashed changes
                                 {errorCount > 0 && warningCount > 0 && " · "}
                                 {warningCount > 0 &&
                                     `${warningCount} warning${warningCount > 1 ? "s" : ""}`}
@@ -140,6 +151,7 @@ export function NotificationBell() {
 
                     <div className="max-h-80 overflow-y-auto">
                         {notifications.length === 0 ? (
+<<<<<<< Updated upstream
                             <div className="px-4 py-8 text-center text-sm text-muted-foreground dark:text-muted-foreground">
                                 <svg
                                     className="mx-auto mb-2 h-8 w-8 text-muted-foreground dark:text-muted-foreground"
@@ -153,6 +165,11 @@ export function NotificationBell() {
                                         strokeWidth={2}
                                         d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
                                     />
+=======
+                            <div className="px-4 py-8 text-center text-sm text-muted-foreground">
+                                <svg className="mx-auto mb-2 h-8 w-8 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+>>>>>>> Stashed changes
                                 </svg>
                                 All clear — no issues detected
                             </div>
@@ -163,9 +180,14 @@ export function NotificationBell() {
                                     <div
                                         key={notification.id}
                                         className={cn(
+<<<<<<< Updated upstream
                                             "border-b border-gray-100 px-4 py-3 last:border-b-0 dark:border-border",
                                             notification.type === "error" &&
                                                 "bg-red-50/50 dark:bg-red-950/20"
+=======
+                                            "border-b border-border px-4 py-3 last:border-b-0",
+                                            notification.type === "error" && "bg-error-bg/50"
+>>>>>>> Stashed changes
                                         )}
                                     >
                                         <div className="flex items-start gap-3">
@@ -185,13 +207,14 @@ export function NotificationBell() {
                                                             ] || ""}
                                                         </span>
                                                     )}
-                                                    <p className="text-sm font-medium text-foreground dark:text-foreground truncate">
+                                                    <p className="text-sm font-medium text-foreground truncate">
                                                         {notification.title}
                                                     </p>
                                                 </div>
-                                                <p className="mt-0.5 text-xs text-muted-foreground dark:text-muted-foreground">
+                                                <p className="mt-0.5 text-xs text-muted-foreground">
                                                     {notification.message}
                                                 </p>
+<<<<<<< Updated upstream
                                                 {notification.actionLabel &&
                                                     notification.actionHref && (
                                                         <a
@@ -209,6 +232,17 @@ export function NotificationBell() {
                                                             →
                                                         </a>
                                                     )}
+=======
+                                                {notification.actionLabel && notification.actionHref && (
+                                                    <a
+                                                        href={notification.actionHref}
+                                                        className="mt-2 inline-block text-xs font-medium text-primary hover:text-primary"
+                                                        onClick={() => setIsOpen(false)}
+                                                    >
+                                                        {notification.actionLabel} →
+                                                    </a>
+                                                )}
+>>>>>>> Stashed changes
                                             </div>
                                         </div>
                                     </div>

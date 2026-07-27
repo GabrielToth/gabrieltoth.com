@@ -94,7 +94,7 @@ export function GoLiveButton({
     if (error) {
         return (
             <div className="flex items-center gap-2">
-                <span className="text-xs text-red-500">{error}</span>
+                <span className="text-xs text-error">{error}</span>
                 <button
                     onClick={() => setError(null)}
                     className="text-xs text-primary hover:text-primary"
@@ -110,10 +110,10 @@ export function GoLiveButton({
             <button
                 onClick={handleEndStream}
                 disabled={loading}
-                className="inline-flex items-center rounded-md bg-red-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="inline-flex items-center rounded-md bg-error px-3 py-1.5 text-xs font-medium text-primary-foreground hover:bg-error/80 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
                 {loading ? (
-                    <span className="mr-1 inline-block h-3 w-3 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                    <span className="mr-1 inline-block h-3 w-3 animate-spin rounded-full border-2 border-primary-foreground border-t-transparent" />
                 ) : null}
                 {t("endStream")}
             </button>
@@ -124,12 +124,12 @@ export function GoLiveButton({
         <button
             onClick={handleGoLive}
             disabled={loading}
-            className="inline-flex items-center rounded-md bg-green-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-            {loading ? (
-                <span className="mr-1 inline-block h-3 w-3 animate-spin rounded-full border-2 border-white border-t-transparent" />
-            ) : null}
-            {t("goLive")}
+className="inline-flex items-center rounded-md bg-success px-3 py-1.5 text-xs font-medium text-primary-foreground hover:bg-success/80 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+                {loading ? (
+                    <span className="mr-1 inline-block h-3 w-3 animate-spin rounded-full border-2 border-primary-foreground border-t-transparent" />
+                ) : null}
+                {t("goLive")}
         </button>
     )
 }

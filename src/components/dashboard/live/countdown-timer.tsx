@@ -80,7 +80,7 @@ export function CountdownTimer({
     if (expired || timeRemaining === null) {
         return (
             <div className="text-center">
-                <span className="text-lg font-bold text-green-600 dark:text-green-400">
+                <span className="text-lg font-bold text-success">
                     {t("startingNow")}
                 </span>
             </div>

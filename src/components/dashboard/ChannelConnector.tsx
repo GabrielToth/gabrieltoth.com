@@ -70,7 +70,7 @@ export const ChannelConnector: React.FC<ChannelConnectorProps> = ({
                                 "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
                                 channel.isConnected
                                     ? "border-primary bg-primary/5 text-primary hover:bg-primary/10"
-                                    : "border-border bg-white text-muted-foreground hover:border-primary/50 hover:bg-primary/5 hover:text-primary"
+                                    : "border-border bg-card text-muted-foreground hover:border-primary/50 hover:bg-primary/5 hover:text-primary"
                             )}
                             title={channel.name}
                             aria-label={`${channel.name} - ${channel.isConnected ? lt("connected") : lt("disconnected")}`}
@@ -82,7 +82,7 @@ export const ChannelConnector: React.FC<ChannelConnectorProps> = ({
 
                             {/* Connection Status Indicator */}
                             {channel.isConnected && (
-                                <div className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-green-500 text-white">
+                                <div className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-success text-primary-foreground">
                                     <svg
                                         className="h-3 w-3"
                                         fill="currentColor"
@@ -100,9 +100,9 @@ export const ChannelConnector: React.FC<ChannelConnectorProps> = ({
 
                         {/* Tooltip */}
                         {hoveredChannel === channel.id && (
-                            <div className="absolute bottom-full left-1/2 mb-2 -translate-x-1/2 whitespace-nowrap rounded-md bg-background px-2 py-1 text-xs text-white">
+                            <div className="absolute bottom-full left-1/2 mb-2 -translate-x-1/2 whitespace-nowrap rounded-md bg-card px-2 py-1 text-xs text-primary-foreground">
                                 {channel.name}
-                                <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-900" />
+                                <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-card" />
                             </div>
                         )}
                     </div>

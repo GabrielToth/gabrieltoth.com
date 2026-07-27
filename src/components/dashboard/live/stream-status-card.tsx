@@ -67,8 +67,8 @@ export function StreamStatusCard({
                 </div>
                 <div className="flex items-center gap-2">
                     {isLive && (
-                        <span className="flex items-center gap-1 rounded-full bg-red-100 px-2 py-0.5 text-xs font-medium text-red-700 dark:bg-red-900/30 dark:text-red-400">
-                            <span className="h-2 w-2 rounded-full bg-red-500 animate-pulse" />
+                        <span className="flex items-center gap-1 rounded-full bg-error-bg px-2 py-0.5 text-xs font-medium text-error">
+                            <span className="h-2 w-2 rounded-full bg-error animate-pulse" />
                             LIVE
                         </span>
                     )}

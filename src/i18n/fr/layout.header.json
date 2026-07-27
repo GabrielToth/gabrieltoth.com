@@ -1,19 +1,19 @@
 {
-    "home": "Home",
-    "about": "About Me",
-    "projects": "Projects",
+    "home": "Accueil",
+    "about": "À propos",
+    "projects": "Projets",
     "services": "Services",
-    "channels": "Channels",
+    "channels": "Chaînes",
     "contact": "Contact",
-    "language": "Language",
-    "editors": "Editors",
-    "login": "Login",
-    "register": "Register",
-    "dashboard": "Dashboard",
+    "language": "Langue",
+    "editors": "Éditeurs",
+    "login": "Connexion",
+    "register": "Inscription",
+    "dashboard": "Tableau de bord",
     "servicesDropdown": {
         "channelManagement": "ViraTrend",
-        "pcOptimization": "PC Optimization",
-        "affiliate": "Amazon Affiliate"
+        "pcOptimization": "Optimisation PC",
+        "affiliate": "Affiliation Amazon"
     },
     "minecraftDropdown": {
         "modpacks": "Modpacks",

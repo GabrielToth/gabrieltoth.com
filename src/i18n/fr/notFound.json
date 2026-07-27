@@ -1,21 +1,21 @@
 {
-    "title": "Page Not Found",
-    "subtitle": "The page you're looking for doesn't exist, but we have other interesting options!",
-    "homeButton": "Home Page",
-    "backButton": "Go Back",
-    "contactText": "If you think this is an error, please contact us.",
-    "viewButton": "View Page",
+    "title": "Page introuvable",
+    "subtitle": "La page que vous recherchez n'existe pas, mais nous avons d'autres options intéressantes !",
+    "homeButton": "Page d'accueil",
+    "backButton": "Retour",
+    "contactText": "Si vous pensez qu'il s'agit d'une erreur, veuillez nous contacter.",
+    "viewButton": "Voir la page",
     "products": {
         "viraTrend": {
-            "description": "Specialized consulting for digital growth"
+            "description": "Conseil spécialisé pour la croissance numérique"
         },
         "pcGamingOptimization": {
-            "title": "PC Gaming Optimization",
-            "description": "Optimization services for better performance"
+            "title": "Optimisation PC Gaming",
+            "description": "Services d'optimisation pour de meilleures performances"
         },
         "workAsEditor": {
-            "title": "Work as Editor",
-            "description": "Earn 90% of AdSense editing videos"
+            "title": "Travailler comme éditeur",
+            "description": "Gagnez 90% de l'AdSense en montant des vidéos"
         }
     }
 }

@@ -10,6 +10,7 @@ const PORT = parseInt(process.env.PORT, 10) || 3001
 const UPLOAD_DIR = process.env.UPLOAD_DIR || path.join(__dirname, "uploads")
 const SUPABASE_URL = process.env.SUPABASE_URL || ""
 const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || ""
+const ALLOWED_EMAILS = (process.env.ALLOWED_EMAILS || "").split(",").map(s => s.trim().toLowerCase()).filter(Boolean)
 
 let supabase = null
 if (SUPABASE_URL && SUPABASE_KEY) {
@@ -43,7 +44,8 @@ const fileStore = new FileStore({
 })
 
 // tus server
-const tusServer = new Server(fileStore, {
+const tusServer = new Server({
+    datastore: fileStore,
     path: "/upload",
     async onIncomingRequest(req, res) {
         const taskId = extractAuth(req)
@@ -125,5 +127,5 @@ app.get("/files/:taskId", async (req, res) => {
 app.listen(PORT, "0.0.0.0", () => {
     console.log(`Meta Publisher Server running on http://0.0.0.0:${PORT}`)
     console.log(`Upload dir: ${UPLOAD_DIR}`)
-    console.log(`Allowed emails: ${ALLOWED_EMAILS.join(", ") || "(none)"}`)
+    console.log(`Allowed emails: ${ALLOWED_EMAILS.length ? ALLOWED_EMAILS.join(", ") : "(none)"}`)
 })

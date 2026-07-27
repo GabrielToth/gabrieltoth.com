@@ -1,7 +1,7 @@
 {
-    "title": "Something went wrong",
-    "subtitle": "We encountered an unexpected error. Please try again or return to the home page.",
-    "tryAgain": "Try Again",
-    "homeButton": "Home Page",
-    "contactText": "If this problem persists, please contact us for support."
+    "title": "Une erreur s'est produite",
+    "subtitle": "Nous avons rencontré une erreur inattendue. Veuillez réessayer ou retourner à la page d'accueil.",
+    "tryAgain": "Réessayer",
+    "homeButton": "Page d'accueil",
+    "contactText": "Si ce problème persiste, veuillez nous contacter pour obtenir de l'aide."
 }

@@ -1,36 +1,36 @@
 {
     "dataInfo": {
-        "title": "Data Transparency",
-        "text": "We only collect essential data for service provision: contact information, channel data and communications. We do not sell or share your data."
+        "title": "Transparence des données",
+        "text": "Nous ne collectons que les données essentielles pour la prestation de services : informations de contact, données de chaîne et communications. Nous ne vendons ni ne partageons vos données."
     },
-    "companyDescription": "Full Stack Developer specialized in Data Science with channel consulting services, digital solutions for personal and business projects, and video editing services for channels.",
+    "companyDescription": "Développeur Full Stack spécialisé en Data Science avec services de conseil pour chaînes, solutions numériques pour projets personnels et professionnels, et services de montage vidéo pour chaînes.",
     "links": {
         "services": {
             "title": "Services",
             "items": {
-                "pcOptimization": "PC Optimization",
-                "amazonAffiliate": "Amazon Affiliate"
+                "pcOptimization": "Optimisation PC",
+                "amazonAffiliate": "Affiliation Amazon"
             }
         },
         "legal": {
-            "title": "Legal",
+            "title": "Légal",
             "items": {
-                "privacy": "Privacy Policy",
-                "terms": "Terms of Service"
+                "privacy": "Politique de confidentialité",
+                "terms": "Conditions d'utilisation"
             }
         },
         "contact": {
             "title": "Contact",
             "items": {
-                "workAsEditor": "Work as Editor"
+                "workAsEditor": "Travailler comme éditeur"
             }
         }
     },
-    "rights": "All rights reserved.",
+    "rights": "Tous droits réservés.",
     "short": {
-        "privacy": "Privacy",
-        "terms": "Terms",
-        "secureData": "Secure data",
-        "openSource": "Open source • Fully public"
+        "privacy": "Confidentialité",
+        "terms": "Conditions",
+        "secureData": "Données sécurisées",
+        "openSource": "Open source • Entièrement public"
     }
 }

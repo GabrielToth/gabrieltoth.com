@@ -168,12 +168,12 @@ export function StreamKeyCard({ platform }: StreamKeyCardProps) {
     // Loading state
     if (fetchState.loading) {
         return (
-            <div className="rounded-lg border border-border bg-white p-4 dark:border-border dark:bg-background">
-                <h3 className="mb-4 text-lg font-semibold text-foreground dark:text-foreground">
+            <div className="rounded-lg border border-border bg-card p-4">
+                <h3 className="mb-4 text-lg font-semibold text-foreground">
                     Stream Key
                 </h3>
                 <div className="flex items-center justify-center py-8">
-                    <div className="inline-block h-6 w-6 animate-spin rounded-full border-2 border-border border-t-blue-500"></div>
+                    <div className="inline-block h-6 w-6 animate-spin rounded-full border-2 border-border border-t-primary"></div>
                     <span className="ml-2 text-sm text-muted-foreground">
                         Loading stream key...
                     </span>
@@ -185,17 +185,17 @@ export function StreamKeyCard({ platform }: StreamKeyCardProps) {
     // Error state
     if (fetchState.error) {
         return (
-            <div className="rounded-lg border border-border bg-white p-4 dark:border-border dark:bg-background">
-                <h3 className="mb-4 text-lg font-semibold text-foreground dark:text-foreground">
+            <div className="rounded-lg border border-border bg-card p-4">
+                <h3 className="mb-4 text-lg font-semibold text-foreground">
                     Stream Key
                 </h3>
-                <div className="rounded-md bg-red-50 p-3 text-center dark:bg-red-950/30">
-                    <p className="text-sm text-red-600 dark:text-red-400">
+                <div className="rounded-md bg-error-bg p-3 text-center">
+                    <p className="text-sm text-error">
                         {fetchState.error}
                     </p>
                     <button
                         onClick={handleRetry}
-                        className="mt-2 rounded-md bg-primary px-3 py-1.5 text-xs font-medium text-white hover:bg-primary"
+                        className="mt-2 rounded-md bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground hover:bg-primary"
                     >
                         Retry
                     </button>
@@ -207,12 +207,12 @@ export function StreamKeyCard({ platform }: StreamKeyCardProps) {
     // Empty state
     if (platform === "twitch" && !fetchState.key) {
         return (
-            <div className="rounded-lg border border-border bg-white p-4 dark:border-border dark:bg-background">
-                <h3 className="mb-4 text-lg font-semibold text-foreground dark:text-foreground">
+            <div className="rounded-lg border border-border bg-card p-4">
+                <h3 className="mb-4 text-lg font-semibold text-foreground">
                     Stream Key
                 </h3>
                 <div className="rounded-md bg-muted p-3 text-center dark:bg-card">
-                    <p className="text-sm text-muted-foreground dark:text-muted-foreground">
+                    <p className="text-sm text-muted-foreground">
                         No stream key available. Ensure your Twitch account has
                         the required permissions.
                     </p>
@@ -231,8 +231,8 @@ export function StreamKeyCard({ platform }: StreamKeyCardProps) {
                 : ""
 
     return (
-        <div className="rounded-lg border border-border bg-white p-4 dark:border-border dark:bg-background">
-            <h3 className="mb-4 text-lg font-semibold text-foreground dark:text-foreground">
+        <div className="rounded-lg border border-border bg-card p-4">
+            <h3 className="mb-4 text-lg font-semibold text-foreground">
                 Stream Key
             </h3>
 
@@ -240,7 +240,7 @@ export function StreamKeyCard({ platform }: StreamKeyCardProps) {
                 <div className="space-y-4">
                     {/* Twitch: Stream key display */}
                     <div className="flex items-center gap-2">
-                        <code className="flex-1 rounded-md bg-muted px-3 py-2 font-mono text-sm dark:bg-card dark:text-muted-foreground">
+                        <code className="flex-1 rounded-md bg-muted px-3 py-2 font-mono text-sm ">
                             {revealed
                                 ? fetchState.key
                                 : "••••••••••••••••••••••••••••••"}
@@ -249,7 +249,7 @@ export function StreamKeyCard({ platform }: StreamKeyCardProps) {
                         {/* Show/Hide toggle */}
                         <button
                             onClick={() => setRevealed(!revealed)}
-                            className="rounded-md border border-input p-2 text-muted-foreground hover:bg-muted dark:border-border dark:text-muted-foreground dark:hover:bg-accent"
+                            className="rounded-md border border-input p-2 text-muted-foreground hover:bg-muted dark:border-border dark:hover:bg-accent"
                             title={
                                 revealed ? "Hide stream key" : "Show stream key"
                             }
@@ -287,13 +287,13 @@ export function StreamKeyCard({ platform }: StreamKeyCardProps) {
                         {/* Copy button */}
                         <button
                             onClick={() => handleCopy(fetchState.key || "")}
-                            className="rounded-md border border-input p-2 text-muted-foreground hover:bg-muted dark:border-border dark:text-muted-foreground dark:hover:bg-accent"
+                            className="rounded-md border border-input p-2 text-muted-foreground hover:bg-muted dark:border-border dark:hover:bg-accent"
                             title={copied ? "Copied!" : "Copy to clipboard"}
                         >
                             {copied ? (
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
-                                    className="h-5 w-5 text-green-500"
+                                    className="h-5 w-5 text-success"
                                     viewBox="0 0 24 24"
                                     fill="none"
                                     stroke="currentColor"
@@ -324,7 +324,7 @@ export function StreamKeyCard({ platform }: StreamKeyCardProps) {
                         </button>
                     </div>
 
-                    <p className="text-xs text-muted-foreground dark:text-muted-foreground">
+                    <p className="text-xs text-muted-foreground">
                         {fetchState.note}
                     </p>
 
@@ -349,7 +349,7 @@ export function StreamKeyCard({ platform }: StreamKeyCardProps) {
                         </label>
                         <div className="flex items-center gap-2">
                             {revealed && kickSavedKey ? (
-                                <span className="flex-1 rounded-md bg-muted px-3 py-2 font-mono text-sm dark:bg-card dark:text-muted-foreground">
+                                <span className="flex-1 rounded-md bg-muted px-3 py-2 font-mono text-sm ">
                                     {kickSavedKey}
                                 </span>
                             ) : (
@@ -365,7 +365,7 @@ export function StreamKeyCard({ platform }: StreamKeyCardProps) {
                             {/* Show/Hide toggle */}
                             <button
                                 onClick={() => setRevealed(!revealed)}
-                                className="rounded-md border border-input p-2 text-muted-foreground hover:bg-muted dark:border-border dark:text-muted-foreground dark:hover:bg-accent"
+                                className="rounded-md border border-input p-2 text-muted-foreground hover:bg-muted dark:border-border dark:hover:bg-accent"
                                 title={
                                     revealed
                                         ? "Hide stream key"
@@ -406,7 +406,7 @@ export function StreamKeyCard({ platform }: StreamKeyCardProps) {
                             {kickSavedKey && (
                                 <button
                                     onClick={() => handleCopy(kickSavedKey)}
-                                    className="rounded-md border border-input p-2 text-muted-foreground hover:bg-muted dark:border-border dark:text-muted-foreground dark:hover:bg-accent"
+                                    className="rounded-md border border-input p-2 text-muted-foreground hover:bg-muted dark:border-border dark:hover:bg-accent"
                                     title={
                                         copied ? "Copied!" : "Copy to clipboard"
                                     }
@@ -414,7 +414,7 @@ export function StreamKeyCard({ platform }: StreamKeyCardProps) {
                                     {copied ? (
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"
-                                            className="h-5 w-5 text-green-500"
+                                            className="h-5 w-5 text-success"
                                             viewBox="0 0 24 24"
                                             fill="none"
                                             stroke="currentColor"
@@ -451,7 +451,7 @@ export function StreamKeyCard({ platform }: StreamKeyCardProps) {
                     <button
                         onClick={handleKickSave}
                         disabled={kickSaving}
-                        className="w-full rounded-md bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-primary disabled:cursor-not-allowed disabled:opacity-50"
+                        className="w-full rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground disabled:cursor-not-allowed disabled:opacity-50"
                     >
                         {kickSaving
                             ? "Saving..."
@@ -464,15 +464,15 @@ export function StreamKeyCard({ platform }: StreamKeyCardProps) {
                         <p
                             className={`text-sm ${
                                 kickSaveMessage.type === "success"
-                                    ? "text-green-600"
-                                    : "text-red-600"
+                                    ? "text-success"
+                                    : "text-error"
                             }`}
                         >
                             {kickSaveMessage.text}
                         </p>
                     )}
 
-                    <p className="text-xs text-muted-foreground dark:text-muted-foreground">
+                    <p className="text-xs text-muted-foreground">
                         Kick does not provide stream keys via API. Your key is
                         stored in your browser only (localStorage).
                     </p>

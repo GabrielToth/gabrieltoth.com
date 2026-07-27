@@ -209,7 +209,7 @@ export function StreamScheduler() {
     return (
         <div className="space-y-6">
             {/* New Schedule Form */}
-            <div className="rounded-lg border border-border bg-white p-4 dark:border-border dark:bg-background">
+            <div className="rounded-lg border border-border bg-card p-4">
                 <h3 className="mb-4 text-lg font-semibold text-foreground dark:text-foreground">
                     {t("newSchedule")}
                 </h3>
@@ -236,13 +236,13 @@ export function StreamScheduler() {
                             maxLength={140}
                             className={`mt-1 block w-full rounded-md border px-3 py-2 text-sm shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-ring dark:bg-card dark:text-foreground ${
                                 validationErrors.title
-                                    ? "border-red-500"
+                                    ? "border-error"
                                     : "border-input dark:border-input"
                             }`}
                             placeholder={t("title")}
                         />
                         {validationErrors.title && (
-                            <p className="mt-1 text-xs text-red-500">
+                            <p className="mt-1 text-xs text-error">
                                 {validationErrors.title}
                             </p>
                         )}
@@ -279,7 +279,7 @@ export function StreamScheduler() {
                             ))}
                         </div>
                         {validationErrors.platform && (
-                            <p className="mt-1 text-xs text-red-500">
+                            <p className="mt-1 text-xs text-error">
                                 {validationErrors.platform}
                             </p>
                         )}
@@ -306,12 +306,12 @@ export function StreamScheduler() {
                             min={getMinDateTime()}
                             className={`mt-1 block w-full rounded-md border px-3 py-2 text-sm shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-ring dark:bg-card dark:text-foreground ${
                                 validationErrors.scheduledStartTime
-                                    ? "border-red-500"
+                                    ? "border-error"
                                     : "border-input dark:border-input"
                             }`}
                         />
                         {validationErrors.scheduledStartTime && (
-                            <p className="mt-1 text-xs text-red-500">
+                            <p className="mt-1 text-xs text-error">
                                 {validationErrors.scheduledStartTime}
                             </p>
                         )}
@@ -370,13 +370,13 @@ export function StreamScheduler() {
                             rows={3}
                             className={`mt-1 block w-full rounded-md border px-3 py-2 text-sm shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-ring dark:bg-card dark:text-foreground ${
                                 validationErrors.description
-                                    ? "border-red-500"
+                                    ? "border-error"
                                     : "border-input dark:border-input"
                             }`}
                             placeholder={t("description")}
                         />
                         {validationErrors.description && (
-                            <p className="mt-1 text-xs text-red-500">
+                            <p className="mt-1 text-xs text-error">
                                 {validationErrors.description}
                             </p>
                         )}
@@ -414,7 +414,7 @@ export function StreamScheduler() {
                     </div>
 
                     {error && (
-                        <div className="rounded-md bg-red-50 p-3 text-sm text-red-600 dark:bg-red-950/30 dark:text-red-400">
+                        <div className="rounded-md bg-error-bg p-3 text-sm text-error">
                             {error}
                         </div>
                     )}
@@ -422,11 +422,11 @@ export function StreamScheduler() {
                     <button
                         type="submit"
                         disabled={submitting}
-                        className="inline-flex items-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-primary focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="inline-flex items-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                         {submitting ? (
                             <>
-                                <span className="mr-2 inline-block h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                                <span className="mr-2 inline-block h-4 w-4 animate-spin rounded-full border-2 border-primary-foreground border-t-transparent" />
                                 {t("saving")}
                             </>
                         ) : (
@@ -437,7 +437,7 @@ export function StreamScheduler() {
             </div>
 
             {/* Upcoming Schedules */}
-            <div className="rounded-lg border border-border bg-white p-4 dark:border-border dark:bg-background">
+            <div className="rounded-lg border border-border bg-card p-4">
                 <h3 className="mb-4 text-lg font-semibold text-foreground dark:text-foreground">
                     {t("upcomingStreams")}
                 </h3>
@@ -455,7 +455,7 @@ export function StreamScheduler() {
                         {schedules.map(schedule => (
                             <div
                                 key={schedule.id}
-                                className="flex items-center justify-between rounded-md border border-gray-100 p-3 dark:border-border"
+                                className="flex items-center justify-between rounded-md border border-border p-3"
                             >
                                 <div className="min-w-0 flex-1">
                                     <p className="truncate text-sm font-medium text-foreground dark:text-foreground">
@@ -473,7 +473,7 @@ export function StreamScheduler() {
                                 </div>
                                 <button
                                     onClick={() => handleCancel(schedule.id)}
-                                    className="ml-4 shrink-0 rounded-md bg-red-50 px-3 py-1 text-xs font-medium text-red-600 hover:bg-red-100 dark:bg-red-950/30 dark:text-red-400"
+                                    className="ml-4 shrink-0 rounded-md bg-error-bg px-3 py-1 text-xs font-medium text-error hover:bg-error-bg/80"
                                 >
                                     {t("cancel")}
                                 </button>

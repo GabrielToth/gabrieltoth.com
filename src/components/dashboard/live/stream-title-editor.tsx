@@ -97,7 +97,7 @@ export function StreamTitleEditor({
             <button
                 onClick={handleSave}
                 disabled={saving}
-                className="w-full rounded-md bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-primary disabled:cursor-not-allowed disabled:opacity-50"
+                className="w-full rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground disabled:cursor-not-allowed disabled:opacity-50"
             >
                 {saving ? "Saving..." : "Update Stream"}
             </button>
@@ -106,8 +106,8 @@ export function StreamTitleEditor({
                 <p
                     className={`text-sm ${
                         message.type === "success"
-                            ? "text-green-600"
-                            : "text-red-600"
+                            ? "text-success"
+                            : "text-error"
                     }`}
                 >
                     {message.text}
