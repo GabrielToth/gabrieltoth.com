@@ -20,7 +20,7 @@
             "modpacksPreference": "Modpacks Preference",
             "hypixelSkyblock": "Hypixel Skyblock",
             "futureGoals": "Future Goals",
-            "contentCreation": "Content Creation",
+            "contentCreation": "Contenu Creation",
             "contentCreationText": "Creating tutorials, guides, and showcasing modpack configurations to help the community.",
             "modDevelopment": "Mod Development",
             "modDevelopmentText": "Building custom mods and tools to enhance the Minecraft experience.",
@@ -39,7 +39,7 @@
     "modpack": {
         "version": "Version",
         "compatibility": "Compatibility",
-        "platforms": "Platforms",
+        "platforms": "Plateformes",
         "links": "Links",
         "tags": "Tags",
         "creators": "Creators",

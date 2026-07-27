@@ -18,10 +18,22 @@
         "cta": "View Plans",
         "videoText": "THAT'S HOW AN OPTIMIZED PC FEELS LIKE",
         "stats": [
-            { "value": "99.9%", "label": "Uptime" },
-            { "value": "low", "label": "Latency" },
-            { "value": "20+", "label": "Games Optimized" },
-            { "value": "5+", "label": "Happy Customers" }
+            {
+                "value": "99.9%",
+                "label": "Uptime"
+            },
+            {
+                "value": "low",
+                "label": "Latency"
+            },
+            {
+                "value": "20+",
+                "label": "Games Optimized"
+            },
+            {
+                "value": "5+",
+                "label": "Happy Customers"
+            }
         ],
         "learnMore": "Learn More"
     },
@@ -97,7 +109,7 @@
     },
     "testimonials": {
         "title": "Trusted by Pros, Loved by Gamers",
-        "subtitle": "You're not the first. Join the hundreds of players who've unlocked elite performance.",
+        "subtitle": "You're not the first. Join the hundreds sur players who've unlocked elite performance.",
         "items": [
             {
                 "name": "ProGamer",
@@ -107,7 +119,7 @@
             },
             {
                 "name": "StreamerPro",
-                "role": "Content Creator",
+                "role": "Contenu Creator",
                 "content": "Finally I can game and stream without FPS drops. The optimization was perfect!",
                 "rating": 5
             }
@@ -117,7 +129,7 @@
         "title": "Any Game, Every Time",
         "subtitle": "From fast-paced shooters to open-world, we know how to make your game run exactly as you'd like it to.",
         "list": [
-            "Call of Duty",
+            "Call sur Duty",
             "PUBG",
             "Marvel Rivals",
             "Rainbow Six Siege",
@@ -139,7 +151,7 @@
                 "description": "We are available to address any issues for up to 7 days post-optimization."
             },
             {
-                "title": "Years of Experience",
+                "title": "Years sur Experience",
                 "description": "We've spent years testing, benchmarking, and tuning systems for top performance."
             }
         ]

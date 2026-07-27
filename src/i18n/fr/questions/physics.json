@@ -3,7 +3,12 @@
         "id": "phys-001",
         "category": "physics",
         "prompt": "F = m × a; m = 2, a = 3; F = ?",
-        "choices": ["6", "4", "5", "8"],
+        "choices": [
+            "6",
+            "4",
+            "5",
+            "8"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -11,7 +16,12 @@
         "id": "phys-002",
         "category": "physics",
         "prompt": "F = m × a; m = 3, a = 3; F = ?",
-        "choices": ["9", "6", "8", "7"],
+        "choices": [
+            "9",
+            "6",
+            "8",
+            "7"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -19,7 +29,12 @@
         "id": "phys-003",
         "category": "physics",
         "prompt": "F = m × a; m = 4, a = 4; F = ?",
-        "choices": ["16", "12", "18", "14"],
+        "choices": [
+            "16",
+            "12",
+            "18",
+            "14"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -27,7 +42,12 @@
         "id": "phys-004",
         "category": "physics",
         "prompt": "F = m × a; m = 5, a = 4; F = ?",
-        "choices": ["20", "18", "22", "16"],
+        "choices": [
+            "20",
+            "18",
+            "22",
+            "16"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -35,7 +55,12 @@
         "id": "phys-005",
         "category": "physics",
         "prompt": "F = m × a; m = 6, a = 5; F = ?",
-        "choices": ["30", "24", "32", "28"],
+        "choices": [
+            "30",
+            "24",
+            "32",
+            "28"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -43,7 +68,12 @@
         "id": "phys-006",
         "category": "physics",
         "prompt": "F = m × a; m = 7, a = 5; F = ?",
-        "choices": ["35", "30", "32", "28"],
+        "choices": [
+            "35",
+            "30",
+            "32",
+            "28"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -51,7 +81,12 @@
         "id": "phys-007",
         "category": "physics",
         "prompt": "F = m × a; m = 8, a = 6; F = ?",
-        "choices": ["48", "42", "50", "46"],
+        "choices": [
+            "48",
+            "42",
+            "50",
+            "46"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -59,7 +94,12 @@
         "id": "phys-008",
         "category": "physics",
         "prompt": "F = m × a; m = 3, a = 8; F = ?",
-        "choices": ["24", "20", "26", "22"],
+        "choices": [
+            "24",
+            "20",
+            "26",
+            "22"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -67,7 +107,12 @@
         "id": "phys-009",
         "category": "physics",
         "prompt": "F = m × a; m = 8, a = 3; F = ?",
-        "choices": ["24", "20", "26", "22"],
+        "choices": [
+            "24",
+            "20",
+            "26",
+            "22"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -75,7 +120,12 @@
         "id": "phys-010",
         "category": "physics",
         "prompt": "F = m × a; m = 4, a = 7; F = ?",
-        "choices": ["28", "24", "26", "30"],
+        "choices": [
+            "28",
+            "24",
+            "26",
+            "30"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -83,7 +133,12 @@
         "id": "phys-011",
         "category": "physics",
         "prompt": "F = m × a; m = 2, a = 3; F = ?",
-        "choices": ["6", "4", "5", "8"],
+        "choices": [
+            "6",
+            "4",
+            "5",
+            "8"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -91,7 +146,12 @@
         "id": "phys-012",
         "category": "physics",
         "prompt": "F = m × a; m = 3, a = 3; F = ?",
-        "choices": ["9", "6", "8", "7"],
+        "choices": [
+            "9",
+            "6",
+            "8",
+            "7"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -99,7 +159,12 @@
         "id": "phys-013",
         "category": "physics",
         "prompt": "F = m × a; m = 4, a = 4; F = ?",
-        "choices": ["16", "12", "18", "14"],
+        "choices": [
+            "16",
+            "12",
+            "18",
+            "14"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -107,7 +172,12 @@
         "id": "phys-014",
         "category": "physics",
         "prompt": "F = m × a; m = 5, a = 4; F = ?",
-        "choices": ["20", "18", "22", "16"],
+        "choices": [
+            "20",
+            "18",
+            "22",
+            "16"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -115,7 +185,12 @@
         "id": "phys-015",
         "category": "physics",
         "prompt": "F = m × a; m = 6, a = 5; F = ?",
-        "choices": ["30", "24", "32", "28"],
+        "choices": [
+            "30",
+            "24",
+            "32",
+            "28"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -123,7 +198,12 @@
         "id": "phys-016",
         "category": "physics",
         "prompt": "F = m × a; m = 7, a = 5; F = ?",
-        "choices": ["35", "30", "32", "28"],
+        "choices": [
+            "35",
+            "30",
+            "32",
+            "28"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -131,7 +211,12 @@
         "id": "phys-017",
         "category": "physics",
         "prompt": "F = m × a; m = 8, a = 6; F = ?",
-        "choices": ["48", "42", "50", "46"],
+        "choices": [
+            "48",
+            "42",
+            "50",
+            "46"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -139,7 +224,12 @@
         "id": "phys-018",
         "category": "physics",
         "prompt": "F = m × a; m = 3, a = 8; F = ?",
-        "choices": ["24", "20", "26", "22"],
+        "choices": [
+            "24",
+            "20",
+            "26",
+            "22"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -147,7 +237,12 @@
         "id": "phys-019",
         "category": "physics",
         "prompt": "F = m × a; m = 8, a = 3; F = ?",
-        "choices": ["24", "20", "26", "22"],
+        "choices": [
+            "24",
+            "20",
+            "26",
+            "22"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -155,7 +250,12 @@
         "id": "phys-020",
         "category": "physics",
         "prompt": "F = m × a; m = 4, a = 7; F = ?",
-        "choices": ["28", "24", "26", "30"],
+        "choices": [
+            "28",
+            "24",
+            "26",
+            "30"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -163,7 +263,12 @@
         "id": "phys-021",
         "category": "physics",
         "prompt": "F = m × a; m = 2, a = 3; F = ?",
-        "choices": ["6", "4", "5", "8"],
+        "choices": [
+            "6",
+            "4",
+            "5",
+            "8"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -171,7 +276,12 @@
         "id": "phys-022",
         "category": "physics",
         "prompt": "F = m × a; m = 3, a = 3; F = ?",
-        "choices": ["9", "6", "8", "7"],
+        "choices": [
+            "9",
+            "6",
+            "8",
+            "7"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -179,7 +289,12 @@
         "id": "phys-023",
         "category": "physics",
         "prompt": "F = m × a; m = 4, a = 4; F = ?",
-        "choices": ["16", "12", "18", "14"],
+        "choices": [
+            "16",
+            "12",
+            "18",
+            "14"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -187,7 +302,12 @@
         "id": "phys-024",
         "category": "physics",
         "prompt": "F = m × a; m = 5, a = 4; F = ?",
-        "choices": ["20", "18", "22", "16"],
+        "choices": [
+            "20",
+            "18",
+            "22",
+            "16"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -195,7 +315,12 @@
         "id": "phys-025",
         "category": "physics",
         "prompt": "F = m × a; m = 6, a = 5; F = ?",
-        "choices": ["30", "24", "32", "28"],
+        "choices": [
+            "30",
+            "24",
+            "32",
+            "28"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -203,7 +328,12 @@
         "id": "phys-026",
         "category": "physics",
         "prompt": "F = m × a; m = 7, a = 5; F = ?",
-        "choices": ["35", "30", "32", "28"],
+        "choices": [
+            "35",
+            "30",
+            "32",
+            "28"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -211,7 +341,12 @@
         "id": "phys-027",
         "category": "physics",
         "prompt": "F = m × a; m = 8, a = 6; F = ?",
-        "choices": ["48", "42", "50", "46"],
+        "choices": [
+            "48",
+            "42",
+            "50",
+            "46"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -219,7 +354,12 @@
         "id": "phys-028",
         "category": "physics",
         "prompt": "F = m × a; m = 3, a = 8; F = ?",
-        "choices": ["24", "20", "26", "22"],
+        "choices": [
+            "24",
+            "20",
+            "26",
+            "22"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -227,7 +367,12 @@
         "id": "phys-029",
         "category": "physics",
         "prompt": "F = m × a; m = 8, a = 3; F = ?",
-        "choices": ["24", "20", "26", "22"],
+        "choices": [
+            "24",
+            "20",
+            "26",
+            "22"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -235,7 +380,12 @@
         "id": "phys-030",
         "category": "physics",
         "prompt": "F = m × a; m = 4, a = 7; F = ?",
-        "choices": ["28", "24", "26", "30"],
+        "choices": [
+            "28",
+            "24",
+            "26",
+            "30"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -243,7 +393,12 @@
         "id": "phys-031",
         "category": "physics",
         "prompt": "F = m × a; m = 2, a = 3; F = ?",
-        "choices": ["6", "4", "5", "8"],
+        "choices": [
+            "6",
+            "4",
+            "5",
+            "8"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -251,7 +406,12 @@
         "id": "phys-032",
         "category": "physics",
         "prompt": "F = m × a; m = 3, a = 3; F = ?",
-        "choices": ["9", "6", "8", "7"],
+        "choices": [
+            "9",
+            "6",
+            "8",
+            "7"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -259,7 +419,12 @@
         "id": "phys-033",
         "category": "physics",
         "prompt": "F = m × a; m = 4, a = 4; F = ?",
-        "choices": ["16", "12", "18", "14"],
+        "choices": [
+            "16",
+            "12",
+            "18",
+            "14"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -267,7 +432,12 @@
         "id": "phys-034",
         "category": "physics",
         "prompt": "F = m × a; m = 5, a = 4; F = ?",
-        "choices": ["20", "18", "22", "16"],
+        "choices": [
+            "20",
+            "18",
+            "22",
+            "16"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -275,7 +445,12 @@
         "id": "phys-035",
         "category": "physics",
         "prompt": "F = m × a; m = 6, a = 5; F = ?",
-        "choices": ["30", "24", "32", "28"],
+        "choices": [
+            "30",
+            "24",
+            "32",
+            "28"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -283,7 +458,12 @@
         "id": "phys-036",
         "category": "physics",
         "prompt": "F = m × a; m = 7, a = 5; F = ?",
-        "choices": ["35", "30", "32", "28"],
+        "choices": [
+            "35",
+            "30",
+            "32",
+            "28"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -291,7 +471,12 @@
         "id": "phys-037",
         "category": "physics",
         "prompt": "F = m × a; m = 8, a = 6; F = ?",
-        "choices": ["48", "42", "50", "46"],
+        "choices": [
+            "48",
+            "42",
+            "50",
+            "46"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -299,7 +484,12 @@
         "id": "phys-038",
         "category": "physics",
         "prompt": "F = m × a; m = 3, a = 8; F = ?",
-        "choices": ["24", "20", "26", "22"],
+        "choices": [
+            "24",
+            "20",
+            "26",
+            "22"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -307,7 +497,12 @@
         "id": "phys-039",
         "category": "physics",
         "prompt": "F = m × a; m = 8, a = 3; F = ?",
-        "choices": ["24", "20", "26", "22"],
+        "choices": [
+            "24",
+            "20",
+            "26",
+            "22"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -315,7 +510,12 @@
         "id": "phys-040",
         "category": "physics",
         "prompt": "F = m × a; m = 4, a = 7; F = ?",
-        "choices": ["28", "24", "26", "30"],
+        "choices": [
+            "28",
+            "24",
+            "26",
+            "30"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -323,7 +523,12 @@
         "id": "phys-041",
         "category": "physics",
         "prompt": "F = m × a; m = 2, a = 3; F = ?",
-        "choices": ["6", "4", "5", "8"],
+        "choices": [
+            "6",
+            "4",
+            "5",
+            "8"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -331,7 +536,12 @@
         "id": "phys-042",
         "category": "physics",
         "prompt": "F = m × a; m = 3, a = 3; F = ?",
-        "choices": ["9", "6", "8", "7"],
+        "choices": [
+            "9",
+            "6",
+            "8",
+            "7"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -339,7 +549,12 @@
         "id": "phys-043",
         "category": "physics",
         "prompt": "F = m × a; m = 4, a = 4; F = ?",
-        "choices": ["16", "12", "18", "14"],
+        "choices": [
+            "16",
+            "12",
+            "18",
+            "14"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -347,7 +562,12 @@
         "id": "phys-044",
         "category": "physics",
         "prompt": "F = m × a; m = 5, a = 4; F = ?",
-        "choices": ["20", "18", "22", "16"],
+        "choices": [
+            "20",
+            "18",
+            "22",
+            "16"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -355,7 +575,12 @@
         "id": "phys-045",
         "category": "physics",
         "prompt": "F = m × a; m = 6, a = 5; F = ?",
-        "choices": ["30", "24", "32", "28"],
+        "choices": [
+            "30",
+            "24",
+            "32",
+            "28"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -363,7 +588,12 @@
         "id": "phys-046",
         "category": "physics",
         "prompt": "F = m × a; m = 7, a = 5; F = ?",
-        "choices": ["35", "30", "32", "28"],
+        "choices": [
+            "35",
+            "30",
+            "32",
+            "28"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -371,7 +601,12 @@
         "id": "phys-047",
         "category": "physics",
         "prompt": "F = m × a; m = 8, a = 6; F = ?",
-        "choices": ["48", "42", "50", "46"],
+        "choices": [
+            "48",
+            "42",
+            "50",
+            "46"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -379,7 +614,12 @@
         "id": "phys-048",
         "category": "physics",
         "prompt": "F = m × a; m = 3, a = 8; F = ?",
-        "choices": ["24", "20", "26", "22"],
+        "choices": [
+            "24",
+            "20",
+            "26",
+            "22"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -387,7 +627,12 @@
         "id": "phys-049",
         "category": "physics",
         "prompt": "F = m × a; m = 8, a = 3; F = ?",
-        "choices": ["24", "20", "26", "22"],
+        "choices": [
+            "24",
+            "20",
+            "26",
+            "22"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -395,7 +640,12 @@
         "id": "phys-050",
         "category": "physics",
         "prompt": "F = m × a; m = 4, a = 7; F = ?",
-        "choices": ["28", "24", "26", "30"],
+        "choices": [
+            "28",
+            "24",
+            "26",
+            "30"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -403,7 +653,12 @@
         "id": "phys-051",
         "category": "physics",
         "prompt": "F = m × a; m = 2, a = 3; F = ?",
-        "choices": ["6", "4", "5", "8"],
+        "choices": [
+            "6",
+            "4",
+            "5",
+            "8"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -411,7 +666,12 @@
         "id": "phys-052",
         "category": "physics",
         "prompt": "F = m × a; m = 3, a = 3; F = ?",
-        "choices": ["9", "6", "8", "7"],
+        "choices": [
+            "9",
+            "6",
+            "8",
+            "7"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -419,7 +679,12 @@
         "id": "phys-053",
         "category": "physics",
         "prompt": "F = m × a; m = 4, a = 4; F = ?",
-        "choices": ["16", "12", "18", "14"],
+        "choices": [
+            "16",
+            "12",
+            "18",
+            "14"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -427,7 +692,12 @@
         "id": "phys-054",
         "category": "physics",
         "prompt": "F = m × a; m = 5, a = 4; F = ?",
-        "choices": ["20", "18", "22", "16"],
+        "choices": [
+            "20",
+            "18",
+            "22",
+            "16"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -435,7 +705,12 @@
         "id": "phys-055",
         "category": "physics",
         "prompt": "F = m × a; m = 6, a = 5; F = ?",
-        "choices": ["30", "24", "32", "28"],
+        "choices": [
+            "30",
+            "24",
+            "32",
+            "28"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -443,7 +718,12 @@
         "id": "phys-056",
         "category": "physics",
         "prompt": "F = m × a; m = 7, a = 5; F = ?",
-        "choices": ["35", "30", "32", "28"],
+        "choices": [
+            "35",
+            "30",
+            "32",
+            "28"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -451,7 +731,12 @@
         "id": "phys-057",
         "category": "physics",
         "prompt": "F = m × a; m = 8, a = 6; F = ?",
-        "choices": ["48", "42", "50", "46"],
+        "choices": [
+            "48",
+            "42",
+            "50",
+            "46"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -459,7 +744,12 @@
         "id": "phys-058",
         "category": "physics",
         "prompt": "F = m × a; m = 3, a = 8; F = ?",
-        "choices": ["24", "20", "26", "22"],
+        "choices": [
+            "24",
+            "20",
+            "26",
+            "22"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -467,7 +757,12 @@
         "id": "phys-059",
         "category": "physics",
         "prompt": "F = m × a; m = 8, a = 3; F = ?",
-        "choices": ["24", "20", "26", "22"],
+        "choices": [
+            "24",
+            "20",
+            "26",
+            "22"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -475,7 +770,12 @@
         "id": "phys-060",
         "category": "physics",
         "prompt": "F = m × a; m = 4, a = 7; F = ?",
-        "choices": ["28", "24", "26", "30"],
+        "choices": [
+            "28",
+            "24",
+            "26",
+            "30"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -483,7 +783,12 @@
         "id": "phys-061",
         "category": "physics",
         "prompt": "F = m × a; m = 2, a = 3; F = ?",
-        "choices": ["6", "4", "5", "8"],
+        "choices": [
+            "6",
+            "4",
+            "5",
+            "8"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -491,7 +796,12 @@
         "id": "phys-062",
         "category": "physics",
         "prompt": "F = m × a; m = 3, a = 3; F = ?",
-        "choices": ["9", "6", "8", "7"],
+        "choices": [
+            "9",
+            "6",
+            "8",
+            "7"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -499,7 +809,12 @@
         "id": "phys-063",
         "category": "physics",
         "prompt": "F = m × a; m = 4, a = 4; F = ?",
-        "choices": ["16", "12", "18", "14"],
+        "choices": [
+            "16",
+            "12",
+            "18",
+            "14"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -507,7 +822,12 @@
         "id": "phys-064",
         "category": "physics",
         "prompt": "F = m × a; m = 5, a = 4; F = ?",
-        "choices": ["20", "18", "22", "16"],
+        "choices": [
+            "20",
+            "18",
+            "22",
+            "16"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -515,7 +835,12 @@
         "id": "phys-065",
         "category": "physics",
         "prompt": "F = m × a; m = 6, a = 5; F = ?",
-        "choices": ["30", "24", "32", "28"],
+        "choices": [
+            "30",
+            "24",
+            "32",
+            "28"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -523,7 +848,12 @@
         "id": "phys-066",
         "category": "physics",
         "prompt": "F = m × a; m = 7, a = 5; F = ?",
-        "choices": ["35", "30", "32", "28"],
+        "choices": [
+            "35",
+            "30",
+            "32",
+            "28"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -531,7 +861,12 @@
         "id": "phys-067",
         "category": "physics",
         "prompt": "F = m × a; m = 8, a = 6; F = ?",
-        "choices": ["48", "42", "50", "46"],
+        "choices": [
+            "48",
+            "42",
+            "50",
+            "46"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -539,7 +874,12 @@
         "id": "phys-068",
         "category": "physics",
         "prompt": "F = m × a; m = 3, a = 8; F = ?",
-        "choices": ["24", "20", "26", "22"],
+        "choices": [
+            "24",
+            "20",
+            "26",
+            "22"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -547,7 +887,12 @@
         "id": "phys-069",
         "category": "physics",
         "prompt": "F = m × a; m = 8, a = 3; F = ?",
-        "choices": ["24", "20", "26", "22"],
+        "choices": [
+            "24",
+            "20",
+            "26",
+            "22"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -555,7 +900,12 @@
         "id": "phys-070",
         "category": "physics",
         "prompt": "F = m × a; m = 4, a = 7; F = ?",
-        "choices": ["28", "24", "26", "30"],
+        "choices": [
+            "28",
+            "24",
+            "26",
+            "30"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -563,7 +913,12 @@
         "id": "phys-071",
         "category": "physics",
         "prompt": "F = m × a; m = 2, a = 3; F = ?",
-        "choices": ["6", "4", "5", "8"],
+        "choices": [
+            "6",
+            "4",
+            "5",
+            "8"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -571,7 +926,12 @@
         "id": "phys-072",
         "category": "physics",
         "prompt": "F = m × a; m = 3, a = 3; F = ?",
-        "choices": ["9", "6", "8", "7"],
+        "choices": [
+            "9",
+            "6",
+            "8",
+            "7"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -579,7 +939,12 @@
         "id": "phys-073",
         "category": "physics",
         "prompt": "F = m × a; m = 4, a = 4; F = ?",
-        "choices": ["16", "12", "18", "14"],
+        "choices": [
+            "16",
+            "12",
+            "18",
+            "14"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -587,7 +952,12 @@
         "id": "phys-074",
         "category": "physics",
         "prompt": "F = m × a; m = 5, a = 4; F = ?",
-        "choices": ["20", "18", "22", "16"],
+        "choices": [
+            "20",
+            "18",
+            "22",
+            "16"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -595,7 +965,12 @@
         "id": "phys-075",
         "category": "physics",
         "prompt": "F = m × a; m = 6, a = 5; F = ?",
-        "choices": ["30", "24", "32", "28"],
+        "choices": [
+            "30",
+            "24",
+            "32",
+            "28"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -603,7 +978,12 @@
         "id": "phys-076",
         "category": "physics",
         "prompt": "F = m × a; m = 7, a = 5; F = ?",
-        "choices": ["35", "30", "32", "28"],
+        "choices": [
+            "35",
+            "30",
+            "32",
+            "28"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -611,7 +991,12 @@
         "id": "phys-077",
         "category": "physics",
         "prompt": "F = m × a; m = 8, a = 6; F = ?",
-        "choices": ["48", "42", "50", "46"],
+        "choices": [
+            "48",
+            "42",
+            "50",
+            "46"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -619,7 +1004,12 @@
         "id": "phys-078",
         "category": "physics",
         "prompt": "F = m × a; m = 3, a = 8; F = ?",
-        "choices": ["24", "20", "26", "22"],
+        "choices": [
+            "24",
+            "20",
+            "26",
+            "22"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -627,7 +1017,12 @@
         "id": "phys-079",
         "category": "physics",
         "prompt": "F = m × a; m = 8, a = 3; F = ?",
-        "choices": ["24", "20", "26", "22"],
+        "choices": [
+            "24",
+            "20",
+            "26",
+            "22"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -635,7 +1030,12 @@
         "id": "phys-080",
         "category": "physics",
         "prompt": "F = m × a; m = 4, a = 7; F = ?",
-        "choices": ["28", "24", "26", "30"],
+        "choices": [
+            "28",
+            "24",
+            "26",
+            "30"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -643,7 +1043,12 @@
         "id": "phys-081",
         "category": "physics",
         "prompt": "F = m × a; m = 2, a = 3; F = ?",
-        "choices": ["6", "4", "5", "8"],
+        "choices": [
+            "6",
+            "4",
+            "5",
+            "8"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -651,7 +1056,12 @@
         "id": "phys-082",
         "category": "physics",
         "prompt": "F = m × a; m = 3, a = 3; F = ?",
-        "choices": ["9", "6", "8", "7"],
+        "choices": [
+            "9",
+            "6",
+            "8",
+            "7"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -659,7 +1069,12 @@
         "id": "phys-083",
         "category": "physics",
         "prompt": "F = m × a; m = 4, a = 4; F = ?",
-        "choices": ["16", "12", "18", "14"],
+        "choices": [
+            "16",
+            "12",
+            "18",
+            "14"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -667,7 +1082,12 @@
         "id": "phys-084",
         "category": "physics",
         "prompt": "F = m × a; m = 5, a = 4; F = ?",
-        "choices": ["20", "18", "22", "16"],
+        "choices": [
+            "20",
+            "18",
+            "22",
+            "16"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -675,7 +1095,12 @@
         "id": "phys-085",
         "category": "physics",
         "prompt": "F = m × a; m = 6, a = 5; F = ?",
-        "choices": ["30", "24", "32", "28"],
+        "choices": [
+            "30",
+            "24",
+            "32",
+            "28"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -683,7 +1108,12 @@
         "id": "phys-086",
         "category": "physics",
         "prompt": "F = m × a; m = 7, a = 5; F = ?",
-        "choices": ["35", "30", "32", "28"],
+        "choices": [
+            "35",
+            "30",
+            "32",
+            "28"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -691,7 +1121,12 @@
         "id": "phys-087",
         "category": "physics",
         "prompt": "F = m × a; m = 8, a = 6; F = ?",
-        "choices": ["48", "42", "50", "46"],
+        "choices": [
+            "48",
+            "42",
+            "50",
+            "46"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -699,7 +1134,12 @@
         "id": "phys-088",
         "category": "physics",
         "prompt": "F = m × a; m = 3, a = 8; F = ?",
-        "choices": ["24", "20", "26", "22"],
+        "choices": [
+            "24",
+            "20",
+            "26",
+            "22"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -707,7 +1147,12 @@
         "id": "phys-089",
         "category": "physics",
         "prompt": "F = m × a; m = 8, a = 3; F = ?",
-        "choices": ["24", "20", "26", "22"],
+        "choices": [
+            "24",
+            "20",
+            "26",
+            "22"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -715,7 +1160,12 @@
         "id": "phys-090",
         "category": "physics",
         "prompt": "F = m × a; m = 4, a = 7; F = ?",
-        "choices": ["28", "24", "26", "30"],
+        "choices": [
+            "28",
+            "24",
+            "26",
+            "30"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -723,7 +1173,12 @@
         "id": "phys-091",
         "category": "physics",
         "prompt": "F = m × a; m = 2, a = 3; F = ?",
-        "choices": ["6", "4", "5", "8"],
+        "choices": [
+            "6",
+            "4",
+            "5",
+            "8"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -731,7 +1186,12 @@
         "id": "phys-092",
         "category": "physics",
         "prompt": "F = m × a; m = 3, a = 3; F = ?",
-        "choices": ["9", "6", "8", "7"],
+        "choices": [
+            "9",
+            "6",
+            "8",
+            "7"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -739,7 +1199,12 @@
         "id": "phys-093",
         "category": "physics",
         "prompt": "F = m × a; m = 4, a = 4; F = ?",
-        "choices": ["16", "12", "18", "14"],
+        "choices": [
+            "16",
+            "12",
+            "18",
+            "14"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -747,7 +1212,12 @@
         "id": "phys-094",
         "category": "physics",
         "prompt": "F = m × a; m = 5, a = 4; F = ?",
-        "choices": ["20", "18", "22", "16"],
+        "choices": [
+            "20",
+            "18",
+            "22",
+            "16"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -755,7 +1225,12 @@
         "id": "phys-095",
         "category": "physics",
         "prompt": "F = m × a; m = 6, a = 5; F = ?",
-        "choices": ["30", "24", "32", "28"],
+        "choices": [
+            "30",
+            "24",
+            "32",
+            "28"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -763,7 +1238,12 @@
         "id": "phys-096",
         "category": "physics",
         "prompt": "F = m × a; m = 7, a = 5; F = ?",
-        "choices": ["35", "30", "32", "28"],
+        "choices": [
+            "35",
+            "30",
+            "32",
+            "28"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -771,7 +1251,12 @@
         "id": "phys-097",
         "category": "physics",
         "prompt": "F = m × a; m = 8, a = 6; F = ?",
-        "choices": ["48", "42", "50", "46"],
+        "choices": [
+            "48",
+            "42",
+            "50",
+            "46"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -779,7 +1264,12 @@
         "id": "phys-098",
         "category": "physics",
         "prompt": "F = m × a; m = 3, a = 8; F = ?",
-        "choices": ["24", "20", "26", "22"],
+        "choices": [
+            "24",
+            "20",
+            "26",
+            "22"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -787,7 +1277,12 @@
         "id": "phys-099",
         "category": "physics",
         "prompt": "F = m × a; m = 8, a = 3; F = ?",
-        "choices": ["24", "20", "26", "22"],
+        "choices": [
+            "24",
+            "20",
+            "26",
+            "22"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     },
@@ -795,7 +1290,12 @@
         "id": "phys-100",
         "category": "physics",
         "prompt": "F = m × a; m = 4, a = 7; F = ?",
-        "choices": ["28", "24", "26", "30"],
+        "choices": [
+            "28",
+            "24",
+            "26",
+            "30"
+        ],
         "answerIndex": 0,
         "difficulty": 1
     }
