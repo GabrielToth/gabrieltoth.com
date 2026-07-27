@@ -243,7 +243,7 @@
     "cta": {
         "title": "Ready to Start?",
         "description": "Join our team of talented editors today",
-        "button": "Submit Application"
+        "button": "Soumettre Application"
     },
     "structuredData": {
         "jobPosting": {
@@ -276,7 +276,7 @@
                 }
             },
             "qualifications": "Video editing experience, knowledge of editing software",
-            "responsibilities": "Edit videos for YouTube, apply thumbnails, optimize for SEO"
+            "responsibilities": "Modifier videos for YouTube, apply thumbnails, optimize for SEO"
         }
     },
     "faqs": [
@@ -310,7 +310,7 @@
         "subtitle": "Join our team of talented editors",
         "personalInfo": "Personal Information",
         "name": "Full name",
-        "email": "Email",
+        "email": "E-mail",
         "age": "Age",
         "location": "Location",
         "experience": "Experience",
@@ -326,7 +326,7 @@
         "expectedRate": "Expected rate ($/hour)",
         "motivation": "Motivation",
         "whyJoin": "Why do you want to join?",
-        "submit": "Submit Application"
+        "submit": "Soumettre Application"
     },
     "placeholders": {
         "name": "Your full name",

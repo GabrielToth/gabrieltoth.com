@@ -2,7 +2,7 @@
     "hero": {
         "title": "Unified Platform for Content Creators",
         "subtitle": "Manage all your social networks in one place. See live streams, chats and unified data from YouTube, TikTok, Twitter and more.",
-        "cta": "Get Started Now",
+        "cta": "Commencer Now",
         "description": "The complete solution for content creators who want to centralize their operations"
     },
     "features": {
@@ -13,20 +13,20 @@
                 "description": "Connect YouTube, TikTok, Twitter, Instagram and other platforms in a single dashboard"
             },
             {
-                "title": "Centralized Live Streams",
+                "title": "Centralized En direct Streams",
                 "description": "Monitor all your live broadcasts in real-time, regardless of platform"
             },
             {
                 "title": "Unified Chats",
-                "description": "View and respond to comments from all platforms in one place"
+                "description": "Voir and respond to comments from all platforms in one place"
             },
             {
                 "title": "Consolidated Data",
                 "description": "Detailed analytics and unified metrics from all your social networks"
             },
             {
-                "title": "Video Upload",
-                "description": "Upload videos to multiple platforms simultaneously with custom metadata"
+                "title": "Video Téléverser",
+                "description": "Téléverser videos to multiple platforms simultaneously with custom metadata"
             },
             {
                 "title": "Content Management",
@@ -40,7 +40,7 @@
         "items": [
             {
                 "name": "YouTube",
-                "description": "Live streams, video uploads and detailed analytics"
+                "description": "En direct streams, video uploads and detailed analytics"
             },
             {
                 "name": "TikTok",
@@ -56,7 +56,7 @@
             },
             {
                 "name": "Twitch",
-                "description": "Live broadcasts and real-time chat"
+                "description": "En direct broadcasts and real-time chat"
             },
             {
                 "name": "Facebook",
@@ -68,7 +68,7 @@
         "title": "Why Use Our Platform",
         "items": [
             {
-                "title": "Save Time",
+                "title": "Enregistrer Time",
                 "description": "No more switching between multiple platforms. Manage everything in one place."
             },
             {
@@ -76,7 +76,7 @@
                 "description": "Automate repetitive tasks and focus on what really matters: creating quality content."
             },
             {
-                "title": "Better Insights",
+                "title": "Better Analyses",
                 "description": "See consolidated data from all platforms to make more informed decisions."
             },
             {
@@ -104,7 +104,7 @@
                 "features": [
                     "Up to 2 connected platforms",
                     "Basic dashboard",
-                    "Email support",
+                    "E-mail support",
                     "Limited analytics"
                 ]
             },
@@ -147,7 +147,7 @@
         "items": [
             {
                 "question": "How do I connect my social networks?",
-                "answer": "It's simple! After creating your account, go to Settings > Connect Platforms and follow the authentication instructions for each social network."
+                "answer": "It's simple! After creating your account, go to Paramètres > Connect Platforms and follow the authentication instructions for each social network."
             },
             {
                 "question": "Is my data safe?",

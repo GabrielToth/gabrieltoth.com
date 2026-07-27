@@ -1,6 +1,6 @@
 {
     "home": "Accueil",
-    "about": "À propos",
+    "about": "À Propos",
     "projects": "Projets",
     "services": "Services",
     "channels": "Chaînes",
@@ -8,7 +8,7 @@
     "language": "Langue",
     "editors": "Éditeurs",
     "login": "Connexion",
-    "register": "Inscription",
+    "register": "S'inscrire",
     "dashboard": "Tableau de bord",
     "servicesDropdown": {
         "channelManagement": "ViraTrend",

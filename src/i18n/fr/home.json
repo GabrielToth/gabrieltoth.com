@@ -5,13 +5,13 @@
         "title": "Data Scientist & Full Stack Developer",
         "subtitle": "Specialized in creating innovative digital solutions with modern technologies",
         "cta": "Get in touch",
-        "resume": "Download Resume",
+        "resume": "Télécharger Resume",
         "disabled": "Disabled",
         "contactEmail": "contact@gabrieltoth.com",
         "resumeUrl": "/resume/Gabriel_Toth_Curriculum_EN.pdf"
     },
     "about": {
-        "title": "About Me",
+        "title": "À propos Me",
         "description": "Developer passionate about technology and innovation",
         "role": "Data Scientist & Full Stack Developer",
         "intro": "Hello! I'm Gabriel Toth Gonçalves, data scientist II and Full Stack developer from Brazil. With a Computer Science degree and specialization in Data Science, I currently work on the social-analytics-engine project, performing advanced digital campaign analysis and conversion metrics.",
@@ -40,7 +40,7 @@
                 "title": "Frontend",
                 "items": [
                     "React",
-                    "Next.js",
+                    "Suivant.js",
                     "TypeScript",
                     "Tailwind CSS",
                     "JavaScript",
@@ -97,9 +97,9 @@
         "contactEmail": "contact@gabrieltoth.com",
         "resumeUrl": "/resume/Gabriel_Toth_Curriculum_EN.pdf",
         "getInTouch": "Get in touch",
-        "email": "Email",
+        "email": "E-mail",
         "scheduleCall": "Schedule a call",
-        "downloadResume": "Download resume",
+        "downloadResume": "Télécharger resume",
         "followMe": "Follow me",
         "services": {
             "title": "Available Services",
@@ -109,7 +109,7 @@
             },
             "webDev": {
                 "title": "Web Development",
-                "description": "Modern websites and applications with React and Next.js"
+                "description": "Modern websites and applications with React and Suivant.js"
             },
             "consulting": {
                 "title": "Digital Consulting",
@@ -125,7 +125,7 @@
         },
         "form": {
             "name": "Your name",
-            "email": "Email",
+            "email": "E-mail",
             "subject": "Subject",
             "message": "Message",
             "emailPlaceholder": "your@email.com",
@@ -133,13 +133,13 @@
             "send": "Send message",
             "sending": "Sending...",
             "success": "Message sent successfully!",
-            "error": "Error sending message. Please try again."
+            "error": "Erreur sending message. Please try again."
         }
     },
     "projects": {
         "title": "Projects",
         "description": "Some of the projects I've developed using modern technologies",
-        "viewProject": "View Project",
+        "viewProject": "Voir Project",
         "sourceCode": "Source Code",
         "technologies": "Technologies",
         "showMore": "Show More",
@@ -149,7 +149,13 @@
                 "title": "Sistema SAT Fiscal - Website",
                 "description": "Institutional website for company specialized in fiscal and accounting solutions. Developed with focus on presenting fiscal services, tax management and business solutions in a clear and professional way.",
                 "image": "/projects/sat-fiscal.jpg",
-                "tags": ["HTML", "CSS", "JavaScript", "SEO", "Design"],
+                "tags": [
+                    "HTML",
+                    "CSS",
+                    "JavaScript",
+                    "SEO",
+                    "Design"
+                ],
                 "liveUrl": "https://sistemasatfiscal.com.br",
                 "featured": true
             },
@@ -157,7 +163,12 @@
                 "title": "Softclever - Website",
                 "description": "Corporate website developed in React for software company, with modern and responsive design. Implements sections for services, portfolio and contact, using technologies like React, modern CSS and SEO optimizations.",
                 "image": "/projects/softclever.jpg",
-                "tags": ["React", "CSS", "JavaScript", "SEO"],
+                "tags": [
+                    "React",
+                    "CSS",
+                    "JavaScript",
+                    "SEO"
+                ],
                 "liveUrl": "https://softclever.com.br",
                 "githubUrl": "https://github.com/gabrieltoth/softclever"
             },
@@ -169,7 +180,7 @@
                     "YouTube",
                     "Content Creation",
                     "Payment Integration",
-                    "Next.js",
+                    "Suivant.js",
                     "Stripe",
                     "PIX"
                 ],
@@ -179,7 +190,12 @@
                 "title": "PC Optimization Service",
                 "description": "Specialized PC optimization service for gaming, focused on maximizing game performance and reducing latency. Includes advanced system configurations, hardware optimization and custom software.",
                 "image": "/projects/pc-optimization.jpg",
-                "tags": ["Windows", "Gaming", "Performance", "Hardware"],
+                "tags": [
+                    "Windows",
+                    "Gaming",
+                    "Performance",
+                    "Hardware"
+                ],
                 "slug": "/pc-optimization"
             }
         ]
