@@ -1,0 +1,25 @@
+{
+    "home": "Home",
+    "about": "About Me",
+    "projects": "Projects",
+    "services": "Services",
+    "channels": "Channels",
+    "contact": "Contact",
+    "language": "Language",
+    "editors": "Editors",
+    "login": "Login",
+    "register": "Register",
+    "dashboard": "Dashboard",
+    "servicesDropdown": {
+        "channelManagement": "ViraTrend",
+        "pcOptimization": "PC Optimization",
+        "affiliate": "Amazon Affiliate"
+    },
+    "minecraftDropdown": {
+        "modpacks": "Modpacks",
+        "mods": "Mods",
+        "plugins": "Plugins",
+        "contributions": "Contributions"
+    },
+    "minecraft": "Minecraft"
+}

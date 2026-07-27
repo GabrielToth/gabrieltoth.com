@@ -1,4 +1,4 @@
-export const locales = ["en", "pt-BR", "es", "de"] as const
+export const locales = ["en", "pt-BR", "es", "de", "fr"] as const
 
 export type Locale = (typeof locales)[number]
 
@@ -9,6 +9,8 @@ export const localeNames: Record<Locale, string> = {
     es: "Español",
     /* cspell:disable-next-line */
     de: "Deutsch",
+    /* cspell:disable-next-line */
+    fr: "Français",
 }
 
 // Short versions for language selector to avoid text overflow
@@ -17,6 +19,7 @@ export const localeNamesShort: Record<Locale, string> = {
     "pt-BR": "PT",
     es: "ES",
     de: "DE",
+    fr: "FR",
 }
 
 export const defaultLocale: Locale = "pt-BR"
@@ -61,7 +64,7 @@ export const getLocaleFromUrl = (pathname: string): Locale => {
 
 export const getLocalizedPath = (path: string): string => {
     // Remove any existing locale from the path
-    const cleanPath = path.replace(/^\/(en|pt-BR|es|de)/, "") || "/"
+    const cleanPath = path.replace(/^\/(en|pt-BR|es|de|fr)/, "") || "/"
     return cleanPath
 }
 
