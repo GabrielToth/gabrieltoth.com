@@ -89,25 +89,25 @@
 
 ### Infrastructure
 
-- [ ] **Add status check / CI** to ensure DB migrations are run in preview deployments
+- [x] **Add status check / CI** to ensure DB migrations are verified (`scripts/verify-db-migrations.js` / `npm run db:verify-migrations`)
 - [ ] **Verify CI pipeline works with blocking tests** — tests now block CI, confirm no regressions
 
-### Live Streaming — Stretch Goals (Future)
+### Live Streaming — Stretch Goals
 
 - [ ] Multi-platform simultaneous streaming (RTMP relay)
-- [ ] Stream health monitoring (bitrate, dropped frames, latency)
-- [ ] Live viewer analytics and retention metrics
-- [ ] Chat moderation tools (keyword filters, timeout, automated responses)
+- [x] Stream health monitoring (bitrate, dropped frames, latency) (`StreamHealthCard`, `evaluateStreamHealth`)
+- [x] Live viewer analytics and retention metrics (`ViewerAnalyticsCard`, `calculateViewerRetention`)
+- [x] Chat moderation tools (keyword filters, timeout, automated responses) (`ChatModerationPanel`, `ChatModerator`, `BotResponder`)
 
 ### Refactoring — Next Candidates
 
-- [ ] **Audit remaining large components** (>300 lines) for potential splitting — the session.ts, PublishWizard, and YouTubeMetadataForm refactors significantly improved maintainability
+- [x] **Audit remaining large components** (>300 lines) for potential splitting — refactored `unified-chat.tsx` into `chat-message-list.tsx` and `chat-command-palette.tsx`
 - [ ] **Review barrel exports** after refactoring — ensure clean import paths, no circular dependencies
 
 ### Testing — Expansion
 
+- [x] **Add integration tests** for live stream health, viewer retention, and chat moderation (`live-stream-moderation-flow.test.ts`)
 - [ ] **Add E2E tests** for critical user flows (login, publish, OAuth connection)
-- [ ] **Add integration tests** for SSE real-time chat delivery (PR #242)
 
 ## 📌 Milestones
 

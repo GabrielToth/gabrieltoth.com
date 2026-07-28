@@ -44,6 +44,7 @@
         "db:types:local": "supabase gen types typescript --local > src/types/supabase.ts",
         "db:migrate": "powershell -File scripts/apply-migration.ps1 local",
         "db:migrate:remote": "powershell -File scripts/apply-migration.ps1 remote",
+        "db:verify-migrations": "node scripts/verify-db-migrations.js",
         "i18n:check-params": "node scripts/i18n/check-params.mjs",
         "i18n:check-params:report": "node scripts/i18n/check-params.mjs --report",
         "build": "next build"
