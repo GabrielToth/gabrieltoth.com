@@ -226,6 +226,23 @@ Refer to test files in `src/__tests__/` for live dashboard component tests:
 npm run test -- src/__tests__/components/dashboard/live/
 ```
 
+### StreamHealthCard
+
+Displays real-time bitrate, frame rate (FPS), latency, dropped frames, and evaluated stream health status (excellent, good, fair, poor, critical) with automated issue detection.
+
+### ViewerAnalyticsCard
+
+Displays peak viewers, average viewers, viewer retention rate (%), and total session stream duration.
+
+### ChatModerationPanel
+
+Provides live chat moderation rules (keyword filters, regex pattern matching, unauthorized link blocking) and automated bot command responses.
+
+### Subcomponents (UnifiedChat Refactor)
+
+- **ChatMessageList**: Renders scrollable message feed with multi-platform badge badges (Twitch, Kick, YouTube).
+- **ChatCommandPalette**: Interactive slash command autocomplete dropdown for moderation commands.
+
 ## Future Enhancements
 
 - [ ] Real SSE backend connection for live chat messages
