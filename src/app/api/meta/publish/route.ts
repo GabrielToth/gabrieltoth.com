@@ -1,6 +1,7 @@
 import { getServerSession } from "@/lib/auth/get-server-session"
 import { getAdminClient } from "@/lib/supabase/server"
 import { createLogger } from "@/lib/logger"
+import { buildClientKey, rateLimitByKey } from "@/lib/rate-limit"
 import { NextRequest, NextResponse } from "next/server"
 
 const logger = createLogger("MetaPublishApi")
@@ -12,6 +13,13 @@ const ALLOWED_EMAILS = new Set([
 
 export async function GET(request: NextRequest): Promise<NextResponse> {
     try {
+        const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "127.0.0.1"
+        const key = buildClientKey({ ip, path: "/api/meta/publish" })
+        const rl = await rateLimitByKey(key)
+        if (!rl.success) {
+            return NextResponse.json({ error: "Too many requests" }, { status: 429 })
+        }
+
         const session = await getServerSession(request)
         if (!session?.user?.id) {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 })

@@ -52,6 +52,7 @@ import {
     regenerateCsrfToken,
     addCsrfTokenToResponse,
 } from "@/lib/middleware/api-csrf-middleware"
+import { buildClientKey, rateLimitByKey } from "@/lib/rate-limit"
 import { createLogger } from "@/lib/logger"
 
 const logger = createLogger("YouTubeUploadRoute")
@@ -80,6 +81,13 @@ const MAX_CATEGORY_ID_LENGTH = 3
 const MAX_FILE_SIZE_BYTES = 500 * 1024 * 1024 // 500MB
 
 export async function POST(request: NextRequest) {
+    const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "127.0.0.1"
+    const key = buildClientKey({ ip, path: "/api/youtube/upload" })
+    const rl = await rateLimitByKey(key)
+    if (!rl.success) {
+        return NextResponse.json({ error: "Too many requests" }, { status: 429 })
+    }
+
     // ── CSRF validation ──
     const { valid } = await validateCsrfFromRequest(request)
     if (!valid) {
