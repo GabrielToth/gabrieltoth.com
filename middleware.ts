@@ -9,7 +9,7 @@
 import { authMiddleware } from "@/lib/middleware/auth-middleware"
 import { NextRequest, NextResponse } from "next/server"
 
-const SUPPORTED_LOCALES = ["en", "pt-BR", "es", "de"]
+const SUPPORTED_LOCALES = ["en", "pt-BR", "es", "de", "fr"]
 const DEFAULT_LOCALE = "pt-BR"
 
 /**
@@ -76,6 +76,6 @@ export const config = {
     matcher: [
         "/dashboard/:path*",
         "/dashboard",
-        "/(en|pt-BR|es|de)/dashboard/:path*",
+        "/(en|pt-BR|es|de|fr)/dashboard/:path*",
     ],
 }
