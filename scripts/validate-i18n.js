@@ -3,7 +3,7 @@
 const fs = require("fs")
 const path = require("path")
 
-const LANGUAGES = ["en", "pt-BR", "es", "de"]
+const LANGUAGES = ["en", "pt-BR", "es", "de", "fr"]
 const I18N_DIR = path.join(__dirname, "../src/i18n")
 const REFERENCE_LANG = "en"
 
