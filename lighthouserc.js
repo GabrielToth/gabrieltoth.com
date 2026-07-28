@@ -5,6 +5,7 @@ module.exports = {
                 "http://localhost:3000",
                 "http://localhost:3000/en",
                 "http://localhost:3000/pt-BR",
+                "http://localhost:3000/fr",
                 "http://localhost:3000/en/channel-management",
 
                 "http://localhost:3000/en/pc-optimization",
