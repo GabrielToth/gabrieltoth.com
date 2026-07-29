@@ -236,9 +236,6 @@ export function useRelayChat(): UseRelayChatReturn {
                 } catch {
                     // ignore unparseable messages
                 }
-                } catch {
-                    // ignore unparseable messages
-                }
             }
 
             ws.onerror = () => {
