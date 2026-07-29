@@ -22,6 +22,9 @@ import { NextRequest, NextResponse } from "next/server"
 
 const logger = createLogger("LiveStatusEndpoint")
 
+const STATUS_CACHE_TTL_MS = 60_000
+const statusCache = new Map<string, { data: any; expiresAt: number }>()
+
 async function getValidAccessToken(
     userId: string,
     platform: string
@@ -392,6 +395,11 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
 
         const userId = session.user.id
 
+        const cached = statusCache.get(userId)
+        if (cached && Date.now() < cached.expiresAt) {
+            return NextResponse.json(cached.data)
+        }
+
         const supabase = createClient(
             process.env.NEXT_PUBLIC_SUPABASE_URL || "",
             process.env.SUPABASE_SERVICE_ROLE_KEY || ""
@@ -516,10 +524,10 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
             }
         }
 
-        return NextResponse.json({
-            success: true,
-            data: platforms,
-        })
+        const response = { success: true, data: platforms }
+        statusCache.set(userId, { data: response, expiresAt: Date.now() + STATUS_CACHE_TTL_MS })
+
+        return NextResponse.json(response)
     } catch (error) {
         const err = error instanceof Error ? error : new Error(String(error))
         logger.error("Live status fetch failed", err)
