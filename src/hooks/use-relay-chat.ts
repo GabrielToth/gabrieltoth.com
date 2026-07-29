@@ -195,17 +195,17 @@ export function useRelayChat(): UseRelayChatReturn {
                         return
                     }
 
-                    const platformPrefixes = ["twitch", "kick", "youtube"]
-                    for (const prefix of platformPrefixes) {
+                    const twitchPrefixes = ["twitch", "kick", "youtube"]
+                    for (const prefix of twitchPrefixes) {
                         const eventName = `${prefix}:message`
                         if (data.event === eventName) {
                             const message: RelayChatMessage = {
-                                id: data.id,
-                                channelId: data.channelId,
+                                id: data.id || `${prefix}-${data.timestamp || Date.now()}`,
+                                channelId: data.channelId || data.channel || "",
                                 platform: prefix,
                                 user: data.user,
                                 content: data.content,
-                                type: data.msgType || "text",
+                                type: data.msgType || data.type || "text",
                                 timestamp: data.timestamp,
                                 isAction: data.isAction,
                             }
@@ -215,7 +215,27 @@ export function useRelayChat(): UseRelayChatReturn {
                             })
                             return
                         }
+                        if (data.platform === prefix && !data.event) {
+                            const message: RelayChatMessage = {
+                                id: `${prefix}-${data.timestamp || Date.now()}`,
+                                channelId: data.channel || data.channelId || "",
+                                platform: prefix,
+                                user: data.user,
+                                content: data.content,
+                                type: data.type || "text",
+                                timestamp: data.timestamp,
+                                isAction: data.isAction,
+                            }
+                            setMessages(prev => {
+                                if (prev.some(m => m.id === message.id && m.content === message.content)) return prev
+                                return [...prev, message]
+                            })
+                            return
+                        }
                     }
+                } catch {
+                    // ignore unparseable messages
+                }
                 } catch {
                     // ignore unparseable messages
                 }
