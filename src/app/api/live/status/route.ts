@@ -311,6 +311,75 @@ async function fetchInstagramLive(
     }
 }
 
+async function fetchYouTubeStream(
+    accessToken: string
+): Promise<Partial<PlatformStreamInfo>> {
+    try {
+        const broadcastRes = await fetch(
+            "https://www.googleapis.com/youtube/v3/liveBroadcasts?part=snippet,status&mine=true",
+            {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                    Accept: "application/json",
+                },
+            }
+        )
+
+        if (!broadcastRes.ok) {
+            logger.warn("YouTube broadcast fetch failed", {
+                status: broadcastRes.status,
+            })
+            return {}
+        }
+
+        const broadcastData = await broadcastRes.json()
+        const items = broadcastData.items || []
+        const liveBroadcast = items.find(
+            (item: any) => item.status?.lifeCycleStatus === "live"
+        )
+
+        if (!liveBroadcast) {
+            return { isLive: false }
+        }
+
+        const videoId = liveBroadcast.id
+        const snippet = liveBroadcast.snippet || {}
+
+        const videoRes = await fetch(
+            `https://www.googleapis.com/youtube/v3/videos?part=liveStreamingDetails,statistics&id=${videoId}`,
+            {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                    Accept: "application/json",
+                },
+            }
+        )
+
+        let viewerCount = 0
+        if (videoRes.ok) {
+            const videoData = await videoRes.json()
+            const video = videoData.items?.[0]
+            if (video?.liveStreamingDetails) {
+                viewerCount = parseInt(
+                    video.liveStreamingDetails.concurrentViewers || "0",
+                    10
+                )
+            }
+        }
+
+        return {
+            isLive: true,
+            viewerCount,
+            title: snippet.title || "",
+            gameName: "",
+            startedAt: snippet.actualStartTime || null,
+        }
+    } catch (error) {
+        logger.error("YouTube live fetch failed", { error })
+        return {}
+    }
+}
+
 export async function GET(request: NextRequest): Promise<NextResponse> {
     try {
         const session = await getServerSession(request)
@@ -398,10 +467,16 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
                     break
                 }
 
-                case "youtube":
-                    // Skip YouTube API calls to preserve quota (search endpoint costs 100 units each)
-                    platforms.push(baseInfo)
+                case "youtube": {
+                    const ytToken = await getValidAccessToken(userId, "youtube")
+                    if (ytToken) {
+                        const ytData = await fetchYouTubeStream(ytToken)
+                        platforms.push({ ...baseInfo, ...ytData })
+                    } else {
+                        platforms.push(baseInfo)
+                    }
                     break
+                }
 
                 case "facebook":
                     if (pageAccessToken) {
