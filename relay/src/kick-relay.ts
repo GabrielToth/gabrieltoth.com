@@ -65,6 +65,7 @@ export class KickPusherRelay extends EventEmitter {
         oauthToken?: string
     ): Promise<{ chatroomId: number; broadcasterUserId: string } | null> {
         try {
+            const slug = channelName.toLowerCase()
             const headers: Record<string, string> = {
                 "User-Agent":
                     "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:135.0) Gecko/20100101 Firefox/135.0",
@@ -75,19 +76,25 @@ export class KickPusherRelay extends EventEmitter {
                 headers["Authorization"] = `Bearer ${oauthToken}`
             }
             const response = await fetch(
-                `https://kick.com/api/v2/channels/${channelName}`,
+                `https://kick.com/api/v2/channels/${slug}`,
                 { headers }
             )
             if (response.ok) {
-                const data = await response.json()
+                const text = await response.text()
+                let data: any
+                try { data = JSON.parse(text) } catch { return null }
                 const chatroomId = data.chatroom?.id || null
                 const broadcasterUserId = String(data.user?.id || data.id || "")
                 if (chatroomId) {
                     return { chatroomId, broadcasterUserId }
                 }
+                console.error(`[KickRelay] getChatroomId: no chatroomId in response for ${slug}`, JSON.stringify(data).slice(0, 500))
+            } else {
+                const text = await response.text()
+                console.error(`[KickRelay] getChatroomId: HTTP ${response.status} for ${slug}: ${text.slice(0, 200)}`)
             }
-        } catch {
-            // fall through
+        } catch (err: any) {
+            console.error(`[KickRelay] getChatroomId error for ${channelName}:`, err.message)
         }
         return null
     }

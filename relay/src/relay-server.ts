@@ -2,7 +2,7 @@ import { createServer } from "node:http"
 import { WebSocketServer, WebSocket } from "ws"
 import { config } from "dotenv"
 import jwt from "jsonwebtoken"
-import { YouTubeStreamListRelay } from "./youtube-relay.js"
+import { YouTubeRelay } from "./youtube-relay.js"
 import { TwitchIrcRelay } from "./twitch-relay.js"
 import { KickPusherRelay } from "./kick-relay.js"
 
@@ -105,7 +105,7 @@ const wss = new WebSocketServer({
 const clients = new Map<WebSocket, ClientInfo>()
 
 // Relay instances per user
-const youtubeRelays = new Map<string, YouTubeStreamListRelay>()
+const youtubeRelays = new Map<string, YouTubeRelay>()
 const twitchRelays = new Map<string, TwitchIrcRelay>()
 const kickRelays = new Map<string, KickPusherRelay>()
 
@@ -526,10 +526,10 @@ async function handleYouTubeConnect(
         return
     }
 
-    const relay = new YouTubeStreamListRelay(token)
+    const relay = new YouTubeRelay(token)
 
     relay.on("connected", (liveChatId: string) => {
-        log("YouTube gRPC stream connected", {
+        log("YouTube stream connected", {
             liveChatId,
             userId: client.userId,
         })
@@ -570,7 +570,7 @@ async function handleYouTubeConnect(
      })
 
     relay.on("disconnected", (reason: string) => {
-        log("YouTube gRPC stream disconnected", {
+        log("YouTube stream disconnected", {
             reason,
             userId: client.userId,
         })
@@ -593,7 +593,7 @@ async function handleYouTubeConnect(
     })
 
     relay.on("reconnecting", (attempt: number, delay: number) => {
-        log("YouTube gRPC reconnecting", {
+        log("YouTube reconnecting", {
             attempt,
             delay,
             userId: client.userId,
@@ -611,7 +611,7 @@ async function handleYouTubeConnect(
     })
 
     relay.on("error", (error: Error) => {
-        log("YouTube gRPC error", {
+        log("YouTube stream error", {
             error: error.message,
             userId: client.userId,
         })

@@ -1,35 +1,26 @@
-import * as grpc from "@grpc/grpc-js"
-import * as protoLoader from "@grpc/proto-loader"
-import path from "path"
-import { fileURLToPath } from "url"
 import { EventEmitter } from "events"
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url))
-const PROTO_PATH = path.join(__dirname, "stream-list.proto")
+const LIVE_BROADCASTS_URL = "https://www.googleapis.com/youtube/v3/liveBroadcasts?part=snippet,status&mine=true"
+const LIVE_CHAT_MESSAGES_URL = "https://www.googleapis.com/youtube/v3/liveChat/messages"
+const MAX_RECONNECT_DELAY = 60000
 
-const YOUTUBE_API_ENDPOINT = "youtube.googleapis.com:443"
-const LIVE_BROADCASTS_URL =
-    "https://www.googleapis.com/youtube/v3/liveBroadcasts?part=snippet,status&mine=true"
-
-const RECONNECT_DELAY_MS = 5_000
-const MAX_RECONNECT_DELAY_MS = 60_000
-const INITIAL_PAGE_SIZE = 200
+export interface YouTubeChatUser {
+    id: string
+    username: string
+    displayName: string
+    platform: "youtube"
+    badges: Array<{ id: string; label: string; imageUrl: string }>
+    isBroadcaster: boolean
+    isModerator: boolean
+    isSubscriber: boolean
+    isVerified: boolean
+}
 
 export interface YouTubeMessage {
     id: string
     channelId: string
     platform: "youtube"
-    user: {
-        id: string
-        username: string
-        displayName: string
-        platform: "youtube"
-        badges: Array<{ id: string; label: string; imageUrl: string }>
-        isBroadcaster: boolean
-        isModerator: boolean
-        isSubscriber: boolean
-        isVerified?: boolean
-    }
+    user: YouTubeChatUser
     content: string
     type: "text" | "system" | "announcement" | "subscription"
     timestamp: number
@@ -39,53 +30,42 @@ export interface YouTubeRelayEvents {
     connected: (liveChatId: string) => void
     disconnected: (reason: string) => void
     message: (msg: YouTubeMessage) => void
-    error: (error: Error) => void
     reconnecting: (attempt: number, delay: number) => void
+    error: (error: Error) => void
 }
 
-export class YouTubeStreamListRelay extends EventEmitter {
+export class YouTubeRelay extends EventEmitter {
     private token: string
     private liveChatId: string | null = null
-    private client: any = null
-    private call: any = null
-    private reconnectAttempt = 0
+    private nextPageToken: string | null = null
+    private pollTimer: ReturnType<typeof setTimeout> | null = null
     private reconnectTimer: ReturnType<typeof setTimeout> | null = null
-    private lastPageToken: string | null = null
     private started = false
     private destroyed = false
-    private seenMessageIds = new Set<string>()
+    private seenIds = new Set<string>()
 
     constructor(token: string) {
         super()
         this.token = token
     }
 
-    on<K extends keyof YouTubeRelayEvents>(
-        event: K,
-        listener: YouTubeRelayEvents[K]
-    ): this {
-        return super.on(event, listener)
-    }
-
-    emit<K extends keyof YouTubeRelayEvents>(
-        event: K,
-        ...args: Parameters<YouTubeRelayEvents[K]>
-    ): boolean {
-        return super.emit(event, ...args)
-    }
-
-    async start(): Promise<string | null> {
+    async start(liveChatId?: string): Promise<string | null> {
         if (this.started) return this.liveChatId
         this.destroyed = false
         this.started = true
 
         try {
-            this.liveChatId = await this.findLiveChatId()
-            if (!this.liveChatId) {
-                throw new Error("No active YouTube live broadcast found")
+            if (!liveChatId) {
+                this.liveChatId = await this.findLiveChatId()
+                if (!this.liveChatId) {
+                    throw new Error("No active YouTube live broadcast found")
+                }
+            } else {
+                this.liveChatId = liveChatId
             }
 
-            await this.connectStream(this.liveChatId)
+            this.emit("connected", this.liveChatId)
+            this.schedulePoll()
             return this.liveChatId
         } catch (error) {
             this.started = false
@@ -96,20 +76,9 @@ export class YouTubeStreamListRelay extends EventEmitter {
     stop(): void {
         this.destroyed = true
         this.started = false
-        if (this.reconnectTimer) {
-            clearTimeout(this.reconnectTimer)
-            this.reconnectTimer = null
-        }
-        this.cancelStream()
+        if (this.pollTimer) { clearTimeout(this.pollTimer); this.pollTimer = null }
+        if (this.reconnectTimer) { clearTimeout(this.reconnectTimer); this.reconnectTimer = null }
         this.removeAllListeners()
-    }
-
-    getLiveChatId(): string | null {
-        return this.liveChatId
-    }
-
-    isConnected(): boolean {
-        return this.call !== null && !this.destroyed
     }
 
     private async findLiveChatId(): Promise<string | null> {
@@ -125,225 +94,127 @@ export class YouTubeStreamListRelay extends EventEmitter {
         const data = await response.json()
         if (!data.items || data.items.length === 0) return null
 
-        const active = data.items.find(
-            (item: any) => item.status?.lifeCycleStatus === "live"
-        )
-
-        return active?.snippet?.liveChatId || null
-    }
-
-    private async connectStream(liveChatId: string): Promise<void> {
-        const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
-            keepCase: false,
-            longs: String,
-            enums: String,
-            defaults: true,
-            oneofs: true,
-            includeDirs: [path.dirname(PROTO_PATH)],
-        })
-
-        const proto = grpc.loadPackageDefinition(packageDefinition) as any
-
-        const channelCredentials = grpc.ChannelCredentials.createSsl()
-
-        this.client = new proto.youtube.api.v3.V3DataLiveChatMessageService(
-            YOUTUBE_API_ENDPOINT,
-            channelCredentials
-        )
-
-        const metadata = new grpc.Metadata()
-        metadata.add("authorization", `Bearer ${this.token}`)
-        metadata.add("x-goog-api-client", "grpc-node/1.0")
-
-        const request = {
-            live_chat_id: liveChatId,
-            part: ["snippet", "authorDetails"],
-            max_results: INITIAL_PAGE_SIZE,
-            ...(this.lastPageToken ? { page_token: this.lastPageToken } : {}),
+        for (const item of data.items) {
+            const chatId = item.snippet?.liveChatId
+            if (chatId) return chatId
         }
 
-        this.call = this.client.StreamList(request, metadata)
-
-        this.call.on("data", (response: any) => {
-            if (response.next_page_token) {
-                this.lastPageToken = response.next_page_token
-            }
-
-            if (response.offline_at) {
-                this.emit(
-                    "disconnected",
-                    "Stream went offline at " + response.offline_at
-                )
-                return
-            }
-
-            const items = response.items || []
-            for (const item of items) {
-                if (this.seenMessageIds.has(item.id)) continue
-                this.seenMessageIds.add(item.id)
-                const chatMessage = this.toChatMessage(liveChatId, item)
-                this.emit("message", chatMessage)
-            }
-        })
-
-        this.call.on("end", () => {
-            this.call = null
-            this.emit("disconnected", "gRPC stream ended")
-            if (!this.destroyed) this.scheduleReconnect(liveChatId)
-        })
-
-        this.call.on("error", (error: grpc.ServiceError) => {
-            this.call = null
-            const errMsg =
-                error.details || error.message || "Unknown gRPC error"
-            const isTerminal =
-                error.code === grpc.status.PERMISSION_DENIED ||
-                error.code === grpc.status.NOT_FOUND ||
-                error.code === grpc.status.UNIMPLEMENTED
-
-            if (isTerminal) {
-                this.emit("error", new Error(errMsg))
-                this.emit("disconnected", "Terminal error: " + errMsg)
-                return
-            }
-
-            this.emit("disconnected", errMsg)
-            if (!this.destroyed) this.scheduleReconnect(liveChatId)
-        })
-
-        this.call.on("status", (status: grpc.StatusObject) => {
-            if (status.code === grpc.status.OK) return
-        })
-
-        this.emit("connected", liveChatId)
+        return data.items[0]?.snippet?.liveChatId || null
     }
 
-    private scheduleReconnect(liveChatId: string): void {
+    private async pollMessages(): Promise<void> {
+        if (this.destroyed || !this.liveChatId) return
+
+        try {
+            const params = new URLSearchParams({
+                liveChatId: this.liveChatId,
+                part: "snippet,authorDetails",
+                maxResults: "200",
+            })
+            if (this.nextPageToken) {
+                params.set("pageToken", this.nextPageToken)
+            }
+
+            const response = await fetch(`${LIVE_CHAT_MESSAGES_URL}?${params}`, {
+                headers: { Authorization: `Bearer ${this.token}` },
+            })
+
+            if (!response.ok) {
+                if (response.status === 403 || response.status === 404) {
+                    this.emit("disconnected", `YouTube API error: ${response.status}`)
+                    return
+                }
+                throw new Error(`YouTube API poll error (${response.status})`)
+            }
+
+            const data = await response.json()
+
+            this.nextPageToken = data.nextPageToken || null
+
+            const items = data.items || []
+            for (const item of items) {
+                if (this.seenIds.has(item.id)) continue
+                this.seenIds.add(item.id)
+
+                const chatMessage = this.toChatMessage(item)
+                if (chatMessage) {
+                    this.emit("message", chatMessage)
+                }
+            }
+
+            const interval = data.pollingIntervalMillis || 5000
+            this.schedulePoll(interval)
+        } catch (error: any) {
+            this.scheduleReconnect(error.message)
+        }
+    }
+
+    private schedulePoll(intervalMs = 5000): void {
         if (this.destroyed) return
+        this.pollTimer = setTimeout(() => this.pollMessages(), intervalMs)
+    }
 
-        const delay = Math.min(
-            RECONNECT_DELAY_MS * Math.pow(2, this.reconnectAttempt),
-            MAX_RECONNECT_DELAY_MS
-        )
-        this.reconnectAttempt++
-
-        this.emit("reconnecting", this.reconnectAttempt, delay)
-
+    private scheduleReconnect(reason: string): void {
+        if (this.destroyed) return
+        this.emit("disconnected", reason)
+        this.emit("reconnecting", 1, MAX_RECONNECT_DELAY)
         this.reconnectTimer = setTimeout(async () => {
             if (this.destroyed) return
             try {
-                this.liveChatId = await this.findLiveChatId()
-                if (this.liveChatId) {
-                    await this.connectStream(this.liveChatId)
-                    this.reconnectAttempt = 0
-                }
-            } catch (error) {
-                this.emit(
-                    "error",
-                    error instanceof Error ? error : new Error(String(error))
-                )
-                if (!this.destroyed) this.scheduleReconnect(liveChatId)
+                await this.start(this.liveChatId || undefined)
+            } catch (err: any) {
+                this.reconnectAttempt++
+                this.emit("reconnecting", this.reconnectAttempt, MAX_RECONNECT_DELAY)
+                this.reconnectTimer = setTimeout(() => this.scheduleReconnect(err.message), MAX_RECONNECT_DELAY)
             }
-        }, delay)
+        }, MAX_RECONNECT_DELAY)
     }
 
-    private cancelStream(): void {
-        if (this.call) {
-            try {
-                this.call.cancel()
-            } catch {}
-            this.call = null
-        }
-        if (this.client) {
-            try {
-                this.client.close()
-            } catch {}
-            this.client = null
-        }
-    }
+    private reconnectAttempt = 0
 
-    private toChatMessage(channelId: string, raw: any): YouTubeMessage {
+    private toChatMessage(raw: any): YouTubeMessage | null {
         const snippet = raw.snippet || {}
-        const author = raw.author_details || {}
+        const author = raw.authorDetails || {}
 
-        const badges: Array<{
-            id: string
-            label: string
-            imageUrl: string
-        }> = []
+        const badges: Array<{ id: string; label: string; imageUrl: string }> = []
 
-        if (author.is_chat_owner)
-            badges.push({
-                id: "owner",
-                label: "Owner",
-                imageUrl: "",
-            })
-        if (author.is_chat_moderator)
-            badges.push({
-                id: "moderator",
-                label: "Moderator",
-                imageUrl: "",
-            })
-        if (author.is_chat_sponsor)
-            badges.push({
-                id: "member",
-                label: "Member",
-                imageUrl: "",
-            })
-        if (author.is_verified)
-            badges.push({
-                id: "verified",
-                label: "Verified",
-                imageUrl: "",
-            })
+        if (author.isChatOwner) badges.push({ id: "owner", label: "Owner", imageUrl: "" })
+        if (author.isChatModerator) badges.push({ id: "moderator", label: "Moderator", imageUrl: "" })
+        if (author.isChatSponsor) badges.push({ id: "member", label: "Member", imageUrl: "" })
+        if (author.isVerified) badges.push({ id: "verified", label: "Verified", imageUrl: "" })
 
-        let content = snippet.text_message_details?.message_text || ""
-        if (!content && snippet.display_message) {
-            content = snippet.display_message
-        }
+        let content = snippet.textMessageDetails?.messageText || ""
+        if (!content && snippet.displayMessage) content = snippet.displayMessage
 
-        const msgType = snippet.type || "textMessageEvent"
-        let messageType: "text" | "system" | "announcement" | "subscription" =
-            "text"
+        const rawType = snippet.type || "textMessageEvent"
+        let messageType: "text" | "system" | "announcement" | "subscription" = "text"
 
-        switch (msgType) {
-            case "chatEndedEvent":
-                messageType = "system"
-                break
-            case "newSponsorEvent":
-                messageType = "subscription"
-                break
-            case "memberMilestoneChatEvent":
-                messageType = "subscription"
-                break
-            case "superChatEvent":
-            case "superStickerEvent":
-                messageType = "announcement"
-                break
-            default:
-                messageType = "text"
+        switch (rawType) {
+            case "chatEndedEvent": messageType = "system"; break
+            case "newSponsorEvent": messageType = "subscription"; break
+            case "memberMilestoneChatEvent": messageType = "subscription"; break
+            case "superChatEvent": messageType = "announcement"; break
+            case "superStickerEvent": messageType = "announcement"; break
         }
 
         return {
             id: `youtube-${raw.id || `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`}`,
-            channelId,
+            channelId: this.liveChatId || "",
             platform: "youtube",
             user: {
-                id: author.channel_id || "unknown",
-                username: author.display_name?.toLowerCase() || "unknown",
-                displayName: author.display_name || "Unknown",
+                id: author.channelId || "unknown",
+                username: author.displayName?.toLowerCase() || "unknown",
+                displayName: author.displayName || "Unknown",
                 platform: "youtube",
                 badges,
-                isBroadcaster: author.is_chat_owner || false,
-                isModerator: author.is_chat_moderator || false,
-                isSubscriber: author.is_chat_sponsor || false,
-                isVerified: author.is_verified || false,
+                isBroadcaster: author.isChatOwner || false,
+                isModerator: author.isChatModerator || false,
+                isSubscriber: author.isChatSponsor || false,
+                isVerified: author.isVerified || false,
             },
             content,
             type: messageType,
-            timestamp: snippet.published_at
-                ? new Date(snippet.published_at).getTime()
-                : Date.now(),
+            timestamp: snippet.publishedAt ? new Date(snippet.publishedAt).getTime() : Date.now(),
         }
     }
 }

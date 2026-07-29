@@ -4,13 +4,11 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "build": "tsc && node -e \"require('fs').cpSync('src/stream-list.proto','dist/stream-list.proto')\"",
+        "build": "tsc",
         "start": "node dist/relay-server.js",
         "dev": "npx tsx watch src/relay-server.ts"
     },
     "dependencies": {
-        "@grpc/grpc-js": "^1.12.0",
-        "@grpc/proto-loader": "^0.7.13",
         "ws": "^8.18.0",
         "dotenv": "^16.4.5",
         "jsonwebtoken": "^9.0.2",
