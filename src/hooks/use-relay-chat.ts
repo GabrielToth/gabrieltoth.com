@@ -28,6 +28,7 @@ export interface RelayChatMessage {
 interface RelayPlatformStatus {
     platform: string
     connected: boolean
+    channelName?: string
     liveChatId?: string
 }
 
@@ -94,6 +95,7 @@ export function useRelayChat(): UseRelayChatReturn {
                         type: "connect",
                         platform,
                         token: info.accessToken,
+                        channelName: info.channelName,
                     })
                 )
                 logger.debug("Sent relay connect", { platform })
@@ -175,6 +177,7 @@ export function useRelayChat(): UseRelayChatReturn {
                             const entry: RelayPlatformStatus = {
                                 platform: data.platform,
                                 connected: data.connected,
+                                channelName: data.channelName,
                                 liveChatId: data.liveChatId,
                             }
                             if (existing >= 0) {
@@ -192,21 +195,26 @@ export function useRelayChat(): UseRelayChatReturn {
                         return
                     }
 
-                    if (data.event === "youtube:message") {
-                        const message: RelayChatMessage = {
-                            id: data.id,
-                            channelId: data.channelId,
-                            platform: "youtube",
-                            user: data.user,
-                            content: data.content,
-                            type: data.msgType || "text",
-                            timestamp: data.timestamp,
+                    const platformPrefixes = ["twitch", "kick", "youtube"]
+                    for (const prefix of platformPrefixes) {
+                        const eventName = `${prefix}:message`
+                        if (data.event === eventName) {
+                            const message: RelayChatMessage = {
+                                id: data.id,
+                                channelId: data.channelId,
+                                platform: prefix,
+                                user: data.user,
+                                content: data.content,
+                                type: data.msgType || "text",
+                                timestamp: data.timestamp,
+                                isAction: data.isAction,
+                            }
+                            setMessages(prev => {
+                                if (prev.some(m => m.id === message.id)) return prev
+                                return [...prev, message]
+                            })
+                            return
                         }
-                        setMessages(prev => {
-                            if (prev.some(m => m.id === message.id)) return prev
-                            return [...prev, message]
-                        })
-                        return
                     }
                 } catch {
                     // ignore unparseable messages

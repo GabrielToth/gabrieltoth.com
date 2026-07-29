@@ -6,7 +6,6 @@
 
 "use client"
 
-import { useChatSSE } from "@/hooks/use-chat-sse"
 import { useRelayChat } from "@/hooks/use-relay-chat"
 import { createLogger } from "@/lib/logger"
 import { useCallback, useRef, useEffect, useState, useMemo } from "react"
@@ -54,48 +53,21 @@ const COMMANDS: CommandItem[] = [
 const logger = createLogger("UnifiedChat")
 
 export function UnifiedChat({ platforms }: UnifiedChatProps) {
-    const sse = useChatSSE(platforms)
     const relay = useRelayChat()
 
     const allMessages: RenderableChatMessage[] = useMemo(() => {
-        const seen = new Set<string>()
-        const merged: RenderableChatMessage[] = []
-
-        for (const m of sse.messages) {
-            seen.add(m.id)
-            merged.push({
-                id: m.id,
-                author: m.user?.displayName || m.user?.username || "Anonymous",
-                content: m.content,
-                platform: m.platform,
-                timestamp: m.timestamp,
-            })
-        }
-
-        for (const m of relay.messages) {
-            if (!seen.has(m.id)) {
-                seen.add(m.id)
-                merged.push({
-                    id: m.id,
-                    author: m.user?.displayName || m.user?.username || "Anonymous",
-                    content: m.content,
-                    platform: "youtube",
-                    timestamp: m.timestamp,
-                })
-            }
-        }
-
-        merged.sort((a, b) => a.timestamp - b.timestamp)
-        return merged
-    }, [sse.messages, relay.messages])
+        return relay.messages.map(m => ({
+            id: m.id,
+            author: m.user?.displayName || m.user?.username || "Anonymous",
+            content: m.content,
+            platform: m.platform,
+            timestamp: m.timestamp,
+        }))
+    }, [relay.messages])
 
     const statusText = relay.isConnected
-        ? sse.isConnected
-            ? "Connected"
-            : "Relay (YouTube)"
-        : sse.isConnected
-          ? "SSE (Twitch/Kick)"
-          : "Disconnected"
+        ? "Connected"
+        : "Disconnected"
 
     const [input, setInput] = useState("")
     const [selectedPlatform, setSelectedPlatform] = useState(
@@ -173,7 +145,6 @@ export function UnifiedChat({ platforms }: UnifiedChatProps) {
 
     return (
         <div className="flex flex-col h-[500px]">
-            {/* Header & Platform selector */}
             <div className="flex items-center justify-between mb-3 border-b border-neutral-800 pb-2">
                 <div className="flex gap-1">
                     {platforms.map((p) => {
@@ -203,14 +174,12 @@ export function UnifiedChat({ platforms }: UnifiedChatProps) {
                 </div>
             </div>
 
-            {/* Message List Component */}
             <ChatMessageList
                 messages={allMessages}
                 getPlatformBadge={getPlatformBadge}
                 messagesEndRef={messagesEndRef}
             />
 
-            {/* Input & Command Palette */}
             <div className="relative mt-auto">
                 {showCommands && (
                     <ChatCommandPalette

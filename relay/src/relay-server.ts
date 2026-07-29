@@ -3,6 +3,8 @@ import { WebSocketServer, WebSocket } from "ws"
 import { config } from "dotenv"
 import jwt from "jsonwebtoken"
 import { YouTubeStreamListRelay } from "./youtube-relay.js"
+import { TwitchIrcRelay } from "./twitch-relay.js"
+import { KickPusherRelay } from "./kick-relay.js"
 
 config()
 
@@ -47,8 +49,6 @@ function log(...args: unknown[]): void {
     console.log(`[${new Date().toISOString()}]`, ...args)
 }
 
-// ─── Platform Connection Types ───────────────────────────────────────
-
 interface PlatformConnection {
     platform: "twitch" | "kick" | "youtube"
     connected: boolean
@@ -62,8 +62,6 @@ interface ClientInfo {
     platforms: Map<string, PlatformConnection>
     connectedAt: number
 }
-
-// ─── HTTP Server ────────────────────────────────────────────────────
 
 const server = createServer((req, res) => {
     if (req.url === "/health" || req.url === "/") {
@@ -83,8 +81,6 @@ const server = createServer((req, res) => {
     res.writeHead(404)
     res.end()
 })
-
-// ─── WebSocket Server ───────────────────────────────────────────────
 
 const wss = new WebSocketServer({
     server,
@@ -107,6 +103,11 @@ const wss = new WebSocketServer({
 })
 
 const clients = new Map<WebSocket, ClientInfo>()
+
+// Relay instances per user
+const youtubeRelays = new Map<string, YouTubeStreamListRelay>()
+const twitchRelays = new Map<string, TwitchIrcRelay>()
+const kickRelays = new Map<string, KickPusherRelay>()
 
 wss.on("connection", (ws: WebSocket, req) => {
     const url = new URL(req.url || "", "http://localhost")
@@ -147,22 +148,45 @@ wss.on("connection", (ws: WebSocket, req) => {
         })
     )
 
-    // Handle incoming messages from client
     ws.on("message", async (raw: Buffer) => {
         try {
             const msg = JSON.parse(raw.toString())
 
-            if (msg.type === "connect" && msg.platform === "youtube") {
-                await handleYouTubeConnect(
-                    clientInfo,
-                    msg.token,
-                    msg.liveChatId
-                )
+            if (msg.type === "connect") {
+                const platform = msg.platform
+                if (platform === "twitch") {
+                    await handleTwitchConnect(clientInfo, msg.token, msg.channelName)
+                } else if (platform === "kick") {
+                    await handleKickConnect(clientInfo, msg.token, msg.channelName)
+                } else if (platform === "youtube") {
+                    await handleYouTubeConnect(
+                        clientInfo,
+                        msg.token,
+                        msg.liveChatId
+                    )
+                } else {
+                    if (clientInfo.ws.readyState === WebSocket.OPEN) {
+                        clientInfo.ws.send(
+                            JSON.stringify({
+                                type: "error",
+                                platform,
+                                error: `Unsupported platform: ${platform}`,
+                            })
+                        )
+                    }
+                }
                 return
             }
 
-            if (msg.type === "disconnect" && msg.platform === "youtube") {
-                handleYouTubeDisconnect(clientInfo)
+            if (msg.type === "disconnect") {
+                const platform = msg.platform
+                if (platform === "twitch") {
+                    handleTwitchDisconnect(clientInfo)
+                } else if (platform === "kick") {
+                    handleKickDisconnect(clientInfo)
+                } else if (platform === "youtube") {
+                    handleYouTubeDisconnect(clientInfo)
+                }
                 return
             }
         } catch {
@@ -182,16 +206,307 @@ wss.on("connection", (ws: WebSocket, req) => {
     })
 })
 
-// ─── YouTube Relay Management ───────────────────────────────────────
+async function handleTwitchConnect(
+    client: ClientInfo,
+    token: string,
+    channelName: string
+): Promise<void> {
+    if (!token) {
+        if (client.ws.readyState === WebSocket.OPEN) {
+            client.ws.send(
+                JSON.stringify({
+                    type: "error",
+                    platform: "twitch",
+                    error: "No Twitch OAuth token provided",
+                })
+            )
+        }
+        return
+    }
 
-const youtubeRelays = new Map<string, YouTubeStreamListRelay>()
+    if (!channelName) {
+        if (client.ws.readyState === WebSocket.OPEN) {
+            client.ws.send(
+                JSON.stringify({
+                    type: "error",
+                    platform: "twitch",
+                    error: "No channel name provided",
+                })
+            )
+        }
+        return
+    }
+
+    const relay = new TwitchIrcRelay()
+
+    relay.on("connected", (roomId: string) => {
+        log("Twitch IRC connected", { roomId, userId: client.userId })
+        client.platforms.set("twitch", {
+            platform: "twitch",
+            connected: true,
+            connectedAt: Date.now(),
+            cleanup: () => relay.disconnect(roomId),
+        })
+        if (client.ws.readyState === WebSocket.OPEN) {
+            client.ws.send(
+                JSON.stringify({
+                    type: "status",
+                    platform: "twitch",
+                    connected: true,
+                    channelName: roomId,
+                })
+            )
+        }
+    })
+
+    relay.on("disconnected", (roomId: string, reason: string) => {
+        log("Twitch IRC disconnected", { roomId, reason, userId: client.userId })
+        client.platforms.set("twitch", {
+            platform: "twitch",
+            connected: false,
+            connectedAt: Date.now(),
+            cleanup: () => relay.disconnect(roomId),
+        })
+        if (client.ws.readyState === WebSocket.OPEN) {
+            client.ws.send(
+                JSON.stringify({
+                    type: "status",
+                    platform: "twitch",
+                    connected: false,
+                    reason,
+                })
+            )
+        }
+    })
+
+    relay.onMessage(channelName, (msg) => {
+        if (client.ws.readyState === WebSocket.OPEN) {
+            client.ws.send(
+                JSON.stringify({
+                    event: "twitch:message",
+                    platform: "twitch",
+                    id: msg.id,
+                    channelId: msg.channelId,
+                    user: msg.user,
+                    content: msg.content,
+                    msgType: msg.type,
+                    timestamp: msg.timestamp,
+                    isAction: msg.isAction,
+                })
+            )
+        }
+    })
+
+    relay.onError((err: Error) => {
+        log("Twitch IRC error", {
+            error: err.message,
+            userId: client.userId,
+        })
+        if (client.ws.readyState === WebSocket.OPEN) {
+            client.ws.send(
+                JSON.stringify({
+                    type: "error",
+                    platform: "twitch",
+                    error: err.message,
+                })
+            )
+        }
+    })
+
+    twitchRelays.set(client.userId, relay)
+
+    try {
+        await relay.connect(channelName, token)
+    } catch (error: any) {
+        log("Twitch relay connect failed", {
+            error: error.message,
+            userId: client.userId,
+        })
+        if (client.ws.readyState === WebSocket.OPEN) {
+            client.ws.send(
+                JSON.stringify({
+                    type: "error",
+                    platform: "twitch",
+                    error: error.message,
+                })
+            )
+        }
+    }
+}
+
+function handleTwitchDisconnect(client: ClientInfo): void {
+    for (const [, platformConn] of client.platforms) {
+        if (platformConn.platform === "twitch") {
+            try { platformConn.cleanup() } catch {}
+            client.platforms.delete("twitch")
+            break
+        }
+    }
+    twitchRelays.delete(client.userId)
+    if (client.ws.readyState === WebSocket.OPEN) {
+        client.ws.send(
+            JSON.stringify({
+                type: "status",
+                platform: "twitch",
+                connected: false,
+            })
+        )
+    }
+}
+
+async function handleKickConnect(
+    client: ClientInfo,
+    token: string,
+    channelName: string
+): Promise<void> {
+    if (!token) {
+        if (client.ws.readyState === WebSocket.OPEN) {
+            client.ws.send(
+                JSON.stringify({
+                    type: "error",
+                    platform: "kick",
+                    error: "No Kick OAuth token provided",
+                })
+            )
+        }
+        return
+    }
+
+    if (!channelName) {
+        if (client.ws.readyState === WebSocket.OPEN) {
+            client.ws.send(
+                JSON.stringify({
+                    type: "error",
+                    platform: "kick",
+                    error: "No channel name provided",
+                })
+            )
+        }
+        return
+    }
+
+    const relay = new KickPusherRelay()
+
+    relay.on("connected", (roomId: string, chatroomId: number | null) => {
+        log("Kick Pusher connected", { roomId, chatroomId, userId: client.userId })
+        client.platforms.set("kick", {
+            platform: "kick",
+            connected: true,
+            connectedAt: Date.now(),
+            cleanup: () => relay.disconnect(roomId),
+        })
+        if (client.ws.readyState === WebSocket.OPEN) {
+            client.ws.send(
+                JSON.stringify({
+                    type: "status",
+                    platform: "kick",
+                    connected: true,
+                    channelName: roomId,
+                })
+            )
+        }
+    })
+
+    relay.on("disconnected", (roomId: string, reason: string) => {
+        log("Kick Pusher disconnected", { roomId, reason, userId: client.userId })
+        client.platforms.set("kick", {
+            platform: "kick",
+            connected: false,
+            connectedAt: Date.now(),
+            cleanup: () => relay.disconnect(roomId),
+        })
+        if (client.ws.readyState === WebSocket.OPEN) {
+            client.ws.send(
+                JSON.stringify({
+                    type: "status",
+                    platform: "kick",
+                    connected: false,
+                    reason,
+                })
+            )
+        }
+    })
+
+    relay.onMessage(channelName, (msg) => {
+        if (client.ws.readyState === WebSocket.OPEN) {
+            client.ws.send(
+                JSON.stringify({
+                    event: "kick:message",
+                    platform: "kick",
+                    id: msg.id,
+                    channelId: msg.channelId,
+                    user: msg.user,
+                    content: msg.content,
+                    msgType: msg.type,
+                    timestamp: msg.timestamp,
+                    isAction: msg.isAction,
+                })
+            )
+        }
+    })
+
+    relay.onError((err: Error) => {
+        log("Kick Pusher error", {
+            error: err.message,
+            userId: client.userId,
+        })
+        if (client.ws.readyState === WebSocket.OPEN) {
+            client.ws.send(
+                JSON.stringify({
+                    type: "error",
+                    platform: "kick",
+                    error: err.message,
+                })
+            )
+        }
+    })
+
+    kickRelays.set(client.userId, relay)
+
+    try {
+        await relay.connect(channelName, token)
+    } catch (error: any) {
+        log("Kick relay connect failed", {
+            error: error.message,
+            userId: client.userId,
+        })
+        if (client.ws.readyState === WebSocket.OPEN) {
+            client.ws.send(
+                JSON.stringify({
+                    type: "error",
+                    platform: "kick",
+                    error: error.message,
+                })
+            )
+        }
+    }
+}
+
+function handleKickDisconnect(client: ClientInfo): void {
+    for (const [, platformConn] of client.platforms) {
+        if (platformConn.platform === "kick") {
+            try { platformConn.cleanup() } catch {}
+            client.platforms.delete("kick")
+            break
+        }
+    }
+    kickRelays.delete(client.userId)
+    if (client.ws.readyState === WebSocket.OPEN) {
+        client.ws.send(
+            JSON.stringify({
+                type: "status",
+                platform: "kick",
+                connected: false,
+            })
+        )
+    }
+}
 
 async function handleYouTubeConnect(
     client: ClientInfo,
     token: string,
     preferredLiveChatId?: string
 ): Promise<void> {
-    // Clean up existing relay for this client
     const existing = youtubeRelays.get(client.userId)
     if (existing) {
         existing.stop()
@@ -199,13 +514,15 @@ async function handleYouTubeConnect(
     }
 
     if (!token) {
-        client.ws.send(
-            JSON.stringify({
-                type: "error",
-                platform: "youtube",
-                error: "No YouTube OAuth token provided",
-            })
-        )
+        if (client.ws.readyState === WebSocket.OPEN) {
+            client.ws.send(
+                JSON.stringify({
+                    type: "error",
+                    platform: "youtube",
+                    error: "No YouTube OAuth token provided",
+                })
+            )
+        }
         return
     }
 
@@ -243,14 +560,14 @@ async function handleYouTubeConnect(
                     platform: "youtube",
                     id: msg.id,
                     channelId: msg.channelId,
-                    user: msg.user,
-                    content: msg.content,
-                    msgType: msg.type,
-                    timestamp: msg.timestamp,
-                })
-            )
-        }
-    })
+                     user: msg.user,
+                     content: msg.content,
+                     msgType: msg.type,
+                     timestamp: msg.timestamp,
+                 })
+             )
+         }
+     })
 
     relay.on("disconnected", (reason: string) => {
         log("YouTube gRPC stream disconnected", {
@@ -346,6 +663,7 @@ function handleYouTubeDisconnect(client: ClientInfo): void {
     }
 }
 
+
 function cleanupClient(client: ClientInfo): void {
     for (const [, platform] of client.platforms) {
         try {
@@ -353,15 +671,10 @@ function cleanupClient(client: ClientInfo): void {
         } catch {}
     }
     client.platforms.clear()
-
-    const relay = youtubeRelays.get(client.userId)
-    if (relay) {
-        relay.stop()
-        youtubeRelays.delete(client.userId)
-    }
+    twitchRelays.delete(client.userId)
+    kickRelays.delete(client.userId)
+    youtubeRelays.delete(client.userId)
 }
-
-// ─── Heartbeat ──────────────────────────────────────────────────────
 
 setInterval(() => {
     for (const ws of wss.clients) {
@@ -370,8 +683,6 @@ setInterval(() => {
         }
     }
 }, PING_INTERVAL)
-
-// ─── Start ──────────────────────────────────────────────────────────
 
 server.listen(PORT, "0.0.0.0", () => {
     log(`Relay server listening on 0.0.0.0:${PORT}`)
