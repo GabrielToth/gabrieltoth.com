@@ -31,7 +31,9 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
             )
         }
 
-        logger.info("Linking initiation requested", { userId })
+        const { locale, redirectTo } = await request.json().catch(() => ({}))
+
+        logger.info("Linking initiation requested", { userId, locale, redirectTo })
 
         const env = validateEnv()
         const config = getYouTubeChannelLinkingConfig(env)
@@ -42,7 +44,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         const { authorizationUrl } =
             oauthService.generateAuthorizationUrl(userId)
 
-        const signedState = generateState(userId, "youtube")
+        const signedState = generateState(userId, "youtube", locale, redirectTo)
 
         logger.info("State parameter signed with HMAC", { userId })
 

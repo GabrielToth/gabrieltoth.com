@@ -42,7 +42,9 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         }
         const userId = session.user.id
 
-        logger.info("Kick linking initiation requested", { userId })
+        const { locale, redirectTo } = await request.json().catch(() => ({}))
+
+        logger.info("Kick linking initiation requested", { userId, locale, redirectTo })
 
         const config = getKickConfig()
         const oauthService = getKickOAuthService(config)
@@ -58,8 +60,8 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         const signedState = generateState(
             userId,
             "kick",
-            undefined,
-            undefined,
+            locale,
+            redirectTo,
             codeVerifier
         )
 

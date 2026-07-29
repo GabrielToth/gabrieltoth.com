@@ -26,13 +26,15 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         }
         const userId = session.user.id
 
-        logger.info("Facebook linking initiation requested", { userId })
+        const { locale, redirectTo } = await request.json().catch(() => ({}))
+
+        logger.info("Facebook linking initiation requested", { userId, locale, redirectTo })
 
         const config = getFacebookConfig()
         const oauthService = getFacebookOAuthService(config)
         await oauthService.initialize()
 
-        const signedState = generateState(userId, "facebook")
+        const signedState = generateState(userId, "facebook", locale, redirectTo)
 
         const params = new URLSearchParams({
             client_id: config.oauth.appId,

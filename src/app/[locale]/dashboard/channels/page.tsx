@@ -206,114 +206,56 @@ export default function ChannelsPage() {
 
     return (
         <>
-            <div className="space-y-6">
+            <div className="space-y-4">
                 <div>
-                    <h1 className="text-2xl font-bold text-foreground dark:text-foreground">
-                        {t("channels.channels")}
-                    </h1>
-                    <p className="mt-1 text-sm text-muted-foreground dark:text-muted-foreground">
-                        {t("channels.description")}
-                    </p>
+                    <h1 className="text-xl font-bold">{t("channels.channels")}</h1>
+                    <p className="text-xs text-muted-foreground">{t("channels.description")}</p>
                 </div>
 
                 {/* Connected Channels */}
                 <section>
-                    <div className="flex items-center justify-between mb-4">
-                        <h2 className="text-lg font-semibold text-foreground dark:text-foreground">
-                            {t("channels.connected", {
-                                count: connectedChannels.length,
-                            })}
+                    <div className="flex items-center justify-between mb-2">
+                        <h2 className="text-sm font-semibold">
+                            {t("channels.connected", { count: connectedChannels.length })}
                         </h2>
                     </div>
                     {connectedChannels.length === 0 ? (
-                        <div className="rounded-lg border-2 border-dashed border-border p-8 text-center dark:border-border">
-                            <p className="text-muted-foreground dark:text-muted-foreground">
-                                {t("channels.noConnected")}
-                            </p>
-                            <p className="mt-1 text-sm text-muted-foreground dark:text-muted-foreground">
-                                {t("channels.connectPrompt")}
-                            </p>
+                        <div className="rounded-lg border-2 border-dashed border-border py-6 text-center">
+                            <p className="text-xs text-muted-foreground">{t("channels.noConnected")}</p>
+                            <p className="mt-0.5 text-xs text-muted-foreground">{t("channels.connectPrompt")}</p>
                         </div>
                     ) : (
-                        <div className="space-y-3">
+                        <div className="space-y-1">
                             {connectedChannels.map(channel => (
                                 <div
                                     key={channel.id}
-                                    className="flex items-center justify-between rounded-lg border border-border bg-white p-4 dark:border-border dark:bg-background"
+                                    className="flex items-center justify-between rounded-md border border-border bg-white px-3 py-1.5 dark:bg-background"
                                 >
-                                    <div className="flex items-center gap-4">
-                                        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-muted dark:bg-card">
+                                    <div className="flex items-center gap-2 min-w-0">
+                                        <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded bg-muted">
                                             <DynamicIcon
-                                                name={
-                                                    PLATFORM_ICONS[
-                                                        channel.platform
-                                                    ] as IconName
-                                                }
-                                                size={24}
+                                                name={PLATFORM_ICONS[channel.platform] as IconName}
+                                                size={14}
                                             />
                                         </div>
-                                        <div>
-                                            <p className="font-medium text-foreground dark:text-foreground">
-                                                {channel.accountName}
-                                            </p>
-                                            <p className="text-sm text-muted-foreground dark:text-muted-foreground">
-                                                {t("channels.onPlatform", {
-                                                    platform:
-                                                        ALL_PLATFORMS.find(
-                                                            p =>
-                                                                p.id ===
-                                                                channel.platform
-                                                        )?.name ||
-                                                        channel.platform,
-                                                })}
-                                            </p>
-                                            {channel.connectedAt && (
-                                                <p className="text-xs text-muted-foreground dark:text-muted-foreground">
-                                                    {t(
-                                                        "channels.connectedSince",
-                                                        {
-                                                            date: new Date(
-                                                                channel.connectedAt
-                                                            ).toLocaleDateString(),
-                                                        }
-                                                    )}
-                                                </p>
-                                            )}
-                                            {channel.needsReconnect && (
-                                                <p className="mt-1 text-xs text-amber-600 dark:text-amber-400">
-                                                    {t(
-                                                        "channels.reconnectRequired"
-                                                    )}
-                                                </p>
-                                            )}
-                                        </div>
-                                    </div>
-                                    <div className="flex items-center gap-2">
-                                        <span
-                                            className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-medium ${
-                                                channel.needsReconnect
-                                                    ? "bg-amber-100 text-amber-800"
-                                                    : "bg-green-100 text-green-800"
-                                            }`}
-                                        >
-                                            {channel.needsReconnect
-                                                ? t("channels.updateNeeded")
-                                                : t("channels.connectedStatus")}
+                                        <span className="truncate text-sm font-medium">{channel.accountName}</span>
+                                        <span className="shrink-0 text-xs text-muted-foreground">
+                                            {ALL_PLATFORMS.find(p => p.id === channel.platform)?.name || channel.platform}
                                         </span>
+                                        {channel.needsReconnect && (
+                                            <span className="shrink-0 text-xs text-amber-600">{t("channels.reconnectRequired")}</span>
+                                        )}
+                                    </div>
+                                    <div className="flex items-center gap-1.5 shrink-0">
+                                        <span className={`inline-block h-1.5 w-1.5 rounded-full ${channel.needsReconnect ? "bg-amber-500" : "bg-green-500"}`} />
                                         <Button
                                             size="sm"
-                                            variant="outline"
-                                            className="text-red-600 hover:bg-red-50"
-                                            onClick={() =>
-                                                handleDisconnect(channel)
-                                            }
-                                            disabled={
-                                                disconnectingId === channel.id
-                                            }
+                                            variant="ghost"
+                                            className="h-6 px-1.5 text-xs text-red-600 hover:bg-red-50"
+                                            onClick={() => handleDisconnect(channel)}
+                                            disabled={disconnectingId === channel.id}
                                         >
-                                            {disconnectingId === channel.id
-                                                ? "..."
-                                                : t("channels.disconnect")}
+                                            {disconnectingId === channel.id ? "..." : t("channels.disconnect")}
                                         </Button>
                                     </div>
                                 </div>
@@ -322,103 +264,50 @@ export default function ChannelsPage() {
                     )}
                 </section>
 
-                {/* Available Platforms — ALL platforms always visible */}
+                {/* Available Platforms */}
                 <section>
-                    <div className="flex items-center justify-between mb-4">
-                        <h2 className="text-lg font-semibold text-foreground dark:text-foreground">
-                            {t("channels.available")}
-                        </h2>
-                    </div>
-                    <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                    <h2 className="text-sm font-semibold mb-2">{t("channels.available")}</h2>
+                    <div className="grid gap-1.5 sm:grid-cols-2 lg:grid-cols-3">
                         {ALL_PLATFORMS.map(platform => {
-                            const connectedList =
-                                platformConnectedChannels[platform.id] || []
+                            const connectedList = platformConnectedChannels[platform.id] || []
                             const hasConnected = connectedList.length > 0
 
                             return (
                                 <div
                                     key={platform.id}
-                                    className="flex flex-col rounded-lg border border-border bg-white p-4 dark:border-border dark:bg-background"
+                                    className="flex items-center justify-between rounded-md border border-border bg-white px-3 py-2 dark:bg-background"
                                 >
-                                    <div className="flex items-center justify-between">
-                                        <div className="flex items-center gap-3">
-                                            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-muted dark:bg-card">
-                                                <DynamicIcon
-                                                    name={
-                                                        PLATFORM_ICONS[
-                                                            platform.id
-                                                        ] as IconName
-                                                    }
-                                                    size={24}
-                                                />
-                                            </div>
-                                            <div>
-                                                <p className="font-medium text-foreground dark:text-foreground">
-                                                    {platform.name}
-                                                </p>
-                                                {!platform.implemented ? (
-                                                    <Badge
-                                                        variant="secondary"
-                                                        className="mt-0.5 text-xs"
-                                                    >
-                                                        {t(
-                                                            "channels.notImplemented"
-                                                        )}
-                                                    </Badge>
-                                                ) : (
-                                                      platform as {
-                                                          localOnly?: boolean
-                                                      }
-                                                  ).localOnly ? (
-                                                    <Badge
-                                                        variant="outline"
-                                                        className="mt-0.5 text-xs border-amber-300 text-amber-700 bg-amber-50 dark:border-amber-700 dark:text-amber-400 dark:bg-amber-950/30"
-                                                    >
-                                                        {t(
-                                                            "channels.localOnly"
-                                                        )}
-                                                    </Badge>
-                                                ) : null}
-                                            </div>
+                                    <div className="flex items-center gap-2 min-w-0">
+                                        <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded bg-muted">
+                                            <DynamicIcon
+                                                name={PLATFORM_ICONS[platform.id] as IconName}
+                                                size={14}
+                                            />
                                         </div>
-                                        <Button
-                                            size="sm"
-                                            disabled={
-                                                connectingPlatform ===
-                                                platform.id
-                                            }
-                                            onClick={() =>
-                                                handleConnect(platform.id)
-                                            }
-                                        >
-                                            {connectingPlatform === platform.id
-                                                ? "..."
-                                                : hasConnected
-                                                  ? t("channels.addAnother")
-                                                  : t("channels.connect")}
-                                        </Button>
+                                        <span className="text-sm font-medium">{platform.name}</span>
+                                        {!platform.implemented ? (
+                                            <Badge variant="secondary" className="text-[10px] px-1.5 py-0">{t("channels.notImplemented")}</Badge>
+                                        ) : (platform as { localOnly?: boolean }).localOnly ? (
+                                            <Badge variant="outline" className="text-[10px] px-1.5 py-0 border-amber-300 text-amber-700 bg-amber-50 dark:border-amber-700 dark:text-amber-400 dark:bg-amber-950/30">
+                                                {t("channels.localOnly")}
+                                            </Badge>
+                                        ) : null}
+                                        {hasConnected && (
+                                            <span className="inline-block h-1.5 w-1.5 rounded-full bg-green-500" />
+                                        )}
                                     </div>
-
-                                    {/* Show connected accounts for this platform */}
-                                    {connectedList.length > 0 && (
-                                        <div className="mt-3 space-y-1.5 border-t border-gray-100 pt-3 dark:border-border">
-                                            {connectedList.map(ch => (
-                                                <div
-                                                    key={ch.id}
-                                                    className="flex items-center justify-between text-sm"
-                                                >
-                                                    <span className="truncate text-foreground dark:text-foreground">
-                                                        {ch.accountName}
-                                                    </span>
-                                                    <span className="ml-2 flex-shrink-0 text-xs text-green-600">
-                                                        {t(
-                                                            "channels.connectedStatus"
-                                                        )}
-                                                    </span>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    )}
+                                    <Button
+                                        size="sm"
+                                        className="h-6 px-2 text-xs shrink-0"
+                                        disabled={connectingPlatform === platform.id}
+                                        onClick={() => handleConnect(platform.id)}
+                                    >
+                                        {connectingPlatform === platform.id
+                                            ? "..."
+                                            : hasConnected
+                                              ? t("channels.addAnother")
+                                              : t("channels.connect")}
+                                    </Button>
                                 </div>
                             )
                         })}
@@ -426,31 +315,20 @@ export default function ChannelsPage() {
                 </section>
             </div>
 
-            {/* Confirmation Dialog */}
             <Dialog
                 open={!!confirmDialog}
-                onOpenChange={open => {
-                    if (!open) setConfirmDialog(null)
-                }}
+                onOpenChange={open => { if (!open) setConfirmDialog(null) }}
             >
                 <DialogContent>
                     <DialogHeader>
                         <DialogTitle>{t("channels.dialogTitle")}</DialogTitle>
-                        <DialogDescription>
-                            {confirmDialog?.message}
-                        </DialogDescription>
+                        <DialogDescription>{confirmDialog?.message}</DialogDescription>
                     </DialogHeader>
                     <DialogFooter>
-                        <Button
-                            variant="outline"
-                            onClick={() => setConfirmDialog(null)}
-                        >
+                        <Button variant="outline" onClick={() => setConfirmDialog(null)}>
                             {t("channels.dialogCancel")}
                         </Button>
-                        <Button
-                            variant="default"
-                            onClick={confirmDialog?.onConfirm}
-                        >
+                        <Button variant="default" onClick={confirmDialog?.onConfirm}>
                             {t("channels.dialogContinue")}
                         </Button>
                     </DialogFooter>

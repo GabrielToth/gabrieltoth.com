@@ -26,13 +26,15 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         }
         const userId = session.user.id
 
-        logger.info("TikTok linking initiation requested", { userId })
+        const { locale, redirectTo } = await request.json().catch(() => ({}))
+
+        logger.info("TikTok linking initiation requested", { userId, locale, redirectTo })
 
         const config = getTikTokConfig()
         const oauthService = getTikTokOAuthService(config)
         await oauthService.initialize()
 
-        const signedState = generateState(userId, "tiktok")
+        const signedState = generateState(userId, "tiktok", locale, redirectTo)
 
         const params = new URLSearchParams({
             client_key: config.oauth.clientKey,

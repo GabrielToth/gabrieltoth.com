@@ -41,13 +41,15 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         }
         const userId = session.user.id
 
-        logger.info("Twitch linking initiation requested", { userId })
+        const { locale, redirectTo } = await request.json().catch(() => ({}))
+
+        logger.info("Twitch linking initiation requested", { userId, locale, redirectTo })
 
         const config = getTwitchConfig()
         const oauthService = getTwitchOAuthService(config)
         await oauthService.initialize()
 
-        const signedState = generateState(userId, "twitch")
+        const signedState = generateState(userId, "twitch", locale, redirectTo)
 
         const { authorizationUrl } = oauthService.generateAuthorizationUrl(
             signedState.token
