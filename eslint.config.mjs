@@ -73,6 +73,37 @@ const eslintConfig = [
             "react-hooks/rules-of-hooks": "error",
             "react-hooks/exhaustive-deps": "warn",
 
+            // Accessibility rules (jsx-a11y)
+            // Warning severity: the repo has in-progress (not yet committed)
+            // files that still contain violations; warnings surface them without
+            // breaking the build. Revisit to error after those land.
+            "jsx-a11y/alt-text": "warn",
+            "jsx-a11y/anchor-has-content": "warn",
+            "jsx-a11y/anchor-is-valid": "warn",
+            "jsx-a11y/aria-props": "error",
+            "jsx-a11y/aria-proptypes": "error",
+            "jsx-a11y/aria-role": "error",
+            "jsx-a11y/aria-unsupported-elements": "error",
+            "jsx-a11y/click-events-have-key-events": "warn",
+            "jsx-a11y/heading-has-content": "warn",
+            "jsx-a11y/iframe-has-title": "warn",
+            "jsx-a11y/img-redundant-alt": "warn",
+            "jsx-a11y/interactive-supports-focus": "warn",
+            "jsx-a11y/lang": "warn",
+            "jsx-a11y/media-has-caption": "warn",
+            "jsx-a11y/mouse-events-have-key-events": "warn",
+            "jsx-a11y/no-access-key": "error",
+            "jsx-a11y/no-autofocus": "warn",
+            "jsx-a11y/no-distracting-elements": "error",
+            "jsx-a11y/no-noninteractive-element-interactions": "warn",
+            // no-onchange omitted intentionally: designed for IE-era <select>
+            // where onChange didn't fire on keyboard, but on modern React it
+            // does; converting to onBlur would delay/deteriorate UX.
+            "jsx-a11y/no-redundant-roles": "warn",
+            "jsx-a11y/role-has-required-aria-props": "error",
+            "jsx-a11y/role-supports-aria-props": "error",
+            "jsx-a11y/scope": "error",
+
             // Let Prettier handle formatting
             indent: "off",
         },

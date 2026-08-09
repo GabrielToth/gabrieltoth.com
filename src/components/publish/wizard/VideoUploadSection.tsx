@@ -65,6 +65,15 @@ export default function VideoUploadSection({
             <CardContent>
                 {!videoFile ? (
                     <div
+                        role="button"
+                        tabIndex={0}
+                        aria-label={t("step4.videoFile")}
+                        onKeyDown={e => {
+                            if (e.key === "Enter" || e.key === " ") {
+                                e.preventDefault()
+                                fileInputRef.current?.click()
+                            }
+                        }}
                         onDragOver={e => {
                             e.preventDefault()
                             setDragOver(true)

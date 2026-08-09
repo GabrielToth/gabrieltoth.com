@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { calculatePasswordStrength } from "@/lib/auth/password-strength"
 import { validatePassword } from "@/lib/validation"
@@ -112,13 +112,13 @@ export function PasswordSetup({
                         className="text-sm text-red-600 dark:text-red-400 mt-2 flex items-center gap-1"
                         role="alert"
                     >
-                        <span className="text-lg">✕</span>
+                        <span className="text-lg">âœ•</span>
                         {validation.error}
                     </p>
                 )}
                 {value && validation.isValid && (
                     <p className="text-sm text-green-600 dark:text-green-400 mt-2 flex items-center gap-1">
-                        <span className="text-lg">✓</span>
+                        <span className="text-lg">âœ“</span>
                         Password meets all requirements
                     </p>
                 )}
@@ -167,16 +167,15 @@ export function PasswordSetup({
                 >
                     Password Requirements:
                 </p>
-                <ul className="space-y-1 text-sm" role="list">
+                <ul className="space-y-1 text-sm">
                     <li
                         className={`transition-colors ${
                             validation.requirements.minLength
                                 ? "text-green-600 dark:text-green-400 font-medium"
                                 : "text-muted-foreground dark:text-muted-foreground"
                         }`}
-                        role="listitem"
                     >
-                        {validation.requirements.minLength ? "✓" : "○"} At least
+                        {validation.requirements.minLength ? "âœ“" : "â—‹"} At least
                         8 characters
                     </li>
                     <li
@@ -185,9 +184,8 @@ export function PasswordSetup({
                                 ? "text-green-600 dark:text-green-400 font-medium"
                                 : "text-muted-foreground dark:text-muted-foreground"
                         }`}
-                        role="listitem"
                     >
-                        {validation.requirements.hasUppercase ? "✓" : "○"} One
+                        {validation.requirements.hasUppercase ? "âœ“" : "â—‹"} One
                         uppercase letter (A-Z)
                     </li>
                     <li
@@ -196,9 +194,8 @@ export function PasswordSetup({
                                 ? "text-green-600 dark:text-green-400 font-medium"
                                 : "text-muted-foreground dark:text-muted-foreground"
                         }`}
-                        role="listitem"
                     >
-                        {validation.requirements.hasLowercase ? "✓" : "○"} One
+                        {validation.requirements.hasLowercase ? "âœ“" : "â—‹"} One
                         lowercase letter (a-z)
                     </li>
                     <li
@@ -207,9 +204,8 @@ export function PasswordSetup({
                                 ? "text-green-600 dark:text-green-400 font-medium"
                                 : "text-muted-foreground dark:text-muted-foreground"
                         }`}
-                        role="listitem"
                     >
-                        {validation.requirements.hasNumber ? "✓" : "○"} One
+                        {validation.requirements.hasNumber ? "âœ“" : "â—‹"} One
                         number (0-9)
                     </li>
                     <li
@@ -218,9 +214,8 @@ export function PasswordSetup({
                                 ? "text-green-600 dark:text-green-400 font-medium"
                                 : "text-muted-foreground dark:text-muted-foreground"
                         }`}
-                        role="listitem"
                     >
-                        {validation.requirements.hasSpecial ? "✓" : "○"} One
+                        {validation.requirements.hasSpecial ? "âœ“" : "â—‹"} One
                         special character (!@#$%^&*)
                     </li>
                 </ul>
@@ -271,13 +266,13 @@ export function PasswordSetup({
                         className="text-sm text-red-600 dark:text-red-400 mt-2 flex items-center gap-1"
                         role="alert"
                     >
-                        <span className="text-lg">✕</span>
+                        <span className="text-lg">âœ•</span>
                         Passwords do not match
                     </p>
                 )}
                 {confirmValue && passwordsMatch && validation.isValid && (
                     <p className="text-sm text-green-600 dark:text-green-400 mt-2 flex items-center gap-1">
-                        <span className="text-lg">✓</span>
+                        <span className="text-lg">âœ“</span>
                         Passwords match
                     </p>
                 )}

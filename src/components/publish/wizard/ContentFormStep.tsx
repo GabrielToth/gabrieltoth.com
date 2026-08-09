@@ -429,6 +429,18 @@ export default function ContentFormStep({
                         </Label>
                         {!state.content.thumbnailFile ? (
                             <div
+                                role="button"
+                                tabIndex={0}
+                                aria-label={t("step4.thumbnail")}
+                                onKeyDown={e => {
+                                    if (
+                                        e.key === "Enter" ||
+                                        e.key === " "
+                                    ) {
+                                        e.preventDefault()
+                                        thumbnailInputRef.current?.click()
+                                    }
+                                }}
                                 onDragOver={e => {
                                     e.preventDefault()
                                     setThumbnailDragOver(true)
