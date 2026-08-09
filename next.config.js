@@ -14,7 +14,7 @@ const nextConfig = {
         NEXT_PUBLIC_DEBUG: process.env.DEBUG === "true" ? "true" : "false",
     },
     typescript: {
-        ignoreBuildErrors: true,
+        ignoreBuildErrors: false,
     },
     // Standalone output for minimal container size
     output: "standalone",
