@@ -20,7 +20,7 @@ const nextConfig = {
     output: "standalone",
     trailingSlash: true,
     generateEtags: false,
-    reactStrictMode: false,
+    reactStrictMode: true,
     eslint: {
         ignoreDuringBuilds: false,
     },
