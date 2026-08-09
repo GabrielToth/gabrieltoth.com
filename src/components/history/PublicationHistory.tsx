@@ -190,8 +190,19 @@ export default function PublicationHistory({
                         <Dialog key={pub.id}>
                             <DialogTrigger asChild>
                                 <div
+                                    role="button"
+                                    tabIndex={0}
                                     className="cursor-pointer rounded-lg border p-3 hover:bg-muted transition"
                                     onClick={() => setSelectedPublication(pub)}
+                                    onKeyDown={e => {
+                                        if (
+                                            e.key === "Enter" ||
+                                            e.key === " "
+                                        ) {
+                                            e.preventDefault()
+                                            setSelectedPublication(pub)
+                                        }
+                                    }}
                                 >
                                     <div className="flex items-start justify-between gap-3">
                                         <div className="flex-1 min-w-0">

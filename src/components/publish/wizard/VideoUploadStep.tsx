@@ -105,6 +105,15 @@ export default function VideoUploadStep({
             <div className="space-y-2">
                 {!videoFile ? (
                     <div
+                        role="button"
+                        tabIndex={0}
+                        aria-label={t("videoUpload.description")}
+                        onKeyDown={e => {
+                            if (e.key === "Enter" || e.key === " ") {
+                                e.preventDefault()
+                                fileInputRef.current?.click()
+                            }
+                        }}
                         onDragOver={e => {
                             e.preventDefault()
                             setDragOver(true)

@@ -104,6 +104,8 @@ export default function LanguageSelector({
                 <>
                     {/* Backdrop */}
                     <div
+                        aria-hidden="true"
+                        tabIndex={-1}
                         className="fixed inset-0 z-40"
                         onClick={() => setIsOpen(false)}
                     />

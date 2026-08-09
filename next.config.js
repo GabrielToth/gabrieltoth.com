@@ -19,8 +19,7 @@ const nextConfig = {
     // Standalone output for minimal container size
     output: "standalone",
     trailingSlash: true,
-    generateEtags: false,
-    reactStrictMode: false,
+    reactStrictMode: true,
     eslint: {
         ignoreDuringBuilds: false,
     },
@@ -296,8 +295,19 @@ const nextConfig = {
                     },
                 ],
             },
+            // Non-versioned static assets (public/*): cache briefly, revalidate
             {
                 source: "/(.*)\\.(js|css|png|jpg|jpeg|gif|ico|svg|webp|avif)",
+                headers: [
+                    {
+                        key: "Cache-Control",
+                        value: "public, max-age=0, must-revalidate",
+                    },
+                ],
+            },
+            // Hashed build assets (_next/static/*): safe for long-lived caching
+            {
+                source: "/_next/static/(.*)",
                 headers: [
                     {
                         key: "Cache-Control",

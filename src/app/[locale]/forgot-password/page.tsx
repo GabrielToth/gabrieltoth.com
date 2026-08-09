@@ -10,10 +10,11 @@ export function generateStaticParams() {
 export async function generateMetadata({
     params,
 }: {
-    params: { locale: string }
+    params: Promise<{ locale: string }>
 }) {
+    const { locale } = await params
     const t = await getTranslations({
-        locale: params.locale,
+        locale,
         namespace: "auth",
     })
     return {
@@ -24,13 +25,13 @@ export async function generateMetadata({
 export default async function ForgotPasswordPage({
     params,
 }: {
-    params: { locale: string }
+    params: Promise<{ locale: string }>
 }) {
+    const { locale } = await params
     const t = await getTranslations({
-        locale: params.locale,
+        locale,
         namespace: "auth",
     })
-    const locale = params.locale
 
     return (
         <>
