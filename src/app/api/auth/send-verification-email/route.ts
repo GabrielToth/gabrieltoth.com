@@ -1,4 +1,5 @@
 import { logEmailVerification } from "@/lib/auth/audit-logging"
+import { checkRateLimitWithDegradation } from "@/lib/auth/rate-limiter"
 import { sendVerificationEmail } from "@/lib/auth/email-service"
 import { getAdminClient } from "@/lib/supabase/server"
 import { NextRequest, NextResponse } from "next/server"
@@ -11,6 +12,22 @@ const VERIFICATION_TOKEN_EXPIRY = parseInt(
 
 export async function POST(request: NextRequest) {
     try {
+        const clientIp =
+            request.headers.get("x-forwarded-for")?.split(",")[0] ||
+            request.headers.get("x-real-ip") ||
+            "unknown"
+
+        const rateLimitCheck = await checkRateLimitWithDegradation(clientIp)
+        if (!rateLimitCheck.allowed) {
+            return NextResponse.json(
+                {
+                    success: false,
+                    error: "Too many requests. Please try again later.",
+                },
+                { status: 429 }
+            )
+        }
+
         let body
         try {
             body = await request.json()
@@ -69,7 +86,6 @@ export async function POST(request: NextRequest) {
             })
 
         if (tokenError) {
-            console.error("Token creation error:", tokenError)
             return NextResponse.json(
                 {
                     success: false,
@@ -88,7 +104,6 @@ export async function POST(request: NextRequest) {
         )
 
         if (!emailSent) {
-            console.error("Failed to send verification email to:", email)
             return NextResponse.json(
                 {
                     success: false,

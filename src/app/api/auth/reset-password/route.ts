@@ -1,3 +1,4 @@
+import { checkRateLimitWithDegradation } from "@/lib/auth/rate-limiter"
 import { hashPassword } from "@/lib/auth/password-hashing"
 import { getAdminClient } from "@/lib/supabase/server"
 import { NextRequest, NextResponse } from "next/server"
@@ -20,6 +21,19 @@ import { NextRequest, NextResponse } from "next/server"
  */
 export async function POST(request: NextRequest) {
     try {
+        const clientIp =
+            request.headers.get("x-forwarded-for")?.split(",")[0] ||
+            request.headers.get("x-real-ip") ||
+            "unknown"
+
+        const rateLimitCheck = await checkRateLimitWithDegradation(clientIp)
+        if (!rateLimitCheck.allowed) {
+            return NextResponse.json(
+                { error: "Too many requests. Please try again later." },
+                { status: 429 }
+            )
+        }
+
         const body = await request.json()
         const { token, password, confirmPassword } = body
 
@@ -117,7 +131,6 @@ export async function POST(request: NextRequest) {
             .eq("id", resetToken.user_id)
 
         if (updateError) {
-            console.error("Failed to update password:", updateError)
             return NextResponse.json(
                 { error: "Failed to reset password" },
                 { status: 500 }
@@ -169,6 +182,19 @@ export async function POST(request: NextRequest) {
  */
 export async function GET(request: NextRequest) {
     try {
+        const clientIp =
+            request.headers.get("x-forwarded-for")?.split(",")[0] ||
+            request.headers.get("x-real-ip") ||
+            "unknown"
+
+        const rateLimitCheck = await checkRateLimitWithDegradation(clientIp)
+        if (!rateLimitCheck.allowed) {
+            return NextResponse.json(
+                { error: "Too many requests. Please try again later." },
+                { status: 429 }
+            )
+        }
+
         const searchParams = request.nextUrl.searchParams
         const token = searchParams.get("token")
 
@@ -221,7 +247,6 @@ export async function GET(request: NextRequest) {
             message: "Token is valid",
         })
     } catch (error) {
-        console.error("Validate reset token error:", error)
         return NextResponse.json(
             { error: "An unexpected error occurred" },
             { status: 500 }

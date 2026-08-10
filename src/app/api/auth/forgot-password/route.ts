@@ -1,3 +1,4 @@
+import { checkRateLimitWithDegradation } from "@/lib/auth/rate-limiter"
 import { generateRandomHex } from "@/lib/crypto-utils"
 import { getAdminClient } from "@/lib/supabase/server"
 import { NextRequest, NextResponse } from "next/server"
@@ -6,8 +7,23 @@ const supabase = getAdminClient()
 
 export async function POST(request: NextRequest) {
     try {
+        const clientIp =
+            request.headers.get("x-forwarded-for")?.split(",")[0] ||
+            request.headers.get("x-real-ip") ||
+            "unknown"
+
+        const rateLimitCheck = await checkRateLimitWithDegradation(clientIp)
+        if (!rateLimitCheck.allowed) {
+            return NextResponse.json(
+                {
+                    error: "Too many requests. Please try again later.",
+                },
+                { status: 429 }
+            )
+        }
+
         const body = await request.json()
-        const { email, locale = "en" } = body
+        const { email } = body
 
         if (!email || typeof email !== "string") {
             return NextResponse.json(
@@ -48,17 +64,12 @@ export async function POST(request: NextRequest) {
             created_at: new Date().toISOString(),
         })
 
-        const resetUrl = `${request.nextUrl.origin}/${locale}/reset-password?token=${token}`
-
-        console.log(`[FORGOT PASSWORD] Reset link for ${email}: ${resetUrl}`)
-
         return NextResponse.json({
             success: true,
             message:
                 "If an account exists with this email, a reset link has been sent.",
         })
     } catch (error) {
-        console.error("[FORGOT PASSWORD] Unexpected error:", error)
         return NextResponse.json(
             { error: "An unexpected error occurred" },
             { status: 500 }

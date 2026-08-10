@@ -5,6 +5,7 @@ import {
 import { logRegistration } from "@/lib/auth/audit-logging"
 import { AuthErrorType, createErrorResponse } from "@/lib/auth/error-handling"
 import { AuthenticationService } from "@/lib/auth/password-security"
+import { checkRateLimitWithDegradation } from "@/lib/auth/rate-limiter"
 import { generateTempToken } from "@/lib/auth/temp-token"
 import {
     validateBirthDateFormat,
@@ -25,6 +26,20 @@ const authService = new AuthenticationService()
 
 export async function POST(request: NextRequest) {
     try {
+        // ============================================================================
+        // RATE LIMITING (prevent account spam / brute force)
+        // ============================================================================
+
+        const clientIp =
+            request.headers.get("x-forwarded-for")?.split(",")[0] ||
+            request.headers.get("x-real-ip") ||
+            "unknown"
+
+        const rateLimitCheck = await checkRateLimitWithDegradation(clientIp)
+        if (!rateLimitCheck.allowed) {
+            return createErrorResponse(AuthErrorType.TOO_MANY_ATTEMPTS)
+        }
+
         // ============================================================================
         // REQUEST BODY PARSING
         // ============================================================================
@@ -243,12 +258,6 @@ export async function POST(request: NextRequest) {
             picture: undefined,
         })
 
-        // Get client IP for logging
-        const clientIp =
-            request.headers.get("x-forwarded-for")?.split(",")[0] ||
-            request.headers.get("x-real-ip") ||
-            "unknown"
-
         // Log registration completion
         await logRegistration(email, clientIp, authResult.userId!)
 
@@ -275,7 +284,6 @@ export async function POST(request: NextRequest) {
             { status: 201 }
         )
     } catch (error) {
-        console.error("Registration error:", error)
         return createErrorResponse(AuthErrorType.INTERNAL_ERROR)
     }
 }
