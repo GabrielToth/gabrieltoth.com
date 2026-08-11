@@ -371,7 +371,7 @@ describe("VerificationReview Component", () => {
         )
 
         const fieldContainers = container.querySelectorAll(
-            ".bg-gray-50.rounded-lg"
+            ".bg-muted.rounded-lg"
         )
         expect(fieldContainers.length).toBeGreaterThan(0)
     })
@@ -388,7 +388,7 @@ describe("VerificationReview Component", () => {
             />
         )
 
-        const editButtons = container.querySelectorAll("button.text-blue-600")
+        const editButtons = container.querySelectorAll("button.text-primary")
         expect(editButtons.length).toBe(5)
     })
 

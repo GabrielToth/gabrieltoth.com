@@ -312,7 +312,7 @@ describe("SuccessMessage Component", () => {
                 />
             )
 
-            const card = container.querySelector(".bg-white.rounded-lg")
+            const card = container.querySelector(".bg-card.rounded-lg")
             expect(card).toBeInTheDocument()
         })
 
@@ -339,7 +339,7 @@ describe("SuccessMessage Component", () => {
             )
 
             const button = screen.getByText("Go to Login Now")
-            expect(button).toHaveClass("bg-blue-600")
+            expect(button).toHaveClass("bg-primary")
         })
     })
 

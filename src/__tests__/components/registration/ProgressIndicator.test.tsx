@@ -52,7 +52,7 @@ describe("ProgressIndicator Component", () => {
         )
 
         const progressBar = container.querySelector(
-            ".bg-blue-500.h-2"
+            ".bg-primary\\/50.h-2"
         ) as HTMLElement
         expect(progressBar).toBeInTheDocument()
         // Step 2 of 4 = 50%
@@ -69,7 +69,7 @@ describe("ProgressIndicator Component", () => {
         )
 
         const progressBarContainer = container.querySelector(
-            ".bg-gray-200.rounded-full.h-2"
+            ".bg-accent.rounded-full.h-2"
         )
         expect(progressBarContainer).toBeInTheDocument()
     })
