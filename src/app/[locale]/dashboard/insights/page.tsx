@@ -1,12 +1,9 @@
 "use client"
 
-import { useTranslations } from "next-intl"
+import { StreamHealthCard } from "@/components/dashboard/live/stream-health-card"
+import { ViewerAnalyticsCard } from "@/components/dashboard/live/viewer-analytics-card"
+import { useLocale, useTranslations } from "next-intl"
 
-/**
- * Insights Tab Page
- * Displays analytics and performance metrics
- * Shows metrics, graphs, and channel comparisons
- */
 export default function InsightsPage() {
     const t = useTranslations("dashboard.insights")
 
@@ -19,9 +16,28 @@ export default function InsightsPage() {
                 <p className="mt-2 text-muted-foreground">{t("description")}</p>
             </div>
 
-            {/* Placeholder for InsightsContainer component */}
-            <div className="rounded-lg border border-border bg-white p-8 text-center">
-                <p className="text-muted-foreground">{t("comingSoon")}</p>
+            {/* Viewer Analytics + Stream Health */}
+            <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+                <StreamHealthCard
+                    metrics={{
+                        bitrateKbps: 6000,
+                        fps: 60,
+                        droppedFrames: 0,
+                        totalFrames: 12000,
+                        latencyMs: 1800,
+                        resolution: "1080p60",
+                        codec: "h264",
+                        timestamp: Date.now(),
+                    }}
+                />
+                <ViewerAnalyticsCard
+                    history={[
+                        { timestamp: Date.now() - 1800000, count: 45 },
+                        { timestamp: Date.now() - 1200000, count: 88 },
+                        { timestamp: Date.now() - 600000, count: 112 },
+                        { timestamp: Date.now(), count: 95 },
+                    ]}
+                />
             </div>
         </div>
     )

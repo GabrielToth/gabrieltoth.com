@@ -1,5 +1,6 @@
 "use client"
 
+import { ChannelGroupManager } from "@/components/dashboard/groups/channel-group-manager"
 import { DynamicIcon } from "@/components/ui/dynamic-icon"
 import type { IconName } from "@/lib/icons"
 import { Button } from "@/components/ui/button"
@@ -312,6 +313,11 @@ export default function ChannelsPage() {
                             )
                         })}
                     </div>
+                </section>
+
+                {/* Channel Groups */}
+                <section>
+                    <ChannelGroupManager />
                 </section>
             </div>
 

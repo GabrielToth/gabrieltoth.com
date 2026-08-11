@@ -2,7 +2,10 @@
     "sidebar": {
         "publish": "Publicar",
         "live": "En Vivo",
-        "insights": "Estadísticas",
+        "insights": "Perspectivas",
+        "discover": "Descubrir",
+        "repost": "Auto Repost",
+        "cloner": "Clonador",
         "channels": "Canales",
         "settings": "Configuración",
         "logout": "Cerrar sesión",
@@ -356,6 +359,33 @@
         "startingNow": "¡Comenzando ahora!",
         "upcomingStreams": "Próximas Transmisiones",
         "noScheduledStreams": "Aún no hay transmisiones programadas. Crea una arriba."
+    },
+    "discover": {
+        "title": "Descubrir",
+        "description": "Encuentra streamers y mira quién está en vivo en todas las plataformas",
+        "loading": "Cargando streamers...",
+        "noUsers": "Ningún streamer encontrado aún"
+    },
+    "repost": {
+        "title": "Auto Repost",
+        "description": "Republicar automáticamente videos de YouTube a otras plataformas en tus grupos",
+        "newConfig": "Nueva Config",
+        "save": "Crear Auto Repost",
+        "saving": "Creando...",
+        "cancel": "Cancelar",
+        "noConfigs": "Aún no hay configuraciones de auto repost. Crea una para empezar."
+    },
+    "cloner": {
+        "title": "Clonador de YouTube",
+        "description": "Clona canales enteros de YouTube — videos, miniaturas, descripciones y metadatos",
+        "selectGroup": "Seleccionar grupo destino...",
+        "noGroups": "Aún no hay grupos. Crea uno en Canales primero.",
+        "startCloning": "Iniciar Clonación",
+        "cloning": "Preparando...",
+        "cancel": "Cancelar",
+        "channelUrl": "URL o handle del canal de YouTube",
+        "channelUrlPlaceholder": "https://youtube.com/@canal",
+        "noConfigs": "Sin clones activos. Ingresa una URL de canal de YouTube para comenzar."
     },
     "channels": {
         "channels": "Canales",
