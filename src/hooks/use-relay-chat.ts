@@ -37,6 +37,7 @@ interface UseRelayChatReturn {
     statuses: RelayPlatformStatus[]
     isConnected: boolean
     error: string | null
+    sendModeration: (action: string, targetUserId: string, targetUsername: string, platform: string, duration?: number, reason?: string) => void
 }
 
 const INITIAL_RECONNECT_DELAY = 1_000
@@ -59,6 +60,26 @@ export function useRelayChat(): UseRelayChatReturn {
     >({})
     const tokenTimerRef = useRef<ReturnType<typeof setInterval> | null>(null)
     const connectRef = useRef<() => void>(() => {})
+
+    const sendModeration = useCallback(
+        (action: string, targetUserId: string, targetUsername: string, platform: string, duration?: number, reason?: string) => {
+            const ws = wsRef.current
+            if (!ws || ws.readyState !== WebSocket.OPEN) {
+                logger.warn("Cannot send moderation: WebSocket not connected")
+                return
+            }
+            ws.send(JSON.stringify({
+                type: "moderate",
+                action,
+                targetUserId,
+                targetUsername,
+                platform,
+                duration,
+                reason,
+            }))
+        },
+        []
+    )
 
     const relayUrl = process.env.NEXT_PUBLIC_RELAY_WS_URL || ""
 
@@ -294,5 +315,5 @@ export function useRelayChat(): UseRelayChatReturn {
         }
     }, [relayUrl, connect, fetchCredentials])
 
-    return { messages, statuses, isConnected, error }
+    return { messages, statuses, isConnected, error, sendModeration }
 }
