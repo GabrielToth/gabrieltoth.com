@@ -3,15 +3,15 @@
 import { logger } from "@/lib/logger"
 import { useLocale, useTranslations } from "next-intl"
 import { useRouter } from "next/navigation"
+
+type DashboardTab = "publish" | "insights" | "channels" | "settings" | "live" | "discover" | "repost" | "cloner"
 import React, { useState } from "react"
 import { Sidebar } from "./Sidebar"
 
 export interface DashboardLayoutProps {
     children: React.ReactNode
-    activeTab: "publish" | "insights" | "channels" | "settings" | "live"
-    onTabChange?: (
-        tab: "publish" | "insights" | "channels" | "settings" | "live"
-    ) => void
+    activeTab: DashboardTab
+    onTabChange?: (tab: DashboardTab) => void
 }
 
 /**
@@ -33,9 +33,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
     const [isLoggingOut, setIsLoggingOut] = useState(false)
     const [logoutError, setLogoutError] = useState<string | null>(null)
 
-    const handleTabChange = (
-        tab: "publish" | "insights" | "channels" | "settings" | "live"
-    ) => {
+    const handleTabChange = (tab: DashboardTab) => {
         setSidebarOpen(false)
         onTabChange?.(tab)
     }

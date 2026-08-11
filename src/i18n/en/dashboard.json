@@ -3,6 +3,9 @@
         "publish": "Publish",
         "live": "Live",
         "insights": "Insights",
+        "discover": "Discover",
+        "repost": "Auto Repost",
+        "cloner": "Cloner",
         "channels": "Channels",
         "settings": "Settings",
         "logout": "Logout",
@@ -356,6 +359,33 @@
         "startingNow": "Starting now!",
         "upcomingStreams": "Upcoming Streams",
         "noScheduledStreams": "No scheduled streams yet. Create one above."
+    },
+    "discover": {
+        "title": "Discover",
+        "description": "Find streamers and see who's live across all platforms",
+        "loading": "Loading streamers...",
+        "noUsers": "No streamers found yet"
+    },
+    "repost": {
+        "title": "Auto Repost",
+        "description": "Automatically repost YouTube videos to other platforms in your groups",
+        "newConfig": "New Config",
+        "save": "Create Auto Repost",
+        "saving": "Creating...",
+        "cancel": "Cancel",
+        "noConfigs": "No auto-repost configs yet. Create one to start reposting YouTube videos automatically."
+    },
+    "cloner": {
+        "title": "YouTube Cloner",
+        "description": "Clone entire YouTube channels — videos, thumbnails, descriptions, and metadata",
+        "selectGroup": "Select target group...",
+        "noGroups": "No groups yet. Create one in Channels first.",
+        "startCloning": "Start Cloning",
+        "cloning": "Preparing...",
+        "cancel": "Cancel",
+        "channelUrl": "YouTube channel URL or handle",
+        "channelUrlPlaceholder": "https://youtube.com/@channel",
+        "noConfigs": "No active clones. Enter a YouTube channel URL above to get started."
     },
     "channels": {
         "channels": "Channels",
