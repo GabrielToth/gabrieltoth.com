@@ -5,6 +5,7 @@ import jwt from "jsonwebtoken"
 import { YouTubeRelay } from "./youtube-relay.js"
 import { TwitchIrcRelay } from "./twitch-relay.js"
 import { KickPusherRelay } from "./kick-relay.js"
+import { executeModeration, cleanupAllTimeouts } from "./moderation-handler.js"
 
 config()
 
@@ -187,6 +188,24 @@ wss.on("connection", (ws: WebSocket, req) => {
                 } else if (platform === "youtube") {
                     handleYouTubeDisconnect(clientInfo)
                 }
+                return
+            }
+
+            if (msg.type === "moderate") {
+                const tRelay = twitchRelays.get(clientInfo.userId)
+                const kRelay = kickRelays.get(clientInfo.userId)
+                await executeModeration(
+                    clientInfo.ws,
+                    clientInfo.userId,
+                    msg.action,
+                    msg.targetUserId,
+                    msg.targetUsername,
+                    msg.platform,
+                    msg.duration,
+                    msg.reason,
+                    tRelay,
+                    kRelay
+                )
                 return
             }
         } catch {
@@ -674,6 +693,7 @@ function cleanupClient(client: ClientInfo): void {
     twitchRelays.delete(client.userId)
     kickRelays.delete(client.userId)
     youtubeRelays.delete(client.userId)
+    cleanupAllTimeouts()
 }
 
 setInterval(() => {

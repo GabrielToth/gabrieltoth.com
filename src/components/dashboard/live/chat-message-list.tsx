@@ -1,8 +1,3 @@
-/**
- * ChatMessageList Component
- * Renders list of live chat messages from multiple platforms
- */
-
 "use client"
 
 import { RefObject } from "react"
@@ -13,18 +8,38 @@ export interface RenderableChatMessage {
     content: string
     platform: string
     timestamp: number
+    duplicateCount?: number
+    platformIcons?: string[]
+    userId?: string
+    displayName?: string
+    isBroadcaster?: boolean
+    isModerator?: boolean
+    isSubscriber?: boolean
+    isVip?: boolean
 }
 
 interface ChatMessageListProps {
-    messages: RenderableChatMessage[]
+    messages: (RenderableChatMessage & { duplicateCount: number })[]
     getPlatformBadge: (platform: string) => { label: string; bgClass: string }
     messagesEndRef: RefObject<HTMLDivElement | null>
+    onUserClick?: (msg: RenderableChatMessage & { duplicateCount: number }) => void
+}
+
+const PLATFORM_MINIS: Record<string, { color: string; label: string }> = {
+    twitch: { color: "#9147ff", label: "TW" },
+    kick: { color: "#00e676", label: "KC" },
+    youtube: { color: "#ff0000", label: "YT" },
+    facebook: { color: "#1877f2", label: "FB" },
+    instagram: { color: "#e4405f", label: "IG" },
+    tiktok: { color: "#000000", label: "TK" },
+    linkedin: { color: "#0a66c2", label: "LI" },
 }
 
 export function ChatMessageList({
     messages,
     getPlatformBadge,
     messagesEndRef,
+    onUserClick,
 }: ChatMessageListProps) {
     return (
         <div className="flex-1 overflow-y-auto space-y-2 mb-3 pr-1 text-xs">
@@ -38,6 +53,7 @@ export function ChatMessageList({
             ) : (
                 messages.map((msg) => {
                     const badge = getPlatformBadge(msg.platform)
+                    const dupPlatforms = msg.platformIcons || (msg.duplicateCount > 1 ? [msg.platform] : [])
                     return (
                         <div key={msg.id} className="flex items-start gap-1.5 leading-relaxed">
                             <span
@@ -45,10 +61,31 @@ export function ChatMessageList({
                             >
                                 {badge.label}
                             </span>
-                            <span className="font-semibold text-neutral-300">
+                            <button
+                                onClick={() => onUserClick?.(msg)}
+                                className="font-semibold text-neutral-300 hover:text-indigo-400 transition-colors cursor-pointer"
+                            >
                                 {msg.author}:
-                            </span>
+                            </button>
                             <span className="text-neutral-200 break-words">{msg.content}</span>
+                            {dupPlatforms.length > 1 && (
+                                <span className="flex items-center gap-0.5 ml-auto shrink-0">
+                                    {dupPlatforms.map(p => {
+                                        const m = PLATFORM_MINIS[p]
+                                        if (!m) return null
+                                        return (
+                                            <span
+                                                key={p}
+                                                className="inline-flex items-center justify-center w-3.5 h-3.5 rounded-full text-[6px] font-bold text-white"
+                                                style={{ backgroundColor: m.color }}
+                                                title={p}
+                                            >
+                                                {m.label}
+                                            </span>
+                                        )
+                                    })}
+                                </span>
+                            )}
                         </div>
                     )
                 })

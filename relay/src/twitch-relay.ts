@@ -116,6 +116,14 @@ export class TwitchIrcRelay extends EventEmitter {
         })
     }
 
+    async sendChat(message: string): Promise<void> {
+        for (const [, conn] of this.connections) {
+            if (conn.connected) {
+                conn.socket.write(`PRIVMSG #${conn.roomId} :${message}\r\n`)
+            }
+        }
+    }
+
     disconnect(roomId: string): void {
         const reconnectTimer = this.reconnectTimers.get(roomId)
         if (reconnectTimer) {
