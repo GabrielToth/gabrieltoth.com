@@ -257,14 +257,14 @@ describe("NavigationButtons Component", () => {
 
             const backButton = screen.getByText("Back")
             expect(backButton).toHaveClass("border")
-            expect(backButton).toHaveClass("border-gray-300")
+            expect(backButton).toHaveClass("border-input")
         })
 
         it("should have proper styling for Next button", () => {
             render(<NavigationButtons onBack={() => {}} onNext={() => {}} />)
 
             const nextButton = screen.getByText("Next")
-            expect(nextButton).toHaveClass("bg-blue-600")
+            expect(nextButton).toHaveClass("bg-primary")
             expect(nextButton).toHaveClass("text-white")
         })
 
@@ -286,10 +286,10 @@ describe("NavigationButtons Component", () => {
             render(<NavigationButtons onBack={() => {}} onNext={() => {}} />)
 
             const backButton = screen.getByText("Back")
-            expect(backButton).toHaveClass("hover:bg-gray-50")
+            expect(backButton).toHaveClass("hover:bg-muted")
 
             const nextButton = screen.getByText("Next")
-            expect(nextButton).toHaveClass("hover:bg-blue-700")
+            expect(nextButton).toHaveClass("hover:bg-primary")
         })
     })
 

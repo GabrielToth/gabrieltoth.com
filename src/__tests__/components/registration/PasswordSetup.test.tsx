@@ -790,7 +790,7 @@ describe("PasswordSetup Component", () => {
             )
 
             // Should display circles for unmet requirements
-            const circles = container.querySelectorAll("li.text-gray-600")
+            const circles = container.querySelectorAll("li.text-muted-foreground")
             expect(circles.length).toBeGreaterThan(0)
         })
 
@@ -824,7 +824,7 @@ describe("PasswordSetup Component", () => {
 
             // Should have gray text for unmet requirements
             const grayRequirements =
-                container.querySelectorAll(".text-gray-600")
+                container.querySelectorAll(".text-muted-foreground")
             expect(grayRequirements.length).toBeGreaterThan(0)
         })
     })
@@ -882,7 +882,7 @@ describe("PasswordSetup Component", () => {
             const confirmInput = container.querySelector(
                 'input[placeholder="Confirm your password"]'
             )
-            expect(confirmInput).toHaveClass("border-gray-300")
+            expect(confirmInput).toHaveClass("border-input")
         })
     })
 

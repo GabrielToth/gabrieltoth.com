@@ -55,7 +55,7 @@ describe("StepProgressBar", () => {
         const bars = container.querySelectorAll(".rounded-full")
         // Steps 0, 1, 2, 3 should be blue (4 bars)
         // Steps 4, 5, 6, 7 should be gray (4 bars)
-        const completedBars = container.querySelectorAll(".bg-blue-500")
+        const completedBars = container.querySelectorAll(".bg-primary\\/50")
         expect(completedBars.length).toBe(4)
     })
 })
