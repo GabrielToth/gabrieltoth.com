@@ -84,6 +84,7 @@ export function useRelayChat(): UseRelayChatReturn {
     const relayUrl = process.env.NEXT_PUBLIC_RELAY_WS_URL || ""
 
     const fetchCredentials = useCallback(async () => {
+        if (!relayUrl) return false
         try {
             const res = await fetch("/api/auth/relay-token")
             if (!res.ok) {
@@ -147,6 +148,11 @@ export function useRelayChat(): UseRelayChatReturn {
 
         wsRef.current?.close()
         wsRef.current = null
+
+        if (!relayUrl) {
+            setError("No relay URL configured")
+            return
+        }
 
         const hasCredentials = await fetchCredentials()
         if (!hasCredentials) {
