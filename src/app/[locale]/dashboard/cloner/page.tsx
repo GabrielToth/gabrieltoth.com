@@ -22,6 +22,7 @@ import {
     FolderOutput,
 } from "lucide-react"
 import { InspectChannelResult, InspectVideoItem } from "@/app/api/cloner/inspect/route"
+import { ExecutionModeSwitch, ExecutionMode } from "@/components/ui/execution-mode-switch"
 
 interface ChannelGroup {
     id: string
@@ -61,7 +62,8 @@ export default function ClonerPage() {
     const [inspectedChannel, setInspectedChannel] = useState<InspectChannelResult | null>(null)
 
     // Config Step Form State
-    const [executionMode, setExecutionMode] = useState<"cloud" | "local">("cloud")
+    const [executionMode, setExecutionMode] = useState<ExecutionMode>("cloud")
+    const [customApiKey, setCustomApiKey] = useState("")
     const [targetGroupId, setTargetGroupId] = useState("")
     const [scheduleType, setScheduleType] = useState<"immediate" | "daily" | "weekly">("daily")
     const [scheduleValue, setScheduleValue] = useState<number>(1) // e.g. 1 video per day
@@ -133,7 +135,11 @@ export default function ClonerPage() {
             const res = await fetch("/api/cloner/inspect", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ url: urlInput.trim() }),
+                body: JSON.stringify({
+                    url: urlInput.trim(),
+                    mode: executionMode,
+                    customApiKey: customApiKey.trim() || undefined,
+                }),
             })
             const data = await res.json()
             if (data.success && data.data) {
@@ -255,11 +261,14 @@ export default function ClonerPage() {
             {/* STEP 1: CHANNEL INSPECT & SEARCH */}
             {step === "search" && (
                 <div className="rounded-xl border border-neutral-800 bg-neutral-900/60 p-6 space-y-4">
-                    <div className="max-w-xl space-y-2">
-                        <h2 className="text-base font-semibold text-neutral-200">1. Identificar Canal do YouTube</h2>
-                        <p className="text-xs text-neutral-400">
-                            Digite a URL completa do canal ou o arroba (ex: <span className="font-mono text-primary">https://www.youtube.com/@Maple-Circuit</span> ou <span className="font-mono text-primary">@Maple-Circuit</span>):
-                        </p>
+                    <div className="flex items-center justify-between flex-wrap gap-2">
+                        <div className="max-w-xl space-y-1">
+                            <h2 className="text-base font-semibold text-neutral-200">1. Identificar Canal do YouTube</h2>
+                            <p className="text-xs text-neutral-400">
+                                Digite a URL completa do canal ou o arroba (ex: <span className="font-mono text-primary">https://www.youtube.com/@Maple-Circuit</span> ou <span className="font-mono text-primary">@Maple-Circuit</span>):
+                            </p>
+                        </div>
+                        <ExecutionModeSwitch mode={executionMode} onChange={setExecutionMode} />
                     </div>
 
                     <div className="flex flex-col sm:flex-row gap-2 max-w-2xl">
@@ -292,6 +301,16 @@ export default function ClonerPage() {
                             )}
                         </button>
                     </div>
+
+                    <div className="flex items-center gap-2 pt-1 text-xs text-neutral-400">
+                        <input
+                            type="text"
+                            placeholder="Chave de API do Google própria (opcional para zerar custos de consulta)..."
+                            value={customApiKey}
+                            onChange={e => setCustomApiKey(e.target.value)}
+                            className="w-full max-w-lg rounded border border-neutral-800 bg-neutral-950 px-3 py-1.5 text-xs text-neutral-200 placeholder-neutral-500 focus:outline-none focus:border-primary"
+                        />
+                    </div>
                 </div>
             )}
 
@@ -320,58 +339,14 @@ export default function ClonerPage() {
                             </div>
                         </div>
 
-                        <button
-                            onClick={() => setStep("search")}
-                            className="text-xs text-neutral-400 hover:text-neutral-200 underline"
-                        >
-                            Trocar Canal
-                        </button>
-                    </div>
-
-                    {/* Mode Selection (Cloud vs Local) */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div
-                            onClick={() => setExecutionMode("cloud")}
-                            className={`rounded-xl border p-4 cursor-pointer transition-all ${
-                                executionMode === "cloud"
-                                    ? "border-primary bg-primary/10 text-neutral-100"
-                                    : "border-neutral-800 bg-neutral-900/40 text-neutral-400 hover:border-neutral-700"
-                            }`}
-                        >
-                            <div className="flex items-center justify-between">
-                                <div className="flex items-center gap-2 font-semibold text-sm text-neutral-200">
-                                    <Cloud className="h-4 w-4 text-primary" />
-                                    <span>Modo Cloud (Nossa Nuvem)</span>
-                                </div>
-                                <span className="text-[10px] font-mono font-bold bg-primary/20 text-primary px-2 py-0.5 rounded-full">
-                                    Servidor 192.168.1.203
-                                </span>
-                            </div>
-                            <p className="mt-2 text-xs text-neutral-400 leading-relaxed">
-                                O processamento e downloads via <span className="font-mono text-neutral-200">yt-dlp</span> são executados no nosso servidor da rede. Baixa automaticamente e posta nas suas redes vinculadas sem consumir sua máquina.
-                            </p>
-                        </div>
-
-                        <div
-                            onClick={() => setExecutionMode("local")}
-                            className={`rounded-xl border p-4 cursor-pointer transition-all ${
-                                executionMode === "local"
-                                    ? "border-primary bg-primary/10 text-neutral-100"
-                                    : "border-neutral-800 bg-neutral-900/40 text-neutral-400 hover:border-neutral-700"
-                            }`}
-                        >
-                            <div className="flex items-center justify-between">
-                                <div className="flex items-center gap-2 font-semibold text-sm text-neutral-200">
-                                    <Laptop className="h-4 w-4 text-emerald-400" />
-                                    <span>Modo Local (Sua Máquina)</span>
-                                </div>
-                                <span className="text-[10px] font-mono font-bold bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded-full">
-                                    Zero Custo em Créditos
-                                </span>
-                            </div>
-                            <p className="mt-2 text-xs text-neutral-400 leading-relaxed">
-                                Baixa o conteúdo diretamente no seu computador via client local. Requer <span className="font-mono text-neutral-200">yt-dlp</span> e <span className="font-mono text-neutral-200">ffmpeg</span> instalados localmente.
-                            </p>
+                        <div className="flex items-center gap-3">
+                            <ExecutionModeSwitch mode={executionMode} onChange={setExecutionMode} />
+                            <button
+                                onClick={() => setStep("search")}
+                                className="text-xs text-neutral-400 hover:text-neutral-200 underline"
+                            >
+                                Trocar Canal
+                            </button>
                         </div>
                     </div>
 

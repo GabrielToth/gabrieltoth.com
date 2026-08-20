@@ -1,7 +1,6 @@
 "use client"
 
-import { Cloud, Laptop } from "lucide-react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { ExecutionModeSwitch } from "@/components/ui/execution-mode-switch"
 import { useTranslations } from "next-intl"
 
 export interface StorageModeToggleProps {
@@ -18,54 +17,11 @@ export default function StorageModeToggle({
     const t = useTranslations("publish")
 
     return (
-        <Card>
-            <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-lg">
-                    <Cloud className="h-5 w-5" />
-                    {t("storageMode.title")}
-                </CardTitle>
-            </CardHeader>
-            <CardContent>
-                <div className="grid grid-cols-2 gap-3">
-                    <button
-                        type="button"
-                        onClick={() => onModeChange("cloud")}
-                        disabled={disabled}
-                        className={`flex flex-col items-center gap-2 rounded-lg border-2 p-4 text-center transition-colors ${
-                            mode === "cloud"
-                                ? "border-primary bg-primary/5 text-primary"
-                                : "border-border text-muted-foreground hover:border-input"
-                        } ${disabled ? "cursor-not-allowed opacity-50" : "cursor-pointer"}`}
-                    >
-                        <Cloud className="h-8 w-8" />
-                        <span className="text-sm font-medium">
-                            {t("storageMode.cloud")}
-                        </span>
-                        <span className="text-xs text-muted-foreground">
-                            {t("storageMode.cloudDescription")}
-                        </span>
-                    </button>
-
-                    <button
-                        type="button"
-                        onClick={() => onModeChange("local")}
-                        disabled={disabled}
-                        className={`flex flex-col items-center gap-2 rounded-lg border-2 p-4 text-center transition-colors ${
-                            mode === "local"
-                                ? "border-primary bg-primary/5 text-primary"
-                                : "border-border text-muted-foreground hover:border-input"
-                        } ${disabled ? "cursor-not-allowed opacity-50" : "cursor-pointer"}`}
-                    >
-                        <Laptop className="h-8 w-8" />
-                        <span className="text-sm font-medium">
-                            {t("storageMode.local")}
-                        </span>
-                        <span className="text-xs text-muted-foreground">
-                            {t("storageMode.localDescription")}
-                        </span>
-                    </button>
-                </div>
-            </CardContent>
-        </Card>
+        <div className="flex items-center justify-between rounded-lg border border-border bg-card p-3">
+            <span className="text-xs font-medium text-foreground">
+                {t("storageMode.title")}
+            </span>
+            <ExecutionModeSwitch mode={mode} onChange={onModeChange} disabled={disabled} />
+        </div>
     )
 }

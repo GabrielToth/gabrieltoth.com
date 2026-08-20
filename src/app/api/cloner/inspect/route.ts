@@ -6,6 +6,7 @@
 
 import { getServerSession } from "@/lib/auth/get-server-session"
 import { createLogger } from "@/lib/logger"
+import { deductAction, getBalance } from "@/lib/credits/service"
 import { NextRequest, NextResponse } from "next/server"
 
 const logger = createLogger("ClonerInspectAPI")
@@ -58,7 +59,10 @@ function formatDuration(seconds: number): string {
     return `${m}:${s.toString().padStart(2, "0")}`
 }
 
-async function resolveYouTubeChannel(urlOrHandle: string): Promise<InspectChannelResult> {
+async function resolveYouTubeChannel(
+    urlOrHandle: string,
+    customApiKey?: string
+): Promise<InspectChannelResult> {
     const cleanInput = urlOrHandle.trim()
     let handle = cleanInput
 
@@ -74,7 +78,7 @@ async function resolveYouTubeChannel(urlOrHandle: string): Promise<InspectChanne
         handle = `@${handle}`
     }
 
-    const apiKey = process.env.YOUTUBE_API_KEY
+    const apiKey = customApiKey || process.env.YOUTUBE_API_KEY
     if (apiKey) {
         try {
             const cleanHandle = handle.replace(/^@/, "")
@@ -282,12 +286,32 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
         const body = await request.json()
         const urlOrHandle = body.url || body.handle
+        const mode = body.mode || "cloud"
+        const customApiKey = body.customApiKey?.trim()
 
         if (!urlOrHandle) {
             return NextResponse.json({ success: false, error: "MISSING_URL" }, { status: 400 })
         }
 
-        const result = await resolveYouTubeChannel(urlOrHandle)
+        // Operational credit cost for Cloud Mode analysis (if not using own Google API Key)
+        let lookupCost = 0
+        if (mode === "cloud" && !customApiKey) {
+            lookupCost = 10
+            const currentBal = await getBalance(session.user.id)
+            if (currentBal.balance < lookupCost) {
+                return NextResponse.json(
+                    {
+                        success: false,
+                        error: `Créditos insuficientes para análise em Cloud Mode. Necessário: ${lookupCost} Cr.`,
+                    },
+                    { status: 402 }
+                )
+            }
+            await deductAction(session.user.id, "youtube_metadata", 1)
+        }
+
+        const result = await resolveYouTubeChannel(urlOrHandle, customApiKey)
+        result.lookupCreditCost = lookupCost
         return NextResponse.json({ success: true, data: result })
     } catch (error) {
         const err = error instanceof Error ? error : new Error(String(error))
