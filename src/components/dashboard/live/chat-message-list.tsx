@@ -52,15 +52,25 @@ export function ChatMessageList({
                 </div>
             ) : (
                 messages.map((msg) => {
-                    const badge = getPlatformBadge(msg.platform)
-                    const dupPlatforms = msg.platformIcons || (msg.duplicateCount > 1 ? [msg.platform] : [])
+                    const dupPlatforms = msg.platformIcons && msg.platformIcons.length > 0
+                        ? msg.platformIcons
+                        : [msg.platform]
                     return (
                         <div key={msg.id} className="flex items-start gap-1.5 leading-relaxed">
-                            <span
-                                className={`text-[9px] px-1 rounded uppercase font-semibold text-white ${badge.bgClass}`}
-                            >
-                                {badge.label}
-                            </span>
+                            <div className="flex items-center gap-1 shrink-0">
+                                {dupPlatforms.map(p => {
+                                    const b = getPlatformBadge(p)
+                                    return (
+                                        <span
+                                            key={p}
+                                            className={`text-[9px] px-1 rounded uppercase font-semibold text-white ${b.bgClass}`}
+                                            title={p}
+                                        >
+                                            {b.label}
+                                        </span>
+                                    )
+                                })}
+                            </div>
                             <button
                                 onClick={() => onUserClick?.(msg)}
                                 className="font-semibold text-neutral-300 hover:text-indigo-400 transition-colors cursor-pointer"
@@ -68,24 +78,6 @@ export function ChatMessageList({
                                 {msg.author}:
                             </button>
                             <span className="text-neutral-200 break-words">{msg.content}</span>
-                            {dupPlatforms.length > 1 && (
-                                <span className="flex items-center gap-0.5 ml-auto shrink-0">
-                                    {dupPlatforms.map(p => {
-                                        const m = PLATFORM_MINIS[p]
-                                        if (!m) return null
-                                        return (
-                                            <span
-                                                key={p}
-                                                className="inline-flex items-center justify-center w-3.5 h-3.5 rounded-full text-[6px] font-bold text-white"
-                                                style={{ backgroundColor: m.color }}
-                                                title={p}
-                                            >
-                                                {m.label}
-                                            </span>
-                                        )
-                                    })}
-                                </span>
-                            )}
                         </div>
                     )
                 })
