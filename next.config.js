@@ -16,8 +16,8 @@ const nextConfig = {
     typescript: {
         ignoreBuildErrors: false,
     },
-    // Standalone output for minimal container size
-    output: "standalone",
+    // Standalone output for minimal container size when explicitly enabled (disabled for Vercel serverless builds)
+    output: process.env.NEXT_OUTPUT_MODE === "standalone" ? "standalone" : undefined,
     trailingSlash: true,
     reactStrictMode: true,
     experimental: {
