@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation"
 type DashboardTab = "publish" | "insights" | "channels" | "settings" | "live" | "discover" | "repost" | "cloner"
 import React, { useState } from "react"
 import { Sidebar } from "./Sidebar"
+import { StreamHealthHeader } from "@/components/dashboard/live/stream-health-header"
 
 export interface DashboardLayoutProps {
     children: React.ReactNode
@@ -105,31 +106,35 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
 
             {/* Main content area */}
             <main className="flex-1 overflow-auto">
-                {/* Mobile header with hamburger */}
-                <div className="sticky top-0 z-20 flex items-center justify-between border-b border-border dark:border-border bg-card dark:bg-background px-3 py-3 sm:px-4 md:hidden">
-                    <button
-                        onClick={() => setSidebarOpen(!sidebarOpen)}
-                        className="inline-flex items-center justify-center rounded-md p-2 text-muted-foreground dark:text-muted-foreground hover:bg-muted dark:hover:bg-accent focus:outline-none focus:ring-2 focus:ring-ring min-h-10 min-w-10"
-                        aria-label={t("toggleSidebar")}
-                        aria-expanded={sidebarOpen}
-                    >
-                        <svg
-                            className="h-6 w-6"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
+                {/* Dashboard Header Bar with Stream Health */}
+                <div className="sticky top-0 z-20 flex items-center justify-between border-b border-border bg-card px-4 py-2.5">
+                    <div className="flex items-center space-x-3">
+                        <button
+                            onClick={() => setSidebarOpen(!sidebarOpen)}
+                            className="inline-flex items-center justify-center rounded-md p-1.5 text-muted-foreground hover:bg-muted focus:outline-none md:hidden"
+                            aria-label={t("toggleSidebar")}
+                            aria-expanded={sidebarOpen}
                         >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M4 6h16M4 12h16M4 18h16"
-                            />
-                        </svg>
-                    </button>
-                    <span className="text-xs sm:text-sm font-medium text-foreground dark:text-foreground">
-                        {t("dashboard")}
-                    </span>
+                            <svg
+                                className="h-6 w-6"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M4 6h16M4 12h16M4 18h16"
+                                />
+                            </svg>
+                        </button>
+                        <span className="text-sm font-semibold text-foreground">
+                            {t("dashboard")}
+                        </span>
+                    </div>
+
+                    <StreamHealthHeader />
                 </div>
 
                 {/* Logout error message */}
