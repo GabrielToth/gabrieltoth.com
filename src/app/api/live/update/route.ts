@@ -275,9 +275,18 @@ async function updateTwitchStream(
 
 async function updateKickStream(
     accessToken: string,
-    title: string
+    title: string,
+    gameId?: string
 ): Promise<{ success: boolean; error?: string }> {
     try {
+        const body: Record<string, unknown> = {
+            stream_title: title,
+        }
+        if (gameId) {
+            const numericId = Number(gameId)
+            body.category_id = isNaN(numericId) ? gameId : numericId
+        }
+
         const response = await fetch(
             "https://api.kick.com/public/v1/channels",
             {
@@ -286,9 +295,7 @@ async function updateKickStream(
                     Authorization: `Bearer ${accessToken}`,
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({
-                    stream_title: title,
-                }),
+                body: JSON.stringify(body),
             }
         )
 
@@ -490,7 +497,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
                 resolvedGameId
             )
         } else if (platform === "kick") {
-            result = await updateKickStream(accessToken, title)
+            result = await updateKickStream(accessToken, title, resolvedGameId)
         } else {
             result = await updateYouTubeStream(
                 accessToken,
@@ -522,7 +529,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
                         game_id
                     )
                 } else if (platform === "kick") {
-                    result = await updateKickStream(refreshed, title)
+                    result = await updateKickStream(refreshed, title, resolvedGameId)
                 } else {
                     result = await updateYouTubeStream(
                         refreshed,
