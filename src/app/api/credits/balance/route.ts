@@ -28,7 +28,7 @@ import {
     handleUnexpectedError,
     AuthErrorType,
 } from "@/lib/auth/error-handling"
-import { getBalance } from "@/lib/credits/service"
+import { getBalance, adminGrant } from "@/lib/credits/service"
 import { getSessionUser, isAdminUser } from "@/lib/credits/session"
 import { NextRequest } from "next/server"
 
@@ -39,7 +39,18 @@ export async function GET(request: NextRequest) {
             return createErrorResponse(AuthErrorType.UNAUTHORIZED)
         }
 
-        const result = await getBalance(user.id)
+        let result = await getBalance(user.id)
+
+        // Grant initial test credits (100,000,000) for gabrieltothgoncalves@gmail.com to test Cloud Mode
+        if (
+            user.email?.toLowerCase() === "gabrieltothgoncalves@gmail.com" &&
+            result.balance < 100000000
+        ) {
+            const grantAmount = 100000000 - result.balance
+            await adminGrant(user.id, grantAmount, "Test credits grant for Cloud Mode")
+            result = await getBalance(user.id)
+        }
+
         return createSuccessResponse({
             ...result,
             userId: user.id,

@@ -8,6 +8,7 @@ type DashboardTab = "publish" | "insights" | "channels" | "settings" | "live" | 
 import React, { useState } from "react"
 import { Sidebar } from "./Sidebar"
 import { StreamHealthHeader } from "@/components/dashboard/live/stream-health-header"
+import { CreditBadge } from "@/components/credits/CreditBadge"
 
 export interface DashboardLayoutProps {
     children: React.ReactNode
@@ -134,7 +135,10 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                         </span>
                     </div>
 
-                    <StreamHealthHeader />
+                    <div className="flex items-center space-x-3">
+                        <CreditBadge />
+                        <StreamHealthHeader />
+                    </div>
                 </div>
 
                 {/* Logout error message */}
