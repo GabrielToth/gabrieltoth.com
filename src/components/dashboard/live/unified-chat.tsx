@@ -2,6 +2,8 @@
 
 import { useRelayChat } from "@/hooks/use-relay-chat"
 import { useChatSSE } from "@/hooks/use-chat-sse"
+import { useLocalChat } from "@/hooks/use-local-chat"
+import { ChatExecutionModeToggle, ChatExecutionMode } from "./chat-execution-mode-toggle"
 import { createLogger } from "@/lib/logger"
 import { useCallback, useRef, useEffect, useState, useMemo } from "react"
 import { ChatMessageList, RenderableChatMessage } from "./chat-message-list"
@@ -68,11 +70,25 @@ const PLATFORM_COLORS: Record<string, string> = {
 }
 
 export function UnifiedChat({ platforms }: UnifiedChatProps) {
+    const [executionMode, setExecutionMode] = useState<ChatExecutionMode>("cloud")
     const relay = useRelayChat()
     const sse = useChatSSE(platforms)
+    const local = useLocalChat(platforms, executionMode === "local")
     const [enabledPlatforms, setEnabledPlatforms] = useState<Set<string>>(new Set(platforms))
     const [sendMode, setSendMode] = useState<string>(platforms[0] || "twitch")
     const [selectedUser, setSelectedUser] = useState<(RenderableChatMessage & { duplicateCount: number }) | null>(null)
+
+    useEffect(() => {
+        const saved = localStorage.getItem("chat_execution_mode") as ChatExecutionMode
+        if (saved === "cloud" || saved === "local") {
+            setExecutionMode(saved)
+        }
+    }, [])
+
+    const handleModeChange = (mode: ChatExecutionMode) => {
+        setExecutionMode(mode)
+        localStorage.setItem("chat_execution_mode", mode)
+    }
 
     useEffect(() => {
         setEnabledPlatforms(new Set(platforms))
@@ -82,6 +98,18 @@ export function UnifiedChat({ platforms }: UnifiedChatProps) {
     }, [platforms, sendMode])
 
     const allMessages: RenderableChatMessage[] = useMemo(() => {
+        if (executionMode === "local") {
+            return local.messages.map(m => ({
+                id: m.id,
+                author: m.user?.displayName || m.user?.username || "Anonymous",
+                content: m.content,
+                platform: m.platform,
+                timestamp: m.timestamp,
+                userId: m.user?.id,
+                displayName: m.user?.displayName,
+            }))
+        }
+
         const relayMsgs: RenderableChatMessage[] = relay.messages.map(m => ({
             id: m.id,
             author: m.user?.displayName || m.user?.username || "Anonymous",
@@ -111,7 +139,7 @@ export function UnifiedChat({ platforms }: UnifiedChatProps) {
         }))
 
         return [...relayMsgs, ...sseMsgs]
-    }, [relay.messages, sse.messages])
+    }, [executionMode, local.messages, relay.messages, sse.messages])
 
     const groupedMessages = useMemo(() => {
         const filtered = allMessages.filter(m => enabledPlatforms.has(m.platform))
@@ -225,8 +253,8 @@ export function UnifiedChat({ platforms }: UnifiedChatProps) {
 
     return (
         <div className="flex flex-col h-[500px]">
-            <div className="flex items-center justify-between mb-2 border-b border-neutral-800 pb-2">
-                <div className="flex gap-1 flex-wrap">
+            <div className="flex items-center justify-between mb-2 border-b border-neutral-800 pb-2 flex-wrap gap-2">
+                <div className="flex gap-1 flex-wrap items-center">
                     {platforms.map(p => {
                         const badge = getPlatformBadge(p)
                         const isEnabled = enabledPlatforms.has(p)
@@ -247,9 +275,12 @@ export function UnifiedChat({ platforms }: UnifiedChatProps) {
                         )
                     })}
                 </div>
-                <div className="flex items-center gap-1.5 text-[10px] text-neutral-400 shrink-0 ml-2">
-                    <span className={`h-2 w-2 rounded-full ${statusText === "Disconnected" ? "bg-red-500" : "bg-emerald-500"}`} />
-                    {statusText}
+                <div className="flex items-center gap-2">
+                    <ChatExecutionModeToggle mode={executionMode} onChange={handleModeChange} />
+                    <div className="flex items-center gap-1.5 text-[10px] text-neutral-400 shrink-0">
+                        <span className={`h-2 w-2 rounded-full ${statusText === "Disconnected" ? "bg-red-500" : "bg-emerald-500"}`} />
+                        {statusText}
+                    </div>
                 </div>
             </div>
 
