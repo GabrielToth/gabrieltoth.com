@@ -1,6 +1,7 @@
 "use client"
 
-import { useRelayChat, RelayChatMessage } from "@/hooks/use-relay-chat"
+import { useRelayChat } from "@/hooks/use-relay-chat"
+import { useChatSSE } from "@/hooks/use-chat-sse"
 import { createLogger } from "@/lib/logger"
 import { useCallback, useRef, useEffect, useState, useMemo } from "react"
 import { ChatMessageList, RenderableChatMessage } from "./chat-message-list"
@@ -68,6 +69,7 @@ const PLATFORM_COLORS: Record<string, string> = {
 
 export function UnifiedChat({ platforms }: UnifiedChatProps) {
     const relay = useRelayChat()
+    const sse = useChatSSE(platforms)
     const [enabledPlatforms, setEnabledPlatforms] = useState<Set<string>>(new Set(platforms))
     const [sendMode, setSendMode] = useState<string>(platforms[0] || "twitch")
     const [selectedUser, setSelectedUser] = useState<(RenderableChatMessage & { duplicateCount: number }) | null>(null)
@@ -80,7 +82,7 @@ export function UnifiedChat({ platforms }: UnifiedChatProps) {
     }, [platforms, sendMode])
 
     const allMessages: RenderableChatMessage[] = useMemo(() => {
-        return relay.messages.map(m => ({
+        const relayMsgs: RenderableChatMessage[] = relay.messages.map(m => ({
             id: m.id,
             author: m.user?.displayName || m.user?.username || "Anonymous",
             content: m.content,
@@ -93,7 +95,23 @@ export function UnifiedChat({ platforms }: UnifiedChatProps) {
             isSubscriber: m.user?.isSubscriber,
             isVip: (m.user as any)?.isVip,
         }))
-    }, [relay.messages])
+
+        const sseMsgs: RenderableChatMessage[] = sse.messages.map(m => ({
+            id: m.id,
+            author: m.user?.displayName || m.user?.username || "Anonymous",
+            content: m.content,
+            platform: m.platform,
+            timestamp: m.timestamp,
+            userId: m.user?.id,
+            displayName: m.user?.displayName,
+            isBroadcaster: m.user?.isBroadcaster,
+            isModerator: m.user?.isModerator,
+            isSubscriber: m.user?.isSubscriber,
+            isVip: m.user?.isVip,
+        }))
+
+        return [...relayMsgs, ...sseMsgs]
+    }, [relay.messages, sse.messages])
 
     const groupedMessages = useMemo(() => {
         const filtered = allMessages.filter(m => enabledPlatforms.has(m.platform))
