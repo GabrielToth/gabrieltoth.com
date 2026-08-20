@@ -20,9 +20,6 @@ const nextConfig = {
     output: "standalone",
     trailingSlash: true,
     reactStrictMode: true,
-    eslint: {
-        ignoreDuringBuilds: false,
-    },
     experimental: {
         serverActions: {
             bodySizeLimit: "10mb",
