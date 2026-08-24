@@ -36,9 +36,7 @@ export default function RootLayout({
             <body>
                 <ThemeProvider>
                     <BfcacheReload />
-                    <div
-                        className={`${inter.variable} antialiased font-sans`}
-                    >
+                    <div className={`${inter.variable} antialiased font-sans`}>
                         {children}
                     </div>
                     {isProd && (
