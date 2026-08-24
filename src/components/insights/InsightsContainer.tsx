@@ -97,84 +97,35 @@ export const InsightsContainer: React.FC<InsightsContainerProps> = ({
 
     /**
      * Fetch analytics data from API
-     * This is a placeholder - in real implementation, would call analytics API
      */
     const handleFetchAnalytics = useCallback(async () => {
         try {
             setIsLoading(true)
             setError(null)
 
-            // Simulate API call delay
-            await new Promise(resolve => setTimeout(resolve, 500))
-
-            // Generate mock data based on time period
-            const mockMetrics: Metric[] = [
-                {
-                    id: "followers",
-                    name: "Followers",
-                    value: 12500,
-                    change: 250,
-                    changePercent: 2.04,
-                    icon: "users",
-                },
-                {
-                    id: "engagement",
-                    name: "Engagement",
-                    value: 3450,
-                    change: 120,
-                    changePercent: 3.6,
-                    icon: "heart",
-                },
-                {
-                    id: "reach",
-                    name: "Reach",
-                    value: 45000,
-                    change: -500,
-                    changePercent: -1.1,
-                    icon: "trending-up",
-                },
-                {
-                    id: "impressions",
-                    name: "Impressions",
-                    value: 125000,
-                    change: 5000,
-                    changePercent: 4.17,
-                    icon: "eye",
-                },
-            ]
-
-            setMetrics(mockMetrics)
-
-            // Generate mock graph data
-            const days =
-                timePeriod === "7d" ? 7 : timePeriod === "30d" ? 30 : 90
-            const mockGraphData: GraphData[] = []
-
-            for (let i = 0; i < days; i++) {
-                const date = new Date()
-                date.setDate(date.getDate() - (days - i))
-
-                availableChannels.forEach(channel => {
-                    mockGraphData.push({
-                        date: date.toISOString().split("T")[0],
-                        followers: Math.floor(Math.random() * 1000) + 10000,
-                        engagement: Math.floor(Math.random() * 500) + 2000,
-                        reach: Math.floor(Math.random() * 5000) + 40000,
-                        impressions: Math.floor(Math.random() * 10000) + 100000,
-                        channel: channel.id,
-                    })
-                })
+            const res = await fetch(
+                `/api/platform/analytics?period=${timePeriod}`
+            )
+            if (!res.ok) {
+                throw new Error(`Analytics API returned HTTP ${res.status}`)
             }
 
-            setGraphData(mockGraphData)
-            setIsLoading(false)
+            const json = await res.json()
+            if (json.success && json.data) {
+                setMetrics(json.data.metrics || [])
+                setGraphData(json.data.graphData || [])
+            } else {
+                setMetrics([])
+                setGraphData([])
+            }
         } catch (err) {
             setError(
                 err instanceof Error ? err.message : "Failed to fetch analytics"
             )
+        } finally {
             setIsLoading(false)
         }
-    }, [timePeriod, availableChannels])
+    }, [timePeriod])
 
     // Fetch data on mount
     useEffect(() => {
