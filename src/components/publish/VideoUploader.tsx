@@ -109,10 +109,7 @@ export default function VideoUploader({
                     tabIndex={disabled ? -1 : 0}
                     aria-label={t("videoUploader.dropzone")}
                     onKeyDown={e => {
-                        if (
-                            !disabled &&
-                            (e.key === "Enter" || e.key === " ")
-                        ) {
+                        if (!disabled && (e.key === "Enter" || e.key === " ")) {
                             e.preventDefault()
                             inputRef.current?.click()
                         }

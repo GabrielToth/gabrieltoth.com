@@ -74,7 +74,7 @@ export function NotificationBell() {
         <div className="relative">
             <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="relative rounded-full p-2 text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+                className="relative flex items-center justify-center rounded-full p-2 text-muted-foreground hover:bg-accent hover:text-accent-foreground min-h-11 min-w-11"
                 aria-label="System notifications"
             >
                 <svg

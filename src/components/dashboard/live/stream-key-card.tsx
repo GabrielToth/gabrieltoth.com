@@ -190,9 +190,7 @@ export function StreamKeyCard({ platform }: StreamKeyCardProps) {
                     Stream Key
                 </h3>
                 <div className="rounded-md bg-error-bg p-3 text-center">
-                    <p className="text-sm text-error">
-                        {fetchState.error}
-                    </p>
+                    <p className="text-sm text-error">{fetchState.error}</p>
                     <button
                         onClick={handleRetry}
                         className="mt-2 rounded-md bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground hover:bg-primary"

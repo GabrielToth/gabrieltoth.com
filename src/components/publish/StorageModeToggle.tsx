@@ -21,7 +21,11 @@ export default function StorageModeToggle({
             <span className="text-xs font-medium text-foreground">
                 {t("storageMode.title")}
             </span>
-            <ExecutionModeSwitch mode={mode} onChange={onModeChange} disabled={disabled} />
+            <ExecutionModeSwitch
+                mode={mode}
+                onChange={onModeChange}
+                disabled={disabled}
+            />
         </div>
     )
 }

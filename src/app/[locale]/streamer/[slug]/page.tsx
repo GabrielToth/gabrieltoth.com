@@ -23,8 +23,10 @@ interface StreamerData {
 }
 
 const EMBED_BUILDERS: Record<string, (username: string) => string> = {
-    twitch: (u) => `https://player.twitch.tv/?channel=${u}&parent=gabrieltoth.com&autoplay=true`,
-    youtube: (u) => `https://www.youtube.com/embed/live_stream?channel=${u}&autoplay=1`,
+    twitch: u =>
+        `https://player.twitch.tv/?channel=${u}&parent=gabrieltoth.com&autoplay=true`,
+    youtube: u =>
+        `https://www.youtube.com/embed/live_stream?channel=${u}&autoplay=1`,
 }
 
 const PLATFORM_COLORS: Record<string, string> = {
@@ -72,17 +74,25 @@ export default function StreamerPage() {
     useEffect(() => {
         async function fetchStreamer() {
             try {
-                const res = await fetch(`/api/discover?slug=${encodeURIComponent(slug)}`)
+                const res = await fetch(
+                    `/api/discover?slug=${encodeURIComponent(slug)}`
+                )
                 if (res.ok) {
                     const data = await res.json()
                     if (data.success && data.data) {
                         const s = data.data as StreamerData
                         setStreamer(s)
 
-                        const hasPlayers = s.platforms.filter(p => EMBED_BUILDERS[p.platform])
+                        const hasPlayers = s.platforms.filter(
+                            p => EMBED_BUILDERS[p.platform]
+                        )
                         const preferred = savedPlatform || s.defaultPlatform
-                        const valid = hasPlayers.find(p => p.platform === preferred)
-                        setSelectedPlatform(valid?.platform || hasPlayers[0]?.platform || "")
+                        const valid = hasPlayers.find(
+                            p => p.platform === preferred
+                        )
+                        setSelectedPlatform(
+                            valid?.platform || hasPlayers[0]?.platform || ""
+                        )
                     }
                 }
             } catch {
@@ -94,10 +104,13 @@ export default function StreamerPage() {
         fetchStreamer()
     }, [slug, savedPlatform])
 
-    const handlePlatformChange = useCallback((platform: string) => {
-        setSelectedPlatform(platform)
-        savePreference(slug, platform)
-    }, [slug])
+    const handlePlatformChange = useCallback(
+        (platform: string) => {
+            setSelectedPlatform(platform)
+            savePreference(slug, platform)
+        },
+        [slug]
+    )
 
     const handleSendChat = useCallback(async () => {
         const text = chatInput.trim()
@@ -141,8 +154,13 @@ export default function StreamerPage() {
         return (
             <div className="flex items-center justify-center min-h-screen bg-neutral-950">
                 <div className="text-center">
-                    <p className="text-neutral-400 text-lg">Streamer not found</p>
-                    <a href={`/${locale}`} className="mt-4 inline-block text-sm text-indigo-400 hover:text-indigo-300">
+                    <p className="text-neutral-400 text-lg">
+                        Streamer not found
+                    </p>
+                    <a
+                        href={`/${locale}`}
+                        className="mt-4 inline-block text-sm text-indigo-400 hover:text-indigo-300"
+                    >
                         Go home
                     </a>
                 </div>
@@ -150,8 +168,15 @@ export default function StreamerPage() {
         )
     }
 
-    const hasPlayers = streamer.platforms.filter(p => EMBED_BUILDERS[p.platform])
-    const currentEmbed = selectedPlatform ? EMBED_BUILDERS[selectedPlatform]?.(streamer.platforms.find(p => p.platform === selectedPlatform)?.username || "") : ""
+    const hasPlayers = streamer.platforms.filter(
+        p => EMBED_BUILDERS[p.platform]
+    )
+    const currentEmbed = selectedPlatform
+        ? EMBED_BUILDERS[selectedPlatform]?.(
+              streamer.platforms.find(p => p.platform === selectedPlatform)
+                  ?.username || ""
+          )
+        : ""
     const livePlatforms = streamer.platforms.filter(p => p.isLive)
 
     return (
@@ -160,14 +185,22 @@ export default function StreamerPage() {
                 <div className="flex items-center gap-4 mb-6">
                     <div className="h-14 w-14 rounded-full bg-neutral-800 flex items-center justify-center text-xl font-bold overflow-hidden">
                         {streamer.avatarUrl ? (
-                            <img src={streamer.avatarUrl} alt="" className="h-full w-full object-cover" />
+                            <img
+                                src={streamer.avatarUrl}
+                                alt=""
+                                className="h-full w-full object-cover"
+                            />
                         ) : (
                             streamer.displayName[0]?.toUpperCase() || "?"
                         )}
                     </div>
                     <div>
-                        <h1 className="text-2xl font-bold">{streamer.displayName}</h1>
-                        <p className="text-sm text-neutral-400">@{streamer.username}</p>
+                        <h1 className="text-2xl font-bold">
+                            {streamer.displayName}
+                        </h1>
+                        <p className="text-sm text-neutral-400">
+                            @{streamer.username}
+                        </p>
                     </div>
                     <div className="flex gap-2 ml-auto">
                         {livePlatforms.map(p => {
@@ -190,20 +223,29 @@ export default function StreamerPage() {
                     <div className="lg:col-span-2 space-y-4">
                         {hasPlayers.length > 0 && (
                             <div className="flex items-center gap-2 mb-2">
-                                <span className="text-xs text-neutral-500">Player:</span>
+                                <span className="text-xs text-neutral-500">
+                                    Player:
+                                </span>
                                 {hasPlayers.map(p => {
-                                    const color = PLATFORM_COLORS[p.platform] || "#666"
+                                    const color =
+                                        PLATFORM_COLORS[p.platform] || "#666"
                                     return (
                                         <button
                                             key={p.platform}
-                                            onClick={() => handlePlatformChange(p.platform)}
+                                            onClick={() =>
+                                                handlePlatformChange(p.platform)
+                                            }
                                             className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
                                                 selectedPlatform === p.platform
                                                     ? "text-white ring-2 ring-offset-1 ring-offset-neutral-900"
                                                     : "text-neutral-400 hover:text-white bg-neutral-800"
                                             }`}
                                             style={{
-                                                backgroundColor: selectedPlatform === p.platform ? color : undefined,
+                                                backgroundColor:
+                                                    selectedPlatform ===
+                                                    p.platform
+                                                        ? color
+                                                        : undefined,
                                             }}
                                         >
                                             {p.platform.toUpperCase()}
@@ -224,16 +266,22 @@ export default function StreamerPage() {
                             </div>
                         ) : (
                             <div className="aspect-video rounded-xl bg-neutral-900 flex items-center justify-center">
-                                <p className="text-neutral-500">No player available for this platform</p>
+                                <p className="text-neutral-500">
+                                    No player available for this platform
+                                </p>
                             </div>
                         )}
 
                         {livePlatforms.length > 0 && (
                             <div className="rounded-xl border border-neutral-800 bg-neutral-900/60 p-4">
-                                <h3 className="text-sm font-semibold text-neutral-200 mb-3">Other Platforms</h3>
+                                <h3 className="text-sm font-semibold text-neutral-200 mb-3">
+                                    Other Platforms
+                                </h3>
                                 <div className="flex flex-wrap gap-2">
                                     {livePlatforms.map(p => {
-                                        const color = PLATFORM_COLORS[p.platform] || "#666"
+                                        const color =
+                                            PLATFORM_COLORS[p.platform] ||
+                                            "#666"
                                         return (
                                             <a
                                                 key={p.platform}
@@ -241,7 +289,9 @@ export default function StreamerPage() {
                                                 target="_blank"
                                                 rel="noopener noreferrer"
                                                 className="inline-flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium text-white hover:opacity-80 transition-opacity"
-                                                style={{ backgroundColor: color }}
+                                                style={{
+                                                    backgroundColor: color,
+                                                }}
                                             >
                                                 Watch on {p.platform}
                                             </a>
@@ -254,23 +304,33 @@ export default function StreamerPage() {
 
                     <div className="space-y-4">
                         <div className="rounded-xl border border-neutral-800 bg-neutral-900/60 p-4">
-                            <h3 className="text-sm font-semibold text-neutral-200 mb-3">Chat</h3>
+                            <h3 className="text-sm font-semibold text-neutral-200 mb-3">
+                                Chat
+                            </h3>
                             <div className="space-y-3">
                                 <p className="text-[11px] text-neutral-400">
-                                    Messages will be sent to all platforms {streamer.displayName} is live on
+                                    Messages will be sent to all platforms{" "}
+                                    {streamer.displayName} is live on
                                 </p>
                                 <div className="flex gap-2">
                                     <input
                                         type="text"
                                         value={chatInput}
-                                        onChange={(e) => setChatInput(e.target.value)}
-                                        onKeyDown={(e) => { if (e.key === "Enter") handleSendChat() }}
+                                        onChange={e =>
+                                            setChatInput(e.target.value)
+                                        }
+                                        onKeyDown={e => {
+                                            if (e.key === "Enter")
+                                                handleSendChat()
+                                        }}
                                         placeholder="Type a message..."
                                         className="flex-1 rounded-lg border border-neutral-700 bg-neutral-800 px-3 py-2 text-sm text-neutral-100 placeholder-neutral-500 focus:outline-none focus:border-neutral-500"
                                     />
                                     <button
                                         onClick={handleSendChat}
-                                        disabled={chatSending || !chatInput.trim()}
+                                        disabled={
+                                            chatSending || !chatInput.trim()
+                                        }
                                         className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-500 disabled:opacity-50"
                                     >
                                         Send
@@ -280,18 +340,32 @@ export default function StreamerPage() {
                         </div>
 
                         <div className="rounded-xl border border-neutral-800 bg-neutral-900/60 p-4">
-                            <h3 className="text-sm font-semibold text-neutral-200 mb-3">Connected Platforms</h3>
+                            <h3 className="text-sm font-semibold text-neutral-200 mb-3">
+                                Connected Platforms
+                            </h3>
                             <div className="space-y-2">
                                 {streamer.platforms.map(p => {
-                                    const color = PLATFORM_COLORS[p.platform] || "#666"
+                                    const color =
+                                        PLATFORM_COLORS[p.platform] || "#666"
                                     return (
-                                        <div key={p.platform} className="flex items-center gap-2 text-xs">
+                                        <div
+                                            key={p.platform}
+                                            className="flex items-center gap-2 text-xs"
+                                        >
                                             <span
                                                 className="h-2 w-2 rounded-full"
-                                                style={{ backgroundColor: p.isLive ? "#22c55e" : "#555" }}
+                                                style={{
+                                                    backgroundColor: p.isLive
+                                                        ? "#22c55e"
+                                                        : "#555",
+                                                }}
                                             />
-                                            <span className="font-medium text-neutral-300 uppercase">{p.platform}</span>
-                                            <span className="text-neutral-500">{p.username}</span>
+                                            <span className="font-medium text-neutral-300 uppercase">
+                                                {p.platform}
+                                            </span>
+                                            <span className="text-neutral-500">
+                                                {p.username}
+                                            </span>
                                         </div>
                                     )
                                 })}

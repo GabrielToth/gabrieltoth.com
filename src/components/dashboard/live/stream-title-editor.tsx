@@ -43,22 +43,27 @@ export function StreamTitleEditor({
     const [loadingCategories, setLoadingCategories] = useState(false)
     const dropdownRef = useRef<HTMLDivElement>(null)
 
-    const fetchCategories = useCallback(async (query: string) => {
-        setLoadingCategories(true)
-        try {
-            const res = await fetch(`/api/live/categories?query=${encodeURIComponent(query)}&platform=${platform}`)
-            if (!res.ok) return
-            const data = await res.json()
-            if (data.success) {
-                setCategories(data.categories || [])
-                setConnectedPlatforms(data.connectedPlatforms || [platform])
+    const fetchCategories = useCallback(
+        async (query: string) => {
+            setLoadingCategories(true)
+            try {
+                const res = await fetch(
+                    `/api/live/categories?query=${encodeURIComponent(query)}&platform=${platform}`
+                )
+                if (!res.ok) return
+                const data = await res.json()
+                if (data.success) {
+                    setCategories(data.categories || [])
+                    setConnectedPlatforms(data.connectedPlatforms || [platform])
+                }
+            } catch {
+                // Silently handle autocomplete network errors
+            } finally {
+                setLoadingCategories(false)
             }
-        } catch {
-            // Silently handle autocomplete network errors
-        } finally {
-            setLoadingCategories(false)
-        }
-    }, [platform])
+        },
+        [platform]
+    )
 
     useEffect(() => {
         if (isDropdownOpen) {
@@ -68,12 +73,16 @@ export function StreamTitleEditor({
 
     useEffect(() => {
         function handleClickOutside(event: MouseEvent) {
-            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+            if (
+                dropdownRef.current &&
+                !dropdownRef.current.contains(event.target as Node)
+            ) {
                 setIsDropdownOpen(false)
             }
         }
         document.addEventListener("mousedown", handleClickOutside)
-        return () => document.removeEventListener("mousedown", handleClickOutside)
+        return () =>
+            document.removeEventListener("mousedown", handleClickOutside)
     }, [])
 
     const handleSelectCategory = (cat: CategoryOption) => {
@@ -156,14 +165,19 @@ export function StreamTitleEditor({
                     <div className="absolute left-0 right-0 top-full mt-1 z-50 max-h-60 overflow-y-auto rounded-md border border-border bg-card shadow-lg text-xs">
                         {connectedPlatforms.length > 0 && (
                             <div className="border-b border-border bg-muted/30 px-3 py-1.5 text-[10px] text-muted-foreground font-mono">
-                                Connected platforms: {connectedPlatforms.join(", ")}
+                                Connected platforms:{" "}
+                                {connectedPlatforms.join(", ")}
                             </div>
                         )}
 
                         {loadingCategories ? (
-                            <div className="p-3 text-center text-muted-foreground">Searching categories...</div>
+                            <div className="p-3 text-center text-muted-foreground">
+                                Searching categories...
+                            </div>
                         ) : categories.length === 0 ? (
-                            <div className="p-3 text-center text-muted-foreground">No categories found</div>
+                            <div className="p-3 text-center text-muted-foreground">
+                                No categories found
+                            </div>
                         ) : (
                             categories.map(cat => (
                                 <button
@@ -184,7 +198,9 @@ export function StreamTitleEditor({
                                                 🎮
                                             </div>
                                         )}
-                                        <span className="truncate font-medium text-foreground">{cat.name}</span>
+                                        <span className="truncate font-medium text-foreground">
+                                            {cat.name}
+                                        </span>
                                     </div>
                                     <span className="ml-2 rounded px-1.5 py-0.5 text-[10px] uppercase font-bold bg-primary/10 text-primary">
                                         {cat.platform}

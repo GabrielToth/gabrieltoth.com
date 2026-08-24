@@ -60,7 +60,7 @@ export function ChatModerationPanel({
                         type="text"
                         placeholder="Add blocked keyword..."
                         value={newPattern}
-                        onChange={(e) => setNewPattern(e.target.value)}
+                        onChange={e => setNewPattern(e.target.value)}
                         className="flex-1 rounded-lg border border-neutral-700 bg-neutral-800 px-3 py-1.5 text-xs text-neutral-100 focus:outline-none"
                     />
                     <button
@@ -71,14 +71,21 @@ export function ChatModerationPanel({
                     </button>
                 </div>
                 <ul className="mt-3 space-y-1">
-                    {rules.map((rule) => (
+                    {rules.map(rule => (
                         <li
                             key={rule.id}
                             className="flex items-center justify-between rounded-lg bg-neutral-800/40 px-3 py-1.5 text-xs text-neutral-300"
                         >
-                            <span>Keyword: <strong>{rule.pattern}</strong> ({rule.action})</span>
+                            <span>
+                                Keyword: <strong>{rule.pattern}</strong> (
+                                {rule.action})
+                            </span>
                             <button
-                                onClick={() => setRules(rules.filter((r) => r.id !== rule.id))}
+                                onClick={() =>
+                                    setRules(
+                                        rules.filter(r => r.id !== rule.id)
+                                    )
+                                }
                                 className="text-neutral-500 hover:text-red-400"
                             >
                                 Remove
@@ -97,14 +104,14 @@ export function ChatModerationPanel({
                         type="text"
                         placeholder="Trigger (e.g. !discord)"
                         value={newTrigger}
-                        onChange={(e) => setNewTrigger(e.target.value)}
+                        onChange={e => setNewTrigger(e.target.value)}
                         className="rounded-lg border border-neutral-700 bg-neutral-800 px-3 py-1.5 text-xs text-neutral-100 focus:outline-none"
                     />
                     <input
                         type="text"
                         placeholder="Bot response..."
                         value={newResponse}
-                        onChange={(e) => setNewResponse(e.target.value)}
+                        onChange={e => setNewResponse(e.target.value)}
                         className="rounded-lg border border-neutral-700 bg-neutral-800 px-3 py-1.5 text-xs text-neutral-100 focus:outline-none"
                     />
                 </div>
@@ -120,9 +127,16 @@ export function ChatModerationPanel({
                             key={idx}
                             className="flex items-center justify-between rounded-lg bg-neutral-800/40 px-3 py-1.5 text-xs text-neutral-300"
                         >
-                            <span><strong>{cmd.trigger}</strong> &rarr; {cmd.response}</span>
+                            <span>
+                                <strong>{cmd.trigger}</strong> &rarr;{" "}
+                                {cmd.response}
+                            </span>
                             <button
-                                onClick={() => setCommands(commands.filter((_, i) => i !== idx))}
+                                onClick={() =>
+                                    setCommands(
+                                        commands.filter((_, i) => i !== idx)
+                                    )
+                                }
                                 className="text-neutral-500 hover:text-red-400"
                             >
                                 Remove

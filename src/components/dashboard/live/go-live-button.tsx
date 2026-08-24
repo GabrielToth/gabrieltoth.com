@@ -124,12 +124,12 @@ export function GoLiveButton({
         <button
             onClick={handleGoLive}
             disabled={loading}
-className="inline-flex items-center rounded-md bg-success px-3 py-1.5 text-xs font-medium text-primary-foreground hover:bg-success/80 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-                {loading ? (
-                    <span className="mr-1 inline-block h-3 w-3 animate-spin rounded-full border-2 border-primary-foreground border-t-transparent" />
-                ) : null}
-                {t("goLive")}
+            className="inline-flex items-center rounded-md bg-success px-3 py-1.5 text-xs font-medium text-primary-foreground hover:bg-success/80 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+            {loading ? (
+                <span className="mr-1 inline-block h-3 w-3 animate-spin rounded-full border-2 border-primary-foreground border-t-transparent" />
+            ) : null}
+            {t("goLive")}
         </button>
     )
 }

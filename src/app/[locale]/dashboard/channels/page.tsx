@@ -124,7 +124,10 @@ export default function ChannelsPage() {
             const authUrl = `/api/oauth/connect/${platform}?locale=${locale}`
             window.location.href = authUrl
         } catch (err) {
-            logger.error("Failed to initiate OAuth flow", { platform, error: err })
+            logger.error("Failed to initiate OAuth flow", {
+                platform,
+                error: err,
+            })
             setConnectingPlatform(null)
         }
     }
@@ -202,7 +205,9 @@ export default function ChannelsPage() {
                 <>
                     {/* Connected Channels List */}
                     <section>
-                        <h2 className="text-sm font-semibold mb-2">{t("channels.connected")}</h2>
+                        <h2 className="text-sm font-semibold mb-2">
+                            {t("channels.connected")}
+                        </h2>
                         {channels.length === 0 ? (
                             <p className="text-sm text-muted-foreground py-4">
                                 {t("channels.noChannels")}
@@ -218,13 +223,21 @@ export default function ChannelsPage() {
                                             <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-muted overflow-hidden">
                                                 {channel.thumbnailUrl ? (
                                                     <img
-                                                        src={channel.thumbnailUrl}
-                                                        alt={channel.accountName}
+                                                        src={
+                                                            channel.thumbnailUrl
+                                                        }
+                                                        alt={
+                                                            channel.accountName
+                                                        }
                                                         className="h-full w-full object-cover"
                                                     />
                                                 ) : (
                                                     <DynamicIcon
-                                                        name={PLATFORM_ICONS[channel.platform] as IconName}
+                                                        name={
+                                                            PLATFORM_ICONS[
+                                                                channel.platform
+                                                            ] as IconName
+                                                        }
                                                         size={16}
                                                     />
                                                 )}
@@ -240,15 +253,24 @@ export default function ChannelsPage() {
                                         </div>
 
                                         <div className="flex items-center gap-1.5 shrink-0">
-                                            <span className={`inline-block h-1.5 w-1.5 rounded-full ${channel.needsReconnect ? "bg-amber-500" : "bg-green-500"}`} />
+                                            <span
+                                                className={`inline-block h-1.5 w-1.5 rounded-full ${channel.needsReconnect ? "bg-amber-500" : "bg-green-500"}`}
+                                            />
                                             <Button
                                                 size="sm"
                                                 variant="ghost"
                                                 className="h-6 px-1.5 text-xs text-red-600 hover:bg-red-50"
-                                                onClick={() => handleDisconnect(channel)}
-                                                disabled={disconnectingId === channel.id}
+                                                onClick={() =>
+                                                    handleDisconnect(channel)
+                                                }
+                                                disabled={
+                                                    disconnectingId ===
+                                                    channel.id
+                                                }
                                             >
-                                                {disconnectingId === channel.id ? "..." : t("channels.disconnect")}
+                                                {disconnectingId === channel.id
+                                                    ? "..."
+                                                    : t("channels.disconnect")}
                                             </Button>
                                         </div>
                                     </div>
@@ -265,31 +287,39 @@ export default function ChannelsPage() {
                     {/* Available Platforms Grid */}
                     <section>
                         <div className="flex items-center justify-between mb-2">
-                            <h2 className="text-sm font-semibold">{t("channels.available")}</h2>
+                            <h2 className="text-sm font-semibold">
+                                {t("channels.available")}
+                            </h2>
                             <div className="flex items-center gap-3 text-[10px] text-muted-foreground font-mono">
                                 <span className="flex items-center gap-1">
-                                    <span className="h-2 w-2 rounded-full bg-emerald-500 inline-block" /> Operacional
+                                    <span className="h-2 w-2 rounded-full bg-emerald-500 inline-block" />{" "}
+                                    Operacional
                                 </span>
                                 <span className="flex items-center gap-1">
-                                    <span className="h-2 w-2 rounded-full bg-amber-500 inline-block" /> Dev / Sandbox
+                                    <span className="h-2 w-2 rounded-full bg-amber-500 inline-block" />{" "}
+                                    Dev / Sandbox
                                 </span>
                                 <span className="flex items-center gap-1">
-                                    <span className="h-2 w-2 rounded-full bg-neutral-400 inline-block" /> Em Breve
+                                    <span className="h-2 w-2 rounded-full bg-neutral-400 inline-block" />{" "}
+                                    Em Breve
                                 </span>
                             </div>
                         </div>
                         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2">
                             {ALL_PLATFORMS.map(platform => {
-                                const connectedList = platformConnectedChannels[platform.id] || []
+                                const connectedList =
+                                    platformConnectedChannels[platform.id] || []
                                 const hasConnected = connectedList.length > 0
                                 const statusColor = platform.implemented
-                                    ? (platform as { localOnly?: boolean }).localOnly
+                                    ? (platform as { localOnly?: boolean })
+                                          .localOnly
                                         ? "bg-amber-500"
                                         : "bg-emerald-500"
                                     : "bg-neutral-400"
 
                                 const statusTooltip = platform.implemented
-                                    ? (platform as { localOnly?: boolean }).localOnly
+                                    ? (platform as { localOnly?: boolean })
+                                          .localOnly
                                         ? "Ambiente Dev / Sandbox"
                                         : "Disponível e Operacional"
                                     : "Em Desenvolvimento"
@@ -305,7 +335,11 @@ export default function ChannelsPage() {
                                         />
                                         <div className="p-2 rounded-full bg-muted/50 mb-1">
                                             <DynamicIcon
-                                                name={(PLATFORM_ICONS[platform.id] || "Share2") as IconName}
+                                                name={
+                                                    (PLATFORM_ICONS[
+                                                        platform.id
+                                                    ] || "Share2") as IconName
+                                                }
                                                 size={20}
                                             />
                                         </div>
@@ -321,10 +355,13 @@ export default function ChannelsPage() {
                                             size="sm"
                                             variant="outline"
                                             className="mt-2 h-7 w-full text-[11px] px-1"
-                                            onClick={() => handleConnect(platform.id)}
+                                            onClick={() =>
+                                                handleConnect(platform.id)
+                                            }
                                             disabled={
                                                 !platform.implemented ||
-                                                connectingPlatform === platform.id
+                                                connectingPlatform ===
+                                                    platform.id
                                             }
                                         >
                                             {connectingPlatform === platform.id

@@ -3,7 +3,10 @@
 import { useRelayChat } from "@/hooks/use-relay-chat"
 import { useChatSSE } from "@/hooks/use-chat-sse"
 import { useLocalChat } from "@/hooks/use-local-chat"
-import { ChatExecutionModeToggle, ChatExecutionMode } from "./chat-execution-mode-toggle"
+import {
+    ChatExecutionModeToggle,
+    ChatExecutionMode,
+} from "./chat-execution-mode-toggle"
 import { createLogger } from "@/lib/logger"
 import { useCallback, useRef, useEffect, useState, useMemo } from "react"
 import { ChatMessageList, RenderableChatMessage } from "./chat-message-list"
@@ -16,19 +19,41 @@ interface UnifiedChatProps {
 }
 
 const COMMANDS: CommandItem[] = [
-    { name: "/timeout", description: "Timeout a user", usage: "/timeout <username> [duration] [reason]" },
-    { name: "/ban", description: "Ban a user", usage: "/ban <username> [reason]" },
+    {
+        name: "/timeout",
+        description: "Timeout a user",
+        usage: "/timeout <username> [duration] [reason]",
+    },
+    {
+        name: "/ban",
+        description: "Ban a user",
+        usage: "/ban <username> [reason]",
+    },
     { name: "/unban", description: "Unban a user", usage: "/unban <username>" },
-    { name: "/me", description: "Send an action message", usage: "/me <message>" },
-    { name: "/slow", description: "Slow mode on/off", usage: "/slow [seconds] | /slow on | /slow off" },
-    { name: "/subscribers", description: "Subscribers-only on/off", usage: "/subscribers | /subscribersoff" },
+    {
+        name: "/me",
+        description: "Send an action message",
+        usage: "/me <message>",
+    },
+    {
+        name: "/slow",
+        description: "Slow mode on/off",
+        usage: "/slow [seconds] | /slow on | /slow off",
+    },
+    {
+        name: "/subscribers",
+        description: "Subscribers-only on/off",
+        usage: "/subscribers | /subscribersoff",
+    },
 ]
 
 const logger = createLogger("UnifiedChat")
 
 const DUP_WINDOW_MS = 10000
 
-function deduplicateAndGroup(all: RenderableChatMessage[]): (RenderableChatMessage & { duplicateCount: number })[] {
+function deduplicateAndGroup(
+    all: RenderableChatMessage[]
+): (RenderableChatMessage & { duplicateCount: number })[] {
     const groups: RenderableChatMessage[][] = []
     const used = new Set<string>()
 
@@ -41,7 +66,10 @@ function deduplicateAndGroup(all: RenderableChatMessage[]): (RenderableChatMessa
         for (const other of all) {
             if (used.has(other.id)) continue
             const otherKey = `${other.author.toLowerCase()}|${other.content.trim()}`
-            if (key === otherKey && Math.abs(other.timestamp - msg.timestamp) < DUP_WINDOW_MS) {
+            if (
+                key === otherKey &&
+                Math.abs(other.timestamp - msg.timestamp) < DUP_WINDOW_MS
+            ) {
                 cluster.push(other)
                 used.add(other.id)
             }
@@ -70,16 +98,23 @@ const PLATFORM_COLORS: Record<string, string> = {
 }
 
 export function UnifiedChat({ platforms }: UnifiedChatProps) {
-    const [executionMode, setExecutionMode] = useState<ChatExecutionMode>("cloud")
+    const [executionMode, setExecutionMode] =
+        useState<ChatExecutionMode>("cloud")
     const relay = useRelayChat()
     const sse = useChatSSE(platforms)
     const local = useLocalChat(platforms, executionMode === "local")
-    const [enabledPlatforms, setEnabledPlatforms] = useState<Set<string>>(new Set(platforms))
+    const [enabledPlatforms, setEnabledPlatforms] = useState<Set<string>>(
+        new Set(platforms)
+    )
     const [sendMode, setSendMode] = useState<string>(platforms[0] || "twitch")
-    const [selectedUser, setSelectedUser] = useState<(RenderableChatMessage & { duplicateCount: number }) | null>(null)
+    const [selectedUser, setSelectedUser] = useState<
+        (RenderableChatMessage & { duplicateCount: number }) | null
+    >(null)
 
     useEffect(() => {
-        const saved = localStorage.getItem("chat_execution_mode") as ChatExecutionMode
+        const saved = localStorage.getItem(
+            "chat_execution_mode"
+        ) as ChatExecutionMode
         if (saved === "cloud" || saved === "local") {
             setExecutionMode(saved)
         }
@@ -142,7 +177,9 @@ export function UnifiedChat({ platforms }: UnifiedChatProps) {
     }, [executionMode, local.messages, relay.messages, sse.messages])
 
     const groupedMessages = useMemo(() => {
-        const filtered = allMessages.filter(m => enabledPlatforms.has(m.platform))
+        const filtered = allMessages.filter(m =>
+            enabledPlatforms.has(m.platform)
+        )
         return deduplicateAndGroup(filtered)
     }, [allMessages, enabledPlatforms])
 
@@ -173,7 +210,9 @@ export function UnifiedChat({ platforms }: UnifiedChatProps) {
     const filteredCommands = useMemo(() => {
         if (!input.startsWith("/")) return []
         const query = input.slice(1).toLowerCase()
-        return COMMANDS.filter(cmd => cmd.name.slice(1).toLowerCase().startsWith(query))
+        return COMMANDS.filter(cmd =>
+            cmd.name.slice(1).toLowerCase().startsWith(query)
+        )
     }, [input])
 
     useEffect(() => {
@@ -188,8 +227,9 @@ export function UnifiedChat({ platforms }: UnifiedChatProps) {
     const togglePlatform = useCallback((p: string) => {
         setEnabledPlatforms(prev => {
             const next = new Set(prev)
-            if (next.has(p)) { if (next.size > 1) next.delete(p) }
-            else next.add(p)
+            if (next.has(p)) {
+                if (next.size > 1) next.delete(p)
+            } else next.add(p)
             return next
         })
     }, [])
@@ -233,7 +273,7 @@ export function UnifiedChat({ platforms }: UnifiedChatProps) {
                 selectedUser.userId || selectedUser.author,
                 selectedUser.author,
                 selectedUser.platform,
-                duration,
+                duration
             )
         },
         [selectedUser, relay.sendModeration]
@@ -242,8 +282,13 @@ export function UnifiedChat({ platforms }: UnifiedChatProps) {
     const getPlatformBadge = (platform: string) => {
         const lower = platform.toLowerCase()
         const labels: Record<string, string> = {
-            twitch: "TW", kick: "KC", youtube: "YT",
-            facebook: "FB", instagram: "IG", tiktok: "TK", linkedin: "LI",
+            twitch: "TW",
+            kick: "KC",
+            youtube: "YT",
+            facebook: "FB",
+            instagram: "IG",
+            tiktok: "TK",
+            linkedin: "LI",
         }
         return {
             label: labels[lower] || lower.slice(0, 2).toUpperCase(),
@@ -270,15 +315,22 @@ export function UnifiedChat({ platforms }: UnifiedChatProps) {
                                 title={`${isEnabled ? "Click to hide" : "Click to show"} ${p}`}
                             >
                                 {p.toUpperCase()}
-                                {platformCounts[p] ? ` (${platformCounts[p]})` : ""}
+                                {platformCounts[p]
+                                    ? ` (${platformCounts[p]})`
+                                    : ""}
                             </button>
                         )
                     })}
                 </div>
                 <div className="flex items-center gap-2">
-                    <ChatExecutionModeToggle mode={executionMode} onChange={handleModeChange} />
+                    <ChatExecutionModeToggle
+                        mode={executionMode}
+                        onChange={handleModeChange}
+                    />
                     <div className="flex items-center gap-1.5 text-[10px] text-neutral-400 shrink-0">
-                        <span className={`h-2 w-2 rounded-full ${statusText === "Disconnected" ? "bg-red-500" : "bg-emerald-500"}`} />
+                        <span
+                            className={`h-2 w-2 rounded-full ${statusText === "Disconnected" ? "bg-red-500" : "bg-emerald-500"}`}
+                        />
                         {statusText}
                     </div>
                 </div>
@@ -290,7 +342,7 @@ export function UnifiedChat({ platforms }: UnifiedChatProps) {
                         messages={groupedMessages}
                         getPlatformBadge={getPlatformBadge}
                         messagesEndRef={messagesEndRef}
-                        onUserClick={(msg) => setSelectedUser(msg)}
+                        onUserClick={msg => setSelectedUser(msg)}
                     />
                 </div>
 
@@ -298,10 +350,14 @@ export function UnifiedChat({ platforms }: UnifiedChatProps) {
                     <div className="w-60 shrink-0">
                         <UserCard
                             username={selectedUser.author}
-                            displayName={selectedUser.displayName || selectedUser.author}
+                            displayName={
+                                selectedUser.displayName || selectedUser.author
+                            }
                             platform={selectedUser.platform}
                             userId={selectedUser.userId || selectedUser.author}
-                            platformBadge={getPlatformBadge(selectedUser.platform)}
+                            platformBadge={getPlatformBadge(
+                                selectedUser.platform
+                            )}
                             isBroadcaster={selectedUser.isBroadcaster}
                             isModerator={selectedUser.isModerator}
                             isSubscriber={selectedUser.isSubscriber}
@@ -318,7 +374,7 @@ export function UnifiedChat({ platforms }: UnifiedChatProps) {
                     <ChatCommandPalette
                         commands={filteredCommands}
                         selectedIndex={selectedCmd}
-                        onSelect={(cmd) => {
+                        onSelect={cmd => {
                             setInput(cmd.name + " ")
                             setShowCommands(false)
                         }}
@@ -327,22 +383,30 @@ export function UnifiedChat({ platforms }: UnifiedChatProps) {
                 <div className="flex gap-2">
                     <select
                         value={sendMode}
-                        onChange={(e) => setSendMode(e.target.value)}
+                        onChange={e => setSendMode(e.target.value)}
                         className="rounded-lg border border-neutral-700 bg-neutral-800 px-2 py-2 text-xs text-neutral-100 focus:border-neutral-500 focus:outline-none"
                     >
                         {platforms.map(p => (
-                            <option key={p} value={p}>{p.toUpperCase()}</option>
+                            <option key={p} value={p}>
+                                {p.toUpperCase()}
+                            </option>
                         ))}
-                        {platforms.length > 1 && <option value="all">ALL</option>}
+                        {platforms.length > 1 && (
+                            <option value="all">ALL</option>
+                        )}
                     </select>
                     <input
                         type="text"
                         value={input}
-                        onChange={(e) => setInput(e.target.value)}
-                        onKeyDown={(e) => {
+                        onChange={e => setInput(e.target.value)}
+                        onKeyDown={e => {
                             if (e.key === "Enter") handleSend()
                         }}
-                        placeholder={sendMode === "all" ? "Message all platforms..." : `Message #${sendMode}...`}
+                        placeholder={
+                            sendMode === "all"
+                                ? "Message all platforms..."
+                                : `Message #${sendMode}...`
+                        }
                         className="flex-1 rounded-lg border border-neutral-700 bg-neutral-800 px-3 py-2 text-xs text-neutral-100 placeholder-neutral-500 focus:border-neutral-500 focus:outline-none"
                     />
                     <button

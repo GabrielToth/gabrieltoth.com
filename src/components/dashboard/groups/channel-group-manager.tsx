@@ -40,7 +40,9 @@ interface ChannelGroupManagerProps {
     connectedChannels?: ConnectedChannel[]
 }
 
-export function ChannelGroupManager({ connectedChannels = [] }: ChannelGroupManagerProps) {
+export function ChannelGroupManager({
+    connectedChannels = [],
+}: ChannelGroupManagerProps) {
     const [groups, setGroups] = useState<ChannelGroup[]>([])
     const [loading, setLoading] = useState(true)
     const [creating, setCreating] = useState(false)
@@ -73,7 +75,10 @@ export function ChannelGroupManager({ connectedChannels = [] }: ChannelGroupMana
             const res = await fetch("/api/channel-groups", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ name: newName.trim(), description: newDesc.trim() }),
+                body: JSON.stringify({
+                    name: newName.trim(),
+                    description: newDesc.trim(),
+                }),
             })
             if (res.ok) {
                 setNewName("")
@@ -88,7 +93,9 @@ export function ChannelGroupManager({ connectedChannels = [] }: ChannelGroupMana
 
     const handleDelete = async (groupId: string) => {
         try {
-            const res = await fetch(`/api/channel-groups?id=${groupId}`, { method: "DELETE" })
+            const res = await fetch(`/api/channel-groups?id=${groupId}`, {
+                method: "DELETE",
+            })
             if (res.ok) fetchGroups()
         } catch {
             // Silently handle error
@@ -122,7 +129,10 @@ export function ChannelGroupManager({ connectedChannels = [] }: ChannelGroupMana
 
     const handleRemoveMember = async (memberId: string) => {
         try {
-            const res = await fetch(`/api/channel-groups/members?id=${memberId}`, { method: "DELETE" })
+            const res = await fetch(
+                `/api/channel-groups/members?id=${memberId}`,
+                { method: "DELETE" }
+            )
             if (res.ok) fetchGroups()
         } catch {
             // Silently handle error
@@ -141,8 +151,13 @@ export function ChannelGroupManager({ connectedChannels = [] }: ChannelGroupMana
         <div className="rounded-xl border border-neutral-800 bg-neutral-900/60 p-4 space-y-4">
             <div className="flex items-center justify-between border-b border-neutral-800 pb-3">
                 <div>
-                    <h3 className="text-sm font-semibold text-neutral-200">Channel Groups</h3>
-                    <p className="text-xs text-neutral-400">Organize channels to publish to multiple platforms simultaneously</p>
+                    <h3 className="text-sm font-semibold text-neutral-200">
+                        Channel Groups
+                    </h3>
+                    <p className="text-xs text-neutral-400">
+                        Organize channels to publish to multiple platforms
+                        simultaneously
+                    </p>
                 </div>
                 <button
                     onClick={() => setCreating(!creating)}
@@ -187,30 +202,51 @@ export function ChannelGroupManager({ connectedChannels = [] }: ChannelGroupMana
             )}
 
             {groups.length === 0 ? (
-                <p className="text-xs text-neutral-500 text-center py-4">No groups created yet. Create a group to organize your connected channels.</p>
+                <p className="text-xs text-neutral-500 text-center py-4">
+                    No groups created yet. Create a group to organize your
+                    connected channels.
+                </p>
             ) : (
                 <div className="space-y-2">
                     {groups.map(group => {
                         const isExpanded = expanded === group.id
                         return (
-                            <div key={group.id} className="rounded-lg border border-neutral-800 bg-neutral-950/40 overflow-hidden">
+                            <div
+                                key={group.id}
+                                className="rounded-lg border border-neutral-800 bg-neutral-950/40 overflow-hidden"
+                            >
                                 <div
-                                    onClick={() => setExpanded(isExpanded ? null : group.id)}
+                                    onClick={() =>
+                                        setExpanded(
+                                            isExpanded ? null : group.id
+                                        )
+                                    }
                                     className="flex items-center justify-between p-3 cursor-pointer hover:bg-neutral-900/50 transition-colors"
                                 >
                                     <div className="flex items-center gap-2">
-                                        {isExpanded ? <ChevronUp className="h-4 w-4 text-neutral-400" /> : <ChevronDown className="h-4 w-4 text-neutral-400" />}
+                                        {isExpanded ? (
+                                            <ChevronUp className="h-4 w-4 text-neutral-400" />
+                                        ) : (
+                                            <ChevronDown className="h-4 w-4 text-neutral-400" />
+                                        )}
                                         <div>
-                                            <p className="text-xs font-semibold text-neutral-200">{group.name}</p>
-                                            {group.description && <p className="text-[10px] text-neutral-500">{group.description}</p>}
+                                            <p className="text-xs font-semibold text-neutral-200">
+                                                {group.name}
+                                            </p>
+                                            {group.description && (
+                                                <p className="text-[10px] text-neutral-500">
+                                                    {group.description}
+                                                </p>
+                                            )}
                                         </div>
                                     </div>
                                     <div className="flex items-center gap-3">
                                         <span className="text-[10px] font-mono text-neutral-400 bg-neutral-800/60 px-2 py-0.5 rounded-full">
-                                            {group.members?.length || 0} channels
+                                            {group.members?.length || 0}{" "}
+                                            channels
                                         </span>
                                         <button
-                                            onClick={(e) => {
+                                            onClick={e => {
                                                 e.stopPropagation()
                                                 handleDelete(group.id)
                                             }}
@@ -228,18 +264,31 @@ export function ChannelGroupManager({ connectedChannels = [] }: ChannelGroupMana
                                         <div className="flex items-center gap-2">
                                             <select
                                                 value={selectedChannel}
-                                                onChange={e => setSelectedChannel(e.target.value)}
+                                                onChange={e =>
+                                                    setSelectedChannel(
+                                                        e.target.value
+                                                    )
+                                                }
                                                 className="flex-1 text-xs rounded border border-neutral-700 bg-neutral-900 px-2 py-1.5 text-neutral-200 focus:outline-none focus:border-primary"
                                             >
-                                                <option value="">Select connected channel to add...</option>
+                                                <option value="">
+                                                    Select connected channel to
+                                                    add...
+                                                </option>
                                                 {connectedChannels.map(ch => (
-                                                    <option key={ch.id} value={ch.id}>
-                                                        {ch.platform.toUpperCase()} — {ch.accountName}
+                                                    <option
+                                                        key={ch.id}
+                                                        value={ch.id}
+                                                    >
+                                                        {ch.platform.toUpperCase()}{" "}
+                                                        — {ch.accountName}
                                                     </option>
                                                 ))}
                                             </select>
                                             <button
-                                                onClick={() => handleAddMember(group.id)}
+                                                onClick={() =>
+                                                    handleAddMember(group.id)
+                                                }
                                                 disabled={!selectedChannel}
                                                 className="flex items-center gap-1 text-xs bg-primary/20 text-primary hover:bg-primary/30 px-3 py-1.5 rounded font-medium disabled:opacity-50 disabled:cursor-not-allowed"
                                             >
@@ -250,19 +299,36 @@ export function ChannelGroupManager({ connectedChannels = [] }: ChannelGroupMana
 
                                         {/* Group Members List */}
                                         <div className="space-y-1.5">
-                                            {(!group.members || group.members.length === 0) ? (
-                                                <p className="text-[11px] text-neutral-500 italic py-1">No channels in this group yet.</p>
+                                            {!group.members ||
+                                            group.members.length === 0 ? (
+                                                <p className="text-[11px] text-neutral-500 italic py-1">
+                                                    No channels in this group
+                                                    yet.
+                                                </p>
                                             ) : (
                                                 group.members.map(m => (
-                                                    <div key={m.id} className="flex items-center justify-between rounded bg-neutral-800/40 px-2.5 py-1.5 text-xs">
+                                                    <div
+                                                        key={m.id}
+                                                        className="flex items-center justify-between rounded bg-neutral-800/40 px-2.5 py-1.5 text-xs"
+                                                    >
                                                         <div className="flex items-center gap-2">
-                                                            <span className={`text-[9px] px-1.5 py-0.5 rounded font-bold text-white uppercase ${PLATFORM_COLORS[m.platform] || "bg-neutral-600"}`}>
+                                                            <span
+                                                                className={`text-[9px] px-1.5 py-0.5 rounded font-bold text-white uppercase ${PLATFORM_COLORS[m.platform] || "bg-neutral-600"}`}
+                                                            >
                                                                 {m.platform}
                                                             </span>
-                                                            <span className="font-medium text-neutral-200">{m.platform_username}</span>
+                                                            <span className="font-medium text-neutral-200">
+                                                                {
+                                                                    m.platform_username
+                                                                }
+                                                            </span>
                                                         </div>
                                                         <button
-                                                            onClick={() => handleRemoveMember(m.id)}
+                                                            onClick={() =>
+                                                                handleRemoveMember(
+                                                                    m.id
+                                                                )
+                                                            }
                                                             className="text-neutral-500 hover:text-rose-400 p-0.5"
                                                             title="Remove from group"
                                                         >

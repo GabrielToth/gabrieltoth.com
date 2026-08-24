@@ -433,10 +433,7 @@ export default function ContentFormStep({
                                 tabIndex={0}
                                 aria-label={t("step4.thumbnail")}
                                 onKeyDown={e => {
-                                    if (
-                                        e.key === "Enter" ||
-                                        e.key === " "
-                                    ) {
+                                    if (e.key === "Enter" || e.key === " ") {
                                         e.preventDefault()
                                         thumbnailInputRef.current?.click()
                                     }

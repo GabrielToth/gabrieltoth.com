@@ -5,7 +5,10 @@
 
 "use client"
 
-import { evaluateStreamHealth, StreamHealthMetrics } from "@/lib/live/stream-health"
+import {
+    evaluateStreamHealth,
+    StreamHealthMetrics,
+} from "@/lib/live/stream-health"
 import { useState } from "react"
 
 interface StreamHealthHeaderProps {
@@ -23,7 +26,9 @@ const DEFAULT_METRICS: StreamHealthMetrics = {
     timestamp: Date.now(),
 }
 
-export function StreamHealthHeader({ metrics = DEFAULT_METRICS }: StreamHealthHeaderProps) {
+export function StreamHealthHeader({
+    metrics = DEFAULT_METRICS,
+}: StreamHealthHeaderProps) {
     const health = evaluateStreamHealth(metrics)
     const [open, setOpen] = useState(false)
 
@@ -54,7 +59,9 @@ export function StreamHealthHeader({ metrics = DEFAULT_METRICS }: StreamHealthHe
                     <span
                         className={`absolute inline-flex h-full w-full animate-ping rounded-full ${statusColors[health.level]} opacity-75`}
                     />
-                    <span className={`relative inline-flex h-2 w-2 rounded-full ${statusColors[health.level]}`} />
+                    <span
+                        className={`relative inline-flex h-2 w-2 rounded-full ${statusColors[health.level]}`}
+                    />
                 </span>
                 <span className="font-mono text-[11px] text-muted-foreground">
                     {metrics.bitrateKbps} kbps · {metrics.fps} FPS
@@ -64,8 +71,12 @@ export function StreamHealthHeader({ metrics = DEFAULT_METRICS }: StreamHealthHe
             {open && (
                 <div className="absolute right-0 top-full mt-2 z-50 w-56 rounded-lg border border-border bg-card p-3 shadow-lg text-xs">
                     <div className="flex items-center justify-between border-b border-border pb-2">
-                        <span className="font-semibold text-foreground">{statusBadgeText[health.level]}</span>
-                        <span className="font-mono font-bold text-primary">{health.score}/100</span>
+                        <span className="font-semibold text-foreground">
+                            {statusBadgeText[health.level]}
+                        </span>
+                        <span className="font-mono font-bold text-primary">
+                            {health.score}/100
+                        </span>
                     </div>
                     <div className="mt-2 space-y-1 text-muted-foreground">
                         <p>Resolution: {metrics.resolution}</p>

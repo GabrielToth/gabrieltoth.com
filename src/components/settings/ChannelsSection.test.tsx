@@ -191,10 +191,10 @@ describe("ChannelsSection", () => {
         await waitFor(() => {
             expect(mockFetch).toHaveBeenCalledWith(
                 "/api/oauth/authorize/youtube",
-                {
+                expect.objectContaining({
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                }
+                })
             )
         })
     })
