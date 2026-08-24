@@ -1,13 +1,17 @@
 import { expect, test } from "@playwright/test"
 
 test.describe("French Locale & Sitemap E2E Flows", () => {
-    test("French homepage loads correctly with translated content", async ({ page }) => {
+    test("French homepage loads correctly with translated content", async ({
+        page,
+    }) => {
         const response = await page.goto("/fr")
         expect(response?.status()).toBe(200)
         await expect(page).toHaveURL(/\/fr\/?$/)
     })
 
-    test("French sitemap route responds with XML containing hreflang tags", async ({ page }) => {
+    test("French sitemap route responds with XML containing hreflang tags", async ({
+        page,
+    }) => {
         const response = await page.goto("/sitemap-fr.xml")
         expect(response?.status()).toBe(200)
         const contentType = response?.headers()["content-type"]

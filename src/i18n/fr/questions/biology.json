@@ -3,1200 +3,700 @@
         "id": "bio-001",
         "category": "biology",
         "prompt": "3, 5, 7, 9, ?",
-        "choices": [
-            "11",
-            "9",
-            "13",
-            "7"
-        ],
+        "choices": ["11", "9", "13", "7"],
         "answerIndex": 0
     },
     {
         "id": "bio-002",
         "category": "biology",
         "prompt": "4, 7, 10, 13, ?",
-        "choices": [
-            "16",
-            "13",
-            "19",
-            "10"
-        ],
+        "choices": ["16", "13", "19", "10"],
         "answerIndex": 0
     },
     {
         "id": "bio-003",
         "category": "biology",
         "prompt": "5, 9, 13, 17, ?",
-        "choices": [
-            "21",
-            "17",
-            "25",
-            "13"
-        ],
+        "choices": ["21", "17", "25", "13"],
         "answerIndex": 0
     },
     {
         "id": "bio-004",
         "category": "biology",
         "prompt": "6, 11, 16, 21, ?",
-        "choices": [
-            "26",
-            "21",
-            "31",
-            "16"
-        ],
+        "choices": ["26", "21", "31", "16"],
         "answerIndex": 0
     },
     {
         "id": "bio-005",
         "category": "biology",
         "prompt": "7, 8, 9, 10, ?",
-        "choices": [
-            "11",
-            "10",
-            "12",
-            "9"
-        ],
+        "choices": ["11", "10", "12", "9"],
         "answerIndex": 0
     },
     {
         "id": "bio-006",
         "category": "biology",
         "prompt": "8, 10, 12, 14, ?",
-        "choices": [
-            "16",
-            "14",
-            "18",
-            "12"
-        ],
+        "choices": ["16", "14", "18", "12"],
         "answerIndex": 0
     },
     {
         "id": "bio-007",
         "category": "biology",
         "prompt": "2, 5, 8, 11, ?",
-        "choices": [
-            "14",
-            "11",
-            "17",
-            "8"
-        ],
+        "choices": ["14", "11", "17", "8"],
         "answerIndex": 0
     },
     {
         "id": "bio-008",
         "category": "biology",
         "prompt": "3, 7, 11, 15, ?",
-        "choices": [
-            "19",
-            "15",
-            "23",
-            "11"
-        ],
+        "choices": ["19", "15", "23", "11"],
         "answerIndex": 0
     },
     {
         "id": "bio-009",
         "category": "biology",
         "prompt": "4, 9, 14, 19, ?",
-        "choices": [
-            "24",
-            "19",
-            "29",
-            "14"
-        ],
+        "choices": ["24", "19", "29", "14"],
         "answerIndex": 0
     },
     {
         "id": "bio-010",
         "category": "biology",
         "prompt": "5, 6, 7, 8, ?",
-        "choices": [
-            "9",
-            "8",
-            "10",
-            "7"
-        ],
+        "choices": ["9", "8", "10", "7"],
         "answerIndex": 0
     },
     {
         "id": "bio-011",
         "category": "biology",
         "prompt": "6, 8, 10, 12, ?",
-        "choices": [
-            "14",
-            "12",
-            "16",
-            "10"
-        ],
+        "choices": ["14", "12", "16", "10"],
         "answerIndex": 0
     },
     {
         "id": "bio-012",
         "category": "biology",
         "prompt": "7, 10, 13, 16, ?",
-        "choices": [
-            "19",
-            "16",
-            "22",
-            "13"
-        ],
+        "choices": ["19", "16", "22", "13"],
         "answerIndex": 0
     },
     {
         "id": "bio-013",
         "category": "biology",
         "prompt": "8, 12, 16, 20, ?",
-        "choices": [
-            "24",
-            "20",
-            "28",
-            "16"
-        ],
+        "choices": ["24", "20", "28", "16"],
         "answerIndex": 0
     },
     {
         "id": "bio-014",
         "category": "biology",
         "prompt": "2, 7, 12, 17, ?",
-        "choices": [
-            "22",
-            "17",
-            "27",
-            "12"
-        ],
+        "choices": ["22", "17", "27", "12"],
         "answerIndex": 0
     },
     {
         "id": "bio-015",
         "category": "biology",
         "prompt": "3, 4, 5, 6, ?",
-        "choices": [
-            "7",
-            "6",
-            "8",
-            "5"
-        ],
+        "choices": ["7", "6", "8", "5"],
         "answerIndex": 0
     },
     {
         "id": "bio-016",
         "category": "biology",
         "prompt": "4, 6, 8, 10, ?",
-        "choices": [
-            "12",
-            "10",
-            "14",
-            "8"
-        ],
+        "choices": ["12", "10", "14", "8"],
         "answerIndex": 0
     },
     {
         "id": "bio-017",
         "category": "biology",
         "prompt": "5, 8, 11, 14, ?",
-        "choices": [
-            "17",
-            "14",
-            "20",
-            "11"
-        ],
+        "choices": ["17", "14", "20", "11"],
         "answerIndex": 0
     },
     {
         "id": "bio-018",
         "category": "biology",
         "prompt": "6, 10, 14, 18, ?",
-        "choices": [
-            "22",
-            "18",
-            "26",
-            "14"
-        ],
+        "choices": ["22", "18", "26", "14"],
         "answerIndex": 0
     },
     {
         "id": "bio-019",
         "category": "biology",
         "prompt": "7, 12, 17, 22, ?",
-        "choices": [
-            "27",
-            "22",
-            "32",
-            "17"
-        ],
+        "choices": ["27", "22", "32", "17"],
         "answerIndex": 0
     },
     {
         "id": "bio-020",
         "category": "biology",
         "prompt": "8, 9, 10, 11, ?",
-        "choices": [
-            "12",
-            "11",
-            "13",
-            "10"
-        ],
+        "choices": ["12", "11", "13", "10"],
         "answerIndex": 0
     },
     {
         "id": "bio-021",
         "category": "biology",
         "prompt": "2, 4, 6, 8, ?",
-        "choices": [
-            "10",
-            "8",
-            "12",
-            "6"
-        ],
+        "choices": ["10", "8", "12", "6"],
         "answerIndex": 0
     },
     {
         "id": "bio-022",
         "category": "biology",
         "prompt": "3, 6, 9, 12, ?",
-        "choices": [
-            "15",
-            "12",
-            "18",
-            "9"
-        ],
+        "choices": ["15", "12", "18", "9"],
         "answerIndex": 0
     },
     {
         "id": "bio-023",
         "category": "biology",
         "prompt": "4, 8, 12, 16, ?",
-        "choices": [
-            "20",
-            "16",
-            "24",
-            "12"
-        ],
+        "choices": ["20", "16", "24", "12"],
         "answerIndex": 0
     },
     {
         "id": "bio-024",
         "category": "biology",
         "prompt": "5, 10, 15, 20, ?",
-        "choices": [
-            "25",
-            "20",
-            "30",
-            "15"
-        ],
+        "choices": ["25", "20", "30", "15"],
         "answerIndex": 0
     },
     {
         "id": "bio-025",
         "category": "biology",
         "prompt": "6, 7, 8, 9, ?",
-        "choices": [
-            "10",
-            "9",
-            "11",
-            "8"
-        ],
+        "choices": ["10", "9", "11", "8"],
         "answerIndex": 0
     },
     {
         "id": "bio-026",
         "category": "biology",
         "prompt": "7, 9, 11, 13, ?",
-        "choices": [
-            "15",
-            "13",
-            "17",
-            "11"
-        ],
+        "choices": ["15", "13", "17", "11"],
         "answerIndex": 0
     },
     {
         "id": "bio-027",
         "category": "biology",
         "prompt": "8, 11, 14, 17, ?",
-        "choices": [
-            "20",
-            "17",
-            "23",
-            "14"
-        ],
+        "choices": ["20", "17", "23", "14"],
         "answerIndex": 0
     },
     {
         "id": "bio-028",
         "category": "biology",
         "prompt": "2, 6, 10, 14, ?",
-        "choices": [
-            "18",
-            "14",
-            "22",
-            "10"
-        ],
+        "choices": ["18", "14", "22", "10"],
         "answerIndex": 0
     },
     {
         "id": "bio-029",
         "category": "biology",
         "prompt": "3, 8, 13, 18, ?",
-        "choices": [
-            "23",
-            "18",
-            "28",
-            "13"
-        ],
+        "choices": ["23", "18", "28", "13"],
         "answerIndex": 0
     },
     {
         "id": "bio-030",
         "category": "biology",
         "prompt": "4, 5, 6, 7, ?",
-        "choices": [
-            "8",
-            "7",
-            "9",
-            "6"
-        ],
+        "choices": ["8", "7", "9", "6"],
         "answerIndex": 0
     },
     {
         "id": "bio-031",
         "category": "biology",
         "prompt": "5, 7, 9, 11, ?",
-        "choices": [
-            "13",
-            "11",
-            "15",
-            "9"
-        ],
+        "choices": ["13", "11", "15", "9"],
         "answerIndex": 0
     },
     {
         "id": "bio-032",
         "category": "biology",
         "prompt": "6, 9, 12, 15, ?",
-        "choices": [
-            "18",
-            "15",
-            "21",
-            "12"
-        ],
+        "choices": ["18", "15", "21", "12"],
         "answerIndex": 0
     },
     {
         "id": "bio-033",
         "category": "biology",
         "prompt": "7, 11, 15, 19, ?",
-        "choices": [
-            "23",
-            "19",
-            "27",
-            "15"
-        ],
+        "choices": ["23", "19", "27", "15"],
         "answerIndex": 0
     },
     {
         "id": "bio-034",
         "category": "biology",
         "prompt": "8, 13, 18, 23, ?",
-        "choices": [
-            "28",
-            "23",
-            "33",
-            "18"
-        ],
+        "choices": ["28", "23", "33", "18"],
         "answerIndex": 0
     },
     {
         "id": "bio-035",
         "category": "biology",
         "prompt": "2, 3, 4, 5, ?",
-        "choices": [
-            "6",
-            "5",
-            "7",
-            "4"
-        ],
+        "choices": ["6", "5", "7", "4"],
         "answerIndex": 0
     },
     {
         "id": "bio-036",
         "category": "biology",
         "prompt": "3, 5, 7, 9, ?",
-        "choices": [
-            "11",
-            "9",
-            "13",
-            "7"
-        ],
+        "choices": ["11", "9", "13", "7"],
         "answerIndex": 0
     },
     {
         "id": "bio-037",
         "category": "biology",
         "prompt": "4, 7, 10, 13, ?",
-        "choices": [
-            "16",
-            "13",
-            "19",
-            "10"
-        ],
+        "choices": ["16", "13", "19", "10"],
         "answerIndex": 0
     },
     {
         "id": "bio-038",
         "category": "biology",
         "prompt": "5, 9, 13, 17, ?",
-        "choices": [
-            "21",
-            "17",
-            "25",
-            "13"
-        ],
+        "choices": ["21", "17", "25", "13"],
         "answerIndex": 0
     },
     {
         "id": "bio-039",
         "category": "biology",
         "prompt": "6, 11, 16, 21, ?",
-        "choices": [
-            "26",
-            "21",
-            "31",
-            "16"
-        ],
+        "choices": ["26", "21", "31", "16"],
         "answerIndex": 0
     },
     {
         "id": "bio-040",
         "category": "biology",
         "prompt": "7, 8, 9, 10, ?",
-        "choices": [
-            "11",
-            "10",
-            "12",
-            "9"
-        ],
+        "choices": ["11", "10", "12", "9"],
         "answerIndex": 0
     },
     {
         "id": "bio-041",
         "category": "biology",
         "prompt": "8, 10, 12, 14, ?",
-        "choices": [
-            "16",
-            "14",
-            "18",
-            "12"
-        ],
+        "choices": ["16", "14", "18", "12"],
         "answerIndex": 0
     },
     {
         "id": "bio-042",
         "category": "biology",
         "prompt": "2, 5, 8, 11, ?",
-        "choices": [
-            "14",
-            "11",
-            "17",
-            "8"
-        ],
+        "choices": ["14", "11", "17", "8"],
         "answerIndex": 0
     },
     {
         "id": "bio-043",
         "category": "biology",
         "prompt": "3, 7, 11, 15, ?",
-        "choices": [
-            "19",
-            "15",
-            "23",
-            "11"
-        ],
+        "choices": ["19", "15", "23", "11"],
         "answerIndex": 0
     },
     {
         "id": "bio-044",
         "category": "biology",
         "prompt": "4, 9, 14, 19, ?",
-        "choices": [
-            "24",
-            "19",
-            "29",
-            "14"
-        ],
+        "choices": ["24", "19", "29", "14"],
         "answerIndex": 0
     },
     {
         "id": "bio-045",
         "category": "biology",
         "prompt": "5, 6, 7, 8, ?",
-        "choices": [
-            "9",
-            "8",
-            "10",
-            "7"
-        ],
+        "choices": ["9", "8", "10", "7"],
         "answerIndex": 0
     },
     {
         "id": "bio-046",
         "category": "biology",
         "prompt": "6, 8, 10, 12, ?",
-        "choices": [
-            "14",
-            "12",
-            "16",
-            "10"
-        ],
+        "choices": ["14", "12", "16", "10"],
         "answerIndex": 0
     },
     {
         "id": "bio-047",
         "category": "biology",
         "prompt": "7, 10, 13, 16, ?",
-        "choices": [
-            "19",
-            "16",
-            "22",
-            "13"
-        ],
+        "choices": ["19", "16", "22", "13"],
         "answerIndex": 0
     },
     {
         "id": "bio-048",
         "category": "biology",
         "prompt": "8, 12, 16, 20, ?",
-        "choices": [
-            "24",
-            "20",
-            "28",
-            "16"
-        ],
+        "choices": ["24", "20", "28", "16"],
         "answerIndex": 0
     },
     {
         "id": "bio-049",
         "category": "biology",
         "prompt": "2, 7, 12, 17, ?",
-        "choices": [
-            "22",
-            "17",
-            "27",
-            "12"
-        ],
+        "choices": ["22", "17", "27", "12"],
         "answerIndex": 0
     },
     {
         "id": "bio-050",
         "category": "biology",
         "prompt": "3, 4, 5, 6, ?",
-        "choices": [
-            "7",
-            "6",
-            "8",
-            "5"
-        ],
+        "choices": ["7", "6", "8", "5"],
         "answerIndex": 0
     },
     {
         "id": "bio-051",
         "category": "biology",
         "prompt": "4, 6, 8, 10, ?",
-        "choices": [
-            "12",
-            "10",
-            "14",
-            "8"
-        ],
+        "choices": ["12", "10", "14", "8"],
         "answerIndex": 0
     },
     {
         "id": "bio-052",
         "category": "biology",
         "prompt": "5, 8, 11, 14, ?",
-        "choices": [
-            "17",
-            "14",
-            "20",
-            "11"
-        ],
+        "choices": ["17", "14", "20", "11"],
         "answerIndex": 0
     },
     {
         "id": "bio-053",
         "category": "biology",
         "prompt": "6, 10, 14, 18, ?",
-        "choices": [
-            "22",
-            "18",
-            "26",
-            "14"
-        ],
+        "choices": ["22", "18", "26", "14"],
         "answerIndex": 0
     },
     {
         "id": "bio-054",
         "category": "biology",
         "prompt": "7, 12, 17, 22, ?",
-        "choices": [
-            "27",
-            "22",
-            "32",
-            "17"
-        ],
+        "choices": ["27", "22", "32", "17"],
         "answerIndex": 0
     },
     {
         "id": "bio-055",
         "category": "biology",
         "prompt": "8, 9, 10, 11, ?",
-        "choices": [
-            "12",
-            "11",
-            "13",
-            "10"
-        ],
+        "choices": ["12", "11", "13", "10"],
         "answerIndex": 0
     },
     {
         "id": "bio-056",
         "category": "biology",
         "prompt": "2, 4, 6, 8, ?",
-        "choices": [
-            "10",
-            "8",
-            "12",
-            "6"
-        ],
+        "choices": ["10", "8", "12", "6"],
         "answerIndex": 0
     },
     {
         "id": "bio-057",
         "category": "biology",
         "prompt": "3, 6, 9, 12, ?",
-        "choices": [
-            "15",
-            "12",
-            "18",
-            "9"
-        ],
+        "choices": ["15", "12", "18", "9"],
         "answerIndex": 0
     },
     {
         "id": "bio-058",
         "category": "biology",
         "prompt": "4, 8, 12, 16, ?",
-        "choices": [
-            "20",
-            "16",
-            "24",
-            "12"
-        ],
+        "choices": ["20", "16", "24", "12"],
         "answerIndex": 0
     },
     {
         "id": "bio-059",
         "category": "biology",
         "prompt": "5, 10, 15, 20, ?",
-        "choices": [
-            "25",
-            "20",
-            "30",
-            "15"
-        ],
+        "choices": ["25", "20", "30", "15"],
         "answerIndex": 0
     },
     {
         "id": "bio-060",
         "category": "biology",
         "prompt": "6, 7, 8, 9, ?",
-        "choices": [
-            "10",
-            "9",
-            "11",
-            "8"
-        ],
+        "choices": ["10", "9", "11", "8"],
         "answerIndex": 0
     },
     {
         "id": "bio-061",
         "category": "biology",
         "prompt": "7, 9, 11, 13, ?",
-        "choices": [
-            "15",
-            "13",
-            "17",
-            "11"
-        ],
+        "choices": ["15", "13", "17", "11"],
         "answerIndex": 0
     },
     {
         "id": "bio-062",
         "category": "biology",
         "prompt": "8, 11, 14, 17, ?",
-        "choices": [
-            "20",
-            "17",
-            "23",
-            "14"
-        ],
+        "choices": ["20", "17", "23", "14"],
         "answerIndex": 0
     },
     {
         "id": "bio-063",
         "category": "biology",
         "prompt": "2, 6, 10, 14, ?",
-        "choices": [
-            "18",
-            "14",
-            "22",
-            "10"
-        ],
+        "choices": ["18", "14", "22", "10"],
         "answerIndex": 0
     },
     {
         "id": "bio-064",
         "category": "biology",
         "prompt": "3, 8, 13, 18, ?",
-        "choices": [
-            "23",
-            "18",
-            "28",
-            "13"
-        ],
+        "choices": ["23", "18", "28", "13"],
         "answerIndex": 0
     },
     {
         "id": "bio-065",
         "category": "biology",
         "prompt": "4, 5, 6, 7, ?",
-        "choices": [
-            "8",
-            "7",
-            "9",
-            "6"
-        ],
+        "choices": ["8", "7", "9", "6"],
         "answerIndex": 0
     },
     {
         "id": "bio-066",
         "category": "biology",
         "prompt": "5, 7, 9, 11, ?",
-        "choices": [
-            "13",
-            "11",
-            "15",
-            "9"
-        ],
+        "choices": ["13", "11", "15", "9"],
         "answerIndex": 0
     },
     {
         "id": "bio-067",
         "category": "biology",
         "prompt": "6, 9, 12, 15, ?",
-        "choices": [
-            "18",
-            "15",
-            "21",
-            "12"
-        ],
+        "choices": ["18", "15", "21", "12"],
         "answerIndex": 0
     },
     {
         "id": "bio-068",
         "category": "biology",
         "prompt": "7, 11, 15, 19, ?",
-        "choices": [
-            "23",
-            "19",
-            "27",
-            "15"
-        ],
+        "choices": ["23", "19", "27", "15"],
         "answerIndex": 0
     },
     {
         "id": "bio-069",
         "category": "biology",
         "prompt": "8, 13, 18, 23, ?",
-        "choices": [
-            "28",
-            "23",
-            "33",
-            "18"
-        ],
+        "choices": ["28", "23", "33", "18"],
         "answerIndex": 0
     },
     {
         "id": "bio-070",
         "category": "biology",
         "prompt": "2, 3, 4, 5, ?",
-        "choices": [
-            "6",
-            "5",
-            "7",
-            "4"
-        ],
+        "choices": ["6", "5", "7", "4"],
         "answerIndex": 0
     },
     {
         "id": "bio-071",
         "category": "biology",
         "prompt": "3, 5, 7, 9, ?",
-        "choices": [
-            "11",
-            "9",
-            "13",
-            "7"
-        ],
+        "choices": ["11", "9", "13", "7"],
         "answerIndex": 0
     },
     {
         "id": "bio-072",
         "category": "biology",
         "prompt": "4, 7, 10, 13, ?",
-        "choices": [
-            "16",
-            "13",
-            "19",
-            "10"
-        ],
+        "choices": ["16", "13", "19", "10"],
         "answerIndex": 0
     },
     {
         "id": "bio-073",
         "category": "biology",
         "prompt": "5, 9, 13, 17, ?",
-        "choices": [
-            "21",
-            "17",
-            "25",
-            "13"
-        ],
+        "choices": ["21", "17", "25", "13"],
         "answerIndex": 0
     },
     {
         "id": "bio-074",
         "category": "biology",
         "prompt": "6, 11, 16, 21, ?",
-        "choices": [
-            "26",
-            "21",
-            "31",
-            "16"
-        ],
+        "choices": ["26", "21", "31", "16"],
         "answerIndex": 0
     },
     {
         "id": "bio-075",
         "category": "biology",
         "prompt": "7, 8, 9, 10, ?",
-        "choices": [
-            "11",
-            "10",
-            "12",
-            "9"
-        ],
+        "choices": ["11", "10", "12", "9"],
         "answerIndex": 0
     },
     {
         "id": "bio-076",
         "category": "biology",
         "prompt": "8, 10, 12, 14, ?",
-        "choices": [
-            "16",
-            "14",
-            "18",
-            "12"
-        ],
+        "choices": ["16", "14", "18", "12"],
         "answerIndex": 0
     },
     {
         "id": "bio-077",
         "category": "biology",
         "prompt": "2, 5, 8, 11, ?",
-        "choices": [
-            "14",
-            "11",
-            "17",
-            "8"
-        ],
+        "choices": ["14", "11", "17", "8"],
         "answerIndex": 0
     },
     {
         "id": "bio-078",
         "category": "biology",
         "prompt": "3, 7, 11, 15, ?",
-        "choices": [
-            "19",
-            "15",
-            "23",
-            "11"
-        ],
+        "choices": ["19", "15", "23", "11"],
         "answerIndex": 0
     },
     {
         "id": "bio-079",
         "category": "biology",
         "prompt": "4, 9, 14, 19, ?",
-        "choices": [
-            "24",
-            "19",
-            "29",
-            "14"
-        ],
+        "choices": ["24", "19", "29", "14"],
         "answerIndex": 0
     },
     {
         "id": "bio-080",
         "category": "biology",
         "prompt": "5, 6, 7, 8, ?",
-        "choices": [
-            "9",
-            "8",
-            "10",
-            "7"
-        ],
+        "choices": ["9", "8", "10", "7"],
         "answerIndex": 0
     },
     {
         "id": "bio-081",
         "category": "biology",
         "prompt": "6, 8, 10, 12, ?",
-        "choices": [
-            "14",
-            "12",
-            "16",
-            "10"
-        ],
+        "choices": ["14", "12", "16", "10"],
         "answerIndex": 0
     },
     {
         "id": "bio-082",
         "category": "biology",
         "prompt": "7, 10, 13, 16, ?",
-        "choices": [
-            "19",
-            "16",
-            "22",
-            "13"
-        ],
+        "choices": ["19", "16", "22", "13"],
         "answerIndex": 0
     },
     {
         "id": "bio-083",
         "category": "biology",
         "prompt": "8, 12, 16, 20, ?",
-        "choices": [
-            "24",
-            "20",
-            "28",
-            "16"
-        ],
+        "choices": ["24", "20", "28", "16"],
         "answerIndex": 0
     },
     {
         "id": "bio-084",
         "category": "biology",
         "prompt": "2, 7, 12, 17, ?",
-        "choices": [
-            "22",
-            "17",
-            "27",
-            "12"
-        ],
+        "choices": ["22", "17", "27", "12"],
         "answerIndex": 0
     },
     {
         "id": "bio-085",
         "category": "biology",
         "prompt": "3, 4, 5, 6, ?",
-        "choices": [
-            "7",
-            "6",
-            "8",
-            "5"
-        ],
+        "choices": ["7", "6", "8", "5"],
         "answerIndex": 0
     },
     {
         "id": "bio-086",
         "category": "biology",
         "prompt": "4, 6, 8, 10, ?",
-        "choices": [
-            "12",
-            "10",
-            "14",
-            "8"
-        ],
+        "choices": ["12", "10", "14", "8"],
         "answerIndex": 0
     },
     {
         "id": "bio-087",
         "category": "biology",
         "prompt": "5, 8, 11, 14, ?",
-        "choices": [
-            "17",
-            "14",
-            "20",
-            "11"
-        ],
+        "choices": ["17", "14", "20", "11"],
         "answerIndex": 0
     },
     {
         "id": "bio-088",
         "category": "biology",
         "prompt": "6, 10, 14, 18, ?",
-        "choices": [
-            "22",
-            "18",
-            "26",
-            "14"
-        ],
+        "choices": ["22", "18", "26", "14"],
         "answerIndex": 0
     },
     {
         "id": "bio-089",
         "category": "biology",
         "prompt": "7, 12, 17, 22, ?",
-        "choices": [
-            "27",
-            "22",
-            "32",
-            "17"
-        ],
+        "choices": ["27", "22", "32", "17"],
         "answerIndex": 0
     },
     {
         "id": "bio-090",
         "category": "biology",
         "prompt": "8, 9, 10, 11, ?",
-        "choices": [
-            "12",
-            "11",
-            "13",
-            "10"
-        ],
+        "choices": ["12", "11", "13", "10"],
         "answerIndex": 0
     },
     {
         "id": "bio-091",
         "category": "biology",
         "prompt": "2, 4, 6, 8, ?",
-        "choices": [
-            "10",
-            "8",
-            "12",
-            "6"
-        ],
+        "choices": ["10", "8", "12", "6"],
         "answerIndex": 0
     },
     {
         "id": "bio-092",
         "category": "biology",
         "prompt": "3, 6, 9, 12, ?",
-        "choices": [
-            "15",
-            "12",
-            "18",
-            "9"
-        ],
+        "choices": ["15", "12", "18", "9"],
         "answerIndex": 0
     },
     {
         "id": "bio-093",
         "category": "biology",
         "prompt": "4, 8, 12, 16, ?",
-        "choices": [
-            "20",
-            "16",
-            "24",
-            "12"
-        ],
+        "choices": ["20", "16", "24", "12"],
         "answerIndex": 0
     },
     {
         "id": "bio-094",
         "category": "biology",
         "prompt": "5, 10, 15, 20, ?",
-        "choices": [
-            "25",
-            "20",
-            "30",
-            "15"
-        ],
+        "choices": ["25", "20", "30", "15"],
         "answerIndex": 0
     },
     {
         "id": "bio-095",
         "category": "biology",
         "prompt": "6, 7, 8, 9, ?",
-        "choices": [
-            "10",
-            "9",
-            "11",
-            "8"
-        ],
+        "choices": ["10", "9", "11", "8"],
         "answerIndex": 0
     },
     {
         "id": "bio-096",
         "category": "biology",
         "prompt": "7, 9, 11, 13, ?",
-        "choices": [
-            "15",
-            "13",
-            "17",
-            "11"
-        ],
+        "choices": ["15", "13", "17", "11"],
         "answerIndex": 0
     },
     {
         "id": "bio-097",
         "category": "biology",
         "prompt": "8, 11, 14, 17, ?",
-        "choices": [
-            "20",
-            "17",
-            "23",
-            "14"
-        ],
+        "choices": ["20", "17", "23", "14"],
         "answerIndex": 0
     },
     {
         "id": "bio-098",
         "category": "biology",
         "prompt": "2, 6, 10, 14, ?",
-        "choices": [
-            "18",
-            "14",
-            "22",
-            "10"
-        ],
+        "choices": ["18", "14", "22", "10"],
         "answerIndex": 0
     },
     {
         "id": "bio-099",
         "category": "biology",
         "prompt": "3, 8, 13, 18, ?",
-        "choices": [
-            "23",
-            "18",
-            "28",
-            "13"
-        ],
+        "choices": ["23", "18", "28", "13"],
         "answerIndex": 0
     },
     {
         "id": "bio-100",
         "category": "biology",
         "prompt": "4, 5, 6, 7, ?",
-        "choices": [
-            "8",
-            "7",
-            "9",
-            "6"
-        ],
+        "choices": ["8", "7", "9", "6"],
         "answerIndex": 0
     }
 ]
