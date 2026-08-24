@@ -134,9 +134,13 @@ async function resolveYouTubeChannel(
                                                     publishedAt?: string
                                                     liveBroadcastContent?: string
                                                     thumbnails?: {
-                                                        medium?: { url?: string }
+                                                        medium?: {
+                                                            url?: string
+                                                        }
                                                         high?: { url?: string }
-                                                        default?: { url?: string }
+                                                        default?: {
+                                                            url?: string
+                                                        }
                                                     }
                                                 }
                                                 statistics?: {
