@@ -12,7 +12,10 @@ export async function POST(
     try {
         const session = await getServerSession(request)
         if (!session?.user?.id) {
-            return NextResponse.json({ success: false, error: "UNAUTHORIZED" }, { status: 401 })
+            return NextResponse.json(
+                { success: false, error: "UNAUTHORIZED" },
+                { status: 401 }
+            )
         }
 
         const { id } = await params
@@ -30,7 +33,10 @@ export async function POST(
             .single()
 
         if (fetchError || !config) {
-            return NextResponse.json({ success: false, error: "NOT_FOUND" }, { status: 404 })
+            return NextResponse.json(
+                { success: false, error: "NOT_FOUND" },
+                { status: 404 }
+            )
         }
 
         const { data: job, error: jobError } = await supabase
@@ -49,7 +55,10 @@ export async function POST(
 
         await supabase
             .from("cloner_configs")
-            .update({ last_cloned_at: new Date().toISOString(), status: "running" })
+            .update({
+                last_cloned_at: new Date().toISOString(),
+                status: "running",
+            })
             .eq("id", id)
 
         logger.info("Clone job created", { jobId: job.id, configId: id })
@@ -57,6 +66,9 @@ export async function POST(
     } catch (error) {
         const err = error instanceof Error ? error : new Error(String(error))
         logger.error("ClonerConfigs clone POST error", err)
-        return NextResponse.json({ success: false, error: err.message }, { status: 500 })
+        return NextResponse.json(
+            { success: false, error: err.message },
+            { status: 500 }
+        )
     }
 }

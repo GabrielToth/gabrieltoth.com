@@ -1,4 +1,8 @@
-import { calculateViewerRetention, ViewerDataPoint, ChatDataPoint } from "./viewer-analytics"
+import {
+    calculateViewerRetention,
+    ViewerDataPoint,
+    ChatDataPoint,
+} from "./viewer-analytics"
 
 describe("calculateViewerRetention", () => {
     it("handles empty history gracefully", () => {
@@ -20,9 +24,21 @@ describe("calculateViewerRetention", () => {
 
         const chatHistory: ChatDataPoint[] = [
             { timestamp: now, chattersCount: 20, repeatChattersCount: 5 },
-            { timestamp: now + 60000, chattersCount: 30, repeatChattersCount: 15 },
-            { timestamp: now + 120000, chattersCount: 25, repeatChattersCount: 12 },
-            { timestamp: now + 180000, chattersCount: 15, repeatChattersCount: 8 },
+            {
+                timestamp: now + 60000,
+                chattersCount: 30,
+                repeatChattersCount: 15,
+            },
+            {
+                timestamp: now + 120000,
+                chattersCount: 25,
+                repeatChattersCount: 12,
+            },
+            {
+                timestamp: now + 180000,
+                chattersCount: 15,
+                repeatChattersCount: 8,
+            },
         ]
 
         const stats = calculateViewerRetention(history, chatHistory)

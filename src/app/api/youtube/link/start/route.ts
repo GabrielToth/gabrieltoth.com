@@ -33,7 +33,11 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
         const { locale, redirectTo } = await request.json().catch(() => ({}))
 
-        logger.info("Linking initiation requested", { userId, locale, redirectTo })
+        logger.info("Linking initiation requested", {
+            userId,
+            locale,
+            redirectTo,
+        })
 
         const env = validateEnv()
         const config = getYouTubeChannelLinkingConfig(env)

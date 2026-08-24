@@ -7,14 +7,22 @@ describe("ChatModerator", () => {
         ]
         const moderator = new ChatModerator(rules)
 
-        const res = moderator.evaluateMessage("Hello this contains BADWORD here")
+        const res = moderator.evaluateMessage(
+            "Hello this contains BADWORD here"
+        )
         expect(res.flagged).toBe(true)
         expect(res.action).toBe("block")
     })
 
     it("flags unauthorized links", () => {
         const rules: ModerationRule[] = [
-            { id: "2", pattern: "", type: "link", action: "timeout", timeoutSeconds: 300 },
+            {
+                id: "2",
+                pattern: "",
+                type: "link",
+                action: "timeout",
+                timeoutSeconds: 300,
+            },
         ]
         const moderator = new ChatModerator(rules)
 

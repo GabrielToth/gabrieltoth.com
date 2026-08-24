@@ -1,13 +1,8 @@
 export type ExternalPlatform =
-    | "tiktok"
-    | "instagram"
-    | "facebook"
-    | "youtube"
-    | "kwai"
-    | "twitch"
-    | "x"
+    "tiktok" | "instagram" | "facebook" | "youtube" | "kwai" | "twitch" | "x"
 
-export type SessionStatus = "active" | "expired" | "invalid" | "pending_verification"
+export type SessionStatus =
+    "active" | "expired" | "invalid" | "pending_verification"
 
 export interface SessionCookie {
     name: string

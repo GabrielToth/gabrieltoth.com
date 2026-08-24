@@ -22,7 +22,9 @@ describe("SQL Injection Prevention", () => {
         })
 
         it("detects classic union-based injection", () => {
-            const result = detectSqlInjection("1 UNION SELECT password FROM users")
+            const result = detectSqlInjection(
+                "1 UNION SELECT password FROM users"
+            )
             expect(result.detected).toBe(true)
             expect(result.pattern).toBe("SQL keyword")
         })
@@ -55,10 +57,7 @@ describe("SQL Injection Prevention", () => {
         })
 
         it("rejects suspicious SQL patterns with field context", () => {
-            const result = validateAgainstSqlInjection(
-                "' OR 1=1--",
-                "email"
-            )
+            const result = validateAgainstSqlInjection("' OR 1=1--", "email")
             expect(result.isValid).toBe(false)
             expect(result.error).toContain("email")
         })

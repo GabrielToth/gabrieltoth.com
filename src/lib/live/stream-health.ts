@@ -13,7 +13,8 @@ export interface StreamHealthMetrics {
     timestamp: number
 }
 
-export type HealthStatusLevel = "excellent" | "good" | "fair" | "poor" | "critical"
+export type HealthStatusLevel =
+    "excellent" | "good" | "fair" | "poor" | "critical"
 
 export interface StreamHealthStatus {
     level: HealthStatusLevel
@@ -21,7 +22,9 @@ export interface StreamHealthStatus {
     issues: string[]
 }
 
-export function evaluateStreamHealth(metrics: StreamHealthMetrics): StreamHealthStatus {
+export function evaluateStreamHealth(
+    metrics: StreamHealthMetrics
+): StreamHealthStatus {
     const issues: string[] = []
     let score = 100
 
@@ -33,14 +36,18 @@ export function evaluateStreamHealth(metrics: StreamHealthMetrics): StreamHealth
             issues.push(`High dropped frames: ${(dropRatio * 100).toFixed(1)}%`)
         } else if (dropRatio > 0.01) {
             score -= 15
-            issues.push(`Minor dropped frames: ${(dropRatio * 100).toFixed(1)}%`)
+            issues.push(
+                `Minor dropped frames: ${(dropRatio * 100).toFixed(1)}%`
+            )
         }
     }
 
     // Bitrate check
     if (metrics.bitrateKbps < 1500) {
         score -= 30
-        issues.push(`Low bitrate: ${metrics.bitrateKbps} Kbps (min recommended: 1500)`)
+        issues.push(
+            `Low bitrate: ${metrics.bitrateKbps} Kbps (min recommended: 1500)`
+        )
     } else if (metrics.bitrateKbps < 3000) {
         score -= 10
         issues.push(`Sub-optimal bitrate: ${metrics.bitrateKbps} Kbps`)

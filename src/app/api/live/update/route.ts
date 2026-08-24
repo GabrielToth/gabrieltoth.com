@@ -529,7 +529,11 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
                         game_id
                     )
                 } else if (platform === "kick") {
-                    result = await updateKickStream(refreshed, title, resolvedGameId)
+                    result = await updateKickStream(
+                        refreshed,
+                        title,
+                        resolvedGameId
+                    )
                 } else {
                     result = await updateYouTubeStream(
                         refreshed,

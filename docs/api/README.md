@@ -4,11 +4,13 @@
 
 ## 📋 Table of Contents
 
-- [Authentication](#authentication)
-- [Social Media](#social-media)
-- [Publishing](#publishing)
-- [Analytics](#analytics)
-- [User Management](#user-management)
+- [Authentication](#-authentication)
+- [Auth Endpoints](#auth-endpoints)
+- [OAuth Endpoints](#oauth-endpoints)
+- [Social Media Endpoints](#social-media-endpoints)
+- [Publishing Endpoints](#publishing-endpoints)
+- [Analytics Endpoints](#analytics-endpoints)
+- [Rate Limits](#rate-limits)
 
 ## 🔐 Authentication
 

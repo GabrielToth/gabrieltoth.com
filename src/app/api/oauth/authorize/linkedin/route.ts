@@ -33,7 +33,11 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
         const { locale, redirectTo } = await request.json().catch(() => ({}))
 
-        logger.info("LinkedIn linking initiation requested", { userId, locale, redirectTo })
+        logger.info("LinkedIn linking initiation requested", {
+            userId,
+            locale,
+            redirectTo,
+        })
 
         const config = getLinkedInConfig()
         const oauthService = getLinkedInOAuthService(config)
@@ -42,7 +46,12 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         const authResponse = oauthService.generateAuthorizationUrl(userId)
 
         // Sign the state with HMAC for verification in callback
-        const signedState = generateState(userId, "linkedin", locale, redirectTo)
+        const signedState = generateState(
+            userId,
+            "linkedin",
+            locale,
+            redirectTo
+        )
 
         // Use the signed state as the oauth state parameter
         const authorizeUrl = authResponse.authorizationUrl.replace(

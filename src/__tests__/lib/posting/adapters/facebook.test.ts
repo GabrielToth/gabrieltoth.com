@@ -13,7 +13,10 @@ const mockGetFacebookConfig = vi.fn()
 const mockGetValidFacebookToken = vi.fn()
 const mockGetFacebookOAuthService = vi.fn()
 const mockPostToPageFeed = vi.fn()
-const mockLogger = { info: vi.fn(), warn: vi.fn(), error: vi.fn() }
+
+const { mockLogger } = vi.hoisted(() => ({
+    mockLogger: { info: vi.fn(), warn: vi.fn(), error: vi.fn() },
+}))
 
 vi.mock("@/lib/facebook/config", () => ({
     getFacebookConfig: (...args: unknown[]) => mockGetFacebookConfig(...args),

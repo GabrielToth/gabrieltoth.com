@@ -13,7 +13,10 @@ export async function GET(
         const { id } = await context.params
         const session = await getServerSession(request)
         if (!session?.user?.id) {
-            return NextResponse.json({ success: false, error: "UNAUTHORIZED" }, { status: 401 })
+            return NextResponse.json(
+                { success: false, error: "UNAUTHORIZED" },
+                { status: 401 }
+            )
         }
 
         const supabase = createClient(
@@ -30,14 +33,20 @@ export async function GET(
 
         if (error) throw error
         if (!data) {
-            return NextResponse.json({ success: false, error: "NOT_FOUND" }, { status: 404 })
+            return NextResponse.json(
+                { success: false, error: "NOT_FOUND" },
+                { status: 404 }
+            )
         }
 
         return NextResponse.json({ success: true, data })
     } catch (error) {
         const err = error instanceof Error ? error : new Error(String(error))
         logger.error("ChannelGroup GET error", err)
-        return NextResponse.json({ success: false, error: err.message }, { status: 500 })
+        return NextResponse.json(
+            { success: false, error: err.message },
+            { status: 500 }
+        )
     }
 }
 
@@ -49,7 +58,10 @@ export async function PATCH(
         const { id } = await context.params
         const session = await getServerSession(request)
         if (!session?.user?.id) {
-            return NextResponse.json({ success: false, error: "UNAUTHORIZED" }, { status: 401 })
+            return NextResponse.json(
+                { success: false, error: "UNAUTHORIZED" },
+                { status: 401 }
+            )
         }
 
         const body = await request.json()
@@ -60,7 +72,11 @@ export async function PATCH(
 
         const { error } = await supabase
             .from("channel_groups")
-            .update({ name: body.name, description: body.description, updated_at: new Date().toISOString() })
+            .update({
+                name: body.name,
+                description: body.description,
+                updated_at: new Date().toISOString(),
+            })
             .eq("id", id)
             .eq("user_id", session.user.id)
 
@@ -69,7 +85,10 @@ export async function PATCH(
     } catch (error) {
         const err = error instanceof Error ? error : new Error(String(error))
         logger.error("ChannelGroup PATCH error", err)
-        return NextResponse.json({ success: false, error: err.message }, { status: 500 })
+        return NextResponse.json(
+            { success: false, error: err.message },
+            { status: 500 }
+        )
     }
 }
 
@@ -81,7 +100,10 @@ export async function DELETE(
         const { id } = await context.params
         const session = await getServerSession(request)
         if (!session?.user?.id) {
-            return NextResponse.json({ success: false, error: "UNAUTHORIZED" }, { status: 401 })
+            return NextResponse.json(
+                { success: false, error: "UNAUTHORIZED" },
+                { status: 401 }
+            )
         }
 
         const supabase = createClient(
@@ -100,6 +122,9 @@ export async function DELETE(
     } catch (error) {
         const err = error instanceof Error ? error : new Error(String(error))
         logger.error("ChannelGroup DELETE error", err)
-        return NextResponse.json({ success: false, error: err.message }, { status: 500 })
+        return NextResponse.json(
+            { success: false, error: err.message },
+            { status: 500 }
+        )
     }
 }

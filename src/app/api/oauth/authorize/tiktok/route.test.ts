@@ -80,7 +80,10 @@ describe("POST /api/oauth/authorize/tiktok", () => {
                 iat: Date.now(),
             },
         })
-        mockRequest = { headers: new Map() } as unknown as NextRequest
+        mockRequest = {
+            headers: new Map(),
+            json: vi.fn().mockResolvedValue({}),
+        } as unknown as NextRequest
     })
 
     afterEach(() => {

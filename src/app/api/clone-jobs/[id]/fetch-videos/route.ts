@@ -13,7 +13,10 @@ export async function POST(
         const { id } = await context.params
         const session = await getServerSession(request)
         if (!session?.user?.id) {
-            return NextResponse.json({ success: false, error: "UNAUTHORIZED" }, { status: 401 })
+            return NextResponse.json(
+                { success: false, error: "UNAUTHORIZED" },
+                { status: 401 }
+            )
         }
 
         const supabase = createClient(
@@ -29,7 +32,10 @@ export async function POST(
             .single()
 
         if (!job) {
-            return NextResponse.json({ success: false, error: "NOT_FOUND" }, { status: 404 })
+            return NextResponse.json(
+                { success: false, error: "NOT_FOUND" },
+                { status: 404 }
+            )
         }
 
         const channelUrl = job.source_channel_url
@@ -40,7 +46,9 @@ export async function POST(
         const urlMatch = channelUrl.match(/youtube\.com\/(\w+)/)
 
         if (handleMatch) {
-            const res = await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&type=channel&q=${handleMatch[1]}&key=${process.env.YOUTUBE_API_KEY}`)
+            const res = await fetch(
+                `https://www.googleapis.com/youtube/v3/search?part=snippet&type=channel&q=${handleMatch[1]}&key=${process.env.YOUTUBE_API_KEY}`
+            )
             const data = await res.json()
             channelId = data.items?.[0]?.id?.channelId || ""
         } else if (channelMatch) {
@@ -48,7 +56,10 @@ export async function POST(
         }
 
         if (!channelId) {
-            return NextResponse.json({ success: false, error: "Could not resolve channel" }, { status: 400 })
+            return NextResponse.json(
+                { success: false, error: "Could not resolve channel" },
+                { status: 400 }
+            )
         }
 
         const allVideos: any[] = []
@@ -65,8 +76,12 @@ export async function POST(
 
         const videos = allVideos.map((item: any) => {
             const title = item.snippet?.title || ""
-            const isShort = title.match(/#shorts/i) || (item.snippet?.tags || []).includes("Shorts")
-            const isLive = item.snippet?.liveBroadcastContent === "upcoming" || item.snippet?.liveBroadcastContent === "live"
+            const isShort =
+                title.match(/#shorts/i) ||
+                (item.snippet?.tags || []).includes("Shorts")
+            const isLive =
+                item.snippet?.liveBroadcastContent === "upcoming" ||
+                item.snippet?.liveBroadcastContent === "live"
             let category: string
             if (isLive) category = "live"
             else if (isShort) category = "short"
@@ -84,7 +99,9 @@ export async function POST(
         })
 
         const categories = job.categories || ["video", "short", "live"]
-        const filtered = videos.filter((v: any) => categories.includes(v.category))
+        const filtered = videos.filter((v: any) =>
+            categories.includes(v.category)
+        )
         const videoIds = filtered.map((v: any) => v.videoId)
 
         await supabase
@@ -107,6 +124,9 @@ export async function POST(
     } catch (error) {
         const err = error instanceof Error ? error : new Error(String(error))
         logger.error("CloneFetchVideos error", err)
-        return NextResponse.json({ success: false, error: err.message }, { status: 500 })
+        return NextResponse.json(
+            { success: false, error: err.message },
+            { status: 500 }
+        )
     }
 }

@@ -42,23 +42,33 @@ async function getValidAccessToken(
 
         if (!storedToken.refreshToken) return null
 
-        let refreshed: { accessToken: string; expiresIn: number; refreshToken?: string }
+        let refreshed: {
+            accessToken: string
+            expiresIn: number
+            refreshToken?: string
+        }
 
         if (platform === "twitch") {
             const config = getTwitchConfig()
             const oauthService = getTwitchOAuthService(config)
             await oauthService.initialize()
-            refreshed = await oauthService.refreshAccessToken(storedToken.refreshToken)
+            refreshed = await oauthService.refreshAccessToken(
+                storedToken.refreshToken
+            )
         } else if (platform === "kick") {
             const config = getKickConfig()
             const oauthService = getKickOAuthService(config)
             await oauthService.initialize()
-            refreshed = await oauthService.refreshAccessToken(storedToken.refreshToken)
+            refreshed = await oauthService.refreshAccessToken(
+                storedToken.refreshToken
+            )
         } else if (platform === "youtube") {
             const ytConfig = getYouTubeChannelLinkingConfig(validateEnv())
             const ytOAuthService = getYouTubeOAuthService(ytConfig)
             await ytOAuthService.initialize()
-            refreshed = await ytOAuthService.refreshAccessToken(storedToken.refreshToken)
+            refreshed = await ytOAuthService.refreshAccessToken(
+                storedToken.refreshToken
+            )
         } else {
             return null
         }
@@ -78,7 +88,10 @@ async function getValidAccessToken(
     }
 }
 
-async function fetchTwitchCategories(query: string, accessToken: string): Promise<CategoryResult[]> {
+async function fetchTwitchCategories(
+    query: string,
+    accessToken: string
+): Promise<CategoryResult[]> {
     try {
         const clientId = process.env.TWITCH_CLIENT_ID || ""
         const url = query
@@ -98,14 +111,19 @@ async function fetchTwitchCategories(query: string, accessToken: string): Promis
             id: item.id,
             name: item.name,
             platform: "twitch",
-            boxArtUrl: item.box_art_url?.replace("{width}", "144").replace("{height}", "192"),
+            boxArtUrl: item.box_art_url
+                ?.replace("{width}", "144")
+                .replace("{height}", "192"),
         }))
     } catch {
         return []
     }
 }
 
-async function fetchKickCategories(query: string, accessToken: string): Promise<CategoryResult[]> {
+async function fetchKickCategories(
+    query: string,
+    accessToken: string
+): Promise<CategoryResult[]> {
     try {
         const url = query
             ? `https://api.kick.com/public/v1/categories?query=${encodeURIComponent(query)}&limit=10`
@@ -130,7 +148,10 @@ async function fetchKickCategories(query: string, accessToken: string): Promise<
     }
 }
 
-async function fetchYouTubeCategories(query: string, accessToken: string): Promise<CategoryResult[]> {
+async function fetchYouTubeCategories(
+    query: string,
+    accessToken: string
+): Promise<CategoryResult[]> {
     try {
         const res = await fetch(
             `https://www.googleapis.com/youtube/v3/videoCategories?part=snippet&regionCode=US`,
@@ -187,7 +208,9 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
 
         let targetPlatforms = connectedPlatforms
         if (requestedPlatform) {
-            targetPlatforms = connectedPlatforms.filter(p => p === requestedPlatform)
+            targetPlatforms = connectedPlatforms.filter(
+                p => p === requestedPlatform
+            )
         }
 
         const results: CategoryResult[] = []
@@ -197,10 +220,18 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
             if (!token) {
                 // Fallback default list if token fetching fails but platform is connected
                 if (query.toLowerCase().includes("game") || !query) {
-                    results.push({ id: "21779", name: "League of Legends", platform })
+                    results.push({
+                        id: "21779",
+                        name: "League of Legends",
+                        platform,
+                    })
                     results.push({ id: "27471", name: "Minecraft", platform })
                     results.push({ id: "33214", name: "VALORANT", platform })
-                    results.push({ id: "509658", name: "Just Chatting", platform })
+                    results.push({
+                        id: "509658",
+                        name: "Just Chatting",
+                        platform,
+                    })
                 }
                 continue
             }
@@ -223,7 +254,10 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
             categories: results,
         })
     } catch (error) {
-        logger.error("Category search failed", error instanceof Error ? error : new Error(String(error)))
+        logger.error(
+            "Category search failed",
+            error instanceof Error ? error : new Error(String(error))
+        )
         return NextResponse.json(
             { success: false, error: "INTERNAL_ERROR" },
             { status: 500 }
