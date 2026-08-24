@@ -246,7 +246,7 @@ export async function GET(request: NextRequest) {
             valid: true,
             message: "Token is valid",
         })
-    } catch (error) {
+    } catch (_error) {
         return NextResponse.json(
             { error: "An unexpected error occurred" },
             { status: 500 }
