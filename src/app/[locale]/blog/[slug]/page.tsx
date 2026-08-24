@@ -9,7 +9,9 @@ interface PageProps {
 
 export default async function BlogPostPage({ params }: PageProps) {
     const { locale: rawLocale, slug } = await params
-    const locale: Locale = locales.includes(rawLocale as Locale) ? (rawLocale as Locale) : defaultLocale
+    const locale: Locale = locales.includes(rawLocale as Locale)
+        ? (rawLocale as Locale)
+        : defaultLocale
     const post = getBlogPostBySlug(slug)
 
     if (!post) {

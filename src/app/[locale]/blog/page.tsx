@@ -8,7 +8,9 @@ interface PageProps {
 
 export default async function BlogPage({ params }: PageProps) {
     const { locale: rawLocale } = await params
-    const locale: Locale = locales.includes(rawLocale as Locale) ? (rawLocale as Locale) : defaultLocale
+    const locale: Locale = locales.includes(rawLocale as Locale)
+        ? (rawLocale as Locale)
+        : defaultLocale
     const posts = getAllBlogPosts()
 
     return (
@@ -34,7 +36,10 @@ export default async function BlogPage({ params }: PageProps) {
                             <span>{post.readTime}</span>
                         </div>
                         <h2 className="mb-2 text-xl font-semibold text-foreground">
-                            <Link href={`/${locale}/blog/${post.slug}`} className="hover:underline">
+                            <Link
+                                href={`/${locale}/blog/${post.slug}`}
+                                className="hover:underline"
+                            >
                                 {post.title[locale] || post.title.en}
                             </Link>
                         </h2>
