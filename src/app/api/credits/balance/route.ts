@@ -47,7 +47,11 @@ export async function GET(request: NextRequest) {
             result.balance < 100000000
         ) {
             const grantAmount = 100000000 - result.balance
-            await adminGrant(user.id, grantAmount, "Test credits grant for Cloud Mode")
+            await adminGrant(
+                user.id,
+                grantAmount,
+                "Test credits grant for Cloud Mode"
+            )
             result = await getBalance(user.id)
         }
 

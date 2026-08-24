@@ -28,7 +28,11 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
         const { locale, redirectTo } = await request.json().catch(() => ({}))
 
-        logger.info("TikTok linking initiation requested", { userId, locale, redirectTo })
+        logger.info("TikTok linking initiation requested", {
+            userId,
+            locale,
+            redirectTo,
+        })
 
         const config = getTikTokConfig()
         const oauthService = getTikTokOAuthService(config)

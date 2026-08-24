@@ -68,7 +68,9 @@ async function resolveYouTubeChannel(
 
     if (cleanInput.includes("youtube.com/")) {
         const handleMatch = cleanInput.match(/youtube\.com\/@([\w.-]+)/)
-        const channelMatch = cleanInput.match(/youtube\.com\/channel\/([\w.-]+)/)
+        const channelMatch = cleanInput.match(
+            /youtube\.com\/channel\/([\w.-]+)/
+        )
         if (handleMatch) {
             handle = `@${handleMatch[1]}`
         } else if (channelMatch) {
@@ -96,57 +98,114 @@ async function resolveYouTubeChannel(
                         const channelData = await channelRes.json()
                         const ch = channelData.items?.[0]
                         if (ch) {
-                            const uploadsPlaylistId = ch.contentDetails?.relatedPlaylists?.uploads || ""
+                            const uploadsPlaylistId =
+                                ch.contentDetails?.relatedPlaylists?.uploads ||
+                                ""
                             const playlistRes = await fetch(
                                 `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet,contentDetails&playlistId=${uploadsPlaylistId}&maxResults=50&key=${apiKey}`
                             )
                             let videoItems: InspectVideoItem[] = []
                             if (playlistRes.ok) {
                                 const plData = await playlistRes.json()
-                                const videoIds = (plData.items || []).map((i: any) => i.contentDetails?.videoId).filter(Boolean).join(",")
+                                const videoIds = (plData.items || [])
+                                    .map((i: any) => i.contentDetails?.videoId)
+                                    .filter(Boolean)
+                                    .join(",")
                                 if (videoIds) {
                                     const vRes = await fetch(
                                         `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&id=${videoIds}&key=${apiKey}`
                                     )
                                     if (vRes.ok) {
                                         const vData = await vRes.json()
-                                        videoItems = (vData.items || []).map((v: any) => {
-                                            const durationSec = parseDurationSeconds(v.contentDetails?.duration || "")
-                                            const title = v.snippet?.title || ""
-                                            const isShort = durationSec <= 60 || title.match(/#shorts/i)
-                                            const isLive = v.snippet?.liveBroadcastContent === "live" || v.snippet?.liveBroadcastContent === "upcoming"
-                                            let cat: "video" | "short" | "live" | "podcast" = "video"
-                                            if (isLive) cat = "live"
-                                            else if (isShort) cat = "short"
+                                        videoItems = (vData.items || []).map(
+                                            (v: any) => {
+                                                const durationSec =
+                                                    parseDurationSeconds(
+                                                        v.contentDetails
+                                                            ?.duration || ""
+                                                    )
+                                                const title =
+                                                    v.snippet?.title || ""
+                                                const isShort =
+                                                    durationSec <= 60 ||
+                                                    title.match(/#shorts/i)
+                                                const isLive =
+                                                    v.snippet
+                                                        ?.liveBroadcastContent ===
+                                                        "live" ||
+                                                    v.snippet
+                                                        ?.liveBroadcastContent ===
+                                                        "upcoming"
+                                                let cat:
+                                                    | "video"
+                                                    | "short"
+                                                    | "live"
+                                                    | "podcast" = "video"
+                                                if (isLive) cat = "live"
+                                                else if (isShort) cat = "short"
 
-                                            return {
-                                                id: v.id,
-                                                title,
-                                                thumbnailUrl: v.snippet?.thumbnails?.medium?.url || v.snippet?.thumbnails?.default?.url || "",
-                                                durationSeconds: durationSec,
-                                                durationFormatted: formatDuration(durationSec),
-                                                category: cat,
-                                                publishedAt: v.snippet?.publishedAt || "",
-                                                viewCount: parseInt(v.statistics?.viewCount || "0", 10),
+                                                return {
+                                                    id: v.id,
+                                                    title,
+                                                    thumbnailUrl:
+                                                        v.snippet?.thumbnails
+                                                            ?.medium?.url ||
+                                                        v.snippet?.thumbnails
+                                                            ?.default?.url ||
+                                                        "",
+                                                    durationSeconds:
+                                                        durationSec,
+                                                    durationFormatted:
+                                                        formatDuration(
+                                                            durationSec
+                                                        ),
+                                                    category: cat,
+                                                    publishedAt:
+                                                        v.snippet
+                                                            ?.publishedAt || "",
+                                                    viewCount: parseInt(
+                                                        v.statistics
+                                                            ?.viewCount || "0",
+                                                        10
+                                                    ),
+                                                }
                                             }
-                                        })
+                                        )
                                     }
                                 }
                             }
 
-                            const videos = videoItems.filter(v => v.category === "video")
-                            const shorts = videoItems.filter(v => v.category === "short")
-                            const lives = videoItems.filter(v => v.category === "live")
-                            const podcasts = videoItems.filter(v => v.category === "podcast")
+                            const videos = videoItems.filter(
+                                v => v.category === "video"
+                            )
+                            const shorts = videoItems.filter(
+                                v => v.category === "short"
+                            )
+                            const lives = videoItems.filter(
+                                v => v.category === "live"
+                            )
+                            const podcasts = videoItems.filter(
+                                v => v.category === "podcast"
+                            )
 
                             return {
                                 channelId: ch.id,
                                 title: ch.snippet?.title || handle,
                                 handle: `@${cleanHandle}`,
-                                avatarUrl: ch.snippet?.thumbnails?.high?.url || ch.snippet?.thumbnails?.medium?.url || "",
+                                avatarUrl:
+                                    ch.snippet?.thumbnails?.high?.url ||
+                                    ch.snippet?.thumbnails?.medium?.url ||
+                                    "",
                                 description: ch.snippet?.description || "",
-                                subscriberCountFormatted: parseInt(ch.statistics?.subscriberCount || "0", 10).toLocaleString(),
-                                totalVideosCount: parseInt(ch.statistics?.videoCount || `${videoItems.length}`, 10),
+                                subscriberCountFormatted: parseInt(
+                                    ch.statistics?.subscriberCount || "0",
+                                    10
+                                ).toLocaleString(),
+                                totalVideosCount: parseInt(
+                                    ch.statistics?.videoCount ||
+                                        `${videoItems.length}`,
+                                    10
+                                ),
                                 categories: { videos, shorts, lives, podcasts },
                                 lookupCreditCost: 10,
                             }
@@ -155,7 +214,10 @@ async function resolveYouTubeChannel(
                 }
             }
         } catch (err) {
-            logger.warn("YouTube API inspection failed, using HTML scraper fallback", { error: String(err) })
+            logger.warn(
+                "YouTube API inspection failed, using HTML scraper fallback",
+                { error: String(err) }
+            )
         }
     }
 
@@ -165,28 +227,39 @@ async function resolveYouTubeChannel(
         const targetUrl = `https://www.youtube.com/@${cleanHandle}`
         const htmlRes = await fetch(targetUrl, {
             headers: {
-                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:135.0) Gecko/20100101 Firefox/135.0",
+                "User-Agent":
+                    "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:135.0) Gecko/20100101 Firefox/135.0",
                 "Accept-Language": "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7",
             },
         })
 
         const html = await htmlRes.text()
-        const titleMatch = html.match(/<meta property="og:title" content="([^"]+)">/)
-        const descMatch = html.match(/<meta property="og:description" content="([^"]+)">/)
-        const imageMatch = html.match(/<meta property="og:image" content="([^"]+)">/)
+        const titleMatch = html.match(
+            /<meta property="og:title" content="([^"]+)">/
+        )
+        const descMatch = html.match(
+            /<meta property="og:description" content="([^"]+)">/
+        )
+        const imageMatch = html.match(
+            /<meta property="og:image" content="([^"]+)">/
+        )
         const channelIdMatch = html.match(/"channelId":"(UC[\w-]+)"/)
 
         const title = titleMatch ? titleMatch[1] : `@${cleanHandle}`
         const avatarUrl = imageMatch ? imageMatch[1] : ""
         const description = descMatch ? descMatch[1] : ""
-        const channelId = channelIdMatch ? channelIdMatch[1] : `UC_${cleanHandle}`
+        const channelId = channelIdMatch
+            ? channelIdMatch[1]
+            : `UC_${cleanHandle}`
 
         // Generate sample categorized videos for preview
         const mockVideos: InspectVideoItem[] = [
             {
                 id: `v1_${cleanHandle}`,
                 title: `${title} - Full Video Overview & Gameplay`,
-                thumbnailUrl: avatarUrl || "https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg",
+                thumbnailUrl:
+                    avatarUrl ||
+                    "https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg",
                 durationSeconds: 745,
                 durationFormatted: "12:25",
                 category: "video",
@@ -196,7 +269,9 @@ async function resolveYouTubeChannel(
             {
                 id: `v2_${cleanHandle}`,
                 title: `${title} - Best Moments & Highlights`,
-                thumbnailUrl: avatarUrl || "https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg",
+                thumbnailUrl:
+                    avatarUrl ||
+                    "https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg",
                 durationSeconds: 420,
                 durationFormatted: "07:00",
                 category: "video",
@@ -209,7 +284,9 @@ async function resolveYouTubeChannel(
             {
                 id: `s1_${cleanHandle}`,
                 title: `Insane Play! #shorts`,
-                thumbnailUrl: avatarUrl || "https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg",
+                thumbnailUrl:
+                    avatarUrl ||
+                    "https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg",
                 durationSeconds: 45,
                 durationFormatted: "0:45",
                 category: "short",
@@ -219,7 +296,9 @@ async function resolveYouTubeChannel(
             {
                 id: `s2_${cleanHandle}`,
                 title: `Quick Tip You Need to Know #shorts`,
-                thumbnailUrl: avatarUrl || "https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg",
+                thumbnailUrl:
+                    avatarUrl ||
+                    "https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg",
                 durationSeconds: 30,
                 durationFormatted: "0:30",
                 category: "short",
@@ -232,7 +311,9 @@ async function resolveYouTubeChannel(
             {
                 id: `l1_${cleanHandle}`,
                 title: `Live Stream Replay - Ranked Matches`,
-                thumbnailUrl: avatarUrl || "https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg",
+                thumbnailUrl:
+                    avatarUrl ||
+                    "https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg",
                 durationSeconds: 7200,
                 durationFormatted: "2:00:00",
                 category: "live",
@@ -245,7 +326,9 @@ async function resolveYouTubeChannel(
             {
                 id: `p1_${cleanHandle}`,
                 title: `Podcast Episode #1 - Special Guest Interview`,
-                thumbnailUrl: avatarUrl || "https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg",
+                thumbnailUrl:
+                    avatarUrl ||
+                    "https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg",
                 durationSeconds: 3600,
                 durationFormatted: "1:00:00",
                 category: "podcast",
@@ -261,7 +344,11 @@ async function resolveYouTubeChannel(
             avatarUrl,
             description,
             subscriberCountFormatted: "10K+",
-            totalVideosCount: mockVideos.length + mockShorts.length + mockLives.length + mockPodcasts.length,
+            totalVideosCount:
+                mockVideos.length +
+                mockShorts.length +
+                mockLives.length +
+                mockPodcasts.length,
             categories: {
                 videos: mockVideos,
                 shorts: mockShorts,
@@ -281,7 +368,10 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     try {
         const session = await getServerSession(request)
         if (!session?.user?.id) {
-            return NextResponse.json({ success: false, error: "UNAUTHORIZED" }, { status: 401 })
+            return NextResponse.json(
+                { success: false, error: "UNAUTHORIZED" },
+                { status: 401 }
+            )
         }
 
         const body = await request.json()
@@ -290,7 +380,10 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         const customApiKey = body.customApiKey?.trim()
 
         if (!urlOrHandle) {
-            return NextResponse.json({ success: false, error: "MISSING_URL" }, { status: 400 })
+            return NextResponse.json(
+                { success: false, error: "MISSING_URL" },
+                { status: 400 }
+            )
         }
 
         // Operational credit cost for Cloud Mode analysis (if not using own Google API Key)
@@ -316,6 +409,9 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     } catch (error) {
         const err = error instanceof Error ? error : new Error(String(error))
         logger.error("Cloner inspect error", err)
-        return NextResponse.json({ success: false, error: err.message }, { status: 500 })
+        return NextResponse.json(
+            { success: false, error: err.message },
+            { status: 500 }
+        )
     }
 }

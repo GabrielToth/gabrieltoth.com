@@ -47,7 +47,10 @@ export function calculateViewerRetention(
     // Viewer Retention Rate: ratio of average viewers to peak viewers (watch time / stream time ratio)
     const viewerRetentionRate =
         peakViewers > 0
-            ? Math.min(100, Math.max(0, Math.round((averageViewers / peakViewers) * 100)))
+            ? Math.min(
+                  100,
+                  Math.max(0, Math.round((averageViewers / peakViewers) * 100))
+              )
             : 0
 
     const startTime = viewerHistory[0].timestamp
@@ -58,18 +61,33 @@ export function calculateViewerRetention(
     let chatRetentionRate = 0
     if (chatHistory && chatHistory.length > 0) {
         const peakChatters = Math.max(...chatHistory.map(c => c.chattersCount))
-        const totalRepeat = chatHistory.reduce((acc, c) => acc + (c.repeatChattersCount || 0), 0)
-        const totalChatters = chatHistory.reduce((acc, c) => acc + c.chattersCount, 0)
+        const totalRepeat = chatHistory.reduce(
+            (acc, c) => acc + (c.repeatChattersCount || 0),
+            0
+        )
+        const totalChatters = chatHistory.reduce(
+            (acc, c) => acc + c.chattersCount,
+            0
+        )
 
         if (totalRepeat > 0 && totalChatters > 0) {
-            chatRetentionRate = Math.min(100, Math.round((totalRepeat / totalChatters) * 100))
+            chatRetentionRate = Math.min(
+                100,
+                Math.round((totalRepeat / totalChatters) * 100)
+            )
         } else if (peakChatters > 0) {
             const avgChatters = Math.round(totalChatters / chatHistory.length)
-            chatRetentionRate = Math.min(100, Math.round((avgChatters / peakChatters) * 100))
+            chatRetentionRate = Math.min(
+                100,
+                Math.round((avgChatters / peakChatters) * 100)
+            )
         }
     } else {
         // Fallback chat retention from engagement curve
-        chatRetentionRate = Math.min(100, Math.round(viewerRetentionRate * 0.85))
+        chatRetentionRate = Math.min(
+            100,
+            Math.round(viewerRetentionRate * 0.85)
+        )
     }
 
     return {

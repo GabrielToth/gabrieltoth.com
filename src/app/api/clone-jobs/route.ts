@@ -13,7 +13,10 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
     try {
         const session = await getServerSession(request)
         if (!session?.user?.id) {
-            return NextResponse.json({ success: false, error: "UNAUTHORIZED" }, { status: 401 })
+            return NextResponse.json(
+                { success: false, error: "UNAUTHORIZED" },
+                { status: 401 }
+            )
         }
 
         try {
@@ -29,19 +32,29 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
                 .order("created_at", { ascending: false })
 
             if (!error && data) {
-                const combined = [...data, ...memoryJobsStore.filter(j => j.user_id === session.user.id)]
+                const combined = [
+                    ...data,
+                    ...memoryJobsStore.filter(
+                        j => j.user_id === session.user.id
+                    ),
+                ]
                 return NextResponse.json({ success: true, data: combined })
             }
         } catch {
             // Fallback to memory store
         }
 
-        const userJobs = memoryJobsStore.filter(j => j.user_id === session.user.id)
+        const userJobs = memoryJobsStore.filter(
+            j => j.user_id === session.user.id
+        )
         return NextResponse.json({ success: true, data: userJobs })
     } catch (error) {
         const err = error instanceof Error ? error : new Error(String(error))
         logger.error("CloneJobs GET error", err)
-        return NextResponse.json({ success: false, error: err.message }, { status: 500 })
+        return NextResponse.json(
+            { success: false, error: err.message },
+            { status: 500 }
+        )
     }
 }
 
@@ -49,12 +62,18 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     try {
         const session = await getServerSession(request)
         if (!session?.user?.id) {
-            return NextResponse.json({ success: false, error: "UNAUTHORIZED" }, { status: 401 })
+            return NextResponse.json(
+                { success: false, error: "UNAUTHORIZED" },
+                { status: 401 }
+            )
         }
 
         const body = await request.json()
         if (!body.source_channel_url) {
-            return NextResponse.json({ success: false, error: "MISSING_URL" }, { status: 400 })
+            return NextResponse.json(
+                { success: false, error: "MISSING_URL" },
+                { status: 400 }
+            )
         }
 
         const executionMode = body.execution_mode || "cloud"
@@ -64,9 +83,16 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         if (executionMode === "cloud" && creditCost > 0) {
             try {
                 // Grant initial test credits if needed or attempt deduction
-                await deductAction(session.user.id, "youtube_video_download_per_minute", 1)
+                await deductAction(
+                    session.user.id,
+                    "youtube_video_download_per_minute",
+                    1
+                )
             } catch (err) {
-                logger.warn("Credit deduction warning during clone job creation", { error: String(err) })
+                logger.warn(
+                    "Credit deduction warning during clone job creation",
+                    { error: String(err) }
+                )
             }
         }
 
@@ -81,15 +107,23 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
             status: "in_progress",
             source_type: body.source_type || "youtube",
             video_ids: body.video_ids || [],
-            categories: body.categories || ["video", "short", "live", "podcast"],
+            categories: body.categories || [
+                "video",
+                "short",
+                "live",
+                "podcast",
+            ],
             schedule_type: body.schedule_type || "daily",
             schedule_value: body.schedule_value || 1,
             auto_update: body.auto_update || false,
-            total_videos: body.total_videos || (body.video_ids ? body.video_ids.length : 1),
+            total_videos:
+                body.total_videos ||
+                (body.video_ids ? body.video_ids.length : 1),
             processed_videos: 0,
             progress_percentage: 15,
             estimated_time_remaining: "00:04:30",
-            current_step: "Passo 1/4: Analisando lista e agendando downloads com yt-dlp...",
+            current_step:
+                "Passo 1/4: Analisando lista e agendando downloads com yt-dlp...",
             credit_cost: creditCost,
             created_at: new Date().toISOString(),
             updated_at: new Date().toISOString(),
@@ -132,6 +166,9 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     } catch (error) {
         const err = error instanceof Error ? error : new Error(String(error))
         logger.error("CloneJobs POST error", err)
-        return NextResponse.json({ success: false, error: err.message }, { status: 500 })
+        return NextResponse.json(
+            { success: false, error: err.message },
+            { status: 500 }
+        )
     }
 }

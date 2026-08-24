@@ -1,4 +1,7 @@
-export function trackCustomEvent(eventName: string, properties?: Record<string, unknown>): void {
+export function trackCustomEvent(
+    eventName: string,
+    properties?: Record<string, unknown>
+): void {
     if (typeof window === "undefined") return
 
     // Vercel Analytics custom event track

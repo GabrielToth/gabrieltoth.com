@@ -44,7 +44,11 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
         const { locale, redirectTo } = await request.json().catch(() => ({}))
 
-        logger.info("Kick linking initiation requested", { userId, locale, redirectTo })
+        logger.info("Kick linking initiation requested", {
+            userId,
+            locale,
+            redirectTo,
+        })
 
         const config = getKickConfig()
         const oauthService = getKickOAuthService(config)

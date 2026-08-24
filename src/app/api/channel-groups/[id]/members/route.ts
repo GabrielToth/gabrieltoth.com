@@ -13,7 +13,10 @@ export async function GET(
         const { id } = await context.params
         const session = await getServerSession(request)
         if (!session?.user?.id) {
-            return NextResponse.json({ success: false, error: "UNAUTHORIZED" }, { status: 401 })
+            return NextResponse.json(
+                { success: false, error: "UNAUTHORIZED" },
+                { status: 401 }
+            )
         }
 
         const supabase = createClient(
@@ -29,7 +32,10 @@ export async function GET(
             .single()
 
         if (!group) {
-            return NextResponse.json({ success: false, error: "NOT_FOUND" }, { status: 404 })
+            return NextResponse.json(
+                { success: false, error: "NOT_FOUND" },
+                { status: 404 }
+            )
         }
 
         const { data, error } = await supabase
@@ -42,7 +48,10 @@ export async function GET(
     } catch (error) {
         const err = error instanceof Error ? error : new Error(String(error))
         logger.error("Members GET error", err)
-        return NextResponse.json({ success: false, error: err.message }, { status: 500 })
+        return NextResponse.json(
+            { success: false, error: err.message },
+            { status: 500 }
+        )
     }
 }
 
@@ -54,12 +63,18 @@ export async function POST(
         const { id } = await context.params
         const session = await getServerSession(request)
         if (!session?.user?.id) {
-            return NextResponse.json({ success: false, error: "UNAUTHORIZED" }, { status: 401 })
+            return NextResponse.json(
+                { success: false, error: "UNAUTHORIZED" },
+                { status: 401 }
+            )
         }
 
         const body = await request.json()
         if (!body.platform || !body.platform_username) {
-            return NextResponse.json({ success: false, error: "MISSING_FIELDS" }, { status: 400 })
+            return NextResponse.json(
+                { success: false, error: "MISSING_FIELDS" },
+                { status: 400 }
+            )
         }
 
         const supabase = createClient(
@@ -75,7 +90,10 @@ export async function POST(
             .single()
 
         if (!group) {
-            return NextResponse.json({ success: false, error: "NOT_FOUND" }, { status: 404 })
+            return NextResponse.json(
+                { success: false, error: "NOT_FOUND" },
+                { status: 404 }
+            )
         }
 
         const { data, error } = await supabase
@@ -96,7 +114,10 @@ export async function POST(
     } catch (error) {
         const err = error instanceof Error ? error : new Error(String(error))
         logger.error("Members POST error", err)
-        return NextResponse.json({ success: false, error: err.message }, { status: 500 })
+        return NextResponse.json(
+            { success: false, error: err.message },
+            { status: 500 }
+        )
     }
 }
 
@@ -108,13 +129,19 @@ export async function DELETE(
         const { id } = await context.params
         const session = await getServerSession(request)
         if (!session?.user?.id) {
-            return NextResponse.json({ success: false, error: "UNAUTHORIZED" }, { status: 401 })
+            return NextResponse.json(
+                { success: false, error: "UNAUTHORIZED" },
+                { status: 401 }
+            )
         }
 
         const { searchParams } = new URL(request.url)
         const memberId = searchParams.get("memberId")
         if (!memberId) {
-            return NextResponse.json({ success: false, error: "MISSING_MEMBER_ID" }, { status: 400 })
+            return NextResponse.json(
+                { success: false, error: "MISSING_MEMBER_ID" },
+                { status: 400 }
+            )
         }
 
         const supabase = createClient(
@@ -130,7 +157,10 @@ export async function DELETE(
             .single()
 
         if (!group) {
-            return NextResponse.json({ success: false, error: "NOT_FOUND" }, { status: 404 })
+            return NextResponse.json(
+                { success: false, error: "NOT_FOUND" },
+                { status: 404 }
+            )
         }
 
         const { error } = await supabase
@@ -144,6 +174,9 @@ export async function DELETE(
     } catch (error) {
         const err = error instanceof Error ? error : new Error(String(error))
         logger.error("Members DELETE error", err)
-        return NextResponse.json({ success: false, error: err.message }, { status: 500 })
+        return NextResponse.json(
+            { success: false, error: err.message },
+            { status: 500 }
+        )
     }
 }

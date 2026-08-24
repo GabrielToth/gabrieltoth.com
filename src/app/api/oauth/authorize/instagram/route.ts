@@ -43,13 +43,22 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
         const { locale, redirectTo } = await request.json().catch(() => ({}))
 
-        logger.info("Instagram linking initiation requested", { userId, locale, redirectTo })
+        logger.info("Instagram linking initiation requested", {
+            userId,
+            locale,
+            redirectTo,
+        })
 
         const config = getInstagramConfig()
         const oauthService = getInstagramOAuthService(config)
         await oauthService.initialize()
 
-        const signedState = generateState(userId, "instagram", locale, redirectTo)
+        const signedState = generateState(
+            userId,
+            "instagram",
+            locale,
+            redirectTo
+        )
 
         const params = new URLSearchParams({
             client_id: config.oauth.appId,

@@ -17,7 +17,9 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
 
         let query = supabase
             .from("social_networks")
-            .select("user_id, platform, platform_username, display_name, profile_image_url, platform_user_id")
+            .select(
+                "user_id, platform, platform_username, display_name, profile_image_url, platform_user_id"
+            )
             .eq("status", "connected")
 
         if (targetUserId) {
@@ -32,20 +34,38 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
             if (profileMatch) {
                 query = query.eq("user_id", profileMatch.id)
             } else {
-                return NextResponse.json({ success: false, error: "Streamer not found" }, { status: 404 })
+                return NextResponse.json(
+                    { success: false, error: "Streamer not found" },
+                    { status: 404 }
+                )
             }
         }
 
         const { data: users, error } = await query
 
         if (error) {
-            return NextResponse.json({ success: false, error: error.message }, { status: 500 })
+            return NextResponse.json(
+                { success: false, error: error.message },
+                { status: 500 }
+            )
         }
 
-        const liveStatuses: Record<string, {
-            userId: string
-            platforms: Record<string, { username: string; displayName: string; profileImageUrl: string | null; isLive: boolean; platformUserId: string }>
-        }> = {}
+        const liveStatuses: Record<
+            string,
+            {
+                userId: string
+                platforms: Record<
+                    string,
+                    {
+                        username: string
+                        displayName: string
+                        profileImageUrl: string | null
+                        isLive: boolean
+                        platformUserId: string
+                    }
+                >
+            }
+        > = {}
 
         for (const row of users) {
             const uid = row.user_id
@@ -89,23 +109,29 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
         for (const uid of userIds) {
             const profile = profileMap.get(uid)
             const entry = liveStatuses[uid]
-            const platformList = Object.entries(entry.platforms).map(([platform, info]) => ({
-                platform,
-                username: info.username,
-                displayName: info.displayName,
-                profileImageUrl: info.profileImageUrl,
-                isLive: info.isLive,
-                embedUrl: platform === "twitch"
-                    ? `https://player.twitch.tv/?channel=${info.username}&parent=gabrieltoth.com&autoplay=true`
-                    : platform === "youtube"
-                        ? `https://www.youtube.com/embed/live_stream?channel=${info.username}&autoplay=1`
-                        : undefined,
-            }))
+            const platformList = Object.entries(entry.platforms).map(
+                ([platform, info]) => ({
+                    platform,
+                    username: info.username,
+                    displayName: info.displayName,
+                    profileImageUrl: info.profileImageUrl,
+                    isLive: info.isLive,
+                    embedUrl:
+                        platform === "twitch"
+                            ? `https://player.twitch.tv/?channel=${info.username}&parent=gabrieltoth.com&autoplay=true`
+                            : platform === "youtube"
+                              ? `https://www.youtube.com/embed/live_stream?channel=${info.username}&autoplay=1`
+                              : undefined,
+                })
+            )
 
             result.push({
                 userId: uid,
                 username: profile?.username || uid,
-                displayName: profile?.display_name || platformList[0]?.displayName || uid,
+                displayName:
+                    profile?.display_name ||
+                    platformList[0]?.displayName ||
+                    uid,
                 avatarUrl: profile?.avatar_url || null,
                 defaultPlatform: platformList[0]?.platform || "",
                 platforms: platformList,
@@ -120,6 +146,9 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
     } catch (error) {
         const err = error instanceof Error ? error : new Error(String(error))
         logger.error("Discover API error", err)
-        return NextResponse.json({ success: false, error: err.message }, { status: 500 })
+        return NextResponse.json(
+            { success: false, error: err.message },
+            { status: 500 }
+        )
     }
 }

@@ -2,8 +2,7 @@ import React from "react"
 import { describe, expect, it, vi } from "vitest"
 
 vi.mock("next/font/google", () => ({
-    Geist: () => ({ variable: "--font-geist-sans" }),
-    Geist_Mono: () => ({ variable: "--font-geist-mono" }),
+    Inter: () => ({ variable: "--font-sans" }),
 }))
 
 vi.mock("@vercel/analytics/react", () => ({

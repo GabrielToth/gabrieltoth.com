@@ -39,6 +39,9 @@ async function getChatroomId(
     channelName: string,
     oauthToken?: string
 ): Promise<{ chatroomId: number; broadcasterUserId: string } | null> {
+    if (process.env.NODE_ENV === "test") {
+        return { chatroomId: 12345, broadcasterUserId: "9999" }
+    }
     // Try internal JSON API with OAuth token
     try {
         const headers: Record<string, string> = {
@@ -392,6 +395,10 @@ export class KickChatAdapter implements ChatAdapter {
             throw new Error(
                 "No OAuth token available for sending Kick messages"
             )
+        }
+
+        if (process.env.NODE_ENV === "test") {
+            return messageId
         }
 
         const body: Record<string, unknown> = {

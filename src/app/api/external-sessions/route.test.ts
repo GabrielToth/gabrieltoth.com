@@ -41,15 +41,20 @@ vi.mock("@supabase/supabase-js", () => ({
 
 describe("External Sessions API Route", () => {
     it("should return 401 Unauthorized for GET without valid session", async () => {
-        const req = new NextRequest("http://localhost:3000/api/external-sessions")
+        const req = new NextRequest(
+            "http://localhost:3000/api/external-sessions"
+        )
         const res = await GET(req)
         expect(res.status).toBe(401)
     })
 
     it("should return session list for GET with valid manager session", async () => {
-        const req = new NextRequest("http://localhost:3000/api/external-sessions", {
-            headers: { authorization: "Bearer valid-token" },
-        })
+        const req = new NextRequest(
+            "http://localhost:3000/api/external-sessions",
+            {
+                headers: { authorization: "Bearer valid-token" },
+            }
+        )
         const res = await GET(req)
         const body = await res.json()
         expect(res.status).toBe(200)
@@ -59,19 +64,29 @@ describe("External Sessions API Route", () => {
     })
 
     it("should store new encrypted session for POST", async () => {
-        const req = new NextRequest("http://localhost:3000/api/external-sessions", {
-            method: "POST",
-            headers: {
-                authorization: "Bearer valid-token",
-                "content-type": "application/json",
-            },
-            body: JSON.stringify({
-                managedClientName: "Waveigl",
-                platform: "tiktok",
-                platformUsername: "waveigl_official",
-                cookies: [{ name: "sessionid", value: "abc", domain: ".tiktok.com", path: "/" }],
-            }),
-        })
+        const req = new NextRequest(
+            "http://localhost:3000/api/external-sessions",
+            {
+                method: "POST",
+                headers: {
+                    authorization: "Bearer valid-token",
+                    "content-type": "application/json",
+                },
+                body: JSON.stringify({
+                    managedClientName: "Waveigl",
+                    platform: "tiktok",
+                    platformUsername: "waveigl_official",
+                    cookies: [
+                        {
+                            name: "sessionid",
+                            value: "abc",
+                            domain: ".tiktok.com",
+                            path: "/",
+                        },
+                    ],
+                }),
+            }
+        )
 
         const res = await POST(req)
         const body = await res.json()
@@ -81,10 +96,13 @@ describe("External Sessions API Route", () => {
     })
 
     it("should revoke session for DELETE", async () => {
-        const req = new NextRequest("http://localhost:3000/api/external-sessions?id=sess-1", {
-            method: "DELETE",
-            headers: { authorization: "Bearer valid-token" },
-        })
+        const req = new NextRequest(
+            "http://localhost:3000/api/external-sessions?id=sess-1",
+            {
+                method: "DELETE",
+                headers: { authorization: "Bearer valid-token" },
+            }
+        )
 
         const res = await DELETE(req)
         const body = await res.json()

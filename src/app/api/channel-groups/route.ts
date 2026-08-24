@@ -9,7 +9,10 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
     try {
         const session = await getServerSession(request)
         if (!session?.user?.id) {
-            return NextResponse.json({ success: false, error: "UNAUTHORIZED" }, { status: 401 })
+            return NextResponse.json(
+                { success: false, error: "UNAUTHORIZED" },
+                { status: 401 }
+            )
         }
 
         const supabase = createClient(
@@ -28,7 +31,10 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
     } catch (error) {
         const err = error instanceof Error ? error : new Error(String(error))
         logger.error("ChannelGroups GET error", err)
-        return NextResponse.json({ success: false, error: err.message }, { status: 500 })
+        return NextResponse.json(
+            { success: false, error: err.message },
+            { status: 500 }
+        )
     }
 }
 
@@ -36,12 +42,18 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     try {
         const session = await getServerSession(request)
         if (!session?.user?.id) {
-            return NextResponse.json({ success: false, error: "UNAUTHORIZED" }, { status: 401 })
+            return NextResponse.json(
+                { success: false, error: "UNAUTHORIZED" },
+                { status: 401 }
+            )
         }
 
         const body = await request.json()
         if (!body.name) {
-            return NextResponse.json({ success: false, error: "MISSING_NAME" }, { status: 400 })
+            return NextResponse.json(
+                { success: false, error: "MISSING_NAME" },
+                { status: 400 }
+            )
         }
 
         const supabase = createClient(
@@ -51,7 +63,11 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
         const { data, error } = await supabase
             .from("channel_groups")
-            .insert({ user_id: session.user.id, name: body.name, description: body.description || "" })
+            .insert({
+                user_id: session.user.id,
+                name: body.name,
+                description: body.description || "",
+            })
             .select()
             .single()
 
@@ -60,6 +76,9 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     } catch (error) {
         const err = error instanceof Error ? error : new Error(String(error))
         logger.error("ChannelGroups POST error", err)
-        return NextResponse.json({ success: false, error: err.message }, { status: 500 })
+        return NextResponse.json(
+            { success: false, error: err.message },
+            { status: 500 }
+        )
     }
 }

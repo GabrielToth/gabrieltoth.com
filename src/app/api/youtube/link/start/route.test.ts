@@ -119,6 +119,7 @@ describe("POST /api/youtube/link/start", () => {
         })
         mockRequest = {
             headers: new Map(),
+            json: vi.fn().mockResolvedValue({}),
         }
     })
 

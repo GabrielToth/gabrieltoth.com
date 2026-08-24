@@ -525,7 +525,10 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
         }
 
         const response = { success: true, data: platforms }
-        statusCache.set(userId, { data: response, expiresAt: Date.now() + STATUS_CACHE_TTL_MS })
+        statusCache.set(userId, {
+            data: response,
+            expiresAt: Date.now() + STATUS_CACHE_TTL_MS,
+        })
 
         return NextResponse.json(response)
     } catch (error) {

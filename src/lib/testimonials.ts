@@ -14,7 +14,8 @@ export const TESTIMONIALS: Testimonial[] = [
         name: "Alex Silva",
         role: "Content Creator & Youtuber",
         comment: {
-            "pt-BR": "O Gabriel otimizou a infraestrutura dos meus canais e a automação de publicação. O tempo de postagem caiu 80%!",
+            "pt-BR":
+                "O Gabriel otimizou a infraestrutura dos meus canais e a automação de publicação. O tempo de postagem caiu 80%!",
             en: "Gabriel optimized my channel infrastructure and publication automation. Post time dropped by 80%!",
             es: "¡Gabriel optimizó la infraestructura de mis canales y la automatización de publicaciones. El tiempo de publicación se redujo un 80%!",
             de: "Gabriel hat meine Kanalinfrastruktur und Veröffentlichungsautomatisierung optimiert. Die Veröffentlichungszeit sank um 80%!",
@@ -27,7 +28,8 @@ export const TESTIMONIALS: Testimonial[] = [
         name: "Lucas Mendes",
         role: "Competitive Gamer",
         comment: {
-            "pt-BR": "A otimização de PC foi surreal. Ganhei mais de 60 FPS no Valorant e o frametime ficou super liso.",
+            "pt-BR":
+                "A otimização de PC foi surreal. Ganhei mais de 60 FPS no Valorant e o frametime ficou super liso.",
             en: "The PC optimization was unreal. Gained over 60 FPS in Valorant and the frametime became super smooth.",
             es: "La optimización de PC fue irreal. ¡Gané más de 60 FPS en Valorant y el frametime quedó súper fluido!",
             de: "Die PC-Optimierung war unglaublich. Über 60 FPS mehr in Valorant und das Frametime wurde extrem flüssig.",

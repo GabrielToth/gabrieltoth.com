@@ -43,7 +43,11 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
         const { locale, redirectTo } = await request.json().catch(() => ({}))
 
-        logger.info("Twitch linking initiation requested", { userId, locale, redirectTo })
+        logger.info("Twitch linking initiation requested", {
+            userId,
+            locale,
+            redirectTo,
+        })
 
         const config = getTwitchConfig()
         const oauthService = getTwitchOAuthService(config)
