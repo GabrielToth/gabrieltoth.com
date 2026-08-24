@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest"
 import {
+    buildAdvancedMetrics,
     buildNormalizedGraphData,
     buildNormalizedMetrics,
 } from "@/lib/analytics/normalized-analytics-service"
@@ -31,6 +32,16 @@ describe("normalized-analytics-service", () => {
             expect(metrics).toHaveLength(4)
             expect(metrics[0].value).toBe(0)
             expect(metrics[0].changePercent).toBe(0)
+        })
+    })
+
+    describe("buildAdvancedMetrics", () => {
+        it("should build detailed breakdown metrics for advanced view", () => {
+            const simple = buildNormalizedMetrics({ totalFollowers: 500 })
+            const advanced = buildAdvancedMetrics(simple, "twitch")
+
+            expect(advanced.length).toBeGreaterThan(0)
+            expect(advanced[0].platformBreakdown.twitch).toBeDefined()
         })
     })
 

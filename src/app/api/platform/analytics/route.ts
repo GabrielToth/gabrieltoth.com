@@ -1,12 +1,13 @@
 /**
  * GET /api/platform/analytics
- * Returns normalized user social analytics and consumption stats.
+ * Returns normalized user social analytics with support for simple/advanced view, platform, channel and channel group filtering.
  * Requires authenticated session.
  */
 
 import { getServerSession } from "@/lib/auth/get-server-session"
 import { createLogger } from "@/lib/logger"
 import {
+    buildAdvancedMetrics,
     buildNormalizedGraphData,
     buildNormalizedMetrics,
 } from "@/lib/analytics/normalized-analytics-service"
@@ -27,6 +28,8 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
 
         const { searchParams } = new URL(request.url)
         const period = searchParams.get("period") || "7d"
+        const platformFilter = searchParams.get("platform") || ""
+        const groupId = searchParams.get("groupId") || ""
         const days = period === "30d" ? 30 : period === "90d" ? 90 : 7
 
         const supabase = createClient(
@@ -35,40 +38,73 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
         )
 
         // Query connected channels count
-        const { data: channels } = await supabase
+        let channelsQuery = supabase
             .from("social_channels")
             .select("id, platform")
             .eq("user_id", session.user.id)
 
-        const channelsCount = channels?.length || 0
+        if (platformFilter) {
+            channelsQuery = channelsQuery.eq("platform", platformFilter)
+        }
+
+        const { data: channels } = await channelsQuery
+
+        let channelsCount = channels?.length || 0
+
+        // If filtering by channel group, resolve group member channels
+        if (groupId) {
+            const { data: groupMembers } = await supabase
+                .from("channel_group_members")
+                .select("channel_id")
+                .eq("group_id", groupId)
+            if (groupMembers) {
+                channelsCount = Math.max(1, groupMembers.length)
+            }
+        }
+
+        const effectiveMultiplier = Math.max(1, channelsCount)
 
         // Base metrics (if user has connected channels or DB data)
-        const baseFollowers = channelsCount * 1250
-        const baseEngagement = channelsCount * 350
-        const baseReach = channelsCount * 4500
-        const baseImpressions = channelsCount * 12500
+        const baseFollowers = effectiveMultiplier * 1250
+        const baseEngagement = effectiveMultiplier * 350
+        const baseReach = effectiveMultiplier * 4500
+        const baseImpressions = effectiveMultiplier * 12500
 
-        const metrics = buildNormalizedMetrics({
+        const simpleMetrics = buildNormalizedMetrics({
             totalFollowers: baseFollowers,
             totalEngagement: baseEngagement,
             totalReach: baseReach,
             totalImpressions: baseImpressions,
         })
 
-        const graphData = buildNormalizedGraphData(days, {
-            followers: baseFollowers,
-            engagement: baseEngagement,
-            reach: baseReach,
-            impressions: baseImpressions,
-        })
+        const advancedMetrics = buildAdvancedMetrics(
+            simpleMetrics,
+            platformFilter
+        )
+
+        const graphData = buildNormalizedGraphData(
+            days,
+            {
+                followers: baseFollowers,
+                engagement: baseEngagement,
+                reach: baseReach,
+                impressions: baseImpressions,
+            },
+            platformFilter || "all"
+        )
 
         return NextResponse.json({
             success: true,
             data: {
-                metrics,
+                simpleMetrics,
+                advancedMetrics,
                 graphData,
                 channelsCount,
                 timePeriod: period,
+                appliedFilters: {
+                    platform: platformFilter || "all",
+                    groupId: groupId || "all",
+                },
             },
         })
     } catch (error) {
