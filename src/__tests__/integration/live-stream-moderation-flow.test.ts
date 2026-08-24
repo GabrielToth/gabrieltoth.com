@@ -2,8 +2,14 @@
  * Integration Test for Live Stream Health, Viewer Analytics, and Chat Moderation Flow
  */
 
-import { evaluateStreamHealth, StreamHealthMetrics } from "@/lib/live/stream-health"
-import { calculateViewerRetention, ViewerDataPoint } from "@/lib/live/viewer-analytics"
+import {
+    evaluateStreamHealth,
+    StreamHealthMetrics,
+} from "@/lib/live/stream-health"
+import {
+    calculateViewerRetention,
+    ViewerDataPoint,
+} from "@/lib/live/viewer-analytics"
 import { ChatModerator, ModerationRule } from "@/lib/chat/moderation"
 import { BotResponder } from "@/lib/chat/bot-responder"
 
@@ -38,11 +44,20 @@ describe("Live Stream Health, Analytics and Moderation Integration", () => {
 
     it("evaluates messages against moderator rules and bot commands", () => {
         const rules: ModerationRule[] = [
-            { id: "r1", pattern: "crypto scam", type: "keyword", action: "block" },
+            {
+                id: "r1",
+                pattern: "crypto scam",
+                type: "keyword",
+                action: "block",
+            },
         ]
         const moderator = new ChatModerator(rules)
         const bot = new BotResponder([
-            { trigger: "!schedule", response: "Streams every Mon/Wed 8PM EST", enabled: true },
+            {
+                trigger: "!schedule",
+                response: "Streams every Mon/Wed 8PM EST",
+                enabled: true,
+            },
         ])
 
         const msg1 = "Join this crypto scam now!"

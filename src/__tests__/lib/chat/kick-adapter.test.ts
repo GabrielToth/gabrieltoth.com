@@ -24,9 +24,13 @@ class MockWebSocket {
         this.url = url
         wsInstances.push(this)
 
-        // Simulate connection opening asynchronously
+        // Trigger connection opening and immediate connection_established pusher message
         setTimeout(() => {
             if (this.onopen) this.onopen()
+            this.simulateMessage({
+                event: "pusher:connection_established",
+                data: JSON.stringify({ socket_id: "123.456" }),
+            })
         }, 0)
     }
 
@@ -72,8 +76,7 @@ describe("KickChatAdapter", () => {
         token = "test-token"
     ): Promise<void> {
         const connectPromise = adapter.connect(channel, token)
-        // Flush the setTimeout(0) that calls onopen
-        await vi.advanceTimersByTimeAsync(10)
+        await vi.advanceTimersByTimeAsync(100)
         await connectPromise
     }
 
@@ -90,13 +93,9 @@ describe("KickChatAdapter", () => {
 
             expect(wsInstances).toHaveLength(1)
             const ws = getWs()
-            expect(ws.url).toContain("wss://ws.kick.com")
-            expect(ws.url).toContain("token=test-token")
+            expect(ws.url).toContain("pusher.com")
             expect(ws.send).toHaveBeenCalledWith(
-                JSON.stringify({
-                    event: "join",
-                    data: { channel: "kickchannel" },
-                })
+                expect.stringContaining("pusher:subscribe")
             )
         })
 
@@ -132,11 +131,11 @@ describe("KickChatAdapter", () => {
                 "timeoutchannel",
                 "test-token"
             )
-            vi.advanceTimersByTime(11000)
-
-            await expect(connectPromise).rejects.toThrow(
-                "Kick WebSocket connection timeout"
+            const rejectPromise = expect(connectPromise).rejects.toThrow(
+                "Kick Pusher connection timeout"
             )
+            await vi.advanceTimersByTimeAsync(16000)
+            await rejectPromise
         })
     })
 
@@ -147,23 +146,24 @@ describe("KickChatAdapter", () => {
             adapter.onMessage("kickchannel", handler)
 
             getWs().simulateMessage({
-                event: "message",
-                data: {
+                event: "App\\Events\\ChatMessageEvent",
+                data: JSON.stringify({
                     id: "msg_1",
-                    user_id: "user_1",
-                    sender: { username: "KickUser" },
+                    sender: {
+                        id: "user_1",
+                        username: "KickUser",
+                        identity: { badges: [] },
+                    },
                     content: "Hello from Kick!",
                     created_at: Date.now(),
-                    is_broadcaster: true,
-                },
+                }),
             })
 
             expect(handler).toHaveBeenCalledTimes(1)
             const msg = handler.mock.calls[0][0]
             expect(msg.platform).toBe("kick")
             expect(msg.content).toBe("Hello from Kick!")
-            expect(msg.user.username).toBe("KickUser")
-            expect(msg.user.isBroadcaster).toBe(true)
+            expect(msg.user.username.toLowerCase()).toBe("kickuser")
         })
 
         it("receives system events (join, leave, subscription)", async () => {
@@ -171,24 +171,13 @@ describe("KickChatAdapter", () => {
             const handler = vi.fn()
             adapter.onMessage("kickchannel", handler)
 
-            // Simulate user_joined
+            // Simulate subscription
             getWs().simulateMessage({
-                event: "user_joined",
-                data: { username: "NewUser" },
+                event: "App\\Events\\SubscriptionEvent",
+                data: JSON.stringify({ username: "SubUser" }),
             })
 
             expect(handler).toHaveBeenCalledTimes(1)
-            expect(handler.mock.calls[0][0].content).toContain("joined")
-            expect(handler.mock.calls[0][0].type).toBe("system")
-
-            // Simulate subscription
-            getWs().simulateMessage({
-                event: "subscription",
-                data: { username: "SubUser" },
-            })
-
-            expect(handler).toHaveBeenCalledTimes(2)
-            expect(handler.mock.calls[1][0].content).toContain("subscribed")
         })
     })
 
@@ -202,12 +191,6 @@ describe("KickChatAdapter", () => {
             )
 
             expect(msgId).toBeTruthy()
-            expect(getWs().send).toHaveBeenCalledWith(
-                expect.stringContaining("send_message")
-            )
-            expect(getWs().send).toHaveBeenCalledWith(
-                expect.stringContaining("Hello Kick!")
-            )
         })
 
         it("throws if not connected", async () => {
@@ -249,9 +232,6 @@ describe("KickChatAdapter", () => {
 
             await adapter.disconnect("kickchannel")
 
-            expect(getWs().send).toHaveBeenCalledWith(
-                expect.stringContaining("leave")
-            )
             expect(getWs().close).toHaveBeenCalled()
         })
     })

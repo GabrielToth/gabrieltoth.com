@@ -55,7 +55,8 @@ export class KickPusherRelay extends EventEmitter {
     private connections: Map<string, KickConnection> = new Map()
     private messageHandlers: Map<string, Set<KickMessageHandler>> = new Map()
     private errorHandlers: Set<KickErrorHandler> = new Set()
-    private reconnectTimers: Map<string, ReturnType<typeof setTimeout>> = new Map()
+    private reconnectTimers: Map<string, ReturnType<typeof setTimeout>> =
+        new Map()
     private reconnectAttempts: Map<string, number> = new Map()
     private readonly MAX_RECONNECT_ATTEMPTS = 5
     private readonly RECONNECT_DELAY_MS = 3000
@@ -69,27 +70,41 @@ export class KickPusherRelay extends EventEmitter {
             const { spawnSync } = await import("child_process")
             const args = [
                 "-s",
-                "-A", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:135.0) Gecko/20100101 Firefox/135.0",
-                "-H", "Accept: application/json",
-                "-H", "Referer: https://kick.com/",
+                "-A",
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:135.0) Gecko/20100101 Firefox/135.0",
+                "-H",
+                "Accept: application/json",
+                "-H",
+                "Referer: https://kick.com/",
                 "https://kick.com/api/v2/channels/" + slug,
             ]
             if (oauthToken) {
                 args.push("-H", "Authorization: Bearer " + oauthToken)
             }
-            const result = spawnSync("curl.exe", args, { timeout: 10000, encoding: "utf8" })
+            const result = spawnSync("curl.exe", args, {
+                timeout: 10000,
+                encoding: "utf8",
+            })
             if (result.error) {
                 throw result.error
             }
             const data = JSON.parse(result.stdout)
             const chatroomId = data.chatroom?.id || null
-            const broadcasterUserId = String(data.user?.id || data.id || data.user_id || "")
+            const broadcasterUserId = String(
+                data.user?.id || data.id || data.user_id || ""
+            )
             if (chatroomId) {
                 return { chatroomId, broadcasterUserId }
             }
-            console.error("[KickRelay] getChatroomId: no chatroomId for " + slug, JSON.stringify(data).slice(0, 500))
+            console.error(
+                "[KickRelay] getChatroomId: no chatroomId for " + slug,
+                JSON.stringify(data).slice(0, 500)
+            )
         } catch (err: any) {
-            console.error("[KickRelay] getChatroomId error for " + channelName + ":", err?.message || String(err))
+            console.error(
+                "[KickRelay] getChatroomId error for " + channelName + ":",
+                err?.message || String(err)
+            )
         }
         return null
     }
@@ -137,7 +152,10 @@ export class KickPusherRelay extends EventEmitter {
                     try {
                         const pusherEvent: PusherEvent = JSON.parse(event.data)
 
-                        if (pusherEvent.event === "pusher:connection_established") {
+                        if (
+                            pusherEvent.event ===
+                            "pusher:connection_established"
+                        ) {
                             connection.connected = true
                             this.emit("connected", roomId, chatroomId)
                             if (chatroomId) {
@@ -307,7 +325,10 @@ export class KickPusherRelay extends EventEmitter {
         }
     }
 
-    private notifyMessageHandlers(roomId: string, message: KickChatMessage): void {
+    private notifyMessageHandlers(
+        roomId: string,
+        message: KickChatMessage
+    ): void {
         const handlers = this.messageHandlers.get(roomId)
         if (handlers) {
             for (const handler of handlers) {

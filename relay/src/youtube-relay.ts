@@ -1,7 +1,9 @@
 import { EventEmitter } from "events"
 
-const LIVE_BROADCASTS_URL = "https://www.googleapis.com/youtube/v3/liveBroadcasts?part=snippet,status&mine=true"
-const LIVE_CHAT_MESSAGES_URL = "https://www.googleapis.com/youtube/v3/liveChat/messages"
+const LIVE_BROADCASTS_URL =
+    "https://www.googleapis.com/youtube/v3/liveBroadcasts?part=snippet,status&mine=true"
+const LIVE_CHAT_MESSAGES_URL =
+    "https://www.googleapis.com/youtube/v3/liveChat/messages"
 const MAX_RECONNECT_DELAY = 60000
 
 export interface YouTubeChatUser {
@@ -76,8 +78,14 @@ export class YouTubeRelay extends EventEmitter {
     stop(): void {
         this.destroyed = true
         this.started = false
-        if (this.pollTimer) { clearTimeout(this.pollTimer); this.pollTimer = null }
-        if (this.reconnectTimer) { clearTimeout(this.reconnectTimer); this.reconnectTimer = null }
+        if (this.pollTimer) {
+            clearTimeout(this.pollTimer)
+            this.pollTimer = null
+        }
+        if (this.reconnectTimer) {
+            clearTimeout(this.reconnectTimer)
+            this.reconnectTimer = null
+        }
         this.removeAllListeners()
     }
 
@@ -115,13 +123,19 @@ export class YouTubeRelay extends EventEmitter {
                 params.set("pageToken", this.nextPageToken)
             }
 
-            const response = await fetch(`${LIVE_CHAT_MESSAGES_URL}?${params}`, {
-                headers: { Authorization: `Bearer ${this.token}` },
-            })
+            const response = await fetch(
+                `${LIVE_CHAT_MESSAGES_URL}?${params}`,
+                {
+                    headers: { Authorization: `Bearer ${this.token}` },
+                }
+            )
 
             if (!response.ok) {
                 if (response.status === 403 || response.status === 404) {
-                    this.emit("disconnected", `YouTube API error: ${response.status}`)
+                    this.emit(
+                        "disconnected",
+                        `YouTube API error: ${response.status}`
+                    )
                     return
                 }
                 throw new Error(`YouTube API poll error (${response.status})`)
@@ -164,8 +178,15 @@ export class YouTubeRelay extends EventEmitter {
                 await this.start(this.liveChatId || undefined)
             } catch (err: any) {
                 this.reconnectAttempt++
-                this.emit("reconnecting", this.reconnectAttempt, MAX_RECONNECT_DELAY)
-                this.reconnectTimer = setTimeout(() => this.scheduleReconnect(err.message), MAX_RECONNECT_DELAY)
+                this.emit(
+                    "reconnecting",
+                    this.reconnectAttempt,
+                    MAX_RECONNECT_DELAY
+                )
+                this.reconnectTimer = setTimeout(
+                    () => this.scheduleReconnect(err.message),
+                    MAX_RECONNECT_DELAY
+                )
             }
         }, MAX_RECONNECT_DELAY)
     }
@@ -176,25 +197,41 @@ export class YouTubeRelay extends EventEmitter {
         const snippet = raw.snippet || {}
         const author = raw.authorDetails || {}
 
-        const badges: Array<{ id: string; label: string; imageUrl: string }> = []
+        const badges: Array<{ id: string; label: string; imageUrl: string }> =
+            []
 
-        if (author.isChatOwner) badges.push({ id: "owner", label: "Owner", imageUrl: "" })
-        if (author.isChatModerator) badges.push({ id: "moderator", label: "Moderator", imageUrl: "" })
-        if (author.isChatSponsor) badges.push({ id: "member", label: "Member", imageUrl: "" })
-        if (author.isVerified) badges.push({ id: "verified", label: "Verified", imageUrl: "" })
+        if (author.isChatOwner)
+            badges.push({ id: "owner", label: "Owner", imageUrl: "" })
+        if (author.isChatModerator)
+            badges.push({ id: "moderator", label: "Moderator", imageUrl: "" })
+        if (author.isChatSponsor)
+            badges.push({ id: "member", label: "Member", imageUrl: "" })
+        if (author.isVerified)
+            badges.push({ id: "verified", label: "Verified", imageUrl: "" })
 
         let content = snippet.textMessageDetails?.messageText || ""
         if (!content && snippet.displayMessage) content = snippet.displayMessage
 
         const rawType = snippet.type || "textMessageEvent"
-        let messageType: "text" | "system" | "announcement" | "subscription" = "text"
+        let messageType: "text" | "system" | "announcement" | "subscription" =
+            "text"
 
         switch (rawType) {
-            case "chatEndedEvent": messageType = "system"; break
-            case "newSponsorEvent": messageType = "subscription"; break
-            case "memberMilestoneChatEvent": messageType = "subscription"; break
-            case "superChatEvent": messageType = "announcement"; break
-            case "superStickerEvent": messageType = "announcement"; break
+            case "chatEndedEvent":
+                messageType = "system"
+                break
+            case "newSponsorEvent":
+                messageType = "subscription"
+                break
+            case "memberMilestoneChatEvent":
+                messageType = "subscription"
+                break
+            case "superChatEvent":
+                messageType = "announcement"
+                break
+            case "superStickerEvent":
+                messageType = "announcement"
+                break
         }
 
         return {
@@ -214,7 +251,9 @@ export class YouTubeRelay extends EventEmitter {
             },
             content,
             type: messageType,
-            timestamp: snippet.publishedAt ? new Date(snippet.publishedAt).getTime() : Date.now(),
+            timestamp: snippet.publishedAt
+                ? new Date(snippet.publishedAt).getTime()
+                : Date.now(),
         }
     }
 }

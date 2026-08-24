@@ -33,7 +33,10 @@ export interface LocalChatMessage {
     isAction?: boolean
 }
 
-export function useLocalChat(platforms: string[], enabled: boolean = true): {
+export function useLocalChat(
+    platforms: string[],
+    enabled: boolean = true
+): {
     messages: LocalChatMessage[]
     isConnected: boolean
     error: string | null
@@ -67,7 +70,7 @@ export function useLocalChat(platforms: string[], enabled: boolean = true): {
                         logger.info("Local Twitch WebSocket connected")
                     }
 
-                    ws.onmessage = (event) => {
+                    ws.onmessage = event => {
                         if (!isMounted) return
                         const data = event.data as string
                         if (data.startsWith("PING")) {
@@ -75,7 +78,9 @@ export function useLocalChat(platforms: string[], enabled: boolean = true): {
                             return
                         }
                         if (data.includes("PRIVMSG")) {
-                            const match = data.match(/display-name=([^;]+).*?:([^!]+)!.* PRIVMSG #\w+ :(.*)/)
+                            const match = data.match(
+                                /display-name=([^;]+).*?:([^!]+)!.* PRIVMSG #\w+ :(.*)/
+                            )
                             if (match) {
                                 const displayName = match[1] || match[2]
                                 const content = match[3]
@@ -101,7 +106,8 @@ export function useLocalChat(platforms: string[], enabled: boolean = true): {
                 }
 
                 if (platforms.includes("kick")) {
-                    const PUSHER_URL = "wss://ws-us2.pusher.com/app/32cbd69e4b950bf97679?protocol=7&client=js&version=8.4.0-rc2&flash=false"
+                    const PUSHER_URL =
+                        "wss://ws-us2.pusher.com/app/32cbd69e4b950bf97679?protocol=7&client=js&version=8.4.0-rc2&flash=false"
                     const ws = new WebSocket(PUSHER_URL)
                     sockets.push(ws)
 
@@ -113,7 +119,9 @@ export function useLocalChat(platforms: string[], enabled: boolean = true): {
                 }
             } catch (err) {
                 if (isMounted) {
-                    setError("Failed to establish local client stream connection")
+                    setError(
+                        "Failed to establish local client stream connection"
+                    )
                 }
             }
         }

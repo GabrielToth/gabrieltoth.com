@@ -1,22 +1,22 @@
 import { WebSocket } from "ws"
 
 const PLATFORM_MAX_TIMEOUTS: Record<string, number> = {
-    twitch: 1209600,    // 14 days in seconds (Twitch max)
-    kick: 86400,        // 24 hours in seconds (Kick max)
-    youtube: 86400,     // 24 hours (YouTube chat timeout max via API)
+    twitch: 1209600, // 14 days in seconds (Twitch max)
+    kick: 86400, // 24 hours in seconds (Kick max)
+    youtube: 86400, // 24 hours (YouTube chat timeout max via API)
 }
 
 const TIMEOUT_REAPPLY_BEFORE = 60 // seconds before expiry to re-apply
-const RECHECK_INTERVAL = 30_000   // check every 30s
+const RECHECK_INTERVAL = 30_000 // check every 30s
 
 interface ScheduledTimeout {
     targetUserId: string
     targetUsername: string
     platform: string
-    duration: number        // original requested duration in seconds
+    duration: number // original requested duration in seconds
     appliedDuration: number // actual applied duration (platform max or requested)
-    appliedAt: number       // timestamp when last applied
-    expiresAt: number       // when the current timeout expires
+    appliedAt: number // timestamp when last applied
+    expiresAt: number // when the current timeout expires
     repeatCount: number
     reapplyTimer: ReturnType<typeof setInterval> | null
 }
@@ -51,9 +51,19 @@ export async function executeModeration(
         const effective = getEffectiveDuration(requestedDuration, platform)
 
         if (platform === "twitch" && twitchRelay) {
-            await executeTwitchTimeout(twitchRelay, targetUsername, effective, reason)
+            await executeTwitchTimeout(
+                twitchRelay,
+                targetUsername,
+                effective,
+                reason
+            )
         } else if (platform === "kick" && kickRelay) {
-            await executeKickTimeout(kickRelay, targetUsername, effective, reason)
+            await executeKickTimeout(
+                kickRelay,
+                targetUsername,
+                effective,
+                reason
+            )
         } else {
             sendError(ws, platform, `No relay available for ${platform}`)
             return
@@ -92,7 +102,12 @@ export async function executeModeration(
                     }
 
                     if (platform === "twitch" && twitchRelay) {
-                        executeTwitchTimeout(twitchRelay, targetUsername, nextEffective, reason)
+                        executeTwitchTimeout(
+                            twitchRelay,
+                            targetUsername,
+                            nextEffective,
+                            reason
+                        )
                             .then(() => {
                                 st.appliedAt = Date.now()
                                 st.expiresAt = Date.now() + nextEffective * 1000
@@ -100,7 +115,12 @@ export async function executeModeration(
                             })
                             .catch(() => {})
                     } else if (platform === "kick" && kickRelay) {
-                        executeKickTimeout(kickRelay, targetUsername, nextEffective, reason)
+                        executeKickTimeout(
+                            kickRelay,
+                            targetUsername,
+                            nextEffective,
+                            reason
+                        )
                             .then(() => {
                                 st.appliedAt = Date.now()
                                 st.expiresAt = Date.now() + nextEffective * 1000
@@ -114,7 +134,12 @@ export async function executeModeration(
             activeTimeouts.set(key, st)
         }
 
-        sendResult(ws, "timeout", true, { platform, targetUsername, duration: effective, willReapply: requestedDuration > effective })
+        sendResult(ws, "timeout", true, {
+            platform,
+            targetUsername,
+            duration: effective,
+            willReapply: requestedDuration > effective,
+        })
         return
     }
 
@@ -200,7 +225,9 @@ async function executeKickTimeout(
     duration: number,
     reason?: string
 ): Promise<void> {
-    return kickRelay.sendChat(`/timeout ${username} ${duration}${reason ? ` ${reason}` : ""}`)
+    return kickRelay.sendChat(
+        `/timeout ${username} ${duration}${reason ? ` ${reason}` : ""}`
+    )
 }
 
 async function executeKickBan(
@@ -238,11 +265,7 @@ function sendResult(
     }
 }
 
-function sendError(
-    ws: WebSocket,
-    platform: string,
-    error: string
-): void {
+function sendError(ws: WebSocket, platform: string, error: string): void {
     if (ws.readyState === WebSocket.OPEN) {
         ws.send(
             JSON.stringify({
@@ -254,7 +277,10 @@ function sendError(
     }
 }
 
-export function cleanupTimeoutsForUser(targetUserId: string, platform: string): void {
+export function cleanupTimeoutsForUser(
+    targetUserId: string,
+    platform: string
+): void {
     const key = timeoutKey(platform, targetUserId)
     const existing = activeTimeouts.get(key)
     if (existing?.reapplyTimer) {

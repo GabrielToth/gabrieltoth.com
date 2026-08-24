@@ -37,7 +37,14 @@ interface UseRelayChatReturn {
     statuses: RelayPlatformStatus[]
     isConnected: boolean
     error: string | null
-    sendModeration: (action: string, targetUserId: string, targetUsername: string, platform: string, duration?: number, reason?: string) => void
+    sendModeration: (
+        action: string,
+        targetUserId: string,
+        targetUsername: string,
+        platform: string,
+        duration?: number,
+        reason?: string
+    ) => void
 }
 
 const INITIAL_RECONNECT_DELAY = 1_000
@@ -62,21 +69,30 @@ export function useRelayChat(): UseRelayChatReturn {
     const connectRef = useRef<() => void>(() => {})
 
     const sendModeration = useCallback(
-        (action: string, targetUserId: string, targetUsername: string, platform: string, duration?: number, reason?: string) => {
+        (
+            action: string,
+            targetUserId: string,
+            targetUsername: string,
+            platform: string,
+            duration?: number,
+            reason?: string
+        ) => {
             const ws = wsRef.current
             if (!ws || ws.readyState !== WebSocket.OPEN) {
                 logger.warn("Cannot send moderation: WebSocket not connected")
                 return
             }
-            ws.send(JSON.stringify({
-                type: "moderate",
-                action,
-                targetUserId,
-                targetUsername,
-                platform,
-                duration,
-                reason,
-            }))
+            ws.send(
+                JSON.stringify({
+                    type: "moderate",
+                    action,
+                    targetUserId,
+                    targetUsername,
+                    platform,
+                    duration,
+                    reason,
+                })
+            )
         },
         []
     )
@@ -227,7 +243,9 @@ export function useRelayChat(): UseRelayChatReturn {
                         const eventName = `${prefix}:message`
                         if (data.event === eventName) {
                             const message: RelayChatMessage = {
-                                id: data.id || `${prefix}-${data.timestamp || Date.now()}`,
+                                id:
+                                    data.id ||
+                                    `${prefix}-${data.timestamp || Date.now()}`,
                                 channelId: data.channelId || data.channel || "",
                                 platform: prefix,
                                 user: data.user,
@@ -237,7 +255,8 @@ export function useRelayChat(): UseRelayChatReturn {
                                 isAction: data.isAction,
                             }
                             setMessages(prev => {
-                                if (prev.some(m => m.id === message.id)) return prev
+                                if (prev.some(m => m.id === message.id))
+                                    return prev
                                 return [...prev, message]
                             })
                             return
@@ -254,7 +273,14 @@ export function useRelayChat(): UseRelayChatReturn {
                                 isAction: data.isAction,
                             }
                             setMessages(prev => {
-                                if (prev.some(m => m.id === message.id && m.content === message.content)) return prev
+                                if (
+                                    prev.some(
+                                        m =>
+                                            m.id === message.id &&
+                                            m.content === message.content
+                                    )
+                                )
+                                    return prev
                                 return [...prev, message]
                             })
                             return

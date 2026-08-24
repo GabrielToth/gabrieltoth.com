@@ -48,9 +48,7 @@ describe("UnifiedChat", () => {
     it("renders initial empty state when no chat messages", () => {
         render(<UnifiedChat {...defaultProps} />)
 
-        expect(
-            screen.getByText("No chat messages yet")
-        ).toBeInTheDocument()
+        expect(screen.getByText("No chat messages yet")).toBeInTheDocument()
     })
 
     it("input field accepts text", () => {
