@@ -33,6 +33,7 @@
     "ignorePaths": [
         "**/translations/**",
         "src/**/translations/**",
+        "src/i18n/fr/**",
         "src/app/[locale]/privacy-policy/page.tsx",
         "src/app/[locale]/terms-of-service/page.tsx",
         "src/orchestration/**",
