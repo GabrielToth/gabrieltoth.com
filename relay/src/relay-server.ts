@@ -156,9 +156,17 @@ wss.on("connection", (ws: WebSocket, req) => {
             if (msg.type === "connect") {
                 const platform = msg.platform
                 if (platform === "twitch") {
-                    await handleTwitchConnect(clientInfo, msg.token, msg.channelName)
+                    await handleTwitchConnect(
+                        clientInfo,
+                        msg.token,
+                        msg.channelName
+                    )
                 } else if (platform === "kick") {
-                    await handleKickConnect(clientInfo, msg.token, msg.channelName)
+                    await handleKickConnect(
+                        clientInfo,
+                        msg.token,
+                        msg.channelName
+                    )
                 } else if (platform === "youtube") {
                     await handleYouTubeConnect(
                         clientInfo,
@@ -279,7 +287,11 @@ async function handleTwitchConnect(
     })
 
     relay.on("disconnected", (roomId: string, reason: string) => {
-        log("Twitch IRC disconnected", { roomId, reason, userId: client.userId })
+        log("Twitch IRC disconnected", {
+            roomId,
+            reason,
+            userId: client.userId,
+        })
         client.platforms.set("twitch", {
             platform: "twitch",
             connected: false,
@@ -298,7 +310,7 @@ async function handleTwitchConnect(
         }
     })
 
-    relay.onMessage(channelName, (msg) => {
+    relay.onMessage(channelName, msg => {
         if (client.ws.readyState === WebSocket.OPEN) {
             client.ws.send(
                 JSON.stringify({
@@ -356,7 +368,9 @@ async function handleTwitchConnect(
 function handleTwitchDisconnect(client: ClientInfo): void {
     for (const [, platformConn] of client.platforms) {
         if (platformConn.platform === "twitch") {
-            try { platformConn.cleanup() } catch {}
+            try {
+                platformConn.cleanup()
+            } catch {}
             client.platforms.delete("twitch")
             break
         }
@@ -407,7 +421,11 @@ async function handleKickConnect(
     const relay = new KickPusherRelay()
 
     relay.on("connected", (roomId: string, chatroomId: number | null) => {
-        log("Kick Pusher connected", { roomId, chatroomId, userId: client.userId })
+        log("Kick Pusher connected", {
+            roomId,
+            chatroomId,
+            userId: client.userId,
+        })
         client.platforms.set("kick", {
             platform: "kick",
             connected: true,
@@ -427,7 +445,11 @@ async function handleKickConnect(
     })
 
     relay.on("disconnected", (roomId: string, reason: string) => {
-        log("Kick Pusher disconnected", { roomId, reason, userId: client.userId })
+        log("Kick Pusher disconnected", {
+            roomId,
+            reason,
+            userId: client.userId,
+        })
         client.platforms.set("kick", {
             platform: "kick",
             connected: false,
@@ -446,7 +468,7 @@ async function handleKickConnect(
         }
     })
 
-    relay.onMessage(channelName, (msg) => {
+    relay.onMessage(channelName, msg => {
         if (client.ws.readyState === WebSocket.OPEN) {
             client.ws.send(
                 JSON.stringify({
@@ -504,7 +526,9 @@ async function handleKickConnect(
 function handleKickDisconnect(client: ClientInfo): void {
     for (const [, platformConn] of client.platforms) {
         if (platformConn.platform === "kick") {
-            try { platformConn.cleanup() } catch {}
+            try {
+                platformConn.cleanup()
+            } catch {}
             client.platforms.delete("kick")
             break
         }
@@ -579,14 +603,14 @@ async function handleYouTubeConnect(
                     platform: "youtube",
                     id: msg.id,
                     channelId: msg.channelId,
-                     user: msg.user,
-                     content: msg.content,
-                     msgType: msg.type,
-                     timestamp: msg.timestamp,
-                 })
-             )
-         }
-     })
+                    user: msg.user,
+                    content: msg.content,
+                    msgType: msg.type,
+                    timestamp: msg.timestamp,
+                })
+            )
+        }
+    })
 
     relay.on("disconnected", (reason: string) => {
         log("YouTube stream disconnected", {
@@ -681,7 +705,6 @@ function handleYouTubeDisconnect(client: ClientInfo): void {
         )
     }
 }
-
 
 function cleanupClient(client: ClientInfo): void {
     for (const [, platform] of client.platforms) {

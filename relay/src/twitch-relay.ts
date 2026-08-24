@@ -43,7 +43,8 @@ export class TwitchIrcRelay extends EventEmitter {
     private connections: Map<string, TwitchConnection> = new Map()
     private messageHandlers: Map<string, Set<TwitchMessageHandler>> = new Map()
     private errorHandlers: Set<(error: Error) => void> = new Set()
-    private reconnectTimers: Map<string, ReturnType<typeof setTimeout>> = new Map()
+    private reconnectTimers: Map<string, ReturnType<typeof setTimeout>> =
+        new Map()
     private reconnectAttempts: Map<string, number> = new Map()
     private readonly MAX_RECONNECT_ATTEMPTS = 5
     private readonly RECONNECT_DELAY_MS = 3000
@@ -90,7 +91,10 @@ export class TwitchIrcRelay extends EventEmitter {
                     if (line.startsWith("PING")) {
                         socket.write(`PONG ${line.substring(5)}\r\n`)
                     }
-                    if (!connection.connected && line.includes(":Welcome, GLHF!")) {
+                    if (
+                        !connection.connected &&
+                        line.includes(":Welcome, GLHF!")
+                    ) {
                         connection.connected = true
                         clearTimeout(timeout)
                         socket.write(`JOIN #${roomId}\r\n`)
@@ -158,20 +162,30 @@ export class TwitchIrcRelay extends EventEmitter {
             if (privmsgMatch) {
                 const [, tags, , channel, content] = privmsgMatch
                 const parsedTags = this.parseIrcTags(tags)
-                const isAction = content.startsWith("\u0001ACTION ") && content.endsWith("\u0001")
+                const isAction =
+                    content.startsWith("\u0001ACTION ") &&
+                    content.endsWith("\u0001")
                 const message: TwitchChatMessage = {
                     id: `twitch-${parsedTags["id"] || `${Date.now()}-${Math.random().toString(36).substring(2, 8)}`}`,
                     channelId: channel,
                     platform: "twitch",
                     user: {
                         id: parsedTags["user-id"] || "unknown",
-                        username: parsedTags["display-name"]?.toLowerCase() || "unknown",
+                        username:
+                            parsedTags["display-name"]?.toLowerCase() ||
+                            "unknown",
                         displayName: parsedTags["display-name"] || "Unknown",
                         platform: "twitch",
                         badges: this.parseBadges(parsedTags["badges"] || ""),
-                        isBroadcaster: parsedTags["badges"]?.includes("broadcaster") || false,
-                        isModerator: parsedTags["badges"]?.includes("moderator") || false,
-                        isSubscriber: parsedTags["badges"]?.includes("subscriber") || false,
+                        isBroadcaster:
+                            parsedTags["badges"]?.includes("broadcaster") ||
+                            false,
+                        isModerator:
+                            parsedTags["badges"]?.includes("moderator") ||
+                            false,
+                        isSubscriber:
+                            parsedTags["badges"]?.includes("subscriber") ||
+                            false,
                         isVip: parsedTags["badges"]?.includes("vip") || false,
                     },
                     content: isAction ? content.slice(8, -1) : content,
@@ -259,7 +273,10 @@ export class TwitchIrcRelay extends EventEmitter {
         }
     }
 
-    private notifyMessageHandlers(roomId: string, message: TwitchChatMessage): void {
+    private notifyMessageHandlers(
+        roomId: string,
+        message: TwitchChatMessage
+    ): void {
         const handlers = this.messageHandlers.get(roomId)
         if (handlers) {
             for (const handler of handlers) {
