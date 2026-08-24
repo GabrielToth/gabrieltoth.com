@@ -17,7 +17,10 @@ const nextConfig = {
         ignoreBuildErrors: false,
     },
     // Standalone output for minimal container size when explicitly enabled (disabled for Vercel serverless builds)
-    output: process.env.NEXT_OUTPUT_MODE === "standalone" ? "standalone" : undefined,
+    output:
+        process.env.NEXT_OUTPUT_MODE === "standalone"
+            ? "standalone"
+            : undefined,
     trailingSlash: true,
     reactStrictMode: true,
     experimental: {
@@ -282,13 +285,11 @@ const nextConfig = {
                     },
                     {
                         key: "Permissions-Policy",
-                        value:
-                            "camera=(), microphone=(), geolocation=(), interest-cohort=()",
+                        value: "camera=(), microphone=(), geolocation=(), interest-cohort=()",
                     },
                     {
                         key: "Content-Security-Policy",
-                        value:
-                            "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: blob: https:; font-src 'self' data: https:; connect-src 'self' https: wss:; frame-src 'self' https:; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;",
+                        value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: blob: https:; font-src 'self' data: https:; connect-src 'self' https: wss:; frame-src 'self' https:; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;",
                     },
                 ],
             },

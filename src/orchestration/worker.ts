@@ -32,66 +32,83 @@ export class Worker {
             },
         ]
 
-        try {
-            logger.info(
-                `Worker executing task ${task.id} (${task.type}) with combo ${this.config.combo}`
-            )
+        const combosToTry = [this.config.combo]
+        if (this.config.combo.startsWith("premium-")) {
+            combosToTry.push("cheap-decompose")
+        } else if (this.config.combo !== "cheap-docs") {
+            combosToTry.push("cheap-docs")
+        }
 
-            const response = await fetch(OMNIROUTE_API, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    model: this.config.combo,
-                    messages,
-                    max_tokens: this.config.maxTokens,
-                    stream: false,
-                }),
-            })
+        let lastError: Error | null = null
 
-            if (!response.ok) {
-                const errorText = await response.text()
-                throw new Error(
-                    `OmniRoute error ${response.status}: ${errorText}`
+        for (const comboName of combosToTry) {
+            try {
+                logger.info(
+                    `Worker executing task ${task.id} (${task.type}) with combo ${comboName}`
+                )
+
+                const response = await fetch(OMNIROUTE_API, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        model: comboName,
+                        messages,
+                        max_tokens: this.config.maxTokens,
+                        stream: false,
+                    }),
+                })
+
+                if (!response.ok) {
+                    const errorText = await response.text()
+                    throw new Error(
+                        `OmniRoute error ${response.status}: ${errorText}`
+                    )
+                }
+
+                const data = await response.json()
+                const result = data.choices?.[0]?.message?.content
+
+                if (!result) {
+                    throw new Error("Empty response from model")
+                }
+
+                const tokensUsed = data.usage?.total_tokens || 0
+
+                logger.info(
+                    `Worker completed task ${task.id} in ${Date.now() - startTime}ms (${tokensUsed} tokens)`
+                )
+
+                return {
+                    taskId: task.id,
+                    success: true,
+                    result,
+                    tokensUsed,
+                    model: comboName,
+                    account: "default",
+                    retryCount: task.retryCount,
+                    completedAt: Date.now(),
+                }
+            } catch (error) {
+                lastError =
+                    error instanceof Error ? error : new Error(String(error))
+                logger.warn(
+                    `Worker combo ${comboName} failed for task ${task.id}: ${lastError.message}. Auto-healing fallback attempt...`
                 )
             }
+        }
 
-            const data = await response.json()
-            const result = data.choices?.[0]?.message?.content
-
-            if (!result) {
-                throw new Error("Empty response from model")
-            }
-
-            const tokensUsed = data.usage?.total_tokens || 0
-
-            logger.info(
-                `Worker completed task ${task.id} in ${Date.now() - startTime}ms (${tokensUsed} tokens)`
-            )
-
-            return {
-                taskId: task.id,
-                success: true,
-                result,
-                tokensUsed,
-                model: this.config.combo,
-                account: "default",
-                retryCount: task.retryCount,
-                completedAt: Date.now(),
-            }
-        } catch (error) {
-            logger.error(
-                `Worker failed task ${task.id}: ${error instanceof Error ? error.message : String(error)}`
-            )
-            return {
-                taskId: task.id,
-                success: false,
-                error: error instanceof Error ? error.message : String(error),
-                tokensUsed: 0,
-                model: this.config.combo,
-                account: "default",
-                retryCount: task.retryCount,
-                completedAt: Date.now(),
-            }
+        logger.error(
+            `Worker failed task ${task.id} across all attempted combos: ${lastError?.message}`
+        )
+        return {
+            taskId: task.id,
+            success: false,
+            error: lastError?.message || "Execution failed",
+            tokensUsed: 0,
+            model: this.config.combo,
+            account: "default",
+            retryCount: task.retryCount,
+            completedAt: Date.now(),
         }
     }
 
