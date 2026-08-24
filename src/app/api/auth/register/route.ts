@@ -283,7 +283,7 @@ export async function POST(request: NextRequest) {
             },
             { status: 201 }
         )
-    } catch (error) {
+    } catch (_error) {
         return createErrorResponse(AuthErrorType.INTERNAL_ERROR)
     }
 }

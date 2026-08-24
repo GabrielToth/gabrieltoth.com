@@ -221,7 +221,6 @@ export default function RegisterFormMultistep({
                         className="w-full px-4 py-2 border border-input dark:border-input rounded-lg bg-card dark:bg-muted text-foreground dark:text-foreground focus:outline-none focus:ring-2 focus:ring-ring dark:focus:ring-ring"
                         placeholder={t("register.emailPlaceholder")}
                         autoComplete="email"
-                        autoFocus
                     />
                 </div>
 
@@ -279,7 +278,6 @@ export default function RegisterFormMultistep({
                         className="w-full px-4 py-2 border border-input dark:border-input rounded-lg bg-card dark:bg-muted text-foreground dark:text-foreground focus:outline-none focus:ring-2 focus:ring-ring dark:focus:ring-ring"
                         placeholder={t("register.namePlaceholder")}
                         autoComplete="name"
-                        autoFocus
                     />
                 </div>
 
@@ -405,7 +403,6 @@ export default function RegisterFormMultistep({
                         placeholder="••••••••"
                         minLength={6}
                         autoComplete="new-password"
-                        autoFocus
                     />
                 </div>
 

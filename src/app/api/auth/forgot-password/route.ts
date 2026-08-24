@@ -69,7 +69,7 @@ export async function POST(request: NextRequest) {
             message:
                 "If an account exists with this email, a reset link has been sent.",
         })
-    } catch (error) {
+    } catch (_error) {
         return NextResponse.json(
             { error: "An unexpected error occurred" },
             { status: 500 }
