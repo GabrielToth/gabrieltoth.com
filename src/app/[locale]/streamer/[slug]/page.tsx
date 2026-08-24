@@ -58,10 +58,10 @@ function savePreference(slug: string, platform: string): void {
 
 export default function StreamerPage() {
     const params = useParams()
-    const searchParams = useSearchParams()
+    const _searchParams = useSearchParams()
     const slug = params.slug as string
     const locale = params.locale as string
-    const t = useTranslations("streamer")
+    const _t = useTranslations("streamer")
 
     const [streamer, setStreamer] = useState<StreamerData | null>(null)
     const [loading, setLoading] = useState(true)
@@ -258,6 +258,7 @@ export default function StreamerPage() {
                         {currentEmbed ? (
                             <div className="aspect-video rounded-xl overflow-hidden bg-black">
                                 <iframe
+                                    title={`${streamer?.displayName || "Streamer"} live player`}
                                     src={currentEmbed}
                                     className="h-full w-full"
                                     allow="autoplay; encrypted-media"
@@ -345,7 +346,7 @@ export default function StreamerPage() {
                             </h3>
                             <div className="space-y-2">
                                 {streamer.platforms.map(p => {
-                                    const color =
+                                    const _color =
                                         PLATFORM_COLORS[p.platform] || "#666"
                                     return (
                                         <div
