@@ -1,11 +1,5 @@
-import {
-    fromEncryptedRecord,
-    toEncryptedRecord,
-} from "@/lib/external-sessions/vault"
-import {
-    EncryptedSessionVaultRecord,
-    ExternalAccountSession,
-} from "@/lib/external-sessions/types"
+import { toEncryptedRecord } from "@/lib/external-sessions/vault"
+import { ExternalAccountSession } from "@/lib/external-sessions/types"
 import { createLogger } from "@/lib/logger"
 import { createClient } from "@supabase/supabase-js"
 import { NextRequest, NextResponse } from "next/server"

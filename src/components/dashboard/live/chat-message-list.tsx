@@ -27,7 +27,7 @@ interface ChatMessageListProps {
     ) => void
 }
 
-const PLATFORM_MINIS: Record<string, { color: string; label: string }> = {
+const _PLATFORM_MINIS: Record<string, { color: string; label: string }> = {
     twitch: { color: "#9147ff", label: "TW" },
     kick: { color: "#00e676", label: "KC" },
     youtube: { color: "#ff0000", label: "YT" },

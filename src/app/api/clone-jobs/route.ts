@@ -7,7 +7,7 @@ import { NextRequest, NextResponse } from "next/server"
 const logger = createLogger("CloneJobsAPI")
 
 // In-memory fallback jobs store if database table is unavailable
-const memoryJobsStore: any[] = []
+const memoryJobsStore: Record<string, unknown>[] = []
 
 export async function GET(request: NextRequest): Promise<NextResponse> {
     try {

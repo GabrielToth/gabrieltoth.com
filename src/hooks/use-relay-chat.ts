@@ -123,7 +123,7 @@ export function useRelayChat(): UseRelayChatReturn {
             })
             return false
         }
-    }, [])
+    }, [relayUrl])
 
     const sendConnectMessage = useCallback((ws: WebSocket) => {
         for (const [platform, info] of Object.entries(platformsRef.current)) {

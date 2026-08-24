@@ -108,7 +108,13 @@ async function resolveYouTubeChannel(
                             if (playlistRes.ok) {
                                 const plData = await playlistRes.json()
                                 const videoIds = (plData.items || [])
-                                    .map((i: any) => i.contentDetails?.videoId)
+                                    .map(
+                                        (i: {
+                                            contentDetails?: {
+                                                videoId?: string
+                                            }
+                                        }) => i.contentDetails?.videoId
+                                    )
                                     .filter(Boolean)
                                     .join(",")
                                 if (videoIds) {
@@ -118,7 +124,25 @@ async function resolveYouTubeChannel(
                                     if (vRes.ok) {
                                         const vData = await vRes.json()
                                         videoItems = (vData.items || []).map(
-                                            (v: any) => {
+                                            (v: {
+                                                id: string
+                                                contentDetails?: {
+                                                    duration?: string
+                                                }
+                                                snippet?: {
+                                                    title?: string
+                                                    publishedAt?: string
+                                                    liveBroadcastContent?: string
+                                                    thumbnails?: {
+                                                        medium?: { url?: string }
+                                                        high?: { url?: string }
+                                                        default?: { url?: string }
+                                                    }
+                                                }
+                                                statistics?: {
+                                                    viewCount?: string
+                                                }
+                                            }) => {
                                                 const durationSec =
                                                     parseDurationSeconds(
                                                         v.contentDetails
