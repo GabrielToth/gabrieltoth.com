@@ -5,7 +5,15 @@ import { useTranslations } from "next-intl"
 import { useParams, usePathname, useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 
-type DashboardTab = "publish" | "live" | "insights" | "channels" | "settings" | "discover" | "repost" | "cloner"
+type DashboardTab =
+    | "publish"
+    | "live"
+    | "insights"
+    | "channels"
+    | "settings"
+    | "discover"
+    | "repost"
+    | "cloner"
 
 export default function DashboardClientLayout({
     children,
