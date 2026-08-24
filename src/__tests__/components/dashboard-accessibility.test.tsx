@@ -511,7 +511,7 @@ describe("Accessibility - WCAG 2.1 AA Compliance", () => {
 
             // Check that text elements have color classes
             const textElements = container.querySelectorAll(
-                "[class*='text-gray'], [class*='text-blue'], [class*='text-white']"
+                "[class*='text-gray'], [class*='text-blue'], [class*='text-white'], [class*='text-foreground'], [class*='text-muted-foreground'], [class*='text-primary']"
             )
             expect(textElements.length).toBeGreaterThan(0)
         })

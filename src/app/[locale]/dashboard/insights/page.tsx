@@ -26,10 +26,26 @@ export default function InsightsPage() {
                         { timestamp: Date.now(), count: 95 },
                     ]}
                     chatHistory={[
-                        { timestamp: Date.now() - 1800000, chattersCount: 12, repeatChattersCount: 4 },
-                        { timestamp: Date.now() - 1200000, chattersCount: 28, repeatChattersCount: 14 },
-                        { timestamp: Date.now() - 600000, chattersCount: 35, repeatChattersCount: 20 },
-                        { timestamp: Date.now(), chattersCount: 30, repeatChattersCount: 18 },
+                        {
+                            timestamp: Date.now() - 1800000,
+                            chattersCount: 12,
+                            repeatChattersCount: 4,
+                        },
+                        {
+                            timestamp: Date.now() - 1200000,
+                            chattersCount: 28,
+                            repeatChattersCount: 14,
+                        },
+                        {
+                            timestamp: Date.now() - 600000,
+                            chattersCount: 35,
+                            repeatChattersCount: 20,
+                        },
+                        {
+                            timestamp: Date.now(),
+                            chattersCount: 30,
+                            repeatChattersCount: 18,
+                        },
                     ]}
                 />
 

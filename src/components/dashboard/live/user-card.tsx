@@ -60,8 +60,12 @@ export function UserCard({
                         {platformBadge.label}
                     </span>
                     <div>
-                        <p className="text-sm font-bold text-neutral-100">{displayName}</p>
-                        <p className="text-[10px] text-neutral-400">@{username}</p>
+                        <p className="text-sm font-bold text-neutral-100">
+                            {displayName}
+                        </p>
+                        <p className="text-[10px] text-neutral-400">
+                            @{username}
+                        </p>
                     </div>
                 </div>
                 <button
@@ -73,14 +77,40 @@ export function UserCard({
             </div>
 
             <div className="flex flex-wrap gap-1.5 mb-3">
-                {isBroadcaster && <span className={`text-[10px] font-semibold ${ROLE_COLORS.broadcaster}`}>Broadcaster</span>}
-                {isModerator && <span className={`text-[10px] font-semibold ${ROLE_COLORS.moderator}`}>Mod</span>}
-                {isSubscriber && <span className={`text-[10px] font-semibold ${ROLE_COLORS.subscriber}`}>Sub</span>}
-                {isVip && <span className={`text-[10px] font-semibold ${ROLE_COLORS.vip}`}>VIP</span>}
+                {isBroadcaster && (
+                    <span
+                        className={`text-[10px] font-semibold ${ROLE_COLORS.broadcaster}`}
+                    >
+                        Broadcaster
+                    </span>
+                )}
+                {isModerator && (
+                    <span
+                        className={`text-[10px] font-semibold ${ROLE_COLORS.moderator}`}
+                    >
+                        Mod
+                    </span>
+                )}
+                {isSubscriber && (
+                    <span
+                        className={`text-[10px] font-semibold ${ROLE_COLORS.subscriber}`}
+                    >
+                        Sub
+                    </span>
+                )}
+                {isVip && (
+                    <span
+                        className={`text-[10px] font-semibold ${ROLE_COLORS.vip}`}
+                    >
+                        VIP
+                    </span>
+                )}
             </div>
 
             <div className="space-y-1.5">
-                <p className="text-[10px] text-neutral-500 uppercase tracking-wider font-semibold">Timeout</p>
+                <p className="text-[10px] text-neutral-500 uppercase tracking-wider font-semibold">
+                    Timeout
+                </p>
                 <div className="flex flex-wrap gap-1">
                     {TIMEOUT_OPTIONS.map(opt => (
                         <button

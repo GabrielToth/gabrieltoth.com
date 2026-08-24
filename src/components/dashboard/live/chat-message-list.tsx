@@ -22,7 +22,9 @@ interface ChatMessageListProps {
     messages: (RenderableChatMessage & { duplicateCount: number })[]
     getPlatformBadge: (platform: string) => { label: string; bgClass: string }
     messagesEndRef: RefObject<HTMLDivElement | null>
-    onUserClick?: (msg: RenderableChatMessage & { duplicateCount: number }) => void
+    onUserClick?: (
+        msg: RenderableChatMessage & { duplicateCount: number }
+    ) => void
 }
 
 const PLATFORM_MINIS: Record<string, { color: string; label: string }> = {
@@ -51,12 +53,16 @@ export function ChatMessageList({
                     </p>
                 </div>
             ) : (
-                messages.map((msg) => {
-                    const dupPlatforms = msg.platformIcons && msg.platformIcons.length > 0
-                        ? msg.platformIcons
-                        : [msg.platform]
+                messages.map(msg => {
+                    const dupPlatforms =
+                        msg.platformIcons && msg.platformIcons.length > 0
+                            ? msg.platformIcons
+                            : [msg.platform]
                     return (
-                        <div key={msg.id} className="flex items-start gap-1.5 leading-relaxed">
+                        <div
+                            key={msg.id}
+                            className="flex items-start gap-1.5 leading-relaxed"
+                        >
                             <div className="flex items-center gap-1 shrink-0">
                                 {dupPlatforms.map(p => {
                                     const b = getPlatformBadge(p)
@@ -77,7 +83,9 @@ export function ChatMessageList({
                             >
                                 {msg.author}:
                             </button>
-                            <span className="text-neutral-200 break-words">{msg.content}</span>
+                            <span className="text-neutral-200 break-words">
+                                {msg.content}
+                            </span>
                         </div>
                     )
                 })

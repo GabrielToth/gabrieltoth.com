@@ -66,8 +66,12 @@ export default function DiscoverPage() {
     return (
         <div className="space-y-6">
             <div>
-                <h1 className="text-2xl font-bold text-foreground">{t("title")}</h1>
-                <p className="mt-1 text-sm text-muted-foreground">{t("description")}</p>
+                <h1 className="text-2xl font-bold text-foreground">
+                    {t("title")}
+                </h1>
+                <p className="mt-1 text-sm text-muted-foreground">
+                    {t("description")}
+                </p>
             </div>
 
             {users.length === 0 ? (
@@ -87,14 +91,23 @@ export default function DiscoverPage() {
                                 <div className="flex items-center gap-3 mb-3">
                                     <div className="h-10 w-10 rounded-full bg-neutral-700 flex items-center justify-center text-sm font-bold text-neutral-300 overflow-hidden">
                                         {user.avatarUrl ? (
-                                            <img src={user.avatarUrl} alt="" className="h-full w-full object-cover" />
+                                            <img
+                                                src={user.avatarUrl}
+                                                alt=""
+                                                className="h-full w-full object-cover"
+                                            />
                                         ) : (
-                                            user.displayName[0]?.toUpperCase() || "?"
+                                            user.displayName[0]?.toUpperCase() ||
+                                            "?"
                                         )}
                                     </div>
                                     <div className="min-w-0">
-                                        <p className="text-sm font-semibold text-neutral-100 truncate">{user.displayName}</p>
-                                        <p className="text-[10px] text-neutral-400">@{user.username}</p>
+                                        <p className="text-sm font-semibold text-neutral-100 truncate">
+                                            {user.displayName}
+                                        </p>
+                                        <p className="text-[10px] text-neutral-400">
+                                            @{user.username}
+                                        </p>
                                     </div>
                                 </div>
                                 <div className="flex flex-wrap gap-1.5">
@@ -107,7 +120,9 @@ export default function DiscoverPage() {
                                                 className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-semibold text-white ${icon.color}`}
                                             >
                                                 {icon.label}
-                                                <span className="text-white/70 text-[9px]">{info.username}</span>
+                                                <span className="text-white/70 text-[9px]">
+                                                    {info.username}
+                                                </span>
                                             </span>
                                         )
                                     })}

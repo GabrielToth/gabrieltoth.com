@@ -51,7 +51,7 @@ describe("NavMenu", () => {
 
         const insightsButton = screen.getByRole("button", { name: /insights/i })
         expect(insightsButton).toHaveAttribute("aria-current", "page")
-        expect(insightsButton).toHaveClass("bg-blue-50", "text-blue-600")
+        expect(insightsButton).toHaveClass("bg-primary/5", "text-primary")
     })
 
     it("does not highlight inactive items", () => {
@@ -66,7 +66,7 @@ describe("NavMenu", () => {
 
         const insightsButton = screen.getByRole("button", { name: /insights/i })
         expect(insightsButton).not.toHaveAttribute("aria-current")
-        expect(insightsButton).toHaveClass("text-gray-700")
+        expect(insightsButton).toHaveClass("text-foreground")
     })
 
     it("calls onItemClick when an item is clicked", () => {

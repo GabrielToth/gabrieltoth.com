@@ -5,7 +5,10 @@
 
 "use client"
 
-import { ExecutionModeSwitch, ExecutionMode } from "@/components/ui/execution-mode-switch"
+import {
+    ExecutionModeSwitch,
+    ExecutionMode,
+} from "@/components/ui/execution-mode-switch"
 
 export type ChatExecutionMode = ExecutionMode
 
@@ -14,6 +17,9 @@ interface ChatExecutionModeToggleProps {
     onChange: (mode: ChatExecutionMode) => void
 }
 
-export function ChatExecutionModeToggle({ mode, onChange }: ChatExecutionModeToggleProps) {
+export function ChatExecutionModeToggle({
+    mode,
+    onChange,
+}: ChatExecutionModeToggleProps) {
     return <ExecutionModeSwitch mode={mode} onChange={onChange} />
 }

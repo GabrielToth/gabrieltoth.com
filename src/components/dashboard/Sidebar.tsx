@@ -10,9 +10,25 @@ import React, { useEffect, useState } from "react"
 import { NotificationBell } from "./NotificationBell"
 
 export interface SidebarProps {
-    activeTab: "publish" | "insights" | "channels" | "settings" | "live" | "discover" | "repost" | "cloner"
+    activeTab:
+        | "publish"
+        | "insights"
+        | "channels"
+        | "settings"
+        | "live"
+        | "discover"
+        | "repost"
+        | "cloner"
     onTabChange: (
-        tab: "publish" | "insights" | "channels" | "settings" | "live" | "discover" | "repost" | "cloner"
+        tab:
+            | "publish"
+            | "insights"
+            | "channels"
+            | "settings"
+            | "live"
+            | "discover"
+            | "repost"
+            | "cloner"
     ) => void
     isOpen?: boolean
     onClose?: () => void

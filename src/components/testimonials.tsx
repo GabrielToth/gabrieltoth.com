@@ -10,10 +10,14 @@ export function TestimonialsSection({ locale = "pt-BR" }: TestimonialsProps) {
             <div className="mx-auto max-w-5xl px-4">
                 <div className="mb-8 text-center">
                     <h2 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
-                        {locale === "pt-BR" ? "Depoimentos & Avaliações" : "Testimonials & Reviews"}
+                        {locale === "pt-BR"
+                            ? "Depoimentos & Avaliações"
+                            : "Testimonials & Reviews"}
                     </h2>
                     <p className="mt-2 text-sm text-muted-foreground">
-                        {locale === "pt-BR" ? "O que dizem os clientes e parceiros" : "What clients and partners say"}
+                        {locale === "pt-BR"
+                            ? "O que dizem os clientes e parceiros"
+                            : "What clients and partners say"}
                     </p>
                 </div>
 
@@ -24,16 +28,23 @@ export function TestimonialsSection({ locale = "pt-BR" }: TestimonialsProps) {
                             className="rounded-xl border border-border bg-card p-6 shadow-sm transition hover:shadow-md"
                         >
                             <div className="mb-3 flex items-center gap-1 text-amber-500">
-                                {Array.from({ length: t.rating }).map((_, i) => (
-                                    <span key={i}>★</span>
-                                ))}
+                                {Array.from({ length: t.rating }).map(
+                                    (_, i) => (
+                                        <span key={i}>★</span>
+                                    )
+                                )}
                             </div>
                             <p className="mb-4 text-sm text-muted-foreground italic">
-                                &ldquo;{t.comment[locale] || t.comment["en"]}&rdquo;
+                                &ldquo;{t.comment[locale] || t.comment["en"]}
+                                &rdquo;
                             </p>
                             <div>
-                                <h3 className="text-sm font-semibold text-foreground">{t.name}</h3>
-                                <p className="text-xs text-muted-foreground">{t.role}</p>
+                                <h3 className="text-sm font-semibold text-foreground">
+                                    {t.name}
+                                </h3>
+                                <p className="text-xs text-muted-foreground">
+                                    {t.role}
+                                </p>
                             </div>
                         </div>
                     ))}

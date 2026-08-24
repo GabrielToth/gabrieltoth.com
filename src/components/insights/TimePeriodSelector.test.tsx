@@ -28,7 +28,7 @@ describe("TimePeriodSelector", () => {
         )
 
         const thirtyDaysButton = screen.getByText("Last 30 days")
-        expect(thirtyDaysButton).toHaveClass("bg-blue-600")
+        expect(thirtyDaysButton).toHaveClass("bg-primary")
     })
 
     it("calls onPeriodChange when a period is clicked", async () => {

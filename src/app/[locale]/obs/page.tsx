@@ -4,8 +4,13 @@ import { useRelayChat } from "@/hooks/use-relay-chat"
 import { useMemo, useRef, useEffect } from "react"
 
 const PLATFORM_LABELS: Record<string, string> = {
-    twitch: "TW", kick: "KC", youtube: "YT",
-    facebook: "FB", instagram: "IG", tiktok: "TK", linkedin: "LI",
+    twitch: "TW",
+    kick: "KC",
+    youtube: "YT",
+    facebook: "FB",
+    instagram: "IG",
+    tiktok: "TK",
+    linkedin: "LI",
 }
 
 const PLATFORM_COLORS: Record<string, string> = {
@@ -25,16 +30,16 @@ export default function ObsChatOverlay() {
     const endRef = useRef<HTMLDivElement>(null)
 
     const messages = useMemo(() => {
-        return relay.messages
-            .slice(-MAX_VISIBLE)
-            .map(m => ({
-                id: m.id,
-                author: m.user?.displayName || m.user?.username || "Anonymous",
-                content: m.content,
-                platform: m.platform,
-                color: PLATFORM_COLORS[m.platform] || "#888",
-                label: PLATFORM_LABELS[m.platform] || m.platform.slice(0, 2).toUpperCase(),
-            }))
+        return relay.messages.slice(-MAX_VISIBLE).map(m => ({
+            id: m.id,
+            author: m.user?.displayName || m.user?.username || "Anonymous",
+            content: m.content,
+            platform: m.platform,
+            color: PLATFORM_COLORS[m.platform] || "#888",
+            label:
+                PLATFORM_LABELS[m.platform] ||
+                m.platform.slice(0, 2).toUpperCase(),
+        }))
     }, [relay.messages])
 
     useEffect(() => {
@@ -44,7 +49,9 @@ export default function ObsChatOverlay() {
     if (!relay.isConnected) {
         return (
             <div className="flex items-center justify-center h-screen bg-transparent">
-                <p className="text-white/40 text-lg">Waiting for connection...</p>
+                <p className="text-white/40 text-lg">
+                    Waiting for connection...
+                </p>
             </div>
         )
     }
@@ -60,7 +67,7 @@ export default function ObsChatOverlay() {
     return (
         <>
             <div className="h-screen w-screen overflow-y-auto bg-transparent p-4 space-y-2 font-sans">
-                {messages.map((msg) => (
+                {messages.map(msg => (
                     <div
                         key={msg.id}
                         className="flex items-start gap-2 obs-message"

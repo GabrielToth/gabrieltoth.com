@@ -175,8 +175,8 @@ export function PasswordSetup({
                                 : "text-muted-foreground dark:text-muted-foreground"
                         }`}
                     >
-                        {validation.requirements.minLength ? "âœ“" : "â—‹"} At least
-                        8 characters
+                        {validation.requirements.minLength ? "âœ“" : "â—‹"} At
+                        least 8 characters
                     </li>
                     <li
                         className={`transition-colors ${
@@ -185,8 +185,8 @@ export function PasswordSetup({
                                 : "text-muted-foreground dark:text-muted-foreground"
                         }`}
                     >
-                        {validation.requirements.hasUppercase ? "âœ“" : "â—‹"} One
-                        uppercase letter (A-Z)
+                        {validation.requirements.hasUppercase ? "âœ“" : "â—‹"}{" "}
+                        One uppercase letter (A-Z)
                     </li>
                     <li
                         className={`transition-colors ${
@@ -195,8 +195,8 @@ export function PasswordSetup({
                                 : "text-muted-foreground dark:text-muted-foreground"
                         }`}
                     >
-                        {validation.requirements.hasLowercase ? "âœ“" : "â—‹"} One
-                        lowercase letter (a-z)
+                        {validation.requirements.hasLowercase ? "âœ“" : "â—‹"}{" "}
+                        One lowercase letter (a-z)
                     </li>
                     <li
                         className={`transition-colors ${

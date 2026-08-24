@@ -36,8 +36,12 @@ export function ChatCommandPalette({
                             : "text-neutral-300 hover:bg-neutral-800/60"
                     }`}
                 >
-                    <span className="font-mono text-emerald-400 font-bold">{cmd.name}</span>
-                    <span className="text-[10px] text-neutral-400">{cmd.description}</span>
+                    <span className="font-mono text-emerald-400 font-bold">
+                        {cmd.name}
+                    </span>
+                    <span className="text-[10px] text-neutral-400">
+                        {cmd.description}
+                    </span>
                 </button>
             ))}
         </div>

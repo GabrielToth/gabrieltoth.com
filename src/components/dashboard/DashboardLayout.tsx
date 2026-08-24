@@ -4,7 +4,15 @@ import { logger } from "@/lib/logger"
 import { useLocale, useTranslations } from "next-intl"
 import { useRouter } from "next/navigation"
 
-type DashboardTab = "publish" | "insights" | "channels" | "settings" | "live" | "discover" | "repost" | "cloner"
+type DashboardTab =
+    | "publish"
+    | "insights"
+    | "channels"
+    | "settings"
+    | "live"
+    | "discover"
+    | "repost"
+    | "cloner"
 import React, { useState } from "react"
 import { Sidebar } from "./Sidebar"
 import { StreamHealthHeader } from "@/components/dashboard/live/stream-health-header"
@@ -109,10 +117,10 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
             <main className="flex-1 overflow-auto">
                 {/* Dashboard Header Bar with Stream Health */}
                 <div className="sticky top-0 z-20 flex items-center justify-between border-b border-border bg-card px-4 py-2.5">
-                    <div className="flex items-center space-x-3">
+                    <div className="flex items-center space-x-3 md:hidden">
                         <button
                             onClick={() => setSidebarOpen(!sidebarOpen)}
-                            className="inline-flex items-center justify-center rounded-md p-1.5 text-muted-foreground hover:bg-muted focus:outline-none md:hidden"
+                            className="inline-flex items-center justify-center rounded-md p-1.5 text-muted-foreground hover:bg-muted focus:outline-none focus:ring-2 focus:ring-primary min-h-10 min-w-10 md:hidden"
                             aria-label={t("toggleSidebar")}
                             aria-expanded={sidebarOpen}
                         >

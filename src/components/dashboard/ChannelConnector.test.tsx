@@ -155,7 +155,7 @@ describe("ChannelConnector", () => {
         )
 
         const facebookButton = screen.getByLabelText(/facebook - connected/i)
-        expect(facebookButton).toHaveClass("border-blue-500", "bg-blue-50")
+        expect(facebookButton).toHaveClass("border-primary", "bg-primary/5")
     })
 
     it("applies correct styling for disconnected channels", () => {
@@ -173,7 +173,7 @@ describe("ChannelConnector", () => {
         const instagramButton = screen.getByLabelText(
             /instagram - disconnected/i
         )
-        expect(instagramButton).toHaveClass("border-gray-200", "bg-white")
+        expect(instagramButton).toHaveClass("border-border", "bg-card")
     })
 
     it("renders section title", () => {
