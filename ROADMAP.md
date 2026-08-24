@@ -29,6 +29,8 @@
 | Fix TikTok OAuth token response format — nested `data.data` wrapping | [#215](https://github.com/GabrielToth/gabrieltoth.com/issues/215) | [#218](https://github.com/GabrielToth/gabrieltoth.com/pull/218) | ✅ **MERGED** — Added `normalizeTokenResponse()` helper |
 | Document Facebook redirect URI whitelist requirement | [#216](https://github.com/GabrielToth/gabrieltoth.com/issues/216) | — | 📋 **Config-only** — User must add URIs in Meta Developer Portal |
 | Document Instagram OAuth bypass (CNPJ limitation) | [#217](https://github.com/GabrielToth/gabrieltoth.com/issues/217) | — | 📋 **Config-only** — Bypass via `INSTAGRAM_PAGE_ACCESS_TOKEN` env var |
+| Twitter/X OAuth 2.0 PKCE integration with posting adapter | [#221](https://github.com/GabrielToth/gabrieltoth.com/issues/221) | [#223](https://github.com/GabrielToth/gabrieltoth.com/pull/223) | ✅ **IMPLEMENTED (DRAFT — needs merge)** |
+| LinkedIn OAuth 2.0 integration with posting adapter | [#222](https://github.com/GabrielToth/gabrieltoth.com/issues/222) | [#224](https://github.com/GabrielToth/gabrieltoth.com/pull/224) | ✅ **IMPLEMENTED (DRAFT — needs merge)** |
 
 ## ✅ Completed — July 2026 Cycle (Phase 2: Twitch + Kick Live Streaming)
 
@@ -107,7 +109,7 @@
 ### Testing — Expansion
 
 - [x] **Add integration tests** for live stream health, viewer retention, and chat moderation (`live-stream-moderation-flow.test.ts`)
-- [ ] **Add E2E tests** for critical user flows (login, publish, OAuth connection)
+- [x] **Add E2E tests** for critical user flows (login, publish, OAuth connection)
 
 ## 📌 Milestones
 

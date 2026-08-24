@@ -154,3 +154,4 @@ audit2.json
 # Test output files
 test-output.txt
 .env*.local
+.vercel
