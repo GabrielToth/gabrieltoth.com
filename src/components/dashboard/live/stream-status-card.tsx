@@ -116,7 +116,7 @@ export function StreamStatusCard({
                         className="flex h-10 w-10 items-center justify-center rounded-full text-sm font-bold text-white shadow-sm"
                         style={{ backgroundColor: getPlatformColor() }}
                     >
-                        {platform.slice(0, 2).toUpperCase()}
+                        {platform.slice(0, 1).toUpperCase()}
                     </div>
                     <div>
                         <div className="flex items-center gap-2">
@@ -182,7 +182,7 @@ export function StreamStatusCard({
                     <p className="text-xl font-bold text-foreground truncate" title={gameName}>
                         {gameName || "—"}
                     </p>
-                    <p className="text-xs text-muted-foreground">Categoria/Jogo</p>
+                    <p className="text-xs text-muted-foreground">Game</p>
                 </div>
             </div>
 
