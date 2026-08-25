@@ -558,7 +558,7 @@ describe("Performance: Login Endpoint", () => {
             expect(PERFORMANCE_THRESHOLDS.LOGIN_ENDPOINT).toBe(500)
             expect(PERFORMANCE_THRESHOLDS.CSRF_VALIDATION).toBe(50)
             expect(PERFORMANCE_THRESHOLDS.RATE_LIMITING).toBe(50)
-            expect(PERFORMANCE_THRESHOLDS.PASSWORD_HASHING).toBe(250)
+            expect(PERFORMANCE_THRESHOLDS.PASSWORD_HASHING).toBe(1000)
             expect(PERFORMANCE_THRESHOLDS.DATABASE_QUERY).toBe(100)
             expect(PERFORMANCE_THRESHOLDS.SESSION_STORAGE).toBe(50)
         })

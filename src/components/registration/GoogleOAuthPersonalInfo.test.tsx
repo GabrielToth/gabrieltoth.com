@@ -462,7 +462,7 @@ describe("GoogleOAuthPersonalInfo", () => {
 
             const inputs = container.querySelectorAll("input")
             inputs.forEach(input => {
-                expect(input).toHaveClass("bg-gray-800")
+                expect(input).toHaveClass("bg-card")
                 expect(input).toHaveClass("text-white")
             })
         })
@@ -474,9 +474,9 @@ describe("GoogleOAuthPersonalInfo", () => {
 
             const inputs = container.querySelectorAll("input")
             inputs.forEach(input => {
-                // Check that input has focus:ring classes (can be blue, green, or red depending on validation state)
+                // Check that input has focus:ring classes (can be ring, blue, green, or red depending on validation state)
                 expect(input.className).toMatch(
-                    /focus:ring-(blue|green|red)-500/
+                    /focus:ring-(ring|blue|green|red)/
                 )
             })
         })
