@@ -14,6 +14,60 @@ import { NextRequest, NextResponse } from "next/server"
 const logger = createLogger("OAuthAuthorizeEndpoint")
 
 /**
+ * GET /api/oauth/authorize/:platform
+ * Direct browser GET navigation handler — redirects user to OAuth provider consent screen
+ */
+export async function GET(
+    request: NextRequest,
+    context: { params: Promise<{ platform: string }> }
+): Promise<NextResponse> {
+    const { platform } = await context.params
+    const locale = request.nextUrl.searchParams.get("locale") || "pt-BR"
+
+    const oauthManager = getOAuthManager()
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    if (!oauthManager.isPlatformConfigured(platform as any)) {
+        logger.warn("Unsupported or unconfigured platform for OAuth GET redirect", {
+            platform,
+        })
+        return NextResponse.json(
+            { error: `Platform ${platform} is not supported or configured` },
+            { status: 400 }
+        )
+    }
+
+    try {
+        const session = await getServerSession(request)
+        const userId = session?.user?.id || "guest"
+
+        const authResponse = await oauthManager.generateAuthorizationUrl(
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            platform as any,
+            userId,
+            locale
+        )
+
+        if (authResponse?.authorizationUrl) {
+            return NextResponse.redirect(authResponse.authorizationUrl)
+        }
+
+        return NextResponse.json(
+            { error: "Failed to generate authorization URL" },
+            { status: 500 }
+        )
+    } catch (error) {
+        logger.error("OAuth GET redirect failed", {
+            platform,
+            error: error instanceof Error ? error.message : String(error),
+        })
+        return NextResponse.json(
+            { error: "Failed to initiate OAuth redirect" },
+            { status: 500 }
+        )
+    }
+}
+
+/**
  * POST /api/oauth/authorize/:platform
  * Initiates OAuth authorization flow
  */
