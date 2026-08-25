@@ -114,3 +114,26 @@ export function getLocalizedPath(key: string, locale: Locale): string {
     const slug = getLocalizedUrl(key, locale)
     return `/${locale}/${slug}`
 }
+
+/**
+ * Reverse lookup: find the route key for a given path or slug
+ * @param pathOrSlug - Path or slug (e.g., "/editores", "otimizacao-de-pc")
+ * @returns The base route key (e.g., "editors", "pc-optimization")
+ */
+export function getRouteKeyFromPath(pathOrSlug: string): string {
+    const cleanPath = pathOrSlug.replace(/^\/|\/$/g, "")
+    if (!cleanPath) return ""
+
+    // Check if cleanPath matches any key directly in en
+    if (urlMapping.en[cleanPath]) return cleanPath
+
+    // Check across all locales for a matching translated slug
+    for (const locale of Object.keys(urlMapping) as Locale[]) {
+        for (const [key, slug] of Object.entries(urlMapping[locale])) {
+            if (slug === cleanPath) {
+                return key
+            }
+        }
+    }
+    return cleanPath
+}

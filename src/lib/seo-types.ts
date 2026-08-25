@@ -44,6 +44,7 @@ export interface DefaultSeoProps {
 export interface SeoConfigOptions {
     locale: Locale
     path?: string
+    canonicalKey?: string
     title?: string
     description?: string
     keywords?: string[]

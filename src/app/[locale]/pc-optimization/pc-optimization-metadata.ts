@@ -1,4 +1,5 @@
 import { defaultLocale, locales, type Locale } from "@/lib/i18n"
+import { generateSeoConfig } from "@/lib/seo-config"
 import { type Metadata } from "next"
 
 interface PageProps {
@@ -52,6 +53,15 @@ export async function generateMetadata({
     /* c8 ignore next */
     const description = descriptions[locale] || descriptions.en
 
+    const seoConfig = generateSeoConfig({
+        locale,
+        path: "/pc-optimization",
+        title,
+        description,
+        keywords: (keywords[locale] || keywords.en).split(", "),
+        ogImage: "https://www.gabrieltoth.com/og-image-pc-optimization.jpg",
+    })
+
     return {
         title,
         description,
@@ -80,16 +90,10 @@ export async function generateMetadata({
             ],
         },
         alternates: {
-            canonical: `https://www.gabrieltoth.com/${locale}/pc-optimization/`,
-            languages: {
-                en: "https://www.gabrieltoth.com/en/pc-optimization/",
-                "pt-BR": "https://www.gabrieltoth.com/pt-BR/pc-optimization/",
-                es: "https://www.gabrieltoth.com/es/pc-optimization/",
-                de: "https://www.gabrieltoth.com/de/pc-optimization/",
-                fr: "https://www.gabrieltoth.com/fr/pc-optimization/",
-                "x-default":
-                    "https://www.gabrieltoth.com/pt-BR/pc-optimization/",
-            },
+            canonical: seoConfig.canonical,
+            languages: Object.fromEntries(
+                (seoConfig.languageAlternates || []).map(alt => [alt.hrefLang, alt.href])
+            ),
         },
     }
 }

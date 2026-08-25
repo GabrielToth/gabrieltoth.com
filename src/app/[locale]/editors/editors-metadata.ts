@@ -66,13 +66,9 @@ export async function generateMetadata({
         },
         alternates: {
             canonical: seoConfig.canonical,
-            languages: {
-                en: "https://www.gabrieltoth.com/en/editors/",
-                "pt-BR": "https://www.gabrieltoth.com/pt-BR/editors/",
-                es: "https://www.gabrieltoth.com/es/editors/",
-                de: "https://www.gabrieltoth.com/de/editors/",
-                "x-default": "https://www.gabrieltoth.com/pt-BR/editors/",
-            },
+            languages: Object.fromEntries(
+                (seoConfig.languageAlternates || []).map(alt => [alt.hrefLang, alt.href])
+            ),
         },
     }
 }
