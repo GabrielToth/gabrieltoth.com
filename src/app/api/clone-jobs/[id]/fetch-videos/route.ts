@@ -43,7 +43,7 @@ export async function POST(
 
         const handleMatch = channelUrl.match(/youtube\.com\/@(\w+)/)
         const channelMatch = channelUrl.match(/youtube\.com\/channel\/(\w+)/)
-        const urlMatch = channelUrl.match(/youtube\.com\/(\w+)/)
+        const _urlMatch = channelUrl.match(/youtube\.com\/(\w+)/)
 
         if (handleMatch) {
             const res = await fetch(
@@ -62,7 +62,20 @@ export async function POST(
             )
         }
 
-        const allVideos: any[] = []
+        interface YouTubeSearchItem {
+            id?: { channelId?: string; videoId?: string }
+            snippet?: {
+                title?: string
+                description?: string
+                thumbnails?: Record<string, unknown>
+                publishedAt?: string
+                channelTitle?: string
+                tags?: string[]
+                liveBroadcastContent?: string
+            }
+        }
+
+        const allVideos: YouTubeSearchItem[] = []
         let pageToken = ""
 
         do {
@@ -74,7 +87,7 @@ export async function POST(
             pageToken = data.nextPageToken || ""
         } while (pageToken && allVideos.length < 500)
 
-        const videos = allVideos.map((item: any) => {
+        const videos = allVideos.map((item: YouTubeSearchItem) => {
             const title = item.snippet?.title || ""
             const isShort =
                 title.match(/#shorts/i) ||
@@ -99,10 +112,10 @@ export async function POST(
         })
 
         const categories = job.categories || ["video", "short", "live"]
-        const filtered = videos.filter((v: any) =>
+        const filtered = videos.filter((v: { category: string }) =>
             categories.includes(v.category)
         )
-        const videoIds = filtered.map((v: any) => v.videoId)
+        const videoIds = filtered.map((v: { videoId: string }) => v.videoId)
 
         await supabase
             .from("clone_jobs")

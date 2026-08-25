@@ -264,7 +264,10 @@
                 "address": {
                     "@type": "PostalAddress",
                     "addressCountry": "BR",
-                    "addressRegion": "São Paulo"
+                    "addressRegion": "São Paulo",
+                    "addressLocality": "REMOTE",
+                    "streetAddress": "N/A",
+                    "postalCode": "N/A"
                 }
             },
             "baseSalary": {
@@ -272,11 +275,14 @@
                 "currency": "BRL",
                 "value": {
                     "@type": "QuantitativeValue",
-                    "unitText": "90% of AdSense per video"
+                    "unitText": "90% of AdSense per video",
+                    "minValue": 0,
+                    "maxValue": 10000
                 }
             },
             "qualifications": "Video editing experience, knowledge of editing software",
-            "responsibilities": "Modifier videos for YouTube, apply thumbnails, optimize for SEO"
+            "responsibilities": "Modifier videos for YouTube, apply thumbnails, optimize for SEO",
+            "validThrough": "2027-12-31T23:59:59Z"
         }
     },
     "faqs": [

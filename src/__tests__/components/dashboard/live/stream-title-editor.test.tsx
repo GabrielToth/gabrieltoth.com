@@ -32,7 +32,7 @@ describe("StreamTitleEditor", () => {
         expect(titleInput).toHaveValue("My Current Title")
 
         const gameInput = screen.getByPlaceholderText(
-            "Enter game or category..."
+            "Search game or category for connected platforms..."
         )
         expect(gameInput).toBeInTheDocument()
         expect(gameInput).toHaveValue("Just Chatting")
@@ -98,7 +98,7 @@ describe("StreamTitleEditor", () => {
             expect(screen.getByText("Stream updated!")).toBeInTheDocument()
         })
         expect(screen.getByText("Stream updated!")).toHaveClass(
-            "text-green-600"
+            "text-emerald-700"
         )
     })
 

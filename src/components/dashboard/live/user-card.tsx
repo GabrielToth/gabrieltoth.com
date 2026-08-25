@@ -34,7 +34,7 @@ const ROLE_COLORS: Record<string, string> = {
 export function UserCard({
     username,
     displayName,
-    platform,
+    platform: _platform,
     platformBadge,
     isBroadcaster,
     isModerator,

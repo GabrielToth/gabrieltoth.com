@@ -61,7 +61,7 @@ describe("Kick Config", () => {
             const config = createKickConfig()
 
             expect(config.oauth.redirectUri).toBe(
-                "https://www.gabrieltoth.com/api/oauth/callback/kick"
+                "http://localhost:3000/api/oauth/callback/kick"
             )
         })
 

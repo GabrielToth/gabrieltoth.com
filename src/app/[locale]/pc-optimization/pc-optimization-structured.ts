@@ -44,12 +44,22 @@ export async function buildPCOptimizationStructured(locale: Locale): Promise<{
                 "@type": "Product",
                 name: plan.name,
                 description: plan.description,
+                image: "https://www.gabrieltoth.com/profile-image.jpg",
+                brand: {
+                    "@type": "Brand",
+                    name: "Gabriel Toth",
+                },
+                mpn: `pc-optimization-${plan.name
+                    .toLowerCase()
+                    .replace(/[^a-z0-9]+/g, "-")
+                    .replace(/^-+|-+$/g, "")}`,
                 url: pageUrl,
                 offers: {
                     "@type": "Offer",
                     priceCurrency,
                     price: plan.basePrice,
                     availability: "https://schema.org/InStock",
+                    priceValidUntil: "2027-12-31T23:59:59Z",
                     url: pageUrl,
                 },
                 aggregateRating: {

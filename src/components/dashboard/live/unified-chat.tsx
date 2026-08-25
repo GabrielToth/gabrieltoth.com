@@ -156,7 +156,7 @@ export function UnifiedChat({ platforms }: UnifiedChatProps) {
             isBroadcaster: m.user?.isBroadcaster,
             isModerator: m.user?.isModerator,
             isSubscriber: m.user?.isSubscriber,
-            isVip: (m.user as any)?.isVip,
+            isVip: (m.user as { isVip?: boolean })?.isVip,
         }))
 
         const sseMsgs: RenderableChatMessage[] = sse.messages.map(m => ({
@@ -194,7 +194,7 @@ export function UnifiedChat({ platforms }: UnifiedChatProps) {
     const statusText = relay.isConnected ? "Connected" : "Disconnected"
 
     const [input, setInput] = useState("")
-    const [historyIndex, setHistoryIndex] = useState(-1)
+    const [_historyIndex, setHistoryIndex] = useState(-1)
     const [showCommands, setShowCommands] = useState(false)
     const [selectedCmd, setSelectedCmd] = useState(0)
     const [sending, setSending] = useState(false)
@@ -276,7 +276,7 @@ export function UnifiedChat({ platforms }: UnifiedChatProps) {
                 duration
             )
         },
-        [selectedUser, relay.sendModeration]
+        [selectedUser, relay]
     )
 
     const getPlatformBadge = (platform: string) => {

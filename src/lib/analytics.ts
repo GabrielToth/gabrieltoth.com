@@ -11,7 +11,6 @@ export function trackCustomEvent(
 
     // Console debug logging in development mode
     if (process.env.NODE_ENV === "development") {
-        // eslint-disable-next-line no-console
         console.log(`[Analytics Event] ${eventName}:`, properties)
     }
 }

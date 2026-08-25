@@ -21,7 +21,7 @@ export function ExecutionModeSwitch({
     mode,
     onChange,
     disabled = false,
-    compact = false,
+    compact: _compact = false,
 }: ExecutionModeSwitchProps) {
     return (
         <div className="inline-flex items-center rounded-full border border-border/80 bg-muted/30 p-0.5 text-xs">

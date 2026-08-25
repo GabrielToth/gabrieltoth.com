@@ -258,11 +258,20 @@ export class KickOAuthService extends BaseService {
             })
 
             return {
-                id: String(channel.broadcaster_user_id || channel.id),
+                id: String(
+                    channel.broadcaster_user_id ||
+                        channel.id ||
+                        channel.channel_id
+                ),
                 name: channel.stream_title || channel.name || "",
                 slug: channel.slug || "",
-                followersCount: 0,
-                isLive: channel.stream?.is_live ?? false,
+                followersCount:
+                    channel.followers_count ?? channel.followersCount ?? 0,
+                isLive:
+                    channel.stream?.is_live ??
+                    channel.live ??
+                    channel.isLive ??
+                    false,
                 chatroomId,
             }
         } catch (error) {

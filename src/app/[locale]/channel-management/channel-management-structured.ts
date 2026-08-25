@@ -18,10 +18,12 @@ export async function buildChannelManagementStructured(
         "@type": "Product",
         name: "ViraTrend - Digital Growth Consulting",
         description: t("about.description"),
+        image: "https://www.gabrieltoth.com/profile-image.jpg",
         brand: {
             "@type": "Brand",
             name: "ViraTrend",
         },
+        mpn: "viratrend-digital-growth-consulting",
         category: "Digital Marketing Consulting",
         url: `https://www.gabrieltoth.com${locale === "en" ? "" : `/${locale}`}/channel-management`,
         offers: {
@@ -29,6 +31,7 @@ export async function buildChannelManagementStructured(
             availability: "https://schema.org/InStock",
             priceCurrency: "BRL",
             price: "0",
+            priceValidUntil: "2027-12-31T23:59:59Z",
             description: t("services.subtitle"),
         },
         aggregateRating: {
@@ -78,12 +81,22 @@ export async function buildChannelManagementStructured(
                 "@type": "Product",
                 name: plan.name,
                 description: plan.description,
+                image: "https://www.gabrieltoth.com/profile-image.jpg",
+                brand: {
+                    "@type": "Brand",
+                    name: "ViraTrend",
+                },
+                mpn: `viratrend-${plan.name
+                    .toLowerCase()
+                    .replace(/[^a-z0-9]+/g, "-")
+                    .replace(/^-+|-+$/g, "")}`,
                 url: pageUrl,
                 offers: {
                     "@type": "Offer",
                     priceCurrency,
                     price: plan.basePrice,
                     availability: "https://schema.org/InStock",
+                    priceValidUntil: "2027-12-31T23:59:59Z",
                     url: pageUrl,
                 },
                 aggregateRating: {

@@ -23,7 +23,10 @@ import { NextRequest, NextResponse } from "next/server"
 const logger = createLogger("LiveStatusEndpoint")
 
 const STATUS_CACHE_TTL_MS = 60_000
-const statusCache = new Map<string, { data: any; expiresAt: number }>()
+const statusCache = new Map<
+    string,
+    { data: Record<string, unknown>; expiresAt: number }
+>()
 
 async function getValidAccessToken(
     userId: string,
@@ -338,7 +341,8 @@ async function fetchYouTubeStream(
         const broadcastData = await broadcastRes.json()
         const items = broadcastData.items || []
         const liveBroadcast = items.find(
-            (item: any) => item.status?.lifeCycleStatus === "live"
+            (item: { status?: { lifeCycleStatus?: string } }) =>
+                item.status?.lifeCycleStatus === "live"
         )
 
         if (!liveBroadcast) {

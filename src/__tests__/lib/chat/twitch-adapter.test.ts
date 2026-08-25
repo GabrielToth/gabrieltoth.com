@@ -106,13 +106,14 @@ describe("TwitchChatAdapter", () => {
 
         it("rejects on connection timeout", async () => {
             const connectPromise = adapter.connect("timeoutchannel", "token")
+            const assertion = expect(connectPromise).rejects.toThrow(
+                "Twitch IRC connection timeout"
+            )
 
             // Advance past the 10s timeout
             await vi.advanceTimersByTimeAsync(11000)
 
-            await expect(connectPromise).rejects.toThrow(
-                "Twitch IRC connection timeout"
-            )
+            await assertion
         })
 
         it("rejects on socket error", async () => {
@@ -120,6 +121,8 @@ describe("TwitchChatAdapter", () => {
                 "errorchannel",
                 "oauth:token"
             )
+            const assertion =
+                expect(connectPromise).rejects.toThrow("Connection refused")
             await vi.advanceTimersByTimeAsync(10)
 
             const socket = getSocket()
@@ -128,7 +131,7 @@ describe("TwitchChatAdapter", () => {
             }
 
             await vi.advanceTimersByTimeAsync(100)
-            await expect(connectPromise).rejects.toThrow("Connection refused")
+            await assertion
         })
     })
 
@@ -259,6 +262,7 @@ describe("TwitchChatAdapter", () => {
             adapter.onError(errorHandler)
 
             const connectPromise = adapter.connect("err-channel", "token")
+            const assertion = expect(connectPromise).rejects.toThrow()
             await vi.advanceTimersByTimeAsync(10)
 
             const socket = getSocket()
@@ -267,7 +271,7 @@ describe("TwitchChatAdapter", () => {
             }
 
             await vi.advanceTimersByTimeAsync(100)
-            await expect(connectPromise).rejects.toThrow()
+            await assertion
             expect(errorHandler).toHaveBeenCalledWith(
                 expect.objectContaining({
                     message: "Socket error",

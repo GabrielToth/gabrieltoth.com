@@ -5,7 +5,7 @@
         "prompt": "3, 5, 7, 9, ?",
         "choices": ["11", "9", "13", "7"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-002",
@@ -13,7 +13,7 @@
         "prompt": "4, 7, 10, 13, ?",
         "choices": ["16", "13", "19", "10"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-003",
@@ -21,7 +21,7 @@
         "prompt": "5, 9, 13, 17, ?",
         "choices": ["21", "17", "25", "13"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-004",
@@ -29,7 +29,7 @@
         "prompt": "6, 11, 16, 21, ?",
         "choices": ["26", "21", "31", "16"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-005",
@@ -37,7 +37,7 @@
         "prompt": "7, 8, 9, 10, ?",
         "choices": ["11", "10", "12", "9"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-006",
@@ -45,7 +45,7 @@
         "prompt": "8, 10, 12, 14, ?",
         "choices": ["16", "14", "18", "12"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-007",
@@ -53,7 +53,7 @@
         "prompt": "2, 5, 8, 11, ?",
         "choices": ["14", "11", "17", "8"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-008",
@@ -61,7 +61,7 @@
         "prompt": "3, 7, 11, 15, ?",
         "choices": ["19", "15", "23", "11"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-009",
@@ -69,7 +69,7 @@
         "prompt": "4, 9, 14, 19, ?",
         "choices": ["24", "19", "29", "14"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-010",
@@ -77,7 +77,7 @@
         "prompt": "5, 6, 7, 8, ?",
         "choices": ["9", "8", "10", "7"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-011",
@@ -85,7 +85,7 @@
         "prompt": "6, 8, 10, 12, ?",
         "choices": ["14", "12", "16", "10"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-012",
@@ -93,7 +93,7 @@
         "prompt": "7, 10, 13, 16, ?",
         "choices": ["19", "16", "22", "13"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-013",
@@ -101,7 +101,7 @@
         "prompt": "8, 12, 16, 20, ?",
         "choices": ["24", "20", "28", "16"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-014",
@@ -109,7 +109,7 @@
         "prompt": "2, 7, 12, 17, ?",
         "choices": ["22", "17", "27", "12"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-015",
@@ -117,7 +117,7 @@
         "prompt": "3, 4, 5, 6, ?",
         "choices": ["7", "6", "8", "5"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-016",
@@ -125,7 +125,7 @@
         "prompt": "4, 6, 8, 10, ?",
         "choices": ["12", "10", "14", "8"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-017",
@@ -133,7 +133,7 @@
         "prompt": "5, 8, 11, 14, ?",
         "choices": ["17", "14", "20", "11"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-018",
@@ -141,7 +141,7 @@
         "prompt": "6, 10, 14, 18, ?",
         "choices": ["22", "18", "26", "14"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-019",
@@ -149,7 +149,7 @@
         "prompt": "7, 12, 17, 22, ?",
         "choices": ["27", "22", "32", "17"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-020",
@@ -157,7 +157,7 @@
         "prompt": "8, 9, 10, 11, ?",
         "choices": ["12", "11", "13", "10"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-021",
@@ -165,7 +165,7 @@
         "prompt": "2, 4, 6, 8, ?",
         "choices": ["10", "8", "12", "6"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-022",
@@ -173,7 +173,7 @@
         "prompt": "3, 6, 9, 12, ?",
         "choices": ["15", "12", "18", "9"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-023",
@@ -181,7 +181,7 @@
         "prompt": "4, 8, 12, 16, ?",
         "choices": ["20", "16", "24", "12"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-024",
@@ -189,7 +189,7 @@
         "prompt": "5, 10, 15, 20, ?",
         "choices": ["25", "20", "30", "15"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-025",
@@ -197,7 +197,7 @@
         "prompt": "6, 7, 8, 9, ?",
         "choices": ["10", "9", "11", "8"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-026",
@@ -205,7 +205,7 @@
         "prompt": "7, 9, 11, 13, ?",
         "choices": ["15", "13", "17", "11"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-027",
@@ -213,7 +213,7 @@
         "prompt": "8, 11, 14, 17, ?",
         "choices": ["20", "17", "23", "14"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-028",
@@ -221,7 +221,7 @@
         "prompt": "2, 6, 10, 14, ?",
         "choices": ["18", "14", "22", "10"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-029",
@@ -229,7 +229,7 @@
         "prompt": "3, 8, 13, 18, ?",
         "choices": ["23", "18", "28", "13"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-030",
@@ -237,7 +237,7 @@
         "prompt": "4, 5, 6, 7, ?",
         "choices": ["8", "7", "9", "6"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-031",
@@ -245,7 +245,7 @@
         "prompt": "5, 7, 9, 11, ?",
         "choices": ["13", "11", "15", "9"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-032",
@@ -253,7 +253,7 @@
         "prompt": "6, 9, 12, 15, ?",
         "choices": ["18", "15", "21", "12"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-033",
@@ -261,7 +261,7 @@
         "prompt": "7, 11, 15, 19, ?",
         "choices": ["23", "19", "27", "15"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-034",
@@ -269,7 +269,7 @@
         "prompt": "8, 13, 18, 23, ?",
         "choices": ["28", "23", "33", "18"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-035",
@@ -277,7 +277,7 @@
         "prompt": "2, 3, 4, 5, ?",
         "choices": ["6", "5", "7", "4"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-036",
@@ -285,7 +285,7 @@
         "prompt": "3, 5, 7, 9, ?",
         "choices": ["11", "9", "13", "7"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-037",
@@ -293,7 +293,7 @@
         "prompt": "4, 7, 10, 13, ?",
         "choices": ["16", "13", "19", "10"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-038",
@@ -301,7 +301,7 @@
         "prompt": "5, 9, 13, 17, ?",
         "choices": ["21", "17", "25", "13"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-039",
@@ -309,7 +309,7 @@
         "prompt": "6, 11, 16, 21, ?",
         "choices": ["26", "21", "31", "16"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-040",
@@ -317,7 +317,7 @@
         "prompt": "7, 8, 9, 10, ?",
         "choices": ["11", "10", "12", "9"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-041",
@@ -325,7 +325,7 @@
         "prompt": "8, 10, 12, 14, ?",
         "choices": ["16", "14", "18", "12"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-042",
@@ -333,7 +333,7 @@
         "prompt": "2, 5, 8, 11, ?",
         "choices": ["14", "11", "17", "8"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-043",
@@ -341,7 +341,7 @@
         "prompt": "3, 7, 11, 15, ?",
         "choices": ["19", "15", "23", "11"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-044",
@@ -349,7 +349,7 @@
         "prompt": "4, 9, 14, 19, ?",
         "choices": ["24", "19", "29", "14"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-045",
@@ -357,7 +357,7 @@
         "prompt": "5, 6, 7, 8, ?",
         "choices": ["9", "8", "10", "7"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-046",
@@ -365,7 +365,7 @@
         "prompt": "6, 8, 10, 12, ?",
         "choices": ["14", "12", "16", "10"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-047",
@@ -373,7 +373,7 @@
         "prompt": "7, 10, 13, 16, ?",
         "choices": ["19", "16", "22", "13"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-048",
@@ -381,7 +381,7 @@
         "prompt": "8, 12, 16, 20, ?",
         "choices": ["24", "20", "28", "16"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-049",
@@ -389,7 +389,7 @@
         "prompt": "2, 7, 12, 17, ?",
         "choices": ["22", "17", "27", "12"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-050",
@@ -397,7 +397,7 @@
         "prompt": "3, 4, 5, 6, ?",
         "choices": ["7", "6", "8", "5"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-051",
@@ -405,7 +405,7 @@
         "prompt": "4, 6, 8, 10, ?",
         "choices": ["12", "10", "14", "8"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-052",
@@ -413,7 +413,7 @@
         "prompt": "5, 8, 11, 14, ?",
         "choices": ["17", "14", "20", "11"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-053",
@@ -421,7 +421,7 @@
         "prompt": "6, 10, 14, 18, ?",
         "choices": ["22", "18", "26", "14"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-054",
@@ -429,7 +429,7 @@
         "prompt": "7, 12, 17, 22, ?",
         "choices": ["27", "22", "32", "17"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-055",
@@ -437,7 +437,7 @@
         "prompt": "8, 9, 10, 11, ?",
         "choices": ["12", "11", "13", "10"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-056",
@@ -445,7 +445,7 @@
         "prompt": "2, 4, 6, 8, ?",
         "choices": ["10", "8", "12", "6"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-057",
@@ -453,7 +453,7 @@
         "prompt": "3, 6, 9, 12, ?",
         "choices": ["15", "12", "18", "9"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-058",
@@ -461,7 +461,7 @@
         "prompt": "4, 8, 12, 16, ?",
         "choices": ["20", "16", "24", "12"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-059",
@@ -469,7 +469,7 @@
         "prompt": "5, 10, 15, 20, ?",
         "choices": ["25", "20", "30", "15"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-060",
@@ -477,7 +477,7 @@
         "prompt": "6, 7, 8, 9, ?",
         "choices": ["10", "9", "11", "8"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-061",
@@ -485,7 +485,7 @@
         "prompt": "7, 9, 11, 13, ?",
         "choices": ["15", "13", "17", "11"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-062",
@@ -493,7 +493,7 @@
         "prompt": "8, 11, 14, 17, ?",
         "choices": ["20", "17", "23", "14"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-063",
@@ -501,7 +501,7 @@
         "prompt": "2, 6, 10, 14, ?",
         "choices": ["18", "14", "22", "10"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-064",
@@ -509,7 +509,7 @@
         "prompt": "3, 8, 13, 18, ?",
         "choices": ["23", "18", "28", "13"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-065",
@@ -517,7 +517,7 @@
         "prompt": "4, 5, 6, 7, ?",
         "choices": ["8", "7", "9", "6"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-066",
@@ -525,7 +525,7 @@
         "prompt": "5, 7, 9, 11, ?",
         "choices": ["13", "11", "15", "9"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-067",
@@ -533,7 +533,7 @@
         "prompt": "6, 9, 12, 15, ?",
         "choices": ["18", "15", "21", "12"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-068",
@@ -541,7 +541,7 @@
         "prompt": "7, 11, 15, 19, ?",
         "choices": ["23", "19", "27", "15"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-069",
@@ -549,7 +549,7 @@
         "prompt": "8, 13, 18, 23, ?",
         "choices": ["28", "23", "33", "18"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-070",
@@ -557,7 +557,7 @@
         "prompt": "2, 3, 4, 5, ?",
         "choices": ["6", "5", "7", "4"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-071",
@@ -565,7 +565,7 @@
         "prompt": "3, 5, 7, 9, ?",
         "choices": ["11", "9", "13", "7"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-072",
@@ -573,7 +573,7 @@
         "prompt": "4, 7, 10, 13, ?",
         "choices": ["16", "13", "19", "10"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-073",
@@ -581,7 +581,7 @@
         "prompt": "5, 9, 13, 17, ?",
         "choices": ["21", "17", "25", "13"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-074",
@@ -589,7 +589,7 @@
         "prompt": "6, 11, 16, 21, ?",
         "choices": ["26", "21", "31", "16"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-075",
@@ -597,7 +597,7 @@
         "prompt": "7, 8, 9, 10, ?",
         "choices": ["11", "10", "12", "9"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-076",
@@ -605,7 +605,7 @@
         "prompt": "8, 10, 12, 14, ?",
         "choices": ["16", "14", "18", "12"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-077",
@@ -613,7 +613,7 @@
         "prompt": "2, 5, 8, 11, ?",
         "choices": ["14", "11", "17", "8"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-078",
@@ -621,7 +621,7 @@
         "prompt": "3, 7, 11, 15, ?",
         "choices": ["19", "15", "23", "11"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-079",
@@ -629,7 +629,7 @@
         "prompt": "4, 9, 14, 19, ?",
         "choices": ["24", "19", "29", "14"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-080",
@@ -637,7 +637,7 @@
         "prompt": "5, 6, 7, 8, ?",
         "choices": ["9", "8", "10", "7"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-081",
@@ -645,7 +645,7 @@
         "prompt": "6, 8, 10, 12, ?",
         "choices": ["14", "12", "16", "10"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-082",
@@ -653,7 +653,7 @@
         "prompt": "7, 10, 13, 16, ?",
         "choices": ["19", "16", "22", "13"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-083",
@@ -661,7 +661,7 @@
         "prompt": "8, 12, 16, 20, ?",
         "choices": ["24", "20", "28", "16"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-084",
@@ -669,7 +669,7 @@
         "prompt": "2, 7, 12, 17, ?",
         "choices": ["22", "17", "27", "12"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-085",
@@ -677,7 +677,7 @@
         "prompt": "3, 4, 5, 6, ?",
         "choices": ["7", "6", "8", "5"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-086",
@@ -685,7 +685,7 @@
         "prompt": "4, 6, 8, 10, ?",
         "choices": ["12", "10", "14", "8"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-087",
@@ -693,7 +693,7 @@
         "prompt": "5, 8, 11, 14, ?",
         "choices": ["17", "14", "20", "11"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-088",
@@ -701,7 +701,7 @@
         "prompt": "6, 10, 14, 18, ?",
         "choices": ["22", "18", "26", "14"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-089",
@@ -709,7 +709,7 @@
         "prompt": "7, 12, 17, 22, ?",
         "choices": ["27", "22", "32", "17"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-090",
@@ -717,7 +717,7 @@
         "prompt": "8, 9, 10, 11, ?",
         "choices": ["12", "11", "13", "10"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-091",
@@ -725,7 +725,7 @@
         "prompt": "2, 4, 6, 8, ?",
         "choices": ["10", "8", "12", "6"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-092",
@@ -733,7 +733,7 @@
         "prompt": "3, 6, 9, 12, ?",
         "choices": ["15", "12", "18", "9"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-093",
@@ -741,7 +741,7 @@
         "prompt": "4, 8, 12, 16, ?",
         "choices": ["20", "16", "24", "12"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-094",
@@ -749,7 +749,7 @@
         "prompt": "5, 10, 15, 20, ?",
         "choices": ["25", "20", "30", "15"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-095",
@@ -757,7 +757,7 @@
         "prompt": "6, 7, 8, 9, ?",
         "choices": ["10", "9", "11", "8"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-096",
@@ -765,7 +765,7 @@
         "prompt": "7, 9, 11, 13, ?",
         "choices": ["15", "13", "17", "11"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-097",
@@ -773,7 +773,7 @@
         "prompt": "8, 11, 14, 17, ?",
         "choices": ["20", "17", "23", "14"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-098",
@@ -781,7 +781,7 @@
         "prompt": "2, 6, 10, 14, ?",
         "choices": ["18", "14", "22", "10"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-099",
@@ -789,7 +789,7 @@
         "prompt": "3, 8, 13, 18, ?",
         "choices": ["23", "18", "28", "13"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     },
     {
         "id": "lang-100",
@@ -797,6 +797,6 @@
         "prompt": "4, 5, 6, 7, ?",
         "choices": ["8", "7", "9", "6"],
         "answerIndex": 0,
-        "language": "en"
+        "language": "fr"
     }
 ]

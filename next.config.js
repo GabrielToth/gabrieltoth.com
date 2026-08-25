@@ -496,7 +496,43 @@ const nextConfig = {
             },
             {
                 source: "/resume/Gabriel%20Toth%20-%20Curriculum%20EN.pdf",
-                destination: "/resume/Gabriel_Toth_Curriculum_ENpdf",
+                destination: "/resume/Gabriel_Toth_Curriculum_EN.pdf",
+                permanent: true,
+            },
+            // Legacy dead routes cleanup (404/removed pages redirected to home)
+            {
+                source: "/iq-test",
+                destination: "/pt-BR/",
+                permanent: true,
+            },
+            {
+                source: "/iq-test/:path*",
+                destination: "/pt-BR/",
+                permanent: true,
+            },
+            {
+                source: "/personality-test",
+                destination: "/pt-BR/",
+                permanent: true,
+            },
+            {
+                source: "/personality-test/:path*",
+                destination: "/pt-BR/",
+                permanent: true,
+            },
+            {
+                source: "/waveigl-support",
+                destination: "/pt-BR/",
+                permanent: true,
+            },
+            {
+                source: "/waveigl-support/:path*",
+                destination: "/pt-BR/",
+                permanent: true,
+            },
+            {
+                source: "/month/:path*",
+                destination: "/pt-BR/",
                 permanent: true,
             },
             // Locale-prefixed canonical routes (static known paths)

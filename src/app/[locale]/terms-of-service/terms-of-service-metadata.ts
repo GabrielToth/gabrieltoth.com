@@ -77,14 +77,9 @@ export async function generateMetadata({
         },
         alternates: {
             canonical: seoConfig.canonical,
-            languages: {
-                en: "https://www.gabrieltoth.com/en/terms-of-service/",
-                "pt-BR": "https://www.gabrieltoth.com/pt-BR/terms-of-service/",
-                es: "https://www.gabrieltoth.com/es/terms-of-service/",
-                de: "https://www.gabrieltoth.com/de/terms-of-service/",
-                "x-default":
-                    "https://www.gabrieltoth.com/pt-BR/terms-of-service/",
-            },
+            languages: Object.fromEntries(
+                (seoConfig.languageAlternates || []).map(alt => [alt.hrefLang, alt.href])
+            ),
         },
     }
 }

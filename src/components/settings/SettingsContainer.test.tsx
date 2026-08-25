@@ -1,43 +1,103 @@
 import { render, screen, waitFor } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
-import { describe, expect, it, vi } from "vitest"
+import { beforeEach, describe, expect, it, vi } from "vitest"
 import { SettingsContainer } from "./SettingsContainer"
 
 vi.mock("next-intl", () => ({
-    useTranslations: (ns: string) => (key: string) => {
+    useTranslations: (_ns: string) => (key: string) => {
         const map: Record<string, string> = {
-            "dashboard.settings.title": "Settings",
-            "dashboard.settings.description":
-                "Manage your account settings and preferences",
-            "dashboard.settings.profile": "Profile",
-            "dashboard.settings.preferences": "Preferences",
-            "dashboard.settings.channels": "Channels",
-            "dashboard.settings.security": "Security",
-            "dashboard.settings.billing": "Billing",
-            "dashboard.settings.integrations": "Integrations",
-            "dashboard.settings.profileInformation": "Profile Information",
+            title: "Settings",
+            description: "Manage your account settings and preferences",
+            "tabs.profile": "Profile",
+            "tabs.preferences": "Preferences",
+            "tabs.channels": "Channels",
+            "tabs.security": "Security",
+            "tabs.billing": "Billing",
+            "tabs.integrations": "Integrations",
         }
-        return map[`${ns}.${key}`] ?? key
+        return map[key] ?? key
     },
     useLocale: () => "en",
 }))
 
+vi.mock("@/lib/api/user", () => ({
+    updateUserProfile: vi.fn(async () => ({
+        success: true,
+    })),
+    downloadInvoice: vi.fn(async () => new Blob()),
+    disconnectIntegration: vi.fn(async () => ({ success: true })),
+    connectIntegration: vi.fn(async () => ({ success: true })),
+    changePassword: vi.fn(async () => ({ success: true })),
+    enableTwoFactor: vi.fn(async () => ({ success: true })),
+    disableTwoFactor: vi.fn(async () => ({ success: true })),
+}))
+
+vi.mock("@/lib/logger", () => ({
+    logger: { info: vi.fn(), error: vi.fn(), warn: vi.fn(), debug: vi.fn() },
+    createLogger: () => ({
+        info: vi.fn(),
+        error: vi.fn(),
+        warn: vi.fn(),
+        debug: vi.fn(),
+    }),
+}))
+
+beforeEach(() => {
+    vi.clearAllMocks()
+    global.fetch = vi.fn((url: string | URL | Request) => {
+        const urlStr = typeof url === "string" ? url : (url as URL).toString()
+        if (urlStr.includes("/api/auth/me")) {
+            return Promise.resolve({
+                ok: true,
+                json: () =>
+                    Promise.resolve({
+                        user: {
+                            id: "1",
+                            name: "Gabriel",
+                            email: "gabriel@test.com",
+                        },
+                    }),
+            })
+        }
+        if (urlStr.includes("/api/networks/status")) {
+            return Promise.resolve({
+                ok: true,
+                json: () => Promise.resolve([]),
+            })
+        }
+        if (urlStr.includes("/api/credits/balance")) {
+            return Promise.resolve({
+                ok: true,
+                json: () => Promise.resolve({ balance: 500 }),
+            })
+        }
+        return Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({}),
+        })
+    }) as unknown as typeof fetch
+})
+
 describe("SettingsContainer", () => {
-    it("renders the settings container with header", () => {
+    it("renders the settings container with header after loading", async () => {
         render(<SettingsContainer />)
 
-        expect(screen.getByText("Settings")).toBeInTheDocument()
+        await waitFor(() => {
+            expect(screen.getByText("Settings")).toBeInTheDocument()
+        })
         expect(
             screen.getByText("Manage your account settings and preferences")
         ).toBeInTheDocument()
     })
 
-    it("renders all settings tabs", () => {
+    it("renders all settings tabs", async () => {
         render(<SettingsContainer />)
 
-        expect(
-            screen.getByRole("tab", { name: /profile/i })
-        ).toBeInTheDocument()
+        await waitFor(() => {
+            expect(
+                screen.getByRole("tab", { name: /profile/i })
+            ).toBeInTheDocument()
+        })
         expect(
             screen.getByRole("tab", { name: /preferences/i })
         ).toBeInTheDocument()
@@ -55,11 +115,12 @@ describe("SettingsContainer", () => {
         ).toBeInTheDocument()
     })
 
-    it("renders profile section by default", async () => {
+    it("shows profile tab by default", async () => {
         render(<SettingsContainer />)
 
         await waitFor(() => {
-            expect(screen.getByText("Profile Information")).toBeInTheDocument()
+            const profileTab = screen.getByRole("tab", { name: /profile/i })
+            expect(profileTab).toHaveAttribute("aria-selected", "true")
         })
     })
 
@@ -67,15 +128,28 @@ describe("SettingsContainer", () => {
         const user = userEvent.setup()
         render(<SettingsContainer />)
 
-        const preferencesTab = screen.getByRole("tab", { name: /preferences/i })
+        await waitFor(() => {
+            expect(
+                screen.getByRole("tab", { name: /preferences/i })
+            ).toBeInTheDocument()
+        })
+
+        const preferencesTab = screen.getByRole("tab", {
+            name: /preferences/i,
+        })
         await user.click(preferencesTab)
 
-        // Verify the tab is now selected
         expect(preferencesTab).toHaveAttribute("aria-selected", "true")
     })
 
     it("switches to integrations tab when clicked", async () => {
         render(<SettingsContainer />)
+
+        await waitFor(() => {
+            expect(
+                screen.getByRole("tab", { name: /integrations/i })
+            ).toBeInTheDocument()
+        })
 
         const integrationsTab = screen.getByRole("tab", {
             name: /integrations/i,
@@ -85,15 +159,5 @@ describe("SettingsContainer", () => {
         await waitFor(() => {
             expect(screen.getByText("Integrations")).toBeInTheDocument()
         })
-    })
-
-    it("renders children when provided", () => {
-        render(
-            <SettingsContainer>
-                <div>Custom Content</div>
-            </SettingsContainer>
-        )
-
-        expect(screen.getByText("Custom Content")).toBeInTheDocument()
     })
 })

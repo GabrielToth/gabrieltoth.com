@@ -12,7 +12,6 @@ export async function sendEmail(
     if (!apiKey) {
         // Fallback for dev mode / no key
         if (process.env.NODE_ENV === "development") {
-            // eslint-disable-next-line no-console
             console.log(
                 `[Resend Dev Fallback] Email to ${options.to}: ${options.subject}`
             )

@@ -1,15 +1,14 @@
 "use client"
 
 import { fetchChannels } from "@/lib/api"
-import React, { useCallback, useEffect, useMemo, useState } from "react"
+import React, { useCallback, useEffect, useState } from "react"
 import { ChannelComparison } from "./ChannelComparison"
 import { ChannelGraphs } from "./ChannelGraphs"
 import { MetricsGrid } from "./MetricsGrid"
 import { TimePeriodSelector } from "./TimePeriodSelector"
+import { AdvancedMetricDetail } from "@/lib/analytics/normalized-analytics-service"
+import { Filter, Layers, LayoutGrid, SlidersHorizontal } from "lucide-react"
 
-/**
- * SocialChannel type definition
- */
 export interface SocialChannel {
     id: string
     platform: "facebook" | "instagram" | "twitter" | "tiktok" | "linkedin"
@@ -19,9 +18,12 @@ export interface SocialChannel {
     connectedAt?: Date
 }
 
-/**
- * Metric type definition
- */
+export interface ChannelGroup {
+    id: string
+    name: string
+    members?: Array<{ channel_id: string }>
+}
+
 export interface Metric {
     id: string
     name: string
@@ -32,9 +34,6 @@ export interface Metric {
     channel?: string
 }
 
-/**
- * GraphData type definition
- */
 export interface GraphData {
     date: string
     followers?: number
@@ -44,191 +43,187 @@ export interface GraphData {
     channel: string
 }
 
-/**
- * InsightsContainerProps
- */
 export interface InsightsContainerProps {
     children?: React.ReactNode
 }
 
-/**
- * InsightsContainer Component
- * Main container for Insights tab
- * Manages state for metrics and analytics data
- * Coordinates child components
- *
- * Features:
- * - Manages metrics state
- * - Manages time period selection
- * - Manages graph data
- * - Provides filtering logic
- * - API integration for fetching analytics
- * - Loading and error states
- * - Data caching
- * - Responsive layout
- */
 export const InsightsContainer: React.FC<InsightsContainerProps> = ({
     children,
 }) => {
-    // State management
     const [metrics, setMetrics] = useState<Metric[]>([])
+    const [advancedMetrics, setAdvancedMetrics] = useState<
+        AdvancedMetricDetail[]
+    >([])
     const [graphData, setGraphData] = useState<GraphData[]>([])
     const [availableChannels, setAvailableChannels] = useState<SocialChannel[]>(
         []
     )
-    const [selectedChannels, setSelectedChannels] = useState<string[]>([])
+    const [channelGroups, setChannelGroups] = useState<ChannelGroup[]>([])
+    const [selectedPlatform, setSelectedPlatform] = useState<string>("all")
+    const [selectedGroup, setSelectedGroup] = useState<string>("all")
+    const [viewMode, setViewMode] = useState<"simple" | "advanced">("simple")
     const [timePeriod, setTimePeriod] = useState<"7d" | "30d" | "90d">("7d")
     const [isLoading, setIsLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
 
-    /**
-     * Fetch available channels from API
-     */
-    const handleFetchChannels = useCallback(async () => {
+    const handleFetchChannelsAndGroups = useCallback(async () => {
         try {
             const data = await fetchChannels()
             setAvailableChannels(data)
-            // Set all channels as selected by default
-            setSelectedChannels(data.map(ch => ch.id))
+
+            const groupRes = await fetch("/api/channel-groups")
+            if (groupRes.ok) {
+                const gJson = await groupRes.json()
+                if (gJson.success && gJson.data) {
+                    setChannelGroups(gJson.data)
+                }
+            }
         } catch (err) {
-            console.error("Failed to fetch channels:", err)
+            console.error("Failed to fetch channels/groups:", err)
         }
     }, [])
 
-    /**
-     * Fetch analytics data from API
-     * This is a placeholder - in real implementation, would call analytics API
-     */
     const handleFetchAnalytics = useCallback(async () => {
         try {
             setIsLoading(true)
             setError(null)
 
-            // Simulate API call delay
-            await new Promise(resolve => setTimeout(resolve, 500))
-
-            // Generate mock data based on time period
-            const mockMetrics: Metric[] = [
-                {
-                    id: "followers",
-                    name: "Followers",
-                    value: 12500,
-                    change: 250,
-                    changePercent: 2.04,
-                    icon: "users",
-                },
-                {
-                    id: "engagement",
-                    name: "Engagement",
-                    value: 3450,
-                    change: 120,
-                    changePercent: 3.6,
-                    icon: "heart",
-                },
-                {
-                    id: "reach",
-                    name: "Reach",
-                    value: 45000,
-                    change: -500,
-                    changePercent: -1.1,
-                    icon: "trending-up",
-                },
-                {
-                    id: "impressions",
-                    name: "Impressions",
-                    value: 125000,
-                    change: 5000,
-                    changePercent: 4.17,
-                    icon: "eye",
-                },
-            ]
-
-            setMetrics(mockMetrics)
-
-            // Generate mock graph data
-            const days =
-                timePeriod === "7d" ? 7 : timePeriod === "30d" ? 30 : 90
-            const mockGraphData: GraphData[] = []
-
-            for (let i = 0; i < days; i++) {
-                const date = new Date()
-                date.setDate(date.getDate() - (days - i))
-
-                availableChannels.forEach(channel => {
-                    mockGraphData.push({
-                        date: date.toISOString().split("T")[0],
-                        followers: Math.floor(Math.random() * 1000) + 10000,
-                        engagement: Math.floor(Math.random() * 500) + 2000,
-                        reach: Math.floor(Math.random() * 5000) + 40000,
-                        impressions: Math.floor(Math.random() * 10000) + 100000,
-                        channel: channel.id,
-                    })
-                })
+            let url = `/api/platform/analytics?period=${timePeriod}`
+            if (selectedPlatform !== "all") {
+                url += `&platform=${selectedPlatform}`
+            }
+            if (selectedGroup !== "all") {
+                url += `&groupId=${selectedGroup}`
             }
 
-            setGraphData(mockGraphData)
-            setIsLoading(false)
+            const res = await fetch(url)
+            if (!res.ok) {
+                throw new Error(`Analytics API returned HTTP ${res.status}`)
+            }
+
+            const json = await res.json()
+            if (json.success && json.data) {
+                setMetrics(json.data.simpleMetrics || [])
+                setAdvancedMetrics(json.data.advancedMetrics || [])
+                setGraphData(json.data.graphData || [])
+            } else {
+                setMetrics([])
+                setAdvancedMetrics([])
+                setGraphData([])
+            }
         } catch (err) {
             setError(
                 err instanceof Error ? err.message : "Failed to fetch analytics"
             )
+        } finally {
             setIsLoading(false)
         }
-    }, [timePeriod, availableChannels])
+    }, [timePeriod, selectedPlatform, selectedGroup])
 
-    // Fetch data on mount
-    useEffect(() => {
-        handleFetchChannels()
-    }, [handleFetchChannels])
-
-    // Fetch analytics when time period or channels change
-    useEffect(() => {
-        if (availableChannels.length > 0) {
-            handleFetchAnalytics()
-        }
-    }, [timePeriod, availableChannels, handleFetchAnalytics])
-
-    // Handle time period change
     const handleTimePeriodChange = (period: "7d" | "30d" | "90d") => {
         setTimePeriod(period)
     }
 
-    // Handle channel selection change
-    const handleChannelSelectionChange = (channels: string[]) => {
-        setSelectedChannels(channels)
-    }
-
-    // Filter graph data based on selected channels
-    const filteredGraphData = useMemo(() => {
-        if (selectedChannels.length === 0) {
-            return graphData
-        }
-
-        return graphData.filter(data => selectedChannels.includes(data.channel))
-    }, [graphData, selectedChannels])
-
-    // Handle retry
     const handleRetry = () => {
         handleFetchAnalytics()
     }
 
-    // If children are provided, render them
+    useEffect(() => {
+        handleFetchChannelsAndGroups()
+    }, [handleFetchChannelsAndGroups])
+
+    useEffect(() => {
+        handleFetchAnalytics()
+    }, [handleFetchAnalytics])
+
     if (children) {
         return <div className="space-y-6">{children}</div>
     }
 
-    // Default render with all components
     return (
         <div className="space-y-4 sm:space-y-6">
-            {/* Header */}
-            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+            {/* Header Controls */}
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-b border-border/60 pb-4">
                 <div>
                     <h1 className="text-2xl sm:text-3xl font-bold text-foreground">
-                        Insights
+                        Insights & Social Analytics
                     </h1>
                     <p className="mt-1 text-xs sm:text-sm text-muted-foreground">
-                        Track your social media performance and analytics
+                        Unified metrics across all connected platforms & channel
+                        groups
                     </p>
+                </div>
+
+                {/* View Mode & Filter Controls */}
+                <div className="flex flex-wrap items-center gap-2">
+                    {/* View Mode Toggle: Simple vs Advanced */}
+                    <div className="inline-flex rounded-lg border border-border p-1 bg-card">
+                        <button
+                            type="button"
+                            onClick={() => setViewMode("simple")}
+                            className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md transition-colors ${
+                                viewMode === "simple"
+                                    ? "bg-primary text-primary-foreground shadow-sm"
+                                    : "text-muted-foreground hover:text-foreground"
+                            }`}
+                        >
+                            <LayoutGrid className="w-3.5 h-3.5" />
+                            Simple View
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => setViewMode("advanced")}
+                            className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md transition-colors ${
+                                viewMode === "advanced"
+                                    ? "bg-primary text-primary-foreground shadow-sm"
+                                    : "text-muted-foreground hover:text-foreground"
+                            }`}
+                        >
+                            <SlidersHorizontal className="w-3.5 h-3.5" />
+                            Advanced View
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            {/* Filter Bar: Platform & Channel Groups */}
+            <div className="flex flex-wrap items-center gap-3 bg-muted/40 p-3 rounded-lg border border-border/80">
+                <div className="flex items-center gap-2 text-xs text-muted-foreground font-medium">
+                    <Filter className="w-3.5 h-3.5 text-primary" />
+                    Filters:
+                </div>
+
+                {/* Platform Filter */}
+                <select
+                    value={selectedPlatform}
+                    onChange={e => setSelectedPlatform(e.target.value)}
+                    className="h-8 px-2.5 py-1 text-xs rounded-md border border-border bg-card text-foreground focus:outline-none focus:ring-1 focus:ring-primary"
+                >
+                    <option value="all">All Platforms</option>
+                    <option value="twitch">Twitch</option>
+                    <option value="youtube">YouTube</option>
+                    <option value="kick">Kick</option>
+                    <option value="instagram">Instagram</option>
+                    <option value="facebook">Facebook</option>
+                    <option value="tiktok">TikTok</option>
+                    <option value="linkedin">LinkedIn</option>
+                </select>
+
+                {/* Channel Group Filter */}
+                <div className="flex items-center gap-1.5">
+                    <Layers className="w-3.5 h-3.5 text-muted-foreground" />
+                    <select
+                        value={selectedGroup}
+                        onChange={e => setSelectedGroup(e.target.value)}
+                        className="h-8 px-2.5 py-1 text-xs rounded-md border border-border bg-card text-foreground focus:outline-none focus:ring-1 focus:ring-primary"
+                    >
+                        <option value="all">All Channel Groups</option>
+                        {channelGroups.map(g => (
+                            <option key={g.id} value={g.id}>
+                                {g.name}
+                            </option>
+                        ))}
+                    </select>
                 </div>
             </div>
 
@@ -240,35 +235,99 @@ export const InsightsContainer: React.FC<InsightsContainerProps> = ({
                 />
             )}
 
-            {/* Metrics Grid */}
-            <MetricsGrid
-                metrics={metrics}
-                isLoading={isLoading}
-                error={error}
-                onRetry={handleRetry}
-            />
+            {/* Simple View Rendering */}
+            {viewMode === "simple" && (
+                <>
+                    <MetricsGrid
+                        metrics={metrics}
+                        isLoading={isLoading}
+                        error={error}
+                        onRetry={handleRetry}
+                    />
 
-            {/* Channel Graphs */}
-            <ChannelGraphs
-                channels={availableChannels}
-                data={filteredGraphData}
-                isLoading={isLoading}
-                error={error}
-                onRetry={handleRetry}
-            />
+                    <ChannelGraphs
+                        channels={availableChannels}
+                        data={graphData}
+                        isLoading={isLoading}
+                        error={error}
+                        onRetry={handleRetry}
+                    />
 
-            {/* Channel Comparison */}
-            <ChannelComparison
-                channels={availableChannels}
-                selectedChannels={selectedChannels}
-                metrics={metrics}
-                onChannelSelectionChange={handleChannelSelectionChange}
-                isLoading={isLoading}
-                error={error}
-                onRetry={handleRetry}
-            />
+                    <ChannelComparison
+                        channels={availableChannels}
+                        selectedChannels={availableChannels.map(c => c.id)}
+                        metrics={metrics}
+                        onChannelSelectionChange={() => {}}
+                        isLoading={isLoading}
+                    />
+                </>
+            )}
+
+            {/* Advanced View Rendering */}
+            {viewMode === "advanced" && (
+                <div className="space-y-6">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        {advancedMetrics.map(adv => (
+                            <div
+                                key={adv.id}
+                                className="p-4 rounded-xl border border-border bg-card shadow-xs space-y-3"
+                            >
+                                <div className="flex items-center justify-between">
+                                    <span className="text-xs font-semibold uppercase tracking-wider text-primary">
+                                        {adv.category}
+                                    </span>
+                                    <span
+                                        className={`text-xs font-bold px-2 py-0.5 rounded-full ${
+                                            adv.change >= 0
+                                                ? "bg-emerald-500/10 text-emerald-500"
+                                                : "bg-red-500/10 text-red-500"
+                                        }`}
+                                    >
+                                        {adv.change >= 0 ? "+" : ""}
+                                        {adv.changePercent}%
+                                    </span>
+                                </div>
+
+                                <div>
+                                    <h4 className="text-sm font-medium text-muted-foreground">
+                                        {adv.name}
+                                    </h4>
+                                    <div className="text-2xl font-bold text-foreground mt-1">
+                                        {adv.value}
+                                    </div>
+                                </div>
+
+                                <div className="border-t border-border/40 pt-2 space-y-1.5 text-xs text-muted-foreground">
+                                    <div className="font-medium text-[11px] uppercase tracking-wide">
+                                        Platform Breakdown
+                                    </div>
+                                    {Object.entries(adv.platformBreakdown).map(
+                                        ([plat, val]) => (
+                                            <div
+                                                key={plat}
+                                                className="flex items-center justify-between capitalize"
+                                            >
+                                                <span>{plat}</span>
+                                                <span className="font-semibold text-foreground">
+                                                    {val}
+                                                </span>
+                                            </div>
+                                        )
+                                    )}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+
+                    <ChannelGraphs
+                        channels={availableChannels}
+                        data={graphData}
+                        isLoading={isLoading}
+                        error={error}
+                        onRetry={handleRetry}
+                    />
+                </div>
+            )}
         </div>
     )
 }
-
-export default InsightsContainer

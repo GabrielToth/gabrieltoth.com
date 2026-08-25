@@ -8,7 +8,7 @@
 "use client"
 
 import { createLogger } from "@/lib/logger"
-import { useCallback, useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
 const logger = createLogger("useLocalChat")
 
@@ -117,7 +117,7 @@ export function useLocalChat(
                         logger.info("Local Kick WebSocket connected")
                     }
                 }
-            } catch (err) {
+            } catch (_err) {
                 if (isMounted) {
                     setError(
                         "Failed to establish local client stream connection"

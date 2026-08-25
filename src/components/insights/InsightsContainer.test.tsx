@@ -14,10 +14,12 @@ describe("InsightsContainer", () => {
 
     it("renders the Insights header", () => {
         render(<InsightsContainer />)
-        expect(screen.getByText("Insights")).toBeInTheDocument()
+        expect(
+            screen.getByText("Insights & Social Analytics")
+        ).toBeInTheDocument()
         expect(
             screen.getByText(
-                "Track your social media performance and analytics"
+                "Unified metrics across all connected platforms & channel groups"
             )
         ).toBeInTheDocument()
     })

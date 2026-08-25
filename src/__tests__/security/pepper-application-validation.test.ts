@@ -22,7 +22,8 @@
  */
 
 import argon2 from "argon2"
-import { describe, expect, it } from "vitest"
+import { beforeEach, describe, expect, it } from "vitest"
+import { ConfigurationManager } from "../../lib/auth/password-security/config"
 import { validatePassword } from "../../lib/auth/password-security/password-validator"
 
 describe("Pepper Application Validation - Security Tests", () => {
@@ -31,6 +32,11 @@ describe("Pepper Application Validation - Security Tests", () => {
     const CORRECT_PEPPER =
         "dev-pepper-test-very-long-string-32chars-minimum-required!"
     const WRONG_PEPPER = "wrong-pepper-min-32-characters-long"
+
+    beforeEach(() => {
+        process.env.PEPPER_SECRET = CORRECT_PEPPER
+        ;(ConfigurationManager as any).instance = null
+    })
 
     describe("Requirement 3.1: Pepper is static server-side secret appended before hashing", () => {
         it("should apply pepper consistently to Argon2id hashes", async () => {

@@ -129,13 +129,11 @@ describe("LiveDashboardPage", () => {
         render(<LiveDashboardPage />)
 
         await waitFor(() => {
-            // UnifiedChat welcome message
-            expect(
-                screen.getByText("Chat connected. Waiting for messages...")
-            ).toBeInTheDocument()
+            // UnifiedChat welcome / empty message
+            expect(screen.getByText("No chat messages yet")).toBeInTheDocument()
             // Input placeholder confirms UnifiedChat rendered
             expect(
-                screen.getByPlaceholderText("Send message to twitch...")
+                screen.getByPlaceholderText("Message #twitch...")
             ).toBeInTheDocument()
         })
     })

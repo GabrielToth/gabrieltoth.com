@@ -107,14 +107,16 @@ async function fetchTwitchCategories(
 
         if (!res.ok) return []
         const data = await res.json()
-        return (data.data || []).map((item: any) => ({
-            id: item.id,
-            name: item.name,
-            platform: "twitch",
-            boxArtUrl: item.box_art_url
-                ?.replace("{width}", "144")
-                .replace("{height}", "192"),
-        }))
+        return (data.data || []).map(
+            (item: { id: string; name: string; box_art_url?: string }) => ({
+                id: item.id,
+                name: item.name,
+                platform: "twitch",
+                boxArtUrl: item.box_art_url
+                    ?.replace("{width}", "144")
+                    .replace("{height}", "192"),
+            })
+        )
     } catch {
         return []
     }
@@ -137,12 +139,19 @@ async function fetchKickCategories(
 
         if (!res.ok) return []
         const data = await res.json()
-        return (data.data || []).map((item: any) => ({
-            id: String(item.id),
-            name: item.name,
-            platform: "kick",
-            boxArtUrl: item.banner?.url || item.responsive_banner?.url,
-        }))
+        return (data.data || []).map(
+            (item: {
+                id: number | string
+                name: string
+                banner?: { url?: string }
+                responsive_banner?: { url?: string }
+            }) => ({
+                id: String(item.id),
+                name: item.name,
+                platform: "kick",
+                boxArtUrl: item.banner?.url || item.responsive_banner?.url,
+            })
+        )
     } catch {
         return []
     }
@@ -164,11 +173,13 @@ async function fetchYouTubeCategories(
 
         if (!res.ok) return []
         const data = await res.json()
-        const items = (data.items || []).map((item: any) => ({
-            id: item.id,
-            name: item.snippet?.title || "Gaming",
-            platform: "youtube",
-        }))
+        const items = (data.items || []).map(
+            (item: { id: string; snippet?: { title?: string } }) => ({
+                id: item.id,
+                name: item.snippet?.title || "Gaming",
+                platform: "youtube",
+            })
+        )
 
         if (!query) return items
         return items.filter((cat: CategoryResult) =>

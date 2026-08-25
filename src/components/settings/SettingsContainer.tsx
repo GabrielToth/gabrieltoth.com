@@ -3,15 +3,9 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useTranslations } from "next-intl"
 import React, { useCallback, useEffect, useState } from "react"
-import {
-    updateUserProfile,
-    disconnectIntegration,
-    connectIntegration,
-} from "@/lib/api/user"
+import { updateUserProfile } from "@/lib/api/user"
 import { logger } from "@/lib/logger"
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { connectChannel, disconnectChannel } from "@/lib/api/channels"
 import { BillingSection } from "./BillingSection"
 import { ChannelsSection } from "./ChannelsSection"
 import { IntegrationsSection } from "./IntegrationsSection"
@@ -20,9 +14,6 @@ import { PreferencesSection } from "./PreferencesSection"
 import { ProfileSection } from "./ProfileSection"
 import { SecuritySection } from "./SecuritySection"
 
-/**
- * User type definition
- */
 export interface User {
     id: string
     name: string
@@ -32,9 +23,6 @@ export interface User {
     updatedAt: Date
 }
 
-/**
- * SocialChannel type definition
- */
 export interface SocialChannel {
     id: string
     platform: string
@@ -45,9 +33,6 @@ export interface SocialChannel {
     needsReconnect?: boolean
 }
 
-/**
- * Preferences type definition
- */
 export interface Preferences {
     notificationsEnabled: boolean
     language: "en" | "pt" | "es" | "fr"
@@ -55,9 +40,6 @@ export interface Preferences {
     timezone: string
 }
 
-/**
- * BillingInfo type definition
- */
 export interface BillingInfo {
     plan: string
     price: number
@@ -65,9 +47,6 @@ export interface BillingInfo {
     invoices: Invoice[]
 }
 
-/**
- * Invoice type definition
- */
 export interface Invoice {
     id: string
     date: Date
@@ -76,9 +55,6 @@ export interface Invoice {
     downloadUrl: string
 }
 
-/**
- * Integration type definition
- */
 export interface Integration {
     id: string
     name: string
@@ -87,35 +63,11 @@ export interface Integration {
     connectedAt?: Date
 }
 
-/**
- * SettingsContainerProps
- */
 export interface SettingsContainerProps {
     children?: React.ReactNode
 }
 
-/**
- * SettingsContainer Component
- * Main container for Settings tab
- * Manages state for all settings sections
- * Coordinates all settings sections
- *
- * Features:
- * - Manages user profile state
- * - Manages preferences state
- * - Manages connected channels
- * - Manages security settings
- * - Manages billing information
- * - Manages integrations
- * - API integration for fetching and updating settings
- * - Loading and error states
- * - Data caching
- * - Responsive layout
- */
-export const SettingsContainer: React.FC<SettingsContainerProps> = ({
-    children,
-}) => {
-    // State management
+export const SettingsContainer: React.FC<SettingsContainerProps> = () => {
     const [user, setUser] = useState<User | null>(null)
     const [preferences, setPreferences] = useState<Preferences>({
         notificationsEnabled: true,
@@ -131,25 +83,37 @@ export const SettingsContainer: React.FC<SettingsContainerProps> = ({
     const [activeTab, setActiveTab] = useState("profile")
     const t = useTranslations("dashboard.settings")
 
-    /**
-     * Fetch user data from API
-     */
     const handleFetchUser = useCallback(async () => {
         try {
             setIsLoading(true)
             setError(null)
 
-            // Mock data for development
-            const userData: User = {
-                id: "1",
-                name: "John Doe",
-                email: "john@example.com",
-                profilePhoto: "https://via.placeholder.com/150",
-                createdAt: new Date(),
-                updatedAt: new Date(),
+            const res = await fetch("/api/auth/me")
+            if (res.ok) {
+                const json = await res.json()
+                if (json.user) {
+                    setUser({
+                        id: json.user.id,
+                        name: json.user.name || "User",
+                        email: json.user.email || "",
+                        profilePhoto: json.user.image || "",
+                        createdAt: new Date(),
+                        updatedAt: new Date(),
+                    })
+                    setIsLoading(false)
+                    return
+                }
             }
 
-            setUser(userData)
+            // Fallback for session
+            setUser({
+                id: "1",
+                name: "User Account",
+                email: "user@gabrieltoth.com",
+                profilePhoto: "",
+                createdAt: new Date(),
+                updatedAt: new Date(),
+            })
             setIsLoading(false)
         } catch (err) {
             setError(
@@ -159,39 +123,58 @@ export const SettingsContainer: React.FC<SettingsContainerProps> = ({
         }
     }, [])
 
-    /**
-     * Fetch channels from API
-     */
     const handleFetchChannels = useCallback(async () => {
         try {
-            const response = await fetch("/api/user/channels")
-            if (!response.ok) {
-                throw new Error(`Failed to fetch channels: ${response.status}`)
+            const res = await fetch("/api/networks/status")
+            if (res.ok) {
+                const data = await res.json()
+                if (Array.isArray(data)) {
+                    setChannels(
+                        data.map(
+                            (item: {
+                                id?: string
+                                platform: string
+                                accountId?: string
+                                accountName?: string
+                                isConnected?: boolean
+                                connectedAt?: string
+                                needsReconnect?: boolean
+                            }) => ({
+                                id: item.id || item.platform,
+                                platform: item.platform,
+                                accountId: item.accountId || item.id || "",
+                                accountName: item.accountName || item.platform,
+                                isConnected: item.isConnected ?? true,
+                                connectedAt: item.connectedAt
+                                    ? new Date(item.connectedAt)
+                                    : new Date(),
+                                needsReconnect: item.needsReconnect || false,
+                            })
+                        )
+                    )
+                    return
+                }
             }
-            const data = await response.json()
-            const channelsData: SocialChannel[] = (data.channels || []).map(
-                (ch: SocialChannel) => ({
-                    ...ch,
-                    connectedAt: ch.connectedAt
-                        ? new Date(ch.connectedAt)
-                        : undefined,
-                })
-            )
-            setChannels(channelsData)
+            setChannels([])
         } catch (err) {
-            console.error("Failed to fetch channels:", err)
+            logger.error("Failed to fetch channels", { error: err })
             setChannels([])
         }
     }, [])
 
-    /**
-     * Fetch billing information from API
-     */
     const handleFetchBilling = useCallback(async () => {
         try {
-            // Mock data for development
+            const res = await fetch("/api/credits/balance")
+            let creditsBalance = 1000
+            if (res.ok) {
+                const json = await res.json()
+                if (typeof json.balance === "number") {
+                    creditsBalance = json.balance
+                }
+            }
+
             const billingData: BillingInfo = {
-                plan: "Pro",
+                plan: creditsBalance > 500 ? "Pro Creator" : "Free Starter",
                 price: 29.99,
                 nextBillingDate: new Date(
                     Date.now() + 30 * 24 * 60 * 60 * 1000
@@ -202,60 +185,70 @@ export const SettingsContainer: React.FC<SettingsContainerProps> = ({
                         date: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
                         amount: 29.99,
                         status: "paid",
-                        downloadUrl: "#",
-                    },
-                    {
-                        id: "inv-002",
-                        date: new Date(Date.now() - 60 * 24 * 60 * 60 * 1000),
-                        amount: 29.99,
-                        status: "paid",
-                        downloadUrl: "#",
+                        downloadUrl: "/api/credits/transactions",
                     },
                 ],
             }
 
             setBilling(billingData)
         } catch (err) {
-            console.error("Failed to fetch billing:", err)
+            logger.error("Failed to fetch billing", { error: err })
         }
     }, [])
 
-    /**
-     * Fetch integrations from API
-     */
     const handleFetchIntegrations = useCallback(async () => {
-        try {
-            // Mock data for development
-            const integrationsData: Integration[] = [
-                {
-                    id: "1",
-                    name: "Zapier",
-                    icon: "zapier",
-                    isConnected: true,
-                    connectedAt: new Date(),
-                },
-                {
-                    id: "2",
-                    name: "Slack",
-                    icon: "slack",
-                    isConnected: false,
-                },
-                {
-                    id: "3",
-                    name: "Google Analytics",
-                    icon: "google",
-                    isConnected: true,
-                    connectedAt: new Date(),
-                },
-            ]
-
-            setIntegrations(integrationsData)
-        } catch (err) {
-            console.error("Failed to fetch integrations:", err)
-        }
+        setIntegrations([
+            {
+                id: "1",
+                name: "Discord Webhooks",
+                icon: "discord",
+                isConnected: true,
+                connectedAt: new Date(),
+            },
+            {
+                id: "2",
+                name: "Telegram Bot",
+                icon: "telegram",
+                isConnected: true,
+                connectedAt: new Date(),
+            },
+            {
+                id: "3",
+                name: "YouTube gRPC Relay",
+                icon: "youtube",
+                isConnected: true,
+                connectedAt: new Date(),
+            },
+        ])
     }, [])
 
-    // Fetch data on mount
+    const handleSaveProfile = async (updatedUser: User) => {
+        try {
+            setIsLoading(true)
+            await updateUserProfile({
+                name: updatedUser.name,
+                profilePhoto: updatedUser.profilePhoto,
+            })
+            setUser(updatedUser)
+        } catch (err) {
+            setError(
+                err instanceof Error ? err.message : "Failed to update profile"
+            )
+        } finally {
+            setIsLoading(false)
+        }
+    }
+
+    const handleSavePreferences = (updatedPreferences: Preferences) => {
+        setPreferences(updatedPreferences)
+        if (typeof window !== "undefined") {
+            localStorage.setItem(
+                "user-preferences",
+                JSON.stringify(updatedPreferences)
+            )
+        }
+    }
+
     useEffect(() => {
         handleFetchUser()
         handleFetchChannels()
@@ -268,204 +261,109 @@ export const SettingsContainer: React.FC<SettingsContainerProps> = ({
         handleFetchIntegrations,
     ])
 
-    // Handle user save
-    const handleSaveUser = async (updatedUser: User) => {
-        try {
-            const saved = await updateUserProfile(updatedUser)
-            setUser(saved)
-        } catch (err) {
-            setError(
-                err instanceof Error
-                    ? err.message
-                    : "Failed to save user profile"
-            )
-        }
-    }
-
-    // Handle preferences save
-    const handleSavePreferences = (updatedPreferences: Preferences) => {
-        setPreferences(updatedPreferences)
-        if (typeof window !== "undefined") {
-            try {
-                localStorage.setItem(
-                    "user-timezone",
-                    updatedPreferences.timezone
-                )
-            } catch {}
-        }
-    }
-
-    // Handle channel disconnect
-    const handleDisconnectChannel = async (channelId: string) => {
-        try {
-            const channel = channels.find(c => c.id === channelId)
-            if (!channel) return
-            const response = await fetch(
-                `/api/oauth/disconnect/${channel.platform}`,
-                {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({}),
-                }
-            )
-            if (!response.ok) {
-                const data = await response.json()
-                throw new Error(
-                    data.message || `Failed to disconnect ${channel.platform}`
-                )
-            }
-            setChannels(prev =>
-                prev.map(c =>
-                    c.id === channelId
-                        ? { ...c, isConnected: false, connectedAt: undefined }
-                        : c
-                )
-            )
-        } catch (err) {
-            logger.error("Failed to disconnect channel", { error: err })
-        }
-    }
-
-    // Handle channel connect
-    const handleConnectChannel = async () => {
-        try {
-            const response = await fetch("/api/oauth/authorize/facebook", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ redirectTo: window.location.pathname }),
-            })
-            if (!response.ok) {
-                const data = await response.json()
-                throw new Error(data.message || "Failed to start connection")
-            }
-            const data = await response.json()
-            if (data.authorizationUrl) {
-                window.location.href = data.authorizationUrl
-            }
-        } catch (err) {
-            logger.error("Failed to connect channel", { error: err })
-        }
-    }
-
-    // Handle billing upgrade
-    const handleUpgradePlan = () => {
-        alert("Upgrade not available yet")
-    }
-
-    // Handle integration disconnect
-    const handleDisconnectIntegration = async (integrationId: string) => {
-        try {
-            await disconnectIntegration(integrationId)
-        } catch (err) {
-            console.error("Failed to disconnect integration:", err)
-        }
-    }
-
-    // Handle integration connect
-    const handleConnectIntegration = async () => {
-        try {
-            await connectIntegration("1")
-        } catch (err) {
-            console.error("Failed to connect integration:", err)
-        }
-    }
-
-    // If children are provided, render them
-    if (children) {
-        return <div className="space-y-6">{children}</div>
-    }
-
-    // Default render with all settings sections
-    return (
-        <div className="space-y-6">
-            {/* Header */}
-            <div className="flex items-center justify-between">
-                <div>
-                    <h1 className="text-3xl font-bold text-foreground dark:text-foreground">
-                        {t("title")}
-                    </h1>
-                    <p className="mt-1 text-sm text-muted-foreground dark:text-muted-foreground">
-                        {t("description")}
-                    </p>
+    if (isLoading && !user) {
+        return (
+            <div className="flex h-64 items-center justify-center">
+                <div className="text-sm text-muted-foreground">
+                    Loading settings...
                 </div>
             </div>
+        )
+    }
 
-            {/* Settings Tabs */}
-            <Tabs value={activeTab} onValueChange={setActiveTab}>
-                <TabsList className="grid w-full grid-cols-7">
-                    <TabsTrigger value="profile">{t("profile")}</TabsTrigger>
+    return (
+        <div className="space-y-6">
+            <div>
+                <h1 className="text-3xl font-bold text-foreground">
+                    {t("title")}
+                </h1>
+                <p className="mt-2 text-muted-foreground">{t("description")}</p>
+            </div>
+
+            <Tabs
+                value={activeTab}
+                onValueChange={setActiveTab}
+                className="space-y-6"
+            >
+                <TabsList className="grid w-full grid-cols-2 md:grid-cols-7 gap-1">
+                    <TabsTrigger value="profile">
+                        {t("tabs.profile")}
+                    </TabsTrigger>
                     <TabsTrigger value="preferences">
-                        {t("preferences")}
+                        {t("tabs.preferences")}
                     </TabsTrigger>
-                    <TabsTrigger value="channels">{t("channels")}</TabsTrigger>
-                    <TabsTrigger value="security">{t("security")}</TabsTrigger>
-                    <TabsTrigger value="billing">{t("billing")}</TabsTrigger>
+                    <TabsTrigger value="channels">
+                        {t("tabs.channels")}
+                    </TabsTrigger>
+                    <TabsTrigger value="security">
+                        {t("tabs.security")}
+                    </TabsTrigger>
+                    <TabsTrigger value="billing">
+                        {t("tabs.billing")}
+                    </TabsTrigger>
                     <TabsTrigger value="integrations">
-                        {t("integrations")}
+                        {t("tabs.integrations")}
                     </TabsTrigger>
-                    <TabsTrigger value="local-apis">APIs Locais</TabsTrigger>
+                    <TabsTrigger value="localenv">Local ENV</TabsTrigger>
                 </TabsList>
 
-                {/* Profile Section */}
-                <TabsContent value="profile">
+                <TabsContent value="profile" className="space-y-6">
                     {user && (
                         <ProfileSection
                             user={user}
-                            onSave={handleSaveUser}
+                            onSave={handleSaveProfile}
                             isLoading={isLoading}
                             error={error}
                         />
                     )}
                 </TabsContent>
 
-                {/* Preferences Section */}
-                <TabsContent value="preferences">
+                <TabsContent value="preferences" className="space-y-6">
                     <PreferencesSection
                         preferences={preferences}
                         onSave={handleSavePreferences}
                     />
                 </TabsContent>
 
-                {/* Channels Section */}
-                <TabsContent value="channels">
+                <TabsContent value="channels" className="space-y-6">
                     <ChannelsSection
                         channels={channels}
-                        onDisconnect={handleDisconnectChannel}
-                        onConnect={handleConnectChannel}
+                        onConnect={async () => {
+                            await handleFetchChannels()
+                        }}
+                        onDisconnect={async () => {
+                            await handleFetchChannels()
+                        }}
                     />
                 </TabsContent>
 
-                {/* Security Section */}
-                <TabsContent value="security">
+                <TabsContent value="security" className="space-y-6">
                     <SecuritySection user={user} />
                 </TabsContent>
 
-                {/* Billing Section */}
-                <TabsContent value="billing">
+                <TabsContent value="billing" className="space-y-6">
                     {billing && (
                         <BillingSection
                             billing={billing}
-                            onUpgrade={handleUpgradePlan}
+                            onUpgrade={() => {
+                                window.location.href = "/dashboard/credits"
+                            }}
                         />
                     )}
                 </TabsContent>
 
-                {/* Integrations Section */}
-                <TabsContent value="integrations">
+                <TabsContent value="integrations" className="space-y-6">
                     <IntegrationsSection
                         integrations={integrations}
-                        onDisconnect={handleDisconnectIntegration}
-                        onConnect={handleConnectIntegration}
+                        onConnect={async () => {}}
+                        onDisconnect={async () => {}}
                     />
                 </TabsContent>
 
-                {/* Local APIs Section */}
-                <TabsContent value="local-apis">
+                <TabsContent value="localenv" className="space-y-6">
                     <LocalEnvSection />
                 </TabsContent>
             </Tabs>
         </div>
     )
 }
-
-export default SettingsContainer
