@@ -122,7 +122,8 @@ describe("OAuthManager", () => {
             expect(mockGenerateState).toHaveBeenCalledWith(
                 "user123",
                 "youtube",
-                "pt-BR"
+                "pt-BR",
+                undefined
             )
         })
 

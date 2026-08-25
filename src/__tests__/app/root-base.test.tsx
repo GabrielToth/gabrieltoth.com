@@ -2,6 +2,7 @@ import { describe, expect, it, vi } from "vitest"
 
 // Mock next/font/google Geist to avoid function call failure
 vi.mock("next/font/google", () => ({
+    Inter: () => ({ variable: "--font-sans", className: "font-sans" }),
     Geist: () => ({ variable: "--font-geist-sans" }),
     Geist_Mono: () => ({ variable: "--font-geist-mono" }),
 }))

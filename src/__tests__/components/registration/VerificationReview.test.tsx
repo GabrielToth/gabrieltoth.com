@@ -486,7 +486,7 @@ describe("VerificationReview Component", () => {
             />
         )
 
-        const createButton = container.querySelector("button.bg-blue-600")
+        const createButton = container.querySelector("button.bg-primary")
         expect(createButton).toBeInTheDocument()
         expect(createButton).toHaveClass("w-full")
         expect(createButton).toHaveClass("text-white")

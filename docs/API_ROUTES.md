@@ -20,27 +20,30 @@ This document describes all API routes available in the system, their authentica
 - **Auth:** Session required
 - **Description:** Returns current authenticated user session metadata.
 
+### `PUT /api/user/profile`
+- **Auth:** Session required (CSRF + Rate Limit)
+- **Description:** Updates user profile name and/or profile photo.
+- **Request Body:** `{ name?: string, profilePhoto?: string }`
+
 ---
 
 ## 📊 Analytics & Insights APIs
 
 ### `GET /api/platform/analytics`
 - **Auth:** Session required
-- **Parameters:** `period` (optional: `7d` | `30d` | `90d`)
-- **Description:** Returns aggregated, standardized social network metrics (`followers`, `engagement`, `reach`, `impressions`) and graph historical data across connected accounts.
+- **Parameters:** `period` (`7d` | `30d` | `90d`), `platform` (optional filter), `groupId` (optional channel group ID)
+- **Description:** Returns normalized social network metrics in **Simple View** (Followers, Engagement, Reach, Impressions) and **Advanced View** (Viral Coefficient, Avg Watch Time, CTR), with per-platform breakdown. Filterable by platform and channel group.
 - **Response:**
 ```json
 {
   "success": true,
   "data": {
-    "metrics": [
-      { "id": "followers", "name": "Followers", "value": 1250, "change": 50, "changePercent": 4.17, "icon": "users" }
-    ],
-    "graphData": [
-      { "date": "2026-07-26", "followers": 1200, "engagement": 300, "reach": 4000, "impressions": 10000, "channel": "all" }
-    ],
-    "channelsCount": 2,
-    "timePeriod": "7d"
+    "simpleMetrics": [ ... ],
+    "advancedMetrics": [ { "id": "viral_coefficient", "category": "growth", "platformBreakdown": { "twitch": 85, "youtube": 92 }, ... } ],
+    "graphData": [ ... ],
+    "channelsCount": 3,
+    "timePeriod": "7d",
+    "appliedFilters": { "platform": "all", "groupId": "all" }
   }
 }
 ```

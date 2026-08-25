@@ -264,7 +264,10 @@
                 "address": {
                     "@type": "PostalAddress",
                     "addressCountry": "BR",
-                    "addressRegion": "São Paulo"
+                    "addressRegion": "São Paulo",
+                    "addressLocality": "REMOTE",
+                    "streetAddress": "N/A",
+                    "postalCode": "N/A"
                 }
             },
             "baseSalary": {
@@ -272,11 +275,14 @@
                 "currency": "BRL",
                 "value": {
                     "@type": "QuantitativeValue",
-                    "unitText": "90% AdSense pro Video"
+                    "unitText": "90% AdSense pro Video",
+                    "minValue": 0,
+                    "maxValue": 10000
                 }
             },
             "qualifications": "Erfahrung in der Videobearbeitung, Kenntnisse in Schnittsoftware",
-            "responsibilities": "Videos für YouTube schneiden, Thumbnails erstellen, für SEO optimieren"
+            "responsibilities": "Videos für YouTube schneiden, Thumbnails erstellen, für SEO optimieren",
+            "validThrough": "2027-12-31T23:59:59Z"
         }
     },
     "faqs": [
