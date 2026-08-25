@@ -135,25 +135,56 @@ async function resolveTwitchGameId(
 async function resolveKickGameId(
     gameInput: string,
     accessToken: string
-): Promise<string | null> {
+): Promise<{ id: string | null; numericId: number | null }> {
+    if (!gameInput) return { id: null, numericId: null }
+    if (!isNaN(Number(gameInput))) {
+        return { id: gameInput, numericId: Number(gameInput) }
+    }
+
     try {
         const params = new URLSearchParams({
             query: gameInput,
-            limit: "1",
+            limit: "5",
         })
-        const response = await fetch(
+        const headers = { Authorization: `Bearer ${accessToken}` }
+
+        // 1. Try public v1 categories
+        let response = await fetch(
             `https://api.kick.com/public/v1/categories?${params.toString()}`,
-            {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`,
-                },
-            }
+            { headers }
         )
-        if (!response.ok) return null
-        const data = await response.json()
-        return data.data?.[0]?.id || null
+        if (response.ok) {
+            const data = await response.json()
+            const match =
+                data.data?.find((c: { name?: string; id?: number | string }) =>
+                    c.name?.toLowerCase() === gameInput.toLowerCase()
+                ) || data.data?.[0]
+            if (match?.id) {
+                const num = Number(match.id)
+                return { id: String(match.id), numericId: isNaN(num) ? null : num }
+            }
+        }
+
+        // 2. Try public v1 subcategories
+        response = await fetch(
+            `https://api.kick.com/public/v1/subcategories?${params.toString()}`,
+            { headers }
+        )
+        if (response.ok) {
+            const data = await response.json()
+            const match =
+                data.data?.find((c: { name?: string; id?: number | string }) =>
+                    c.name?.toLowerCase() === gameInput.toLowerCase()
+                ) || data.data?.[0]
+            if (match?.id) {
+                const num = Number(match.id)
+                return { id: String(match.id), numericId: isNaN(num) ? null : num }
+            }
+        }
+
+        return { id: null, numericId: null }
     } catch {
-        return null
+        return { id: null, numericId: null }
     }
 }
 
@@ -276,15 +307,19 @@ async function updateTwitchStream(
 async function updateKickStream(
     accessToken: string,
     title: string,
-    gameId?: string
+    gameInput?: string
 ): Promise<{ success: boolean; error?: string }> {
     try {
-        const body: Record<string, unknown> = {
-            stream_title: title,
+        const { numericId } = await resolveKickGameId(gameInput || "", accessToken)
+
+        const body: Record<string, unknown> = {}
+        if (title) {
+            body.stream_title = title
+            body.title = title
         }
-        if (gameId) {
-            const numericId = Number(gameId)
-            body.category_id = isNaN(numericId) ? gameId : numericId
+        if (numericId !== null) {
+            body.category_id = numericId
+            body.subcategory_id = numericId
         }
 
         const response = await fetch(
@@ -305,6 +340,21 @@ async function updateKickStream(
                 status: response.status,
                 body: errorBody,
             })
+
+            // Fallback try v2 endpoint
+            const v2Response = await fetch(
+                "https://kick.com/api/v2/channels/me",
+                {
+                    method: "PUT",
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(body),
+                }
+            )
+            if (v2Response.ok) return { success: true }
+
             return {
                 success: false,
                 error: `Kick API error (${response.status}): ${errorBody}`,
@@ -473,8 +523,8 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
                         accessToken
                     )) ?? undefined
             } else {
-                resolvedGameId =
-                    (await resolveKickGameId(game_id, accessToken)) ?? undefined
+                const resolved = await resolveKickGameId(game_id, accessToken)
+                resolvedGameId = resolved.id ?? undefined
             }
             if (!resolvedGameId) {
                 logger.warn(

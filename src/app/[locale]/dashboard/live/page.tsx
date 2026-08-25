@@ -45,6 +45,19 @@ export default function LiveDashboardPage() {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
     const [activePlatform, setActivePlatform] = useState<string>("twitch")
+    const handleOptimisticUpdate = (
+        platformName: string,
+        newTitle: string,
+        newGame: string
+    ) => {
+        setPlatforms(prev =>
+            prev.map(p =>
+                p.platform === platformName
+                    ? { ...p, title: newTitle, gameName: newGame }
+                    : p
+            )
+        )
+    }
     const [upcomingStreams, setUpcomingStreams] = useState<ScheduledStream[]>(
         []
     )
@@ -286,6 +299,8 @@ export default function LiveDashboardPage() {
                             currentTitle={currentPlatform.title}
                             currentGame={currentPlatform.gameName}
                             onUpdate={() => fetchStatus()}
+                            onUpdateOptimistic={handleOptimisticUpdate}
+                            executionMode={executionMode}
                         />
                     </div>
                     <ChatModerationPanel />

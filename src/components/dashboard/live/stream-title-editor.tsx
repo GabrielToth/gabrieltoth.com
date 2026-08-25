@@ -1,17 +1,21 @@
 /**
  * StreamTitleEditor Component
  * Allows editing stream title and game for connected platforms with category autocomplete dropdown
+ * Features instant optimistic UI feedback with loading spinner indicator during backend sync
  */
 
 "use client"
 
 import { useState, useEffect, useRef, useCallback } from "react"
+import { Loader2, CheckCircle2, AlertCircle, RefreshCw } from "lucide-react"
 
 interface StreamTitleEditorProps {
     platform: string
     currentTitle: string
     currentGame: string
     onUpdate: () => void
+    onUpdateOptimistic?: (platform: string, title: string, game: string) => void
+    executionMode?: "cloud" | "local"
 }
 
 interface CategoryOption {
@@ -26,6 +30,8 @@ export function StreamTitleEditor({
     currentTitle,
     currentGame,
     onUpdate,
+    onUpdateOptimistic,
+    executionMode = "cloud",
 }: StreamTitleEditorProps) {
     const [title, setTitle] = useState(currentTitle || "")
     const [game, setGame] = useState(currentGame || "")
@@ -35,6 +41,15 @@ export function StreamTitleEditor({
         type: "success" | "error"
         text: string
     } | null>(null)
+
+    // Sync input states when current props change from external updates
+    useEffect(() => {
+        setTitle(currentTitle || "")
+    }, [currentTitle])
+
+    useEffect(() => {
+        setGame(currentGame || "")
+    }, [currentGame])
 
     // Category Autocomplete State
     const [categories, setCategories] = useState<CategoryOption[]>([])
@@ -92,35 +107,66 @@ export function StreamTitleEditor({
     }
 
     const handleSave = async () => {
+        const trimmedTitle = title.trim()
+        const trimmedGame = game.trim()
+        if (!trimmedTitle) return
+
         setSaving(true)
         setMessage(null)
 
+        // 1. Instant Optimistic UI Update (Immediate response for user)
+        if (onUpdateOptimistic) {
+            onUpdateOptimistic(platform, trimmedTitle, trimmedGame)
+        }
+
         try {
-            const response = await fetch("/api/live/update", {
+            // Check if user has local credentials configured in local mode
+            const isLocalMode = executionMode === "local"
+            let endpointUrl = "/api/live/update"
+            const requestHeaders: Record<string, string> = {
+                "Content-Type": "application/json",
+            }
+            const requestBody: Record<string, unknown> = {
+                platform,
+                title: trimmedTitle,
+                game_id: selectedGameId || trimmedGame,
+            }
+
+            if (isLocalMode && typeof window !== "undefined") {
+                const localCreds = localStorage.getItem(`${platform}_dev_config`)
+                if (localCreds) {
+                    try {
+                        requestBody.localConfig = JSON.parse(localCreds)
+                    } catch {
+                        // ignore parse err
+                    }
+                }
+            }
+
+            const response = await fetch(endpointUrl, {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    platform,
-                    title: title.trim(),
-                    game_id: selectedGameId || game,
-                }),
+                headers: requestHeaders,
+                body: JSON.stringify(requestBody),
             })
 
             const data = await response.json()
 
             if (data.success) {
-                setMessage({ type: "success", text: "Stream updated!" })
+                setMessage({
+                    type: "success",
+                    text: data.message || "Stream updated!",
+                })
                 onUpdate()
             } else {
                 setMessage({
                     type: "error",
-                    text: data.error || "Failed to update",
+                    text: data.error || "Falha ao atualizar dados da live",
                 })
             }
         } catch (err) {
             setMessage({
                 type: "error",
-                text: err instanceof Error ? err.message : "Unknown error",
+                text: err instanceof Error ? err.message : "Erro desconhecido",
             })
         } finally {
             setSaving(false)
@@ -132,105 +178,123 @@ export function StreamTitleEditor({
         <div className="space-y-4">
             <div>
                 <label className="block text-sm font-medium text-foreground dark:text-foreground mb-1">
-                    Stream Title
+                    Título da Live ({platform.toUpperCase()})
                 </label>
                 <input
                     type="text"
                     value={title}
                     onChange={e => setTitle(e.target.value)}
                     maxLength={140}
-                    className="w-full rounded-md border border-input px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-ring dark:border-border dark:bg-card dark:text-foreground"
+                    disabled={saving}
+                    className="w-full rounded-md border border-input px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-ring dark:border-border dark:bg-card dark:text-foreground disabled:opacity-60"
                     placeholder="Enter stream title..."
                 />
             </div>
 
             <div className="relative" ref={dropdownRef}>
                 <label className="block text-sm font-medium text-foreground dark:text-foreground mb-1">
-                    Game / Category
+                    Jogo / Categoria
                 </label>
                 <input
                     type="text"
                     value={game}
+                    disabled={saving}
                     onFocus={() => setIsDropdownOpen(true)}
                     onChange={e => {
                         setGame(e.target.value)
                         setSelectedGameId("")
                         setIsDropdownOpen(true)
                     }}
-                    className="w-full rounded-md border border-input px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-ring dark:border-border dark:bg-card dark:text-foreground"
+                    className="w-full rounded-md border border-input px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-ring dark:border-border dark:bg-card dark:text-foreground disabled:opacity-60"
                     placeholder="Search game or category for connected platforms..."
                 />
 
+                {/* Dropdown Menu */}
                 {isDropdownOpen && (
-                    <div className="absolute left-0 right-0 top-full mt-1 z-50 max-h-60 overflow-y-auto rounded-md border border-border bg-card shadow-lg text-xs">
-                        {connectedPlatforms.length > 0 && (
-                            <div className="border-b border-border bg-muted/30 px-3 py-1.5 text-[10px] text-muted-foreground font-mono">
-                                Connected platforms:{" "}
-                                {connectedPlatforms.join(", ")}
-                            </div>
-                        )}
-
+                    <div className="absolute z-20 mt-1 max-h-60 w-full overflow-auto rounded-md border border-border bg-white p-1 shadow-lg dark:border-border dark:bg-card">
                         {loadingCategories ? (
-                            <div className="p-3 text-center text-muted-foreground">
-                                Searching categories...
+                            <div className="flex items-center justify-center p-3 text-xs text-muted-foreground">
+                                <Loader2 className="mr-2 h-4 w-4 animate-spin text-primary" />
+                                Buscando categorias ({platform})...
                             </div>
-                        ) : categories.length === 0 ? (
-                            <div className="p-3 text-center text-muted-foreground">
-                                No categories found
-                            </div>
-                        ) : (
+                        ) : categories.length > 0 ? (
                             categories.map(cat => (
                                 <button
                                     key={`${cat.platform}-${cat.id}`}
                                     type="button"
                                     onClick={() => handleSelectCategory(cat)}
-                                    className="flex w-full items-center justify-between px-3 py-2 text-left hover:bg-accent focus:bg-accent transition-colors border-b border-border/20 last:border-0"
+                                    className="flex w-full items-center gap-3 rounded-sm px-3 py-2 text-left text-sm hover:bg-muted dark:hover:bg-accent"
                                 >
-                                    <div className="flex items-center space-x-2 min-w-0">
-                                        {cat.boxArtUrl ? (
-                                            <img
-                                                src={cat.boxArtUrl}
-                                                alt={cat.name}
-                                                className="h-7 w-5 rounded object-cover"
-                                            />
-                                        ) : (
-                                            <div className="h-7 w-5 rounded bg-muted flex items-center justify-center text-[9px] font-mono">
-                                                🎮
-                                            </div>
-                                        )}
-                                        <span className="truncate font-medium text-foreground">
+                                    {cat.boxArtUrl && (
+                                        <img
+                                            src={cat.boxArtUrl}
+                                            alt={cat.name}
+                                            className="h-8 w-6 rounded object-cover"
+                                        />
+                                    )}
+                                    <div className="flex-1">
+                                        <p className="font-medium text-foreground">
                                             {cat.name}
-                                        </span>
+                                        </p>
+                                        <p className="text-xs text-muted-foreground capitalize">
+                                            {cat.platform}
+                                        </p>
                                     </div>
-                                    <span className="ml-2 rounded px-1.5 py-0.5 text-[10px] uppercase font-bold bg-primary/10 text-primary">
-                                        {cat.platform}
-                                    </span>
                                 </button>
                             ))
+                        ) : (
+                            <div className="p-3 text-center text-xs text-muted-foreground">
+                                Nenhuma categoria encontrada.
+                            </div>
                         )}
                     </div>
                 )}
             </div>
 
-            <button
-                onClick={handleSave}
-                disabled={saving}
-                className="w-full rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground disabled:cursor-not-allowed disabled:opacity-50"
-            >
-                {saving ? "Saving..." : "Update Stream"}
-            </button>
+            {/* Action button with inline status & loading spinner */}
+            <div className="flex items-center justify-between pt-1">
+                <div className="flex items-center gap-2">
+                    {saving && (
+                        <div className="flex items-center text-xs text-blue-500 font-medium animate-pulse">
+                            <Loader2 className="mr-1.5 h-4 w-4 animate-spin text-blue-500" />
+                            <span>Sincronizando com a plataforma...</span>
+                        </div>
+                    )}
 
-            {message && (
-                <div
-                    className={`rounded-md p-3 text-sm ${
-                        message.type === "success"
-                            ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-400"
-                            : "bg-rose-50 text-rose-700 dark:bg-rose-950/30 dark:text-rose-400"
-                    }`}
-                >
-                    {message.text}
+                    {message && (
+                        <div
+                            className={`flex items-center text-xs font-medium ${
+                                message.type === "success"
+                                    ? "text-emerald-700"
+                                    : "text-red-500"
+                            }`}
+                        >
+                            {message.type === "success" ? (
+                                <CheckCircle2 className="mr-1.5 h-4 w-4" />
+                            ) : (
+                                <AlertCircle className="mr-1.5 h-4 w-4" />
+                            )}
+                            <span className={message.type === "success" ? "text-emerald-700" : undefined}>{message.text}</span>
+                        </div>
+                    )}
                 </div>
-            )}
+
+                <button
+                    type="button"
+                    onClick={handleSave}
+                    disabled={saving || !title.trim()}
+                    className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-white shadow hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:opacity-50 transition-all min-w-[140px]"
+                >
+                    {saving ? (
+                        <>
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                            Saving...
+                        </>
+                    ) : (
+                        "Update Stream"
+                    )}
+                </button>
+            </div>
         </div>
     )
 }
