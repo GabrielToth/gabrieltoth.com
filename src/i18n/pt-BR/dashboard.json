@@ -388,9 +388,12 @@
         "noConfigs": "Nenhum clone ativo. Insira uma URL de canal do YouTube acima para começar."
     },
     "channels": {
+        "title": "Gerenciamento de Canais",
+        "subtitle": "Conecte e gerencie seus canais de mídia social",
         "channels": "Canais",
         "description": "Gerencie todos os seus canais de mídia social conectados",
         "connected": "Conectados ({count})",
+        "noChannels": "Nenhum canal conectado ainda",
         "noConnected": "Nenhum canal conectado ainda",
         "connectPrompt": "Conecte um canal abaixo para começar a publicar",
         "onPlatform": "no {platform}",

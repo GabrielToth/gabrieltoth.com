@@ -388,9 +388,12 @@
         "noConfigs": "Keine aktiven Klone. Gib eine YouTube-Kanal-URL ein, um zu beginnen."
     },
     "channels": {
+        "title": "Kanalverwaltung",
+        "subtitle": "Verbinde und verwalte deine Social-Media-Kanäle",
         "channels": "Kanäle",
         "description": "Verwalte alle deine verbundenen Social-Media-Kanäle",
         "connected": "Verbunden ({count})",
+        "noChannels": "Noch keine Kanäle verbunden",
         "noConnected": "Noch keine Kanäle verbunden",
         "connectPrompt": "Verbinde unten einen Kanal, um mit dem Veröffentlichen zu beginnen",
         "onPlatform": "auf {platform}",

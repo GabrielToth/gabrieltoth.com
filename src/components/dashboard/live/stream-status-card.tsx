@@ -186,30 +186,17 @@ export function StreamStatusCard({
                 </div>
             </div>
 
-            {/* Per-Destination Encoder / Network Metrics */}
+            {/* Per-Destination Bitrate & Stability Indicator */}
             {isLive && (
-                <div className="mt-3 rounded-md border border-border/60 bg-muted/20 p-2.5 text-xs space-y-1.5">
-                    <div className="flex items-center justify-between font-medium text-foreground border-b border-border/40 pb-1.5">
+                <div className="mt-3 rounded-md border border-border/60 bg-muted/20 p-2.5 text-xs">
+                    <div className="flex items-center justify-between font-medium text-foreground">
                         <span className="flex items-center gap-1.5 text-muted-foreground">
-                            <Wifi className="h-3.5 w-3.5 text-primary" /> Estabilidade da Rede ({platform})
+                            <Wifi className="h-3.5 w-3.5 text-primary" /> Taxa de Bits ({platform.toUpperCase()})
                         </span>
                         <span className="text-primary font-bold">
-                            {liveMetrics ? `${liveMetrics.bitrateKbps} kbps` : loadingMetrics ? "Conectando..." : "—"}
+                            {liveMetrics ? `${liveMetrics.bitrateKbps} kbps` : loadingMetrics ? "Verificando..." : "—"}
                         </span>
                     </div>
-
-                    {liveMetrics && (
-                        <div className="grid grid-cols-2 gap-2 text-[11px] text-muted-foreground pt-1">
-                            <div className="flex items-center gap-1">
-                                <Cpu className="h-3 w-3 text-muted-foreground" />
-                                <span>Codec/Res: <strong className="text-foreground">{liveMetrics.codec.toUpperCase()} @ {liveMetrics.resolution} ({liveMetrics.fps} fps)</strong></span>
-                            </div>
-                            <div className="flex items-center gap-1 justify-end">
-                                <HardDrive className="h-3 w-3 text-muted-foreground" />
-                                <span>Latência: <strong className="text-foreground">{liveMetrics.latencyMs}ms</strong> | Perdas: <strong className="text-foreground">{liveMetrics.droppedFrames}</strong></span>
-                            </div>
-                        </div>
-                    )}
                 </div>
             )}
 

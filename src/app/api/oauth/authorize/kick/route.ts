@@ -23,6 +23,38 @@ import { NextRequest, NextResponse } from "next/server"
 
 const logger = createLogger("KickAuthorizeEndpoint")
 
+export async function GET(request: NextRequest): Promise<NextResponse> {
+    try {
+        const session = await getServerSession(request)
+        const userId = session?.user?.id || "guest"
+        const locale = request.nextUrl.searchParams.get("locale") || "pt-BR"
+
+        const config = getKickConfig()
+        const codeVerifier = crypto.randomBytes(32).toString("base64url")
+        const codeChallenge = crypto
+            .createHash("sha256")
+            .update(codeVerifier)
+            .digest("base64url")
+
+        const signedState = generateState(userId, "kick", locale, undefined, codeVerifier)
+
+        const params = new URLSearchParams({
+            client_id: config.oauth.clientId,
+            redirect_uri: config.oauth.redirectUri,
+            response_type: "code",
+            scope: config.oauth.scopes.join(" "),
+            state: signedState.token,
+            code_challenge: codeChallenge,
+            code_challenge_method: "S256",
+        })
+
+        const authorizationUrl = `${config.oauthAuthorizeUrl}?${params.toString()}`
+        return NextResponse.redirect(authorizationUrl)
+    } catch (error) {
+        return NextResponse.json({ error: String(error) }, { status: 500 })
+    }
+}
+
 export async function POST(request: NextRequest): Promise<NextResponse> {
     try {
         const session = await getServerSession(request)
