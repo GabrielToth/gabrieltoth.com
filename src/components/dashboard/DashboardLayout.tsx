@@ -15,7 +15,6 @@ type DashboardTab =
     | "cloner"
 import React, { useState } from "react"
 import { Sidebar } from "./Sidebar"
-import { StreamHealthHeader } from "@/components/dashboard/live/stream-health-header"
 import { CreditBadge } from "@/components/credits/CreditBadge"
 
 export interface DashboardLayoutProps {
@@ -145,7 +144,6 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
 
                     <div className="flex items-center space-x-3">
                         <CreditBadge />
-                        <StreamHealthHeader />
                     </div>
                 </div>
 

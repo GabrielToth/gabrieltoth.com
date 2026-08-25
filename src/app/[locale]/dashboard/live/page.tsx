@@ -7,6 +7,7 @@ import { StreamStatusCard } from "@/components/dashboard/live/stream-status-card
 import { StreamTitleEditor } from "@/components/dashboard/live/stream-title-editor"
 import { UnifiedChat } from "@/components/dashboard/live/unified-chat"
 import { ChatModerationPanel } from "@/components/dashboard/live/chat-moderation-panel"
+import { StreamHealthHeader } from "@/components/dashboard/live/stream-health-header"
 import { useLocale, useTranslations } from "next-intl"
 import { useEffect, useState } from "react"
 
@@ -48,6 +49,14 @@ export default function LiveDashboardPage() {
         []
     )
     const [showScheduler, setShowScheduler] = useState(false)
+    const [executionMode, setExecutionMode] = useState<"cloud" | "local">("cloud")
+
+    useEffect(() => {
+        const stored = typeof window !== "undefined" ? localStorage.getItem("chat_execution_mode") : null
+        if (stored === "local" || stored === "cloud") {
+            setExecutionMode(stored)
+        }
+    }, [])
 
     useEffect(() => {
         fetchStatus()
@@ -154,9 +163,12 @@ export default function LiveDashboardPage() {
     return (
         <div className="space-y-6">
             <div className="flex items-center justify-between">
-                <h1 className="text-2xl font-bold text-foreground dark:text-foreground">
-                    {t("title")}
-                </h1>
+                <div className="flex items-center gap-3">
+                    <h1 className="text-2xl font-bold text-foreground dark:text-foreground">
+                        {t("title")}
+                    </h1>
+                    <StreamHealthHeader />
+                </div>
                 <div className="flex items-center gap-2">
                     <button
                         onClick={() => setShowScheduler(!showScheduler)}
@@ -256,6 +268,8 @@ export default function LiveDashboardPage() {
                         title={p.title}
                         gameName={p.gameName}
                         startedAt={p.startedAt}
+                        executionMode={executionMode}
+                        localOnly={p.platform === "facebook" || p.platform === "instagram"}
                     />
                 ))}
             </div>

@@ -2,8 +2,6 @@
 
 import { ThemeToggleClient } from "@/components/theme/theme-toggle-client"
 import LanguageSelector from "@/components/ui/language-selector"
-import { StreamHealthHeader } from "@/components/dashboard/live/stream-health-header"
-import { CreditBadge } from "@/components/credits/CreditBadge"
 import { useLocale } from "@/hooks/use-locale"
 import { getLocalizedPath } from "@/lib/url-mapping"
 import { Menu, X } from "lucide-react"
@@ -276,8 +274,6 @@ export default function Header() {
                     <div className="flex items-center">
                         {/* Language, Theme and Auth Buttons - visible ≥ 880px */}
                         <div className="hidden nav:flex items-center space-x-3">
-                            <CreditBadge />
-                            <StreamHealthHeader />
                             <div className="flex items-center space-x-2">
                                 <LanguageSelector
                                     variant="header"
