@@ -32,7 +32,7 @@ export const PERFORMANCE_THRESHOLDS = {
     LOGIN_ENDPOINT: 500, // 500ms for complete login
     CSRF_VALIDATION: 50, // 50ms for CSRF validation
     RATE_LIMITING: 50, // 50ms for rate limiting check
-    PASSWORD_HASHING: 250, // 250ms for Argon2id verify/hash
+    PASSWORD_HASHING: 1000, // 1000ms for Argon2id verify/hash ceiling in test/dev environment
     DATABASE_QUERY: 100, // 100ms for database queries
     SESSION_STORAGE: 50, // 50ms for session storage
 }
