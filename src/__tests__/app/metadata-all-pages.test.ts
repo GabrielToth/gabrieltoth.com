@@ -1,4 +1,5 @@
 import { describe, expect, it, vi } from "vitest"
+import { getLocalizedPath, getRouteKeyFromPath } from "@/lib/url-mapping"
 
 vi.mock("next-intl/server", () => {
     return {
@@ -14,14 +15,14 @@ vi.mock("next-intl/server", () => {
 async function assertMetadata(modPath: string, path: string) {
     const mod: any = await import(modPath)
     const locales = ["en", "pt-BR", "es", "de"] as const
+    const routeKey = getRouteKeyFromPath(path)
     for (const locale of locales) {
         const meta = await mod.generateMetadata({
             params: Promise.resolve({ locale }),
         } as any)
         expect(meta).toBeTruthy()
-        expect(meta.alternates?.canonical).toContain(
-            `/${locale === "en" ? "en" : locale}${path}`
-        )
+        const expectedPath = routeKey ? getLocalizedPath(routeKey, locale) : `/${locale}${path}`
+        expect(meta.alternates?.canonical).toContain(expectedPath)
         // Verify languages map has all locales and x-default pointing to pt-BR
         expect(meta.alternates?.languages?.["en"]).toContain("/en")
         expect(meta.alternates?.languages?.["pt-BR"]).toContain("/pt-BR")

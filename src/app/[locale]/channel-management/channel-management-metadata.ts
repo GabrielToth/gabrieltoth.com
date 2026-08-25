@@ -75,15 +75,9 @@ export async function generateMetadata({
         },
         alternates: {
             canonical: seoConfig.canonical,
-            languages: {
-                en: "https://www.gabrieltoth.com/en/channel-management/",
-                "pt-BR":
-                    "https://www.gabrieltoth.com/pt-BR/channel-management/",
-                es: "https://www.gabrieltoth.com/es/channel-management/",
-                de: "https://www.gabrieltoth.com/de/channel-management/",
-                "x-default":
-                    "https://www.gabrieltoth.com/pt-BR/channel-management/",
-            },
+            languages: Object.fromEntries(
+                (seoConfig.languageAlternates || []).map(alt => [alt.hrefLang, alt.href])
+            ),
         },
         other: {
             "theme-color": "#3b82f6",

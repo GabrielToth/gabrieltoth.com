@@ -1,7 +1,8 @@
 // SEO Configuration
 // Split from seo.ts — constants and config generators
 
-import { type Locale } from "@/lib/i18n"
+import { type Locale, locales } from "@/lib/i18n"
+import { getLocalizedUrl, getRouteKeyFromPath } from "@/lib/url-mapping"
 
 import { type DefaultSeoProps, type SeoConfigOptions } from "./seo-types"
 
@@ -221,6 +222,7 @@ export function generateSeoConfig(options: SeoConfigOptions) {
     const {
         locale,
         path = "",
+        canonicalKey,
         title,
         description,
         keywords = [],
@@ -232,12 +234,10 @@ export function generateSeoConfig(options: SeoConfigOptions) {
         breadcrumbs = [],
     } = options
 
-    // Always use locale-prefixed canonical to avoid redirect chains
-    const localeSegment = `/${locale}`
-    const fullUrl = `${SITE_URL}${localeSegment}${path}`.replace(
-        /(?<!\/)$/,
-        "/"
-    )
+    const routeKey = canonicalKey || getRouteKeyFromPath(path)
+    const activeSlug = routeKey ? getLocalizedUrl(routeKey, locale) : path.replace(/^\/|\/$/g, "")
+    const fullPathSegment = activeSlug ? `/${activeSlug}/` : "/"
+    const fullUrl = `${SITE_URL}/${locale}${fullPathSegment}`.replace(/\/+/g, "/").replace("https:/", "https://")
 
     const titleByLocale: Record<Locale, string> = {
         en: "Gabriel Toth Gonçalves - Full Stack Developer & Data Scientist",
@@ -465,25 +465,18 @@ export function generateSeoConfig(options: SeoConfigOptions) {
             },
         ],
         languageAlternates: [
-            {
-                hrefLang: "en",
-                href: `${SITE_URL}/en${path}`.replace(/(?<!\/)$/, "/"),
-            },
-            {
-                hrefLang: "pt-BR",
-                href: `${SITE_URL}/pt-BR${path}`.replace(/(?<!\/)$/, "/"),
-            },
-            {
-                hrefLang: "es",
-                href: `${SITE_URL}/es${path}`.replace(/(?<!\/)$/, "/"),
-            },
-            {
-                hrefLang: "de",
-                href: `${SITE_URL}/de${path}`.replace(/(?<!\/)$/, "/"),
-            },
+            ...locales.map(loc => {
+                const locSlug = routeKey ? getLocalizedUrl(routeKey, loc) : path.replace(/^\/|\/$/g, "")
+                const locPath = locSlug ? `/${locSlug}/` : "/"
+                const hrefUrl = `${SITE_URL}/${loc}${locPath}`.replace(/\/+/g, "/").replace("https:/", "https://")
+                return {
+                    hrefLang: loc,
+                    href: hrefUrl,
+                }
+            }),
             {
                 hrefLang: "x-default",
-                href: `${SITE_URL}/pt-BR${path}`.replace(/(?<!\/)$/, "/"),
+                href: `${SITE_URL}/pt-BR${routeKey ? (getLocalizedUrl(routeKey, "pt-BR") ? `/${getLocalizedUrl(routeKey, "pt-BR")}/` : "/") : (path.replace(/^\/|\/$/g, "") ? `/${path.replace(/^\/|\/$/g, "")}/` : "/")}`.replace(/\/+/g, "/").replace("https:/", "https://"),
             },
         ],
         breadcrumbs,
