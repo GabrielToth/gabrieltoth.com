@@ -29,7 +29,8 @@ vi.mock("@/components/auth/turnstile-widget", () => {
     }) => {
         useEffect(() => {
             onTokenChange("test-turnstile-token")
-        }, [onTokenChange])
+            // eslint-disable-next-line react-hooks/exhaustive-deps
+        }, [])
         return <div data-testid="turnstile-mock" />
     }
     return { default: TurnstileMock }

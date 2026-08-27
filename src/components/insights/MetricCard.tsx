@@ -2,6 +2,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Eye, Heart, TrendingUp, Users } from "lucide-react"
+import { useTranslations } from "next-intl"
 import React from "react"
 
 /**
@@ -51,13 +52,29 @@ export const MetricCard: React.FC<MetricCardProps> = ({ metric }) => {
     const isPositive = metric.change >= 0
     const changeColor = isPositive ? "text-green-600" : "text-red-600"
     const changeBgColor = isPositive ? "bg-green-50" : "bg-red-50"
+    const t = useTranslations("dashboard.insights")
+
+    // Map metric ids to i18n keys so metric names respect the active locale.
+    const metricKey = (
+        {
+            followers: "followers",
+            engagement: "engagement",
+            reach: "reach",
+            impressions: "impressions",
+            viral_coefficient: "viralCoefficient",
+            avg_watch_time: "avgWatchTime",
+            click_through_rate: "clickThroughRate",
+        } as Record<string, string>
+    )[metric.id]
+
+    const label = metricKey ? t(`metrics.${metricKey}`) : metric.name
 
     return (
         <Card className="overflow-hidden">
             <CardHeader className="pb-2 sm:pb-3">
                 <div className="flex items-center justify-between">
                     <CardTitle className="text-xs sm:text-sm font-medium text-muted-foreground">
-                        {metric.name}
+                        {label}
                     </CardTitle>
                     <div className="rounded-lg bg-primary/5 p-2 text-primary">
                         {getIconComponent(metric.icon)}

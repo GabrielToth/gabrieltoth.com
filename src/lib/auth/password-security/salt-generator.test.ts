@@ -111,18 +111,19 @@ describe("Salt Generation Module", () => {
             const salt = generateSalt(64) // Maximum allowed size for distribution test
             const bytes = Array.from(salt)
 
-            // Count byte values in different ranges
+            // Count byte values in different ranges:
+            // low (0..63) = 25%, mid (64..191) = 50%, high (192..255) = 25%
             const ranges = {
                 low: bytes.filter(b => b < 64).length,
                 mid: bytes.filter(b => b >= 64 && b < 192).length,
                 high: bytes.filter(b => b >= 192).length,
             }
 
-            // Each range should have roughly 1/3 of bytes (with tolerance)
-            const tolerance = 64 * 0.3 // 30% tolerance for smaller sample
-            expect(Math.abs(ranges.low - 64 / 3)).toBeLessThan(tolerance)
-            expect(Math.abs(ranges.mid - 64 / 3)).toBeLessThan(tolerance)
-            expect(Math.abs(ranges.high - 64 / 3)).toBeLessThan(tolerance)
+            // Expected counts for 64 bytes: low=16, mid=32, high=16
+            const tolerance = 16 // allow 25% sample noise variance
+            expect(Math.abs(ranges.low - 16)).toBeLessThan(tolerance)
+            expect(Math.abs(ranges.mid - 32)).toBeLessThan(tolerance)
+            expect(Math.abs(ranges.high - 16)).toBeLessThan(tolerance)
         })
     })
 

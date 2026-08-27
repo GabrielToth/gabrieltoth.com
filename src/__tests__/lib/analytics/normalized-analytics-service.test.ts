@@ -38,7 +38,7 @@ describe("normalized-analytics-service", () => {
     describe("buildAdvancedMetrics", () => {
         it("should build detailed breakdown metrics for advanced view", () => {
             const simple = buildNormalizedMetrics({ totalFollowers: 500 })
-            const advanced = buildAdvancedMetrics(simple, "twitch")
+            const advanced = buildAdvancedMetrics(simple, ["twitch"])
 
             expect(advanced.length).toBeGreaterThan(0)
             expect(advanced[0].platformBreakdown.twitch).toBeDefined()

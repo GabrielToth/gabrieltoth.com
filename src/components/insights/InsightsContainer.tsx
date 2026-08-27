@@ -1,6 +1,7 @@
 "use client"
 
 import { fetchChannels } from "@/lib/api"
+import { useTranslations } from "next-intl"
 import React, { useCallback, useEffect, useState } from "react"
 import { ChannelComparison } from "./ChannelComparison"
 import { ChannelGraphs } from "./ChannelGraphs"
@@ -65,6 +66,22 @@ export const InsightsContainer: React.FC<InsightsContainerProps> = ({
     const [timePeriod, setTimePeriod] = useState<"7d" | "30d" | "90d">("7d")
     const [isLoading, setIsLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
+    const t = useTranslations("dashboard.insights")
+
+    const metricLabel = (id: string, fallback: string) => {
+        const key = (
+            {
+                followers: "followers",
+                engagement: "engagement",
+                reach: "reach",
+                impressions: "impressions",
+                viral_coefficient: "viralCoefficient",
+                avg_watch_time: "avgWatchTime",
+                click_through_rate: "clickThroughRate",
+            } as Record<string, string>
+        )[id]
+        return key ? t(`metrics.${key}`) : fallback
+    }
 
     const handleFetchChannelsAndGroups = useCallback(async () => {
         try {
@@ -146,11 +163,10 @@ export const InsightsContainer: React.FC<InsightsContainerProps> = ({
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-b border-border/60 pb-4">
                 <div>
                     <h1 className="text-2xl sm:text-3xl font-bold text-foreground">
-                        Insights & Social Analytics
+                        {t("containerTitle")}
                     </h1>
                     <p className="mt-1 text-xs sm:text-sm text-muted-foreground">
-                        Unified metrics across all connected platforms & channel
-                        groups
+                        {t("subtitle")}
                     </p>
                 </div>
 
@@ -168,7 +184,7 @@ export const InsightsContainer: React.FC<InsightsContainerProps> = ({
                             }`}
                         >
                             <LayoutGrid className="w-3.5 h-3.5" />
-                            Simple View
+                            {t("simpleView")}
                         </button>
                         <button
                             type="button"
@@ -180,7 +196,7 @@ export const InsightsContainer: React.FC<InsightsContainerProps> = ({
                             }`}
                         >
                             <SlidersHorizontal className="w-3.5 h-3.5" />
-                            Advanced View
+                            {t("advancedView")}
                         </button>
                     </div>
                 </div>
@@ -190,7 +206,7 @@ export const InsightsContainer: React.FC<InsightsContainerProps> = ({
             <div className="flex flex-wrap items-center gap-3 bg-muted/40 p-3 rounded-lg border border-border/80">
                 <div className="flex items-center gap-2 text-xs text-muted-foreground font-medium">
                     <Filter className="w-3.5 h-3.5 text-primary" />
-                    Filters:
+                    {t("filters")}
                 </div>
 
                 {/* Platform Filter */}
@@ -199,14 +215,16 @@ export const InsightsContainer: React.FC<InsightsContainerProps> = ({
                     onChange={e => setSelectedPlatform(e.target.value)}
                     className="h-8 px-2.5 py-1 text-xs rounded-md border border-border bg-card text-foreground focus:outline-none focus:ring-1 focus:ring-primary"
                 >
-                    <option value="all">All Platforms</option>
-                    <option value="twitch">Twitch</option>
-                    <option value="youtube">YouTube</option>
-                    <option value="kick">Kick</option>
-                    <option value="instagram">Instagram</option>
-                    <option value="facebook">Facebook</option>
-                    <option value="tiktok">TikTok</option>
-                    <option value="linkedin">LinkedIn</option>
+                    <option value="all">{t("allPlatforms")}</option>
+                    <option value="twitch">{t("platforms.twitch")}</option>
+                    <option value="youtube">{t("platforms.youtube")}</option>
+                    <option value="kick">{t("platforms.kick")}</option>
+                    <option value="instagram">
+                        {t("platforms.instagram")}
+                    </option>
+                    <option value="facebook">{t("platforms.facebook")}</option>
+                    <option value="tiktok">{t("platforms.tiktok")}</option>
+                    <option value="linkedin">{t("platforms.linkedin")}</option>
                 </select>
 
                 {/* Channel Group Filter */}
@@ -217,7 +235,7 @@ export const InsightsContainer: React.FC<InsightsContainerProps> = ({
                         onChange={e => setSelectedGroup(e.target.value)}
                         className="h-8 px-2.5 py-1 text-xs rounded-md border border-border bg-card text-foreground focus:outline-none focus:ring-1 focus:ring-primary"
                     >
-                        <option value="all">All Channel Groups</option>
+                        <option value="all">{t("allGroups")}</option>
                         {channelGroups.map(g => (
                             <option key={g.id} value={g.id}>
                                 {g.name}
@@ -274,7 +292,7 @@ export const InsightsContainer: React.FC<InsightsContainerProps> = ({
                             >
                                 <div className="flex items-center justify-between">
                                     <span className="text-xs font-semibold uppercase tracking-wider text-primary">
-                                        {adv.category}
+                                        {t(`categories.${adv.category}`)}
                                     </span>
                                     <span
                                         className={`text-xs font-bold px-2 py-0.5 rounded-full ${
@@ -290,7 +308,7 @@ export const InsightsContainer: React.FC<InsightsContainerProps> = ({
 
                                 <div>
                                     <h4 className="text-sm font-medium text-muted-foreground">
-                                        {adv.name}
+                                        {metricLabel(adv.id, adv.name)}
                                     </h4>
                                     <div className="text-2xl font-bold text-foreground mt-1">
                                         {adv.value}
@@ -299,7 +317,7 @@ export const InsightsContainer: React.FC<InsightsContainerProps> = ({
 
                                 <div className="border-t border-border/40 pt-2 space-y-1.5 text-xs text-muted-foreground">
                                     <div className="font-medium text-[11px] uppercase tracking-wide">
-                                        Platform Breakdown
+                                        {t("platformBreakdown")}
                                     </div>
                                     {Object.entries(adv.platformBreakdown).map(
                                         ([plat, val]) => (

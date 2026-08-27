@@ -155,9 +155,10 @@ describe("POST /api/oauth/authorize/kick — Attack Matrix", () => {
 
     // ── Row 2: HTTP method confusion ──
     describe("Row 2 — HTTP method confusion", () => {
-        it("should not expose GET handler for authorize", async () => {
+        it("should expose GET handler for direct browser redirect", async () => {
             const route = await import("@/app/api/oauth/authorize/kick/route")
-            expect("GET" in route).toBe(false)
+            expect("GET" in route).toBe(true)
+            expect(typeof route.GET).toBe("function")
         })
     })
 

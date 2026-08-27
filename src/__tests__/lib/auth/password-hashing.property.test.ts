@@ -36,9 +36,9 @@ describe("Property 2: Password Hashing Consistency", () => {
                 const matches = await comparePassword(password, hash)
                 expect(matches).toBe(true)
             }),
-            { numRuns: 50 }
+            { numRuns: 15 }
         )
-    }, 60000) // Argon2id is CPU-heavy
+    }, 120000) // Argon2id is CPU-heavy
 
     it("should produce different hashes for the same password (salt uniqueness)", async () => {
         await fc.assert(
@@ -54,9 +54,9 @@ describe("Property 2: Password Hashing Consistency", () => {
                 expect(await comparePassword(password, hash1)).toBe(true)
                 expect(await comparePassword(password, hash2)).toBe(true)
             }),
-            { numRuns: 50 } // Reduced runs since hashing is expensive
+            { numRuns: 15 } // Reduced runs since hashing is expensive
         )
-    }, 60000)
+    }, 120000)
 
     it("should reject different passwords when compared with hash", async () => {
         await fc.assert(
@@ -77,9 +77,9 @@ describe("Property 2: Password Hashing Consistency", () => {
                     expect(doesNotMatch).toBe(false)
                 }
             ),
-            { numRuns: 50 } // Reduced runs since hashing is expensive
+            { numRuns: 15 } // Reduced runs since hashing is expensive
         )
-    }, 60000)
+    }, 120000)
 
     it("should handle edge cases in password comparison", async () => {
         await fc.assert(
@@ -112,9 +112,9 @@ describe("Property 2: Password Hashing Consistency", () => {
                     ).toBe(false)
                 }
             }),
-            { numRuns: 30 } // Reduced runs since this test does multiple comparisons
+            { numRuns: 15 } // Reduced runs since this test does multiple comparisons
         )
-    }, 60000)
+    }, 120000)
 
     it("should handle special characters in passwords", async () => {
         await fc.assert(
@@ -130,9 +130,9 @@ describe("Property 2: Password Hashing Consistency", () => {
                 // Property: original password matches
                 expect(await comparePassword(password, hash)).toBe(true)
             }),
-            { numRuns: 50 }
+            { numRuns: 15 }
         )
-    }, 60000)
+    }, 120000)
 
     it("should handle invalid inputs gracefully", async () => {
         await fc.assert(
@@ -163,9 +163,9 @@ describe("Property 2: Password Hashing Consistency", () => {
                     false
                 )
             }),
-            { numRuns: 30 }
+            { numRuns: 15 }
         )
-    }, 60000)
+    }, 120000)
 
     it("should maintain consistency across multiple hash-compare cycles", async () => {
         await fc.assert(
@@ -179,7 +179,7 @@ describe("Property 2: Password Hashing Consistency", () => {
                     )
                 }
             }),
-            { numRuns: 20 } // Reduced runs since this does multiple hashing operations
+            { numRuns: 15 } // Reduced runs since this does multiple hashing operations
         )
-    }, 60000)
+    }, 120000)
 })

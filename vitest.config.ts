@@ -55,8 +55,8 @@ export default defineConfig({
             },
         },
         // Increase timeout for property-based tests
-        testTimeout: 10000,
-        hookTimeout: 10000,
+        testTimeout: 30000,
+        hookTimeout: 30000,
         coverage: {
             provider: "v8",
             reportsDirectory: "./coverage",

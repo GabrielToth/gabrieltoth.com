@@ -6,8 +6,11 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { evaluateStreamHealth, StreamHealthMetrics } from "@/lib/live/stream-health"
-import { Cpu, HardDrive, Wifi } from "lucide-react"
+import {
+    evaluateStreamHealth,
+    StreamHealthMetrics,
+} from "@/lib/live/stream-health"
+import { Wifi } from "lucide-react"
 
 interface StreamStatusCardProps {
     platform: string
@@ -35,7 +38,9 @@ export function StreamStatusCard({
     executionMode = "cloud",
     localOnly = false,
 }: StreamStatusCardProps) {
-    const [liveMetrics, setLiveMetrics] = useState<StreamHealthMetrics | null>(initialMetrics || null)
+    const [liveMetrics, setLiveMetrics] = useState<StreamHealthMetrics | null>(
+        initialMetrics || null
+    )
     const [loadingMetrics, setLoadingMetrics] = useState(!initialMetrics)
 
     useEffect(() => {
@@ -47,7 +52,9 @@ export function StreamStatusCard({
         let isMounted = true
         async function fetchPlatformHealth() {
             try {
-                const res = await fetch(`/api/live/health?platform=${encodeURIComponent(platform)}&isLive=true`)
+                const res = await fetch(
+                    `/api/live/health?platform=${encodeURIComponent(platform)}&isLive=true`
+                )
                 if (!res.ok) return
                 const data = await res.json()
                 if (data.success && data.metrics && isMounted) {
@@ -80,16 +87,23 @@ export function StreamStatusCard({
 
     const getPlatformColor = (): string => {
         switch (platform.toLowerCase()) {
-            case "twitch": return "#9146FF"
-            case "kick": return "#53FC18"
-            case "youtube": return "#FF0000"
-            case "facebook": return "#1877F2"
-            case "instagram": return "#E4405F"
-            default: return "#3B82F6"
+            case "twitch":
+                return "#9146FF"
+            case "kick":
+                return "#53FC18"
+            case "youtube":
+                return "#FF0000"
+            case "facebook":
+                return "#1877F2"
+            case "instagram":
+                return "#E4405F"
+            default:
+                return "#3B82F6"
         }
     }
 
-    const health = isLive && liveMetrics ? evaluateStreamHealth(liveMetrics) : null
+    const health =
+        isLive && liveMetrics ? evaluateStreamHealth(liveMetrics) : null
 
     const healthColors: Record<string, string> = {
         excellent: "text-emerald-500 bg-emerald-500/10 border-emerald-500/20",
@@ -147,7 +161,9 @@ export function StreamStatusCard({
                     {isLive ? (
                         <div className="flex items-center gap-2">
                             {health && (
-                                <span className={`rounded-full border px-2 py-0.5 text-[11px] font-semibold capitalize ${healthColors[health.level] || "text-muted-foreground"}`}>
+                                <span
+                                    className={`rounded-full border px-2 py-0.5 text-[11px] font-semibold capitalize ${healthColors[health.level] || "text-muted-foreground"}`}
+                                >
                                     {health.level}
                                 </span>
                             )}
@@ -170,7 +186,9 @@ export function StreamStatusCard({
                     <p className="text-xl font-bold text-foreground">
                         {isLive ? viewerCount.toLocaleString() : "—"}
                     </p>
-                    <p className="text-xs text-muted-foreground">Espectadores</p>
+                    <p className="text-xs text-muted-foreground">
+                        Espectadores
+                    </p>
                 </div>
                 <div className="text-center rounded-md bg-muted/30 p-2">
                     <p className="text-xl font-bold text-foreground">
@@ -179,7 +197,10 @@ export function StreamStatusCard({
                     <p className="text-xs text-muted-foreground">Tempo no Ar</p>
                 </div>
                 <div className="text-center rounded-md bg-muted/30 p-2">
-                    <p className="text-xl font-bold text-foreground truncate" title={gameName}>
+                    <p
+                        className="text-xl font-bold text-foreground truncate"
+                        title={gameName}
+                    >
                         {gameName || "—"}
                     </p>
                     <p className="text-xs text-muted-foreground">Game</p>
@@ -191,18 +212,40 @@ export function StreamStatusCard({
                 <div className="mt-3 rounded-md border border-border/60 bg-muted/20 p-2.5 text-xs">
                     <div className="flex items-center justify-between font-medium text-foreground">
                         <span className="flex items-center gap-1.5 text-muted-foreground">
-                            <Wifi className="h-3.5 w-3.5 text-primary" /> Taxa de Bits ({platform.toUpperCase()})
+                            <Wifi className="h-3.5 w-3.5 text-primary" /> Taxa
+                            de Bits ({platform.toUpperCase()})
                         </span>
                         <span className="text-primary font-bold">
-                            {liveMetrics ? `${liveMetrics.bitrateKbps} kbps` : loadingMetrics ? "Verificando..." : "—"}
+                            {liveMetrics
+                                ? `${liveMetrics.bitrateKbps} kbps`
+                                : loadingMetrics
+                                  ? "Verificando..."
+                                  : "—"}
                         </span>
                     </div>
+                    {liveMetrics &&
+                        (liveMetrics.codec || liveMetrics.resolution) && (
+                            <div className="mt-1.5 flex items-center justify-between text-[11px] text-muted-foreground pt-1.5 border-t border-border/40">
+                                <span>Encoder & Res</span>
+                                <span className="font-mono">
+                                    {(liveMetrics.codec || "—").toUpperCase()} @{" "}
+                                    {liveMetrics.resolution || "—"} (
+                                    {liveMetrics.fps ?? 0} fps)
+                                </span>
+                            </div>
+                        )}
                 </div>
             )}
 
             {title && (
-                <p className="mt-3 truncate text-xs text-muted-foreground" title={title}>
-                    <span className="font-semibold text-foreground">Título:</span> {title}
+                <p
+                    className="mt-3 truncate text-xs text-muted-foreground"
+                    title={title}
+                >
+                    <span className="font-semibold text-foreground">
+                        Título:
+                    </span>{" "}
+                    {title}
                 </p>
             )}
         </div>

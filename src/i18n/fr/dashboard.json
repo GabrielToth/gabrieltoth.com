@@ -145,7 +145,67 @@
     "insights": {
         "title": "Analyses",
         "description": "Voir comprehensive analytics and performance metrics for your social media presence.",
-        "comingSoon": "Analytics dashboard coming soon..."
+        "comingSoon": "Analytics dashboard coming soon...",
+        "subtitle": "Métriques unifiées de toutes les plateformes, chaînes et groupes connectés",
+        "simpleView": "Vue simple",
+        "advancedView": "Vue avancée",
+        "filters": "Filtres :",
+        "allPlatforms": "Toutes les plateformes",
+        "allGroups": "Tous les groupes",
+        "platformBreakdown": "Répartition par plateforme",
+        "timePeriod": "Période :",
+        "retry": "Réessayer",
+        "emptyState": "Aucune métrique disponible. Connectez vos réseaux sociaux pour voir les données.",
+        "noChannelsCompare": "Aucune chaîne disponible pour comparaison. Connectez vos réseaux sociaux pour voir les données.",
+        "selectChannels": "Sélectionner les chaînes à comparer",
+        "channelComparison": "Comparaison des chaînes",
+        "metricsComparison": "Comparaison des métriques",
+        "metric": "Métrique",
+        "highest": "Plus élevé",
+        "channelPerformance": "Performance du canal",
+        "noGraphData": "Aucune donnée graphique disponible. Connectez vos réseaux sociaux pour voir les tendances.",
+        "avgFollowers": "Abonnés moy.",
+        "avgEngagement": "Engagement moy.",
+        "avgReach": "Portée moy.",
+        "avgImpressions": "Impressions moy.",
+        "date": "Date",
+        "metrics": {
+            "followers": "Abonnés",
+            "engagement": "Engagement",
+            "reach": "Portée",
+            "impressions": "Impressions",
+            "viralCoefficient": "Coefficient viral & taux de partage",
+            "avgWatchTime": "Rétention moyenne / durée de visionnage (s)",
+            "clickThroughRate": "Taux de clic (CTR)"
+        },
+        "categories": {
+            "growth": "Croissance",
+            "engagement": "Engagement",
+            "conversion": "Conversion",
+            "monetization": "Monétisation"
+        },
+        "viewer": {
+            "title": "Rétention et analyses des spectateurs",
+            "duration": "Durée",
+            "peakViewers": "Pic de spectateurs",
+            "averageViewers": "Moy. de spectateurs",
+            "viewerRetention": "Rétention des spectateurs",
+            "chatRetention": "Rétention du chat"
+        },
+        "platforms": {
+            "all": "Toutes les plateformes",
+            "twitch": "Twitch",
+            "youtube": "YouTube",
+            "kick": "Kick",
+            "instagram": "Instagram",
+            "facebook": "Facebook",
+            "tiktok": "TikTok",
+            "linkedin": "LinkedIn"
+        },
+        "last7Days": "7 derniers jours",
+        "last30Days": "30 derniers jours",
+        "last90Days": "90 derniers jours",
+        "containerTitle": "Insights et analyses des réseaux sociaux"
     },
     "credits": {
         "title": "Credits",

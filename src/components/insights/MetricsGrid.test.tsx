@@ -1,4 +1,5 @@
-import { render, screen } from "@testing-library/react"
+import { screen } from "@testing-library/react"
+import { renderInsights } from "@/test-utils/insights-render"
 import userEvent from "@testing-library/user-event"
 import { describe, expect, it, vi } from "vitest"
 import type { Metric } from "./MetricsGrid"
@@ -25,20 +26,20 @@ describe("MetricsGrid", () => {
     ]
 
     it("renders metric cards", () => {
-        render(<MetricsGrid metrics={mockMetrics} />)
+        renderInsights(<MetricsGrid metrics={mockMetrics} />)
         expect(screen.getByText("Followers")).toBeInTheDocument()
         expect(screen.getByText("Engagement")).toBeInTheDocument()
     })
 
     it("renders loading skeleton when isLoading is true", () => {
-        render(<MetricsGrid metrics={[]} isLoading={true} />)
+        renderInsights(<MetricsGrid metrics={[]} isLoading={true} />)
         const skeletons = screen.getAllByRole("generic")
         expect(skeletons.length).toBeGreaterThan(0)
     })
 
     it("renders error message when error is provided", () => {
         const errorMessage = "Failed to load metrics"
-        render(
+        renderInsights(
             <MetricsGrid metrics={[]} error={errorMessage} onRetry={vi.fn()} />
         )
         expect(screen.getByText(errorMessage)).toBeInTheDocument()
@@ -46,7 +47,7 @@ describe("MetricsGrid", () => {
 
     it("renders retry button when error and onRetry are provided", () => {
         const mockRetry = vi.fn()
-        render(
+        renderInsights(
             <MetricsGrid
                 metrics={[]}
                 error="Failed to load"
@@ -59,7 +60,7 @@ describe("MetricsGrid", () => {
     it("calls onRetry when retry button is clicked", async () => {
         const user = userEvent.setup()
         const mockRetry = vi.fn()
-        render(
+        renderInsights(
             <MetricsGrid
                 metrics={[]}
                 error="Failed to load"
@@ -74,12 +75,12 @@ describe("MetricsGrid", () => {
     })
 
     it("renders empty state when no metrics", () => {
-        render(<MetricsGrid metrics={[]} />)
+        renderInsights(<MetricsGrid metrics={[]} />)
         expect(screen.getByText(/No metrics available/)).toBeInTheDocument()
     })
 
     it("renders all metrics in a grid", () => {
-        render(<MetricsGrid metrics={mockMetrics} />)
+        renderInsights(<MetricsGrid metrics={mockMetrics} />)
         // Check that both metrics are rendered
         expect(screen.getByText("Followers")).toBeInTheDocument()
         expect(screen.getByText("Engagement")).toBeInTheDocument()

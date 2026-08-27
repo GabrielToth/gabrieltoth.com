@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { useTranslations } from "next-intl"
 import React, { useMemo } from "react"
 
 /**
@@ -60,6 +61,7 @@ export const ChannelGraphs: React.FC<ChannelGraphsProps> = ({
     error = null,
     onRetry,
 }) => {
+    const t = useTranslations("dashboard.insights")
     // Group data by channel
     const dataByChannel = useMemo(() => {
         const grouped: Record<string, GraphData[]> = {}
@@ -100,7 +102,7 @@ export const ChannelGraphs: React.FC<ChannelGraphsProps> = ({
                         size="sm"
                         className="mt-2"
                     >
-                        Retry
+                        {t("retry")}
                     </Button>
                 )}
             </div>
@@ -112,8 +114,7 @@ export const ChannelGraphs: React.FC<ChannelGraphsProps> = ({
         return (
             <div className="rounded-lg border border-border bg-muted p-8 text-center">
                 <p className="text-sm text-muted-foreground">
-                    No graph data available. Connect social channels to see
-                    performance trends.
+                    {t("noGraphData")}
                 </p>
             </div>
         )
@@ -156,7 +157,7 @@ export const ChannelGraphs: React.FC<ChannelGraphsProps> = ({
                                 <div className="grid grid-cols-2 gap-2 sm:gap-4 sm:grid-cols-4">
                                     <div className="rounded-lg bg-primary/5 p-2 sm:p-3">
                                         <p className="text-xs text-muted-foreground">
-                                            Avg Followers
+                                            {t("avgFollowers")}
                                         </p>
                                         <p className="text-base sm:text-lg font-semibold text-foreground">
                                             {Math.round(
@@ -166,7 +167,7 @@ export const ChannelGraphs: React.FC<ChannelGraphsProps> = ({
                                     </div>
                                     <div className="rounded-lg bg-green-50 p-2 sm:p-3">
                                         <p className="text-xs text-muted-foreground">
-                                            Avg Engagement
+                                            {t("avgEngagement")}
                                         </p>
                                         <p className="text-base sm:text-lg font-semibold text-foreground">
                                             {Math.round(
@@ -176,7 +177,7 @@ export const ChannelGraphs: React.FC<ChannelGraphsProps> = ({
                                     </div>
                                     <div className="rounded-lg bg-purple-50 p-2 sm:p-3">
                                         <p className="text-xs text-muted-foreground">
-                                            Avg Reach
+                                            {t("avgReach")}
                                         </p>
                                         <p className="text-base sm:text-lg font-semibold text-foreground">
                                             {Math.round(
@@ -186,7 +187,7 @@ export const ChannelGraphs: React.FC<ChannelGraphsProps> = ({
                                     </div>
                                     <div className="rounded-lg bg-orange-50 p-2 sm:p-3">
                                         <p className="text-xs text-muted-foreground">
-                                            Avg Impressions
+                                            {t("avgImpressions")}
                                         </p>
                                         <p className="text-base sm:text-lg font-semibold text-foreground">
                                             {Math.round(
@@ -202,19 +203,19 @@ export const ChannelGraphs: React.FC<ChannelGraphsProps> = ({
                                         <thead>
                                             <tr className="border-b border-border">
                                                 <th className="px-3 sm:px-4 py-2 text-left font-medium text-foreground">
-                                                    Date
+                                                    {t("date")}
                                                 </th>
                                                 <th className="px-3 sm:px-4 py-2 text-right font-medium text-foreground">
-                                                    Followers
+                                                    {t("metrics.followers")}
                                                 </th>
                                                 <th className="px-3 sm:px-4 py-2 text-right font-medium text-foreground">
-                                                    Engagement
+                                                    {t("metrics.engagement")}
                                                 </th>
                                                 <th className="px-3 sm:px-4 py-2 text-right font-medium text-foreground">
-                                                    Reach
+                                                    {t("metrics.reach")}
                                                 </th>
                                                 <th className="px-3 sm:px-4 py-2 text-right font-medium text-foreground">
-                                                    Impressions
+                                                    {t("metrics.impressions")}
                                                 </th>
                                             </tr>
                                         </thead>

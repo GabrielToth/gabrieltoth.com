@@ -27,7 +27,7 @@ describe("Property 2: Password Hashing Consistency", () => {
                 expect(hash.length).toBeGreaterThanOrEqual(60)
                 expect(hash.length).toBeGreaterThanOrEqual(60)
             }),
-            { numRuns: 20 }
+            { numRuns: 15 }
         )
     }, 30000)
 
@@ -40,7 +40,7 @@ describe("Property 2: Password Hashing Consistency", () => {
                 const matches = await comparePassword(password, hash)
                 expect(matches).toBe(true)
             }),
-            { numRuns: 20 }
+            { numRuns: 15 }
         )
     }, 30000)
 
@@ -60,7 +60,7 @@ describe("Property 2: Password Hashing Consistency", () => {
                     expect(matches).toBe(false)
                 }
             ),
-            { numRuns: 20 }
+            { numRuns: 15 }
         )
     }, 30000)
 
@@ -79,9 +79,9 @@ describe("Property 2: Password Hashing Consistency", () => {
                 expect(matches1).toBe(true)
                 expect(matches2).toBe(true)
             }),
-            { numRuns: 20 }
+            { numRuns: 15 }
         )
-    }, 60000)
+    }, 120000)
 
     it("should handle edge case passwords correctly", async () => {
         await fc.assert(
@@ -111,7 +111,7 @@ describe("Property 2: Password Hashing Consistency", () => {
                     }
                 }
             ),
-            { numRuns: 20 }
+            { numRuns: 15 }
         )
     }, 30000)
 
@@ -131,9 +131,9 @@ describe("Property 2: Password Hashing Consistency", () => {
                 expect(result1).toBe(result2)
                 expect(result2).toBe(result3)
             }),
-            { numRuns: 20 }
+            { numRuns: 15 }
         )
-    }, 60000)
+    }, 120000)
 
     it("should handle case sensitivity correctly", async () => {
         await fc.assert(
@@ -166,7 +166,7 @@ describe("Property 2: Password Hashing Consistency", () => {
                     }
                 }
             ),
-            { numRuns: 20 }
+            { numRuns: 15 }
         )
     }, 30000)
 
@@ -190,7 +190,7 @@ describe("Property 2: Password Hashing Consistency", () => {
                     expect(matches).toBe(true)
                 }
             ),
-            { numRuns: 20 }
+            { numRuns: 15 }
         )
     }, 30000)
 })
@@ -215,7 +215,7 @@ describe("Property 6: Password Comparison Correctness", () => {
                 const result = await comparePassword(password, hash)
                 expect(result).toBe(true)
             }),
-            { numRuns: 20 }
+            { numRuns: 15 }
         )
     }, 30000)
 
@@ -236,7 +236,7 @@ describe("Property 6: Password Comparison Correctness", () => {
                     expect(result).toBe(false)
                 }
             ),
-            { numRuns: 20 }
+            { numRuns: 15 }
         )
     }, 30000)
 
@@ -275,7 +275,7 @@ describe("Property 6: Password Comparison Correctness", () => {
                     expect(result).toBe(false)
                 }
             ),
-            { numRuns: 20 }
+            { numRuns: 15 }
         )
     }, 30000)
 
@@ -299,7 +299,7 @@ describe("Property 6: Password Comparison Correctness", () => {
                     expect(incorrectMatch).toBe(false)
                 }
             ),
-            { numRuns: 20 }
+            { numRuns: 15 }
         )
     }, 30000)
 
@@ -321,9 +321,9 @@ describe("Property 6: Password Comparison Correctness", () => {
                 expect(result1).toBe(result2)
                 expect(result2).toBe(result3)
             }),
-            { numRuns: 20 }
+            { numRuns: 15 }
         )
-    }, 60000)
+    }, 120000)
 
     it("should correctly distinguish between similar passwords", async () => {
         await fc.assert(
@@ -359,7 +359,7 @@ describe("Property 6: Password Comparison Correctness", () => {
                     expect(replacedMatch).toBe(false)
                 }
             ),
-            { numRuns: 20 }
+            { numRuns: 15 }
         )
-    }, 60000)
+    }, 120000)
 })

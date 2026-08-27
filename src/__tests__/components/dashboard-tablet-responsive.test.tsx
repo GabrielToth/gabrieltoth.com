@@ -2,6 +2,7 @@ import { DashboardLayout } from "@/components/dashboard/DashboardLayout"
 import { Sidebar } from "@/components/dashboard/Sidebar"
 import { ChannelComparison } from "@/components/insights/ChannelComparison"
 import { ChannelGraphs } from "@/components/insights/ChannelGraphs"
+import { renderInsights } from "@/test-utils/insights-render"
 import { MetricsGrid } from "@/components/insights/MetricsGrid"
 import { render, screen } from "@testing-library/react"
 import { describe, expect, it, vi } from "vitest"
@@ -15,6 +16,7 @@ vi.mock("@/components/theme/theme-provider", () => ({
 }))
 
 vi.mock("next-intl", () => ({
+    NextIntlClientProvider: ({ children }: { children: React.ReactNode }) => children,
     useTranslations: (ns: string) => (key: string) => {
         const map: Record<string, string> = {
             "dashboard.layout.dashboard": "Dashboard",
@@ -32,6 +34,14 @@ vi.mock("next-intl", () => ({
             "dashboard.sidebar.settings": "Settings",
             "dashboard.sidebar.logout": "Logout",
             "dashboard.sidebar.connectChannels": "Connect Channels",
+            "dashboard.insights.metrics.followers": "Followers",
+            "dashboard.insights.metrics.engagement rate": "Engagement Rate",
+            "dashboard.insights.metrics.impressions": "Impressions",
+            "dashboard.insights.metrics.reach": "Reach",
+        }
+        if (key.startsWith("metrics.")) {
+            const m = key.replace("metrics.", "")
+            return m.charAt(0).toUpperCase() + m.slice(1)
         }
         return map[`${ns}.${key}`] ?? key
     },
@@ -158,14 +168,14 @@ describe("Tablet Responsive Design (768px-1024px)", () => {
         ]
 
         it("should display 2 columns on tablet", () => {
-            const { container } = render(<MetricsGrid metrics={mockMetrics} />)
+            const { container } = renderInsights(<MetricsGrid metrics={mockMetrics} />)
 
             const grid = container.querySelector("div[class*='grid']")
             expect(grid).toHaveClass("sm:grid-cols-2")
         })
 
         it("should display all metrics on tablet", () => {
-            render(<MetricsGrid metrics={mockMetrics} />)
+            renderInsights(<MetricsGrid metrics={mockMetrics} />)
 
             expect(screen.getByText("Followers")).toBeInTheDocument()
             expect(screen.getByText("Engagement")).toBeInTheDocument()
@@ -395,7 +405,7 @@ describe("Tablet Responsive Design (768px-1024px)", () => {
                 },
             ]
 
-            const { container } = render(<MetricsGrid metrics={mockMetrics} />)
+            const { container } = renderInsights(<MetricsGrid metrics={mockMetrics} />)
 
             const grid = container.querySelector("div[class*='grid']")
             expect(grid).toHaveClass("sm:grid-cols-2")
@@ -437,7 +447,7 @@ describe("Tablet Responsive Design (768px-1024px)", () => {
                 },
             ]
 
-            const { container } = render(<MetricsGrid metrics={mockMetrics} />)
+            const { container } = renderInsights(<MetricsGrid metrics={mockMetrics} />)
 
             const grid = container.querySelector("div[class*='grid']")
             expect(grid).toHaveClass("lg:grid-cols-4")

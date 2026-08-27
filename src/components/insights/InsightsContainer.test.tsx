@@ -1,4 +1,5 @@
-import { render, screen } from "@testing-library/react"
+import { screen } from "@testing-library/react"
+import { renderInsights } from "@/test-utils/insights-render"
 import { beforeEach, describe, expect, it, vi } from "vitest"
 import { InsightsContainer } from "./InsightsContainer"
 
@@ -13,7 +14,7 @@ describe("InsightsContainer", () => {
     })
 
     it("renders the Insights header", () => {
-        render(<InsightsContainer />)
+        renderInsights(<InsightsContainer />)
         expect(
             screen.getByText("Insights & Social Analytics")
         ).toBeInTheDocument()
@@ -25,7 +26,7 @@ describe("InsightsContainer", () => {
     })
 
     it("renders children when provided", () => {
-        render(
+        renderInsights(
             <InsightsContainer>
                 <div>Custom Content</div>
             </InsightsContainer>
@@ -34,7 +35,7 @@ describe("InsightsContainer", () => {
     })
 
     it("renders loading state initially", () => {
-        render(<InsightsContainer />)
+        renderInsights(<InsightsContainer />)
         // Check for loading skeletons
         const skeletons = screen.getAllByRole("generic")
         expect(skeletons.length).toBeGreaterThan(0)

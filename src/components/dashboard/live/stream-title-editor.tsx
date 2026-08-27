@@ -133,7 +133,9 @@ export function StreamTitleEditor({
             }
 
             if (isLocalMode && typeof window !== "undefined") {
-                const localCreds = localStorage.getItem(`${platform}_dev_config`)
+                const localCreds = localStorage.getItem(
+                    `${platform}_dev_config`
+                )
                 if (localCreds) {
                     try {
                         requestBody.localConfig = JSON.parse(localCreds)
@@ -274,7 +276,15 @@ export function StreamTitleEditor({
                             ) : (
                                 <AlertCircle className="mr-1.5 h-4 w-4" />
                             )}
-                            <span className={message.type === "success" ? "text-emerald-700" : undefined}>{message.text}</span>
+                            <span
+                                className={
+                                    message.type === "success"
+                                        ? "text-emerald-700"
+                                        : undefined
+                                }
+                            >
+                                {message.text}
+                            </span>
                         </div>
                     )}
                 </div>
