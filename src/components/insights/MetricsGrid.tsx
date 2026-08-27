@@ -1,6 +1,7 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
+import { useTranslations } from "next-intl"
 import React from "react"
 import { MetricCard } from "./MetricCard"
 
@@ -43,6 +44,7 @@ export const MetricsGrid: React.FC<MetricsGridProps> = ({
     error = null,
     onRetry,
 }) => {
+    const t = useTranslations("dashboard.insights")
     // Loading skeleton
     if (isLoading) {
         return (
@@ -69,7 +71,7 @@ export const MetricsGrid: React.FC<MetricsGridProps> = ({
                         size="sm"
                         className="mt-2"
                     >
-                        Retry
+                        {t("retry")}
                     </Button>
                 )}
             </div>
@@ -81,7 +83,7 @@ export const MetricsGrid: React.FC<MetricsGridProps> = ({
         return (
             <div className="rounded-lg border border-border bg-muted p-8 text-center">
                 <p className="text-sm text-muted-foreground">
-                    No metrics available. Connect social channels to see data.
+                    {t("emptyState")}
                 </p>
             </div>
         )

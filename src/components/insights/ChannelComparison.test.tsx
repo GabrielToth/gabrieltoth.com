@@ -1,4 +1,5 @@
-import { render, screen } from "@testing-library/react"
+import { screen } from "@testing-library/react"
+import { renderInsights } from "@/test-utils/insights-render"
 import userEvent from "@testing-library/user-event"
 import { describe, expect, it, vi } from "vitest"
 import type { Metric, SocialChannel } from "./ChannelComparison"
@@ -42,7 +43,7 @@ describe("ChannelComparison", () => {
     ]
 
     it("renders channel comparison title", () => {
-        render(
+        renderInsights(
             <ChannelComparison
                 channels={mockChannels}
                 selectedChannels={[]}
@@ -54,7 +55,7 @@ describe("ChannelComparison", () => {
     })
 
     it("renders channel selection checkboxes", () => {
-        render(
+        renderInsights(
             <ChannelComparison
                 channels={mockChannels}
                 selectedChannels={[]}
@@ -69,7 +70,7 @@ describe("ChannelComparison", () => {
     it("calls onChannelSelectionChange when checkbox is clicked", async () => {
         const user = userEvent.setup()
         const mockOnChange = vi.fn()
-        render(
+        renderInsights(
             <ChannelComparison
                 channels={mockChannels}
                 selectedChannels={[]}
@@ -85,7 +86,7 @@ describe("ChannelComparison", () => {
     })
 
     it("renders comparison table when channels are selected", () => {
-        render(
+        renderInsights(
             <ChannelComparison
                 channels={mockChannels}
                 selectedChannels={["ch1", "ch2"]}
@@ -99,7 +100,7 @@ describe("ChannelComparison", () => {
     })
 
     it("renders loading skeleton when isLoading is true", () => {
-        render(
+        renderInsights(
             <ChannelComparison
                 channels={mockChannels}
                 selectedChannels={[]}
@@ -114,7 +115,7 @@ describe("ChannelComparison", () => {
 
     it("renders error message when error is provided", () => {
         const errorMessage = "Failed to load comparison"
-        render(
+        renderInsights(
             <ChannelComparison
                 channels={mockChannels}
                 selectedChannels={[]}
@@ -128,7 +129,7 @@ describe("ChannelComparison", () => {
     })
 
     it("renders empty state when no channels", () => {
-        render(
+        renderInsights(
             <ChannelComparison
                 channels={[]}
                 selectedChannels={[]}
@@ -142,7 +143,7 @@ describe("ChannelComparison", () => {
     })
 
     it("renders empty comparison state when no channels selected", () => {
-        render(
+        renderInsights(
             <ChannelComparison
                 channels={mockChannels}
                 selectedChannels={[]}
@@ -156,7 +157,7 @@ describe("ChannelComparison", () => {
     })
 
     it("displays metric names in comparison table", () => {
-        render(
+        renderInsights(
             <ChannelComparison
                 channels={mockChannels}
                 selectedChannels={["ch1", "ch2"]}

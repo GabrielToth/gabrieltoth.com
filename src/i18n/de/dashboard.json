@@ -145,7 +145,67 @@
     "insights": {
         "title": "Einblicke",
         "description": "Sehen Sie umfassende Analysen und Leistungskennzahlen Ihrer Social-Media-Präsenz.",
-        "comingSoon": "Analyse-Dashboard in Kürze..."
+        "comingSoon": "Analyse-Dashboard in Kürze...",
+        "subtitle": "Einheitliche Kennzahlen für alle verbundenen Plattformen, Kanäle und Gruppen",
+        "simpleView": "Einfache Ansicht",
+        "advancedView": "Erweiterte Ansicht",
+        "filters": "Filter:",
+        "allPlatforms": "Alle Plattformen",
+        "allGroups": "Alle Gruppen",
+        "platformBreakdown": "Aufschlüsselung nach Plattform",
+        "timePeriod": "Zeitraum:",
+        "retry": "Erneut versuchen",
+        "emptyState": "Keine Metriken verfügbar. Verbinden Sie soziale Kanäle, um Daten zu sehen.",
+        "noChannelsCompare": "Keine Kanäle zum Vergleich verfügbar. Verbinden Sie soziale Kanäle, um Daten zu sehen.",
+        "selectChannels": "Kanäle zum Vergleichen auswählen",
+        "channelComparison": "Kanalvergleich",
+        "metricsComparison": "Metrikvergleich",
+        "metric": "Metrik",
+        "highest": "Höchster",
+        "channelPerformance": "Kanal-Leistung",
+        "noGraphData": "Keine Grafikdaten verfügbar. Verbinden Sie soziale Kanäle, um Leistungstrends zu sehen.",
+        "avgFollowers": "Durchschn. Follower",
+        "avgEngagement": "Durchschn. Engagement",
+        "avgReach": "Durchschn. Reichweite",
+        "avgImpressions": "Durchschn. Impressionen",
+        "date": "Datum",
+        "metrics": {
+            "followers": "Follower",
+            "engagement": "Engagement",
+            "reach": "Reichweite",
+            "impressions": "Impressionen",
+            "viralCoefficient": "Viraler Koeffizient & Teilungsrate",
+            "avgWatchTime": "Durchschn. Verweildauer / Anzeigedauer (Sek.)",
+            "clickThroughRate": "Klickrate (CTR)"
+        },
+        "categories": {
+            "growth": "Wachstum",
+            "engagement": "Engagement",
+            "conversion": "Konversion",
+            "monetization": "Monetarisierung"
+        },
+        "viewer": {
+            "title": "Zuschauer-Retention & Analysen",
+            "duration": "Dauer",
+            "peakViewers": "Spitzenzuschauer",
+            "averageViewers": "Durchschn. Zuschauer",
+            "viewerRetention": "Zuschauer-Retention",
+            "chatRetention": "Chat-Retention"
+        },
+        "platforms": {
+            "all": "Alle Plattformen",
+            "twitch": "Twitch",
+            "youtube": "YouTube",
+            "kick": "Kick",
+            "instagram": "Instagram",
+            "facebook": "Facebook",
+            "tiktok": "TikTok",
+            "linkedin": "LinkedIn"
+        },
+        "last7Days": "Letzte 7 Tage",
+        "last30Days": "Letzte 30 Tage",
+        "last90Days": "Letzte 90 Tage",
+        "containerTitle": "Insights & Analyse sozialer Medien"
     },
     "credits": {
         "title": "Credits",
@@ -410,6 +470,12 @@
         "dialogTitle": "Achtung",
         "dialogCancel": "Abbrechen",
         "dialogContinue": "Fortfahren",
-        "tiktokReconnectMessage": "Sie haben bereits ein TikTok-Konto verbunden. Um ein anderes Konto zu verbinden, trennen Sie zuerst das aktuelle. TikTok OAuth erlaubt es nicht, während der Autorisierung ein anderes Konto auszuwählen."
+        "tiktokReconnectMessage": "Sie haben bereits ein TikTok-Konto verbunden. Um ein anderes Konto zu verbinden, trennen Sie zuerst das aktuelle. TikTok OAuth erlaubt es nicht, während der Autorisierung ein anderes Konto auszuwählen.",
+        "confirmTitle": "Bestätigen",
+        "cancel": "Abbrechen",
+        "confirm": "Bestätigen",
+        "disconnectError": "Kanal konnte nicht getrennt werden. Bitte erneut versuchen.",
+        "tiktokSingleAccountNotice": "Ein TikTok-Konto ist bereits verbunden ({accountName}). Erneutes Verbinden ersetzt es.",
+        "confirmDisconnect": "{accountName} ({platform}) trennen? Dadurch wird der Zugriff von deinem Konto entfernt."
     }
 }

@@ -145,7 +145,67 @@
     "insights": {
         "title": "Insights",
         "description": "Veja análises completas e métricas de desempenho da sua presença nas redes sociais.",
-        "comingSoon": "Painel de análises em breve..."
+        "comingSoon": "Painel de análises em breve...",
+        "subtitle": "Métricas unificadas de todas as plataformas, canais e grupos conectados",
+        "simpleView": "Visão Simples",
+        "advancedView": "Visão Avançada",
+        "filters": "Filtros:",
+        "allPlatforms": "Todas as Plataformas",
+        "allGroups": "Todos os Grupos",
+        "platformBreakdown": "Detalhamento por Plataforma",
+        "timePeriod": "Período de Tempo:",
+        "retry": "Tentar Novamente",
+        "emptyState": "Nenhuma métrica disponível. Conecte canais sociais para ver os dados.",
+        "noChannelsCompare": "Nenhum canal disponível para comparação. Conecte canais sociais para ver os dados.",
+        "selectChannels": "Selecionar Canais para Comparar",
+        "channelComparison": "Comparação de Canais",
+        "metricsComparison": "Comparação de Métricas",
+        "metric": "Métrica",
+        "highest": "Maior",
+        "channelPerformance": "Desempenho do Canal",
+        "noGraphData": "Nenhum dado de gráfico disponível. Conecte canais sociais para ver as tendências de desempenho.",
+        "avgFollowers": "Média de Seguidores",
+        "avgEngagement": "Média de Engajamento",
+        "avgReach": "Alcance Médio",
+        "avgImpressions": "Média de Impressões",
+        "date": "Data",
+        "metrics": {
+            "followers": "Seguidores",
+            "engagement": "Engajamento",
+            "reach": "Alcance",
+            "impressions": "Impressões",
+            "viralCoefficient": "Coeficiente Viral e Taxa de Compartilhamento",
+            "avgWatchTime": "Retenção Média / Tempo de Exibição (s)",
+            "clickThroughRate": "Taxa de Cliques (CTR)"
+        },
+        "categories": {
+            "growth": "Crescimento",
+            "engagement": "Engajamento",
+            "conversion": "Conversão",
+            "monetization": "Monetização"
+        },
+        "viewer": {
+            "title": "Retenção e Análises de Espectadores",
+            "duration": "Duração",
+            "peakViewers": "Pico de Espectadores",
+            "averageViewers": "Média de Espectadores",
+            "viewerRetention": "Retenção de Espectadores",
+            "chatRetention": "Retenção do Chat"
+        },
+        "platforms": {
+            "all": "Todas as Plataformas",
+            "twitch": "Twitch",
+            "youtube": "YouTube",
+            "kick": "Kick",
+            "instagram": "Instagram",
+            "facebook": "Facebook",
+            "tiktok": "TikTok",
+            "linkedin": "LinkedIn"
+        },
+        "last7Days": "Últimos 7 dias",
+        "last30Days": "Últimos 30 dias",
+        "last90Days": "Últimos 90 dias",
+        "containerTitle": "Insights e Análises de Redes Sociais"
     },
     "credits": {
         "title": "Créditos",
@@ -410,6 +470,12 @@
         "dialogTitle": "Atenção",
         "dialogCancel": "Cancelar",
         "dialogContinue": "Continuar",
-        "tiktokReconnectMessage": "Você já tem uma conta do TikTok conectada. Para conectar uma conta diferente, desconecte a atual primeiro. O TikTok OAuth não permite selecionar outra conta durante a autorização."
+        "tiktokReconnectMessage": "Você já tem uma conta do TikTok conectada. Para conectar uma conta diferente, desconecte a atual primeiro. O TikTok OAuth não permite selecionar outra conta durante a autorização.",
+        "confirmTitle": "Confirmar",
+        "cancel": "Cancelar",
+        "confirm": "Confirmar",
+        "disconnectError": "Falha ao desconectar o canal. Tente novamente.",
+        "tiktokSingleAccountNotice": "Uma conta TikTok já está conectada ({accountName}). Conectar novamente irá substituí-la.",
+        "confirmDisconnect": "Desconectar {accountName} ({platform})? Isso removerá o acesso dele da sua conta."
     }
 }

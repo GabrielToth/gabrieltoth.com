@@ -145,7 +145,67 @@
     "insights": {
         "title": "Estadísticas",
         "description": "Ve análisis completos y métricas de rendimiento de tu presencia en redes sociales.",
-        "comingSoon": "Panel de análisis próximamente..."
+        "comingSoon": "Panel de análisis próximamente...",
+        "subtitle": "Métricas unificadas de todas las plataformas, canales y grupos conectados",
+        "simpleView": "Vista Simple",
+        "advancedView": "Vista Avanzada",
+        "filters": "Filtros:",
+        "allPlatforms": "Todas las plataformas",
+        "allGroups": "Todos los grupos",
+        "platformBreakdown": "Desglose por plataforma",
+        "timePeriod": "Período:",
+        "retry": "Reintentar",
+        "emptyState": "No hay métricas disponibles. Conecta redes sociales para ver los datos.",
+        "noChannelsCompare": "No hay canales disponibles para comparar. Conecta redes sociales para ver los datos.",
+        "selectChannels": "Seleccionar canales para comparar",
+        "channelComparison": "Comparación de canales",
+        "metricsComparison": "Comparación de métricas",
+        "metric": "Métrica",
+        "highest": "Mayor",
+        "channelPerformance": "Rendimiento del canal",
+        "noGraphData": "No hay datos de gráfico disponibles. Conecta redes sociales para ver las tendencias.",
+        "avgFollowers": "Seguidores promedio",
+        "avgEngagement": "Engagement promedio",
+        "avgReach": "Alcance promedio",
+        "avgImpressions": "Impresiones promedio",
+        "date": "Fecha",
+        "metrics": {
+            "followers": "Seguidores",
+            "engagement": "Engagement",
+            "reach": "Alcance",
+            "impressions": "Impresiones",
+            "viralCoefficient": "Coeficiente viral y tasa de compartidos",
+            "avgWatchTime": "Retención promedio / Tiempo de visualización (s)",
+            "clickThroughRate": "Tasa de clics (CTR)"
+        },
+        "categories": {
+            "growth": "Crecimiento",
+            "engagement": "Engagement",
+            "conversion": "Conversión",
+            "monetization": "Monetización"
+        },
+        "viewer": {
+            "title": "Retención y análisis de espectadores",
+            "duration": "Duración",
+            "peakViewers": "Pico de espectadores",
+            "averageViewers": "Promedio de espectadores",
+            "viewerRetention": "Retención de espectadores",
+            "chatRetention": "Retención del chat"
+        },
+        "platforms": {
+            "all": "Todas las plataformas",
+            "twitch": "Twitch",
+            "youtube": "YouTube",
+            "kick": "Kick",
+            "instagram": "Instagram",
+            "facebook": "Facebook",
+            "tiktok": "TikTok",
+            "linkedin": "LinkedIn"
+        },
+        "last7Days": "Últimos 7 días",
+        "last30Days": "Últimos 30 días",
+        "last90Days": "Últimos 90 días",
+        "containerTitle": "Insights y análisis de redes sociales"
     },
     "credits": {
         "title": "Créditos",
@@ -410,6 +470,12 @@
         "dialogTitle": "Atención",
         "dialogCancel": "Cancelar",
         "dialogContinue": "Continuar",
-        "tiktokReconnectMessage": "Ya tienes una cuenta de TikTok conectada. Para conectar una cuenta diferente, primero desconecta la actual. La OAuth de TikTok no permite seleccionar otra cuenta durante la autorización."
+        "tiktokReconnectMessage": "Ya tienes una cuenta de TikTok conectada. Para conectar una cuenta diferente, primero desconecta la actual. La OAuth de TikTok no permite seleccionar otra cuenta durante la autorización.",
+        "confirmTitle": "Confirmar",
+        "cancel": "Cancelar",
+        "confirm": "Confirmar",
+        "disconnectError": "No se pudo desconectar el canal. Inténtalo de nuevo.",
+        "tiktokSingleAccountNotice": "Ya hay una cuenta TikTok conectada ({accountName}). Volver a conectar la reemplazará.",
+        "confirmDisconnect": "¿Desconectar {accountName} ({platform})? Esto eliminará su acceso de tu cuenta."
     }
 }

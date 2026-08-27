@@ -1,4 +1,5 @@
-import { render, screen } from "@testing-library/react"
+import { screen } from "@testing-library/react"
+import { renderInsights } from "@/test-utils/insights-render"
 import userEvent from "@testing-library/user-event"
 import { describe, expect, it, vi } from "vitest"
 import type { GraphData, SocialChannel } from "./ChannelGraphs"
@@ -50,13 +51,15 @@ describe("ChannelGraphs", () => {
     ]
 
     it("renders channel graphs", () => {
-        render(<ChannelGraphs channels={mockChannels} data={mockGraphData} />)
+        renderInsights(
+            <ChannelGraphs channels={mockChannels} data={mockGraphData} />
+        )
         expect(screen.getByText("My Facebook (facebook)")).toBeInTheDocument()
         expect(screen.getByText("My Instagram (instagram)")).toBeInTheDocument()
     })
 
     it("renders loading skeleton when isLoading is true", () => {
-        render(
+        renderInsights(
             <ChannelGraphs channels={mockChannels} data={[]} isLoading={true} />
         )
         const skeletons = screen.getAllByRole("generic")
@@ -65,7 +68,7 @@ describe("ChannelGraphs", () => {
 
     it("renders error message when error is provided", () => {
         const errorMessage = "Failed to load graphs"
-        render(
+        renderInsights(
             <ChannelGraphs
                 channels={mockChannels}
                 data={[]}
@@ -78,7 +81,7 @@ describe("ChannelGraphs", () => {
 
     it("renders retry button when error and onRetry are provided", () => {
         const mockRetry = vi.fn()
-        render(
+        renderInsights(
             <ChannelGraphs
                 channels={mockChannels}
                 data={[]}
@@ -92,7 +95,7 @@ describe("ChannelGraphs", () => {
     it("calls onRetry when retry button is clicked", async () => {
         const user = userEvent.setup()
         const mockRetry = vi.fn()
-        render(
+        renderInsights(
             <ChannelGraphs
                 channels={mockChannels}
                 data={[]}
@@ -108,12 +111,14 @@ describe("ChannelGraphs", () => {
     })
 
     it("renders empty state when no channels", () => {
-        render(<ChannelGraphs channels={[]} data={mockGraphData} />)
+        renderInsights(<ChannelGraphs channels={[]} data={mockGraphData} />)
         expect(screen.getByText(/No graph data available/)).toBeInTheDocument()
     })
 
     it("renders data table with metrics", () => {
-        render(<ChannelGraphs channels={mockChannels} data={mockGraphData} />)
+        renderInsights(
+            <ChannelGraphs channels={mockChannels} data={mockGraphData} />
+        )
         // Check for table headers (may appear multiple times for multiple channels)
         expect(screen.getAllByText("Date").length).toBeGreaterThan(0)
         expect(screen.getAllByText("Followers").length).toBeGreaterThan(0)
@@ -123,7 +128,9 @@ describe("ChannelGraphs", () => {
     })
 
     it("displays average statistics for each channel", () => {
-        render(<ChannelGraphs channels={mockChannels} data={mockGraphData} />)
+        renderInsights(
+            <ChannelGraphs channels={mockChannels} data={mockGraphData} />
+        )
         // Check for average statistics (may appear multiple times for multiple channels)
         expect(screen.getAllByText("Avg Followers").length).toBeGreaterThan(0)
         expect(screen.getAllByText("Avg Engagement").length).toBeGreaterThan(0)

@@ -127,13 +127,39 @@ export function buildNormalizedMetrics(rawStats: {
 /**
  * Builds advanced metrics details breakdown for deeper analytics inspection
  */
+/**
+ * Deterministic per-platform value generator (no randomness, reproducible output)
+ * Derives a stable value from the platform name so advanced-metric breakdowns
+ * are consistent across renders and reflect the actual connected platforms.
+ */
+function platformScaled(
+    platform: string,
+    base: number,
+    spread: number
+): number {
+    let hash = 0
+    for (let i = 0; i < platform.length; i++) {
+        hash = (hash * 31 + platform.charCodeAt(i)) >>> 0
+    }
+    const ratio = (hash % 100) / 100 // 0..1, stable for a given platform
+    return Math.round(base + (ratio - 0.5) * spread)
+}
+
 export function buildAdvancedMetrics(
     simpleMetrics: NormalizedMetric[],
-    platformFilter?: string
+    platformFilter?: string[]
 ): AdvancedMetricDetail[] {
-    const platforms = platformFilter
-        ? [platformFilter]
-        : ["twitch", "youtube", "kick", "instagram", "facebook"]
+    const platforms =
+        platformFilter && platformFilter.length > 0
+            ? platformFilter
+            : ["twitch", "youtube", "kick", "instagram", "facebook"]
+
+    const breakdown = (base: number, spread: number) =>
+        Object.fromEntries(
+            platforms
+                .filter(p => !!p)
+                .map(p => [p, platformScaled(p, base, spread)])
+        )
 
     return [
         {
@@ -143,9 +169,7 @@ export function buildAdvancedMetrics(
             value: 1.42,
             change: 0.15,
             changePercent: 11.8,
-            platformBreakdown: Object.fromEntries(
-                platforms.map(p => [p, Math.round(Math.random() * 20 + 80)])
-            ),
+            platformBreakdown: breakdown(100, 40),
             historicalPoints: [
                 { date: "2026-07-20", value: 1.2 },
                 { date: "2026-07-26", value: 1.42 },
@@ -158,9 +182,7 @@ export function buildAdvancedMetrics(
             value: 485,
             change: 35,
             changePercent: 7.7,
-            platformBreakdown: Object.fromEntries(
-                platforms.map(p => [p, Math.round(Math.random() * 200 + 300)])
-            ),
+            platformBreakdown: breakdown(400, 400),
             historicalPoints: [
                 { date: "2026-07-20", value: 450 },
                 { date: "2026-07-26", value: 485 },
@@ -173,9 +195,7 @@ export function buildAdvancedMetrics(
             value: 4.8,
             change: 0.6,
             changePercent: 14.2,
-            platformBreakdown: Object.fromEntries(
-                platforms.map(p => [p, Math.round(Math.random() * 3 + 3)])
-            ),
+            platformBreakdown: breakdown(4.5, 4),
             historicalPoints: [
                 { date: "2026-07-20", value: 4.2 },
                 { date: "2026-07-26", value: 4.8 },

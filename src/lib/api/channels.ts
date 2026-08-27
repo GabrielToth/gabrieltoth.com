@@ -25,52 +25,39 @@ export async function fetchChannels(): Promise<SocialChannel[]> {
     }
 
     try {
-        // In production, replace with actual API call
-        // const response = await fetch('/api/channels')
-        // const data = await response.json()
+        // Fetch the user's real connected social networks from the backend.
+        const response = await fetch("/api/user/channels", {
+            headers: { Accept: "application/json" },
+        })
 
-        // Mock data for development
-        const data: SocialChannel[] = [
-            {
-                id: "1",
-                platform: "facebook",
-                accountId: "fb123",
-                accountName: "My Facebook Page",
-                isConnected: true,
-                connectedAt: new Date(Date.now() - 86400000 * 30),
-            },
-            {
-                id: "2",
-                platform: "instagram",
-                accountId: "ig123",
-                accountName: "My Instagram",
-                isConnected: true,
-                connectedAt: new Date(Date.now() - 86400000 * 30),
-            },
-            {
-                id: "3",
-                platform: "twitter",
-                accountId: "tw123",
-                accountName: "My Twitter",
-                isConnected: true,
-                connectedAt: new Date(Date.now() - 86400000 * 30),
-            },
-            {
-                id: "4",
-                platform: "tiktok",
-                accountId: "tt123",
-                accountName: "My TikTok",
-                isConnected: false,
-            },
-            {
-                id: "5",
-                platform: "linkedin",
-                accountId: "li123",
-                accountName: "My LinkedIn",
-                isConnected: true,
-                connectedAt: new Date(Date.now() - 86400000 * 30),
-            },
-        ]
+        if (!response.ok) {
+            throw new Error(`Failed to fetch channels: HTTP ${response.status}`)
+        }
+
+        const json = await response.json()
+        const items: Array<{
+            id?: string
+            platform?: string
+            accountId?: string
+            accountName?: string
+            isConnected?: boolean
+            connectedAt?: string
+        }> = Array.isArray(json?.channels) ? json.channels : []
+
+        const data: SocialChannel[] = items
+            .filter(item => item && item.platform)
+            .map(item => ({
+                id:
+                    item.id ||
+                    `${item.platform}-${item.accountId || Date.now()}`,
+                platform: item.platform as SocialChannel["platform"],
+                accountId: item.accountId || item.id || "",
+                accountName: item.accountName || item.platform || "",
+                isConnected: item.isConnected ?? true,
+                connectedAt: item.connectedAt
+                    ? new Date(item.connectedAt)
+                    : undefined,
+            }))
 
         // Cache the result
         cache.set(cacheKey, { data, timestamp: now })
@@ -78,7 +65,8 @@ export async function fetchChannels(): Promise<SocialChannel[]> {
         return data
     } catch (error) {
         console.error("Failed to fetch channels:", error)
-        throw new Error("Failed to fetch channels")
+        // Return empty list so callers can show the "no channels" empty state.
+        return []
     }
 }
 

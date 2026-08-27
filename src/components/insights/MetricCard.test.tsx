@@ -1,4 +1,5 @@
-import { render, screen } from "@testing-library/react"
+import { screen } from "@testing-library/react"
+import { renderInsights } from "@/test-utils/insights-render"
 import { describe, expect, it } from "vitest"
 import type { Metric } from "./MetricCard"
 import { MetricCard } from "./MetricCard"
@@ -14,24 +15,24 @@ describe("MetricCard", () => {
     }
 
     it("renders metric name", () => {
-        render(<MetricCard metric={mockMetric} />)
+        renderInsights(<MetricCard metric={mockMetric} />)
         expect(screen.getByText("Followers")).toBeInTheDocument()
     })
 
     it("renders metric value", () => {
-        render(<MetricCard metric={mockMetric} />)
+        renderInsights(<MetricCard metric={mockMetric} />)
         // Check for the value (may be formatted differently based on locale)
         expect(screen.getByText(/12[.,]500/)).toBeInTheDocument()
     })
 
     it("renders positive change with green styling", () => {
-        render(<MetricCard metric={mockMetric} />)
+        renderInsights(<MetricCard metric={mockMetric} />)
         const changeElement = screen.getByText(/\+250/)
         expect(changeElement).toHaveClass("text-green-600")
     })
 
     it("renders change percentage", () => {
-        render(<MetricCard metric={mockMetric} />)
+        renderInsights(<MetricCard metric={mockMetric} />)
         expect(screen.getByText(/2\.04/)).toBeInTheDocument()
     })
 
@@ -41,7 +42,7 @@ describe("MetricCard", () => {
             change: -100,
             changePercent: -0.8,
         }
-        render(<MetricCard metric={negativeMetric} />)
+        renderInsights(<MetricCard metric={negativeMetric} />)
         const changeElement = screen.getByText(/-100/)
         expect(changeElement).toHaveClass("text-red-600")
     })
@@ -52,7 +53,7 @@ describe("MetricCard", () => {
             change: 0,
             changePercent: 0,
         }
-        render(<MetricCard metric={zeroMetric} />)
+        renderInsights(<MetricCard metric={zeroMetric} />)
         expect(screen.getByText(/\+0/)).toBeInTheDocument()
     })
 
@@ -62,7 +63,7 @@ describe("MetricCard", () => {
             value: 1000000,
             change: 50000,
         }
-        render(<MetricCard metric={largeMetric} />)
+        renderInsights(<MetricCard metric={largeMetric} />)
         // Check for large number (may be formatted differently based on locale)
         expect(screen.getByText(/1[.,]000[.,]000/)).toBeInTheDocument()
         expect(screen.getByText(/\+50[.,]000/)).toBeInTheDocument()

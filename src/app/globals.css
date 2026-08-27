@@ -161,6 +161,50 @@ body {
         color 0.3s;
 }
 
+/* ─── Global Interactive Pointer Styles ─── */
+/* Ensure EVERY clickable element shows a pointer (hand) cursor */
+button,
+a,
+select,
+summary,
+label[for],
+input[type="button"],
+input[type="submit"],
+input[type="reset"],
+input[type="checkbox"],
+input[type="radio"],
+input[type="range"],
+input[type="file"]::file-selector-button,
+details > summary,
+[role="button"],
+[role="tab"],
+[role="link"],
+[role="checkbox"],
+[role="radio"],
+[role="switch"],
+[role="option"],
+[role="menuitem"],
+[role="menuitemcheckbox"],
+[role="menuitemradio"],
+[role="listbox"],
+[aria-haspopup],
+[aria-expanded],
+[aria-pressed],
+[tabindex]:not([tabindex="-1"]) {
+    cursor: pointer;
+}
+
+/* Disabled elements: show not-allowed instead */
+button:disabled,
+input:disabled,
+select:disabled,
+textarea:disabled,
+[aria-disabled="true"],
+.disabled,
+*[disabled] {
+    cursor: not-allowed !important;
+}
+
 /* ─── Scrollbar styling ─── */
 ::-webkit-scrollbar {
     width: 0.5rem;

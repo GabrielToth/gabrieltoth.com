@@ -1,6 +1,7 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
+import { useTranslations } from "next-intl"
 import React from "react"
 
 /**
@@ -25,19 +26,21 @@ export const TimePeriodSelector: React.FC<TimePeriodSelectorProps> = ({
     selectedPeriod,
     onPeriodChange,
 }) => {
+    const t = useTranslations("dashboard.insights")
+
     const periods: Array<{
         value: "7d" | "30d" | "90d"
         label: string
     }> = [
-        { value: "7d", label: "Last 7 days" },
-        { value: "30d", label: "Last 30 days" },
-        { value: "90d", label: "Last 90 days" },
+        { value: "7d", label: t("last7Days") },
+        { value: "30d", label: t("last30Days") },
+        { value: "90d", label: t("last90Days") },
     ]
 
     return (
         <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-2">
             <span className="text-xs sm:text-sm font-medium text-foreground">
-                Time Period:
+                {t("timePeriod")}
             </span>
             <div className="flex flex-wrap gap-2">
                 {periods.map(period => (

@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Checkbox } from "@/components/ui/checkbox"
+import { useTranslations } from "next-intl"
 import React, { useMemo } from "react"
 
 /**
@@ -63,6 +64,23 @@ export const ChannelComparison: React.FC<ChannelComparisonProps> = ({
     error = null,
     onRetry,
 }) => {
+    const t = useTranslations("dashboard.insights")
+
+    const metricLabel = (id: string, fallback: string) => {
+        const key = (
+            {
+                followers: "followers",
+                engagement: "engagement",
+                reach: "reach",
+                impressions: "impressions",
+                viral_coefficient: "viralCoefficient",
+                avg_watch_time: "avgWatchTime",
+                click_through_rate: "clickThroughRate",
+            } as Record<string, string>
+        )[id]
+        return key ? t(`metrics.${key}`) : fallback
+    }
+
     // Find highest value for each metric
     const highestValues = useMemo(() => {
         const highest: Record<string, number> = {}
@@ -102,7 +120,7 @@ export const ChannelComparison: React.FC<ChannelComparisonProps> = ({
                         size="sm"
                         className="mt-2"
                     >
-                        Retry
+                        {t("retry")}
                     </Button>
                 )}
             </div>
@@ -114,8 +132,7 @@ export const ChannelComparison: React.FC<ChannelComparisonProps> = ({
         return (
             <div className="rounded-lg border border-border bg-muted p-8 text-center">
                 <p className="text-sm text-muted-foreground">
-                    No channels available for comparison. Connect social
-                    channels to see data.
+                    {t("noChannelsCompare")}
                 </p>
             </div>
         )
@@ -124,14 +141,14 @@ export const ChannelComparison: React.FC<ChannelComparisonProps> = ({
     return (
         <Card>
             <CardHeader>
-                <CardTitle>Channel Comparison</CardTitle>
+                <CardTitle>{t("channelComparison")}</CardTitle>
             </CardHeader>
             <CardContent>
                 <div className="space-y-6">
                     {/* Channel Selection */}
                     <div>
                         <h3 className="mb-3 text-xs sm:text-sm font-medium text-foreground">
-                            Select Channels to Compare
+                            {t("selectChannels")}
                         </h3>
                         <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3">
                             {channels.map(channel => (
@@ -162,14 +179,14 @@ export const ChannelComparison: React.FC<ChannelComparisonProps> = ({
                     {selectedChannels.length > 0 && metrics.length > 0 && (
                         <div>
                             <h3 className="mb-3 text-xs sm:text-sm font-medium text-foreground">
-                                Metrics Comparison
+                                {t("metricsComparison")}
                             </h3>
                             <div className="overflow-x-auto -mx-4 sm:mx-0">
                                 <table className="w-full text-xs sm:text-sm">
                                     <thead>
                                         <tr className="border-b border-border">
                                             <th className="px-3 sm:px-4 py-2 text-left font-medium text-foreground">
-                                                Metric
+                                                {t("metric")}
                                             </th>
                                             {channels
                                                 .filter(ch =>
@@ -186,7 +203,7 @@ export const ChannelComparison: React.FC<ChannelComparisonProps> = ({
                                                     </th>
                                                 ))}
                                             <th className="px-3 sm:px-4 py-2 text-right font-medium text-foreground">
-                                                Highest
+                                                {t("highest")}
                                             </th>
                                         </tr>
                                     </thead>
@@ -202,7 +219,10 @@ export const ChannelComparison: React.FC<ChannelComparisonProps> = ({
                                                     className="border-b border-gray-100 hover:bg-muted"
                                                 >
                                                     <td className="px-3 sm:px-4 py-2 font-medium text-foreground">
-                                                        {metric.name}
+                                                        {metricLabel(
+                                                            metric.id,
+                                                            metric.name
+                                                        )}
                                                     </td>
                                                     {channels
                                                         .filter(ch =>

@@ -1,5 +1,6 @@
 import { DashboardLayout } from "@/components/dashboard/DashboardLayout"
 import { Sidebar } from "@/components/dashboard/Sidebar"
+import { renderInsights } from "@/test-utils/insights-render"
 import { MetricCard } from "@/components/insights/MetricCard"
 import { TimePeriodSelector } from "@/components/insights/TimePeriodSelector"
 import { FilterBar } from "@/components/publish/FilterBar"
@@ -16,6 +17,7 @@ vi.mock("@/components/theme/theme-provider", () => ({
 }))
 
 vi.mock("next-intl", () => ({
+    NextIntlClientProvider: ({ children }: { children: React.ReactNode }) => children,
     useTranslations: (ns: string) => (key: string) => {
         const map: Record<string, string> = {
             "dashboard.layout.dashboard": "Dashboard",
@@ -39,6 +41,14 @@ vi.mock("next-intl", () => ({
             "dashboard.sidebar.settings": "Settings",
             "dashboard.sidebar.logout": "Logout",
             "dashboard.sidebar.connectChannels": "Connect Channels",
+            "dashboard.insights.metrics.followers": "Followers",
+            "dashboard.insights.metrics.engagement rate": "Engagement Rate",
+            "dashboard.insights.metrics.impressions": "Impressions",
+            "dashboard.insights.metrics.reach": "Reach",
+        }
+        if (key.startsWith("metrics.")) {
+            const m = key.replace("metrics.", "")
+            return m.charAt(0).toUpperCase() + m.slice(1)
         }
         return map[`${ns}.${key}`] ?? key
     },
@@ -250,7 +260,7 @@ describe("Accessibility - WCAG 2.1 AA Compliance", () => {
         }
 
         it("should have proper semantic structure", () => {
-            const { container } = render(<MetricCard metric={mockMetric} />)
+            const { container } = renderInsights(<MetricCard metric={mockMetric} />)
 
             // Check for proper card structure
             const card = container.querySelector("div[class*='Card']")
@@ -258,7 +268,7 @@ describe("Accessibility - WCAG 2.1 AA Compliance", () => {
         })
 
         it("should display metric name for accessibility", () => {
-            render(<MetricCard metric={mockMetric} />)
+            renderInsights(<MetricCard metric={mockMetric} />)
 
             expect(screen.getByText("Followers")).toBeInTheDocument()
         })

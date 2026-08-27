@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it } from "vitest"
+import { beforeEach, describe, expect, it, vi } from "vitest"
 import {
     clearChannelsCache,
     connectChannel,
@@ -6,9 +6,55 @@ import {
     fetchChannels,
 } from "./channels"
 
+const mockChannels = [
+    {
+        id: "1",
+        platform: "facebook",
+        accountId: "fb123",
+        accountName: "My Facebook Page",
+        isConnected: true,
+        connectedAt: new Date(Date.now() - 86400000 * 30).toISOString(),
+    },
+    {
+        id: "2",
+        platform: "instagram",
+        accountId: "ig123",
+        accountName: "My Instagram",
+        isConnected: true,
+        connectedAt: new Date(Date.now() - 86400000 * 30).toISOString(),
+    },
+    {
+        id: "3",
+        platform: "twitter",
+        accountId: "tw123",
+        accountName: "My Twitter",
+        isConnected: true,
+        connectedAt: new Date(Date.now() - 86400000 * 30).toISOString(),
+    },
+    {
+        id: "4",
+        platform: "tiktok",
+        accountId: "tt123",
+        accountName: "My TikTok",
+        isConnected: false,
+    },
+    {
+        id: "5",
+        platform: "linkedin",
+        accountId: "li123",
+        accountName: "My LinkedIn",
+        isConnected: false,
+    },
+]
+
 describe("Channels API Service", () => {
     beforeEach(() => {
         clearChannelsCache()
+        global.fetch = vi.fn().mockResolvedValue({
+            ok: true,
+            status: 200,
+            json: async () => ({ channels: mockChannels }),
+        } as Response)
     })
 
     describe("fetchChannels", () => {

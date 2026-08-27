@@ -46,7 +46,11 @@
         "tiktokDesc": "Short-form videos",
         "accountCount": "{count} linked account(s)",
         "noAccounts": "No accounts linked",
-        "youtubeRecommended": "We recommend starting with YouTube as it's the only fully functional platform at the moment."
+        "youtubeRecommended": "We recommend starting with YouTube as it's the only fully functional platform at the moment.",
+        "twitch": "Twitch",
+        "twitchDesc": "Chat et clips de diffusion en direct",
+        "kick": "Kick",
+        "kickDesc": "Plateforme de diffusion en direct"
     },
     "step2": {
         "title": "Sélectionner YouTube Chaînes",

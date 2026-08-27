@@ -524,10 +524,13 @@ describe("Session Token Management", () => {
 
     describe("refreshSessionToken()", () => {
         it("should return new token and expiration when token is valid", async () => {
+            vi.useFakeTimers()
+            const fixedNow = new Date("2026-08-26T12:00:00.000Z")
+            vi.setSystemTime(fixedNow)
+
             const token = "valid-token"
-            const now = new Date()
-            const futureDate = new Date(now.getTime() + 30 * 60 * 1000)
-            const newExpiration = new Date(now.getTime() + 60 * 60 * 1000)
+            const futureDate = new Date(fixedNow.getTime() + 30 * 60 * 1000)
+            const newExpiration = new Date(fixedNow.getTime() + 60 * 60 * 1000)
 
             vi.mocked(db.db.queryOne).mockResolvedValueOnce({
                 id: "token-id",
@@ -555,7 +558,8 @@ describe("Session Token Management", () => {
             expect(result).toBeDefined()
             expect(result).toHaveProperty("token")
             expect(result).toHaveProperty("expiresAt")
-            expect(result!.expiresAt).toEqual(newExpiration)
+            expect(result!.expiresAt.toISOString()).toBe(newExpiration.toISOString())
+            vi.useRealTimers()
         })
 
         it("should return null when token not found", async () => {

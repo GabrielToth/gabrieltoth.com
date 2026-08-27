@@ -145,7 +145,67 @@
     "insights": {
         "title": "Insights",
         "description": "View comprehensive analytics and performance metrics for your social media presence.",
-        "comingSoon": "Analytics dashboard coming soon..."
+        "comingSoon": "Analytics dashboard coming soon...",
+        "subtitle": "Unified metrics across all connected platforms & channel groups",
+        "simpleView": "Simple View",
+        "advancedView": "Advanced View",
+        "filters": "Filters:",
+        "allPlatforms": "All Platforms",
+        "allGroups": "All Groups",
+        "platformBreakdown": "Platform Breakdown",
+        "timePeriod": "Time Period:",
+        "retry": "Retry",
+        "emptyState": "No metrics available. Connect social channels to see data.",
+        "noChannelsCompare": "No channels available for comparison. Connect social channels to see data.",
+        "selectChannels": "Select Channels to Compare",
+        "channelComparison": "Channel Comparison",
+        "metricsComparison": "Metrics Comparison",
+        "metric": "Metric",
+        "highest": "Highest",
+        "channelPerformance": "Channel Performance",
+        "noGraphData": "No graph data available. Connect social channels to see performance trends.",
+        "avgFollowers": "Avg Followers",
+        "avgEngagement": "Avg Engagement",
+        "avgReach": "Avg Reach",
+        "avgImpressions": "Avg Impressions",
+        "date": "Date",
+        "metrics": {
+            "followers": "Followers",
+            "engagement": "Engagement",
+            "reach": "Reach",
+            "impressions": "Impressions",
+            "viralCoefficient": "Viral Coefficient & Share Rate",
+            "avgWatchTime": "Average Retention / Watch Time (Sec)",
+            "clickThroughRate": "Click-Through Rate (CTR %)"
+        },
+        "categories": {
+            "growth": "Growth",
+            "engagement": "Engagement",
+            "conversion": "Conversion",
+            "monetization": "Monetization"
+        },
+        "viewer": {
+            "title": "Viewer Retention & Analytics",
+            "duration": "Duration",
+            "peakViewers": "Peak Viewers",
+            "averageViewers": "Average Viewers",
+            "viewerRetention": "Viewer Retention",
+            "chatRetention": "Chat Retention"
+        },
+        "platforms": {
+            "all": "All Platforms",
+            "twitch": "Twitch",
+            "youtube": "YouTube",
+            "kick": "Kick",
+            "instagram": "Instagram",
+            "facebook": "Facebook",
+            "tiktok": "TikTok",
+            "linkedin": "LinkedIn"
+        },
+        "last7Days": "Last 7 days",
+        "last30Days": "Last 30 days",
+        "last90Days": "Last 90 days",
+        "containerTitle": "Insights & Social Analytics"
     },
     "credits": {
         "title": "Credits",
@@ -410,6 +470,12 @@
         "dialogTitle": "Attention",
         "dialogCancel": "Cancel",
         "dialogContinue": "Continue",
-        "tiktokReconnectMessage": "You already have a TikTok account connected. To connect a different account, disconnect the current one first. TikTok OAuth does not allow selecting another account during authorization."
+        "tiktokReconnectMessage": "You already have a TikTok account connected. To connect a different account, disconnect the current one first. TikTok OAuth does not allow selecting another account during authorization.",
+        "confirmTitle": "Confirm",
+        "cancel": "Cancel",
+        "confirm": "Confirm",
+        "disconnectError": "Failed to disconnect the channel. Please try again.",
+        "tiktokSingleAccountNotice": "One TikTok account is already connected ({accountName}). Connecting again will replace it.",
+        "confirmDisconnect": "Disconnect {accountName} ({platform})? This will remove its access from your account."
     }
 }
