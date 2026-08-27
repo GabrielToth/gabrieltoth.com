@@ -17,6 +17,8 @@ import { UserCard } from "./user-card"
 interface UnifiedChatProps {
     platforms: string[]
     activePlatform?: string
+    /** Hide the popout button when rendered inside the popout window itself */
+    hidePopout?: boolean
 }
 
 const COMMANDS: CommandItem[] = [
@@ -135,7 +137,11 @@ const PLATFORM_COLORS: Record<string, string> = {
     linkedin: "bg-blue-800",
 }
 
-export function UnifiedChat({ platforms, activePlatform }: UnifiedChatProps) {
+export function UnifiedChat({
+    platforms,
+    activePlatform,
+    hidePopout = false,
+}: UnifiedChatProps) {
     const [executionMode, setExecutionMode] =
         useState<ChatExecutionMode>("cloud")
     const relay = useRelayChat()
@@ -383,7 +389,7 @@ export function UnifiedChat({ platforms, activePlatform }: UnifiedChatProps) {
                         mode={executionMode}
                         onChange={handleModeChange}
                     />
-                    {activePlatform && (
+                    {activePlatform && !hidePopout && (
                         <button
                             type="button"
                             onClick={() =>

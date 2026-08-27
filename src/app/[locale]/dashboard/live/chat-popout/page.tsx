@@ -84,6 +84,7 @@ function ChatPopoutInner() {
                 <UnifiedChat
                     platforms={platforms.length ? platforms : ["twitch"]}
                     activePlatform={platforms[0] || undefined}
+                    hidePopout
                 />
             </div>
         </div>
