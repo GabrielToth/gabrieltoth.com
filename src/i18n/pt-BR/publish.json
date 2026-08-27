@@ -46,7 +46,11 @@
         "tiktokDesc": "Vídeos curtos",
         "accountCount": "{count} conta(s) vinculada(s)",
         "noAccounts": "Nenhuma conta vinculada",
-        "youtubeRecommended": "Recomendamos começar com YouTube, pois é a única plataforma totalmente funcional no momento."
+        "youtubeRecommended": "Recomendamos começar com YouTube, pois é a única plataforma totalmente funcional no momento.",
+        "twitch": "Twitch",
+        "twitchDesc": "Chat e clipes de transmissão ao vivo",
+        "kick": "Kick",
+        "kickDesc": "Plataforma de transmissão ao vivo"
     },
     "step2": {
         "title": "Selecionar Canais do YouTube",
@@ -76,8 +80,8 @@
         "notAvailable": "Indisponível"
     },
     "step4": {
-        "title": "Detalhes do Vídeo",
-        "description": "Configure todas as informações do seu vídeo como no YouTube Studio",
+        "title": "Título",
+        "description": "Descrição",
         "videoFile": "Arquivo de Vídeo",
         "dropzone": "Arraste o vídeo aqui ou clique para selecionar",
         "browse": "Procurar Arquivos",
@@ -100,11 +104,9 @@
         "browseImage": "Procurar Imagem",
         "thumbnailUploaded": "A miniatura selecionada acima será usada. Você pode personalizar após a publicação no YouTube Studio.",
         "basicInfo": "Informações Básicas",
-        "title": "Título",
         "titlePlaceholder": "Digite o título do seu vídeo",
         "titleMax": "Máximo 100 caracteres",
         "titleRequired": "O título é obrigatório",
-        "description": "Descrição",
         "descriptionPlaceholder": "Descreva seu vídeo (URLs, links, informações importantes)",
         "descriptionMax": "Máximo 5000 caracteres",
         "thumbnail": "Miniatura",

@@ -470,6 +470,12 @@
         "dialogTitle": "Attention",
         "dialogCancel": "Annuler",
         "dialogContinue": "Continuer",
-        "tiktokReconnectMessage": "You already have a TikTok account connected. To connect a different account, disconnect the current one first. TikTok OAuth does not allow selecting another account during authorization."
+        "tiktokReconnectMessage": "You already have a TikTok account connected. To connect a different account, disconnect the current one first. TikTok OAuth does not allow selecting another account during authorization.",
+        "confirmTitle": "Confirmer",
+        "cancel": "Annuler",
+        "confirm": "Confirmer",
+        "disconnectError": "Échec de la déconnexion du canal. Veuillez réessayer.",
+        "tiktokSingleAccountNotice": "Un compte TikTok est déjà connecté ({accountName}). Se reconnecter le remplacera.",
+        "confirmDisconnect": "Déconnecter {accountName} ({platform}) ? Cela supprimera son accès de votre compte."
     }
 }

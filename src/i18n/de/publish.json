@@ -46,7 +46,11 @@
         "tiktokDesc": "Kurzvideos",
         "accountCount": "{count} Konto/Konten verknüpft",
         "noAccounts": "Keine Konten verknüpft",
-        "youtubeRecommended": "Wir empfehlen, mit YouTube zu beginnen, da es derzeit die einzige voll funktionsfähige Plattform ist."
+        "youtubeRecommended": "Wir empfehlen, mit YouTube zu beginnen, da es derzeit die einzige voll funktionsfähige Plattform ist.",
+        "twitch": "Twitch",
+        "twitchDesc": "Live-Streaming-Chat und Clips",
+        "kick": "Kick",
+        "kickDesc": "Live-Streaming-Plattform"
     },
     "step2": {
         "title": "YouTube-Kanäle auswählen",
@@ -76,8 +80,8 @@
         "notAvailable": "Nicht verfügbar"
     },
     "step4": {
-        "title": "Video-Details",
-        "description": "Konfiguriere alle Videoinformationen wie im YouTube Studio",
+        "title": "Titel",
+        "description": "Beschreibung",
         "videoFile": "Videodatei",
         "dropzone": "Video hierher ziehen oder klicken zum Auswählen",
         "browse": "Dateien Durchsuchen",
@@ -100,11 +104,9 @@
         "browseImage": "Bild Durchsuchen",
         "thumbnailUploaded": "Das oben ausgewählte Vorschaubild wird verwendet. Du kannst es nach der Veröffentlichung im YouTube Studio anpassen.",
         "basicInfo": "Basisdaten",
-        "title": "Titel",
         "titlePlaceholder": "Gib deinen Videotitel ein",
         "titleMax": "Maximal 100 Zeichen",
         "titleRequired": "Titel ist erforderlich",
-        "description": "Beschreibung",
         "descriptionPlaceholder": "Beschreibe dein Video (URLs, Links, wichtige Informationen)",
         "descriptionMax": "Maximal 5000 Zeichen",
         "thumbnail": "Thumbnail",

@@ -10,6 +10,8 @@ import {
     SiInstagram,
     SiTiktok,
     SiX,
+    SiKick,
+    SiTwitch,
 } from "@icons-pack/react-simple-icons"
 import { FaLinkedin } from "react-icons/fa6"
 import { useTranslations } from "next-intl"
@@ -98,6 +100,20 @@ const BASE_NETWORKS: PlatformInfo[] = [
         descKey: "step1.tiktokDesc",
         icon: <SiTiktok className="h-6 w-6 text-black dark:text-foreground" />,
         features: ["video"],
+    },
+    {
+        id: "twitch",
+        labelKey: "step1.twitch",
+        descKey: "step1.twitchDesc",
+        icon: <SiTwitch className="h-6 w-6 text-[#9146FF]" />,
+        features: ["text", "images"],
+    },
+    {
+        id: "kick",
+        labelKey: "step1.kick",
+        descKey: "step1.kickDesc",
+        icon: <SiKick className="h-6 w-6 text-[#53FC18]" />,
+        features: ["text", "images"],
     },
 ]
 

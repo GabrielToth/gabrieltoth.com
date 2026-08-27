@@ -46,7 +46,11 @@
         "tiktokDesc": "Short-form videos",
         "accountCount": "{count} linked account(s)",
         "noAccounts": "No accounts linked",
-        "youtubeRecommended": "We recommend starting with YouTube as it's the only fully functional platform at the moment."
+        "youtubeRecommended": "We recommend starting with YouTube as it's the only fully functional platform at the moment.",
+        "twitch": "Twitch",
+        "twitchDesc": "Live streaming chat and clips",
+        "kick": "Kick",
+        "kickDesc": "Live streaming platform"
     },
     "step2": {
         "title": "Select YouTube Channels",
@@ -76,8 +80,8 @@
         "notAvailable": "Not available"
     },
     "step4": {
-        "title": "Video Details",
-        "description": "Configure all your video information just like YouTube Studio",
+        "title": "Title",
+        "description": "Description",
         "videoFile": "Video File",
         "dropzone": "Drag & drop video file here, or click to select",
         "browse": "Browse Files",
@@ -100,11 +104,9 @@
         "browseImage": "Browse Image",
         "thumbnailUploaded": "The thumbnail selected above will be used. You can customize after publishing in YouTube Studio.",
         "basicInfo": "Basic Information",
-        "title": "Title",
         "titlePlaceholder": "Enter your video title",
         "titleMax": "Maximum 100 characters",
         "titleRequired": "Title is required",
-        "description": "Description",
         "descriptionPlaceholder": "Describe your video (URLs, links, important information)",
         "descriptionMax": "Maximum 5000 characters",
         "thumbnail": "Thumbnail",

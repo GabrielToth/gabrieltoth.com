@@ -470,6 +470,12 @@
         "dialogTitle": "Attention",
         "dialogCancel": "Cancel",
         "dialogContinue": "Continue",
-        "tiktokReconnectMessage": "You already have a TikTok account connected. To connect a different account, disconnect the current one first. TikTok OAuth does not allow selecting another account during authorization."
+        "tiktokReconnectMessage": "You already have a TikTok account connected. To connect a different account, disconnect the current one first. TikTok OAuth does not allow selecting another account during authorization.",
+        "confirmTitle": "Confirm",
+        "cancel": "Cancel",
+        "confirm": "Confirm",
+        "disconnectError": "Failed to disconnect the channel. Please try again.",
+        "tiktokSingleAccountNotice": "One TikTok account is already connected ({accountName}). Connecting again will replace it.",
+        "confirmDisconnect": "Disconnect {accountName} ({platform})? This will remove its access from your account."
     }
 }

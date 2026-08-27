@@ -156,12 +156,16 @@ async function resolveKickGameId(
         if (response.ok) {
             const data = await response.json()
             const match =
-                data.data?.find((c: { name?: string; id?: number | string }) =>
-                    c.name?.toLowerCase() === gameInput.toLowerCase()
+                data.data?.find(
+                    (c: { name?: string; id?: number | string }) =>
+                        c.name?.toLowerCase() === gameInput.toLowerCase()
                 ) || data.data?.[0]
             if (match?.id) {
                 const num = Number(match.id)
-                return { id: String(match.id), numericId: isNaN(num) ? null : num }
+                return {
+                    id: String(match.id),
+                    numericId: isNaN(num) ? null : num,
+                }
             }
         }
 
@@ -173,12 +177,16 @@ async function resolveKickGameId(
         if (response.ok) {
             const data = await response.json()
             const match =
-                data.data?.find((c: { name?: string; id?: number | string }) =>
-                    c.name?.toLowerCase() === gameInput.toLowerCase()
+                data.data?.find(
+                    (c: { name?: string; id?: number | string }) =>
+                        c.name?.toLowerCase() === gameInput.toLowerCase()
                 ) || data.data?.[0]
             if (match?.id) {
                 const num = Number(match.id)
-                return { id: String(match.id), numericId: isNaN(num) ? null : num }
+                return {
+                    id: String(match.id),
+                    numericId: isNaN(num) ? null : num,
+                }
             }
         }
 
@@ -310,58 +318,89 @@ async function updateKickStream(
     gameInput?: string
 ): Promise<{ success: boolean; error?: string }> {
     try {
-        const { numericId } = await resolveKickGameId(gameInput || "", accessToken)
-
-        const body: Record<string, unknown> = {}
-        if (title) {
-            body.stream_title = title
-            body.title = title
-        }
-        if (numericId !== null) {
-            body.category_id = numericId
-            body.subcategory_id = numericId
-        }
-
-        const response = await fetch(
-            "https://api.kick.com/public/v1/channels",
-            {
-                method: "PATCH",
-                headers: {
-                    Authorization: `Bearer ${accessToken}`,
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(body),
-            }
+        let { numericId } = await resolveKickGameId(
+            gameInput || "",
+            accessToken
         )
 
-        if (!response.ok) {
-            const errorBody = await response.text()
-            logger.error("Kick stream update failed", {
-                status: response.status,
-                body: errorBody,
-            })
+        // Kick's public v1 PATCH /channels REQUIRES a category_id.
+        // If the user didn't change the category, preserve the current one.
+        let currentTitle = title
+        if (numericId === null) {
+            try {
+                const chanRes = await fetch(
+                    "https://api.kick.com/public/v1/channels",
+                    {
+                        headers: { Authorization: `Bearer ${accessToken}` },
+                    }
+                )
+                if (chanRes.ok) {
+                    const chanData = await chanRes.json()
+                    const chan = chanData.data?.[0] || chanData
+                    const catId =
+                        chan.category_id ??
+                        chan.subcategory?.id ??
+                        chan.category?.id ??
+                        chan.subcategory_id
+                    if (catId !== undefined && catId !== null) {
+                        numericId = Number(catId)
+                    }
+                    if (!currentTitle && chan?.stream_title) {
+                        currentTitle = chan.stream_title
+                    }
+                }
+            } catch {
+                // Best effort — title-only update still attempted below
+            }
+        }
 
-            // Fallback try v2 endpoint
-            const v2Response = await fetch(
-                "https://kick.com/api/v2/channels/me",
-                {
-                    method: "PUT",
+        const body: Record<string, unknown> = {}
+        if (currentTitle) {
+            body.stream_title = currentTitle
+        }
+        if (numericId !== null && !isNaN(numericId)) {
+            body.category_id = numericId
+        }
+
+        const attempts: {
+            method: string
+            url: string
+        }[] = [
+            { method: "PATCH", url: "https://api.kick.com/public/v1/channels" },
+            { method: "PUT", url: "https://api.kick.com/public/v1/channels" },
+            { method: "PUT", url: "https://kick.com/api/v2/channels/me" },
+        ]
+
+        let lastStatus = 0
+        let lastBody = ""
+        for (const attempt of attempts) {
+            try {
+                const response = await fetch(attempt.url, {
+                    method: attempt.method,
                     headers: {
                         Authorization: `Bearer ${accessToken}`,
                         "Content-Type": "application/json",
                     },
                     body: JSON.stringify(body),
+                })
+                if (response.ok) {
+                    return { success: true }
                 }
-            )
-            if (v2Response.ok) return { success: true }
-
-            return {
-                success: false,
-                error: `Kick API error (${response.status}): ${errorBody}`,
+                lastStatus = response.status
+                lastBody = await response.text()
+            } catch {
+                // Try next endpoint
             }
         }
 
-        return { success: true }
+        logger.error("Kick stream update failed", {
+            status: lastStatus,
+            body: lastBody,
+        })
+        return {
+            success: false,
+            error: `Kick API error (${lastStatus}): ${lastBody}`,
+        }
     } catch (error) {
         logger.error("Kick stream update exception", { error })
         return {

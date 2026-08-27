@@ -470,6 +470,12 @@
         "dialogTitle": "Achtung",
         "dialogCancel": "Abbrechen",
         "dialogContinue": "Fortfahren",
-        "tiktokReconnectMessage": "Sie haben bereits ein TikTok-Konto verbunden. Um ein anderes Konto zu verbinden, trennen Sie zuerst das aktuelle. TikTok OAuth erlaubt es nicht, während der Autorisierung ein anderes Konto auszuwählen."
+        "tiktokReconnectMessage": "Sie haben bereits ein TikTok-Konto verbunden. Um ein anderes Konto zu verbinden, trennen Sie zuerst das aktuelle. TikTok OAuth erlaubt es nicht, während der Autorisierung ein anderes Konto auszuwählen.",
+        "confirmTitle": "Bestätigen",
+        "cancel": "Abbrechen",
+        "confirm": "Bestätigen",
+        "disconnectError": "Kanal konnte nicht getrennt werden. Bitte erneut versuchen.",
+        "tiktokSingleAccountNotice": "Ein TikTok-Konto ist bereits verbunden ({accountName}). Erneutes Verbinden ersetzt es.",
+        "confirmDisconnect": "{accountName} ({platform}) trennen? Dadurch wird der Zugriff von deinem Konto entfernt."
     }
 }

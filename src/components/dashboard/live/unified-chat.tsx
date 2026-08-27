@@ -9,6 +9,7 @@ import {
 } from "./chat-execution-mode-toggle"
 import { createLogger } from "@/lib/logger"
 import { useCallback, useRef, useEffect, useState, useMemo } from "react"
+import { ExternalLink } from "lucide-react"
 import { ChatMessageList, RenderableChatMessage } from "./chat-message-list"
 import { ChatCommandPalette, CommandItem } from "./chat-command-palette"
 import { UserCard } from "./user-card"
@@ -48,6 +49,43 @@ const COMMANDS: CommandItem[] = [
 ]
 
 const logger = createLogger("UnifiedChat")
+
+const CHAT_HISTORY_KEY = "unified_chat_history_v1"
+const MAX_PERSISTED_MESSAGES = 200
+
+/** Load persisted session chat history */
+function loadPersistedHistory(): RenderableChatMessage[] {
+    if (typeof window === "undefined") return []
+    try {
+        const raw = window.sessionStorage.getItem(CHAT_HISTORY_KEY)
+        if (!raw) return []
+        const parsed = JSON.parse(raw)
+        return Array.isArray(parsed) ? parsed : []
+    } catch {
+        return []
+    }
+}
+
+/** Save chat history to sessionStorage (kept per browser session) */
+function persistHistory(messages: RenderableChatMessage[]) {
+    if (typeof window === "undefined") return
+    try {
+        const trimmed = messages.slice(-MAX_PERSISTED_MESSAGES)
+        window.sessionStorage.setItem(CHAT_HISTORY_KEY, JSON.stringify(trimmed))
+    } catch {
+        // Storage full or unavailable — ignore
+    }
+}
+
+/** Open the OBS-friendly popout chat in a separate window */
+function openChatPopout(url: string) {
+    if (typeof window === "undefined") return
+    window.open(
+        url,
+        "ChatPopout",
+        "width=420,height=640,resizable=yes,scrollbars=yes"
+    )
+}
 
 const DUP_WINDOW_MS = 10000
 
@@ -97,7 +135,7 @@ const PLATFORM_COLORS: Record<string, string> = {
     linkedin: "bg-blue-800",
 }
 
-export function UnifiedChat({ platforms }: UnifiedChatProps) {
+export function UnifiedChat({ platforms, activePlatform }: UnifiedChatProps) {
     const [executionMode, setExecutionMode] =
         useState<ChatExecutionMode>("cloud")
     const relay = useRelayChat()
@@ -107,6 +145,9 @@ export function UnifiedChat({ platforms }: UnifiedChatProps) {
         new Set(platforms)
     )
     const [sendMode, setSendMode] = useState<string>(platforms[0] || "twitch")
+    const [persistedHistory] = useState<RenderableChatMessage[]>(() =>
+        loadPersistedHistory()
+    )
     const [selectedUser, setSelectedUser] = useState<
         (RenderableChatMessage & { duplicateCount: number }) | null
     >(null)
@@ -176,20 +217,35 @@ export function UnifiedChat({ platforms }: UnifiedChatProps) {
         return [...relayMsgs, ...sseMsgs]
     }, [executionMode, local.messages, relay.messages, sse.messages])
 
+    // Merge persisted session history so chat survives F5 / page navigation.
+    const mergedMessages = useMemo(() => {
+        if (persistedHistory.length === 0) return allMessages
+        const byId = new Set(allMessages.map(m => m.id))
+        const uniqPersisted = persistedHistory.filter(m => !byId.has(m.id))
+        return [...allMessages, ...uniqPersisted].sort(
+            (a, b) => a.timestamp - b.timestamp
+        )
+    }, [allMessages, persistedHistory])
+
+    // Keep sessionStorage in sync with the live + persisted message stream
+    useEffect(() => {
+        persistHistory(mergedMessages)
+    }, [mergedMessages])
+
     const groupedMessages = useMemo(() => {
-        const filtered = allMessages.filter(m =>
+        const filtered = mergedMessages.filter(m =>
             enabledPlatforms.has(m.platform)
         )
         return deduplicateAndGroup(filtered)
-    }, [allMessages, enabledPlatforms])
+    }, [mergedMessages, enabledPlatforms])
 
     const platformCounts = useMemo(() => {
         const counts: Record<string, number> = {}
-        for (const m of allMessages) {
+        for (const m of mergedMessages) {
             counts[m.platform] = (counts[m.platform] || 0) + 1
         }
         return counts
-    }, [allMessages])
+    }, [mergedMessages])
 
     const statusText = relay.isConnected ? "Connected" : "Disconnected"
 
@@ -327,6 +383,21 @@ export function UnifiedChat({ platforms }: UnifiedChatProps) {
                         mode={executionMode}
                         onChange={handleModeChange}
                     />
+                    {activePlatform && (
+                        <button
+                            type="button"
+                            onClick={() =>
+                                openChatPopout(
+                                    `/dashboard/live/chat-popout${activePlatform ? `?platform=${encodeURIComponent(activePlatform)}` : ""}`
+                                )
+                            }
+                            title="Abrir chat em popup (OBS / Browser Source)"
+                            className="inline-flex items-center gap-1 rounded-full border border-neutral-700 bg-neutral-800 px-2.5 py-1 text-xs font-medium text-neutral-200 transition hover:bg-neutral-700"
+                        >
+                            <ExternalLink className="h-3.5 w-3.5" />
+                            Popout
+                        </button>
+                    )}
                     <div className="flex items-center gap-1.5 text-[10px] text-neutral-400 shrink-0">
                         <span
                             className={`h-2 w-2 rounded-full ${statusText === "Disconnected" ? "bg-red-500" : "bg-emerald-500"}`}

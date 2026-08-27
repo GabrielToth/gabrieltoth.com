@@ -61,18 +61,13 @@ export async function POST(
         const tokenStore = getTokenStore()
         const token = await tokenStore.getToken(userId, platform)
 
-        if (!token) {
-            logger.warn("Token not found for disconnect", {
-                platform,
-                userId,
-            })
+        const supabase = createClient(
+            process.env.NEXT_PUBLIC_SUPABASE_URL || "",
+            process.env.SUPABASE_SERVICE_ROLE_KEY || ""
+        )
 
-            // Still clean up social_networks in case it's stale
+        const cleanup = async () => {
             try {
-                const supabase = createClient(
-                    process.env.NEXT_PUBLIC_SUPABASE_URL || "",
-                    process.env.SUPABASE_SERVICE_ROLE_KEY || ""
-                )
                 await supabase
                     .from("social_networks")
                     .update({
@@ -81,13 +76,39 @@ export async function POST(
                     })
                     .eq("user_id", userId)
                     .eq("platform", platform)
+            } catch (err) {
+                logger.warn("Failed to update social_networks status", {
+                    platform,
+                    userId,
+                    error: err instanceof Error ? err.message : String(err),
+                })
+            }
+        }
+
+        if (!token) {
+            logger.warn("Token not found for disconnect", {
+                platform,
+                userId,
+            })
+
+            // Still clean up social_networks & tokens in case they're stale
+            await cleanup()
+            try {
+                await supabase
+                    .from("oauth_tokens")
+                    .delete()
+                    .eq("user_id", userId)
+                    .eq("platform", platform)
             } catch {
-                // Ignore cleanup errors — token is already gone
+                // ignore token cleanup errors
             }
 
             return NextResponse.json(
-                { error: "No token found for this platform" },
-                { status: 404 }
+                {
+                    success: true,
+                    message: `Successfully disconnected from ${platform}`,
+                },
+                { status: 200 }
             )
         }
 
