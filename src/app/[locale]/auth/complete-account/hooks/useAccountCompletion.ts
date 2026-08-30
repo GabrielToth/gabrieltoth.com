@@ -20,6 +20,7 @@ export interface PrefilledData {
 export interface EditedData {
     email: string
     name: string
+    picture?: string
 }
 
 export interface NewFields {
@@ -136,6 +137,24 @@ export function useAccountCompletion() {
         },
         []
     )
+
+    const setPicture = useCallback((picture: string | undefined) => {
+        setState(prev => ({
+            ...prev,
+            editedData: {
+                ...prev.editedData,
+                picture,
+            },
+            prefilledData: {
+                ...prev.prefilledData,
+                picture,
+            },
+            errors: {
+                ...prev.errors,
+                picture: "",
+            },
+        }))
+    }, [])
 
     const updateNewField = useCallback(
         (field: keyof NewFields, value: string) => {
@@ -334,6 +353,7 @@ export function useAccountCompletion() {
                     password: state.newFields.password,
                     phone: state.newFields.phone,
                     birthDate: state.newFields.birthDate,
+                    picture: state.editedData.picture,
                 }),
             })
 
@@ -395,6 +415,7 @@ export function useAccountCompletion() {
             editedData: {
                 email: data.email,
                 name: data.name,
+                picture: data.picture,
             },
         }))
     }, [])
@@ -446,6 +467,7 @@ export function useAccountCompletion() {
         submitForm,
         resetForm,
         setPrefilledData,
+        setPicture,
         loadRegistrationData,
     }
 }

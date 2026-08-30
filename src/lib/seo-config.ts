@@ -235,9 +235,13 @@ export function generateSeoConfig(options: SeoConfigOptions) {
     } = options
 
     const routeKey = canonicalKey || getRouteKeyFromPath(path)
-    const activeSlug = routeKey ? getLocalizedUrl(routeKey, locale) : path.replace(/^\/|\/$/g, "")
+    const activeSlug = routeKey
+        ? getLocalizedUrl(routeKey, locale)
+        : path.replace(/^\/|\/$/g, "")
     const fullPathSegment = activeSlug ? `/${activeSlug}/` : "/"
-    const fullUrl = `${SITE_URL}/${locale}${fullPathSegment}`.replace(/\/+/g, "/").replace("https:/", "https://")
+    const fullUrl = `${SITE_URL}/${locale}${fullPathSegment}`
+        .replace(/\/+/g, "/")
+        .replace("https:/", "https://")
 
     const titleByLocale: Record<Locale, string> = {
         en: "Gabriel Toth Gonçalves - Full Stack Developer & Data Scientist",
@@ -466,9 +470,13 @@ export function generateSeoConfig(options: SeoConfigOptions) {
         ],
         languageAlternates: [
             ...locales.map(loc => {
-                const locSlug = routeKey ? getLocalizedUrl(routeKey, loc) : path.replace(/^\/|\/$/g, "")
+                const locSlug = routeKey
+                    ? getLocalizedUrl(routeKey, loc)
+                    : path.replace(/^\/|\/$/g, "")
                 const locPath = locSlug ? `/${locSlug}/` : "/"
-                const hrefUrl = `${SITE_URL}/${loc}${locPath}`.replace(/\/+/g, "/").replace("https:/", "https://")
+                const hrefUrl = `${SITE_URL}/${loc}${locPath}`
+                    .replace(/\/+/g, "/")
+                    .replace("https:/", "https://")
                 return {
                     hrefLang: loc,
                     href: hrefUrl,
@@ -476,7 +484,9 @@ export function generateSeoConfig(options: SeoConfigOptions) {
             }),
             {
                 hrefLang: "x-default",
-                href: `${SITE_URL}/pt-BR${routeKey ? (getLocalizedUrl(routeKey, "pt-BR") ? `/${getLocalizedUrl(routeKey, "pt-BR")}/` : "/") : (path.replace(/^\/|\/$/g, "") ? `/${path.replace(/^\/|\/$/g, "")}/` : "/")}`.replace(/\/+/g, "/").replace("https:/", "https://"),
+                href: `${SITE_URL}/pt-BR${routeKey ? (getLocalizedUrl(routeKey, "pt-BR") ? `/${getLocalizedUrl(routeKey, "pt-BR")}/` : "/") : path.replace(/^\/|\/$/g, "") ? `/${path.replace(/^\/|\/$/g, "")}/` : "/"}`
+                    .replace(/\/+/g, "/")
+                    .replace("https:/", "https://"),
             },
         ],
         breadcrumbs,

@@ -9,7 +9,7 @@
 
 "use client"
 
-import { useTranslations } from "next-intl"
+import { useLocale, useTranslations } from "next-intl"
 import DataSummary from "../components/data-summary"
 
 interface Step3VerificationProps {
@@ -45,6 +45,7 @@ export default function Step3Verification({
     isLoading = false,
 }: Step3VerificationProps) {
     const t = useTranslations("auth")
+    const locale = useLocale()
 
     return (
         <div className="space-y-6">
@@ -97,6 +98,22 @@ export default function Step3Verification({
                 <p className="text-sm text-primary dark:text-primary">
                     {t("completeAccount.step3.info")}
                 </p>
+            </div>
+
+            {/* Optional 2FA suggestion */}
+            <div className="p-4 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg">
+                <h3 className="text-sm font-semibold text-foreground dark:text-foreground mb-1">
+                    {t("completeAccount.step3.twoFactor.title")}
+                </h3>
+                <p className="text-sm text-muted-foreground dark:text-muted-foreground mb-3">
+                    {t("completeAccount.step3.twoFactor.description")}
+                </p>
+                <a
+                    href={`/${locale}/dashboard/settings`}
+                    className="text-xs font-medium text-primary hover:text-primary/80"
+                >
+                    {t("completeAccount.step3.twoFactor.action")}
+                </a>
             </div>
 
             {/* Error Message */}

@@ -1,6 +1,9 @@
 "use client"
 
 import { DashboardLayout } from "@/components/dashboard/DashboardLayout"
+import { TutorialOverlay } from "@/components/tutorial/tutorial-overlay"
+import { TutorialProvider } from "@/components/tutorial/tutorial-provider"
+import { useOnboardingOnDashboard } from "@/hooks/use-onboarding-on-dashboard"
 import { useTranslations } from "next-intl"
 import { useParams, usePathname, useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
@@ -25,8 +28,10 @@ export default function DashboardClientLayout({
     const locale = params.locale as string
     const router = useRouter()
     const pathname = usePathname()
-    const [activeTab, setActiveTab] = useState<DashboardTab>("publish")
+    const [activeTab, setActiveTab] = useState<DashboardTab>("discover")
     const [isLoading, setIsLoading] = useState(true)
+
+    useOnboardingOnDashboard()
 
     useEffect(() => {
         if (
@@ -71,8 +76,14 @@ export default function DashboardClientLayout({
     }
 
     return (
-        <DashboardLayout activeTab={activeTab} onTabChange={handleTabChange}>
-            {children}
-        </DashboardLayout>
+        <TutorialProvider>
+            <DashboardLayout
+                activeTab={activeTab}
+                onTabChange={handleTabChange}
+            >
+                {children}
+            </DashboardLayout>
+            <TutorialOverlay />
+        </TutorialProvider>
     )
 }

@@ -309,16 +309,20 @@ describe("Account Completion - Property-Based Tests", () => {
                         const dateStr = birthDate.toISOString().split("T")[0]
                         const result = validateBirthDate(dateStr)
 
-                        // Calculate expected age
+                        // Compute the expected age from the exact date string
+                        // the validator parses (new Date("YYYY-MM-DD")): the
+                        // raw generated Date carries a time-of-day component,
+                        // so comparing local calendar fields against it drifts
+                        // by a day across timezone boundaries.
+                        const parsed = new Date(dateStr)
                         const today = new Date()
-                        let age = today.getFullYear() - birthDate.getFullYear()
-                        const monthDiff =
-                            today.getMonth() - birthDate.getMonth()
+                        let age = today.getFullYear() - parsed.getFullYear()
+                        const monthDiff = today.getMonth() - parsed.getMonth()
 
                         if (
                             monthDiff < 0 ||
                             (monthDiff === 0 &&
-                                today.getDate() < birthDate.getDate())
+                                today.getDate() < parsed.getDate())
                         ) {
                             age--
                         }
@@ -340,9 +344,14 @@ describe("Account Completion - Property-Based Tests", () => {
         it("should reject all future dates", () => {
             fc.assert(
                 fc.property(fc.integer({ min: 1, max: 100 }), daysInFuture => {
-                    const futureDate = new Date()
-                    futureDate.setDate(futureDate.getDate() + daysInFuture)
-                    const dateStr = futureDate.toISOString().split("T")[0]
+                    // Build the offset date in UTC so the truncated date string
+                    // is guaranteed to be ahead of the current date regardless
+                    // of the local timezone offset.
+                    const dateStr = new Date(
+                        Date.now() + daysInFuture * 86400000
+                    )
+                        .toISOString()
+                        .split("T")[0]
 
                     const result = validateBirthDate(dateStr)
                     expect(result.valid).toBe(false)
@@ -357,9 +366,13 @@ describe("Account Completion - Property-Based Tests", () => {
         it("should reject dates with users under 13 years old", () => {
             fc.assert(
                 fc.property(fc.integer({ min: 0, max: 12 }), yearsAgo => {
+                    // Use UTC calendar arithmetic with a 2-day margin so the
+                    // truncated date can never shift across the 13th birthday.
                     const birthDate = new Date()
-                    birthDate.setFullYear(birthDate.getFullYear() - yearsAgo)
-                    birthDate.setDate(birthDate.getDate() + 1) // Ensure not yet 13
+                    birthDate.setUTCFullYear(
+                        birthDate.getUTCFullYear() - yearsAgo
+                    )
+                    birthDate.setUTCDate(birthDate.getUTCDate() + 2)
                     const dateStr = birthDate.toISOString().split("T")[0]
 
                     const result = validateBirthDate(dateStr)
@@ -372,8 +385,13 @@ describe("Account Completion - Property-Based Tests", () => {
         it("should accept dates with users 13 years or older", () => {
             fc.assert(
                 fc.property(fc.integer({ min: 13, max: 120 }), yearsAgo => {
+                    // Use UTC calendar arithmetic with a 2-day margin so the
+                    // truncated date can never shift before the 13th birthday.
                     const birthDate = new Date()
-                    birthDate.setFullYear(birthDate.getFullYear() - yearsAgo)
+                    birthDate.setUTCFullYear(
+                        birthDate.getUTCFullYear() - yearsAgo
+                    )
+                    birthDate.setUTCDate(birthDate.getUTCDate() - 2)
                     const dateStr = birthDate.toISOString().split("T")[0]
 
                     const result = validateBirthDate(dateStr)

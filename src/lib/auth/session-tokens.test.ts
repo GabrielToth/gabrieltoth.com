@@ -558,7 +558,9 @@ describe("Session Token Management", () => {
             expect(result).toBeDefined()
             expect(result).toHaveProperty("token")
             expect(result).toHaveProperty("expiresAt")
-            expect(result!.expiresAt.toISOString()).toBe(newExpiration.toISOString())
+            expect(result!.expiresAt.toISOString()).toBe(
+                newExpiration.toISOString()
+            )
             vi.useRealTimers()
         })
 

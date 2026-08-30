@@ -17,17 +17,67 @@ export interface SitemapPage {
 export function getAllPages(): SitemapPage[] {
     return [
         { key: "", path: "", priority: 1.0, changefreq: "weekly" }, // Home
-        { key: "about-me", path: "/about-me", priority: 0.8, changefreq: "monthly" },
-        { key: "services", path: "/services", priority: 0.8, changefreq: "monthly" },
-        { key: "channel-management", path: "/channel-management", priority: 0.8, changefreq: "monthly" },
-        { key: "editors", path: "/editors", priority: 0.8, changefreq: "monthly" },
-        { key: "pc-optimization", path: "/pc-optimization", priority: 0.8, changefreq: "monthly" },
-        { key: "pc-optimization/terms", path: "/pc-optimization/terms", priority: 0.3, changefreq: "yearly" },
-        { key: "amazon-affiliate", path: "/amazon-affiliate", priority: 0.6, changefreq: "monthly" },
-        { key: "minecraft", path: "/minecraft", priority: 0.7, changefreq: "weekly" },
+        {
+            key: "about-me",
+            path: "/about-me",
+            priority: 0.8,
+            changefreq: "monthly",
+        },
+        {
+            key: "services",
+            path: "/services",
+            priority: 0.8,
+            changefreq: "monthly",
+        },
+        {
+            key: "channel-management",
+            path: "/channel-management",
+            priority: 0.8,
+            changefreq: "monthly",
+        },
+        {
+            key: "editors",
+            path: "/editors",
+            priority: 0.8,
+            changefreq: "monthly",
+        },
+        {
+            key: "pc-optimization",
+            path: "/pc-optimization",
+            priority: 0.8,
+            changefreq: "monthly",
+        },
+        {
+            key: "pc-optimization/terms",
+            path: "/pc-optimization/terms",
+            priority: 0.3,
+            changefreq: "yearly",
+        },
+        {
+            key: "amazon-affiliate",
+            path: "/amazon-affiliate",
+            priority: 0.6,
+            changefreq: "monthly",
+        },
+        {
+            key: "minecraft",
+            path: "/minecraft",
+            priority: 0.7,
+            changefreq: "weekly",
+        },
         { key: "blog", path: "/blog", priority: 0.7, changefreq: "weekly" },
-        { key: "privacy-policy", path: "/privacy-policy", priority: 0.3, changefreq: "yearly" },
-        { key: "terms-of-service", path: "/terms-of-service", priority: 0.3, changefreq: "yearly" },
+        {
+            key: "privacy-policy",
+            path: "/privacy-policy",
+            priority: 0.3,
+            changefreq: "yearly",
+        },
+        {
+            key: "terms-of-service",
+            path: "/terms-of-service",
+            priority: 0.3,
+            changefreq: "yearly",
+        },
     ]
 }
 
@@ -39,17 +89,23 @@ export function generateLocaleSitemap(locale: Locale): string {
         .map(({ key, path, priority, changefreq }) => {
             const routeKey = key || getRouteKeyFromPath(path)
             const getUrlForLocale = (targetLoc: Locale) => {
-                const slug = routeKey ? getLocalizedUrl(routeKey, targetLoc) : path.replace(/^\/|\/$/g, "")
+                const slug = routeKey
+                    ? getLocalizedUrl(routeKey, targetLoc)
+                    : path.replace(/^\/|\/$/g, "")
                 const pathSegment = slug ? `/${slug}/` : "/"
-                return `${SITE_URL}/${targetLoc}${pathSegment}`.replace(/\/+/g, "/").replace("https:/", "https://")
+                return `${SITE_URL}/${targetLoc}${pathSegment}`
+                    .replace(/\/+/g, "/")
+                    .replace("https:/", "https://")
             }
 
             const locUrl = getUrlForLocale(locale)
             const ptUrl = getUrlForLocale("pt-BR")
 
-            const alternateLinks = locales.map(targetLoc => {
-                return `        <xhtml:link rel="alternate" hreflang="${targetLoc}" href="${getUrlForLocale(targetLoc)}" />`
-            }).join("\n")
+            const alternateLinks = locales
+                .map(targetLoc => {
+                    return `        <xhtml:link rel="alternate" hreflang="${targetLoc}" href="${getUrlForLocale(targetLoc)}" />`
+                })
+                .join("\n")
 
             return `
     <url>

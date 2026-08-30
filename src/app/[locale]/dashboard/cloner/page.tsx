@@ -2,6 +2,7 @@
 
 import { useTranslations } from "next-intl"
 import { useCallback, useEffect, useState } from "react"
+import { TutorialLauncher } from "@/components/tutorial/tutorial-launcher"
 import {
     Search,
     Film,
@@ -271,14 +272,18 @@ export default function ClonerPage() {
 
     return (
         <div className="space-y-6">
-            <div>
-                <h1 className="text-2xl font-bold tracking-tight text-foreground">
-                    YouTube Cloner & Auto-Publisher
-                </h1>
-                <p className="text-sm text-muted-foreground">
-                    Clone canais completos do YouTube com download automático,
-                    divisão por categorias e agendamento de postagens.
-                </p>
+            <div className="flex items-start justify-between">
+                <div>
+                    <h1 className="text-2xl font-bold tracking-tight text-foreground">
+                        YouTube Cloner & Auto-Publisher
+                    </h1>
+                    <p className="text-sm text-muted-foreground">
+                        Clone canais completos do YouTube com download
+                        automático, divisão por categorias e agendamento de
+                        postagens.
+                    </p>
+                </div>
+                <TutorialLauncher category="cloner" />
             </div>
 
             {errorMsg && (

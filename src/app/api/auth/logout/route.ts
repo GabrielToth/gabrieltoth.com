@@ -87,7 +87,7 @@ export async function POST(request: NextRequest) {
 
         // Get user email for logging
         const user = await queryOne<{ google_email: string; email: string }>(
-            "SELECT google_email, email FROM users WHERE id = $1",
+            "SELECT email AS google_email, email FROM users WHERE id = $1",
             [session.user_id]
         )
 

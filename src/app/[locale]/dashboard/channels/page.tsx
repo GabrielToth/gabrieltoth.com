@@ -16,6 +16,7 @@ import { logger } from "@/lib/logger"
 import { useTranslations } from "next-intl"
 import { useParams } from "next/navigation"
 import React, { useCallback, useEffect, useState } from "react"
+import { TutorialLauncher } from "@/components/tutorial/tutorial-launcher"
 
 interface ConnectedChannel {
     id: string
@@ -182,13 +183,16 @@ export default function ChannelsPage() {
 
     return (
         <div className="space-y-6">
-            <div>
-                <h1 className="text-2xl font-bold tracking-tight">
-                    {t("channels.title")}
-                </h1>
-                <p className="text-sm text-muted-foreground">
-                    {t("channels.subtitle")}
-                </p>
+            <div className="flex items-start justify-between">
+                <div>
+                    <h1 className="text-2xl font-bold tracking-tight">
+                        {t("channels.title")}
+                    </h1>
+                    <p className="text-sm text-muted-foreground">
+                        {t("channels.subtitle")}
+                    </p>
+                </div>
+                <TutorialLauncher category="channels" />
             </div>
 
             {error && (

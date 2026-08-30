@@ -390,7 +390,16 @@
         "languageEnglish": "English",
         "languageFrench": "French",
         "languagePortuguese": "Portuguese",
-        "languageSpanish": "Spanish"
+        "languageSpanish": "Spanish",
+        "accountAutoDelete": "Suppression automatique du compte",
+        "accountAutoDeleteDescription": "Supprime automatiquement votre compte après une période d'inactivité.",
+        "accountAutoDeleteTitle": "Activer la suppression automatique",
+        "accountAutoDeleteHint": "Si activé, votre compte sera supprimé définitivement après la période choisie sans accès. Par défaut : indéfini (jamais supprimé).",
+        "accountAutoDeletePeriod": "Supprimer après",
+        "period7d": "7 jours",
+        "period30d": "30 jours",
+        "period90d": "3 mois",
+        "period1y": "1 an"
     },
     "live": {
         "title": "Title",
@@ -477,5 +486,286 @@
         "disconnectError": "Échec de la déconnexion du canal. Veuillez réessayer.",
         "tiktokSingleAccountNotice": "Un compte TikTok est déjà connecté ({accountName}). Se reconnecter le remplacera.",
         "confirmDisconnect": "Déconnecter {accountName} ({platform}) ? Cela supprimera son accès de votre compte."
+    },
+    "tutorials": {
+        "ariaOverlay": "Superposition de guide interactif",
+        "tutorialLabel": "Tutoriel",
+        "onboardingLabel": "Bienvenue",
+        "stepXofY": "Étape {current} sur {total}",
+        "skip": "Passer",
+        "back": "Retour",
+        "next": "Suivant",
+        "finish": "Terminer",
+        "close": "Fermer",
+        "startTutorial": "Tutoriel",
+        "openDocs": "Docs",
+        "titles": {
+            "onboarding": "Bienvenue",
+            "publish": "Publier",
+            "channels": "Chaînes",
+            "live": "En direct",
+            "insights": "Analytiques",
+            "discover": "Découvrir",
+            "repost": "Republier",
+            "cloner": "Cloner",
+            "settings": "Paramètres"
+        },
+        "stepTitles": {
+            "welcome.title": "Bienvenue !",
+            "welcome.description": "Ce guide vous accompagne pour votre première publication.",
+            "composer.title": "Rédigez votre publication",
+            "composer.description": "Écrivez votre message ici.",
+            "network.title": "Choisir les plateformes",
+            "network.description": "Sélectionnez les plateformes connectées qui recevront votre publication.",
+            "content.title": "Type de contenu",
+            "content.description": "Choisissez publication ou vidéo.",
+            "submit.title": "Publier",
+            "submit.description": "Envoyez votre contenu à toutes les plateformes sélectionnées.",
+            "publishComposer.title": "Rédigez votre publication",
+            "publishComposer.description": "Écrivez le contenu que vous souhaitez partager.",
+            "publishNetwork.title": "Sélectionner les plateformes",
+            "publishNetwork.description": "Cochez chaque plateforme connectée.",
+            "channelsList.title": "Vos chaînes",
+            "channelsList.description": "Toutes vos plateformes connectées.",
+            "channelsConnect.title": "Connecter une chaîne",
+            "channelsConnect.description": "Liez une nouvelle plateforme sociale.",
+            "liveHealth.title": "Santé du stream",
+            "liveHealth.description": "Surveillez le statut de votre direct.",
+            "liveChat.title": "Chat en direct",
+            "liveChat.description": "Lisez et modérez le chat de toutes les plateformes.",
+            "insightsMetrics.title": "Analytiques",
+            "insightsMetrics.description": "Portée, engagement et croissance.",
+            "insightsChannels.title": "Comparer les chaînes",
+            "insightsChannels.description": "Comparez les performances entre plateformes.",
+            "discoverImport.title": "Importer des créateurs",
+            "discoverImport.description": "Importez une liste JSON de créateurs.",
+            "discoverList.title": "Créateurs découverts",
+            "discoverList.description": "Parcourez les créateurs du réseau.",
+            "repostSchedule.title": "Planifier les reposts",
+            "repostSchedule.description": "Republiez automatiquement selon un calendrier.",
+            "clonerImport.title": "Cloner une chaîne",
+            "clonerImport.description": "Importez une configuration de chaîne.",
+            "settingsProfile.title": "Paramètres du profil",
+            "settingsProfile.description": "Gérez vos informations de profil.",
+            "settingsSecurity.title": "Sécurité",
+            "settingsSecurity.description": "Mot de passe, 2FA et sécurité du compte."
+        }
+    },
+    "docs": {
+        "title": "Documentation",
+        "pickCategory": "Choisissez une catégorie pour lire sa documentation détaillée.",
+        "allCategories": "Toutes les catégories",
+        "technicalTitle": "Vue technique",
+        "dataTitle": "Données collectées",
+        "examplesTitle": "Exemples d'utilisation",
+        "companyLabel": "Entreprise",
+        "individualLabel": "Individuel",
+        "discover": {
+            "overview": "Découvrir — flux de travail courants",
+            "technical": "Découvrir. Pour les agents IA et les utilisateurs techniques : cette page décrit précisément et de manière lisible par machine l'intention, les entrées et les sorties, afin de reproduire le modèle de données sans utiliser notre cloud.",
+            "data": "Découvrir. Profil utilisateur, jetons des plateformes connectées, métadonnées de contenu publié (plateforme, statut, horodatages).",
+            "sections": {
+                "two": "Découvrir — Flux de travail courants",
+                "twoBody": "Flux de travail courants pas à pas para/en/für/pour Découvrir.",
+                "three": "Format des données",
+                "threeBody": "Le format exact des données utilisées, y compris un payload JSON minimal à copier et adapter. (Découvrir)."
+            },
+            "examples": {
+                "individual": "Exemple — créateur individuel",
+                "individualBody": "(Découvrir) Une personne qui utilise cette fonctionnalité pour gérer ses propres chaînes.",
+                "individualStep1": "Connectez vos comptes personnels",
+                "individualStep2": "Utilisez la fonctionnalité avec votre propre contenu",
+                "individualStep3": "Consultez les résultats",
+                "company": "Exemple — entreprise / équipe",
+                "companyBody": "(Découvrir) Une entreprise avec plusieurs personnes travaillant en groupes qui utilise cette fonctionnalité.",
+                "companyStep1": "Créez un groupe d'équipe",
+                "companyStep2": "Connectez les comptes de chaque membre",
+                "companyStep3": "Collaborez sur le contenu avec des rôles"
+            }
+        },
+        "publish": {
+            "overview": "Publier — flux de travail courants",
+            "technical": "Publier. Pour les agents IA et les utilisateurs techniques : cette page décrit précisément et de manière lisible par machine l'intention, les entrées et les sorties, afin de reproduire le modèle de données sans utiliser notre cloud.",
+            "data": "Publier. Profil utilisateur, jetons des plateformes connectées, métadonnées de contenu publié (plateforme, statut, horodatages).",
+            "sections": {
+                "two": "Publier — Flux de travail courants",
+                "twoBody": "Flux de travail courants pas à pas para/en/für/pour Publier.",
+                "three": "Format des données",
+                "threeBody": "Le format exact des données utilisées, y compris un payload JSON minimal à copier et adapter. (Publier)."
+            },
+            "examples": {
+                "individual": "Exemple — créateur individuel",
+                "individualBody": "(Publier) Une personne qui utilise cette fonctionnalité pour gérer ses propres chaînes.",
+                "individualStep1": "Connectez vos comptes personnels",
+                "individualStep2": "Utilisez la fonctionnalité avec votre propre contenu",
+                "individualStep3": "Consultez les résultats",
+                "company": "Exemple — entreprise / équipe",
+                "companyBody": "(Publier) Une entreprise avec plusieurs personnes travaillant en groupes qui utilise cette fonctionnalité.",
+                "companyStep1": "Créez un groupe d'équipe",
+                "companyStep2": "Connectez les comptes de chaque membre",
+                "companyStep3": "Collaborez sur le contenu avec des rôles"
+            }
+        },
+        "channels": {
+            "overview": "Chaînes — flux de travail courants",
+            "technical": "Chaînes. Pour les agents IA et les utilisateurs techniques : cette page décrit précisément et de manière lisible par machine l'intention, les entrées et les sorties, afin de reproduire le modèle de données sans utiliser notre cloud.",
+            "data": "Chaînes. Profil utilisateur, jetons des plateformes connectées, métadonnées de contenu publié (plateforme, statut, horodatages).",
+            "sections": {
+                "two": "Chaînes — Flux de travail courants",
+                "twoBody": "Flux de travail courants pas à pas para/en/für/pour Chaînes.",
+                "three": "Format des données",
+                "threeBody": "Le format exact des données utilisées, y compris un payload JSON minimal à copier et adapter. (Chaînes)."
+            },
+            "examples": {
+                "individual": "Exemple — créateur individuel",
+                "individualBody": "(Chaînes) Une personne qui utilise cette fonctionnalité pour gérer ses propres chaînes.",
+                "individualStep1": "Connectez vos comptes personnels",
+                "individualStep2": "Utilisez la fonctionnalité avec votre propre contenu",
+                "individualStep3": "Consultez les résultats",
+                "company": "Exemple — entreprise / équipe",
+                "companyBody": "(Chaînes) Une entreprise avec plusieurs personnes travaillant en groupes qui utilise cette fonctionnalité.",
+                "companyStep1": "Créez un groupe d'équipe",
+                "companyStep2": "Connectez les comptes de chaque membre",
+                "companyStep3": "Collaborez sur le contenu avec des rôles"
+            }
+        },
+        "live": {
+            "overview": "En direct — flux de travail courants",
+            "technical": "En direct. Pour les agents IA et les utilisateurs techniques : cette page décrit précisément et de manière lisible par machine l'intention, les entrées et les sorties, afin de reproduire le modèle de données sans utiliser notre cloud.",
+            "data": "En direct. Profil utilisateur, jetons des plateformes connectées, métadonnées de contenu publié (plateforme, statut, horodatages).",
+            "sections": {
+                "two": "En direct — Flux de travail courants",
+                "twoBody": "Flux de travail courants pas à pas para/en/für/pour En direct.",
+                "three": "Format des données",
+                "threeBody": "Le format exact des données utilisées, y compris un payload JSON minimal à copier et adapter. (En direct)."
+            },
+            "examples": {
+                "individual": "Exemple — créateur individuel",
+                "individualBody": "(En direct) Une personne qui utilise cette fonctionnalité pour gérer ses propres chaînes.",
+                "individualStep1": "Connectez vos comptes personnels",
+                "individualStep2": "Utilisez la fonctionnalité avec votre propre contenu",
+                "individualStep3": "Consultez les résultats",
+                "company": "Exemple — entreprise / équipe",
+                "companyBody": "(En direct) Une entreprise avec plusieurs personnes travaillant en groupes qui utilise cette fonctionnalité.",
+                "companyStep1": "Créez un groupe d'équipe",
+                "companyStep2": "Connectez les comptes de chaque membre",
+                "companyStep3": "Collaborez sur le contenu avec des rôles"
+            }
+        },
+        "insights": {
+            "overview": "Analytiques — flux de travail courants",
+            "technical": "Analytiques. Pour les agents IA et les utilisateurs techniques : cette page décrit précisément et de manière lisible par machine l'intention, les entrées et les sorties, afin de reproduire le modèle de données sans utiliser notre cloud.",
+            "data": "Analytiques. Profil utilisateur, jetons des plateformes connectées, métadonnées de contenu publié (plateforme, statut, horodatages).",
+            "sections": {
+                "two": "Analytiques — Flux de travail courants",
+                "twoBody": "Flux de travail courants pas à pas para/en/für/pour Analytiques.",
+                "three": "Format des données",
+                "threeBody": "Le format exact des données utilisées, y compris un payload JSON minimal à copier et adapter. (Analytiques)."
+            },
+            "examples": {
+                "individual": "Exemple — créateur individuel",
+                "individualBody": "(Analytiques) Une personne qui utilise cette fonctionnalité pour gérer ses propres chaînes.",
+                "individualStep1": "Connectez vos comptes personnels",
+                "individualStep2": "Utilisez la fonctionnalité avec votre propre contenu",
+                "individualStep3": "Consultez les résultats",
+                "company": "Exemple — entreprise / équipe",
+                "companyBody": "(Analytiques) Une entreprise avec plusieurs personnes travaillant en groupes qui utilise cette fonctionnalité.",
+                "companyStep1": "Créez un groupe d'équipe",
+                "companyStep2": "Connectez les comptes de chaque membre",
+                "companyStep3": "Collaborez sur le contenu avec des rôles"
+            }
+        },
+        "repost": {
+            "overview": "Republier — flux de travail courants",
+            "technical": "Republier. Pour les agents IA et les utilisateurs techniques : cette page décrit précisément et de manière lisible par machine l'intention, les entrées et les sorties, afin de reproduire le modèle de données sans utiliser notre cloud.",
+            "data": "Republier. Profil utilisateur, jetons des plateformes connectées, métadonnées de contenu publié (plateforme, statut, horodatages).",
+            "sections": {
+                "two": "Republier — Flux de travail courants",
+                "twoBody": "Flux de travail courants pas à pas para/en/für/pour Republier.",
+                "three": "Format des données",
+                "threeBody": "Le format exact des données utilisées, y compris un payload JSON minimal à copier et adapter. (Republier)."
+            },
+            "examples": {
+                "individual": "Exemple — créateur individuel",
+                "individualBody": "(Republier) Une personne qui utilise cette fonctionnalité pour gérer ses propres chaînes.",
+                "individualStep1": "Connectez vos comptes personnels",
+                "individualStep2": "Utilisez la fonctionnalité avec votre propre contenu",
+                "individualStep3": "Consultez les résultats",
+                "company": "Exemple — entreprise / équipe",
+                "companyBody": "(Republier) Une entreprise avec plusieurs personnes travaillant en groupes qui utilise cette fonctionnalité.",
+                "companyStep1": "Créez un groupe d'équipe",
+                "companyStep2": "Connectez les comptes de chaque membre",
+                "companyStep3": "Collaborez sur le contenu avec des rôles"
+            }
+        },
+        "cloner": {
+            "overview": "Cloner — flux de travail courants",
+            "technical": "Cloner. Pour les agents IA et les utilisateurs techniques : cette page décrit précisément et de manière lisible par machine l'intention, les entrées et les sorties, afin de reproduire le modèle de données sans utiliser notre cloud.",
+            "data": "Cloner. Profil utilisateur, jetons des plateformes connectées, métadonnées de contenu publié (plateforme, statut, horodatages).",
+            "sections": {
+                "two": "Cloner — Flux de travail courants",
+                "twoBody": "Flux de travail courants pas à pas para/en/für/pour Cloner.",
+                "three": "Format des données",
+                "threeBody": "Le format exact des données utilisées, y compris un payload JSON minimal à copier et adapter. (Cloner)."
+            },
+            "examples": {
+                "individual": "Exemple — créateur individuel",
+                "individualBody": "(Cloner) Une personne qui utilise cette fonctionnalité pour gérer ses propres chaînes.",
+                "individualStep1": "Connectez vos comptes personnels",
+                "individualStep2": "Utilisez la fonctionnalité avec votre propre contenu",
+                "individualStep3": "Consultez les résultats",
+                "company": "Exemple — entreprise / équipe",
+                "companyBody": "(Cloner) Une entreprise avec plusieurs personnes travaillant en groupes qui utilise cette fonctionnalité.",
+                "companyStep1": "Créez un groupe d'équipe",
+                "companyStep2": "Connectez les comptes de chaque membre",
+                "companyStep3": "Collaborez sur le contenu avec des rôles"
+            }
+        },
+        "settings": {
+            "overview": "Paramètres — flux de travail courants",
+            "technical": "Paramètres. Pour les agents IA et les utilisateurs techniques : cette page décrit précisément et de manière lisible par machine l'intention, les entrées et les sorties, afin de reproduire le modèle de données sans utiliser notre cloud.",
+            "data": "Paramètres. Profil utilisateur, jetons des plateformes connectées, métadonnées de contenu publié (plateforme, statut, horodatages).",
+            "sections": {
+                "two": "Paramètres — Flux de travail courants",
+                "twoBody": "Flux de travail courants pas à pas para/en/für/pour Paramètres.",
+                "three": "Format des données",
+                "threeBody": "Le format exact des données utilisées, y compris un payload JSON minimal à copier et adapter. (Paramètres)."
+            },
+            "examples": {
+                "individual": "Exemple — créateur individuel",
+                "individualBody": "(Paramètres) Une personne qui utilise cette fonctionnalité pour gérer ses propres chaînes.",
+                "individualStep1": "Connectez vos comptes personnels",
+                "individualStep2": "Utilisez la fonctionnalité avec votre propre contenu",
+                "individualStep3": "Consultez les résultats",
+                "company": "Exemple — entreprise / équipe",
+                "companyBody": "(Paramètres) Une entreprise avec plusieurs personnes travaillant en groupes qui utilise cette fonctionnalité.",
+                "companyStep1": "Créez un groupe d'équipe",
+                "companyStep2": "Connectez les comptes de chaque membre",
+                "companyStep3": "Collaborez sur le contenu avec des rôles"
+            }
+        }
+    },
+    "groupNames": {
+        "systemAdmin": "Administrateur Système",
+        "paidTestGroup": "Groupe de Test Payant",
+        "freeTestGroup": "Groupe de Test Gratuit",
+        "editorGroup": "Groupe d'Éditeurs",
+        "contributorGroup": "Groupe de Contributeurs",
+        "moderatorGroup": "Groupe de Modérateurs",
+        "socialTeam": "Équipe Social",
+        "videoEditors": "Éditeurs Vidéo",
+        "shoutoutNetwork": "Réseau Shoutout",
+        "partnerNetwork": "Réseau de Partenaires",
+        "contentCreators": "Créateurs de Contenu",
+        "affiliateGroup": "Groupe d'Affiliés",
+        "betaTesters": "Testeurs Bêta",
+        "vipMembers": "Membres VIP",
+        "supportTeam": "Équipe de Support",
+        "translationTeam": "Équipe de Traduction",
+        "brazilCommunity": "Communauté Brésil",
+        "spanishCommunity": "Communauté Espagnole",
+        "germanCommunity": "Communauté Allemande",
+        "frenchCommunity": "Communauté Française",
+        "portugueseCommunity": "Communauté Portugaise"
     }
 }

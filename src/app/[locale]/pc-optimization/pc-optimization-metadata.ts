@@ -92,7 +92,10 @@ export async function generateMetadata({
         alternates: {
             canonical: seoConfig.canonical,
             languages: Object.fromEntries(
-                (seoConfig.languageAlternates || []).map(alt => [alt.hrefLang, alt.href])
+                (seoConfig.languageAlternates || []).map(alt => [
+                    alt.hrefLang,
+                    alt.href,
+                ])
             ),
         },
     }

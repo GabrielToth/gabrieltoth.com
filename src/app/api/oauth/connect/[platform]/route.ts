@@ -3,7 +3,10 @@
  * Supports GET and POST /api/oauth/connect/:platform?locale=...
  */
 
-import { GET as authorizeGET, POST as authorizePOST } from "../../authorize/[platform]/route"
+import {
+    GET as authorizeGET,
+    POST as authorizePOST,
+} from "../../authorize/[platform]/route"
 import { NextRequest, NextResponse } from "next/server"
 
 export async function GET(

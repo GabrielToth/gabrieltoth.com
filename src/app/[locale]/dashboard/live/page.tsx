@@ -10,6 +10,7 @@ import { ChatModerationPanel } from "@/components/dashboard/live/chat-moderation
 import { StreamHealthHeader } from "@/components/dashboard/live/stream-health-header"
 import { useLocale, useTranslations } from "next-intl"
 import { useEffect, useState } from "react"
+import { TutorialLauncher } from "@/components/tutorial/tutorial-launcher"
 
 interface LivePlatform {
     platform: string
@@ -62,10 +63,15 @@ export default function LiveDashboardPage() {
         []
     )
     const [showScheduler, setShowScheduler] = useState(false)
-    const [executionMode, setExecutionMode] = useState<"cloud" | "local">("cloud")
+    const [executionMode, setExecutionMode] = useState<"cloud" | "local">(
+        "cloud"
+    )
 
     useEffect(() => {
-        const stored = typeof window !== "undefined" ? localStorage.getItem("chat_execution_mode") : null
+        const stored =
+            typeof window !== "undefined"
+                ? localStorage.getItem("chat_execution_mode")
+                : null
         if (stored === "local" || stored === "cloud") {
             setExecutionMode(stored)
         }
@@ -183,6 +189,7 @@ export default function LiveDashboardPage() {
                     <StreamHealthHeader />
                 </div>
                 <div className="flex items-center gap-2">
+                    <TutorialLauncher category="live" />
                     <button
                         onClick={() => setShowScheduler(!showScheduler)}
                         className={`rounded-md px-4 py-2 text-sm font-medium transition-colors ${
@@ -282,7 +289,10 @@ export default function LiveDashboardPage() {
                         gameName={p.gameName}
                         startedAt={p.startedAt}
                         executionMode={executionMode}
-                        localOnly={p.platform === "facebook" || p.platform === "instagram"}
+                        localOnly={
+                            p.platform === "facebook" ||
+                            p.platform === "instagram"
+                        }
                     />
                 ))}
             </div>

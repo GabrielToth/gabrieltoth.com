@@ -19,7 +19,11 @@ import {
 } from "@/lib/auth/error-handling"
 import { createSession } from "@/lib/auth/session"
 import { validateTempToken } from "@/lib/auth/temp-token"
-import { getUserByEmail, updateUserAccountCompletion } from "@/lib/auth/user"
+import {
+    getUserByEmail,
+    getUserByOAuthId,
+    updateUserAccountCompletion,
+} from "@/lib/auth/user"
 import { logger } from "@/lib/logger"
 import { buildClientKey, rateLimitByKey } from "@/lib/rate-limit"
 import { getAdminClient } from "@/lib/supabase/server"
@@ -38,6 +42,7 @@ interface CompleteAccountRequest {
     password: string
     phone: string
     birthDate: string
+    picture?: string | null
 }
 
 /**
@@ -217,9 +222,9 @@ export async function POST(
                             name: body.name,
                             phone: body.phone,
                             birth_date: body.birthDate || null,
+                            picture: body.picture || null,
                             email_verified: true,
-                            auth_method: "email",
-                            account_status: "active",
+                            account_completion_status: "completed",
                             account_completed_at: new Date().toISOString(),
                         })
                         .eq("id", existingUser.id)
@@ -268,18 +273,38 @@ export async function POST(
                 }
 
                 // Update user record with account completion data
-                updatedUser = await updateUserAccountCompletion(
-                    tokenPayload.oauth_id,
-                    {
-                        email: body.email,
-                        name: body.name,
-                        password_hash: passwordHash,
-                        phone_number: body.phone,
-                        birth_date: new Date(body.birthDate),
-                        account_completion_status: "completed",
-                        account_completed_at: new Date(),
-                    }
+                // NOTE: tokenPayload.oauth_id is the provider's ID, not the DB
+                // user id. Resolve the canonical user row first so the UPDATE
+                // hits `WHERE id = $uuid` instead of a value that can never
+                // match the users.id PK.
+                const oauthUser = await getUserByOAuthId(
+                    tokenPayload.oauth_provider,
+                    tokenPayload.oauth_id
                 )
+                if (!oauthUser) {
+                    logger.error(
+                        "OAuth user not found for account completion",
+                        {
+                            context: "CompleteAccount",
+                            data: {
+                                provider: tokenPayload.oauth_provider,
+                                oauthId: tokenPayload.oauth_id,
+                            },
+                        }
+                    )
+                    return createErrorResponse(AuthErrorType.INTERNAL_ERROR)
+                }
+
+                updatedUser = await updateUserAccountCompletion(oauthUser.id, {
+                    email: body.email,
+                    name: body.name,
+                    password_hash: passwordHash,
+                    phone_number: body.phone,
+                    birth_date: new Date(body.birthDate),
+                    picture: body.picture || null,
+                    account_completion_status: "completed",
+                    account_completed_at: new Date(),
+                })
             } catch (error) {
                 logger.error("Failed to update user account completion", {
                     context: "CompleteAccount",

@@ -390,7 +390,16 @@
         "languageEnglish": "English",
         "languageFrench": "French",
         "languagePortuguese": "Portuguese",
-        "languageSpanish": "Spanish"
+        "languageSpanish": "Spanish",
+        "accountAutoDelete": "Account auto-delete",
+        "accountAutoDeleteDescription": "Automatically delete your account after a period of inactivity.",
+        "accountAutoDeleteTitle": "Enable auto-delete",
+        "accountAutoDeleteHint": "If enabled, your account will be permanently deleted after the chosen period without access. Default is indefinite (never deleted).",
+        "accountAutoDeletePeriod": "Delete after",
+        "period7d": "7 days",
+        "period30d": "30 days",
+        "period90d": "3 months",
+        "period1y": "1 year"
     },
     "live": {
         "title": "Title",
@@ -477,5 +486,286 @@
         "disconnectError": "Failed to disconnect the channel. Please try again.",
         "tiktokSingleAccountNotice": "One TikTok account is already connected ({accountName}). Connecting again will replace it.",
         "confirmDisconnect": "Disconnect {accountName} ({platform})? This will remove its access from your account."
+    },
+    "tutorials": {
+        "ariaOverlay": "Interactive guide overlay",
+        "tutorialLabel": "Tutorial",
+        "onboardingLabel": "Welcome",
+        "stepXofY": "Step {current} of {total}",
+        "skip": "Skip",
+        "back": "Back",
+        "next": "Next",
+        "finish": "Finish",
+        "close": "Close",
+        "startTutorial": "Tutorial",
+        "openDocs": "Docs",
+        "titles": {
+            "onboarding": "Welcome onboarding",
+            "publish": "Publish",
+            "channels": "Channels",
+            "live": "Live",
+            "insights": "Insights",
+            "discover": "Discover",
+            "repost": "Repost",
+            "cloner": "Cloner",
+            "settings": "Settings"
+        },
+        "stepTitles": {
+            "welcome.title": "Welcome!",
+            "welcome.description": "This guide walks you through your first post.",
+            "composer.title": "Compose your post",
+            "composer.description": "Write your message here.",
+            "network.title": "Choose platforms",
+            "network.description": "Select connected platforms to receive your post.",
+            "content.title": "Content type",
+            "content.description": "Choose post or video.",
+            "submit.title": "Publish",
+            "submit.description": "Send content to all selected platforms.",
+            "publishComposer.title": "Compose your post",
+            "publishComposer.description": "Write the content you want to share.",
+            "publishNetwork.title": "Select platforms",
+            "publishNetwork.description": "Tick each connected platform.",
+            "channelsList.title": "Your channels",
+            "channelsList.description": "All your connected platforms.",
+            "channelsConnect.title": "Connect a channel",
+            "channelsConnect.description": "Link a new social platform.",
+            "liveHealth.title": "Stream health",
+            "liveHealth.description": "Monitor your stream status.",
+            "liveChat.title": "Live chat",
+            "liveChat.description": "Read and moderate chat from all platforms.",
+            "insightsMetrics.title": "Analytics",
+            "insightsMetrics.description": "Reach, engagement and growth.",
+            "insightsChannels.title": "Compare channels",
+            "insightsChannels.description": "Compare performance across platforms.",
+            "discoverImport.title": "Import creators",
+            "discoverImport.description": "Import a JSON list of creators.",
+            "discoverList.title": "Discovered creators",
+            "discoverList.description": "Browse network creators.",
+            "repostSchedule.title": "Schedule reposts",
+            "repostSchedule.description": "Auto-repost on a schedule.",
+            "clonerImport.title": "Clone a channel",
+            "clonerImport.description": "Import a channel configuration.",
+            "settingsProfile.title": "Profile settings",
+            "settingsProfile.description": "Manage your profile information.",
+            "settingsSecurity.title": "Security",
+            "settingsSecurity.description": "Password, 2FA and account safety."
+        }
+    },
+    "docs": {
+        "title": "Documentation",
+        "pickCategory": "Choose a category to read its detailed documentation.",
+        "allCategories": "All categories",
+        "technicalTitle": "Technical overview",
+        "dataTitle": "Data collected",
+        "examplesTitle": "Usage examples",
+        "companyLabel": "Company",
+        "individualLabel": "Individual",
+        "discover": {
+            "overview": "Discover — common workflows",
+            "technical": "Discover. For AI agents and technical users: this page gives a precise, machine-readable description of the feature's intent, inputs and outputs, so the data model can be reproduced without using our cloud.",
+            "data": "Discover. User profile, connected platform tokens, published content metadata (platform, status, timestamps).",
+            "sections": {
+                "two": "Discover — Common workflows",
+                "twoBody": "Step-by-step common workflows para/en/für/pour Discover.",
+                "three": "Data format",
+                "threeBody": "The exact data format used, including a minimal JSON payload you can copy and adapt. (Discover)."
+            },
+            "examples": {
+                "individual": "Example — individual creator",
+                "individualBody": "(Discover) A single person using this feature to manage their own channels.",
+                "individualStep1": "Connect your personal accounts",
+                "individualStep2": "Use the feature on your own content",
+                "individualStep3": "Review results",
+                "company": "Example — company / team",
+                "companyBody": "(Discover) A company with multiple people working in groups using this feature.",
+                "companyStep1": "Create a team group",
+                "companyStep2": "Connect each member's accounts",
+                "companyStep3": "Collaborate on content with roles"
+            }
+        },
+        "publish": {
+            "overview": "Publish — common workflows",
+            "technical": "Publish. For AI agents and technical users: this page gives a precise, machine-readable description of the feature's intent, inputs and outputs, so the data model can be reproduced without using our cloud.",
+            "data": "Publish. User profile, connected platform tokens, published content metadata (platform, status, timestamps).",
+            "sections": {
+                "two": "Publish — Common workflows",
+                "twoBody": "Step-by-step common workflows para/en/für/pour Publish.",
+                "three": "Data format",
+                "threeBody": "The exact data format used, including a minimal JSON payload you can copy and adapt. (Publish)."
+            },
+            "examples": {
+                "individual": "Example — individual creator",
+                "individualBody": "(Publish) A single person using this feature to manage their own channels.",
+                "individualStep1": "Connect your personal accounts",
+                "individualStep2": "Use the feature on your own content",
+                "individualStep3": "Review results",
+                "company": "Example — company / team",
+                "companyBody": "(Publish) A company with multiple people working in groups using this feature.",
+                "companyStep1": "Create a team group",
+                "companyStep2": "Connect each member's accounts",
+                "companyStep3": "Collaborate on content with roles"
+            }
+        },
+        "channels": {
+            "overview": "Channels — common workflows",
+            "technical": "Channels. For AI agents and technical users: this page gives a precise, machine-readable description of the feature's intent, inputs and outputs, so the data model can be reproduced without using our cloud.",
+            "data": "Channels. User profile, connected platform tokens, published content metadata (platform, status, timestamps).",
+            "sections": {
+                "two": "Channels — Common workflows",
+                "twoBody": "Step-by-step common workflows para/en/für/pour Channels.",
+                "three": "Data format",
+                "threeBody": "The exact data format used, including a minimal JSON payload you can copy and adapt. (Channels)."
+            },
+            "examples": {
+                "individual": "Example — individual creator",
+                "individualBody": "(Channels) A single person using this feature to manage their own channels.",
+                "individualStep1": "Connect your personal accounts",
+                "individualStep2": "Use the feature on your own content",
+                "individualStep3": "Review results",
+                "company": "Example — company / team",
+                "companyBody": "(Channels) A company with multiple people working in groups using this feature.",
+                "companyStep1": "Create a team group",
+                "companyStep2": "Connect each member's accounts",
+                "companyStep3": "Collaborate on content with roles"
+            }
+        },
+        "live": {
+            "overview": "Live — common workflows",
+            "technical": "Live. For AI agents and technical users: this page gives a precise, machine-readable description of the feature's intent, inputs and outputs, so the data model can be reproduced without using our cloud.",
+            "data": "Live. User profile, connected platform tokens, published content metadata (platform, status, timestamps).",
+            "sections": {
+                "two": "Live — Common workflows",
+                "twoBody": "Step-by-step common workflows para/en/für/pour Live.",
+                "three": "Data format",
+                "threeBody": "The exact data format used, including a minimal JSON payload you can copy and adapt. (Live)."
+            },
+            "examples": {
+                "individual": "Example — individual creator",
+                "individualBody": "(Live) A single person using this feature to manage their own channels.",
+                "individualStep1": "Connect your personal accounts",
+                "individualStep2": "Use the feature on your own content",
+                "individualStep3": "Review results",
+                "company": "Example — company / team",
+                "companyBody": "(Live) A company with multiple people working in groups using this feature.",
+                "companyStep1": "Create a team group",
+                "companyStep2": "Connect each member's accounts",
+                "companyStep3": "Collaborate on content with roles"
+            }
+        },
+        "insights": {
+            "overview": "Insights — common workflows",
+            "technical": "Insights. For AI agents and technical users: this page gives a precise, machine-readable description of the feature's intent, inputs and outputs, so the data model can be reproduced without using our cloud.",
+            "data": "Insights. User profile, connected platform tokens, published content metadata (platform, status, timestamps).",
+            "sections": {
+                "two": "Insights — Common workflows",
+                "twoBody": "Step-by-step common workflows para/en/für/pour Insights.",
+                "three": "Data format",
+                "threeBody": "The exact data format used, including a minimal JSON payload you can copy and adapt. (Insights)."
+            },
+            "examples": {
+                "individual": "Example — individual creator",
+                "individualBody": "(Insights) A single person using this feature to manage their own channels.",
+                "individualStep1": "Connect your personal accounts",
+                "individualStep2": "Use the feature on your own content",
+                "individualStep3": "Review results",
+                "company": "Example — company / team",
+                "companyBody": "(Insights) A company with multiple people working in groups using this feature.",
+                "companyStep1": "Create a team group",
+                "companyStep2": "Connect each member's accounts",
+                "companyStep3": "Collaborate on content with roles"
+            }
+        },
+        "repost": {
+            "overview": "Repost — common workflows",
+            "technical": "Repost. For AI agents and technical users: this page gives a precise, machine-readable description of the feature's intent, inputs and outputs, so the data model can be reproduced without using our cloud.",
+            "data": "Repost. User profile, connected platform tokens, published content metadata (platform, status, timestamps).",
+            "sections": {
+                "two": "Repost — Common workflows",
+                "twoBody": "Step-by-step common workflows para/en/für/pour Repost.",
+                "three": "Data format",
+                "threeBody": "The exact data format used, including a minimal JSON payload you can copy and adapt. (Repost)."
+            },
+            "examples": {
+                "individual": "Example — individual creator",
+                "individualBody": "(Repost) A single person using this feature to manage their own channels.",
+                "individualStep1": "Connect your personal accounts",
+                "individualStep2": "Use the feature on your own content",
+                "individualStep3": "Review results",
+                "company": "Example — company / team",
+                "companyBody": "(Repost) A company with multiple people working in groups using this feature.",
+                "companyStep1": "Create a team group",
+                "companyStep2": "Connect each member's accounts",
+                "companyStep3": "Collaborate on content with roles"
+            }
+        },
+        "cloner": {
+            "overview": "Cloner — common workflows",
+            "technical": "Cloner. For AI agents and technical users: this page gives a precise, machine-readable description of the feature's intent, inputs and outputs, so the data model can be reproduced without using our cloud.",
+            "data": "Cloner. User profile, connected platform tokens, published content metadata (platform, status, timestamps).",
+            "sections": {
+                "two": "Cloner — Common workflows",
+                "twoBody": "Step-by-step common workflows para/en/für/pour Cloner.",
+                "three": "Data format",
+                "threeBody": "The exact data format used, including a minimal JSON payload you can copy and adapt. (Cloner)."
+            },
+            "examples": {
+                "individual": "Example — individual creator",
+                "individualBody": "(Cloner) A single person using this feature to manage their own channels.",
+                "individualStep1": "Connect your personal accounts",
+                "individualStep2": "Use the feature on your own content",
+                "individualStep3": "Review results",
+                "company": "Example — company / team",
+                "companyBody": "(Cloner) A company with multiple people working in groups using this feature.",
+                "companyStep1": "Create a team group",
+                "companyStep2": "Connect each member's accounts",
+                "companyStep3": "Collaborate on content with roles"
+            }
+        },
+        "settings": {
+            "overview": "Settings — common workflows",
+            "technical": "Settings. For AI agents and technical users: this page gives a precise, machine-readable description of the feature's intent, inputs and outputs, so the data model can be reproduced without using our cloud.",
+            "data": "Settings. User profile, connected platform tokens, published content metadata (platform, status, timestamps).",
+            "sections": {
+                "two": "Settings — Common workflows",
+                "twoBody": "Step-by-step common workflows para/en/für/pour Settings.",
+                "three": "Data format",
+                "threeBody": "The exact data format used, including a minimal JSON payload you can copy and adapt. (Settings)."
+            },
+            "examples": {
+                "individual": "Example — individual creator",
+                "individualBody": "(Settings) A single person using this feature to manage their own channels.",
+                "individualStep1": "Connect your personal accounts",
+                "individualStep2": "Use the feature on your own content",
+                "individualStep3": "Review results",
+                "company": "Example — company / team",
+                "companyBody": "(Settings) A company with multiple people working in groups using this feature.",
+                "companyStep1": "Create a team group",
+                "companyStep2": "Connect each member's accounts",
+                "companyStep3": "Collaborate on content with roles"
+            }
+        }
+    },
+    "groupNames": {
+        "systemAdmin": "System Administrator",
+        "paidTestGroup": "Paid Test Group",
+        "freeTestGroup": "Free Test Group",
+        "editorGroup": "Editor Group",
+        "contributorGroup": "Contributor Group",
+        "moderatorGroup": "Moderator Group",
+        "socialTeam": "Social Team",
+        "videoEditors": "Video Editors",
+        "shoutoutNetwork": "Shoutout Network",
+        "partnerNetwork": "Partner Network",
+        "contentCreators": "Content Creators",
+        "affiliateGroup": "Affiliate Group",
+        "betaTesters": "Beta Testers",
+        "vipMembers": "VIP Members",
+        "supportTeam": "Support Team",
+        "translationTeam": "Translation Team",
+        "brazilCommunity": "Brazil Community",
+        "spanishCommunity": "Spanish Community",
+        "germanCommunity": "German Community",
+        "frenchCommunity": "French Community",
+        "portugueseCommunity": "Portuguese Community"
     }
 }

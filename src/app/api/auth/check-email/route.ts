@@ -58,19 +58,22 @@ export async function GET(request: NextRequest) {
             )
         }
 
-        // Check if email exists
-        const { data: existingUser, error } = await supabase
-            .from("auth_users")
+        // Check if email exists — query canonical `users` table.
+        // OAuth users store their Gmail in both `email` and `oauth_email`,
+        // so we must check both to prevent duplicate email/password registration.
+        const normalizedEmail = email.toLowerCase()
+
+        const { data: existingByEmail, error: emailError } = await supabase
+            .from("users")
             .select("id")
-            .eq("email", email.toLowerCase())
+            .eq("email", normalizedEmail)
             .single()
 
-        const responseTime = Date.now() - startTime
-
-        if (error && error.code !== "PGRST116") {
-            console.error("Database error:", error)
+        if (emailError && emailError.code !== "PGRST116") {
+            console.error("Database error:", emailError)
             return NextResponse.json(
                 {
+                    success: false,
                     available: false,
                     error: "Failed to check email availability",
                 },
@@ -78,12 +81,44 @@ export async function GET(request: NextRequest) {
             )
         }
 
-        const available = !existingUser
+        // Not found by `email` — also check OAuth email column
+        let userFound = existingByEmail
+        if (!userFound) {
+            const { data: existingByOAuth, error: oauthError } = await supabase
+                .from("users")
+                .select("id")
+                .eq("oauth_email", normalizedEmail)
+                .single()
+
+            if (oauthError && oauthError.code !== "PGRST116") {
+                console.error("Database error:", oauthError)
+                return NextResponse.json(
+                    {
+                        success: false,
+                        available: false,
+                        error: "Failed to check email availability",
+                    },
+                    { status: 500 }
+                )
+            }
+
+            userFound = existingByOAuth
+        }
+
+        const responseTime = Date.now() - startTime
+
+        const available = !userFound
 
         return NextResponse.json(
             {
-                email: email.toLowerCase(),
+                success: true,
+                email: normalizedEmail,
                 available,
+                // Nested `data` matches the legacy EmailInput consumer contract.
+                data: {
+                    email: normalizedEmail,
+                    available,
+                },
             },
             {
                 status: 200,

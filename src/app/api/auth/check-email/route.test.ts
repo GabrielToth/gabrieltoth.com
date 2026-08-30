@@ -17,8 +17,9 @@ vi.mock("@/lib/supabase/server", () => ({
                         return {
                             single: vi.fn(async () => {
                                 if (
-                                    table === "auth_users" &&
-                                    field === "email"
+                                    table === "users" &&
+                                    (field === "email" ||
+                                        field === "oauth_email")
                                 ) {
                                     // Simulate existing user for duplicate email test
                                     if (value === "existing@example.com") {

@@ -21,7 +21,9 @@ async function assertMetadata(modPath: string, path: string) {
             params: Promise.resolve({ locale }),
         } as any)
         expect(meta).toBeTruthy()
-        const expectedPath = routeKey ? getLocalizedPath(routeKey, locale) : `/${locale}${path}`
+        const expectedPath = routeKey
+            ? getLocalizedPath(routeKey, locale)
+            : `/${locale}${path}`
         expect(meta.alternates?.canonical).toContain(expectedPath)
         // Verify languages map has all locales and x-default pointing to pt-BR
         expect(meta.alternates?.languages?.["en"]).toContain("/en")

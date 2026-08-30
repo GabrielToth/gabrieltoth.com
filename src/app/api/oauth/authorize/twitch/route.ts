@@ -33,7 +33,9 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
         await oauthService.initialize()
 
         const signedState = generateState(userId, "twitch", locale)
-        const { authorizationUrl } = oauthService.generateAuthorizationUrl(signedState.token)
+        const { authorizationUrl } = oauthService.generateAuthorizationUrl(
+            signedState.token
+        )
         return NextResponse.redirect(authorizationUrl)
     } catch (error) {
         return NextResponse.json({ error: String(error) }, { status: 500 })

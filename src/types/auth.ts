@@ -17,6 +17,21 @@ export interface User {
     google_email: string
     google_name: string
     google_picture?: string
+
+    // Canonical OAuth/provider fields (present in the current `users` schema)
+    // Optional so legacy `google_*` consumers and OAuth casts both work.
+    email?: string
+    name?: string
+    oauth_provider?: "google" | "facebook" | "tiktok" | null
+    oauth_id?: string | null
+    oauth_email?: string | null
+    picture?: string | null
+    password_hash?: string | null
+    email_verified?: boolean
+    account_completion_status?: "pending" | "in_progress" | "completed"
+    birth_date?: Date | null
+    phone_number?: string | null
+
     created_at: Date
     updated_at: Date
 }

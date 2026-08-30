@@ -43,6 +43,7 @@ export default function CompleteAccountForm({
         submitForm,
         resetForm,
         loadRegistrationData,
+        setPicture,
     } = useAccountCompletion()
 
     // Load registration data from temp token on mount
@@ -158,6 +159,7 @@ export default function CompleteAccountForm({
                         editedData={editedData}
                         errors={errors}
                         onUpdateField={updatePrefilledField}
+                        onPictureChange={setPicture}
                         onContinue={handleContinue}
                         isLoading={isLoading}
                     />

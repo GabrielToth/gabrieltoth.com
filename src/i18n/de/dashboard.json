@@ -390,7 +390,16 @@
         "languageEnglish": "Englisch",
         "languageFrench": "Französisch",
         "languagePortuguese": "Portugiesisch",
-        "languageSpanish": "Spanisch"
+        "languageSpanish": "Spanisch",
+        "accountAutoDelete": "Automatische Kontolöschung",
+        "accountAutoDeleteDescription": "Löscht dein Konto automatisch nach einer Inaktivitätsphase.",
+        "accountAutoDeleteTitle": "Automatische Löschung aktivieren",
+        "accountAutoDeleteHint": "Wenn aktiviert, wird dein Konto nach dem gewählten Zeitraum ohne Zugriff dauerhaft gelöscht. Standard: unbestimmt (nie gelöscht).",
+        "accountAutoDeletePeriod": "Löschen nach",
+        "period7d": "7 Tage",
+        "period30d": "30 Tage",
+        "period90d": "3 Monate",
+        "period1y": "1 Jahr"
     },
     "live": {
         "title": "Titel",
@@ -477,5 +486,286 @@
         "disconnectError": "Kanal konnte nicht getrennt werden. Bitte erneut versuchen.",
         "tiktokSingleAccountNotice": "Ein TikTok-Konto ist bereits verbunden ({accountName}). Erneutes Verbinden ersetzt es.",
         "confirmDisconnect": "{accountName} ({platform}) trennen? Dadurch wird der Zugriff von deinem Konto entfernt."
+    },
+    "tutorials": {
+        "ariaOverlay": "Interaktiver Leitfaden",
+        "tutorialLabel": "Tutorial",
+        "onboardingLabel": "Willkommen",
+        "stepXofY": "Schritt {current} von {total}",
+        "skip": "Überspringen",
+        "back": "Zurück",
+        "next": "Weiter",
+        "finish": "Fertig",
+        "close": "Schließen",
+        "startTutorial": "Tutorial",
+        "openDocs": "Doku",
+        "titles": {
+            "onboarding": "Willkommen",
+            "publish": "Veröffentlichen",
+            "channels": "Kanäle",
+            "live": "Live",
+            "insights": "Analysen",
+            "discover": "Entdecken",
+            "repost": "Reposten",
+            "cloner": "Klonen",
+            "settings": "Einstellungen"
+        },
+        "stepTitles": {
+            "welcome.title": "Willkommen!",
+            "welcome.description": "Dieser Leitfaden führt dich durch deinen ersten Beitrag.",
+            "composer.title": "Beitrag verfassen",
+            "composer.description": "Schreibe deine Nachricht hier.",
+            "network.title": "Plattformen wählen",
+            "network.description": "Wähle verbundene Plattformen, die deinen Beitrag erhalten.",
+            "content.title": "Inhaltstyp",
+            "content.description": "Wähle Beitrag oder Video.",
+            "submit.title": "Veröffentlichen",
+            "submit.description": "Sende deinen Inhalt an alle ausgewählten Plattformen.",
+            "publishComposer.title": "Beitrag verfassen",
+            "publishComposer.description": "Schreibe den Inhalt, den du teilen möchtest.",
+            "publishNetwork.title": "Plattformen wählen",
+            "publishNetwork.description": "Markiere jede verbundene Plattform.",
+            "channelsList.title": "Deine Kanäle",
+            "channelsList.description": "Alle deine verbundenen Plattformen.",
+            "channelsConnect.title": "Kanal verbinden",
+            "channelsConnect.description": "Verknüpfe eine neue Social-Plattform.",
+            "liveHealth.title": "Stream-Status",
+            "liveHealth.description": "Überwache den Status deines Streams.",
+            "liveChat.title": "Live-Chat",
+            "liveChat.description": "Lies und moderiere den Chat aller Plattformen.",
+            "insightsMetrics.title": "Analysen",
+            "insightsMetrics.description": "Reichweite, Engagement und Wachstum.",
+            "insightsChannels.title": "Kanäle vergleichen",
+            "insightsChannels.description": "Vergleiche Leistung über Plattformen.",
+            "discoverImport.title": "Creators importieren",
+            "discoverImport.description": "Importiere eine JSON-Liste von Creators.",
+            "discoverList.title": "Entdeckte Creators",
+            "discoverList.description": "Durchsuche die Netzwerk-Creators.",
+            "repostSchedule.title": "Reposts planen",
+            "repostSchedule.description": "Automatisch nach Zeitplan reposten.",
+            "clonerImport.title": "Kanal klonen",
+            "clonerImport.description": "Importiere eine Kanal-Konfiguration.",
+            "settingsProfile.title": "Profileinstellungen",
+            "settingsProfile.description": "Verwalte deine Profilinformationen.",
+            "settingsSecurity.title": "Sicherheit",
+            "settingsSecurity.description": "Passwort, 2FA und Kontosicherheit."
+        }
+    },
+    "docs": {
+        "title": "Dokumentation",
+        "pickCategory": "Wähle eine Kategorie, um ihre detaillierte Dokumentation zu lesen.",
+        "allCategories": "Alle Kategorien",
+        "technicalTitle": "Technische Übersicht",
+        "dataTitle": "Gesammelte Daten",
+        "examplesTitle": "Nutzungsbeispiele",
+        "companyLabel": "Unternehmen",
+        "individualLabel": "Einzelperson",
+        "discover": {
+            "overview": "Entdecken — häufige workflows",
+            "technical": "Entdecken. Für KI-Agenten und technische Benutzer: Diese Seite beschreibt Absicht, Eingaben und Ausgaben der Funktion präzise und maschinenlesbar, damit das Datenmodell ohne unsere Cloud reproduziert werden kann.",
+            "data": "Entdecken. Benutzerprofil, Tokens verbundener Plattformen, Metadaten veröffentlichter Inhalte (Plattform, Status, Zeitstempel).",
+            "sections": {
+                "two": "Entdecken — Häufige Workflows",
+                "twoBody": "Häufige Workflows Schritt für Schritt para/en/für/pour Entdecken.",
+                "three": "Datenformat",
+                "threeBody": "Das genaue Datenformat, einschließlich eines minimalen JSON-Payloads zum Kopieren und Anpassen. (Entdecken)."
+            },
+            "examples": {
+                "individual": "Beispiel — einzelner Ersteller",
+                "individualBody": "(Entdecken) Eine Person, die diese Funktion zur Verwaltung ihrer eigenen Kanäle nutzt.",
+                "individualStep1": "Verbindet eure persönlichen Konten",
+                "individualStep2": "Nutzt die Funktion für eigene Inhalte",
+                "individualStep3": "Ergebnisse überprüfen",
+                "company": "Beispiel — Unternehmen / Team",
+                "companyBody": "(Entdecken) Ein Unternehmen mit mehreren Personen in Gruppen, das diese Funktion nutzt.",
+                "companyStep1": "Erstellt eine Teamgruppe",
+                "companyStep2": "Verbindet die Konten jedes Mitglieds",
+                "companyStep3": "Kollaboriert mit Rollen an Inhalten"
+            }
+        },
+        "publish": {
+            "overview": "Veröffentlichen — häufige workflows",
+            "technical": "Veröffentlichen. Für KI-Agenten und technische Benutzer: Diese Seite beschreibt Absicht, Eingaben und Ausgaben der Funktion präzise und maschinenlesbar, damit das Datenmodell ohne unsere Cloud reproduziert werden kann.",
+            "data": "Veröffentlichen. Benutzerprofil, Tokens verbundener Plattformen, Metadaten veröffentlichter Inhalte (Plattform, Status, Zeitstempel).",
+            "sections": {
+                "two": "Veröffentlichen — Häufige Workflows",
+                "twoBody": "Häufige Workflows Schritt für Schritt para/en/für/pour Veröffentlichen.",
+                "three": "Datenformat",
+                "threeBody": "Das genaue Datenformat, einschließlich eines minimalen JSON-Payloads zum Kopieren und Anpassen. (Veröffentlichen)."
+            },
+            "examples": {
+                "individual": "Beispiel — einzelner Ersteller",
+                "individualBody": "(Veröffentlichen) Eine Person, die diese Funktion zur Verwaltung ihrer eigenen Kanäle nutzt.",
+                "individualStep1": "Verbindet eure persönlichen Konten",
+                "individualStep2": "Nutzt die Funktion für eigene Inhalte",
+                "individualStep3": "Ergebnisse überprüfen",
+                "company": "Beispiel — Unternehmen / Team",
+                "companyBody": "(Veröffentlichen) Ein Unternehmen mit mehreren Personen in Gruppen, das diese Funktion nutzt.",
+                "companyStep1": "Erstellt eine Teamgruppe",
+                "companyStep2": "Verbindet die Konten jedes Mitglieds",
+                "companyStep3": "Kollaboriert mit Rollen an Inhalten"
+            }
+        },
+        "channels": {
+            "overview": "Kanäle — häufige workflows",
+            "technical": "Kanäle. Für KI-Agenten und technische Benutzer: Diese Seite beschreibt Absicht, Eingaben und Ausgaben der Funktion präzise und maschinenlesbar, damit das Datenmodell ohne unsere Cloud reproduziert werden kann.",
+            "data": "Kanäle. Benutzerprofil, Tokens verbundener Plattformen, Metadaten veröffentlichter Inhalte (Plattform, Status, Zeitstempel).",
+            "sections": {
+                "two": "Kanäle — Häufige Workflows",
+                "twoBody": "Häufige Workflows Schritt für Schritt para/en/für/pour Kanäle.",
+                "three": "Datenformat",
+                "threeBody": "Das genaue Datenformat, einschließlich eines minimalen JSON-Payloads zum Kopieren und Anpassen. (Kanäle)."
+            },
+            "examples": {
+                "individual": "Beispiel — einzelner Ersteller",
+                "individualBody": "(Kanäle) Eine Person, die diese Funktion zur Verwaltung ihrer eigenen Kanäle nutzt.",
+                "individualStep1": "Verbindet eure persönlichen Konten",
+                "individualStep2": "Nutzt die Funktion für eigene Inhalte",
+                "individualStep3": "Ergebnisse überprüfen",
+                "company": "Beispiel — Unternehmen / Team",
+                "companyBody": "(Kanäle) Ein Unternehmen mit mehreren Personen in Gruppen, das diese Funktion nutzt.",
+                "companyStep1": "Erstellt eine Teamgruppe",
+                "companyStep2": "Verbindet die Konten jedes Mitglieds",
+                "companyStep3": "Kollaboriert mit Rollen an Inhalten"
+            }
+        },
+        "live": {
+            "overview": "Live — häufige workflows",
+            "technical": "Live. Für KI-Agenten und technische Benutzer: Diese Seite beschreibt Absicht, Eingaben und Ausgaben der Funktion präzise und maschinenlesbar, damit das Datenmodell ohne unsere Cloud reproduziert werden kann.",
+            "data": "Live. Benutzerprofil, Tokens verbundener Plattformen, Metadaten veröffentlichter Inhalte (Plattform, Status, Zeitstempel).",
+            "sections": {
+                "two": "Live — Häufige Workflows",
+                "twoBody": "Häufige Workflows Schritt für Schritt para/en/für/pour Live.",
+                "three": "Datenformat",
+                "threeBody": "Das genaue Datenformat, einschließlich eines minimalen JSON-Payloads zum Kopieren und Anpassen. (Live)."
+            },
+            "examples": {
+                "individual": "Beispiel — einzelner Ersteller",
+                "individualBody": "(Live) Eine Person, die diese Funktion zur Verwaltung ihrer eigenen Kanäle nutzt.",
+                "individualStep1": "Verbindet eure persönlichen Konten",
+                "individualStep2": "Nutzt die Funktion für eigene Inhalte",
+                "individualStep3": "Ergebnisse überprüfen",
+                "company": "Beispiel — Unternehmen / Team",
+                "companyBody": "(Live) Ein Unternehmen mit mehreren Personen in Gruppen, das diese Funktion nutzt.",
+                "companyStep1": "Erstellt eine Teamgruppe",
+                "companyStep2": "Verbindet die Konten jedes Mitglieds",
+                "companyStep3": "Kollaboriert mit Rollen an Inhalten"
+            }
+        },
+        "insights": {
+            "overview": "Analysen — häufige workflows",
+            "technical": "Analysen. Für KI-Agenten und technische Benutzer: Diese Seite beschreibt Absicht, Eingaben und Ausgaben der Funktion präzise und maschinenlesbar, damit das Datenmodell ohne unsere Cloud reproduziert werden kann.",
+            "data": "Analysen. Benutzerprofil, Tokens verbundener Plattformen, Metadaten veröffentlichter Inhalte (Plattform, Status, Zeitstempel).",
+            "sections": {
+                "two": "Analysen — Häufige Workflows",
+                "twoBody": "Häufige Workflows Schritt für Schritt para/en/für/pour Analysen.",
+                "three": "Datenformat",
+                "threeBody": "Das genaue Datenformat, einschließlich eines minimalen JSON-Payloads zum Kopieren und Anpassen. (Analysen)."
+            },
+            "examples": {
+                "individual": "Beispiel — einzelner Ersteller",
+                "individualBody": "(Analysen) Eine Person, die diese Funktion zur Verwaltung ihrer eigenen Kanäle nutzt.",
+                "individualStep1": "Verbindet eure persönlichen Konten",
+                "individualStep2": "Nutzt die Funktion für eigene Inhalte",
+                "individualStep3": "Ergebnisse überprüfen",
+                "company": "Beispiel — Unternehmen / Team",
+                "companyBody": "(Analysen) Ein Unternehmen mit mehreren Personen in Gruppen, das diese Funktion nutzt.",
+                "companyStep1": "Erstellt eine Teamgruppe",
+                "companyStep2": "Verbindet die Konten jedes Mitglieds",
+                "companyStep3": "Kollaboriert mit Rollen an Inhalten"
+            }
+        },
+        "repost": {
+            "overview": "Reposten — häufige workflows",
+            "technical": "Reposten. Für KI-Agenten und technische Benutzer: Diese Seite beschreibt Absicht, Eingaben und Ausgaben der Funktion präzise und maschinenlesbar, damit das Datenmodell ohne unsere Cloud reproduziert werden kann.",
+            "data": "Reposten. Benutzerprofil, Tokens verbundener Plattformen, Metadaten veröffentlichter Inhalte (Plattform, Status, Zeitstempel).",
+            "sections": {
+                "two": "Reposten — Häufige Workflows",
+                "twoBody": "Häufige Workflows Schritt für Schritt para/en/für/pour Reposten.",
+                "three": "Datenformat",
+                "threeBody": "Das genaue Datenformat, einschließlich eines minimalen JSON-Payloads zum Kopieren und Anpassen. (Reposten)."
+            },
+            "examples": {
+                "individual": "Beispiel — einzelner Ersteller",
+                "individualBody": "(Reposten) Eine Person, die diese Funktion zur Verwaltung ihrer eigenen Kanäle nutzt.",
+                "individualStep1": "Verbindet eure persönlichen Konten",
+                "individualStep2": "Nutzt die Funktion für eigene Inhalte",
+                "individualStep3": "Ergebnisse überprüfen",
+                "company": "Beispiel — Unternehmen / Team",
+                "companyBody": "(Reposten) Ein Unternehmen mit mehreren Personen in Gruppen, das diese Funktion nutzt.",
+                "companyStep1": "Erstellt eine Teamgruppe",
+                "companyStep2": "Verbindet die Konten jedes Mitglieds",
+                "companyStep3": "Kollaboriert mit Rollen an Inhalten"
+            }
+        },
+        "cloner": {
+            "overview": "Klonen — häufige workflows",
+            "technical": "Klonen. Für KI-Agenten und technische Benutzer: Diese Seite beschreibt Absicht, Eingaben und Ausgaben der Funktion präzise und maschinenlesbar, damit das Datenmodell ohne unsere Cloud reproduziert werden kann.",
+            "data": "Klonen. Benutzerprofil, Tokens verbundener Plattformen, Metadaten veröffentlichter Inhalte (Plattform, Status, Zeitstempel).",
+            "sections": {
+                "two": "Klonen — Häufige Workflows",
+                "twoBody": "Häufige Workflows Schritt für Schritt para/en/für/pour Klonen.",
+                "three": "Datenformat",
+                "threeBody": "Das genaue Datenformat, einschließlich eines minimalen JSON-Payloads zum Kopieren und Anpassen. (Klonen)."
+            },
+            "examples": {
+                "individual": "Beispiel — einzelner Ersteller",
+                "individualBody": "(Klonen) Eine Person, die diese Funktion zur Verwaltung ihrer eigenen Kanäle nutzt.",
+                "individualStep1": "Verbindet eure persönlichen Konten",
+                "individualStep2": "Nutzt die Funktion für eigene Inhalte",
+                "individualStep3": "Ergebnisse überprüfen",
+                "company": "Beispiel — Unternehmen / Team",
+                "companyBody": "(Klonen) Ein Unternehmen mit mehreren Personen in Gruppen, das diese Funktion nutzt.",
+                "companyStep1": "Erstellt eine Teamgruppe",
+                "companyStep2": "Verbindet die Konten jedes Mitglieds",
+                "companyStep3": "Kollaboriert mit Rollen an Inhalten"
+            }
+        },
+        "settings": {
+            "overview": "Einstellungen — häufige workflows",
+            "technical": "Einstellungen. Für KI-Agenten und technische Benutzer: Diese Seite beschreibt Absicht, Eingaben und Ausgaben der Funktion präzise und maschinenlesbar, damit das Datenmodell ohne unsere Cloud reproduziert werden kann.",
+            "data": "Einstellungen. Benutzerprofil, Tokens verbundener Plattformen, Metadaten veröffentlichter Inhalte (Plattform, Status, Zeitstempel).",
+            "sections": {
+                "two": "Einstellungen — Häufige Workflows",
+                "twoBody": "Häufige Workflows Schritt für Schritt para/en/für/pour Einstellungen.",
+                "three": "Datenformat",
+                "threeBody": "Das genaue Datenformat, einschließlich eines minimalen JSON-Payloads zum Kopieren und Anpassen. (Einstellungen)."
+            },
+            "examples": {
+                "individual": "Beispiel — einzelner Ersteller",
+                "individualBody": "(Einstellungen) Eine Person, die diese Funktion zur Verwaltung ihrer eigenen Kanäle nutzt.",
+                "individualStep1": "Verbindet eure persönlichen Konten",
+                "individualStep2": "Nutzt die Funktion für eigene Inhalte",
+                "individualStep3": "Ergebnisse überprüfen",
+                "company": "Beispiel — Unternehmen / Team",
+                "companyBody": "(Einstellungen) Ein Unternehmen mit mehreren Personen in Gruppen, das diese Funktion nutzt.",
+                "companyStep1": "Erstellt eine Teamgruppe",
+                "companyStep2": "Verbindet die Konten jedes Mitglieds",
+                "companyStep3": "Kollaboriert mit Rollen an Inhalten"
+            }
+        }
+    },
+    "groupNames": {
+        "systemAdmin": "Systemadministrator",
+        "paidTestGroup": "Bezahlte Testgruppe",
+        "freeTestGroup": "Kostenlose Testgruppe",
+        "editorGroup": "Editor-Gruppe",
+        "contributorGroup": "Mitwirkende Gruppe",
+        "moderatorGroup": "Moderatoren-Gruppe",
+        "socialTeam": "Social-Team",
+        "videoEditors": "Video-Editoren",
+        "shoutoutNetwork": "Shoutout-Netzwerk",
+        "partnerNetwork": "Partnernetzwerk",
+        "contentCreators": "Content-Ersteller",
+        "affiliateGroup": "Affiliate-Gruppe",
+        "betaTesters": "Beta-Tester",
+        "vipMembers": "VIP-Mitglieder",
+        "supportTeam": "Support-Team",
+        "translationTeam": "Übersetzungs-Team",
+        "brazilCommunity": "Brasilien-Community",
+        "spanishCommunity": "Spanische Community",
+        "germanCommunity": "Deutsche Community",
+        "frenchCommunity": "Französische Community",
+        "portugueseCommunity": "Portugiesische Community"
     }
 }

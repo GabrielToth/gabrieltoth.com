@@ -16,7 +16,9 @@ import {
     validateGoogleToken,
 } from "@/lib/auth/google-auth"
 import { createRememberMeToken, createSession } from "@/lib/auth/session"
+import { generateTempToken } from "@/lib/auth/temp-token"
 import { upsertUser } from "@/lib/auth/user"
+import { defaultLocale, locales } from "@/lib/i18n"
 import { logger } from "@/lib/logger"
 import {
     getClientIp,
@@ -25,7 +27,19 @@ import {
 import { NextRequest, NextResponse } from "next/server"
 
 type CallbackResult =
-    | { success: true; sessionId: string; userEmail: string; userId: string }
+    | {
+          success: true
+          sessionId: string
+          userEmail: string
+          userId: string
+      }
+    | {
+          success: true
+          requiresCompletion: true
+          tempToken: string
+          userEmail: string
+          userId: string
+      }
     | { success: false; response: NextResponse }
 
 const SESSION_COOKIE = {
@@ -42,6 +56,31 @@ const REMEMBER_ME_COOKIE = {
     sameSite: "lax" as const,
     maxAge: 30 * 24 * 60 * 60, // 30 days
     path: "/",
+}
+
+/**
+ * Detect the user's preferred locale from the Accept-Language header.
+ * The Google callback has no locale in its URL, so we fall back to the
+ * same Accept-Language strategy used by the root middleware.
+ */
+function getPreferredLocale(request: NextRequest): string {
+    const acceptLanguage = request.headers.get("accept-language") || ""
+    for (const locale of locales) {
+        if (acceptLanguage.includes(locale)) {
+            return locale
+        }
+    }
+    return defaultLocale
+}
+
+/**
+ * Build the account completion redirect URL for an incomplete OAuth account.
+ */
+function buildCompletionUrl(request: NextRequest, tempToken: string): string {
+    const locale = getPreferredLocale(request)
+    return `/${locale}/auth/complete-account?token=${encodeURIComponent(
+        tempToken
+    )}`
 }
 
 /**
@@ -153,6 +192,55 @@ async function handleGoogleCallback(
             return {
                 success: false,
                 response: errorResponse("Failed to authenticate", 500),
+            }
+        }
+
+        // Account completion gate: incomplete accounts must finish registration
+        // (name confirmation, birth date, password, optional picture) before
+        // receiving a session. Redirect them to the completion flow with a
+        // short-lived temporary token instead of logging them in.
+        if (user.account_completion_status !== "completed") {
+            const tempToken = generateTempToken({
+                email: user.google_email,
+                oauth_provider: "google",
+                oauth_id: user.google_id,
+                name: user.google_name,
+                picture: user.google_picture,
+            })
+
+            logger.info("Google OAuth account pending completion", {
+                context: "Auth",
+                data: {
+                    userId: user.id,
+                    email: user.google_email,
+                    status: user.account_completion_status || "pending",
+                },
+            })
+
+            try {
+                await logAuditEvent(
+                    "ACCOUNT_COMPLETION",
+                    user.google_email,
+                    clientIp,
+                    {
+                        reason: "Incomplete OAuth account",
+                    },
+                    user.id
+                )
+            } catch (error) {
+                logger.error("Failed to log completion-required event", {
+                    context: "Auth",
+                    error: error as Error,
+                    data: { userId: user.id },
+                })
+            }
+
+            return {
+                success: true,
+                requiresCompletion: true,
+                tempToken,
+                userEmail: user.google_email,
+                userId: user.id,
             }
         }
 
@@ -270,6 +358,13 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
             return result.response
         }
 
+        // Incomplete OAuth account — send to account completion flow with a
+        // temporary token. No session cookie is set until registration completes.
+        if ("requiresCompletion" in result) {
+            const completionUrl = buildCompletionUrl(request, result.tempToken)
+            return NextResponse.redirect(new URL(completionUrl, request.url))
+        }
+
         // Build redirect with session cookie directly on the redirect response
         const redirectResponse = NextResponse.redirect(
             new URL("/dashboard", request.url)
@@ -341,6 +436,19 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
         if (!result.success) {
             return result.response
+        }
+
+        // Incomplete OAuth account — frontend should navigate to the completion
+        // flow. Return the temp token + completion URL so the client can route
+        // the user (no session cookie is set until registration completes).
+        if ("requiresCompletion" in result) {
+            const completionUrl = buildCompletionUrl(request, result.tempToken)
+            return NextResponse.json({
+                success: true,
+                requiresCompletion: true,
+                tempToken: result.tempToken,
+                redirectUrl: completionUrl,
+            })
         }
 
         // POST handler from frontend — return JSON so client JS can redirect

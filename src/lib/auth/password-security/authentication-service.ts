@@ -67,10 +67,12 @@ class SupabaseAuthRepository implements IAuthRepository {
     constructor(private readonly supabase: SupabaseClient) {}
 
     async userExistsByEmail(email: string): Promise<boolean> {
+        const normalized = email.toLowerCase()
+
         const { data, error } = await this.supabase
             .from("users")
             .select("id")
-            .eq("email", email.toLowerCase())
+            .eq("email", normalized)
             .single()
 
         // PGRST116 = no rows found
@@ -78,7 +80,23 @@ class SupabaseAuthRepository implements IAuthRepository {
             throw error
         }
 
-        return data !== null
+        if (data) {
+            return true
+        }
+
+        // OAuth users store their provider email in `oauth_email` too, so a
+        // same-Gmail OAuth user must not be registrable via email/password.
+        const { data: oauthData, error: oauthError } = await this.supabase
+            .from("users")
+            .select("id")
+            .eq("oauth_email", normalized)
+            .single()
+
+        if (oauthError && oauthError.code !== "PGRST116") {
+            throw oauthError
+        }
+
+        return oauthData !== null
     }
 
     async createUser(data: {

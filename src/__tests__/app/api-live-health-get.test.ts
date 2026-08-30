@@ -3,7 +3,9 @@ import { describe, expect, it } from "vitest"
 
 describe("GET /api/live/health", () => {
     it("returns platform-specific stream health metrics for twitch", async () => {
-        const req = new Request("http://localhost:3000/api/live/health?platform=twitch&isLive=true")
+        const req = new Request(
+            "http://localhost:3000/api/live/health?platform=twitch&isLive=true"
+        )
         const res = await GET(req)
         expect(res.status).toBe(200)
         const data = await res.json()
@@ -16,7 +18,9 @@ describe("GET /api/live/health", () => {
     })
 
     it("returns platform-specific stream health metrics for youtube", async () => {
-        const req = new Request("http://localhost:3000/api/live/health?platform=youtube&isLive=true")
+        const req = new Request(
+            "http://localhost:3000/api/live/health?platform=youtube&isLive=true"
+        )
         const res = await GET(req)
         expect(res.status).toBe(200)
         const data = await res.json()
