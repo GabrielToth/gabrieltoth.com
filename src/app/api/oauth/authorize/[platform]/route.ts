@@ -27,9 +27,12 @@ export async function GET(
     const oauthManager = getOAuthManager()
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     if (!oauthManager.isPlatformConfigured(platform as any)) {
-        logger.warn("Unsupported or unconfigured platform for OAuth GET redirect", {
-            platform,
-        })
+        logger.warn(
+            "Unsupported or unconfigured platform for OAuth GET redirect",
+            {
+                platform,
+            }
+        )
         return NextResponse.json(
             { error: `Platform ${platform} is not supported or configured` },
             { status: 400 }

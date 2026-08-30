@@ -83,10 +83,7 @@ export const SecuritySection: React.FC<SecuritySectionProps> = ({ user }) => {
     const handleAutoDeleteToggle = (checked: boolean) => {
         setAutoDeleteEnabled(checked)
         try {
-            localStorage?.setItem(
-                "gt_autodelete_enabled",
-                checked ? "1" : "0"
-            )
+            localStorage?.setItem("gt_autodelete_enabled", checked ? "1" : "0")
         } catch {}
     }
 

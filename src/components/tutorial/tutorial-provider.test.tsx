@@ -1,6 +1,9 @@
 import { describe, it, expect, beforeEach, vi } from "vitest"
 import { render, screen, fireEvent } from "@testing-library/react"
-import { TutorialProvider, useTutorial } from "@/components/tutorial/tutorial-provider"
+import {
+    TutorialProvider,
+    useTutorial,
+} from "@/components/tutorial/tutorial-provider"
 
 // Test harness that consumes the tutorial context
 function Probe() {

@@ -19,7 +19,11 @@ import {
 } from "@/lib/auth/error-handling"
 import { createSession } from "@/lib/auth/session"
 import { validateTempToken } from "@/lib/auth/temp-token"
-import { getUserByEmail, getUserByOAuthId, updateUserAccountCompletion } from "@/lib/auth/user"
+import {
+    getUserByEmail,
+    getUserByOAuthId,
+    updateUserAccountCompletion,
+} from "@/lib/auth/user"
 import { logger } from "@/lib/logger"
 import { buildClientKey, rateLimitByKey } from "@/lib/rate-limit"
 import { getAdminClient } from "@/lib/supabase/server"
@@ -291,19 +295,16 @@ export async function POST(
                     return createErrorResponse(AuthErrorType.INTERNAL_ERROR)
                 }
 
-                updatedUser = await updateUserAccountCompletion(
-                    oauthUser.id,
-                    {
-                        email: body.email,
-                        name: body.name,
-                        password_hash: passwordHash,
-                        phone_number: body.phone,
-                        birth_date: new Date(body.birthDate),
-                        picture: body.picture || null,
-                        account_completion_status: "completed",
-                        account_completed_at: new Date(),
-                    }
-                )
+                updatedUser = await updateUserAccountCompletion(oauthUser.id, {
+                    email: body.email,
+                    name: body.name,
+                    password_hash: passwordHash,
+                    phone_number: body.phone,
+                    birth_date: new Date(body.birthDate),
+                    picture: body.picture || null,
+                    account_completion_status: "completed",
+                    account_completed_at: new Date(),
+                })
             } catch (error) {
                 logger.error("Failed to update user account completion", {
                     context: "CompleteAccount",

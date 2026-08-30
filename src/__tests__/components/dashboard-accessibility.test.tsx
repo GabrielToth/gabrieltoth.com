@@ -17,7 +17,8 @@ vi.mock("@/components/theme/theme-provider", () => ({
 }))
 
 vi.mock("next-intl", () => ({
-    NextIntlClientProvider: ({ children }: { children: React.ReactNode }) => children,
+    NextIntlClientProvider: ({ children }: { children: React.ReactNode }) =>
+        children,
     useTranslations: (ns: string) => (key: string) => {
         const map: Record<string, string> = {
             "dashboard.layout.dashboard": "Dashboard",
@@ -260,7 +261,9 @@ describe("Accessibility - WCAG 2.1 AA Compliance", () => {
         }
 
         it("should have proper semantic structure", () => {
-            const { container } = renderInsights(<MetricCard metric={mockMetric} />)
+            const { container } = renderInsights(
+                <MetricCard metric={mockMetric} />
+            )
 
             // Check for proper card structure
             const card = container.querySelector("div[class*='Card']")

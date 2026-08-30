@@ -63,10 +63,15 @@ export default function LiveDashboardPage() {
         []
     )
     const [showScheduler, setShowScheduler] = useState(false)
-    const [executionMode, setExecutionMode] = useState<"cloud" | "local">("cloud")
+    const [executionMode, setExecutionMode] = useState<"cloud" | "local">(
+        "cloud"
+    )
 
     useEffect(() => {
-        const stored = typeof window !== "undefined" ? localStorage.getItem("chat_execution_mode") : null
+        const stored =
+            typeof window !== "undefined"
+                ? localStorage.getItem("chat_execution_mode")
+                : null
         if (stored === "local" || stored === "cloud") {
             setExecutionMode(stored)
         }
@@ -284,7 +289,10 @@ export default function LiveDashboardPage() {
                         gameName={p.gameName}
                         startedAt={p.startedAt}
                         executionMode={executionMode}
-                        localOnly={p.platform === "facebook" || p.platform === "instagram"}
+                        localOnly={
+                            p.platform === "facebook" ||
+                            p.platform === "instagram"
+                        }
                     />
                 ))}
             </div>

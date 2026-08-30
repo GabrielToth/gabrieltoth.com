@@ -35,9 +35,7 @@ export function DocsPage({ category }: DocsPageProps) {
                             key={c}
                             type="button"
                             onClick={() =>
-                                router.push(
-                                    `/${locale}/dashboard/docs/${c}`
-                                )
+                                router.push(`/${locale}/dashboard/docs/${c}`)
                             }
                             className="rounded-lg border border-border bg-card p-4 text-left transition hover:border-primary/50"
                         >
@@ -73,9 +71,7 @@ export function DocsPage({ category }: DocsPageProps) {
                     <Button
                         variant="outline"
                         size="sm"
-                        onClick={() =>
-                            router.push(`/${locale}/dashboard/docs`)
-                        }
+                        onClick={() => router.push(`/${locale}/dashboard/docs`)}
                     >
                         {t("allCategories")}
                     </Button>
@@ -91,9 +87,7 @@ export function DocsPage({ category }: DocsPageProps) {
                     {t(doc.technicalKey)}
                 </p>
                 <div className="mt-4 rounded-md bg-muted p-3 text-xs text-muted-foreground">
-                    <span className="font-semibold">
-                        {t("dataTitle")}:{" "}
-                    </span>
+                    <span className="font-semibold">{t("dataTitle")}: </span>
                     {t(doc.dataKey)}
                 </div>
             </section>

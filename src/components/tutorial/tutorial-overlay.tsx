@@ -54,9 +54,7 @@ export function TutorialOverlay() {
         update()
         window.addEventListener("resize", update)
         // Re-measure shortly after activation to let layout settle
-        const timers = [400, 700].map(ms =>
-            window.setTimeout(update, ms)
-        )
+        const timers = [400, 700].map(ms => window.setTimeout(update, ms))
         return () => {
             window.removeEventListener("resize", update)
             timers.forEach(clearTimeout)
@@ -102,9 +100,7 @@ export function TutorialOverlay() {
     }, [currentStep, rect, viewport.w])
 
     useLayoutEffect(() => {
-        const el = mounted
-            ? document.getElementById(SPOTLIGHT_ID)
-            : null
+        const el = mounted ? document.getElementById(SPOTLIGHT_ID) : null
         if (el && overlayStyle) {
             el.style.clipPath = overlayStyle.clipPath
         }
@@ -114,11 +110,7 @@ export function TutorialOverlay() {
 
     let tooltip: { left: number; top: number; arrow?: string } | null = null
     if (rect) {
-        const placement = computePlacement(
-            currentStep,
-            rect,
-            viewport
-        )
+        const placement = computePlacement(currentStep, rect, viewport)
         const gap = 14
         const TOOLTIP_W = 320
         if (placement === "bottom") {
@@ -246,9 +238,7 @@ export function TutorialOverlay() {
                             onClick={next}
                             className="rounded-md bg-primary px-3 py-1 text-xs font-medium text-primary-foreground hover:bg-primary/90"
                         >
-                            {step + 1 < total
-                                ? t("next")
-                                : t("finish")}
+                            {step + 1 < total ? t("next") : t("finish")}
                         </button>
                     </div>
                 </div>

@@ -8,7 +8,11 @@
 
 import { createSession } from "@/lib/auth/session"
 import { generateTempToken, validateTempToken } from "@/lib/auth/temp-token"
-import { getUserByEmail, getUserByOAuthId, updateUserAccountCompletion } from "@/lib/auth/user"
+import {
+    getUserByEmail,
+    getUserByOAuthId,
+    updateUserAccountCompletion,
+} from "@/lib/auth/user"
 import { rateLimitByKey } from "@/lib/rate-limit"
 import { hashPassword } from "@/lib/auth/password-hashing"
 import { NextRequest } from "next/server"

@@ -36,7 +36,13 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
             .update(codeVerifier)
             .digest("base64url")
 
-        const signedState = generateState(userId, "kick", locale, undefined, codeVerifier)
+        const signedState = generateState(
+            userId,
+            "kick",
+            locale,
+            undefined,
+            codeVerifier
+        )
 
         const params = new URLSearchParams({
             client_id: config.oauth.clientId,

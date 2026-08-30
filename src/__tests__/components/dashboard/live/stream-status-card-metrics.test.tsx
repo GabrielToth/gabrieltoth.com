@@ -25,7 +25,9 @@ describe("StreamStatusCard Per-Platform Metrics & Mode Indicator", () => {
         )
 
         expect(screen.getByText("LOCAL")).toBeInTheDocument()
-        expect(screen.getByText(/facebook \(Apenas Local\)/i)).toBeInTheDocument()
+        expect(
+            screen.getByText(/facebook \(Apenas Local\)/i)
+        ).toBeInTheDocument()
     })
 
     it("fetches and displays platform-specific bitrate and network stability metrics when live", async () => {
@@ -62,7 +64,9 @@ describe("StreamStatusCard Per-Platform Metrics & Mode Indicator", () => {
 
         await waitFor(() => {
             expect(screen.getByText("6000 kbps")).toBeInTheDocument()
-            expect(screen.getByText(/H264 @ 1080p60 \(60 fps\)/i)).toBeInTheDocument()
+            expect(
+                screen.getByText(/H264 @ 1080p60 \(60 fps\)/i)
+            ).toBeInTheDocument()
         })
     })
 })

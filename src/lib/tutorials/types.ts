@@ -8,12 +8,7 @@
  * go back, or skip the whole tutorial at any time.
  */
 
-export type TutorialPlacement =
-    | "top"
-    | "bottom"
-    | "left"
-    | "right"
-    | "auto"
+export type TutorialPlacement = "top" | "bottom" | "left" | "right" | "auto"
 
 export interface TutorialStep {
     /** index of the step (0-based) */

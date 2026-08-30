@@ -37,7 +37,9 @@ describe("StreamTitleEditor Optimistic UI & Spinner", () => {
         render(<StreamTitleEditor {...defaultProps} />)
 
         const titleInput = screen.getByPlaceholderText("Enter stream title...")
-        fireEvent.change(titleInput, { target: { value: "New Optimistic Title" } })
+        fireEvent.change(titleInput, {
+            target: { value: "New Optimistic Title" },
+        })
 
         const saveButton = screen.getByText("Update Stream")
         fireEvent.click(saveButton)
@@ -68,7 +70,10 @@ describe("StreamTitleEditor Optimistic UI & Spinner", () => {
         vi.spyOn(globalThis, "fetch").mockReturnValue(
             fetchPromise.then(() => ({
                 ok: true,
-                json: async () => ({ success: true, message: "Stream updated!" }),
+                json: async () => ({
+                    success: true,
+                    message: "Stream updated!",
+                }),
             })) as any
         )
 

@@ -63,7 +63,8 @@ export default function Step1Prefilled({
 
     const handleSavePicture = useCallback(() => {
         const trimmed = pictureInput.trim()
-        const hasUrl = trimmed.startsWith("http://") || trimmed.startsWith("https://")
+        const hasUrl =
+            trimmed.startsWith("http://") || trimmed.startsWith("https://")
         onPictureChange?.(hasUrl ? trimmed : undefined)
         setIsPictureEditing(false)
     }, [onPictureChange, pictureInput])
@@ -121,7 +122,9 @@ export default function Step1Prefilled({
                     <>
                         {editedData.picture || prefilledData.picture ? (
                             <img
-                                src={editedData.picture || prefilledData.picture}
+                                src={
+                                    editedData.picture || prefilledData.picture
+                                }
                                 alt={prefilledData.name}
                                 className="w-24 h-24 rounded-full border-4 dark:border-white/10 dark:border-border object-cover opacity-60"
                             />
@@ -153,7 +156,9 @@ export default function Step1Prefilled({
                                 <button
                                     type="button"
                                     onClick={() => {
-                                        setPictureInput(prefilledData.picture || "")
+                                        setPictureInput(
+                                            prefilledData.picture || ""
+                                        )
                                         setEditingField(null)
                                         setIsPictureEditing(false)
                                         onPictureChange?.(prefilledData.picture)

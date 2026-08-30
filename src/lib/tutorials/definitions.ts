@@ -205,13 +205,13 @@ export const CATEGORY_TUTORIALS: Tutorial[] = [
     },
 ]
 
-export function getTutorialById(id: string | null | undefined): Tutorial | null {
+export function getTutorialById(
+    id: string | null | undefined
+): Tutorial | null {
     if (!id) return null
     return CATEGORY_TUTORIALS.find(t => t.id === id) ?? null
 }
 
-export function getTutorialsForCategory(
-    category: string
-): Tutorial[] {
+export function getTutorialsForCategory(category: string): Tutorial[] {
     return CATEGORY_TUTORIALS.filter(t => t.category === category)
 }

@@ -76,10 +76,7 @@ function getPreferredLocale(request: NextRequest): string {
 /**
  * Build the account completion redirect URL for an incomplete OAuth account.
  */
-function buildCompletionUrl(
-    request: NextRequest,
-    tempToken: string
-): string {
+function buildCompletionUrl(request: NextRequest, tempToken: string): string {
     const locale = getPreferredLocale(request)
     return `/${locale}/auth/complete-account?token=${encodeURIComponent(
         tempToken

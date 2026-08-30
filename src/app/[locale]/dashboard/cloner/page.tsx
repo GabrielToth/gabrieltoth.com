@@ -278,8 +278,9 @@ export default function ClonerPage() {
                         YouTube Cloner & Auto-Publisher
                     </h1>
                     <p className="text-sm text-muted-foreground">
-                        Clone canais completos do YouTube com download automático,
-                        divisão por categorias e agendamento de postagens.
+                        Clone canais completos do YouTube com download
+                        automático, divisão por categorias e agendamento de
+                        postagens.
                     </p>
                 </div>
                 <TutorialLauncher category="cloner" />

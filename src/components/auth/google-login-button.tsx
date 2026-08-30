@@ -105,9 +105,7 @@ export function GoogleLoginButton({
               ? t("signin.googleSignUpButton")
               : t("register.googleButton")
     const loadingText =
-        type === "login"
-            ? t("login.loading")
-            : t("register.loading")
+        type === "login" ? t("login.loading") : t("register.loading")
 
     return (
         <div className="flex flex-col gap-2">

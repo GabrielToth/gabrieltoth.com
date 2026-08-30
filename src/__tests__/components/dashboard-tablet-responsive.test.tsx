@@ -16,7 +16,8 @@ vi.mock("@/components/theme/theme-provider", () => ({
 }))
 
 vi.mock("next-intl", () => ({
-    NextIntlClientProvider: ({ children }: { children: React.ReactNode }) => children,
+    NextIntlClientProvider: ({ children }: { children: React.ReactNode }) =>
+        children,
     useTranslations: (ns: string) => (key: string) => {
         const map: Record<string, string> = {
             "dashboard.layout.dashboard": "Dashboard",
@@ -168,7 +169,9 @@ describe("Tablet Responsive Design (768px-1024px)", () => {
         ]
 
         it("should display 2 columns on tablet", () => {
-            const { container } = renderInsights(<MetricsGrid metrics={mockMetrics} />)
+            const { container } = renderInsights(
+                <MetricsGrid metrics={mockMetrics} />
+            )
 
             const grid = container.querySelector("div[class*='grid']")
             expect(grid).toHaveClass("sm:grid-cols-2")
@@ -405,7 +408,9 @@ describe("Tablet Responsive Design (768px-1024px)", () => {
                 },
             ]
 
-            const { container } = renderInsights(<MetricsGrid metrics={mockMetrics} />)
+            const { container } = renderInsights(
+                <MetricsGrid metrics={mockMetrics} />
+            )
 
             const grid = container.querySelector("div[class*='grid']")
             expect(grid).toHaveClass("sm:grid-cols-2")
@@ -447,7 +452,9 @@ describe("Tablet Responsive Design (768px-1024px)", () => {
                 },
             ]
 
-            const { container } = renderInsights(<MetricsGrid metrics={mockMetrics} />)
+            const { container } = renderInsights(
+                <MetricsGrid metrics={mockMetrics} />
+            )
 
             const grid = container.querySelector("div[class*='grid']")
             expect(grid).toHaveClass("lg:grid-cols-4")

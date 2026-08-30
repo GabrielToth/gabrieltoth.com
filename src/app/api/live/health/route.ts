@@ -1,7 +1,13 @@
 import { NextResponse } from "next/server"
-import { evaluateStreamHealth, StreamHealthMetrics } from "@/lib/live/stream-health"
+import {
+    evaluateStreamHealth,
+    StreamHealthMetrics,
+} from "@/lib/live/stream-health"
 
-const PLATFORM_METRICS: Record<string, Omit<StreamHealthMetrics, "timestamp">> = {
+const PLATFORM_METRICS: Record<
+    string,
+    Omit<StreamHealthMetrics, "timestamp">
+> = {
     twitch: {
         bitrateKbps: 6000,
         fps: 60,
@@ -55,7 +61,8 @@ export async function GET(req: Request) {
         const platform = searchParams.get("platform")?.toLowerCase() || "twitch"
         const isLive = searchParams.get("isLive") === "true"
 
-        const platformData = PLATFORM_METRICS[platform] || PLATFORM_METRICS.twitch
+        const platformData =
+            PLATFORM_METRICS[platform] || PLATFORM_METRICS.twitch
         const metrics: StreamHealthMetrics = {
             ...platformData,
             timestamp: Date.now(),

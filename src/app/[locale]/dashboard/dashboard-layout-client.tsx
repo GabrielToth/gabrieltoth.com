@@ -77,7 +77,10 @@ export default function DashboardClientLayout({
 
     return (
         <TutorialProvider>
-            <DashboardLayout activeTab={activeTab} onTabChange={handleTabChange}>
+            <DashboardLayout
+                activeTab={activeTab}
+                onTabChange={handleTabChange}
+            >
                 {children}
             </DashboardLayout>
             <TutorialOverlay />

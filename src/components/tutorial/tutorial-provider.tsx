@@ -75,11 +75,7 @@ function setLS(key: string, value: string) {
     }
 }
 
-export function TutorialProvider({
-    children,
-}: {
-    children: React.ReactNode
-}) {
+export function TutorialProvider({ children }: { children: React.ReactNode }) {
     const [active, setActive] = useState<Tutorial | null>(null)
     const [step, setStep] = useState(0)
     const total = active?.steps.length ?? 0
