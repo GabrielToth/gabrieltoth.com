@@ -155,3 +155,6 @@ audit2.json
 test-output.txt
 .env*.local
 .vercel
+
+# local editor/tool config
+.claude/
