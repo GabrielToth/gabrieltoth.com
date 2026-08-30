@@ -612,15 +612,14 @@ export async function POST(request: NextRequest) {
         // SECURE COOKIE SETTING (Task 8.10, Requirement 8)
         // ============================================================================
 
-        // Set secure session cookie (HttpOnly, Secure, SameSite)
-        // Cookie duration matches DB session duration (30 days) so users stay
-        // logged in across deployments and don't need to re-authenticate.
+        // Set secure session cookie (HttpOnly, Secure, SameSite=Strict) so
+        // the session cookie can never be sent on cross-site requests.
         response.cookies.set({
             name: "auth_session",
             value: sessionToken,
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
-            sameSite: "lax",
+            sameSite: "strict",
             maxAge: 30 * 24 * 60 * 60, // 30 days (matches SESSION_EXPIRATION_DAYS)
             path: "/",
         })
