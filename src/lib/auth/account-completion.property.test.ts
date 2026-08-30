@@ -304,6 +304,7 @@ describe("Account Completion - Property-Based Tests", () => {
                     fc.date({
                         min: new Date("1900-01-01"),
                         max: new Date(),
+                        noInvalidDate: true,
                     }),
                     birthDate => {
                         const dateStr = birthDate.toISOString().split("T")[0]

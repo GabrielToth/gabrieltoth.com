@@ -65,6 +65,8 @@ vi.mock("@/lib/supabase/server", () => ({
 describe("POST /api/auth/register", () => {
     beforeEach(() => {
         vi.clearAllMocks()
+        process.env.JWT_SECRET =
+            process.env.JWT_SECRET || "test-secret-key-for-register-tests"
     })
 
     it("should successfully register a user with valid data and CAPTCHA token", async () => {
