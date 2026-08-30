@@ -25,7 +25,7 @@ export async function getSessionUser(
         id: string
         google_email: string
         google_name: string
-    }>("SELECT id, google_email, google_name FROM users WHERE id = $1", [
+    }>("SELECT id, email AS google_email, name AS google_name FROM users WHERE id = $1", [
         session.user_id,
     ])
 

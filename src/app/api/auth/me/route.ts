@@ -58,7 +58,7 @@ export async function GET(request: NextRequest) {
             google_name: string
             google_picture?: string
         }>(
-            "SELECT id, google_email, google_name, google_picture FROM users WHERE id = $1",
+            "SELECT id, email AS google_email, name AS google_name, picture AS google_picture FROM users WHERE id = $1",
             [session.user_id]
         )
 

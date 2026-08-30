@@ -22,9 +22,11 @@ interface Step1PrefilledProps {
     editedData: {
         email: string
         name: string
+        picture?: string
     }
     errors: Record<string, string>
     onUpdateField: (field: "email" | "name", value: string) => void
+    onPictureChange?: (picture: string | undefined) => void
     onContinue: () => void
     isLoading?: boolean
 }
@@ -34,6 +36,7 @@ export default function Step1Prefilled({
     editedData,
     errors,
     onUpdateField,
+    onPictureChange,
     onContinue,
     isLoading = false,
 }: Step1PrefilledProps) {
@@ -41,6 +44,10 @@ export default function Step1Prefilled({
     const [editingField, setEditingField] = useState<"email" | "name" | null>(
         null
     )
+    const [pictureInput, setPictureInput] = useState(
+        editedData.picture ?? prefilledData.picture ?? ""
+    )
+    const [isPictureEditing, setIsPictureEditing] = useState(false)
 
     const handleEditField = useCallback((field: "email" | "name") => {
         setEditingField(field)
@@ -53,6 +60,19 @@ export default function Step1Prefilled({
         },
         [onUpdateField]
     )
+
+    const handleSavePicture = useCallback(() => {
+        const trimmed = pictureInput.trim()
+        const hasUrl = trimmed.startsWith("http://") || trimmed.startsWith("https://")
+        onPictureChange?.(hasUrl ? trimmed : undefined)
+        setIsPictureEditing(false)
+    }, [onPictureChange, pictureInput])
+
+    const handleRemovePicture = useCallback(() => {
+        setPictureInput("")
+        onPictureChange?.(undefined)
+        setIsPictureEditing(true)
+    }, [onPictureChange])
 
     const handleCancelEdit = useCallback(() => {
         setEditingField(null)
@@ -70,16 +90,83 @@ export default function Step1Prefilled({
                 </p>
             </div>
 
-            {/* Profile Picture */}
-            {prefilledData.picture && (
-                <div className="flex justify-center">
-                    <img
-                        src={prefilledData.picture}
-                        alt={prefilledData.name}
-                        className="w-24 h-24 rounded-full border-4 dark:border-white/10 dark:border-border object-cover"
-                    />
-                </div>
-            )}
+            {/* Profile Picture — double as the optional photo confirmation */}
+            <div className="flex flex-col items-center gap-3">
+                {(editedData.picture || prefilledData.picture) &&
+                !isPictureEditing ? (
+                    <>
+                        <img
+                            src={editedData.picture || prefilledData.picture}
+                            alt={prefilledData.name}
+                            className="w-24 h-24 rounded-full border-4 dark:border-white/10 dark:border-border object-cover"
+                        />
+                        <div className="flex gap-2">
+                            <button
+                                type="button"
+                                onClick={() => setIsPictureEditing(true)}
+                                className="text-xs text-primary hover:text-primary/80 font-medium"
+                            >
+                                {t("completeAccount.step1.changePicture")}
+                            </button>
+                            <button
+                                type="button"
+                                onClick={handleRemovePicture}
+                                className="text-xs text-destructive hover:text-destructive/80 font-medium"
+                            >
+                                {t("completeAccount.step1.removePicture")}
+                            </button>
+                        </div>
+                    </>
+                ) : (
+                    <>
+                        {editedData.picture || prefilledData.picture ? (
+                            <img
+                                src={editedData.picture || prefilledData.picture}
+                                alt={prefilledData.name}
+                                className="w-24 h-24 rounded-full border-4 dark:border-white/10 dark:border-border object-cover opacity-60"
+                            />
+                        ) : (
+                            <div className="w-24 h-24 rounded-full border-4 dark:border-white/10 dark:border-border bg-muted flex items-center justify-center text-muted-foreground">
+                                {(prefilledData.name || "?")
+                                    .charAt(0)
+                                    .toUpperCase()}
+                            </div>
+                        )}
+                        <input
+                            type="url"
+                            value={pictureInput}
+                            onChange={e => setPictureInput(e.target.value)}
+                            placeholder={t(
+                                "completeAccount.step1.picturePlaceholder"
+                            )}
+                            className="w-full max-w-sm px-3 py-2 text-sm border border-border rounded-md bg-background dark:bg-gray-800 text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                        />
+                        <div className="flex gap-2">
+                            <button
+                                type="button"
+                                onClick={handleSavePicture}
+                                className="px-3 py-1.5 text-xs font-medium rounded-md bg-primary text-primary-foreground hover:bg-primary/90"
+                            >
+                                {t("completeAccount.step1.confirmPicture")}
+                            </button>
+                            {prefilledData.picture && (
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        setPictureInput(prefilledData.picture || "")
+                                        setEditingField(null)
+                                        setIsPictureEditing(false)
+                                        onPictureChange?.(prefilledData.picture)
+                                    }}
+                                    className="px-3 py-1.5 text-xs font-medium rounded-md border border-border hover:bg-muted"
+                                >
+                                    {t("completeAccount.step1.keepPicture")}
+                                </button>
+                            )}
+                        </div>
+                    </>
+                )}
+            </div>
 
             {/* Form Fields */}
             <div className="space-y-4">

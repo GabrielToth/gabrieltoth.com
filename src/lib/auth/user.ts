@@ -37,11 +37,21 @@ export async function upsertUser(googleData: GoogleUserData): Promise<User> {
             )
         }
 
-        // Check if user exists by google_id
+        // Check if user exists — the users table uses canonical columns
+        // (email, name, oauth_provider, oauth_id, oauth_email, picture). Aliases
+        // keep the legacy `google_*` field names for existing consumers.
         const existingUser = await db.queryOne<User>(
-            `SELECT id, google_id, google_email, google_name, google_picture, created_at, updated_at
+            `SELECT id,
+                    email AS google_email,
+                    name AS google_name,
+                    oauth_id AS google_id,
+                    picture AS google_picture,
+                    oauth_provider, oauth_id, oauth_email, email, name, picture,
+                    password_hash, email_verified, account_completion_status,
+                    birth_date, phone AS phone_number,
+                    created_at, updated_at
              FROM users
-             WHERE google_id = $1`,
+             WHERE oauth_provider = 'google' AND oauth_id = $1`,
             [googleData.google_id]
         )
 
@@ -56,12 +66,21 @@ export async function upsertUser(googleData: GoogleUserData): Promise<User> {
                 // Update user with new data
                 const updatedUser = await db.queryOne<User>(
                     `UPDATE users
-                     SET google_name = $1, google_picture = $2, updated_at = NOW()
-                     WHERE google_id = $3
-                     RETURNING id, google_id, google_email, google_name, google_picture, created_at, updated_at`,
+                     SET name = $1, picture = $2, oauth_email = $3, email = $3, updated_at = NOW()
+                     WHERE oauth_provider = 'google' AND oauth_id = $4
+                     RETURNING id,
+                               email AS google_email,
+                               name AS google_name,
+                               oauth_id AS google_id,
+                               picture AS google_picture,
+                               oauth_provider, oauth_id, oauth_email, email, name, picture,
+                               password_hash, email_verified, account_completion_status,
+                               birth_date, phone AS phone_number,
+                               created_at, updated_at`,
                     [
                         googleData.google_name,
                         googleData.google_picture || null,
+                        googleData.google_email,
                         googleData.google_id,
                     ]
                 )
@@ -91,15 +110,23 @@ export async function upsertUser(googleData: GoogleUserData): Promise<User> {
             return existingUser
         }
 
-        // User does not exist - create new user
+        // User does not exist - create new user (canonical columns only)
         const newUser = await db.queryOne<User>(
-            `INSERT INTO users (google_id, google_email, google_name, google_picture, email, name, created_at, updated_at)
-             VALUES ($1, $2, $3, $4, $2, $3, NOW(), NOW())
-             RETURNING id, google_id, google_email, google_name, google_picture, created_at, updated_at`,
+            `INSERT INTO users (email, name, oauth_provider, oauth_id, oauth_email, picture, email_verified, account_completion_status, created_at, updated_at)
+             VALUES ($1, $2, 'google', $3, $1, $4, TRUE, 'pending', NOW(), NOW())
+             RETURNING id,
+                       email AS google_email,
+                       name AS google_name,
+                       oauth_id AS google_id,
+                       picture AS google_picture,
+                       oauth_provider, oauth_id, oauth_email, email, name, picture,
+                       password_hash, email_verified, account_completion_status,
+                       birth_date, phone AS phone_number,
+                       created_at, updated_at`,
             [
-                googleData.google_id,
                 googleData.google_email,
                 googleData.google_name,
+                googleData.google_id,
                 googleData.google_picture || null,
             ]
         )
@@ -134,7 +161,15 @@ export async function upsertUser(googleData: GoogleUserData): Promise<User> {
 export async function getUserById(userId: string): Promise<User | null> {
     try {
         return await db.queryOne<User>(
-            `SELECT id, google_id, google_email, google_name, google_picture, created_at, updated_at
+            `SELECT id,
+                    email AS google_email,
+                    name AS google_name,
+                    oauth_id AS google_id,
+                    picture AS google_picture,
+                    oauth_provider, oauth_id, oauth_email, email, name, picture,
+                    password_hash, email_verified, account_completion_status,
+                    birth_date, phone AS phone_number,
+                    created_at, updated_at
              FROM users
              WHERE id = $1`,
             [userId]
@@ -161,9 +196,17 @@ export async function getUserByGoogleId(
 ): Promise<User | null> {
     try {
         return await db.queryOne<User>(
-            `SELECT id, google_id, google_email, google_name, google_picture, created_at, updated_at
+            `SELECT id,
+                    email AS google_email,
+                    name AS google_name,
+                    oauth_id AS google_id,
+                    picture AS google_picture,
+                    oauth_provider, oauth_id, oauth_email, email, name, picture,
+                    password_hash, email_verified, account_completion_status,
+                    birth_date, phone AS phone_number,
+                    created_at, updated_at
              FROM users
-             WHERE google_id = $1`,
+             WHERE oauth_provider = 'google' AND oauth_id = $1`,
             [googleId]
         )
     } catch (error) {
@@ -201,9 +244,9 @@ export async function getUserByEmail(email: string): Promise<OAuthUser | null> {
 
         // Fallback to old schema (google_email column) for backward compatibility
         const legacyUser = await db.queryOne<User>(
-            `SELECT id, google_id, google_email, google_name, google_picture, created_at, updated_at
+            `SELECT id, password_hash, oauth_provider, oauth_id, oauth_email, email, name, picture, email_verified, account_completion_status, birth_date, phone AS phone_number, created_at, updated_at
              FROM users
-             WHERE google_email = $1`,
+             WHERE oauth_email = $1`,
             [email]
         )
 
@@ -413,6 +456,7 @@ export async function updateUserAccountCompletion(
         password_hash?: string
         phone_number?: string
         birth_date?: string | Date
+        picture?: string | null
         account_completion_status?: "pending" | "in_progress" | "completed"
         account_completed_at?: Date
     }
@@ -447,8 +491,14 @@ export async function updateUserAccountCompletion(
         }
 
         if (data.phone_number !== undefined) {
-            updates.push(`phone_number = $${paramIndex}`)
+            updates.push(`phone = $${paramIndex}`)
             values.push(data.phone_number)
+            paramIndex++
+        }
+
+        if (data.picture !== undefined) {
+            updates.push(`picture = $${paramIndex}`)
+            values.push(data.picture || null)
             paramIndex++
         }
 
@@ -484,7 +534,7 @@ export async function updateUserAccountCompletion(
         const query = `UPDATE users
                        SET ${updates.join(", ")}
                        WHERE id = $${paramIndex}
-                       RETURNING id, email, password_hash, oauth_provider, oauth_id, name, picture, phone_number, birth_date, account_completion_status, account_completed_at, email_verified, created_at, updated_at`
+                       RETURNING id, email, password_hash, oauth_provider, oauth_id, name, picture, phone AS phone_number, birth_date, account_completion_status, account_completed_at, email_verified, created_at, updated_at`
 
         const updatedUser = await db.queryOne<OAuthUser>(query, values)
 

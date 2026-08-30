@@ -12,6 +12,7 @@ import Step3Verification from "./step-3-verification"
 
 // Mock next-intl
 vi.mock("next-intl", () => ({
+    useLocale: () => "en",
     useTranslations: () => (key: string) => {
         const translations: Record<string, string> = {
             "completeAccount.step3.description":

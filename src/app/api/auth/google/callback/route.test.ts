@@ -8,7 +8,7 @@
 
 import { NextRequest } from "next/server"
 import { beforeEach, describe, expect, it, vi } from "vitest"
-import { POST } from "./route"
+import { GET, POST } from "./route"
 
 // Mock dependencies
 vi.mock("@/lib/auth/google-auth", () => ({
@@ -53,8 +53,10 @@ import { upsertUser } from "@/lib/auth/user"
 describe("POST /api/auth/google/callback", () => {
     beforeEach(() => {
         vi.clearAllMocks()
-        process.env.GOOGLE_REDIRECT_URI =
+        process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI =
             "http://localhost:3000/api/auth/google/callback"
+        process.env.JWT_SECRET =
+            process.env.JWT_SECRET || "test-secret-key-for-callback-tests"
     })
 
     it("returns 400 when authorization code is missing", async () => {
@@ -75,7 +77,7 @@ describe("POST /api/auth/google/callback", () => {
     })
 
     it("returns 500 when redirect URI is not configured", async () => {
-        delete process.env.GOOGLE_REDIRECT_URI
+        delete process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI
 
         const request = new NextRequest(
             "http://localhost:3000/api/auth/google/callback",
@@ -184,6 +186,7 @@ describe("POST /api/auth/google/callback", () => {
             google_email: "user@example.com",
             google_name: "Test User",
             google_picture: "https://example.com/pic.jpg",
+            account_completion_status: "completed",
         })
         ;(createSession as any).mockRejectedValueOnce(
             new Error("Database error")
@@ -218,6 +221,7 @@ describe("POST /api/auth/google/callback", () => {
             google_email: "user@example.com",
             google_name: "Test User",
             google_picture: "https://example.com/pic.jpg",
+            account_completion_status: "completed",
         })
         ;(createSession as any).mockResolvedValueOnce({
             id: "session-123",
@@ -264,6 +268,7 @@ describe("POST /api/auth/google/callback", () => {
             google_email: "user@example.com",
             google_name: "Test User",
             google_picture: "https://example.com/pic.jpg",
+            account_completion_status: "completed",
         })
         ;(createSession as any).mockResolvedValueOnce({
             id: "session-123",
@@ -288,5 +293,74 @@ describe("POST /api/auth/google/callback", () => {
         expect(setCookieHeader).toContain("session=session-token-123")
         expect(setCookieHeader).toContain("HttpOnly")
         expect(setCookieHeader?.toLowerCase()).toContain("samesite=lax")
+    })
+
+    it("redirects to account completion when OAuth account is pending", async () => {
+        ;(exchangeCodeForToken as any).mockResolvedValueOnce("valid-token")
+        ;(validateGoogleToken as any).mockResolvedValueOnce({
+            sub: "google-123",
+            email: "user@example.com",
+            name: "Test User",
+            picture: "https://example.com/pic.jpg",
+        })
+        ;(upsertUser as any).mockResolvedValueOnce({
+            id: "user-123",
+            google_id: "google-123",
+            google_email: "user@example.com",
+            google_name: "Test User",
+            google_picture: "https://example.com/pic.jpg",
+            account_completion_status: "pending",
+        })
+
+        const request = new NextRequest(
+            "http://localhost:3000/api/auth/google/callback",
+            {
+                method: "POST",
+                body: JSON.stringify({ code: "test-code" }),
+            }
+        )
+
+        const response = await POST(request)
+        const data = await response.json()
+
+        expect(response.status).toBe(200)
+        expect(data.success).toBe(true)
+        expect(data.requiresCompletion).toBe(true)
+        expect(data.tempToken).toBeTruthy()
+        expect(data.redirectUrl).toContain("/auth/complete-account")
+        // No session cookie should be set for incomplete accounts
+        expect(response.headers.get("set-cookie")).toBeNull()
+    })
+
+    it("GET redirects to account completion page when OAuth account is pending", async () => {
+        ;(exchangeCodeForToken as any).mockResolvedValueOnce("valid-token")
+        ;(validateGoogleToken as any).mockResolvedValueOnce({
+            sub: "google-123",
+            email: "user@example.com",
+            name: "Test User",
+            picture: "https://example.com/pic.jpg",
+        })
+        ;(upsertUser as any).mockResolvedValueOnce({
+            id: "user-123",
+            google_id: "google-123",
+            google_email: "user@example.com",
+            google_name: "Test User",
+            google_picture: "https://example.com/pic.jpg",
+            account_completion_status: "pending",
+        })
+
+        const request = new NextRequest(
+            "http://localhost:3000/api/auth/google/callback?code=test-code",
+            { method: "GET" }
+        )
+
+        const response = await GET(request)
+
+        expect(response.status).toBe(307)
+        expect(response.headers.get("location")).toContain(
+            "/auth/complete-account"
+        )
+        // No session cookie should be set for incomplete accounts
+        expect(response.headers.get("set-cookie")).toBeNull()
     })
 })

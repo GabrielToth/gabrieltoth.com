@@ -121,7 +121,7 @@ export async function GET(
 
         // ── Look up user email ──
         const user = await db.queryOne<{ google_email: string }>(
-            "SELECT google_email FROM users WHERE id = $1",
+            "SELECT email AS google_email FROM users WHERE id = $1",
             [session.user_id]
         )
 

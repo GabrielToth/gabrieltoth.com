@@ -8,7 +8,7 @@
 
 import { createSession } from "@/lib/auth/session"
 import { generateTempToken, validateTempToken } from "@/lib/auth/temp-token"
-import { getUserByEmail, updateUserAccountCompletion } from "@/lib/auth/user"
+import { getUserByEmail, getUserByOAuthId, updateUserAccountCompletion } from "@/lib/auth/user"
 import { rateLimitByKey } from "@/lib/rate-limit"
 import { hashPassword } from "@/lib/auth/password-hashing"
 import { NextRequest } from "next/server"
@@ -78,6 +78,15 @@ describe("POST /api/auth/complete-account", () => {
 
             vi.mocked(getUserByEmail).mockResolvedValue(null)
             vi.mocked(hashPassword).mockResolvedValue("hashed-password")
+            vi.mocked(getUserByOAuthId).mockResolvedValue({
+                id: "user-123",
+                email: "user@example.com",
+                oauth_provider: "google",
+                oauth_id: "google-123",
+                name: "John Doe",
+                created_at: new Date(),
+                updated_at: new Date(),
+            } as never)
             vi.mocked(updateUserAccountCompletion).mockResolvedValue(
                 mockUser as never
             )
@@ -523,6 +532,15 @@ describe("POST /api/auth/complete-account", () => {
 
             vi.mocked(getUserByEmail).mockResolvedValue(null)
             vi.mocked(hashPassword).mockResolvedValue("hashed-password")
+            vi.mocked(getUserByOAuthId).mockResolvedValue({
+                id: "user-123",
+                email: "user@example.com",
+                oauth_provider: "google",
+                oauth_id: "google-123",
+                name: "John Doe",
+                created_at: new Date(),
+                updated_at: new Date(),
+            } as never)
             vi.mocked(updateUserAccountCompletion).mockResolvedValue(
                 mockUser as never
             )
@@ -644,6 +662,15 @@ describe("POST /api/auth/complete-account", () => {
 
             vi.mocked(getUserByEmail).mockResolvedValue(null)
             vi.mocked(hashPassword).mockResolvedValue("hashed-password")
+            vi.mocked(getUserByOAuthId).mockResolvedValue({
+                id: "user-123",
+                email: "user@example.com",
+                oauth_provider: "google",
+                oauth_id: "google-123",
+                name: "John Doe",
+                created_at: new Date(),
+                updated_at: new Date(),
+            } as never)
             vi.mocked(updateUserAccountCompletion).mockResolvedValue(
                 mockUser as never
             )
@@ -724,6 +751,15 @@ describe("POST /api/auth/complete-account", () => {
 
             vi.mocked(getUserByEmail).mockResolvedValue(null)
             vi.mocked(hashPassword).mockResolvedValue("hashed-password")
+            vi.mocked(getUserByOAuthId).mockResolvedValue({
+                id: "user-123",
+                email: "user@example.com",
+                oauth_provider: "google",
+                oauth_id: "google-123",
+                name: "John Doe",
+                created_at: new Date(),
+                updated_at: new Date(),
+            } as never)
             vi.mocked(updateUserAccountCompletion).mockResolvedValue(
                 mockUser as never
             )
