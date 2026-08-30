@@ -7,7 +7,6 @@ import { updateUserProfile } from "@/lib/api/user"
 import { logger } from "@/lib/logger"
 
 import { BillingSection } from "./BillingSection"
-import { ChannelsSection } from "./ChannelsSection"
 import { IntegrationsSection } from "./IntegrationsSection"
 import { LocalEnvSection } from "./LocalEnvSection"
 import { PreferencesSection } from "./PreferencesSection"
@@ -69,11 +68,32 @@ export interface SettingsContainerProps {
 
 export const SettingsContainer: React.FC<SettingsContainerProps> = () => {
     const [user, setUser] = useState<User | null>(null)
-    const [preferences, setPreferences] = useState<Preferences>({
-        notificationsEnabled: true,
-        language: "en",
-        theme: "auto",
-        timezone: "UTC",
+    const [preferences, setPreferences] = useState<Preferences>(() => {
+        // Load persisted preferences from localStorage so settings survive
+        // closing the tab / browser.
+        if (typeof window !== "undefined") {
+            try {
+                const raw = window.localStorage.getItem("user-preferences")
+                if (raw) {
+                    const parsed = JSON.parse(raw)
+                    return {
+                        notificationsEnabled:
+                            parsed.notificationsEnabled ?? true,
+                        language: parsed.language ?? "en",
+                        theme: parsed.theme ?? "auto",
+                        timezone: parsed.timezone ?? "UTC",
+                    }
+                }
+            } catch {
+                // ignore corrupt JSON
+            }
+        }
+        return {
+            notificationsEnabled: true,
+            language: "en",
+            theme: "auto",
+            timezone: "UTC",
+        }
     })
     const [channels, setChannels] = useState<SocialChannel[]>([])
     const [billing, setBilling] = useState<BillingInfo | null>(null)
@@ -285,15 +305,12 @@ export const SettingsContainer: React.FC<SettingsContainerProps> = () => {
                 onValueChange={setActiveTab}
                 className="space-y-6"
             >
-                <TabsList className="grid w-full grid-cols-2 md:grid-cols-7 gap-1">
+                <TabsList className="grid w-full grid-cols-2 md:grid-cols-6 gap-1">
                     <TabsTrigger value="profile">
                         {t("tabs.profile")}
                     </TabsTrigger>
                     <TabsTrigger value="preferences">
                         {t("tabs.preferences")}
-                    </TabsTrigger>
-                    <TabsTrigger value="channels">
-                        {t("tabs.channels")}
                     </TabsTrigger>
                     <TabsTrigger value="security">
                         {t("tabs.security")}
@@ -322,18 +339,6 @@ export const SettingsContainer: React.FC<SettingsContainerProps> = () => {
                     <PreferencesSection
                         preferences={preferences}
                         onSave={handleSavePreferences}
-                    />
-                </TabsContent>
-
-                <TabsContent value="channels" className="space-y-6">
-                    <ChannelsSection
-                        channels={channels}
-                        onConnect={async () => {
-                            await handleFetchChannels()
-                        }}
-                        onDisconnect={async () => {
-                            await handleFetchChannels()
-                        }}
                     />
                 </TabsContent>
 

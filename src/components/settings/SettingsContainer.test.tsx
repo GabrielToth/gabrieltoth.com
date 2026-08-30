@@ -102,9 +102,6 @@ describe("SettingsContainer", () => {
             screen.getByRole("tab", { name: /preferences/i })
         ).toBeInTheDocument()
         expect(
-            screen.getByRole("tab", { name: /channels/i })
-        ).toBeInTheDocument()
-        expect(
             screen.getByRole("tab", { name: /security/i })
         ).toBeInTheDocument()
         expect(

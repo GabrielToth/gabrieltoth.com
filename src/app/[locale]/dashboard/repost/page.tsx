@@ -2,6 +2,7 @@
 
 import { useTranslations } from "next-intl"
 import { useCallback, useEffect, useState } from "react"
+import { TutorialLauncher } from "@/components/tutorial/tutorial-launcher"
 
 interface ChannelGroup {
     id: string
@@ -119,12 +120,15 @@ export default function RepostPage() {
                         in your groups
                     </p>
                 </div>
-                <button
-                    onClick={() => setShowForm(!showForm)}
-                    className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-500"
-                >
-                    {showForm ? "Cancel" : "New Config"}
-                </button>
+                <div className="flex items-center gap-2">
+                    <TutorialLauncher category="repost" />
+                    <button
+                        onClick={() => setShowForm(!showForm)}
+                        className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-500"
+                    >
+                        {showForm ? "Cancel" : "New Config"}
+                    </button>
+                </div>
             </div>
 
             {showForm && (

@@ -4,6 +4,7 @@ import { ViewerAnalyticsCard } from "@/components/dashboard/live/viewer-analytic
 import { InsightsContainer } from "@/components/insights/InsightsContainer"
 import { useTranslations } from "next-intl"
 import { useEffect, useState } from "react"
+import { TutorialLauncher } from "@/components/tutorial/tutorial-launcher"
 
 export default function InsightsPage() {
     const t = useTranslations("dashboard.insights")
@@ -87,11 +88,14 @@ export default function InsightsPage() {
 
     return (
         <div className="space-y-6">
-            <div>
-                <h1 className="text-3xl font-bold text-foreground">
-                    {t("title")}
-                </h1>
-                <p className="mt-2 text-muted-foreground">{t("description")}</p>
+            <div className="flex items-start justify-between">
+                <div>
+                    <h1 className="text-3xl font-bold text-foreground">
+                        {t("title")}
+                    </h1>
+                    <p className="mt-2 text-muted-foreground">{t("description")}</p>
+                </div>
+                <TutorialLauncher category="insights" />
             </div>
 
             {/* Viewer Analytics (Viewer Retention & Chat Retention) */}

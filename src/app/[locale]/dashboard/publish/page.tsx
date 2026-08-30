@@ -7,6 +7,7 @@ import { Post } from "@/components/publish/PostCard"
 import { UniversalPostingButton } from "@/components/publish"
 import { useLocale, useTranslations } from "next-intl"
 import { format } from "date-fns"
+import { TutorialLauncher } from "@/components/tutorial/tutorial-launcher"
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Suspense, useCallback, useEffect, useMemo, useState } from "react"
 
@@ -157,10 +158,13 @@ export default function PublishPage() {
                         {t("description")}
                     </p>
                 </div>
-                <UniversalPostingButton
-                    linkedNetworksCount={3}
-                    onOpen={handleNewPost}
-                />
+                <div className="flex items-center gap-2">
+                    <TutorialLauncher category="publish" />
+                    <UniversalPostingButton
+                        linkedNetworksCount={3}
+                        onOpen={handleNewPost}
+                    />
+                </div>
             </div>
 
             <CalendarView

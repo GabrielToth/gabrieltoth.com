@@ -10,6 +10,13 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Toggle } from "@/components/ui/toggle"
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select"
 import { useTranslations } from "next-intl"
 import React, { useState } from "react"
 import { User } from "./SettingsContainer"
@@ -64,6 +71,31 @@ export const SecuritySection: React.FC<SecuritySectionProps> = ({ user }) => {
     // 2FA state
     const [twoFactorEnabled, setTwoFactorEnabled] = useState(false)
     const [showTwoFactorSetup, setShowTwoFactorSetup] = useState(false)
+
+    // Account auto-delete after inactivity
+    const [autoDeleteEnabled, setAutoDeleteEnabled] = useState(
+        () => localStorage?.getItem("gt_autodelete_enabled") === "1" || false
+    )
+    const [autoDeletePeriod, setAutoDeletePeriod] = useState(
+        () => localStorage?.getItem("gt_autodelete_period") ?? "indefinite"
+    )
+
+    const handleAutoDeleteToggle = (checked: boolean) => {
+        setAutoDeleteEnabled(checked)
+        try {
+            localStorage?.setItem(
+                "gt_autodelete_enabled",
+                checked ? "1" : "0"
+            )
+        } catch {}
+    }
+
+    const handleAutoDeletePeriod = (value: string) => {
+        setAutoDeletePeriod(value)
+        try {
+            localStorage?.setItem("gt_autodelete_period", value)
+        } catch {}
+    }
 
     // Password change state
     const [showPasswordForm, setShowPasswordForm] = useState(false)
@@ -495,6 +527,73 @@ export const SecuritySection: React.FC<SecuritySectionProps> = ({ user }) => {
                                 </Button>
                             </div>
                         </form>
+                    )}
+                </CardContent>
+            </Card>
+
+            {/* Account auto-delete after inactivity */}
+            <Card>
+                <CardHeader>
+                    <CardTitle>{t("accountAutoDelete")}</CardTitle>
+                    <CardDescription>
+                        {t("accountAutoDeleteDescription")}
+                    </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                    <div className="flex items-center justify-between">
+                        <div>
+                            <p className="font-medium text-foreground dark:text-foreground">
+                                {t("accountAutoDeleteTitle")}
+                            </p>
+                            <p className="text-sm text-muted-foreground dark:text-foreground">
+                                {t("accountAutoDeleteHint")}
+                            </p>
+                        </div>
+                        <Toggle
+                            pressed={autoDeleteEnabled}
+                            onPressedChange={handleAutoDeleteToggle}
+                            aria-label={t("accountAutoDelete")}
+                        />
+                    </div>
+
+                    {autoDeleteEnabled && (
+                        <div className="flex items-center gap-3">
+                            <label
+                                htmlFor="autodelete-period"
+                                className="text-sm font-medium text-foreground dark:text-foreground"
+                            >
+                                {t("accountAutoDeletePeriod")}
+                            </label>
+                            <Select
+                                value={autoDeletePeriod}
+                                onValueChange={handleAutoDeletePeriod}
+                            >
+                                <SelectTrigger
+                                    id="autodelete-period"
+                                    className="w-44"
+                                >
+                                    <SelectValue
+                                        placeholder={t(
+                                            "accountAutoDeletePeriod"
+                                        )}
+                                    />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="7d">
+                                        {t("period7d")}
+                                    </SelectItem>
+                                    <SelectItem value="30d">
+                                        {t("period30d")}
+                                    </SelectItem>
+                                    <SelectItem value="90d">
+                                        {t("period90d")}
+                                    </SelectItem>
+                                    <SelectItem value="1y">
+                                        {t("period1y")}
+                                    </SelectItem>
+                                </SelectContent>
+                            </Select>
+                        </div>
                     )}
                 </CardContent>
             </Card>

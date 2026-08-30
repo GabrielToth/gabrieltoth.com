@@ -153,10 +153,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
     }
 
     const navItems = [
+        { id: "discover", label: t("discover"), icon: "🌐" },
         { id: "publish", label: t("publish"), icon: "📝" },
         { id: "live", label: t("live"), icon: "📡" },
         { id: "insights", label: t("insights"), icon: "📊" },
-        { id: "discover", label: t("discover"), icon: "🌐" },
         { id: "repost", label: t("repost"), icon: "🔄" },
         { id: "cloner", label: t("cloner"), icon: "🧬" },
         { id: "channels", label: t("channels"), icon: "🔗" },

@@ -10,6 +10,7 @@ import { ChatModerationPanel } from "@/components/dashboard/live/chat-moderation
 import { StreamHealthHeader } from "@/components/dashboard/live/stream-health-header"
 import { useLocale, useTranslations } from "next-intl"
 import { useEffect, useState } from "react"
+import { TutorialLauncher } from "@/components/tutorial/tutorial-launcher"
 
 interface LivePlatform {
     platform: string
@@ -183,6 +184,7 @@ export default function LiveDashboardPage() {
                     <StreamHealthHeader />
                 </div>
                 <div className="flex items-center gap-2">
+                    <TutorialLauncher category="live" />
                     <button
                         onClick={() => setShowScheduler(!showScheduler)}
                         className={`rounded-md px-4 py-2 text-sm font-medium transition-colors ${
