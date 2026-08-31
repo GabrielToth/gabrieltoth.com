@@ -1,6 +1,6 @@
 # Auditoria i18n — gabrieltoth.com
 
-> Gerado em: 2026-08-30T22:49:40.859Z | Branch: main | Locales: en, pt-BR, es, de, fr | next-intl (request.ts + useTranslations/getTranslations)
+> Gerado em: 2026-08-31T12:48:56.884Z | Branch: main | Locales: en, pt-BR, es, de, fr | next-intl (request.ts + useTranslations/getTranslations)
 > Como usar: este arquivo é a fonte de consulta de cobertura. Filtre por "❌" para achar gaps. Padrões para novos idiomas: ver §10. Checklist de PR: ver §11.
 
 ## Índice
@@ -27,13 +27,13 @@ A. [Apêndice — comandos de validação](#a-apêndice--comandos-de-validação
 | Wrappers (re-export de slug localizado) | 37 |
 | Canônicas (layout/conteúdo real) | 52 |
 | .tsx em src/app+src/components (sem __tests__/.test.) | 323 |
-| Com i18n direto (useTranslations/getTranslations) | 139 (43%) |
-| Sem i18n direto | 184 (57%) |
-| Namespaces por locale | 34 (9 questions/* à parte) |
-| Namespaces carregados em request.ts | 32 |
+| Com i18n direto (useTranslations/getTranslations) | 144 (45%) |
+| Sem i18n direto | 179 (55%) |
+| Namespaces por locale | 36 (9 questions/* à parte) |
+| Namespaces carregados em request.ts | 34 |
 | Namespaces existentes mas NÃO carregados | breadcrumbs.json, seo.json |
-| Páginas canônicas SEM i18n direto | 20 |
-| Páginas canônicas COM i18n direto | 32 |
+| Páginas canônicas SEM i18n direto | 15 |
+| Páginas canônicas COM i18n direto | 37 |
 
 **Leitura em 30s:**
 - **Cobertura boa** em: dashboard (channels/cloner/credits/discover/insights/live/publish/repost/settings), minecraft (todos os subpaths), amazon-affiliate, auth/complete-account, forgot-password, home/landing.
@@ -141,6 +141,8 @@ const messages: MessagesRecord = {
         termsOfServicePageHero,
         error,
         notFound,
+        blog,
+        payments,
         layout: {
             header,
             footer: await loadJson(
@@ -157,7 +159,7 @@ const messages: MessagesRecord = {
 
 ```
 
-**Carregados (32):** aboutMe.json, amazonAffiliate.json, auth.json, channelManagement.json, dashboard.json, editors.json, error.json, home.json, homePageHero.json, landing.json, layout.footer.json, layout.header.json, minecraft.json, minecraftContributionsPageHero.json, minecraftHypixelQolPageHero.json, minecraftModpacksPageHero.json, minecraftModsPageHero.json, minecraftPageHero.json, minecraftPluginsPageHero.json, notFound.json, pcOptimization.json, pcOptimizationPageHero.json, pcOptimizationTerms.json, pcOptimizationTermsPageHero.json, pcOptimizationWhatsapp.json, privacyPageHero.json, privacyPolicy.json, publish.json, services.json, servicesPageHero.json, termsOfService.json, termsOfServicePageHero.json
+**Carregados (34):** aboutMe.json, amazonAffiliate.json, auth.json, blog.json, channelManagement.json, dashboard.json, editors.json, error.json, home.json, homePageHero.json, landing.json, layout.footer.json, layout.header.json, minecraft.json, minecraftContributionsPageHero.json, minecraftHypixelQolPageHero.json, minecraftModpacksPageHero.json, minecraftModsPageHero.json, minecraftPageHero.json, minecraftPluginsPageHero.json, notFound.json, payments.json, pcOptimization.json, pcOptimizationPageHero.json, pcOptimizationTerms.json, pcOptimizationTermsPageHero.json, pcOptimizationWhatsapp.json, privacyPageHero.json, privacyPolicy.json, publish.json, services.json, servicesPageHero.json, termsOfService.json, termsOfServicePageHero.json
 
 **NÃO carregados (2):** breadcrumbs.json, seo.json
 
@@ -285,16 +287,17 @@ const urlMapping: Record<Locale, Record<string, string>> = {
 
 ## 3) Namespaces — inventário e paridade
 
-Todos os 5 locales têm exatamente os mesmos 34 arquivos em src/i18n/<locale>/*.json + 9 em questions/*.json.
+Todos os 5 locales têm exatamente os mesmos 36 arquivos em src/i18n/<locale>/*.json + 9 em questions/*.json.
 
 | Namespace | en | pt-BR | es | de | fr | Status |
 |---|---:|---:|---:|---:|---:|---|
 | aboutMe.json | 3 | 3 | 3 | 3 | 3 | ✅ paridade |
 | amazonAffiliate.json | 3 | 3 | 3 | 3 | 3 | ✅ paridade |
 | auth.json | 177 | 177 | 177 | 177 | 177 | ✅ paridade |
+| blog.json | 6 | 6 | 6 | 6 | 6 | ✅ paridade |
 | breadcrumbs.json | 1 | 1 | 1 | 1 | 1 | ✅ paridade |
 | channelManagement.json | 94 | 94 | 94 | 94 | 94 | ✅ paridade |
-| dashboard.json | 675 | 675 | 675 | 675 | 675 | ✅ paridade |
+| dashboard.json | 681 | 681 | 681 | 681 | 681 | ✅ paridade |
 | editors.json | 104 | 104 | 104 | 104 | 104 | ✅ paridade |
 | error.json | 5 | 5 | 5 | 5 | 5 | ✅ paridade |
 | home.json | 114 | 114 | 114 | 114 | 114 | ✅ paridade |
@@ -310,6 +313,7 @@ Todos os 5 locales têm exatamente os mesmos 34 arquivos em src/i18n/<locale>/*.
 | minecraftPageHero.json | 3 | 3 | 3 | 3 | 3 | ✅ paridade |
 | minecraftPluginsPageHero.json | 3 | 3 | 3 | 3 | 3 | ✅ paridade |
 | notFound.json | 11 | 11 | 11 | 11 | 11 | ✅ paridade |
+| payments.json | 8 | 8 | 8 | 8 | 8 | ✅ paridade |
 | pcOptimization.json | 34 | 34 | 34 | 34 | 34 | ✅ paridade |
 | pcOptimizationPageHero.json | 4 | 4 | 4 | 4 | 4 | ✅ paridade |
 | pcOptimizationTerms.json | 19 | 19 | 19 | 19 | 19 | ✅ paridade |
@@ -405,8 +409,8 @@ Legenda: **i18n direto** = page.tsx importa e chama useTranslations/getTranslati
 | 1 | `[locale]/about-me/page.tsx` | `/en/about-me` | `/pt-BR/quem-sou-eu` | `/es/acerca-de-mi` | `/de/uber-mich` | `/fr/a-propos-de-moi` | ❌ | `—` | ⚠️ Delegado: AboutMeSection tem i18n (aboutMe), mas page metadata/SEO hardcoded EN + StructuredData sem t() |
 | 2 | `[locale]/amazon-affiliate/page.tsx` | `/en/amazon-affiliate` | `/pt-BR/afiliados-amazon` | `/es/afiliados-amazon` | `/de/amazon-partner` | `/fr/affiliation-amazon` | ✅ | `amazonAffiliate` | ✅ |
 | 3 | `[locale]/auth/complete-account/page.tsx` | `/en/auth/complete-account` | `/pt-BR/auth/complete-account` | `/es/auth/complete-account` | `/de/auth/complete-account` | `/fr/auth/complete-account` | ✅ | `auth, auth` | ✅ |
-| 4 | `[locale]/blog/[slug]/page.tsx` | `/en/blog/[slug]` | `/pt-BR/blog/[slug]` | `/es/blog/[slug]` | `/de/blog/[slug]` | `/fr/blog/[slug]` | ❌ | `—` | ❌ Sem i18n — blog lista/detalhe hardcoded EN (sem namespace blog) |
-| 5 | `[locale]/blog/page.tsx` | `/en/blog` | `/pt-BR/blog` | `/es/blog` | `/de/blog` | `/fr/blog` | ❌ | `—` | ❌ Sem i18n — blog lista/detalhe hardcoded EN (sem namespace blog) |
+| 4 | `[locale]/blog/[slug]/page.tsx` | `/en/blog/[slug]` | `/pt-BR/blog/[slug]` | `/es/blog/[slug]` | `/de/blog/[slug]` | `/fr/blog/[slug]` | ✅ | `blog` | ✅ |
+| 5 | `[locale]/blog/page.tsx` | `/en/blog` | `/pt-BR/blog` | `/es/blog` | `/de/blog` | `/fr/blog` | ✅ | `blog` | ✅ |
 | 6 | `[locale]/channel-management/page.tsx` | `/en/channel-management` | `/pt-BR/gerenciamento-de-canais` | `/es/gestion-de-canales` | `/de/kanalverwaltung` | `/fr/gestion-de-chaine` | ❌ | `—` | ⚠️ Delegado parcial: channel-management-view/breadcrumbs têm i18n, mas page.tsx sem t() — breadcrumbs/SEO vêm de helper hardcoded |
 | 7 | `[locale]/dashboard/channels/page.tsx` | `/en/dashboard/channels` | `/pt-BR/dashboard/channels` | `/es/dashboard/channels` | `/de/dashboard/channels` | `/fr/dashboard/channels` | ✅ | `dashboard` | ✅ |
 | 8 | `[locale]/dashboard/cloner/page.tsx` | `/en/dashboard/cloner` | `/pt-BR/dashboard/cloner` | `/es/dashboard/cloner` | `/de/dashboard/cloner` | `/fr/dashboard/cloner` | ✅ | `dashboard.cloner` | ✅ |
@@ -415,7 +419,7 @@ Legenda: **i18n direto** = page.tsx importa e chama useTranslations/getTranslati
 | 11 | `[locale]/dashboard/docs/[category]/page.tsx` | `/en/dashboard/docs/[category]` | `/pt-BR/dashboard/docs/[category]` | `/es/dashboard/docs/[category]` | `/de/dashboard/docs/[category]` | `/fr/dashboard/docs/[category]` | ❌ | `—` | ❌ Sem i18n — docs/tutorial hardcoded |
 | 12 | `[locale]/dashboard/docs/page.tsx` | `/en/dashboard/docs` | `/pt-BR/dashboard/docs` | `/es/dashboard/docs` | `/de/dashboard/docs` | `/fr/dashboard/docs` | ❌ | `—` | ❌ Sem i18n — docs/tutorial hardcoded |
 | 13 | `[locale]/dashboard/insights/page.tsx` | `/en/dashboard/insights` | `/pt-BR/dashboard/insights` | `/es/dashboard/insights` | `/de/dashboard/insights` | `/fr/dashboard/insights` | ✅ | `dashboard.insights` | ✅ |
-| 14 | `[locale]/dashboard/live/chat-popout/page.tsx` | `/en/dashboard/live/chat-popout` | `/pt-BR/dashboard/live/chat-popout` | `/es/dashboard/live/chat-popout` | `/de/dashboard/live/chat-popout` | `/fr/dashboard/live/chat-popout` | ❌ | `—` | ❌ Sem i18n — popout hardcoded (título/copy) |
+| 14 | `[locale]/dashboard/live/chat-popout/page.tsx` | `/en/dashboard/live/chat-popout` | `/pt-BR/dashboard/live/chat-popout` | `/es/dashboard/live/chat-popout` | `/de/dashboard/live/chat-popout` | `/fr/dashboard/live/chat-popout` | ✅ | `dashboard` | ✅ |
 | 15 | `[locale]/dashboard/live/page.tsx` | `/en/dashboard/live` | `/pt-BR/dashboard/live` | `/es/dashboard/live` | `/de/dashboard/live` | `/fr/dashboard/live` | ✅ | `dashboard.live` | ✅ |
 | 16 | `[locale]/dashboard/page.tsx` | `/en/dashboard` | `/pt-BR/dashboard` | `/es/dashboard` | `/de/dashboard` | `/fr/dashboard` | ✅ | `dashboard.common` | ✅ |
 | 17 | `[locale]/dashboard/publish/page.tsx` | `/en/dashboard/publish` | `/pt-BR/dashboard/publish` | `/es/dashboard/publish` | `/de/dashboard/publish` | `/fr/dashboard/publish` | ✅ | `dashboard.publish` | ✅ |
@@ -430,9 +434,9 @@ Legenda: **i18n direto** = page.tsx importa e chama useTranslations/getTranslati
 | 26 | `[locale]/minecraft/mods/page.tsx` | `/en/minecraft/mods` | `/pt-BR/minecraft/mods` | `/es/minecraft/mods` | `/de/minecraft/mods` | `/fr/minecraft/mods` | ✅ | `minecraft, minecraft, minecraftModsPageHero` | ✅ |
 | 27 | `[locale]/minecraft/page.tsx` | `/en/minecraft` | `/pt-BR/minecraft` | `/es/minecraft` | `/de/minecraft` | `/fr/minecraft` | ✅ | `minecraft, minecraft, minecraftPageHero` | ✅ |
 | 28 | `[locale]/minecraft/plugins/page.tsx` | `/en/minecraft/plugins` | `/pt-BR/minecraft/plugins` | `/es/minecraft/plugins` | `/de/minecraft/plugins` | `/fr/minecraft/plugins` | ✅ | `minecraft, minecraft, minecraftPluginsPageHero` | ✅ |
-| 29 | `[locale]/obs/page.tsx` | `/en/obs` | `/pt-BR/obs` | `/es/obs` | `/de/obs` | `/fr/obs` | ❌ | `—` | ❌ Sem i18n — obs page hardcoded |
+| 29 | `[locale]/obs/page.tsx` | `/en/obs` | `/pt-BR/obs` | `/es/obs` | `/de/obs` | `/fr/obs` | ✅ | `dashboard` | ✅ |
 | 30 | `[locale]/page.tsx` | `/en/page.tsx` | `/pt-BR/page.tsx` | `/es/page.tsx` | `/de/page.tsx` | `/fr/page.tsx` | ✅ | `landing` | ✅ |
-| 31 | `[locale]/payments/checkout/page.tsx` | `/en/payments/checkout` | `/pt-BR/payments/checkout` | `/es/payments/checkout` | `/de/payments/checkout` | `/fr/payments/checkout` | ❌ | `—` | ❌ Sem i18n — checkout hardcoded |
+| 31 | `[locale]/payments/checkout/page.tsx` | `/en/payments/checkout` | `/pt-BR/payments/checkout` | `/es/payments/checkout` | `/de/payments/checkout` | `/fr/payments/checkout` | ✅ | `payments, payments` | ✅ |
 | 32 | `[locale]/pc-optimization/page.tsx` | `/en/pc-optimization` | `/pt-BR/otimizacao-de-pc` | `/es/optimizacion-de-pc` | `/de/pc-optimierung` | `/fr/optimisation-de-pc` | ❌ | `—` | ⚠️ Delegado: pc-optimization-view/breadcrumbs têm i18n, page sem t() |
 | 33 | `[locale]/pc-optimization/terms/page.tsx` | `/en/pc-optimization/terms` | `/pt-BR/otimizacao-de-pc/terms` | `/es/optimizacion-de-pc/terms` | `/de/pc-optimierung/terms` | `/fr/optimisation-de-pc/terms` | ✅ | `pcOptimizationTerms, pcOptimizationTermsPageHero` | ✅ |
 | 34 | `[locale]/privacy-policy/page.tsx` | `/en/privacy-policy` | `/pt-BR/politica-de-privacidade` | `/es/politica-de-privacidad` | `/de/datenschutzrichtlinie` | `/fr/politique-de-confidentialite` | ✅ | `privacyPolicy, privacyPageHero` | ✅ |
@@ -459,7 +463,7 @@ Legenda: **i18n direto** = page.tsx importa e chama useTranslations/getTranslati
 
 ## 6) Componentes — inventário
 
-**Total .tsx (app+components, sem testes):** 323 → **139 com i18n** / **184 sem i18n direto**.
+**Total .tsx (app+components, sem testes):** 323 → **144 com i18n** / **179 sem i18n direto**.
 
 "Sem i18n direto" inclui: ui primitivos (button, dialog, etc.) que são atômicos e corretamente sem tradução, + views/sections que deveriam ter mas não têm. Abaixo amostragem por diretório.
 
@@ -467,7 +471,7 @@ Legenda: **i18n direto** = page.tsx importa e chama useTranslations/getTranslati
 
 | Diretório | Qtd sem i18n | Comentário |
 |---|---:|---|
-| `src/app/[locale]` | 54 | Pages/sections/views — ver §5.2 e §7 |
+| `src/app/[locale]` | 49 | Pages/sections/views — ver §5.2 e §7 |
 | `src/components/ui` | 37 | Esperado: primitivos sem copy (ok se não têm texto) |
 | `src/components/registration` | 23 | ⚠️ Fluxos de conta — checar se usam auth namespace |
 | `src/components/dashboard` | 17 | Misto: alguns têm i18n, outros delegam |
@@ -512,15 +516,12 @@ Legenda: **i18n direto** = page.tsx importa e chama useTranslations/getTranslati
 - `src/app/[locale]/afiliados-amazon/page.tsx`
 - `src/app/[locale]/amazon-partner/page.tsx`
 - `src/app/[locale]/anmelden/page.tsx`
-- `src/app/[locale]/blog/[slug]/page.tsx`
-- `src/app/[locale]/blog/page.tsx`
 - `src/app/[locale]/channel-management/page.tsx`
 - `src/app/[locale]/conditions-d-utilisation/page.tsx`
 - `src/app/[locale]/connexion/page.tsx`
 - `src/app/[locale]/dashboard/docs/[category]/page.tsx`
 - `src/app/[locale]/dashboard/docs/page.tsx`
 - `src/app/[locale]/dashboard/layout.tsx`
-- `src/app/[locale]/dashboard/live/chat-popout/page.tsx`
 - `src/app/[locale]/datenschutzrichtlinie/page.tsx`
 - `src/app/[locale]/dienstleistungen/page.tsx`
 - `src/app/[locale]/editeurs/page.tsx`
@@ -538,11 +539,9 @@ Legenda: **i18n direto** = page.tsx importa e chama useTranslations/getTranslati
 - `src/app/[locale]/locale-provider.tsx`
 - `src/app/[locale]/login/page.tsx`
 - `src/app/[locale]/nutzungsbedingungen/page.tsx`
-- `src/app/[locale]/obs/page.tsx`
 - `src/app/[locale]/optimisation-de-pc/page.tsx`
 - `src/app/[locale]/optimizacion-de-pc/page.tsx`
 - `src/app/[locale]/otimizacao-de-pc/page.tsx`
-- `src/app/[locale]/payments/checkout/page.tsx`
 - `src/app/[locale]/pc-optimierung/page.tsx`
 - `src/app/[locale]/pc-optimization/page.tsx`
 - `src/app/[locale]/politica-de-privacidad/page.tsx`
@@ -704,6 +703,8 @@ Legenda: **i18n direto** = page.tsx importa e chama useTranslations/getTranslati
 - `src/app/[locale]/auth/complete-account/steps/step-1-prefilled.tsx` → `auth`
 - `src/app/[locale]/auth/complete-account/steps/step-2-new-fields.tsx` → `auth`
 - `src/app/[locale]/auth/complete-account/steps/step-3-verification.tsx` → `auth`
+- `src/app/[locale]/blog/[slug]/page.tsx` → `blog`
+- `src/app/[locale]/blog/page.tsx` → `blog`
 - `src/app/[locale]/channel-management/channel-management-view.tsx` → `channelManagement, channelManagement, channelManagement, channelManagement, channelManagement, channelManagement, channelManagement, channelManagement`
 - `src/app/[locale]/dashboard/channels/page.tsx` → `dashboard`
 - `src/app/[locale]/dashboard/cloner/page.tsx` → `dashboard.cloner`
@@ -711,6 +712,7 @@ Legenda: **i18n direto** = page.tsx importa e chama useTranslations/getTranslati
 - `src/app/[locale]/dashboard/dashboard-layout-client.tsx` → `dashboard.common`
 - `src/app/[locale]/dashboard/discover/page.tsx` → `dashboard.discover`
 - `src/app/[locale]/dashboard/insights/page.tsx` → `dashboard.insights`
+- `src/app/[locale]/dashboard/live/chat-popout/page.tsx` → `dashboard`
 - `src/app/[locale]/dashboard/live/page.tsx` → `dashboard.live`
 - `src/app/[locale]/dashboard/page.tsx` → `dashboard.common`
 - `src/app/[locale]/dashboard/publish/page.tsx` → `dashboard.publish`
@@ -730,10 +732,7 @@ Legenda: **i18n direto** = page.tsx importa e chama useTranslations/getTranslati
 - `src/app/[locale]/home/landing-faq-section.tsx` → `landing`
 - `src/app/[locale]/home/landing-features-section.tsx` → `landing`
 - `src/app/[locale]/home/landing-hero-section.tsx` → `landing, homePageHero`
-- `src/app/[locale]/home/landing-platforms-section.tsx` → `landing`
-- `src/app/[locale]/home/landing-pricing-section.tsx` → `landing`
-- `src/app/[locale]/home/projects-section.tsx` → `home.projects`
-- ... e mais 99 com i18n
+- ... e mais 104 com i18n
 
 ## 7) Gaps — o que NÃO está traduzido
 
@@ -767,66 +766,66 @@ Amostra de 120 ocorrências (priorizar P0/P1):
 
 | # | Componente | Linha | Texto hardcoded | url afetada | língua |
 |---|---|---:|---|---|---|
-| 1 | `src/app/[locale]/dashboard/live/chat-popout/page.tsx` | 61 | "Popout Chat" | `/{locale}/dashboard/live/chat-popout` | 5 (hardcoded igual em todas) |
-| 2 | `src/app/[locale]/obs/page.tsx` | 62 | "No messages yet" | `/{locale}/obs` | 5 (hardcoded igual em todas) |
-| 3 | `src/app/[locale]/payments/checkout/page.tsx` | 54 | "IQ Test Payment" | `/{locale}/payments/checkout` | 5 (hardcoded igual em todas) |
-| 4 | `src/app/[locale]/payments/checkout/page.tsx` | 56 | "Generating PIX…" | `/{locale}/payments/checkout` | 5 (hardcoded igual em todas) |
-| 5 | `src/app/[locale]/payments/checkout/page.tsx` | 73 | "Copy & Paste code" | `/{locale}/payments/checkout` | 5 (hardcoded igual em todas) |
-| 6 | `src/app/[locale]/payments/checkout/page.tsx` | 102 | "Loading…" | `/{locale}/payments/checkout` | 5 (hardcoded igual em todas) |
-| 7 | `src/app/not-found.tsx` | 89 | "Ver em Português" | `/not-found.tsx` | 5 (hardcoded igual em todas) |
-| 8 | `src/app/not-found.tsx` | 99 | "View in English" | `/not-found.tsx` | 5 (hardcoded igual em todas) |
-| 9 | `src/components/AuthenticationScreen/AuthenticationScreen.tsx` | 181 | "Login to Your Account" | `src/components/AuthenticationScreen/AuthenticationScreen.tsx` | 5 (hardcoded igual em todas) |
-| 10 | `src/components/AuthenticationScreen/EmailAuthForm/EmailAuthForm.tsx` | 42 | "Email" | `src/components/AuthenticationScreen/EmailAuthForm/EmailAuthForm.tsx` | 5 (hardcoded igual em todas) |
-| 11 | `src/components/AuthenticationScreen/EmailAuthForm/EmailAuthForm.tsx` | 54 | "Password" | `src/components/AuthenticationScreen/EmailAuthForm/EmailAuthForm.tsx` | 5 (hardcoded igual em todas) |
-| 12 | `src/components/analytics/performance-monitor.tsx` | 131 | "LCP:" | `src/components/analytics/performance-monitor.tsx` | 5 (hardcoded igual em todas) |
-| 13 | `src/components/analytics/performance-monitor.tsx` | 144 | "FCP:" | `src/components/analytics/performance-monitor.tsx` | 5 (hardcoded igual em todas) |
-| 14 | `src/components/analytics/performance-monitor.tsx` | 157 | "CLS:" | `src/components/analytics/performance-monitor.tsx` | 5 (hardcoded igual em todas) |
-| 15 | `src/components/analytics/performance-monitor.tsx` | 170 | "TTFB:" | `src/components/analytics/performance-monitor.tsx` | 5 (hardcoded igual em todas) |
-| 16 | `src/components/analytics/performance-monitor.tsx` | 190 | "Count:" | `src/components/analytics/performance-monitor.tsx` | 5 (hardcoded igual em todas) |
-| 17 | `src/components/analytics/performance-monitor.tsx` | 201 | "Size:" | `src/components/analytics/performance-monitor.tsx` | 5 (hardcoded igual em todas) |
-| 18 | `src/components/analytics/performance-monitor.tsx` | 216 | "● Good" | `src/components/analytics/performance-monitor.tsx` | 5 (hardcoded igual em todas) |
-| 19 | `src/components/analytics/performance-monitor.tsx` | 220 | "● Poor" | `src/components/analytics/performance-monitor.tsx` | 5 (hardcoded igual em todas) |
-| 20 | `src/components/auth/dashboard.tsx` | 40 | "Loading..." | `src/components/auth/dashboard.tsx` | 5 (hardcoded igual em todas) |
-| 21 | `src/components/auth/forgot-password-form.tsx` | 184 | "Email" | `src/components/auth/forgot-password-form.tsx` | 5 (hardcoded igual em todas) |
-| 22 | `src/components/auth/login-form.tsx` | 296 | "Email" | `src/components/auth/login-form.tsx` | 5 (hardcoded igual em todas) |
-| 23 | `src/components/auth/login-form.tsx` | 316 | "Password" | `src/components/auth/login-form.tsx` | 5 (hardcoded igual em todas) |
-| 24 | `src/components/auth/protected-route.tsx` | 42 | "Loading..." | `src/components/auth/protected-route.tsx` | 5 (hardcoded igual em todas) |
-| 25 | `src/components/auth/register-form.tsx` | 333 | "Name" | `src/components/auth/register-form.tsx` | 5 (hardcoded igual em todas) |
-| 26 | `src/components/auth/register-form.tsx` | 360 | "Email" | `src/components/auth/register-form.tsx` | 5 (hardcoded igual em todas) |
-| 27 | `src/components/auth/register-form.tsx` | 387 | "Password" | `src/components/auth/register-form.tsx` | 5 (hardcoded igual em todas) |
-| 28 | `src/components/auth/register-form.tsx` | 428 | "Confirm Password" | `src/components/auth/register-form.tsx` | 5 (hardcoded igual em todas) |
-| 29 | `src/components/auth/reset-password-form.tsx` | 278 | "New Password" | `src/components/auth/reset-password-form.tsx` | 5 (hardcoded igual em todas) |
-| 30 | `src/components/auth/reset-password-form.tsx` | 310 | "Confirm New Password" | `src/components/auth/reset-password-form.tsx` | 5 (hardcoded igual em todas) |
-| 31 | `src/components/dashboard/groups/channel-group-manager.tsx` | 167 | "New Group" | `src/components/dashboard/groups/channel-group-manager.tsx` | 5 (hardcoded igual em todas) |
-| 32 | `src/components/dashboard/live/chat-message-list.tsx` | 50 | "No chat messages yet" | `src/components/dashboard/live/chat-message-list.tsx` | 5 (hardcoded igual em todas) |
-| 33 | `src/components/dashboard/live/stream-health-card.tsx` | 45 | "Bitrate" | `src/components/dashboard/live/stream-health-card.tsx` | 5 (hardcoded igual em todas) |
-| 34 | `src/components/dashboard/live/stream-health-card.tsx` | 51 | "Frame Rate" | `src/components/dashboard/live/stream-health-card.tsx` | 5 (hardcoded igual em todas) |
-| 35 | `src/components/dashboard/live/stream-health-card.tsx` | 57 | "Latency" | `src/components/dashboard/live/stream-health-card.tsx` | 5 (hardcoded igual em todas) |
-| 36 | `src/components/dashboard/live/stream-health-card.tsx` | 63 | "Dropped Frames" | `src/components/dashboard/live/stream-health-card.tsx` | 5 (hardcoded igual em todas) |
-| 37 | `src/components/dashboard/live/stream-health-card.tsx` | 72 | "Issues Detected:" | `src/components/dashboard/live/stream-health-card.tsx` | 5 (hardcoded igual em todas) |
-| 38 | `src/components/dashboard/live/stream-status-card.tsx` | 197 | "Tempo no Ar" | `src/components/dashboard/live/stream-status-card.tsx` | 5 (hardcoded igual em todas) |
-| 39 | `src/components/dashboard/live/stream-status-card.tsx` | 206 | "Game" | `src/components/dashboard/live/stream-status-card.tsx` | 5 (hardcoded igual em todas) |
-| 40 | `src/components/dashboard/live/stream-status-card.tsx` | 229 | "Encoder & Res" | `src/components/dashboard/live/stream-status-card.tsx` | 5 (hardcoded igual em todas) |
-| 41 | `src/components/dashboard/live/stream-title-editor.tsx` | 262 | "Sincronizando com a plataforma..." | `src/components/dashboard/live/stream-title-editor.tsx` | 5 (hardcoded igual em todas) |
-| 42 | `src/components/history/PublicationHistory.tsx` | 123 | "Publication History" | `src/components/history/PublicationHistory.tsx` | 5 (hardcoded igual em todas) |
-| 43 | `src/components/history/PublicationHistory.tsx` | 152 | "All Networks" | `src/components/history/PublicationHistory.tsx` | 5 (hardcoded igual em todas) |
-| 44 | `src/components/history/PublicationHistory.tsx` | 172 | "All Status" | `src/components/history/PublicationHistory.tsx` | 5 (hardcoded igual em todas) |
-| 45 | `src/components/history/PublicationHistory.tsx` | 173 | "Success" | `src/components/history/PublicationHistory.tsx` | 5 (hardcoded igual em todas) |
-| 46 | `src/components/history/PublicationHistory.tsx` | 174 | "Failed" | `src/components/history/PublicationHistory.tsx` | 5 (hardcoded igual em todas) |
-| 47 | `src/components/history/PublicationHistory.tsx` | 175 | "Pending" | `src/components/history/PublicationHistory.tsx` | 5 (hardcoded igual em todas) |
-| 48 | `src/components/registration/EmailInput.stories.tsx` | 41 | "Value:" | `src/components/registration/EmailInput.stories.tsx` | 5 (hardcoded igual em todas) |
-| 49 | `src/components/registration/EmailInput.stories.tsx` | 44 | "Valid:" | `src/components/registration/EmailInput.stories.tsx` | 5 (hardcoded igual em todas) |
-| 50 | `src/components/registration/GoogleOAuthFlow.tsx` | 250 | "Authorizing..." | `src/components/registration/GoogleOAuthFlow.tsx` | 5 (hardcoded igual em todas) |
-| 51 | `src/components/registration/GoogleOAuthFlow.tsx` | 266 | "Authorize with Google" | `src/components/registration/GoogleOAuthFlow.tsx` | 5 (hardcoded igual em todas) |
-| 52 | `src/components/registration/PasswordSetup.stories.tsx` | 50 | "Password:" | `src/components/registration/PasswordSetup.stories.tsx` | 5 (hardcoded igual em todas) |
-| 53 | `src/components/registration/PasswordSetup.stories.tsx` | 53 | "Confirm:" | `src/components/registration/PasswordSetup.stories.tsx` | 5 (hardcoded igual em todas) |
-| 54 | `src/components/registration/PasswordSetup.stories.tsx` | 57 | "Valid:" | `src/components/registration/PasswordSetup.stories.tsx` | 5 (hardcoded igual em todas) |
-| 55 | `src/components/registration/PersonalDataForm.stories.tsx` | 48 | "Name:" | `src/components/registration/PersonalDataForm.stories.tsx` | 5 (hardcoded igual em todas) |
-| 56 | `src/components/registration/PersonalDataForm.stories.tsx` | 51 | "Phone:" | `src/components/registration/PersonalDataForm.stories.tsx` | 5 (hardcoded igual em todas) |
-| 57 | `src/components/registration/PersonalDataForm.stories.tsx` | 54 | "Valid:" | `src/components/registration/PersonalDataForm.stories.tsx` | 5 (hardcoded igual em todas) |
-| 58 | `src/components/seo/structured-data.tsx` | 40 | "/ Array" | `src/components/seo/structured-data.tsx` | 5 (hardcoded igual em todas) |
-| 59 | `src/components/ui/badge.stories.tsx` | 37 | "Default" | `src/components/ui/badge.stories.tsx` | 5 (hardcoded igual em todas) |
-| 60 | `src/components/ui/badge.stories.tsx` | 38 | "Secondary" | `src/components/ui/badge.stories.tsx` | 5 (hardcoded igual em todas) |
+| 1 | `src/app/not-found.tsx` | 89 | "Ver em Português" | `/not-found.tsx` | 5 (hardcoded igual em todas) |
+| 2 | `src/app/not-found.tsx` | 99 | "View in English" | `/not-found.tsx` | 5 (hardcoded igual em todas) |
+| 3 | `src/components/AuthenticationScreen/AuthenticationScreen.tsx` | 181 | "Login to Your Account" | `src/components/AuthenticationScreen/AuthenticationScreen.tsx` | 5 (hardcoded igual em todas) |
+| 4 | `src/components/AuthenticationScreen/EmailAuthForm/EmailAuthForm.tsx` | 42 | "Email" | `src/components/AuthenticationScreen/EmailAuthForm/EmailAuthForm.tsx` | 5 (hardcoded igual em todas) |
+| 5 | `src/components/AuthenticationScreen/EmailAuthForm/EmailAuthForm.tsx` | 54 | "Password" | `src/components/AuthenticationScreen/EmailAuthForm/EmailAuthForm.tsx` | 5 (hardcoded igual em todas) |
+| 6 | `src/components/analytics/performance-monitor.tsx` | 131 | "LCP:" | `src/components/analytics/performance-monitor.tsx` | 5 (hardcoded igual em todas) |
+| 7 | `src/components/analytics/performance-monitor.tsx` | 144 | "FCP:" | `src/components/analytics/performance-monitor.tsx` | 5 (hardcoded igual em todas) |
+| 8 | `src/components/analytics/performance-monitor.tsx` | 157 | "CLS:" | `src/components/analytics/performance-monitor.tsx` | 5 (hardcoded igual em todas) |
+| 9 | `src/components/analytics/performance-monitor.tsx` | 170 | "TTFB:" | `src/components/analytics/performance-monitor.tsx` | 5 (hardcoded igual em todas) |
+| 10 | `src/components/analytics/performance-monitor.tsx` | 190 | "Count:" | `src/components/analytics/performance-monitor.tsx` | 5 (hardcoded igual em todas) |
+| 11 | `src/components/analytics/performance-monitor.tsx` | 201 | "Size:" | `src/components/analytics/performance-monitor.tsx` | 5 (hardcoded igual em todas) |
+| 12 | `src/components/analytics/performance-monitor.tsx` | 216 | "● Good" | `src/components/analytics/performance-monitor.tsx` | 5 (hardcoded igual em todas) |
+| 13 | `src/components/analytics/performance-monitor.tsx` | 220 | "● Poor" | `src/components/analytics/performance-monitor.tsx` | 5 (hardcoded igual em todas) |
+| 14 | `src/components/auth/dashboard.tsx` | 40 | "Loading..." | `src/components/auth/dashboard.tsx` | 5 (hardcoded igual em todas) |
+| 15 | `src/components/auth/forgot-password-form.tsx` | 184 | "Email" | `src/components/auth/forgot-password-form.tsx` | 5 (hardcoded igual em todas) |
+| 16 | `src/components/auth/login-form.tsx` | 296 | "Email" | `src/components/auth/login-form.tsx` | 5 (hardcoded igual em todas) |
+| 17 | `src/components/auth/login-form.tsx` | 316 | "Password" | `src/components/auth/login-form.tsx` | 5 (hardcoded igual em todas) |
+| 18 | `src/components/auth/protected-route.tsx` | 42 | "Loading..." | `src/components/auth/protected-route.tsx` | 5 (hardcoded igual em todas) |
+| 19 | `src/components/auth/register-form.tsx` | 333 | "Name" | `src/components/auth/register-form.tsx` | 5 (hardcoded igual em todas) |
+| 20 | `src/components/auth/register-form.tsx` | 360 | "Email" | `src/components/auth/register-form.tsx` | 5 (hardcoded igual em todas) |
+| 21 | `src/components/auth/register-form.tsx` | 387 | "Password" | `src/components/auth/register-form.tsx` | 5 (hardcoded igual em todas) |
+| 22 | `src/components/auth/register-form.tsx` | 428 | "Confirm Password" | `src/components/auth/register-form.tsx` | 5 (hardcoded igual em todas) |
+| 23 | `src/components/auth/reset-password-form.tsx` | 278 | "New Password" | `src/components/auth/reset-password-form.tsx` | 5 (hardcoded igual em todas) |
+| 24 | `src/components/auth/reset-password-form.tsx` | 310 | "Confirm New Password" | `src/components/auth/reset-password-form.tsx` | 5 (hardcoded igual em todas) |
+| 25 | `src/components/dashboard/groups/channel-group-manager.tsx` | 167 | "New Group" | `src/components/dashboard/groups/channel-group-manager.tsx` | 5 (hardcoded igual em todas) |
+| 26 | `src/components/dashboard/live/chat-message-list.tsx` | 50 | "No chat messages yet" | `src/components/dashboard/live/chat-message-list.tsx` | 5 (hardcoded igual em todas) |
+| 27 | `src/components/dashboard/live/stream-health-card.tsx` | 45 | "Bitrate" | `src/components/dashboard/live/stream-health-card.tsx` | 5 (hardcoded igual em todas) |
+| 28 | `src/components/dashboard/live/stream-health-card.tsx` | 51 | "Frame Rate" | `src/components/dashboard/live/stream-health-card.tsx` | 5 (hardcoded igual em todas) |
+| 29 | `src/components/dashboard/live/stream-health-card.tsx` | 57 | "Latency" | `src/components/dashboard/live/stream-health-card.tsx` | 5 (hardcoded igual em todas) |
+| 30 | `src/components/dashboard/live/stream-health-card.tsx` | 63 | "Dropped Frames" | `src/components/dashboard/live/stream-health-card.tsx` | 5 (hardcoded igual em todas) |
+| 31 | `src/components/dashboard/live/stream-health-card.tsx` | 72 | "Issues Detected:" | `src/components/dashboard/live/stream-health-card.tsx` | 5 (hardcoded igual em todas) |
+| 32 | `src/components/dashboard/live/stream-status-card.tsx` | 197 | "Tempo no Ar" | `src/components/dashboard/live/stream-status-card.tsx` | 5 (hardcoded igual em todas) |
+| 33 | `src/components/dashboard/live/stream-status-card.tsx` | 206 | "Game" | `src/components/dashboard/live/stream-status-card.tsx` | 5 (hardcoded igual em todas) |
+| 34 | `src/components/dashboard/live/stream-status-card.tsx` | 229 | "Encoder & Res" | `src/components/dashboard/live/stream-status-card.tsx` | 5 (hardcoded igual em todas) |
+| 35 | `src/components/dashboard/live/stream-title-editor.tsx` | 262 | "Sincronizando com a plataforma..." | `src/components/dashboard/live/stream-title-editor.tsx` | 5 (hardcoded igual em todas) |
+| 36 | `src/components/history/PublicationHistory.tsx` | 123 | "Publication History" | `src/components/history/PublicationHistory.tsx` | 5 (hardcoded igual em todas) |
+| 37 | `src/components/history/PublicationHistory.tsx` | 152 | "All Networks" | `src/components/history/PublicationHistory.tsx` | 5 (hardcoded igual em todas) |
+| 38 | `src/components/history/PublicationHistory.tsx` | 172 | "All Status" | `src/components/history/PublicationHistory.tsx` | 5 (hardcoded igual em todas) |
+| 39 | `src/components/history/PublicationHistory.tsx` | 173 | "Success" | `src/components/history/PublicationHistory.tsx` | 5 (hardcoded igual em todas) |
+| 40 | `src/components/history/PublicationHistory.tsx` | 174 | "Failed" | `src/components/history/PublicationHistory.tsx` | 5 (hardcoded igual em todas) |
+| 41 | `src/components/history/PublicationHistory.tsx` | 175 | "Pending" | `src/components/history/PublicationHistory.tsx` | 5 (hardcoded igual em todas) |
+| 42 | `src/components/registration/EmailInput.stories.tsx` | 41 | "Value:" | `src/components/registration/EmailInput.stories.tsx` | 5 (hardcoded igual em todas) |
+| 43 | `src/components/registration/EmailInput.stories.tsx` | 44 | "Valid:" | `src/components/registration/EmailInput.stories.tsx` | 5 (hardcoded igual em todas) |
+| 44 | `src/components/registration/GoogleOAuthFlow.tsx` | 250 | "Authorizing..." | `src/components/registration/GoogleOAuthFlow.tsx` | 5 (hardcoded igual em todas) |
+| 45 | `src/components/registration/GoogleOAuthFlow.tsx` | 266 | "Authorize with Google" | `src/components/registration/GoogleOAuthFlow.tsx` | 5 (hardcoded igual em todas) |
+| 46 | `src/components/registration/PasswordSetup.stories.tsx` | 50 | "Password:" | `src/components/registration/PasswordSetup.stories.tsx` | 5 (hardcoded igual em todas) |
+| 47 | `src/components/registration/PasswordSetup.stories.tsx` | 53 | "Confirm:" | `src/components/registration/PasswordSetup.stories.tsx` | 5 (hardcoded igual em todas) |
+| 48 | `src/components/registration/PasswordSetup.stories.tsx` | 57 | "Valid:" | `src/components/registration/PasswordSetup.stories.tsx` | 5 (hardcoded igual em todas) |
+| 49 | `src/components/registration/PersonalDataForm.stories.tsx` | 48 | "Name:" | `src/components/registration/PersonalDataForm.stories.tsx` | 5 (hardcoded igual em todas) |
+| 50 | `src/components/registration/PersonalDataForm.stories.tsx` | 51 | "Phone:" | `src/components/registration/PersonalDataForm.stories.tsx` | 5 (hardcoded igual em todas) |
+| 51 | `src/components/registration/PersonalDataForm.stories.tsx` | 54 | "Valid:" | `src/components/registration/PersonalDataForm.stories.tsx` | 5 (hardcoded igual em todas) |
+| 52 | `src/components/seo/structured-data.tsx` | 40 | "/ Array" | `src/components/seo/structured-data.tsx` | 5 (hardcoded igual em todas) |
+| 53 | `src/components/ui/badge.stories.tsx` | 37 | "Default" | `src/components/ui/badge.stories.tsx` | 5 (hardcoded igual em todas) |
+| 54 | `src/components/ui/badge.stories.tsx` | 38 | "Secondary" | `src/components/ui/badge.stories.tsx` | 5 (hardcoded igual em todas) |
+| 55 | `src/components/ui/badge.stories.tsx` | 39 | "Destructive" | `src/components/ui/badge.stories.tsx` | 5 (hardcoded igual em todas) |
+| 56 | `src/components/ui/badge.stories.tsx` | 40 | "Outline" | `src/components/ui/badge.stories.tsx` | 5 (hardcoded igual em todas) |
+| 57 | `src/components/ui/badge.stories.tsx` | 64 | "Feature Name" | `src/components/ui/badge.stories.tsx` | 5 (hardcoded igual em todas) |
+| 58 | `src/components/ui/badge.stories.tsx` | 65 | "Beta" | `src/components/ui/badge.stories.tsx` | 5 (hardcoded igual em todas) |
+| 59 | `src/components/ui/badge.stories.tsx` | 68 | "Product Status" | `src/components/ui/badge.stories.tsx` | 5 (hardcoded igual em todas) |
+| 60 | `src/components/ui/badge.stories.tsx` | 69 | "Out of Stock" | `src/components/ui/badge.stories.tsx` | 5 (hardcoded igual em todas) |
 
 > Dica: rode grep -rn '>[A-ZÁÂÃ].*<' src/app src/components --include="*.tsx" | grep -v 't(' → lista completa. Melhor ainda: regra eslint no-restricted-syntax para JSXText sem t().
 

@@ -53,6 +53,8 @@ export default getRequestConfig(async ({ locale }) => {
         termsOfServicePageHero,
         error,
         notFound,
+        blog,
+        payments,
     ] = await Promise.all([
         loadJson(() => import(`@/i18n/${selectedLocale}/home.json`)),
         loadJson(() => import(`@/i18n/${selectedLocale}/landing.json`)),
@@ -124,6 +126,8 @@ export default getRequestConfig(async ({ locale }) => {
         ),
         loadJson(() => import(`@/i18n/${selectedLocale}/error.json`)),
         loadJson(() => import(`@/i18n/${selectedLocale}/notFound.json`)),
+        loadJson(() => import(`@/i18n/${selectedLocale}/blog.json`)),
+        loadJson(() => import(`@/i18n/${selectedLocale}/payments.json`)),
     ])
 
     const messages: MessagesRecord = {
@@ -158,6 +162,8 @@ export default getRequestConfig(async ({ locale }) => {
         termsOfServicePageHero,
         error,
         notFound,
+        blog,
+        payments,
         layout: {
             header,
             footer: await loadJson(

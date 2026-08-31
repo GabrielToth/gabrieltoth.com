@@ -1,0 +1,12 @@
+{
+    "checkout": {
+        "title": "Paiement du test de QI",
+        "generating": "Génération du PIX…",
+        "qrAlt": "QR Code PIX",
+        "copyPasteCode": "Code copier-coller",
+        "copyCode": "Copier le code",
+        "trackingCode": "Suivi : {code}",
+        "loading": "Chargement…",
+        "errorPayment": "Échec de la création du paiement PIX"
+    }
+}

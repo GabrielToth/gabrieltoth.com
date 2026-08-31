@@ -1,5 +1,6 @@
 import { getAllBlogPosts } from "@/lib/blog"
 import { defaultLocale, locales, type Locale } from "@/lib/i18n"
+import { getTranslations } from "next-intl/server"
 import Link from "next/link"
 
 interface PageProps {
@@ -11,18 +12,15 @@ export default async function BlogPage({ params }: PageProps) {
     const locale: Locale = locales.includes(rawLocale as Locale)
         ? (rawLocale as Locale)
         : defaultLocale
+    const t = await getTranslations({ locale, namespace: "blog" })
     const posts = getAllBlogPosts()
 
     return (
         <main className="container mx-auto max-w-4xl px-4 py-12">
             <h1 className="mb-2 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-                {locale === "pt-BR" ? "Blog & Artigos" : "Blog & Articles"}
+                {t("title")}
             </h1>
-            <p className="mb-8 text-muted-foreground">
-                {locale === "pt-BR"
-                    ? "Artigos sobre engenharia de software, Next.js, inteligência artificial e otimização."
-                    : "Articles about software engineering, Next.js, artificial intelligence, and performance."}
-            </p>
+            <p className="mb-8 text-muted-foreground">{t("description")}</p>
 
             <div className="grid gap-6">
                 {posts.map(post => (

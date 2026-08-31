@@ -1,5 +1,6 @@
 "use client"
 import Image from "next/image"
+import { useTranslations } from "next-intl"
 import { useSearchParams } from "next/navigation"
 import { Suspense, useEffect, useMemo, useState } from "react"
 
@@ -7,6 +8,7 @@ const PIX_ENDPOINT = "/api/payments/pix/create"
 
 function CheckoutInner() {
     const search = useSearchParams()
+    const t = useTranslations("payments")
     const price = Number(search.get("price") || 1)
     const product = search.get("product") || "iqtest"
 
@@ -33,7 +35,7 @@ function CheckoutInner() {
                         amount: price,
                     }),
                 })
-                if (!res.ok) throw new Error("Failed to create PIX payment")
+                if (!res.ok) throw new Error(t("checkout.errorPayment"))
                 const json = await res.json()
                 setTrackingCode(json.order?.trackingCode || null)
                 setQr({
@@ -47,13 +49,15 @@ function CheckoutInner() {
             }
         }
         run()
-    }, [description, price])
+    }, [description, price, t])
 
     return (
         <section className="max-w-xl mx-auto px-4 py-16">
-            <h1 className="text-2xl font-bold mb-4">IQ Test Payment</h1>
+            <h1 className="text-2xl font-bold mb-4">{t("checkout.title")}</h1>
             {loading && (
-                <p className="text-muted-foreground">Generating PIX…</p>
+                <p className="text-muted-foreground">
+                    {t("checkout.generating")}
+                </p>
             )}
             {error && <p className="text-red-600">{error}</p>}
 
@@ -63,14 +67,16 @@ function CheckoutInner() {
                         <div className="mb-4 flex justify-center">
                             <Image
                                 src={qr.qrCode}
-                                alt="PIX QR"
+                                alt={t("checkout.qrAlt")}
                                 width={220}
                                 height={220}
                             />
                         </div>
                     )}
                     <div className="space-y-2">
-                        <div className="font-medium">Copy & Paste code</div>
+                        <div className="font-medium">
+                            {t("checkout.copyPasteCode")}
+                        </div>
                         <div className="text-xs break-all bg-muted dark:bg-background p-2 rounded">
                             {qr.copyPasteCode}
                         </div>
@@ -80,12 +86,12 @@ function CheckoutInner() {
                                 navigator.clipboard.writeText(qr.copyPasteCode)
                             }
                         >
-                            Copy code
+                            {t("checkout.copyCode")}
                         </button>
                     </div>
                     {trackingCode && (
                         <p className="mt-4 text-xs text-muted-foreground">
-                            Tracking: {trackingCode}
+                            {t("checkout.trackingCode", { code: trackingCode })}
                         </p>
                     )}
                 </div>
@@ -95,11 +101,12 @@ function CheckoutInner() {
 }
 
 export default function CheckoutPage() {
+    const t = useTranslations("payments")
     return (
         <Suspense
             fallback={
                 <section className="max-w-xl mx-auto px-4 py-16">
-                    <p>Loading…</p>
+                    <p>{t("checkout.loading")}</p>
                 </section>
             }
         >

@@ -1,5 +1,6 @@
 "use client"
 
+import { useTranslations } from "next-intl"
 import { Suspense, useEffect, useState } from "react"
 import { useSearchParams } from "next/navigation"
 import { UnifiedChat } from "@/components/dashboard/live/unified-chat"
@@ -11,6 +12,7 @@ import { logger } from "@/lib/logger"
  * URL: /dashboard/live/chat-popout?platform=twitch
  */
 function ChatPopoutInner() {
+    const t = useTranslations("dashboard")
     const searchParams = useSearchParams()
     const requested = searchParams.get("platform")
     const [platforms, setPlatforms] = useState<string[]>([])
@@ -58,7 +60,7 @@ function ChatPopoutInner() {
         <div className="flex h-screen w-screen flex-col bg-[#0b0b0e] text-neutral-200 overflow-hidden">
             {/* Thin header with copy-to-clipboard URL hint (invisible-friendly) */}
             <div className="flex items-center justify-between px-3 py-1.5 text-[10px] text-neutral-500 bg-black/50 border-b border-neutral-800/60">
-                <span>Popout Chat</span>
+                <span>{t("chatPopout.title")}</span>
                 {platforms.length > 0 && (
                     <button
                         type="button"
@@ -74,9 +76,9 @@ function ChatPopoutInner() {
                             }
                         }}
                         className="underline decoration-dotted hover:text-neutral-300"
-                        title="Copiar URL para usar no OBS"
+                        title={t("chatPopout.copyUrlTooltip")}
                     >
-                        Copiar URL (OBS)
+                        {t("chatPopout.copyUrl")}
                     </button>
                 )}
             </div>

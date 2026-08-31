@@ -1,0 +1,12 @@
+{
+    "checkout": {
+        "title": "IQ-Test Zahlung",
+        "generating": "PIX wird generiert…",
+        "qrAlt": "PIX-QR-Code",
+        "copyPasteCode": "Kopieren & Einfügen Code",
+        "copyCode": "Code kopieren",
+        "trackingCode": "Verfolgung: {code}",
+        "loading": "Laden…",
+        "errorPayment": "PIX-Zahlung konnte nicht erstellt werden"
+    }
+}
