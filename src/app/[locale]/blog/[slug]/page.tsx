@@ -1,5 +1,6 @@
 import { getBlogPostBySlug } from "@/lib/blog"
 import { defaultLocale, locales, type Locale } from "@/lib/i18n"
+import { getTranslations } from "next-intl/server"
 import Link from "next/link"
 import { notFound } from "next/navigation"
 
@@ -12,6 +13,7 @@ export default async function BlogPostPage({ params }: PageProps) {
     const locale: Locale = locales.includes(rawLocale as Locale)
         ? (rawLocale as Locale)
         : defaultLocale
+    const t = await getTranslations({ locale, namespace: "blog" })
     const post = getBlogPostBySlug(slug)
 
     if (!post) {
@@ -24,7 +26,7 @@ export default async function BlogPostPage({ params }: PageProps) {
                 href={`/${locale}/blog`}
                 className="mb-6 inline-flex items-center text-sm text-muted-foreground hover:text-foreground"
             >
-                ← {locale === "pt-BR" ? "Voltar ao Blog" : "Back to Blog"}
+                {t("backToBlog")}
             </Link>
 
             <header className="mb-8">

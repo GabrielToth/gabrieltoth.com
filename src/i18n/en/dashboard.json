@@ -767,5 +767,15 @@
         "germanCommunity": "German Community",
         "frenchCommunity": "French Community",
         "portugueseCommunity": "Portuguese Community"
+    },
+    "obs": {
+        "anonymous": "Anonymous",
+        "waitingForConnection": "Waiting for connection...",
+        "noMessagesYet": "No messages yet"
+    },
+    "chatPopout": {
+        "title": "Popout Chat",
+        "copyUrl": "Copy URL (OBS)",
+        "copyUrlTooltip": "Copy URL for OBS usage"
     }
 }

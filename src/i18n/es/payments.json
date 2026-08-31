@@ -1,0 +1,12 @@
+{
+    "checkout": {
+        "title": "Pago del Test de IQ",
+        "generating": "Generando PIX…",
+        "qrAlt": "Código QR PIX",
+        "copyPasteCode": "Código de copiar y pegar",
+        "copyCode": "Copiar código",
+        "trackingCode": "Seguimiento: {code}",
+        "loading": "Cargando…",
+        "errorPayment": "Error al crear el pago PIX"
+    }
+}

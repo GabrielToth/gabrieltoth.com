@@ -1,6 +1,7 @@
 "use client"
 
 import { useRelayChat } from "@/hooks/use-relay-chat"
+import { useTranslations } from "next-intl"
 import { useMemo, useRef, useEffect } from "react"
 
 const PLATFORM_LABELS: Record<string, string> = {
@@ -27,12 +28,14 @@ const MAX_VISIBLE = 50
 
 export default function ObsChatOverlay() {
     const relay = useRelayChat()
+    const t = useTranslations("dashboard")
     const endRef = useRef<HTMLDivElement>(null)
 
     const messages = useMemo(() => {
         return relay.messages.slice(-MAX_VISIBLE).map(m => ({
             id: m.id,
-            author: m.user?.displayName || m.user?.username || "Anonymous",
+            author:
+                m.user?.displayName || m.user?.username || t("obs.anonymous"),
             content: m.content,
             platform: m.platform,
             color: PLATFORM_COLORS[m.platform] || "#888",
@@ -50,7 +53,7 @@ export default function ObsChatOverlay() {
         return (
             <div className="flex items-center justify-center h-screen bg-transparent">
                 <p className="text-white/40 text-lg">
-                    Waiting for connection...
+                    {t("obs.waitingForConnection")}
                 </p>
             </div>
         )
@@ -59,7 +62,9 @@ export default function ObsChatOverlay() {
     if (messages.length === 0) {
         return (
             <div className="flex items-center justify-center h-screen bg-transparent">
-                <p className="text-white/30 text-xl">No messages yet</p>
+                <p className="text-white/30 text-xl">
+                    {t("obs.noMessagesYet")}
+                </p>
             </div>
         )
     }
