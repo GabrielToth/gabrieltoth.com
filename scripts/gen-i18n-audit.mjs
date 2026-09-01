@@ -286,7 +286,7 @@ md += `| Páginas canônicas COM i18n direto | ${canon.filter(p => hasI18n(read(
 
 md += `**Leitura em 30s:**\n`
 md += `- **Cobertura boa** em: dashboard (channels/cloner/credits/discover/insights/live/publish/repost/settings), minecraft (todos os subpaths), amazon-affiliate, auth/complete-account, forgot-password, home/landing.\n`
-md += `- **Gaps restantes** (§7): P0 monetário/visível já traduzido (blog, obs, checkout, chat-popout); os 4 públicos (channel-management/editors/pc-optimization/about-me) têm SEO/breadcrumbs via getTranslations, físico da page sem t() (P2 residual); docs puramente delegado (P2 residual); login/register falso-positivo (redirect-only, forms com auth); dívida real = legado fora de [locale] (P1) + placeholders residuais (P1).\n`
+md += `- **Gaps restantes** (§7): P0 monetário/visível já traduzido (blog, obs, checkout, chat-popout); os 4 públicos (channel-management/editors/pc-optimization/about-me) têm SEO/breadcrumbs via getTranslations, físico da page sem t() (P2 residual); docs puramente delegado (P2 residual); login/register falso-positivo (redirect-only, forms com auth); 6 URLs sem [locale] são redirects de compatibilidade (✅ manter); gabriel-toth-goncalves intencional com t() (P2 residual); dívida restante = placeholders residuais (P1).\n`
 md += `- **Dívida de infra — RESOLVIDA**: breadcrumbs.json e seo.json agora carregados em request.ts (${loaded.length}/${nsFiles.length} namespaces).\n`
 md += `- **Risco de nova língua**: adicionar locale exige 6 toques manuais (ver §10); sem checklist, é fácil esquecer request.ts, locales[], url-mapping, wrappers, middleware e scripts/validate.\n\n`
 
@@ -430,7 +430,7 @@ for (const p of canon) {
             diag = "❌ Sem i18n — popout hardcoded (título/copy)"
         else if (p.includes("src/app/page.tsx"))
             diag =
-                "❌ LEGADO sem [locale] — redirect/landing fora do fluxo next-intl"
+                "✅ Redirect de URL antiga — permanentRedirect para /{locale} (landing compat)"
         else if (
             p.includes("src/app/channel-management") ||
             p.includes("src/app/editors") ||
@@ -439,10 +439,10 @@ for (const p of canon) {
             p.includes("src/app/terms-of-service")
         )
             diag =
-                "❌ LEGADO sem [locale] — duplicata fora de [locale], sem i18n"
+                "✅ Redirect de URL antiga — permanentRedirect para /{locale}/<slug> (compat)"
         else if (p.includes("src/app/dashboard/settings/page.tsx"))
             diag =
-                "❌ LEGADO /dashboard sem [locale] — depende de middleware redirect"
+                "✅ Removido — /dashboard legado coberto por middleware 308 → /{locale}/dashboard/* (arquivos deletados)"
         else diag = "⚠️ Sem useTranslations/getTranslations"
     } else diag = "✅"
 
@@ -560,7 +560,28 @@ for (const p of canon) {
 for (const p of pages) {
     if (p.startsWith("src/app/[locale]")) continue
     const rel = p.replace("src/app", "").replace("/page.tsx", "")
-    md += `| ${gapCounter} | url: ${rel || "/"} (sem [locale]) · comp: \`${p}\` · 5 | Legado sem [locale] | fora do fluxo next-intl, sem i18n | P1 | Redirecionar para /{locale}/<slug> via middleware |\n`
+    const content = read(p)
+    const isRedirect = /permanentRedirect\(|redirect\(/.test(content)
+    const hasT = hasI18n(content)
+    let tipo, evid, pri, fix
+    if (isRedirect) {
+        tipo = "Redirect de URL antiga"
+        evid = "permanentRedirect para /{locale}/<slug> (cobre URLs sem locale)"
+        pri = "✅"
+        fix = "Manter"
+    } else if (hasT) {
+        tipo = "Conteúdo intencional sem locale"
+        evid =
+            "usa getTranslations mas fora de [locale] (ex: gabriel-toth-goncalves)"
+        pri = "P2 residual"
+        fix = "Documentar; opcional: mover para [locale]"
+    } else {
+        tipo = "Legado sem i18n"
+        evid = "sem t() e sem redirect"
+        pri = "P1"
+        fix = "Remover ou redirecionar via middleware"
+    }
+    md += `| ${gapCounter} | url: ${rel || "/"} (sem [locale]) · comp: \`${p}\` · 5 | ${tipo} | ${evid} | ${pri} | ${fix} |\n`
     gapCounter++
 }
 md += `\n`
@@ -656,7 +677,7 @@ md += `| Fase | Escopo | Estimativa | Critério de pronto |\n|---|---|---|---|\n
 md += `| 1 — P0 ✅ | blog (2 pages) + obs + payments/checkout + chat-popout traduzidos | feito | t() + namespaces, i18n:validate verde |\n`
 md += `| 2 — P1 metadata ✅ | about-me, channel-management, editors, pc-optimization: metadata/SEO via getTranslations | feito | generateMetadata usa getTranslations, breadcrumbs t() |\n`
 md += `| 3 — P1 infra ✅ | breadcrumbs.json + seo.json em messages map | feito | request.ts carrega 36/36 |\n`
-md += `| 4 — P1 legado | Remover/redirect src/app/<slug> fora de [locale] + /dashboard/settings duplicata | 0.5 dia | Sem duplicatas, middleware cobre, sem 404 |\n`
+md += `| 4 — P1 legado ✅ | Redirects sem [locale] já tratam compatibilidade (channel-management/editors/pc-optimization/privacy-policy/terms-of-service + / → permanentRedirect; /dashboard/* via middleware 308; src/app/dashboard/** duplicata removida) + gabriel-toth-goncalves intencional | feito | 6 redirects mantidos, /dashboard legado removido, nenhum 404 |\n`
 md += `| 5 — P1 polish | registration/*, auth/*, dashboard placeholders residuais | 1 dia | Todo placeholder/title/aria via t() |\n`
 md += `| 6 — Guardrails | ESLint rule JSXText sem t() + CI i18n:validate/check-params obrigatório | 0.5 dia | PR falha se hardcoded |\n`
 md += `| 7 — Nova língua | Gerador \`scripts/new-locale.mjs <code>\` automatizando §10.1 | 0.5 dia | Rodar e ter locale novo verde |\n`
@@ -678,7 +699,7 @@ md += `comm -23 <(ls src/i18n/en/*.json | xargs -I{} basename {} | sort) <(grep 
 md += "```\n\n"
 
 md += `---\n\n`
-md += `**Próximo passo recomendado:** P0 concluído (blog/obs/checkout/popout) e infra breadcrumbs/seo destravada. Agora: (1) P1 legado — redirecionar páginas sem [locale] (src/app/channel-management/*, editors, pc-optimization, page.tsx) para as canônicas; (2) tokens residuais hardcoded nos componentes com i18n (cloner/discover/repost/registration); (3) opcionalmente adicionar generateMetadata nas pages docs.\n`
+md += `**Próximo passo recomendado:** P0/P1-legado/P1-infra concluídos (audit §7 com 7 ✅ legado-compat). Restam: P1 polish — placeholders residuais hardcoded nos componentes com i18n (cloner/discover/repost/registration, ~45 arquivos); P2 hygiene — mover t() para pages delegadas e adicionar generateMetadata em dashboard/docs.\n`
 
 const outPath = path.join(ROOT, "docs/I18N_AUDIT.md")
 fs.mkdirSync(path.dirname(outPath), { recursive: true })

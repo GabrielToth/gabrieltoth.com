@@ -1,6 +1,6 @@
 # Auditoria i18n — gabrieltoth.com
 
-> Gerado em: 2026-09-01T00:19:54.238Z | Branch: main | Locales: en, pt-BR, es, de, fr | next-intl (request.ts + useTranslations/getTranslations)
+> Gerado em: 2026-09-01T01:44:35.240Z | Branch: main | Locales: en, pt-BR, es, de, fr | next-intl (request.ts + useTranslations/getTranslations)
 > Como usar: este arquivo é a fonte de consulta de cobertura. Filtre por "❌" para achar gaps. Padrões para novos idiomas: ver §10. Checklist de PR: ver §11.
 
 ## Índice
@@ -23,21 +23,21 @@ A. [Apêndice — comandos de validação](#a-apêndice--comandos-de-validação
 
 | Métrica | Valor |
 |---|---|
-| page.tsx no total | 89 |
+| page.tsx no total | 84 |
 | Wrappers (re-export de slug localizado) | 37 |
-| Canônicas (layout/conteúdo real) | 52 |
-| .tsx em src/app+src/components (sem __tests__/.test.) | 323 |
-| Com i18n direto (useTranslations/getTranslations) | 145 (45%) |
-| Sem i18n direto | 178 (55%) |
+| Canônicas (layout/conteúdo real) | 47 |
+| .tsx em src/app+src/components (sem __tests__/.test.) | 316 |
+| Com i18n direto (useTranslations/getTranslations) | 140 (44%) |
+| Sem i18n direto | 176 (56%) |
 | Namespaces por locale | 36 (9 questions/* à parte) |
 | Namespaces carregados em request.ts | 36 |
 | Namespaces existentes mas NÃO carregados | — |
-| Páginas canônicas SEM i18n direto | 14 |
-| Páginas canônicas COM i18n direto | 38 |
+| Páginas canônicas SEM i18n direto | 13 |
+| Páginas canônicas COM i18n direto | 34 |
 
 **Leitura em 30s:**
 - **Cobertura boa** em: dashboard (channels/cloner/credits/discover/insights/live/publish/repost/settings), minecraft (todos os subpaths), amazon-affiliate, auth/complete-account, forgot-password, home/landing.
-- **Gaps restantes** (§7): P0 monetário/visível já traduzido (blog, obs, checkout, chat-popout); os 4 públicos (channel-management/editors/pc-optimization/about-me) têm SEO/breadcrumbs via getTranslations, físico da page sem t() (P2 residual); docs puramente delegado (P2 residual); login/register falso-positivo (redirect-only, forms com auth); dívida real = legado fora de [locale] (P1) + placeholders residuais (P1).
+- **Gaps restantes** (§7): P0 monetário/visível já traduzido (blog, obs, checkout, chat-popout); os 4 públicos (channel-management/editors/pc-optimization/about-me) têm SEO/breadcrumbs via getTranslations, físico da page sem t() (P2 residual); docs puramente delegado (P2 residual); login/register falso-positivo (redirect-only, forms com auth); 6 URLs sem [locale] são redirects de compatibilidade (✅ manter); gabriel-toth-goncalves intencional com t() (P2 residual); dívida restante = placeholders residuais (P1).
 - **Dívida de infra — RESOLVIDA**: breadcrumbs.json e seo.json agora carregados em request.ts (36/36 namespaces).
 - **Risco de nova língua**: adicionar locale exige 6 toques manuais (ver §10); sem checklist, é fácil esquecer request.ts, locales[], url-mapping, wrappers, middleware e scripts/validate.
 
@@ -447,23 +447,18 @@ Legenda: **i18n direto** = page.tsx importa e chama useTranslations/getTranslati
 | 39 | `[locale]/streamer/[slug]/page.tsx` | `/en/streamer/[slug]` | `/pt-BR/streamer/[slug]` | `/es/streamer/[slug]` | `/de/streamer/[slug]` | `/fr/streamer/[slug]` | ✅ | `streamer` | ✅ |
 | 40 | `[locale]/terms-of-service/page.tsx` | `/en/terms-of-service` | `/pt-BR/termos-de-servico` | `/es/terminos-de-servicio` | `/de/nutzungsbedingungen` | `/fr/conditions-d-utilisation` | ✅ | `termsOfServicePageHero` | ✅ |
 | 41 | `channel-management/page.tsx` | `/channel-management (sem [locale])` | `/channel-management (sem [locale])` | `/channel-management (sem [locale])` | `/channel-management (sem [locale])` | `/channel-management (sem [locale])` | ❌ | `—` | ⚠️ Delegado parcial: channel-management-view/breadcrumbs têm i18n, mas page.tsx sem t() — breadcrumbs/SEO vêm de helper hardcoded |
-| 42 | `dashboard/credits/page.tsx` | `/dashboard/credits (sem [locale])` | `/dashboard/credits (sem [locale])` | `/dashboard/credits (sem [locale])` | `/dashboard/credits (sem [locale])` | `/dashboard/credits (sem [locale])` | ✅ | `dashboard.credits` | ✅ |
-| 43 | `dashboard/insights/page.tsx` | `/dashboard/insights (sem [locale])` | `/dashboard/insights (sem [locale])` | `/dashboard/insights (sem [locale])` | `/dashboard/insights (sem [locale])` | `/dashboard/insights (sem [locale])` | ✅ | `dashboard.insights` | ✅ |
-| 44 | `dashboard/page.tsx` | `/dashboard (sem [locale])` | `/dashboard (sem [locale])` | `/dashboard (sem [locale])` | `/dashboard (sem [locale])` | `/dashboard (sem [locale])` | ✅ | `dashboard.common` | ✅ |
-| 45 | `dashboard/publish/page.tsx` | `/dashboard/publish (sem [locale])` | `/dashboard/publish (sem [locale])` | `/dashboard/publish (sem [locale])` | `/dashboard/publish (sem [locale])` | `/dashboard/publish (sem [locale])` | ✅ | `dashboard.publish` | ✅ |
-| 46 | `dashboard/settings/page.tsx` | `/dashboard/settings (sem [locale])` | `/dashboard/settings (sem [locale])` | `/dashboard/settings (sem [locale])` | `/dashboard/settings (sem [locale])` | `/dashboard/settings (sem [locale])` | ❌ | `—` | ❌ LEGADO /dashboard sem [locale] — depende de middleware redirect |
-| 47 | `editors/page.tsx` | `/editors (sem [locale])` | `/editors (sem [locale])` | `/editors (sem [locale])` | `/editors (sem [locale])` | `/editors (sem [locale])` | ❌ | `—` | ⚠️ Delegado: editors-view/breadcrumbs têm i18n, page sem t() |
-| 48 | `gabriel-toth-goncalves/page.tsx` | `/gabriel-toth-goncalves (sem [locale])` | `/gabriel-toth-goncalves (sem [locale])` | `/gabriel-toth-goncalves (sem [locale])` | `/gabriel-toth-goncalves (sem [locale])` | `/gabriel-toth-goncalves (sem [locale])` | ✅ | `home` | ✅ |
-| 49 | `page.tsx` | `/ (sem [locale])` | `/ (sem [locale])` | `/ (sem [locale])` | `/ (sem [locale])` | `/ (sem [locale])` | ❌ | `—` | ❌ LEGADO sem [locale] — redirect/landing fora do fluxo next-intl |
-| 50 | `pc-optimization/page.tsx` | `/pc-optimization (sem [locale])` | `/pc-optimization (sem [locale])` | `/pc-optimization (sem [locale])` | `/pc-optimization (sem [locale])` | `/pc-optimization (sem [locale])` | ❌ | `—` | ⚠️ Delegado: pc-optimization-view/breadcrumbs têm i18n, page sem t() |
-| 51 | `privacy-policy/page.tsx` | `/privacy-policy (sem [locale])` | `/privacy-policy (sem [locale])` | `/privacy-policy (sem [locale])` | `/privacy-policy (sem [locale])` | `/privacy-policy (sem [locale])` | ❌ | `—` | ❌ LEGADO sem [locale] — duplicata fora de [locale], sem i18n |
-| 52 | `terms-of-service/page.tsx` | `/terms-of-service (sem [locale])` | `/terms-of-service (sem [locale])` | `/terms-of-service (sem [locale])` | `/terms-of-service (sem [locale])` | `/terms-of-service (sem [locale])` | ❌ | `—` | ❌ LEGADO sem [locale] — duplicata fora de [locale], sem i18n |
+| 42 | `editors/page.tsx` | `/editors (sem [locale])` | `/editors (sem [locale])` | `/editors (sem [locale])` | `/editors (sem [locale])` | `/editors (sem [locale])` | ❌ | `—` | ⚠️ Delegado: editors-view/breadcrumbs têm i18n, page sem t() |
+| 43 | `gabriel-toth-goncalves/page.tsx` | `/gabriel-toth-goncalves (sem [locale])` | `/gabriel-toth-goncalves (sem [locale])` | `/gabriel-toth-goncalves (sem [locale])` | `/gabriel-toth-goncalves (sem [locale])` | `/gabriel-toth-goncalves (sem [locale])` | ✅ | `home` | ✅ |
+| 44 | `page.tsx` | `/ (sem [locale])` | `/ (sem [locale])` | `/ (sem [locale])` | `/ (sem [locale])` | `/ (sem [locale])` | ❌ | `—` | ✅ Redirect de URL antiga — permanentRedirect para /{locale} (landing compat) |
+| 45 | `pc-optimization/page.tsx` | `/pc-optimization (sem [locale])` | `/pc-optimization (sem [locale])` | `/pc-optimization (sem [locale])` | `/pc-optimization (sem [locale])` | `/pc-optimization (sem [locale])` | ❌ | `—` | ⚠️ Delegado: pc-optimization-view/breadcrumbs têm i18n, page sem t() |
+| 46 | `privacy-policy/page.tsx` | `/privacy-policy (sem [locale])` | `/privacy-policy (sem [locale])` | `/privacy-policy (sem [locale])` | `/privacy-policy (sem [locale])` | `/privacy-policy (sem [locale])` | ❌ | `—` | ✅ Redirect de URL antiga — permanentRedirect para /{locale}/<slug> (compat) |
+| 47 | `terms-of-service/page.tsx` | `/terms-of-service (sem [locale])` | `/terms-of-service (sem [locale])` | `/terms-of-service (sem [locale])` | `/terms-of-service (sem [locale])` | `/terms-of-service (sem [locale])` | ❌ | `—` | ✅ Redirect de URL antiga — permanentRedirect para /{locale}/<slug> (compat) |
 
 > Nota: wrappers não aparecem aqui; eles expõem o mesmo conteúdo canônico sob slugs traduzidos (ver §5.1). Para auditar "url por língua" real, combine canônica + wrappers do mesmo conceito (ex: canônica about-me + wrappers quem-sou-eu etc.).
 
 ## 6) Componentes — inventário
 
-**Total .tsx (app+components, sem testes):** 323 → **145 com i18n** / **178 sem i18n direto**.
+**Total .tsx (app+components, sem testes):** 316 → **140 com i18n** / **176 sem i18n direto**.
 
 "Sem i18n direto" inclui: ui primitivos (button, dialog, etc.) que são atômicos e corretamente sem tradução, + views/sections que deveriam ter mas não têm. Abaixo amostragem por diretório.
 
@@ -479,7 +474,6 @@ Legenda: **i18n direto** = page.tsx importa e chama useTranslations/getTranslati
 | `src/components/publish` | 6 |  |
 | `src/components/AuthenticationScreen` | 4 |  |
 | `src/components/theme` | 4 |  |
-| `src/app/dashboard` | 2 | Misto: alguns têm i18n, outros delegam |
 | `src/components/analytics` | 2 |  |
 | `src/components/layout` | 2 |  |
 | `src/components/notifications` | 2 |  |
@@ -558,8 +552,6 @@ Legenda: **i18n direto** = page.tsx importa e chama useTranslations/getTranslati
 - `src/app/[locale]/termos-de-servico/page.tsx`
 - `src/app/[locale]/uber-mich/page.tsx`
 - `src/app/channel-management/page.tsx`
-- `src/app/dashboard/layout.tsx`
-- `src/app/dashboard/settings/page.tsx`
 - `src/app/editors/page.tsx`
 - `src/app/error.tsx`
 - `src/app/gabriel-toth-goncalves/layout.tsx`
@@ -731,7 +723,7 @@ Legenda: **i18n direto** = page.tsx importa e chama useTranslations/getTranslati
 - `src/app/[locale]/home/landing-cta-section.tsx` → `landing`
 - `src/app/[locale]/home/landing-faq-section.tsx` → `landing`
 - `src/app/[locale]/home/landing-features-section.tsx` → `landing`
-- ... e mais 105 com i18n
+- ... e mais 100 com i18n
 
 ## 7) Gaps — o que NÃO está traduzido
 
@@ -753,18 +745,13 @@ Prioridade P0 = quebra de experiência por idioma; P1 = dívida visível; P2 = i
 | 10 | url: /{locale}/login · comp: `src/app/[locale]/login/page.tsx` · 5 | Falso positivo | page só faz redirect(/signin); forms usam auth namespace | ✅ | Manter redirect-only |
 | 11 | url: /{locale}/pc-optimization · comp: `src/app/[locale]/pc-optimization/page.tsx` · 5 | Delegação (page sem t() no corpo) | views/sections i18n + metadata/SEO/breadcrumbs via getTranslations (namespace) | P2 residual | Sem ação obrigatória; opcional mover t() para page |
 | 12 | url: /{locale}/register · comp: `src/app/[locale]/register/page.tsx` · 5 | Falso positivo | page só faz redirect(/signin); forms usam auth namespace | ✅ | Manter redirect-only |
-| 13 | url: /channel-management (sem [locale]) · comp: `src/app/channel-management/page.tsx` · 5 | Legado sem [locale] | fora do fluxo next-intl, sem i18n | P1 | Redirecionar para /{locale}/<slug> via middleware |
-| 14 | url: /dashboard/credits (sem [locale]) · comp: `src/app/dashboard/credits/page.tsx` · 5 | Legado sem [locale] | fora do fluxo next-intl, sem i18n | P1 | Redirecionar para /{locale}/<slug> via middleware |
-| 15 | url: /dashboard/insights (sem [locale]) · comp: `src/app/dashboard/insights/page.tsx` · 5 | Legado sem [locale] | fora do fluxo next-intl, sem i18n | P1 | Redirecionar para /{locale}/<slug> via middleware |
-| 16 | url: /dashboard (sem [locale]) · comp: `src/app/dashboard/page.tsx` · 5 | Legado sem [locale] | fora do fluxo next-intl, sem i18n | P1 | Redirecionar para /{locale}/<slug> via middleware |
-| 17 | url: /dashboard/publish (sem [locale]) · comp: `src/app/dashboard/publish/page.tsx` · 5 | Legado sem [locale] | fora do fluxo next-intl, sem i18n | P1 | Redirecionar para /{locale}/<slug> via middleware |
-| 18 | url: /dashboard/settings (sem [locale]) · comp: `src/app/dashboard/settings/page.tsx` · 5 | Legado sem [locale] | fora do fluxo next-intl, sem i18n | P1 | Redirecionar para /{locale}/<slug> via middleware |
-| 19 | url: /editors (sem [locale]) · comp: `src/app/editors/page.tsx` · 5 | Legado sem [locale] | fora do fluxo next-intl, sem i18n | P1 | Redirecionar para /{locale}/<slug> via middleware |
-| 20 | url: /gabriel-toth-goncalves (sem [locale]) · comp: `src/app/gabriel-toth-goncalves/page.tsx` · 5 | Legado sem [locale] | fora do fluxo next-intl, sem i18n | P1 | Redirecionar para /{locale}/<slug> via middleware |
-| 21 | url: / (sem [locale]) · comp: `src/app/page.tsx` · 5 | Legado sem [locale] | fora do fluxo next-intl, sem i18n | P1 | Redirecionar para /{locale}/<slug> via middleware |
-| 22 | url: /pc-optimization (sem [locale]) · comp: `src/app/pc-optimization/page.tsx` · 5 | Legado sem [locale] | fora do fluxo next-intl, sem i18n | P1 | Redirecionar para /{locale}/<slug> via middleware |
-| 23 | url: /privacy-policy (sem [locale]) · comp: `src/app/privacy-policy/page.tsx` · 5 | Legado sem [locale] | fora do fluxo next-intl, sem i18n | P1 | Redirecionar para /{locale}/<slug> via middleware |
-| 24 | url: /terms-of-service (sem [locale]) · comp: `src/app/terms-of-service/page.tsx` · 5 | Legado sem [locale] | fora do fluxo next-intl, sem i18n | P1 | Redirecionar para /{locale}/<slug> via middleware |
+| 13 | url: /channel-management (sem [locale]) · comp: `src/app/channel-management/page.tsx` · 5 | Redirect de URL antiga | permanentRedirect para /{locale}/<slug> (cobre URLs sem locale) | ✅ | Manter |
+| 14 | url: /editors (sem [locale]) · comp: `src/app/editors/page.tsx` · 5 | Redirect de URL antiga | permanentRedirect para /{locale}/<slug> (cobre URLs sem locale) | ✅ | Manter |
+| 15 | url: /gabriel-toth-goncalves (sem [locale]) · comp: `src/app/gabriel-toth-goncalves/page.tsx` · 5 | Conteúdo intencional sem locale | usa getTranslations mas fora de [locale] (ex: gabriel-toth-goncalves) | P2 residual | Documentar; opcional: mover para [locale] |
+| 16 | url: / (sem [locale]) · comp: `src/app/page.tsx` · 5 | Redirect de URL antiga | permanentRedirect para /{locale}/<slug> (cobre URLs sem locale) | ✅ | Manter |
+| 17 | url: /pc-optimization (sem [locale]) · comp: `src/app/pc-optimization/page.tsx` · 5 | Redirect de URL antiga | permanentRedirect para /{locale}/<slug> (cobre URLs sem locale) | ✅ | Manter |
+| 18 | url: /privacy-policy (sem [locale]) · comp: `src/app/privacy-policy/page.tsx` · 5 | Redirect de URL antiga | permanentRedirect para /{locale}/<slug> (cobre URLs sem locale) | ✅ | Manter |
+| 19 | url: /terms-of-service (sem [locale]) · comp: `src/app/terms-of-service/page.tsx` · 5 | Redirect de URL antiga | permanentRedirect para /{locale}/<slug> (cobre URLs sem locale) | ✅ | Manter |
 
 ## 8) Hardcoded strings — amostra
 
@@ -925,7 +912,7 @@ Crie novo namespace só se a página for isolada (ex: blog.json, obs.json, payme
 | 1 — P0 ✅ | blog (2 pages) + obs + payments/checkout + chat-popout traduzidos | feito | t() + namespaces, i18n:validate verde |
 | 2 — P1 metadata ✅ | about-me, channel-management, editors, pc-optimization: metadata/SEO via getTranslations | feito | generateMetadata usa getTranslations, breadcrumbs t() |
 | 3 — P1 infra ✅ | breadcrumbs.json + seo.json em messages map | feito | request.ts carrega 36/36 |
-| 4 — P1 legado | Remover/redirect src/app/<slug> fora de [locale] + /dashboard/settings duplicata | 0.5 dia | Sem duplicatas, middleware cobre, sem 404 |
+| 4 — P1 legado ✅ | Redirects sem [locale] já tratam compatibilidade (channel-management/editors/pc-optimization/privacy-policy/terms-of-service + / → permanentRedirect; /dashboard/* via middleware 308; src/app/dashboard/** duplicata removida) + gabriel-toth-goncalves intencional | feito | 6 redirects mantidos, /dashboard legado removido, nenhum 404 |
 | 5 — P1 polish | registration/*, auth/*, dashboard placeholders residuais | 1 dia | Todo placeholder/title/aria via t() |
 | 6 — Guardrails | ESLint rule JSXText sem t() + CI i18n:validate/check-params obrigatório | 0.5 dia | PR falha se hardcoded |
 | 7 — Nova língua | Gerador `scripts/new-locale.mjs <code>` automatizando §10.1 | 0.5 dia | Rodar e ter locale novo verde |
@@ -950,4 +937,4 @@ comm -23 <(ls src/i18n/en/*.json | xargs -I{} basename {} | sort) <(grep -oP '@\
 
 ---
 
-**Próximo passo recomendado:** P0 concluído (blog/obs/checkout/popout) e infra breadcrumbs/seo destravada. Agora: (1) P1 legado — redirecionar páginas sem [locale] (src/app/channel-management/*, editors, pc-optimization, page.tsx) para as canônicas; (2) tokens residuais hardcoded nos componentes com i18n (cloner/discover/repost/registration); (3) opcionalmente adicionar generateMetadata nas pages docs.
+**Próximo passo recomendado:** P0/P1-legado/P1-infra concluídos (audit §7 com 7 ✅ legado-compat). Restam: P1 polish — placeholders residuais hardcoded nos componentes com i18n (cloner/discover/repost/registration, ~45 arquivos); P2 hygiene — mover t() para pages delegadas e adicionar generateMetadata em dashboard/docs.
