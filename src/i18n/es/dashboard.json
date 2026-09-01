@@ -243,7 +243,14 @@
         "channels": "Canales",
         "security": "Seguridad",
         "billing": "Facturación",
-        "integrations": "Integraciones",
+        "integrations": {
+            "title": "Integraciones",
+            "unofficialX": "X.com (No Oficial)",
+            "unofficialNotice": "Esta integración NO es oficial. Usa interceptación de cookies de sesión y puede fallar en cualquier momento. Úsela bajo su propio riesgo.",
+            "cookieVault": "Bóveda de Cookies de Sesión",
+            "saveCookies": "Almacenar cookies de sesión (encriptadas) para publicación automática",
+            "creditsCost": "Primeros 90 min gratis, luego 5 créditos/hora"
+        },
         "profileInformation": "Información del Perfil",
         "profileDescription": "Actualiza tu información personal y foto de perfil",
         "fullName": "Nombre Completo",

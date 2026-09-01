@@ -80,6 +80,31 @@ export const IntegrationsSection: React.FC<IntegrationsSectionProps> = ({
                 </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
+                {/* Unofficial X.com integration notice */}
+                <div className="rounded-lg border border-primary/30 bg-primary/5 p-4">
+                    <div className="flex items-start gap-3">
+                        <div className="flex-shrink-0 mt-0.5">
+                            <svg
+                                className="w-5 h-5 text-primary"
+                                fill="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 className="text-sm font-semibold text-foreground">
+                                {t("integrations.unofficialX")}
+                            </h3>
+                            <p className="mt-1 text-sm text-muted-foreground leading-relaxed">
+                                {t("integrations.unofficialNotice")}
+                            </p>
+                            <p className="mt-2 text-xs text-primary">
+                                {t("integrations.creditsCost")}
+                            </p>
+                        </div>
+                    </div>
+                </div>
                 {/* Connected Integrations */}
                 {connectedIntegrations.length > 0 && (
                     <div className="space-y-4">

@@ -243,7 +243,14 @@
         "channels": "Channels",
         "security": "Security",
         "billing": "Billing",
-        "integrations": "Integrations",
+        "integrations": {
+            "title": "Integrations",
+            "unofficialX": "X.com (Unofficial)",
+            "unofficialNotice": "This integration is NOT official. It uses cookie-based session scraping and may break at any time. Use at your own risk.",
+            "cookieVault": "Session Cookie Vault",
+            "saveCookies": "Store session cookies (encrypted) for unattended posting",
+            "creditsCost": "First 90 min free, then 5 credits/hour"
+        },
         "profileInformation": "Profile Information",
         "profileDescription": "Update your personal information and profile photo",
         "fullName": "Full Name",

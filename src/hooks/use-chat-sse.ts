@@ -55,7 +55,13 @@ interface UseChatSSEReturn {
     statuses: PlatformStatus[]
     isConnected: boolean
     error: SSEError | null
+    broadcastCommand: BroadcastCommandResult | null
     addMessage: (message: SSEChatMessage) => void
+}
+
+export interface BroadcastCommandResult {
+    command: "titleall" | "categoryall"
+    results: Array<{ platform: string; success: boolean; error?: string }>
 }
 
 const MAX_RECONNECT_DELAY_MS = 30_000
@@ -67,6 +73,8 @@ export function useChatSSE(_platforms: string[]): UseChatSSEReturn {
     const [statuses, setStatuses] = useState<PlatformStatus[]>([])
     const [isConnected, setIsConnected] = useState(false)
     const [error, setError] = useState<SSEError | null>(null)
+    const [broadcastCommand, setBroadcastCommand] =
+        useState<BroadcastCommandResult | null>(null)
 
     const lastEventRef = useRef<EventSource | null>(null)
     const reconnectAttemptRef = useRef(0)
@@ -143,6 +151,18 @@ export function useChatSSE(_platforms: string[]): UseChatSSEReturn {
             }
         })
 
+        eventSource.addEventListener(
+            "broadcast_command",
+            (event: MessageEvent) => {
+                if (!mountedRef.current) return
+                try {
+                    setBroadcastCommand(JSON.parse(event.data))
+                } catch {
+                    // noop
+                }
+            }
+        )
+
         eventSource.addEventListener("error", (event: MessageEvent) => {
             if (!mountedRef.current) return
             try {
@@ -216,6 +236,7 @@ export function useChatSSE(_platforms: string[]): UseChatSSEReturn {
         statuses,
         isConnected,
         error,
+        broadcastCommand,
         addMessage,
     }
 }

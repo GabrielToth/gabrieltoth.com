@@ -213,6 +213,50 @@ export class MessageAggregator {
             timestamp: message.timestamp,
             isAction: message.isAction,
         })
+
+        // Broadcaster chat commands: !titleall / !categoryall
+        if (message.user.isBroadcaster) {
+            this.handleBroadcastCommand(message.content).catch(err =>
+                logger.error("Broadcast command failed", {
+                    userId: this.userId,
+                    error: err instanceof Error ? err.message : String(err),
+                })
+            )
+        }
+    }
+
+    /**
+     * Parse and execute global broadcaster commands (!titleall / !categoryall).
+     */
+    private async handleBroadcastCommand(content: string): Promise<void> {
+        const trimmed = content.trim()
+        let payload: { title?: string; category?: string } | null = null
+
+        if (trimmed.startsWith("!titleall ")) {
+            payload = { title: trimmed.slice("!titleall ".length).trim() }
+        } else if (trimmed.startsWith("!categoryall ")) {
+            payload = {
+                category: trimmed.slice("!categoryall ".length).trim(),
+            }
+        }
+
+        if (!payload) return
+
+        const { updateUserStreams } = await import(
+            "@/lib/live/stream-updater"
+        )
+        const results = await updateUserStreams(this.userId, payload)
+
+        logger.info("Broadcast command executed", {
+            userId: this.userId,
+            payload,
+            results,
+        })
+
+        sendEvent(this.userId, "broadcast_command", {
+            command: payload.title ? "titleall" : "categoryall",
+            results,
+        })
     }
 
     private handleError(platform: ChatPlatform, error: Error): void {
