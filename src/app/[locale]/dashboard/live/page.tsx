@@ -194,7 +194,7 @@ export default function LiveDashboardPage() {
                         onClick={() => setShowScheduler(!showScheduler)}
                         className={`rounded-md px-4 py-2 text-sm font-medium transition-colors ${
                             showScheduler
-                                ? "bg-primary text-white"
+                                ? "bg-primary text-primary-foreground"
                                 : "bg-muted text-foreground hover:bg-accent dark:bg-card dark:text-foreground"
                         }`}
                     >
@@ -206,7 +206,7 @@ export default function LiveDashboardPage() {
                             onClick={() => setActivePlatform(p.platform)}
                             className={`rounded-md px-4 py-2 text-sm font-medium transition-colors ${
                                 activePlatform === p.platform
-                                    ? "bg-primary text-white"
+                                    ? "bg-primary text-primary-foreground"
                                     : "bg-muted text-foreground hover:bg-accent dark:bg-card dark:text-foreground"
                             }`}
                         >

@@ -84,7 +84,7 @@ export default function FieldEditor({
                 <button
                     onClick={handleSave}
                     disabled={isLoading || editValue === value}
-                    className="flex-1 px-4 py-2 bg-primary dark:bg-primary text-white rounded-full hover:bg-primary dark:hover:bg-primary disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium"
+                    className="flex-1 px-4 py-2 bg-primary dark:bg-primary text-primary-foreground rounded-full hover:bg-primary dark:hover:bg-primary disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium"
                 >
                     {isLoading
                         ? t("completeAccount.saving")

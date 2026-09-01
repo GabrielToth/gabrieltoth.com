@@ -540,7 +540,7 @@ export default function ApplicationForm({
                         disabled={
                             isSubmitting || !formData.name || !formData.email
                         }
-                        className="px-8 py-3 bg-primary text-white rounded-lg font-semibold hover:bg-primary transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="px-8 py-3 bg-primary text-primary-foreground rounded-lg font-semibold hover:bg-primary transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                         {isSubmitting ? t("submitting") : t("form.submit")}
                     </Button>

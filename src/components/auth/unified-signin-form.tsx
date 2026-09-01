@@ -349,7 +349,7 @@ export default function UnifiedSignInForm({
                         <button
                             type="submit"
                             disabled={isLoading}
-                            className="w-full px-4 py-3 bg-primary hover:bg-primary dark:bg-primary dark:hover:bg-primary text-white rounded-full font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="w-full px-4 py-3 bg-primary hover:bg-primary dark:bg-primary dark:hover:bg-primary text-primary-foreground rounded-full font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             {isLoading
                                 ? t("signin.loading")
@@ -483,7 +483,7 @@ export default function UnifiedSignInForm({
                     <button
                         type="submit"
                         disabled={isLoading}
-                        className="w-full px-4 py-3 bg-primary hover:bg-primary dark:bg-primary dark:hover:bg-primary text-white rounded-full font-medium transition-colors mt-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="w-full px-4 py-3 bg-primary hover:bg-primary dark:bg-primary dark:hover:bg-primary text-primary-foreground rounded-full font-medium transition-colors mt-2 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                         {isLoading ? t("signin.loading") : t("signin.signIn")}
                     </button>
@@ -598,7 +598,7 @@ export default function UnifiedSignInForm({
                     <button
                         type="submit"
                         disabled={isLoading}
-                        className="w-full px-4 py-3 bg-primary hover:bg-primary dark:bg-primary dark:hover:bg-primary text-white rounded-full font-medium transition-colors mt-6 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="w-full px-4 py-3 bg-primary hover:bg-primary dark:bg-primary dark:hover:bg-primary text-primary-foreground rounded-full font-medium transition-colors mt-6 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                         {isLoading
                             ? t("signin.loading")

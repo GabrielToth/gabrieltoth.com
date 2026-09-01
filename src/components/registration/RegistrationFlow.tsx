@@ -332,7 +332,7 @@ export function RegistrationFlow() {
                     </p>
                     <a
                         href="/register"
-                        className="inline-block px-6 py-2 bg-primary hover:bg-primary text-white font-medium rounded-lg transition-colors"
+                        className="inline-block px-6 py-2 bg-primary hover:bg-primary text-primary-foreground font-medium rounded-lg transition-colors"
                     >
                         Start Over
                     </a>

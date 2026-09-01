@@ -199,7 +199,7 @@ export default function ResetPasswordForm({
             <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full px-4 py-3 bg-primary hover:bg-primary dark:bg-primary dark:hover:bg-primary text-white rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full px-4 py-3 bg-primary hover:bg-primary dark:bg-primary dark:hover:bg-primary text-primary-foreground rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
                 {isLoading
                     ? t("resetPassword.loading")

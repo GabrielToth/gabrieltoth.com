@@ -191,7 +191,7 @@ export default async function PCOptimizationTermsPage({ params }: PageProps) {
                                     </p>
                                     <Link
                                         href={`/${locale}/pc-optimization`}
-                                        className="inline-flex items-center px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary transition-colors"
+                                        className="inline-flex items-center px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary transition-colors"
                                     >
                                         {t("footer.backLink")}
                                     </Link>

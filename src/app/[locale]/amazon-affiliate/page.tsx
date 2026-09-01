@@ -52,7 +52,7 @@ export default function AmazonAffiliatePage() {
                     />
                     <button
                         onClick={onGenerate}
-                        className="px-4 py-2 rounded-md bg-primary text-white hover:bg-primary"
+                        className="px-4 py-2 rounded-md bg-primary text-primary-foreground hover:bg-primary"
                     >
                         Generate
                     </button>

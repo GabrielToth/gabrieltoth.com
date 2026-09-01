@@ -149,7 +149,13 @@
                 "title": "Sistema SAT Fiscal - Website",
                 "description": "Website institucional para empresa especializada em soluções fiscais e contábeis. Desenvolvido com foco em apresentar serviços fiscais, gestão tributária e soluções empresariais de forma clara e profissional.",
                 "image": "/projects/sat-fiscal.jpg",
-                "tags": ["HTML", "CSS", "JavaScript", "SEO", "Design"],
+                "tags": [
+                    "HTML",
+                    "CSS",
+                    "JavaScript",
+                    "SEO",
+                    "Design"
+                ],
                 "liveUrl": "https://sistemasatfiscal.com.br",
                 "featured": true
             },
@@ -157,7 +163,12 @@
                 "title": "Softclever - Website",
                 "description": "Site empresarial desenvolvido em React para empresa de software, com design moderno e responsivo. Implementa seções para serviços, portfólio e contato, utilizando tecnologias como React, CSS moderno e otimizações de SEO.",
                 "image": "/projects/softclever.jpg",
-                "tags": ["React", "CSS", "JavaScript", "SEO"],
+                "tags": [
+                    "React",
+                    "CSS",
+                    "JavaScript",
+                    "SEO"
+                ],
                 "liveUrl": "https://softclever.com.br",
                 "githubUrl": "https://github.com/gabrieltoth/softclever"
             },
@@ -179,7 +190,12 @@
                 "title": "PC Optimization Service",
                 "description": "Serviço especializado de otimização de PCs para gaming, com foco em maximizar performance em jogos e reduzir latência. Inclui configurações avançadas de sistema, otimização de hardware e software personalizado.",
                 "image": "/projects/pc-optimization.jpg",
-                "tags": ["Windows", "Gaming", "Performance", "Hardware"],
+                "tags": [
+                    "Windows",
+                    "Gaming",
+                    "Performance",
+                    "Hardware"
+                ],
                 "slug": "/pc-optimization"
             }
         ]
@@ -214,26 +230,26 @@
     },
     "channelManagement": {
         "badge": "ViraTrend - Consultoria Especializada",
-        "title": "Channel Management",
+        "title": "Gestão de Canais",
         "subtitle": "Transforme Seu Canal em uma Máquina de Crescimento",
-        "description": "Specialized in analytics, content optimization and monetization strategies for YouTube. + 2M monthly views managed with proven results.",
+        "description": "Especializado em analytics, otimização de conteúdo e estratégias de monetização para múltiplas redes. Mais de 2 milhões de visualizações mensais gerenciadas.",
         "features": {
-            "title": "How I Can Help Your Channel",
+            "title": "Como posso ajudar o seu canal",
             "analytics": {
-                "title": "Complete Performance Analysis",
-                "description": "Deep audit of your analytics with actionable insights for immediate optimization"
+                "title": "Análise de Desempenho Completa",
+                "description": "Auditoria profunda dos seus analytics com orientações para otimização imediata"
             },
             "optimization": {
-                "title": "Content Strategy",
-                "description": "Data-driven content strategy development to maximize reach and engagement"
+                "title": "Estratégia de Conteúdo",
+                "description": "Planejamento orientado por dados para maximizar alcance e engajamento"
             },
             "growth": {
-                "title": "Growth Strategies",
-                "description": "Custom plans for sustainable growth and engagement with focus on results"
+                "title": "Estratégias de Crescimento",
+                "description": "Planos personalizados para crescimento sustentável com foco em resultados"
             },
             "monetization": {
-                "title": "Monetization Optimization",
-                "description": "Strategies to maximize revenue through multiple monetization channels"
+                "title": "Otimização de Monetização",
+                "description": "Estratégias para maximizar a receita em múltiplos canais de ganhos"
             }
         },
         "results": {

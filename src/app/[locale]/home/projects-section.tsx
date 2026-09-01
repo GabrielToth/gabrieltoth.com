@@ -48,7 +48,7 @@ export default function ProjectsSection() {
                             key={project.title}
                             className="bg-muted dark:bg-card rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
                         >
-                            <div className="w-full h-32 bg-gradient-to-br from-blue-500 to-primary flex items-center justify-center text-white font-bold text-lg">
+                            <div className="w-full h-32 bg-primary/20 flex items-center justify-center text-foreground font-bold text-lg">
                                 {project.title}
                             </div>
 
@@ -79,7 +79,7 @@ export default function ProjectsSection() {
                                 <div className="flex space-x-3">
                                     <a
                                         href={project.liveUrl}
-                                        className="flex items-center space-x-2 bg-primary text-white px-4 py-2 rounded-full hover:bg-primary transition-colors text-sm font-medium"
+                                        className="flex items-center space-x-2 bg-primary text-primary-foreground px-4 py-2 rounded-full hover:bg-primary transition-colors text-sm font-medium"
                                     >
                                         <ExternalLink size={16} />
                                         <span>{t("viewProject")}</span>

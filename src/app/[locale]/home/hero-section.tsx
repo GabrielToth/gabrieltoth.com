@@ -44,7 +44,7 @@ export default function HeroSection({}: HeroSectionProps) {
                     <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-8">
                         <a
                             href={`mailto:${t("contactEmail")}`}
-                            className="inline-flex items-center px-8 py-4 bg-primary text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 group"
+                            className="inline-flex items-center px-8 py-4 bg-primary text-primary-foreground font-semibold rounded-lg shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 group"
                         >
                             <Mail className="mr-2 h-5 w-5 group-hover:scale-110 transition-transform" />
                             {t("cta")}

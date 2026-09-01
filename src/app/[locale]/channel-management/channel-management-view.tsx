@@ -61,7 +61,7 @@ const HeroSection = ({ locale: _locale }: { locale: Locale }) => {
                         )}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center px-8 py-4 bg-primary text-white rounded-full font-semibold hover:bg-primary transition-colors text-lg"
+                        className="inline-flex items-center px-8 py-4 bg-primary text-primary-foreground rounded-full font-semibold hover:bg-primary transition-colors text-lg"
                     >
                         <MessageCircle className="mr-2" size={20} />
                         {t("hero.cta")}
@@ -410,7 +410,7 @@ const PricingSection = ({
                                 {/* Monero Discount Badge */}
                                 {pricing.isMonero && (
                                     <div className="absolute -top-2 -right-2">
-                                        <div className="bg-orange-500 text-white px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1">
+                                        <div className="bg-primary text-primary-foreground px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1">
                                             <Percent className="w-3 h-3" />
                                             {t("moneroToggle.enabled")
                                                 .replace(/^[^\(]*\(/, "")
@@ -476,7 +476,7 @@ const PricingSection = ({
                                     )}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="w-full py-3 px-6 bg-primary text-white rounded-full font-semibold hover:bg-primary transition-colors text-center block"
+                                    className="w-full py-3 px-6 bg-primary text-primary-foreground rounded-full font-semibold hover:bg-primary transition-colors text-center block"
                                 >
                                     {t("pricing.cta")}
                                 </a>
@@ -500,10 +500,10 @@ const EditorSection = ({ locale }: { locale: Locale }) => {
     return (
         <section className="w-full bg-primary py-20">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                <h2 className="text-3xl font-bold text-white mb-4">
+                <h2 className="text-3xl font-bold text-primary-foreground mb-4">
                     {t("editorCta.title")}
                 </h2>
-                <p className="text-lg text-blue-100 mb-8">
+                <p className="text-lg text-primary-foreground/80 mb-8">
                     {t("editorCta.subtitle")}
                 </p>
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -516,7 +516,7 @@ const EditorSection = ({ locale }: { locale: Locale }) => {
                         <Button
                             variant="outline"
                             size="lg"
-                            className="w-full border-white text-primary bg-white hover:bg-primary hover:text-white"
+                            className="w-full border-primary-foreground text-primary bg-primary-foreground hover:bg-primary-foreground/90 hover:text-primary"
                         >
                             {t("editorCta.more")}
                         </Button>
@@ -525,7 +525,7 @@ const EditorSection = ({ locale }: { locale: Locale }) => {
                         <Button
                             variant="outline"
                             size="lg"
-                            className="w-full bg-transparent border-white text-white hover:bg-white hover:text-primary"
+                            className="w-full bg-transparent border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary"
                         >
                             {t("editorCta.workAsEditor")}
                         </Button>

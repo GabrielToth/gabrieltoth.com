@@ -84,7 +84,7 @@ export default function NotFound() {
                                 <div className="flex flex-col gap-2">
                                     <Link
                                         href={product.href}
-                                        className="inline-flex items-center justify-center px-4 py-2 bg-primary text-white rounded-full text-sm font-medium hover:bg-primary transition-colors"
+                                        className="inline-flex items-center justify-center px-4 py-2 bg-primary text-primary-foreground rounded-full text-sm font-medium hover:bg-primary transition-colors"
                                     >
                                         <span>Ver em Português</span>
                                         <ExternalLink
@@ -111,7 +111,7 @@ export default function NotFound() {
                     <div className="flex flex-col sm:flex-row gap-4 justify-center">
                         <Link
                             href="/pt-BR"
-                            className="inline-flex items-center px-6 py-3 bg-primary text-white rounded-full font-medium hover:bg-primary transition-colors"
+                            className="inline-flex items-center px-6 py-3 bg-primary text-primary-foreground rounded-full font-medium hover:bg-primary transition-colors"
                         >
                             <Home className="mr-2" size={20} />
                             Página Inicial

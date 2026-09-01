@@ -72,7 +72,7 @@ export default function LocaleError({
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                     <button
                         onClick={reset}
-                        className="inline-flex items-center px-6 py-3 bg-primary text-white rounded-full font-medium hover:bg-primary transition-colors"
+                        className="inline-flex items-center px-6 py-3 bg-primary text-primary-foreground rounded-full font-medium hover:bg-primary transition-colors"
                     >
                         {content.tryAgain}
                     </button>

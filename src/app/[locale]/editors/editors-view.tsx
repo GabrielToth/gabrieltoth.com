@@ -291,7 +291,7 @@ export const CTASection = ({ locale: _locale }: SectionPropsWithLocale) => {
     const whatsappNumber = "5511993313606"
 
     return (
-        <section className="w-full bg-primary text-white py-20 px-4 sm:px-6 lg:px-8">
+        <section className="w-full bg-primary text-primary-foreground py-20 px-4 sm:px-6 lg:px-8">
             <div className="max-w-7xl mx-auto text-center">
                 <h2 className="text-3xl font-bold mb-4">{t("cta.title")}</h2>
                 <p className="text-lg mb-8">{t("cta.description")}</p>

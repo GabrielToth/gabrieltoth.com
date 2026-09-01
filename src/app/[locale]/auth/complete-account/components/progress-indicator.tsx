@@ -61,7 +61,7 @@ export default function ProgressIndicator({
                             <div
                                 className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold text-sm transition-all duration-300 ${
                                     isCurrent
-                                        ? "bg-primary dark:bg-primary text-white ring-2 ring-ring dark:ring-blue-400"
+                                        ? "bg-primary dark:bg-primary text-primary-foreground ring-2 ring-ring dark:ring-blue-400"
                                         : isCompleted
                                           ? "bg-green-600 dark:bg-green-500 text-white"
                                           : "bg-accent dark:bg-muted text-muted-foreground dark:text-muted-foreground"

@@ -51,7 +51,7 @@ export function NavigationButtons({
                 <button
                     onClick={onNext}
                     disabled={nextDisabled || isLoading}
-                    className="px-4 sm:px-6 py-3 sm:py-2 bg-primary hover:bg-primary text-white font-medium rounded-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 min-h-[44px] sm:min-h-auto text-base sm:text-sm"
+                    className="px-4 sm:px-6 py-3 sm:py-2 bg-primary hover:bg-primary text-primary-foreground font-medium rounded-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 min-h-[44px] sm:min-h-auto text-base sm:text-sm"
                     aria-label={nextLabel}
                 >
                     {isLoading && (

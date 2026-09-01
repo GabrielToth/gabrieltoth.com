@@ -172,7 +172,7 @@ export default function Step2NewFields({
                 <button
                     onClick={onContinue}
                     disabled={isLoading || !isFormValid}
-                    className="flex-1 px-4 py-3 bg-primary dark:bg-primary text-white rounded-full hover:bg-primary dark:hover:bg-primary disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
+                    className="flex-1 px-4 py-3 bg-primary dark:bg-primary text-primary-foreground rounded-full hover:bg-primary dark:hover:bg-primary disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
                 >
                     {isLoading
                         ? t("completeAccount.loading")

@@ -5,7 +5,6 @@ import { generateSeoConfig } from "@/lib/seo"
 import { type Metadata } from "next"
 import { getTranslations } from "next-intl/server"
 import AboutMeSection from "./about-me-section"
-import AboutSection from "../home/about-section"
 import ChannelManagementSection from "../home/channel-management-section"
 import ContactSection from "../home/contact-section"
 import ProjectsSection from "../home/projects-section"
@@ -52,7 +51,6 @@ export default async function AboutPage({ params }: AboutPageProps) {
             <StructuredData locale={locale} type="both" />
             <main className="min-h-screen bg-card dark:bg-background">
                 <AboutMeSection locale={locale} />
-                <AboutSection params={{ locale }} />
                 <ChannelManagementSection params={{ locale }} />
                 <ProjectsSection />
                 <ContactSection />

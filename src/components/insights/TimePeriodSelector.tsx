@@ -55,7 +55,7 @@ export const TimePeriodSelector: React.FC<TimePeriodSelectorProps> = ({
                         onClick={() => onPeriodChange(period.value)}
                         className={`text-xs sm:text-sm min-h-10 ${
                             selectedPeriod === period.value
-                                ? "bg-primary text-white hover:bg-primary"
+                                ? "bg-primary text-primary-foreground hover:bg-primary"
                                 : "border-input text-foreground hover:bg-muted"
                         }`}
                     >

@@ -69,7 +69,7 @@ export function SuccessMessage({
 
                 <button
                     onClick={() => router.push(redirectUrl)}
-                    className="w-full px-4 py-3 bg-primary hover:bg-primary text-white font-medium rounded-lg transition-colors min-h-[44px]"
+                    className="w-full px-4 py-3 bg-primary hover:bg-primary text-primary-foreground font-medium rounded-lg transition-colors min-h-[44px]"
                 >
                     Go to Login Now
                 </button>

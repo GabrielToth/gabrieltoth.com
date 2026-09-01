@@ -17,12 +17,12 @@ export default function ChannelManagementSection({
     return (
         <section
             id="channel-management"
-            className="py-24 bg-gradient-to-br from-primary/5 to-primary/5 dark:from-primary/10 dark:to-blue-900/20"
+            className="py-24 bg-gradient-to-br from-primary/5 to-primary/5 dark:from-primary/10 dark:to-primary/10"
         >
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="text-center mb-16">
-                    <div className="inline-flex items-center px-4 py-2 rounded-full bg-primary/10 dark:bg-primary/10 text-primary dark:text-primary text-sm font-medium mb-8">
-                        🚀 {tCM("hero.badge")}
+                    <div className="inline-flex items-center px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-8">
+                        {tCM("hero.badge")}
                     </div>
                     <h2 className="text-3xl sm:text-4xl font-bold text-foreground dark:text-foreground mb-4">
                         <span className="text-foreground">ViraTrend</span>
@@ -195,7 +195,7 @@ export default function ChannelManagementSection({
                     </p>
                     <Link
                         href={`/${locale}/channel-management`}
-                        className="inline-flex items-center space-x-2 bg-primary text-white px-8 py-4 rounded-lg hover:bg-primary transition-colors font-medium text-lg"
+                        className="inline-flex items-center space-x-2 bg-primary text-primary-foreground px-8 py-4 rounded-lg hover:bg-primary transition-colors font-medium text-lg"
                     >
                         <Users size={20} />
                         <span>{t("channelManagement.cta.button")}</span>
