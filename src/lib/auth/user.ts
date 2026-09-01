@@ -40,20 +40,51 @@ export async function upsertUser(googleData: GoogleUserData): Promise<User> {
         // Check if user exists — the users table uses canonical columns
         // (email, name, oauth_provider, oauth_id, oauth_email, picture). Aliases
         // keep the legacy `google_*` field names for existing consumers.
-        const existingUser = await db.queryOne<User>(
-            `SELECT id,
-                    email AS google_email,
-                    name AS google_name,
-                    oauth_id AS google_id,
-                    picture AS google_picture,
-                    oauth_provider, oauth_id, oauth_email, email, name, picture,
-                    password_hash, email_verified, account_completion_status,
-                    birth_date, phone AS phone_number,
-                    created_at, updated_at
-             FROM users
-             WHERE oauth_provider = 'google' AND oauth_id = $1`,
-            [googleData.google_id]
-        )
+        let existingUser: User | null
+        try {
+            existingUser = await db.queryOne<User>(
+                `SELECT id,
+                        email AS google_email,
+                        name AS google_name,
+                        oauth_id AS google_id,
+                        picture AS google_picture,
+                        oauth_provider, oauth_id, oauth_email, email, name, picture,
+                        password_hash, email_verified, account_completion_status,
+                        birth_date, phone AS phone_number,
+                        created_at, updated_at
+                 FROM users
+                 WHERE oauth_provider = 'google' AND oauth_id = $1`,
+                [googleData.google_id]
+            )
+        } catch (err) {
+            // Self-heal legacy production databases missing the picture column
+            const msg = err instanceof Error ? err.message : String(err)
+            if (msg.includes("column") && msg.includes("picture")) {
+                logger.warn(
+                    "users.picture column missing — auto-creating it",
+                    { context: "Auth" }
+                )
+                await db.query(
+                    `ALTER TABLE public.users ADD COLUMN IF NOT EXISTS picture TEXT`
+                )
+                existingUser = await db.queryOne<User>(
+                    `SELECT id,
+                            email AS google_email,
+                            name AS google_name,
+                            oauth_id AS google_id,
+                            picture AS google_picture,
+                            oauth_provider, oauth_id, oauth_email, email, name, picture,
+                            password_hash, email_verified, account_completion_status,
+                            birth_date, phone AS phone_number,
+                            created_at, updated_at
+                     FROM users
+                     WHERE oauth_provider = 'google' AND oauth_id = $1`,
+                    [googleData.google_id]
+                )
+            } else {
+                throw err
+            }
+        }
 
         if (existingUser) {
             // User exists - check if profile data changed

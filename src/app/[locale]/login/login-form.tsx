@@ -60,11 +60,11 @@ export default function LoginForm({ locale }: LoginFormProps) {
             <GoogleLoginButton className="w-full mb-3" type="login" />
 
             <button
-                onClick={() => setShowEmailForm(!showEmailForm)}
-                disabled={isLoading}
-                className="w-full px-4 py-3 bg-accent hover:bg-accent dark:bg-muted dark:hover:bg-muted text-foreground dark:text-foreground rounded-full font-medium transition-colors mb-6 disabled:opacity-50 disabled:cursor-not-allowed"
+                disabled
+                title={t("login.comingSoon")}
+                className="w-full px-4 py-3 bg-muted text-muted-foreground rounded-full font-medium opacity-50 cursor-not-allowed mb-6"
             >
-                {t("login.emailButton")}
+                {t("login.emailButton")} — {t("login.comingSoon")}
             </button>
 
             {showEmailForm && (

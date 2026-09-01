@@ -265,7 +265,7 @@ describe("NavigationButtons Component", () => {
 
             const nextButton = screen.getByText("Next")
             expect(nextButton).toHaveClass("bg-primary")
-            expect(nextButton).toHaveClass("text-white")
+            expect(nextButton).toHaveClass("text-primary-foreground")
         })
 
         it("should have proper styling for Cancel button", () => {

@@ -47,10 +47,7 @@ export default function Header() {
     }
 
     const getHomeLink = () => {
-        // If on homepage, link to hero section; otherwise link to home
-        const isHomepage =
-            pathname === `/${locale}` || pathname === `/${locale}/`
-        return isHomepage ? "#hero" : `/${locale}`
+        return `/${locale}`
     }
 
     const getServicesLinks = () => [
@@ -128,14 +125,6 @@ export default function Header() {
 
                     {/* Desktop Navigation - Center */}
                     <nav className="hidden nav:flex items-center space-x-8 flex-1 justify-center">
-                        <Link
-                            href={getHomeLink()}
-                            className="text-foreground dark:text-foreground hover:text-foreground dark:hover:text-foreground transition-colors"
-                            data-testid="nav-home-desktop"
-                        >
-                            {t("home")}
-                        </Link>
-
                         {navigationLinks.map(link => (
                             <Link
                                 key={link.href}
@@ -533,15 +522,6 @@ export default function Header() {
                                 />
                                 <ThemeToggleClient />
                             </div>
-
-                            <Link
-                                href={getHomeLink()}
-                                className="block px-3 py-2 text-foreground dark:text-foreground hover:text-foreground dark:hover:text-foreground transition-colors"
-                                onClick={() => setIsMobileMenuOpen(false)}
-                                data-testid="nav-home-mobile"
-                            >
-                                {t("home")}
-                            </Link>
 
                             {navigationLinks.map(link => (
                                 <Link

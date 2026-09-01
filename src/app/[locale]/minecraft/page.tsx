@@ -72,7 +72,7 @@ export default async function MinecraftPage({ params }: MinecraftPageProps) {
                                     "minecraft-modpacks",
                                     locale
                                 )}
-                                className="group bg-[#171717] border border-neutral-700 rounded-lg p-8 hover:border-[#10b981] transition-all duration-200 hover:shadow-lg hover:shadow-[#10b981]/20"
+                                className="group bg-[#0a0a0a] border border-neutral-700 rounded-lg p-8 hover:border-[#10b981] transition-all duration-200 hover:shadow-lg hover:shadow-[#10b981]/20"
                             >
                                 <div className="flex items-center justify-between mb-4">
                                     <h2 className="text-2xl font-bold text-white group-hover:text-[#10b981] transition-colors">
@@ -103,7 +103,7 @@ export default async function MinecraftPage({ params }: MinecraftPageProps) {
                                     "minecraft-mods",
                                     locale
                                 )}
-                                className="group bg-[#171717] border border-neutral-700 rounded-lg p-8 hover:border-[#10b981] transition-all duration-200 hover:shadow-lg hover:shadow-[#10b981]/20"
+                                className="group bg-[#0a0a0a] border border-neutral-700 rounded-lg p-8 hover:border-[#10b981] transition-all duration-200 hover:shadow-lg hover:shadow-[#10b981]/20"
                             >
                                 <div className="flex items-center justify-between mb-4">
                                     <h2 className="text-2xl font-bold text-white group-hover:text-[#10b981] transition-colors">
@@ -130,7 +130,7 @@ export default async function MinecraftPage({ params }: MinecraftPageProps) {
                         </div>
 
                         {/* Journey Section */}
-                        <div className="bg-[#242424] border border-neutral-700 rounded-lg p-8 max-w-4xl mx-auto">
+                        <div className="bg-[#0a0a0a] border border-neutral-700 rounded-lg p-8 max-w-4xl mx-auto">
                             <h2 className="text-3xl font-bold mb-6 text-[#10b981]">
                                 {t("landing.journey.title")}
                             </h2>
@@ -177,7 +177,7 @@ export default async function MinecraftPage({ params }: MinecraftPageProps) {
                                         "minecraft-modpacks",
                                         locale
                                     )}
-                                    className="bg-[#171717] border border-neutral-700 rounded-lg p-6 hover:border-[#10b981] transition-all duration-200 hover:shadow-lg hover:shadow-[#10b981]/20"
+                                    className="bg-[#0a0a0a] border border-neutral-700 rounded-lg p-6 hover:border-[#10b981] transition-all duration-200 hover:shadow-lg hover:shadow-[#10b981]/20"
                                 >
                                     <h3 className="text-xl font-bold mb-3 text-white hover:text-[#10b981] transition-colors">
                                         {t("landing.journey.modpacks", {
@@ -198,7 +198,7 @@ export default async function MinecraftPage({ params }: MinecraftPageProps) {
                                         "minecraft-mods",
                                         locale
                                     )}
-                                    className="bg-[#171717] border border-neutral-700 rounded-lg p-6 hover:border-[#10b981] transition-all duration-200 hover:shadow-lg hover:shadow-[#10b981]/20"
+                                    className="bg-[#0a0a0a] border border-neutral-700 rounded-lg p-6 hover:border-[#10b981] transition-all duration-200 hover:shadow-lg hover:shadow-[#10b981]/20"
                                 >
                                     <h3 className="text-xl font-bold mb-3 text-white hover:text-[#10b981] transition-colors">
                                         {t("landing.journey.mods", {
@@ -219,7 +219,7 @@ export default async function MinecraftPage({ params }: MinecraftPageProps) {
                                         "minecraft-plugins",
                                         locale
                                     )}
-                                    className="bg-[#171717] border border-neutral-700 rounded-lg p-6 hover:border-[#10b981] transition-all duration-200 hover:shadow-lg hover:shadow-[#10b981]/20"
+                                    className="bg-[#0a0a0a] border border-neutral-700 rounded-lg p-6 hover:border-[#10b981] transition-all duration-200 hover:shadow-lg hover:shadow-[#10b981]/20"
                                 >
                                     <h3 className="text-xl font-bold mb-3 text-white hover:text-[#10b981] transition-colors">
                                         {t("landing.journey.plugins", {

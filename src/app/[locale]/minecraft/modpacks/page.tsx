@@ -55,7 +55,7 @@ export default async function ModpacksPage({ params }: ModpacksPageProps) {
                                     "minecraft-modpacks-hypixel-qol",
                                     locale
                                 )}
-                                className="group bg-[#171717] border border-neutral-700 rounded-lg p-6 hover:border-[#10b981] transition-all duration-200 hover:shadow-lg hover:shadow-[#10b981]/20"
+                                className="group bg-[#0a0a0a] border border-neutral-700 rounded-lg p-6 hover:border-[#10b981] transition-all duration-200 hover:shadow-lg hover:shadow-[#10b981]/20"
                             >
                                 <div className="flex items-center justify-between mb-4">
                                     <h2 className="text-2xl font-bold text-white group-hover:text-[#10b981] transition-colors">

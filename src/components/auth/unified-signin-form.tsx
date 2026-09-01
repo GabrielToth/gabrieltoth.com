@@ -1,10 +1,6 @@
 "use client"
 
-import {
-    signInWithEmail,
-    signInWithSSO,
-    signUpWithEmail,
-} from "@/lib/auth/unified-auth"
+import { signInWithEmail, signUpWithEmail } from "@/lib/auth/unified-auth"
 import { logger } from "@/lib/logger"
 import { LockKeyhole } from "lucide-react"
 import { useTranslations } from "next-intl"
@@ -132,19 +128,6 @@ export default function UnifiedSignInForm({
         }
     }
 
-    // Handle SSO
-    const handleSSO = async () => {
-        setError(null)
-        setIsLoading(true)
-
-        try {
-            await signInWithSSO(email || "")
-        } catch (err) {
-            setError(err instanceof Error ? err.message : "SSO sign-in failed")
-            setIsLoading(false)
-        }
-    }
-
     // Handle Google Login
     const handleGoogleLogin = async () => {
         try {
@@ -221,23 +204,26 @@ export default function UnifiedSignInForm({
                             : t("signin.googleSignUpButton")}
                     </button>
 
-                    {/* SSO Button - Dark background */}
+                    {/* SSO Button - Coming soon */}
                     <button
-                        onClick={handleSSO}
-                        disabled={isLoading}
-                        className="w-full h-12 px-4 bg-card dark:bg-muted hover:bg-background dark:hover:bg-muted text-white rounded-full font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                        disabled
+                        title={t("signin.comingSoon")}
+                        className="w-full h-12 px-4 bg-muted text-muted-foreground rounded-full font-medium opacity-50 cursor-not-allowed flex items-center justify-center gap-2"
                     >
                         <LockKeyhole size={20} />
                         {mode === "signin"
                             ? t("signin.sso")
                             : t("signin.ssoSignUp")}
+                        <span className="ml-2 text-xs font-semibold px-2 py-0.5 rounded-full border border-muted-foreground">
+                            {t("signin.comingSoon")}
+                        </span>
                     </button>
 
-                    {/* Email Button - Border only */}
+                    {/* Email Button - Coming soon */}
                     <button
-                        onClick={() => setStep("email")}
-                        disabled={isLoading}
-                        className="w-full h-12 px-4 border-2 border-blue-600 dark:border-primary text-primary dark:text-primary hover:bg-primary/5 dark:hover:bg-primary/10 rounded-full font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                        disabled
+                        title={t("signin.comingSoon")}
+                        className="w-full h-12 px-4 border-2 border-border text-muted-foreground rounded-full font-medium opacity-50 cursor-not-allowed flex items-center justify-center gap-2"
                     >
                         <FaEnvelope size={20} />
                         {mode === "signin"
@@ -396,9 +382,9 @@ export default function UnifiedSignInForm({
                             {t("signin.ssoDescription")}
                         </p>
                         <button
-                            onClick={handleSSO}
-                            disabled={isLoading || !email}
-                            className="w-full px-4 py-2 border border-input dark:border-input rounded-full text-foreground dark:text-foreground hover:bg-muted dark:hover:bg-accent transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium"
+                            disabled
+                            title={t("signin.comingSoon")}
+                            className="w-full px-4 py-2 border border-input rounded-full text-muted-foreground opacity-50 cursor-not-allowed text-sm font-medium"
                         >
                             {mode === "signin"
                                 ? t("signin.sso")

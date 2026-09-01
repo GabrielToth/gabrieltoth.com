@@ -50,7 +50,7 @@ export default async function ModsPage({ params }: ModsPageProps) {
                 <section className="py-12 px-4 sm:px-6 lg:px-8 bg-[#0a0a0a]">
                     <div className="max-w-7xl mx-auto">
                         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
-                            <div className="bg-[#171717] border border-neutral-700 rounded-lg p-6">
+                            <div className="bg-[#0a0a0a] border border-neutral-700 rounded-lg p-6">
                                 <h2 className="text-2xl font-bold text-white mb-4">
                                     Coming Soon
                                 </h2>

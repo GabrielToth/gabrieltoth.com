@@ -1,320 +1,336 @@
 {
-    "hero": {
-        "greeting": "Hallo, ich bin",
-        "name": "Gabriel Toth Gonçalves",
-        "title": "Datenwissenschaftler & Full Stack Entwickler",
-        "subtitle": "Spezialisiert auf die Entwicklung innovativer digitaler Lösungen mit modernen Technologien",
-        "cta": "Kontakt aufnehmen",
-        "resume": "Lebenslauf herunterladen",
-        "disabled": "Deaktiviert",
-        "contactEmail": "contact@gabrieltoth.com",
-        "resumeUrl": "/resume/Gabriel_Toth_Curriculum_EN.pdf"
-    },
-    "about": {
-        "title": "Über Mich",
-        "description": "Entwickler mit Leidenschaft für Technologie und Innovation",
-        "role": "Datenwissenschaftler & Full Stack Entwickler",
-        "intro": "Hallo! Ich bin Gabriel Toth Gonçalves, Senior Data Scientist und Full Stack Entwickler aus Brasilien. Mit einem Abschluss in Informatik und Spezialisierung auf Data Science arbeite ich derzeit am social-analytics-engine Projekt und führe erweiterte Analysen von digitalen Kampagnen und Conversion-Metriken durch.",
-        "experience": "Meine aktuelle Arbeit umfasst die Integration von Google Analytics-Daten mit Social Media-Metriken (YouTube, Instagram, X, Telegram) und Stripe-Conversion-Analysen mit Python, PostgreSQL, SQLAlchemy und Docker. Ich entwickle auch Unternehmenslösungen und habe Websites wie softclever.com.br (React) und sistemasatfiscal.com.br (Angular) mit modernen Technologien erstellt.",
-        "passion": "Neben Datenanalyse und Data Science verwalte ich Kanäle wie den WaveIGL-Kanal mit über 2 Millionen monatlichen Aufrufen und erstelle Inhalte für soziale Medien. Ich entwickelte ViraTrend, einen spezialisierten Service für digitale Wachstumsberatung für Content-Ersteller. Ich bin leidenschaftlich daran interessiert, Daten in umsetzbare Erkenntnisse umzuwandeln und maschinelles Lernen zu verwenden, um digitale Kampagnen und Benutzererfahrungen zu optimieren.",
-        "location": "Brasilien",
-        "interests": "Wenn ich nicht programmiere, können Sie mich dabei finden, wie ich Bildungsinhalte erstelle, neue Technologien erkunde oder Minecraft spiele (ja, ich habe sogar mein eigenes Plugin!).",
-        "specializedIn": "Spezialisiert auf",
-        "skills": {
-            "title": "Kernkompetenzen",
-            "dataScience": {
-                "title": "Datenwissenschaft",
-                "items": [
-                    "Python",
-                    "SQLAlchemy",
-                    "Google APIs",
-                    "Power BI",
-                    "pytest",
-                    "Pandas",
-                    "Matplotlib",
-                    "Scikit-learn",
-                    "NumPy"
-                ]
-            },
-            "frontend": {
-                "title": "Frontend",
-                "items": [
-                    "React",
-                    "Next.js",
-                    "TypeScript",
-                    "Tailwind CSS",
-                    "JavaScript",
-                    "Angular",
-                    "HTML",
-                    "CSS",
-                    "SCSS",
-                    "SASS",
-                    "WordPress"
-                ]
-            },
-            "backend": {
-                "title": "Backend",
-                "items": [
-                    "Node.js",
-                    "Python",
-                    "PostgreSQL",
-                    "Docker",
-                    "Google Cloud",
-                    "REST APIs",
-                    "AWS",
-                    "MySQL",
-                    "Go",
-                    "Java"
-                ]
-            },
-            "tools": {
-                "title": "Werkzeuge",
-                "items": [
-                    "Git",
-                    "Docker",
-                    "VS Code",
-                    "Figma",
-                    "Power BI",
-                    "Slack",
-                    "Excel",
-                    "Metabase",
-                    "Jira",
-                    "Notion",
-                    "GitHub",
-                    "GitLab"
-                ]
-            }
-        },
-        "contact": {
-            "title": "Kontakt aufnehmen",
-            "description": "Bereit zur Zusammenarbeit oder Diskussion Ihres nächsten Projekts",
-            "button": "Lass uns sprechen"
-        }
+  "hero": {
+    "greeting": "Hallo, ich bin",
+    "name": "Gabriel Toth Gonçalves",
+    "title": "Datenwissenschaftler & Full Stack Entwickler",
+    "subtitle": "Spezialisiert auf die Entwicklung innovativer digitaler Lösungen mit modernen Technologien",
+    "cta": "Kontakt aufnehmen",
+    "resume": "Lebenslauf herunterladen",
+    "disabled": "Deaktiviert",
+    "contactEmail": "contact@gabrieltoth.com",
+    "resumeUrl": "/resume/Gabriel_Toth_Curriculum_EN.pdf"
+  },
+  "about": {
+    "title": "Über Mich",
+    "description": "Entwickler mit Leidenschaft für Technologie und Innovation",
+    "role": "Datenwissenschaftler & Full Stack Entwickler",
+    "intro": "Hallo! Ich bin Gabriel Toth Gonçalves, Senior Data Scientist und Full Stack Entwickler aus Brasilien. Mit einem Abschluss in Informatik und Spezialisierung auf Data Science arbeite ich derzeit am social-analytics-engine Projekt und führe erweiterte Analysen von digitalen Kampagnen und Conversion-Metriken durch.",
+    "experience": "Meine aktuelle Arbeit umfasst die Integration von Google Analytics-Daten mit Social Media-Metriken (YouTube, Instagram, X, Telegram) und Stripe-Conversion-Analysen mit Python, PostgreSQL, SQLAlchemy und Docker. Ich entwickle auch Unternehmenslösungen und habe Websites wie softclever.com.br (React) und sistemasatfiscal.com.br (Angular) mit modernen Technologien erstellt.",
+    "passion": "Neben Datenanalyse und Data Science verwalte ich Kanäle wie den WaveIGL-Kanal mit über 2 Millionen monatlichen Aufrufen und erstelle Inhalte für soziale Medien. Ich entwickelte ViraTrend, einen spezialisierten Service für digitale Wachstumsberatung für Content-Ersteller. Ich bin leidenschaftlich daran interessiert, Daten in umsetzbare Erkenntnisse umzuwandeln und maschinelles Lernen zu verwenden, um digitale Kampagnen und Benutzererfahrungen zu optimieren.",
+    "location": "Brasilien",
+    "interests": "Wenn ich nicht programmiere, können Sie mich dabei finden, wie ich Bildungsinhalte erstelle, neue Technologien erkunde oder Minecraft spiele (ja, ich habe sogar mein eigenes Plugin!).",
+    "specializedIn": "Spezialisiert auf",
+    "skills": {
+      "title": "Kernkompetenzen",
+      "dataScience": {
+        "title": "Datenwissenschaft",
+        "items": [
+          "Python",
+          "SQLAlchemy",
+          "Google APIs",
+          "Power BI",
+          "pytest",
+          "Pandas",
+          "Matplotlib",
+          "Scikit-learn",
+          "NumPy"
+        ]
+      },
+      "frontend": {
+        "title": "Frontend",
+        "items": [
+          "React",
+          "Next.js",
+          "TypeScript",
+          "Tailwind CSS",
+          "JavaScript",
+          "Angular",
+          "HTML",
+          "CSS",
+          "SCSS",
+          "SASS",
+          "WordPress"
+        ]
+      },
+      "backend": {
+        "title": "Backend",
+        "items": [
+          "Node.js",
+          "Python",
+          "PostgreSQL",
+          "Docker",
+          "Google Cloud",
+          "REST APIs",
+          "AWS",
+          "MySQL",
+          "Go",
+          "Java"
+        ]
+      },
+      "tools": {
+        "title": "Werkzeuge",
+        "items": [
+          "Git",
+          "Docker",
+          "VS Code",
+          "Figma",
+          "Power BI",
+          "Slack",
+          "Excel",
+          "Metabase",
+          "Jira",
+          "Notion",
+          "GitHub",
+          "GitLab"
+        ]
+      }
     },
     "contact": {
-        "title": "Verwandle Dein Projekt In Realität",
-        "subtitle": "Bereit, Ihre Ideen in digitale Realität zu verwandeln",
-        "contactEmail": "contact@gabrieltoth.com",
-        "resumeUrl": "/resume/Gabriel_Toth_Curriculum_EN.pdf",
-        "getInTouch": "Kontakt aufnehmen",
-        "email": "E-Mail",
-        "scheduleCall": "Anruf planen",
-        "downloadResume": "Lebenslauf herunterladen",
-        "followMe": "Folge mir",
-        "services": {
-            "title": "Verfügbare Dienste",
-            "dataScience": {
-                "title": "Datenanalyse",
-                "description": "Erweiterte Analyse digitaler Kampagnen und Conversion-Metriken"
-            },
-            "webDev": {
-                "title": "Webentwicklung",
-                "description": "Moderne Websites und Anwendungen mit React und Next.js"
-            },
-            "consulting": {
-                "title": "Digitale Beratung",
-                "description": "Wachstumsstrategien für Content-Ersteller"
-            },
-            "channelManagement": "Kanalverwaltung"
-        },
-        "availability": {
-            "title": "Verfügbarkeit",
-            "current": "Verfügbar für neue Projekte",
-            "response": "Antwort innerhalb von 24h",
-            "timezone": "Zeitzone: UTC-3"
-        },
-        "form": {
-            "name": "Ihr Name",
-            "email": "E-Mail",
-            "subject": "Betreff",
-            "message": "Nachricht",
-            "emailPlaceholder": "ihre@email.com",
-            "messagePlaceholder": "Erzählen Sie mir von Ihrem Projekt...",
-            "send": "Nachricht senden",
-            "sending": "Senden...",
-            "success": "Nachricht erfolgreich gesendet!",
-            "error": "Fehler beim Senden der Nachricht. Versuchen Sie es erneut."
-        }
-    },
-    "projects": {
-        "title": "Projekte",
-        "description": "Einige der Projekte, die ich mit modernen Technologien entwickelt habe",
-        "viewProject": "Projekt ansehen",
-        "sourceCode": "Quellcode",
-        "technologies": "Technologien",
-        "showMore": "Mehr anzeigen",
-        "showLess": "Weniger anzeigen",
-        "items": [
-            {
-                "title": "Sistema SAT Fiscal - Website",
-                "description": "Unternehmenswebsite für ein Unternehmen, das auf steuerliche und buchhalterische Lösungen spezialisiert ist. Entwickelt mit dem Fokus, Steuerdienste, Steuerverwaltung und Unternehmenslösungen klar und professionell zu präsentieren.",
-                "image": "/projects/sat-fiscal.jpg",
-                "tags": ["HTML", "CSS", "JavaScript", "SEO", "Design"],
-                "liveUrl": "https://sistemasatfiscal.com.br",
-                "featured": true
-            },
-            {
-                "title": "Softclever - Website",
-                "description": "Unternehmenswebsite, entwickelt in React für ein Softwareunternehmen, mit modernem und responsivem Design. Implementiert Bereiche für Dienstleistungen, Portfolio und Kontakt und nutzt Technologien wie React, modernes CSS und SEO-Optimierungen.",
-                "image": "/projects/softclever.jpg",
-                "tags": ["React", "CSS", "JavaScript", "SEO"],
-                "liveUrl": "https://softclever.com.br",
-                "githubUrl": "https://github.com/gabrieltoth/softclever"
-            },
-            {
-                "title": "WaveIGL Projekt",
-                "description": "Umfassendes Bildungsprojekt einschließlich YouTube-Kanal mit über 2 Millionen monatlichen Aufrufen, integriertem Zahlungssystem für Investitionen und Kanalverwaltung. Enthält Inhalte über Technologie, Programmierung und Spieleentwicklung.",
-                "image": "/projects/waveigl.jpg",
-                "tags": [
-                    "YouTube",
-                    "Content-Erstellung",
-                    "Zahlungsintegration",
-                    "Next.js",
-                    "Stripe",
-                    "PIX"
-                ],
-                "slug": "/waveigl-support"
-            },
-            {
-                "title": "PC-Optimierungsservice",
-                "description": "Spezialisierter PC-Optimierungsservice für Gaming, der sich auf maximale Spielleistung und reduzierte Latenz konzentriert. Beinhaltet erweiterte Systemkonfigurationen, Hardware-Optimierung und maßgeschneiderte Software.",
-                "image": "/projects/pc-optimization.jpg",
-                "tags": ["Windows", "Gaming", "Leistung", "Hardware"],
-                "slug": "/pc-optimization"
-            }
-        ]
-    },
-    "seo": {
-        "personDescription": "Full-Stack-Entwickler und Datenwissenschaftler, spezialisiert auf moderne Technologien",
-        "jobTitle": "Full Stack Entwickler & Datenwissenschaftler"
-    },
-    "structuredData": {
-        "profilePage": {
-            "@context": "https://schema.org",
-            "@type": "ProfilePage",
-            "mainEntity": {
-                "@type": "Person",
-                "name": "Gabriel Toth Gonçalves",
-                "alternateName": "Gabriel Toth",
-                "description": "Full-Stack-Entwickler und Datenwissenschaftler, spezialisiert auf moderne Technologien",
-                "url": "https://www.gabrieltoth.com",
-                "image": "https://www.gabrieltoth.com/profile-image.jpg",
-                "sameAs": [
-                    "https://github.com/gabrieltoth",
-                    "https://linkedin.com/in/gabriel-toth",
-                    "https://twitter.com/gabrieltoth"
-                ],
-                "jobTitle": "Full Stack Entwickler & Datenwissenschaftler",
-                "worksFor": {
-                    "@type": "Organization",
-                    "name": "Gabriel Toth Tech"
-                }
-            }
-        }
-    },
-    "channelManagement": {
-        "badge": "ViraTrend - Spezialisierte Beratung",
-        "title": "Channel Management",
-        "subtitle": "Verwandle deinen Kanal in eine Wachstumsmaschine",
-        "description": "Specialized in analytics, content optimization and monetization strategies for YouTube. + 2M monthly views managed with proven results.",
-        "features": {
-            "title": "How I Can Help Your Channel",
-            "analytics": {
-                "title": "Complete Performance Analysis",
-                "description": "Deep audit of your analytics with actionable insights for immediate optimization"
-            },
-            "optimization": {
-                "title": "Content Strategy",
-                "description": "Data-driven content strategy development to maximize reach and engagement"
-            },
-            "growth": {
-                "title": "Growth Strategies",
-                "description": "Custom plans for sustainable growth and engagement with focus on results"
-            },
-            "monetization": {
-                "title": "Monetization Optimization",
-                "description": "Strategies to maximize revenue through multiple monetization channels"
-            }
-        },
-        "results": {
-            "title": "Nachgewiesene Ergebnisse",
-            "subtitle": "Reale Wachstumsfälle",
-            "cases": [
-                {
-                    "channel": "WaveIGL",
-                    "description": "Gaming-Kanal, den ich verwalte",
-                    "metrics": [
-                        {
-                            "label": "Monatliche Aufrufe",
-                            "value": "2M+"
-                        },
-                        {
-                            "label": "Wachstum",
-                            "value": "400%"
-                        },
-                        {
-                            "label": "Einnahmen",
-                            "value": "5x"
-                        }
-                    ]
-                },
-                {
-                    "channel": "Gabriel Toth (inaktiv)",
-                    "description": "Mein persönlicher Kanal - Historischer Fall",
-                    "metrics": [
-                        {
-                            "label": "Gesamtaufrufe",
-                            "value": "1M+"
-                        },
-                        {
-                            "label": "Aktuelle Abonnenten",
-                            "value": "1.4K+"
-                        },
-                        {
-                            "label": "Aufrufe mit <1K Abos",
-                            "value": "1M+"
-                        }
-                    ]
-                }
-            ]
-        },
-        "cta": {
-            "title": "Bereit, dein Wachstum zu beschleunigen?",
-            "description": "Fordere eine personalisierte Beratung an und entdecke, wie du deinen Kanal transformieren kannst",
-            "button": "Beratung anfordern"
-        },
-        "stats": [
-            {
-                "value": "2M+",
-                "label": "Verwaltete monatliche Aufrufe"
-            },
-            {
-                "value": "300%",
-                "label": "Durchschnittliches Kundenwachstum"
-            },
-            {
-                "value": "5+",
-                "label": "Jahre Erfahrung"
-            }
-        ],
-        "pricing": {
-            "title": "Beratungspläne",
-            "express": {
-                "name": "Express-Analyse",
-                "price": "R$ 497",
-                "description": "Umfassendes Audit mit detailliertem Bericht"
-            },
-            "complete": {
-                "name": "Komplette Beratung",
-                "price": "R$ 1.497",
-                "description": "Strategie + Umsetzung + Betreuung",
-                "popular": true
-            },
-            "intensive": {
-                "name": "Intensivbetreuung",
-                "price": "Auf Anfrage",
-                "description": "Personalisierte monatliche Betreuung"
-            }
-        }
+      "title": "Kontakt aufnehmen",
+      "description": "Bereit zur Zusammenarbeit oder Diskussion Ihres nächsten Projekts",
+      "button": "Lass uns sprechen"
     }
+  },
+  "contact": {
+    "title": "Verwandle Dein Projekt In Realität",
+    "subtitle": "Bereit, Ihre Ideen in digitale Realität zu verwandeln",
+    "contactEmail": "contact@gabrieltoth.com",
+    "resumeUrl": "/resume/Gabriel_Toth_Curriculum_EN.pdf",
+    "getInTouch": "Kontakt aufnehmen",
+    "email": "E-Mail",
+    "scheduleCall": "Anruf planen",
+    "downloadResume": "Lebenslauf herunterladen",
+    "followMe": "Folge mir",
+    "services": {
+      "title": "Verfügbare Dienste",
+      "dataScience": {
+        "title": "Datenanalyse",
+        "description": "Erweiterte Analyse digitaler Kampagnen und Conversion-Metriken"
+      },
+      "webDev": {
+        "title": "Webentwicklung",
+        "description": "Moderne Websites und Anwendungen mit React und Next.js"
+      },
+      "consulting": {
+        "title": "Digitale Beratung",
+        "description": "Wachstumsstrategien für Content-Ersteller"
+      },
+      "channelManagement": "Kanalverwaltung"
+    },
+    "availability": {
+      "title": "Verfügbarkeit",
+      "current": "Verfügbar für neue Projekte",
+      "response": "Antwort innerhalb von 24h",
+      "timezone": "Zeitzone: UTC-3"
+    },
+    "form": {
+      "name": "Ihr Name",
+      "email": "E-Mail",
+      "subject": "Betreff",
+      "message": "Nachricht",
+      "emailPlaceholder": "ihre@email.com",
+      "messagePlaceholder": "Erzählen Sie mir von Ihrem Projekt...",
+      "send": "Nachricht senden",
+      "sending": "Senden...",
+      "success": "Nachricht erfolgreich gesendet!",
+      "error": "Fehler beim Senden der Nachricht. Versuchen Sie es erneut."
+    }
+  },
+  "projects": {
+    "title": "Projekte",
+    "description": "Einige der Projekte, die ich mit modernen Technologien entwickelt habe",
+    "viewProject": "Projekt ansehen",
+    "sourceCode": "Quellcode",
+    "technologies": "Technologien",
+    "showMore": "Mehr anzeigen",
+    "showLess": "Weniger anzeigen",
+    "items": [
+      {
+        "title": "Sistema SAT Fiscal - Website",
+        "description": "Unternehmenswebsite für ein Unternehmen, das auf steuerliche und buchhalterische Lösungen spezialisiert ist. Entwickelt mit dem Fokus, Steuerdienste, Steuerverwaltung und Unternehmenslösungen klar und professionell zu präsentieren.",
+        "image": "/projects/sat-fiscal.jpg",
+        "tags": [
+          "HTML",
+          "CSS",
+          "JavaScript",
+          "SEO",
+          "Design"
+        ],
+        "liveUrl": "https://sistemasatfiscal.com.br",
+        "featured": true
+      },
+      {
+        "title": "Softclever - Website",
+        "description": "Unternehmenswebsite, entwickelt in React für ein Softwareunternehmen, mit modernem und responsivem Design. Implementiert Bereiche für Dienstleistungen, Portfolio und Kontakt und nutzt Technologien wie React, modernes CSS und SEO-Optimierungen.",
+        "image": "/projects/softclever.jpg",
+        "tags": [
+          "React",
+          "CSS",
+          "JavaScript",
+          "SEO"
+        ],
+        "liveUrl": "https://softclever.com.br",
+        "githubUrl": "https://github.com/gabrieltoth/softclever"
+      },
+      {
+        "title": "WaveIGL Projekt",
+        "description": "Umfassendes Bildungsprojekt einschließlich YouTube-Kanal mit über 2 Millionen monatlichen Aufrufen, integriertem Zahlungssystem für Investitionen und Kanalverwaltung. Enthält Inhalte über Technologie, Programmierung und Spieleentwicklung.",
+        "image": "/projects/waveigl.jpg",
+        "tags": [
+          "YouTube",
+          "Content-Erstellung",
+          "Zahlungsintegration",
+          "Next.js",
+          "Stripe",
+          "PIX"
+        ],
+        "slug": "/waveigl-support"
+      },
+      {
+        "title": "PC-Optimierungsservice",
+        "description": "Spezialisierter PC-Optimierungsservice für Gaming, der sich auf maximale Spielleistung und reduzierte Latenz konzentriert. Beinhaltet erweiterte Systemkonfigurationen, Hardware-Optimierung und maßgeschneiderte Software.",
+        "image": "/projects/pc-optimization.jpg",
+        "tags": [
+          "Windows",
+          "Gaming",
+          "Leistung",
+          "Hardware"
+        ],
+        "slug": "/pc-optimization"
+      }
+    ]
+  },
+  "seo": {
+    "personDescription": "Full-Stack-Entwickler und Datenwissenschaftler, spezialisiert auf moderne Technologien",
+    "jobTitle": "Full Stack Entwickler & Datenwissenschaftler"
+  },
+  "structuredData": {
+    "profilePage": {
+      "@context": "https://schema.org",
+      "@type": "ProfilePage",
+      "mainEntity": {
+        "@type": "Person",
+        "name": "Gabriel Toth Gonçalves",
+        "alternateName": "Gabriel Toth",
+        "description": "Full-Stack-Entwickler und Datenwissenschaftler, spezialisiert auf moderne Technologien",
+        "url": "https://www.gabrieltoth.com",
+        "image": "https://www.gabrieltoth.com/profile-image.jpg",
+        "sameAs": [
+          "https://github.com/gabrieltoth",
+          "https://linkedin.com/in/gabriel-toth",
+          "https://twitter.com/gabrieltoth"
+        ],
+        "jobTitle": "Full Stack Entwickler & Datenwissenschaftler",
+        "worksFor": {
+          "@type": "Organization",
+          "name": "Gabriel Toth Tech"
+        }
+      }
+    }
+  },
+  "channelManagement": {
+    "badge": "ViraTrend - Spezialisierte Beratung",
+    "title": "Kanalmanagement",
+    "subtitle": "Verwandle deinen Kanal in eine Wachstumsmaschine",
+    "description": "Spezialisiert auf Analytics, Content-Optimierung und Monetarisierungsstrategien für YouTube. Über 2 Millionen monatliche Aufrufe mit nachweisbaren Ergebnissen.",
+    "features": {
+      "title": "Wie ich deinem Kanal helfen kann",
+      "analytics": {
+        "title": "Umfassende Leistungsanalyse",
+        "description": "Tiefgehende Analyse deiner Analytics mit umsetzbaren Erkenntnissen zur sofortigen Optimierung"
+      },
+      "optimization": {
+        "title": "Content-Strategie",
+        "description": "Datenbasierte Content-Strategie zur Maximierung von Reichweite und Engagement"
+      },
+      "growth": {
+        "title": "Wachstumsstrategien",
+        "description": "Maßgeschneiderte Pläne für nachhaltiges Wachstum mit Fokus auf Ergebnisse"
+      },
+      "monetization": {
+        "title": "Monetarisierungs-Optimierung",
+        "description": "Strategien zur Umsatzmaximierung über mehrere Monetarisierungskanäle"
+      }
+    },
+    "results": {
+      "title": "Nachgewiesene Ergebnisse",
+      "subtitle": "Reale Wachstumsfälle",
+      "cases": [
+        {
+          "channel": "WaveIGL",
+          "description": "Gaming-Kanal, den ich verwalte",
+          "metrics": [
+            {
+              "label": "Monatliche Aufrufe",
+              "value": "2M+"
+            },
+            {
+              "label": "Wachstum",
+              "value": "400%"
+            },
+            {
+              "label": "Einnahmen",
+              "value": "5x"
+            }
+          ]
+        },
+        {
+          "channel": "Gabriel Toth (inaktiv)",
+          "description": "Mein persönlicher Kanal - Historischer Fall",
+          "metrics": [
+            {
+              "label": "Gesamtaufrufe",
+              "value": "1M+"
+            },
+            {
+              "label": "Aktuelle Abonnenten",
+              "value": "1.4K+"
+            },
+            {
+              "label": "Aufrufe mit <1K Abos",
+              "value": "1M+"
+            }
+          ]
+        }
+      ]
+    },
+    "cta": {
+      "title": "Bereit, dein Wachstum zu beschleunigen?",
+      "description": "Fordere eine personalisierte Beratung an und entdecke, wie du deinen Kanal transformieren kannst",
+      "button": "Beratung anfordern"
+    },
+    "stats": [
+      {
+        "value": "2M+",
+        "label": "Verwaltete monatliche Aufrufe"
+      },
+      {
+        "value": "300%",
+        "label": "Durchschnittliches Kundenwachstum"
+      },
+      {
+        "value": "5+",
+        "label": "Jahre Erfahrung"
+      }
+    ],
+    "pricing": {
+      "title": "Beratungspläne",
+      "express": {
+        "name": "Express-Analyse",
+        "price": "R$ 497",
+        "description": "Umfassendes Audit mit detailliertem Bericht"
+      },
+      "complete": {
+        "name": "Komplette Beratung",
+        "price": "R$ 1.497",
+        "description": "Strategie + Umsetzung + Betreuung",
+        "popular": true
+      },
+      "intensive": {
+        "name": "Intensivbetreuung",
+        "price": "Auf Anfrage",
+        "description": "Personalisierte monatliche Betreuung"
+      }
+    }
+  }
 }

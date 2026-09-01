@@ -59,7 +59,7 @@ export default async function ContributionsPage({
 
                 <section className="py-12 px-4 sm:px-6 lg:px-8 bg-[#0a0a0a]">
                     <div className="max-w-7xl mx-auto">
-                        <div className="bg-[#242424] border border-neutral-700 rounded-lg p-12 max-w-4xl mx-auto text-center">
+                        <div className="bg-[#0a0a0a] border border-neutral-700 rounded-lg p-12 max-w-4xl mx-auto text-center">
                             <h2 className="text-3xl font-bold mb-4 text-[#10b981]">
                                 {t("contributions.comingSoon", {
                                     defaultValue: "Coming Soon",

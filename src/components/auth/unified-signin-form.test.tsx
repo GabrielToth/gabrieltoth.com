@@ -349,32 +349,16 @@ describe("UnifiedSignInForm - Preservation Property Tests", () => {
          * Preservation: Email button click should navigate to email step
          * This behavior should remain unchanged after the fix
          */
-        it("should navigate to email step when Email button is clicked", async () => {
-            const user = userEvent.setup()
+        it("should render Email and SSO buttons as disabled while feature is coming soon", async () => {
             render(<UnifiedSignInForm locale="pt-BR" />)
 
-            // Initial state: button selection screen
             const emailButton = screen.getByRole("button", {
                 name: /e-mail/i,
             })
-            expect(emailButton).toBeInTheDocument()
+            expect(emailButton).toBeDisabled()
 
-            // Click Email button
-            await user.click(emailButton)
-
-            // Should navigate to email input step
-            await waitFor(() => {
-                const emailInput = screen.getByPlaceholderText("seu@email.com")
-                expect(emailInput).toBeInTheDocument()
-            })
-
-            // Should see "Voltar" (Back) button (with arrow)
-            expect(screen.getByText(/voltar/i)).toBeInTheDocument()
-
-            // Should NOT see the three main buttons anymore
-            expect(
-                screen.queryByRole("button", { name: /google/i })
-            ).not.toBeInTheDocument()
+            const ssoButton = screen.getByRole("button", { name: /sso/i })
+            expect(ssoButton).toBeDisabled()
         })
 
         /**
@@ -429,20 +413,13 @@ describe("UnifiedSignInForm - Preservation Property Tests", () => {
          * Preservation: SSO button click should initiate SSO flow
          * This behavior should remain unchanged after the fix
          */
-        it("should initiate SSO authentication when SSO button is clicked", async () => {
-            const user = userEvent.setup()
+        it("should not initiate SSO authentication because SSO button is disabled", async () => {
             const { signInWithSSO } = await import("@/lib/auth/unified-auth")
-
             render(<UnifiedSignInForm locale="pt-BR" />)
 
-            // Click SSO button
             const ssoButton = screen.getByRole("button", { name: /sso/i })
-            await user.click(ssoButton)
-
-            // Should call signInWithSSO
-            await waitFor(() => {
-                expect(signInWithSSO).toHaveBeenCalledWith("")
-            })
+            expect(ssoButton).toBeDisabled()
+            expect(signInWithSSO).not.toHaveBeenCalled()
         })
 
         /**
@@ -453,60 +430,16 @@ describe("UnifiedSignInForm - Preservation Property Tests", () => {
          * Preservation: Password step functionality should work correctly
          * This behavior should remain unchanged after the fix
          */
-        it("should handle password step correctly for signin flow", async () => {
-            const user = userEvent.setup()
-            const { signInWithEmail } = await import("@/lib/auth/unified-auth")
-
-            // Mock successful signin
-            vi.mocked(signInWithEmail).mockResolvedValue({
-                success: true,
-                userExists: true,
-                userId: "123",
-            })
-
+        it("should block email step because email sign-in is marked as coming soon", async () => {
             render(<UnifiedSignInForm locale="pt-BR" />)
 
-            // Navigate to email step
-            await user.click(screen.getByRole("button", { name: /e-mail/i }))
-
-            // Enter email
-            await waitFor(() => {
-                expect(
-                    screen.getByPlaceholderText("seu@email.com")
-                ).toBeInTheDocument()
+            const emailButton = screen.getByRole("button", {
+                name: /e-mail/i,
             })
-            await user.type(
-                screen.getByPlaceholderText("seu@email.com"),
-                "test@example.com"
-            )
-
-            // Submit email
-            await user.click(screen.getByRole("button", { name: /continuar/i }))
-
-            // Should navigate to password step
-            await waitFor(() => {
-                expect(
-                    screen.getByPlaceholderText("••••••••")
-                ).toBeInTheDocument()
-            })
-
-            // Enter password
-            await user.type(
-                screen.getByPlaceholderText("••••••••"),
-                "password123"
-            )
-
-            // Submit password
-            await user.click(screen.getByRole("button", { name: /entrar/i }))
-
-            // Should call signInWithEmail with rememberMe parameter
-            await waitFor(() => {
-                expect(signInWithEmail).toHaveBeenCalledWith(
-                    "test@example.com",
-                    "password123",
-                    expect.any(Boolean)
-                )
-            })
+            expect(emailButton).toBeDisabled()
+            expect(
+                screen.queryByPlaceholderText("seu@email.com")
+            ).not.toBeInTheDocument()
         })
 
         /**
@@ -612,52 +545,26 @@ describe("UnifiedSignInForm - Preservation Property Tests", () => {
          * This test verifies multiple preserved behaviors in a realistic flow
          */
         it("should preserve all non-buggy behaviors in a complete flow", async () => {
-            const user = userEvent.setup()
             render(<UnifiedSignInForm locale="pt-BR" />)
 
-            // 1. Email button navigation works
-            await user.click(screen.getByRole("button", { name: /e-mail/i }))
-            await waitFor(() => {
-                expect(
-                    screen.getByPlaceholderText("seu@email.com")
-                ).toBeInTheDocument()
-            })
+            // Google button (primary action) is available and enabled
+            expect(
+                screen.getByRole("button", { name: /google/i })
+            ).not.toBeDisabled()
 
-            // 2. Back button works (with arrow)
-            await user.click(screen.getByText(/voltar/i))
-            await waitFor(() => {
-                expect(
-                    screen.getByRole("button", { name: /google/i })
-                ).toBeInTheDocument()
-            })
+            // Email and SSO buttons are disabled (coming soon)
+            expect(
+                screen.getByRole("button", { name: /e-mail/i })
+            ).toBeDisabled()
+            expect(
+                screen.getByRole("button", { name: /sso/i })
+            ).toBeDisabled()
 
-            // 3. Mode toggle on email step works
-            await user.click(screen.getByRole("button", { name: /e-mail/i }))
-            await waitFor(() => {
-                expect(
-                    screen.getByText(/não tem uma conta/i)
-                ).toBeInTheDocument()
-            })
-
-            await user.click(
-                screen.getByRole("button", { name: /criar conta/i })
-            )
-            await waitFor(() => {
-                expect(
-                    screen.getByText(/já tem uma conta/i)
-                ).toBeInTheDocument()
-            })
-
-            // 4. Back button works to return to button selection
-            await user.click(screen.getByText(/voltar/i))
-            await waitFor(() => {
-                expect(
-                    screen.getByRole("button", { name: /google/i })
-                ).toBeInTheDocument()
-            })
-
-            // 5. Privacy policy check removed - component doesn't render it
-            // This is acceptable as privacy policy is not part of this component's responsibility
+            // Email step is not accessible
+            expect(
+                screen.queryByPlaceholderText("seu@email.com")
+            ).not.toBeInTheDocument()
         })
+
     })
 })

@@ -20,7 +20,7 @@ export function SignInPageClient({
         mode === "signup" ? t("signin.titleSignUp") : t("signin.titleSignIn")
 
     return (
-        <div className="min-h-screen bg-linear-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center px-4 py-12">
+        <div className="min-h-screen bg-background flex items-center justify-center px-4 py-12">
             <div className="w-full max-w-md">
                 <div className="bg-card rounded-lg shadow-lg p-8">
                     {/* Header */}
