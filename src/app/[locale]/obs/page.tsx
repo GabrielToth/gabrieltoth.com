@@ -43,7 +43,7 @@ export default function ObsChatOverlay() {
                 PLATFORM_LABELS[m.platform] ||
                 m.platform.slice(0, 2).toUpperCase(),
         }))
-    }, [relay.messages])
+    }, [relay.messages, t])
 
     useEffect(() => {
         endRef.current?.scrollIntoView({ behavior: "smooth" })

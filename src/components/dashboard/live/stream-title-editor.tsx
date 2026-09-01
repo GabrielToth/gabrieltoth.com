@@ -7,7 +7,7 @@
 "use client"
 
 import { useState, useEffect, useRef, useCallback } from "react"
-import { Loader2, CheckCircle2, AlertCircle, RefreshCw } from "lucide-react"
+import { Loader2, CheckCircle2, AlertCircle } from "lucide-react"
 
 interface StreamTitleEditorProps {
     platform: string
@@ -53,7 +53,6 @@ export function StreamTitleEditor({
 
     // Category Autocomplete State
     const [categories, setCategories] = useState<CategoryOption[]>([])
-    const [connectedPlatforms, setConnectedPlatforms] = useState<string[]>([])
     const [isDropdownOpen, setIsDropdownOpen] = useState(false)
     const [loadingCategories, setLoadingCategories] = useState(false)
     const dropdownRef = useRef<HTMLDivElement>(null)
