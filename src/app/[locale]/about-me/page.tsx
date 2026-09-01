@@ -3,6 +3,7 @@ import StructuredData from "@/components/seo/structured-data"
 import { type Locale } from "@/lib/i18n"
 import { generateSeoConfig } from "@/lib/seo"
 import { type Metadata } from "next"
+import { getTranslations } from "next-intl/server"
 import AboutMeSection from "./about-me-section"
 import AboutSection from "../home/about-section"
 import ChannelManagementSection from "../home/channel-management-section"
@@ -18,12 +19,14 @@ export async function generateMetadata({
 }: AboutPageProps): Promise<Metadata> {
     const { locale } = await params
 
+    const t = await getTranslations({ locale, namespace: "aboutMe" })
+
     const seoConfig = generateSeoConfig({
         locale,
         path: "/about-me",
-        title: undefined,
-        description: undefined,
-        keywords: [],
+        title: t("seo.title"),
+        description: t("seo.description"),
+        keywords: t("seo.keywords").split(", "),
         ogType: "website",
         ogImage: "https://www.gabrieltoth.com/og-image-home.jpg",
     })
@@ -43,17 +46,6 @@ export async function generateMetadata({
 
 export default async function AboutPage({ params }: AboutPageProps) {
     const { locale } = await params
-
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const seoConfig = generateSeoConfig({
-        locale,
-        path: "/about-me",
-        title: undefined,
-        description: undefined,
-        keywords: [],
-        ogType: "website",
-        ogImage: "https://www.gabrieltoth.com/og-image-home.jpg",
-    })
 
     return (
         <>

@@ -304,7 +304,8 @@
         }
     ],
     "breadcrumbs": {
-        "services": "Dienstleistungen"
+        "services": "Dienstleistungen",
+        "editors": "YouTube-Editoren"
     },
     "submitting": "Senden...",
     "formSubmitted": {
@@ -351,5 +352,10 @@
     "options": {
         "experienceLevel": ["Anfänger", "Fortgeschritten", "Erfahren", "Profi"]
     },
-    "applicationTemplate": "Hallo! Ich möchte mich für die Stelle als Video-Editor bewerben.\n\n*BEWERBUNGSFORMULAR*\n\nVollständiger Name:\nAlter:\nPortfolio (Links):\nBearbeitungserfahrung (Jahre) (nicht erforderlich):\n\n*Software-Kenntnisse:*\n- Premiere Pro: (Grundkenntnisse/Fortgeschritten/Erfahren)\n- After Effects: (Grundkenntnisse/Fortgeschritten/Erfahren)\n- DaVinci Resolve: (Grundkenntnisse/Fortgeschritten/Erfahren)\n- Andere:\n\nIch freue mich auf Ihre Rückmeldung!"
+    "applicationTemplate": "Hallo! Ich möchte mich für die Stelle als Video-Editor bewerben.\n\n*BEWERBUNGSFORMULAR*\n\nVollständiger Name:\nAlter:\nPortfolio (Links):\nBearbeitungserfahrung (Jahre) (nicht erforderlich):\n\n*Software-Kenntnisse:*\n- Premiere Pro: (Grundkenntnisse/Fortgeschritten/Erfahren)\n- After Effects: (Grundkenntnisse/Fortgeschritten/Erfahren)\n- DaVinci Resolve: (Grundkenntnisse/Fortgeschritten/Erfahren)\n- Andere:\n\nIch freue mich auf Ihre Rückmeldung!",
+    "seo": {
+        "title": "YouTube-Video-Editoren Gesucht | Werde Teil Unseres Teams - Gabriel Toth",
+        "description": "Werde Teil unseres globalen Teams professioneller Video-Editoren. Flexibler Zeitplan, wettbewerbsfähige Bezahlung und spannende YouTube-Projekte. Jetzt bewerben!",
+        "keywords": "youtube video editor, videoschnitt jobs, premiere pro, after effects, davinci resolve, freelance editor, gabriel toth"
+    }
 }

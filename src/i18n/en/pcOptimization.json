@@ -18,10 +18,22 @@
         "cta": "View Plans",
         "videoText": "THAT'S HOW AN OPTIMIZED PC FEELS LIKE",
         "stats": [
-            { "value": "99.9%", "label": "Uptime" },
-            { "value": "low", "label": "Latency" },
-            { "value": "20+", "label": "Games Optimized" },
-            { "value": "5+", "label": "Happy Customers" }
+            {
+                "value": "99.9%",
+                "label": "Uptime"
+            },
+            {
+                "value": "low",
+                "label": "Latency"
+            },
+            {
+                "value": "20+",
+                "label": "Games Optimized"
+            },
+            {
+                "value": "5+",
+                "label": "Happy Customers"
+            }
         ],
         "learnMore": "Learn More"
     },
@@ -148,5 +160,10 @@
         "title": "STOP WASTING YOUR TIME",
         "subtitle": "Every second you lose to lag, someone else is dominating the match.",
         "button": "UNLOCK FULL POWER"
+    },
+    "seo": {
+        "title": "Gaming PC Optimization - Maximum Performance - Gabriel Toth",
+        "description": "Unlock your gaming PC's true potential! Professional optimization for more FPS, less lag and maximum performance in all games.",
+        "keywords": "gaming pc optimization, more fps, less lag, gaming performance, windows optimization, overclocking, gabriel toth, gaming pc, performance improvement"
     }
 }

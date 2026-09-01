@@ -12,7 +12,7 @@ export async function getChannelManagementBreadcrumbs(locale: Locale) {
             url: `${base}${localePath}`,
         },
         {
-            name: "ViraTrend",
+            name: t("breadcrumbs.channelManagement"),
             url: `${base}${localePath}/channel-management`,
         },
     ]

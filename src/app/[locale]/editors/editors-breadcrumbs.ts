@@ -12,7 +12,7 @@ export async function getEditorsBreadcrumbs(locale: Locale) {
             url: `${base}${localePath}`,
         },
         {
-            name: "YouTube Editors",
+            name: t("breadcrumbs.editors"),
             url: `${base}${localePath}/editors`,
         },
     ]

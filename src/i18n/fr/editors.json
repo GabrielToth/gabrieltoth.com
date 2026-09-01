@@ -304,7 +304,8 @@
         }
     ],
     "breadcrumbs": {
-        "services": "Services"
+        "services": "Services",
+        "editors": "Monteurs YouTube"
     },
     "submitting": "Submitting...",
     "formSubmitted": {
@@ -356,5 +357,10 @@
             "Professional"
         ]
     },
-    "applicationTemplate": "Hi! I would like to apply for the video editor position.\n\n*APPLICATION FORM*\n\nFull Name:\nAge:\nPortfolio (links):\nEditing Experience (years) (no need to have):\n\n*Software Proficiency:*\n- Premiere Pro: (Basic/Intermediate/Advanced)\n- After Effects: (Basic/Intermediate/Advanced)\n- DaVinci Resolve: (Basic/Intermediate/Advanced)\n- Others:\n\nLooking forward to hearing back!"
+    "applicationTemplate": "Hi! I would like to apply for the video editor position.\n\n*APPLICATION FORM*\n\nFull Name:\nAge:\nPortfolio (links):\nEditing Experience (years) (no need to have):\n\n*Software Proficiency:*\n- Premiere Pro: (Basic/Intermediate/Advanced)\n- After Effects: (Basic/Intermediate/Advanced)\n- DaVinci Resolve: (Basic/Intermediate/Advanced)\n- Others:\n\nLooking forward to hearing back!",
+    "seo": {
+        "title": "Monteurs Vidéo YouTube Recherchés | Rejoignez Notre Équipe - Gabriel Toth",
+        "description": "Rejoignez notre équipe mondiale de monteurs vidéo professionnels. Horaires flexibles, rémunération compétitive et projets YouTube passionnants. Postulez maintenant !",
+        "keywords": "monteur vidéo youtube, emploi montage vidéo, premiere pro, after effects, davinci resolve, monteur freelance, gabriel toth"
+    }
 }

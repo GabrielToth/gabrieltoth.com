@@ -1,6 +1,7 @@
 import { defaultLocale, locales, type Locale } from "@/lib/i18n"
 import { generateSeoConfig } from "@/lib/seo"
 import { type Metadata } from "next"
+import { getTranslations } from "next-intl/server"
 
 interface PageProps {
     params: Promise<{ locale: string }>
@@ -23,12 +24,14 @@ export async function generateMetadata({
         locale = localeParam as Locale
     }
 
+    const t = await getTranslations({ locale, namespace: "editors" })
+
     const seoConfig = generateSeoConfig({
         locale,
         path: "/editors",
-        title: undefined,
-        description: undefined,
-        keywords: [],
+        title: t("seo.title"),
+        description: t("seo.description"),
+        keywords: t("seo.keywords").split(", "),
         ogType: "article",
         ogImage: "https://www.gabrieltoth.com/og-image-editors.jpg",
     })
@@ -72,6 +75,9 @@ export async function generateMetadata({
                     alt.href,
                 ])
             ),
+        },
+        other: {
+            "theme-color": "#3b82f6",
         },
     }
 }

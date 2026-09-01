@@ -1,6 +1,6 @@
 # Auditoria i18n — gabrieltoth.com
 
-> Gerado em: 2026-08-31T12:48:56.884Z | Branch: main | Locales: en, pt-BR, es, de, fr | next-intl (request.ts + useTranslations/getTranslations)
+> Gerado em: 2026-09-01T00:19:54.238Z | Branch: main | Locales: en, pt-BR, es, de, fr | next-intl (request.ts + useTranslations/getTranslations)
 > Como usar: este arquivo é a fonte de consulta de cobertura. Filtre por "❌" para achar gaps. Padrões para novos idiomas: ver §10. Checklist de PR: ver §11.
 
 ## Índice
@@ -27,18 +27,18 @@ A. [Apêndice — comandos de validação](#a-apêndice--comandos-de-validação
 | Wrappers (re-export de slug localizado) | 37 |
 | Canônicas (layout/conteúdo real) | 52 |
 | .tsx em src/app+src/components (sem __tests__/.test.) | 323 |
-| Com i18n direto (useTranslations/getTranslations) | 144 (45%) |
-| Sem i18n direto | 179 (55%) |
+| Com i18n direto (useTranslations/getTranslations) | 145 (45%) |
+| Sem i18n direto | 178 (55%) |
 | Namespaces por locale | 36 (9 questions/* à parte) |
-| Namespaces carregados em request.ts | 34 |
-| Namespaces existentes mas NÃO carregados | breadcrumbs.json, seo.json |
-| Páginas canônicas SEM i18n direto | 15 |
-| Páginas canônicas COM i18n direto | 37 |
+| Namespaces carregados em request.ts | 36 |
+| Namespaces existentes mas NÃO carregados | — |
+| Páginas canônicas SEM i18n direto | 14 |
+| Páginas canônicas COM i18n direto | 38 |
 
 **Leitura em 30s:**
 - **Cobertura boa** em: dashboard (channels/cloner/credits/discover/insights/live/publish/repost/settings), minecraft (todos os subpaths), amazon-affiliate, auth/complete-account, forgot-password, home/landing.
-- **Gaps confirmados** (§7): blog, docs, login, register, about-me/channel-management/editors/pc-optimization (page.tsx sem i18n — delegam para sections/views que às vezes têm i18n, mas metadata/SEO/breadcrumbs seguem hardcoded em EN), obs, payments/checkout, live/chat-popout, dashboard/docs, e legado fora de [locale] (src/app/page.tsx, src/app/channel-management/*, etc.).
-- **Dívida de infra**: 2 namespaces em disco nunca entram em messages (breadcrumbs.json, seo.json) e portanto nunca são traduzidos no front, mesmo existindo em 5 línguas.
+- **Gaps restantes** (§7): P0 monetário/visível já traduzido (blog, obs, checkout, chat-popout); os 4 públicos (channel-management/editors/pc-optimization/about-me) têm SEO/breadcrumbs via getTranslations, físico da page sem t() (P2 residual); docs puramente delegado (P2 residual); login/register falso-positivo (redirect-only, forms com auth); dívida real = legado fora de [locale] (P1) + placeholders residuais (P1).
+- **Dívida de infra — RESOLVIDA**: breadcrumbs.json e seo.json agora carregados em request.ts (36/36 namespaces).
 - **Risco de nova língua**: adicionar locale exige 6 toques manuais (ver §10); sem checklist, é fácil esquecer request.ts, locales[], url-mapping, wrappers, middleware e scripts/validate.
 
 ## 2) Arquitetura i18n atual
@@ -143,6 +143,8 @@ const messages: MessagesRecord = {
         notFound,
         blog,
         payments,
+        breadcrumbs,
+        seo,
         layout: {
             header,
             footer: await loadJson(
@@ -159,11 +161,9 @@ const messages: MessagesRecord = {
 
 ```
 
-**Carregados (34):** aboutMe.json, amazonAffiliate.json, auth.json, blog.json, channelManagement.json, dashboard.json, editors.json, error.json, home.json, homePageHero.json, landing.json, layout.footer.json, layout.header.json, minecraft.json, minecraftContributionsPageHero.json, minecraftHypixelQolPageHero.json, minecraftModpacksPageHero.json, minecraftModsPageHero.json, minecraftPageHero.json, minecraftPluginsPageHero.json, notFound.json, payments.json, pcOptimization.json, pcOptimizationPageHero.json, pcOptimizationTerms.json, pcOptimizationTermsPageHero.json, pcOptimizationWhatsapp.json, privacyPageHero.json, privacyPolicy.json, publish.json, services.json, servicesPageHero.json, termsOfService.json, termsOfServicePageHero.json
+**Carregados (36):** aboutMe.json, amazonAffiliate.json, auth.json, blog.json, breadcrumbs.json, channelManagement.json, dashboard.json, editors.json, error.json, home.json, homePageHero.json, landing.json, layout.footer.json, layout.header.json, minecraft.json, minecraftContributionsPageHero.json, minecraftHypixelQolPageHero.json, minecraftModpacksPageHero.json, minecraftModsPageHero.json, minecraftPageHero.json, minecraftPluginsPageHero.json, notFound.json, payments.json, pcOptimization.json, pcOptimizationPageHero.json, pcOptimizationTerms.json, pcOptimizationTermsPageHero.json, pcOptimizationWhatsapp.json, privacyPageHero.json, privacyPolicy.json, publish.json, seo.json, services.json, servicesPageHero.json, termsOfService.json, termsOfServicePageHero.json
 
-**NÃO carregados (2):** breadcrumbs.json, seo.json
-
-> ⚠️ Ação: os arquivos existem em 5 línguas mas nunca são expostos ao front. `breadcrumbs.json` = {"home":"Home"}; `seo.json` = {personDescription, personJobTitle, websiteDescription, organizationDescription} — hoje SEO é gerado hardcoded em EN via generateSeoConfig/OgImage. Se devem ser traduzidos, precisam entrar no map (ex: `breadcrumbs, seo`) e serem consumidos via `useTranslations("breadcrumbs")` / `getTranslations`.
+**NÃO carregados (0):** —
 
 ### 2.3 Middleware — middleware.ts
 
@@ -291,14 +291,14 @@ Todos os 5 locales têm exatamente os mesmos 36 arquivos em src/i18n/<locale>/*.
 
 | Namespace | en | pt-BR | es | de | fr | Status |
 |---|---:|---:|---:|---:|---:|---|
-| aboutMe.json | 3 | 3 | 3 | 3 | 3 | ✅ paridade |
+| aboutMe.json | 8 | 8 | 8 | 8 | 8 | ✅ paridade |
 | amazonAffiliate.json | 3 | 3 | 3 | 3 | 3 | ✅ paridade |
 | auth.json | 177 | 177 | 177 | 177 | 177 | ✅ paridade |
 | blog.json | 6 | 6 | 6 | 6 | 6 | ✅ paridade |
 | breadcrumbs.json | 1 | 1 | 1 | 1 | 1 | ✅ paridade |
-| channelManagement.json | 94 | 94 | 94 | 94 | 94 | ✅ paridade |
+| channelManagement.json | 95 | 95 | 95 | 95 | 95 | ✅ paridade |
 | dashboard.json | 681 | 681 | 681 | 681 | 681 | ✅ paridade |
-| editors.json | 104 | 104 | 104 | 104 | 104 | ✅ paridade |
+| editors.json | 108 | 108 | 108 | 108 | 108 | ✅ paridade |
 | error.json | 5 | 5 | 5 | 5 | 5 | ✅ paridade |
 | home.json | 114 | 114 | 114 | 114 | 114 | ✅ paridade |
 | homePageHero.json | 3 | 3 | 3 | 3 | 3 | ✅ paridade |
@@ -314,7 +314,7 @@ Todos os 5 locales têm exatamente os mesmos 36 arquivos em src/i18n/<locale>/*.
 | minecraftPluginsPageHero.json | 3 | 3 | 3 | 3 | 3 | ✅ paridade |
 | notFound.json | 11 | 11 | 11 | 11 | 11 | ✅ paridade |
 | payments.json | 8 | 8 | 8 | 8 | 8 | ✅ paridade |
-| pcOptimization.json | 34 | 34 | 34 | 34 | 34 | ✅ paridade |
+| pcOptimization.json | 37 | 37 | 37 | 37 | 37 | ✅ paridade |
 | pcOptimizationPageHero.json | 4 | 4 | 4 | 4 | 4 | ✅ paridade |
 | pcOptimizationTerms.json | 19 | 19 | 19 | 19 | 19 | ✅ paridade |
 | pcOptimizationTermsPageHero.json | 3 | 3 | 3 | 3 | 3 | ✅ paridade |
@@ -406,7 +406,7 @@ Legenda: **i18n direto** = page.tsx importa e chama useTranslations/getTranslati
 
 | # | Componente | url en | url pt-BR | url es | url de | url fr | i18n direto | namespaces | Diagnóstico |
 |---|---|---|---|---|---|---|---|---|---|
-| 1 | `[locale]/about-me/page.tsx` | `/en/about-me` | `/pt-BR/quem-sou-eu` | `/es/acerca-de-mi` | `/de/uber-mich` | `/fr/a-propos-de-moi` | ❌ | `—` | ⚠️ Delegado: AboutMeSection tem i18n (aboutMe), mas page metadata/SEO hardcoded EN + StructuredData sem t() |
+| 1 | `[locale]/about-me/page.tsx` | `/en/about-me` | `/pt-BR/quem-sou-eu` | `/es/acerca-de-mi` | `/de/uber-mich` | `/fr/a-propos-de-moi` | ✅ | `aboutMe` | ✅ |
 | 2 | `[locale]/amazon-affiliate/page.tsx` | `/en/amazon-affiliate` | `/pt-BR/afiliados-amazon` | `/es/afiliados-amazon` | `/de/amazon-partner` | `/fr/affiliation-amazon` | ✅ | `amazonAffiliate` | ✅ |
 | 3 | `[locale]/auth/complete-account/page.tsx` | `/en/auth/complete-account` | `/pt-BR/auth/complete-account` | `/es/auth/complete-account` | `/de/auth/complete-account` | `/fr/auth/complete-account` | ✅ | `auth, auth` | ✅ |
 | 4 | `[locale]/blog/[slug]/page.tsx` | `/en/blog/[slug]` | `/pt-BR/blog/[slug]` | `/es/blog/[slug]` | `/de/blog/[slug]` | `/fr/blog/[slug]` | ✅ | `blog` | ✅ |
@@ -463,7 +463,7 @@ Legenda: **i18n direto** = page.tsx importa e chama useTranslations/getTranslati
 
 ## 6) Componentes — inventário
 
-**Total .tsx (app+components, sem testes):** 323 → **144 com i18n** / **179 sem i18n direto**.
+**Total .tsx (app+components, sem testes):** 323 → **145 com i18n** / **178 sem i18n direto**.
 
 "Sem i18n direto" inclui: ui primitivos (button, dialog, etc.) que são atômicos e corretamente sem tradução, + views/sections que deveriam ter mas não têm. Abaixo amostragem por diretório.
 
@@ -471,7 +471,7 @@ Legenda: **i18n direto** = page.tsx importa e chama useTranslations/getTranslati
 
 | Diretório | Qtd sem i18n | Comentário |
 |---|---:|---|
-| `src/app/[locale]` | 49 | Pages/sections/views — ver §5.2 e §7 |
+| `src/app/[locale]` | 48 | Pages/sections/views — ver §5.2 e §7 |
 | `src/components/ui` | 37 | Esperado: primitivos sem copy (ok se não têm texto) |
 | `src/components/registration` | 23 | ⚠️ Fluxos de conta — checar se usam auth namespace |
 | `src/components/dashboard` | 17 | Misto: alguns têm i18n, outros delegam |
@@ -510,7 +510,6 @@ Legenda: **i18n direto** = page.tsx importa e chama useTranslations/getTranslati
 
 - `src/app/500.tsx`
 - `src/app/[locale]/a-propos-de-moi/page.tsx`
-- `src/app/[locale]/about-me/page.tsx`
 - `src/app/[locale]/acerca-de-mi/page.tsx`
 - `src/app/[locale]/affiliation-amazon/page.tsx`
 - `src/app/[locale]/afiliados-amazon/page.tsx`
@@ -693,6 +692,7 @@ Legenda: **i18n direto** = page.tsx importa e chama useTranslations/getTranslati
 ### 6.3 Lista — com i18n direto (139 arquivos, amostra 40)
 
 - `src/app/[locale]/about-me/about-me-section.tsx` → `aboutMe`
+- `src/app/[locale]/about-me/page.tsx` → `aboutMe`
 - `src/app/[locale]/amazon-affiliate/page.tsx` → `amazonAffiliate`
 - `src/app/[locale]/auth/complete-account/complete-account-form.tsx` → `auth`
 - `src/app/[locale]/auth/complete-account/components/data-summary.tsx` → `auth`
@@ -731,32 +731,40 @@ Legenda: **i18n direto** = page.tsx importa e chama useTranslations/getTranslati
 - `src/app/[locale]/home/landing-cta-section.tsx` → `landing`
 - `src/app/[locale]/home/landing-faq-section.tsx` → `landing`
 - `src/app/[locale]/home/landing-features-section.tsx` → `landing`
-- `src/app/[locale]/home/landing-hero-section.tsx` → `landing, homePageHero`
-- ... e mais 104 com i18n
+- ... e mais 105 com i18n
 
 ## 7) Gaps — o que NÃO está traduzido
 
-Prioridade P0 = quebra de experiência por idioma; P1 = dívida visível; P2 = infra/polimento.
+Prioridade P0 = quebra de experiência por idioma; P1 = dívida visível; P2 = infra/polimento; ✅ = resolvido nesta versão.
+
+> Tabela calculada na geração (fonte: canônicas com hasI18n() + namespaces carregados em request.ts). P0 monetário/visível já traduzido em PRs recentes; sobram P1 legado e P2 resíduos.
 
 | # | url / componente / língua | Tipo | Evidência | Prioridade | Correção sugerida |
 |---|---|---|---|---|---|
-| 1 | url: /{locale}/blog e /{locale}/blog/[slug] · comp: src/app/[locale]/blog/page.tsx, [slug]/page.tsx · língua: 5 | Página sem i18n | 2 page.tsx sem useTranslations/getTranslations; sem namespace blog em request.ts/i18n | P0 | Criar src/i18n/<locale>/blog.json + carregar em request.ts + t() em lista/detalhe |
-| 2 | url: /{locale}/login e wrappers /entrar/iniciar-sesion/anmelden/connexion · comp: src/app/[locale]/login/page.tsx · língua: 5 | Auth page sem i18n | page.tsx sem t(); depende de filho login-form mas metadata/SEO da page hardcoded | P0 | Adicionar getTranslations("auth") na page (title/desc/metadata) + garantir login-form usa auth |
-| 3 | url: /{locale}/register e wrappers · comp: src/app/[locale]/register/page.tsx | Auth page sem i18n | igual login | P0 | idem |
-| 4 | url: /{locale}/obs · comp: src/app/[locale]/obs/page.tsx · 5 | Página sem i18n | page sem t() | P0 | Criar namespace obs ou reutilizar dashboard |
-| 5 | url: /{locale}/payments/checkout · comp: src/app/[locale]/payments/checkout/page.tsx · 5 | Checkout sem i18n | hardcoded | P0 | Namespace payments/checkout |
-| 6 | url: /{locale}/dashboard/docs e /{locale}/dashboard/docs/[category] · comp: docs/page.tsx, [category]/page.tsx · 5 | Docs sem i18n | sem t() | P1 | Namespace docs/tutorial |
-| 7 | url: /{locale}/dashboard/live/chat-popout · comp: chat-popout/page.tsx · 5 | Popout sem i18n | títulos/copy hardcoded ("Popout Chat", "Copiar URL para usar no OBS") | P1 | dashboard.live namespace |
-| 8 | url: /{locale}/about-me (e wrappers) · comp: src/app/[locale]/about-me/page.tsx · 5 | Delegação parcial | page sem t(); AboutMeSection OK (aboutMe), mas generateMetadata/generateSeoConfig/OgImage hardcoded EN | P1 | Adicionar getTranslations("aboutMe"/"seo") na page para metadata/SEO |
-| 9 | url: /{locale}/channel-management (+ wrappers) · comp: channel-management/page.tsx · 5 | Delegação parcial | page sem t(); view/breadcrumbs têm i18n, mas SEO/breadcrumbs helper com strings hardcoded | P1 | Mover breadcrumbs/SEO para namespaces + t() na page |
-| 10 | url: /{locale}/editors (+ wrappers) · comp: editors/page.tsx · 5 | Delegação parcial | idem | P1 | idem |
-| 11 | url: /{locale}/pc-optimization (+ wrappers) · comp: pc-optimization/page.tsx · 5 | Delegação parcial | idem | P1 | idem |
-| 12 | url: /channel-management, /editors, /pc-optimization, /privacy-policy, /terms-of-service (sem [locale]) · comps: src/app/channel-management/page.tsx etc. · 5 | Legado sem [locale] | páginas fora de [locale] duplicam canônicas, sem i18n, fora do fluxo next-intl | P1 | Remover ou redirecionar para /{locale}/<slug> (middleware) |
-| 13 | url: / (raiz) · comp: src/app/page.tsx · 5 | Landing sem [locale] | sem t() | P1 | Manter apenas como redirect para /{locale} (já existe?) ou adicionar i18n |
-| 14 | url: /{locale}/dashboard/settings (legado) · comp: src/app/dashboard/settings/page.tsx · 5 | Duplicata | depende de middleware redirect | P2 | Remover duplicata, manter só [locale]/dashboard/settings |
-| 15 | namespaces breadcrumbs.json, seo.json · 5 | Infra não carregada | existem em 5 línguas mas não entram em messages (request.ts) | P2 | Adicionar ao messages map ou remover arquivos se obsoletos |
-| 16 | url: src/components/registration/*, src/components/auth/* · 5 | Componentes auth sem i18n | parte dos fluxos não usa t() direto (usa prop drilling) | P1 | Garantir todo registration/* usa auth namespace |
-| 17 | url: dashboard/cloner, discover, repost — placeholders hardcoded | Componentes com i18n mas com strings residuais | grep encontrou placeholders hardcoded mesmo em arquivos com t() (ex: "Cole a URL...", "Carregar JSON Local") | P1 | Mover todos placeholders/títulos para dashboard.json |
+| 1 | namespaces breadcrumbs.json, seo.json · 5 | Infra — RESOLVIDO | carregados em request.ts (36/36) e consumíveis via getTranslations("breadcrumbs"/"seo") | ✅ | — |
+| 2 | url: /{locale}/blog e /{locale}/blog/[slug] · comp: src/app/[locale]/blog/page.tsx, [slug]/page.tsx · 5 | Página — RESOLVIDO | blog.json criado; lista e detalhe usam use/getTranslations("blog") | ✅ | — |
+| 3 | url: /{locale}/obs · comp: src/app/[locale]/obs/page.tsx · 5 | Página — RESOLVIDO | dashboard.obs.* via useTranslations("dashboard") | ✅ | — |
+| 4 | url: /{locale}/payments/checkout · comp: payments/checkout/page.tsx · 5 | Página — RESOLVIDO | payments.checkout.* via useTranslations("payments") | ✅ | — |
+| 5 | url: /{locale}/dashboard/live/chat-popout · comp: chat-popout/page.tsx · 5 | Página — RESOLVIDO | dashboard.chatPopout.* via useTranslations("dashboard") | ✅ | — |
+| 6 | url: /{locale}/channel-management · comp: `src/app/[locale]/channel-management/page.tsx` · 5 | Delegação (page sem t() no corpo) | views/sections i18n + metadata/SEO/breadcrumbs via getTranslations (namespace) | P2 residual | Sem ação obrigatória; opcional mover t() para page |
+| 7 | url: /{locale}/dashboard/docs/[category] · comp: `src/app/[locale]/dashboard/docs/[category]/page.tsx` · 5 | Delegação (DocsPage) | page.tsx é wrapper fino; DocsPage usa dashboard.docs + dashboard.tutorials | P2 residual | Opcional: adicionar generateMetadata na page |
+| 8 | url: /{locale}/dashboard/docs · comp: `src/app/[locale]/dashboard/docs/page.tsx` · 5 | Delegação (DocsPage) | page.tsx é wrapper fino; DocsPage usa dashboard.docs + dashboard.tutorials | P2 residual | Opcional: adicionar generateMetadata na page |
+| 9 | url: /{locale}/editors · comp: `src/app/[locale]/editors/page.tsx` · 5 | Delegação (page sem t() no corpo) | views/sections i18n + metadata/SEO/breadcrumbs via getTranslations (namespace) | P2 residual | Sem ação obrigatória; opcional mover t() para page |
+| 10 | url: /{locale}/login · comp: `src/app/[locale]/login/page.tsx` · 5 | Falso positivo | page só faz redirect(/signin); forms usam auth namespace | ✅ | Manter redirect-only |
+| 11 | url: /{locale}/pc-optimization · comp: `src/app/[locale]/pc-optimization/page.tsx` · 5 | Delegação (page sem t() no corpo) | views/sections i18n + metadata/SEO/breadcrumbs via getTranslations (namespace) | P2 residual | Sem ação obrigatória; opcional mover t() para page |
+| 12 | url: /{locale}/register · comp: `src/app/[locale]/register/page.tsx` · 5 | Falso positivo | page só faz redirect(/signin); forms usam auth namespace | ✅ | Manter redirect-only |
+| 13 | url: /channel-management (sem [locale]) · comp: `src/app/channel-management/page.tsx` · 5 | Legado sem [locale] | fora do fluxo next-intl, sem i18n | P1 | Redirecionar para /{locale}/<slug> via middleware |
+| 14 | url: /dashboard/credits (sem [locale]) · comp: `src/app/dashboard/credits/page.tsx` · 5 | Legado sem [locale] | fora do fluxo next-intl, sem i18n | P1 | Redirecionar para /{locale}/<slug> via middleware |
+| 15 | url: /dashboard/insights (sem [locale]) · comp: `src/app/dashboard/insights/page.tsx` · 5 | Legado sem [locale] | fora do fluxo next-intl, sem i18n | P1 | Redirecionar para /{locale}/<slug> via middleware |
+| 16 | url: /dashboard (sem [locale]) · comp: `src/app/dashboard/page.tsx` · 5 | Legado sem [locale] | fora do fluxo next-intl, sem i18n | P1 | Redirecionar para /{locale}/<slug> via middleware |
+| 17 | url: /dashboard/publish (sem [locale]) · comp: `src/app/dashboard/publish/page.tsx` · 5 | Legado sem [locale] | fora do fluxo next-intl, sem i18n | P1 | Redirecionar para /{locale}/<slug> via middleware |
+| 18 | url: /dashboard/settings (sem [locale]) · comp: `src/app/dashboard/settings/page.tsx` · 5 | Legado sem [locale] | fora do fluxo next-intl, sem i18n | P1 | Redirecionar para /{locale}/<slug> via middleware |
+| 19 | url: /editors (sem [locale]) · comp: `src/app/editors/page.tsx` · 5 | Legado sem [locale] | fora do fluxo next-intl, sem i18n | P1 | Redirecionar para /{locale}/<slug> via middleware |
+| 20 | url: /gabriel-toth-goncalves (sem [locale]) · comp: `src/app/gabriel-toth-goncalves/page.tsx` · 5 | Legado sem [locale] | fora do fluxo next-intl, sem i18n | P1 | Redirecionar para /{locale}/<slug> via middleware |
+| 21 | url: / (sem [locale]) · comp: `src/app/page.tsx` · 5 | Legado sem [locale] | fora do fluxo next-intl, sem i18n | P1 | Redirecionar para /{locale}/<slug> via middleware |
+| 22 | url: /pc-optimization (sem [locale]) · comp: `src/app/pc-optimization/page.tsx` · 5 | Legado sem [locale] | fora do fluxo next-intl, sem i18n | P1 | Redirecionar para /{locale}/<slug> via middleware |
+| 23 | url: /privacy-policy (sem [locale]) · comp: `src/app/privacy-policy/page.tsx` · 5 | Legado sem [locale] | fora do fluxo next-intl, sem i18n | P1 | Redirecionar para /{locale}/<slug> via middleware |
+| 24 | url: /terms-of-service (sem [locale]) · comp: `src/app/terms-of-service/page.tsx` · 5 | Legado sem [locale] | fora do fluxo next-intl, sem i18n | P1 | Redirecionar para /{locale}/<slug> via middleware |
 
 ## 8) Hardcoded strings — amostra
 
@@ -894,7 +902,7 @@ Regras:
 | auth | login, register, complete-account, forgot-password, reset-password |
 | dashboard.* | channels, cloner, credits, discover, insights, live, publish, repost, settings, common |
 | home / landing / aboutMe / editors / channelManagement / pcOptimization / services / minecraft* | páginas públicas |
-| seo / breadcrumbs | SEO e navegação (após corrigir §7#15) |
+| seo / breadcrumbs | SEO e navegação (já carregados em request.ts) |
 
 Crie novo namespace só se a página for isolada (ex: blog.json, obs.json, payments.json, docs.json) e adicione em request.ts.
 
@@ -914,10 +922,10 @@ Crie novo namespace só se a página for isolada (ex: blog.json, obs.json, payme
 
 | Fase | Escopo | Estimativa | Critério de pronto |
 |---|---|---|---|
-| 1 — P0 | blog (2 pages) + login/register (2) + obs + payments/checkout + chat-popout | 1–2 dias | Todas P0 com t() + namespaces, i18n:validate verde, sem hardcoded em grep |
-| 2 — P1 metadata | about-me, channel-management, editors, pc-optimization: mover metadata/SEO para t() | 1 dia | generateMetadata usa getTranslations, og locale por locale, hreflang ok |
-| 3 — P1 infra | breadcrumbs.json + seo.json em messages map + consumir via t() | 0.5 dia | request.ts carrega ambos, breadcrumbs traduzidos, seo.json usado em generateSeoConfig |
-| 4 — P1 legado | Remover/redirect src/app/<slug> fora de [locale] (7 pastas) + /dashboard/settings duplicata | 0.5 dia | Sem duplicatas, middleware cobre, sem 404 |
+| 1 — P0 ✅ | blog (2 pages) + obs + payments/checkout + chat-popout traduzidos | feito | t() + namespaces, i18n:validate verde |
+| 2 — P1 metadata ✅ | about-me, channel-management, editors, pc-optimization: metadata/SEO via getTranslations | feito | generateMetadata usa getTranslations, breadcrumbs t() |
+| 3 — P1 infra ✅ | breadcrumbs.json + seo.json em messages map | feito | request.ts carrega 36/36 |
+| 4 — P1 legado | Remover/redirect src/app/<slug> fora de [locale] + /dashboard/settings duplicata | 0.5 dia | Sem duplicatas, middleware cobre, sem 404 |
 | 5 — P1 polish | registration/*, auth/*, dashboard placeholders residuais | 1 dia | Todo placeholder/title/aria via t() |
 | 6 — Guardrails | ESLint rule JSXText sem t() + CI i18n:validate/check-params obrigatório | 0.5 dia | PR falha se hardcoded |
 | 7 — Nova língua | Gerador `scripts/new-locale.mjs <code>` automatizando §10.1 | 0.5 dia | Rodar e ter locale novo verde |
@@ -942,4 +950,4 @@ comm -23 <(ls src/i18n/en/*.json | xargs -I{} basename {} | sort) <(grep -oP '@\
 
 ---
 
-**Próximo passo recomendado:** começar pela Fase 1 (P0) — blog + auth + obs/checkout/popout — e já na mesma PR corrigir Fase 3 (breadcrumbs/seo em messages), pois destrava breadcrumbs traduzidos para Fase 2.
+**Próximo passo recomendado:** P0 concluído (blog/obs/checkout/popout) e infra breadcrumbs/seo destravada. Agora: (1) P1 legado — redirecionar páginas sem [locale] (src/app/channel-management/*, editors, pc-optimization, page.tsx) para as canônicas; (2) tokens residuais hardcoded nos componentes com i18n (cloner/discover/repost/registration); (3) opcionalmente adicionar generateMetadata nas pages docs.

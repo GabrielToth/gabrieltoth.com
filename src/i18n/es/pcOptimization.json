@@ -18,10 +18,22 @@
         "cta": "Ver Planes",
         "videoText": "ASÍ SE SIENTE UN PC OPTIMIZADO",
         "stats": [
-            { "value": "99.9%", "label": "Uptime" },
-            { "value": "bajo", "label": "Latencia" },
-            { "value": "20+", "label": "Juegos Optimizados" },
-            { "value": "5+", "label": "Clientes Satisfechos" }
+            {
+                "value": "99.9%",
+                "label": "Uptime"
+            },
+            {
+                "value": "bajo",
+                "label": "Latencia"
+            },
+            {
+                "value": "20+",
+                "label": "Juegos Optimizados"
+            },
+            {
+                "value": "5+",
+                "label": "Clientes Satisfechos"
+            }
         ],
         "learnMore": "Saber Más"
     },
@@ -148,5 +160,10 @@
         "title": "DEJA DE PERDER EL TIEMPO",
         "subtitle": "Cada segundo que pierdes por lag, alguien más domina la partida.",
         "button": "DESBLOQUEAR PODER TOTAL"
+    },
+    "seo": {
+        "title": "Optimización de PC Gaming - Máximo Rendimiento - Gabriel Toth",
+        "description": "¡Desbloquea el verdadero potencial de tu PC gaming! Optimización profesional para más FPS, menos lag y rendimiento máximo en todos los juegos.",
+        "keywords": "optimización pc gaming, más fps, menos lag, rendimiento gaming, optimización windows, overclocking, gabriel toth, pc gaming, mejora rendimiento"
     }
 }

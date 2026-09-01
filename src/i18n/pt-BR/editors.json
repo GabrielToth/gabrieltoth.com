@@ -304,7 +304,8 @@
         }
     ],
     "breadcrumbs": {
-        "services": "Serviços"
+        "services": "Serviços",
+        "editors": "Editores de YouTube"
     },
     "submitting": "Enviando...",
     "formSubmitted": {
@@ -356,5 +357,10 @@
             "Profissional"
         ]
     },
-    "applicationTemplate": "Olá! Gostaria de me candidatar para a vaga de editor de vídeos.\n\n*FORMULÁRIO DE CANDIDATURA*\n\nNome Completo:\nIdade:\nPortfolio (links):\nExperiência com edição (anos) (não precisa ter):\n\n*Software que domina:*\n- Premiere Pro: (Básico/Intermediário/Avançado)\n- After Effects: (Básico/Intermediário/Avançado)\n- DaVinci Resolve: (Básico/Intermediário/Avançado)\n- Outros:\n\nAguardo retorno!"
+    "applicationTemplate": "Olá! Gostaria de me candidatar para a vaga de editor de vídeos.\n\n*FORMULÁRIO DE CANDIDATURA*\n\nNome Completo:\nIdade:\nPortfolio (links):\nExperiência com edição (anos) (não precisa ter):\n\n*Software que domina:*\n- Premiere Pro: (Básico/Intermediário/Avançado)\n- After Effects: (Básico/Intermediário/Avançado)\n- DaVinci Resolve: (Básico/Intermediário/Avançado)\n- Outros:\n\nAguardo retorno!",
+    "seo": {
+        "title": "Procuramos Editores de Vídeo para YouTube | Junte-se à Nossa Equipe - Gabriel Toth",
+        "description": "Junte-se à nossa equipe global de editores de vídeo profissionais. Horário flexível, remuneração competitiva e projetos empolgantes no YouTube. Candidate-se agora!",
+        "keywords": "editor de vídeo youtube, vagas edição de vídeo, premiere pro, after effects, davinci resolve, editor freelancer, gabriel toth"
+    }
 }

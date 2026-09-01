@@ -304,7 +304,8 @@
         }
     ],
     "breadcrumbs": {
-        "services": "Services"
+        "services": "Services",
+        "editors": "YouTube Editors"
     },
     "submitting": "Submitting...",
     "formSubmitted": {
@@ -356,5 +357,10 @@
             "Professional"
         ]
     },
-    "applicationTemplate": "Hi! I would like to apply for the video editor position.\n\n*APPLICATION FORM*\n\nFull Name:\nAge:\nPortfolio (links):\nEditing Experience (years) (no need to have):\n\n*Software Proficiency:*\n- Premiere Pro: (Basic/Intermediate/Advanced)\n- After Effects: (Basic/Intermediate/Advanced)\n- DaVinci Resolve: (Basic/Intermediate/Advanced)\n- Others:\n\nLooking forward to hearing back!"
+    "applicationTemplate": "Hi! I would like to apply for the video editor position.\n\n*APPLICATION FORM*\n\nFull Name:\nAge:\nPortfolio (links):\nEditing Experience (years) (no need to have):\n\n*Software Proficiency:*\n- Premiere Pro: (Basic/Intermediate/Advanced)\n- After Effects: (Basic/Intermediate/Advanced)\n- DaVinci Resolve: (Basic/Intermediate/Advanced)\n- Others:\n\nLooking forward to hearing back!",
+    "seo": {
+        "title": "YouTube Video Editors Wanted | Join Our Team - Gabriel Toth",
+        "description": "Join our global team of professional video editors. Flexible schedule, competitive pay, and exciting YouTube projects. Apply now!",
+        "keywords": "youtube video editor, video editing jobs, premiere pro, after effects, davinci resolve, freelance editor, gabriel toth"
+    }
 }
