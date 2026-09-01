@@ -11,7 +11,9 @@ import { NextResponse } from "next/server"
 export async function GET(request: Request) {
     // Basic auth / owner check simulation
     const authHeader = request.headers.get("authorization")
-    const isOwner = process.env.ADMIN_SECRET_KEY && authHeader === `Bearer ${process.env.ADMIN_SECRET_KEY}`
+    const _isOwner =
+        process.env.ADMIN_SECRET_KEY &&
+        authHeader === `Bearer ${process.env.ADMIN_SECRET_KEY}`
 
     const telemetry = {
         timestamp: new Date().toISOString(),

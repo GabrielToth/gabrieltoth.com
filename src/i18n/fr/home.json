@@ -149,13 +149,7 @@
                 "title": "Sistema SAT Fiscal - Website",
                 "description": "Institutional website for company specialized in fiscal and accounting solutions. Developed with focus on presenting fiscal services, tax management and business solutions in a clear and professional way.",
                 "image": "/projects/sat-fiscal.jpg",
-                "tags": [
-                    "HTML",
-                    "CSS",
-                    "JavaScript",
-                    "SEO",
-                    "Design"
-                ],
+                "tags": ["HTML", "CSS", "JavaScript", "SEO", "Design"],
                 "liveUrl": "https://sistemasatfiscal.com.br",
                 "featured": true
             },
@@ -163,12 +157,7 @@
                 "title": "Softclever - Website",
                 "description": "Corporate website developed in React for software company, with modern and responsive design. Implements sections for services, portfolio and contact, using technologies like React, modern CSS and SEO optimizations.",
                 "image": "/projects/softclever.jpg",
-                "tags": [
-                    "React",
-                    "CSS",
-                    "JavaScript",
-                    "SEO"
-                ],
+                "tags": ["React", "CSS", "JavaScript", "SEO"],
                 "liveUrl": "https://softclever.com.br",
                 "githubUrl": "https://github.com/gabrieltoth/softclever"
             },
@@ -190,12 +179,7 @@
                 "title": "PC Optimization Service",
                 "description": "Specialized PC optimization service for gaming, focused on maximizing game performance and reducing latency. Includes advanced system configurations, hardware optimization and custom software.",
                 "image": "/projects/pc-optimization.jpg",
-                "tags": [
-                    "Windows",
-                    "Gaming",
-                    "Performance",
-                    "Hardware"
-                ],
+                "tags": ["Windows", "Gaming", "Performance", "Hardware"],
                 "slug": "/pc-optimization"
             }
         ]

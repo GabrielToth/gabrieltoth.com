@@ -1,14 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import {
-    Activity,
-    Users,
-    Video,
-    ShieldAlert,
-    CreditCard,
-    Server,
-} from "lucide-react"
+import { Users, Video, CreditCard, Server } from "lucide-react"
 
 interface TelemetryData {
     timestamp: string
