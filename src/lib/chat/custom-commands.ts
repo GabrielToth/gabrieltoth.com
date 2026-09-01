@@ -58,3 +58,63 @@ export function matchAndExecuteCustomCommand(
     const response = interpolateCommandResponse(cmd.responseTemplate, context)
     return { matched: true, response }
 }
+
+/**
+ * Handles special broad-streamer commands like !titleall and !categoryall
+ */
+export async function processGlobalBroadcasterCommands(
+    messageText: string,
+    _userId: string,
+    connectedPlatforms: string[] = ["twitch", "youtube", "kick"]
+): Promise<{
+    processed: boolean
+    command?: string
+    value?: string
+    results?: Array<{ platform: string; success: boolean }>
+}> {
+    const trimmed = messageText.trim()
+    if (trimmed.startsWith("!titleall ")) {
+        const title = trimmed.replace("!titleall ", "").trim()
+        const results = await Promise.all(
+            connectedPlatforms.map(async (platform) => {
+                try {
+                    const res = await fetch("/api/live/update", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ platform, title }),
+                    })
+                    return { platform, success: res.ok }
+                } catch {
+                    return { platform, success: false }
+                }
+            })
+        )
+        return { processed: true, command: "!titleall", value: title, results }
+    }
+
+    if (trimmed.startsWith("!categoryall ")) {
+        const category = trimmed.replace("!categoryall ", "").trim()
+        const results = await Promise.all(
+            connectedPlatforms.map(async (platform) => {
+                try {
+                    const res = await fetch("/api/live/update", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ platform, category }),
+                    })
+                    return { platform, success: res.ok }
+                } catch {
+                    return { platform, success: false }
+                }
+            })
+        )
+        return {
+            processed: true,
+            command: "!categoryall",
+            value: category,
+            results,
+        }
+    }
+
+    return { processed: false }
+}

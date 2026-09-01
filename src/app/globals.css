@@ -5,19 +5,19 @@
 
 /* ─── Light theme CSS variables ─── */
 :root {
-    --background: oklch(0.97 0 0);
-    --foreground: oklch(0.15 0 0);
+    --background: oklch(0.98 0 0);
+    --foreground: oklch(0.12 0 0);
     --card: oklch(1 0 0);
-    --card-foreground: oklch(0.15 0 0);
+    --card-foreground: oklch(0.12 0 0);
     --popover: oklch(1 0 0);
-    --popover-foreground: oklch(0.15 0 0);
-    --primary: oklch(0.22 0.05 260);
-    --primary-foreground: oklch(0.98 0 0);
-    --secondary: oklch(0.92 0 0);
-    --secondary-foreground: oklch(0.25 0 0);
-    --muted: oklch(0.92 0 0);
-    --muted-foreground: oklch(0.4 0 0);
-    --accent: oklch(0.9 0 0);
+    --popover-foreground: oklch(0.12 0 0);
+    --primary: oklch(0.20 0 0);
+    --primary-foreground: oklch(0.99 0 0);
+    --secondary: oklch(0.94 0 0);
+    --secondary-foreground: oklch(0.15 0 0);
+    --muted: oklch(0.94 0 0);
+    --muted-foreground: oklch(0.35 0 0);
+    --accent: oklch(0.94 0 0);
     --accent-foreground: oklch(0.2 0 0);
     --destructive: oklch(0.55 0.15 27);
     --destructive-foreground: oklch(0.97 0 0);

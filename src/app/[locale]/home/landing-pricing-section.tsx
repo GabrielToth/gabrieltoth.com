@@ -67,7 +67,7 @@ export default function LandingPricingSection({
                                             className="flex items-center text-muted-foreground dark:text-muted-foreground"
                                         >
                                             <span className="w-5 h-5 bg-primary rounded-full flex items-center justify-center mr-3 flex-shrink-0">
-                                                <span className="text-white text-sm">
+                                                <span className="text-primary-foreground text-sm">
                                                     ✓
                                                 </span>
                                             </span>

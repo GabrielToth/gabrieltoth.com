@@ -39,18 +39,18 @@ export default async function ModsPage({ params }: ModsPageProps) {
 
     return (
         <>
-            <main className="min-h-screen bg-[#1a1a1a] text-white">
+            <main className="min-h-screen bg-[#0a0a0a] text-white">
                 <PageHeader
                     eyebrow={tHero("hero.badge")}
                     title={tHero("hero.title")}
                     subtitle={tHero("hero.subtitle")}
-                    className="bg-[#1a1a1a] dark:from-[#1a1a1a] dark:to-[#1a1a1a]"
+                    className="bg-[#0a0a0a] dark:from-[#0a0a0a] dark:to-[#0a0a0a]"
                 />
 
-                <section className="py-12 px-4 sm:px-6 lg:px-8 bg-[#1a1a1a]">
+                <section className="py-12 px-4 sm:px-6 lg:px-8 bg-[#0a0a0a]">
                     <div className="max-w-7xl mx-auto">
                         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
-                            <div className="bg-[#2d2d2d] border border-neutral-700 rounded-lg p-6">
+                            <div className="bg-[#171717] border border-neutral-700 rounded-lg p-6">
                                 <h2 className="text-2xl font-bold text-white mb-4">
                                     Coming Soon
                                 </h2>

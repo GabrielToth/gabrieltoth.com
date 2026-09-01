@@ -37,7 +37,7 @@ export default function ServicesSubmenu({ locale }: ServicesSubmenuProps) {
                     key={category.key}
                     // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     href={getLocalizedPath(category.key as any, locale)}
-                    className="group bg-[#2d2d2d] border border-neutral-700 rounded-lg p-6 hover:border-primary transition-all duration-200 hover:shadow-lg hover:shadow-blue-500/20"
+                    className="group bg-[#171717] border border-neutral-700 rounded-lg p-6 hover:border-primary transition-all duration-200 hover:shadow-lg hover:shadow-blue-500/20"
                 >
                     <h3 className="text-lg font-bold mb-2 text-white group-hover:text-primary transition-colors">
                         {category.label}
