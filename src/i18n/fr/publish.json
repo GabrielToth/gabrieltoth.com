@@ -7,46 +7,46 @@
         "cancel": "Annuler",
         "publish": "Publier Maintenant",
         "publishing": "Publication...",
-        "success": "Vidéo published successfully!",
-        "error": "Error publishing. Please try again."
+        "success": "Vidéo publiée avec succès !",
+        "error": "Erreur lors de la publication. Veuillez réessayer."
     },
     "closeConfirm": {
-        "title": "Discard changes?",
-        "description": "You have unsaved content. What would you like to do?",
-        "saveDraft": "Save as Draft",
-        "backToEditing": "Retour to Editing",
-        "discard": "Discard"
+        "title": "Abandonner les modifications ?",
+        "description": "Vous avez du contenu non enregistré. Que souhaitez-vous faire ?",
+        "saveDraft": "Enregistrer comme brouillon",
+        "backToEditing": "Retour à l'édition",
+        "discard": "Abandonner"
     },
     "contentType": {
-        "title": "Contenu Type",
-        "description": "Choose the type sur content you want to publish",
+        "title": "Type de contenu",
+        "description": "Choisissez le type de contenu que vous souhaitez publier",
         "post": {
             "label": "Publication",
-            "description": "Text with images for social networks"
+            "description": "Texte avec images pour les réseaux sociaux"
         },
         "video": {
             "label": "Vidéo",
-            "description": "Vidéo upload with thumbnails and metadata"
+            "description": "Téléversement de vidéo avec miniatures et métadonnées"
         }
     },
     "step1": {
-        "title": "Sélectionner Social Network",
-        "description": "Choose which social network to publish to",
+        "title": "Sélectionner le réseau social",
+        "description": "Choisissez le réseau social sur lequel publier",
         "youtube": "YouTube",
-        "youtubeDesc": "Téléverser videos with full YouTube Studio metadata",
+        "youtubeDesc": "Téléversez des vidéos avec toutes les métadonnées YouTube Studio",
         "facebook": "Facebook",
-        "facebookDesc": "Share to pages and profiles",
+        "facebookDesc": "Partagez sur des pages et des profils",
         "instagram": "Instagram",
-        "instagramDesc": "Posts with images and videos",
+        "instagramDesc": "Publications avec images et vidéos",
         "twitter": "Twitter / X",
-        "twitterDesc": "Publication tweets with media",
+        "twitterDesc": "Publiez des tweets avec des médias",
         "linkedin": "LinkedIn",
-        "linkedinDesc": "Share professional content",
+        "linkedinDesc": "Partagez du contenu professionnel",
         "tiktok": "TikTok",
-        "tiktokDesc": "Short-form videos",
-        "accountCount": "{count} linked account(s)",
-        "noAccounts": "No accounts linked",
-        "youtubeRecommended": "We recommend starting with YouTube as it's the only fully functional platform at the moment.",
+        "tiktokDesc": "Vidéos au format court",
+        "accountCount": "{count} compte(s) associé(s)",
+        "noAccounts": "Aucun compte associé",
+        "youtubeRecommended": "Nous vous recommandons de commencer par YouTube car c'est la seule plateforme entièrement fonctionnelle pour le moment.",
         "twitch": "Twitch",
         "twitchDesc": "Chat et clips de diffusion en direct",
         "kick": "Kick",
@@ -368,7 +368,7 @@
         "timeRemaining": "Time remaining: {time}",
         "metadataStep": "Configuring video metadata...",
         "publishStep": "Publication video...",
-        "complete": "Vidéo published successfully!",
+        "complete": "Vidéo publiée avec succès !",
         "completeDescription": "Your video has been uploaded to YouTube. Visit YouTube Studio for more editing options.",
         "viewOnYoutube": "View on YouTube",
         "error": "Error during processing",

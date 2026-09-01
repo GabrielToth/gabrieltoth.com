@@ -1,39 +1,39 @@
 {
     "moneroToggle": {
-        "title": "Monero (XMR) Pricing",
-        "description": "Enable to see 50% discount prices using Monero",
-        "enabled": "💰 Monero Prices (50% OFF)",
-        "disabled": "💴 Regular Prices (PIX/Card)"
+        "title": "Tarification Monero (XMR)",
+        "description": "Activez pour afficher les prix avec 50% de réduction en Monero",
+        "enabled": "💰 Prix Monero (-50%)",
+        "disabled": "💴 Prix réguliers (PIX/Carte)"
     },
     "hero": {
-        "badge": "🎬 Join Our Team",
-        "title": "We're Looking for Talented Editors",
-        "subtitle": "Be part of a global team of professional editors. Work on interesting projects with flexible schedules.",
-        "cta": "Apply Now",
+        "badge": "🎬 Rejoignez notre équipe",
+        "title": "Nous recherchons des monteurs talentueux",
+        "subtitle": "Faites partie d'une équipe mondiale de monteurs professionnels. Travaillez sur des projets passionnants avec des horaires flexibles.",
+        "cta": "Postuler maintenant",
         "stats": [
             {
                 "number": "50+",
-                "label": "Active editors"
+                "label": "Monteurs actifs"
             },
             {
                 "number": "100+",
-                "label": "Projects per month"
+                "label": "Projets par mois"
             },
             {
                 "number": "24/7",
-                "label": "Team support"
+                "label": "Support d'équipe"
             }
         ]
     },
     "about": {
-        "title": "Why Work With Us?",
-        "description": "We offer a flexible and rewarding environment for talented editors",
-        "intro": "We're looking for editors passionate about creating quality content. We offer diverse projects, competitive pay, and the freedom to work from anywhere.",
-        "experience": "Our platform connects you to global clients, ensuring a constant flow of interesting projects. You choose which projects to accept and set your own pace.",
-        "passion": "We value creativity and quality. If you're detail-oriented, organized, and love video editing, we want you on our team.",
+        "title": "Pourquoi travailler avec nous ?",
+        "description": "Nous offrons un environnement flexible et gratifiant pour les monteurs vidéo talentueux.",
+        "intro": "Nous recherchons des monteurs passionnés par la création de contenus de haute qualité. Nous proposons des projets variés, une rémunération compétitive et la liberté de travailler d'où vous voulez.",
+        "experience": "Notre plateforme vous met en relation avec des clients du monde entier, garantissant un flux constant de projets stimulants. Vous choisissez les projets à accepter et fixez votre propre rythme.",
+        "passion": "Nous valorisons la créativité et l'exigence de qualité. Si vous êtes rigoureux, organisé et passionné par le montage vidéo, nous voulons vous compter parmi nous.",
         "skills": [
             {
-                "name": "Video Editing",
+                "name": "Montage vidéo",
                 "iconName": "Video"
             },
             {
@@ -41,11 +41,11 @@
                 "iconName": "Wand2"
             },
             {
-                "name": "Color Grading",
+                "name": "Étalonnage couleur",
                 "iconName": "Palette"
             },
             {
-                "name": "Sound Design",
+                "name": "Design sonore",
                 "iconName": "Volume2"
             }
         ]

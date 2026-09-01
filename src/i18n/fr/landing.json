@@ -1,36 +1,24 @@
 {
     "hero": {
-        "title": "Unified Platform for Content Creators",
-        "subtitle": "Manage all your social networks in one place. See live streams, chats and unified data from YouTube, TikTok, Twitter and more.",
-        "cta": "Commencer Now",
-        "description": "The complete solution for content creators who want to centralize their operations"
+        "title": "Plateforme unifiée pour les créateurs de contenu",
+        "subtitle": "Gérez tous vos réseaux sociaux au même endroit. Observez vos flux en direct, vos chats et vos données unifiées depuis YouTube, TikTok, Twitter et plus encore.",
+        "cta": "Commencer dès maintenant",
+        "description": "La solution complète pour les créateurs de contenu souhaitant centraliser leurs opérations"
     },
     "features": {
-        "title": "Key Features",
+        "title": "Fonctionnalités clés",
         "items": [
             {
-                "title": "Unified Social Networks",
-                "description": "Connect YouTube, TikTok, Twitter, Instagram and other platforms in a single dashboard"
+                "title": "Réseaux sociaux unifiés",
+                "description": "Connectez YouTube, TikTok, Twitter, Instagram et d'autres plateformes dans un seul tableau de bord"
             },
             {
-                "title": "Centralized En direct Streams",
-                "description": "Monitor all your live broadcasts in real-time, regardless of platform"
+                "title": "Flux en direct centralisés",
+                "description": "Surveillez toutes vos diffusions en direct en temps réel, quelle que soit la plateforme"
             },
             {
-                "title": "Unified Chats",
-                "description": "Voir and respond to comments from all platforms in one place"
-            },
-            {
-                "title": "Consolidated Data",
-                "description": "Detailed analytics and unified metrics from all your social networks"
-            },
-            {
-                "title": "Video Téléverser",
-                "description": "Téléverser videos to multiple platforms simultaneously with custom metadata"
-            },
-            {
-                "title": "Content Management",
-                "description": "Organize, edit and publish content across all platforms efficiently"
+                "title": "Chats unifiés",
+                "description": "Consultez et répondez aux commentaires de toutes les plateformes au même endroit"
             }
         ]
     },

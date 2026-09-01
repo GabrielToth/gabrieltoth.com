@@ -1,18 +1,18 @@
 {
     "hero": {
-        "greeting": "Hello, I'm",
+        "greeting": "Bonjour, je suis",
         "name": "Gabriel Toth Gonçalves",
-        "title": "Data Scientist & Full Stack Developer",
-        "subtitle": "Specialized in creating innovative digital solutions with modern technologies",
-        "cta": "Get in touch",
-        "resume": "Télécharger Resume",
-        "disabled": "Disabled",
+        "title": "Data Scientist & Développeur Full Stack",
+        "subtitle": "Spécialisé dans la création de solutions numériques innovantes avec des technologies modernes.",
+        "cta": "Prendre contact",
+        "resume": "Télécharger le CV",
+        "disabled": "Désactivé",
         "contactEmail": "contact@gabrieltoth.com",
-        "resumeUrl": "/resume/Gabriel_Toth_Curriculum_EN.pdf"
+        "resumeUrl": "/resume/Gabriel_Toth_Curriculum_FR.pdf"
     },
     "about": {
-        "title": "À propos Me",
-        "description": "Developer passionate about technology and innovation",
+        "title": "About Me",
+        "description": "Développeur passionné par la technologie et l'innovation, combinant expertise en science des données et développement d'applications modernes.",
         "role": "Data Scientist & Full Stack Developer",
         "intro": "Hello! I'm Gabriel Toth Gonçalves, data scientist II and Full Stack developer from Brazil. With a Computer Science degree and specialization in Data Science, I currently work on the social-analytics-engine project, performing advanced digital campaign analysis and conversion metrics.",
         "experience": "My current work involves integrating Google Analytics data with social media metrics (YouTube, Instagram, X, Telegram) and Stripe conversion analysis using Python, PostgreSQL, SQLAlchemy, and Docker. I also develop enterprise web solutions, having created sites like softclever.com.br (React) and sistemasatfiscal.com.br (Angular), using modern technologies.",
@@ -40,7 +40,7 @@
                 "title": "Frontend",
                 "items": [
                     "React",
-                    "Suivant.js",
+                    "Next.js",
                     "TypeScript",
                     "Tailwind CSS",
                     "JavaScript",
@@ -169,7 +169,7 @@
                     "YouTube",
                     "Content Creation",
                     "Payment Integration",
-                    "Suivant.js",
+                    "Next.js",
                     "Stripe",
                     "PIX"
                 ],

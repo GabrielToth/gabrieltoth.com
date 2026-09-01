@@ -1,6 +1,6 @@
 # Auditoria i18n — gabrieltoth.com
 
-> Gerado em: 2026-09-01T01:44:35.240Z | Branch: main | Locales: en, pt-BR, es, de, fr | next-intl (request.ts + useTranslations/getTranslations)
+> Gerado em: 2026-09-01T11:09:52.888Z | Branch: main | Locales: en, pt-BR, es, de, fr | next-intl (request.ts + useTranslations/getTranslations)
 > Como usar: este arquivo é a fonte de consulta de cobertura. Filtre por "❌" para achar gaps. Padrões para novos idiomas: ver §10. Checklist de PR: ver §11.
 
 ## Índice

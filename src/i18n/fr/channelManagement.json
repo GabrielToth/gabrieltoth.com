@@ -1,52 +1,48 @@
 {
     "moneroToggle": {
-        "title": "Monero (XMR) Pricing",
-        "description": "Enable to see 50% discount prices using Monero",
-        "enabled": "💰 Monero Prices (50% OFF)",
-        "disabled": "💴 Regular Prices (PIX/Card)",
-        "currencySymbol": "$",
+        "title": "Tarification Monero (XMR)",
+        "description": "Activez pour afficher les prix avec 50% de réduction en Monero",
+        "enabled": "💰 Prix Monero (-50%)",
+        "disabled": "💴 Prix réguliers (PIX/Carte)",
+        "currencySymbol": "€",
         "conversionRate": 6
     },
     "hero": {
-        "badge": "🚀 ViraTrend - Specialized Consulting",
-        "title": "Transform Your Channel into a Growth Machine",
-        "subtitle": "Specialized in analytics, content optimization and monetization strategies for multiple platforms. + 2M monthly views combined across YouTube, Instagram, TikTok, Twitch and other social networks.",
-        "cta": "Request Consulting",
+        "badge": "🚀 ViraTrend - Conseil spécialisé",
+        "title": "Transformez votre chaîne en une machine de croissance",
+        "subtitle": "Spécialisé en analyse de données, optimisation de contenu et stratégies de monétisation multiplateformes. +2M de vues mensuelles cumulées sur YouTube, Instagram, TikTok, Twitch et d'autres réseaux sociaux.",
+        "cta": "Demander un conseil",
         "stats": [
             {
                 "number": "2M+",
-                "label": "Monthly views combined (all platforms)"
+                "label": "Vues mensuelles cumulées (toutes plateformes)"
             },
             {
                 "number": "1M+",
-                "label": "Views with under 1K subs (record)"
+                "label": "Vues avec moins de 1K abonnés (record)"
             },
             {
                 "number": "10+",
-                "label": "Years of experience (since 2013)"
+                "label": "Années d'expérience (depuis 2013)"
             }
         ]
     },
     "about": {
-        "title": "À propos ViraTrend",
-        "subtitle": "Your specialized digital growth consulting",
-        "description": "ViraTrend was born from real experience of those who understand the challenge of growing on social media. With over 10 years creating content, going through all phases - from zero to millions of views - we've developed unique methodologies based on real data and proven results.",
+        "title": "À propos de ViraTrend",
+        "subtitle": "Votre conseil spécialisé en croissance numérique",
+        "description": "ViraTrend est né de l'expérience réelle de ceux qui comprennent le défi de grandir sur les réseaux sociaux. Avec plus de 10 ans de création de contenu et le passage par toutes les étapes — de zéro à des millions de vues — nous avons développé des méthodologies uniques fondées sur des données réelles et des résultats éprouvés.",
         "features": [
             {
-                "title": "Deep Data Analysis",
-                "description": "We dive deep into your analytics to find hidden opportunities"
+                "title": "Analyse approfondie des données",
+                "description": "Nous plongeons au cœur de vos métriques pour identifier des opportunités cachées"
             },
             {
-                "title": "Personalized Strategies",
-                "description": "Each channel is unique, so we create tailored strategies for your niche"
+                "title": "Stratégies personnalisées",
+                "description": "Chaque chaîne est unique, c'est pourquoi nous concevons des stratégies sur mesure adaptées à votre niche"
             },
             {
-                "title": "Complete Support",
-                "description": "Continuous monitoring throughout the entire strategy implementation"
-            },
-            {
-                "title": "Proven Results",
-                "description": "Methodology tested and refined with over 2 million monthly views"
+                "title": "Optimisation complète",
+                "description": "Du titre aux miniatures en passant par les métadonnées pour maximiser la portée organique"
             }
         ]
     },

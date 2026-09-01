@@ -44,6 +44,41 @@ const ENGLISH_WORDS = [
     "Warning",
 ]
 
+// Patterns whose values/keys are not real translation gaps (placeholders, brands, URLs)
+const IGNORED_VALUE_PATTERNS = [
+    /@/, // email placeholders like seu@email.com
+    /Next\.js/i, // tech brand
+    /^https?:\/\//, // URLs
+    /\.(jpg|png|webp|svg|com)\b/i, // assets/domains
+    /Gabriel Toth/i, // creator name
+    /gabrieltoth/i, // domain/brand
+    /Minecraft/i, // game title
+    /Hypixel/i, // game server name
+    /Monero/i, // crypto currency name
+    /Windows|macOS|Linux/i, // OS names
+    /Discord|Telegram|YouTube|TikTok|Twitch|Kick|Facebook|Instagram|GitHub|Twitter/i, // platform names
+    /OAuth|RTMP|OBS|SSE|GPU|CPU|RAM/i, // tech specs/protocols
+]
+const IGNORED_KEY_PATTERNS = [
+    /placeholder/i,
+    /contactEmail/i,
+    /image/i,
+    /url/i,
+    /tags/i,
+    /structuredData/i,
+    /downloadCount/i,
+    /endpoints/i,
+    /skills/i,
+    /tools/i,
+    /games/i,
+    /projects/i,
+    /selectedFile/i,
+    /slug/i,
+    /contributions/i,
+    /modpacks/i,
+    /plugins/i,
+]
+
 // Files that are allowed to have EN content (legal docs requiring professional translation)
 const ALLOWED_EN_FILES = [
     "privacyPolicy.json",
@@ -94,14 +129,93 @@ function hasEnglishContent(obj, fileName) {
         return null
     }
 
+    const locale = path.basename(path.dirname(fileName))
+    if (locale === "en") return null
+
+    let enObj = null
+    try {
+        const enPath = path.join(I18N_DIR, "en", path.basename(fileName))
+        enObj = JSON.parse(fs.readFileSync(enPath, "utf8"))
+    } catch {
+        // EN file might not exist or failed to parse
+    }
+
+    const getEnValue = keyPath => {
+        if (!enObj || !keyPath) return undefined
+        const parts = keyPath.replace(/\[(\d+)\]/g, ".$1").split(".")
+        let cur = enObj
+        for (const p of parts) {
+            if (cur == null) return undefined
+            cur = cur[p]
+        }
+        return typeof cur === "string" ? cur : undefined
+    }
+
+    const isIgnored = (value, keyPath) => {
+        if (IGNORED_VALUE_PATTERNS.some(re => re.test(value))) return true
+        if (IGNORED_KEY_PATTERNS.some(re => re.test(keyPath))) return true
+        return false
+    }
+
+    const LOANWORDS = new Set([
+        "Email",
+        "Error",
+        "Dashboard",
+        "Next",
+        "Continue",
+        "Login",
+        "About",
+        "Services",
+        "Contact",
+        "Filter",
+        "Save",
+        "Edit",
+        "Delete",
+        "Cancel",
+    ])
+
     const violations = []
 
     function check(value, keyPath = "") {
         if (typeof value === "string") {
+            if (isIgnored(value, keyPath)) return
+
+            const enVal = getEnValue(keyPath)
+            if (
+                enVal &&
+                value === enVal &&
+                value.trim().length > 12 &&
+                !isIgnored(enVal, keyPath)
+            ) {
+                // If it's a short value containing a loanword or proper noun, don't flag as untranslated block
+                const containsLoanwordOnly = ENGLISH_WORDS.some(
+                    w =>
+                        LOANWORDS.has(w) &&
+                        new RegExp(`^\\s*${w}\\s*$`, "i").test(value)
+                )
+                if (!containsLoanwordOnly) {
+                    violations.push({
+                        key: keyPath,
+                        value: value.substring(0, 100),
+                        word: "(identical to EN)",
+                    })
+                    return
+                }
+            }
+
             for (const word of ENGLISH_WORDS) {
                 // Check for exact word match (word boundaries)
                 const regex = new RegExp(`\\b${word}\\b`, "i")
                 if (regex.test(value)) {
+                    // If string is translated (different from EN) or short loanword, allow standard loanwords
+                    if (
+                        LOANWORDS.has(word) &&
+                        (enVal === undefined ||
+                            value !== enVal ||
+                            value.trim().length <= 30)
+                    ) {
+                        continue
+                    }
                     violations.push({
                         key: keyPath,
                         value: value.substring(0, 100),
