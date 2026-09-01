@@ -3,5 +3,14 @@
         "badge": "👨‍💼 Lerne Mich Kennen",
         "title": "Über Mich",
         "subtitle": "Leidenschaftlicher Entwickler und Unternehmer, der digitale Lösungen mit Fokus auf Technologie, Innovation und kontinuierliches Lernen schafft."
+    },
+    "seo": {
+        "title": "Über Mich | Gabriel Toth - Full-Stack-Entwickler & Data Scientist",
+        "description": "Leidenschaftlicher Entwickler und Unternehmer, der digitale Lösungen mit Technologie, Innovation und kontinuierlichem Lernen schafft. Entdecke meinen Werdegang, meine Fähigkeiten und Projekte.",
+        "keywords": "gabriel toth, über mich, full stack entwickler, data scientist, portfolio, unternehmer, technologie"
+    },
+    "breadcrumbs": {
+        "aboutMe": "Über Mich",
+        "services": "Dienstleistungen"
     }
 }

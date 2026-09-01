@@ -3,5 +3,14 @@
         "badge": "👨‍💼 Get to Know Me",
         "title": "About Me",
         "subtitle": "Passionate developer and entrepreneur creating digital solutions with a focus on technology, innovation, and continuous learning."
+    },
+    "seo": {
+        "title": "À Propos de Moi | Gabriel Toth - Développeur Full Stack & Data Scientist",
+        "description": "Développeur et entrepreneur passionné par la création de solutions numériques axées sur la technologie, l'innovation et l'apprentissage continu. Découvrez mon parcours, mes compétences et mes projets.",
+        "keywords": "gabriel toth, à propos de moi, développeur full stack, data scientist, portfolio, entrepreneur, technologie"
+    },
+    "breadcrumbs": {
+        "aboutMe": "À Propos de Moi",
+        "services": "Services"
     }
 }

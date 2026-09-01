@@ -55,6 +55,8 @@ export default getRequestConfig(async ({ locale }) => {
         notFound,
         blog,
         payments,
+        breadcrumbs,
+        seo,
     ] = await Promise.all([
         loadJson(() => import(`@/i18n/${selectedLocale}/home.json`)),
         loadJson(() => import(`@/i18n/${selectedLocale}/landing.json`)),
@@ -128,6 +130,8 @@ export default getRequestConfig(async ({ locale }) => {
         loadJson(() => import(`@/i18n/${selectedLocale}/notFound.json`)),
         loadJson(() => import(`@/i18n/${selectedLocale}/blog.json`)),
         loadJson(() => import(`@/i18n/${selectedLocale}/payments.json`)),
+        loadJson(() => import(`@/i18n/${selectedLocale}/breadcrumbs.json`)),
+        loadJson(() => import(`@/i18n/${selectedLocale}/seo.json`)),
     ])
 
     const messages: MessagesRecord = {
@@ -164,6 +168,8 @@ export default getRequestConfig(async ({ locale }) => {
         notFound,
         blog,
         payments,
+        breadcrumbs,
+        seo,
         layout: {
             header,
             footer: await loadJson(
