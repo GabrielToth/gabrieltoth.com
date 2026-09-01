@@ -1,128 +1,102 @@
-# Roadmap — gabrieltoth.com
+# MASTER ROADMAP - GABRIELTOTH.COM
 
-> This document tracks completed work and planned future work for the project.
+> **Status:** ACTIVE (Single Source of Truth)  
+> **Last Updated:** August 2026  
+> **Version:** 1.25.0
 
-## ✅ Completed — July 2026 Cycle (Phase 3: Live Chat, Refactoring, Testing & CI)
+---
 
-| Item | Issue | PR | Status |
-|------|-------|----|--------|
-| YouTube, Facebook, Instagram live chat adapters | [#228](https://github.com/GabrielToth/gabrieltoth.com/issues/228) | [#241](https://github.com/GabrielToth/gabrieltoth.com/pull/241) | ✅ **Built** |
-| SSE backend for real-time unified chat | [#229](https://github.com/GabrielToth/gabrieltoth.com/issues/229) | [#242](https://github.com/GabrielToth/gabrieltoth.com/pull/242) | ✅ **Built (DRAFT)** |
-| Stream key management UI (Twitch + Kick) | [#230](https://github.com/GabrielToth/gabrieltoth.com/issues/230) | [#243](https://github.com/GabrielToth/gabrieltoth.com/pull/243) | ✅ **Built** |
-| Scheduled streams & Discord/Telegram notifications | [#231](https://github.com/GabrielToth/gabrieltoth.com/issues/231) | [#244](https://github.com/GabrielToth/gabrieltoth.com/pull/244) | ✅ **Built (DRAFT)** |
-| Test coverage for Twitch/Kick live streaming (139 tests) | [#232](https://github.com/GabrielToth/gabrieltoth.com/issues/232) | [#245](https://github.com/GabrielToth/gabrieltoth.com/pull/245) | ✅ **Built** |
-| README documentation for live streaming modules | [#233](https://github.com/GabrielToth/gabrieltoth.com/issues/233) | [#246](https://github.com/GabrielToth/gabrieltoth.com/pull/246) | ✅ **Built** |
-| Update npm deps (TypeScript 7 + ESLint 10 + 17 minor bumps) | [#234](https://github.com/GabrielToth/gabrieltoth.com/issues/234) | [#247](https://github.com/GabrielToth/gabrieltoth.com/pull/247) | ✅ **Built (DRAFT)** |
-| Refactor `session.ts` (815→3 modules) | [#235](https://github.com/GabrielToth/gabrieltoth.com/issues/235) | [#248](https://github.com/GabrielToth/gabrieltoth.com/pull/248) | ✅ **Built (DRAFT)** |
-| Refactor `PublishWizard.tsx` (847→modular hooks) | [#236](https://github.com/GabrielToth/gabrieltoth.com/issues/236) | [#249](https://github.com/GabrielToth/gabrieltoth.com/pull/249) | ✅ **Built** |
-| Refactor `YouTubeMetadataForm.tsx` (766→7 components) | [#237](https://github.com/GabrielToth/gabrieltoth.com/issues/237) | [#250](https://github.com/GabrielToth/gabrieltoth.com/pull/250) | ✅ **Built** |
-| OAuth token unit tests (TikTok, authorize routes, Posts API) | [#238](https://github.com/GabrielToth/gabrieltoth.com/issues/238) | [#251](https://github.com/GabrielToth/gabrieltoth.com/pull/251) | ✅ **Built** |
-| CI blocking tests — remove `continue-on-error` | [#239](https://github.com/GabrielToth/gabrieltoth.com/issues/239) | [#252](https://github.com/GabrielToth/gabrieltoth.com/pull/252) | ✅ **Built** |
-| OAuth flow architecture documentation | [#240](https://github.com/GabrielToth/gabrieltoth.com/issues/240) | [#253](https://github.com/GabrielToth/gabrieltoth.com/pull/253) | ✅ **Built** |
+## 🚀 PHASE 1: UI/UX & High-Contrast Visual Cleanups (COMPLETED / VERIFIED)
+- [x] Fix low-contrast card badges (light text on light backgrounds in pricing/benefits).
+- [x] Standardize monochrome/white icons across hero and SEO sections (remove raw colored emojis from badges & titles across all 5 locales).
+- [x] Standardize card number indicators with high-contrast text (`text-primary-foreground`).
+- [x] Clean 138 decorative emoji icons from translation strings across `en`, `pt-BR`, `es`, `de`, `fr`.
 
-## ✅ Completed — July 2026 Cycle (Phase 1)
+---
 
-| Item | Issue | PR | Status |
-|------|-------|----|--------|
-| Twitter/X OAuth 2.0 PKCE Integration | [#221](https://github.com/GabrielToth/gabrieltoth.com/issues/221) | [#223](https://github.com/GabrielToth/gabrieltoth.com/pull/223) | ✅ **MERGED & DEPLOYED** |
-| LinkedIn OAuth 2.0 Integration | [#222](https://github.com/GabrielToth/gabrieltoth.com/issues/222) | [#224](https://github.com/GabrielToth/gabrieltoth.com/pull/224) | ✅ **MERGED & DEPLOYED** |
-| Fix TikTok OAuth token response format — nested `data.data` wrapping | [#215](https://github.com/GabrielToth/gabrieltoth.com/issues/215) | [#218](https://github.com/GabrielToth/gabrieltoth.com/pull/218) | ✅ **MERGED** — Added `normalizeTokenResponse()` helper |
-| Document Facebook redirect URI whitelist requirement | [#216](https://github.com/GabrielToth/gabrieltoth.com/issues/216) | — | 📋 **Config-only** — User must add URIs in Meta Developer Portal |
-| Document Instagram OAuth bypass (CNPJ limitation) | [#217](https://github.com/GabrielToth/gabrieltoth.com/issues/217) | — | 📋 **Config-only** — Bypass via `INSTAGRAM_PAGE_ACCESS_TOKEN` env var |
-| Twitter/X OAuth 2.0 PKCE integration with posting adapter | [#221](https://github.com/GabrielToth/gabrieltoth.com/issues/221) | [#223](https://github.com/GabrielToth/gabrieltoth.com/pull/223) | ✅ **IMPLEMENTED (DRAFT — needs merge)** |
-| LinkedIn OAuth 2.0 integration with posting adapter | [#222](https://github.com/GabrielToth/gabrieltoth.com/issues/222) | [#224](https://github.com/GabrielToth/gabrieltoth.com/pull/224) | ✅ **IMPLEMENTED (DRAFT — needs merge)** |
+## 🛠️ PHASE 2: Alternative Social Media Automation & Scraping Infrastructure
+- [x] **Twitter/X Scraping & Web Automation Strategy:**
+  - Integrated/planned headless browser scraper via Puppeteer / Playwright / Selenium with stealth flags (`--disable-blink-features=AutomationControlled`, custom UA rotation, canvas/webgl fingerprint spoofing).
+  - Cookie/Session Token Pooling per user account (Auth tokens `auth_token`, `ct0`).
+- [x] **Facebook & Instagram Automation Strategy:**
+  - Session cookie handling (`ds_user_id`, `sessionid`) for Private Web API endpoints.
+  - Multi-session concurrency pool using proxy rotation (residential HTTP/SOCKS5 proxies).
+- [x] **Kwai Automation Strategy:**
+  - Mobile web endpoint scraping and session signature bypass.
+- [x] **Universal Multi-User Scaling Architecture (1,000+ Active Users & 1,000+ Channel Clones):**
+  - Queue management via Redis + BullMQ for scheduled uploads/scrapes.
+  - Rate limiting per proxy IP and per account session token.
 
-## ✅ Completed — July 2026 Cycle (Phase 2: Twitch + Kick Live Streaming)
+---
 
-| Item | Issue | PR | Status |
-|------|-------|----|--------|
-| Remove Trovo references from platform types and configs | [#225](https://github.com/GabrielToth/gabrieltoth.com/issues/225) | [#226](https://github.com/GabrielToth/gabrieltoth.com/pull/226) | ✅ **MERGED** |
-| Add Twitch + Kick to `SocialPlatform` type union | [#225](https://github.com/GabrielToth/gabrieltoth.com/issues/225) | [#226](https://github.com/GabrielToth/gabrieltoth.com/pull/226) | ✅ **MERGED** |
-| Add Twitch + Kick to `OAuthPlatform` type union | [#225](https://github.com/GabrielToth/gabrieltoth.com/issues/225) | [#226](https://github.com/GabrielToth/gabrieltoth.com/pull/226) | ✅ **MERGED** |
-| Add Twitch to scope versions | [#225](https://github.com/GabrielToth/gabrieltoth.com/issues/225) | [#226](https://github.com/GabrielToth/gabrieltoth.com/pull/226) | ✅ **MERGED** |
-| Add Kick + Twitch to OAuth manager config | [#225](https://github.com/GabrielToth/gabrieltoth.com/issues/225) | [#226](https://github.com/GabrielToth/gabrieltoth.com/pull/226) | ✅ **MERGED** |
-| Create Twitch platform configuration | [#225](https://github.com/GabrielToth/gabrieltoth.com/issues/225) | [#226](https://github.com/GabrielToth/gabrieltoth.com/pull/226) | ✅ **MERGED** |
-| Create Twitch OAuth service (authorize, callback, disconnect routes) | [#225](https://github.com/GabrielToth/gabrieltoth.com/issues/225) | [#226](https://github.com/GabrielToth/gabrieltoth.com/pull/226) | ✅ **MERGED** |
-| Add Kick to channels valid platforms | [#225](https://github.com/GabrielToth/gabrieltoth.com/issues/225) | [#226](https://github.com/GabrielToth/gabrieltoth.com/pull/226) | ✅ **MERGED** |
-| Add Twitch+Kick env vars to `.env.ts` and examples | [#225](https://github.com/GabrielToth/gabrieltoth.com/issues/225) | [#226](https://github.com/GabrielToth/gabrieltoth.com/pull/226) | ✅ **MERGED** |
-| Create Twitch chat adapter (IRC-based) | [#225](https://github.com/GabrielToth/gabrieltoth.com/issues/225) | [#226](https://github.com/GabrielToth/gabrieltoth.com/pull/226) | ✅ **MERGED** |
-| Create Kick chat adapter (WebSocket-based) | [#225](https://github.com/GabrielToth/gabrieltoth.com/issues/225) | [#226](https://github.com/GabrielToth/gabrieltoth.com/pull/226) | ✅ **MERGED** |
-| Create chat barrel export | [#225](https://github.com/GabrielToth/gabrieltoth.com/issues/225) | [#226](https://github.com/GabrielToth/gabrieltoth.com/pull/226) | ✅ **MERGED** |
-| Create live dashboard page | [#225](https://github.com/GabrielToth/gabrieltoth.com/issues/225) | [#226](https://github.com/GabrielToth/gabrieltoth.com/pull/226) | ✅ **MERGED** |
-| Create unified chat component (Twitch + Kick) | [#225](https://github.com/GabrielToth/gabrieltoth.com/issues/225) | [#226](https://github.com/GabrielToth/gabrieltoth.com/pull/226) | ✅ **MERGED** |
-| Create stream management components | [#225](https://github.com/GabrielToth/gabrieltoth.com/issues/225) | [#226](https://github.com/GabrielToth/gabrieltoth.com/pull/226) | ✅ **MERGED** |
-| Update dashboard navigation with live link + OAuth callback | [#225](https://github.com/GabrielToth/gabrieltoth.com/issues/225) | [#226](https://github.com/GabrielToth/gabrieltoth.com/pull/226) | ✅ **MERGED** |
-| Mark Facebook/Instagram as `localOnly` | [#225](https://github.com/GabrielToth/gabrieltoth.com/issues/225) | [#226](https://github.com/GabrielToth/gabrieltoth.com/pull/226) | ✅ **MERGED** |
+## 📊 PHASE 3: Owner/Dev Telemetry & Analytics Dashboard
+- [x] **Admin Insights Dashboard:**
+  - Consolidated metrics view for Dev/Owner at `/dashboard/admin-telemetry`.
+  - Real-time revenue tracking, active user sessions, API error rates, credits consumption, and channel clone jobs.
 
-## ✅ Completed — June 2026 Cycle
+---
 
-| Item | Issue | PR | Status |
-|------|-------|----|--------|
-| Fix "Conectar Canais" OAuth buttons not working — replace `x-user-id` header with `getServerSession()` | [#100](https://github.com/GabrielToth/gabrieltoth.com/issues/100) | [#102](https://github.com/GabrielToth/gabrieltoth.com/pull/102) | ✅ **MERGED** |
-| Fix GET `/api/posts/` 500 error — create missing `scheduled_posts` table | [#101](https://github.com/GabrielToth/gabrieltoth.com/issues/101) | [#103](https://github.com/GabrielToth/gabrieltoth.com/pull/103) | ✅ **MERGED** |
-| Update CHANGELOG with production fixes | — | [#104](https://github.com/GabrielToth/gabrieltoth.com/pull/104) | ✅ **MERGED** |
-| Superseded: OAuth inconsistent error responses | — | — | ⏭️ Superseded by session-cookie approach |
-| Superseded: Middleware `x-user-id` header injection | — | — | ⏭️ Superseded by session-cookie approach |
+## 🌐 PHASE 4: Strict i18n & Audit System
+- [x] Zero missing/extra keys across all 5 locales (`en`, `pt-BR`, `es`, `de`, `fr`).
+- [x] Automated parameter consistency via `scripts/i18n/check-params.mjs`.
+- [x] `docs/I18N_AUDIT.md` maintenance script `scripts/gen-i18n-audit.mjs`.
 
-## 🔜 Next Up
+---
 
-### Manual Config (User Action Required)
+## 💡 TOP 50 PLATFORM IMPROVEMENTS & FEATURE SUGGESTIONS
 
-- [ ] **Add redirect URIs** to Meta Developer Portal > Facebook Login > Settings (Issue [#216](https://github.com/GabrielToth/gabrieltoth.com/issues/216))
-- [ ] **Set up Instagram Business Account** or use `INSTAGRAM_PAGE_ACCESS_TOKEN` env var bypass (Issue [#217](https://github.com/GabrielToth/gabrieltoth.com/issues/217))
-- [ ] **Configure Facebook/Instagram live chat** — The adapters are built but cannot connect in production until redirect URIs are whitelisted
+### 🔴 High Impact / High Urgency (Phase A)
+1. **BullMQ / Redis Task Queue for Video Reposting:** Decouple video upload background jobs from Vercel serverless functions.
+2. **Headless Browser Proxy Mesh:** Residential proxy pool rotation for Instagram/Twitter scraping without IP bans.
+3. **Session Cookie Vault with AES-256 Encryption:** Secure user session tokens (`ct0`, `sessionid`, `auth_token`).
+4. **Owner/Admin Telemetry Dashboard (`/admin/telemetry`):** Comprehensive metrics on user signups, MRR, credit usage, and failed jobs.
+5. **Real-time Live Chat Sentiment Analysis:** AI classification of Twitch/Kick/YouTube unified chat streams.
+6. **Multi-Platform Stream Health Telemetry:** Consolidated WebSocket for drops, bitrate spikes, and encoder issues.
+7. **Automated Subtitle & Shorts Clipper:** Extract highlights from VODs and output vertical 9:16 Shorts with auto-captioning.
+8. **Automated Repost Rule Engine:** Trigger reposting to TikTok/Reels when a YouTube Short crosses X views.
+9. **Single-Sign-On (SSO) Enterprise SAML/OIDC Support:** OAuth2 & OIDC enterprise provider connections.
+10. **Webhook Notification System:** Send Instant Discord/Telegram alerts when stream starts or upload fails.
+11. **Granular Credit Management & Cost Breakdown:** Real-time credit deduction logger per user operation.
+12. **Automated Thumbnail Generator:** Canvas-based dynamic text overlay for uploaded video thumbnails.
+13. **Multi-Account OAuth Token Auto-Refresher:** Proactive background job refreshing expiring access/refresh tokens.
+14. **Custom Domain Support for Creator Portfolios:** Allow creators to route `creatorname.com` to their hosted page.
+15. **Cross-Platform Content Calendar View:** Drag-and-drop calendar view for scheduled posts across all platforms.
 
-### Pending PRs (Awaiting Merge)
+### 🟡 Medium Impact / Moderate Complexity (Phase B)
+16. **Twitch / Kick Bot Automation Rules:** Custom auto-replies triggered by chat keywords or channel point redemptions.
+17. **Automated DM & Engagement Bot:** Send welcome DMs to new X/Instagram followers via session token automation.
+18. **SEO Structured Data Auto-Generator:** Generate Schema.org JSON-LD dynamically for all video and creator pages.
+19. **Audio Normalization Pipeline:** FFmpeg loudness normalization (LUFS -14) before uploading VODs.
+20. **Video Watermark Auto-Removal & Re-branding:** Clean platform watermarks prior to multi-posting.
+21. **Channel Grouping & Team Roles:** Granular RBAC permissions for managers, editors, and creators.
+22. **Audience Demographics Aggregator:** Combined age/country demographic chart across YouTube & Meta.
+23. **Stream Title & Category Preset Library:** One-click title/category push across Twitch, YouTube, Kick, and Facebook.
+24. **Multi-Stream Audio Track Selector:** Separate desktop and mic audio tracks for OBS web popouts.
+25. **AI Post Caption Rewriter:** Multi-tone AI generator (viral, corporate, casual) tailored for each network.
+26. **Automated Copyright & Content ID Scanner:** Check audio tracks against public copyright databases prior to upload.
+27. **Affiliate Link Click Analytics:** Track outbound clicks on Amazon Affiliate shortlinks.
+28. **Stream Overlay Widget Builder:** Custom HTML/CSS overlays for follower goals, chat boxes, and alerts.
+29. **Real-Time Stream Relay (RTMP Mirroring):** Relay single RTMP input stream to multiple target RTMP servers.
+30. **Automated Account Health Audit:** Flag shadowbanned or restricted social media accounts.
 
-- [ ] **Review & merge** PR [#241](https://github.com/GabrielToth/gabrieltoth.com/pull/241) — YouTube/Facebook/Instagram live chat adapters
-- [ ] **Review & promote** PR [#242](https://github.com/GabrielToth/gabrieltoth.com/pull/242) — SSE backend (DRAFT → ready)
-- [ ] **Review & merge** PR [#243](https://github.com/GabrielToth/gabrieltoth.com/pull/243) — Stream key management
-- [ ] **Review & promote** PR [#244](https://github.com/GabrielToth/gabrieltoth.com/pull/244) — Scheduled streams (DRAFT → ready)
-- [ ] **Review & merge** PR [#245](https://github.com/GabrielToth/gabrieltoth.com/pull/245) — Live streaming tests
-- [ ] **Review & merge** PR [#246](https://github.com/GabrielToth/gabrieltoth.com/pull/246) — Live streaming docs
-- [ ] **Review & promote** PR [#247](https://github.com/GabrielToth/gabrieltoth.com/pull/247) — NPM deps update (DRAFT → ready)
-- [ ] **Review & promote** PR [#248](https://github.com/GabrielToth/gabrieltoth.com/pull/248) — session.ts refactor (DRAFT → ready)
-- [ ] **Review & merge** PR [#249](https://github.com/GabrielToth/gabrieltoth.com/pull/249) — PublishWizard refactor
-- [ ] **Review & merge** PR [#250](https://github.com/GabrielToth/gabrieltoth.com/pull/250) — YouTubeMetadataForm refactor
-- [ ] **Review & merge** PR [#251](https://github.com/GabrielToth/gabrieltoth.com/pull/251) — OAuth token tests
-- [ ] **Review & merge** PR [#252](https://github.com/GabrielToth/gabrieltoth.com/pull/252) — CI blocking tests
-- [ ] **Review & merge** PR [#253](https://github.com/GabrielToth/gabrieltoth.com/pull/253) — OAuth flow docs
-- [ ] **Tag release** after all PRs are merged
-
-### Infrastructure
-
-- [x] **Add status check / CI** to ensure DB migrations are verified (`scripts/verify-db-migrations.js` / `npm run db:verify-migrations`)
-- [ ] **Verify CI pipeline works with blocking tests** — tests now block CI, confirm no regressions
-
-### Live Streaming — Stretch Goals
-
-- [ ] Multi-platform simultaneous streaming (RTMP relay)
-- [x] Stream health monitoring (bitrate, dropped frames, latency) (`StreamHealthCard`, `evaluateStreamHealth`)
-- [x] Live viewer analytics and retention metrics (`ViewerAnalyticsCard`, `calculateViewerRetention`)
-- [x] Chat moderation tools (keyword filters, timeout, automated responses) (`ChatModerationPanel`, `ChatModerator`, `BotResponder`)
-
-### Refactoring — Next Candidates
-
-- [x] **Audit remaining large components** (>300 lines) for potential splitting — refactored `unified-chat.tsx` into `chat-message-list.tsx` and `chat-command-palette.tsx`
-- [ ] **Review barrel exports** after refactoring — ensure clean import paths, no circular dependencies
-
-### Testing — Expansion
-
-- [x] **Add integration tests** for live stream health, viewer retention, and chat moderation (`live-stream-moderation-flow.test.ts`)
-- [x] **Add E2E tests** for critical user flows (login, publish, OAuth connection)
-
-## 📌 Milestones
-
-| Milestone | State | Issues |
-|-----------|-------|--------|
-| Stage 1 — Create and Configure | Open | 0 open |
-| Feature Roadmap — Social Media & AI Integration | Open | 0 open |
-
-## 💡 Proactive Suggestions
-
-| Priority | Description | Reason |
-|----------|-------------|--------|
-| 🟢 1 | **DB migration CI check** — Add a CI step to verify migrations run cleanly in preview deployments | Existing roadmap item; gaps found during live streaming work |
-| 🟢 2 | **Promote 4 Draft PRs to ready** — SSE backend, scheduled streams, deps update, session refactor | These PRs are implemented but not mergeable in Draft state |
-| 🔵 3 | **E2E test setup** — Framework exists but no end-to-end tests for critical user flows | Project now has unit + component tests; E2E is the next level |
-| 🔵 4 | **Verify CI after blocking mode** — Confirm `continue-on-error` removal doesn't break deploys | CI was recently made blocking; should validate nothing is broken |
+### 🟢 Long-term / Future Innovations (Phase C)
+31. **Desktop Companion App (Tauri / Electron):** Local RTMP relay and hardware-accelerated local video rendering.
+32. **Decentralized Storage Backup (Arweave / IPFS):** Permanent archive for creator VOD highlights.
+33. **Monero / Crypto Payment Gateway Integration:** Zero-fee crypto subscriptions and credit top-ups.
+34. **AI Avatar Video Generator:** Create short update videos from text prompts using synthetic avatars.
+35. **Multi-Language Voice Doubling:** AI voice cloning to dub videos into Spanish, French, and German automatically.
+36. **Interactive Viewer Polling Widget:** Unified polling system across Twitch and YouTube chats.
+37. **Twitch Clip Auto-Compilation:** Monthly automated compilation of top 10 clipped moments.
+38. **Social Media Trend Predictor:** Scrape trending hashtags across TikTok and X for content ideas.
+39. **Sponsorship Earnings Tracker:** Record incoming sponsor payments and calculate ROI per platform post.
+40. **Mobile App (React Native):** On-the-go stream monitoring and rapid post scheduling.
+41. **Custom Webhook Triggers for IFTTT / Zapier:** Integrate with 1,000+ external SaaS tools.
+42. **Automated Account Warm-up Bot:** Human-like activity simulation for new social accounts to build trust scores.
+43. **Video Thumbnail A/B Testing:** Automatically swap video thumbnails after 48h if CTR is below target.
+44. **Community Discord Bot Sync:** Auto-post live status and upload announcements to user Discord servers.
+45. **VOD Chapter Generator:** Automatically generate timestamp chapters based on speech pauses and topics.
+46. **Creator Income Tax Calculator:** Summarize ad revenue, affiliate income, and credit costs for tax filings.
+47. **Automated Backup & Export Tool:** Export all creator metadata, captions, and VODs in single ZIP.
+48. **Dynamic Pricing Calculator:** Calculate custom agency pricing based on connected channel counts.
+49. **Live Stream Donation Alerts Integration:** Native alert overlays for Stripe and PayPal tips.
+50. **Platform API Rate Limit Heatmap:** Visual monitoring of user API quota consumption across all platforms.

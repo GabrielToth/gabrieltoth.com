@@ -61,7 +61,7 @@
         "channelCount": "{count} canal(is) selecionado(s)",
         "selectChannel": "Selecionar canal",
         "channelWarning": "Aviso: Não é recomendado enviar o mesmo vídeo para múltiplos canais. O YouTube pode limitar a divulgação de vídeos idênticos sem aviso prévio. Isso pode prejudicar o desempenho de todos os canais envolvidos.",
-        "channelWarningTitle": "⚠️ Atenção: Conteúdo Duplicado",
+        "channelWarningTitle": "Atenção: Conteúdo Duplicado",
         "channelName": "Nome do Canal",
         "channelSubscribers": "Inscritos",
         "channelVideos": "Vídeos",

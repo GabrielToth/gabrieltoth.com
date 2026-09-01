@@ -36,10 +36,10 @@
     "warnings": {
         "title": "Important Warnings",
         "items": [
-            "⚠️ **Overclocking**: Overclocking services increase performance but may reduce hardware lifespan.",
-            "⚠️ **Experimental Settings**: Some advanced settings may require reversal in case of incompatibility.",
-            "⚠️ **System Updates**: Future Windows updates may revert some optimizations.",
-            "⚠️ **Old Hardware**: Very old systems may have physical limitations that prevent certain optimizations."
+            "**Overclocking**: Overclocking services increase performance but may reduce hardware lifespan.",
+            "**Experimental Settings**: Some advanced settings may require reversal in case of incompatibility.",
+            "**System Updates**: Future Windows updates may revert some optimizations.",
+            "**Old Hardware**: Very old systems may have physical limitations that prevent certain optimizations."
         ]
     },
     "payment": {

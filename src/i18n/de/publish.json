@@ -61,7 +61,7 @@
         "channelCount": "{count} Kanal/Kanäle ausgewählt",
         "selectChannel": "Kanal auswählen",
         "channelWarning": "Warnung: Das Hochladen desselben Videos auf mehrere Kanäle wird nicht empfohlen. YouTube kann die Reichweite identischer Videos ohne Vorankündigung einschränken, was allen beteiligten Kanälen schaden kann.",
-        "channelWarningTitle": "⚠️ Achtung: Doppelte Inhalte",
+        "channelWarningTitle": "Achtung: Doppelte Inhalte",
         "channelName": "Kanalname",
         "channelSubscribers": "Abonnenten",
         "channelVideos": "Videos",

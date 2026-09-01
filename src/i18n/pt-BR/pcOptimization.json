@@ -6,13 +6,13 @@
     "moneroToggle": {
         "title": "Preços com Monero (XMR)",
         "description": "Ative para ver preços com 50% de desconto usando Monero",
-        "enabled": "💰 Preços Monero (50% OFF)",
-        "disabled": "💴 Preços Regulares (PIX/Cartão)",
+        "enabled": "Preços Monero (50% OFF)",
+        "disabled": "Preços Regulares (PIX/Cartão)",
         "currencySymbol": "R$",
         "conversionRate": 1
     },
     "hero": {
-        "badge": "⚡ PC LENTO?",
+        "badge": "PC LENTO?",
         "title": "AQUI NÃO!",
         "subtitle": "Ajuste completo de performance para você nunca mais sofrer com lag.",
         "cta": "Ver Planos",

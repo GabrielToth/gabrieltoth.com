@@ -36,10 +36,10 @@
     "warnings": {
         "title": "Avisos Importantes",
         "items": [
-            "⚠️ **Overclocking**: Serviços de overclocking aumentam performance mas podem reduzir vida útil do hardware.",
-            "⚠️ **Configurações Experimentais**: Algumas configurações avançadas podem exigir reversão em caso de incompatibilidade.",
-            "⚠️ **Atualizações do Sistema**: Atualizações futuras do Windows podem reverter algumas otimizações.",
-            "⚠️ **Hardware Antigo**: Sistemas muito antigos podem ter limitações físicas que impedem certas otimizações."
+            "**Overclocking**: Serviços de overclocking aumentam performance mas podem reduzir vida útil do hardware.",
+            "**Configurações Experimentais**: Algumas configurações avançadas podem exigir reversão em caso de incompatibilidade.",
+            "**Atualizações do Sistema**: Atualizações futuras do Windows podem reverter algumas otimizações.",
+            "**Hardware Antigo**: Sistemas muito antigos podem ter limitações físicas que impedem certas otimizações."
         ]
     },
     "payment": {

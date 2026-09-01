@@ -68,7 +68,7 @@ export function StreamTitleEditor({
                 const data = await res.json()
                 if (data.success) {
                     setCategories(data.categories || [])
-                    setConnectedPlatforms(data.connectedPlatforms || [platform])
+                    // Connected platforms available for autocomplete
                 }
             } catch {
                 // Silently handle autocomplete network errors

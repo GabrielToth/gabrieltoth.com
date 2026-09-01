@@ -2,11 +2,11 @@
     "moneroToggle": {
         "title": "Monero (XMR) Pricing",
         "description": "Enable to see 50% discount prices using Monero",
-        "enabled": "💰 Monero Prices (50% OFF)",
-        "disabled": "💴 Regular Prices (PIX/Card)"
+        "enabled": "Monero Prices (50% OFF)",
+        "disabled": "Regular Prices (PIX/Card)"
     },
     "hero": {
-        "badge": "🎬 Join Our Team",
+        "badge": "Join Our Team",
         "title": "We're Looking for Talented Editors",
         "subtitle": "Be part of a global team of professional editors. Work on interesting projects with flexible schedules.",
         "cta": "Apply Now",

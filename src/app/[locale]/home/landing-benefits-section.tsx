@@ -1,6 +1,7 @@
 "use client"
 
 import { useTranslations } from "next-intl"
+import { Check } from "lucide-react"
 
 export default function LandingBenefitsSection() {
     const t = useTranslations("landing")
@@ -23,9 +24,10 @@ export default function LandingBenefitsSection() {
                             className="p-6 bg-muted dark:bg-card rounded-lg border-border border"
                         >
                             <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center mb-4">
-                                <span className="text-white font-bold text-lg">
-                                    ✓
-                                </span>
+                                <Check
+                                    className="w-6 h-6 text-primary-foreground"
+                                    aria-hidden="true"
+                                />
                             </div>
                             <h3 className="text-xl font-semibold text-foreground dark:text-foreground mb-2">
                                 {benefit.title}

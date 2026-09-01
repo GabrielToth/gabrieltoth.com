@@ -36,10 +36,10 @@
     "warnings": {
         "title": "Avisos Importantes",
         "items": [
-            "⚠️ **Overclocking**: ...",
-            "⚠️ **Configuraciones Experimentales**: ...",
-            "⚠️ **Actualizaciones del Sistema**: ...",
-            "⚠️ **Hardware Antiguo**: ..."
+            "**Overclocking**: ...",
+            "**Configuraciones Experimentales**: ...",
+            "**Actualizaciones del Sistema**: ...",
+            "**Hardware Antiguo**: ..."
         ]
     },
     "payment": {

@@ -29,7 +29,7 @@ export function ProgressIndicator({
                                     index < currentStep
                                         ? "bg-green-500 text-white"
                                         : index === currentStep
-                                          ? "bg-primary/50 text-white ring-4 ring-blue-200 dark:ring-blue-900"
+                                          ? "bg-primary text-primary-foreground ring-4 ring-blue-200 dark:ring-blue-900"
                                           : "bg-accent dark:bg-muted text-muted-foreground dark:text-muted-foreground"
                                 }`}
                                 aria-current={

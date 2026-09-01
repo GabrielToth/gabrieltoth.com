@@ -44,8 +44,8 @@ export default function LandingPricingSection({
                             }`}
                         >
                             {plan.popular && (
-                                <div className="bg-primary text-white text-center py-2 font-semibold">
-                                    Popular
+                                <div className="bg-primary text-primary-foreground text-center py-2 font-semibold">
+                                    {t("pricing.popularTag")}
                                 </div>
                             )}
                             <div className="p-8">

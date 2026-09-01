@@ -40,7 +40,7 @@ function PricingToggleClient({ locale: _locale }: PricingToggleProps) {
                     onClick={toggleMoneroPrice}
                     className={`px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 flex items-center gap-2 ${
                         !showMoneroPrice
-                            ? "bg-primary/50 text-white shadow-md"
+                            ? "bg-primary text-primary-foreground shadow-md"
                             : "text-muted-foreground dark:text-muted-foreground hover:text-foreground dark:hover:text-muted-foreground"
                     }`}
                 >

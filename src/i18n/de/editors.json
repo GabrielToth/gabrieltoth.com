@@ -2,11 +2,11 @@
     "moneroToggle": {
         "title": "Monero (XMR) Preise",
         "description": "Aktivieren, um 50% Rabattpreise mit Monero zu sehen",
-        "enabled": "💰 Monero Preise (50% OFF)",
-        "disabled": "💴 Reguläre Preise (PIX/Karte)"
+        "enabled": "Monero Preise (50% OFF)",
+        "disabled": "Reguläre Preise (PIX/Karte)"
     },
     "hero": {
-        "badge": "🎬 Tritt Unserem Team Bei",
+        "badge": "Tritt Unserem Team Bei",
         "title": "Wir Suchen Talentierte Editoren",
         "subtitle": "Sei Teil eines globalen Teams professioneller Editoren. Arbeite an interessanten Projekten mit flexiblen Arbeitszeiten.",
         "cta": "Jetzt Bewerben",
@@ -350,7 +350,12 @@
         "selectOption": "Auswählen..."
     },
     "options": {
-        "experienceLevel": ["Anfänger", "Fortgeschritten", "Erfahren", "Profi"]
+        "experienceLevel": [
+            "Anfänger",
+            "Fortgeschritten",
+            "Erfahren",
+            "Profi"
+        ]
     },
     "applicationTemplate": "Hallo! Ich möchte mich für die Stelle als Video-Editor bewerben.\n\n*BEWERBUNGSFORMULAR*\n\nVollständiger Name:\nAlter:\nPortfolio (Links):\nBearbeitungserfahrung (Jahre) (nicht erforderlich):\n\n*Software-Kenntnisse:*\n- Premiere Pro: (Grundkenntnisse/Fortgeschritten/Erfahren)\n- After Effects: (Grundkenntnisse/Fortgeschritten/Erfahren)\n- DaVinci Resolve: (Grundkenntnisse/Fortgeschritten/Erfahren)\n- Andere:\n\nIch freue mich auf Ihre Rückmeldung!",
     "seo": {

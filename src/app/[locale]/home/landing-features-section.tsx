@@ -29,7 +29,7 @@ export default function LandingFeaturesSection() {
                             className="p-6 bg-muted dark:bg-card rounded-lg border border-border dark:border-border hover:shadow-lg transition-shadow"
                         >
                             <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center mb-4">
-                                <span className="text-white font-bold text-xl">
+                                <span className="text-primary-foreground font-bold text-xl">
                                     {index + 1}
                                 </span>
                             </div>

@@ -61,7 +61,7 @@
         "channelCount": "{count} channel(s) selected",
         "selectChannel": "Sélectionner channel",
         "channelWarning": "Warning: Uploading the same video to multiple channels is not recommended. YouTube may limit the reach sur identical videos without notice, potentially harming all channels involved.",
-        "channelWarningTitle": "⚠️ Attention: Duplicate Contenu",
+        "channelWarningTitle": "Attention: Duplicate Contenu",
         "channelName": "Chaîne Name",
         "channelSubscribers": "Subscribers",
         "channelVideos": "Videos",

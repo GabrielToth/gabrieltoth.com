@@ -17,7 +17,7 @@
         "intro": "¡Hola! Soy Gabriel Toth Gonçalves, científico de datos senior y desarrollador Full Stack brasileño. Graduado en Ciencias de la Computación con especialización en Ciencia de Datos, actualmente trabajo en el proyecto social-analytics-engine, realizando análisis avanzados de campañas digitales y métricas de conversión.",
         "experience": "Mi trabajo actual involucra la integración de datos de Google Analytics con métricas de redes sociales (YouTube, Instagram, X, Telegram) y análisis de conversiones Stripe usando Python, PostgreSQL, SQLAlchemy y Docker. También desarrollo soluciones web empresariales, habiendo creado sitios como softclever.com.br (React) y sistemasatfiscal.com.br (Angular), utilizando tecnologías modernas.",
         "passion": "Además del análisis y ciencia de datos, gestiono canales como el canal WaveIGL con más de 2 millones de visualizaciones mensuales creando contenido en redes sociales. Desarrollé ViraTrend, un servicio especializado en consultoría de crecimiento digital para creadores de contenido. Me apasiona transformar datos en insights accionables y usar machine learning para optimizar campañas digitales y experiencias de usuario.",
-        "location": "📍 Brasil",
+        "location": "Brasil",
         "interests": "Cuando no estoy programando, me puedes encontrar creando contenido educativo, explorando nuevas tecnologías o jugando Minecraft (¡sí, hasta tengo mi propio plugin!).",
         "specializedIn": "Especializado en",
         "skills": {
@@ -149,7 +149,13 @@
                 "title": "Sistema SAT Fiscal - Sitio Web",
                 "description": "Sitio institucional para empresa especializada en soluciones fiscales y contables. Desarrollado con enfoque en presentar servicios fiscales, gestión tributaria y soluciones empresariales de forma clara y profesional.",
                 "image": "/projects/sat-fiscal.jpg",
-                "tags": ["HTML", "CSS", "JavaScript", "SEO", "Diseño"],
+                "tags": [
+                    "HTML",
+                    "CSS",
+                    "JavaScript",
+                    "SEO",
+                    "Diseño"
+                ],
                 "liveUrl": "https://sistemasatfiscal.com.br",
                 "featured": true
             },
@@ -157,7 +163,12 @@
                 "title": "Softclever - Sitio Web",
                 "description": "Sitio corporativo desarrollado en React para empresa de software, con diseño moderno y responsivo. Implementa secciones para servicios, portafolio y contacto, utilizando tecnologías como React, CSS moderno y optimizaciones de SEO.",
                 "image": "/projects/softclever.jpg",
-                "tags": ["React", "CSS", "JavaScript", "SEO"],
+                "tags": [
+                    "React",
+                    "CSS",
+                    "JavaScript",
+                    "SEO"
+                ],
                 "liveUrl": "https://softclever.com.br",
                 "githubUrl": "https://github.com/gabrieltoth/softclever"
             },
@@ -179,7 +190,12 @@
                 "title": "Servicio de Optimización de PC",
                 "description": "Servicio especializado de optimización de PC para gaming, enfocado en maximizar el rendimiento en juegos y reducir la latencia. Incluye configuraciones avanzadas del sistema, optimización de hardware y software personalizado.",
                 "image": "/projects/pc-optimization.jpg",
-                "tags": ["Windows", "Gaming", "Rendimiento", "Hardware"],
+                "tags": [
+                    "Windows",
+                    "Gaming",
+                    "Rendimiento",
+                    "Hardware"
+                ],
                 "slug": "/pc-optimization"
             }
         ]

@@ -2,11 +2,11 @@
     "moneroToggle": {
         "title": "Tarification Monero (XMR)",
         "description": "Activez pour afficher les prix avec 50% de réduction en Monero",
-        "enabled": "💰 Prix Monero (-50%)",
-        "disabled": "💴 Prix réguliers (PIX/Carte)"
+        "enabled": "Prix Monero (-50%)",
+        "disabled": "Prix réguliers (PIX/Carte)"
     },
     "hero": {
-        "badge": "🎬 Rejoignez notre équipe",
+        "badge": "Rejoignez notre équipe",
         "title": "Nous recherchons des monteurs talentueux",
         "subtitle": "Faites partie d'une équipe mondiale de monteurs professionnels. Travaillez sur des projets passionnants avec des horaires flexibles.",
         "cta": "Postuler maintenant",

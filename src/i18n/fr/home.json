@@ -17,7 +17,7 @@
         "intro": "Hello! I'm Gabriel Toth Gonçalves, data scientist II and Full Stack developer from Brazil. With a Computer Science degree and specialization in Data Science, I currently work on the social-analytics-engine project, performing advanced digital campaign analysis and conversion metrics.",
         "experience": "My current work involves integrating Google Analytics data with social media metrics (YouTube, Instagram, X, Telegram) and Stripe conversion analysis using Python, PostgreSQL, SQLAlchemy, and Docker. I also develop enterprise web solutions, having created sites like softclever.com.br (React) and sistemasatfiscal.com.br (Angular), using modern technologies.",
         "passion": "Beyond data analysis and science, I developed ViraTrend, a specialized service for digital growth consulting for content creators. I'm passionate about transforming data into actionable insights and using machine learning to optimize digital campaigns and user experiences.",
-        "location": "📍 Brazil",
+        "location": "Brazil",
         "interests": "When I'm not coding, you can find me creating educational content, exploring new technologies, or playing Minecraft (yes, I even have my own plugin!).",
         "specializedIn": "Specialized in",
         "skills": {
@@ -149,7 +149,13 @@
                 "title": "Sistema SAT Fiscal - Website",
                 "description": "Institutional website for company specialized in fiscal and accounting solutions. Developed with focus on presenting fiscal services, tax management and business solutions in a clear and professional way.",
                 "image": "/projects/sat-fiscal.jpg",
-                "tags": ["HTML", "CSS", "JavaScript", "SEO", "Design"],
+                "tags": [
+                    "HTML",
+                    "CSS",
+                    "JavaScript",
+                    "SEO",
+                    "Design"
+                ],
                 "liveUrl": "https://sistemasatfiscal.com.br",
                 "featured": true
             },
@@ -157,7 +163,12 @@
                 "title": "Softclever - Website",
                 "description": "Corporate website developed in React for software company, with modern and responsive design. Implements sections for services, portfolio and contact, using technologies like React, modern CSS and SEO optimizations.",
                 "image": "/projects/softclever.jpg",
-                "tags": ["React", "CSS", "JavaScript", "SEO"],
+                "tags": [
+                    "React",
+                    "CSS",
+                    "JavaScript",
+                    "SEO"
+                ],
                 "liveUrl": "https://softclever.com.br",
                 "githubUrl": "https://github.com/gabrieltoth/softclever"
             },
@@ -179,7 +190,12 @@
                 "title": "PC Optimization Service",
                 "description": "Specialized PC optimization service for gaming, focused on maximizing game performance and reducing latency. Includes advanced system configurations, hardware optimization and custom software.",
                 "image": "/projects/pc-optimization.jpg",
-                "tags": ["Windows", "Gaming", "Performance", "Hardware"],
+                "tags": [
+                    "Windows",
+                    "Gaming",
+                    "Performance",
+                    "Hardware"
+                ],
                 "slug": "/pc-optimization"
             }
         ]

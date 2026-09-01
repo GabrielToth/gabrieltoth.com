@@ -2,13 +2,13 @@
     "moneroToggle": {
         "title": "Tarification Monero (XMR)",
         "description": "Activez pour afficher les prix avec 50% de réduction en Monero",
-        "enabled": "💰 Prix Monero (-50%)",
-        "disabled": "💴 Prix réguliers (PIX/Carte)",
+        "enabled": "Prix Monero (-50%)",
+        "disabled": "Prix réguliers (PIX/Carte)",
         "currencySymbol": "€",
         "conversionRate": 6
     },
     "hero": {
-        "badge": "🚀 ViraTrend - Conseil spécialisé",
+        "badge": "ViraTrend - Conseil spécialisé",
         "title": "Transformez votre chaîne en une machine de croissance",
         "subtitle": "Spécialisé en analyse de données, optimisation de contenu et stratégies de monétisation multiplateformes. +2M de vues mensuelles cumulées sur YouTube, Instagram, TikTok, Twitch et d'autres réseaux sociaux.",
         "cta": "Demander un conseil",
@@ -271,7 +271,7 @@
     "whatsapp": {
         "paymentMethodCard": "Card",
         "currencySymbol": "$",
-        "template": "Hello! I'm interested in channel consulting.%0A%0A📋 Chosen plan: {planName}%0A💰 Price: {currency} {price}%0A💳 Payment method: {paymentMethod}%0A%0AName:%0AYouTube Channel:%0AYour main goal:%0AContent type:%0APosting frequency:%0A%0ALooking forward to hearing from you!"
+        "template": "Hello! I'm interested in channel consulting.%0A%0A Chosen plan: {planName}%0A Price: {currency} {price}%0A Payment method: {paymentMethod}%0A%0AName:%0AYouTube Channel:%0AYour main goal:%0AContent type:%0APosting frequency:%0A%0ALooking forward to hearing from you!"
     },
     "submitting": "Submitting...",
     "formSubmitted": {
