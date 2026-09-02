@@ -1,7 +1,7 @@
 /**
  * YouTube Token Encryption Service
  * Provides AES-256 encryption/decryption for OAuth tokens
- * Supports multiple key management strategies (AWS KMS, local file, environment variable)
+ * Supports key management strategies (local file, environment variable)
  * Validates: Requirements 1.4, 8.1
  */
 
@@ -28,7 +28,7 @@ const AUTH_TAG_LENGTH = 16
 /**
  * Key management strategy type
  */
-export type KeyManagementStrategy = "aws-kms" | "local-file" | "environment"
+export type KeyManagementStrategy = "local-file" | "environment"
 
 /**
  * Encryption result containing encrypted data and metadata
@@ -99,7 +99,7 @@ export class TokenEncryptionService {
      * @throws Error if configuration is invalid
      */
     private validateConfig(): void {
-        const { strategy, kmsKeyId, localKeyPath, environmentVariableName } =
+        const { strategy, localKeyPath, environmentVariableName } =
             this.keyManagementConfig
 
         if (!strategy) {
@@ -107,13 +107,6 @@ export class TokenEncryptionService {
         }
 
         switch (strategy) {
-            case "aws-kms":
-                if (!kmsKeyId) {
-                    throw new Error(
-                        "AWS KMS key ID is required for aws-kms strategy"
-                    )
-                }
-                break
             case "local-file":
                 if (!localKeyPath) {
                     throw new Error(
@@ -155,9 +148,7 @@ export class TokenEncryptionService {
                 case "local-file":
                     key = this.getKeyFromLocalFile()
                     break
-                case "aws-kms":
-                    key = await this.getKeyFromAwsKms()
-                    break
+
                 default:
                     throw new Error(
                         `Unknown key management strategy: ${strategy}`
@@ -235,31 +226,6 @@ export class TokenEncryptionService {
         } catch (error) {
             throw new Error(
                 `Failed to read key file: ${error instanceof Error ? error.message : "Unknown error"}`
-            )
-        }
-    }
-
-    /**
-     * Get encryption key from AWS KMS
-     * @returns The encryption key as a Buffer
-     * @throws Error if AWS KMS is not available or key cannot be retrieved
-     */
-    private async getKeyFromAwsKms(): Promise<Buffer> {
-        // Check if key is cached
-        const cacheKey = this.keyManagementConfig.kmsKeyId!
-        if (this.keyCache.has(cacheKey)) {
-            return this.keyCache.get(cacheKey)!
-        }
-
-        try {
-            // AWS KMS integration would go here
-            // For now, throw an error indicating it's not implemented
-            throw new Error(
-                "AWS KMS integration is not yet implemented. Use 'environment' or 'local-file' strategy instead."
-            )
-        } catch (error) {
-            throw new Error(
-                `Failed to retrieve key from AWS KMS: ${error instanceof Error ? error.message : "Unknown error"}`
             )
         }
     }
@@ -483,12 +449,6 @@ export function getTokenEncryptionService(): TokenEncryptionService {
     let config: KeyManagementConfig
 
     switch (strategy) {
-        case "aws-kms":
-            config = {
-                strategy: "aws-kms",
-                kmsKeyId: process.env.AWS_KMS_KEY_ID,
-            }
-            break
         case "local-file":
             config = {
                 strategy: "local-file",

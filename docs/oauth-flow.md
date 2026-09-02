@@ -138,7 +138,6 @@ Three strategies are supported, selected via `TOKEN_ENCRYPTION_STRATEGY`:
 |----------|---------|-------------|
 | `environment` (default) | `TOKEN_ENCRYPTION_KEY` | 64-char hex string (32 bytes). Validated for length and hex format. |
 | `local-file` | `TOKEN_ENCRYPTION_KEY_PATH` | Path to a file containing the hex key. |
-| `aws-kms` | `AWS_KMS_KEY_ID` | Not yet implemented — throws error if used. |
 
 ### Singleton
 
@@ -423,7 +422,6 @@ connection is established. Source: `src/lib/audit/discord-user-audit.ts`.
 |---------|-------------|--------|
 | `OAUTH_STATE_SECRET` | HMAC signing key for OAuth state tokens | 64-character hex |
 | `TOKEN_ENCRYPTION_KEY` | AES-256-GCM encryption key for stored tokens | 64-character hex |
-| `TOKEN_ENCRYPTION_STRATEGY` | Key management strategy (`environment`, `local-file`, `aws-kms`) | Default: `environment` |
 | `TOKEN_ENCRYPTION_KEY_ENV_VAR` | Override env var name for token encryption key | Default: `TOKEN_ENCRYPTION_KEY` |
 | `TOKEN_ENCRYPTION_KEY_PATH` | File path for local-file strategy | File must contain 64-char hex |
 

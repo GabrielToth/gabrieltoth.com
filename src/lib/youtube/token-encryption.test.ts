@@ -248,15 +248,6 @@ describe("TokenEncryptionService", () => {
             )
         })
 
-        it("should validate AWS KMS configuration", () => {
-            expect(() => {
-                new TokenEncryptionService({
-                    strategy: "aws-kms",
-                    kmsKeyId: undefined,
-                })
-            }).toThrow("AWS KMS key ID is required for aws-kms strategy")
-        })
-
         it("should validate local-file configuration", () => {
             expect(() => {
                 new TokenEncryptionService({

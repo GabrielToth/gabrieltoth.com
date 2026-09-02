@@ -70,7 +70,8 @@
         "changes": "Changes ",
         "noChangelog": "No changelog available ",
         "errorChargement": "Erreur lors du chargement du journal des modifications",
-        "viewOnGitHub": "View on GitHub "
+        "viewOnGitHub": "View on GitHub ",
+        "errorLoading": "Échec du chargement du journal des modifications"
     },
     "plugins": {
         "title": "Plugins ",

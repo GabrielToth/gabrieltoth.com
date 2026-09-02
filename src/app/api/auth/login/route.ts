@@ -30,7 +30,7 @@ import { generateRandomHex } from "@/lib/crypto-utils"
 import { validateEmail } from "@/lib/validation"
 import { getAdminClient } from "@/lib/supabase/server"
 import { NextRequest } from "next/server"
-import { v4 as uuidv4 } from "uuid"
+
 
 const supabase = getAdminClient()
 
@@ -114,7 +114,7 @@ const authService = getAuthenticationService()
  */
 export async function POST(request: NextRequest) {
     // Generate request ID for tracing
-    const requestId = uuidv4()
+    const requestId = globalThis.crypto.randomUUID()
 
     try {
         // ============================================================================

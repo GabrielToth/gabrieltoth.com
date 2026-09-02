@@ -10,7 +10,6 @@ The Token Encryption Service provides secure AES-256-GCM encryption and decrypti
 - **Multiple Key Management Strategies**:
   - Environment variable (default)
   - Local key file
-  - AWS KMS (placeholder for future implementation)
 - **Key Caching**: Efficient key retrieval with caching
 - **Key Rotation**: Support for rotating encryption keys
 - **Comprehensive Error Handling**: Detailed error messages for debugging
@@ -106,17 +105,6 @@ const service = new TokenEncryptionService({
 })
 ```
 
-### 3. AWS KMS (Future Implementation)
-
-For production environments, AWS KMS provides secure key management:
-
-```typescript
-const service = new TokenEncryptionService({
-    strategy: "aws-kms",
-    kmsKeyId: "arn:aws:kms:region:account:key/key-id",
-})
-```
-
 ## API Reference
 
 ### TokenEncryptionService
@@ -129,10 +117,9 @@ constructor(config: KeyManagementConfig)
 
 **Parameters:**
 
-- `config.strategy`: Key management strategy ("environment" | "local-file" | "aws-kms")
+- `config.strategy`: Key management strategy ("environment" | "local-file")
 - `config.environmentVariableName`: (for environment strategy) Name of environment variable
 - `config.localKeyPath`: (for local-file strategy) Path to key file
-- `config.kmsKeyId`: (for aws-kms strategy) AWS KMS key ID
 
 #### encrypt(token: string): Promise<EncryptionResult>
 
@@ -270,12 +257,7 @@ TOKEN_ENCRYPTION_KEY=<64-character-hex-string>
 
 ### Production
 
-For production, use AWS KMS:
-
-```bash
-TOKEN_ENCRYPTION_STRATEGY=aws-kms
-AWS_KMS_KEY_ID=arn:aws:kms:region:account:key/key-id
-```
+For production, use a securely generated environment variable.```
 
 ## Security Considerations
 
@@ -390,7 +372,7 @@ const service = getTokenEncryptionService()
 // Generate new key
 const newKey = generateEncryptionKey()
 
-// Store new key in secure location (e.g., AWS KMS, environment variable)
+// Store new key in secure location (e.g., environment variable)
 process.env.TOKEN_ENCRYPTION_KEY = newKey
 
 // Rotate the key

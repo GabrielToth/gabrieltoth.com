@@ -172,6 +172,7 @@ function hasEnglishContent(obj, fileName) {
         "Edit",
         "Delete",
         "Cancel",
+        "Settings",
     ])
 
     const violations = []
