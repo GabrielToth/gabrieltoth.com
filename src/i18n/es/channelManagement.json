@@ -14,15 +14,15 @@
         "cta": "Solicitar Consultoría",
         "stats": [
             {
-                "number": "2M+",
+                "number": "2M+ ",
                 "label": "Vistas mensuales combinadas (todas las plataformas)"
             },
             {
-                "number": "1M+",
+                "number": "1M+ ",
                 "label": "Vistas con menos de 1K subs (récord)"
             },
             {
-                "number": "10+",
+                "number": "10+ ",
                 "label": "Años de experiencia (desde 2013)"
             }
         ]
@@ -128,7 +128,7 @@
             "Analítica & Data Science",
             "Estrategia de Contenido",
             "Monetización",
-            "Growth Hacking",
+            "Growth Hacking ",
             "Optimización de YouTube",
             "Desarrollo de Audiencia"
         ]
@@ -160,13 +160,13 @@
         "subtitle": "Testimonios reales de creadores que transformaron sus canales",
         "items": [
             {
-                "name": "João Silva",
+                "name": "João Silva ",
                 "role": "Creador en YouTube",
                 "content": "Gabriel me ayudó a crecer de 1K a 50K suscriptores en solo 6 meses. ¡Su enfoque basado en datos es increíble!",
                 "rating": 5
             },
             {
-                "name": "Maria Santos",
+                "name": "Maria Santos ",
                 "role": "Creadora de Contenido",
                 "content": "Los insights de analítica cambiaron por completo cómo creo contenido. Ahora sé exactamente lo que quiere mi audiencia.",
                 "rating": 5
@@ -270,11 +270,11 @@
     },
     "breadcrumbs": {
         "services": "Servicios",
-        "channelManagement": "ViraTrend"
+        "channelManagement": "ViraTrend "
     },
     "whatsapp": {
         "paymentMethodCard": "Tarjeta",
-        "currencySymbol": "$",
+        "currencySymbol": "$ ",
         "template": "¡Hola! Estoy interesado en la consultoría de canales.%0A%0A Plan elegido: {planName}%0A Precio: {currency} {price}%0A Método de pago: {paymentMethod}%0A%0ANombre:%0ACanal de YouTube:%0ATu objetivo principal:%0ATipo de contenido:%0AFrecuencia de publicación:%0A%0A¡Espero su contacto!"
     },
     "submitting": "Enviando...",
@@ -287,7 +287,7 @@
         "subtitle": "Completa la información de tu canal para un análisis personalizado",
         "personalInfo": "Información Personal",
         "name": "Nombre completo",
-        "email": "Email",
+        "email": "Email ",
         "channelInfo": "Información del Canal",
         "channelName": "Nombre del canal",
         "channelUrl": "URL del canal (YouTube)",

@@ -1,7 +1,13 @@
 {
     "breadcrumbs": [
-        { "name": "Inicio", "href": "/" },
-        { "name": "Politica de Privacidad", "href": "/privacy-policy" }
+        {
+            "name": "Inicio",
+            "href": "/ "
+        },
+        {
+            "name": "Politica de Privacidad",
+            "href": "/privacy-policy "
+        }
     ],
     "title": "Politica de Privacidad",
     "lastUpdated": "Ultima actualizacion: 23 de julio de 2026",

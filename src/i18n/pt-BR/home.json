@@ -1,7 +1,7 @@
 {
     "hero": {
         "greeting": "Olá, eu sou",
-        "name": "Gabriel Toth Gonçalves",
+        "name": "Gabriel Toth Gonçalves ",
         "title": "Cientista de Dados & Desenvolvedor Full Stack",
         "subtitle": "Especializado em criar soluções digitais inovadoras com tecnologias modernas",
         "cta": "Entre em contato",
@@ -25,63 +25,63 @@
             "dataScience": {
                 "title": "Ciência de Dados",
                 "items": [
-                    "Python",
-                    "SQLAlchemy",
-                    "Google APIs",
-                    "Power BI",
-                    "pytest",
-                    "Pandas",
-                    "Matplotlib",
-                    "Scikit-learn",
-                    "NumPy"
+                    "Python ",
+                    "SQLAlchemy ",
+                    "Google APIs ",
+                    "Power BI ",
+                    "pytest ",
+                    "Pandas ",
+                    "Matplotlib ",
+                    "Scikit-learn ",
+                    "NumPy "
                 ]
             },
             "frontend": {
-                "title": "Frontend",
+                "title": "Frontend ",
                 "items": [
-                    "React",
-                    "Next.js",
-                    "TypeScript",
-                    "Tailwind CSS",
-                    "JavaScript",
-                    "Angular",
-                    "HTML",
-                    "CSS",
-                    "SCSS",
-                    "SASS",
-                    "WordPress"
+                    "React ",
+                    "Next.js ",
+                    "TypeScript ",
+                    "Tailwind CSS ",
+                    "JavaScript ",
+                    "Angular ",
+                    "HTML ",
+                    "CSS ",
+                    "SCSS ",
+                    "SASS ",
+                    "WordPress "
                 ]
             },
             "backend": {
-                "title": "Backend",
+                "title": "Backend ",
                 "items": [
-                    "Node.js",
-                    "Python",
-                    "PostgreSQL",
-                    "Docker",
-                    "Google Cloud",
-                    "REST APIs",
-                    "AWS",
-                    "MySQL",
-                    "Go",
-                    "Java"
+                    "Node.js ",
+                    "Python ",
+                    "PostgreSQL ",
+                    "Docker ",
+                    "Google Cloud ",
+                    "REST APIs ",
+                    "AWS ",
+                    "MySQL ",
+                    "Go ",
+                    "Java "
                 ]
             },
             "tools": {
                 "title": "Ferramentas",
                 "items": [
-                    "Git",
-                    "Docker",
-                    "VS Code",
-                    "Figma",
-                    "Power BI",
-                    "Slack",
-                    "Excel",
-                    "Metabase",
-                    "Jira",
-                    "Notion",
-                    "GitHub",
-                    "GitLab"
+                    "Git ",
+                    "Docker ",
+                    "VS Code ",
+                    "Figma ",
+                    "Power BI ",
+                    "Slack ",
+                    "Excel ",
+                    "Metabase ",
+                    "Jira ",
+                    "Notion ",
+                    "GitHub ",
+                    "GitLab "
                 ]
             }
         },
@@ -97,7 +97,7 @@
         "contactEmail": "contato@gabrieltoth.com",
         "resumeUrl": "/resume/Gabriel_Toth_Curriculum_PT.pdf",
         "getInTouch": "Entre em contato",
-        "email": "Email",
+        "email": "Email ",
         "scheduleCall": "Agendar chamada",
         "downloadResume": "Baixar currículo",
         "followMe": "Me siga",
@@ -125,7 +125,7 @@
         },
         "form": {
             "name": "Seu nome",
-            "email": "Email",
+            "email": "Email ",
             "subject": "Assunto",
             "message": "Mensagem",
             "emailPlaceholder": "seu@email.com",
@@ -146,57 +146,57 @@
         "showLess": "Ver Menos",
         "items": [
             {
-                "title": "Sistema SAT Fiscal - Website",
+                "title": "Sistema SAT Fiscal - Website ",
                 "description": "Website institucional para empresa especializada em soluções fiscais e contábeis. Desenvolvido com foco em apresentar serviços fiscais, gestão tributária e soluções empresariais de forma clara e profissional.",
-                "image": "/projects/sat-fiscal.jpg",
+                "image": "/projects/sat-fiscal.jpg ",
                 "tags": [
-                    "HTML",
-                    "CSS",
-                    "JavaScript",
-                    "SEO",
-                    "Design"
+                    "HTML ",
+                    "CSS ",
+                    "JavaScript ",
+                    "SEO ",
+                    "Design "
                 ],
-                "liveUrl": "https://sistemasatfiscal.com.br",
+                "liveUrl": "https://sistemasatfiscal.com.br ",
                 "featured": true
             },
             {
-                "title": "Softclever - Website",
+                "title": "Softclever - Website ",
                 "description": "Site empresarial desenvolvido em React para empresa de software, com design moderno e responsivo. Implementa seções para serviços, portfólio e contato, utilizando tecnologias como React, CSS moderno e otimizações de SEO.",
-                "image": "/projects/softclever.jpg",
+                "image": "/projects/softclever.jpg ",
                 "tags": [
-                    "React",
-                    "CSS",
-                    "JavaScript",
-                    "SEO"
+                    "React ",
+                    "CSS ",
+                    "JavaScript ",
+                    "SEO "
                 ],
-                "liveUrl": "https://softclever.com.br",
-                "githubUrl": "https://github.com/gabrieltoth/softclever"
+                "liveUrl": "https://softclever.com.br ",
+                "githubUrl": "https://github.com/gabrieltoth/softclever "
             },
             {
                 "title": "Projeto WaveIGL",
                 "description": "Projeto educacional completo incluindo canal do YouTube com mais de 2 milhões de visualizações mensais, sistema de pagamentos integrado para investimentos e gestão de canais. Inclui criação de conteúdo sobre tecnologia, programação e desenvolvimento de jogos.",
-                "image": "/projects/waveigl.jpg",
+                "image": "/projects/waveigl.jpg ",
                 "tags": [
-                    "YouTube",
+                    "YouTube ",
                     "Criação de Conteúdo",
                     "Integração de Pagamentos",
-                    "Next.js",
-                    "Stripe",
-                    "PIX"
+                    "Next.js ",
+                    "Stripe ",
+                    "PIX "
                 ],
-                "slug": "/waveigl-support"
+                "slug": "/waveigl-support "
             },
             {
-                "title": "PC Optimization Service",
+                "title": "PC Optimization Service ",
                 "description": "Serviço especializado de otimização de PCs para gaming, com foco em maximizar performance em jogos e reduzir latência. Inclui configurações avançadas de sistema, otimização de hardware e software personalizado.",
-                "image": "/projects/pc-optimization.jpg",
+                "image": "/projects/pc-optimization.jpg ",
                 "tags": [
-                    "Windows",
-                    "Gaming",
-                    "Performance",
-                    "Hardware"
+                    "Windows ",
+                    "Gaming ",
+                    "Performance ",
+                    "Hardware "
                 ],
-                "slug": "/pc-optimization"
+                "slug": "/pc-optimization "
             }
         ]
     },
@@ -206,24 +206,24 @@
     },
     "structuredData": {
         "profilePage": {
-            "@context": "https://schema.org",
-            "@type": "ProfilePage",
+            "@context": "https://schema.org ",
+            "@type": "ProfilePage ",
             "mainEntity": {
-                "@type": "Person",
-                "name": "Gabriel Toth Gonçalves",
-                "alternateName": "Gabriel Toth",
+                "@type": "Person ",
+                "name": "Gabriel Toth Gonçalves ",
+                "alternateName": "Gabriel Toth ",
                 "description": "Desenvolvedor Full Stack e Cientista de Dados especializado em tecnologias modernas",
-                "url": "https://www.gabrieltoth.com",
-                "image": "https://www.gabrieltoth.com/profile-image.jpg",
+                "url": "https://www.gabrieltoth.com ",
+                "image": "https://www.gabrieltoth.com/profile-image.jpg ",
                 "sameAs": [
-                    "https://github.com/gabrieltoth",
-                    "https://linkedin.com/in/gabriel-toth",
-                    "https://twitter.com/gabrieltoth"
+                    "https://github.com/gabrieltoth ",
+                    "https://linkedin.com/in/gabriel-toth ",
+                    "https://twitter.com/gabrieltoth "
                 ],
                 "jobTitle": "Desenvolvedor Full Stack & Cientista de Dados",
                 "worksFor": {
-                    "@type": "Organization",
-                    "name": "Gabriel Toth Tech"
+                    "@type": "Organization ",
+                    "name": "Gabriel Toth Tech "
                 }
             }
         }
@@ -257,20 +257,20 @@
             "subtitle": "Casos reais de crescimento",
             "cases": [
                 {
-                    "channel": "WaveIGL",
+                    "channel": "WaveIGL ",
                     "description": "Canal de Gaming gerenciado por mim",
                     "metrics": [
                         {
                             "label": "Visualizações mensais",
-                            "value": "2M+"
+                            "value": "2M+ "
                         },
                         {
                             "label": "Crescimento",
-                            "value": "400%"
+                            "value": "400% "
                         },
                         {
                             "label": "Receita",
-                            "value": "5x"
+                            "value": "5x "
                         }
                     ]
                 },
@@ -280,15 +280,15 @@
                     "metrics": [
                         {
                             "label": "Total de visualizações",
-                            "value": "1M+"
+                            "value": "1M+ "
                         },
                         {
                             "label": "Inscritos atuais",
-                            "value": "1.4K+"
+                            "value": "1.4K+ "
                         },
                         {
                             "label": "Views com <1K inscritos",
-                            "value": "1M+"
+                            "value": "1M+ "
                         }
                     ]
                 }
@@ -301,15 +301,15 @@
         },
         "stats": [
             {
-                "value": "2M+",
+                "value": "2M+ ",
                 "label": "Visualizações mensais gerenciadas"
             },
             {
-                "value": "300%",
+                "value": "300% ",
                 "label": "Crescimento médio de clientes"
             },
             {
-                "value": "5+",
+                "value": "5+ ",
                 "label": "Anos de experiência"
             }
         ],
@@ -317,12 +317,12 @@
             "title": "Planos de Consultoria",
             "express": {
                 "name": "Análise Express",
-                "price": "R$ 497",
+                "price": "R$ 497 ",
                 "description": "Auditoria completa com relatório detalhado"
             },
             "complete": {
                 "name": "Consultoria Completa",
-                "price": "R$ 1.497",
+                "price": "R$ 1.497 ",
                 "description": "Estratégia + implementação + acompanhamento",
                 "popular": true
             },

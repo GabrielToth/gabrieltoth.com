@@ -39,27 +39,27 @@
         "description": "Integração com as principais redes sociais",
         "items": [
             {
-                "name": "YouTube",
+                "name": "YouTube ",
                 "description": "Transmissões ao vivo, uploads de vídeos e análises detalhadas"
             },
             {
-                "name": "TikTok",
+                "name": "TikTok ",
                 "description": "Gerenciamento de conteúdo e métricas de engajamento"
             },
             {
-                "name": "Twitter/X",
+                "name": "Twitter/X ",
                 "description": "Tweets, retweets e análise de alcance"
             },
             {
-                "name": "Instagram",
+                "name": "Instagram ",
                 "description": "Posts, stories e métricas de seguidores"
             },
             {
-                "name": "Twitch",
+                "name": "Twitch ",
                 "description": "Transmissões ao vivo e chat em tempo real"
             },
             {
-                "name": "Facebook",
+                "name": "Facebook ",
                 "description": "Vídeos, posts e análise de audiência"
             }
         ]

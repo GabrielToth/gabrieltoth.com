@@ -12,15 +12,15 @@
         "cta": "Jetzt Bewerben",
         "stats": [
             {
-                "number": "50+",
+                "number": "50+ ",
                 "label": "Aktive Editoren"
             },
             {
-                "number": "100+",
+                "number": "100+ ",
                 "label": "Projekte pro Monat"
             },
             {
-                "number": "24/7",
+                "number": "24/7 ",
                 "label": "Team-Support"
             }
         ]
@@ -34,19 +34,19 @@
         "skills": [
             {
                 "name": "Videobearbeitung",
-                "iconName": "Video"
+                "iconName": "Video "
             },
             {
-                "name": "Motion Graphics",
-                "iconName": "Wand2"
+                "name": "Motion Graphics ",
+                "iconName": "Wand2 "
             },
             {
-                "name": "Color Grading",
-                "iconName": "Palette"
+                "name": "Color Grading ",
+                "iconName": "Palette "
             },
             {
-                "name": "Sound Design",
-                "iconName": "Volume2"
+                "name": "Sound Design ",
+                "iconName": "Volume2 "
             }
         ]
     },
@@ -55,24 +55,24 @@
         "subtitle": "Professionelle Software für Qualitätsergebnisse",
         "items": [
             {
-                "name": "Adobe Premiere Pro",
+                "name": "Adobe Premiere Pro ",
                 "description": "Professionelle Videobearbeitung",
-                "iconName": "Video"
+                "iconName": "Video "
             },
             {
-                "name": "After Effects",
+                "name": "After Effects ",
                 "description": "Motion Graphics und VFX",
-                "iconName": "Wand2"
+                "iconName": "Wand2 "
             },
             {
-                "name": "DaVinci Resolve",
+                "name": "DaVinci Resolve ",
                 "description": "Erweiterte Farbkorrektur",
-                "iconName": "Palette"
+                "iconName": "Palette "
             },
             {
-                "name": "Audition",
+                "name": "Audition ",
                 "description": "Professionelle Audiobearbeitung",
-                "iconName": "Volume2"
+                "iconName": "Volume2 "
             }
         ]
     },
@@ -81,36 +81,36 @@
         "subtitle": "Vielfalt verfügbarer Arbeiten",
         "items": [
             {
-                "iconName": "Youtube",
-                "title": "YouTube Videos",
+                "iconName": "Youtube ",
+                "title": "YouTube Videos ",
                 "description": "Komplette Bearbeitung für Content-Ersteller",
                 "features": [
                     "Dynamische Schnitte",
-                    "Thumbnails",
-                    "Intros/Outros",
+                    "Thumbnails ",
+                    "Pünktliche und schnelle Lieferung",
                     "Untertitel"
                 ]
             },
             {
-                "iconName": "Megaphone",
+                "iconName": "Megaphone ",
                 "title": "Werbeinhalte",
                 "description": "Werbe- und kommerzielle Videos",
                 "features": [
                     "Visuelles Skript",
                     "Animationen",
-                    "Branding",
+                    "Branding ",
                     "Call-to-Action"
                 ]
             },
             {
-                "iconName": "Users",
+                "iconName": "Users ",
                 "title": "Soziale Medien",
                 "description": "Inhalte für Instagram, TikTok, etc",
                 "features": [
                     "Vertikales Format",
                     "Trending-Effekte",
-                    "Hashtags",
-                    "Stories"
+                    "Hashtags ",
+                    "Stories "
                 ]
             }
         ]
@@ -122,14 +122,14 @@
             {
                 "rating": 5,
                 "content": "Ich arbeite hier seit 2 Jahren und es ist fantastisch! Vielfältige Projekte, pünktliche Bezahlung und totale Zeitflexibilität.",
-                "name": "Maria Silva",
-                "role": "Senior Editor"
+                "name": "Maria Silva ",
+                "role": "Streamer & Content Creator"
             },
             {
                 "rating": 5,
                 "content": "Die beste Plattform für Freelance-Editoren. Außergewöhnlicher Support und qualitativ hochwertige Kunden.",
-                "name": "João Santos",
-                "role": "Motion Designer"
+                "name": "João Santos ",
+                "role": "Digitaler Content Creator"
             }
         ]
     },
@@ -161,7 +161,7 @@
                 "popular": true
             },
             {
-                "name": "Senior Editor",
+                "name": "Senior Editor ",
                 "basePrice": 200,
                 "description": "Für erfahrene Editoren (3+ Jahre)",
                 "features": [
@@ -179,9 +179,9 @@
         "subtitle": "Was Sie brauchen, um Teil des Teams zu werden",
         "items": [
             {
-                "title": "Hardware",
+                "title": "Hardware ",
                 "description": "Mindestens erforderliche Ausrüstung",
-                "iconName": "Monitor",
+                "iconName": "Monitor ",
                 "features": [
                     "PC mit mindestens 16GB RAM",
                     "Dedizierte Grafikkarte",
@@ -190,11 +190,11 @@
                 ]
             },
             {
-                "title": "Software",
+                "title": "Software ",
                 "description": "Programme, die Sie beherrschen sollten",
-                "iconName": "Code",
+                "iconName": "Code ",
                 "features": [
-                    "Adobe Premiere Pro",
+                    "Adobe Premiere Pro ",
                     "After Effects (wünschenswert)",
                     "Grundlagen Photoshop",
                     "Audio-Grundlagen"
@@ -203,7 +203,7 @@
             {
                 "title": "Erfahrung",
                 "description": "Wissen und Fähigkeiten",
-                "iconName": "Star",
+                "iconName": "Star ",
                 "features": [
                     "Verfügbares Portfolio",
                     "Grundkenntnisse Englisch",
@@ -221,22 +221,22 @@
             {
                 "title": "Totale Flexibilität",
                 "description": "Arbeiten Sie wann und wo Sie wollen",
-                "iconName": "Clock"
+                "iconName": "Clock "
             },
             {
                 "title": "Garantierte Bezahlung",
                 "description": "Immer pünktlich bezahlt, keine Verzögerungen",
-                "iconName": "CreditCard"
+                "iconName": "CreditCard "
             },
             {
                 "title": "Berufliches Wachstum",
                 "description": "Entwickeln Sie Ihre Fähigkeiten kontinuierlich",
-                "iconName": "TrendingUp"
+                "iconName": "TrendingUp "
             },
             {
                 "title": "Dedizierter Support",
                 "description": "Team immer verfügbar, um zu helfen",
-                "iconName": "MessageSquare"
+                "iconName": "MessageSquare "
             }
         ]
     },
@@ -247,34 +247,34 @@
     },
     "structuredData": {
         "jobPosting": {
-            "@context": "https://schema.org",
-            "@type": "JobPosting",
+            "@context": "https://schema.org ",
+            "@type": "JobPosting ",
             "title": "Freelance Videoeditor",
             "description": "Einzigartige Gelegenheit, als Videoeditor zu arbeiten und 90% der AdSense-Einnahmen pro Video zu erhalten",
             "hiringOrganization": {
-                "@type": "Organization",
-                "name": "Gabriel Toth Gonçalves",
-                "sameAs": "https://www.gabrieltoth.com"
+                "@type": "Organization ",
+                "name": "Gabriel Toth Gonçalves ",
+                "sameAs": "https://www.gabrieltoth.com "
             },
-            "datePosted": "2024-12-15",
-            "employmentType": "CONTRACTOR",
+            "datePosted": "2024-12-15 ",
+            "employmentType": "CONTRACTOR ",
             "workHours": "Flexible Arbeitszeiten",
             "jobLocation": {
-                "@type": "Place",
+                "@type": "Place ",
                 "address": {
-                    "@type": "PostalAddress",
-                    "addressCountry": "BR",
-                    "addressRegion": "São Paulo",
-                    "addressLocality": "REMOTE",
-                    "streetAddress": "N/A",
-                    "postalCode": "N/A"
+                    "@type": "PostalAddress ",
+                    "addressCountry": "BR ",
+                    "addressRegion": "São Paulo ",
+                    "addressLocality": "REMOTE ",
+                    "streetAddress": "N/A ",
+                    "postalCode": "N/A "
                 }
             },
             "baseSalary": {
-                "@type": "MonetaryAmount",
-                "currency": "BRL",
+                "@type": "MonetaryAmount ",
+                "currency": "BRL ",
                 "value": {
-                    "@type": "QuantitativeValue",
+                    "@type": "QuantitativeValue ",
                     "unitText": "90% AdSense pro Video",
                     "minValue": 0,
                     "maxValue": 10000
@@ -282,7 +282,7 @@
             },
             "qualifications": "Erfahrung in der Videobearbeitung, Kenntnisse in Schnittsoftware",
             "responsibilities": "Videos für YouTube schneiden, Thumbnails erstellen, für SEO optimieren",
-            "validThrough": "2027-12-31T23:59:59Z"
+            "validThrough": "2027-12-31T23:59:59Z "
         }
     },
     "faqs": [
@@ -323,7 +323,7 @@
         "experience": "Erfahrung",
         "experienceLevel": "Erfahrungsstufe",
         "software": "Bearbeitungssoftware",
-        "portfolio": "Portfolio",
+        "portfolio": "Portfolio ",
         "portfolioUrl": "Portfolio-Link",
         "sampleWork": "Beispielarbeit",
         "workStyle": "Arbeitsstil",
@@ -331,7 +331,7 @@
         "hoursPerWeek": "Stunden pro Woche",
         "preferredContent": "Bevorzugter Inhaltstyp",
         "expectedRate": "Erwarteter Satz ($/Stunde)",
-        "motivation": "Motivation",
+        "motivation": "Motivation ",
         "whyJoin": "Warum möchten Sie beitreten?",
         "submit": "Bewerbung Einreichen"
     },
@@ -350,7 +350,12 @@
         "selectOption": "Auswählen..."
     },
     "options": {
-        "experienceLevel": ["Anfänger", "Fortgeschritten", "Erfahren", "Profi"]
+        "experienceLevel": [
+            "Anfänger",
+            "Fortgeschritten",
+            "Erfahren",
+            "Profi"
+        ]
     },
     "applicationTemplate": "Hallo! Ich möchte mich für die Stelle als Video-Editor bewerben.\n\n*BEWERBUNGSFORMULAR*\n\nVollständiger Name:\nAlter:\nPortfolio (Links):\nBearbeitungserfahrung (Jahre) (nicht erforderlich):\n\n*Software-Kenntnisse:*\n- Premiere Pro: (Grundkenntnisse/Fortgeschritten/Erfahren)\n- After Effects: (Grundkenntnisse/Fortgeschritten/Erfahren)\n- DaVinci Resolve: (Grundkenntnisse/Fortgeschritten/Erfahren)\n- Andere:\n\nIch freue mich auf Ihre Rückmeldung!",
     "seo": {

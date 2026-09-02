@@ -6,7 +6,7 @@
     "companyDescription": "Développeur Full Stack spécialisé en Data Science avec services de conseil pour chaînes, solutions numériques pour projets personnels et professionnels, et services de montage vidéo pour chaînes.",
     "links": {
         "services": {
-            "title": "Services",
+            "title": "Services ",
             "items": {
                 "pcOptimization": "Optimisation PC",
                 "amazonAffiliate": "Affiliation Amazon"
@@ -20,7 +20,7 @@
             }
         },
         "contact": {
-            "title": "Contact",
+            "title": "Contact ",
             "items": {
                 "workAsEditor": "Travailler comme éditeur"
             }

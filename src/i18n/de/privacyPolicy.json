@@ -1,7 +1,13 @@
 {
     "breadcrumbs": [
-        { "name": "Startseite", "href": "/" },
-        { "name": "Datenschutzrichtlinie", "href": "/privacy-policy" }
+        {
+            "name": "Startseite",
+            "href": "/ "
+        },
+        {
+            "name": "Datenschutzrichtlinie",
+            "href": "/privacy-policy "
+        }
     ],
     "title": "Datenschutzrichtlinie",
     "lastUpdated": "Letzte Aktualisierung: 23. Juli 2026",

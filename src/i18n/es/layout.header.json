@@ -11,15 +11,15 @@
     "register": "Registrarse",
     "dashboard": "Panel",
     "servicesDropdown": {
-        "channelManagement": "ViraTrend",
+        "channelManagement": "ViraTrend ",
         "pcOptimization": "Optimización de PC",
         "affiliate": "Afiliados de Amazon"
     },
     "minecraftDropdown": {
-        "modpacks": "Modpacks",
-        "mods": "Mods",
-        "plugins": "Plugins",
+        "modpacks": "Modpacks ",
+        "mods": "Mods ",
+        "plugins": "Plugins ",
         "contributions": "Contribuciones"
     },
-    "minecraft": "Minecraft"
+    "minecraft": "Minecraft "
 }

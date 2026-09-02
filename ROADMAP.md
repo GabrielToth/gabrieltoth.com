@@ -52,10 +52,10 @@
 4. **Owner/Admin Telemetry Dashboard (`/admin/telemetry`):** Comprehensive metrics on user signups, MRR, credit usage, and failed jobs.
 5. **Real-time Live Chat Sentiment Analysis:** AI classification of Twitch/Kick/YouTube unified chat streams.
 6. **Multi-Platform Stream Health Telemetry:** Consolidated WebSocket for drops, bitrate spikes, and encoder issues.
-7. **Automated Subtitle & Shorts Clipper:** Extract highlights from VODs and output vertical 9:16 Shorts with auto-captioning.
+7. **Automated Subtitle & Shorts Clipper (Local OSS Stack):** Extract highlights from VODs and output vertical 9:16 Shorts with auto-captioning using local FFmpeg/Whisper pipeline (never paid services).
 8. **Automated Repost Rule Engine:** Trigger reposting to TikTok/Reels when a YouTube Short crosses X views.
 9. **Single-Sign-On (SSO) Enterprise SAML/OIDC Support:** OAuth2 & OIDC enterprise provider connections.
-10. **Webhook Notification System:** Send Instant Discord/Telegram alerts when stream starts or upload fails.
+10. ~~Webhook Notification System~~ (REMOVED: Discord stream notifications already exist via external bot; Telegram/webhooks not needed — Discord is only used for audit logs.)
 11. **Granular Credit Management & Cost Breakdown:** Real-time credit deduction logger per user operation.
 12. **Automated Thumbnail Generator:** Canvas-based dynamic text overlay for uploaded video thumbnails.
 13. **Multi-Account OAuth Token Auto-Refresher:** Proactive background job refreshing expiring access/refresh tokens.
@@ -100,3 +100,12 @@
 48. **Dynamic Pricing Calculator:** Calculate custom agency pricing based on connected channel counts.
 49. **Live Stream Donation Alerts Integration:** Native alert overlays for Stripe and PayPal tips.
 50. **Platform API Rate Limit Heatmap:** Visual monitoring of user API quota consumption across all platforms.
+
+---
+
+## 🗓️ CURRENT SPRINT (Last updated: 2026-09-01)
+### Active & Pending
+- **#419: i18n untranslated English strings** — Fix 15 files ('en' identical strings) across pt-BR/ES/DE/FR in editors.json, dashboard.json, publish.json, etc.
+- **#420: Dependency Security Audit** — Resolve remaining 7 high Dependabot vulnerabilities (npm audit fix --force for safe deps).
+- **#421: MapLibre/Nominatim Location Search** — Feature for settings (open-source map widget, self-hostable tiles if needed).
+- **#422: Meta Publishing External Solution** — No CNPJ. No Official API. Research & implement the cheapest/only local-supported auto-poster for Main + IG Business via browser automation ONLY. No need for official Meta Developer Portal changes (Phase: Local Chrome Debug Server).

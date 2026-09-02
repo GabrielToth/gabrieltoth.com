@@ -1,24 +1,24 @@
 {
     "navigation": {
-        "minecraft": "Minecraft",
-        "modpacks": "Modpacks",
-        "mods": "Mods"
+        "minecraft": "Minecraft ",
+        "modpacks": "Modpacks ",
+        "mods": "Mods "
     },
     "landing": {
         "title": "Proyectos Minecraft",
         "subtitle": "Modpacks, mods y creación de contenido",
         "description": "Explora mi viaje en Minecraft: desde la creación de modpacks optimizados hasta el desarrollo de mods personalizados y compartir tutoriales de programación.",
         "chooseCategory": "Elige una categoría",
-        "modpacksTitle": "Modpacks",
+        "modpacksTitle": "Modpacks ",
         "modpacksDescription": "Colecciones curadas de modpacks para una jugabilidad mejorada",
-        "modsTitle": "Mods",
+        "modsTitle": "Mods ",
         "modsDescription": "Modificaciones y herramientas personalizadas",
         "journey": {
             "title": "Mi Viaje en Minecraft",
             "myStory": "Mi Historia",
             "storyIntro": "He estado creando contenido de Minecraft y desarrollando mods durante años, combinando mi pasión por los juegos con experiencia en programación.",
             "modpacksPreference": "Preferencia de Modpacks",
-            "hypixelSkyblock": "Hypixel Skyblock",
+            "hypixelSkyblock": "Hypixel Skyblock ",
             "futureGoals": "Objetivos Futuros",
             "contentCreation": "Creación de Contenido",
             "contentCreationText": "Creando tutoriales, guías y mostrando configuraciones de modpacks para ayudar a la comunidad.",
@@ -26,11 +26,11 @@
             "modDevelopmentText": "Construyendo mods y herramientas personalizadas para mejorar la experiencia de Minecraft.",
             "optimization": "Optimización de Rendimiento",
             "optimizationText": "Enfocándome en crear modpacks ligeros y optimizados que funcionan sin problemas en diversos hardwares.",
-            "modpacks": "Modpacks",
+            "modpacks": "Modpacks ",
             "modpacksText": "Creando modpacks ligeros y optimizados que funcionan sin problemas en diversos hardwares.",
-            "mods": "Mods",
+            "mods": "Mods ",
             "modsText": "Construyendo mods y herramientas personalizadas para mejorar la experiencia de Minecraft.",
-            "plugins": "Plugins",
+            "plugins": "Plugins ",
             "pluginsText": "Desarrollando plugins de servidor para una jugabilidad mejorada y características de la comunidad.",
             "contributions": "Contribuciones",
             "contributionsText": "Mis contribuciones a la comunidad de modding de Minecraft"
@@ -45,7 +45,7 @@
         "creators": "Creadores",
         "details": "Detalles",
         "minecraftVersion": "Versión de Minecraft",
-        "modLoader": "Mod Loader",
+        "modLoader": "Mod Loader ",
         "environment": "Entorno",
         "clientSide": "Cliente",
         "serverSide": "Servidor",
@@ -55,16 +55,16 @@
         "donate": "Donar",
         "description": "Descripción",
         "modList": "Lista de Mods",
-        "changelog": "Changelog",
+        "changelog": "Changelog ",
         "searchMods": "Buscar mods...",
-        "modsCount": "{count} mods",
+        "modsCount": "{count} mods ",
         "downloadCount": "{count} descargas",
         "lastUpdated": "Última actualización",
         "created": "Creado",
         "license": "Licencia"
     },
     "changelog": {
-        "title": "Changelog",
+        "title": "Changelog ",
         "version": "Versión",
         "released": "Lanzado",
         "changes": "Cambios",
@@ -73,7 +73,7 @@
         "viewOnGitHub": "Ver en GitHub"
     },
     "plugins": {
-        "title": "Plugins",
+        "title": "Plugins ",
         "subtitle": "Plugins y herramientas de servidor",
         "description": "Plugins y herramientas personalizadas de servidor para una jugabilidad mejorada",
         "comingSoon": "Plugins Próximamente",

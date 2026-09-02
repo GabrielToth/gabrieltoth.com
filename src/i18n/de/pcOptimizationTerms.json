@@ -9,37 +9,37 @@
     "generalTerms": {
         "title": "Allgemeine Optimierungsbedingungen",
         "items": [
-            "1. **Nature of Services**: Services include system adjustments, hardware/software configurations, driver installation, power profile optimization, and specific settings for gaming or work.",
-            "2. **Execution Time**: The complete process may take 2 to 6 hours, depending on initial system settings and specific objectives.",
-            "3. **Remote Access**: Some adjustments may be performed remotely through specialized software, always with prior client authorization.",
-            "4. **Documentation**: All changes made will be documented and provided to the client."
+            "1. **Nature of Services**: Services include system adjustments, hardware/software configurations, driver installation, power profile optimization, and specific settings for gaming or work. ",
+            "2. **Execution Time**: The complete process may take 2 to 6 hours, depending on initial system settings and specific objectives. ",
+            "3. **Remote Access**: Some adjustments may be performed remotely through specialized software, always with prior client authorization. ",
+            "4. **Documentation**: All changes made will be documented and provided to the client. "
         ]
     },
     "warranties": {
         "title": "Garantien und Einschränkungen",
         "items": [
-            "• **Service Warranty**: 30 days for correction of problems directly related to performed optimizations.",
-            "• **Liability Limit**: We are not responsible for pre-existing hardware damage or failures unrelated to performed adjustments.",
-            "• **Compatibility**: Some optimizations may not be compatible with specific software or very old hardware.",
-            "• **Performance**: Performance improvements vary according to available hardware and intended use."
+            "• **Service Warranty**: 30 days for correction of problems directly related to performed optimizations. ",
+            "• **Liability Limit**: We are not responsible for pre-existing hardware damage or failures unrelated to performed adjustments. ",
+            "• **Compatibility**: Some optimizations may not be compatible with specific software or very old hardware. ",
+            "• **Performance**: Performance improvements vary according to available hardware and intended use. "
         ]
     },
     "requirements": {
         "title": "Anforderungen und Verantwortlichkeiten des Kunden",
         "items": [
-            "• **Data Backup**: It is recommended to backup important data before adjustments.",
-            "• **System Information**: Provide accurate information about hardware, installed software, and intended use.",
-            "• **Administrative Access**: Provide administrator access to the system during the process.",
-            "• **Proper Environment**: Ensure virus and malware-free environment before adjustments."
+            "• **Data Backup**: It is recommended to backup important data before adjustments. ",
+            "• **System Information**: Provide accurate information about hardware, installed software, and intended use. ",
+            "• **Administrative Access**: Provide administrator access to the system during the process. ",
+            "• **Proper Environment**: Ensure virus and malware-free environment before adjustments. "
         ]
     },
     "warnings": {
         "title": "Wichtige Hinweise",
         "items": [
-            "**Overclocking**: Overclocking services increase performance but may reduce hardware lifespan.",
-            "**Experimental Settings**: Some advanced settings may require reversal in case of incompatibility.",
-            "**System Updates**: Future Windows updates may revert some optimizations.",
-            "**Old Hardware**: Very old systems may have physical limitations that prevent certain optimizations."
+            "**Overclocking**: Overclocking services increase performance but may reduce hardware lifespan. ",
+            "**Experimental Settings**: Some advanced settings may require reversal in case of incompatibility. ",
+            "**System Updates**: Future Windows updates may revert some optimizations. ",
+            "**Old Hardware**: Very old systems may have physical limitations that prevent certain optimizations. "
         ]
     },
     "payment": {

@@ -19,19 +19,19 @@
         "videoText": "ASSIM É UM PC OTIMIZADO",
         "stats": [
             {
-                "value": "99.9%",
-                "label": "Uptime"
+                "value": "99.9% ",
+                "label": "Uptime "
             },
             {
                 "value": "baixo",
                 "label": "Latência"
             },
             {
-                "value": "20+",
+                "value": "20+ ",
                 "label": "Jogos Otimizados"
             },
             {
-                "value": "5+",
+                "value": "5+ ",
                 "label": "Clientes Satisfeitos"
             }
         ],
@@ -64,7 +64,7 @@
         "subtitle": "Nós ajustamos tudo, você curte a performance",
         "plans": [
             {
-                "name": "Windows Performance Boost",
+                "name": "Windows Performance Boost ",
                 "basePrice": 50,
                 "description": "Windows & Rede prontos para jogar. Limpo, rápido e totalmente otimizado.",
                 "features": [
@@ -112,13 +112,13 @@
         "subtitle": "Você não é o primeiro. Junte-se aos jogadores que já desbloquearam performance de elite.",
         "items": [
             {
-                "name": "ProGamer",
+                "name": "ProGamer ",
                 "role": "Jogador Competitivo",
                 "content": "Meu jogo nunca esteve tão suave! Quase dobrei os frames — incrível.",
                 "rating": 5
             },
             {
-                "name": "StreamerPro",
+                "name": "StreamerPro ",
                 "role": "Criador de Conteúdo",
                 "content": "Finalmente consigo jogar e streamar sem quedas de FPS. A otimização foi perfeita!",
                 "rating": 5
@@ -129,14 +129,14 @@
         "title": "Qualquer Jogo, Sempre",
         "subtitle": "De shooters frenéticos a mundos abertos, sabemos como fazer seu jogo rodar do jeito que você quer.",
         "list": [
-            "Call of Duty",
-            "PUBG",
-            "Marvel Rivals",
-            "Rainbow Six Siege",
-            "Valorant",
-            "Fortnite",
-            "CS2",
-            "Apex Legends"
+            "Call of Duty ",
+            "PUBG ",
+            "Marvel Rivals ",
+            "Rainbow Six Siege ",
+            "Valorant ",
+            "Fortnite ",
+            "CS2 ",
+            "Apex Legends "
         ]
     },
     "guarantee": {

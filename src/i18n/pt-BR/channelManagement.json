@@ -14,15 +14,15 @@
         "cta": "Solicitar Consultoria",
         "stats": [
             {
-                "number": "2M+",
+                "number": "2M+ ",
                 "label": "Views mensais somadas (todas as plataformas)"
             },
             {
-                "number": "1M+",
+                "number": "1M+ ",
                 "label": "Views com menos de 1K subs (recorde)"
             },
             {
-                "number": "10+",
+                "number": "10+ ",
                 "label": "Anos de experiência (desde 2013)"
             }
         ]
@@ -105,13 +105,13 @@
         "subtitle": "Depoimentos reais de criadores que transformaram seus canais",
         "items": [
             {
-                "name": "João Silva",
+                "name": "João Silva ",
                 "role": "Criador do YouTube",
                 "content": "Gabriel me ajudou a crescer de 1K para 50K inscritos em apenas 6 meses. Sua abordagem baseada em dados é incrível!",
                 "rating": 5
             },
             {
-                "name": "Maria Santos",
+                "name": "Maria Santos ",
                 "role": "Criadora de Conteúdo",
                 "content": "Os insights de analytics mudaram completamente como eu crio conteúdo. Agora sei exatamente o que minha audiência quer.",
                 "rating": 5
@@ -204,10 +204,10 @@
         "experience": "Meu trabalho envolve a integração de dados do Google Analytics com métricas de redes sociais (YouTube, Instagram, X, Telegram) e análise de conversões Stripe usando Python, PostgreSQL, SQLAlchemy e Docker. Também desenvolvo soluções web empresariais, tendo criado sites como softclever.com.br (React) e sistemasatfiscal.com.br (Angular).",
         "passion": "Além da análise de dados, tenho um case impressionante: alcancei mais de 1 milhão de views em um canal antes mesmo de ter 1000 inscritos. Gerencio canais desde 2013 e uso machine learning para otimizar campanhas em múltiplas plataformas.",
         "skills": [
-            "Analytics & Data Science",
+            "Analytics & Data Science ",
             "Estratégia de Conteúdo",
             "Monetização",
-            "Growth Hacking",
+            "Growth Hacking ",
             "Otimização YouTube",
             "Desenvolvimento de Audiência"
         ]
@@ -270,7 +270,7 @@
     },
     "breadcrumbs": {
         "services": "Serviços",
-        "channelManagement": "ViraTrend"
+        "channelManagement": "ViraTrend "
     },
     "whatsapp": {
         "paymentMethodCard": "PIX/Cartão",
@@ -287,7 +287,7 @@
         "subtitle": "Preencha as informações do seu canal para uma análise personalizada",
         "personalInfo": "Informações Pessoais",
         "name": "Nome completo",
-        "email": "Email",
+        "email": "Email ",
         "channelInfo": "Informações do Canal",
         "channelName": "Nome do canal",
         "channelUrl": "URL do canal (YouTube)",
@@ -307,13 +307,13 @@
         "email": "seu@email.com",
         "channelName": "Nome do seu canal",
         "channelUrl": "https://youtube.com/@seucanal",
-        "subscribers": "Ex: 10000",
-        "monthlyViews": "Ex: 100000",
-        "currentRevenue": "Ex: 5000",
+        "subscribers": "Ex: 10000 ",
+        "monthlyViews": "Ex: 100000 ",
+        "currentRevenue": "Ex: 5000 ",
         "mainGoal": "Ex: Aumentar monetização, crescer audiência...",
         "biggestChallenge": "Ex: Baixo engajamento, views estagnadas...",
         "expectedGrowth": "Ex: 200% em 6 meses",
-        "budget": "Ex: 1500",
+        "budget": "Ex: 1500 ",
         "additionalInfo": "Conte mais sobre seu canal e necessidades...",
         "selectOption": "Selecionar..."
     }

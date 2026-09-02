@@ -2,24 +2,24 @@
     "home": "Accueil",
     "about": "À Propos",
     "projects": "Projets",
-    "services": "Services",
+    "services": "Services ",
     "channels": "Chaînes",
-    "contact": "Contact",
+    "contact": "Contact ",
     "language": "Langue",
     "editors": "Éditeurs",
     "login": "Connexion",
     "register": "S'inscrire",
     "dashboard": "Tableau de bord",
     "servicesDropdown": {
-        "channelManagement": "ViraTrend",
+        "channelManagement": "ViraTrend ",
         "pcOptimization": "Optimisation PC",
         "affiliate": "Affiliation Amazon"
     },
     "minecraftDropdown": {
-        "modpacks": "Modpacks",
-        "mods": "Mods",
-        "plugins": "Plugins",
-        "contributions": "Contributions"
+        "modpacks": "Modpacks ",
+        "mods": "Mods ",
+        "plugins": "Plugins ",
+        "contributions": "Contributions "
     },
-    "minecraft": "Minecraft"
+    "minecraft": "Minecraft "
 }

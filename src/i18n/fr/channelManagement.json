@@ -14,15 +14,15 @@
         "cta": "Demander un conseil",
         "stats": [
             {
-                "number": "2M+",
+                "number": "2M+ ",
                 "label": "Vues mensuelles cumulées (toutes plateformes)"
             },
             {
-                "number": "1M+",
+                "number": "1M+ ",
                 "label": "Vues avec moins de 1K abonnés (record)"
             },
             {
-                "number": "10+",
+                "number": "10+ ",
                 "label": "Années d'expérience (depuis 2013)"
             }
         ]
@@ -47,270 +47,270 @@
         ]
     },
     "services": {
-        "title": "Our Services",
-        "subtitle": "Complete solutions for every stage of your growth",
+        "title": "Our Services ",
+        "subtitle": "Les services que je propose",
         "items": [
             {
-                "title": "Analytics & Diagnosis",
-                "description": "Complete analysis of current performance and opportunity identification",
+                "title": "Consultation Gratuite",
+                "description": "Analyse initiale de votre chaîne et recommandations.",
                 "features": [
-                    "Complete channel audit",
-                    "Competition analysis",
-                    "Trend identification",
-                    "Detailed report"
+                    "Complete channel audit ",
+                    "Competition analysis ",
+                    "Trend identification ",
+                    "Detailed report "
                 ],
                 "price": 350
             },
             {
-                "title": "Content Strategy",
-                "description": "Strategic content planning based on data",
+                "title": "Content Strategy ",
+                "description": "Strategic content planning based on data ",
                 "features": [
-                    "Editorial calendar",
-                    "Content ideas",
-                    "Title optimization",
-                    "Engagement strategies"
+                    "Editorial calendar ",
+                    "Content ideas ",
+                    "Title optimization ",
+                    "Engagement strategies "
                 ],
                 "price": 500
             },
             {
-                "title": "Monetization Optimization",
-                "description": "Revenue maximization through multiple sources",
+                "title": "Monetization Optimization ",
+                "description": "Revenue maximization through multiple sources ",
                 "features": [
-                    "Revenue analysis",
-                    "Monetization strategies",
-                    "CPM optimization",
-                    "Income diversification"
+                    "Revenue analysis ",
+                    "Monetization strategies ",
+                    "CPM optimization ",
+                    "Income diversification "
                 ],
                 "price": 650
             },
             {
-                "title": "Complete Consulting",
-                "description": "Complete package with all services included",
+                "title": "Complete Consulting ",
+                "description": "Complete package with all services included ",
                 "features": [
-                    "All previous services",
-                    "Monthly follow-up",
-                    "Priority support",
-                    "Guided implementation"
+                    "Consultation préalable",
+                    "Monthly follow-up ",
+                    "Priority support ",
+                    "Guided implementation "
                 ],
                 "price": 1200
             }
         ]
     },
     "testimonials": {
-        "title": "What Our Clients Say",
-        "subtitle": "Real testimonials from creators who transformed their channels",
+        "title": "What Our Clients Say ",
+        "subtitle": "Real testimonials from creators who transformed their channels ",
         "items": [
             {
-                "name": "João Silva",
-                "role": "YouTube Creator",
-                "content": "Gabriel helped me grow from 1K to 50K subscribers in just 6 months. His data-driven approach is incredible!",
+                "name": "João Silva ",
+                "role": "YouTube Creator ",
+                "content": "Gabriel helped me grow from 1K to 50K subscribers in just 6 months. His data-driven approach is incredible! ",
                 "rating": 5
             },
             {
-                "name": "Maria Santos",
-                "role": "Content Creator",
-                "content": "The analytics insights completely changed how I create content. Now I know exactly what my audience wants.",
+                "name": "Maria Santos ",
+                "role": "Content Creator ",
+                "content": "The analytics insights completely changed how I create content. Now I know exactly what my audience wants. ",
                 "rating": 5
             }
         ]
     },
     "pricing": {
-        "title": "Choose Your Plan",
-        "subtitle": "Investment that pays for itself",
-        "cta": "Hire Now",
-        "mostPopular": "Most Popular",
+        "title": "Choose Your Plan ",
+        "subtitle": "Investment that pays for itself ",
+        "cta": "Hire Now ",
+        "mostPopular": "Most Popular ",
         "features": {
-            "analytics": "Analytics & Diagnosis",
-            "strategy": "Content Strategy",
-            "monetization": "Monetization Optimization",
-            "complete": "Complete Consulting"
+            "analytics": "Analytics & Diagnosis ",
+            "strategy": "Content Strategy ",
+            "monetization": "Monetization Optimization ",
+            "complete": "Complete Consulting "
         },
         "plans": [
             {
-                "name": "Express Analysis",
+                "name": "Express Analysis ",
                 "basePrice": 497,
-                "description": "Complete audit with detailed report",
+                "description": "Complete audit with detailed report ",
                 "features": [
-                    "Analysis of last 3 months",
-                    "20+ pages report",
-                    "1h presentation call",
-                    "Prioritized action list",
-                    "Video editing included: up to 300 minutes/month"
+                    "Analysis of last 3 months ",
+                    "20+ pages report ",
+                    "1h presentation call ",
+                    "Prioritized action list ",
+                    "Video editing included: up to 300 minutes/month "
                 ],
                 "popular": false,
-                "editingNote": "Professional video editing to maximize engagement"
+                "editingNote": "Professional video editing to maximize engagement "
             },
             {
-                "name": "Complete Strategy",
+                "name": "Complete Strategy ",
                 "basePrice": 997,
-                "description": "Full strategy with implementation support",
+                "description": "Full strategy with implementation support ",
                 "features": [
-                    "Everything from Express Analysis",
-                    "Data-driven content strategy",
-                    "Monthly optimization sessions",
-                    "Direct WhatsApp support",
-                    "Video editing included: up to 600 minutes/month"
+                    "Everything from Express Analysis ",
+                    "Data-driven content strategy ",
+                    "Monthly optimization sessions ",
+                    "Direct WhatsApp support ",
+                    "Video editing included: up to 600 minutes/month "
                 ],
                 "popular": true,
-                "editingNote": "Priority editing with faster turnaround"
+                "editingNote": "Priority editing with faster turnaround "
             },
             {
-                "name": "Growth Partnership",
+                "name": "Growth Partnership ",
                 "basePrice": 1997,
-                "description": "Full management and optimization",
+                "description": "Full management and optimization ",
                 "features": [
-                    "Everything from Complete Strategy",
-                    "Channel management",
-                    "Content calendar planning",
-                    "Community management",
-                    "Video editing included: unlimited"
+                    "Everything from Complete Strategy ",
+                    "Channel management ",
+                    "Content calendar planning ",
+                    "Community management ",
+                    "Video editing included: unlimited "
                 ],
                 "popular": false,
-                "editingNote": "Full production support with dedicated editor"
+                "editingNote": "Full production support with dedicated editor "
             }
         ],
-        "note": "All plans include professional video editing services. Editing capacity varies by plan and can be adjusted to your needs."
+        "note": "All plans include professional video editing services. Editing capacity varies by plan and can be adjusted to your needs. "
     },
     "editorCta": {
-        "title": "Ready to Accelerate Your Growth?",
-        "subtitle": "Contact us via WhatsApp to align expectations",
-        "more": "Learn more",
-        "workAsEditor": "Work as Editor"
+        "title": "Ready to Accelerate Your Growth? ",
+        "subtitle": "Contact us via WhatsApp to align expectations ",
+        "more": "Learn more ",
+        "workAsEditor": "Work as Editor "
     },
     "faq": {
-        "title": "Frequently Asked Questions",
-        "subtitle": "Clear your main doubts about our consulting",
+        "title": "Frequently Asked Questions ",
+        "subtitle": "Clear your main doubts about our consulting ",
         "items": [
             {
-                "question": "How soon do I see results?",
-                "answer": "First insights appear immediately after analysis. Practical growth results start appearing between 30-60 days with consistent strategy application."
+                "question": "How soon do I see results? ",
+                "answer": "First insights appear immediately after analysis. Practical growth results start appearing between 30-60 days with consistent strategy application. "
             },
             {
-                "question": "Does it work for any niche?",
-                "answer": "Yes! Our methodology is adaptable to all niches. We've worked with gaming, lifestyle, education, tech, entertainment and many others."
+                "question": "Does it work for any niche? ",
+                "answer": "Yes! Our methodology is adaptable to all niches. We've worked with gaming, lifestyle, education, tech, entertainment and many others. "
             },
             {
-                "question": "Do I need many subscribers?",
-                "answer": "No! We work from beginner channels to creators with millions of followers. Our strategies are adapted for each growth stage."
+                "question": "Do I need many subscribers? ",
+                "answer": "No! We work from beginner channels to creators with millions of followers. Our strategies are adapted for each growth stage. "
             },
             {
-                "question": "Is support included?",
-                "answer": "Yes, all plans include support during implementation. The Complete plan includes monthly follow-up."
+                "question": "Is support included? ",
+                "answer": "Yes, all plans include support during implementation. The Complete plan includes monthly follow-up. "
             }
         ]
     },
     "personalAbout": {
         "title": "À propos Me",
-        "description": "Data Scientist & Full Stack Developer focused on digital growth",
-        "intro": "I'm Gabriel Toth Gonçalves, a senior data scientist and Full Stack developer from Brazil. With a Computer Science degree and specialization in Data Science, I currently work on the social-analytics-engine project, performing advanced digital campaign analysis and conversion metrics.",
-        "experience": "My work involves integrating Google Analytics data with social media metrics (YouTube, Instagram, X, Telegram) and Stripe conversion analysis using Python, PostgreSQL, SQLAlchemy, and Docker. I also develop enterprise web solutions, having created sites like softclever.com.br (React) and sistemasatfiscal.com.br (Angular).",
-        "passion": "Beyond data analysis, I have an impressive case: I reached over 1 million views on a channel that still had less than 1000 subscribers. I've been managing channels since 2013 and use machine learning to optimize campaigns across multiple platforms.",
+        "description": "Data Scientist & Full Stack Developer focused on digital growth ",
+        "intro": "I'm Gabriel Toth Gonçalves, a senior data scientist and Full Stack developer from Brazil. With a Computer Science degree and specialization in Data Science, I currently work on the social-analytics-engine project, performing advanced digital campaign analysis and conversion metrics. ",
+        "experience": "My work involves integrating Google Analytics data with social media metrics (YouTube, Instagram, X, Telegram) and Stripe conversion analysis using Python, PostgreSQL, SQLAlchemy, and Docker. I also develop enterprise web solutions, having created sites like softclever.com.br (React) and sistemasatfiscal.com.br (Angular). ",
+        "passion": "Beyond data analysis, I have an impressive case: I reached over 1 million views on a channel that still had less than 1000 subscribers. I've been managing channels since 2013 and use machine learning to optimize campaigns across multiple platforms. ",
         "skills": [
-            "Analytics & Data Science",
-            "Content Strategy",
-            "Monetization",
-            "Growth Hacking",
-            "YouTube Optimization",
-            "Audience Development"
+            "Analytics & Data Science ",
+            "Content Strategy ",
+            "Monetization ",
+            "Growth Hacking ",
+            "YouTube Optimization ",
+            "Audience Development "
         ]
     },
     "problems": {
-        "title": "Your Growth Challenges",
-        "subtitle": "Recognize any of these problems?",
+        "title": "Your Growth Challenges ",
+        "subtitle": "Recognize any of these problems? ",
         "items": [
             {
-                "title": "Stagnant Growth",
-                "description": "Your channel stopped growing and you don't know why"
+                "title": "Stagnant Growth ",
+                "description": "Your channel stopped growing and you don't know why "
             },
             {
-                "title": "Confusing Analytics",
-                "description": "Lots of data, but no clear direction on what to do"
+                "title": "Confusing Analytics ",
+                "description": "Lots of data, but no clear direction on what to do "
             },
             {
-                "title": "Low Monetization",
-                "description": "Revenue doesn't match the number of views"
+                "title": "Low Monetization ",
+                "description": "Revenue doesn't match the number of views "
             },
             {
-                "title": "Unfocused Content",
-                "description": "Creating content without a clear growth strategy"
+                "title": "Unfocused Content ",
+                "description": "Creating content without a clear growth strategy "
             }
         ]
     },
     "results": {
-        "title": "Real Results from Our Consultations",
-        "subtitle": "Real cases and achievements over 10+ years of experience",
+        "title": "Real Results from Our Consultations ",
+        "subtitle": "Real cases and achievements over 10+ years of experience ",
         "items": [
             {
-                "name": "Gabriel Toth (old channel) - @oprimeirogabrieltoth",
-                "role": "Old channel - Extraordinary result",
-                "content": "One of my most impressive cases: I achieved over 1 million views on a channel that still had less than 1000 subscribers. This demonstrates my ability to create viral content and deeply understand platform algorithms.",
+                "name": "Gabriel Toth (old channel) - @oprimeirogabrieltoth ",
+                "role": "Old channel - Extraordinary result ",
+                "content": "One of my most impressive cases: I achieved over 1 million views on a channel that still had less than 1000 subscribers. This demonstrates my ability to create viral content and deeply understand platform algorithms. ",
                 "rating": 5
             },
             {
-                "name": "Gabriel Toth (current channel) - @ogabrieltoth",
-                "role": "Current channel - 100K views prediction in July",
-                "content": "Putting into practice the multi-platform content strategy, I'm showing in practice that growth is possible for everyone.",
+                "name": "Gabriel Toth (current channel) - @ogabrieltoth ",
+                "role": "Current channel - 100K views prediction in July ",
+                "content": "Putting into practice the multi-platform content strategy, I'm showing in practice that growth is possible for everyone. ",
                 "rating": 5
             }
         ]
     },
     "cta": {
-        "title": "Ready to Transform Your Channel?",
-        "subtitle": "Join the creators who are already growing with our strategies",
-        "button": "Start Now",
-        "whatsapp": "Chat on WhatsApp"
+        "title": "Ready to Transform Your Channel? ",
+        "subtitle": "Join the creators who are already growing with our strategies ",
+        "button": "Start Now ",
+        "whatsapp": "Chat on WhatsApp "
     },
     "seo": {
-        "title": "YouTube Consulting & Channel Management | Social Media Manager",
-        "description": "Specialized consulting for YouTube, Instagram, TikTok and Twitch growth. Channel management, analytics and monetization strategies with Gabriel Toth."
+        "title": "YouTube Consulting & Channel Management | Social Media Manager ",
+        "description": "Specialized consulting for YouTube, Instagram, TikTok and Twitch growth. Channel management, analytics and monetization strategies with Gabriel Toth. "
     },
     "breadcrumbs": {
-        "services": "Services",
-        "channelManagement": "ViraTrend"
+        "services": "Services ",
+        "channelManagement": "ViraTrend "
     },
     "whatsapp": {
-        "paymentMethodCard": "Card",
-        "currencySymbol": "$",
-        "template": "Hello! I'm interested in channel consulting.%0A%0A Chosen plan: {planName}%0A Price: {currency} {price}%0A Payment method: {paymentMethod}%0A%0AName:%0AYouTube Channel:%0AYour main goal:%0AContent type:%0APosting frequency:%0A%0ALooking forward to hearing from you!"
+        "paymentMethodCard": "Card ",
+        "currencySymbol": "$ ",
+        "template": "Hello! I'm interested in channel consulting.%0A%0A Chosen plan: {planName}%0A Price: {currency} {price}%0A Payment method: {paymentMethod}%0A%0AName:%0AYouTube Channel:%0AYour main goal:%0AContent type:%0APosting frequency:%0A%0ALooking forward to hearing from you! "
     },
-    "submitting": "Submitting...",
+    "submitting": "Submitting... ",
     "formSubmitted": {
-        "title": "Application Submitted!",
-        "description": "Thank you! We'll review your application and get back to you soon."
+        "title": "Application Submitted! ",
+        "description": "Nous vous répondrons sous peu. Retournez à la page d'accueil."
     },
     "form": {
-        "title": "Request Channel Consulting",
-        "subtitle": "Fill in your channel information for a personalized analysis",
-        "personalInfo": "Personal Information",
-        "name": "Full name",
+        "title": "Request Channel Consulting ",
+        "subtitle": "Fill in your channel information for a personalized analysis ",
+        "personalInfo": "Personal Information ",
+        "name": "Full name ",
         "email": "E-mail",
-        "channelInfo": "Channel Information",
-        "channelName": "Channel name",
-        "channelUrl": "Channel URL (YouTube)",
-        "subscribers": "Number of subscribers",
-        "monthlyViews": "Monthly views",
-        "currentRevenue": "Current monthly revenue ($)",
-        "goals": "Goals and Challenges",
-        "mainGoal": "Main goal",
-        "biggestChallenge": "Biggest current challenge",
-        "expectedGrowth": "Expected growth (%)",
-        "budget": "Consulting budget ($)",
-        "additionalInfo": "Additional information",
-        "submit": "Request Consulting"
+        "channelInfo": "Channel Information ",
+        "channelName": "Channel name ",
+        "channelUrl": "Channel URL (YouTube) ",
+        "subscribers": "Number of subscribers ",
+        "monthlyViews": "Monthly views ",
+        "currentRevenue": "Current monthly revenue ($) ",
+        "goals": "Goals and Challenges ",
+        "mainGoal": "Main goal ",
+        "biggestChallenge": "Biggest current challenge ",
+        "expectedGrowth": "Expected growth (%) ",
+        "budget": "Consulting budget ($) ",
+        "additionalInfo": "Additional information ",
+        "submit": "Request Consulting "
     },
     "placeholders": {
-        "name": "Your full name",
-        "email": "your@email.com",
-        "channelName": "Your channel name",
-        "channelUrl": "https://youtube.com/@yourchannel",
-        "subscribers": "Ex: 10000",
-        "monthlyViews": "Ex: 100000",
-        "currentRevenue": "Ex: 5000",
-        "mainGoal": "Ex: Increase monetization, grow audience...",
-        "biggestChallenge": "Ex: Low engagement, stagnant views...",
-        "expectedGrowth": "Ex: 200% in 6 months",
-        "budget": "Ex: 1500",
-        "additionalInfo": "Tell us more about your channel and needs...",
-        "selectOption": "Select..."
+        "name": "Your full name ",
+        "email": "your@email.com ",
+        "channelName": "Your channel name ",
+        "channelUrl": "https://youtube.com/@yourchannel ",
+        "subscribers": "Ex: 10000 ",
+        "monthlyViews": "Ex: 100000 ",
+        "currentRevenue": "Ex: 5000 ",
+        "mainGoal": "Ex: Increase monetization, grow audience... ",
+        "biggestChallenge": "Ex: Low engagement, stagnant views... ",
+        "expectedGrowth": "Ex: 200% in 6 months ",
+        "budget": "Ex: 1500 ",
+        "additionalInfo": "Tell us more about your channel and needs... ",
+        "selectOption": "Select... "
     }
 }

@@ -9,17 +9,17 @@
     "editors": "Editoren",
     "login": "Anmelden",
     "register": "Registrieren",
-    "dashboard": "Dashboard",
+    "dashboard": "Dashboard ",
     "servicesDropdown": {
-        "channelManagement": "ViraTrend",
+        "channelManagement": "ViraTrend ",
         "pcOptimization": "PC-Optimierung",
         "affiliate": "Amazon-Partner"
     },
     "minecraftDropdown": {
-        "modpacks": "Modpacks",
-        "mods": "Mods",
-        "plugins": "Plugins",
+        "modpacks": "Modpacks ",
+        "mods": "Mods ",
+        "plugins": "Plugins ",
         "contributions": "Beiträge"
     },
-    "minecraft": "Minecraft"
+    "minecraft": "Minecraft "
 }

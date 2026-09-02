@@ -23,140 +23,140 @@
         ]
     },
     "platforms": {
-        "title": "Supported Platforms",
-        "description": "Integration with major social networks",
+        "title": "Plateformes Supportées",
+        "description": "Connectez et gérez vos comptes sur plusieurs réseaux en un seul endroit.",
         "items": [
             {
-                "name": "YouTube",
+                "name": "YouTube ",
                 "description": "En direct streams, video uploads and detailed analytics"
             },
             {
-                "name": "TikTok",
-                "description": "Content management and engagement metrics"
+                "name": "TikTok ",
+                "description": "Instagram, Facebook, Threads"
             },
             {
-                "name": "Twitter/X",
-                "description": "Tweets, retweets and reach analysis"
+                "name": "Twitter/X ",
+                "description": "Tweets, retweets and reach analysis "
             },
             {
-                "name": "Instagram",
-                "description": "Posts, stories and follower metrics"
+                "name": "Instagram ",
+                "description": "Posts, stories and follower metrics "
             },
             {
-                "name": "Twitch",
+                "name": "Twitch ",
                 "description": "En direct broadcasts and real-time chat"
             },
             {
-                "name": "Facebook",
-                "description": "Videos, posts and audience analysis"
+                "name": "Facebook ",
+                "description": "Videos, posts and audience analysis "
             }
         ]
     },
     "benefits": {
-        "title": "Why Use Our Platform",
+        "title": "Why Use Our Platform ",
         "items": [
             {
                 "title": "Enregistrer Time",
-                "description": "No more switching between multiple platforms. Manage everything in one place."
+                "description": "No more switching between multiple platforms. Manage everything in one place. "
             },
             {
-                "title": "Increase Productivity",
-                "description": "Automate repetitive tasks and focus on what really matters: creating quality content."
+                "title": "Increase Productivity ",
+                "description": "Automate repetitive tasks and focus on what really matters: creating quality content. "
             },
             {
                 "title": "Better Analyses",
-                "description": "See consolidated data from all platforms to make more informed decisions."
+                "description": "See consolidated data from all platforms to make more informed decisions. "
             },
             {
-                "title": "Accelerated Growth",
-                "description": "With the right tools, you can grow faster across all platforms."
+                "title": "Accelerated Growth ",
+                "description": "With the right tools, you can grow faster across all platforms. "
             },
             {
-                "title": "Dedicated Support",
-                "description": "Our team is always ready to help you maximize the platform's potential."
+                "title": "Dedicated Support ",
+                "description": "Our team is always ready to help you maximize the platform's potential. "
             },
             {
-                "title": "Guaranteed Security",
-                "description": "Your data is protected with industry best practices for security."
+                "title": "Guaranteed Security ",
+                "description": "Your data is protected with industry best practices for security. "
             }
         ]
     },
     "pricing": {
-        "title": "Pricing Plans",
-        "description": "Choose the perfect plan for your needs",
+        "title": "Pricing Plans ",
+        "description": "Choose the perfect plan for your needs ",
         "plans": [
             {
-                "name": "Starter",
-                "price": "Free",
-                "description": "Perfect to get started",
+                "name": "Starter ",
+                "price": "Free ",
+                "description": "Perfect to get started ",
                 "features": [
-                    "Up to 2 connected platforms",
-                    "Basic dashboard",
+                    "Up to 2 connected platforms ",
+                    "Basic dashboard ",
                     "E-mail support",
-                    "Limited analytics"
+                    "Limited analytics "
                 ]
             },
             {
-                "name": "Professional",
-                "price": "$29/month",
-                "description": "For growing creators",
+                "name": "Professional ",
+                "price": "$29/month ",
+                "description": "For growing creators ",
                 "features": [
-                    "Up to 6 connected platforms",
-                    "Complete dashboard",
-                    "Priority support",
-                    "Detailed analytics",
-                    "Batch upload"
+                    "Up to 6 connected platforms ",
+                    "Complete dashboard ",
+                    "Priority support ",
+                    "Detailed analytics ",
+                    "Batch upload "
                 ],
                 "popular": true
             },
             {
-                "name": "Enterprise",
-                "price": "Custom",
-                "description": "For large creators",
+                "name": "Enterprise ",
+                "price": "Sur mesure",
+                "description": "For large creators ",
                 "features": [
-                    "Unlimited platforms",
-                    "Custom dashboard",
-                    "24/7 support",
-                    "Advanced analytics",
-                    "API integration",
-                    "Team manager"
+                    "Unlimited platforms ",
+                    "Custom dashboard ",
+                    "24/7 support ",
+                    "Advanced analytics ",
+                    "API integration ",
+                    "Team manager "
                 ]
             }
         ],
-        "popularTag": "Most Popular"
+        "popularTag": "Most Popular "
     },
     "cta": {
-        "title": "Ready to Revolutionize Your Content?",
-        "subtitle": "Join thousands of creators already using our platform",
-        "button": "Start Free"
+        "title": "Ready to Revolutionize Your Content? ",
+        "subtitle": "Join thousands of creators already using our platform ",
+        "button": "Start Free "
     },
-    "pricingLabel": "Card",
+    "pricingLabel": "Card ",
     "faq": {
-        "title": "Frequently Asked Questions",
+        "title": "Frequently Asked Questions ",
         "items": [
             {
-                "question": "How do I connect my social networks?",
+                "question": "How do I connect my social networks? ",
                 "answer": "It's simple! After creating your account, go to Paramètres > Connect Platforms and follow the authentication instructions for each social network."
             },
             {
-                "question": "Is my data safe?",
-                "answer": "Yes! We use end-to-end encryption and follow industry best practices for security. We never store your passwords."
+                "question": "Is my data safe? ",
+                "answer": "Yes! We use end-to-end encryption and follow industry best practices for security. We never store your passwords. "
             },
             {
-                "question": "Can I upload videos to multiple platforms at the same time?",
-                "answer": "Yes! With our batch upload feature, you can send videos to multiple platforms simultaneously with custom metadata."
+                "question": "Can I upload videos to multiple platforms at the same time? ",
+                "answer": "Yes! With our batch upload feature, you can send videos to multiple platforms simultaneously with custom metadata. "
             },
             {
-                "question": "What is the support response time?",
-                "answer": "Our support responds within 24 hours for Professional plans and within 1 hour for Enterprise plans."
+                "question": "What is the support response time? ",
+                "answer": "Our support responds within 24 hours for Professional plans and within 1 hour for Enterprise plans. "
             },
             {
-                "question": "Can I cancel my subscription anytime?",
-                "answer": "Yes! You can cancel your subscription anytime without penalties. Your data will remain accessible for 30 days."
+                "question": "Can I cancel my subscription anytime? ",
+                "answer": "Yes! You can cancel your subscription anytime without penalties. Your data will remain accessible for 30 days. "
             },
             {
-                "question": "Do you offer integration with external tools?",
-                "answer": "Yes! We offer API and integrations with popular tools like Zapier, Make and other automation platforms."
+                "question": "Do you offer integration with external tools? ",
+                "answer": "Yes! We offer API and integrations with popular tools like Zapier, Make and other automation platforms. "
             }
         ]
     }

@@ -2,8 +2,14 @@
     "title": "Nutzungsbedingungen",
     "lastUpdated": "Letzte Aktualisierung: 23. Juli 2026",
     "breadcrumbs": [
-        { "name": "Startseite", "href": "/" },
-        { "name": "Nutzungsbedingungen", "href": "/terms-of-service" }
+        {
+            "name": "Startseite",
+            "href": "/ "
+        },
+        {
+            "name": "Nutzungsbedingungen",
+            "href": "/terms-of-service "
+        }
     ],
     "sections": {
         "acceptance": {

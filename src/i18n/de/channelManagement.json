@@ -14,15 +14,15 @@
         "cta": "Beratung Anfordern",
         "stats": [
             {
-                "number": "2M+",
+                "number": "2M+ ",
                 "label": "Monatliche Aufrufe kombiniert (alle Plattformen)"
             },
             {
-                "number": "1M+",
+                "number": "1M+ ",
                 "label": "Aufrufe mit unter 1K Subs (Rekord)"
             },
             {
-                "number": "10+",
+                "number": "10+ ",
                 "label": "Jahre Erfahrung (seit 2013)"
             }
         ]
@@ -147,12 +147,12 @@
         "experience": "Ich integriere Google Analytics-Daten mit Social-Media-Metriken (YouTube, Instagram, X, Telegram) und Stripe-Conversions mit Python, PostgreSQL, SQLAlchemy und Docker. Außerdem entwickle ich Weblösungen für Unternehmen.",
         "passion": "Neben Datenanalyse manage ich mehrere soziale Netzwerke, einschließlich WaveIGL (YouTube, Instagram, TikTok, Twitch) mit über 2M monatlichen Aufrufen. Ich nutze Machine Learning, um Kampagnen über mehrere Plattformen zu optimieren.",
         "skills": [
-            "Analytics & Data Science",
+            "Analytics & Data Science ",
             "Content-Strategie",
             "Monetarisierung",
-            "Growth Hacking",
+            "Growth Hacking ",
             "YouTube-Optimierung",
-            "Audience Development"
+            "Audience Development "
         ]
     },
     "problems": {
@@ -182,14 +182,14 @@
         "subtitle": "Echte Erfahrungsberichte von Creators, die ihre Kanäle transformiert haben",
         "items": [
             {
-                "name": "João Silva",
-                "role": "YouTube Creator",
+                "name": "João Silva ",
+                "role": "YouTube Creator ",
                 "content": "Gabriel half mir, in nur 6 Monaten von 1K auf 50K Abonnenten zu wachsen. Sein datengetriebener Ansatz ist genial!",
                 "rating": 5
             },
             {
-                "name": "Maria Santos",
-                "role": "Content Creator",
+                "name": "Maria Santos ",
+                "role": "Digitaler Content Creator",
                 "content": "Die Analytics-Insights haben meine Content-Erstellung komplett verändert. Jetzt weiß ich genau, was mein Publikum will.",
                 "rating": 5
             }
@@ -270,11 +270,11 @@
     },
     "breadcrumbs": {
         "services": "Dienstleistungen",
-        "channelManagement": "ViraTrend"
+        "channelManagement": "ViraTrend "
     },
     "whatsapp": {
         "paymentMethodCard": "Karte",
-        "currencySymbol": "$",
+        "currencySymbol": "$ ",
         "template": "Hallo! Ich bin an der Kanalberatung interessiert.%0A%0A Ausgewählter Plan: {planName}%0A Preis: {currency} {price}%0A Zahlungsmethode: {paymentMethod}%0A%0AName:%0AYouTube-Kanal:%0AIhr Hauptziel:%0AInhaltstyp:%0AVeröffentlichungshäufigkeit:%0A%0AIch freue mich auf Ihre Kontaktaufnahme!"
     },
     "submitting": "Senden...",

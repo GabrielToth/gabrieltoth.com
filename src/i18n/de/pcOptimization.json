@@ -19,7 +19,7 @@
         "videoText": "SO FÜHLT SICH EIN OPTIMIERTER PC AN",
         "stats": [
             {
-                "value": "99.9%",
+                "value": "99.9% ",
                 "label": "Betriebszeit"
             },
             {
@@ -27,11 +27,11 @@
                 "label": "Latenz"
             },
             {
-                "value": "20+",
+                "value": "20+ ",
                 "label": "Optimierte Spiele"
             },
             {
-                "value": "5+",
+                "value": "5+ ",
                 "label": "Zufriedene Kunden"
             }
         ],
@@ -112,14 +112,14 @@
         "subtitle": "Sie sind nicht der Erste. Schließen Sie sich Hunderten von Spielern an, die Elite-Leistung freigeschaltet haben.",
         "items": [
             {
-                "name": "ProGamer",
+                "name": "ProGamer ",
                 "role": "Wettkampfspieler",
                 "content": "Mein Spiel hat sich nie besser angefühlt! Ich bekomme jetzt fast doppelt so viele FPS - das ist absolut unglaublich.",
                 "rating": 5
             },
             {
-                "name": "StreamerPro",
-                "role": "Content Creator",
+                "name": "StreamerPro ",
+                "role": "Digitaler Content Creator",
                 "content": "Endlich kann ich spielen und streamen ohne FPS-Drops. Die Optimierung war perfekt!",
                 "rating": 5
             }
@@ -129,14 +129,14 @@
         "title": "Jedes Spiel, Jedes Mal",
         "subtitle": "Von schnellen Shootern bis hin zu Open-World-Spielen - wir wissen, wie wir Ihr Spiel genau so laufen lassen, wie Sie es möchten.",
         "list": [
-            "Call of Duty",
-            "PUBG",
-            "Marvel Rivals",
-            "Rainbow Six Siege",
-            "Valorant",
-            "Fortnite",
-            "CS2",
-            "Apex Legends"
+            "Call of Duty ",
+            "PUBG ",
+            "Marvel Rivals ",
+            "Rainbow Six Siege ",
+            "Valorant ",
+            "Fortnite ",
+            "CS2 ",
+            "Apex Legends "
         ]
     },
     "guarantee": {

@@ -39,27 +39,27 @@
         "description": "Integration mit großen sozialen Netzwerken",
         "items": [
             {
-                "name": "YouTube",
+                "name": "YouTube ",
                 "description": "Live-Streams, Video-Uploads und detaillierte Analysen"
             },
             {
-                "name": "TikTok",
+                "name": "TikTok ",
                 "description": "Content-Verwaltung und Engagement-Metriken"
             },
             {
-                "name": "Twitter/X",
+                "name": "Twitter/X ",
                 "description": "Tweets, Retweets und Reichweitenanalyse"
             },
             {
-                "name": "Instagram",
+                "name": "Instagram ",
                 "description": "Posts, Stories und Follower-Metriken"
             },
             {
-                "name": "Twitch",
+                "name": "Twitch ",
                 "description": "Live-Übertragungen und Echtzeit-Chat"
             },
             {
-                "name": "Facebook",
+                "name": "Facebook ",
                 "description": "Videos, Posts und Zielgruppenanalyse"
             }
         ]
@@ -98,7 +98,7 @@
         "description": "Wähle den perfekten Plan für deine Anforderungen",
         "plans": [
             {
-                "name": "Starter",
+                "name": "Starter ",
                 "price": "Kostenlos",
                 "description": "Perfekt zum Anfangen",
                 "features": [

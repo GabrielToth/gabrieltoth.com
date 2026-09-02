@@ -2,8 +2,14 @@
     "title": "Terminos de Servicio",
     "lastUpdated": "Ultima actualizacion: 23 de julio de 2026",
     "breadcrumbs": [
-        { "name": "Inicio", "href": "/" },
-        { "name": "Terminos de Servicio", "href": "/terms-of-service" }
+        {
+            "name": "Inicio",
+            "href": "/ "
+        },
+        {
+            "name": "Terminos de Servicio",
+            "href": "/terms-of-service "
+        }
     ],
     "sections": {
         "acceptance": {
