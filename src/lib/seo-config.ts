@@ -9,7 +9,7 @@ import { type DefaultSeoProps, type SeoConfigOptions } from "./seo-types"
 const SITE_URL = "https://www.gabrieltoth.com"
 const SITE_NAME = "Gabriel Toth Portfolio"
 const AUTHOR_NAME = "Gabriel Toth Gonçalves"
-const AUTHOR_EMAIL = "contato@gabrieltoth.com"
+const AUTHOR_EMAIL = "bentoexposed@gmail.com"
 const AUTHOR_PHONE = "+55 11 99999-9999"
 
 // Enhanced default SEO configuration

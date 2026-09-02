@@ -36,7 +36,7 @@ const seoMessages: Record<Locale, SeoMessages> = {
 const SITE_URL = "https://www.gabrieltoth.com"
 const SITE_NAME = "Gabriel Toth Portfolio"
 const AUTHOR_NAME = "Gabriel Toth Gonçalves"
-const AUTHOR_EMAIL = "contato@gabrieltoth.com"
+const AUTHOR_EMAIL = "bentoexposed@gmail.com"
 const AUTHOR_PHONE = "+55 11 99999-9999"
 
 // Enhanced Person structured data

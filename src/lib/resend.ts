@@ -31,7 +31,7 @@ export async function sendEmail(
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                from: options.from || "Gabriel Toth <contato@gabrieltoth.com>",
+                from: options.from || "Gabriel Toth <bentoexposed@gmail.com>",
                 to: Array.isArray(options.to) ? options.to : [options.to],
                 subject: options.subject,
                 html: options.html,
