@@ -1,0 +1,8 @@
+{
+    "title": "Town Search",
+    "placeholder": "Search a town or city...",
+    "searching": "Searching...",
+    "noResults": "No results found.",
+    "error": "Search failed. Please try again.",
+    "selected": "Selected"
+}

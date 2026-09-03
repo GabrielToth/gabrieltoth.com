@@ -57,6 +57,7 @@ export default getRequestConfig(async ({ locale }) => {
         payments,
         breadcrumbs,
         seo,
+        townSearch,
     ] = await Promise.all([
         loadJson(() => import(`@/i18n/${selectedLocale}/home.json`)),
         loadJson(() => import(`@/i18n/${selectedLocale}/landing.json`)),
@@ -132,6 +133,7 @@ export default getRequestConfig(async ({ locale }) => {
         loadJson(() => import(`@/i18n/${selectedLocale}/payments.json`)),
         loadJson(() => import(`@/i18n/${selectedLocale}/breadcrumbs.json`)),
         loadJson(() => import(`@/i18n/${selectedLocale}/seo.json`)),
+        loadJson(() => import(`@/i18n/${selectedLocale}/townSearch.json`)),
     ])
 
     const messages: MessagesRecord = {
@@ -170,6 +172,7 @@ export default getRequestConfig(async ({ locale }) => {
         payments,
         breadcrumbs,
         seo,
+        townSearch,
         layout: {
             header,
             footer: await loadJson(

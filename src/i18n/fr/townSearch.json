@@ -1,0 +1,8 @@
+{
+    "title": "Recherche de Villes",
+    "placeholder": "Rechercher une ville...",
+    "searching": "Recherche en cours...",
+    "noResults": "Aucun résultat trouvé.",
+    "error": "La recherche a échoué. Réessayez.",
+    "selected": "Sélectionné"
+}

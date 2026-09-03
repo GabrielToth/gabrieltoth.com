@@ -1,0 +1,8 @@
+{
+    "title": "Busca de Cidades",
+    "placeholder": "Busque uma cidade...",
+    "searching": "Buscando...",
+    "noResults": "Nenhum resultado encontrado.",
+    "error": "A busca falhou. Tente novamente.",
+    "selected": "Selecionado"
+}
