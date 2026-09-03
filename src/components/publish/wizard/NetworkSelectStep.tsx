@@ -303,7 +303,7 @@ export default function NetworkSelectStep({
                                                     key={feat}
                                                     className="inline-flex items-center rounded bg-muted px-1.5 py-0.5 text-[10px] text-muted-foreground dark:bg-card dark:text-muted-foreground"
                                                 >
-                                                    {feat_label(feat, t)}
+                                                    {feat_label(feat)}
                                                 </span>
                                             ))}
                                         </div>
@@ -332,11 +332,7 @@ export default function NetworkSelectStep({
 }
 
 /** Map feature key to short label for badges */
-function feat_label(
-    feat: string,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    _t: any
-): string {
+function feat_label(feat: string): string {
     const labels: Record<string, string> = {
         text: "📝 Texto",
         images: "🖼️ Imagens",

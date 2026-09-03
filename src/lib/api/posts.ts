@@ -103,8 +103,18 @@ export function invalidateCache(): void {
     cache.clear()
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function mapScheduledPostToPost(p: any): Post {
+export interface ScheduledPostApiItem {
+    id: string
+    content?: string
+    scheduledTime: number
+    publishedAt?: number | string
+    status?: string
+    networks?: Array<string | { platform?: string }>
+    errorMessage?: string
+    createdAt: number | string
+}
+
+export function mapScheduledPostToPost(p: ScheduledPostApiItem): Post {
     return {
         id: p.id,
         title: (p.content || "").slice(0, 80),
@@ -119,8 +129,7 @@ function mapScheduledPostToPost(p: any): Post {
                   : p.status === "draft"
                     ? "draft"
                     : "scheduled",
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        channels: (p.networks || []).map((n: any) =>
+        channels: (p.networks || []).map((n: string | { platform?: string }) =>
             typeof n === "string" ? n : n.platform || ""
         ),
         errorMessage: p.errorMessage,

@@ -31,7 +31,6 @@ import { validateEmail } from "@/lib/validation"
 import { getAdminClient } from "@/lib/supabase/server"
 import { NextRequest } from "next/server"
 
-
 const supabase = getAdminClient()
 
 const authService = getAuthenticationService()

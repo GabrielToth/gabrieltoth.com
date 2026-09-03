@@ -556,15 +556,12 @@ describe("UnifiedSignInForm - Preservation Property Tests", () => {
             expect(
                 screen.getByRole("button", { name: /e-mail/i })
             ).toBeDisabled()
-            expect(
-                screen.getByRole("button", { name: /sso/i })
-            ).toBeDisabled()
+            expect(screen.getByRole("button", { name: /sso/i })).toBeDisabled()
 
             // Email step is not accessible
             expect(
                 screen.queryByPlaceholderText("seu@email.com")
             ).not.toBeInTheDocument()
         })
-
     })
 })

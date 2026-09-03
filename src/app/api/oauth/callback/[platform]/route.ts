@@ -13,6 +13,7 @@ import { getServerSession } from "@/lib/auth/get-server-session"
 import { getUserById } from "@/lib/auth/user"
 import { createLogger } from "@/lib/logger"
 import { getOAuthManager } from "@/lib/oauth"
+import type { OAuthPlatform } from "@/lib/oauth/oauth-types"
 import { getScopeVersion } from "@/lib/oauth/scope-versions"
 import { getTokenStore } from "@/lib/token-store"
 import { createClient } from "@supabase/supabase-js"
@@ -186,8 +187,7 @@ export async function GET(
 
         // Exchange code for token
         const tokenResponse = await oauthManager.exchangeCodeForToken(
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            platform as any,
+            platform as OAuthPlatform,
             code,
             userId
         )

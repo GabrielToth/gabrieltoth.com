@@ -9,9 +9,18 @@ vi.mock("@supabase/supabase-js", () => ({
                     eq: () =>
                         Promise.resolve({
                             data: [
-                                { platform: "twitch", platform_user_id: "70000" },
-                                { platform: "kick", platform_user_id: "kick_u" },
-                                { platform: "youtube", platform_user_id: "yt_u" },
+                                {
+                                    platform: "twitch",
+                                    platform_user_id: "70000",
+                                },
+                                {
+                                    platform: "kick",
+                                    platform_user_id: "kick_u",
+                                },
+                                {
+                                    platform: "youtube",
+                                    platform_user_id: "yt_u",
+                                },
                             ],
                             error: null,
                         }),
@@ -58,17 +67,47 @@ vi.mock("@/lib/config/env", () => ({ validateEnv: () => ({}) }))
 describe("updateUserStreams", () => {
     beforeEach(() => {
         vi.clearAllMocks()
-        mockFetch.mockImplementation(async (url) => {
-            if (String(url).includes('liveBroadcasts')) {
-                return { ok: true, status: 200, json: async () => ({ items: [{ id: 'b1', snippet: { title: 'x' } }] }), text: async () => '{}' }
+        mockFetch.mockImplementation(async url => {
+            if (String(url).includes("liveBroadcasts")) {
+                return {
+                    ok: true,
+                    status: 200,
+                    json: async () => ({
+                        items: [{ id: "b1", snippet: { title: "x" } }],
+                    }),
+                    text: async () => "{}",
+                }
             }
-            if (String(url).includes('search/categories')) {
-                return { ok: true, status: 200, json: async () => ({ data: [{ id: '509658' }] }), text: async () => '{}' }
+            if (String(url).includes("search/categories")) {
+                return {
+                    ok: true,
+                    status: 200,
+                    json: async () => ({ data: [{ id: "509658" }] }),
+                    text: async () => "{}",
+                }
             }
-            if (String(url).includes('kick.com/public/v1/channels')) {
-                return { ok: true, status: 200, json: async () => ({ data: [{ category: { id: 123 }, session_title: 'Old', slug: 'x' }] }), text: async () => '{}' }
+            if (String(url).includes("kick.com/public/v1/channels")) {
+                return {
+                    ok: true,
+                    status: 200,
+                    json: async () => ({
+                        data: [
+                            {
+                                category: { id: 123 },
+                                session_title: "Old",
+                                slug: "x",
+                            },
+                        ],
+                    }),
+                    text: async () => "{}",
+                }
             }
-            return { ok: true, status: 200, json: async () => ({ data: [] }), text: async () => '{}' }
+            return {
+                ok: true,
+                status: 200,
+                json: async () => ({ data: [] }),
+                text: async () => "{}",
+            }
         })
     })
 

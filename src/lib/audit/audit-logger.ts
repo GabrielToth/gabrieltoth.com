@@ -83,3 +83,33 @@ export function createAuditEntry(
         errorMessage: options?.errorMessage,
     }
 }
+
+/**
+ * Log a detailed user action with context (IP, user agent, changes, status)
+ */
+export async function logUserAction(
+    userId: string,
+    action:
+        | "auth.login"
+        | "auth.logout"
+        | "auth.register"
+        | "post.create"
+        | "post.publish"
+        | "channel.connect"
+        | "channel.disconnect"
+        | "settings.update"
+        | "location.search"
+        | string,
+    resource: string,
+    details?: {
+        resourceId?: string
+        changes?: Record<string, unknown>
+        ipAddress?: string
+        userAgent?: string
+        status?: "success" | "failure"
+        errorMessage?: string
+    }
+): Promise<void> {
+    const entry = createAuditEntry(userId, action, resource, details)
+    await auditLog(entry)
+}

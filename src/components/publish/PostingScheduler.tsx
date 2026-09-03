@@ -186,8 +186,9 @@ export default function PostingScheduler({
 
             <RadioGroup
                 value={scheduleType}
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                onValueChange={(v: any) => setScheduleType(v)}
+                onValueChange={(v: string) =>
+                    setScheduleType(v as "immediate" | "scheduled")
+                }
             >
                 <div className="flex items-center gap-2">
                     <RadioGroupItem value="immediate" id="immediate" />

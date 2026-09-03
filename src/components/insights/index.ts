@@ -24,3 +24,6 @@ export type { MetricsGridProps } from "./MetricsGrid"
 
 export { TimePeriodSelector } from "./TimePeriodSelector"
 export type { TimePeriodSelectorProps } from "./TimePeriodSelector"
+
+export { UserActivityHeatmap } from "./UserActivityHeatmap"
+export type { UserAuditLogAction } from "./UserActivityHeatmap"

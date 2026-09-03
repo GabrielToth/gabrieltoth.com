@@ -149,13 +149,7 @@
                 "title": "Sistema SAT Fiscal - Sitio Web",
                 "description": "Sitio institucional para empresa especializada en soluciones fiscales y contables. Desarrollado con enfoque en presentar servicios fiscales, gestión tributaria y soluciones empresariales de forma clara y profesional.",
                 "image": "/projects/sat-fiscal.jpg ",
-                "tags": [
-                    "HTML ",
-                    "CSS ",
-                    "JavaScript ",
-                    "SEO ",
-                    "Diseño"
-                ],
+                "tags": ["HTML ", "CSS ", "JavaScript ", "SEO ", "Diseño"],
                 "liveUrl": "https://sistemasatfiscal.com.br ",
                 "featured": true
             },
@@ -163,12 +157,7 @@
                 "title": "Softclever - Sitio Web",
                 "description": "Sitio corporativo desarrollado en React para empresa de software, con diseño moderno y responsivo. Implementa secciones para servicios, portafolio y contacto, utilizando tecnologías como React, CSS moderno y optimizaciones de SEO.",
                 "image": "/projects/softclever.jpg ",
-                "tags": [
-                    "React ",
-                    "CSS ",
-                    "JavaScript ",
-                    "SEO "
-                ],
+                "tags": ["React ", "CSS ", "JavaScript ", "SEO "],
                 "liveUrl": "https://softclever.com.br ",
                 "githubUrl": "https://github.com/gabrieltoth/softclever "
             },
@@ -190,12 +179,7 @@
                 "title": "Servicio de Optimización de PC",
                 "description": "Servicio especializado de optimización de PC para gaming, enfocado en maximizar el rendimiento en juegos y reducir la latencia. Incluye configuraciones avanzadas del sistema, optimización de hardware y software personalizado.",
                 "image": "/projects/pc-optimization.jpg ",
-                "tags": [
-                    "Windows ",
-                    "Gaming ",
-                    "Rendimiento",
-                    "Hardware "
-                ],
+                "tags": ["Windows ", "Gaming ", "Rendimiento", "Hardware "],
                 "slug": "/pc-optimization "
             }
         ]

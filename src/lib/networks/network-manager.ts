@@ -47,6 +47,21 @@ export interface SocialNetwork {
     updatedAt: number
 }
 
+/** Database row shape for network records (snake_case keys) */
+interface NetworkDbRecord {
+    id: string
+    user_id: string
+    platform: SocialPlatform
+    platform_user_id: string
+    platform_username: string
+    status: NetworkStatus
+    linked_at?: string | number
+    expires_at?: string | number | null
+    metadata?: Record<string, unknown> | null
+    created_at?: string | number
+    updated_at?: string | number
+}
+
 /**
  * Network Manager
  * Handles network linking, unlinking, and status management
@@ -397,8 +412,17 @@ export class NetworkManager {
     /**
      * Map database record to SocialNetwork
      */
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    private mapDatabaseToNetwork(dbNetwork: any): SocialNetwork {
+    private mapDatabaseToNetwork(dbNetwork: NetworkDbRecord): SocialNetwork {
+        const linkedAt = dbNetwork.linked_at
+            ? new Date(dbNetwork.linked_at).getTime()
+            : Date.now()
+        const createdAt = dbNetwork.created_at
+            ? new Date(dbNetwork.created_at).getTime()
+            : Date.now()
+        const updatedAt = dbNetwork.updated_at
+            ? new Date(dbNetwork.updated_at).getTime()
+            : Date.now()
+
         return {
             id: dbNetwork.id,
             userId: dbNetwork.user_id,
@@ -406,13 +430,13 @@ export class NetworkManager {
             platformUserId: dbNetwork.platform_user_id,
             platformUsername: dbNetwork.platform_username,
             status: dbNetwork.status,
-            linkedAt: new Date(dbNetwork.linked_at).getTime(),
+            linkedAt,
             expiresAt: dbNetwork.expires_at
                 ? new Date(dbNetwork.expires_at).getTime()
                 : undefined,
-            metadata: dbNetwork.metadata,
-            createdAt: new Date(dbNetwork.created_at).getTime(),
-            updatedAt: new Date(dbNetwork.updated_at).getTime(),
+            metadata: (dbNetwork.metadata as Record<string, any>) || undefined,
+            createdAt,
+            updatedAt,
         }
     }
 }

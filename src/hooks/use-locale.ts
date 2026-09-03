@@ -8,6 +8,7 @@ import {
     setLocaleCookie,
     type Locale,
 } from "@/lib/i18n"
+import { getLocalizedUrl, getRouteKeyFromPath } from "@/lib/url-mapping"
 import { usePathname, useRouter } from "next/navigation"
 import { useEffect, useRef, useState } from "react"
 
@@ -89,17 +90,24 @@ export function useLocale() {
     const changeLocale = (newLocale: Locale) => {
         setLocaleCookie(newLocale)
 
-        // Update URL to include new locale
+        // Update URL to include new locale and correctly mapped slug
         const pathSegments = pathname.split("/").filter(Boolean)
         const currentPathLocale = pathSegments[0]
 
         let newPath: string
-        if (locales.includes(currentPathLocale as Locale)) {
-            // Replace existing locale
-            pathSegments[0] = newLocale
-            newPath = "/" + pathSegments.join("/")
+        if (
+            currentPathLocale &&
+            locales.includes(currentPathLocale as Locale)
+        ) {
+            const routeSlug = pathSegments.slice(1).join("/")
+            if (routeSlug) {
+                const routeKey = getRouteKeyFromPath(routeSlug)
+                const newSlug = getLocalizedUrl(routeKey, newLocale)
+                newPath = `/${newLocale}/${newSlug}`
+            } else {
+                newPath = `/${newLocale}`
+            }
         } else {
-            // Add locale to path
             newPath = `/${newLocale}${pathname}`
         }
 

@@ -1,12 +1,12 @@
 import { locales } from "@/lib/i18n"
+import { LocalePageProps } from "../lib/locale-page-props"
 import { generateMetadata as generateAboutMetadata } from "../about-me/page"
 
 export const revalidate = 3600
 
 export { default } from "../about-me/page"
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export async function generateMetadata(props: any) {
+export async function generateMetadata(props: LocalePageProps) {
     return generateAboutMetadata(props)
 }
 

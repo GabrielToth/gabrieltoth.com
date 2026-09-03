@@ -7,6 +7,7 @@ import { Post } from "@/components/publish/PostCard"
 import { UniversalPostingButton } from "@/components/publish"
 import { useLocale, useTranslations } from "next-intl"
 import { format } from "date-fns"
+import { mapScheduledPostToPost } from "@/lib/api/posts"
 import { TutorialLauncher } from "@/components/tutorial/tutorial-launcher"
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Suspense, useCallback, useEffect, useMemo, useState } from "react"
@@ -55,28 +56,9 @@ export default function PublishPage() {
                 throw new Error(msg)
             }
             const data = await res.json()
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            const mapped: Post[] = (data.posts || []).map((p: any) => ({
-                id: p.id,
-                title: p.content.slice(0, 80),
-                content: p.content,
-                scheduledAt: new Date(p.scheduledTime),
-                publishedAt: p.publishedAt
-                    ? new Date(p.publishedAt)
-                    : undefined,
-                status:
-                    p.status === "published"
-                        ? "published"
-                        : p.status === "failed"
-                          ? "failed"
-                          : "scheduled",
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                channels: (p.networks || []).map((n: any) =>
-                    typeof n === "string" ? n : n.platform || ""
-                ),
-                errorMessage: p.errorMessage,
-                createdAt: new Date(p.createdAt),
-            }))
+            const mapped: Post[] = (data.posts || []).map(
+                mapScheduledPostToPost
+            )
             setPosts(mapped)
         } catch (err) {
             setError(err instanceof Error ? err.message : t("failedToFetch"))

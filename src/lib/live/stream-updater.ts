@@ -495,18 +495,18 @@ export async function updateUserStreams(
     update: { title?: string; category?: string }
 ): Promise<StreamPlatformResult[]> {
     const supabase = createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL || '',
-        process.env.SUPABASE_SERVICE_ROLE_KEY || ''
+        process.env.NEXT_PUBLIC_SUPABASE_URL || "",
+        process.env.SUPABASE_SERVICE_ROLE_KEY || ""
     )
 
     const { data: networks, error: fetchError } = await supabase
-        .from('social_networks')
-        .select('platform, platform_user_id')
-        .eq('user_id', userId)
-        .eq('status', 'connected')
+        .from("social_networks")
+        .select("platform, platform_user_id")
+        .eq("user_id", userId)
+        .eq("status", "connected")
 
     if (fetchError || !networks || networks.length === 0) {
-        logger.warn('No connected platforms for user', {
+        logger.warn("No connected platforms for user", {
             userId,
             error: fetchError?.message,
         })
@@ -517,7 +517,7 @@ export async function updateUserStreams(
 
     for (const network of networks) {
         const platform = network.platform as string
-        if (!['twitch', 'kick', 'youtube'].includes(platform)) continue
+        if (!["twitch", "kick", "youtube"].includes(platform)) continue
 
         const { accessToken, error: tokenError } = await getValidAccessToken(
             userId,
@@ -527,16 +527,19 @@ export async function updateUserStreams(
             results.push({
                 platform,
                 success: false,
-                error: tokenError || 'TOKEN_ERROR',
+                error: tokenError || "TOKEN_ERROR",
             })
             continue
         }
 
         let result: { success: boolean; error?: string }
-        if (platform === 'twitch') {
+        if (platform === "twitch") {
             const gameId = update.category
-                ? (await resolveTwitchGameId(update.category, process.env.TWITCH_CLIENT_ID || "", accessToken)) ??
-                  undefined
+                ? ((await resolveTwitchGameId(
+                      update.category,
+                      process.env.TWITCH_CLIENT_ID || "",
+                      accessToken
+                  )) ?? undefined)
                 : undefined
             const broadcasterId =
                 (network as { platform_user_id?: string }).platform_user_id ||
@@ -544,13 +547,13 @@ export async function updateUserStreams(
             result = await updateTwitchStream(
                 accessToken,
                 broadcasterId,
-                update.title ?? '',
+                update.title ?? "",
                 gameId
             )
-        } else if (platform === 'kick') {
+        } else if (platform === "kick") {
             result = await updateKickStream(
                 accessToken,
-                update.title ?? '',
+                update.title ?? "",
                 update.category
             )
         } else {
@@ -558,13 +561,13 @@ export async function updateUserStreams(
                 results.push({
                     platform,
                     success: false,
-                    error: 'YOUTUBE_NO_CATEGORY_SUPPORT',
+                    error: "YOUTUBE_NO_CATEGORY_SUPPORT",
                 })
                 continue
             }
             result = await updateYouTubeStream(
                 accessToken,
-                update.title ?? '',
+                update.title ?? "",
                 undefined
             )
         }

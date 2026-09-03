@@ -9,11 +9,11 @@
  */
 
 import { createLogger } from "@/lib/logger"
-import { CookieVault, type StoredSessionCookie } from "@/lib/cookies/cookie-vault"
 import {
-    xCheckSession,
-    type XSessionCookies,
-} from "./unofficial-x-adapter"
+    CookieVault,
+    type StoredSessionCookie,
+} from "@/lib/cookies/cookie-vault"
+import { xCheckSession, type XSessionCookies } from "./unofficial-x-adapter"
 import { createClient } from "@supabase/supabase-js"
 
 const logger = createLogger("XIntegrationProvider")
@@ -46,7 +46,9 @@ export function extractXSessionCookies(
  * Resolve whether to use the official X adapter or the unofficial one.
  * If unofficial is chosen, validate cookies first.
  */
-export async function resolveXIntegrationMode(config: XIntegrationConfig): Promise<{
+export async function resolveXIntegrationMode(
+    config: XIntegrationConfig
+): Promise<{
     mode: "official" | "unofficial" | "none"
     cookies?: XSessionCookies
     error?: string

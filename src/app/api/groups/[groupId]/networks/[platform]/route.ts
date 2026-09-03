@@ -7,6 +7,8 @@
 
 import { getServerSession } from "@/lib/auth/get-server-session"
 import { getNetworkGroupManager } from "@/lib/groups"
+import type { SocialPlatform } from "@/lib/networks/network-manager"
+import { isSocialPlatform } from "@/lib/platform-guards"
 import { createLogger } from "@/lib/logger"
 import { NextRequest, NextResponse } from "next/server"
 
@@ -38,8 +40,7 @@ export async function DELETE(
         const group = await groupManager.removeNetworkFromGroup(
             userId,
             groupId,
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            platform as any
+            platform as SocialPlatform
         )
 
         logger.info("Network removed from group", {

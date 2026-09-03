@@ -60,10 +60,9 @@ export async function upsertUser(googleData: GoogleUserData): Promise<User> {
             // Self-heal legacy production databases missing the picture column
             const msg = err instanceof Error ? err.message : String(err)
             if (msg.includes("column") && msg.includes("picture")) {
-                logger.warn(
-                    "users.picture column missing — auto-creating it",
-                    { context: "Auth" }
-                )
+                logger.warn("users.picture column missing — auto-creating it", {
+                    context: "Auth",
+                })
                 await db.query(
                     `ALTER TABLE public.users ADD COLUMN IF NOT EXISTS picture TEXT`
                 )

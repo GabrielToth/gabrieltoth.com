@@ -8,6 +8,7 @@
 import { getServerSession } from "@/lib/auth/get-server-session"
 import { createLogger } from "@/lib/logger"
 import { getNetworkManager } from "@/lib/networks"
+import type { SocialPlatform } from "@/lib/networks/network-manager"
 import { NextRequest, NextResponse } from "next/server"
 
 const logger = createLogger("NetworkDisconnectEndpoint")
@@ -36,8 +37,7 @@ export async function DELETE(
         const networkManager = getNetworkManager()
         const disconnected = await networkManager.unlinkNetwork(
             userId,
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            platform as any
+            platform as SocialPlatform
         )
 
         if (!disconnected) {
