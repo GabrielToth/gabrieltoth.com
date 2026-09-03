@@ -96,8 +96,8 @@ export async function upsertUser(googleData: GoogleUserData): Promise<User> {
                 // Update user with new data
                 const updatedUser = await db.queryOne<User>(
                     `UPDATE users
-                     SET name = $1, picture = $2, oauth_email = $3, email = $3, updated_at = NOW()
-                     WHERE oauth_provider = 'google' AND oauth_id = $4
+                     SET name = $1, picture = $2, oauth_email = $3, email = $4, updated_at = NOW()
+                     WHERE oauth_provider = 'google' AND oauth_id = $5
                      RETURNING id,
                                email AS google_email,
                                name AS google_name,
@@ -110,6 +110,7 @@ export async function upsertUser(googleData: GoogleUserData): Promise<User> {
                     [
                         googleData.google_name,
                         googleData.google_picture || null,
+                        googleData.google_email,
                         googleData.google_email,
                         googleData.google_id,
                     ]
@@ -143,7 +144,7 @@ export async function upsertUser(googleData: GoogleUserData): Promise<User> {
         // User does not exist - create new user (canonical columns only)
         const newUser = await db.queryOne<User>(
             `INSERT INTO users (email, name, oauth_provider, oauth_id, oauth_email, picture, email_verified, account_completion_status, created_at, updated_at)
-             VALUES ($1, $2, 'google', $3, $1, $4, TRUE, 'pending', NOW(), NOW())
+             VALUES ($1, $2, 'google', $3, $4, $5, TRUE, 'pending', NOW(), NOW())
              RETURNING id,
                        email AS google_email,
                        name AS google_name,
@@ -157,6 +158,7 @@ export async function upsertUser(googleData: GoogleUserData): Promise<User> {
                 googleData.google_email,
                 googleData.google_name,
                 googleData.google_id,
+                googleData.google_email,
                 googleData.google_picture || null,
             ]
         )
