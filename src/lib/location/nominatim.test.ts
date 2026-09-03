@@ -35,9 +35,11 @@ describe("searchTowns", () => {
     it("maps Nominatim results to TownResult with address fallback", async () => {
         vi.stubGlobal(
             "fetch",
-            vi.fn().mockResolvedValue(
-                new Response(JSON.stringify(OSM_FIXTURE), { status: 200 })
-            )
+            vi
+                .fn()
+                .mockResolvedValue(
+                    new Response(JSON.stringify(OSM_FIXTURE), { status: 200 })
+                )
         )
 
         const results = await searchTowns("curitiba")
@@ -82,14 +84,16 @@ describe("searchTowns", () => {
     it("falls back to display_name first segment when no address fields", async () => {
         vi.stubGlobal(
             "fetch",
-            vi.fn().mockResolvedValue(
-                new Response(
-                    JSON.stringify([
-                        { ...OSM_FIXTURE[0], address: undefined },
-                    ]),
-                    { status: 200 }
+            vi
+                .fn()
+                .mockResolvedValue(
+                    new Response(
+                        JSON.stringify([
+                            { ...OSM_FIXTURE[0], address: undefined },
+                        ]),
+                        { status: 200 }
+                    )
                 )
-            )
         )
         const results = await searchTowns("curitiba")
         expect(results[0].name).toBe("Curitiba")

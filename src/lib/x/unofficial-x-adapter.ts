@@ -126,8 +126,7 @@ export async function xPostTweet(
         }
 
         const data = await res.json()
-        const tweetId =
-            data?.data?.create_tweet?.tweet_results?.result?.rest_id
+        const tweetId = data?.data?.create_tweet?.tweet_results?.result?.rest_id
 
         return { success: true, tweetId, unofficial: true }
     } catch (err) {
@@ -166,12 +165,9 @@ export async function xReadTimeline(
         const tweets =
             data?.data?.home?.home_timeline_urt?.instructions
                 ?.filter(
-                    (i: { type?: string }) =>
-                        i.type === "TimelineAddEntries"
+                    (i: { type?: string }) => i.type === "TimelineAddEntries"
                 )
-                ?.flatMap(
-                    (i: { entries?: unknown[] }) => i.entries ?? []
-                ) || []
+                ?.flatMap((i: { entries?: unknown[] }) => i.entries ?? []) || []
 
         return { success: true, tweets }
     } catch (err) {

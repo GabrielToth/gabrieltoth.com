@@ -27,6 +27,18 @@ interface Network {
     status: "connected" | "disconnected" | "expired"
 }
 
+interface NetworkStatusItem {
+    id?: string
+    platform?: string
+    name?: string
+    status?: string
+}
+
+interface NetworkStatusResponse {
+    networks?: NetworkStatusItem[]
+    error?: string
+}
+
 interface NetworkGroup {
     id: string
     name: string
@@ -85,21 +97,22 @@ export default function PostingInterface({
             try {
                 const res = await fetch("/api/networks/status")
                 if (!res.ok) throw new Error("Failed to load networks")
-                const data = await res.json()
+                const data: NetworkStatusResponse = await res.json()
 
-                const mapped: Network[] = (data.networks || data || []).map(
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    (n: any, i: number) => ({
-                        id: n.id || n.platform || String(i),
-                        platform: n.platform || n.name,
-                        status:
-                            n.status === "connected"
-                                ? "connected"
-                                : n.status === "expired"
-                                  ? "expired"
-                                  : "disconnected",
-                    })
-                )
+                const mapped: Network[] = (
+                    data.networks ||
+                    (data as NetworkStatusItem[]) ||
+                    []
+                ).map((n: NetworkStatusItem, i: number) => ({
+                    id: n.id || n.platform || String(i),
+                    platform: n.platform || n.name || "",
+                    status:
+                        n.status === "connected"
+                            ? "connected"
+                            : n.status === "expired"
+                              ? "expired"
+                              : "disconnected",
+                }))
 
                 if (mapped.length === 0) {
                     setNetworks(exampleNetworks)

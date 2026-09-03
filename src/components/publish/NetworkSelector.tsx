@@ -142,8 +142,9 @@ export default function NetworkSelector({
                 <div className="flex gap-2">
                     <Select
                         value={sortBy}
-                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                        onValueChange={(v: any) => setSortBy(v)}
+                        onValueChange={(v: string) =>
+                            setSortBy(v as "name" | "status")
+                        }
                     >
                         <SelectTrigger className="w-32">
                             <SelectValue />

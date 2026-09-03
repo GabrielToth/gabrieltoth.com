@@ -7,6 +7,8 @@
  */
 
 import { authMiddleware } from "@/lib/middleware/auth-middleware"
+import { getLocalizedUrl, getRouteKeyFromPath } from "@/lib/url-mapping"
+import type { Locale } from "@/lib/i18n"
 import { NextRequest, NextResponse } from "next/server"
 
 const SUPPORTED_LOCALES = ["en", "pt-BR", "es", "de", "fr"]
@@ -66,6 +68,24 @@ export async function middleware(request: NextRequest) {
         }
     }
 
+    // Redirect mismatched route slugs (e.g. /pt-BR/acerca-de-mi -> /pt-BR/quem-sou-eu)
+    const pathSegments = pathname.split("/").filter(Boolean)
+    if (pathSegments.length >= 2) {
+        const requestLocale = pathSegments[0] as Locale
+        if (SUPPORTED_LOCALES.includes(requestLocale)) {
+            const slug = pathSegments.slice(1).join("/")
+            const routeKey = getRouteKeyFromPath(slug)
+            const expectedSlug = getLocalizedUrl(routeKey, requestLocale)
+            if (expectedSlug && slug !== expectedSlug) {
+                const redirectUrl = `/${requestLocale}/${expectedSlug}${request.nextUrl.search}`
+                return NextResponse.redirect(
+                    new URL(redirectUrl, request.url),
+                    { status: 308 }
+                )
+            }
+        }
+    }
+
     return NextResponse.next()
 }
 
@@ -73,9 +93,5 @@ export async function middleware(request: NextRequest) {
  * Middleware configuration
  */
 export const config = {
-    matcher: [
-        "/dashboard/:path*",
-        "/dashboard",
-        "/(en|pt-BR|es|de|fr)/dashboard/:path*",
-    ],
+    matcher: ["/dashboard/:path*", "/dashboard", "/(en|pt-BR|es|de|fr)/:path*"],
 }

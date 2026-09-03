@@ -127,7 +127,9 @@ export function TownSearch({ labels, onSelect }: TownSearchProps) {
                 </button>
             </div>
 
-            {error ? <p className="text-sm text-red-500">{labels.error}</p> : null}
+            {error ? (
+                <p className="text-sm text-red-500">{labels.error}</p>
+            ) : null}
 
             {results.length > 0 && (
                 <ul className="max-h-48 overflow-auto rounded-md border border-border bg-card text-sm">
@@ -145,12 +147,20 @@ export function TownSearch({ labels, onSelect }: TownSearchProps) {
                 </ul>
             )}
 
-            {!loading && query.trim().length >= 2 && results.length === 0 && !error ? (
-                <p className="text-sm text-muted-foreground">{labels.noResults}</p>
+            {!loading &&
+            query.trim().length >= 2 &&
+            results.length === 0 &&
+            !error ? (
+                <p className="text-sm text-muted-foreground">
+                    {labels.noResults}
+                </p>
             ) : null}
 
             {selected ? (
-                <p className="text-sm text-muted-foreground" data-testid="selected-town">
+                <p
+                    className="text-sm text-muted-foreground"
+                    data-testid="selected-town"
+                >
                     {labels.selected}: {selected.displayName}
                 </p>
             ) : null}

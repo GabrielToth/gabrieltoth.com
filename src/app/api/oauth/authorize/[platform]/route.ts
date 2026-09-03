@@ -8,6 +8,7 @@
 import { getServerSession } from "@/lib/auth/get-server-session"
 import { createLogger } from "@/lib/logger"
 import { getOAuthManager } from "@/lib/oauth"
+import type { OAuthPlatform } from "@/lib/oauth/oauth-types"
 import { rateLimitByKey } from "@/lib/rate-limit"
 import { NextRequest, NextResponse } from "next/server"
 
@@ -44,8 +45,7 @@ export async function GET(
         const userId = session?.user?.id || "guest"
 
         const authResponse = await oauthManager.generateAuthorizationUrl(
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            platform as any,
+            platform as OAuthPlatform,
             userId,
             locale
         )
@@ -143,8 +143,7 @@ export async function POST(
 
         // Generate authorization URL with locale and redirectTo for callback redirect
         const authResponse = await oauthManager.generateAuthorizationUrl(
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            platform as any,
+            platform as OAuthPlatform,
             userId,
             locale,
             redirectTo

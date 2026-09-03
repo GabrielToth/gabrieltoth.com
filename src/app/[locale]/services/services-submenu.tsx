@@ -35,11 +35,10 @@ export default function ServicesSubmenu({ locale }: ServicesSubmenuProps) {
             {categories.map(category => (
                 <Link
                     key={category.key}
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    href={getLocalizedPath(category.key as any, locale)}
-                    className="group bg-[#171717] border border-neutral-700 rounded-lg p-6 hover:border-primary transition-all duration-200 hover:shadow-lg hover:shadow-blue-500/20"
+                    href={getLocalizedPath(category.key, locale)}
+                    className="group bg-card border border-border/60 rounded-xl p-6 hover:border-primary transition-all duration-200 hover:shadow-lg hover:shadow-primary/10"
                 >
-                    <h3 className="text-lg font-bold mb-2 text-white group-hover:text-primary transition-colors">
+                    <h3 className="text-lg font-bold mb-2 text-foreground group-hover:text-primary transition-colors">
                         {category.label}
                     </h3>
                     <p className="text-muted-foreground text-sm line-clamp-2">

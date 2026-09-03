@@ -8,7 +8,12 @@
  * - 5 credits / hour afterwards (passed directly to user as cost-relay)
  */
 
-import { createCipheriv, createDecipheriv, randomBytes, scryptSync } from "crypto"
+import {
+    createCipheriv,
+    createDecipheriv,
+    randomBytes,
+    scryptSync,
+} from "crypto"
 
 export interface StoredSessionCookie {
     name: string
@@ -93,9 +98,6 @@ export class CookieVault {
         const freeThresholdMinutes = 90
         if (durationMinutes <= freeThresholdMinutes) return 0
         const remainingMinutes = durationMinutes - freeThresholdMinutes
-        return Math.max(
-            1,
-            Math.ceil(((remainingMinutes / 60) * 5) / 0.1) * 0.1
-        )
+        return Math.max(1, Math.ceil(((remainingMinutes / 60) * 5) / 0.1) * 0.1)
     }
 }

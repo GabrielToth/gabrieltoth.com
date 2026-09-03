@@ -49,15 +49,15 @@ export default async function ServicesPage({ params }: ServicesPageProps) {
 
     return (
         <>
-            <main className="min-h-screen bg-[#0a0a0a] text-white">
+            <main className="min-h-screen bg-background text-foreground">
                 <PageHeader
                     eyebrow={tHero("hero.badge")}
                     title={tHero("hero.title")}
                     subtitle={tHero("hero.subtitle")}
-                    className="bg-[#0a0a0a] dark:from-[#0a0a0a] dark:to-[#0a0a0a]"
+                    className="bg-background"
                 />
 
-                <section className="py-12 px-4 sm:px-6 lg:px-8 bg-[#0a0a0a]">
+                <section className="py-12 px-4 sm:px-6 lg:px-8 bg-background">
                     <div className="max-w-7xl mx-auto">
                         {/* Submenu */}
                         <div className="mb-16">
@@ -70,7 +70,7 @@ export default async function ServicesPage({ params }: ServicesPageProps) {
                                 <Link
                                     key={service.key}
                                     href={getLocalizedPath(service.key, locale)}
-                                    className="group bg-[#171717] border border-neutral-700 rounded-lg p-8 hover:border-primary transition-all duration-200 hover:shadow-lg hover:shadow-blue-500/20"
+                                    className="group bg-card border border-border/60 rounded-xl p-8 hover:border-primary transition-all duration-200 hover:shadow-lg hover:shadow-primary/10"
                                 >
                                     <div className="flex items-center justify-between mb-4">
                                         <h2 className="text-2xl font-bold text-white group-hover:text-primary transition-colors">
@@ -98,22 +98,22 @@ export default async function ServicesPage({ params }: ServicesPageProps) {
                         </div>
 
                         {/* Approach Section */}
-                        <div className="bg-[#242424] border border-neutral-700 rounded-lg p-8 max-w-4xl mx-auto">
+                        <div className="bg-card/80 border border-border/60 rounded-xl p-8 max-w-4xl mx-auto">
                             <h2 className="text-3xl font-bold mb-6 text-primary">
                                 {t("landing.approach.title")}
                             </h2>
 
                             <div className="grid md:grid-cols-3 gap-6">
-                                <div className="bg-[#171717] border border-neutral-700 rounded-lg p-6">
-                                    <h3 className="text-xl font-bold mb-3 text-white">
+                                <div className="bg-background border border-border/60 rounded-lg p-6">
+                                    <h3 className="text-xl font-bold mb-3 text-foreground">
                                         {t("landing.approach.qualityFirst")}
                                     </h3>
                                     <p className="text-muted-foreground text-sm">
                                         {t("landing.approach.qualityFirstText")}
                                     </p>
                                 </div>
-                                <div className="bg-[#171717] border border-neutral-700 rounded-lg p-6">
-                                    <h3 className="text-xl font-bold mb-3 text-white">
+                                <div className="bg-background border border-border/60 rounded-lg p-6">
+                                    <h3 className="text-xl font-bold mb-3 text-foreground">
                                         {t(
                                             "landing.approach.tailoredSolutions"
                                         )}
@@ -124,7 +124,7 @@ export default async function ServicesPage({ params }: ServicesPageProps) {
                                         )}
                                     </p>
                                 </div>
-                                <div className="bg-[#171717] border border-neutral-700 rounded-lg p-6">
+                                <div className="bg-background border border-border/60 rounded-lg p-6">
                                     <h3 className="text-xl font-bold mb-3 text-white">
                                         {t("landing.approach.resultsDriven")}
                                     </h3>

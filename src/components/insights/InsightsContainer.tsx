@@ -7,6 +7,7 @@ import { ChannelComparison } from "./ChannelComparison"
 import { ChannelGraphs } from "./ChannelGraphs"
 import { MetricsGrid } from "./MetricsGrid"
 import { TimePeriodSelector } from "./TimePeriodSelector"
+import { UserActivityHeatmap } from "./UserActivityHeatmap"
 import { AdvancedMetricDetail } from "@/lib/analytics/normalized-analytics-service"
 import { Filter, Layers, LayoutGrid, SlidersHorizontal } from "lucide-react"
 
@@ -278,6 +279,8 @@ export const InsightsContainer: React.FC<InsightsContainerProps> = ({
                         onChannelSelectionChange={() => {}}
                         isLoading={isLoading}
                     />
+
+                    <UserActivityHeatmap />
                 </>
             )}
 

@@ -7,6 +7,7 @@
 
 import { getServerSession } from "@/lib/auth/get-server-session"
 import { createLogger } from "@/lib/logger"
+import type { SocialPlatform } from "@/lib/networks/network-manager"
 import { getConflictDetector, getContentAdapter } from "@/lib/posting"
 import { NextRequest, NextResponse } from "next/server"
 
@@ -17,7 +18,7 @@ const logger = createLogger("ContentValidationEndpoint")
  */
 interface ValidateContentRequest {
     content: string
-    platforms: string[]
+    platforms: SocialPlatform[]
     scheduledTime?: number
 }
 
@@ -55,16 +56,14 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         // Validate content for each platform
         const platformValidations = contentAdapter.validateForPlatforms(
             body.content,
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            body.platforms as any
+            body.platforms as SocialPlatform[]
         )
 
         // Detect conflicts
         const conflictResult = await conflictDetector.detectConflicts(
             userId,
             body.content,
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            body.platforms as any,
+            body.platforms as SocialPlatform[],
             body.scheduledTime
         )
 

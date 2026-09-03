@@ -1,6 +1,9 @@
 import { auditLog } from "@/lib/audit/audit-logger"
 import { getServerSession } from "@/lib/auth/get-server-session"
-import { PublicationQueue } from "@/lib/queue/publication-queue"
+import {
+    PublicationQueue,
+    type ScheduledPost,
+} from "@/lib/queue/publication-queue"
 import { NextRequest, NextResponse } from "next/server"
 
 export const dynamic = "force-dynamic"
@@ -128,8 +131,7 @@ export async function POST(request: NextRequest) {
 }
 
 async function publishToNetworks(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    publication: any,
+    publication: ScheduledPost,
     userId: string
 ): Promise<Array<{ network: string; success: boolean; error?: string }>> {
     const results = []
@@ -137,14 +139,14 @@ async function publishToNetworks(
     for (const network of publication.networks) {
         try {
             // Get network adapter
-            const adapter = getNetworkAdapter(network)
+            const adapter = getNetworkAdapter(network.platform)
 
             // Get OAuth token
-            const token = await getNetworkToken(userId, network)
+            const token = await getNetworkToken(userId, network.platform)
 
             if (!token) {
                 results.push({
-                    network,
+                    network: network.platform,
                     success: false,
                     error: "No valid token found",
                 })
@@ -154,20 +156,23 @@ async function publishToNetworks(
             // Publish to network
             const result = await adapter.publish({
                 content: publication.content,
-                images: publication.images,
-                metadata: publication.metadata?.[network],
+                images: publication.mediaId ? [publication.mediaId] : undefined,
+                metadata: {
+                    mediaType: publication.mediaType,
+                    networkId: network.id,
+                },
                 token,
             })
 
             results.push({
-                network,
+                network: network.platform,
                 success: true,
                 externalId: result.id,
                 externalUrl: result.url,
             })
         } catch (error) {
             results.push({
-                network,
+                network: network.platform,
                 success: false,
                 error: error instanceof Error ? error.message : "Unknown error",
             })

@@ -8,6 +8,7 @@
 import { getServerSession } from "@/lib/auth/get-server-session"
 import { createLogger } from "@/lib/logger"
 import { getOAuthManager } from "@/lib/oauth"
+import type { OAuthPlatform } from "@/lib/oauth/oauth-types"
 import { rateLimitByKey } from "@/lib/rate-limit"
 import { getTokenStore } from "@/lib/token-store"
 import { createClient } from "@supabase/supabase-js"
@@ -115,8 +116,7 @@ export async function POST(
         // Revoke the token with the OAuth provider
         const oauthManager = getOAuthManager()
         const revoked = await oauthManager.revokeToken(
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            platform as any,
+            platform as OAuthPlatform,
             token.accessToken,
             userId
         )

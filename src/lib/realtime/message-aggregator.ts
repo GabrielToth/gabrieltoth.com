@@ -242,9 +242,7 @@ export class MessageAggregator {
 
         if (!payload) return
 
-        const { updateUserStreams } = await import(
-            "@/lib/live/stream-updater"
-        )
+        const { updateUserStreams } = await import("@/lib/live/stream-updater")
         const results = await updateUserStreams(this.userId, payload)
 
         logger.info("Broadcast command executed", {

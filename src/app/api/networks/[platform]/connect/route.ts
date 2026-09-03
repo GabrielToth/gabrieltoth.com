@@ -8,6 +8,7 @@
 import { getServerSession } from "@/lib/auth/get-server-session"
 import { createLogger } from "@/lib/logger"
 import { getNetworkManager } from "@/lib/networks"
+import type { SocialPlatform } from "@/lib/networks/network-manager"
 import { NextRequest, NextResponse } from "next/server"
 
 const logger = createLogger("NetworkConnectEndpoint")
@@ -61,8 +62,7 @@ export async function POST(
         const networkManager = getNetworkManager()
         const network = await networkManager.linkNetwork(
             userId,
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            platform as any,
+            platform as SocialPlatform,
             body.platformUserId,
             body.platformUsername,
             body.metadata
