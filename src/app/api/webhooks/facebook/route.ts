@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import crypto from "crypto"
 import { handleWebhookEvent } from "@/lib/facebook/webhook-handler"
+import type { FacebookWebhookEvent } from "@/lib/facebook/webhook-types"
 import { createLogger } from "@/lib/logger"
 
 const logger = createLogger("FacebookWebhook")
@@ -94,7 +95,9 @@ export async function POST(req: NextRequest) {
         }
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const result = await handleWebhookEvent(event as any)
+        const result = await handleWebhookEvent(
+            event as unknown as FacebookWebhookEvent
+        )
 
         logger.info("Facebook webhook processed", {
             handled: result.handled,

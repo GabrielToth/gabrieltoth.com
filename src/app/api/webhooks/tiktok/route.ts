@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server"
 import { handleTikTokWebhookEvent } from "@/lib/tiktok/webhook-handler"
+import type { TikTokWebhookEventType } from "@/lib/tiktok/webhook-types"
 import { createLogger } from "@/lib/logger"
 
 const logger = createLogger("TikTokWebhook")
@@ -45,8 +46,7 @@ export async function POST(req: NextRequest) {
         }
 
         const result = await handleTikTokWebhookEvent({
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            event: event.event as any,
+            event: event.event as TikTokWebhookEventType,
             create_time: event.create_time,
             content: event.content,
         })

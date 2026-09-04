@@ -45,7 +45,8 @@
         "db:verify-migrations": "node scripts/verify-db-migrations.js",
         "i18n:check-params": "node scripts/i18n/check-params.mjs",
         "i18n:check-params:report": "node scripts/i18n/check-params.mjs --report",
-        "build": "next build"
+        "build": "next build",
+        "test:e2e:selenium": "SELENIUM_E2E=1 vitest run src/__tests__/e2e-selenium"
     },
     "devDependencies": {
         "@chromatic-com/storybook": "^5.2.1",
@@ -77,9 +78,11 @@
         "@types/qrcode": "^1.5.6",
         "@types/react": "^19.2.17",
         "@types/react-dom": "^19.2.3",
+        "@types/selenium-webdriver": "^4.35.6",
         "@typescript-eslint/eslint-plugin": "^8.64.0",
         "@typescript-eslint/parser": "^8.64.0",
         "@vitest/coverage-v8": "^4.1.10",
+        "chromedriver": "^133.0.3",
         "cspell": "^10.0.1",
         "cspell-dict-pt-br": "^1.1.1",
         "eslint": "^10.7.0",
@@ -97,6 +100,7 @@
         "markdownlint-cli2": "^0.23.0",
         "node-fetch": "^3.3.2",
         "prettier": "^3.9.5",
+        "selenium-webdriver": "^4.48.0",
         "storybook": "^10.6.0",
         "supabase": "^2.117.0-beta.2",
         "tailwindcss": "^4.3.2",
