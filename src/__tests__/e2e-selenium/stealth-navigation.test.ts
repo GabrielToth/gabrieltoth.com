@@ -10,10 +10,7 @@
 
 import { describe, it, expect, beforeAll, afterAll } from "vitest"
 import { WebDriver, By, until } from "selenium-webdriver"
-import {
-    createStealthDriver,
-    quitDriver,
-} from "@/lib/testing/selenium-stealth"
+import { createStealthDriver, quitDriver } from "@/lib/testing/selenium-stealth"
 
 const BASE_URL = process.env.TEST_BASE_URL || "http://localhost:3000"
 const E2E_ENABLED = process.env.SELENIUM_E2E === "1"

@@ -1563,3 +1563,4 @@ twid
 automations
 chromedriver
 goog
+LOCALAPPDATA

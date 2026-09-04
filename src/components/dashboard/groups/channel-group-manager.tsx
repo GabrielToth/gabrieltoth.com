@@ -141,14 +141,14 @@ export function ChannelGroupManager({
 
     if (loading) {
         return (
-            <div className="rounded-xl border border-neutral-800 bg-neutral-900/60 p-4 text-center text-xs text-neutral-400">
+            <div className="rounded-xl border border-neutral-800 bg-background p-4 text-center text-xs text-neutral-400">
                 Loading groups...
             </div>
         )
     }
 
     return (
-        <div className="rounded-xl border border-neutral-800 bg-neutral-900/60 p-4 space-y-4">
+        <div className="rounded-xl border border-neutral-800 bg-background p-4 space-y-4">
             <div className="flex items-center justify-between border-b border-neutral-800 pb-3">
                 <div>
                     <h3 className="text-sm font-semibold text-neutral-200">
@@ -169,20 +169,20 @@ export function ChannelGroupManager({
             </div>
 
             {creating && (
-                <div className="rounded-lg border border-neutral-700 bg-neutral-800/80 p-3 space-y-2">
+                <div className="rounded-lg border border-neutral-700 bg-card p-3 space-y-2">
                     <input
                         type="text"
                         placeholder="Group Name..."
                         value={newName}
                         onChange={e => setNewName(e.target.value)}
-                        className="w-full text-xs rounded border border-neutral-700 bg-neutral-900 px-3 py-2 text-neutral-200 focus:outline-none focus:border-primary"
+                        className="w-full text-xs rounded border border-neutral-700 bg-background px-3 py-2 text-neutral-200 focus:outline-none focus:border-primary"
                     />
                     <input
                         type="text"
                         placeholder="Description (optional)..."
                         value={newDesc}
                         onChange={e => setNewDesc(e.target.value)}
-                        className="w-full text-xs rounded border border-neutral-700 bg-neutral-900 px-3 py-2 text-neutral-200 focus:outline-none focus:border-primary"
+                        className="w-full text-xs rounded border border-neutral-700 bg-background px-3 py-2 text-neutral-200 focus:outline-none focus:border-primary"
                     />
                     <div className="flex justify-end gap-2">
                         <button
@@ -221,7 +221,7 @@ export function ChannelGroupManager({
                                             isExpanded ? null : group.id
                                         )
                                     }
-                                    className="flex items-center justify-between p-3 cursor-pointer hover:bg-neutral-900/50 transition-colors"
+                                    className="flex items-center justify-between p-3 cursor-pointer hover:bg-background transition-colors"
                                 >
                                     <div className="flex items-center gap-2">
                                         {isExpanded ? (
@@ -241,7 +241,7 @@ export function ChannelGroupManager({
                                         </div>
                                     </div>
                                     <div className="flex items-center gap-3">
-                                        <span className="text-[10px] font-mono text-neutral-400 bg-neutral-800/60 px-2 py-0.5 rounded-full">
+                                        <span className="text-[10px] font-mono text-neutral-400 bg-card px-2 py-0.5 rounded-full">
                                             {group.members?.length || 0}{" "}
                                             channels
                                         </span>
@@ -259,7 +259,7 @@ export function ChannelGroupManager({
                                 </div>
 
                                 {isExpanded && (
-                                    <div className="border-t border-neutral-800/60 p-3 bg-neutral-900/40 space-y-3">
+                                    <div className="border-t border-neutral-800/60 p-3 bg-background space-y-3">
                                         {/* Add Channel to Group Controls */}
                                         <div className="flex items-center gap-2">
                                             <select
@@ -269,7 +269,7 @@ export function ChannelGroupManager({
                                                         e.target.value
                                                     )
                                                 }
-                                                className="flex-1 text-xs rounded border border-neutral-700 bg-neutral-900 px-2 py-1.5 text-neutral-200 focus:outline-none focus:border-primary"
+                                                className="flex-1 text-xs rounded border border-neutral-700 bg-background px-2 py-1.5 text-neutral-200 focus:outline-none focus:border-primary"
                                             >
                                                 <option value="">
                                                     Select connected channel to
@@ -309,7 +309,7 @@ export function ChannelGroupManager({
                                                 group.members.map(m => (
                                                     <div
                                                         key={m.id}
-                                                        className="flex items-center justify-between rounded bg-neutral-800/40 px-2.5 py-1.5 text-xs"
+                                                        className="flex items-center justify-between rounded bg-card px-2.5 py-1.5 text-xs"
                                                     >
                                                         <div className="flex items-center gap-2">
                                                             <span

@@ -295,7 +295,7 @@ export default function ClonerPage() {
 
             {/* STEP 1: CHANNEL INSPECT & SEARCH */}
             {step === "search" && (
-                <div className="rounded-xl border border-neutral-800 bg-neutral-900/60 p-6 space-y-4">
+                <div className="rounded-xl border border-neutral-800 bg-background/60 p-6 space-y-4">
                     <div className="flex items-center justify-between flex-wrap gap-2">
                         <div className="max-w-xl space-y-1">
                             <h2 className="text-base font-semibold text-neutral-200">
@@ -368,7 +368,7 @@ export default function ClonerPage() {
             {step === "configure" && inspectedChannel && (
                 <div className="space-y-6">
                     {/* Inspected Channel Summary Header */}
-                    <div className="rounded-xl border border-neutral-800 bg-neutral-900/60 p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                    <div className="rounded-xl border border-neutral-800 bg-background/60 p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                         <div className="flex items-center gap-3">
                             {inspectedChannel.avatarUrl ? (
                                 <img
@@ -410,7 +410,7 @@ export default function ClonerPage() {
                     </div>
 
                     {/* Target Group & Publishing Schedule Settings */}
-                    <div className="rounded-xl border border-neutral-800 bg-neutral-900/60 p-4 space-y-4">
+                    <div className="rounded-xl border border-neutral-800 bg-background/60 p-4 space-y-4">
                         <h3 className="text-sm font-semibold text-neutral-200 border-b border-neutral-800 pb-2">
                             2. Configurações de Destino e Frequência de Postagem
                         </h3>
@@ -502,7 +502,7 @@ export default function ClonerPage() {
                     </div>
 
                     {/* Categorized Content Selection Tabs */}
-                    <div className="rounded-xl border border-neutral-800 bg-neutral-900/60 p-4 space-y-4">
+                    <div className="rounded-xl border border-neutral-800 bg-background/60 p-4 space-y-4">
                         <div className="flex items-center justify-between border-b border-neutral-800 pb-3 flex-wrap gap-2">
                             <div className="flex items-center gap-1 font-semibold text-sm text-neutral-200">
                                 <span>
@@ -672,10 +672,10 @@ export default function ClonerPage() {
                                                         <img
                                                             src={v.thumbnailUrl}
                                                             alt={v.title}
-                                                            className="h-10 w-16 object-cover rounded shrink-0 bg-neutral-800"
+                                                            className="h-10 w-16 object-cover rounded shrink-0 bg-card"
                                                         />
                                                     ) : (
-                                                        <div className="h-10 w-16 bg-neutral-800 rounded flex items-center justify-center shrink-0">
+                                                        <div className="h-10 w-16 bg-card rounded flex items-center justify-center shrink-0">
                                                             <Play className="h-4 w-4" />
                                                         </div>
                                                     )}
@@ -700,7 +700,7 @@ export default function ClonerPage() {
                     </div>
 
                     {/* Summary Footer & Action Button */}
-                    <div className="rounded-xl border border-neutral-800 bg-neutral-900/60 p-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <div className="rounded-xl border border-neutral-800 bg-background/60 p-4 flex flex-col sm:flex-row items-center justify-between gap-4">
                         <div className="text-xs space-y-1">
                             <p className="font-semibold text-neutral-200">
                                 Total Selecionado:{" "}
@@ -759,7 +759,7 @@ export default function ClonerPage() {
 
             {/* STEP 3: LIVE PROGRESS TRACKING & JOB STATUS */}
             {(step === "progress" || jobs.length > 0) && (
-                <div className="rounded-xl border border-neutral-800 bg-neutral-900/60 p-4 space-y-4">
+                <div className="rounded-xl border border-neutral-800 bg-background/60 p-4 space-y-4">
                     <div className="flex items-center justify-between border-b border-neutral-800 pb-3">
                         <h3 className="text-sm font-semibold text-neutral-200">
                             Progresso dos Trabalhos de Clonagem
@@ -847,7 +847,7 @@ export default function ClonerPage() {
                                                 {job.progress_percentage || 25}%
                                             </span>
                                         </div>
-                                        <div className="h-2 w-full bg-neutral-800 rounded-full overflow-hidden">
+                                        <div className="h-2 w-full bg-card rounded-full overflow-hidden">
                                             <div
                                                 className="h-full bg-primary transition-all duration-500"
                                                 style={{

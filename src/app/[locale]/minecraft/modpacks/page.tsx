@@ -39,15 +39,15 @@ export default async function ModpacksPage({ params }: ModpacksPageProps) {
 
     return (
         <>
-            <main className="min-h-screen bg-[#0a0a0a] text-white">
+            <main className="min-h-screen bg-[var(--background)] text-white">
                 <PageHeader
                     eyebrow={tHero("hero.badge")}
                     title={tHero("hero.title")}
                     subtitle={tHero("hero.subtitle")}
-                    className="bg-[#0a0a0a] dark:from-[#0a0a0a] dark:to-[#0a0a0a]"
+                    className="bg-[var(--background)] dark:from-[var(--background)] dark:to-[var(--background)]"
                 />
 
-                <section className="py-12 px-4 sm:px-6 lg:px-8 bg-[#0a0a0a]">
+                <section className="py-12 px-4 sm:px-6 lg:px-8 bg-[var(--background)]">
                     <div className="max-w-7xl mx-auto">
                         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
                             <Link
@@ -55,7 +55,7 @@ export default async function ModpacksPage({ params }: ModpacksPageProps) {
                                     "minecraft-modpacks-hypixel-qol",
                                     locale
                                 )}
-                                className="group bg-[#0a0a0a] border border-neutral-700 rounded-lg p-6 hover:border-[#10b981] transition-all duration-200 hover:shadow-lg hover:shadow-[#10b981]/20"
+                                className="group bg-[var(--background)] border border-neutral-700 rounded-lg p-6 hover:border-[#10b981] transition-all duration-200 hover:shadow-lg hover:shadow-[#10b981]/20"
                             >
                                 <div className="flex items-center justify-between mb-4">
                                     <h2 className="text-2xl font-bold text-white group-hover:text-[#10b981] transition-colors">

@@ -183,7 +183,7 @@ export default function StreamerPage() {
         <div className="min-h-screen bg-neutral-950 text-white">
             <div className="mx-auto max-w-7xl px-4 py-6">
                 <div className="flex items-center gap-4 mb-6">
-                    <div className="h-14 w-14 rounded-full bg-neutral-800 flex items-center justify-center text-xl font-bold overflow-hidden">
+                    <div className="h-14 w-14 rounded-full bg-card flex items-center justify-center text-xl font-bold overflow-hidden">
                         {streamer.avatarUrl ? (
                             <img
                                 src={streamer.avatarUrl}
@@ -238,7 +238,7 @@ export default function StreamerPage() {
                                             className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
                                                 selectedPlatform === p.platform
                                                     ? "text-white ring-2 ring-offset-1 ring-offset-neutral-900"
-                                                    : "text-neutral-400 hover:text-white bg-neutral-800"
+                                                    : "text-neutral-400 hover:text-white bg-card"
                                             }`}
                                             style={{
                                                 backgroundColor:
@@ -266,7 +266,7 @@ export default function StreamerPage() {
                                 />
                             </div>
                         ) : (
-                            <div className="aspect-video rounded-xl bg-neutral-900 flex items-center justify-center">
+                            <div className="aspect-video rounded-xl bg-background flex items-center justify-center">
                                 <p className="text-neutral-500">
                                     No player available for this platform
                                 </p>
@@ -274,7 +274,7 @@ export default function StreamerPage() {
                         )}
 
                         {livePlatforms.length > 0 && (
-                            <div className="rounded-xl border border-neutral-800 bg-neutral-900/60 p-4">
+                            <div className="rounded-xl border border-neutral-800 bg-background p-4">
                                 <h3 className="text-sm font-semibold text-neutral-200 mb-3">
                                     Other Platforms
                                 </h3>
@@ -304,7 +304,7 @@ export default function StreamerPage() {
                     </div>
 
                     <div className="space-y-4">
-                        <div className="rounded-xl border border-neutral-800 bg-neutral-900/60 p-4">
+                        <div className="rounded-xl border border-neutral-800 bg-background p-4">
                             <h3 className="text-sm font-semibold text-neutral-200 mb-3">
                                 Chat
                             </h3>
@@ -325,7 +325,7 @@ export default function StreamerPage() {
                                                 handleSendChat()
                                         }}
                                         placeholder="Type a message..."
-                                        className="flex-1 rounded-lg border border-neutral-700 bg-neutral-800 px-3 py-2 text-sm text-neutral-100 placeholder-neutral-500 focus:outline-none focus:border-neutral-500"
+                                        className="flex-1 rounded-lg border border-neutral-700 bg-card px-3 py-2 text-sm text-neutral-100 placeholder-neutral-500 focus:outline-none focus:border-neutral-500"
                                     />
                                     <button
                                         onClick={handleSendChat}
@@ -340,7 +340,7 @@ export default function StreamerPage() {
                             </div>
                         </div>
 
-                        <div className="rounded-xl border border-neutral-800 bg-neutral-900/60 p-4">
+                        <div className="rounded-xl border border-neutral-800 bg-background p-4">
                             <h3 className="text-sm font-semibold text-neutral-200 mb-3">
                                 Connected Platforms
                             </h3>

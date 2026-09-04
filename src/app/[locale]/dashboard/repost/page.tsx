@@ -132,17 +132,17 @@ export default function RepostPage() {
             </div>
 
             {showForm && (
-                <div className="rounded-xl border border-neutral-800 bg-neutral-900/60 p-4 space-y-3">
+                <div className="rounded-xl border border-neutral-800 bg-background/60 p-4 space-y-3">
                     <input
                         value={sourceUrl}
                         onChange={e => setSourceUrl(e.target.value)}
                         placeholder="YouTube channel URL or handle (e.g. https://youtube.com/@channel)"
-                        className="w-full rounded-lg border border-neutral-700 bg-neutral-800 px-3 py-2 text-sm text-neutral-100 focus:outline-none"
+                        className="w-full rounded-lg border border-neutral-700 bg-card px-3 py-2 text-sm text-neutral-100 focus:outline-none"
                     />
                     <select
                         value={targetGroupId}
                         onChange={e => setTargetGroupId(e.target.value)}
-                        className="w-full rounded-lg border border-neutral-700 bg-neutral-800 px-3 py-2 text-sm text-neutral-100 focus:outline-none"
+                        className="w-full rounded-lg border border-neutral-700 bg-card px-3 py-2 text-sm text-neutral-100 focus:outline-none"
                     >
                         <option value="">Select target group...</option>
                         {groups.map(g => (
@@ -162,7 +162,7 @@ export default function RepostPage() {
                                 setInterval(parseInt(e.target.value) || 360)
                             }
                             min={60}
-                            className="w-20 rounded-lg border border-neutral-700 bg-neutral-800 px-3 py-2 text-sm text-neutral-100 focus:outline-none"
+                            className="w-20 rounded-lg border border-neutral-700 bg-card px-3 py-2 text-sm text-neutral-100 focus:outline-none"
                         />
                         <span className="text-xs text-neutral-400">
                             minutes
@@ -191,7 +191,7 @@ export default function RepostPage() {
                 {configs.map(config => (
                     <div
                         key={config.id}
-                        className="rounded-xl border border-neutral-800 bg-neutral-900/60 p-4 flex items-center justify-between"
+                        className="rounded-xl border border-neutral-800 bg-background/60 p-4 flex items-center justify-between"
                     >
                         <div>
                             <p className="text-sm font-semibold text-neutral-200">
@@ -213,7 +213,7 @@ export default function RepostPage() {
                                 className={`px-3 py-1.5 rounded-lg text-xs font-semibold ${
                                     config.enabled
                                         ? "bg-emerald-600/20 text-emerald-400"
-                                        : "bg-neutral-800 text-neutral-500"
+                                        : "bg-card text-neutral-500"
                                 }`}
                             >
                                 {config.enabled ? "ON" : "OFF"}

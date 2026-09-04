@@ -46,7 +46,10 @@
         "i18n:check-params": "node scripts/i18n/check-params.mjs",
         "i18n:check-params:report": "node scripts/i18n/check-params.mjs --report",
         "build": "next build",
-        "test:e2e:selenium": "SELENIUM_E2E=1 vitest run src/__tests__/e2e-selenium"
+        "test:e2e:selenium": "SELENIUM_E2E=1 vitest run src/__tests__/e2e-selenium",
+        "standards:check": "node scripts/check-component-standards.mjs",
+        "test:e2e:selenium:profile": "SELENIUM_E2E=1 SELENIUM_PROFILE=1 vitest run src/__tests__/e2e-selenium",
+        "test:e2e:selenium:crawl": "SELENIUM_E2E=1 vitest run src/__tests__/e2e-selenium/full-site-crawl.test.ts"
     },
     "devDependencies": {
         "@chromatic-com/storybook": "^5.2.1",
