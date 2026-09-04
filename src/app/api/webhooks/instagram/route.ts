@@ -16,6 +16,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import crypto from "crypto"
 import { handleWebhookEvent } from "@/lib/instagram/webhook-handler"
+import type { InstagramWebhookEvent } from "@/lib/instagram/webhook-types"
 import { createLogger } from "@/lib/logger"
 
 const logger = createLogger("InstagramWebhook")
@@ -87,8 +88,7 @@ export async function POST(req: NextRequest) {
 
         const event = body as { object?: string }
         if (event?.object === "page" || event?.object === "instagram") {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            handleWebhookEvent(event as any)
+            handleWebhookEvent(event as unknown as InstagramWebhookEvent)
         }
 
         return new NextResponse("OK", { status: 200 })
