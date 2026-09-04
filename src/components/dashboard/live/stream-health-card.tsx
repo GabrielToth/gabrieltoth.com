@@ -26,7 +26,7 @@ export function StreamHealthCard({ metrics }: StreamHealthCardProps) {
     }
 
     return (
-        <div className="rounded-xl border border-neutral-800 bg-neutral-900/60 p-4 backdrop-blur-sm">
+        <div className="rounded-xl border border-neutral-800 bg-background p-4 backdrop-blur-sm">
             <div className="flex items-center justify-between border-b border-neutral-800 pb-3">
                 <h3 className="text-sm font-semibold text-neutral-200">
                     Stream Health
@@ -41,25 +41,25 @@ export function StreamHealthCard({ metrics }: StreamHealthCardProps) {
             </div>
 
             <div className="mt-4 grid grid-cols-2 gap-3 text-xs sm:grid-cols-4">
-                <div className="rounded-lg bg-neutral-800/40 p-2.5">
+                <div className="rounded-lg bg-card p-2.5">
                     <p className="text-neutral-400">Bitrate</p>
                     <p className="mt-1 text-sm font-bold text-neutral-100">
                         {metrics.bitrateKbps} Kbps
                     </p>
                 </div>
-                <div className="rounded-lg bg-neutral-800/40 p-2.5">
+                <div className="rounded-lg bg-card p-2.5">
                     <p className="text-neutral-400">Frame Rate</p>
                     <p className="mt-1 text-sm font-bold text-neutral-100">
                         {metrics.fps} FPS
                     </p>
                 </div>
-                <div className="rounded-lg bg-neutral-800/40 p-2.5">
+                <div className="rounded-lg bg-card p-2.5">
                     <p className="text-neutral-400">Latency</p>
                     <p className="mt-1 text-sm font-bold text-neutral-100">
                         {(metrics.latencyMs / 1000).toFixed(1)}s
                     </p>
                 </div>
-                <div className="rounded-lg bg-neutral-800/40 p-2.5">
+                <div className="rounded-lg bg-card p-2.5">
                     <p className="text-neutral-400">Dropped Frames</p>
                     <p className="mt-1 text-sm font-bold text-neutral-100">
                         {metrics.droppedFrames}

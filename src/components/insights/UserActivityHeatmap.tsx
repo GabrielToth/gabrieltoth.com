@@ -92,7 +92,7 @@ export const UserActivityHeatmap: React.FC<UserActivityHeatmapProps> = ({
     }, [logs, selectedActionFilter])
 
     const getIntensityClass = (val: number) => {
-        if (val === 0) return "bg-neutral-900 border-neutral-800"
+        if (val === 0) return "bg-background border-neutral-800"
         if (val <= 2)
             return "bg-emerald-950/60 border-emerald-800/40 text-emerald-300"
         if (val <= 4)
@@ -182,7 +182,7 @@ export const UserActivityHeatmap: React.FC<UserActivityHeatmapProps> = ({
             {/* Legend */}
             <div className="flex items-center justify-end gap-2 text-xs text-muted-foreground border-t border-border/30 pt-3">
                 <span>Less</span>
-                <div className="w-3 h-3 rounded bg-neutral-900 border border-neutral-800" />
+                <div className="w-3 h-3 rounded bg-background border border-neutral-800" />
                 <div className="w-3 h-3 rounded bg-emerald-950/60 border border-emerald-800/40" />
                 <div className="w-3 h-3 rounded bg-emerald-800/80 border border-emerald-600/50" />
                 <div className="w-3 h-3 rounded bg-emerald-600 border border-emerald-500" />
@@ -217,7 +217,7 @@ export const UserActivityHeatmap: React.FC<UserActivityHeatmapProps> = ({
                                         <span className="font-semibold text-foreground font-mono">
                                             {log.action}
                                         </span>
-                                        <span className="text-[10px] px-1.5 py-0.2 bg-neutral-800 rounded text-neutral-300">
+                                        <span className="text-[10px] px-1.5 py-0.2 bg-card rounded text-neutral-300">
                                             {log.resource}
                                         </span>
                                     </div>

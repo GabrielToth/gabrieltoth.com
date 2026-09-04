@@ -372,7 +372,7 @@ export function UnifiedChat({
                                 className={`px-2 py-1 rounded text-xs font-medium transition flex items-center gap-1 ${
                                     isEnabled
                                         ? `${badge.bgClass} text-white`
-                                        : "bg-neutral-800 text-neutral-500 line-through"
+                                        : "bg-card text-neutral-500 line-through"
                                 }`}
                                 title={`${isEnabled ? "Click to hide" : "Click to show"} ${p}`}
                             >
@@ -398,7 +398,7 @@ export function UnifiedChat({
                                 )
                             }
                             title="Abrir chat em popup (OBS / Browser Source)"
-                            className="inline-flex items-center gap-1 rounded-full border border-neutral-700 bg-neutral-800 px-2.5 py-1 text-xs font-medium text-neutral-200 transition hover:bg-neutral-700"
+                            className="inline-flex items-center gap-1 rounded-full border border-neutral-700 bg-card px-2.5 py-1 text-xs font-medium text-neutral-200 transition hover:bg-neutral-700"
                         >
                             <ExternalLink className="h-3.5 w-3.5" />
                             Popout
@@ -461,7 +461,7 @@ export function UnifiedChat({
                     <select
                         value={sendMode}
                         onChange={e => setSendMode(e.target.value)}
-                        className="rounded-lg border border-neutral-700 bg-neutral-800 px-2 py-2 text-xs text-neutral-100 focus:border-neutral-500 focus:outline-none"
+                        className="rounded-lg border border-neutral-700 bg-card px-2 py-2 text-xs text-neutral-100 focus:border-neutral-500 focus:outline-none"
                     >
                         {platforms.map(p => (
                             <option key={p} value={p}>
@@ -484,7 +484,7 @@ export function UnifiedChat({
                                 ? "Message all platforms..."
                                 : `Message #${sendMode}...`
                         }
-                        className="flex-1 rounded-lg border border-neutral-700 bg-neutral-800 px-3 py-2 text-xs text-neutral-100 placeholder-neutral-500 focus:border-neutral-500 focus:outline-none"
+                        className="flex-1 rounded-lg border border-neutral-700 bg-card px-3 py-2 text-xs text-neutral-100 placeholder-neutral-500 focus:border-neutral-500 focus:outline-none"
                     />
                     <button
                         onClick={handleSend}

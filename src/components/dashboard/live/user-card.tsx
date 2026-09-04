@@ -51,7 +51,7 @@ export function UserCard({
     )
 
     return (
-        <div className="rounded-xl border border-neutral-700 bg-neutral-900 p-4 shadow-xl">
+        <div className="rounded-xl border border-neutral-700 bg-background p-4 shadow-xl">
             <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
                     <span
@@ -116,7 +116,7 @@ export function UserCard({
                         <button
                             key={opt.duration}
                             onClick={() => handleTimeout(opt.duration)}
-                            className="rounded-md bg-neutral-800 px-2.5 py-1.5 text-[11px] font-medium text-neutral-200 hover:bg-orange-600/30 hover:text-orange-300 transition-colors"
+                            className="rounded-md bg-card px-2.5 py-1.5 text-[11px] font-medium text-neutral-200 hover:bg-orange-600/30 hover:text-orange-300 transition-colors"
                         >
                             {opt.label}
                         </button>

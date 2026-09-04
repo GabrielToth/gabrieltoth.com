@@ -42,21 +42,21 @@ export default async function HypixelQolPage({ params }: HypixelQolPageProps) {
 
     return (
         <>
-            <main className="min-h-screen bg-[#0a0a0a] text-white">
+            <main className="min-h-screen bg-[var(--background)] text-white">
                 <PageHeader
                     eyebrow={tHero("hero.badge")}
                     title={tHero("hero.title")}
                     subtitle={tHero("hero.subtitle")}
-                    className="bg-[#0a0a0a] dark:from-[#0a0a0a] dark:to-[#0a0a0a]"
+                    className="bg-[var(--background)] dark:from-[var(--background)] dark:to-[var(--background)]"
                 />
 
                 {/* Navigation Menu */}
-                <section className="pb-8 px-4 sm:px-6 lg:px-8 border-b border-neutral-700 bg-[#0a0a0a]">
+                <section className="pb-8 px-4 sm:px-6 lg:px-8 border-b border-neutral-700 bg-[var(--background)]">
                     <div className="max-w-7xl mx-auto">
                         <div className="flex flex-wrap gap-4 mb-8">
                             <Link
                                 href={getLocalizedPath("minecraft", locale)}
-                                className="px-4 py-2 bg-[#0a0a0a] border border-neutral-700 rounded-lg hover:border-[#10b981] transition-all duration-200 text-muted-foreground hover:text-[#10b981]"
+                                className="px-4 py-2 bg-[var(--background)] border border-neutral-700 rounded-lg hover:border-[#10b981] transition-all duration-200 text-muted-foreground hover:text-[#10b981]"
                             >
                                 ←{" "}
                                 {t("landing.title", {
@@ -68,7 +68,7 @@ export default async function HypixelQolPage({ params }: HypixelQolPageProps) {
                                     "minecraft-modpacks",
                                     locale
                                 )}
-                                className="px-4 py-2 bg-[#0a0a0a] border border-neutral-700 rounded-lg hover:border-[#10b981] transition-all duration-200 text-muted-foreground hover:text-[#10b981]"
+                                className="px-4 py-2 bg-[var(--background)] border border-neutral-700 rounded-lg hover:border-[#10b981] transition-all duration-200 text-muted-foreground hover:text-[#10b981]"
                             >
                                 {t("landing.modpacksTitle", {
                                     defaultValue: "Modpacks",
@@ -81,7 +81,7 @@ export default async function HypixelQolPage({ params }: HypixelQolPageProps) {
                 {/* Content Section */}
                 <section className="py-16 px-4 sm:px-6 lg:px-8">
                     <div className="max-w-7xl mx-auto">
-                        <div className="bg-[#0a0a0a] border border-neutral-700 rounded-lg p-8">
+                        <div className="bg-[var(--background)] border border-neutral-700 rounded-lg p-8">
                             <h2 className="text-3xl font-bold mb-6 text-[#10b981]">
                                 About This Modpack
                             </h2>
