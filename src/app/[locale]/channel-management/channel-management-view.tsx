@@ -497,12 +497,12 @@ const EditorSection = ({ locale }: { locale: Locale }) => {
     const t = useTranslations("channelManagement")
 
     return (
-        <section className="w-full bg-primary py-20">
+        <section className="w-full bg-muted py-20">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                <h2 className="text-3xl font-bold text-primary-foreground mb-4">
+                <h2 className="text-3xl font-bold text-foreground mb-4">
                     {t("editorCta.title")}
                 </h2>
-                <p className="text-lg text-primary-foreground/80 mb-8">
+                <p className="text-lg text-muted-foreground mb-8">
                     {t("editorCta.subtitle")}
                 </p>
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -513,9 +513,8 @@ const EditorSection = ({ locale }: { locale: Locale }) => {
                         className="w-full sm:w-auto"
                     >
                         <Button
-                            variant="outline"
                             size="lg"
-                            className="w-full border-primary-foreground text-primary bg-primary-foreground hover:bg-primary-foreground/90 hover:text-primary"
+                            className="w-full bg-primary text-primary-foreground hover:bg-primary"
                         >
                             {t("editorCta.more")}
                         </Button>
@@ -524,7 +523,7 @@ const EditorSection = ({ locale }: { locale: Locale }) => {
                         <Button
                             variant="outline"
                             size="lg"
-                            className="w-full bg-transparent border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary"
+                            className="w-full bg-transparent border-border text-foreground hover:bg-accent/20"
                         >
                             {t("editorCta.workAsEditor")}
                         </Button>

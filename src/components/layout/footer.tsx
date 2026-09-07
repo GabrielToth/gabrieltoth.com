@@ -12,20 +12,6 @@ export default async function Footer({ locale }: FooterProps) {
 
     return (
         <footer className="bg-background text-white">
-            {/* Data Transparency Banner */}
-            <div className="bg-blue-900 py-4 px-4 sm:px-6 lg:px-8">
-                <div className="max-w-7xl mx-auto">
-                    <div className="text-center">
-                        <h3 className="text-sm font-semibold text-blue-100 mb-2">
-                            {t("dataInfo.title")}
-                        </h3>
-                        <p className="text-xs text-blue-200">
-                            {t("dataInfo.text")}
-                        </p>
-                    </div>
-                </div>
-            </div>
-
             {/* Main Footer */}
             <div className="py-12 px-4 sm:px-6 lg:px-8">
                 <div className="max-w-7xl mx-auto">
