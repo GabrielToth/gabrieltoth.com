@@ -177,7 +177,7 @@ export default async function PCOptimizationTermsPage({ params }: PageProps) {
                                     <h2 className="text-2xl font-semibold text-foreground dark:text-foreground mb-4">
                                         {t("support.title")}
                                     </h2>
-                                    <div className="p-6 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
+                                    <div className="p-6 bg-card border border-border rounded-lg">
                                         <p className="text-foreground dark:text-foreground">
                                             {t("support.text")}
                                         </p>

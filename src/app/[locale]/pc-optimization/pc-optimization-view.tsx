@@ -41,7 +41,7 @@ export default function PCOptimizationView({
     }>
 
     return (
-        <div className="min-h-screen bg-black text-white overflow-hidden">
+        <div className="min-h-screen bg-background text-foreground overflow-hidden">
             {/* Hero Section */}
             <section className="relative">
                 <PCOptimizationHero locale={locale} />
@@ -61,20 +61,13 @@ export default function PCOptimizationView({
                         ))}
                     </div>
                 </div>
-
-                {/* Scroll Animation */}
-                <div className="relative z-20 flex justify-center py-12">
-                    <div className="w-6 h-10 border-2 border-border rounded-full flex justify-center">
-                        <div className="w-1 h-3 bg-muted rounded-full mt-2 animate-bounce"></div>
-                    </div>
-                </div>
             </section>
 
             {/* Features Section */}
-            <section className="py-24 bg-gradient-to-b from-black to-gray-900">
+            <section className="py-24">
                 <div className="max-w-7xl mx-auto px-4">
                     <div className="text-center mb-16">
-                        <h2 className="text-4xl md:text-5xl font-black mb-6 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+                        <h2 className="text-4xl md:text-5xl font-black mb-6 text-primary">
                             {t("features.title")}
                         </h2>
                         <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
@@ -89,12 +82,12 @@ export default function PCOptimizationView({
                             return (
                                 <div
                                     key={index}
-                                    className="bg-card/50 backdrop-blur-sm border border-border rounded-xl p-6 hover:border-primary/50 transition-all duration-300 hover:transform hover:scale-105"
+                                    className="bg-card border border-border rounded-xl p-6 hover:border-primary/50 transition-all duration-300"
                                 >
-                                    <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-500 rounded-lg flex items-center justify-center mb-4">
-                                        <IconComponent className="w-6 h-6 text-white" />
+                                    <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
+                                        <IconComponent className="w-6 h-6 text-primary" />
                                     </div>
-                                    <h3 className="text-xl font-bold mb-3 text-white">
+                                    <h3 className="text-xl font-bold mb-3 text-foreground">
                                         {feature.title}
                                     </h3>
                                     <p className="text-muted-foreground leading-relaxed">
@@ -108,13 +101,10 @@ export default function PCOptimizationView({
             </section>
 
             {/* Pricing Section */}
-            <section
-                id="pricing"
-                className="py-24 bg-gradient-to-b from-gray-900 to-black"
-            >
+            <section id="pricing" className="py-24">
                 <div className="max-w-7xl mx-auto px-4">
                     <div className="text-center mb-16">
-                        <h2 className="text-4xl md:text-5xl font-black mb-6 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+                        <h2 className="text-4xl md:text-5xl font-black mb-6 text-primary">
                             {t("pricing.title")}
                         </h2>
                         <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
@@ -134,15 +124,15 @@ export default function PCOptimizationView({
                             return (
                                 <div
                                     key={index}
-                                    className={`relative bg-card/50 backdrop-blur-sm border rounded-2xl p-8 hover:transform hover:scale-105 transition-all duration-300 ${
+                                    className={`relative bg-card border rounded-2xl p-8 transition-all duration-300 ${
                                         plan.popular
-                                            ? "border-primary shadow-2xl shadow-blue-500/20"
+                                            ? "border-primary shadow-2xl shadow-primary/10"
                                             : "border-border"
                                     }`}
                                 >
                                     {plan.popular && (
                                         <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                                            <div className="bg-gradient-to-r from-blue-500 to-purple-500 text-white px-4 py-1 rounded-full text-sm font-bold">
+                                            <div className="bg-primary text-primary-foreground px-4 py-1 rounded-full text-sm font-bold">
                                                 {t("pricing.popular")}
                                             </div>
                                         </div>
@@ -159,7 +149,7 @@ export default function PCOptimizationView({
                                         )}
 
                                     <div className="text-center mb-8">
-                                        <h3 className="text-2xl font-bold text-white mb-4">
+                                        <h3 className="text-2xl font-bold text-foreground mb-4">
                                             {plan.name}
                                         </h3>
                                         <div className="flex items-center justify-center gap-2 mb-2">
@@ -194,10 +184,10 @@ export default function PCOptimizationView({
                                     </ul>
 
                                     <button
-                                        className={`w-full py-3 rounded-lg font-semibold transition-all duration-300 ${
+                                        className={`w-full py-3 rounded-full font-semibold transition-colors ${
                                             plan.popular
-                                                ? "bg-gradient-to-r from-blue-600 to-primary hover:from-blue-700 hover:to-purple-700 text-white"
-                                                : "bg-muted hover:bg-muted text-muted-foreground"
+                                                ? "bg-primary text-primary-foreground hover:bg-primary"
+                                                : "bg-muted hover:bg-accent/20 text-muted-foreground"
                                         }`}
                                     >
                                         {t("pricing.cta")}
@@ -210,10 +200,10 @@ export default function PCOptimizationView({
             </section>
 
             {/* Testimonials Section */}
-            <section className="py-24 bg-gradient-to-b from-black to-gray-900">
+            <section className="py-24">
                 <div className="max-w-7xl mx-auto px-4">
                     <div className="text-center mb-16">
-                        <h2 className="text-4xl md:text-5xl font-black mb-6 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+                        <h2 className="text-4xl md:text-5xl font-black mb-6 text-primary">
                             {t("testimonials.title")}
                         </h2>
                         <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
@@ -225,7 +215,7 @@ export default function PCOptimizationView({
                         {testimonialsList.map((testimonial, index) => (
                             <div
                                 key={index}
-                                className="bg-card/50 backdrop-blur-sm border border-border rounded-xl p-6"
+                                className="bg-card border border-border rounded-xl p-6"
                             >
                                 <div className="flex items-center mb-4">
                                     {[...Array(testimonial.rating)].map(
@@ -241,7 +231,7 @@ export default function PCOptimizationView({
                                     "{testimonial.content}"
                                 </p>
                                 <div>
-                                    <div className="font-bold text-white">
+                                    <div className="font-bold text-foreground">
                                         {testimonial.name}
                                     </div>
                                     <div className="text-muted-foreground text-sm">
@@ -255,12 +245,12 @@ export default function PCOptimizationView({
             </section>
 
             {/* CTA Section */}
-            <section className="py-24 bg-gradient-to-r from-blue-900 to-purple-900">
+            <section className="py-24 bg-primary">
                 <div className="max-w-4xl mx-auto px-4 text-center">
-                    <h2 className="text-4xl md:text-5xl font-black mb-6 text-white">
+                    <h2 className="text-4xl md:text-5xl font-black mb-6 text-primary-foreground">
                         {t("cta.title")}
                     </h2>
-                    <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
+                    <p className="text-xl text-primary-foreground/80 mb-8 max-w-2xl mx-auto">
                         {t("cta.subtitle")}
                     </p>
                     <a
@@ -269,37 +259,12 @@ export default function PCOptimizationView({
                         )}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-block px-8 py-4 bg-white text-primary hover:bg-muted rounded-lg font-semibold text-lg transition-all duration-300 transform hover:scale-105"
+                        className="inline-block px-8 py-4 bg-primary-foreground text-primary hover:bg-primary-foreground/90 rounded-full font-semibold text-lg transition-colors"
                     >
                         {t("cta.button")}
                     </a>
                 </div>
             </section>
-
-            <style>{`
-                @keyframes marquee {
-                    0% {
-                        transform: translateX(100%);
-                    }
-                    100% {
-                        transform: translateX(-100%);
-                    }
-                }
-                @keyframes marquee-slow {
-                    0% {
-                        transform: translateX(100%);
-                    }
-                    100% {
-                        transform: translateX(-200%);
-                    }
-                }
-                .animate-marquee {
-                    animation: marquee 10s linear infinite;
-                }
-                .animate-marquee-slow {
-                    animation: marquee-slow 15s linear infinite;
-                }
-            `}</style>
         </div>
     )
 }

@@ -17,13 +17,13 @@ export default function PCOptimizationHero({
             eyebrow={tHero("hero.badge")}
             title={tHero("hero.title")}
             subtitle={tHero("hero.subtitle")}
-            className="bg-gradient-to-br from-blue-900/20 via-purple-900/10 to-black dark:from-blue-900/30 dark:via-purple-900/20 dark:to-black"
+            className=""
             containerClassName="space-y-6"
         >
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                 <a
                     href="#pricing"
-                    className="px-8 py-4 bg-gradient-to-r from-blue-600 to-primary hover:from-blue-700 hover:to-purple-700 rounded-lg font-semibold text-lg transition-all duration-300 transform hover:scale-105 text-white"
+                    className="px-8 py-4 bg-primary text-primary-foreground rounded-full font-semibold text-lg transition-colors hover:bg-primary"
                 >
                     {tHero("hero.cta")}
                 </a>
