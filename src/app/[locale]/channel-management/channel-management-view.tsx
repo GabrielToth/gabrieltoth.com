@@ -1,6 +1,5 @@
 "use client"
 
-import LanguageSelectorWrapper from "@/components/layout/language-selector-wrapper"
 import PageHeader from "@/components/layout/page-header"
 import { Button } from "@/components/ui/button"
 import PricingToggle from "@/components/ui/pricing-toggle"
@@ -542,16 +541,6 @@ const ChannelManagementView = ({ locale }: ChannelManagementLandingProps) => {
 
     return (
         <main className="flex min-h-screen flex-col">
-            {/* Language Selector */}
-            <div className="fixed top-4 right-4 z-50">
-                <div className="bg-white/90 dark:bg-card/90 backdrop-blur-sm rounded-lg p-2 shadow-md">
-                    <LanguageSelectorWrapper
-                        variant="default"
-                        includeThemeToggle={true}
-                    />
-                </div>
-            </div>
-
             {/* Page Sections */}
             <HeroSection locale={locale} />
             <AboutSection />

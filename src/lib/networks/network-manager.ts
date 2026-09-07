@@ -434,7 +434,7 @@ export class NetworkManager {
             expiresAt: dbNetwork.expires_at
                 ? new Date(dbNetwork.expires_at).getTime()
                 : undefined,
-            metadata: (dbNetwork.metadata as Record<string, any>) || undefined,
+            metadata: (dbNetwork.metadata as Record<string, unknown>) || undefined,
             createdAt,
             updatedAt,
         }

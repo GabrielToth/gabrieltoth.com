@@ -43,7 +43,7 @@ export function AuthenticationEntry({
                 </div>
 
                 {/* Card */}
-                <Card className="bg-slate-800 border-slate-700 p-6 sm:p-8 space-y-3">
+                <Card className="bg-card border-slate-700 p-6 sm:p-8 space-y-3">
                     {/* Email Registration Button */}
                     <button
                         onClick={onEmailSelected}

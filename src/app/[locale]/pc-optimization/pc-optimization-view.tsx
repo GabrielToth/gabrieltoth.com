@@ -1,7 +1,6 @@
 "use client"
 
 import PCOptimizationHero from "./pc-optimization-hero"
-import LanguageSelectorWrapper from "@/components/layout/language-selector-wrapper"
 import PricingToggle from "@/components/ui/pricing-toggle"
 import { useMoneroPricing } from "@/hooks/use-monero-pricing"
 import { type Locale } from "@/lib/i18n"
@@ -43,16 +42,6 @@ export default function PCOptimizationView({
 
     return (
         <div className="min-h-screen bg-black text-white overflow-hidden">
-            {/* Language Selector */}
-            <div className="fixed top-4 right-4 z-50">
-                <div className="bg-white/90 dark:bg-card/90 backdrop-blur-sm rounded-lg p-2 shadow-md">
-                    <LanguageSelectorWrapper
-                        variant="default"
-                        includeThemeToggle={true}
-                    />
-                </div>
-            </div>
-
             {/* Hero Section */}
             <section className="relative">
                 <PCOptimizationHero locale={locale} />

@@ -94,7 +94,6 @@ export async function POST(req: NextRequest) {
             return new NextResponse("OK", { status: 200 })
         }
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const result = await handleWebhookEvent(
             event as unknown as FacebookWebhookEvent
         )

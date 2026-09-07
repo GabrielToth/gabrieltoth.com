@@ -141,7 +141,7 @@ export default function StreamerPage() {
 
     if (loading) {
         return (
-            <div className="flex items-center justify-center min-h-screen bg-neutral-950">
+            <div className="flex items-center justify-center min-h-screen bg-background">
                 <div className="text-center">
                     <div className="mb-4 inline-block h-8 w-8 animate-spin rounded-full border-4 border-neutral-700 border-t-blue-500"></div>
                     <p className="text-neutral-400">Loading streamer...</p>
@@ -152,7 +152,7 @@ export default function StreamerPage() {
 
     if (!streamer) {
         return (
-            <div className="flex items-center justify-center min-h-screen bg-neutral-950">
+            <div className="flex items-center justify-center min-h-screen bg-background">
                 <div className="text-center">
                     <p className="text-neutral-400 text-lg">
                         Streamer not found
@@ -180,7 +180,7 @@ export default function StreamerPage() {
     const livePlatforms = streamer.platforms.filter(p => p.isLive)
 
     return (
-        <div className="min-h-screen bg-neutral-950 text-white">
+        <div className="min-h-screen bg-background text-white">
             <div className="mx-auto max-w-7xl px-4 py-6">
                 <div className="flex items-center gap-4 mb-6">
                     <div className="h-14 w-14 rounded-full bg-card flex items-center justify-center text-xl font-bold overflow-hidden">

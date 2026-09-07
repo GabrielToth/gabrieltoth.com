@@ -20,7 +20,8 @@ export default function LoginForm({ locale }: LoginFormProps) {
     const [rememberMe, setRememberMe] = useState(false)
     const [error, setError] = useState<string | null>(null)
     const [isLoading, setIsLoading] = useState(false)
-    const [showEmailForm, setShowEmailForm] = useState(false)
+    // Email/password login is "coming soon" — kept inert for future enablement
+    const showEmailForm = false
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()

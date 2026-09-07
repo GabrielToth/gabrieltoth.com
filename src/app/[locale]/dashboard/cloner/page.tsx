@@ -327,7 +327,7 @@ export default function ClonerPage() {
                                 value={urlInput}
                                 onChange={e => setUrlInput(e.target.value)}
                                 placeholder="Cole a URL ou @do_canal..."
-                                className="w-full rounded-lg border border-neutral-700 bg-neutral-950 pl-9 pr-3 py-2 text-sm text-neutral-100 placeholder-neutral-500 focus:border-primary focus:outline-none"
+                                className="w-full rounded-lg border border-neutral-700 bg-background pl-9 pr-3 py-2 text-sm text-neutral-100 placeholder-neutral-500 focus:border-primary focus:outline-none"
                                 onKeyDown={e =>
                                     e.key === "Enter" && handleInspect()
                                 }
@@ -358,7 +358,7 @@ export default function ClonerPage() {
                             placeholder="Chave de API do Google própria (opcional para zerar custos de consulta)..."
                             value={customApiKey}
                             onChange={e => setCustomApiKey(e.target.value)}
-                            className="w-full max-w-lg rounded border border-neutral-800 bg-neutral-950 px-3 py-1.5 text-xs text-neutral-200 placeholder-neutral-500 focus:outline-none focus:border-primary"
+                            className="w-full max-w-lg rounded border border-neutral-800 bg-background px-3 py-1.5 text-xs text-neutral-200 placeholder-neutral-500 focus:outline-none focus:border-primary"
                         />
                     </div>
                 </div>
@@ -425,7 +425,7 @@ export default function ClonerPage() {
                                     onChange={e =>
                                         setTargetGroupId(e.target.value)
                                     }
-                                    className="w-full rounded-md border border-neutral-700 bg-neutral-950 px-3 py-2 text-neutral-200 focus:outline-none focus:border-primary"
+                                    className="w-full rounded-md border border-neutral-700 bg-background px-3 py-2 text-neutral-200 focus:outline-none focus:border-primary"
                                 >
                                     <option value="">
                                         Selecione o grupo para repostar...
@@ -450,7 +450,7 @@ export default function ClonerPage() {
                                                 "immediate" | "daily" | "weekly"
                                         )
                                     }
-                                    className="w-full rounded-md border border-neutral-700 bg-neutral-950 px-3 py-2 text-neutral-200 focus:outline-none focus:border-primary"
+                                    className="w-full rounded-md border border-neutral-700 bg-background px-3 py-2 text-neutral-200 focus:outline-none focus:border-primary"
                                 >
                                     <option value="immediate">
                                         Imediato (Tudo de uma vez)
@@ -478,7 +478,7 @@ export default function ClonerPage() {
                                             parseInt(e.target.value, 10) || 1
                                         )
                                     }
-                                    className="w-full rounded-md border border-neutral-700 bg-neutral-950 px-3 py-2 text-neutral-200 focus:outline-none focus:border-primary"
+                                    className="w-full rounded-md border border-neutral-700 bg-background px-3 py-2 text-neutral-200 focus:outline-none focus:border-primary"
                                 />
                             </div>
                         </div>
@@ -489,7 +489,7 @@ export default function ClonerPage() {
                                 id="autoUpdate"
                                 checked={autoUpdate}
                                 onChange={e => setAutoUpdate(e.target.checked)}
-                                className="rounded border-neutral-700 bg-neutral-950 text-primary focus:ring-0"
+                                className="rounded border-neutral-700 bg-background text-primary focus:ring-0"
                             />
                             <label
                                 htmlFor="autoUpdate"
@@ -513,7 +513,7 @@ export default function ClonerPage() {
                                 </span>
                             </div>
 
-                            <div className="flex items-center gap-1 bg-neutral-950 p-1 rounded-lg border border-neutral-800 text-xs">
+                            <div className="flex items-center gap-1 bg-background p-1 rounded-lg border border-neutral-800 text-xs">
                                 <button
                                     onClick={() => setActiveTab("videos")}
                                     className={`flex items-center gap-1.5 px-3 py-1 rounded-md font-medium transition-colors ${
@@ -609,7 +609,7 @@ export default function ClonerPage() {
 
                             return (
                                 <div className="space-y-2">
-                                    <div className="flex items-center justify-between text-xs text-neutral-400 px-2 py-1 bg-neutral-950/40 rounded border border-neutral-800">
+                                    <div className="flex items-center justify-between text-xs text-neutral-400 px-2 py-1 bg-background/40 rounded border border-neutral-800">
                                         <button
                                             onClick={() =>
                                                 toggleCategorySelection(list)
@@ -660,7 +660,7 @@ export default function ClonerPage() {
                                                     className={`flex items-center gap-3 p-2 rounded-lg border cursor-pointer transition-colors ${
                                                         isSelected
                                                             ? "border-primary/50 bg-primary/5 text-neutral-200"
-                                                            : "border-neutral-800 bg-neutral-950/40 text-neutral-400 hover:border-neutral-700"
+                                                            : "border-neutral-800 bg-background/40 text-neutral-400 hover:border-neutral-700"
                                                     }`}
                                                 >
                                                     {isSelected ? (
@@ -785,7 +785,7 @@ export default function ClonerPage() {
                             {jobs.map(job => (
                                 <div
                                     key={job.id}
-                                    className="rounded-lg border border-neutral-800 bg-neutral-950/60 p-4 space-y-3"
+                                    className="rounded-lg border border-neutral-800 bg-background/60 p-4 space-y-3"
                                 >
                                     <div className="flex items-center justify-between flex-wrap gap-2">
                                         <div className="flex items-center gap-3">

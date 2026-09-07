@@ -1,4 +1,3 @@
-import { LocalePageProps } from "../lib/locale-page-props"
 import { locales } from "@/lib/i18n"
 
 export { default } from "../register/page"

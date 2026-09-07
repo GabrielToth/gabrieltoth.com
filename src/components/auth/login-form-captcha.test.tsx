@@ -16,7 +16,10 @@ vi.mock("./turnstile-widget", () => ({
     default: ({ onTokenChange }: any) => (
         <div
             data-testid="turnstile-widget"
+            role="button"
+            tabIndex={0}
             onClick={() => onTokenChange("test-captcha-token")}
+            onKeyDown={() => onTokenChange("test-captcha-token")}
         >
             Mock CAPTCHA Widget
         </div>
