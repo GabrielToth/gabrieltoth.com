@@ -213,14 +213,23 @@ export function ChannelGroupManager({
                         return (
                             <div
                                 key={group.id}
-                                className="rounded-lg border border-neutral-800 bg-neutral-950/40 overflow-hidden"
+                                className="rounded-lg border border-border bg-card overflow-hidden"
                             >
                                 <div
+                                    role="button"
+                                    tabIndex={0}
                                     onClick={() =>
                                         setExpanded(
                                             isExpanded ? null : group.id
                                         )
                                     }
+                                    onKeyDown={e => {
+                                        if (e.key === "Enter" || e.key === " ") {
+                                            setExpanded(
+                                                isExpanded ? null : group.id
+                                            )
+                                        }
+                                    }}
                                     className="flex items-center justify-between p-3 cursor-pointer hover:bg-background transition-colors"
                                 >
                                     <div className="flex items-center gap-2">

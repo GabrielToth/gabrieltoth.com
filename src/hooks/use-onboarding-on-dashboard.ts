@@ -3,8 +3,6 @@
 import { useEffect } from "react"
 import { useTutorial } from "@/components/tutorial/tutorial-provider"
 
-const ONBOARDING_RUN_KEY = "gt_onboarding_run"
-
 /**
  * Runs the first-run onboarding tour once per session after the user lands
  * on the dashboard. The provider itself remembers skip/seen in localStorage,

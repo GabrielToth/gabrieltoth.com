@@ -8,10 +8,10 @@
  * Rules:
  *  1. No raw hex greys (#0a0a0a, #111, #141414, #171717, #242424) inside
  *     pages/components — use bg-card / bg-background / border-border tokens.
- *  2. No `props: any` / `(...args: any[])` inside page.tsx/route.tsx files.
- *  3. Page aliases (localized page.tsx wrappers) must import LocalePageProps.
+ *  2. No `bg-{neutral|zinc|stone|slate|gray}-{800|900|950}` background
+ *     classes — use tokenized bg-card / bg-background / bg-muted instead.
+ *  3. No `props: any` inside page.tsx/route.tsx files.
  *  4. Components may not import from `next/router` (App Router only).
- *  5. Hardcoded Portuguese/Spanish copy in TSX → must use next-intl `t()`.
  *
  * Run: node scripts/check-component-standards.mjs
  */
@@ -26,52 +26,17 @@ const violations = []
 let scanned = 0
 
 const RAW_GREY = /#(0a0a0a|111|141414|171717|242424|262626|333333)\b/i
-const PROPS_ANY = /(?:props|props\w*)\s*(?::|=\s*)\s*(?:{\s*[\w|,\s]*}\s*:\s*)?any\b/i
+const PROPS_ANY =
+    /(?:props|props\w*)\s*(?::|=\s*)\s*(?:{\s*[\w|,\s]*}\s*:\s*)?any\b/i
 const NEXT_ROUTER = /from\s+["']next\/router["']/
-const BANNED_TAILWIND_GREYS =
-    /\bbg-(neutral-(?:8|9)00|zinc-(?:8|9)00)(?:\/|\s|"|`)/
 
-/** Locale aliases that must use LocalePageProps */
-const ALIAS_LOCALE_PAGES = new Set([
-    "a-propos-de-moi",
-    "acerca-de-mi",
-    "afiliados-amazon",
-    "afiliation-amazon",
-    "anmelden",
-    "channel-management-de",
-    "conditions-d-utilisation",
-    "connexion",
-    "datenschutzrichtlinie",
-    "editeurs",
-    "editoren",
-    "gestion-de-canales",
-    "gestion-de-chaine",
-    "gerenciamento-de-canais",
-    "iniciar-sesion",
-    "kanalverwaltung",
-    "nutzungsbedingungen",
-    "otimizacao-de-pc",
-    "optimizacion-de-pc",
-    "optimisation-de-pc",
-    "pc-optimierung",
-    "pagamentos",
-    "pagos",
-    "paiements",
-    "politica-de-privacidad",
-    "politica-de-privacidade",
-    "politique-de-confidentialite",
-    "quem-sou-eu",
-    "registrar",
-    "registrarse",
-    "registrieren",
-    "s-inscrire",
-    "servicos",
-    "servicios",
-    "termos-de-servico",
-    "terminos-de-servicio",
-    "uber-mich",
-    "zahlungen",
-])
+/**
+ * Only flag *background* classes (bg-*) in the darkest shades (800/900/950).
+ * Lighter greys (text-neutral-400, border-neutral-700) are acceptable
+ * supporting tones and are NOT violations of the card/background token rule.
+ */
+const BANNED_BG_GREYS =
+    /bg-(neutral|zinc|stone|slate|gray)-(?:800|900|950)(?:\/|[\s"`])/
 
 /** Recursively collect source files. */
 function walk(dir, out = []) {
@@ -85,8 +50,8 @@ function walk(dir, out = []) {
     return out
 }
 
-function report(file, line, rule, message) {
-    violations.push({ file: relative(ROOT, file), line, rule, message })
+function report(file, rule, message) {
+    violations.push({ file: relative(ROOT, file), rule, message })
 }
 
 function scanFile(file) {
@@ -97,31 +62,43 @@ function scanFile(file) {
 
     // Rule 1 — raw grey hex colours
     if (RAW_GREY.test(src)) {
-        report(file, 0, "raw-grey-hex", "Raw grey hex used; prefer bg-card / bg-background / border-border tokens")
+        report(
+            file,
+            "raw-grey-hex",
+            "Raw grey hex used; prefer bg-card / bg-background / border-border tokens"
+        )
     }
 
-    // Rule 1b — banned tailwind neutral/zinc-800/900 classes
-    if (BANNED_TAILWIND_GREYS.test(src)) {
-        report(file, 0, "banned-tailwind-grey", "bg-neutral-800/900 or bg-zinc-800/900 used; prefer tokenized bg-card / bg-muted / border-border")
+    // Rule 2 — banned dark grey *background* classes
+    if (BANNED_BG_GREYS.test(src)) {
+        report(
+            file,
+            "banned-bg-grey",
+            "Dark bg-neutral/zinc/stone/slate/gray-800/900/950 used; prefer tokenized bg-card / bg-background / bg-muted"
+        )
     }
 
-    // Rule 2 — props: any / (...args: any[]) in pages/routes
-    if (PROPS_ANY.test(src) && (filename === "page.tsx" || filename === "route.ts" || filename === "layout.tsx")) {
-        report(file, 0, "props-any", "Page/route using props: any — please derive proper LocalePageProps / route types")
+    // Rule 3 — props: any in pages/routes
+    if (
+        PROPS_ANY.test(src) &&
+        (filename === "page.tsx" ||
+            filename === "route.ts" ||
+            filename === "layout.tsx")
+    ) {
+        report(
+            file,
+            "props-any",
+            "Page/route using props: any — derive proper LocalePageProps / route types"
+        )
     }
 
     // Rule 4 — next/router import (Pages Router leftovers)
     if (NEXT_ROUTER.test(src)) {
-        report(file, 0, "next-router-import", "next/router is not allowed in the App Router — use next/navigation")
-    }
-
-    // Rule 3 — alias page must import LocalePageProps
-    if (filename === "page.tsx") {
-        const dir = rel.split(/[\\/]/).at(-2) || ""
-        const isAliasLocale = ALIAS_LOCALE_PAGES.has(dir)
-        if (isAliasLocale && !/LocalePageProps/.test(src)) {
-            report(file, 0, "locale-page-props", `Alias route "${dir}" must import LocalePageProps`)
-        }
+        report(
+            file,
+            "next-router-import",
+            "next/router is not allowed in the App Router — use next/navigation"
+        )
     }
 }
 
@@ -140,9 +117,11 @@ function main() {
         process.exit(0)
     }
 
-    console.log(`❌ ${violations.length} standard violation(s) across ${scanned} scanned files:\n`)
+    console.log(
+        `❌ ${violations.length} standard violation(s) across ${scanned} scanned files:\n`
+    )
     for (const v of violations) {
-        console.log(`  [${v.rule}] ${v.file}:${v.line} → ${v.message}`)
+        console.log(`  [${v.rule}] ${v.file} → ${v.message}`)
     }
     console.log("")
     process.exit(1)

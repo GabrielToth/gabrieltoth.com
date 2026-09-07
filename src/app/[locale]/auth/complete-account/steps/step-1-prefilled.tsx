@@ -142,7 +142,7 @@ export default function Step1Prefilled({
                             placeholder={t(
                                 "completeAccount.step1.picturePlaceholder"
                             )}
-                            className="w-full max-w-sm px-3 py-2 text-sm border border-border rounded-md bg-background dark:bg-gray-800 text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                            className="w-full max-w-sm px-3 py-2 text-sm border border-border rounded-md bg-background dark:bg-card text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
                         />
                         <div className="flex gap-2">
                             <button

@@ -163,10 +163,10 @@ describe("Selenium — Full Site Crawl (all locales)", () => {
                     const body = await driver.findElement(By.css("body"))
                     const text = await body.getText()
                     expect(text.length).toBeGreaterThan(0)
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                } catch (error: any) {
-                    // eslint-disable-next-line no-console
-                    console.warn(`Route failed: ${url} — ${error?.message}`)
+                } catch (error) {
+                    const message =
+                        error instanceof Error ? error.message : String(error)
+                    console.warn(`Route failed: ${url} — ${message}`)
                 }
             }
         },

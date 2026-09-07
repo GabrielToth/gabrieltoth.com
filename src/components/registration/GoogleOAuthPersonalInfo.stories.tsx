@@ -34,7 +34,7 @@ export const Default: Story = {
     },
     decorators: [
         Story => (
-            <div className="w-full max-w-md bg-gray-900 rounded-lg p-8">
+            <div className="w-full max-w-md bg-background rounded-lg p-8">
                 <Story />
             </div>
         ),
@@ -53,7 +53,7 @@ export const DifferentName: Story = {
     },
     decorators: [
         Story => (
-            <div className="w-full max-w-md bg-gray-900 rounded-lg p-8">
+            <div className="w-full max-w-md bg-background rounded-lg p-8">
                 <Story />
             </div>
         ),
@@ -72,7 +72,7 @@ export const SpecialCharacterName: Story = {
     },
     decorators: [
         Story => (
-            <div className="w-full max-w-md bg-gray-900 rounded-lg p-8">
+            <div className="w-full max-w-md bg-background rounded-lg p-8">
                 <Story />
             </div>
         ),
@@ -96,7 +96,7 @@ export const Mobile: Story = {
     },
     decorators: [
         Story => (
-            <div className="w-full bg-gray-900 rounded-lg p-4">
+            <div className="w-full bg-background rounded-lg p-4">
                 <Story />
             </div>
         ),
@@ -120,7 +120,7 @@ export const Tablet: Story = {
     },
     decorators: [
         Story => (
-            <div className="w-full max-w-2xl bg-gray-900 rounded-lg p-8">
+            <div className="w-full max-w-2xl bg-background rounded-lg p-8">
                 <Story />
             </div>
         ),

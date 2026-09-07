@@ -95,7 +95,7 @@ export const SettingsContainer: React.FC<SettingsContainerProps> = () => {
             timezone: "UTC",
         }
     })
-    const [channels, setChannels] = useState<SocialChannel[]>([])
+    const [, setChannels] = useState<SocialChannel[]>([])
     const [billing, setBilling] = useState<BillingInfo | null>(null)
     const [integrations, setIntegrations] = useState<Integration[]>([])
     const [isLoading, setIsLoading] = useState(true)

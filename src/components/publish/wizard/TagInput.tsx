@@ -153,7 +153,7 @@ export default function TagInput({
     return (
         <div className="space-y-2">
             <div
-                className={`flex min-h-10 flex-wrap items-center gap-1.5 rounded-md border bg-white px-3 py-2 text-sm ring-offset-background focus-within:ring-2 focus-within:ring-neutral-950 focus-within:ring-offset-2 dark:bg-neutral-950 dark:ring-offset-neutral-950 dark:focus-within:ring-neutral-300 ${
+                className={`flex min-h-10 flex-wrap items-center gap-1.5 rounded-md border bg-white px-3 py-2 text-sm ring-offset-background focus-within:ring-2 focus-within:ring-neutral-950 focus-within:ring-offset-2 dark:bg-background dark:ring-offset-neutral-950 dark:focus-within:ring-neutral-300 ${
                     disabled ? "cursor-not-allowed opacity-50" : ""
                 } ${
                     isAtLimit

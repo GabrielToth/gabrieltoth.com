@@ -8,7 +8,6 @@
 import { getServerSession } from "@/lib/auth/get-server-session"
 import { getNetworkGroupManager } from "@/lib/groups"
 import type { SocialPlatform } from "@/lib/networks/network-manager"
-import { isSocialPlatform } from "@/lib/platform-guards"
 import { createLogger } from "@/lib/logger"
 import { NextRequest, NextResponse } from "next/server"
 
