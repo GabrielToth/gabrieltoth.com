@@ -23,140 +23,140 @@
         ]
     },
     "platforms": {
-        "title": "Plateformes Supportées",
+        "title": "Plateformes supportées",
         "description": "Connectez et gérez vos comptes sur plusieurs réseaux en un seul endroit.",
         "items": [
             {
-                "name": "YouTube ",
-                "description": "En direct streams, video uploads and detailed analytics"
+                "name": "YouTube",
+                "description": "Diffusions en direct, téléchargements de vidéos et analytique détaillée"
             },
             {
-                "name": "TikTok ",
+                "name": "TikTok",
                 "description": "Instagram, Facebook, Threads"
             },
             {
-                "name": "Twitter/X ",
-                "description": "Tweets, retweets and reach analysis "
+                "name": "Twitter/X",
+                "description": "Tweets, retweets et analyse de portée"
             },
             {
-                "name": "Instagram ",
-                "description": "Posts, stories and follower metrics "
+                "name": "Instagram",
+                "description": "Publications, stories et métriques d'abonnés"
             },
             {
-                "name": "Twitch ",
-                "description": "En direct broadcasts and real-time chat"
+                "name": "Twitch",
+                "description": "Diffusions en direct et chat en temps réel"
             },
             {
-                "name": "Facebook ",
-                "description": "Videos, posts and audience analysis "
+                "name": "Facebook",
+                "description": "Vidéos, publications et analyse d'audience"
             }
         ]
     },
     "benefits": {
-        "title": "Why Use Our Platform ",
+        "title": "Pourquoi utiliser notre plateforme",
         "items": [
             {
-                "title": "Enregistrer Time",
-                "description": "No more switching between multiple platforms. Manage everything in one place. "
+                "title": "Gagner du temps",
+                "description": "Fini les allers-retours entre plusieurs plateformes. Gérez tout en un seul endroit."
             },
             {
-                "title": "Increase Productivity ",
-                "description": "Automate repetitive tasks and focus on what really matters: creating quality content. "
+                "title": "Augmenter la productivité",
+                "description": "Automatisez les tâches répétitives et concentrez-vous sur l'essentiel : créer du contenu de qualité."
             },
             {
-                "title": "Better Analyses",
-                "description": "See consolidated data from all platforms to make more informed decisions. "
+                "title": "De meilleures analyses",
+                "description": "Consultez les données consolidées de toutes les plateformes pour prendre des décisions plus éclairées."
             },
             {
-                "title": "Accelerated Growth ",
-                "description": "With the right tools, you can grow faster across all platforms. "
+                "title": "Croissance accélérée",
+                "description": "Avec les bons outils, vous pouvez croître plus vite sur toutes les plateformes."
             },
             {
-                "title": "Dedicated Support ",
-                "description": "Our team is always ready to help you maximize the platform's potential. "
+                "title": "Support dédié",
+                "description": "Notre équipe est toujours prête à vous aider à tirer le meilleur parti de la plateforme."
             },
             {
-                "title": "Guaranteed Security ",
-                "description": "Your data is protected with industry best practices for security. "
+                "title": "Sécurité garantie",
+                "description": "Vos données sont protégées selon les meilleures pratiques de sécurité du secteur."
             }
         ]
     },
     "pricing": {
-        "title": "Pricing Plans ",
-        "description": "Choose the perfect plan for your needs ",
+        "title": "Plans tarifaires",
+        "description": "Choisissez le plan parfait selon vos besoins",
         "plans": [
             {
-                "name": "Starter ",
-                "price": "Free ",
-                "description": "Perfect to get started ",
+                "name": "Débutant",
+                "price": "Gratuit",
+                "description": "Parfait pour commencer",
                 "features": [
-                    "Up to 2 connected platforms ",
-                    "Basic dashboard ",
-                    "E-mail support",
-                    "Limited analytics "
+                    "Jusqu'à 2 plateformes connectées",
+                    "Tableau de bord de base",
+                    "Support par e-mail",
+                    "Analytique limitée"
                 ]
             },
             {
-                "name": "Professional ",
-                "price": "$29/month ",
-                "description": "For growing creators ",
+                "name": "Professionnel",
+                "price": "29$/mois",
+                "description": "Pour les créateurs en croissance",
                 "features": [
-                    "Up to 6 connected platforms ",
-                    "Complete dashboard ",
-                    "Priority support ",
-                    "Detailed analytics ",
-                    "Batch upload "
+                    "Jusqu'à 6 plateformes connectées",
+                    "Tableau de bord complet",
+                    "Support prioritaire",
+                    "Analytique détaillée",
+                    "Téléchargement par lot"
                 ],
                 "popular": true
             },
             {
-                "name": "Enterprise ",
+                "name": "Entreprise",
                 "price": "Sur mesure",
-                "description": "For large creators ",
+                "description": "Pour les grands créateurs",
                 "features": [
-                    "Unlimited platforms ",
-                    "Custom dashboard ",
-                    "24/7 support ",
-                    "Advanced analytics ",
-                    "API integration ",
-                    "Team manager "
+                    "Plateformes illimitées",
+                    "Tableau de bord personnalisé",
+                    "Support 24/7",
+                    "Analytique avancée",
+                    "Intégration API",
+                    "Gestionnaire d'équipe"
                 ]
             }
         ],
-        "popularTag": "Most Popular "
+        "popularTag": "Le plus populaire"
     },
     "cta": {
-        "title": "Ready to Revolutionize Your Content? ",
-        "subtitle": "Join thousands of creators already using our platform ",
-        "button": "Start Free "
+        "title": "Prêt à révolutionner votre contenu ?",
+        "subtitle": "Rejoignez des milliers de créateurs qui utilisent déjà notre plateforme",
+        "button": "Commencer gratuitement"
     },
-    "pricingLabel": "Card ",
+    "pricingLabel": "Carte",
     "faq": {
-        "title": "Frequently Asked Questions ",
+        "title": "Questions fréquentes",
         "items": [
             {
-                "question": "How do I connect my social networks? ",
-                "answer": "It's simple! After creating your account, go to Paramètres > Connect Platforms and follow the authentication instructions for each social network."
+                "question": "Comment connecter mes réseaux sociaux ?",
+                "answer": "C'est simple ! Après avoir créé votre compte, allez dans Paramètres > Connecter les plateformes et suivez les instructions d'authentification pour chaque réseau social."
             },
             {
-                "question": "Is my data safe? ",
-                "answer": "Yes! We use end-to-end encryption and follow industry best practices for security. We never store your passwords. "
+                "question": "Mes données sont-elles en sécurité ?",
+                "answer": "Oui ! Nous utilisons un chiffrement de bout en bout et suivons les meilleures pratiques de sécurité du secteur. Nous ne stockons jamais vos mots de passe."
             },
             {
-                "question": "Can I upload videos to multiple platforms at the same time? ",
-                "answer": "Yes! With our batch upload feature, you can send videos to multiple platforms simultaneously with custom metadata. "
+                "question": "Puis-je télécharger des vidéos sur plusieurs plateformes en même temps ?",
+                "answer": "Oui ! Avec notre fonction de téléchargement par lot, vous pouvez envoyer des vidéos vers plusieurs plateformes simultanément avec des métadonnées personnalisées."
             },
             {
-                "question": "What is the support response time? ",
-                "answer": "Our support responds within 24 hours for Professional plans and within 1 hour for Enterprise plans. "
+                "question": "Quel est le délai de réponse du support ?",
+                "answer": "Notre support répond sous 24 heures pour les plans Professionnel et sous 1 heure pour les plans Entreprise."
             },
             {
-                "question": "Can I cancel my subscription anytime? ",
-                "answer": "Yes! You can cancel your subscription anytime without penalties. Your data will remain accessible for 30 days. "
+                "question": "Puis-je annuler mon abonnement à tout moment ?",
+                "answer": "Oui ! Vous pouvez annuler votre abonnement à tout moment sans pénalités. Vos données resteront accessibles pendant 30 jours."
             },
             {
-                "question": "Do you offer integration with external tools? ",
-                "answer": "Yes! We offer API and integrations with popular tools like Zapier, Make and other automation platforms. "
+                "question": "Proposez-vous une intégration avec des outils externes ?",
+                "answer": "Oui ! Nous proposons une API et des intégrations avec des outils populaires comme Zapier, Make et d'autres plateformes d'automatisation."
             }
         ]
     }

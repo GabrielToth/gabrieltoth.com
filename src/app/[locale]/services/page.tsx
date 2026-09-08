@@ -1,4 +1,3 @@
-import ServicesSubmenu from "@/app/[locale]/services/services-submenu"
 import Footer from "@/components/layout/footer"
 import PageHeader from "@/components/layout/page-header"
 import { type Locale } from "@/lib/i18n"
@@ -59,11 +58,6 @@ export default async function ServicesPage({ params }: ServicesPageProps) {
 
                 <section className="py-12 px-4 sm:px-6 lg:px-8 bg-background">
                     <div className="max-w-7xl mx-auto">
-                        {/* Submenu */}
-                        <div className="mb-16">
-                            <ServicesSubmenu locale={locale} />
-                        </div>
-
                         {/* Service Cards */}
                         <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto mb-16">
                             {services.slice(0, 4).map(service => (

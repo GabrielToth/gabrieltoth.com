@@ -1,169 +1,169 @@
 {
     "breadcrumbs": {
-        "services": "Services ",
+        "services": "Services",
         "pcOptimization": "Optimisation PC"
     },
     "moneroToggle": {
-        "title": "Monero (XMR) Pricing ",
-        "description": "Enable to see 50% discount prices using Monero ",
-        "enabled": "Monero Prices (50% OFF) ",
+        "title": "Tarification Monero (XMR)",
+        "description": "Activez pour afficher les prix avec 50% de réduction en Monero",
+        "enabled": "Prix Monero (-50%)",
         "disabled": "Le minage Monero nécessite un consentement préalable.",
-        "currencySymbol": "$ ",
+        "currencySymbol": "$",
         "conversionRate": 6
     },
     "hero": {
-        "badge": "SLOW PC? ",
+        "badge": "PC LENT ?",
         "title": "Optimisation Professionnelle de PC",
-        "subtitle": "Complete performance tuning so you never have to worry about lag again. ",
-        "cta": "View Plans ",
-        "videoText": "THAT'S HOW AN OPTIMIZED PC FEELS LIKE ",
+        "subtitle": "Réglage complet des performances pour ne plus jamais vous soucier du lag.",
+        "cta": "Voir les plans",
+        "videoText": "VOICI CE QUE L'ON RESSENT AVEC UN PC OPTIMISÉ",
         "stats": [
             {
-                "value": "99.9% ",
-                "label": "Uptime "
+                "value": "99,9%",
+                "label": "Disponibilité"
             },
             {
-                "value": "low ",
-                "label": "Latency "
+                "value": "faible",
+                "label": "Latence"
             },
             {
-                "value": "20+ ",
-                "label": "Games Optimized "
+                "value": "20+",
+                "label": "Jeux optimisés"
             },
             {
-                "value": "5+ ",
-                "label": "Happy Customers "
+                "value": "5+",
+                "label": "Clients satisfaits"
             }
         ],
-        "learnMore": "Learn More "
+        "learnMore": "En savoir plus"
     },
     "features": {
-        "title": "Why Choose Our Optimization ",
-        "subtitle": "Proven techniques that deliver real results for serious gamers ",
+        "title": "Pourquoi choisir notre optimisation",
+        "subtitle": "Des techniques éprouvées qui produisent de vrais résultats pour les joueurs sérieux",
         "list": [
             {
-                "title": "CPU Optimization ",
+                "title": "Optimisation du CPU",
                 "description": "Configuration des paramètres et optimisation"
             },
             {
-                "title": "Game Configuration ",
-                "description": "We configure each game individually to ensure you get the best possible FPS without sacrificing visual quality. "
+                "title": "Configuration des jeux",
+                "description": "Nous configurons chaque jeu individuellement pour garantir le meilleur FPS possible sans sacrifier la qualité visuelle."
             },
             {
-                "title": "Display Optimization ",
-                "description": "We optimize your monitor to ensure you get the best gaming experience, including resolution and frame rate adjustments. "
+                "title": "Optimisation de l'affichage",
+                "description": "Nous optimisons votre moniteur pour garantir la meilleure expérience de jeu, y compris les réglages de résolution et de fréquence d'images."
             },
             {
-                "title": "Security ",
-                "description": "We perform software updates while maintaining maximum security possible, ensuring your PC remains protected. "
+                "title": "Sécurité",
+                "description": "Nous effectuons les mises à jour logicielles tout en maintenant la sécurité maximale possible, garantissant que votre PC reste protégé."
             }
         ]
     },
     "pricing": {
-        "title": "Choose Your Optimization Tier ",
-        "subtitle": "We handle the tuning, you enjoy the performance ",
+        "title": "Choisissez votre niveau d'optimisation",
+        "subtitle": "Nous nous occupons du réglage, vous profitez des performances",
         "plans": [
             {
-                "name": "Windows Performance Boost ",
+                "name": "Boost de performance Windows",
                 "basePrice": 50,
-                "description": "Game-ready Windows & Network. Clean, fast, and fully optimized for peak performance. ",
+                "description": "Windows & réseau prêts pour le jeu. Propre, rapide et entièrement optimisé pour des performances maximales.",
                 "features": [
-                    "Manual Windows optimization ",
-                    "Gaming network configuration ",
-                    "Bloatware removal ",
-                    "Power optimization ",
-                    "7-day support "
+                    "Optimisation manuelle de Windows",
+                    "Configuration réseau gaming",
+                    "Suppression des bloatwares",
+                    "Optimisation de l'alimentation",
+                    "Support 7 jours"
                 ],
                 "popular": false
             },
             {
-                "name": "Pro-Level System Optimization ",
+                "name": "Optimisation système niveau Pro",
                 "basePrice": 75,
-                "description": "Unlock your hardware's true potential with OS and BIOS fine-tuning, including hidden tweaks. ",
+                "description": "Libérez le vrai potentiel de votre matériel avec le réglage fin de l'OS et du BIOS, y compris les ajustements cachés.",
                 "features": [
-                    "Everything from Windows Boost ",
-                    "Advanced BIOS optimization ",
-                    "Hidden system tweaks ",
-                    "Peripheral configuration ",
-                    "Stability testing "
+                    "Tout depuis le Boost Windows",
+                    "Optimisation avancée du BIOS",
+                    "Ajustements système cachés",
+                    "Configuration des périphériques",
+                    "Tests de stabilité"
                 ],
                 "popular": true
             },
             {
-                "name": "Ultimate Performance Overhaul ",
+                "name": "Refonte de performance ultime",
                 "basePrice": 100,
-                "description": "All-in-one tuning with CPU, GPU & RAM overclocking for peak performance. ",
+                "description": "Réglage tout-en-un avec overclocking du CPU, du GPU et de la RAM pour des performances maximales.",
                 "features": [
-                    "Everything from Pro-Level ",
-                    "Safe CPU overclocking ",
-                    "Optimized GPU overclocking ",
-                    "RAM overclocking (XMP+) ",
-                    "Temperature monitoring ",
-                    "Stability guarantee "
+                    "Tout depuis le niveau Pro",
+                    "Overclocking sécurisé du CPU",
+                    "Overclocking optimisé du GPU",
+                    "Overclocking de la RAM (XMP+)",
+                    "Surveillance des températures",
+                    "Garantie de stabilité"
                 ],
                 "popular": false
             }
         ],
-        "popular": "MOST POPULAR ",
-        "cta": "READ TERMS & GET STARTED "
+        "popular": "LE PLUS POPULAIRE",
+        "cta": "LIRE LES CONDITIONS & COMMENCER"
     },
     "testimonials": {
-        "title": "Trusted by Pros, Loved by Gamers ",
-        "subtitle": "You're not the first. Join the hundreds sur players who've unlocked elite performance.",
+        "title": "Approuvé par les pros, adoré par les joueurs",
+        "subtitle": "Vous n'êtes pas le premier. Rejoignez les centaines de joueurs qui ont débloqué des performances d'élite.",
         "items": [
             {
-                "name": "ProGamer ",
-                "role": "Competitive Player ",
-                "content": "My game never felt better, and so smooth! Getting nearly double the frames now - this is absolutely incredible. ",
+                "name": "ProGamer",
+                "role": "Joueur compétitif",
+                "content": "Mon jeu n'a jamais été aussi fluide ! J'obtiens presque le double d'images par seconde maintenant - c'est absolument incroyable.",
                 "rating": 5
             },
             {
-                "name": "StreamerPro ",
-                "role": "Contenu Creator",
-                "content": "Finally I can game and stream without FPS drops. The optimization was perfect! ",
+                "name": "StreamerPro",
+                "role": "Créateur de contenu",
+                "content": "Enfin, je peux jouer et streamer sans chute de FPS. L'optimisation était parfaite !",
                 "rating": 5
             }
         ]
     },
     "games": {
-        "title": "Any Game, Every Time ",
-        "subtitle": "From fast-paced shooters to open-world, we know how to make your game run exactly as you'd like it to. ",
+        "title": "N'importe quel jeu, à chaque fois",
+        "subtitle": "Des shooters rapides aux mondes ouverts, nous savons comment faire tourner votre jeu exactement comme vous le souhaitez.",
         "list": [
-            "Call sur Duty",
-            "PUBG ",
-            "Marvel Rivals ",
-            "Rainbow Six Siege ",
-            "Valorant ",
-            "Fortnite ",
-            "CS2 ",
-            "Apex Legends "
+            "Call of Duty",
+            "PUBG",
+            "Marvel Rivals",
+            "Rainbow Six Siege",
+            "Valorant",
+            "Fortnite",
+            "CS2",
+            "Apex Legends"
         ]
     },
     "guarantee": {
-        "title": "Results Guarantee ",
+        "title": "Garantie de résultats",
         "items": [
             {
-                "title": "Proven Methods ",
-                "description": "Our specialists optimize your CPU, GPU, RAM and NIC, then go through various stress tests. "
+                "title": "Méthodes éprouvées",
+                "description": "Nos spécialistes optimisent votre CPU, GPU, RAM et carte réseau, puis effectuent divers tests de stress."
             },
             {
-                "title": "Free Support ",
-                "description": "We are available to address any issues for up to 7 days post-optimization. "
+                "title": "Support gratuit",
+                "description": "Nous sommes disponibles pour résoudre tout problème jusqu'à 7 jours après l'optimisation."
             },
             {
-                "title": "Years sur Experience",
-                "description": "We've spent years testing, benchmarking, and tuning systems for top performance. "
+                "title": "Des années d'expérience",
+                "description": "Nous avons passé des années à tester, à comparer (benchmark) et à régler des systèmes pour des performances optimales."
             }
         ]
     },
     "cta": {
-        "title": "STOP WASTING YOUR TIME ",
-        "subtitle": "Every second you lose to lag, someone else is dominating the match. ",
-        "button": "UNLOCK FULL POWER "
+        "title": "ARRÊTEZ DE PERDRE VOTRE TEMPS",
+        "subtitle": "Chaque seconde perdue à cause du lag, quelqu'un d'autre domine la partie.",
+        "button": "DÉBLOQUER LA PLEINE PUISSANCE"
     },
     "seo": {
         "title": "Optimisation de PC Gaming - Performance Maximale - Gabriel Toth",
-        "description": "Libérez le vrai potentiel de votre PC gamer ! Optimisation professionnelle pour plus de FPS, moins de lag et une performance maximale dans tous les jeux.",
+        "description": "Libérez le vrai potentiel de votre PC gamer ! Optimisation professionnelle pour plus de FPS, moins de lag et des performances maximales dans tous les jeux.",
         "keywords": "optimisation pc gaming, plus de fps, moins de lag, performance gaming, optimisation windows, overclocking, gabriel toth, pc gamer, amélioration performance"
     }
 }

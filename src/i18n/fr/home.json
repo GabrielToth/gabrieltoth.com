@@ -1,27 +1,27 @@
 {
     "hero": {
         "greeting": "Bonjour, je suis",
-        "name": "Gabriel Toth Gonçalves ",
+        "name": "Gabriel Toth Gonçalves",
         "title": "Data Scientist & Développeur Full Stack",
         "subtitle": "Spécialisé dans la création de solutions numériques innovantes avec des technologies modernes.",
         "cta": "Prendre contact",
         "resume": "Télécharger le CV",
         "disabled": "Désactivé",
-        "contactEmail": "bentoexposed@gmail.com ",
+        "contactEmail": "contato@gabrieltoth.com",
         "resumeUrl": "/resume/Gabriel_Toth_Curriculum_FR.pdf"
     },
     "about": {
-        "title": "About Me ",
+        "title": "À propos de moi",
         "description": "Développeur passionné par la technologie et l'innovation, combinant expertise en science des données et développement d'applications modernes.",
         "role": "Développeur Full-Stack",
-        "intro": "Hello! I'm Gabriel Toth Gonçalves, data scientist II and Full Stack developer from Brazil. With a Computer Science degree and specialization in Data Science, I currently work on the social-analytics-engine project, performing advanced digital campaign analysis and conversion metrics. ",
-        "experience": "My current work involves integrating Google Analytics data with social media metrics (YouTube, Instagram, X, Telegram) and Stripe conversion analysis using Python, PostgreSQL, SQLAlchemy, and Docker. I also develop enterprise web solutions, having created sites like softclever.com.br (React) and sistemasatfiscal.com.br (Angular), using modern technologies. ",
+        "intro": "Bonjour ! Je suis Gabriel Toth Gonçalves, data scientist II et développeur Full Stack originaire du Brésil. Diplômé en informatique et spécialisé en science des données, je travaille actuellement sur le projet social-analytics-engine, réalisant des analyses avancées de campagnes numériques et de métriques de conversion.",
+        "experience": "Mon travail consiste à intégrer les données de Google Analytics avec les métriques des réseaux sociaux (YouTube, Instagram, X, Telegram) et l'analyse de conversion Stripe en utilisant Python, PostgreSQL, SQLAlchemy et Docker. Je développe également des solutions web d'entreprise, ayant créé des sites comme softclever.com.br (React) et sistemasatfiscal.com.br (Angular), en utilisant des technologies modernes.",
         "passion": "Passionné de data science, de croissance de médias sociaux et de construction d’outils utiles et scalables.",
-        "location": "Brazil ",
-        "interests": "When I'm not coding, you can find me creating educational content, exploring new technologies, or playing Minecraft (yes, I even have my own plugin!). ",
+        "location": "Brésil",
+        "interests": "Quand je ne code pas, vous me trouverez en train de créer du contenu éducatif, d'explorer de nouvelles technologies ou de jouer à Minecraft (oui, j'ai même mon propre plugin !).",
         "specializedIn": "Spécialisé dans les stratégies de croissance pour YouTube, les algorithmes de recommandation et l’automatisation des workflows.",
         "skills": {
-            "title": "Core Skills ",
+            "title": "Compétences clés",
             "dataScience": {
                 "title": "Data Science ",
                 "items": [
@@ -53,7 +53,7 @@
                 ]
             },
             "backend": {
-                "title": "Retourend ",
+                "title": "Backend",
                 "items": [
                     "Node.js ",
                     "Python ",
@@ -87,106 +87,106 @@
         },
         "contact": {
             "title": "Contactez-moi",
-            "description": "Ready to collaborate or discuss your next project ",
-            "button": "Let's talk "
+            "description": "Prêt à collaborer ou à discuter de votre prochain projet",
+            "button": "Discutons-en"
         }
     },
     "contact": {
-        "title": "Turn Your Project Into Reality ",
-        "subtitle": "Ready to transform your ideas into digital reality ",
-        "contactEmail": "bentoexposed@gmail.com ",
-        "resumeUrl": "/resume/Gabriel_Toth_Curriculum_EN.pdf ",
-        "getInTouch": "Get in touch ",
+        "title": "Transformez votre projet en réalité",
+        "subtitle": "Prêt à transformer vos idées en réalité numérique",
+        "contactEmail": "contato@gabrieltoth.com",
+        "resumeUrl": "/resume/Gabriel_Toth_Curriculum_FR.pdf",
+        "getInTouch": "Entrer en contact",
         "email": "E-mail",
-        "scheduleCall": "Schedule a call ",
-        "downloadResume": "Télécharger resume",
-        "followMe": "Follow me ",
+        "scheduleCall": "Planifier un appel",
+        "downloadResume": "Télécharger le CV",
+        "followMe": "Suivez-moi",
         "services": {
-            "title": "Available Services ",
+            "title": "Services disponibles",
             "dataScience": {
-                "title": "Data Analysis ",
-                "description": "Advanced digital campaign analysis and conversion metrics "
+                "title": "Analyse de données",
+                "description": "Analyse avancée de campagnes numériques et métriques de conversion"
             },
             "webDev": {
-                "title": "Web Development ",
-                "description": "Modern websites and applications with React and Suivant.js"
+                "title": "Développement web",
+                "description": "Sites et applications modernes avec React et Next.js"
             },
             "consulting": {
-                "title": "Digital Consulting ",
-                "description": "Growth strategies for content creators "
+                "title": "Consulting numérique",
+                "description": "Stratégies de croissance pour les créateurs de contenu"
             },
-            "channelManagement": "Channel Management "
+            "channelManagement": "Gestion de chaîne"
         },
         "availability": {
-            "title": "Availability ",
-            "current": "Available for new projects ",
-            "response": "Response within 24h ",
-            "timezone": "Timezone: UTC-3 "
+            "title": "Disponibilité",
+            "current": "Disponible pour de nouveaux projets",
+            "response": "Réponse sous 24h",
+            "timezone": "Fuseau horaire : UTC-3"
         },
         "form": {
-            "name": "Your name ",
+            "name": "Votre nom",
             "email": "E-mail",
-            "subject": "Subject ",
-            "message": "Message ",
-            "emailPlaceholder": "your@email.com ",
-            "messagePlaceholder": "Tell me about your project... ",
-            "send": "Send message ",
-            "sending": "Sending... ",
-            "success": "Message sent successfully! ",
-            "error": "Erreur sending message. Please try again."
+            "subject": "Sujet",
+            "message": "Message",
+            "emailPlaceholder": "votre@email.com",
+            "messagePlaceholder": "Parlez-moi de votre projet...",
+            "send": "Envoyer le message",
+            "sending": "Envoi en cours...",
+            "success": "Message envoyé avec succès !",
+            "error": "Erreur lors de l'envoi du message. Veuillez réessayer."
         }
     },
     "projects": {
-        "title": "Projects ",
-        "description": "Some of the projects I've developed using modern technologies ",
-        "viewProject": "Voir Project",
-        "sourceCode": "Source Code ",
-        "technologies": "Technologies ",
-        "showMore": "Show More ",
-        "showLess": "Show Less ",
+        "title": "Projets",
+        "description": "Quelques-uns des projets que j'ai développés en utilisant des technologies modernes",
+        "viewProject": "Voir le projet",
+        "sourceCode": "Code source",
+        "technologies": "Technologies",
+        "showMore": "Voir plus",
+        "showLess": "Voir moins",
         "items": [
             {
-                "title": "Sistema SAT Fiscal - Website ",
-                "description": "Institutional website for company specialized in fiscal and accounting solutions. Developed with focus on presenting fiscal services, tax management and business solutions in a clear and professional way. ",
-                "image": "/projects/sat-fiscal.jpg ",
-                "tags": ["HTML ", "CSS ", "JavaScript ", "SEO ", "Design "],
-                "liveUrl": "https://sistemasatfiscal.com.br ",
+                "title": "Sistema SAT Fiscal - Site web",
+                "description": "Site institutionnel pour une entreprise spécialisée dans les solutions fiscales et comptables. Développé en mettant l'accent sur la présentation des services fiscaux, la gestion fiscale et les solutions d'entreprise de manière claire et professionnelle.",
+                "image": "/projects/sat-fiscal.jpg",
+                "tags": ["HTML", "CSS", "JavaScript", "SEO", "Design"],
+                "liveUrl": "https://sistemasatfiscal.com.br",
                 "featured": true
             },
             {
-                "title": "Softclever - Website ",
-                "description": "Corporate website developed in React for software company, with modern and responsive design. Implements sections for services, portfolio and contact, using technologies like React, modern CSS and SEO optimizations. ",
-                "image": "/projects/softclever.jpg ",
-                "tags": ["React ", "CSS ", "JavaScript ", "SEO "],
-                "liveUrl": "https://softclever.com.br ",
-                "githubUrl": "https://github.com/gabrieltoth/softclever "
+                "title": "Softclever - Site web",
+                "description": "Site corporate développé en React pour une entreprise de logiciels, avec un design moderne et responsive. Implémente des sections pour les services, le portfolio et le contact, en utilisant des technologies comme React, du CSS moderne et des optimisations SEO.",
+                "image": "/projects/softclever.jpg",
+                "tags": ["React", "CSS", "JavaScript", "SEO"],
+                "liveUrl": "https://softclever.com.br",
+                "githubUrl": "https://github.com/gabrieltoth/softclever"
             },
             {
-                "title": "WaveIGL Project ",
-                "description": "Complete educational project including a YouTube channel with over 2 million monthly views, integrated payment system for investments, and channel management. Includes content creation about technology, programming, and game development. ",
-                "image": "/projects/waveigl.jpg ",
+                "title": "Projet WaveIGL",
+                "description": "Projet éducatif complet comprenant une chaîne YouTube avec plus de 2 millions de vues mensuelles, un système de paiement intégré pour les investissements et la gestion de chaîne. Inclut la création de contenu sur la technologie, la programmation et le développement de jeux.",
+                "image": "/projects/waveigl.jpg",
                 "tags": [
-                    "YouTube ",
+                    "YouTube",
                     "Création de contenu",
-                    "Payment Integration ",
-                    "Next.js ",
-                    "Stripe ",
-                    "PIX "
+                    "Intégration des paiements",
+                    "Next.js",
+                    "Stripe",
+                    "PIX"
                 ],
-                "slug": "/waveigl-support "
+                "slug": "/waveigl-support"
             },
             {
-                "title": "PC Optimization Service ",
-                "description": "Specialized PC optimization service for gaming, focused on maximizing game performance and reducing latency. Includes advanced system configurations, hardware optimization and custom software. ",
-                "image": "/projects/pc-optimization.jpg ",
-                "tags": ["Windows ", "Gaming ", "Performance ", "Hardware "],
-                "slug": "/pc-optimization "
+                "title": "Service d'optimisation PC",
+                "description": "Service spécialisé d'optimisation de PC pour le gaming, axé sur la maximisation des performances des jeux et la réduction de la latence. Inclut des configurations système avancées, l'optimisation matérielle et des logiciels personnalisés.",
+                "image": "/projects/pc-optimization.jpg",
+                "tags": ["Windows", "Gaming", "Performance", "Matériel"],
+                "slug": "/pc-optimization"
             }
         ]
     },
     "seo": {
-        "personDescription": "Full Stack Developer and Data Scientist specialized in modern technologies ",
-        "jobTitle": "Full Stack Developer & Data Scientist "
+        "personDescription": "Développeur Full Stack et Data Scientist spécialisé dans les technologies modernes",
+        "jobTitle": "Développeur Full Stack & Data Scientist"
     },
     "structuredData": {
         "profilePage": {
@@ -196,7 +196,7 @@
                 "@type": "Person ",
                 "name": "Gabriel Toth Gonçalves ",
                 "alternateName": "Gabriel Toth ",
-                "description": "Full Stack Developer and Data Scientist specialized in modern technologies ",
+                "description": "Développeur Full Stack et Data Scientist spécialisé dans les technologies modernes",
                 "url": "https://www.gabrieltoth.com ",
                 "image": "https://www.gabrieltoth.com/profile-image.jpg ",
                 "sameAs": [
@@ -204,18 +204,18 @@
                     "https://linkedin.com/in/gabriel-toth ",
                     "https://twitter.com/gabrieltoth "
                 ],
-                "jobTitle": "Full Stack Developer & Data Scientist ",
+                "jobTitle": "Développeur Full Stack & Data Scientist",
                 "worksFor": {
                     "@type": "Organization ",
-                    "name": "Gabriel Toth Tech "
+                    "name": "Gabriel Toth Tech"
                 }
             }
         }
     },
     "channelManagement": {
-        "badge": "ViraTrend - Specialized Consulting ",
+        "badge": "ViraTrend - Consulting spécialisé",
         "title": "Gestion de Chaîne",
-        "subtitle": "Transform Your Channel into a Growth Machine ",
+        "subtitle": "Transformez votre chaîne en une machine de croissance",
         "description": "Spécialisé dans l’analytique, l’optimisation de contenu et les stratégies de monétisation pour YouTube. Plus de 2 millions de vues mensuelles gérées avec des résultats prouvés.",
         "features": {
             "title": "Comment je peux aider ta chaîne",
@@ -237,83 +237,83 @@
             }
         },
         "results": {
-            "title": "Proven Results ",
-            "subtitle": "Real growth cases ",
+            "title": "Résultats prouvés",
+            "subtitle": "Cas de croissance réels",
             "cases": [
                 {
-                    "channel": "WaveIGL ",
-                    "description": "Gaming channel managed by me ",
+                    "channel": "WaveIGL",
+                    "description": "Chaîne gaming gérée par moi",
                     "metrics": [
                         {
-                            "label": "Monthly views ",
-                            "value": "2M+ "
+                            "label": "Vues mensuelles",
+                            "value": "2M+"
                         },
                         {
-                            "label": "Growth ",
-                            "value": "400% "
+                            "label": "Croissance",
+                            "value": "400%"
                         },
                         {
-                            "label": "Revenue ",
-                            "value": "5x "
+                            "label": "Revenus",
+                            "value": "5x"
                         }
                     ]
                 },
                 {
-                    "channel": "Gabriel Toth (inactive) ",
-                    "description": "My personal channel - Historical case ",
+                    "channel": "Gabriel Toth (inactive)",
+                    "description": "Ma chaîne personnelle - Cas historique",
                     "metrics": [
                         {
-                            "label": "Total views ",
-                            "value": "1M+ "
+                            "label": "Vues totales",
+                            "value": "1M+"
                         },
                         {
-                            "label": "Current subscribers ",
-                            "value": "1.4K+ "
+                            "label": "Abonnés actuels",
+                            "value": "1.4K+"
                         },
                         {
-                            "label": "Views with <1K subs ",
-                            "value": "1M+ "
+                            "label": "Vues avec <1K abonnés",
+                            "value": "1M+"
                         }
                     ]
                 }
             ]
         },
         "cta": {
-            "title": "Ready to accelerate your growth? ",
-            "description": "Request a personalized consultation and discover how to transform your channel ",
-            "button": "Request Consultation "
+            "title": "Prêt à accélérer votre croissance ?",
+            "description": "Demandez une consultation personnalisée et découvrez comment transformer votre chaîne",
+            "button": "Demander une consultation"
         },
         "stats": [
             {
-                "value": "2M+ ",
-                "label": "Monthly views managed "
+                "value": "2M+",
+                "label": "Vues mensuelles gérées"
             },
             {
-                "value": "300% ",
-                "label": "Average client growth "
+                "value": "300%",
+                "label": "Croissance moyenne des clients"
             },
             {
-                "value": "5+ ",
-                "label": "Years of experience "
+                "value": "5+",
+                "label": "Années d'expérience"
             }
         ],
         "pricing": {
-            "title": "Consulting Plans ",
+            "title": "Plans de consulting",
             "express": {
-                "name": "Express Analysis ",
-                "price": "R$ 497 ",
-                "description": "Complete audit with detailed report "
+                "name": "Analyse Express",
+                "price": "R$ 497",
+                "description": "Audit complet avec rapport détaillé"
             },
             "complete": {
-                "name": "Complete Consulting ",
-                "price": "R$ 1.497 ",
-                "description": "Strategy + implementation + follow-up ",
+                "name": "Consulting Complet",
+                "price": "R$ 1.497",
+                "description": "Stratégie + mise en œuvre + suivi",
                 "popular": true
             },
             "intensive": {
-                "name": "Intensive Mentoring ",
-                "price": "Quote on request ",
-                "description": "Personalized monthly follow-up "
+                "name": "Mentorat intensif",
+                "price": "Devis sur demande",
+                "description": "Suivi mensuel personnalisé"
             }
         }
     }
