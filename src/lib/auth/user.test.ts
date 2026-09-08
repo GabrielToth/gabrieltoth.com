@@ -31,6 +31,8 @@ vi.mock("@/lib/db", () => ({
 vi.mock("@/lib/logger", () => ({
     logger: {
         debug: vi.fn(),
+        info: vi.fn(),
+        warn: vi.fn(),
         error: vi.fn(),
     },
 }))
@@ -62,13 +64,15 @@ describe("User Management", () => {
 
                 // Mock: user does not exist
                 vi.mocked(db.db.queryOne).mockResolvedValueOnce(null)
+                // Mock: no email fallback match
+                vi.mocked(db.db.queryOne).mockResolvedValueOnce(null)
                 // Mock: user created
                 vi.mocked(db.db.queryOne).mockResolvedValueOnce(expectedUser)
 
                 const result = await upsertUser(googleData)
 
                 expect(result).toEqual(expectedUser)
-                expect(vi.mocked(db.db.queryOne)).toHaveBeenCalledTimes(2)
+                expect(vi.mocked(db.db.queryOne)).toHaveBeenCalledTimes(3)
             })
 
             it("should return existing user when google_id exists and profile unchanged", async () => {
@@ -170,6 +174,56 @@ describe("User Management", () => {
                 expect(vi.mocked(db.db.queryOne)).toHaveBeenCalledTimes(2)
             })
 
+            it("should re-link Google identity when a user already exists with the same email (no duplicate email)", async () => {
+                // Regression test for the `users_email_key` unique-constraint
+                // violation: when a user already exists with the same email but
+                // a different/missing Google identity, upsert must UPDATE the
+                // existing row instead of INSERTing a duplicate.
+                const googleData: GoogleUserData = {
+                    google_id: "new-google-id",
+                    google_email: "user@example.com",
+                    google_name: "John Doe",
+                    google_picture: "https://example.com/photo.jpg",
+                }
+
+                const existingByEmail: User = {
+                    id: "user-id-1",
+                    google_id: "",
+                    google_email: googleData.google_email,
+                    google_name: "John Doe",
+                    google_picture: "https://example.com/photo.jpg",
+                    oauth_provider: null,
+                    oauth_id: null,
+                    created_at: new Date("2024-01-01"),
+                    updated_at: new Date("2024-01-01"),
+                }
+
+                const reLinkedUser: User = {
+                    ...existingByEmail,
+                    google_id: googleData.google_id,
+                    oauth_provider: "google",
+                    oauth_id: googleData.google_id,
+                    updated_at: new Date(),
+                }
+
+                // (1) oauth_id lookup -> null, (2) email fallback -> existingByEmail,
+                // (3) UPDATE -> reLinkedUser
+                vi.mocked(db.db.queryOne).mockResolvedValueOnce(null)
+                vi.mocked(db.db.queryOne).mockResolvedValueOnce(existingByEmail)
+                vi.mocked(db.db.queryOne).mockResolvedValueOnce(reLinkedUser)
+
+                const result = await upsertUser(googleData)
+
+                expect(result.id).toBe("user-id-1")
+                expect(result.google_id).toBe(googleData.google_id)
+                expect(result.oauth_provider).toBe("google")
+                expect(vi.mocked(db.db.queryOne)).toHaveBeenCalledTimes(3)
+
+                // The third call must be an UPDATE (re-link), not an INSERT.
+                const updateCall = vi.mocked(db.db.queryOne).mock.calls[2]
+                expect(updateCall[0]).toContain("UPDATE users")
+            })
+
             it("should handle missing google_picture (nullable field)", async () => {
                 const googleData: GoogleUserData = {
                     google_id: "123456789",
@@ -190,13 +244,15 @@ describe("User Management", () => {
 
                 // Mock: user does not exist
                 vi.mocked(db.db.queryOne).mockResolvedValueOnce(null)
+                // Mock: no email fallback match
+                vi.mocked(db.db.queryOne).mockResolvedValueOnce(null)
                 // Mock: user created
                 vi.mocked(db.db.queryOne).mockResolvedValueOnce(expectedUser)
 
                 const result = await upsertUser(googleData)
 
                 expect(result.google_picture).toBeUndefined()
-                expect(vi.mocked(db.db.queryOne)).toHaveBeenCalledTimes(2)
+                expect(vi.mocked(db.db.queryOne)).toHaveBeenCalledTimes(3)
             })
 
             it("should throw error when google_id is missing", async () => {
@@ -327,6 +383,10 @@ describe("User Management", () => {
                             }
 
                             // Mock: user does not exist
+                            vi.mocked(db.db.queryOne).mockResolvedValueOnce(
+                                null
+                            )
+                            // Mock: no email fallback match
                             vi.mocked(db.db.queryOne).mockResolvedValueOnce(
                                 null
                             )
@@ -482,6 +542,9 @@ describe("User Management", () => {
                             }
 
                             // First upsert: create user
+                            vi.mocked(db.db.queryOne).mockResolvedValueOnce(
+                                null
+                            )
                             vi.mocked(db.db.queryOne).mockResolvedValueOnce(
                                 null
                             )

@@ -85,19 +85,101 @@ export async function upsertUser(googleData: GoogleUserData): Promise<User> {
             }
         }
 
+        // Fallback: a user may already exist with the same email but a
+        // different (or missing) Google identity. The `email` column has a
+        // global UNIQUE constraint, so INSERT would violate it. Re-link the
+        // Google identity onto the existing account instead of creating a
+        // duplicate row.
+        let foundByEmailFallback = false
+        if (!existingUser) {
+            try {
+                const byEmail = await db.queryOne<User>(
+                    `SELECT id,
+                            email AS google_email,
+                            name AS google_name,
+                            oauth_id AS google_id,
+                            picture AS google_picture,
+                            oauth_provider, oauth_id, oauth_email, email, name, picture,
+                            password_hash, email_verified, account_completion_status,
+                            birth_date, phone AS phone_number,
+                            created_at, updated_at
+                     FROM users
+                     WHERE email = $1`,
+                    [googleData.google_email]
+                )
+                if (byEmail) {
+                    existingUser = byEmail
+                    foundByEmailFallback = true
+                    logger.warn(
+                        "Google identity re-linked to existing email account",
+                        {
+                            context: "Auth",
+                            data: {
+                                userId: byEmail.id,
+                                email: googleData.google_email,
+                                previousProvider: byEmail.oauth_provider,
+                                previousOAuthId: byEmail.oauth_id,
+                            },
+                        }
+                    )
+                }
+            } catch (err) {
+                const msg = err instanceof Error ? err.message : String(err)
+                if (msg.includes("column") && msg.includes("picture")) {
+                    await db.query(
+                        `ALTER TABLE public.users ADD COLUMN IF NOT EXISTS picture TEXT`
+                    )
+                    const byEmail = await db.queryOne<User>(
+                        `SELECT id,
+                                email AS google_email,
+                                name AS google_name,
+                                oauth_id AS google_id,
+                                picture AS google_picture,
+                                oauth_provider, oauth_id, oauth_email, email, name, picture,
+                                password_hash, email_verified, account_completion_status,
+                                birth_date, phone AS phone_number,
+                                created_at, updated_at
+                         FROM users
+                         WHERE email = $1`,
+                        [googleData.google_email]
+                    )
+                    if (byEmail) {
+                        existingUser = byEmail
+                        foundByEmailFallback = true
+                        logger.warn(
+                            "Google identity re-linked to existing email account",
+                            { context: "Auth", data: { userId: byEmail.id } }
+                        )
+                    }
+                } else {
+                    throw err
+                }
+            }
+        }
+
         if (existingUser) {
             // User exists - check if profile data changed
             const nameChanged =
                 existingUser.google_name !== googleData.google_name
             const pictureChanged =
                 existingUser.google_picture !== googleData.google_picture
+            // Re-link the Google OAuth identity if this account was found by
+            // email fallback (different or NULL oauth_id/provider).
+            const identityChanged =
+                foundByEmailFallback &&
+                (existingUser.oauth_provider !== "google" ||
+                    existingUser.oauth_id !== googleData.google_id)
 
-            if (nameChanged || pictureChanged) {
-                // Update user with new data
+            if (nameChanged || pictureChanged || identityChanged) {
+                // Update user with new data + re-link Google identity.
+                // We match by primary key (id) so the UNIQUE(email) and
+                // UNIQUE(oauth_provider, oauth_id) constraints are preserved
+                // even when the Google identity changed.
                 const updatedUser = await db.queryOne<User>(
                     `UPDATE users
-                     SET name = $1, picture = $2, oauth_email = $3, email = $4, updated_at = NOW()
-                     WHERE oauth_provider = 'google' AND oauth_id = $5
+                     SET name = $1, picture = $2, oauth_email = $3, email = $4,
+                         oauth_provider = 'google', oauth_id = $5, updated_at = NOW()
+                     WHERE id = $6
                      RETURNING id,
                                email AS google_email,
                                name AS google_name,
@@ -113,6 +195,7 @@ export async function upsertUser(googleData: GoogleUserData): Promise<User> {
                         googleData.google_email,
                         googleData.google_email,
                         googleData.google_id,
+                        existingUser.id,
                     ]
                 )
 
@@ -126,6 +209,7 @@ export async function upsertUser(googleData: GoogleUserData): Promise<User> {
                         userId: updatedUser.id,
                         nameChanged,
                         pictureChanged,
+                        identityChanged,
                     },
                 })
 
