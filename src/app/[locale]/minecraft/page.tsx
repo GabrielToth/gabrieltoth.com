@@ -1,4 +1,3 @@
-import MinecraftSubmenu from "@/app/[locale]/minecraft/minecraft-submenu"
 import Footer from "@/components/layout/footer"
 import PageHeader from "@/components/layout/page-header"
 import { type Locale } from "@/lib/i18n"
@@ -59,76 +58,6 @@ export default async function MinecraftPage({ params }: MinecraftPageProps) {
 
                 <section className="py-12 px-4 sm:px-6 lg:px-8 bg-[var(--background)]">
                     <div className="max-w-7xl mx-auto">
-                        {/* Submenu */}
-                        <div className="mb-16">
-                            <MinecraftSubmenu locale={locale} />
-                        </div>
-
-                        {/* Category Cards */}
-                        <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto mb-16">
-                            {/* Modpacks Card */}
-                            <Link
-                                href={getLocalizedPath(
-                                    "minecraft-modpacks",
-                                    locale
-                                )}
-                                className="group bg-[var(--background)] border border-neutral-700 rounded-lg p-8 hover:border-[#10b981] transition-all duration-200 hover:shadow-lg hover:shadow-[#10b981]/20"
-                            >
-                                <div className="flex items-center justify-between mb-4">
-                                    <h2 className="text-2xl font-bold text-white group-hover:text-[#10b981] transition-colors">
-                                        {t("landing.modpacksTitle")}
-                                    </h2>
-                                    <svg
-                                        className="w-6 h-6 text-[#10b981] transform group-hover:translate-x-1 transition-transform"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        stroke="currentColor"
-                                    >
-                                        <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            strokeWidth={2}
-                                            d="M9 5l7 7-7 7"
-                                        />
-                                    </svg>
-                                </div>
-                                <p className="text-muted-foreground">
-                                    {t("landing.modpacksDescription")}
-                                </p>
-                            </Link>
-
-                            {/* Mods Card */}
-                            <Link
-                                href={getLocalizedPath(
-                                    "minecraft-mods",
-                                    locale
-                                )}
-                                className="group bg-[var(--background)] border border-neutral-700 rounded-lg p-8 hover:border-[#10b981] transition-all duration-200 hover:shadow-lg hover:shadow-[#10b981]/20"
-                            >
-                                <div className="flex items-center justify-between mb-4">
-                                    <h2 className="text-2xl font-bold text-white group-hover:text-[#10b981] transition-colors">
-                                        {t("landing.modsTitle")}
-                                    </h2>
-                                    <svg
-                                        className="w-6 h-6 text-[#10b981] transform group-hover:translate-x-1 transition-transform"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        stroke="currentColor"
-                                    >
-                                        <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            strokeWidth={2}
-                                            d="M9 5l7 7-7 7"
-                                        />
-                                    </svg>
-                                </div>
-                                <p className="text-muted-foreground">
-                                    {t("landing.modsDescription")}
-                                </p>
-                            </Link>
-                        </div>
-
                         {/* Journey Section */}
                         <div className="bg-[var(--background)] border border-neutral-700 rounded-lg p-8 max-w-4xl mx-auto">
                             <h2 className="text-3xl font-bold mb-6 text-[#10b981]">

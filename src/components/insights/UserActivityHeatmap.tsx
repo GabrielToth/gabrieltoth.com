@@ -45,7 +45,7 @@ function generateSampleHeatmapData(): {
     const logs: UserAuditLogAction[] = Array.from({ length: 12 }, (_, i) => ({
         id: `audit-${i + 1}`,
         userId: "usr_active_01",
-        userEmail: "bentoexposed@gmail.com",
+        userEmail: "contato@gabrieltoth.com",
         action: actions[i % actions.length],
         resource: "dashboard",
         status: "success",
