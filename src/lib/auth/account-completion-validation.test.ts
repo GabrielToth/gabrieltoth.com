@@ -77,19 +77,27 @@ describe("Account Completion Validation", () => {
 
     describe("validatePhoneNumber", () => {
         it("should accept valid international phone number", () => {
-            expect(validatePhoneNumber("+1234567890")).toBe(true)
+            expect(validatePhoneNumber("+14155552671")).toBe(true)
         })
 
         it("should accept valid Brazilian phone number", () => {
-            expect(validatePhoneNumber("+551199999999")).toBe(true)
+            expect(validatePhoneNumber("+5511993313606")).toBe(true)
+        })
+
+        it("should accept Brazilian phone number with formatting", () => {
+            expect(validatePhoneNumber("+55 (11) 99331-3606")).toBe(true)
         })
 
         it("should accept valid German phone number", () => {
-            expect(validatePhoneNumber("+491234567890")).toBe(true)
+            expect(validatePhoneNumber("+4915123456789")).toBe(true)
         })
 
-        it("should reject phone number without +", () => {
-            expect(validatePhoneNumber("1234567890")).toBe(false)
+        it("should accept a Brazilian national number without +", () => {
+            expect(validatePhoneNumber("11993313606")).toBe(true)
+        })
+
+        it("should reject a phone number without + that is not valid BR", () => {
+            expect(validatePhoneNumber("12345")).toBe(false)
         })
 
         it("should reject phone number with too few digits", () => {
@@ -97,7 +105,7 @@ describe("Account Completion Validation", () => {
         })
 
         it("should reject phone number with too many digits", () => {
-            expect(validatePhoneNumber("+12345678901234567")).toBe(false)
+            expect(validatePhoneNumber("+12345678901234567890")).toBe(false)
         })
 
         it("should reject empty phone number", () => {
@@ -244,7 +252,7 @@ describe("Account Completion Validation", () => {
                 email: "user@example.com",
                 name: "John Doe",
                 password: "SecurePass123!",
-                phone: "+1234567890",
+                phone: "+14155552671",
                 birthDate: "1990-01-01",
             })
             expect(result.valid).toBe(true)
@@ -280,7 +288,7 @@ describe("Account Completion Validation", () => {
                 email: "user@example.com",
                 name: "John Doe",
                 password: "SecurePass123!",
-                phone: "1234567890",
+                phone: "12345",
                 birthDate: "1990-01-01",
             })
             expect(result.valid).toBe(false)

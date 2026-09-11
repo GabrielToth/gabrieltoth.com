@@ -11,6 +11,8 @@
  * Validates: Requirements 5.1, 5.2, 5.3, 5.4, 6.1
  */
 
+import { isValidPhoneNumber } from "libphonenumber-js"
+
 /**
  * Validate password strength requirements
  *
@@ -90,16 +92,22 @@ export function validatePhoneNumber(phone: string): boolean {
         return false
     }
 
-    if (!phone.startsWith("+")) {
+    // Accept common phone formats with optional formatting chars
+    // (spaces, dashes, parens, dots) then validate with libphonenumber-js
+    const cleaned = phone.replace(/[\s\-\(\)\.]/g, "")
+
+    if (!/^\+?\d+$/.test(cleaned)) {
         return false
     }
 
-    const digits = phone.slice(1)
-    if (!/^\d+$/.test(digits)) {
-        return false
+    // If starts with +, validate with full number; otherwise assume it's local
+    if (cleaned.startsWith("+")) {
+        return isValidPhoneNumber(cleaned)
     }
 
-    return digits.length >= 10 && digits.length <= 15
+    // If no +, it could be a national number; validate with default country
+    // For Brazil (pt-BR locale), assume BR as default country
+    return isValidPhoneNumber(cleaned, "BR")
 }
 
 /**

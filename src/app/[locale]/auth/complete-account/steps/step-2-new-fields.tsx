@@ -11,6 +11,8 @@
 
 import { Input } from "@/components/ui/input"
 import { useTranslations } from "next-intl"
+import { PhoneInput } from "react-international-phone"
+import "react-international-phone/style.css"
 import PasswordStrength from "../components/password-strength"
 
 interface Step2NewFieldsProps {
@@ -105,20 +107,28 @@ export default function Step2NewFields({
                     <label className="block text-sm font-medium text-foreground dark:text-foreground">
                         {t("completeAccount.step2.phone")}
                     </label>
-                    <Input
-                        type="tel"
+                    <PhoneInput
+                        defaultCountry="br"
                         value={newFields.phone}
-                        onChange={e => onUpdateField("phone", e.target.value)}
-                        placeholder={t(
-                            "completeAccount.step2.phonePlaceholder"
-                        )}
+                        onChange={phone => onUpdateField("phone", phone)}
                         disabled={isLoading}
-                        aria-invalid={!!errors.phone}
-                        className={
-                            errors.phone
-                                ? "border-red-500 dark:border-red-400"
-                                : ""
-                        }
+                        inputProps={{
+                            autoComplete: "tel",
+                            id: "phone",
+                            placeholder: t(
+                                "completeAccount.step2.phonePlaceholder"
+                            ),
+                            className: `w-full px-4 py-2 rounded-r-lg bg-card dark:bg-muted text-foreground dark:text-foreground focus:outline-none focus:ring-2 focus:ring-ring dark:focus:ring-ring ${
+                                errors.phone
+                                    ? "border-red-500 dark:border-red-400"
+                                    : "border-input dark:border-input"
+                            }`,
+                        }}
+                        countrySelectorStyleProps={{
+                            buttonClassName: `border border-input dark:border-input rounded-l-lg bg-card dark:bg-muted text-foreground dark:text-foreground hover:bg-muted dark:hover:bg-muted ${
+                                isLoading ? "opacity-50 cursor-not-allowed" : ""
+                            }`,
+                        }}
                     />
                     <p className="text-xs text-muted-foreground dark:text-muted-foreground">
                         {t("completeAccount.step2.phoneHint")}
