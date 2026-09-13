@@ -1,0 +1,6 @@
+Contact: mailto:security@gabrieltoth.com
+Contact: mailto:gabrieltothgoncalves@gmail.com
+Expires: 2027-09-13T00:00:00.000Z
+Preferred-Languages: en, pt-BR
+Canonical: https://gabrieltoth.com/.well-known/security.txt
+Policy: https://gabrieltoth.com/security
