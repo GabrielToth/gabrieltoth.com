@@ -54,7 +54,7 @@ describe("POST /api/auth/complete-account", () => {
                 oauth_id: "google-123",
                 name: "John Doe",
                 picture: "https://example.com/photo.jpg",
-                phone_number: "+1234567890",
+                phone_number: "+14155552671",
                 birth_date: new Date("1990-01-01"),
                 account_completion_status: "completed",
                 account_completed_at: new Date(),
@@ -105,7 +105,7 @@ describe("POST /api/auth/complete-account", () => {
                         email: "user@example.com",
                         name: "John Doe",
                         password: "SecurePass123!",
-                        phone: "+1234567890",
+                        phone: "+14155552671",
                         birthDate: "1990-01-01",
                     }),
                     headers: {
@@ -156,7 +156,7 @@ describe("POST /api/auth/complete-account", () => {
                         email: "invalid-email",
                         name: "John Doe",
                         password: "SecurePass123!",
-                        phone: "+1234567890",
+                        phone: "+14155552671",
                         birthDate: "1990-01-01",
                     }),
                     headers: {
@@ -202,7 +202,7 @@ describe("POST /api/auth/complete-account", () => {
                         email: "user@example.com",
                         name: "John Doe",
                         password: "weak",
-                        phone: "+1234567890",
+                        phone: "+14155552671",
                         birthDate: "1990-01-01",
                     }),
                     headers: {
@@ -248,7 +248,7 @@ describe("POST /api/auth/complete-account", () => {
                         email: "user@example.com",
                         name: "John Doe",
                         password: "SecurePass123!",
-                        phone: "1234567890",
+                        phone: "12345",
                         birthDate: "1990-01-01",
                     }),
                     headers: {
@@ -294,7 +294,7 @@ describe("POST /api/auth/complete-account", () => {
                         email: "user@example.com",
                         name: "John Doe",
                         password: "SecurePass123!",
-                        phone: "+1234567890",
+                        phone: "+14155552671",
                         birthDate: "2020-01-01",
                     }),
                     headers: {
@@ -340,7 +340,7 @@ describe("POST /api/auth/complete-account", () => {
                         email: "user@example.com",
                         name: "John Doe",
                         password: "SecurePass123!",
-                        phone: "+1234567890",
+                        phone: "+14155552671",
                         // Missing birthDate
                     }),
                     headers: {
@@ -376,7 +376,7 @@ describe("POST /api/auth/complete-account", () => {
                         email: "user@example.com",
                         name: "John Doe",
                         password: "SecurePass123!",
-                        phone: "+1234567890",
+                        phone: "+14155552671",
                         birthDate: "1990-01-01",
                     }),
                     headers: {
@@ -411,7 +411,7 @@ describe("POST /api/auth/complete-account", () => {
                         email: "user@example.com",
                         name: "John Doe",
                         password: "SecurePass123!",
-                        phone: "+1234567890",
+                        phone: "+14155552671",
                         birthDate: "1990-01-01",
                     }),
                     headers: {
@@ -473,7 +473,7 @@ describe("POST /api/auth/complete-account", () => {
                         email: "newuser@example.com",
                         name: "John Doe",
                         password: "SecurePass123!",
-                        phone: "+1234567890",
+                        phone: "+14155552671",
                         birthDate: "1990-01-01",
                     }),
                     headers: {
@@ -509,7 +509,7 @@ describe("POST /api/auth/complete-account", () => {
                 oauth_provider: "google",
                 oauth_id: "google-123",
                 name: "John Doe",
-                phone_number: "+1234567890",
+                phone_number: "+14155552671",
                 birth_date: new Date("1990-01-01"),
                 account_completion_status: "completed",
                 account_completed_at: new Date(),
@@ -559,7 +559,7 @@ describe("POST /api/auth/complete-account", () => {
                         email: "user@example.com",
                         name: "John Doe",
                         password: "SecurePass123!",
-                        phone: "+1234567890",
+                        phone: "+14155552671",
                         birthDate: "1990-01-01",
                     }),
                     headers: {
@@ -612,7 +612,7 @@ describe("POST /api/auth/complete-account", () => {
                         email: "user@example.com",
                         name: "John Doe",
                         password: "SecurePass123!",
-                        phone: "+1234567890",
+                        phone: "+14155552671",
                         birthDate: "1990-01-01",
                     }),
                     headers: {
@@ -647,7 +647,7 @@ describe("POST /api/auth/complete-account", () => {
                 oauth_provider: "google",
                 oauth_id: "google-123",
                 name: "John Doe",
-                phone_number: "+1234567890",
+                phone_number: "+14155552671",
                 birth_date: new Date("1990-01-01"),
                 account_completion_status: "completed",
                 account_completed_at: new Date(),
@@ -691,7 +691,7 @@ describe("POST /api/auth/complete-account", () => {
                         email: "user@example.com",
                         name: "John Doe",
                         password: "SecurePass123!",
-                        phone: "+1234567890",
+                        phone: "+14155552671",
                         birthDate: "1990-01-01",
                     }),
                     headers: {
@@ -728,7 +728,7 @@ describe("POST /api/auth/complete-account", () => {
                 oauth_provider: "google",
                 oauth_id: "google-123",
                 name: "John Doe",
-                phone_number: "+1234567890",
+                phone_number: "+14155552671",
                 birth_date: new Date("1990-01-01"),
                 account_completion_status: "completed",
                 account_completed_at: new Date(),
@@ -778,7 +778,7 @@ describe("POST /api/auth/complete-account", () => {
                         email: "user@example.com",
                         name: "John Doe",
                         password: "SecurePass123!",
-                        phone: "+1234567890",
+                        phone: "+14155552671",
                         birthDate: "1990-01-01",
                     }),
                     headers: {

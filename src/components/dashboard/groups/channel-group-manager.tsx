@@ -224,7 +224,10 @@ export function ChannelGroupManager({
                                         )
                                     }
                                     onKeyDown={e => {
-                                        if (e.key === "Enter" || e.key === " ") {
+                                        if (
+                                            e.key === "Enter" ||
+                                            e.key === " "
+                                        ) {
                                             setExpanded(
                                                 isExpanded ? null : group.id
                                             )
