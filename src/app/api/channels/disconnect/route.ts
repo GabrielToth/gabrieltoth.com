@@ -125,21 +125,18 @@ export async function POST(request: NextRequest) {
             }
         }
 
-        // 2. Mark social_networks as disconnected (this is what GET /api/user/channels reads)
-        let update = supabase
+        // 2. Delete social_networks record completely (so it disappears from channel list)
+        let query = supabase
             .from("social_networks")
-            .update({
-                status: "disconnected",
-                updated_at: new Date().toISOString(),
-            })
+            .delete()
             .eq("user_id", userId)
             .eq("platform", platform)
 
         if (typeof channelId === "string" && channelId.length > 0) {
-            update = update.eq("id", channelId)
+            query = query.eq("id", channelId)
         }
 
-        const { error: socialError } = await update
+        const { error: socialError } = await query
         if (socialError) {
             logger.error("Failed to update social_networks", {
                 platform,
