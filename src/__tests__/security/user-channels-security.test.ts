@@ -73,6 +73,70 @@ vi.mock("@/lib/middleware/api-csrf-middleware", () => ({
     getOrGenerateCsrfToken: vi.fn().mockReturnValue("mock-csrf-token"),
 }))
 
+const mockGetServerSession = vi.hoisted(() =>
+    vi.fn().mockImplementation((request?: { cookies?: { get?: (name: string) => { value?: string } | undefined } }) => {
+        const cookie = request?.cookies?.get?.("auth_session")
+        // Presence of an auth_session cookie simulates a valid session.
+        return cookie?.value
+            ? Promise.resolve({ user: { id: "user-1" } })
+            : Promise.resolve(null)
+    })
+)
+
+vi.mock("@/lib/auth/get-server-session", () => ({
+    getServerSession: mockGetServerSession,
+}))
+
+const mockGetToken = vi.hoisted(() => vi.fn().mockResolvedValue(null))
+const mockDeleteToken = vi.hoisted(() => vi.fn().mockResolvedValue(true))
+
+vi.mock("@/lib/token-store", () => ({
+    getTokenStore: vi.fn(() => ({
+        getToken: mockGetToken,
+        deleteToken: mockDeleteToken,
+    })),
+}))
+
+vi.mock("@/lib/oauth", () => ({
+    getOAuthManager: vi.fn(() => ({
+        revokeToken: vi.fn().mockResolvedValue(true),
+    })),
+}))
+
+// Supabase admin client mock — a chainable query builder that is also awaitable.
+function makeSupabaseQuery<T = { error: null }>(resolveValue: T) {
+    const ops = [
+        "select",
+        "insert",
+        "update",
+        "delete",
+        "eq",
+        "neq",
+        "order",
+        "single",
+        "maybeSingle",
+        "limit",
+    ]
+    const thenable = Promise.resolve(resolveValue)
+    const builder: Record<string, any> = {
+        then: thenable.then.bind(thenable),
+        catch: thenable.catch.bind(thenable),
+        finally: thenable.finally.bind(thenable),
+    }
+    for (const op of ops) {
+        // Each op returns the builder itself so calls can be chained
+        // (e.g. .update().eq().eq()) and then awaited.
+        builder[op] = vi.fn(() => builder)
+    }
+    return builder
+}
+
+vi.mock("@/lib/supabase/server", () => ({
+    getAdminClient: vi.fn(() => ({
+        from: vi.fn(() => makeSupabaseQuery({ data: null, error: null })),
+    })),
+}))
+
 vi.mock("@/lib/auth/password-security", () => ({
     verifyPasswordArgon2id: mockVerifyPassword,
     hashPasswordArgon2id: mockHashPassword,
@@ -106,7 +170,10 @@ function makeRequest(
     const headers = new Headers()
     headers.set("Content-Type", "application/json")
     if (options?.cookie) {
-        headers.set("Cookie", `session=${options.cookie}`)
+        headers.set(
+            "Cookie",
+            `session=${options.cookie}; auth_session=${options.cookie}`
+        )
     }
     return new NextRequest(url, {
         method: options?.method || "GET",
@@ -125,7 +192,10 @@ function makeRequestNoContentType(
 ): NextRequest {
     const headers = new Headers()
     if (options?.cookie) {
-        headers.set("Cookie", `session=${options.cookie}`)
+        headers.set(
+            "Cookie",
+            `session=${options.cookie}; auth_session=${options.cookie}`
+        )
     }
     return new NextRequest(url, {
         method: options?.method || "GET",
@@ -1576,8 +1646,7 @@ describe("POST /api/channels/disconnect — Attack Matrix", () => {
     })
 
     it("should reject with invalid session", async () => {
-        const { db } = await import("@/lib/db")
-        vi.mocked(db.queryOne).mockResolvedValueOnce(null)
+        mockGetServerSession.mockResolvedValueOnce(null)
         const res = await handler(
             makeRequest("http://localhost/api/channels/disconnect", {
                 method: "POST",
@@ -1589,11 +1658,7 @@ describe("POST /api/channels/disconnect — Attack Matrix", () => {
     })
 
     it("should reject with expired session", async () => {
-        const { db } = await import("@/lib/db")
-        vi.mocked(db.queryOne).mockResolvedValueOnce({
-            user_id: "user-1",
-            expires_at: new Date(Date.now() - 3600000),
-        })
+        mockGetServerSession.mockResolvedValueOnce(null)
         const res = await handler(
             makeRequest("http://localhost/api/channels/disconnect", {
                 method: "POST",
@@ -1775,8 +1840,7 @@ describe("POST /api/channels/disconnect — Attack Matrix", () => {
 
     // ── 15. Info disclosure ──
     it("should not leak internal paths on error", async () => {
-        const { db } = await import("@/lib/db")
-        vi.mocked(db.query).mockRejectedValueOnce(
+        mockGetToken.mockRejectedValueOnce(
             new Error("Error at C:\\src\\route.ts")
         )
         const req = makeRequest("http://localhost/api/channels/disconnect", {
@@ -1789,10 +1853,8 @@ describe("POST /api/channels/disconnect — Attack Matrix", () => {
         expect(JSON.stringify(body)).not.toContain(":\\")
     })
 
-    // ── 17. IDOR — disconnect uses session user_id, not user-provided ID ──
+    // ── 17. IDOR — disconnect scopes to session user_id + optional channelId ──
     it("should delete using session user_id, not user-provided user ID", async () => {
-        const { db } = await import("@/lib/db")
-        vi.mocked(db.query).mockClear()
         const res = await handler(
             makeRequest("http://localhost/api/channels/disconnect", {
                 method: "POST",
@@ -1804,9 +1866,9 @@ describe("POST /api/channels/disconnect — Attack Matrix", () => {
         expect(res.status).toBe(400)
     })
 
-    it("should call DELETE queries with correct parameters", async () => {
-        const { db } = await import("@/lib/db")
-        vi.mocked(db.query).mockClear()
+    it("should call disconnect using session user_id and platform", async () => {
+        mockGetToken.mockClear()
+        mockGetToken.mockResolvedValueOnce(null)
         const res = await handler(
             makeRequest("http://localhost/api/channels/disconnect", {
                 method: "POST",
@@ -1815,7 +1877,6 @@ describe("POST /api/channels/disconnect — Attack Matrix", () => {
             })
         )
         expect(res.status).toBe(200)
-        // Should call db.query twice: once for linked_accounts, once for oauth_tokens
-        expect(db.query).toHaveBeenCalledTimes(2)
+        expect(mockGetToken).toHaveBeenCalledWith("user-1", "twitter")
     })
 })
