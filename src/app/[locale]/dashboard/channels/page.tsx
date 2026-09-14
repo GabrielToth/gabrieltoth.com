@@ -143,25 +143,14 @@ export default function ChannelsPage() {
                 setConfirmDialog(null)
                 setDisconnectingId(channel.id)
                 try {
-                    let response = await fetch(
-                        `/api/oauth/disconnect/${channel.platform}?channelId=${channel.id}`,
-                        {
-                            method: "POST",
-                            headers: { "Content-Type": "application/json" },
-                            body: JSON.stringify({ channelId: channel.id }),
-                        }
-                    )
-
-                    if (!response.ok) {
-                        response = await fetch("/api/channels/disconnect", {
-                            method: "POST",
-                            headers: { "Content-Type": "application/json" },
-                            body: JSON.stringify({
-                                channelId: channel.id,
-                                platform: channel.platform,
-                            }),
-                        })
-                    }
+                    const response = await fetch("/api/channels/disconnect", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            channelId: channel.id,
+                            platform: channel.platform,
+                        }),
+                    })
 
                     if (!response.ok) {
                         throw new Error(

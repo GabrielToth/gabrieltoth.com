@@ -109,13 +109,20 @@ export async function connectChannel(platform: string): Promise<SocialChannel> {
 /**
  * Disconnect a social channel
  */
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export async function disconnectChannel(platform: string): Promise<void> {
+export async function disconnectChannel(
+    platform: string,
+    channelId?: string
+): Promise<void> {
     try {
-        // In production, replace with actual API call
-        // const response = await fetch(`/api/channels/${platform}/disconnect`, {
-        //   method: 'POST'
-        // })
+        const response = await fetch("/api/channels/disconnect", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ platform, channelId }),
+        })
+
+        if (!response.ok) {
+            throw new Error(`Failed to disconnect channel: HTTP ${response.status}`)
+        }
 
         // Invalidate cache
         cache.delete("channels")
