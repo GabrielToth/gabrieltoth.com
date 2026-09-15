@@ -2,6 +2,7 @@
     "sidebar": {
         "publish": "Veröffentlichen",
         "live": "Live ",
+        "chatCommands": "Chat-Befehle",
         "insights": "Einblicke",
         "discover": "Entdecken",
         "repost": "Auto Repost ",
@@ -784,5 +785,29 @@
         "title": "Chat-Popup",
         "copyUrl": "URL kopieren (OBS)",
         "copyUrlTooltip": "URL für OBS-Nutzung kopieren"
+    },
+    "chatCommands": {
+        "title": "Chat-Befehle",
+        "description": "Verwalte Standard- und benutzerdefinierte Chatbot-Befehle, Aktionen, Berechtigungen und Plattformen.",
+        "addCommand": "Befehl Hinzufügen",
+        "noCommands": "Noch keine Befehle konfiguriert. Klicke auf 'Befehl Hinzufügen', um einen zu erstellen.",
+        "default": "Standard",
+        "platforms": "Plattformen",
+        "roles": "Rollen",
+        "cooldown": "Abklingzeit",
+        "editCommand": "Befehl Bearbeiten",
+        "editCommandDesc": "Konfiguriere Auslöser, Bot-Antworten, Berechtigungen und Verfügbarkeit.",
+        "newCommand": "Neuer Befehl",
+        "newCommandDesc": "Erstelle einen neuen benutzerdefinierten Chat-Befehl mit Bot-Antworten oder Aktionen.",
+        "trigger": "Auslöser (z. B. !discord)",
+        "type": "Befehlstyp",
+        "typeResponse": "Bot-Antworttext",
+        "typeStreamUpdate": "Stream-Aktualisierung (Titel/Kategorie)",
+        "typeModeration": "Moderationsaktion",
+        "response": "Antwortvorlage",
+        "allowedRoles": "Erlaubte Rollen",
+        "enabled": "Aktiviert",
+        "cancel": "Abbrechen",
+        "save": "Befehl Speichern"
     }
 }

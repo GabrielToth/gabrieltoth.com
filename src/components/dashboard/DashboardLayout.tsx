@@ -10,6 +10,7 @@ type DashboardTab =
     | "channels"
     | "settings"
     | "live"
+    | "chat-commands"
     | "discover"
     | "repost"
     | "cloner"

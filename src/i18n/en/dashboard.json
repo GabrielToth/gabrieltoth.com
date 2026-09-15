@@ -2,6 +2,7 @@
     "sidebar": {
         "publish": "Publish",
         "live": "Live",
+        "chatCommands": "Chat Commands",
         "insights": "Insights",
         "discover": "Discover",
         "repost": "Auto Repost",
@@ -784,5 +785,29 @@
         "title": "Popout Chat",
         "copyUrl": "Copy URL (OBS)",
         "copyUrlTooltip": "Copy URL for OBS usage"
+    },
+    "chatCommands": {
+        "title": "Chat Commands",
+        "description": "Manage default and custom chatbot commands, actions, permissions, and platform availability.",
+        "addCommand": "Add Command",
+        "noCommands": "No commands configured yet. Click 'Add Command' to create one.",
+        "default": "Default",
+        "platforms": "Platforms",
+        "roles": "Allowed Roles",
+        "cooldown": "Cooldown",
+        "editCommand": "Edit Command",
+        "editCommandDesc": "Configure command triggers, bot actions, permissions, and platform availability.",
+        "newCommand": "New Command",
+        "newCommandDesc": "Create a new custom chat command with bot responses or actions.",
+        "trigger": "Trigger (e.g. !discord)",
+        "type": "Command Type",
+        "typeResponse": "Bot Response Text",
+        "typeStreamUpdate": "Stream Update (Title/Category)",
+        "typeModeration": "Moderation Action",
+        "response": "Response Template",
+        "allowedRoles": "Allowed Roles",
+        "enabled": "Enabled",
+        "cancel": "Cancel",
+        "save": "Save Command"
     }
 }

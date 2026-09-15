@@ -16,6 +16,7 @@ export interface SidebarProps {
         | "channels"
         | "settings"
         | "live"
+        | "chat-commands"
         | "discover"
         | "repost"
         | "cloner"
@@ -26,6 +27,7 @@ export interface SidebarProps {
             | "channels"
             | "settings"
             | "live"
+            | "chat-commands"
             | "discover"
             | "repost"
             | "cloner"
@@ -156,6 +158,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         { id: "discover", label: t("discover"), icon: "🌐" },
         { id: "publish", label: t("publish"), icon: "📝" },
         { id: "live", label: t("live"), icon: "📡" },
+        { id: "chat-commands", label: t("chatCommands"), icon: "💬" },
         { id: "insights", label: t("insights"), icon: "📊" },
         { id: "repost", label: t("repost"), icon: "🔄" },
         { id: "cloner", label: t("cloner"), icon: "🧬" },

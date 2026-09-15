@@ -14,6 +14,7 @@ type DashboardTab =
     | "channels"
     | "settings"
     | "live"
+    | "chat-commands"
     | "discover"
     | "repost"
     | "cloner"
@@ -49,6 +50,8 @@ export default function DashboardClientLayout({
             setActiveTab("repost")
         } else if (pathname.includes("/dashboard/cloner")) {
             setActiveTab("cloner")
+        } else if (pathname.includes("/dashboard/chat-commands")) {
+            setActiveTab("chat-commands")
         } else if (pathname.includes("/dashboard/channels")) {
             setActiveTab("channels")
         } else if (pathname.includes("/dashboard/settings")) {
