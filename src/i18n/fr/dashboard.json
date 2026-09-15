@@ -2,6 +2,7 @@
     "sidebar": {
         "publish": "Publier",
         "live": "Direct",
+        "chatCommands": "Commandes de Chat",
         "insights": "Analyses",
         "discover": "Découvrir",
         "repost": "Republication auto",
@@ -787,5 +788,29 @@
         "title": "Popout Chat (à traduire)",
         "copyUrl": "Copy URL (OBS) (à traduire)",
         "copyUrlTooltip": "Copy URL for OBS usage (à traduire)"
+    },
+    "chatCommands": {
+        "title": "Commandes de Chat",
+        "description": "Gérez les commandes chatbot par défaut et personnalisées, les actions, autorisations et plateformes.",
+        "addCommand": "Ajouter une commande",
+        "noCommands": "Aucune commande configurée pour le moment. Cliquez sur 'Ajouter une commande' pour en créer une.",
+        "default": "Par défaut",
+        "platforms": "Plateformes",
+        "roles": "Rôles autorisés",
+        "cooldown": "Temps de recharge",
+        "editCommand": "Modifier la commande",
+        "editCommandDesc": "Configurez les déclencheurs, réponses bot, autorisations et disponibilité par plateforme.",
+        "newCommand": "Nouvelle commande",
+        "newCommandDesc": "Créez une nouvelle commande de chat personnalisée avec des réponses ou des actions du bot.",
+        "trigger": "Déclencheur (ex: !discord)",
+        "type": "Type de commande",
+        "typeResponse": "Texte de réponse du bot",
+        "typeStreamUpdate": "Mise à jour du stream (Titre/Catégorie)",
+        "typeModeration": "Action de modération",
+        "response": "Modèle de réponse",
+        "allowedRoles": "Rôles autorisés",
+        "enabled": "Activé",
+        "cancel": "Annuler",
+        "save": "Enregistrer la commande"
     }
 }

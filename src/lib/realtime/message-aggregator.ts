@@ -28,6 +28,24 @@ const ADAPTER_REGISTRY: Record<ChatPlatform, () => ChatAdapter> = {
     kick: () => new KickChatAdapter(),
 }
 
+export interface AggregatedMessage {
+    id: string
+    channelId: string
+    platform: string
+    user: {
+        id: string
+        username: string
+        displayName: string
+        isBroadcaster?: boolean
+        isModerator?: boolean
+        isSubscriber?: boolean
+    }
+    content: string
+    type: string
+    timestamp: number
+    isAction?: boolean
+}
+
 export class MessageAggregator {
     private static instances = new Map<string, MessageAggregator>()
 
@@ -214,7 +232,7 @@ export class MessageAggregator {
             isAction: message.isAction,
         })
 
-        // Broadcaster chat commands: !titleall / !categoryall
+        // Broadcaster chat commands: !titleall / !title / !categoryall / !category
         if (message.user.isBroadcaster) {
             this.handleBroadcastCommand(message.content).catch(err =>
                 logger.error("Broadcast command failed", {
@@ -223,20 +241,117 @@ export class MessageAggregator {
                 })
             )
         }
+
+        // Custom chat commands handling for all users
+        if (message.content.startsWith("!")) {
+            this.handleCustomChatCommand(message).catch(err =>
+                logger.error("Custom command handling failed", {
+                    userId: this.userId,
+                    error: err instanceof Error ? err.message : String(err),
+                })
+            )
+        }
     }
 
     /**
-     * Parse and execute global broadcaster commands (!titleall / !categoryall).
+     * Process general custom chat commands (!discord, !specs, etc.)
+     */
+    private async handleCustomChatCommand(message: AggregatedMessage): Promise<void> {
+        try {
+            const { parseCommandTrigger, interpolateResponse, isRoleAllowed, isPlatformSupported } = await import("@/lib/chat/types")
+            const trigger = parseCommandTrigger(message.content)
+            if (!trigger) return
+
+            // Skip title/category commands as they are handled separately
+            if (["!title", "!titleall", "!category", "!categoryall"].includes(trigger)) return
+
+            const { getAdminClient } = await import("@/lib/supabase/server")
+            const supabase = getAdminClient()
+
+            // Fetch active command definitions for user
+            const { data: dbCmds } = await supabase
+                .from("custom_commands")
+                .select("*")
+                .eq("user_id", this.userId)
+                .eq("enabled", true)
+
+            const { DEFAULT_COMMANDS } = await import("@/lib/chat/types")
+            
+            // Combine DB commands and fallback defaults
+            const customCmds = (dbCmds || []).map(row => ({
+                trigger: row.trigger,
+                responseTemplate: row.response_template,
+                platforms: row.platforms || ["twitch", "kick", "youtube"],
+                allowedRoles: row.allowed_roles || ["viewer"],
+            }))
+
+            const allCmds = [
+                ...customCmds,
+                ...DEFAULT_COMMANDS.map(d => ({
+                    trigger: d.trigger,
+                    responseTemplate: d.responseTemplate || "",
+                    platforms: d.platforms || ["twitch", "kick", "youtube"],
+                    allowedRoles: d.allowedRoles || ["viewer"],
+                }))
+            ]
+
+            const matchedCmd = allCmds.find(c => c.trigger.toLowerCase() === trigger)
+            if (!matchedCmd || !matchedCmd.responseTemplate) return
+
+            // Permission check: check platform and user role
+            const userRole = message.user.isBroadcaster
+                ? "broadcaster"
+                : message.user.isModerator
+                ? "moderator"
+                : message.user.isSubscriber
+                ? "subscriber"
+                : "viewer"
+
+            if (!isPlatformSupported(message.platform, matchedCmd.platforms)) return
+            if (!isRoleAllowed(userRole, matchedCmd.allowedRoles)) return
+
+            const response = interpolateResponse(matchedCmd.responseTemplate, {
+                username: message.user.displayName || message.user.username,
+                platform: message.platform,
+                channelId: message.channelId,
+                userId: message.user.id,
+                isModerator: !!message.user.isModerator,
+                isBroadcaster: !!message.user.isBroadcaster,
+                isSubscriber: !!message.user.isSubscriber,
+            })
+
+            // Broadcast command response event via SSE
+            sendEvent(this.userId, "command_response", {
+                trigger,
+                response,
+                user: message.user.username,
+                platform: message.platform,
+            })
+        } catch (err) {
+            logger.warn("Failed to process custom chat command", { error: String(err) })
+        }
+    }
+
+    /**
+     * Parse and execute broadcaster & custom chat commands.
+     * Supports !title, !titleall, !category, !categoryall, plus user DB custom commands.
      */
     private async handleBroadcastCommand(content: string): Promise<void> {
         const trimmed = content.trim()
         let payload: { title?: string; category?: string } | null = null
 
+        // Support both !titleall / !title and !categoryall / !category
         if (trimmed.startsWith("!titleall ")) {
             payload = { title: trimmed.slice("!titleall ".length).trim() }
+        } else if (trimmed.startsWith("!title ")) {
+            payload = { title: trimmed.slice("!title ".length).trim() }
         } else if (trimmed.startsWith("!categoryall ")) {
             payload = {
                 category: trimmed.slice("!categoryall ".length).trim(),
+            }
+        } else if (trimmed.startsWith("!category ")) {
+            payload = {
+                category: trimmed.slice("!category ".length).trim(),
             }
         }
 

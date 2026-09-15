@@ -2,6 +2,7 @@
     "sidebar": {
         "publish": "Publicar",
         "live": "En Vivo",
+        "chatCommands": "Comandos de Chat",
         "insights": "Perspectivas",
         "discover": "Descubrir",
         "repost": "Auto Repost ",
@@ -784,5 +785,29 @@
         "title": "Chat emergente",
         "copyUrl": "Copiar URL (OBS)",
         "copyUrlTooltip": "Copiar URL para usar en OBS"
+    },
+    "chatCommands": {
+        "title": "Comandos de Chat",
+        "description": "Gestiona comandos estándar y personalizados del chatbot, acciones, permisos y plataformas.",
+        "addCommand": "Añadir Comando",
+        "noCommands": "Aún no hay comandos configurados. Haz clic en 'Añadir Comando' para crear uno.",
+        "default": "Predeterminado",
+        "platforms": "Plataformas",
+        "roles": "Permisos",
+        "cooldown": "Enfriamiento",
+        "editCommand": "Editar Comando",
+        "editCommandDesc": "Configura activadores de comando, respuestas del bot, permisos y disponibilidad.",
+        "newCommand": "Nuevo Comando",
+        "newCommandDesc": "Crea un nuevo comando personalizado con respuestas o acciones del bot.",
+        "trigger": "Activador (ej: !discord)",
+        "type": "Tipo de Comando",
+        "typeResponse": "Texto de Respuesta del Bot",
+        "typeStreamUpdate": "Actualización de Transmisión (Título/Categoría)",
+        "typeModeration": "Acción de Moderación",
+        "response": "Plantilla de Respuesta",
+        "allowedRoles": "Roles Permitidos",
+        "enabled": "Activado",
+        "cancel": "Cancelar",
+        "save": "Guardar Comando"
     }
 }
