@@ -177,7 +177,7 @@ export default function LiveDashboardPage() {
     }
 
     const currentPlatform =
-        platforms.find(p => p.platform === activePlatform) || platforms[0]
+        platforms.find(p => p.platform === activePlatform) || platforms[0] || {}
 
     return (
         <div className="space-y-6">
