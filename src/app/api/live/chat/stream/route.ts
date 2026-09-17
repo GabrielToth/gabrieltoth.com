@@ -63,15 +63,14 @@ export async function GET(request: NextRequest): Promise<Response> {
         }
 
         // Determine which platforms the user has connected and their channel names.
-        // YouTube is handled separately via the relay WebSocket, not the SSE MessageAggregator.
         const platformConnect: Partial<
-            Record<"twitch" | "kick", { channelName: string; token?: string }>
+            Record<"twitch" | "kick" | "youtube", { channelName: string; token?: string }>
         > = {}
         for (const network of networks || []) {
             const plat = network.platform as string
-            if (plat !== "twitch" && plat !== "kick") continue
+            if (plat !== "twitch" && plat !== "kick" && plat !== "youtube") continue
 
-            const key = plat as "twitch" | "kick"
+            const key = plat as "twitch" | "kick" | "youtube"
             const info: { channelName: string; token?: string } = {
                 channelName: network.platform_username || plat,
             }
