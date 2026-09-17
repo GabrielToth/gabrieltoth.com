@@ -317,7 +317,8 @@ export class KickChatAdapter implements ChatAdapter {
                     badges: [],
                     isBroadcaster:
                         sender.is_broadcaster === true ||
-                        payload.is_broadcaster === true,
+                        payload.is_broadcaster === true ||
+                        String(sender.username || payload.username || "").toLowerCase() === roomId.toLowerCase(),
                     isModerator:
                         sender.is_moderator === true ||
                         payload.is_moderator === true,

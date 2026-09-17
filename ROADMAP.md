@@ -109,3 +109,43 @@
 - **#420: Dependency Security Audit** — Resolve remaining 7 high Dependabot vulnerabilities (npm audit fix --force for safe deps).
 - **#421: MapLibre/Nominatim Location Search** — Feature for settings (open-source map widget, self-hostable tiles if needed).
 - **#422: Meta Publishing External Solution** — No CNPJ. No Official API. Research & implement the cheapest/only local-supported auto-poster for Main + IG Business via browser automation ONLY. No need for official Meta Developer Portal changes (Phase: Local Chrome Debug Server).
+
+
+---
+
+## 🏛️ PHASE 5: MICROSERVICES, SUBDOMAINS & INFRASTRUCTURE SPLIT (PROPOSAL & ROADMAP)
+
+### 📌 Architecture Overview
+To achieve high availability, zero downtime during deployments, and strict separation of concerns between public marketing, operational channel management, and system health telemetry, the platform will be split into isolated microservices and subdomains powered by Cloudflare DNS & Worker Edge Proxying.
+
+---
+
+### 1️⃣ status.gabrieltoth.com — Standalone Status & Health Page
+* **Purpose:** Public-facing uptime monitor, latency dashboard, and incident status page for all live stream webhooks, SSE chat aggregators, and OAuth provider integrations.
+* **Tech Stack:** Lightweight Next.js / Astro static build deployed to Vercel/Cloudflare Pages, completely detached from main database to ensure availability even during primary DB maintenance.
+* **Features:**
+  - Automated ping checks for YouTube Data API, Twitch Helix, Kick API, Meta Graph API, and internal SSE /api/live/chat/stream.
+  - Historical uptime charts (99.9% target SLA).
+  - Discord webhook alerts on degradation.
+
+---
+
+### 2️⃣ Channel Management Subdomain Proposals
+For the dedicated Channel Management & Live Streaming Control Center, here are 4 recommended subdomains:
+
+1. **studio.gabrieltoth.com (RECOMMENDED 🌟):** Professional creator term mirroring YouTube Studio & OBS Studio. High branding value for social media management, broadcasting, and content publishing.
+2. **stream.gabrieltoth.com:** Clear, direct domain focused on live stream controls, multi-chat aggregation, and broadcast updates.
+3. **hub.gabrieltoth.com:** Central operational hub for multi-channel publishing, analytics, and automation.
+4. **live.gabrieltoth.com:** Concise subdomain dedicated specifically to real-time live streaming tools and unified chat.
+
+---
+
+### 3️⃣ Subdomain Migration & Cloudflare Edge Routing Strategy
+* **Cloudflare Managed Zone:** Zone ID 828668fe9dffe3c2ad60246caaf15d29 (configured via CLOUDFLARE_ZONE_ID & CLOUDFLARE_API_TOKEN).
+* **Routing Architecture:**
+  - gabrieltoth.com → Public Marketing, SEO Landing, Blog, i18n Pages (/pt-BR, /en, /fr, /de, /es).
+  - studio.gabrieltoth.com (or stream.gabrieltoth.com) → Dedicated App Application (/dashboard/live, /dashboard/publish, /dashboard/chat-commands, /dashboard/channels).
+  - status.gabrieltoth.com → Telemetry & Uptime Monitor.
+* **Shared Auth & Session Strategy:**
+  - Cross-subdomain HTTP-Only Cookie with domain scope .gabrieltoth.com for seamless Single Sign-On (SSO) between main site and subdomains without re-authenticating.
+  - Centralized Supabase Auth & Redis token store access.

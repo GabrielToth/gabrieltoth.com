@@ -99,13 +99,13 @@ function deduplicateAndGroup(
 
     for (const msg of all) {
         if (used.has(msg.id)) continue
-        const key = `${msg.author.toLowerCase()}|${msg.content.trim()}`
+        const key = `${msg.author.toLowerCase()}|${msg.content?.trim() || ""}`
         const cluster: RenderableChatMessage[] = [msg]
         used.add(msg.id)
 
         for (const other of all) {
             if (used.has(other.id)) continue
-            const otherKey = `${other.author.toLowerCase()}|${other.content.trim()}`
+            const otherKey = `${other.author.toLowerCase()}|${other.content?.trim() || ""}`
             if (
                 key === otherKey &&
                 Math.abs(other.timestamp - msg.timestamp) < DUP_WINDOW_MS

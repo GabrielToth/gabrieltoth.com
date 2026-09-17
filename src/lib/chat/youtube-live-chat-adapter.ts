@@ -284,31 +284,62 @@ export class YouTubeLiveChatAdapter implements ChatAdapter {
      * Find the active live broadcast's liveChatId
      */
     private async findLiveChatId(token: string): Promise<string | null> {
-        const url = `${YOUTUBE_API_BASE}/liveBroadcasts?part=snippet,status&mine=true`
+        let url = `${YOUTUBE_API_BASE}/liveBroadcasts?part=snippet,status&broadcastStatus=active&mine=true`
 
-        const response = await fetch(url, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        })
+        let response: Response | undefined
+        try {
+            response = await fetch(url, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            })
+        } catch {
+            // fetch exception
+        }
 
-        if (!response.ok) {
-            const errorBody = await response.text()
+        let data: any = null
+        if (response && response.ok) {
+            try {
+                data = await response.json()
+            } catch {
+                // JSON parse exception
+            }
+        }
+
+        if (!data?.items || data.items.length === 0) {
+            url = `${YOUTUBE_API_BASE}/liveBroadcasts?part=snippet,status&broadcastStatus=all&mine=true`
+            try {
+                const res = await fetch(url, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                })
+                if (res && res.ok) {
+                    data = await res.json()
+                }
+            } catch {
+                // fetch exception
+            }
+        }
+
+        if (!response || (!response.ok && (!data?.items || data.items.length === 0))) {
+            const status = response ? response.status : 500
+            const statusText = response ? response.statusText : "Network Error"
             throw new Error(
-                `Failed to fetch YouTube live broadcasts: ${response.status} ${errorBody}`
+                `Failed to fetch YouTube live broadcasts: ${status} ${statusText}`
             )
         }
 
-        const data = await response.json()
-
-        if (!data.items || data.items.length === 0) {
+        if (!data?.items || data.items.length === 0) {
             return null
         }
 
         // Find the first active live broadcast
         const activeBroadcast = data.items.find(
             (item: YouTubeLiveBroadcast) =>
-                item.status?.lifeCycleStatus === "live"
+                item.status?.lifeCycleStatus === "live" ||
+                item.status?.lifeCycleStatus === "ready" ||
+                item.status?.lifeCycleStatus === "testing"
         )
 
         if (!activeBroadcast || !activeBroadcast.snippet?.liveChatId) {

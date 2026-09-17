@@ -6,13 +6,13 @@
  */
 
 import { createLogger } from "@/lib/logger"
-import { KickChatAdapter, TwitchChatAdapter } from "@/lib/chat"
+import { KickChatAdapter, TwitchChatAdapter, YouTubeLiveChatAdapter } from "@/lib/chat"
 import type { ChatAdapter, ChatMessage } from "@/lib/chat/types"
 import { sendEvent } from "./sse-manager"
 
 const logger = createLogger("MessageAggregator")
 
-type ChatPlatform = "twitch" | "kick"
+type ChatPlatform = "twitch" | "kick" | "youtube"
 
 type PlatformConnectInfo = Partial<
     Record<ChatPlatform, { channelName: string; token?: string }>
@@ -26,6 +26,7 @@ interface PlatformAdapterEntry {
 const ADAPTER_REGISTRY: Record<ChatPlatform, () => ChatAdapter> = {
     twitch: () => new TwitchChatAdapter(),
     kick: () => new KickChatAdapter(),
+    youtube: () => new YouTubeLiveChatAdapter(),
 }
 
 export interface AggregatedMessage {
@@ -370,6 +371,36 @@ export class MessageAggregator {
             command: payload.title ? "titleall" : "categoryall",
             results,
         })
+
+        // Send confirmation chat response back to active chat platforms
+        const successfulPlatforms = results.filter(r => r.success).map(r => r.platform)
+        const failedPlatforms = results.filter(r => !r.success).map(r => `${r.platform} (${r.error || "error"})`)
+
+        let replyMessage = ""
+        if (payload.title) {
+            replyMessage = successfulPlatforms.length > 0
+                ? `[Bot] Updated title to "${payload.title}" on ${successfulPlatforms.join(", ")}.`
+                : `[Bot] Failed to update title.`
+        } else if (payload.category) {
+            replyMessage = successfulPlatforms.length > 0
+                ? `[Bot] Updated category to "${payload.category}" on ${successfulPlatforms.join(", ")}.`
+                : `[Bot] Failed to update category.`
+        }
+
+        if (failedPlatforms.length > 0 && successfulPlatforms.length > 0) {
+            replyMessage += ` (Failed: ${failedPlatforms.join(", ")})`
+        }
+
+        if (replyMessage) {
+            for (const [platform, entry] of this.adapters.entries()) {
+                const connectInfo = this.platformConnect[platform]
+                if (connectInfo?.channelName && entry.adapter) {
+                    entry.adapter.sendMessage(connectInfo.channelName, replyMessage).catch(err => {
+                        logger.warn("Failed to send command feedback to chat", { platform, error: String(err) })
+                    })
+                }
+            }
+        }
     }
 
     private handleError(platform: ChatPlatform, error: Error): void {
@@ -401,10 +432,12 @@ export class MessageAggregator {
             }
         }
 
-        const adapter =
-            platform === "twitch"
-                ? new TwitchChatAdapter()
-                : new KickChatAdapter()
+        const factory = ADAPTER_REGISTRY[platform]
+        if (!factory) {
+            logger.error("No adapter factory for platform", { platform })
+            return false
+        }
+        const adapter = factory()
 
         try {
             await adapter.connect(channelName, token)
@@ -413,10 +446,14 @@ export class MessageAggregator {
                 await twitchAdapter.waitForJoin(channelName)
             }
             await adapter.sendMessage(channelName, message)
+            return true
+        } catch (error) {
+            const err = error instanceof Error ? error : new Error(String(error))
+            logger.error("Failed to send message on platform", { platform, error: err.message })
+            return false
         } finally {
             await adapter.disconnect(channelName)
         }
-        return false
     }
 
     isRunning(): boolean {
