@@ -371,6 +371,36 @@ export class MessageAggregator {
             command: payload.title ? "titleall" : "categoryall",
             results,
         })
+
+        // Send confirmation chat response back to active chat platforms
+        const successfulPlatforms = results.filter(r => r.success).map(r => r.platform)
+        const failedPlatforms = results.filter(r => !r.success).map(r => `${r.platform} (${r.error || "error"})`)
+
+        let replyMessage = ""
+        if (payload.title) {
+            replyMessage = successfulPlatforms.length > 0
+                ? `[Bot] Updated title to "${payload.title}" on ${successfulPlatforms.join(", ")}.`
+                : `[Bot] Failed to update title.`
+        } else if (payload.category) {
+            replyMessage = successfulPlatforms.length > 0
+                ? `[Bot] Updated category to "${payload.category}" on ${successfulPlatforms.join(", ")}.`
+                : `[Bot] Failed to update category.`
+        }
+
+        if (failedPlatforms.length > 0 && successfulPlatforms.length > 0) {
+            replyMessage += ` (Failed: ${failedPlatforms.join(", ")})`
+        }
+
+        if (replyMessage) {
+            for (const [platform, entry] of this.adapters.entries()) {
+                const connectInfo = this.platformConnect[platform]
+                if (connectInfo?.channelName && entry.adapter) {
+                    entry.adapter.sendMessage(connectInfo.channelName, replyMessage).catch(err => {
+                        logger.warn("Failed to send command feedback to chat", { platform, error: String(err) })
+                    })
+                }
+            }
+        }
     }
 
     private handleError(platform: ChatPlatform, error: Error): void {

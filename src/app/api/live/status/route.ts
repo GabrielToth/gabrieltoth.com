@@ -9,6 +9,8 @@ import { getServerSession } from "@/lib/auth/get-server-session"
 import { createLogger } from "@/lib/logger"
 import { getKickConfig } from "@/lib/kick/config"
 import { getKickOAuthService } from "@/lib/kick/oauth-service"
+import { getTwitchConfig } from "@/lib/twitch/config"
+import { getTwitchOAuthService } from "@/lib/twitch/oauth-service"
 import { getTokenStore } from "@/lib/token-store"
 import { getYouTubeOAuthService } from "@/lib/youtube/oauth-service"
 import { getYouTubeChannelLinkingConfig } from "@/lib/youtube/config"
@@ -59,6 +61,13 @@ async function getValidAccessToken(
             const ytOAuthService = getYouTubeOAuthService(ytConfig)
             await ytOAuthService.initialize()
             refreshed = await ytOAuthService.refreshAccessToken(
+                storedToken.refreshToken
+            )
+        } else if (platform === "twitch") {
+            const config = getTwitchConfig()
+            const oauthService = getTwitchOAuthService(config)
+            await oauthService.initialize()
+            refreshed = await oauthService.refreshAccessToken(
                 storedToken.refreshToken
             )
         } else {
@@ -321,8 +330,9 @@ async function fetchYouTubeStream(
     accessToken: string
 ): Promise<Partial<PlatformStreamInfo>> {
     try {
-        const broadcastRes = await fetch(
-            "https://www.googleapis.com/youtube/v3/liveBroadcasts?part=snippet,status&mine=true",
+        // Try liveBroadcasts with broadcastStatus=active
+        let broadcastRes = await fetch(
+            "https://www.googleapis.com/youtube/v3/liveBroadcasts?part=snippet,status&broadcastStatus=active&mine=true",
             {
                 headers: {
                     Authorization: `Bearer ${accessToken}`,
@@ -331,21 +341,57 @@ async function fetchYouTubeStream(
             }
         )
 
-        if (!broadcastRes.ok) {
-            logger.warn("YouTube broadcast fetch failed", {
-                status: broadcastRes.status,
-            })
-            return {}
+        let broadcastData = broadcastRes.ok ? await broadcastRes.json() : null
+        let items = broadcastData?.items || []
+
+        // If broadcastStatus=active returns empty, try broadcastStatus=all
+        if (items.length === 0) {
+            broadcastRes = await fetch(
+                "https://www.googleapis.com/youtube/v3/liveBroadcasts?part=snippet,status&broadcastStatus=all&mine=true",
+                {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                        Accept: "application/json",
+                    },
+                }
+            )
+            if (broadcastRes.ok) {
+                broadcastData = await broadcastRes.json()
+                items = broadcastData?.items || []
+            }
         }
 
-        const broadcastData = await broadcastRes.json()
-        const items = broadcastData.items || []
-        const liveBroadcast = items.find(
+        let liveBroadcast = items.find(
             (item: { status?: { lifeCycleStatus?: string } }) =>
-                item.status?.lifeCycleStatus === "live"
+                item.status?.lifeCycleStatus === "live" ||
+                item.status?.lifeCycleStatus === "ready" ||
+                item.status?.lifeCycleStatus === "testing"
         )
 
+        // Fallback to Search API for active live stream if liveBroadcasts is empty
         if (!liveBroadcast) {
+            const searchRes = await fetch(
+                "https://www.googleapis.com/youtube/v3/search?part=snippet&eventType=live&type=video&mine=true",
+                {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                        Accept: "application/json",
+                    },
+                }
+            )
+            if (searchRes.ok) {
+                const searchData = await searchRes.json()
+                const searchItem = searchData.items?.[0]
+                if (searchItem) {
+                    return {
+                        isLive: true,
+                        viewerCount: 0,
+                        title: searchItem.snippet?.title || "",
+                        gameName: "YouTube Live",
+                        startedAt: searchItem.snippet?.publishedAt || null,
+                    }
+                }
+            }
             return { isLive: false }
         }
 

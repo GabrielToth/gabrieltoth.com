@@ -29,24 +29,36 @@ async function getCachedLiveChatId(
         return cached.liveChatId
     }
 
-    const broadcastResponse = await fetch(
-        "https://www.googleapis.com/youtube/v3/liveBroadcasts?part=snippet,status&mine=true",
+    let broadcastResponse = await fetch(
+        "https://www.googleapis.com/youtube/v3/liveBroadcasts?part=snippet,status&broadcastStatus=active&mine=true",
         {
             headers: { Authorization: `Bearer ${token}` },
         }
     )
-    if (!broadcastResponse.ok) {
-        if (broadcastResponse.status === 401) {
-            await markAccountDisconnected(userId, "youtube").catch(() => {})
+
+    let broadcastData = broadcastResponse.ok ? await broadcastResponse.json() : null
+    let items = broadcastData?.items || []
+
+    if (items.length === 0) {
+        broadcastResponse = await fetch(
+            "https://www.googleapis.com/youtube/v3/liveBroadcasts?part=snippet,status&broadcastStatus=all&mine=true",
+            {
+                headers: { Authorization: `Bearer ${token}` },
+            }
+        )
+        if (broadcastResponse.ok) {
+            broadcastData = await broadcastResponse.json()
+            items = broadcastData?.items || []
         }
-        return null
     }
 
-    const broadcastData = await broadcastResponse.json()
-    const active = broadcastData.items?.find(
+    const active = items.find(
         (item: { status?: { lifeCycleStatus?: string } }) =>
-            item.status?.lifeCycleStatus === "live"
-    )
+            item.status?.lifeCycleStatus === "live" ||
+            item.status?.lifeCycleStatus === "ready" ||
+            item.status?.lifeCycleStatus === "testing"
+    ) || items[0]
+
     const liveChatId = active?.snippet?.liveChatId
     if (liveChatId) {
         liveChatIdCache.set(userId, {
@@ -365,6 +377,30 @@ async function sendTwitchMessage(
             },
             { status: 500 }
         )
+    }
+
+    // Try modern Twitch Helix Chat REST API for non-slash messages
+    if (platformUserId) {
+        try {
+            const res = await fetch("https://api.twitch.tv/helix/chat/messages", {
+                method: "POST",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Client-Id": config.oauth.clientId,
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    broadcaster_id: platformUserId,
+                    sender_id: platformUserId,
+                    message,
+                }),
+            })
+            if (res.ok) {
+                return NextResponse.json({ success: true, sentViaHelix: true })
+            }
+        } catch {
+            // Fall back to active aggregator sendMessage socket
+        }
     }
 
     const sentViaActive = await MessageAggregator.sendMessage(

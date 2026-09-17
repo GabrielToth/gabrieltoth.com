@@ -271,9 +271,7 @@ export async function updateTwitchStream(
     try {
         const clientId = process.env.TWITCH_CLIENT_ID || ""
 
-        const body: Record<string, unknown> = {
-            broadcaster_id: userId,
-        }
+        const body: Record<string, unknown> = {}
         if (title) {
             body.title = title
         }
@@ -281,7 +279,8 @@ export async function updateTwitchStream(
             body.game_id = gameId
         }
 
-        const response = await fetch("https://api.twitch.tv/helix/channels", {
+        const url = `https://api.twitch.tv/helix/channels?broadcaster_id=${encodeURIComponent(userId)}`
+        const response = await fetch(url, {
             method: "PATCH",
             headers: {
                 Authorization: `Bearer ${accessToken}`,
@@ -417,9 +416,9 @@ export async function updateYouTubeStream(
     _gameId?: string
 ): Promise<{ success: boolean; error?: string }> {
     try {
-        // Find active broadcast
-        const broadcastResponse = await fetch(
-            "https://www.googleapis.com/youtube/v3/liveBroadcasts?part=snippet,status&mine=true",
+        // Find active broadcast with broadcastStatus=active or fallback to broadcastStatus=all
+        let broadcastResponse = await fetch(
+            "https://www.googleapis.com/youtube/v3/liveBroadcasts?part=snippet,status&broadcastStatus=active&mine=true",
             {
                 headers: {
                     Authorization: `Bearer ${accessToken}`,
@@ -427,23 +426,42 @@ export async function updateYouTubeStream(
             }
         )
 
-        if (!broadcastResponse.ok) {
-            return {
-                success: false,
-                error: `YouTube API error (${broadcastResponse.status})`,
+        let broadcastData = broadcastResponse.ok ? await broadcastResponse.json() : null
+        let items = broadcastData?.items || []
+
+        if (items.length === 0) {
+            broadcastResponse = await fetch(
+                "https://www.googleapis.com/youtube/v3/liveBroadcasts?part=snippet,status&broadcastStatus=all&mine=true",
+                {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                    },
+                }
+            )
+            if (broadcastResponse.ok) {
+                broadcastData = await broadcastResponse.json()
+                items = broadcastData?.items || []
             }
         }
 
-        const broadcastData = await broadcastResponse.json()
-        const broadcast = broadcastData.items?.[0]
+        const broadcast = items.find(
+            (b: { status?: { lifeCycleStatus?: string } }) =>
+                b.status?.lifeCycleStatus === "live" ||
+                b.status?.lifeCycleStatus === "ready" ||
+                b.status?.lifeCycleStatus === "testing"
+        ) || items[0]
+
         if (!broadcast) {
             return { success: false, error: "No active broadcast found" }
         }
 
+        const existingSnippet = broadcast.snippet || {}
         const updateBody: Record<string, unknown> = {
             id: broadcast.id,
             snippet: {
+                ...existingSnippet,
                 title,
+                scheduledStartTime: existingSnippet.scheduledStartTime || new Date().toISOString(),
             },
         }
 
