@@ -368,10 +368,10 @@ async function fetchYouTubeStream(
                 item.status?.lifeCycleStatus === "testing"
         )
 
-        // Fallback to Search API for active live stream if liveBroadcasts is empty
+        // Fallback to Channels + Search API for active live stream if liveBroadcasts is empty
         if (!liveBroadcast) {
-            const searchRes = await fetch(
-                "https://www.googleapis.com/youtube/v3/search?part=snippet&eventType=live&type=video&mine=true",
+            const chanRes = await fetch(
+                "https://www.googleapis.com/youtube/v3/channels?part=id,snippet&mine=true",
                 {
                     headers: {
                         Authorization: `Bearer ${accessToken}`,
@@ -379,16 +379,31 @@ async function fetchYouTubeStream(
                     },
                 }
             )
-            if (searchRes.ok) {
-                const searchData = await searchRes.json()
-                const searchItem = searchData.items?.[0]
-                if (searchItem) {
-                    return {
-                        isLive: true,
-                        viewerCount: 0,
-                        title: searchItem.snippet?.title || "",
-                        gameName: "YouTube Live",
-                        startedAt: searchItem.snippet?.publishedAt || null,
+            if (chanRes.ok) {
+                const chanData = await chanRes.json()
+                const channelId = chanData.items?.[0]?.id
+                if (channelId) {
+                    const searchRes = await fetch(
+                        `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${channelId}&eventType=live&type=video`,
+                        {
+                            headers: {
+                                Authorization: `Bearer ${accessToken}`,
+                                Accept: "application/json",
+                            },
+                        }
+                    )
+                    if (searchRes.ok) {
+                        const searchData = await searchRes.json()
+                        const searchItem = searchData.items?.[0]
+                        if (searchItem) {
+                            return {
+                                isLive: true,
+                                viewerCount: 0,
+                                title: searchItem.snippet?.title || "",
+                                gameName: "YouTube Live",
+                                startedAt: searchItem.snippet?.publishedAt || null,
+                            }
+                        }
                     }
                 }
             }

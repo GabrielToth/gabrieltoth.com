@@ -296,10 +296,13 @@ export function UnifiedChat({
         })
     }, [])
 
+    const [sendError, setSendError] = useState<string | null>(null)
+
     const handleSend = useCallback(async () => {
         const text = input.trim()
         if (!text || sending) return
         setSending(true)
+        setSendError(null)
         try {
             if (!historyRef.current.includes(text)) {
                 historyRef.current.push(text)
@@ -308,19 +311,30 @@ export function UnifiedChat({
 
             const targetPlatforms = sendMode === "all" ? platforms : [sendMode]
 
-            await Promise.all(
-                targetPlatforms.map(p =>
-                    fetch("/api/live/chat/send", {
+            const results = await Promise.all(
+                targetPlatforms.map(async p => {
+                    const res = await fetch("/api/live/chat/send", {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({ platform: p, message: text }),
                     })
-                )
+                    const data = await res.json().catch(() => ({}))
+                    return { platform: p, ok: res.ok && data.success !== false, error: data.message || data.error || `HTTP ${res.status}` }
+                })
             )
 
-            setInput("")
-            setShowCommands(false)
+            const failures = results.filter(r => !r.ok)
+            if (failures.length > 0) {
+                const errMsg = failures.map(f => `${f.platform.toUpperCase()}: ${f.error}`).join(" | ")
+                setSendError(errMsg)
+                logger.error("Failed to send message to platform(s)", { failures })
+            } else {
+                setInput("")
+                setShowCommands(false)
+            }
         } catch (err) {
+            const msg = err instanceof Error ? err.message : String(err)
+            setSendError(msg)
             logger.error("Failed to send message", { error: err })
         } finally {
             setSending(false)
@@ -447,6 +461,17 @@ export function UnifiedChat({
             </div>
 
             <div className="relative mt-auto">
+                {sendError && (
+                    <div className="mb-2 flex items-center justify-between rounded-lg border border-red-500/30 bg-red-950/80 px-3 py-1.5 text-xs text-red-200 backdrop-blur-sm">
+                        <span>⚠️ {sendError}</span>
+                        <button
+                            onClick={() => setSendError(null)}
+                            className="ml-2 font-bold hover:text-white"
+                        >
+                            ✕
+                        </button>
+                    </div>
+                )}
                 {showCommands && (
                     <ChatCommandPalette
                         commands={filteredCommands}
