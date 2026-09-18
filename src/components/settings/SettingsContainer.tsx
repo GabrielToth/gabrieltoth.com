@@ -12,6 +12,7 @@ import { LocalEnvSection } from "./LocalEnvSection"
 import { PreferencesSection } from "./PreferencesSection"
 import { ProfileSection } from "./ProfileSection"
 import { SecuritySection } from "./SecuritySection"
+import { ChatSettingsSection } from "./ChatSettingsSection"
 
 export interface User {
     id: string
@@ -305,13 +306,14 @@ export const SettingsContainer: React.FC<SettingsContainerProps> = () => {
                 onValueChange={setActiveTab}
                 className="space-y-6"
             >
-                <TabsList className="grid w-full grid-cols-2 md:grid-cols-6 gap-1">
+                <TabsList className="grid w-full grid-cols-2 md:grid-cols-7 gap-1">
                     <TabsTrigger value="profile">
                         {t("tabs.profile")}
                     </TabsTrigger>
                     <TabsTrigger value="preferences">
                         {t("tabs.preferences")}
                     </TabsTrigger>
+                    <TabsTrigger value="chat">Chat</TabsTrigger>
                     <TabsTrigger value="security">
                         {t("tabs.security")}
                     </TabsTrigger>
@@ -340,6 +342,10 @@ export const SettingsContainer: React.FC<SettingsContainerProps> = () => {
                         preferences={preferences}
                         onSave={handleSavePreferences}
                     />
+                </TabsContent>
+
+                <TabsContent value="chat" className="space-y-6">
+                    <ChatSettingsSection />
                 </TabsContent>
 
                 <TabsContent value="security" className="space-y-6">
