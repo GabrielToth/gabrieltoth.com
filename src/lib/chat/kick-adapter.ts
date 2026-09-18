@@ -298,27 +298,31 @@ export class KickChatAdapter implements ChatAdapter {
             if (!payload || payload.type === "system_message") return
 
             const sender = payload.sender || payload.user || {}
+            const rawUsername =
+                typeof sender.username === "string" && sender.username !== "[object Object]"
+                    ? sender.username
+                    : typeof payload.username === "string" && payload.username !== "[object Object]"
+                    ? payload.username
+                    : typeof sender.slug === "string" && sender.slug !== "[object Object]"
+                    ? sender.slug
+                    : ""
+
+            const resolvedName = rawUsername || (typeof sender.name === "string" && sender.name !== "[object Object]" ? sender.name : roomId)
+
             const message: ChatMessage = {
                 id: `kick-${payload.id || `${Date.now()}-${Math.random().toString(36).substring(2, 8)}`}`,
                 channelId: roomId,
                 platform: "kick",
                 user: {
-                    id: String(sender.id || payload.user_id || "unknown"),
-                    username: String(
-                        sender.username || payload.username || "unknown"
-                    ).toLowerCase(),
-                    displayName: String(
-                        sender.username ||
-                            payload.username ||
-                            sender.name ||
-                            "Unknown"
-                    ),
+                    id: String(sender.id || payload.user_id || resolvedName),
+                    username: resolvedName.toLowerCase(),
+                    displayName: resolvedName,
                     platform: "kick",
                     badges: [],
                     isBroadcaster:
                         sender.is_broadcaster === true ||
                         payload.is_broadcaster === true ||
-                        String(sender.username || payload.username || "").toLowerCase() === roomId.toLowerCase(),
+                        resolvedName.toLowerCase() === roomId.toLowerCase(),
                     isModerator:
                         sender.is_moderator === true ||
                         payload.is_moderator === true,

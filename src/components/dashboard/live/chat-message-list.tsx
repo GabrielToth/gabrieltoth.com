@@ -25,6 +25,8 @@ interface ChatMessageListProps {
     onUserClick?: (
         msg: RenderableChatMessage & { duplicateCount: number }
     ) => void
+    showTimestamps?: boolean
+    fontSize?: "xs" | "sm" | "md" | "lg"
 }
 
 const _PLATFORM_MINIS: Record<string, { color: string; label: string }> = {
@@ -42,9 +44,20 @@ export function ChatMessageList({
     getPlatformBadge,
     messagesEndRef,
     onUserClick,
+    showTimestamps = true,
+    fontSize = "xs",
 }: ChatMessageListProps) {
+    const fontSizeClass =
+        fontSize === "sm"
+            ? "text-xs"
+            : fontSize === "md"
+            ? "text-sm"
+            : fontSize === "lg"
+            ? "text-base"
+            : "text-[11px]"
+
     return (
-        <div className="flex-1 overflow-y-auto space-y-2 mb-3 pr-1 text-xs">
+        <div className={`flex-1 overflow-y-auto space-y-2 mb-3 pr-1 ${fontSizeClass}`}>
             {messages.length === 0 ? (
                 <div className="flex flex-col items-center justify-center h-full text-neutral-500">
                     <p>No chat messages yet</p>
@@ -64,6 +77,14 @@ export function ChatMessageList({
                             className="flex items-start gap-1.5 leading-relaxed"
                         >
                             <div className="flex items-center gap-1 shrink-0">
+                                {showTimestamps && msg.timestamp && (
+                                    <span className="text-[9px] text-neutral-500 font-mono">
+                                        {new Date(msg.timestamp).toLocaleTimeString([], {
+                                            hour: "2-digit",
+                                            minute: "2-digit",
+                                        })}
+                                    </span>
+                                )}
                                 {dupPlatforms.map(p => {
                                     const b = getPlatformBadge(p)
                                     return (

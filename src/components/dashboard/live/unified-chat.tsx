@@ -13,6 +13,7 @@ import { ExternalLink } from "lucide-react"
 import { ChatMessageList, RenderableChatMessage } from "./chat-message-list"
 import { ChatCommandPalette, CommandItem } from "./chat-command-palette"
 import { UserCard } from "./user-card"
+import { useChatSettings } from "@/hooks/use-chat-settings"
 
 interface UnifiedChatProps {
     platforms: string[]
@@ -157,6 +158,8 @@ export function UnifiedChat({
     const [selectedUser, setSelectedUser] = useState<
         (RenderableChatMessage & { duplicateCount: number }) | null
     >(null)
+    const { settings, updateSettings } = useChatSettings()
+    const [showSettingsModal, setShowSettingsModal] = useState(false)
 
     useEffect(() => {
         const saved = localStorage.getItem(
@@ -429,11 +432,69 @@ export function UnifiedChat({
 
             <div className="flex-1 flex gap-3 min-h-0 relative">
                 <div className="flex-1 flex flex-col min-w-0">
+                    {showSettingsModal && (
+                        <div className="mb-2 rounded-xl border border-neutral-700 bg-neutral-900/95 p-3 text-xs text-neutral-200 shadow-xl backdrop-blur-md">
+                            <div className="flex items-center justify-between border-b border-neutral-800 pb-2 mb-3">
+                                <span className="font-semibold text-neutral-100 flex items-center gap-1">
+                                    ⚙️ Chat Configuration
+                                </span>
+                                <button
+                                    onClick={() => setShowSettingsModal(false)}
+                                    className="text-neutral-400 hover:text-white"
+                                >
+                                    ✕
+                                </button>
+                            </div>
+                            <div className="space-y-3">
+                                <label className="flex items-center justify-between cursor-pointer">
+                                    <span>Show Message Timestamps</span>
+                                    <input
+                                        type="checkbox"
+                                        checked={settings.showTimestamps}
+                                        onChange={e => updateSettings({ showTimestamps: e.target.checked })}
+                                        className="rounded border-neutral-700 bg-neutral-800 text-indigo-600 focus:ring-indigo-500"
+                                    />
+                                </label>
+                                <label className="flex items-center justify-between cursor-pointer">
+                                    <span>Unify Creator Display Name Across Platforms</span>
+                                    <input
+                                        type="checkbox"
+                                        checked={settings.useUniversalNickname}
+                                        onChange={e => updateSettings({ useUniversalNickname: e.target.checked })}
+                                        className="rounded border-neutral-700 bg-neutral-800 text-indigo-600 focus:ring-indigo-500"
+                                    />
+                                </label>
+                                <label className="flex items-center justify-between cursor-pointer">
+                                    <span>Show Platform Badges</span>
+                                    <input
+                                        type="checkbox"
+                                        checked={settings.showBadges}
+                                        onChange={e => updateSettings({ showBadges: e.target.checked })}
+                                        className="rounded border-neutral-700 bg-neutral-800 text-indigo-600 focus:ring-indigo-500"
+                                    />
+                                </label>
+                                <div className="flex items-center justify-between">
+                                    <span>Font Size</span>
+                                    <select
+                                        value={settings.fontSize}
+                                        onChange={e => updateSettings({ fontSize: e.target.value as any })}
+                                        className="rounded border border-neutral-700 bg-neutral-800 px-2 py-1 text-xs text-neutral-200"
+                                    >
+                                        <option value="xs">Small</option>
+                                        <option value="sm">Medium</option>
+                                        <option value="md">Large</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    )}
                     <ChatMessageList
                         messages={groupedMessages}
                         getPlatformBadge={getPlatformBadge}
                         messagesEndRef={messagesEndRef}
                         onUserClick={msg => setSelectedUser(msg)}
+                        showTimestamps={settings.showTimestamps}
+                        fontSize={settings.fontSize}
                     />
                 </div>
 
