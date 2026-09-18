@@ -358,12 +358,19 @@ async function scrapeYouTubeLivePage(
                 html.match(/"videoId"\s*:\s*"([a-zA-Z0-9_-]{11})"/) ||
                 html.match(/<link rel="canonical" href="https:\/\/www\.youtube\.com\/watch\?v=([a-zA-Z0-9_-]{11})">/)
 
-            const isLive =
+            const isEnded =
+                html.includes('"isEnded":true') ||
+                html.includes('"isLiveEnded":true')
+
+            const hasLiveMarker =
                 html.includes('"isLive":true') ||
+                html.includes('"isLiveBroadcast":true') ||
                 html.includes('"status":"LIVE"') ||
                 html.includes('"style":"LIVE"') ||
                 html.includes('badge-shape-wiz__text">LIVE') ||
-                Boolean(videoIdMatch)
+                html.includes('liveChatRenderer')
+
+            const isLive = hasLiveMarker && !isEnded
 
             if (isLive && videoIdMatch?.[1]) {
                 const videoId = videoIdMatch[1]
@@ -394,28 +401,13 @@ async function fetchYouTubeStream(
     username?: string
 ): Promise<Partial<PlatformStreamInfo>> {
     try {
-        // 1. Try public web scraping check first for instant 0-quota direct stream key detection
-        const scraped = await scrapeYouTubeLivePage(channelId || username || "")
-        let targetVideoId = scraped.videoId
+        let targetVideoId: string | undefined
 
-        // 2. Try liveBroadcasts with broadcastStatus=active if no videoId yet
-        if (!targetVideoId && accessToken) {
-            let broadcastRes = await fetch(
-                "https://www.googleapis.com/youtube/v3/liveBroadcasts?part=snippet,status&broadcastStatus=active&mine=true",
-                {
-                    headers: {
-                        Authorization: `Bearer ${accessToken}`,
-                        Accept: "application/json",
-                    },
-                }
-            )
-
-            let broadcastData = broadcastRes.ok ? await broadcastRes.json() : null
-            let items = broadcastData?.items || []
-
-            if (items.length === 0) {
-                broadcastRes = await fetch(
-                    "https://www.googleapis.com/youtube/v3/liveBroadcasts?part=snippet,status&broadcastStatus=all&mine=true",
+        // 1. Try liveBroadcasts with broadcastStatus=active FIRST if accessToken is present
+        if (accessToken) {
+            try {
+                let broadcastRes = await fetch(
+                    "https://www.googleapis.com/youtube/v3/liveBroadcasts?part=snippet,status&broadcastStatus=active&mine=true",
                     {
                         headers: {
                             Authorization: `Bearer ${accessToken}`,
@@ -423,21 +415,47 @@ async function fetchYouTubeStream(
                         },
                     }
                 )
-                if (broadcastRes.ok) {
-                    broadcastData = await broadcastRes.json()
-                    items = broadcastData?.items || []
+
+                let broadcastData = broadcastRes.ok ? await broadcastRes.json() : null
+                let items = broadcastData?.items || []
+
+                if (items.length === 0) {
+                    broadcastRes = await fetch(
+                        "https://www.googleapis.com/youtube/v3/liveBroadcasts?part=snippet,status&broadcastStatus=all&mine=true",
+                        {
+                            headers: {
+                                Authorization: `Bearer ${accessToken}`,
+                                Accept: "application/json",
+                            },
+                        }
+                    )
+                    if (broadcastRes.ok) {
+                        broadcastData = await broadcastRes.json()
+                        items = broadcastData?.items || []
+                    }
                 }
+
+                const liveBroadcast = items.find(
+                    (item: { status?: { lifeCycleStatus?: string } }) =>
+                        item.status?.lifeCycleStatus === "live" ||
+                        item.status?.lifeCycleStatus === "ready" ||
+                        item.status?.lifeCycleStatus === "testing"
+                ) || items[0]
+
+                if (liveBroadcast?.id) {
+                    targetVideoId = liveBroadcast.id
+                }
+            } catch (broadcastErr) {
+                logger.warn("YouTube liveBroadcasts API call failed", { broadcastErr })
             }
+        }
 
-            const liveBroadcast = items.find(
-                (item: { status?: { lifeCycleStatus?: string } }) =>
-                    item.status?.lifeCycleStatus === "live" ||
-                    item.status?.lifeCycleStatus === "ready" ||
-                    item.status?.lifeCycleStatus === "testing"
-            )
-
-            if (liveBroadcast?.id) {
-                targetVideoId = liveBroadcast.id
+        // 2. If no targetVideoId from API, try public web scraping
+        let scraped: { isLive: boolean; videoId?: string; title?: string; viewerCount?: number } = { isLive: false }
+        if (!targetVideoId) {
+            scraped = await scrapeYouTubeLivePage(channelId || username || "")
+            if (scraped.isLive && scraped.videoId) {
+                targetVideoId = scraped.videoId
             }
         }
 
@@ -551,6 +569,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
             .select("*")
             .in("platform", [
                 "youtube",
+                "google",
                 "facebook",
                 "instagram",
                 "twitch",
@@ -559,7 +578,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
                 "twitter",
             ])
             .eq("user_id", userId)
-            .eq("status", "connected")
+            .neq("status", "disconnected")
 
         if (error) {
             logger.error("Failed to fetch live platforms", {
@@ -575,8 +594,9 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
         const platforms: PlatformStreamInfo[] = []
 
         for (const network of networks || []) {
+            const rawPlat = network.platform === "google" ? "youtube" : network.platform
             const baseInfo = {
-                platform: network.platform,
+                platform: rawPlat,
                 username: network.platform_username || "",
                 displayName:
                     network.metadata?.displayName ||
@@ -594,7 +614,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
             const pageAccessToken =
                 network.metadata?.page_access_token || accessToken
 
-            switch (network.platform) {
+            switch (rawPlat) {
                 case "twitch":
                     const twitchData = await fetchTwitchStream(
                         network.provider_user_id || network.platform_user_id
