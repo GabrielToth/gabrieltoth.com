@@ -159,8 +159,17 @@ describe("YouTube Live Status Detection", () => {
     })
 
     describe("liveBroadcasts mine=true filtering", () => {
+        type BroadcastItem = {
+            id: string
+            status?: { lifeCycleStatus?: string }
+            snippet?: {
+                actualStartTime?: string
+                scheduledStartTime?: string
+            }
+        }
+
         it("accepts broadcast with lifeCycleStatus live and actualStartTime", () => {
-            const items = [
+            const items: BroadcastItem[] = [
                 {
                     id: "abc123",
                     status: { lifeCycleStatus: "live" },
@@ -176,10 +185,7 @@ describe("YouTube Live Status Detection", () => {
         })
 
         it("rejects ready (scheduled) broadcast — NOT live yet", () => {
-            const items: Array<{
-                status?: { lifeCycleStatus?: string }
-                snippet?: { actualStartTime?: string }
-            }> = [
+            const items: BroadcastItem[] = [
                 {
                     id: "sched456",
                     status: { lifeCycleStatus: "ready" },
@@ -195,10 +201,7 @@ describe("YouTube Live Status Detection", () => {
         })
 
         it("rejects testing broadcast without actualStartTime", () => {
-            const items: Array<{
-                status?: { lifeCycleStatus?: string }
-                snippet?: { actualStartTime?: string }
-            }> = [
+            const items: BroadcastItem[] = [
                 {
                     id: "test789",
                     status: { lifeCycleStatus: "testing" },
@@ -259,6 +262,7 @@ describe("YouTube Live Status Detection", () => {
             const details: {
                 actualStartTime?: string
                 actualEndTime?: string
+                scheduledStartTime?: string
             } = {
                 scheduledStartTime: "2030-01-01T00:00:00Z",
             }
