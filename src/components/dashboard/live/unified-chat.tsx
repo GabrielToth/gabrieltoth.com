@@ -334,15 +334,24 @@ export function UnifiedChat({
                         body: JSON.stringify({ platform: p, message: text }),
                     })
                     const data = await res.json().catch(() => ({}))
-                    return { platform: p, ok: res.ok && data.success !== false, error: data.message || data.error || `HTTP ${res.status}` }
+                    return {
+                        platform: p,
+                        ok: res.ok && data.success !== false,
+                        error:
+                            data.message || data.error || `HTTP ${res.status}`,
+                    }
                 })
             )
 
             const failures = results.filter(r => !r.ok)
             if (failures.length > 0) {
-                const errMsg = failures.map(f => `${f.platform.toUpperCase()}: ${f.error}`).join(" | ")
+                const errMsg = failures
+                    .map(f => `${f.platform.toUpperCase()}: ${f.error}`)
+                    .join(" | ")
                 setSendError(errMsg)
-                logger.error("Failed to send message to platform(s)", { failures })
+                logger.error("Failed to send message to platform(s)", {
+                    failures,
+                })
             } else {
                 setInput("")
                 setShowCommands(false)
@@ -463,16 +472,29 @@ export function UnifiedChat({
                                     <input
                                         type="checkbox"
                                         checked={settings.showTimestamps}
-                                        onChange={e => updateSettings({ showTimestamps: e.target.checked })}
+                                        onChange={e =>
+                                            updateSettings({
+                                                showTimestamps:
+                                                    e.target.checked,
+                                            })
+                                        }
                                         className="rounded border-neutral-700 bg-neutral-800 text-indigo-600 focus:ring-indigo-500"
                                     />
                                 </label>
                                 <label className="flex items-center justify-between cursor-pointer">
-                                    <span>Unify Creator Display Name Across Platforms</span>
+                                    <span>
+                                        Unify Creator Display Name Across
+                                        Platforms
+                                    </span>
                                     <input
                                         type="checkbox"
                                         checked={settings.useUniversalNickname}
-                                        onChange={e => updateSettings({ useUniversalNickname: e.target.checked })}
+                                        onChange={e =>
+                                            updateSettings({
+                                                useUniversalNickname:
+                                                    e.target.checked,
+                                            })
+                                        }
                                         className="rounded border-neutral-700 bg-neutral-800 text-indigo-600 focus:ring-indigo-500"
                                     />
                                 </label>
@@ -481,7 +503,11 @@ export function UnifiedChat({
                                     <input
                                         type="checkbox"
                                         checked={settings.showBadges}
-                                        onChange={e => updateSettings({ showBadges: e.target.checked })}
+                                        onChange={e =>
+                                            updateSettings({
+                                                showBadges: e.target.checked,
+                                            })
+                                        }
                                         className="rounded border-neutral-700 bg-neutral-800 text-indigo-600 focus:ring-indigo-500"
                                     />
                                 </label>
@@ -491,12 +517,8 @@ export function UnifiedChat({
                                         value={settings.fontSize}
                                         onChange={e =>
                                             updateSettings({
-                                                fontSize: e.target
-                                                    .value as
-                                                    "xs" |
-                                                    "sm" |
-                                                    "md" |
-                                                    "lg",
+                                                fontSize: e.target.value as
+                                                    "xs" | "sm" | "md" | "lg",
                                             })
                                         }
                                         className="rounded border border-neutral-700 bg-neutral-800 px-2 py-1 text-xs text-neutral-200"

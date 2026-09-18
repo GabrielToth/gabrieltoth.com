@@ -327,9 +327,7 @@ async function fetchInstagramLive(
     }
 }
 
-async function scrapeYouTubeLivePage(
-    channelIdOrUsername: string
-): Promise<{
+async function scrapeYouTubeLivePage(channelIdOrUsername: string): Promise<{
     isLive: boolean
     videoId?: string
     title?: string
@@ -364,7 +362,9 @@ async function scrapeYouTubeLivePage(
             const videoIdMatch =
                 finalUrl.match(/watch\?v=([a-zA-Z0-9_-]{11})/) ||
                 html.match(/"videoId"\s*:\s*"([a-zA-Z0-9_-]{11})"/) ||
-                html.match(/<link rel="canonical" href="https:\/\/www\.youtube\.com\/watch\?v=([a-zA-Z0-9_-]{11})">/)
+                html.match(
+                    /<link rel="canonical" href="https:\/\/www\.youtube\.com\/watch\?v=([a-zA-Z0-9_-]{11})">/
+                )
 
             const isEnded =
                 html.includes('"isEnded":true') ||
@@ -376,7 +376,7 @@ async function scrapeYouTubeLivePage(
                 html.includes('"status":"LIVE"') ||
                 html.includes('"style":"LIVE"') ||
                 html.includes('badge-shape-wiz__text">LIVE') ||
-                html.includes('liveChatRenderer')
+                html.includes("liveChatRenderer")
 
             const isLive = hasLiveMarker && !isEnded
 
@@ -385,8 +385,9 @@ async function scrapeYouTubeLivePage(
 
                 // Title: <title> tag or og:title meta (strip trailing " - YouTube")
                 const titleMatch =
-                    html.match(/<meta property="og:title" content="([^"]+)">/) ||
-                    html.match(/<title>([^<]+)<\/title>/)
+                    html.match(
+                        /<meta property="og:title" content="([^"]+)">/
+                    ) || html.match(/<title>([^<]+)<\/title>/)
                 const title = titleMatch
                     ? titleMatch[1].replace(/ - YouTube$/, "")
                     : ""
@@ -625,7 +626,8 @@ async function fetchYouTubeStream(
                         startedAt = details.actualStartTime || null
                         if (snippet.title) title = snippet.title
                         if (YOUTUBE_CATEGORY_NAMES[snippet.categoryId]) {
-                            gameName = YOUTUBE_CATEGORY_NAMES[snippet.categoryId]
+                            gameName =
+                                YOUTUBE_CATEGORY_NAMES[snippet.categoryId]
                         }
                         viewerCount =
                             parseInt(details.concurrentViewers || "0", 10) ||
@@ -714,7 +716,8 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
         const platforms: PlatformStreamInfo[] = []
 
         for (const network of networks || []) {
-            const rawPlat = network.platform === "google" ? "youtube" : network.platform
+            const rawPlat =
+                network.platform === "google" ? "youtube" : network.platform
             const baseInfo = {
                 platform: rawPlat,
                 username: network.platform_username || "",

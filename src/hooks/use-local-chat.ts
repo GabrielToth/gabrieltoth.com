@@ -69,9 +69,7 @@ export function useLocalChat(
                     sockets.push(ws)
 
                     // Use the user's real Twitch channel — never a generic one
-                    const twitchChannel = (
-                        twitchChannelKey || ""
-                    )
+                    const twitchChannel = (twitchChannelKey || "")
                         .toLowerCase()
                         .replace(/^#/, "")
                         .replace(/\s/g, "")

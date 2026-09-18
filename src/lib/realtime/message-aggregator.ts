@@ -6,7 +6,11 @@
  */
 
 import { createLogger } from "@/lib/logger"
-import { KickChatAdapter, TwitchChatAdapter, YouTubeLiveChatAdapter } from "@/lib/chat"
+import {
+    KickChatAdapter,
+    TwitchChatAdapter,
+    YouTubeLiveChatAdapter,
+} from "@/lib/chat"
 import type { ChatAdapter, ChatMessage } from "@/lib/chat/types"
 import { sendEvent } from "./sse-manager"
 
@@ -15,7 +19,10 @@ const logger = createLogger("MessageAggregator")
 type ChatPlatform = "twitch" | "kick" | "youtube"
 
 type PlatformConnectInfo = Partial<
-    Record<ChatPlatform, { channelName: string; token?: string; channelId?: string }>
+    Record<
+        ChatPlatform,
+        { channelName: string; token?: string; channelId?: string }
+    >
 >
 
 interface PlatformAdapterEntry {
@@ -258,14 +265,26 @@ export class MessageAggregator {
     /**
      * Process general custom chat commands (!discord, !specs, etc.)
      */
-    private async handleCustomChatCommand(message: AggregatedMessage): Promise<void> {
+    private async handleCustomChatCommand(
+        message: AggregatedMessage
+    ): Promise<void> {
         try {
-            const { parseCommandTrigger, interpolateResponse, isRoleAllowed, isPlatformSupported } = await import("@/lib/chat/types")
+            const {
+                parseCommandTrigger,
+                interpolateResponse,
+                isRoleAllowed,
+                isPlatformSupported,
+            } = await import("@/lib/chat/types")
             const trigger = parseCommandTrigger(message.content)
             if (!trigger) return
 
             // Skip title/category commands as they are handled separately
-            if (["!title", "!titleall", "!category", "!categoryall"].includes(trigger)) return
+            if (
+                ["!title", "!titleall", "!category", "!categoryall"].includes(
+                    trigger
+                )
+            )
+                return
 
             const { getAdminClient } = await import("@/lib/supabase/server")
             const supabase = getAdminClient()
@@ -278,7 +297,7 @@ export class MessageAggregator {
                 .eq("enabled", true)
 
             const { DEFAULT_COMMANDS } = await import("@/lib/chat/types")
-            
+
             // Combine DB commands and fallback defaults
             const customCmds = (dbCmds || []).map(row => ({
                 trigger: row.trigger,
@@ -294,22 +313,25 @@ export class MessageAggregator {
                     responseTemplate: d.responseTemplate || "",
                     platforms: d.platforms || ["twitch", "kick", "youtube"],
                     allowedRoles: d.allowedRoles || ["viewer"],
-                }))
+                })),
             ]
 
-            const matchedCmd = allCmds.find(c => c.trigger.toLowerCase() === trigger)
+            const matchedCmd = allCmds.find(
+                c => c.trigger.toLowerCase() === trigger
+            )
             if (!matchedCmd || !matchedCmd.responseTemplate) return
 
             // Permission check: check platform and user role
             const userRole = message.user.isBroadcaster
                 ? "broadcaster"
                 : message.user.isModerator
-                ? "moderator"
-                : message.user.isSubscriber
-                ? "subscriber"
-                : "viewer"
+                  ? "moderator"
+                  : message.user.isSubscriber
+                    ? "subscriber"
+                    : "viewer"
 
-            if (!isPlatformSupported(message.platform, matchedCmd.platforms)) return
+            if (!isPlatformSupported(message.platform, matchedCmd.platforms))
+                return
             if (!isRoleAllowed(userRole, matchedCmd.allowedRoles)) return
 
             const response = interpolateResponse(matchedCmd.responseTemplate, {
@@ -330,7 +352,9 @@ export class MessageAggregator {
                 platform: message.platform,
             })
         } catch (err) {
-            logger.warn("Failed to process custom chat command", { error: String(err) })
+            logger.warn("Failed to process custom chat command", {
+                error: String(err),
+            })
         }
     }
 
@@ -374,18 +398,24 @@ export class MessageAggregator {
         })
 
         // Send confirmation chat response back to active chat platforms
-        const successfulPlatforms = results.filter(r => r.success).map(r => r.platform)
-        const failedPlatforms = results.filter(r => !r.success).map(r => `${r.platform} (${r.error || "error"})`)
+        const successfulPlatforms = results
+            .filter(r => r.success)
+            .map(r => r.platform)
+        const failedPlatforms = results
+            .filter(r => !r.success)
+            .map(r => `${r.platform} (${r.error || "error"})`)
 
         let replyMessage = ""
         if (payload.title) {
-            replyMessage = successfulPlatforms.length > 0
-                ? `[Bot] Updated title to "${payload.title}" on ${successfulPlatforms.join(", ")}.`
-                : `[Bot] Failed to update title.`
+            replyMessage =
+                successfulPlatforms.length > 0
+                    ? `[Bot] Updated title to "${payload.title}" on ${successfulPlatforms.join(", ")}.`
+                    : `[Bot] Failed to update title.`
         } else if (payload.category) {
-            replyMessage = successfulPlatforms.length > 0
-                ? `[Bot] Updated category to "${payload.category}" on ${successfulPlatforms.join(", ")}.`
-                : `[Bot] Failed to update category.`
+            replyMessage =
+                successfulPlatforms.length > 0
+                    ? `[Bot] Updated category to "${payload.category}" on ${successfulPlatforms.join(", ")}.`
+                    : `[Bot] Failed to update category.`
         }
 
         if (failedPlatforms.length > 0 && successfulPlatforms.length > 0) {
@@ -396,9 +426,14 @@ export class MessageAggregator {
             for (const [platform, entry] of this.adapters.entries()) {
                 const connectInfo = this.platformConnect[platform]
                 if (connectInfo?.channelName && entry.adapter) {
-                    entry.adapter.sendMessage(connectInfo.channelName, replyMessage).catch(err => {
-                        logger.warn("Failed to send command feedback to chat", { platform, error: String(err) })
-                    })
+                    entry.adapter
+                        .sendMessage(connectInfo.channelName, replyMessage)
+                        .catch(err => {
+                            logger.warn(
+                                "Failed to send command feedback to chat",
+                                { platform, error: String(err) }
+                            )
+                        })
                 }
             }
         }
@@ -442,7 +477,8 @@ export class MessageAggregator {
 
         try {
             const aggregatorInstance = MessageAggregator.instances.get(userId)
-            const channelId = aggregatorInstance?.platformConnect[platform]?.channelId
+            const channelId =
+                aggregatorInstance?.platformConnect[platform]?.channelId
             await adapter.connect(channelName, token, channelId)
             if (platform === "twitch") {
                 const twitchAdapter = adapter as TwitchChatAdapter
@@ -451,8 +487,12 @@ export class MessageAggregator {
             await adapter.sendMessage(channelName, message)
             return true
         } catch (error) {
-            const err = error instanceof Error ? error : new Error(String(error))
-            logger.error("Failed to send message on platform", { platform, error: err.message })
+            const err =
+                error instanceof Error ? error : new Error(String(error))
+            logger.error("Failed to send message on platform", {
+                platform,
+                error: err.message,
+            })
             return false
         } finally {
             await adapter.disconnect(channelName)

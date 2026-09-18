@@ -41,7 +41,14 @@ export async function GET(request: NextRequest): Promise<Response> {
         const { data: networks, error } = await supabase
             .from("social_networks")
             .select("*")
-            .in("platform", ["twitch", "kick", "youtube", "google", "tiktok", "twitter"])
+            .in("platform", [
+                "twitch",
+                "kick",
+                "youtube",
+                "google",
+                "tiktok",
+                "twitter",
+            ])
             .eq("user_id", userId)
             .neq("status", "disconnected")
 
@@ -64,21 +71,30 @@ export async function GET(request: NextRequest): Promise<Response> {
 
         // Determine which platforms the user has connected and their channel names.
         const platformConnect: Partial<
-            Record<"twitch" | "kick" | "youtube", { channelName: string; token?: string; channelId?: string }>
+            Record<
+                "twitch" | "kick" | "youtube",
+                { channelName: string; token?: string; channelId?: string }
+            >
         > = {}
         for (const network of networks || []) {
             let plat = network.platform as string
             if (plat === "google") plat = "youtube"
-            if (plat !== "twitch" && plat !== "kick" && plat !== "youtube") continue
+            if (plat !== "twitch" && plat !== "kick" && plat !== "youtube")
+                continue
 
             const key = plat as "twitch" | "kick" | "youtube"
-            const info: { channelName: string; token?: string; channelId?: string } = {
+            const info: {
+                channelName: string
+                token?: string
+                channelId?: string
+            } = {
                 channelName: network.platform_username || plat,
             }
 
             // Pass the platform channel ID (YouTube UC... channelId) so the
             // adapter can query liveBroadcasts by channelId instead of mine=true
-            const platformChannelId = network.provider_user_id || network.platform_user_id
+            const platformChannelId =
+                network.provider_user_id || network.platform_user_id
             if (platformChannelId) {
                 info.channelId = platformChannelId
             }

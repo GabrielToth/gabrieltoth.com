@@ -24,8 +24,7 @@ export function extractLiveScrape(html: string, finalUrl: string) {
         )
 
     const isEnded =
-        html.includes('"isEnded":true') ||
-        html.includes('"isLiveEnded":true')
+        html.includes('"isEnded":true') || html.includes('"isLiveEnded":true')
 
     const hasLiveMarker =
         html.includes('"isLive":true') ||
@@ -33,7 +32,7 @@ export function extractLiveScrape(html: string, finalUrl: string) {
         html.includes('"status":"LIVE"') ||
         html.includes('"style":"LIVE"') ||
         html.includes('badge-shape-wiz__text">LIVE') ||
-        html.includes('liveChatRenderer')
+        html.includes("liveChatRenderer")
 
     const isLive = hasLiveMarker && !isEnded
 
@@ -44,9 +43,7 @@ export function extractLiveScrape(html: string, finalUrl: string) {
     const titleMatch =
         html.match(/<meta property="og:title" content="([^"]+)">/) ||
         html.match(/<title>([^<]+)<\/title>/)
-    const title = titleMatch
-        ? titleMatch[1].replace(/ - YouTube$/, "")
-        : ""
+    const title = titleMatch ? titleMatch[1].replace(/ - YouTube$/, "") : ""
 
     const categoryMatch = html.match(/"category":"([^"]+)"/)
     const gameName = categoryMatch?.[1] || undefined
@@ -62,8 +59,7 @@ export function extractLiveScrape(html: string, finalUrl: string) {
     const viewersRaw =
         watchingNow?.[1] || simpleViewers?.[1] || runsViewers?.[1]
     if (viewersRaw) {
-        viewerCount =
-            parseInt(viewersRaw.replace(/[,.​\s]/g, ""), 10) || 0
+        viewerCount = parseInt(viewersRaw.replace(/[,.​\s]/g, ""), 10) || 0
     }
 
     return { isLive: true, videoId, title, gameName, viewerCount }
@@ -73,7 +69,7 @@ describe("YouTube Live Status Detection", () => {
     describe("scrape parsing (extractLiveScrape)", () => {
         it("detects live stream with videoId, title, game and viewers (real-world HTML shape)", () => {
             const html = [
-                '<title>Hay Day - Tudo o que você precisa saber - #04 - YouTube</title>',
+                "<title>Hay Day - Tudo o que você precisa saber - #04 - YouTube</title>",
                 '"videoId":"5pS7npa6zi4"',
                 '"isLive":true',
                 '"category":"Gaming"',
@@ -86,7 +82,9 @@ describe("YouTube Live Status Detection", () => {
             expect(res).not.toBeNull()
             expect(res!.isLive).toBe(true)
             expect(res!.videoId).toBe("5pS7npa6zi4")
-            expect(res!.title).toBe("Hay Day - Tudo o que você precisa saber - #04")
+            expect(res!.title).toBe(
+                "Hay Day - Tudo o que você precisa saber - #04"
+            )
             expect(res!.gameName).toBe("Gaming")
             expect(res!.viewerCount).toBe(1)
         })
@@ -112,7 +110,7 @@ describe("YouTube Live Status Detection", () => {
 
         it("returns null when page has no live markers", () => {
             const res = extractLiveScrape(
-                '<title>Some Channel - YouTube</title>',
+                "<title>Some Channel - YouTube</title>",
                 "https://www.youtube.com/@somechannel"
             )
             expect(res).toBeNull()
@@ -150,7 +148,7 @@ describe("YouTube Live Status Detection", () => {
 
         it("falls back to scraped title/game when meta tags absent", () => {
             const html = [
-                '<title>My Stream Title - YouTube</title>',
+                "<title>My Stream Title - YouTube</title>",
                 '"isLive":true',
                 '"videoId":"5pS7npa6zi4"',
             ].join("")
@@ -170,7 +168,7 @@ describe("YouTube Live Status Detection", () => {
                 },
             ]
             const liveBroadcast = items.find(
-                (item) =>
+                item =>
                     item.status?.lifeCycleStatus === "live" &&
                     !!item.snippet?.actualStartTime
             )
@@ -186,7 +184,7 @@ describe("YouTube Live Status Detection", () => {
                 },
             ]
             const liveBroadcast = items.find(
-                (item) =>
+                item =>
                     item.status?.lifeCycleStatus === "live" &&
                     !!item.snippet?.actualStartTime
             )
@@ -202,7 +200,7 @@ describe("YouTube Live Status Detection", () => {
                 },
             ]
             const liveBroadcast = items.find(
-                (item) =>
+                item =>
                     item.status?.lifeCycleStatus === "live" &&
                     !!item.snippet?.actualStartTime
             )
@@ -272,8 +270,7 @@ describe("YouTube Live Status Detection", () => {
         })
 
         it("falls back when categoryId unknown", () => {
-            const gameName =
-                YOUTUBE_CATEGORY_NAMES["99"] || "YouTube Live"
+            const gameName = YOUTUBE_CATEGORY_NAMES["99"] || "YouTube Live"
             expect(gameName).toBe("YouTube Live")
         })
     })
