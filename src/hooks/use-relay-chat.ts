@@ -134,6 +134,7 @@ export function useRelayChat(): UseRelayChatReturn {
                         platform,
                         token: info.accessToken,
                         channelName: info.channelName,
+                        channelId: (info as { channelId?: string }).channelId,
                     })
                 )
                 logger.debug("Sent relay connect", { platform })

@@ -113,6 +113,7 @@ interface PlatformStreamInfo {
     title: string
     gameName: string
     startedAt: string | null
+    liveChatId?: string | null
 }
 
 async function fetchTwitchStream(
@@ -326,16 +327,21 @@ async function fetchInstagramLive(
     }
 }
 
-async function scrapeYouTubeLivePage(
-    channelIdOrUsername: string
-): Promise<{ isLive: boolean; videoId?: string; title?: string; viewerCount?: number }> {
+async function scrapeYouTubeLivePage(channelIdOrUsername: string): Promise<{
+    isLive: boolean
+    videoId?: string
+    title?: string
+    gameName?: string
+    viewerCount?: number
+}> {
     if (!channelIdOrUsername) return { isLive: false }
 
+    const handle = channelIdOrUsername.replace(/^@/, "")
     const targets = [
-        channelIdOrUsername.startsWith("UC") || channelIdOrUsername.length > 20
-            ? `https://www.youtube.com/channel/${channelIdOrUsername}/live`
-            : `https://www.youtube.com/@${channelIdOrUsername.replace(/^@/, "")}/live`,
-        `https://www.youtube.com/@${channelIdOrUsername.replace(/^@/, "")}/live`,
+        handle.startsWith("UC")
+            ? `https://www.youtube.com/channel/${handle}/live`
+            : `https://www.youtube.com/@${handle}/live`,
+        `https://www.youtube.com/@${handle}/live`,
     ]
 
     for (const targetUrl of targets) {
@@ -356,7 +362,9 @@ async function scrapeYouTubeLivePage(
             const videoIdMatch =
                 finalUrl.match(/watch\?v=([a-zA-Z0-9_-]{11})/) ||
                 html.match(/"videoId"\s*:\s*"([a-zA-Z0-9_-]{11})"/) ||
-                html.match(/<link rel="canonical" href="https:\/\/www\.youtube\.com\/watch\?v=([a-zA-Z0-9_-]{11})">/)
+                html.match(
+                    /<link rel="canonical" href="https:\/\/www\.youtube\.com\/watch\?v=([a-zA-Z0-9_-]{11})">/
+                )
 
             const isEnded =
                 html.includes('"isEnded":true') ||
@@ -368,24 +376,52 @@ async function scrapeYouTubeLivePage(
                 html.includes('"status":"LIVE"') ||
                 html.includes('"style":"LIVE"') ||
                 html.includes('badge-shape-wiz__text">LIVE') ||
-                html.includes('liveChatRenderer')
+                html.includes("liveChatRenderer")
 
             const isLive = hasLiveMarker && !isEnded
 
             if (isLive && videoIdMatch?.[1]) {
                 const videoId = videoIdMatch[1]
-                const titleMatch =
-                    html.match(/<meta property="og:title" content="([^"]+)">/) ||
-                    html.match(/<title>([^<]+)<\/title>/)
-                const title = titleMatch ? titleMatch[1].replace(/ - YouTube$/, "") : ""
 
+                // Title: <title> tag or og:title meta (strip trailing " - YouTube")
+                const titleMatch =
+                    html.match(
+                        /<meta property="og:title" content="([^"]+)">/
+                    ) || html.match(/<title>([^<]+)<\/title>/)
+                const title = titleMatch
+                    ? titleMatch[1].replace(/ - YouTube$/, "")
+                    : ""
+
+                // Category (game): "category":"Gaming" in player microformat
+                const categoryMatch = html.match(/"category":"([^"]+)"/)
+                const gameName = categoryMatch?.[1] || undefined
+
+                // Viewers: multiple formats observed in the wild:
+                //   "viewCount":"1","author":...      (live stream player)
+                //   "videoViewCountRenderer"..."text":"1 watching now"
+                //   "viewCount":{"runs":[{"text":"1"...
                 let viewerCount = 0
-                const viewersMatch = html.match(/"viewCount"\s*:\s*\{\s*"runs"\s*:\s*\[\{\s*"text"\s*:\s*"([0-9,.]+)"/)
-                if (viewersMatch?.[1]) {
-                    viewerCount = parseInt(viewersMatch[1].replace(/[,.]/g, ""), 10) || 0
+                const simpleViewers = html.match(/"viewCount":"(\d+)"/)
+                const watchingNow = html.match(
+                    /"videoViewCountRenderer"[\s\S]{0,400}?"text":"(\d[\d,.]*) watching now"/
+                )
+                const runsViewers = html.match(
+                    /"viewCount"\s*:\s*\{\s*"runs"\s*:\s*\[\{\s*"text"\s*:\s*"([0-9,.]+)"/
+                )
+                const viewersRaw =
+                    watchingNow?.[1] || simpleViewers?.[1] || runsViewers?.[1]
+                if (viewersRaw) {
+                    viewerCount =
+                        parseInt(viewersRaw.replace(/[,.\s]/g, ""), 10) || 0
                 }
 
-                return { isLive: true, videoId, title, viewerCount }
+                return {
+                    isLive: true,
+                    videoId,
+                    title,
+                    gameName,
+                    viewerCount,
+                }
             }
         } catch {
             // Try next target
@@ -401,12 +437,39 @@ async function fetchYouTubeStream(
     username?: string
 ): Promise<Partial<PlatformStreamInfo>> {
     try {
-        let targetVideoId: string | undefined
+        const handle = channelId || username || ""
+        if (!handle && !accessToken) return {}
 
-        // 1. Try liveBroadcasts with broadcastStatus=active FIRST if accessToken is present
-        if (accessToken) {
+        let targetVideoId: string | undefined
+        let scraped: {
+            isLive: boolean
+            videoId?: string
+            title?: string
+            gameName?: string
+            viewerCount?: number
+        } = { isLive: false }
+
+        // ============================================================
+        // STAGE 1 (primary): Public page scrape — free, no API quota.
+        // Finds the *actual* live video (e.g. "5pS7npa6zi4") from the
+        // channel's /live page, which is what viewers see.
+        // ============================================================
+        if (handle) {
+            scraped = await scrapeYouTubeLivePage(handle)
+            if (scraped.isLive && scraped.videoId) {
+                targetVideoId = scraped.videoId
+            }
+        }
+
+        // ============================================================
+        // STAGE 2: liveBroadcasts (mine=true) — 1 quota unit.
+        // Only trust broadcasts whose lifeCycleStatus is "live" AND
+        // that have actually started. A "ready"/"testing" broadcast is
+        // scheduled/upcoming, NOT live.
+        // ============================================================
+        if (!targetVideoId && accessToken) {
             try {
-                let broadcastRes = await fetch(
+                const broadcastRes = await fetch(
                     "https://www.googleapis.com/youtube/v3/liveBroadcasts?part=snippet,status&broadcastStatus=active&mine=true",
                     {
                         headers: {
@@ -416,92 +479,128 @@ async function fetchYouTubeStream(
                     }
                 )
 
-                let broadcastData = broadcastRes.ok ? await broadcastRes.json() : null
-                let items = broadcastData?.items || []
-
-                if (items.length === 0) {
-                    broadcastRes = await fetch(
-                        "https://www.googleapis.com/youtube/v3/liveBroadcasts?part=snippet,status&broadcastStatus=all&mine=true",
-                        {
-                            headers: {
-                                Authorization: `Bearer ${accessToken}`,
-                                Accept: "application/json",
-                            },
-                        }
-                    )
-                    if (broadcastRes.ok) {
-                        broadcastData = await broadcastRes.json()
-                        items = broadcastData?.items || []
-                    }
-                }
+                const broadcastData = broadcastRes.ok
+                    ? await broadcastRes.json()
+                    : null
+                const items = broadcastData?.items || []
 
                 const liveBroadcast = items.find(
-                    (item: { status?: { lifeCycleStatus?: string } }) =>
-                        item.status?.lifeCycleStatus === "live" ||
-                        item.status?.lifeCycleStatus === "ready" ||
-                        item.status?.lifeCycleStatus === "testing"
-                ) || items[0]
+                    (item: {
+                        status?: { lifeCycleStatus?: string }
+                        snippet?: { actualStartTime?: string }
+                    }) =>
+                        item.status?.lifeCycleStatus === "live" &&
+                        !!item.snippet?.actualStartTime
+                )
 
                 if (liveBroadcast?.id) {
                     targetVideoId = liveBroadcast.id
                 }
             } catch (broadcastErr) {
-                logger.warn("YouTube liveBroadcasts API call failed", { broadcastErr })
+                logger.warn("YouTube liveBroadcasts API call failed", {
+                    broadcastErr,
+                })
             }
         }
 
-        // 2. If no targetVideoId from API, try public web scraping
-        let scraped: { isLive: boolean; videoId?: string; title?: string; viewerCount?: number } = { isLive: false }
-        if (!targetVideoId) {
-            scraped = await scrapeYouTubeLivePage(channelId || username || "")
-            if (scraped.isLive && scraped.videoId) {
-                targetVideoId = scraped.videoId
-            }
-        }
-
-        // 3. Try Channels + Search API if still no videoId
+        // ============================================================
+        // STAGE 3 (last resort): Channels + Search API — 101 quota
+        // units. Only when scrape found nothing AND mine=true found
+        // nothing. Never queried with an invalid/empty channelId.
+        // ============================================================
         if (!targetVideoId && accessToken) {
-            const chanRes = await fetch(
-                "https://www.googleapis.com/youtube/v3/channels?part=id,snippet&mine=true",
-                {
-                    headers: {
-                        Authorization: `Bearer ${accessToken}`,
-                        Accept: "application/json",
-                    },
-                }
-            )
-            if (chanRes.ok) {
-                const chanData = await chanRes.json()
-                const resolvedChannelId = chanData.items?.[0]?.id || channelId
-                if (resolvedChannelId) {
-                    const searchRes = await fetch(
-                        `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${resolvedChannelId}&eventType=live&type=video`,
-                        {
-                            headers: {
-                                Authorization: `Bearer ${accessToken}`,
-                                Accept: "application/json",
-                            },
-                        }
-                    )
-                    if (searchRes.ok) {
-                        const searchData = await searchRes.json()
-                        const searchItem = searchData.items?.[0]
-                        if (searchItem?.id?.videoId) {
-                            targetVideoId = searchItem.id.videoId
+            try {
+                const chanRes = await fetch(
+                    "https://www.googleapis.com/youtube/v3/channels?part=id&mine=true",
+                    {
+                        headers: {
+                            Authorization: `Bearer ${accessToken}`,
+                            Accept: "application/json",
+                        },
+                    }
+                )
+                if (chanRes.ok) {
+                    const chanData = await chanRes.json()
+                    const resolvedChannelId = chanData.items?.[0]?.id || ""
+
+                    // Only call Search API with a valid UC channelId — an
+                    // empty channelId returns random global streams.
+                    if (resolvedChannelId.startsWith("UC")) {
+                        const searchRes = await fetch(
+                            `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${encodeURIComponent(
+                                resolvedChannelId
+                            )}&eventType=live&type=video`,
+                            {
+                                headers: {
+                                    Authorization: `Bearer ${accessToken}`,
+                                    Accept: "application/json",
+                                },
+                            }
+                        )
+                        if (searchRes.ok) {
+                            const searchData = await searchRes.json()
+                            const searchItem = searchData.items?.[0]
+                            if (searchItem?.id?.videoId) {
+                                targetVideoId = searchItem.id.videoId
+                            }
                         }
                     }
                 }
+            } catch (searchErr) {
+                logger.warn("YouTube Search API call failed", { searchErr })
             }
         }
 
+        // ============================================================
+        // No live video found anywhere -> definitively offline.
+        // ============================================================
         if (!targetVideoId) {
-            return { isLive: scraped.isLive }
+            return {
+                isLive: false,
+                viewerCount: 0,
+                title: "",
+                gameName: "",
+                startedAt: null,
+                liveChatId: null,
+            }
         }
 
-        // 4. Query YouTube API videos endpoint with targetVideoId to get details & liveChatId
+        // ============================================================
+        // STAGE 4: Enrich via videos endpoint (1 quota unit) — title,
+        // viewers, actualStartTime and liveChatId. CRITICAL: only
+        // report live if the video is ACTUALLY streaming.
+        // ============================================================
+        let title = scraped.title || ""
+        let viewerCount = scraped.viewerCount || 0
+        let startedAt: string | null = null
+        let liveChatId: string | null = null
+        let gameName = scraped.gameName || "YouTube Live"
+        let confirmedLive = scraped.isLive
+
+        // YouTube video category names (snippet.categoryId -> label).
+        // "20" = Gaming is what game streams use (e.g. Hay Day).
+        const YOUTUBE_CATEGORY_NAMES: Record<string, string> = {
+            "1": "Film & Animation",
+            "2": "Autos & Vehicles",
+            "10": "Music",
+            "15": "Pets & Animals",
+            "17": "Sports",
+            "19": "Travel & Events",
+            "20": "Gaming",
+            "22": "People & Blogs",
+            "23": "Comedy",
+            "24": "Entertainment",
+            "25": "News & Politics",
+            "26": "Howto & Style",
+            "27": "Education",
+            "28": "Science & Technology",
+        }
+
         if (accessToken) {
             const videoRes = await fetch(
-                `https://www.googleapis.com/youtube/v3/videos?part=snippet,liveStreamingDetails,statistics&id=${targetVideoId}`,
+                `https://www.googleapis.com/youtube/v3/videos?part=snippet,liveStreamingDetails,statistics&id=${encodeURIComponent(
+                    targetVideoId
+                )}`,
                 {
                     headers: {
                         Authorization: `Bearer ${accessToken}`,
@@ -516,25 +615,48 @@ async function fetchYouTubeStream(
                 if (video) {
                     const details = video.liveStreamingDetails || {}
                     const snippet = video.snippet || {}
-                    const viewerCount = parseInt(details.concurrentViewers || "0", 10) || scraped.viewerCount || 0
 
-                    return {
-                        isLive: true,
-                        viewerCount,
-                        title: snippet.title || scraped.title || "",
-                        gameName: snippet.categoryTitle || "YouTube Live",
-                        startedAt: details.actualStartTime || snippet.publishedAt || null,
+                    // Live = has started AND has not ended.
+                    const isActuallyLive =
+                        !!details.actualStartTime && !details.actualEndTime
+
+                    if (isActuallyLive) {
+                        confirmedLive = true
+                        liveChatId = details.liveChatId || null
+                        startedAt = details.actualStartTime || null
+                        if (snippet.title) title = snippet.title
+                        if (YOUTUBE_CATEGORY_NAMES[snippet.categoryId]) {
+                            gameName =
+                                YOUTUBE_CATEGORY_NAMES[snippet.categoryId]
+                        }
+                        viewerCount =
+                            parseInt(details.concurrentViewers || "0", 10) ||
+                            viewerCount
+                    } else {
+                        confirmedLive = false
                     }
                 }
             }
         }
 
+        if (!confirmedLive) {
+            return {
+                isLive: false,
+                viewerCount: 0,
+                title: "",
+                gameName: "",
+                startedAt: null,
+                liveChatId: null,
+            }
+        }
+
         return {
             isLive: true,
-            viewerCount: scraped.viewerCount || 0,
-            title: scraped.title || "",
-            gameName: "YouTube Live",
-            startedAt: null,
+            viewerCount,
+            title,
+            gameName,
+            startedAt,
+            liveChatId,
         }
     } catch (error) {
         logger.error("YouTube live fetch failed", { error })
@@ -594,7 +716,8 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
         const platforms: PlatformStreamInfo[] = []
 
         for (const network of networks || []) {
-            const rawPlat = network.platform === "google" ? "youtube" : network.platform
+            const rawPlat =
+                network.platform === "google" ? "youtube" : network.platform
             const baseInfo = {
                 platform: rawPlat,
                 username: network.platform_username || "",

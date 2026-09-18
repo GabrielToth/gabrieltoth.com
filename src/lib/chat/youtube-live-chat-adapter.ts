@@ -88,7 +88,11 @@ export class YouTubeLiveChatAdapter implements ChatAdapter {
     /**
      * Connect to a YouTube Live chat room
      */
-    async connect(roomId: string, token: string): Promise<void> {
+    async connect(
+        roomId: string,
+        token: string,
+        channelId?: string
+    ): Promise<void> {
         if (this.pollingStates.has(roomId)) {
             logger.debug("Already connected to YouTube live chat", { roomId })
             return
@@ -96,7 +100,7 @@ export class YouTubeLiveChatAdapter implements ChatAdapter {
 
         try {
             // Step 1: Find the active live broadcast to get the liveChatId
-            const liveChatId = await this.findLiveChatId(token)
+            const liveChatId = await this.findLiveChatId(token, channelId)
 
             if (!liveChatId) {
                 throw new Error(
@@ -283,8 +287,14 @@ export class YouTubeLiveChatAdapter implements ChatAdapter {
     /**
      * Find the active live broadcast's liveChatId
      */
-    private async findLiveChatId(token: string): Promise<string | null> {
-        let url = `${YOUTUBE_API_BASE}/liveBroadcasts?part=snippet,status&broadcastStatus=active&mine=true`
+    private async findLiveChatId(
+        token: string,
+        channelId?: string
+    ): Promise<string | null> {
+        const channelParam = channelId
+            ? `channelId=${encodeURIComponent(channelId)}`
+            : "mine=true"
+        let url = `${YOUTUBE_API_BASE}/liveBroadcasts?part=snippet,status&broadcastStatus=active&${channelParam}`
 
         let response: Response | undefined
         try {
@@ -307,7 +317,7 @@ export class YouTubeLiveChatAdapter implements ChatAdapter {
         }
 
         if (!data?.items || data.items.length === 0) {
-            url = `${YOUTUBE_API_BASE}/liveBroadcasts?part=snippet,status&broadcastStatus=all&mine=true`
+            url = `${YOUTUBE_API_BASE}/liveBroadcasts?part=snippet,status&broadcastStatus=all&${channelParam}`
             try {
                 const res = await fetch(url, {
                     headers: {
@@ -322,7 +332,10 @@ export class YouTubeLiveChatAdapter implements ChatAdapter {
             }
         }
 
-        if (!response || (!response.ok && (!data?.items || data.items.length === 0))) {
+        if (
+            !response ||
+            (!response.ok && (!data?.items || data.items.length === 0))
+        ) {
             const status = response ? response.status : 500
             const statusText = response ? response.statusText : "Network Error"
             throw new Error(

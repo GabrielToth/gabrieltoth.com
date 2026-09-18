@@ -171,7 +171,8 @@ wss.on("connection", (ws: WebSocket, req) => {
                     await handleYouTubeConnect(
                         clientInfo,
                         msg.token,
-                        msg.liveChatId
+                        msg.liveChatId,
+                        msg.channelId
                     )
                 } else {
                     if (clientInfo.ws.readyState === WebSocket.OPEN) {
@@ -548,7 +549,8 @@ function handleKickDisconnect(client: ClientInfo): void {
 async function handleYouTubeConnect(
     client: ClientInfo,
     token: string,
-    preferredLiveChatId?: string
+    preferredLiveChatId?: string,
+    channelId?: string
 ): Promise<void> {
     const existing = youtubeRelays.get(client.userId)
     if (existing) {
@@ -569,7 +571,7 @@ async function handleYouTubeConnect(
         return
     }
 
-    const relay = new YouTubeRelay(token)
+    const relay = new YouTubeRelay(token, channelId)
 
     relay.on("connected", (liveChatId: string) => {
         log("YouTube stream connected", {

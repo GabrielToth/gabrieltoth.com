@@ -324,6 +324,11 @@ export default function LiveDashboardPage() {
                     <UnifiedChat
                         platforms={platforms.map(p => p.platform)}
                         activePlatform={activePlatform}
+                        channels={Object.fromEntries(
+                            platforms
+                                .filter(p => p.username)
+                                .map(p => [p.platform, p.username])
+                        )}
                     />
                 </div>
             </div>

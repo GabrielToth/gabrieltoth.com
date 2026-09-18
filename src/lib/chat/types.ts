@@ -79,7 +79,7 @@ export interface ChatAdapter {
     readonly platform: ChatPlatform
     readonly config: ChatAdapterConfig
 
-    connect(roomId: string, token: string): Promise<void>
+    connect(roomId: string, token: string, channelId?: string): Promise<void>
     disconnect(roomId: string): Promise<void>
     sendMessage(
         roomId: string,
@@ -87,7 +87,10 @@ export interface ChatAdapter {
         options?: SendMessageOptions
     ): Promise<string>
     getRoom(roomId: string): Promise<ChatRoom | null>
-    onMessage(roomId: string, callback: (message: ChatMessage) => void): () => void
+    onMessage(
+        roomId: string,
+        callback: (message: ChatMessage) => void
+    ): () => void
     onError(callback: (error: Error) => void): () => void
     on?: (event: string, listener: (...args: unknown[]) => void) => this
     off?: (event: string, listener: (...args: unknown[]) => void) => this
@@ -145,7 +148,8 @@ export const DEFAULT_COMMANDS: DefaultCommand[] = [
         id: "default:categoryall",
         trigger: "!categoryall",
         type: "stream_update",
-        description: "Updates the stream category/game for all active platforms",
+        description:
+            "Updates the stream category/game for all active platforms",
         platforms: ["twitch", "kick"],
         allowedRoles: ["broadcaster"],
         cooldownSeconds: 30,
@@ -170,7 +174,8 @@ export const DEFAULT_COMMANDS: DefaultCommand[] = [
         id: "default:commands",
         trigger: "!commands",
         type: "response",
-        responseTemplate: "Available commands: !title <title>, !category <category>, !discord, !commands",
+        responseTemplate:
+            "Available commands: !title <title>, !category <category>, !discord, !commands",
         description: "List available commands",
         platforms: ["twitch", "kick", "youtube"],
         allowedRoles: ["viewer"],
@@ -195,8 +200,14 @@ export function interpolateResponse(
     result = result.replace(/\{user\}/gi, context.username)
     result = result.replace(/\{platform\}/gi, context.platform)
     result = result.replace(/\{channel\}/gi, context.channelId)
-    result = result.replace(/\{time\}/gi, new Date().toLocaleTimeString("en-US", { hour12: false }))
-    result = result.replace(/\{date\}/gi, new Date().toLocaleDateString("en-US"))
+    result = result.replace(
+        /\{time\}/gi,
+        new Date().toLocaleTimeString("en-US", { hour12: false })
+    )
+    result = result.replace(
+        /\{date\}/gi,
+        new Date().toLocaleDateString("en-US")
+    )
     return result
 }
 
