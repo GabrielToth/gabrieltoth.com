@@ -176,7 +176,10 @@ describe("YouTube Live Status Detection", () => {
         })
 
         it("rejects ready (scheduled) broadcast — NOT live yet", () => {
-            const items = [
+            const items: Array<{
+                status?: { lifeCycleStatus?: string }
+                snippet?: { actualStartTime?: string }
+            }> = [
                 {
                     id: "sched456",
                     status: { lifeCycleStatus: "ready" },
@@ -192,7 +195,10 @@ describe("YouTube Live Status Detection", () => {
         })
 
         it("rejects testing broadcast without actualStartTime", () => {
-            const items = [
+            const items: Array<{
+                status?: { lifeCycleStatus?: string }
+                snippet?: { actualStartTime?: string }
+            }> = [
                 {
                     id: "test789",
                     status: { lifeCycleStatus: "testing" },
@@ -250,7 +256,10 @@ describe("YouTube Live Status Detection", () => {
         })
 
         it("rejects upcoming stream (no actualStartTime)", () => {
-            const details = {
+            const details: {
+                actualStartTime?: string
+                actualEndTime?: string
+            } = {
                 scheduledStartTime: "2030-01-01T00:00:00Z",
             }
             const isActuallyLive =
