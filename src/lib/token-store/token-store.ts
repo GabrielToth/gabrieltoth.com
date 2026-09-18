@@ -135,12 +135,26 @@ export class TokenStore {
         platform: string
     ): Promise<TokenData | null> {
         try {
-            const { data, error } = await this.supabase
+            let { data, error } = await this.supabase
                 .from("oauth_tokens")
                 .select("*")
                 .eq("user_id", userId)
                 .eq("platform", platform)
                 .single()
+
+            if ((!data || error) && platform === "youtube") {
+                const googleResult = await this.supabase
+                    .from("oauth_tokens")
+                    .select("*")
+                    .eq("user_id", userId)
+                    .eq("platform", "google")
+                    .single()
+
+                if (googleResult.data) {
+                    data = googleResult.data
+                    error = null
+                }
+            }
 
             if (error) {
                 if (error.code === "PGRST116") {

@@ -41,9 +41,9 @@ export async function GET(request: NextRequest): Promise<Response> {
         const { data: networks, error } = await supabase
             .from("social_networks")
             .select("*")
-            .in("platform", ["twitch", "kick", "youtube", "tiktok", "twitter"])
+            .in("platform", ["twitch", "kick", "youtube", "google", "tiktok", "twitter"])
             .eq("user_id", userId)
-            .eq("status", "connected")
+            .neq("status", "disconnected")
 
         if (error) {
             logger.error("Failed to fetch connected platforms", {
@@ -67,7 +67,8 @@ export async function GET(request: NextRequest): Promise<Response> {
             Record<"twitch" | "kick" | "youtube", { channelName: string; token?: string }>
         > = {}
         for (const network of networks || []) {
-            const plat = network.platform as string
+            let plat = network.platform as string
+            if (plat === "google") plat = "youtube"
             if (plat !== "twitch" && plat !== "kick" && plat !== "youtube") continue
 
             const key = plat as "twitch" | "kick" | "youtube"
