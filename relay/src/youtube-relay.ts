@@ -6,6 +6,11 @@ const LIVE_CHAT_MESSAGES_URL =
     "https://www.googleapis.com/youtube/v3/liveChat/messages"
 const MAX_RECONNECT_DELAY = 60000
 
+function log(message: string, data?: Record<string, unknown>): void {
+    const payload = data ? ` ${JSON.stringify(data)}` : ""
+    console.log(`[youtube-relay] ${message}${payload}`)
+}
+
 export interface YouTubeChatUser {
     id: string
     username: string
@@ -46,9 +51,12 @@ export class YouTubeRelay extends EventEmitter {
     private destroyed = false
     private seenIds = new Set<string>()
 
-    constructor(token: string) {
+    private channelId?: string
+
+    constructor(token: string, channelId?: string) {
         super()
         this.token = token
+        this.channelId = channelId
     }
 
     async start(liveChatId?: string): Promise<string | null> {
@@ -90,24 +98,65 @@ export class YouTubeRelay extends EventEmitter {
     }
 
     private async findLiveChatId(): Promise<string | null> {
-        const response = await fetch(LIVE_BROADCASTS_URL, {
-            headers: { Authorization: `Bearer ${this.token}` },
-        })
+        // Try 1: mine=true (token owner's active broadcast)
+        try {
+            const response = await fetch(LIVE_BROADCASTS_URL, {
+                headers: { Authorization: `Bearer ${this.token}` },
+            })
 
-        if (!response.ok) {
-            const body = await response.text()
-            throw new Error(`YouTube API error (${response.status}): ${body}`)
+            if (response.ok) {
+                const data = await response.json()
+                if (data.items && data.items.length > 0) {
+                    for (const item of data.items) {
+                        const chatId = item.snippet?.liveChatId
+                        if (chatId) return chatId
+                    }
+                }
+            }
+        } catch (err) {
+            log("YouTube mine=true broadcast lookup failed", {
+                error: String(err),
+            })
         }
 
-        const data = await response.json()
-        if (!data.items || data.items.length === 0) return null
+        // Try 2: channelId-based Search API (works for any channel, no mine=true)
+        if (this.channelId && this.channelId.startsWith("UC")) {
+            try {
+                const searchUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${encodeURIComponent(this.channelId)}&eventType=live&type=video`
+                const searchRes = await fetch(searchUrl, {
+                    headers: { Authorization: `Bearer ${this.token}` },
+                })
 
-        for (const item of data.items) {
-            const chatId = item.snippet?.liveChatId
-            if (chatId) return chatId
+                if (searchRes.ok) {
+                    const searchData = await searchRes.json()
+                    const videoId = searchData.items?.[0]?.id?.videoId
+
+                    if (videoId) {
+                        // Get the video details to find liveChatId
+                        const videosUrl = `https://www.googleapis.com/youtube/v3/videos?part=liveStreamingDetails&id=${videoId}`
+                        const videosRes = await fetch(videosUrl, {
+                            headers: {
+                                Authorization: `Bearer ${this.token}`,
+                            },
+                        })
+
+                        if (videosRes.ok) {
+                            const videosData = await videosRes.json()
+                            const liveChatId =
+                                videosData.items?.[0]?.liveStreamingDetails
+                                    ?.liveChatId
+                            if (liveChatId) return liveChatId
+                        }
+                    }
+                }
+            } catch (err) {
+                log("YouTube channelId broadcast lookup failed", {
+                    error: String(err),
+                })
+            }
         }
 
-        return data.items[0]?.snippet?.liveChatId || null
+        return null
     }
 
     private async pollMessages(): Promise<void> {

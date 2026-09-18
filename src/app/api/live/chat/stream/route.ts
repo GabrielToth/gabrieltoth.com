@@ -64,7 +64,7 @@ export async function GET(request: NextRequest): Promise<Response> {
 
         // Determine which platforms the user has connected and their channel names.
         const platformConnect: Partial<
-            Record<"twitch" | "kick" | "youtube", { channelName: string; token?: string }>
+            Record<"twitch" | "kick" | "youtube", { channelName: string; token?: string; channelId?: string }>
         > = {}
         for (const network of networks || []) {
             let plat = network.platform as string
@@ -72,8 +72,15 @@ export async function GET(request: NextRequest): Promise<Response> {
             if (plat !== "twitch" && plat !== "kick" && plat !== "youtube") continue
 
             const key = plat as "twitch" | "kick" | "youtube"
-            const info: { channelName: string; token?: string } = {
+            const info: { channelName: string; token?: string; channelId?: string } = {
                 channelName: network.platform_username || plat,
+            }
+
+            // Pass the platform channel ID (YouTube UC... channelId) so the
+            // adapter can query liveBroadcasts by channelId instead of mine=true
+            const platformChannelId = network.provider_user_id || network.platform_user_id
+            if (platformChannelId) {
+                info.channelId = platformChannelId
             }
 
             try {

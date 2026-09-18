@@ -15,7 +15,7 @@ const logger = createLogger("MessageAggregator")
 type ChatPlatform = "twitch" | "kick" | "youtube"
 
 type PlatformConnectInfo = Partial<
-    Record<ChatPlatform, { channelName: string; token?: string }>
+    Record<ChatPlatform, { channelName: string; token?: string; channelId?: string }>
 >
 
 interface PlatformAdapterEntry {
@@ -127,7 +127,8 @@ export class MessageAggregator {
 
                 this.adapters.set(platform, entry)
 
-                await adapter.connect(channelName, token)
+                const channelId = connectInfo.channelId
+                await adapter.connect(channelName, token, channelId)
                 logger.info("Connected to platform chat", {
                     userId: this.userId,
                     platform,
@@ -440,7 +441,9 @@ export class MessageAggregator {
         const adapter = factory()
 
         try {
-            await adapter.connect(channelName, token)
+            const aggregatorInstance = MessageAggregator.instances.get(userId)
+            const channelId = aggregatorInstance?.platformConnect[platform]?.channelId
+            await adapter.connect(channelName, token, channelId)
             if (platform === "twitch") {
                 const twitchAdapter = adapter as TwitchChatAdapter
                 await twitchAdapter.waitForJoin(channelName)

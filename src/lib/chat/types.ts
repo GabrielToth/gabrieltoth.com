@@ -79,7 +79,7 @@ export interface ChatAdapter {
     readonly platform: ChatPlatform
     readonly config: ChatAdapterConfig
 
-    connect(roomId: string, token: string): Promise<void>
+    connect(roomId: string, token: string, channelId?: string): Promise<void>
     disconnect(roomId: string): Promise<void>
     sendMessage(
         roomId: string,

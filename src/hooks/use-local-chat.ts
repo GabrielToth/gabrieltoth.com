@@ -35,7 +35,9 @@ export interface LocalChatMessage {
 
 export function useLocalChat(
     platforms: string[],
-    enabled: boolean = true
+    enabled: boolean = true,
+    /** Map of platform -> channel username (e.g. { twitch: "gabriel", kick: "user" }) */
+    channelOverrides?: Record<string, string>
 ): {
     messages: LocalChatMessage[]
     isConnected: boolean
@@ -45,6 +47,11 @@ export function useLocalChat(
     const [isConnected, setIsConnected] = useState(false)
     const [error, setError] = useState<string | null>(null)
     const activeSocketsRef = useRef<WebSocket[]>([])
+
+    // Stable primitive for the effect dependency — the channels object may
+    // be recreated inline by callers each render, but the twitch channel
+    // string itself is what the connection depends on.
+    const twitchChannelKey = channelOverrides?.twitch || ""
 
     useEffect(() => {
         if (!enabled || platforms.length === 0) {
@@ -61,13 +68,34 @@ export function useLocalChat(
                     const ws = new WebSocket("wss://irc-ws.chat.twitch.tv:443")
                     sockets.push(ws)
 
+                    // Use the user's real Twitch channel — never a generic one
+                    const twitchChannel = (
+                        twitchChannelKey || ""
+                    )
+                        .toLowerCase()
+                        .replace(/^#/, "")
+                        .replace(/\s/g, "")
+
+                    if (!twitchChannel) {
+                        logger.warn(
+                            "Local Twitch chat skipped: no channel provided",
+                            {}
+                        )
+                    }
+
                     ws.onopen = () => {
                         if (!isMounted) return
+                        if (!twitchChannel) {
+                            ws.close()
+                            return
+                        }
                         ws.send("CAP REQ :twitch.tv/tags twitch.tv/commands")
                         ws.send("NICK justinfan12345")
-                        ws.send("JOIN #general")
+                        ws.send(`JOIN #${twitchChannel}`)
                         setIsConnected(true)
-                        logger.info("Local Twitch WebSocket connected")
+                        logger.info("Local Twitch WebSocket connected", {
+                            channel: twitchChannel,
+                        })
                     }
 
                     ws.onmessage = event => {
@@ -78,20 +106,25 @@ export function useLocalChat(
                             return
                         }
                         if (data.includes("PRIVMSG")) {
-                            const match = data.match(
-                                /display-name=([^;]+).*?:([^!]+)!.* PRIVMSG #\w+ :(.*)/
+                            // Parse IRCv3 tags: display-name=Name;... :user!user@... PRIVMSG #channel :msg
+                            const tagMatch = data.match(
+                                /display-name=([^;\s]+)/
                             )
-                            if (match) {
-                                const displayName = match[1] || match[2]
-                                const content = match[3]
+                            const msgMatch = data.match(
+                                /:([^!\s]+)!\S+ PRIVMSG #\S+ :(.*)/
+                            )
+                            if (tagMatch && msgMatch) {
+                                const displayName = tagMatch[1]
+                                const username = msgMatch[1]
+                                const content = msgMatch[2]
                                 const msg: LocalChatMessage = {
                                     id: `local-tw-${Date.now()}-${Math.random()}`,
-                                    channelId: "twitch",
+                                    channelId: `twitch:${twitchChannel}`,
                                     platform: "twitch",
                                     user: {
-                                        id: match[2],
-                                        username: match[2],
-                                        displayName,
+                                        id: username,
+                                        username,
+                                        displayName: displayName || username,
                                         platform: "twitch",
                                         badges: [],
                                     },
@@ -139,7 +172,7 @@ export function useLocalChat(
                 }
             })
         }
-    }, [platforms, enabled])
+    }, [platforms, enabled, twitchChannelKey])
 
     return { messages, isConnected, error }
 }

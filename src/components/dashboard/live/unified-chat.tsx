@@ -20,6 +20,8 @@ interface UnifiedChatProps {
     activePlatform?: string
     /** Hide the popout button when rendered inside the popout window itself */
     hidePopout?: boolean
+    /** Map of platform -> channel username for local chat mode */
+    channels?: Record<string, string>
 }
 
 const COMMANDS: CommandItem[] = [
@@ -53,7 +55,7 @@ const COMMANDS: CommandItem[] = [
 
 const logger = createLogger("UnifiedChat")
 
-const CHAT_HISTORY_KEY = "unified_chat_history_v1"
+const CHAT_HISTORY_KEY = "unified_chat_history_v2"
 const MAX_PERSISTED_MESSAGES = 200
 
 /** Load persisted session chat history */
@@ -63,7 +65,16 @@ function loadPersistedHistory(): RenderableChatMessage[] {
         const raw = window.sessionStorage.getItem(CHAT_HISTORY_KEY)
         if (!raw) return []
         const parsed = JSON.parse(raw)
-        return Array.isArray(parsed) ? parsed : []
+        if (!Array.isArray(parsed)) return []
+        // Filter out garbage from older buggy sessions: messages with no
+        // real author (e.g. the "Anonymous" flood from #general) or no content
+        return parsed.filter(
+            (m: RenderableChatMessage) =>
+                !!m.content &&
+                !!m.author &&
+                m.author !== "Anonymous" &&
+                !!m.timestamp
+        )
     } catch {
         return []
     }
@@ -142,12 +153,13 @@ export function UnifiedChat({
     platforms,
     activePlatform,
     hidePopout = false,
+    channels = {},
 }: UnifiedChatProps) {
     const [executionMode, setExecutionMode] =
         useState<ChatExecutionMode>("cloud")
     const relay = useRelayChat()
     const sse = useChatSSE(platforms)
-    const local = useLocalChat(platforms, executionMode === "local")
+    const local = useLocalChat(platforms, executionMode === "local", channels)
     const [enabledPlatforms, setEnabledPlatforms] = useState<Set<string>>(
         new Set(platforms)
     )
@@ -477,7 +489,16 @@ export function UnifiedChat({
                                     <span>Font Size</span>
                                     <select
                                         value={settings.fontSize}
-                                        onChange={e => updateSettings({ fontSize: e.target.value as any })}
+                                        onChange={e =>
+                                            updateSettings({
+                                                fontSize: e.target
+                                                    .value as
+                                                    "xs" |
+                                                    "sm" |
+                                                    "md" |
+                                                    "lg",
+                                            })
+                                        }
                                         className="rounded border border-neutral-700 bg-neutral-800 px-2 py-1 text-xs text-neutral-200"
                                     >
                                         <option value="xs">Small</option>

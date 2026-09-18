@@ -46,20 +46,29 @@ export async function GET(request: NextRequest): Promise<Response> {
 
         const { data: networks } = await supabase
             .from("social_networks")
-            .select("platform, platform_username")
+            .select("platform, platform_username, platform_user_id")
             .eq("user_id", userId)
             .eq("status", "connected")
             .in("platform", ["youtube", "twitch", "kick"])
 
         const platforms: Record<
             string,
-            { channelName: string; accessToken?: string }
+            { channelName: string; accessToken?: string; channelId?: string }
         > = {}
 
         for (const network of networks || []) {
             const plat = network.platform
-            const info: { channelName: string; accessToken?: string } = {
+            const info: {
+                channelName: string
+                accessToken?: string
+                channelId?: string
+            } = {
                 channelName: network.platform_username || plat,
+            }
+
+            // Pass the platform channel ID (YouTube UC... channelId)
+            if (network.platform_user_id) {
+                info.channelId = network.platform_user_id
             }
 
             try {
