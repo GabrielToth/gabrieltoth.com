@@ -44,7 +44,9 @@ export function saveChatSettings(settings: ChatSettings): void {
 }
 
 export function useChatSettings() {
-    const [settings, setSettings] = useState<ChatSettings>(getStoredChatSettings)
+    const [settings, setSettings] = useState<ChatSettings>(
+        getStoredChatSettings
+    )
 
     useEffect(() => {
         const handleUpdate = () => {

@@ -121,9 +121,9 @@ To achieve high availability, zero downtime during deployments, and strict separ
 ---
 
 ### 1️⃣ status.gabrieltoth.com — Standalone Status & Health Page
-* **Purpose:** Public-facing uptime monitor, latency dashboard, and incident status page for all live stream webhooks, SSE chat aggregators, and OAuth provider integrations.
-* **Tech Stack:** Lightweight Next.js / Astro static build deployed to Vercel/Cloudflare Pages, completely detached from main database to ensure availability even during primary DB maintenance.
-* **Features:**
+- **Purpose:** Public-facing uptime monitor, latency dashboard, and incident status page for all live stream webhooks, SSE chat aggregators, and OAuth provider integrations.
+- **Tech Stack:** Lightweight Next.js / Astro static build deployed to Vercel/Cloudflare Pages, completely detached from main database to ensure availability even during primary DB maintenance.
+- **Features:**
   - Automated ping checks for YouTube Data API, Twitch Helix, Kick API, Meta Graph API, and internal SSE /api/live/chat/stream.
   - Historical uptime charts (99.9% target SLA).
   - Discord webhook alerts on degradation.
@@ -141,11 +141,11 @@ For the dedicated Channel Management & Live Streaming Control Center, here are 4
 ---
 
 ### 3️⃣ Subdomain Migration & Cloudflare Edge Routing Strategy
-* **Cloudflare Managed Zone:** Zone ID 828668fe9dffe3c2ad60246caaf15d29 (configured via CLOUDFLARE_ZONE_ID & CLOUDFLARE_API_TOKEN).
-* **Routing Architecture:**
+- **Cloudflare Managed Zone:** Zone ID 828668fe9dffe3c2ad60246caaf15d29 (configured via CLOUDFLARE_ZONE_ID & CLOUDFLARE_API_TOKEN).
+- **Routing Architecture:**
   - gabrieltoth.com → Public Marketing, SEO Landing, Blog, i18n Pages (/pt-BR, /en, /fr, /de, /es).
   - studio.gabrieltoth.com (or stream.gabrieltoth.com) → Dedicated App Application (/dashboard/live, /dashboard/publish, /dashboard/chat-commands, /dashboard/channels).
   - status.gabrieltoth.com → Telemetry & Uptime Monitor.
-* **Shared Auth & Session Strategy:**
+- **Shared Auth & Session Strategy:**
   - Cross-subdomain HTTP-Only Cookie with domain scope .gabrieltoth.com for seamless Single Sign-On (SSO) between main site and subdomains without re-authenticating.
   - Centralized Supabase Auth & Redis token store access.

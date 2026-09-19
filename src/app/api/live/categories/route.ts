@@ -13,10 +13,7 @@ import { getKickConfig } from "@/lib/kick/config"
 import { getKickOAuthService } from "@/lib/kick/oauth-service"
 import { getYouTubeOAuthService } from "@/lib/youtube/oauth-service"
 import { getYouTubeChannelLinkingConfig } from "@/lib/youtube/config"
-import {
-    validateEnvScoped,
-    YOUTUBE_ENV_KEYS,
-} from "@/lib/config/env"
+import { validateEnvScoped, YOUTUBE_ENV_KEYS } from "@/lib/config/env"
 import { createClient } from "@supabase/supabase-js"
 import { NextRequest, NextResponse } from "next/server"
 

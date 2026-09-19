@@ -158,3 +158,4 @@ test-output.txt
 
 # local editor/tool config
 .claude/
+.tmp-203/

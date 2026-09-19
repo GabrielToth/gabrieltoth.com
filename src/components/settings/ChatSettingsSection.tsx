@@ -2,6 +2,7 @@
 
 import React from "react"
 import { useChatSettings } from "@/hooks/use-chat-settings"
+import type { ChatSettings } from "@/hooks/use-chat-settings"
 
 export const ChatSettingsSection: React.FC = () => {
     const { settings, updateSettings } = useChatSettings()
@@ -13,7 +14,9 @@ export const ChatSettingsSection: React.FC = () => {
                     Live Chat & Unified Stream Configuration
                 </h3>
                 <p className="text-sm text-muted-foreground">
-                    Configure chat message timestamps, universal creator display names, badges, and font sizes across Twitch, Kick, and YouTube.
+                    Configure chat message timestamps, universal creator display
+                    names, badges, and font sizes across Twitch, Kick, and
+                    YouTube.
                 </p>
             </div>
 
@@ -24,15 +27,20 @@ export const ChatSettingsSection: React.FC = () => {
                             Show Message Timestamps
                         </h4>
                         <p className="text-xs text-muted-foreground">
-                            Display the message sent time (e.g. 12:34 PM) next to messages in the unified chat stream.
+                            Display the message sent time (e.g. 12:34 PM) next
+                            to messages in the unified chat stream.
                         </p>
                     </div>
                     <label className="relative inline-flex items-center cursor-pointer">
                         <input
                             type="checkbox"
                             checked={settings.showTimestamps}
-                            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                                updateSettings({ showTimestamps: e.target.checked })
+                            onChange={(
+                                e: React.ChangeEvent<HTMLInputElement>
+                            ) =>
+                                updateSettings({
+                                    showTimestamps: e.target.checked,
+                                })
                             }
                             className="sr-only peer"
                         />
@@ -46,15 +54,21 @@ export const ChatSettingsSection: React.FC = () => {
                             Unify Creator Display Name Across Platforms
                         </h4>
                         <p className="text-xs text-muted-foreground">
-                            Display your account's universal nickname for your own messages across Twitch, Kick, and YouTube instead of raw platform handles.
+                            Display your account's universal nickname for your
+                            own messages across Twitch, Kick, and YouTube
+                            instead of raw platform handles.
                         </p>
                     </div>
                     <label className="relative inline-flex items-center cursor-pointer">
                         <input
                             type="checkbox"
                             checked={settings.useUniversalNickname}
-                            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                                updateSettings({ useUniversalNickname: e.target.checked })
+                            onChange={(
+                                e: React.ChangeEvent<HTMLInputElement>
+                            ) =>
+                                updateSettings({
+                                    useUniversalNickname: e.target.checked,
+                                })
                             }
                             className="sr-only peer"
                         />
@@ -68,14 +82,17 @@ export const ChatSettingsSection: React.FC = () => {
                             Show Platform Badges
                         </h4>
                         <p className="text-xs text-muted-foreground">
-                            Display moderator, subscriber, and VIP badges next to chat usernames.
+                            Display moderator, subscriber, and VIP badges next
+                            to chat usernames.
                         </p>
                     </div>
                     <label className="relative inline-flex items-center cursor-pointer">
                         <input
                             type="checkbox"
                             checked={settings.showBadges}
-                            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                            onChange={(
+                                e: React.ChangeEvent<HTMLInputElement>
+                            ) =>
                                 updateSettings({ showBadges: e.target.checked })
                             }
                             className="sr-only peer"
@@ -90,13 +107,17 @@ export const ChatSettingsSection: React.FC = () => {
                             Chat Stream Font Size
                         </h4>
                         <p className="text-xs text-muted-foreground">
-                            Adjust font size for chat messages in dashboard and popouts.
+                            Adjust font size for chat messages in dashboard and
+                            popouts.
                         </p>
                     </div>
                     <select
                         value={settings.fontSize}
                         onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-                            updateSettings({ fontSize: e.target.value as any })
+                            updateSettings({
+                                fontSize: e.target
+                                    .value as ChatSettings["fontSize"],
+                            })
                         }
                         className="rounded-lg border border-input bg-background px-3 py-1.5 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
                     >

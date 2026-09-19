@@ -121,7 +121,9 @@ export async function disconnectChannel(
         })
 
         if (!response.ok) {
-            throw new Error(`Failed to disconnect channel: HTTP ${response.status}`)
+            throw new Error(
+                `Failed to disconnect channel: HTTP ${response.status}`
+            )
         }
 
         // Invalidate cache

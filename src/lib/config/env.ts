@@ -216,9 +216,7 @@ function getRequiredVars(): readonly string[] {
  * missing optional feature's vars (e.g. Instagram on Vercel) cannot
  * break unrelated platforms.
  */
-export function validateEnvScoped(
-    keys: readonly string[]
-): EnvironmentConfig {
+export function validateEnvScoped(keys: readonly string[]): EnvironmentConfig {
     const missing = keys.filter(key => !process.env[key])
 
     if (missing.length > 0) {

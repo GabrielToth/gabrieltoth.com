@@ -23,13 +23,25 @@ vi.mock("@/lib/supabase/server", () => {
             eq: ReturnType<typeof vi.fn>
             single: ReturnType<typeof vi.fn>
             then: (onFulfilled: (v: unknown) => unknown) => unknown
-        } & { _payload?: { trigger?: string; response_template?: string; type?: string } }
+        } & {
+            _payload?: {
+                trigger?: string
+                response_template?: string
+                type?: string
+            }
+        }
 
         b.select = vi.fn(() => b)
-        b.insert = vi.fn((payload: { trigger?: string; response_template?: string; type?: string }) => {
-            b._payload = payload
-            return b
-        })
+        b.insert = vi.fn(
+            (payload: {
+                trigger?: string
+                response_template?: string
+                type?: string
+            }) => {
+                b._payload = payload
+                return b
+            }
+        )
         b.update = vi.fn(() => b)
         b.delete = vi.fn(() => b)
         b.eq = vi.fn(() => b)
@@ -39,14 +51,17 @@ vi.mock("@/lib/supabase/server", () => {
                 ? {
                       id: "test-id",
                       trigger: payload.trigger ?? "!socials",
-                      response_template: payload.response_template ?? "Check out my socials!",
+                      response_template:
+                          payload.response_template ?? "Check out my socials!",
                       type: payload.type ?? "response",
                   }
                 : { id: "test-id", trigger: "!socials" }
             return Promise.resolve({ data, error: null })
         })
         b.then = (onFulfilled: (v: unknown) => unknown) =>
-            Promise.resolve({ data: [], error: null }).then(onFulfilled as never)
+            Promise.resolve({ data: [], error: null }).then(
+                onFulfilled as never
+            )
         return b
     }
 

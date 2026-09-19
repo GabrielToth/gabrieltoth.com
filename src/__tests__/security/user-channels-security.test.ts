@@ -74,13 +74,19 @@ vi.mock("@/lib/middleware/api-csrf-middleware", () => ({
 }))
 
 const mockGetServerSession = vi.hoisted(() =>
-    vi.fn().mockImplementation((request?: { cookies?: { get?: (name: string) => { value?: string } | undefined } }) => {
-        const cookie = request?.cookies?.get?.("auth_session")
-        // Presence of an auth_session cookie simulates a valid session.
-        return cookie?.value
-            ? Promise.resolve({ user: { id: "user-1" } })
-            : Promise.resolve(null)
-    })
+    vi.fn().mockImplementation(
+        (request?: {
+            cookies?: {
+                get?: (name: string) => { value?: string } | undefined
+            }
+        }) => {
+            const cookie = request?.cookies?.get?.("auth_session")
+            // Presence of an auth_session cookie simulates a valid session.
+            return cookie?.value
+                ? Promise.resolve({ user: { id: "user-1" } })
+                : Promise.resolve(null)
+        }
+    )
 )
 
 vi.mock("@/lib/auth/get-server-session", () => ({

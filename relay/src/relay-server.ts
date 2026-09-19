@@ -277,9 +277,7 @@ async function handleTwitchConnect(
     const previousTwitchRelay = twitchRelays.get(client.userId)
     if (previousTwitchRelay) {
         try {
-            previousTwitchRelay.disconnect(
-                previousTwitchConn?.roomName || ""
-            )
+            previousTwitchRelay.disconnect(previousTwitchConn?.roomName || "")
         } catch {}
         twitchRelays.delete(client.userId)
     }

@@ -14,10 +14,7 @@ import { getTwitchOAuthService } from "@/lib/twitch/oauth-service"
 import { getTokenStore } from "@/lib/token-store"
 import { getYouTubeOAuthService } from "@/lib/youtube/oauth-service"
 import { getYouTubeChannelLinkingConfig } from "@/lib/youtube/config"
-import {
-    validateEnvScoped,
-    YOUTUBE_ENV_KEYS,
-} from "@/lib/config/env"
+import { validateEnvScoped, YOUTUBE_ENV_KEYS } from "@/lib/config/env"
 import {
     isTerminalTokenError,
     markAccountDisconnected,

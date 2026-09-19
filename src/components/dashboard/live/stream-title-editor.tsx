@@ -34,7 +34,7 @@ export function StreamTitleEditor({
     executionMode = "cloud",
 }: StreamTitleEditorProps) {
     const [title, setTitle] = useState(currentTitle || "")
-    
+
     const [game, setGame] = useState(currentGame || "")
     const [selectedGameId, setSelectedGameId] = useState<string>("")
     const [saving, setSaving] = useState(false)

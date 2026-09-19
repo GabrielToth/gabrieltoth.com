@@ -49,6 +49,10 @@ interface YouTubeLiveBroadcast {
     }
 }
 
+interface YouTubeLiveBroadcastsResponse {
+    items?: YouTubeLiveBroadcast[]
+}
+
 interface YouTubeLiveChatMessage {
     id: string
     snippet: {
@@ -307,7 +311,11 @@ export class YouTubeLiveChatAdapter implements ChatAdapter {
             // fetch exception
         }
 
-        let data: any = null
+        let data:
+            | (YouTubeLiveBroadcastsResponse & {
+                  pollingIntervalMillis?: number
+              })
+            | null = null
         if (response && response.ok) {
             try {
                 data = await response.json()

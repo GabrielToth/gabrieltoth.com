@@ -118,19 +118,14 @@ export function useRelayChat(): UseRelayChatReturn {
 
                 const prevTokens = Object.fromEntries(
                     Object.entries(platformsRef.current).map(
-                        ([platform, info]) => [
-                            platform,
-                            info.accessToken || "",
-                        ]
+                        ([platform, info]) => [platform, info.accessToken || ""]
                     )
                 )
 
                 tokenRef.current = data.token
                 platformsRef.current = data.platforms || {}
 
-                const tokensChanged = Object.entries(
-                    platformsRef.current
-                ).some(
+                const tokensChanged = Object.entries(platformsRef.current).some(
                     ([platform, info]) =>
                         (info.accessToken || "") !==
                         (prevTokens[platform] || "")

@@ -1,5 +1,9 @@
 import { describe, expect, it, vi } from "vitest"
-import { DEFAULT_CHAT_SETTINGS, getStoredChatSettings, saveChatSettings } from "@/hooks/use-chat-settings"
+import {
+    DEFAULT_CHAT_SETTINGS,
+    getStoredChatSettings,
+    saveChatSettings,
+} from "@/hooks/use-chat-settings"
 
 describe("YouTube Live Detection & Chat Settings Suite", () => {
     it("should initialize default chat settings correctly", () => {

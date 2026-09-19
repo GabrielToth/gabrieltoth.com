@@ -51,13 +51,15 @@ export function ChatMessageList({
         fontSize === "sm"
             ? "text-xs"
             : fontSize === "md"
-            ? "text-sm"
-            : fontSize === "lg"
-            ? "text-base"
-            : "text-[11px]"
+              ? "text-sm"
+              : fontSize === "lg"
+                ? "text-base"
+                : "text-[11px]"
 
     return (
-        <div className={`flex-1 overflow-y-auto space-y-2 mb-3 pr-1 ${fontSizeClass}`}>
+        <div
+            className={`flex-1 overflow-y-auto space-y-2 mb-3 pr-1 ${fontSizeClass}`}
+        >
             {messages.length === 0 ? (
                 <div className="flex flex-col items-center justify-center h-full text-neutral-500">
                     <p>No chat messages yet</p>
@@ -79,7 +81,9 @@ export function ChatMessageList({
                             <div className="flex items-center gap-1 shrink-0">
                                 {showTimestamps && msg.timestamp && (
                                     <span className="text-[9px] text-neutral-500 font-mono">
-                                        {new Date(msg.timestamp).toLocaleTimeString([], {
+                                        {new Date(
+                                            msg.timestamp
+                                        ).toLocaleTimeString([], {
                                             hour: "2-digit",
                                             minute: "2-digit",
                                         })}

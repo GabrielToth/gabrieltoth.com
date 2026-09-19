@@ -58,7 +58,7 @@
         "loadingChannels": "Chargement des chaînes...",
         "noChannels": "No YouTube channels connected ",
         "connectChannel": "Connect Chaîne",
-        "channelCount": "chaînes connectées",
+        "channelCount": "{count} chaîne(s) sélectionnée(s)",
         "selectChannel": "Sélectionner channel",
         "channelWarning": "Warning: Uploading the same video to multiple channels is not recommended. YouTube may limit the reach sur identical videos without notice, potentially harming all channels involved.",
         "channelWarningTitle": "Attention: Duplicate Contenu",

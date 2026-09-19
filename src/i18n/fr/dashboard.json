@@ -589,8 +589,7 @@
                 "companyStep1": "Create a team group (à traduire)",
                 "companyStep2": "Connect each member's accounts (à traduire)",
                 "companyStep3": "Collaborate on content with roles (à traduire)"
-            },
-            "title": "Documentation Discover"
+            }
         },
         "publish": {
             "overview": "Publish — common workflows (à traduire)",
@@ -613,8 +612,7 @@
                 "companyStep1": "Create a team group (à traduire)",
                 "companyStep2": "Connect each member's accounts (à traduire)",
                 "companyStep3": "Collaborate on content with roles (à traduire)"
-            },
-            "title": "Documentation Publish"
+            }
         },
         "channels": {
             "overview": "Channels — common workflows (à traduire)",
@@ -637,8 +635,7 @@
                 "companyStep1": "Create a team group (à traduire)",
                 "companyStep2": "Connect each member's accounts (à traduire)",
                 "companyStep3": "Collaborate on content with roles (à traduire)"
-            },
-            "title": "Documentation Channels"
+            }
         },
         "live": {
             "overview": "Live — common workflows (à traduire)",

@@ -19,10 +19,7 @@ import { getTwitchConfig } from "@/lib/twitch/config"
 import { getTwitchOAuthService } from "@/lib/twitch/oauth-service"
 import { getYouTubeOAuthService } from "@/lib/youtube/oauth-service"
 import { getYouTubeChannelLinkingConfig } from "@/lib/youtube/config"
-import {
-    validateEnvScoped,
-    YOUTUBE_ENV_KEYS,
-} from "@/lib/config/env"
+import { validateEnvScoped, YOUTUBE_ENV_KEYS } from "@/lib/config/env"
 import {
     isTerminalTokenError,
     markAccountDisconnected,
@@ -433,7 +430,9 @@ export async function updateYouTubeStream(
             }
         )
 
-        let broadcastData = broadcastResponse.ok ? await broadcastResponse.json() : null
+        let broadcastData = broadcastResponse.ok
+            ? await broadcastResponse.json()
+            : null
         let items = broadcastData?.items || []
 
         if (items.length === 0) {
@@ -451,12 +450,13 @@ export async function updateYouTubeStream(
             }
         }
 
-        const broadcast = items.find(
-            (b: { status?: { lifeCycleStatus?: string } }) =>
-                b.status?.lifeCycleStatus === "live" ||
-                b.status?.lifeCycleStatus === "ready" ||
-                b.status?.lifeCycleStatus === "testing"
-        ) || items[0]
+        const broadcast =
+            items.find(
+                (b: { status?: { lifeCycleStatus?: string } }) =>
+                    b.status?.lifeCycleStatus === "live" ||
+                    b.status?.lifeCycleStatus === "ready" ||
+                    b.status?.lifeCycleStatus === "testing"
+            ) || items[0]
 
         if (!broadcast) {
             return { success: false, error: "No active broadcast found" }
@@ -468,7 +468,9 @@ export async function updateYouTubeStream(
             snippet: {
                 ...existingSnippet,
                 title,
-                scheduledStartTime: existingSnippet.scheduledStartTime || new Date().toISOString(),
+                scheduledStartTime:
+                    existingSnippet.scheduledStartTime ||
+                    new Date().toISOString(),
             },
         }
 

@@ -36,7 +36,9 @@ async function getCachedLiveChatId(
         }
     )
 
-    let broadcastData = broadcastResponse.ok ? await broadcastResponse.json() : null
+    let broadcastData = broadcastResponse.ok
+        ? await broadcastResponse.json()
+        : null
     let items = broadcastData?.items || []
 
     if (items.length === 0) {
@@ -52,12 +54,13 @@ async function getCachedLiveChatId(
         }
     }
 
-    const active = items.find(
-        (item: { status?: { lifeCycleStatus?: string } }) =>
-            item.status?.lifeCycleStatus === "live" ||
-            item.status?.lifeCycleStatus === "ready" ||
-            item.status?.lifeCycleStatus === "testing"
-    ) || items[0]
+    const active =
+        items.find(
+            (item: { status?: { lifeCycleStatus?: string } }) =>
+                item.status?.lifeCycleStatus === "live" ||
+                item.status?.lifeCycleStatus === "ready" ||
+                item.status?.lifeCycleStatus === "testing"
+        ) || items[0]
 
     const liveChatId = active?.snippet?.liveChatId
     if (liveChatId) {
@@ -382,19 +385,22 @@ async function sendTwitchMessage(
     // Try modern Twitch Helix Chat REST API for non-slash messages
     if (platformUserId) {
         try {
-            const res = await fetch("https://api.twitch.tv/helix/chat/messages", {
-                method: "POST",
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    "Client-Id": config.oauth.clientId,
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    broadcaster_id: platformUserId,
-                    sender_id: platformUserId,
-                    message,
-                }),
-            })
+            const res = await fetch(
+                "https://api.twitch.tv/helix/chat/messages",
+                {
+                    method: "POST",
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        "Client-Id": config.oauth.clientId,
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        broadcaster_id: platformUserId,
+                        sender_id: platformUserId,
+                        message,
+                    }),
+                }
+            )
             if (res.ok) {
                 return NextResponse.json({ success: true, sentViaHelix: true })
             }

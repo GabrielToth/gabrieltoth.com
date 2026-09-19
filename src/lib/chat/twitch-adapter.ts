@@ -334,7 +334,8 @@ export class TwitchChatAdapter implements ChatAdapter {
                         badges: this.parseBadges(parsedTags["badges"] || ""),
                         isBroadcaster:
                             parsedTags["badges"]?.includes("broadcaster") ||
-                            parsedTags["display-name"]?.toLowerCase() === roomId.toLowerCase() ||
+                            parsedTags["display-name"]?.toLowerCase() ===
+                                roomId.toLowerCase() ||
                             false,
                         isModerator:
                             parsedTags["badges"]?.includes("moderator") ||

@@ -5,10 +5,7 @@
  */
 
 import { getServerSession } from "@/lib/auth/get-server-session"
-import {
-    validateEnvScoped,
-    YOUTUBE_ENV_KEYS,
-} from "@/lib/config/env"
+import { validateEnvScoped, YOUTUBE_ENV_KEYS } from "@/lib/config/env"
 import { createLogger } from "@/lib/logger"
 import { getYouTubeChannelLinkingConfig } from "@/lib/youtube/config"
 import { getYouTubeOAuthService } from "@/lib/youtube/oauth-service"

@@ -299,15 +299,23 @@ export class KickChatAdapter implements ChatAdapter {
 
             const sender = payload.sender || payload.user || {}
             const rawUsername =
-                typeof sender.username === "string" && sender.username !== "[object Object]"
+                typeof sender.username === "string" &&
+                sender.username !== "[object Object]"
                     ? sender.username
-                    : typeof payload.username === "string" && payload.username !== "[object Object]"
-                    ? payload.username
-                    : typeof sender.slug === "string" && sender.slug !== "[object Object]"
-                    ? sender.slug
-                    : ""
+                    : typeof payload.username === "string" &&
+                        payload.username !== "[object Object]"
+                      ? payload.username
+                      : typeof sender.slug === "string" &&
+                          sender.slug !== "[object Object]"
+                        ? sender.slug
+                        : ""
 
-            const resolvedName = rawUsername || (typeof sender.name === "string" && sender.name !== "[object Object]" ? sender.name : roomId)
+            const resolvedName =
+                rawUsername ||
+                (typeof sender.name === "string" &&
+                sender.name !== "[object Object]"
+                    ? sender.name
+                    : roomId)
 
             const message: ChatMessage = {
                 id: `kick-${payload.id || `${Date.now()}-${Math.random().toString(36).substring(2, 8)}`}`,

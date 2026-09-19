@@ -8,7 +8,10 @@
 
 import { createLogger } from "@/lib/logger"
 import { getTokenStore } from "@/lib/token-store"
-import { isTerminalTokenError, markAccountDisconnected } from "@/lib/auth/token-health"
+import {
+    isTerminalTokenError,
+    markAccountDisconnected,
+} from "@/lib/auth/token-health"
 import type { TokenData } from "@/lib/token-store"
 
 const logger = createLogger("TokenRefresh")
@@ -32,10 +35,7 @@ export async function getFreshPlatformToken(
         stored.expiresAt < Date.now()
     ) {
         try {
-            const refreshed = await doRefresh(
-                platform,
-                stored.refreshToken
-            )
+            const refreshed = await doRefresh(platform, stored.refreshToken)
             const expiresAt = Date.now() + refreshed.expiresIn * 1000
             await tokenStore.refreshToken(userId, platform, {
                 accessToken: refreshed.accessToken,
@@ -53,9 +53,7 @@ export async function getFreshPlatformToken(
                 error: msg,
             })
             if (platform === "youtube" && isTerminalTokenError(msg)) {
-                await markAccountDisconnected(userId, "youtube").catch(
-                    () => {}
-                )
+                await markAccountDisconnected(userId, "youtube").catch(() => {})
             }
         }
     }
@@ -74,15 +72,12 @@ async function doRefresh(
     refreshToken: string
 ): Promise<RefreshResult> {
     if (platform === "youtube") {
-        const { getYouTubeOAuthService } = await import(
-            "@/lib/youtube/oauth-service"
-        )
-        const { getYouTubeChannelLinkingConfig } = await import(
-            "@/lib/youtube/config"
-        )
-        const { validateEnvScoped, YOUTUBE_ENV_KEYS } = await import(
-            "@/lib/config/env"
-        )
+        const { getYouTubeOAuthService } =
+            await import("@/lib/youtube/oauth-service")
+        const { getYouTubeChannelLinkingConfig } =
+            await import("@/lib/youtube/config")
+        const { validateEnvScoped, YOUTUBE_ENV_KEYS } =
+            await import("@/lib/config/env")
         const config = getYouTubeChannelLinkingConfig(
             validateEnvScoped(YOUTUBE_ENV_KEYS)
         )
@@ -98,9 +93,8 @@ async function doRefresh(
 
     if (platform === "twitch") {
         const { getTwitchConfig } = await import("@/lib/twitch/config")
-        const { getTwitchOAuthService } = await import(
-            "@/lib/twitch/oauth-service"
-        )
+        const { getTwitchOAuthService } =
+            await import("@/lib/twitch/oauth-service")
         const oauth = getTwitchOAuthService(getTwitchConfig())
         await oauth.initialize()
         const refreshed = await oauth.refreshAccessToken(refreshToken)

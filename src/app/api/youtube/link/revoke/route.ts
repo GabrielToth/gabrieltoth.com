@@ -35,10 +35,7 @@
 import { getServerSession } from "@/lib/auth/get-server-session"
 import { createLogger } from "@/lib/logger"
 import { getTokenStore } from "@/lib/token-store"
-import {
-    validateEnvScoped,
-    YOUTUBE_ENV_KEYS,
-} from "@/lib/config/env"
+import { validateEnvScoped, YOUTUBE_ENV_KEYS } from "@/lib/config/env"
 import { getYouTubeChannelLinkingConfig } from "@/lib/youtube/config"
 import { getYouTubeOAuthService } from "@/lib/youtube/oauth-service"
 import { createClient } from "@supabase/supabase-js"

@@ -133,9 +133,7 @@ describe("POST /api/auth/otp/verify", () => {
         expect(res.status).toBe(400)
         expect(data.error).toBe("Invalid request data")
         expect(
-            data.details.some(
-                (d: { path: string[] }) => d.path[0] === "code"
-            )
+            data.details.some((d: { path: string[] }) => d.path[0] === "code")
         ).toBe(true)
     })
 

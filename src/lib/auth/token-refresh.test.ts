@@ -151,10 +151,7 @@ describe("getFreshPlatformToken", () => {
 
         // Refresh failed → falls back to expired token (non-null)
         expect(result?.accessToken).toBe("expired")
-        expect(mockMarkDisconnected).toHaveBeenCalledWith(
-            USER_ID,
-            "youtube"
-        )
+        expect(mockMarkDisconnected).toHaveBeenCalledWith(USER_ID, "youtube")
     })
 
     it("keeps account connected on transient refresh error", async () => {
