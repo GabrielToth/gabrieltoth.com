@@ -11,7 +11,7 @@ import { createClient } from "@supabase/supabase-js"
 import { NextRequest } from "next/server"
 import { MessageAggregator } from "@/lib/realtime/message-aggregator"
 import { createSSEStream, closeConnections } from "@/lib/realtime/sse-manager"
-import { getTokenStore } from "@/lib/token-store"
+import { getFreshPlatformToken } from "@/lib/auth/token-refresh"
 
 const logger = createLogger("ChatStreamEndpoint")
 
@@ -93,15 +93,14 @@ export async function GET(request: NextRequest): Promise<Response> {
 
             // Pass the platform channel ID (YouTube UC... channelId) so the
             // adapter can query liveBroadcasts by channelId instead of mine=true
-            const platformChannelId =
-                network.provider_user_id || network.platform_user_id
+            const platformChannelId = network.platform_user_id
             if (platformChannelId) {
                 info.channelId = platformChannelId
             }
 
             try {
-                const tokenStore = getTokenStore()
-                const stored = await tokenStore.getToken(userId, key)
+                // Refresh if expired so the adapter gets a valid token
+                const stored = await getFreshPlatformToken(userId, key)
 
                 if (stored?.accessToken) {
                     info.token = stored.accessToken
