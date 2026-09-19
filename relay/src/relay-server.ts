@@ -55,6 +55,7 @@ interface PlatformConnection {
     connected: boolean
     connectedAt: number
     cleanup: () => void
+    roomName?: string
 }
 
 interface ClientInfo {
@@ -265,6 +266,24 @@ async function handleTwitchConnect(
         return
     }
 
+    // Stop any existing relay for this user before creating a new one
+    const previousTwitchConn = client.platforms.get("twitch")
+    if (previousTwitchConn) {
+        try {
+            previousTwitchConn.cleanup()
+        } catch {}
+        client.platforms.delete("twitch")
+    }
+    const previousTwitchRelay = twitchRelays.get(client.userId)
+    if (previousTwitchRelay) {
+        try {
+            previousTwitchRelay.disconnect(
+                previousTwitchConn?.roomName || ""
+            )
+        } catch {}
+        twitchRelays.delete(client.userId)
+    }
+
     const relay = new TwitchIrcRelay()
 
     relay.on("connected", (roomId: string) => {
@@ -274,6 +293,7 @@ async function handleTwitchConnect(
             connected: true,
             connectedAt: Date.now(),
             cleanup: () => relay.disconnect(roomId),
+            roomName: roomId,
         })
         if (client.ws.readyState === WebSocket.OPEN) {
             client.ws.send(
@@ -419,6 +439,22 @@ async function handleKickConnect(
         return
     }
 
+    // Stop any existing relay for this user before creating a new one
+    const previousKickConn = client.platforms.get("kick")
+    if (previousKickConn) {
+        try {
+            previousKickConn.cleanup()
+        } catch {}
+        client.platforms.delete("kick")
+    }
+    const previousKickRelay = kickRelays.get(client.userId)
+    if (previousKickRelay) {
+        try {
+            previousKickRelay.disconnect(previousKickConn?.roomName || "")
+        } catch {}
+        kickRelays.delete(client.userId)
+    }
+
     const relay = new KickPusherRelay()
 
     relay.on("connected", (roomId: string, chatroomId: number | null) => {
@@ -432,6 +468,7 @@ async function handleKickConnect(
             connected: true,
             connectedAt: Date.now(),
             cleanup: () => relay.disconnect(roomId),
+            roomName: roomId,
         })
         if (client.ws.readyState === WebSocket.OPEN) {
             client.ws.send(
@@ -554,8 +591,17 @@ async function handleYouTubeConnect(
 ): Promise<void> {
     const existing = youtubeRelays.get(client.userId)
     if (existing) {
-        existing.stop()
+        try {
+            existing.stop()
+        } catch {}
         youtubeRelays.delete(client.userId)
+    }
+    const previousYtConn = client.platforms.get("youtube")
+    if (previousYtConn) {
+        try {
+            previousYtConn.cleanup()
+        } catch {}
+        client.platforms.delete("youtube")
     }
 
     if (!token) {

@@ -55,6 +55,21 @@ vi.mock("@/lib/config/env", () => ({
         YOUTUBE_REDIRECT_URI: "http://localhost:3000/api/youtube/link/callback",
         TOKEN_ENCRYPTION_KEY: "a".repeat(64),
     }),
+    validateEnvScoped: () => ({
+        REDIS_URL: "redis://localhost:6379",
+        YOUTUBE_CLIENT_ID: "test-client-id",
+        YOUTUBE_CLIENT_SECRET: "test-client-secret",
+        YOUTUBE_REDIRECT_URI: "http://localhost:3000/api/youtube/link/callback",
+        TOKEN_ENCRYPTION_KEY: "a".repeat(64),
+    }),
+    YOUTUBE_ENV_KEYS: [
+        "YOUTUBE_CLIENT_ID",
+        "YOUTUBE_CLIENT_SECRET",
+        "YOUTUBE_REDIRECT_URI",
+        "EMAIL_FROM",
+        "RESEND_FROM_NAME",
+        "TOKEN_ENCRYPTION_KEY",
+    ],
 }))
 
 vi.mock("@/lib/youtube/config", () => ({

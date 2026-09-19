@@ -13,7 +13,10 @@ import { getKickConfig } from "@/lib/kick/config"
 import { getKickOAuthService } from "@/lib/kick/oauth-service"
 import { getYouTubeOAuthService } from "@/lib/youtube/oauth-service"
 import { getYouTubeChannelLinkingConfig } from "@/lib/youtube/config"
-import { validateEnv } from "@/lib/config/env"
+import {
+    validateEnvScoped,
+    YOUTUBE_ENV_KEYS,
+} from "@/lib/config/env"
 import { createClient } from "@supabase/supabase-js"
 import { NextRequest, NextResponse } from "next/server"
 
@@ -63,7 +66,9 @@ async function getValidAccessToken(
                 storedToken.refreshToken
             )
         } else if (platform === "youtube") {
-            const ytConfig = getYouTubeChannelLinkingConfig(validateEnv())
+            const ytConfig = getYouTubeChannelLinkingConfig(
+                validateEnvScoped(YOUTUBE_ENV_KEYS)
+            )
             const ytOAuthService = getYouTubeOAuthService(ytConfig)
             await ytOAuthService.initialize()
             refreshed = await ytOAuthService.refreshAccessToken(

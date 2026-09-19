@@ -34,6 +34,15 @@ const mockGetServerSession = vi.hoisted(() =>
 
 vi.mock("@/lib/config/env", () => ({
     validateEnv: mockValidateEnv,
+    validateEnvScoped: mockValidateEnv,
+    YOUTUBE_ENV_KEYS: [
+        "YOUTUBE_CLIENT_ID",
+        "YOUTUBE_CLIENT_SECRET",
+        "YOUTUBE_REDIRECT_URI",
+        "EMAIL_FROM",
+        "RESEND_FROM_NAME",
+        "TOKEN_ENCRYPTION_KEY",
+    ],
 }))
 
 vi.mock("@/lib/auth/get-server-session", () => ({

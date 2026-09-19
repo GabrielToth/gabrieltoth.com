@@ -211,6 +211,39 @@ function getRequiredVars(): readonly string[] {
 }
 
 /**
+ * Validate ONLY the environment variables a specific feature needs.
+ * Use this in feature paths (YouTube chat, token refresh, etc.) so a
+ * missing optional feature's vars (e.g. Instagram on Vercel) cannot
+ * break unrelated platforms.
+ */
+export function validateEnvScoped(
+    keys: readonly string[]
+): EnvironmentConfig {
+    const missing = keys.filter(key => !process.env[key])
+
+    if (missing.length > 0) {
+        throw new Error(
+            `Missing required environment variables:\n  ${missing.join("\n  ")}`
+        )
+    }
+
+    return parseConfig()
+}
+
+/**
+ * Keys required by the YouTube channel-linking feature (OAuth refresh,
+ * chat, Data API). Instagram/TikTok/etc. are NOT required here.
+ */
+export const YOUTUBE_ENV_KEYS: readonly string[] = [
+    "YOUTUBE_CLIENT_ID",
+    "YOUTUBE_CLIENT_SECRET",
+    "YOUTUBE_REDIRECT_URI",
+    "EMAIL_FROM",
+    "RESEND_FROM_NAME",
+    "TOKEN_ENCRYPTION_KEY",
+]
+
+/**
  * Validate ALL required environment variables at startup.
  * Every env var the code reads must be set — no fallbacks, no silent failures.
  * In production, local-only vars (POSTGRES_*, UPSTASH_*, HOSTNAME) are skipped.

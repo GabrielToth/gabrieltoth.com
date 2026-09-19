@@ -5,7 +5,10 @@
  */
 
 import { getServerSession } from "@/lib/auth/get-server-session"
-import { validateEnv } from "@/lib/config/env"
+import {
+    validateEnvScoped,
+    YOUTUBE_ENV_KEYS,
+} from "@/lib/config/env"
 import { createLogger } from "@/lib/logger"
 import { getYouTubeChannelLinkingConfig } from "@/lib/youtube/config"
 import { getYouTubeOAuthService } from "@/lib/youtube/oauth-service"
@@ -39,7 +42,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
             redirectTo,
         })
 
-        const env = validateEnv()
+        const env = validateEnvScoped(YOUTUBE_ENV_KEYS)
         const config = getYouTubeChannelLinkingConfig(env)
 
         const oauthService = getYouTubeOAuthService(config)

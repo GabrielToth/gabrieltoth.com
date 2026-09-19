@@ -14,7 +14,10 @@
 
 import { createLogger } from "@/lib/logger"
 import { getTokenStore } from "@/lib/token-store"
-import { validateEnv } from "@/lib/config/env"
+import {
+    validateEnvScoped,
+    YOUTUBE_ENV_KEYS,
+} from "@/lib/config/env"
 import { getYouTubeChannelLinkingConfig } from "./config"
 import {
     getYouTubeOAuthService,
@@ -47,7 +50,7 @@ export async function getValidYouTubeToken(
     const oauthService =
         options?.oauthService ??
         (() => {
-            const env = validateEnv()
+            const env = validateEnvScoped(YOUTUBE_ENV_KEYS)
             const config = getYouTubeChannelLinkingConfig(env)
             return getYouTubeOAuthService(config)
         })()

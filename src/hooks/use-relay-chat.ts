@@ -99,31 +99,56 @@ export function useRelayChat(): UseRelayChatReturn {
 
     const relayUrl = process.env.NEXT_PUBLIC_RELAY_WS_URL || ""
 
-    const fetchCredentials = useCallback(async () => {
-        if (!relayUrl) return false
-        try {
-            const res = await fetch("/api/auth/relay-token")
-            if (!res.ok) {
-                throw new Error(
-                    `Failed to fetch relay credentials: ${res.status}`
+    const fetchCredentials = useCallback(
+        async (opts?: { onTokensChanged?: () => void }): Promise<boolean> => {
+            if (!relayUrl) return false
+            try {
+                const res = await fetch("/api/auth/relay-token")
+                if (!res.ok) {
+                    throw new Error(
+                        `Failed to fetch relay credentials: ${res.status}`
+                    )
+                }
+                const data = await res.json()
+                if (!data.success) {
+                    throw new Error(
+                        data.error || "Failed to fetch relay credentials"
+                    )
+                }
+
+                const prevTokens = Object.fromEntries(
+                    Object.entries(platformsRef.current).map(
+                        ([platform, info]) => [
+                            platform,
+                            info.accessToken || "",
+                        ]
+                    )
                 )
-            }
-            const data = await res.json()
-            if (!data.success) {
-                throw new Error(
-                    data.error || "Failed to fetch relay credentials"
+
+                tokenRef.current = data.token
+                platformsRef.current = data.platforms || {}
+
+                const tokensChanged = Object.entries(
+                    platformsRef.current
+                ).some(
+                    ([platform, info]) =>
+                        (info.accessToken || "") !==
+                        (prevTokens[platform] || "")
                 )
+
+                if (tokensChanged) {
+                    opts?.onTokensChanged?.()
+                }
+                return true
+            } catch (err) {
+                logger.error("Failed to fetch relay credentials", {
+                    error: String(err),
+                })
+                return false
             }
-            tokenRef.current = data.token
-            platformsRef.current = data.platforms || {}
-            return true
-        } catch (err) {
-            logger.error("Failed to fetch relay credentials", {
-                error: String(err),
-            })
-            return false
-        }
-    }, [relayUrl])
+        },
+        [relayUrl]
+    )
 
     const sendConnectMessage = useCallback((ws: WebSocket) => {
         for (const [platform, info] of Object.entries(platformsRef.current)) {
@@ -321,7 +346,17 @@ export function useRelayChat(): UseRelayChatReturn {
 
             tokenTimerRef.current = setInterval(() => {
                 if (wsRef.current?.readyState === WebSocket.OPEN) {
-                    fetchCredentials()
+                    fetchCredentials({
+                        onTokensChanged: () => {
+                            const ws = wsRef.current
+                            if (ws?.readyState === WebSocket.OPEN) {
+                                sendConnectMessage(ws)
+                                logger.info(
+                                    "Re-sent relay connect due to token refresh"
+                                )
+                            }
+                        },
+                    })
                 }
             }, TOKEN_REFRESH_INTERVAL)
         }
@@ -346,7 +381,7 @@ export function useRelayChat(): UseRelayChatReturn {
 
             setIsConnected(false)
         }
-    }, [relayUrl, connect, fetchCredentials])
+    }, [relayUrl, connect, fetchCredentials, sendConnectMessage])
 
     return { messages, statuses, isConnected, error, sendModeration }
 }

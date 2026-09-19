@@ -35,7 +35,10 @@
 import { getServerSession } from "@/lib/auth/get-server-session"
 import { createLogger } from "@/lib/logger"
 import { getTokenStore } from "@/lib/token-store"
-import { validateEnv } from "@/lib/config/env"
+import {
+    validateEnvScoped,
+    YOUTUBE_ENV_KEYS,
+} from "@/lib/config/env"
 import { getYouTubeChannelLinkingConfig } from "@/lib/youtube/config"
 import { getYouTubeOAuthService } from "@/lib/youtube/oauth-service"
 import { createClient } from "@supabase/supabase-js"
@@ -79,7 +82,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         }
 
         // Initialize OAuth service for token revocation
-        const env = validateEnv()
+        const env = validateEnvScoped(YOUTUBE_ENV_KEYS)
         const config = getYouTubeChannelLinkingConfig(env)
         const oauthService = getYouTubeOAuthService(config)
         await oauthService.initialize()
