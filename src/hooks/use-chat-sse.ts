@@ -68,7 +68,7 @@ const MAX_RECONNECT_DELAY_MS = 30_000
 const INITIAL_RECONNECT_DELAY_MS = 1_000
 const DEDUP_WINDOW_MS = 3_000
 
-export function useChatSSE(_platforms: string[]): UseChatSSEReturn {
+export function useChatSSE(_platforms: string[], enabled = true): UseChatSSEReturn {
     const [messages, setMessages] = useState<SSEChatMessage[]>([])
     const [statuses, setStatuses] = useState<PlatformStatus[]>([])
     const [isConnected, setIsConnected] = useState(false)
@@ -82,7 +82,7 @@ export function useChatSSE(_platforms: string[]): UseChatSSEReturn {
     const mountedRef = useRef(true)
 
     const connect = useCallback(() => {
-        if (!mountedRef.current) return
+        if (!mountedRef.current || !enabled) return
 
         // Close existing connection
         if (lastEventRef.current) {
@@ -201,11 +201,13 @@ export function useChatSSE(_platforms: string[]): UseChatSSEReturn {
                 connect()
             }, delay)
         }
-    }, [])
+    }, [enabled])
 
     useEffect(() => {
         mountedRef.current = true
-        connect()
+        if (enabled) {
+            connect()
+        }
 
         return () => {
             mountedRef.current = false
@@ -222,7 +224,7 @@ export function useChatSSE(_platforms: string[]): UseChatSSEReturn {
 
             setIsConnected(false)
         }
-    }, [connect])
+    }, [enabled, connect])
 
     const addMessage = useCallback((message: SSEChatMessage) => {
         setMessages(prev => {

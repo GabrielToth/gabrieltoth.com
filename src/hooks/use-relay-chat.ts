@@ -51,7 +51,7 @@ const INITIAL_RECONNECT_DELAY = 1_000
 const MAX_RECONNECT_DELAY = 30_000
 const TOKEN_REFRESH_INTERVAL = 4 * 60 * 1000
 
-export function useRelayChat(): UseRelayChatReturn {
+export function useRelayChat(enabled = true): UseRelayChatReturn {
     const [messages, setMessages] = useState<RelayChatMessage[]>([])
     const [statuses, setStatuses] = useState<RelayPlatformStatus[]>([])
     const [isConnected, setIsConnected] = useState(false)
@@ -259,6 +259,14 @@ export function useRelayChat(): UseRelayChatReturn {
                         return
                     }
 
+                    if (data.type === "reconnecting") {
+                        logger.warn("Relay reconnecting", {
+                            reason: data.reason,
+                        })
+                        setIsConnected(false)
+                        return
+                    }
+
                     const twitchPrefixes = ["twitch", "kick", "youtube"]
                     for (const prefix of twitchPrefixes) {
                         const eventName = `${prefix}:message`
@@ -336,7 +344,7 @@ export function useRelayChat(): UseRelayChatReturn {
         mountedRef.current = true
         connectRef.current = connect
 
-        if (relayUrl) {
+        if (relayUrl && enabled) {
             connect()
 
             tokenTimerRef.current = setInterval(() => {
@@ -376,7 +384,7 @@ export function useRelayChat(): UseRelayChatReturn {
 
             setIsConnected(false)
         }
-    }, [relayUrl, connect, fetchCredentials, sendConnectMessage])
+    }, [relayUrl, enabled, connect, fetchCredentials, sendConnectMessage])
 
     return { messages, statuses, isConnected, error, sendModeration }
 }

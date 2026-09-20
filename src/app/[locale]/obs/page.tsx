@@ -1,6 +1,6 @@
 "use client"
 
-import { useRelayChat } from "@/hooks/use-relay-chat"
+import { useChatSSE } from "@/hooks/use-chat-sse"
 import { useTranslations } from "next-intl"
 import { useMemo, useRef, useEffect } from "react"
 
@@ -27,12 +27,14 @@ const PLATFORM_COLORS: Record<string, string> = {
 const MAX_VISIBLE = 50
 
 export default function ObsChatOverlay() {
-    const relay = useRelayChat()
+    // SSE pipeline (same source as the dashboard unified chat) — avoids a
+    // second concurrent YouTube polling pipeline (quota duplication).
+    const sse = useChatSSE([])
     const t = useTranslations("dashboard")
     const endRef = useRef<HTMLDivElement>(null)
 
     const messages = useMemo(() => {
-        return relay.messages.slice(-MAX_VISIBLE).map(m => ({
+        return sse.messages.slice(-MAX_VISIBLE).map(m => ({
             id: m.id,
             author:
                 m.user?.displayName || m.user?.username || t("obs.anonymous"),
@@ -43,13 +45,13 @@ export default function ObsChatOverlay() {
                 PLATFORM_LABELS[m.platform] ||
                 m.platform.slice(0, 2).toUpperCase(),
         }))
-    }, [relay.messages, t])
+    }, [sse.messages, t])
 
     useEffect(() => {
         endRef.current?.scrollIntoView({ behavior: "smooth" })
     }, [messages.length])
 
-    if (!relay.isConnected) {
+    if (!sse.isConnected) {
         return (
             <div className="flex items-center justify-center h-screen bg-transparent">
                 <p className="text-white/40 text-lg">

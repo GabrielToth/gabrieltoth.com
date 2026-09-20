@@ -103,12 +103,28 @@
 
 ---
 
-## 🗓️ CURRENT SPRINT (Last updated: 2026-09-01)
+## 🗓️ CURRENT SPRINT (Last updated: 2026-09-20)
 ### Active & Pending
 - **#419: i18n untranslated English strings** — Fix 15 files ('en' identical strings) across pt-BR/ES/DE/FR in editors.json, dashboard.json, publish.json, etc.
 - **#420: Dependency Security Audit** — Resolve remaining 7 high Dependabot vulnerabilities (npm audit fix --force for safe deps).
 - **#421: MapLibre/Nominatim Location Search** — Feature for settings (open-source map widget, self-hostable tiles if needed).
 - **#422: Meta Publishing External Solution** — No CNPJ. No Official API. Research & implement the cheapest/only local-supported auto-poster for Main + IG Business via browser automation ONLY. No need for official Meta Developer Portal changes (Phase: Local Chrome Debug Server).
+- **#423: YouTube API quota exhaustion & duplicate chat pipelines (FIXED 2026-09-20)** — Root cause of "live status/chat broken in production":
+  - **Killer:** `UnifiedChat` ran BOTH the external relay WS (`useRelayChat`) AND the built-in SSE aggregator (`useChatSSE`) simultaneously — each polled YouTube `liveChatMessages` every 5s independently (~1,480 units/h during a live, doubled). Status-route fallbacks (channels.list + search.list = 101u) fired whenever the public page scrape failed on Vercel IPs, burning the 10k/day quota in under an hour.
+  - **Fixes applied:**
+    - `use-relay-chat.ts` / `use-chat-sse.ts` gained an `enabled` param; `UnifiedChat` now runs only the SSE pipeline in cloud mode (relay disabled by default) and only local adapters in local mode.
+    - Quota circuit breaker: `youtubeQuotaExceededUntil` (15 min cooldown) in `/api/live/status` (all 4 stages guarded, 403 quotaExceeded detection) and in `youtube-live-chat-adapter.ts` (poll paused + user-visible error event).
+    - First-poll backfill gate: the first successful YouTube poll marks history as seen without emitting (no more chat replay to every new SSE client).
+    - `seenMessageIds` capped at 500 entries (memory safety on long streams).
+    - Moderation moved off the relay WS: `handleModerate` now POSTs `/ban`/`/timeout`/`/unban` to `/api/live/chat/send` (Twitch→Helix moderation, already implemented server-side).
+    - OBS overlay (`/[locale]/obs`) migrated from relay to SSE — same source as dashboard, no second pipeline.
+    - Relay `type:"reconnecting"` event handled (status now correctly flips to Disconnected during reconnects).
+    - Local mode Kick WebSocket `onmessage` implemented (Pusher `App\\Events\\ChatMessage` parse, ping/pong, badges; requires `window.KICK_CHATROOM_ID`).
+    - Verified: tsc clean, eslint clean, 234 chat/hooks/app tests pass, `next build` exit 0.
+  - **Manual follow-ups:**
+    - [ ] Confirm `TOKEN_ENCRYPTION_KEY` (64-hex) is set as a Vercel **production** secret (tokens were refreshing on 2026-09-20, so a working key exists in the live env; local `.env.production` placeholders are stale/invalid — do not copy them).
+    - [ ] Quota resets at midnight Pacific Time; verify `youtube.v3` usage in Google Cloud Console → IAM & Admin → Quotas after the reset.
+    - [ ] Optional: delete or document `src/hooks/use-chat-ws.ts` (dead code — no imports).
 
 
 ---

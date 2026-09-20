@@ -157,8 +157,14 @@ export function UnifiedChat({
 }: UnifiedChatProps) {
     const [executionMode, setExecutionMode] =
         useState<ChatExecutionMode>("cloud")
-    const relay = useRelayChat()
-    const sse = useChatSSE(platforms)
+    const isCloud = executionMode === "cloud"
+    // Only ONE cloud pipeline may poll the YouTube API at a time:
+    // relay + SSE simultaneously double-burn quota (search.list = 100u).
+    // SSE is the built-in default pipeline (/api/live/chat/stream);
+    // the external relay is kept disabled to avoid duplicate consumption.
+    const useRelayPipeline = false
+    const relay = useRelayChat(useRelayPipeline)
+    const sse = useChatSSE(platforms, isCloud)
     const local = useLocalChat(platforms, executionMode === "local", channels)
     const [enabledPlatforms, setEnabledPlatforms] = useState<Set<string>>(
         new Set(platforms)
@@ -268,7 +274,14 @@ export function UnifiedChat({
         return counts
     }, [mergedMessages])
 
-    const statusText = relay.isConnected ? "Connected" : "Disconnected"
+    const statusText =
+        executionMode === "local"
+            ? local.isConnected
+                ? "Connected"
+                : "Disconnected"
+            : sse.isConnected
+              ? "Connected"
+              : "Disconnected"
 
     const [input, setInput] = useState("")
     const [_historyIndex, setHistoryIndex] = useState(-1)
@@ -368,15 +381,32 @@ export function UnifiedChat({
     const handleModerate = useCallback(
         (action: string, duration?: number) => {
             if (!selectedUser) return
-            relay.sendModeration(
-                action,
-                selectedUser.userId || selectedUser.author,
-                selectedUser.author,
-                selectedUser.platform,
-                duration
-            )
+            // Moderation goes through the REST chat-send route (works with
+            // the SSE pipeline; the relay WebSocket is disabled by default):
+            // Twitch maps /ban /timeout /unban to Helix moderation calls.
+            const target = selectedUser.author
+            const commands: Record<string, string> = {
+                timeout: `/timeout ${target} ${duration || 600}`,
+                ban: `/ban ${target}`,
+                unban: `/unban ${target}`,
+            }
+            const command = commands[action]
+            if (!command) {
+                logger.warn("Unsupported moderation action", { action })
+                return
+            }
+            fetch("/api/live/chat/send", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    platform: selectedUser.platform,
+                    message: command,
+                }),
+            }).catch(err => {
+                logger.error("Moderation REST request failed", { err })
+            })
         },
-        [selectedUser, relay]
+        [selectedUser]
     )
 
     const getPlatformBadge = (platform: string) => {

@@ -30,6 +30,33 @@ const statusCache = new Map<
     { data: Record<string, unknown>; expiresAt: number }
 >()
 
+// ============================================================
+// YouTube API quota circuit breaker.
+// When the project exhausts its 10k/day quota, every API call fails
+// with 403 quotaExceeded. Polling every 30s would burn retries with
+// no chance of success, so once quota exhaustion is detected we stop
+// ALL YouTube Data API usage for 15 minutes and rely on the free
+// public page scrape (Stage 1) only.
+// ============================================================
+const YOUTUBE_QUOTA_COOLDOWN_MS = 15 * 60 * 1000
+let youtubeQuotaExceededUntil = 0
+
+function isYouTubeQuotaExceeded(): boolean {
+    return Date.now() < youtubeQuotaExceededUntil
+}
+
+/** Detect quota/rate-limit failures in YouTube API error payloads. */
+function markYouTubeQuotaIfExceeded(status: number, body: string): boolean {
+    if (status === 403 && /quotaExceeded|rateLimitExceeded|dailyLimitExceeded/i.test(body)) {
+        youtubeQuotaExceededUntil = Date.now() + YOUTUBE_QUOTA_COOLDOWN_MS
+        logger.error("YouTube API quota exhausted — API calls paused for 15 minutes", {
+            cooldownUntil: new Date(youtubeQuotaExceededUntil).toISOString(),
+        })
+        return true
+    }
+    return false
+}
+
 async function getValidAccessToken(
     userId: string,
     platform: string
@@ -469,7 +496,7 @@ async function fetchYouTubeStream(
         // that have actually started. A "ready"/"testing" broadcast is
         // scheduled/upcoming, NOT live.
         // ============================================================
-        if (!targetVideoId && accessToken) {
+        if (!targetVideoId && accessToken && !isYouTubeQuotaExceeded()) {
             try {
                 const broadcastRes = await fetch(
                     "https://www.googleapis.com/youtube/v3/liveBroadcasts?part=snippet,status&broadcastStatus=active&mine=true",
@@ -480,6 +507,13 @@ async function fetchYouTubeStream(
                         },
                     }
                 )
+
+                if (!broadcastRes.ok) {
+                    markYouTubeQuotaIfExceeded(
+                        broadcastRes.status,
+                        await broadcastRes.text().catch(() => "")
+                    )
+                }
 
                 const broadcastData = broadcastRes.ok
                     ? await broadcastRes.json()
@@ -510,7 +544,7 @@ async function fetchYouTubeStream(
         // units. Only when scrape found nothing AND mine=true found
         // nothing. Never queried with an invalid/empty channelId.
         // ============================================================
-        if (!targetVideoId && accessToken) {
+        if (!targetVideoId && accessToken && !isYouTubeQuotaExceeded()) {
             try {
                 const chanRes = await fetch(
                     "https://www.googleapis.com/youtube/v3/channels?part=id&mine=true",
@@ -527,7 +561,11 @@ async function fetchYouTubeStream(
 
                     // Only call Search API with a valid UC channelId — an
                     // empty channelId returns random global streams.
-                    if (resolvedChannelId.startsWith("UC")) {
+                    // Skipped entirely while quota circuit breaker is open.
+                    if (
+                        resolvedChannelId.startsWith("UC") &&
+                        !isYouTubeQuotaExceeded()
+                    ) {
                         const searchRes = await fetch(
                             `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${encodeURIComponent(
                                 resolvedChannelId
@@ -539,6 +577,12 @@ async function fetchYouTubeStream(
                                 },
                             }
                         )
+                        if (!searchRes.ok) {
+                            markYouTubeQuotaIfExceeded(
+                                searchRes.status,
+                                await searchRes.text().catch(() => "")
+                            )
+                        }
                         if (searchRes.ok) {
                             const searchData = await searchRes.json()
                             const searchItem = searchData.items?.[0]
@@ -598,7 +642,7 @@ async function fetchYouTubeStream(
             "28": "Science & Technology",
         }
 
-        if (accessToken) {
+        if (accessToken && !isYouTubeQuotaExceeded()) {
             const videoRes = await fetch(
                 `https://www.googleapis.com/youtube/v3/videos?part=snippet,liveStreamingDetails,statistics&id=${encodeURIComponent(
                     targetVideoId
@@ -610,6 +654,13 @@ async function fetchYouTubeStream(
                     },
                 }
             )
+
+            if (!videoRes.ok) {
+                markYouTubeQuotaIfExceeded(
+                    videoRes.status,
+                    await videoRes.text().catch(() => "")
+                )
+            }
 
             if (videoRes.ok) {
                 const videoData = await videoRes.json()

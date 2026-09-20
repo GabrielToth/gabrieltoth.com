@@ -21,6 +21,12 @@ const logger = createLogger("YouTubeLiveChatAdapter")
 
 const YOUTUBE_API_BASE = "https://www.googleapis.com/youtube/v3"
 
+/** Circuit breaker cooldown after a 403 quotaExceeded response (15 min). */
+const QUOTA_COOLDOWN_MS = 15 * 60 * 1000
+
+/** Max entries in the seen-message dedupe set (memory safety on long streams). */
+const SEEN_MESSAGE_IDS_CAP = 500
+
 interface YouTubeMessageHandler {
     (message: ChatMessage): void
 }
@@ -34,6 +40,8 @@ interface YouTubePollingState {
     intervalId: ReturnType<typeof setInterval> | null
     seenMessageIds: Set<string>
     connected: boolean
+    /** First poll after connect marks history as seen without emitting. */
+    hasCompletedFirstPoll?: boolean
 }
 
 interface YouTubeLiveBroadcast {
@@ -76,6 +84,8 @@ interface YouTubeLiveChatMessage {
 }
 
 export class YouTubeLiveChatAdapter implements ChatAdapter {
+    /** Timestamp until which API calls are paused due to quota exhaustion. */
+    private quotaExceededUntil = 0
     readonly platform = "youtube" as const
     readonly config: ChatAdapterConfig = {
         platform: "youtube",
@@ -120,6 +130,7 @@ export class YouTubeLiveChatAdapter implements ChatAdapter {
                 pollingIntervalMs: this.DEFAULT_POLLING_INTERVAL_MS,
                 intervalId: null,
                 seenMessageIds: new Set(),
+                hasCompletedFirstPoll: false,
                 connected: true,
             }
 
@@ -462,6 +473,13 @@ export class YouTubeLiveChatAdapter implements ChatAdapter {
      * Execute a single poll cycle
      */
     private async pollCycle(state: YouTubePollingState): Promise<void> {
+        // Quota circuit breaker: if the project's YouTube API quota is
+        // exhausted, stop polling entirely for QUOTA_COOLDOWN_MS instead of
+        // burning a 403 on every interval tick.
+        if (Date.now() < this.quotaExceededUntil) {
+            return
+        }
+
         try {
             const messages = await this.fetchLiveChatMessages(
                 state.liveChatId,
@@ -469,16 +487,53 @@ export class YouTubeLiveChatAdapter implements ChatAdapter {
                 state.nextPageToken
             )
 
+            // First successful poll after connect is treated as history:
+            // mark everything as seen WITHOUT emitting. Otherwise the SSE
+            // stream replays the entire chat backlog to every new client.
+            const isFirstPoll = !state.hasCompletedFirstPoll
+
             for (const msg of messages) {
                 if (state.seenMessageIds.has(msg.id)) continue
                 state.seenMessageIds.add(msg.id)
 
+                if (isFirstPoll) continue
+
                 const chatMessage = this.toChatMessage(state.liveChatId, msg)
                 this.notifyMessageHandlers(state.roomId, chatMessage)
             }
+
+            // Cap the seen set so long streams don't leak memory.
+            if (state.seenMessageIds.size > SEEN_MESSAGE_IDS_CAP) {
+                // Rebuild preserving only the most recent entries.
+                const recent = Array.from(state.seenMessageIds).slice(
+                    -SEEN_MESSAGE_IDS_CAP
+                )
+                state.seenMessageIds = new Set(recent)
+            }
+
+            state.hasCompletedFirstPoll = true
         } catch (error) {
             const err =
                 error instanceof Error ? error : new Error(String(error))
+
+            // 403 quotaExceeded — open the circuit breaker for 15 min.
+            if (err.message.includes("403") && /quotaExceeded|rateLimitExceeded|dailyLimitExceeded/i.test(err.message)) {
+                this.quotaExceededUntil = Date.now() + QUOTA_COOLDOWN_MS
+                logger.error(
+                    "YouTube API quota exhausted — chat polling paused",
+                    {
+                        roomId: state.roomId,
+                        cooldownMs: QUOTA_COOLDOWN_MS,
+                    }
+                )
+                this.notifyError(
+                    new Error(
+                        "YouTube API quota exhausted. Chat polling paused for 15 minutes."
+                    )
+                )
+                return
+            }
+
             logger.warn("YouTube live chat poll cycle error", {
                 roomId: state.roomId,
                 error: err.message,
