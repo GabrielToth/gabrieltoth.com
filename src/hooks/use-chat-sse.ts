@@ -68,7 +68,10 @@ const MAX_RECONNECT_DELAY_MS = 30_000
 const INITIAL_RECONNECT_DELAY_MS = 1_000
 const DEDUP_WINDOW_MS = 3_000
 
-export function useChatSSE(_platforms: string[], enabled = true): UseChatSSEReturn {
+export function useChatSSE(
+    _platforms: string[],
+    enabled = true
+): UseChatSSEReturn {
     const [messages, setMessages] = useState<SSEChatMessage[]>([])
     const [statuses, setStatuses] = useState<PlatformStatus[]>([])
     const [isConnected, setIsConnected] = useState(false)

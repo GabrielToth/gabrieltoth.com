@@ -25,7 +25,9 @@ const DO_LOGIN = process.argv.includes("--login")
 const results = []
 function record(name, ok, extra = "") {
     const icon = ok === "PASS" ? "PASS" : "FAIL"
-    console.log(`  ${ok === "PASS" ? "✅" : "❌"} ${name}${extra ? " — " + extra : ""}`)
+    console.log(
+        `  ${ok === "PASS" ? "✅" : "❌"} ${name}${extra ? " — " + extra : ""}`
+    )
     results.push({ name, ok, extra })
 }
 
@@ -66,7 +68,8 @@ async function main() {
 
     await step("dashboard reachable without redirect", async () => {
         await gotoProd(page, `${BASE_URL}/pt-BR/dashboard`, 2500)
-        if (/signin|login/.test(page.url())) throw new Error("redirected to signin")
+        if (/signin|login/.test(page.url()))
+            throw new Error("redirected to signin")
         await page.waitForSelector("main", { timeout: 10000 })
         return page.url()
     })
@@ -98,9 +101,13 @@ async function main() {
     // --------------------------------------------------------- scheduled-streams bug
     console.log("\n[C] Scheduled streams (known: production bug check)")
     await step("scheduled-streams page renders content", async () => {
-        await gotoProd(page, `${BASE_URL}/pt-BR/dashboard/scheduled-streams`, 3000)
-        const txt = await page.evaluate(
-            () => document.body.innerText.substring(0, 200)
+        await gotoProd(
+            page,
+            `${BASE_URL}/pt-BR/dashboard/scheduled-streams`,
+            3000
+        )
+        const txt = await page.evaluate(() =>
+            document.body.innerText.substring(0, 200)
         )
         if (/404|not found|Página não encontrada/i.test(txt))
             throw new Error("404 rendered — route not deployed to production")
@@ -112,7 +119,9 @@ async function main() {
     await step("live status API returns real channel data", async () => {
         await page.evaluate(async () => {}) // warm
         const data = await page.evaluate(async () => {
-            const r = await fetch("/api/live/status", { credentials: "include" })
+            const r = await fetch("/api/live/status", {
+                credentials: "include",
+            })
             return { status: r.status, body: await r.json() }
         })
         if (data.status !== 200) throw new Error("HTTP " + data.status)
@@ -131,7 +140,8 @@ async function main() {
         const found = ["Twitch", "Kick", "YouTube"].filter(p =>
             txt.toLowerCase().includes(p.toLowerCase())
         )
-        if (found.length < 2) throw new Error("platform cards missing: " + found)
+        if (found.length < 2)
+            throw new Error("platform cards missing: " + found)
         return `${found.join("/")} cards visible`
     })
 
@@ -140,7 +150,8 @@ async function main() {
             const m = document.querySelector("main")
             return m ? m.innerText : ""
         })
-        if (!/Chat Unificado/i.test(txt)) throw new Error("unified chat missing")
+        if (!/Chat Unificado/i.test(txt))
+            throw new Error("unified chat missing")
         return "Chat Unificado present"
     })
 
@@ -155,17 +166,17 @@ async function main() {
         })
         if (data.status !== 200) throw new Error("HTTP " + data.status)
         const total = data.body?.data?.simpleMetrics?.[0]?.value
-        if (typeof total !== "number") throw new Error("no totalFollowers metric")
+        if (typeof total !== "number")
+            throw new Error("no totalFollowers metric")
         return `totalFollowers = ${total.toLocaleString()}`
     })
 
     await step("insights page renders metric cards", async () => {
         await gotoProd(page, `${BASE_URL}/pt-BR/dashboard/insights`, 3000)
-        const txt = await page.evaluate(
-            () =>
-                document.querySelector("main")
-                    ? document.querySelector("main").innerText
-                    : ""
+        const txt = await page.evaluate(() =>
+            document.querySelector("main")
+                ? document.querySelector("main").innerText
+                : ""
         )
         if (!/Seguidores|Followers|Visão/i.test(txt))
             throw new Error("metric cards missing")
@@ -174,24 +185,39 @@ async function main() {
 
     // --------------------------------------------------------- chat commands
     console.log("\n[F] Chat commands — CRUD (creates + deletes test command)")
-    await step("default commands listed (!titleall, !categoryall, !discord)", async () => {
-        await gotoProd(page, `${BASE_URL}/pt-BR/dashboard/chat-commands`, 2500)
-        const txt = await page.evaluate(() => document.querySelector("main").innerText)
-        for (const cmd of ["!titleall", "!categoryall", "!discord"]) {
-            if (!txt.includes(cmd)) throw new Error(`missing ${cmd}`)
+    await step(
+        "default commands listed (!titleall, !categoryall, !discord)",
+        async () => {
+            await gotoProd(
+                page,
+                `${BASE_URL}/pt-BR/dashboard/chat-commands`,
+                2500
+            )
+            const txt = await page.evaluate(
+                () => document.querySelector("main").innerText
+            )
+            for (const cmd of ["!titleall", "!categoryall", "!discord"]) {
+                if (!txt.includes(cmd)) throw new Error(`missing ${cmd}`)
+            }
+            return "all defaults present"
         }
-        return "all defaults present"
-    })
+    )
 
-    await step("Add Command form opens with trigger/response/cooldown", async () => {
-        await page.locator('button:has-text("Adicionar Comando")').first().click()
-        await page.waitForTimeout(1000)
-        const trig = page.locator("#trigger")
-        if (!(await trig.count())) throw new Error("trigger input missing")
-        const resp = page.locator("#response")
-        if (!(await resp.count())) throw new Error("response input missing")
-        return "form fields present"
-    })
+    await step(
+        "Add Command form opens with trigger/response/cooldown",
+        async () => {
+            await page
+                .locator('button:has-text("Adicionar Comando")')
+                .first()
+                .click()
+            await page.waitForTimeout(1000)
+            const trig = page.locator("#trigger")
+            if (!(await trig.count())) throw new Error("trigger input missing")
+            const resp = page.locator("#response")
+            if (!(await resp.count())) throw new Error("response input missing")
+            return "form fields present"
+        }
+    )
 
     const TEST_CMD = "!e2etestcmd"
     await step("create test command (POST roundtrip)", async () => {
@@ -201,12 +227,17 @@ async function main() {
         if (await cd.count()) await page.fill("#cooldown", "5")
         // save
         await page
-            .locator('button:has-text("Salvar Comando"), button:has-text("Salvar"), [role=dialog] button[type=submit]:has-text("Salvar")')
+            .locator(
+                'button:has-text("Salvar Comando"), button:has-text("Salvar"), [role=dialog] button[type=submit]:has-text("Salvar")'
+            )
             .first()
             .click()
         await page.waitForTimeout(2000)
-        const txt = await page.evaluate(() => document.querySelector("main").innerText)
-        if (!txt.includes(TEST_CMD)) throw new Error("command not in list after save")
+        const txt = await page.evaluate(
+            () => document.querySelector("main").innerText
+        )
+        if (!txt.includes(TEST_CMD))
+            throw new Error("command not in list after save")
         return "command created and listed"
     })
 
@@ -214,7 +245,9 @@ async function main() {
         // The UI hides delete behind a per-row overflow menu; use the same
         // API the UI calls after opening the menu — direct & reliable.
         const list = await page.evaluate(async () => {
-            const r = await fetch("/api/chat-commands/", { credentials: "include" })
+            const r = await fetch("/api/chat-commands/", {
+                credentials: "include",
+            })
             const j = await r.json()
             return j?.data || []
         })
@@ -227,9 +260,17 @@ async function main() {
             })
             return { status: r.status, body: await r.json() }
         }, test.id)
-        if (del.status !== 200) throw new Error("HTTP " + del.status + " " + JSON.stringify(del.body).substring(0, 80))
+        if (del.status !== 200)
+            throw new Error(
+                "HTTP " +
+                    del.status +
+                    " " +
+                    JSON.stringify(del.body).substring(0, 80)
+            )
         const after = await page.evaluate(async () => {
-            const r = await fetch("/api/chat-commands/", { credentials: "include" })
+            const r = await fetch("/api/chat-commands/", {
+                credentials: "include",
+            })
             const j = await r.json()
             return (j?.data || []).some(c => c.trigger === "!e2etestcmd")
         })
@@ -241,7 +282,9 @@ async function main() {
     console.log("\n[G] Channels page (non-destructive)")
     await step("channels list shows connected platforms", async () => {
         await gotoProd(page, `${BASE_URL}/pt-BR/dashboard/channels`, 3000)
-        const txt = await page.evaluate(() => document.querySelector("main").innerText)
+        const txt = await page.evaluate(
+            () => document.querySelector("main").innerText
+        )
         const found = ["Twitch", "Kick", "YouTube"].filter(p =>
             txt.toLowerCase().includes(p.toLowerCase())
         )
@@ -260,7 +303,9 @@ async function main() {
     console.log("\n[H] Settings page")
     await step("settings tabs render", async () => {
         await gotoProd(page, `${BASE_URL}/pt-BR/dashboard/settings`, 2500)
-        const txt = await page.evaluate(() => document.querySelector("main").innerText)
+        const txt = await page.evaluate(
+            () => document.querySelector("main").innerText
+        )
         const tabs = ["Chat"].filter(t => txt.includes(t))
         if (tabs.length === 0) throw new Error("no settings tabs readable")
         // known i18n bug: raw keys like dashboard.settings.tabs.*
@@ -299,7 +344,10 @@ async function login() {
     const ctx = browser.contexts()[0]
     const page = await ctx.newPage()
     await gotoProd(page, `${BASE_URL}/pt-BR/signin/`, 2000)
-    await page.locator('button:has-text("Google"), a:has-text("Google")').first().click()
+    await page
+        .locator('button:has-text("Google"), a:has-text("Google")')
+        .first()
+        .click()
     await page.waitForURL(/dashboard/, { timeout: 30000 })
     console.log("Logged in:", page.url())
     await page.close()

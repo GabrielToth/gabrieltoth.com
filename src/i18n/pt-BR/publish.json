@@ -354,7 +354,9 @@
         "scheduleHint": "Se você agendar e sair, o upload será processado quando você retornar",
         "scheduleNow": "Publicar agora",
         "scheduleLater": "Agendar para depois",
-        "scheduleWarning": "Se você agendar e fechar o navegador, o vídeo será enviado quando você retornar e estiver logado. O processamento é local."
+        "scheduleWarning": "Se você agendar e fechar o navegador, o vídeo será enviado quando você retornar e estiver logado. O processamento é local.",
+        "membersOnly": "Restrito a membros",
+        "membersOnlyHint": "Somente membros do canal poderão visualizar esta publicação"
     },
     "step7": {
         "title": "Processando",

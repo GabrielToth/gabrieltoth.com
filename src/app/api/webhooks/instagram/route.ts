@@ -44,7 +44,14 @@ export async function POST(req: NextRequest) {
         const rawBody = await req.text()
 
         const signature = req.headers.get("x-hub-signature-256")
-        if (signature) {
+        if (!signature) {
+            // Meta ALWAYS signs webhook POSTs. A missing signature means the
+            // request did not come from Meta — reject (Facebook route does the
+            // same). Previously this logged a warning and processed anyway.
+            logger.warn("Missing x-hub-signature-256 header — rejecting")
+            return new NextResponse("Forbidden", { status: 403 })
+        }
+        {
             const appSecret = process.env.INSTAGRAM_APP_SECRET
             if (!appSecret) {
                 logger.error(
@@ -75,8 +82,6 @@ export async function POST(req: NextRequest) {
                 logger.warn("Signature comparison failed")
                 return new NextResponse("Forbidden", { status: 403 })
             }
-        } else {
-            logger.warn("Missing x-hub-signature-256 header")
         }
 
         let body: unknown

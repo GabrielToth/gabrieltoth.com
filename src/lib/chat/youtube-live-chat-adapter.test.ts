@@ -146,17 +146,30 @@ describe("YouTubeLiveChatAdapter", () => {
                     ok: true,
                     json: async () => mockLiveBroadcastsResponse(),
                 })
+                // Initial poll — treated as history, suppressed (not emitted)
                 .mockResolvedValueOnce({
                     ok: true,
                     json: async () =>
                         mockLiveChatMessagesResponse([makeMessage()]),
                 })
+                // Next poll — a brand-new message is emitted to handlers
+                .mockResolvedValueOnce({
+                    ok: true,
+                    json: async () =>
+                        mockLiveChatMessagesResponse([
+                            makeMessage({ id: "msg-2" }),
+                        ]),
+                })
 
-            // Register handler before connect to catch the initial poll
             adapter.onMessage(roomId, handler)
             await adapter.connect(roomId, token)
 
-            expect(handler).toHaveBeenCalled()
+            // Backlog is suppressed on the first poll…
+            expect(handler).not.toHaveBeenCalled()
+
+            // …and only new messages are emitted on subsequent polls.
+            await vi.advanceTimersByTimeAsync(5000)
+            expect(handler).toHaveBeenCalledTimes(1)
             const chatMessage = handler.mock.calls[0][0]
             expect(chatMessage.platform).toBe("youtube")
             expect(chatMessage.content).toBe("Hello from YouTube!")
@@ -171,25 +184,39 @@ describe("YouTubeLiveChatAdapter", () => {
                     ok: true,
                     json: async () => mockLiveBroadcastsResponse(),
                 })
-                // Initial poll (now awaited inside connect)
+                // Initial poll (awaited inside connect) — history, suppressed
                 .mockResolvedValueOnce({
                     ok: true,
                     json: async () => mockLiveChatMessagesResponse([message]),
                 })
-                // Second poll
+                // Second poll — a NEW message is emitted once
                 .mockResolvedValueOnce({
                     ok: true,
-                    json: async () => mockLiveChatMessagesResponse([message]),
+                    json: async () =>
+                        mockLiveChatMessagesResponse([
+                            makeMessage({ id: "msg-2" }),
+                        ]),
+                })
+                // Third poll — repeats the already-seen message: no re-emit
+                .mockResolvedValueOnce({
+                    ok: true,
+                    json: async () =>
+                        mockLiveChatMessagesResponse([
+                            makeMessage({ id: "msg-2" }),
+                        ]),
                 })
 
-            // Register handler before connect to catch the initial poll
             adapter.onMessage(roomId, handler)
             await adapter.connect(roomId, token)
 
-            // Initial poll should have delivered 1 message
+            // First poll is history — suppressed
+            expect(handler).toHaveBeenCalledTimes(0)
+
+            // Second poll emits the new message exactly once
+            await vi.advanceTimersByTimeAsync(5000)
             expect(handler).toHaveBeenCalledTimes(1)
 
-            // Second poll — same messages should not trigger handler
+            // Third poll repeats it — must not re-emit
             await vi.advanceTimersByTimeAsync(5000)
             expect(handler).toHaveBeenCalledTimes(1)
         })
@@ -402,11 +429,19 @@ describe("YouTubeLiveChatAdapter", () => {
                     ok: true,
                     json: async () => mockLiveBroadcastsResponse(),
                 })
+                // Initial poll (history) — suppressed so backlog is never replayed
+                .mockResolvedValueOnce({
+                    ok: true,
+                    json: async () =>
+                        mockLiveChatMessagesResponse([makeMessage()]),
+                })
+                // Next poll — a NEW super chat event is emitted
                 .mockResolvedValueOnce({
                     ok: true,
                     json: async () =>
                         mockLiveChatMessagesResponse([
                             makeMessage({
+                                id: "msg-super",
                                 snippet: {
                                     ...makeMessage().snippet,
                                     type: "superChatEvent",
@@ -415,9 +450,9 @@ describe("YouTubeLiveChatAdapter", () => {
                         ]),
                 })
 
-            // Register handler before connect to catch the initial poll
             adapter.onMessage(roomId, handler)
             await adapter.connect(roomId, token)
+            await vi.advanceTimersByTimeAsync(5000)
 
             expect(handler.mock.calls[0][0].type).toBe("announcement")
         })

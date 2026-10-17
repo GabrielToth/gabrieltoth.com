@@ -131,8 +131,13 @@ export function buildNormalizedMetrics(rawStats: {
  * Deterministic per-platform value generator (no randomness, reproducible output)
  * Derives a stable value from the platform name so advanced-metric breakdowns
  * are consistent across renders and reflect the actual connected platforms.
+ *
+ * DEPRECATED for display: real advanced metrics (viral coefficient, watch
+ * time, CTR) require per-platform analytics APIs that are not wired yet.
+ * Kept only for backward compatibility of the exported signature — callers
+ * should treat these values as placeholders when `realData` is not provided.
  */
-function platformScaled(
+function _platformScaled(
     platform: string,
     base: number,
     spread: number
@@ -147,59 +152,84 @@ function platformScaled(
 
 export function buildAdvancedMetrics(
     simpleMetrics: NormalizedMetric[],
-    platformFilter?: string[]
+    platformFilter?: string[],
+    /** When true, returns honest zeros for metrics we have no real source for */
+    realData = false
 ): AdvancedMetricDetail[] {
     const platforms =
-        platformFilter && platformFilter.length > 0
-            ? platformFilter
-            : ["twitch", "youtube", "kick", "instagram", "facebook"]
+        platformFilter && platformFilter.length > 0 ? platformFilter : []
 
-    const breakdown = (base: number, spread: number) =>
-        Object.fromEntries(
-            platforms
-                .filter(p => !!p)
-                .map(p => [p, platformScaled(p, base, spread)])
-        )
+    const breakdown = () =>
+        Object.fromEntries(platforms.filter(p => !!p).map(p => [p, 0]))
+
+    if (realData) {
+        // Followers growth rate is the only advanced metric we can derive
+        // from real snapshot data today.
+        const followersMetric = simpleMetrics.find(m => m.id === "followers")
+        return [
+            {
+                id: "follower_growth_rate",
+                name: "Follower Growth Rate",
+                category: "growth",
+                value: followersMetric?.changePercent || 0,
+                change: followersMetric?.change || 0,
+                changePercent: followersMetric?.changePercent || 0,
+                platformBreakdown: breakdown(),
+                historicalPoints: [],
+            },
+            {
+                id: "avg_watch_time",
+                name: "Average Retention / Watch Time (Sec)",
+                category: "engagement",
+                value: 0,
+                change: 0,
+                changePercent: 0,
+                platformBreakdown: breakdown(),
+                historicalPoints: [],
+            },
+            {
+                id: "click_through_rate",
+                name: "Click-Through Rate (CTR %)",
+                category: "conversion",
+                value: 0,
+                change: 0,
+                changePercent: 0,
+                platformBreakdown: breakdown(),
+                historicalPoints: [],
+            },
+        ]
+    }
 
     return [
         {
             id: "viral_coefficient",
             name: "Viral Coefficient & Share Rate",
             category: "growth",
-            value: 1.42,
-            change: 0.15,
-            changePercent: 11.8,
-            platformBreakdown: breakdown(100, 40),
-            historicalPoints: [
-                { date: "2026-07-20", value: 1.2 },
-                { date: "2026-07-26", value: 1.42 },
-            ],
+            value: 0,
+            change: 0,
+            changePercent: 0,
+            platformBreakdown: breakdown(),
+            historicalPoints: [],
         },
         {
             id: "avg_watch_time",
             name: "Average Retention / Watch Time (Sec)",
             category: "engagement",
-            value: 485,
-            change: 35,
-            changePercent: 7.7,
-            platformBreakdown: breakdown(400, 400),
-            historicalPoints: [
-                { date: "2026-07-20", value: 450 },
-                { date: "2026-07-26", value: 485 },
-            ],
+            value: 0,
+            change: 0,
+            changePercent: 0,
+            platformBreakdown: breakdown(),
+            historicalPoints: [],
         },
         {
             id: "click_through_rate",
             name: "Click-Through Rate (CTR %)",
             category: "conversion",
-            value: 4.8,
-            change: 0.6,
-            changePercent: 14.2,
-            platformBreakdown: breakdown(4.5, 4),
-            historicalPoints: [
-                { date: "2026-07-20", value: 4.2 },
-                { date: "2026-07-26", value: 4.8 },
-            ],
+            value: 0,
+            change: 0,
+            changePercent: 0,
+            platformBreakdown: breakdown(),
+            historicalPoints: [],
         },
     ]
 }

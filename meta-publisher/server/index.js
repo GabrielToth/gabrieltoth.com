@@ -25,8 +25,27 @@ if (SUPABASE_URL && SUPABASE_KEY) {
 
 fs.mkdirSync(UPLOAD_DIR, { recursive: true })
 
+const ALLOWED_ORIGINS = (
+    process.env.ALLOWED_ORIGINS || "https://gabrieltoth.com"
+)
+    .split(",")
+    .map(s => s.trim())
+    .filter(Boolean)
 const app = express()
-app.use(cors({ origin: true }))
+// Restrict CORS to production + dashboard origins (was `origin: true`, which
+// reflected any origin — unsafe for a credentialed upload endpoint)
+app.use(
+    cors({
+        origin(origin, cb) {
+            // allow non-browser clients (no Origin header) and localhost dev
+            if (!origin) return cb(null, true)
+            if (ALLOWED_ORIGINS.includes(origin)) return cb(null, true)
+            if (/^https?:\/\/localhost(:\d+)?$/.test(origin))
+                return cb(null, true)
+            return cb(new Error("Origin not allowed: " + origin))
+        },
+    })
+)
 app.use(express.json())
 
 function extractAuth(req) {

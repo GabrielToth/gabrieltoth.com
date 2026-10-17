@@ -45,7 +45,8 @@ describe("BillingSection", () => {
             <BillingSection billing={mockBilling} onUpgrade={mockOnUpgrade} />
         )
 
-        expect(screen.getByText("Pro Plan")).toBeInTheDocument()
+        // Matches real i18n: dashboard.settings.planValue = "Plan: {plan}"
+        expect(screen.getByText("Plan: Pro")).toBeInTheDocument()
         // Use getAllByText since price appears multiple times (plan card + invoice table)
         const priceElements = screen.getAllByText("$29.99")
         expect(priceElements.length).toBeGreaterThan(0)

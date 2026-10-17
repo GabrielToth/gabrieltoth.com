@@ -8,6 +8,7 @@ import { StreamTitleEditor } from "@/components/dashboard/live/stream-title-edit
 import { UnifiedChat } from "@/components/dashboard/live/unified-chat"
 import { ChatModerationPanel } from "@/components/dashboard/live/chat-moderation-panel"
 import { StreamHealthHeader } from "@/components/dashboard/live/stream-health-header"
+import { useLiveMetricsRecorder } from "@/hooks/use-live-metrics-recorder"
 import { useLocale, useTranslations } from "next-intl"
 import { useEffect, useState } from "react"
 import { TutorialLauncher } from "@/components/tutorial/tutorial-launcher"
@@ -46,6 +47,9 @@ export default function LiveDashboardPage() {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
     const [activePlatform, setActivePlatform] = useState<string>("twitch")
+
+    // Record real viewer metrics from status polling into /api/live/metrics
+    useLiveMetricsRecorder(platforms)
     const handleOptimisticUpdate = (
         platformName: string,
         newTitle: string,

@@ -7,6 +7,7 @@
 
 import { getServerSession } from "@/lib/auth/get-server-session"
 import { createLogger } from "@/lib/logger"
+import { isUnofficialScrapingAllowed } from "@/lib/compliance/scraping-gate"
 import { getKickConfig } from "@/lib/kick/config"
 import { getKickOAuthService } from "@/lib/kick/oauth-service"
 import { getTwitchConfig } from "@/lib/twitch/config"
@@ -47,11 +48,19 @@ function isYouTubeQuotaExceeded(): boolean {
 
 /** Detect quota/rate-limit failures in YouTube API error payloads. */
 function markYouTubeQuotaIfExceeded(status: number, body: string): boolean {
-    if (status === 403 && /quotaExceeded|rateLimitExceeded|dailyLimitExceeded/i.test(body)) {
+    if (
+        status === 403 &&
+        /quotaExceeded|rateLimitExceeded|dailyLimitExceeded/i.test(body)
+    ) {
         youtubeQuotaExceededUntil = Date.now() + YOUTUBE_QUOTA_COOLDOWN_MS
-        logger.error("YouTube API quota exhausted — API calls paused for 15 minutes", {
-            cooldownUntil: new Date(youtubeQuotaExceededUntil).toISOString(),
-        })
+        logger.error(
+            "YouTube API quota exhausted — API calls paused for 15 minutes",
+            {
+                cooldownUntil: new Date(
+                    youtubeQuotaExceededUntil
+                ).toISOString(),
+            }
+        )
         return true
     }
     return false
@@ -482,8 +491,12 @@ async function fetchYouTubeStream(
         // STAGE 1 (primary): Public page scrape — free, no API quota.
         // Finds the *actual* live video (e.g. "5pS7npa6zi4") from the
         // channel's /live page, which is what viewers see.
+        //
+        // COMPLIANCE: gated behind ALLOW_UNOFFICIAL_SCRAPING (default OFF)
+        // so the public site never scrapes under the CNPJ entity. When off
+        // we fall straight through to the official liveBroadcasts API.
         // ============================================================
-        if (handle) {
+        if (handle && isUnofficialScrapingAllowed()) {
             scraped = await scrapeYouTubeLivePage(handle)
             if (scraped.isLive && scraped.videoId) {
                 targetVideoId = scraped.videoId

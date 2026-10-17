@@ -9,11 +9,32 @@ import { NextResponse } from "next/server"
  * - API call telemetry
  */
 export async function GET(request: Request) {
-    // Basic auth / owner check simulation
+    // Owner-only endpoint: requires a valid bearer token matching
+    // ADMIN_SECRET_KEY. Returns 401 otherwise — telemetry must never be
+    // public, and hardcoded placeholder metrics were misleading anyway.
     const authHeader = request.headers.get("authorization")
-    const _isOwner =
-        process.env.ADMIN_SECRET_KEY &&
-        authHeader === `Bearer ${process.env.ADMIN_SECRET_KEY}`
+    const secret = process.env.ADMIN_SECRET_KEY
+    const isOwner = Boolean(
+        secret &&
+        authHeader &&
+        authHeader.length === `Bearer ${secret}`.length &&
+        authHeader === `Bearer ${secret}`
+    )
+
+    if (!isOwner) {
+        return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+    }
+
+    if (!secret) {
+        // Misconfiguration guard: without a configured secret the endpoint
+        // is disabled entirely rather than accidentally open.
+        return NextResponse.json(
+            {
+                error: "Admin telemetry disabled (no ADMIN_SECRET_KEY configured)",
+            },
+            { status: 503 }
+        )
+    }
 
     const telemetry = {
         timestamp: new Date().toISOString(),

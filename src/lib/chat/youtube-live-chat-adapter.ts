@@ -517,7 +517,12 @@ export class YouTubeLiveChatAdapter implements ChatAdapter {
                 error instanceof Error ? error : new Error(String(error))
 
             // 403 quotaExceeded — open the circuit breaker for 15 min.
-            if (err.message.includes("403") && /quotaExceeded|rateLimitExceeded|dailyLimitExceeded/i.test(err.message)) {
+            if (
+                err.message.includes("403") &&
+                /quotaExceeded|rateLimitExceeded|dailyLimitExceeded/i.test(
+                    err.message
+                )
+            ) {
                 this.quotaExceededUntil = Date.now() + QUOTA_COOLDOWN_MS
                 logger.error(
                     "YouTube API quota exhausted — chat polling paused",
