@@ -73,8 +73,6 @@ Também adicionar no `cleanup_all_users()`: `DELETE FROM public.social_networks;
 import { createClient } from "@supabase/supabase-js"
 import { NextRequest } from "next/server"
 
-const BCRYPT_HASH_REGEX = /^\$2[aby]\$/
-
 function hashToken(token: string): string {
   // Usa SHA-256 pra hashear o session token (mesmo esquema do login route)
   const crypto = require("crypto")
