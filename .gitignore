@@ -16,6 +16,12 @@ test_results*.txt
 test_run_output*.txt
 vitest-results.json
 test-results.json
+lint-results.json
+*-results.json
+*-report.json
+tests/*-report.json
+tests/prod-e2e-fails/
+/bug-reports/
 .vitest-last.txt
 .vitest-summary.txt
 .vitest-results.json
