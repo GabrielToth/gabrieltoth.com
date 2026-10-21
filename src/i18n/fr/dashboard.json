@@ -206,7 +206,9 @@
         "last7Days": "7 derniers jours",
         "last30Days": "30 derniers jours",
         "last90Days": "90 derniers jours",
-        "containerTitle": "Insights et analytique sociale"
+        "containerTitle": "Insights et analytique sociale",
+        "activityHeatmap": "Carte d'Activité",
+        "heatmapSubtitle": "Votre activité des {days} derniers jours"
     },
     "credits": {
         "title": "Crédits de plateforme",
@@ -407,7 +409,15 @@
         "period7d": "7 days (à traduire)",
         "period30d": "30 days (à traduire)",
         "period90d": "3 months (à traduire)",
-        "period1y": "1 year (à traduire)"
+        "period1y": "1 year (à traduire)",
+        "tabs": {
+            "profile": "Profil",
+            "preferences": "Préférences",
+            "security": "Sécurité",
+            "billing": "Facturation",
+            "integrations": "Intégrations"
+        },
+        "planValue": "Formule : {plan}"
     },
     "live": {
         "title": "Gestion du direct",

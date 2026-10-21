@@ -13,7 +13,8 @@
     "servicesDropdown": {
         "channelManagement": "ViraTrend ",
         "pcOptimization": "Optimisation PC",
-        "affiliate": "Affiliation Amazon"
+        "affiliate": "Affiliation Amazon",
+        "support": "Assistance"
     },
     "minecraftDropdown": {
         "modpacks": "Modpacks ",

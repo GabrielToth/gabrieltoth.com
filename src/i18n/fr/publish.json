@@ -354,7 +354,9 @@
         "scheduleHint": "If you schedule and leave, the upload will process when you return ",
         "scheduleNow": "Publier now",
         "scheduleLater": "Programmer for later",
-        "scheduleWarning": "If you schedule and close the browser, the video will be uploaded when you return and are logged in. Processing is local. "
+        "scheduleWarning": "If you schedule and close the browser, the video will be uploaded when you return and are logged in. Processing is local. ",
+        "membersOnly": "Réservé aux membres",
+        "membersOnlyHint": "Seuls les membres de la chaîne pourront voir cette publication"
     },
     "step7": {
         "title": "Processing ",

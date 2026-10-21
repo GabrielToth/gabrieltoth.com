@@ -354,7 +354,9 @@
         "scheduleHint": "Wenn du planst und gehst, wird der Upload verarbeitet, wenn du zurückkommst",
         "scheduleNow": "Jetzt veröffentlichen",
         "scheduleLater": "Für später planen",
-        "scheduleWarning": "Wenn du planst und den Browser schließt, wird das Video hochgeladen, wenn du zurückkommst und eingeloggt bist. Die Verarbeitung erfolgt lokal."
+        "scheduleWarning": "Wenn du planst und den Browser schließt, wird das Video hochgeladen, wenn du zurückkommst und eingeloggt bist. Die Verarbeitung erfolgt lokal.",
+        "membersOnly": "Nur für Mitglieder",
+        "membersOnlyHint": "Nur Kanalmitglieder können diesen Beitrag sehen"
     },
     "step7": {
         "title": "Wird verarbeitet",

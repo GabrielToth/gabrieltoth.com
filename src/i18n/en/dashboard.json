@@ -206,7 +206,9 @@
         "last7Days": "Last 7 days",
         "last30Days": "Last 30 days",
         "last90Days": "Last 90 days",
-        "containerTitle": "Insights & Social Analytics"
+        "containerTitle": "Insights & Social Analytics",
+        "activityHeatmap": "Activity Heatmap",
+        "heatmapSubtitle": "Your activity over the last {days} days"
     },
     "credits": {
         "title": "Credits",
@@ -407,7 +409,15 @@
         "period7d": "7 days",
         "period30d": "30 days",
         "period90d": "3 months",
-        "period1y": "1 year"
+        "period1y": "1 year",
+        "tabs": {
+            "profile": "Profile",
+            "preferences": "Preferences",
+            "security": "Security",
+            "billing": "Billing",
+            "integrations": "Integrations"
+        },
+        "planValue": "Plan: {plan}"
     },
     "live": {
         "title": "Title",

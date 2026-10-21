@@ -206,7 +206,9 @@
         "last7Days": "Últimos 7 dias",
         "last30Days": "Últimos 30 dias",
         "last90Days": "Últimos 90 dias",
-        "containerTitle": "Insights e Análises de Redes Sociais"
+        "containerTitle": "Insights e Análises de Redes Sociais",
+        "activityHeatmap": "Mapa de Atividade",
+        "heatmapSubtitle": "Sua atividade nos últimos {days} dias"
     },
     "credits": {
         "title": "Créditos",
@@ -407,7 +409,15 @@
         "period7d": "7 dias",
         "period30d": "30 dias",
         "period90d": "3 meses",
-        "period1y": "1 ano"
+        "period1y": "1 ano",
+        "tabs": {
+            "profile": "Perfil",
+            "preferences": "Preferências",
+            "security": "Segurança",
+            "billing": "Faturamento",
+            "integrations": "Integrações"
+        },
+        "planValue": "Plano: {plan}"
     },
     "live": {
         "title": "Título",
