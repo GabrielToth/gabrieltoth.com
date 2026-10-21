@@ -152,7 +152,9 @@ export function useLocalChat(
                             ws.send(
                                 JSON.stringify({
                                     event: "pusher:subscribe",
-                                    data: { channel: `chatrooms.${chatroomId}` },
+                                    data: {
+                                        channel: `chatrooms.${chatroomId}`,
+                                    },
                                 })
                             )
                         } else {
@@ -176,7 +178,12 @@ export function useLocalChat(
                             // Pusher connection handshake: respond to
                             // pusher:connection_established / keep ping-pong alive
                             if (data.event === "pusher:ping") {
-                                ws.send(JSON.stringify({ event: "pusher:pong", data: {} }))
+                                ws.send(
+                                    JSON.stringify({
+                                        event: "pusher:pong",
+                                        data: {},
+                                    })
+                                )
                                 return
                             }
                             if (data.event !== "App\\\\Events\\\\ChatMessage") {
@@ -186,7 +193,8 @@ export function useLocalChat(
                             const payload =
                                 typeof data.data === "string"
                                     ? JSON.parse(data.data)
-                                    : (data.data as Record<string, unknown>) || {}
+                                    : (data.data as Record<string, unknown>) ||
+                                      {}
                             const sender = (payload.sender || {}) as Record<
                                 string,
                                 unknown
@@ -227,12 +235,15 @@ export function useLocalChat(
                                         username,
                                     platform: "kick",
                                     badges,
-                                    isBroadcaster: sender.is_broadcaster === true,
+                                    isBroadcaster:
+                                        sender.is_broadcaster === true,
                                     isModerator: sender.is_moderator === true,
                                     isSubscriber:
-                                        ((sender.subscription || {}) as {
-                                            active?: boolean
-                                        }).active === true,
+                                        (
+                                            (sender.subscription || {}) as {
+                                                active?: boolean
+                                            }
+                                        ).active === true,
                                 },
                                 content: String(payload.content || ""),
                                 type: "text",

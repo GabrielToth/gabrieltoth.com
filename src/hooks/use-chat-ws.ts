@@ -118,7 +118,7 @@ export function useChatWS(_platforms: string[]): UseChatWSReturn {
             tokenRef.current = token
         }
 
-        const url = `${WS_URL}?token=${encodeURIComponent(token)}`
+        const url = `${WS_URL}`
         const ws = new WebSocket(url)
         wsRef.current = ws
 
@@ -127,6 +127,10 @@ export function useChatWS(_platforms: string[]): UseChatWSReturn {
                 ws.close()
                 return
             }
+            // In-band auth: send the JWT as the first message instead of
+            // a URL query param — keeps the token out of proxy/access logs
+            // and the browser devtools network URL preview.
+            ws.send(JSON.stringify({ type: "auth", token }))
             setIsConnected(true)
             setError(null)
             reconnectAttemptRef.current = 0

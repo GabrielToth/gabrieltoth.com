@@ -144,24 +144,53 @@ export default function ChatCommandsPage() {
                 <div className="flex justify-center py-12">
                     <Loader2 className="h-8 w-8 animate-spin" />
                 </div>
+            ) : commands.length === 0 ? (
+                <Card>
+                    <CardContent className="pt-6">
+                        <p className="text-center text-muted-foreground">
+                            {t("noCommands")}
+                        </p>
+                    </CardContent>
+                </Card>
             ) : (
-                <div className="grid gap-6">
-                    {commands.length === 0 && (
-                        <Card>
-                            <CardContent className="pt-6">
-                                <p className="text-center text-muted-foreground">
-                                    {t("noCommands")}
-                                </p>
-                            </CardContent>
-                        </Card>
-                    )}
-
-                    {commands.map(cmd => (
-                        <Card key={cmd.id}>
-                            <CardHeader className="flex flex-row items-start justify-between">
-                                <div className="space-y-1">
-                                    <CardTitle>
-                                        {cmd.trigger}
+                <div className="overflow-x-auto rounded-lg border border-border">
+                    <table className="w-full text-sm">
+                        <thead>
+                            <tr className="border-b border-border bg-muted/50 text-left">
+                                <th className="px-3 py-2 font-medium">
+                                    {t("trigger")}
+                                </th>
+                                <th className="px-3 py-2 font-medium">
+                                    {t("type")}
+                                </th>
+                                <th className="px-3 py-2 font-medium">
+                                    {t("response")}
+                                </th>
+                                <th className="px-3 py-2 font-medium">
+                                    {t("platforms")}
+                                </th>
+                                <th className="px-3 py-2 font-medium">
+                                    {t("roles")}
+                                </th>
+                                <th className="px-3 py-2 font-medium">
+                                    {t("cooldown")}
+                                </th>
+                                <th className="px-3 py-2 font-medium">
+                                    {t("enabled")}
+                                </th>
+                                <th className="px-3 py-2" />
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {commands.map(cmd => (
+                                <tr
+                                    key={cmd.id}
+                                    className="border-b border-border/60 last:border-0 hover:bg-muted/30"
+                                >
+                                    <td className="whitespace-nowrap px-3 py-1.5">
+                                        <span className="font-mono font-semibold">
+                                            {cmd.trigger}
+                                        </span>
                                         {isDefault(cmd.id) && (
                                             <Badge
                                                 variant="outline"
@@ -170,62 +199,71 @@ export default function ChatCommandsPage() {
                                                 {t("default")}
                                             </Badge>
                                         )}
-                                    </CardTitle>
-                                    <CardDescription>
+                                    </td>
+                                    <td className="whitespace-nowrap px-3 py-1.5">
+                                        <Badge variant="outline">
+                                            {cmd.type}
+                                        </Badge>
+                                    </td>
+                                    <td className="max-w-[240px] truncate px-3 py-1.5 text-muted-foreground">
                                         {cmd.description ||
-                                            cmd.responseTemplate?.substring(
-                                                0,
-                                                60
-                                            )}
-                                    </CardDescription>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                    <Badge variant="outline">{cmd.type}</Badge>
-                                    <Button
-                                        variant="ghost"
-                                        size="sm"
-                                        onClick={() => {
-                                            setEditing(cmd)
-                                            setShowDialog(true)
-                                        }}
-                                    >
-                                        <Edit3 className="h-4 w-4" />
-                                    </Button>
-                                    {!isDefault(cmd.id) && (
-                                        <Button
-                                            variant="ghost"
-                                            size="sm"
-                                            onClick={() =>
-                                                deleteCommand(cmd.id!)
-                                            }
-                                        >
-                                            <Trash2 className="h-4 w-4" />
-                                        </Button>
-                                    )}
-                                </div>
-                            </CardHeader>
-                            <CardContent>
-                                <div className="flex flex-wrap gap-2">
-                                    <Badge variant="secondary">
-                                        {t("platforms")}:{" "}
+                                            cmd.responseTemplate ||
+                                            "—"}
+                                    </td>
+                                    <td className="whitespace-nowrap px-3 py-1.5 text-xs text-muted-foreground">
                                         {(cmd.platforms || []).join(", ") ||
                                             PLATFORM_OPTIONS.map(
                                                 p => p.value
                                             ).join(", ")}
-                                    </Badge>
-                                    <Badge variant="secondary">
-                                        {t("roles")}:{" "}
-                                        {(cmd.allowedRoles || []).join(", ") ||
-                                            "viewer"}
-                                    </Badge>
-                                    <Badge variant="secondary">
-                                        {t("cooldown")}:{" "}
+                                    </td>
+                                    <td className="whitespace-nowrap px-3 py-1.5 text-xs text-muted-foreground">
+                                        {(cmd.allowedRoles || ["viewer"]).join(
+                                            ", "
+                                        )}
+                                    </td>
+                                    <td className="whitespace-nowrap px-3 py-1.5 text-xs text-muted-foreground">
                                         {cmd.cooldownSeconds || 10}s
-                                    </Badge>
-                                </div>
-                            </CardContent>
-                        </Card>
-                    ))}
+                                    </td>
+                                    <td className="px-3 py-1.5">
+                                        <span
+                                            className={
+                                                cmd.enabled === false
+                                                    ? "text-muted-foreground"
+                                                    : "text-emerald-500"
+                                            }
+                                        >
+                                            {cmd.enabled === false ? "✕" : "✓"}
+                                        </span>
+                                    </td>
+                                    <td className="px-3 py-1.5">
+                                        <div className="flex items-center justify-end gap-1">
+                                            <Button
+                                                variant="ghost"
+                                                size="sm"
+                                                onClick={() => {
+                                                    setEditing(cmd)
+                                                    setShowDialog(true)
+                                                }}
+                                            >
+                                                <Edit3 className="h-4 w-4" />
+                                            </Button>
+                                            {!isDefault(cmd.id) && (
+                                                <Button
+                                                    variant="ghost"
+                                                    size="sm"
+                                                    onClick={() =>
+                                                        deleteCommand(cmd.id!)
+                                                    }
+                                                >
+                                                    <Trash2 className="h-4 w-4" />
+                                                </Button>
+                                            )}
+                                        </div>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
                 </div>
             )}
 

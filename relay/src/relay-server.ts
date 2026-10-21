@@ -117,12 +117,16 @@ wss.on("connection", (ws: WebSocket, req) => {
 
     let userId = ""
     let decoded: any = null
+    let authenticated = false
 
-    if (tokenParam && JWT_SECRET) {
+    const finishAuth = (token: string): boolean => {
+        if (!JWT_SECRET) return true // dev mode — allow all
         try {
-            decoded = jwt.verify(tokenParam, JWT_SECRET)
+            decoded = jwt.verify(token, JWT_SECRET)
             userId = decoded.sub || ""
-            log("Client authenticated", { userId })
+            authenticated = true
+            log("Client authenticated (in-band)", { userId })
+            return true
         } catch (err: any) {
             log("JWT verification failed", err.message)
             ws.send(
@@ -132,7 +136,26 @@ wss.on("connection", (ws: WebSocket, req) => {
                     error: "Invalid token",
                 })
             )
+            return false
         }
+    }
+
+    // Legacy: token in query param (kept for backward compatibility with
+    // older clients; new clients send it in-band via the first message)
+    if (tokenParam && JWT_SECRET) {
+        finishAuth(tokenParam)
+    }
+
+    // In-band auth grace period: if not authenticated via query param,
+    // the client must send { type: "auth", token } within 5 seconds.
+    let authTimeout: ReturnType<typeof setTimeout> | null = null
+    if (!authenticated) {
+        authTimeout = setTimeout(() => {
+            if (!authenticated) {
+                log("Client closed: no in-band auth within grace period")
+                ws.close(4001, "Authentication required")
+            }
+        }, 5_000)
     }
 
     const clientInfo: ClientInfo = {
@@ -143,6 +166,8 @@ wss.on("connection", (ws: WebSocket, req) => {
     }
     clients.set(ws, clientInfo)
 
+    // Send the "connected" banner AFTER successful auth (or immediately in
+    // legacy mode) so clients can rely on it as the auth-ack signal.
     ws.send(
         JSON.stringify({
             type: "connected",
@@ -153,6 +178,44 @@ wss.on("connection", (ws: WebSocket, req) => {
     ws.on("message", async (raw: Buffer) => {
         try {
             const msg = JSON.parse(raw.toString())
+
+            // In-band authentication message
+            if (msg.type === "auth") {
+                if (authTimeout) {
+                    clearTimeout(authTimeout)
+                    authTimeout = null
+                }
+                if (!authenticated) {
+                    const ok = finishAuth(msg.token || "")
+                    if (ok) {
+                        clientInfo.userId = userId
+                        ws.send(
+                            JSON.stringify({
+                                type: "connected",
+                                data: {
+                                    server: "gabrieltoth-relay",
+                                    userId,
+                                },
+                            })
+                        )
+                    } else {
+                        ws.close(4003, "Invalid token")
+                    }
+                }
+                return
+            }
+
+            // Gate: unauthenticated clients may only send "auth"
+            if (!authenticated && JWT_SECRET) {
+                ws.send(
+                    JSON.stringify({
+                        type: "error",
+                        platform: "auth",
+                        error: "Not authenticated",
+                    })
+                )
+                return
+            }
 
             if (msg.type === "connect") {
                 const platform = msg.platform
