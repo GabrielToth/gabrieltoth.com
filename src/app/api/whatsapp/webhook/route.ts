@@ -1,6 +1,7 @@
 import { ordersDb as db } from "@/lib/orders-store"
 import { verifyMoneroTransaction } from "@/lib/monero"
 import { NextRequest, NextResponse } from "next/server"
+import crypto from "crypto"
 
 // WhatsApp Webhook verification (GET)
 export async function GET(req: NextRequest) {
@@ -9,7 +10,11 @@ export async function GET(req: NextRequest) {
     const token = searchParams.get("hub.verify_token")
     const challenge = searchParams.get("hub.challenge")
 
-    if (mode === "subscribe" && token === process.env.WHATSAPP_VERIFY_TOKEN) {
+    if (
+        mode === "subscribe" &&
+        token === process.env.WHATSAPP_VERIFY_TOKEN &&
+        challenge
+    ) {
         console.log("WhatsApp webhook verified")
         return new NextResponse(challenge)
     }
@@ -20,7 +25,41 @@ export async function GET(req: NextRequest) {
 // WhatsApp Message processing (POST)
 export async function POST(req: NextRequest) {
     try {
-        const body = await req.json()
+        // Meta Cloud API signs every webhook POST with X-Hub-Signature-256
+        // (HMAC-SHA256 over the raw body using the app secret). Reject any
+        // unsigned/mis-signed request BEFORE processing — this handler moves
+        // money (Monero tx verification), so unauthenticated calls are
+        // strictly forbidden.
+        const rawBody = await req.text()
+        const signature = req.headers.get("x-hub-signature-256")
+        const appSecret = process.env.WHATSAPP_APP_SECRET
+
+        if (!appSecret) {
+            console.error(
+                "Missing WHATSAPP_APP_SECRET — webhook signature verification impossible"
+            )
+            return new NextResponse("Forbidden", { status: 403 })
+        }
+        if (!signature) {
+            console.warn("WhatsApp webhook rejected: missing signature")
+            return new NextResponse("Forbidden", { status: 403 })
+        }
+
+        const expectedSig =
+            "sha256=" +
+            crypto.createHmac("sha256", appSecret).update(rawBody).digest("hex")
+        const isVerified =
+            signature.length === expectedSig.length &&
+            crypto.timingSafeEqual(
+                Buffer.from(signature),
+                Buffer.from(expectedSig)
+            )
+        if (!isVerified) {
+            console.warn("WhatsApp webhook rejected: invalid signature")
+            return new NextResponse("Forbidden", { status: 403 })
+        }
+
+        const body = JSON.parse(rawBody)
 
         // Process incoming WhatsApp messages
         if (body.entry?.[0]?.changes?.[0]?.value?.messages) {

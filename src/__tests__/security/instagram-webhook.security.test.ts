@@ -831,7 +831,7 @@ describe("POST /api/webhooks/instagram — Attack Matrix", () => {
             expect(response.status).toBe(403)
         })
 
-        it("should handle missing signature header", async () => {
+        it("should reject missing signature header", async () => {
             const bodyStr = JSON.stringify({ object: "instagram", entry: [] })
             const request = new NextRequest(
                 "http://localhost/api/webhooks/instagram",
@@ -842,7 +842,8 @@ describe("POST /api/webhooks/instagram — Attack Matrix", () => {
                 }
             )
             const response = await POST(request)
-            expect(response.status).toBe(200)
+            // Meta always signs webhook POSTs — unsigned requests are rejected
+            expect(response.status).toBe(403)
         })
 
         it("should handle malformed signature header", async () => {
@@ -854,7 +855,7 @@ describe("POST /api/webhooks/instagram — Attack Matrix", () => {
             expect(response.status).toBe(403)
         })
 
-        it("should handle empty signature header (treated as missing)", async () => {
+        it("should reject empty signature header", async () => {
             const bodyStr = JSON.stringify({ object: "instagram", entry: [] })
             const request = new NextRequest(
                 "http://localhost/api/webhooks/instagram",
@@ -868,9 +869,8 @@ describe("POST /api/webhooks/instagram — Attack Matrix", () => {
                 }
             )
             const response = await POST(request)
-            // Empty string is falsy — treated as missing signature,
-            // logs warning but still processes body
-            expect(response.status).toBe(200)
+            // Empty signature is treated as missing — rejected before processing
+            expect(response.status).toBe(403)
         })
 
         it("should handle Host override header", async () => {
