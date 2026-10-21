@@ -34,6 +34,85 @@ export type Database = {
     }
     public: {
         Tables: {
+            platform_stats_snapshots: {
+                Row: {
+                    captured_at: string
+                    channel_name: string | null
+                    created_at: string
+                    followers: number | null
+                    id: string
+                    platform: string
+                    user_id: string
+                    views: number | null
+                }
+                Insert: {
+                    captured_at?: string
+                    channel_name?: string | null
+                    created_at?: string
+                    followers?: number | null
+                    id?: string
+                    platform: string
+                    user_id: string
+                    views?: number | null
+                }
+                Update: {
+                    captured_at?: string
+                    channel_name?: string | null
+                    created_at?: string
+                    followers?: number | null
+                    id?: string
+                    platform?: string
+                    user_id?: string
+                    views?: number | null
+                }
+                Relationships: [
+                    {
+                        foreignKeyName: "platform_stats_snapshots_user_id_fkey"
+                        columns: ["user_id"]
+                        isOneToOne: false
+                        referencedRelation: "users"
+                        referencedColumns: ["id"]
+                    },
+                ]
+            }
+            live_metrics_snapshots: {
+                Row: {
+                    chat_messages_count: number
+                    created_at: string
+                    id: string
+                    platform: string
+                    timestamp: string
+                    user_id: string
+                    viewers: number
+                }
+                Insert: {
+                    chat_messages_count?: number
+                    created_at?: string
+                    id?: string
+                    platform: string
+                    timestamp?: string
+                    user_id: string
+                    viewers?: number
+                }
+                Update: {
+                    chat_messages_count?: number
+                    created_at?: string
+                    id?: string
+                    platform?: string
+                    timestamp?: string
+                    user_id?: string
+                    viewers?: number
+                }
+                Relationships: [
+                    {
+                        foreignKeyName: "live_metrics_snapshots_user_id_fkey"
+                        columns: ["user_id"]
+                        isOneToOne: false
+                        referencedRelation: "users"
+                        referencedColumns: ["id"]
+                    },
+                ]
+            }
             audit_logs: {
                 Row: {
                     created_at: string | null

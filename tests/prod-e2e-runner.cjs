@@ -38,7 +38,9 @@ async function step(browser, name, fn) {
     } catch (err) {
         record(name, "FAIL", err.message)
         try {
-            await page.screenshot({ path: `tests/prod-e2e-fails/${name.replace(/[^a-z0-9]/gi, "_")}.png` })
+            await page.screenshot({
+                path: `tests/prod-e2e-fails/${name.replace(/[^a-z0-9]/gi, "_")}.png`,
+            })
         } catch {
             /* ignore */
         }
@@ -57,7 +59,10 @@ async function clickAny(page, selectors, timeout = 10000) {
     let lastErr = null
     for (const sel of selectors) {
         try {
-            await page.locator(sel).first().waitFor({ state: "visible", timeout })
+            await page
+                .locator(sel)
+                .first()
+                .waitFor({ state: "visible", timeout })
             await page.locator(sel).first().click()
             return sel
         } catch (err) {
@@ -98,14 +103,14 @@ async function main() {
     const browser = await chromium.connectOverCDP(
         `http://127.0.0.1:${CDP_PORT}`
     )
-    
+
     // Capture the real auth cookie so unauthenticated tests can restore it
     const ctx = browser.contexts()[0]
     const realAuthCookie = await browser
         .contexts()[0]
         .cookies(BASE_URL)
-        .then(cs => cs.find(c => c.name === 'auth_session'))
-console.log("Connected to real Chrome.\n")
+        .then(cs => cs.find(c => c.name === "auth_session"))
+    console.log("Connected to real Chrome.\n")
 
     // ------------------------------------------------------------------ 1
     console.log("[1] Home & locales")
@@ -113,7 +118,8 @@ console.log("Connected to real Chrome.\n")
         await gotoProd(page, `${BASE_URL}/pt-BR`)
         await page.waitForSelector("main", { timeout: 20000 })
         const title = await page.title()
-        if (!/gabriel|plataforma|criadores/i.test(title)) throw new Error("title=" + title)
+        if (!/gabriel|plataforma|criadores/i.test(title))
+            throw new Error("title=" + title)
         return title
     })
 
@@ -141,33 +147,59 @@ console.log("Connected to real Chrome.\n")
             '[data-testid="services-button"]',
         ])
         await page.waitForTimeout(600)
-        const link = await clickAny(page, [
-            '[data-testid="services-link-mid"]',
-            '[data-testid="services-link"]',
-            '[data-testid="services-link-channel-management"]',
-            'a[href*="servicos"]',
-            'a[href*="channel-management"]',
-        ], 8000)
-        await page.waitForURL(/servicos|services|channel-management/, { timeout: 15000 })
+        const link = await clickAny(
+            page,
+            [
+                '[data-testid="services-link-mid"]',
+                '[data-testid="services-link"]',
+                '[data-testid="services-link-channel-management"]',
+                'a[href*="servicos"]',
+                'a[href*="channel-management"]',
+            ],
+            8000
+        )
+        await page.waitForURL(/servicos|services|channel-management/, {
+            timeout: 15000,
+        })
         return btn + " -> " + link + " -> " + page.url()
     })
 
-    await step(browser, "Language selector opens and shows locale options", async page => {
-        await gotoProd(page, `${BASE_URL}/en`)
-        const sel = await clickAny(page, [
-            '[data-testid="language-selector"]',
-            '[data-testid="language-selector-button"]',
-        ])
-        await page.waitForTimeout(800)
-        const opts = await page.evaluate(() => ({
-            pt: !!document.querySelector('[data-testid="language-selector-option-pt-BR"]'),
-            es: !!document.querySelector('[data-testid="language-selector-option-es"]'),
-            de: !!document.querySelector('[data-testid="language-selector-option-de"]'),
-        }))
-        if (!opts.pt && !opts.es && !opts.de)
-            throw new Error("no locale options after click: " + JSON.stringify(opts))
-        return sel + " options pt=" + opts.pt + " es=" + opts.es + " de=" + opts.de
-    })
+    await step(
+        browser,
+        "Language selector opens and shows locale options",
+        async page => {
+            await gotoProd(page, `${BASE_URL}/en`)
+            const sel = await clickAny(page, [
+                '[data-testid="language-selector"]',
+                '[data-testid="language-selector-button"]',
+            ])
+            await page.waitForTimeout(800)
+            const opts = await page.evaluate(() => ({
+                pt: !!document.querySelector(
+                    '[data-testid="language-selector-option-pt-BR"]'
+                ),
+                es: !!document.querySelector(
+                    '[data-testid="language-selector-option-es"]'
+                ),
+                de: !!document.querySelector(
+                    '[data-testid="language-selector-option-de"]'
+                ),
+            }))
+            if (!opts.pt && !opts.es && !opts.de)
+                throw new Error(
+                    "no locale options after click: " + JSON.stringify(opts)
+                )
+            return (
+                sel +
+                " options pt=" +
+                opts.pt +
+                " es=" +
+                opts.es +
+                " de=" +
+                opts.de
+            )
+        }
+    )
 
     await step(browser, "Language selector switches to PT-BR", async page => {
         await gotoProd(page, `${BASE_URL}/en`)
@@ -203,67 +235,99 @@ console.log("Connected to real Chrome.\n")
     console.log("\n[4] Auth access control")
     // NOTE: profile may be logged in — these steps must simulate signed-out
     // state without destroying the persisted session for other steps.
-    await step(browser, "Unauthenticated /dashboard redirects to signin", async page => {
-        await ctx.addCookies([{ name: "auth_session", value: "invalid-e2e", url: BASE_URL }])
-        await page.goto(`${BASE_URL}/pt-BR/dashboard`, {
-            waitUntil: "domcontentloaded",
-        })
-        await page.waitForTimeout(2500)
-        const url = page.url()
-        if (realAuthCookie) await ctx.addCookies([realAuthCookie])
-        if (!/signin|login/.test(url))
-            throw new Error("expected signin redirect, got " + url)
-        return url
-    })
+    await step(
+        browser,
+        "Unauthenticated /dashboard redirects to signin",
+        async page => {
+            await ctx.addCookies([
+                { name: "auth_session", value: "invalid-e2e", url: BASE_URL },
+            ])
+            await page.goto(`${BASE_URL}/pt-BR/dashboard`, {
+                waitUntil: "domcontentloaded",
+            })
+            await page.waitForTimeout(2500)
+            const url = page.url()
+            if (realAuthCookie) await ctx.addCookies([realAuthCookie])
+            if (!/signin|login/.test(url))
+                throw new Error("expected signin redirect, got " + url)
+            return url
+        }
+    )
 
-    await step(browser, "Unauthenticated /dashboard/insights redirects to signin", async page => {
-        await ctx.addCookies([{ name: "auth_session", value: "invalid-e2e", url: BASE_URL }])
-        await page.goto(`${BASE_URL}/pt-BR/dashboard/insights`, {
-            waitUntil: "domcontentloaded",
-        })
-        await page.waitForTimeout(2500)
-        const url = page.url()
-        if (!/signin|login/.test(url))
-            throw new Error("expected signin redirect, got " + url)
-        if (realAuthCookie) await ctx.addCookies([realAuthCookie])
-        return url
-    })
+    await step(
+        browser,
+        "Unauthenticated /dashboard/insights redirects to signin",
+        async page => {
+            await ctx.addCookies([
+                { name: "auth_session", value: "invalid-e2e", url: BASE_URL },
+            ])
+            await page.goto(`${BASE_URL}/pt-BR/dashboard/insights`, {
+                waitUntil: "domcontentloaded",
+            })
+            await page.waitForTimeout(2500)
+            const url = page.url()
+            if (!/signin|login/.test(url))
+                throw new Error("expected signin redirect, got " + url)
+            if (realAuthCookie) await ctx.addCookies([realAuthCookie])
+            return url
+        }
+    )
 
-    await step(browser, "API /api/live/status returns 401 without session", async page => {
-        await page.goto(`${BASE_URL}/pt-BR`, { waitUntil: "domcontentloaded" })
-        const status = await page.evaluate(async () => {
-            const r = await fetch("/api/live/status", { credentials: "omit" })
-            return r.status
-        })
-        if (status !== 401) throw new Error("HTTP " + status)
-        return "HTTP 401 ✓"
-    })
+    await step(
+        browser,
+        "API /api/live/status returns 401 without session",
+        async page => {
+            await page.goto(`${BASE_URL}/pt-BR`, {
+                waitUntil: "domcontentloaded",
+            })
+            const status = await page.evaluate(async () => {
+                const r = await fetch("/api/live/status", {
+                    credentials: "omit",
+                })
+                return r.status
+            })
+            if (status !== 401) throw new Error("HTTP " + status)
+            return "HTTP 401 ✓"
+        }
+    )
 
-    await step(browser, "API /api/platform/analytics returns 401 without session", async page => {
-        await page.goto(`${BASE_URL}/pt-BR`, { waitUntil: "domcontentloaded" })
-        const status = await page.evaluate(async () => {
-            const r = await fetch("/api/platform/analytics", { credentials: "omit" })
-            return r.status
-        })
-        if (status !== 401) throw new Error("HTTP " + status)
-        return "HTTP 401 ✓"
-    })
+    await step(
+        browser,
+        "API /api/platform/analytics returns 401 without session",
+        async page => {
+            await page.goto(`${BASE_URL}/pt-BR`, {
+                waitUntil: "domcontentloaded",
+            })
+            const status = await page.evaluate(async () => {
+                const r = await fetch("/api/platform/analytics", {
+                    credentials: "omit",
+                })
+                return r.status
+            })
+            if (status !== 401) throw new Error("HTTP " + status)
+            return "HTTP 401 ✓"
+        }
+    )
 
     // ------------------------------------------------------------------ 5
     console.log("\n[5] Signed-in area (if session exists in profile)")
-    await step(browser, "Signed-in dashboard /channels is reachable", async page => {
-        // restore the real session (remove the invalid override)
-        if (realAuthCookie) await ctx.addCookies([realAuthCookie])
-        await page.goto(`${BASE_URL}/pt-BR/dashboard/channels`, {
-            waitUntil: "domcontentloaded",
-        })
-        await page.waitForTimeout(3000)
-        const url = page.url()
-        if (/signin|login/.test(url))
-            throw new Error("redirected to signin — no session in profile")
-        await page.waitForSelector("main", { timeout: 15000 })
-        return url
-    })
+    await step(
+        browser,
+        "Signed-in dashboard /channels is reachable",
+        async page => {
+            // restore the real session (remove the invalid override)
+            if (realAuthCookie) await ctx.addCookies([realAuthCookie])
+            await page.goto(`${BASE_URL}/pt-BR/dashboard/channels`, {
+                waitUntil: "domcontentloaded",
+            })
+            await page.waitForTimeout(3000)
+            const url = page.url()
+            if (/signin|login/.test(url))
+                throw new Error("redirected to signin — no session in profile")
+            await page.waitForSelector("main", { timeout: 15000 })
+            return url
+        }
+    )
 
     // ------------------------------------------------------------------ 6
     console.log("\n[6] SEO & infra sanity")
@@ -308,7 +372,9 @@ console.log("Connected to real Chrome.\n")
     const pass = results.filter(r => r.ok === "PASS").length
     const fail = results.filter(r => r.ok === "FAIL").length
     console.log("\n" + "=".repeat(60))
-    console.log(`RESULT: ${pass} passed, ${fail} failed, ${results.length} total`)
+    console.log(
+        `RESULT: ${pass} passed, ${fail} failed, ${results.length} total`
+    )
     console.log("=".repeat(60))
     for (const r of results) {
         console.log(
@@ -321,7 +387,11 @@ console.log("Connected to real Chrome.\n")
     const reportPath = "tests/prod-e2e-report.json"
     fs.writeFileSync(
         reportPath,
-        JSON.stringify({ baseUrl: BASE_URL, at: new Date().toISOString(), results }, null, 2)
+        JSON.stringify(
+            { baseUrl: BASE_URL, at: new Date().toISOString(), results },
+            null,
+            2
+        )
     )
     console.log(`\nReport saved to ${reportPath}`)
     console.log("Chrome stays open — session persists for the next run.")
