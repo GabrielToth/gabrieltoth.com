@@ -17,6 +17,7 @@ import { useTranslations } from "next-intl"
 import { useParams } from "next/navigation"
 import React, { useCallback, useEffect, useState } from "react"
 import { TutorialLauncher } from "@/components/tutorial/tutorial-launcher"
+import ByoTokenChannelFinder from "@/components/dashboard/channels/byo-token-channel-finder"
 
 interface ConnectedChannel {
     id: string
@@ -196,6 +197,8 @@ export default function ChannelsPage() {
                 </div>
                 <TutorialLauncher category="channels" />
             </div>
+
+            <ByoTokenChannelFinder />
 
             {error && (
                 <div className="rounded-md bg-destructive/15 p-3 text-sm text-destructive">
