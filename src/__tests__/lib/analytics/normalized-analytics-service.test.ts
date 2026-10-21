@@ -43,6 +43,18 @@ describe("normalized-analytics-service", () => {
             expect(advanced.length).toBeGreaterThan(0)
             expect(advanced[0].platformBreakdown.twitch).toBeDefined()
         })
+
+        it("should return honest zeros in real-data mode", () => {
+            const simple = buildNormalizedMetrics({ totalFollowers: 500 })
+            const advanced = buildAdvancedMetrics(simple, ["twitch"], true)
+
+            expect(advanced[0].id).toBe("follower_growth_rate")
+            // 0 -> 500 baseline delta: prevFollowers=490, change=10 => ~2.04%
+            expect(advanced[0].value).toBeCloseTo(2.04, 1)
+            expect(advanced.every(m => m.historicalPoints.length === 0)).toBe(
+                true
+            )
+        })
     })
 
     describe("buildNormalizedGraphData", () => {
