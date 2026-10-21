@@ -5,6 +5,7 @@
  */
 
 import { getServerSession } from "@/lib/auth/get-server-session"
+import { isUnofficialScrapingAllowed } from "@/lib/compliance/scraping-gate"
 import { createLogger } from "@/lib/logger"
 import { deductAction, getBalance } from "@/lib/credits/service"
 import { NextRequest, NextResponse } from "next/server"
@@ -250,7 +251,24 @@ async function resolveYouTubeChannel(
     }
 
     // Scraping Fallback for Channel Inspection
+    //
+    // COMPLIANCE: gated behind ALLOW_UNOFFICIAL_SCRAPING (default OFF). Under
+    // the public CNPJ entity we do not scrape YouTube HTML. When disabled we
+    // return whatever the official API produced (empty categories if it failed)
+    // and never bill the user.
+    //
+    // HONEST METADATA ONLY: if the YouTube API is unavailable, scrape the
+    // channel page og:* tags for real title/avatar/description. We do NOT
+    // fabricate sample videos — returning mock video lists while charging
+    // lookup credits would bill users for fake data (legal/compliance risk).
+    // Video categories are returned empty; the UI shows the real API as
+    // required to populate them. This fallback costs the user 0 credits.
     try {
+        if (!isUnofficialScrapingAllowed()) {
+            throw new Error(
+                "Scraping disabled (official-API-only mode) — skipping HTML fallback"
+            )
+        }
         const cleanHandle = handle.replace(/^@/, "")
         const targetUrl = `https://www.youtube.com/@${cleanHandle}`
         const htmlRes = await fetch(targetUrl, {
@@ -260,6 +278,10 @@ async function resolveYouTubeChannel(
                 "Accept-Language": "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7",
             },
         })
+
+        if (!htmlRes.ok) {
+            throw new Error(`Channel page returned HTTP ${htmlRes.status}`)
+        }
 
         const html = await htmlRes.text()
         const titleMatch = html.match(
@@ -273,6 +295,12 @@ async function resolveYouTubeChannel(
         )
         const channelIdMatch = html.match(/"channelId":"(UC[\w-]+)"/)
 
+        // Real channel must be discoverable — otherwise this is not a
+        // fallback, it is fabrication.
+        if (!titleMatch && !channelIdMatch) {
+            throw new Error("Channel not found via page metadata")
+        }
+
         const title = titleMatch ? titleMatch[1] : `@${cleanHandle}`
         const avatarUrl = imageMatch ? imageMatch[1] : ""
         const description = descMatch ? descMatch[1] : ""
@@ -280,110 +308,24 @@ async function resolveYouTubeChannel(
             ? channelIdMatch[1]
             : `UC_${cleanHandle}`
 
-        // Generate sample categorized videos for preview
-        const mockVideos: InspectVideoItem[] = [
-            {
-                id: `v1_${cleanHandle}`,
-                title: `${title} - Full Video Overview & Gameplay`,
-                thumbnailUrl:
-                    avatarUrl ||
-                    "https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg",
-                durationSeconds: 745,
-                durationFormatted: "12:25",
-                category: "video",
-                publishedAt: new Date(Date.now() - 86400000 * 2).toISOString(),
-                viewCount: 15400,
-            },
-            {
-                id: `v2_${cleanHandle}`,
-                title: `${title} - Best Moments & Highlights`,
-                thumbnailUrl:
-                    avatarUrl ||
-                    "https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg",
-                durationSeconds: 420,
-                durationFormatted: "07:00",
-                category: "video",
-                publishedAt: new Date(Date.now() - 86400000 * 5).toISOString(),
-                viewCount: 8900,
-            },
-        ]
-
-        const mockShorts: InspectVideoItem[] = [
-            {
-                id: `s1_${cleanHandle}`,
-                title: `Insane Play! #shorts`,
-                thumbnailUrl:
-                    avatarUrl ||
-                    "https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg",
-                durationSeconds: 45,
-                durationFormatted: "0:45",
-                category: "short",
-                publishedAt: new Date(Date.now() - 86400000 * 1).toISOString(),
-                viewCount: 45000,
-            },
-            {
-                id: `s2_${cleanHandle}`,
-                title: `Quick Tip You Need to Know #shorts`,
-                thumbnailUrl:
-                    avatarUrl ||
-                    "https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg",
-                durationSeconds: 30,
-                durationFormatted: "0:30",
-                category: "short",
-                publishedAt: new Date(Date.now() - 86400000 * 3).toISOString(),
-                viewCount: 32000,
-            },
-        ]
-
-        const mockLives: InspectVideoItem[] = [
-            {
-                id: `l1_${cleanHandle}`,
-                title: `Live Stream Replay - Ranked Matches`,
-                thumbnailUrl:
-                    avatarUrl ||
-                    "https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg",
-                durationSeconds: 7200,
-                durationFormatted: "2:00:00",
-                category: "live",
-                publishedAt: new Date(Date.now() - 86400000 * 7).toISOString(),
-                viewCount: 12000,
-            },
-        ]
-
-        const mockPodcasts: InspectVideoItem[] = [
-            {
-                id: `p1_${cleanHandle}`,
-                title: `Podcast Episode #1 - Special Guest Interview`,
-                thumbnailUrl:
-                    avatarUrl ||
-                    "https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg",
-                durationSeconds: 3600,
-                durationFormatted: "1:00:00",
-                category: "podcast",
-                publishedAt: new Date(Date.now() - 86400000 * 10).toISOString(),
-                viewCount: 6400,
-            },
-        ]
-
         return {
             channelId,
             title,
             handle: `@${cleanHandle}`,
             avatarUrl,
             description,
-            subscriberCountFormatted: "10K+",
-            totalVideosCount:
-                mockVideos.length +
-                mockShorts.length +
-                mockLives.length +
-                mockPodcasts.length,
+            subscriberCountFormatted: "",
+            totalVideosCount: 0,
+            // No fabricated videos. UI must communicate that video lists
+            // require the YouTube API (own key or working cloud quota).
             categories: {
-                videos: mockVideos,
-                shorts: mockShorts,
-                lives: mockLives,
-                podcasts: mockPodcasts,
+                videos: [] as InspectVideoItem[],
+                shorts: [] as InspectVideoItem[],
+                lives: [] as InspectVideoItem[],
+                podcasts: [] as InspectVideoItem[],
             },
-            lookupCreditCost: 10,
+            // Scraping metadata costs the user nothing.
+            lookupCreditCost: 0,
         }
     } catch (error) {
         const err = error instanceof Error ? error : new Error(String(error))
@@ -414,7 +356,10 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
             )
         }
 
-        // Operational credit cost for Cloud Mode analysis (if not using own Google API Key)
+        // Operational credit cost for Cloud Mode analysis (if not using own Google API Key).
+        // IMPORTANT: we check the balance up-front but only DEDUCT after a
+        // successful API-backed inspection. The scraping fallback returns
+        // lookupCreditCost = 0 and must never cost the user anything.
         let lookupCost = 0
         if (mode === "cloud" && !customApiKey) {
             lookupCost = 10
@@ -428,11 +373,15 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
                     { status: 402 }
                 )
             }
-            await deductAction(session.user.id, "youtube_metadata", 1)
         }
 
         const result = await resolveYouTubeChannel(urlOrHandle, customApiKey)
-        result.lookupCreditCost = lookupCost
+
+        if (result.lookupCreditCost > 0) {
+            // Real API data returned — charge now (after, not before, success)
+            await deductAction(session.user.id, "youtube_metadata", 1)
+        }
+        result.lookupCreditCost = result.lookupCreditCost || lookupCost
         return NextResponse.json({ success: true, data: result })
     } catch (error) {
         const err = error instanceof Error ? error : new Error(String(error))
