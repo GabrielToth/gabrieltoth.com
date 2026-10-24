@@ -139,8 +139,11 @@ describe("Performance: Login Endpoint", () => {
                 await Promise.all(promises)
             }, "Concurrent password hashing")
 
-            // Should complete in reasonable time
-            expect(duration).toBeLessThan(1000)
+            // Should complete in a reasonable time. Five concurrent Argon2id
+            // hashes each use 64 MB of memory, so shared CI runners can be
+            // several times slower than a developer machine. This guards
+            // against pathological serialization (10s+) without being flaky.
+            expect(duration).toBeLessThan(5000)
         })
     })
 
