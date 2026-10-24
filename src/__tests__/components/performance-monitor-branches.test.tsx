@@ -6,6 +6,7 @@ describe("components/analytics/performance-monitor branches", () => {
     beforeEach(() => {
         // Mock performance entries for initial update
         ;(global as any).performance = {
+            now: vi.fn(() => Date.now()),
             getEntriesByType: vi.fn().mockReturnValue([
                 { entryType: "resource", transferSize: 2048 },
                 { entryType: "resource", transferSize: 1024 },

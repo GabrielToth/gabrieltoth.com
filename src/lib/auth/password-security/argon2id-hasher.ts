@@ -32,7 +32,7 @@
  * - Timeout margin: 7-8 seconds remaining after hashing
  */
 
-import argon2 from "argon2"
+import * as argon2 from "argon2"
 import {
     logPasswordHashingError,
     logPepperConfigurationError,
@@ -149,8 +149,7 @@ export async function hashPasswordArgon2id(
             memoryCost: memoryKiB,
             timeCost: argon2Params.time,
             parallelism: argon2Params.parallelism,
-            type: 2, // Argon2id type
-            version: 19, // Argon2 version 19
+            type: "argon2id", // Argon2id type (Argon2 v19 is always used)
             hashLength: 32, // 256-bit hash
             salt: salt, // Use our generated salt
         })
