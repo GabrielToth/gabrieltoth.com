@@ -266,7 +266,7 @@ describe("Accessibility - WCAG 2.1 AA Compliance", () => {
             )
 
             // Check for proper card structure
-            const card = container.querySelector("div[class*='Card']")
+            const card = container.querySelector("div[class*='bg-card']")
             expect(card).toBeInTheDocument()
         })
 

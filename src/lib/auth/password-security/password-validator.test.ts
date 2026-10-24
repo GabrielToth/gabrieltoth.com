@@ -17,7 +17,7 @@
  * - Convenience functions (isPasswordValid, shouldMigratePassword, getValidationDescription)
  */
 
-import argon2 from "argon2"
+import * as argon2 from "argon2"
 import { afterAll, beforeAll, describe, expect, it } from "vitest"
 import {
     getValidationDescription,
@@ -52,8 +52,7 @@ describe("Password Validator", () => {
                 memoryCost: 64 * 1024, // 64 MB
                 timeCost: 3,
                 parallelism: 2,
-                type: 2, // Argon2id
-                version: 19,
+                type: "argon2id", // Argon2id
             })
         })
 
@@ -102,8 +101,7 @@ describe("Password Validator", () => {
                 memoryCost: 64 * 1024,
                 timeCost: 3,
                 parallelism: 2,
-                type: 2,
-                version: 19,
+                type: "argon2id",
             })
         })
 
@@ -233,8 +231,7 @@ describe("Password Validator", () => {
                 memoryCost: 64 * 1024,
                 timeCost: 3,
                 parallelism: 2,
-                type: 2,
-                version: 19,
+                type: "argon2id",
             })
         })
 
@@ -253,8 +250,7 @@ describe("Password Validator", () => {
                 memoryCost: 64 * 1024,
                 timeCost: 3,
                 parallelism: 2,
-                type: 2,
-                version: 19,
+                type: "argon2id",
             })
 
             // Try to validate with correct pepper (should fail)
@@ -274,8 +270,7 @@ describe("Password Validator", () => {
                 memoryCost: 64 * 1024,
                 timeCost: 3,
                 parallelism: 2,
-                type: 2,
-                version: 19,
+                type: "argon2id",
             })
         })
 
@@ -318,8 +313,7 @@ describe("Password Validator", () => {
                 memoryCost: 64 * 1024,
                 timeCost: 3,
                 parallelism: 2,
-                type: 2,
-                version: 19,
+                type: "argon2id",
             })
 
             validResult = await validatePassword(TEST_PASSWORD, argon2Hash)
@@ -362,8 +356,7 @@ describe("Password Validator", () => {
                 memoryCost: 64 * 1024,
                 timeCost: 3,
                 parallelism: 2,
-                type: 2,
-                version: 19,
+                type: "argon2id",
             })
         })
 
@@ -375,8 +368,7 @@ describe("Password Validator", () => {
                 memoryCost: 64 * 1024,
                 timeCost: 3,
                 parallelism: 2,
-                type: 2,
-                version: 19,
+                type: "argon2id",
             })
 
             const result = await validatePassword(specialPassword, hash)
@@ -392,8 +384,7 @@ describe("Password Validator", () => {
                 memoryCost: 64 * 1024,
                 timeCost: 3,
                 parallelism: 2,
-                type: 2,
-                version: 19,
+                type: "argon2id",
             })
 
             const result = await validatePassword(unicodePassword, hash)
@@ -409,8 +400,7 @@ describe("Password Validator", () => {
                 memoryCost: 64 * 1024,
                 timeCost: 3,
                 parallelism: 2,
-                type: 2,
-                version: 19,
+                type: "argon2id",
             })
 
             const result = await validatePassword(spacedPassword, hash)
@@ -426,8 +416,7 @@ describe("Password Validator", () => {
                 memoryCost: 64 * 1024,
                 timeCost: 3,
                 parallelism: 2,
-                type: 2,
-                version: 19,
+                type: "argon2id",
             })
 
             const result = await validatePassword(minPassword, hash)
@@ -443,8 +432,7 @@ describe("Password Validator", () => {
                 memoryCost: 64 * 1024,
                 timeCost: 3,
                 parallelism: 2,
-                type: 2,
-                version: 19,
+                type: "argon2id",
             })
 
             const result = await validatePassword(maxPassword, hash)

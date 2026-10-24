@@ -21,7 +21,7 @@
  * - Requirement 3.5: Pepper loaded once at startup and cached in memory
  */
 
-import argon2 from "argon2"
+import * as argon2 from "argon2"
 import { beforeEach, describe, expect, it } from "vitest"
 import { ConfigurationManager } from "../../lib/auth/password-security/config"
 import { validatePassword } from "../../lib/auth/password-security/password-validator"
@@ -48,16 +48,14 @@ describe("Pepper Application Validation - Security Tests", () => {
                 memoryCost: 64 * 1024,
                 timeCost: 3,
                 parallelism: 2,
-                type: 2,
-                version: 19,
+                type: "argon2id",
             })
 
             const hash2 = await argon2.hash(pepperedPassword2, {
                 memoryCost: 64 * 1024,
                 timeCost: 3,
                 parallelism: 2,
-                type: 2,
-                version: 19,
+                type: "argon2id",
             })
 
             // Both should validate with same password (due to salt, hashes differ but both validate)
@@ -75,8 +73,7 @@ describe("Pepper Application Validation - Security Tests", () => {
                 memoryCost: 64 * 1024,
                 timeCost: 3,
                 parallelism: 2,
-                type: 2,
-                version: 19,
+                type: "argon2id",
             })
 
             // Should validate with correct password (pepper appended internally)
@@ -91,8 +88,7 @@ describe("Pepper Application Validation - Security Tests", () => {
                 memoryCost: 64 * 1024,
                 timeCost: 3,
                 parallelism: 2,
-                type: 2,
-                version: 19,
+                type: "argon2id",
             })
 
             // Trying to validate with single password against double-peppered hash should fail
@@ -112,8 +108,7 @@ describe("Pepper Application Validation - Security Tests", () => {
                 memoryCost: 64 * 1024,
                 timeCost: 3,
                 parallelism: 2,
-                type: 2,
-                version: 19,
+                type: "argon2id",
             })
 
             // Should validate successfully
@@ -139,8 +134,7 @@ describe("Pepper Application Validation - Security Tests", () => {
                 memoryCost: 64 * 1024,
                 timeCost: 3,
                 parallelism: 2,
-                type: 2,
-                version: 19,
+                type: "argon2id",
             })
 
             const result = await validatePassword(TEST_PASSWORD, hash)
@@ -163,8 +157,7 @@ describe("Pepper Application Validation - Security Tests", () => {
                     memoryCost: 64 * 1024,
                     timeCost: 3,
                     parallelism: 2,
-                    type: 2,
-                    version: 19,
+                    type: "argon2id",
                 })
 
                 const result = await validatePassword(password, hash)
@@ -181,8 +174,7 @@ describe("Pepper Application Validation - Security Tests", () => {
                 memoryCost: 64 * 1024,
                 timeCost: 3,
                 parallelism: 2,
-                type: 2,
-                version: 19,
+                type: "argon2id",
             })
 
             // Create hash with wrong pepper
@@ -191,8 +183,7 @@ describe("Pepper Application Validation - Security Tests", () => {
                 memoryCost: 64 * 1024,
                 timeCost: 3,
                 parallelism: 2,
-                type: 2,
-                version: 19,
+                type: "argon2id",
             })
 
             // Trying to validate with correct pepper against wrong-pepper hash should fail
@@ -209,8 +200,7 @@ describe("Pepper Application Validation - Security Tests", () => {
                 memoryCost: 64 * 1024,
                 timeCost: 3,
                 parallelism: 2,
-                type: 2,
-                version: 19,
+                type: "argon2id",
             })
 
             const result = await validatePassword(TEST_PASSWORD, wrongHash)
@@ -253,8 +243,7 @@ describe("Pepper Application Validation - Security Tests", () => {
                 memoryCost: 64 * 1024,
                 timeCost: 3,
                 parallelism: 2,
-                type: 2,
-                version: 19,
+                type: "argon2id",
             })
 
             // Attacker has the hash but not the pepper
@@ -287,8 +276,7 @@ describe("Pepper Application Validation - Security Tests", () => {
                 memoryCost: 64 * 1024,
                 timeCost: 3,
                 parallelism: 2,
-                type: 2,
-                version: 19,
+                type: "argon2id",
             })
 
             // With correct pepper, validation succeeds
@@ -304,8 +292,7 @@ describe("Pepper Application Validation - Security Tests", () => {
                 memoryCost: 64 * 1024,
                 timeCost: 3,
                 parallelism: 2,
-                type: 2,
-                version: 19,
+                type: "argon2id",
             })
 
             // With correct pepper against wrong-pepper hash, validation fails
@@ -324,8 +311,7 @@ describe("Pepper Application Validation - Security Tests", () => {
                 memoryCost: 64 * 1024,
                 timeCost: 3,
                 parallelism: 2,
-                type: 2,
-                version: 19,
+                type: "argon2id",
             })
 
             const argon2Result = await validatePassword(
@@ -339,8 +325,7 @@ describe("Pepper Application Validation - Security Tests", () => {
                 memoryCost: 64 * 1024,
                 timeCost: 3,
                 parallelism: 2,
-                type: 2,
-                version: 19,
+                type: "argon2id",
             })
 
             const argon2WrongResult = await validatePassword(
@@ -359,8 +344,7 @@ describe("Pepper Application Validation - Security Tests", () => {
                 memoryCost: 64 * 1024,
                 timeCost: 3,
                 parallelism: 2,
-                type: 2,
-                version: 19,
+                type: "argon2id",
             })
 
             // Validate multiple times
@@ -383,8 +367,7 @@ describe("Pepper Application Validation - Security Tests", () => {
                 memoryCost: 64 * 1024,
                 timeCost: 3,
                 parallelism: 2,
-                type: 2,
-                version: 19,
+                type: "argon2id",
             })
 
             // Validate with original pepper still in environment
@@ -400,8 +383,7 @@ describe("Pepper Application Validation - Security Tests", () => {
                 memoryCost: 64 * 1024,
                 timeCost: 3,
                 parallelism: 2,
-                type: 2,
-                version: 19,
+                type: "argon2id",
             })
 
             // Create hash with new pepper
@@ -410,8 +392,7 @@ describe("Pepper Application Validation - Security Tests", () => {
                 memoryCost: 64 * 1024,
                 timeCost: 3,
                 parallelism: 2,
-                type: 2,
-                version: 19,
+                type: "argon2id",
             })
 
             // With current pepper (CORRECT_PEPPER), old hash validates
@@ -438,8 +419,7 @@ describe("Pepper Application Validation - Security Tests", () => {
                 memoryCost: 64 * 1024,
                 timeCost: 3,
                 parallelism: 2,
-                type: 2,
-                version: 19,
+                type: "argon2id",
             })
 
             // Trying to validate without pepper (using wrong pepper) should fail
@@ -448,8 +428,7 @@ describe("Pepper Application Validation - Security Tests", () => {
                 memoryCost: 64 * 1024,
                 timeCost: 3,
                 parallelism: 2,
-                type: 2,
-                version: 19,
+                type: "argon2id",
             })
 
             const result = await validatePassword(TEST_PASSWORD, wrongHash)
@@ -463,8 +442,7 @@ describe("Pepper Application Validation - Security Tests", () => {
                 memoryCost: 64 * 1024,
                 timeCost: 3,
                 parallelism: 2,
-                type: 2,
-                version: 19,
+                type: "argon2id",
             })
 
             // Validation should succeed (pepper applied in both directions)
@@ -477,8 +455,7 @@ describe("Pepper Application Validation - Security Tests", () => {
                 memoryCost: 64 * 1024,
                 timeCost: 3,
                 parallelism: 2,
-                type: 2,
-                version: 19,
+                type: "argon2id",
             })
 
             const wrongResult = await validatePassword(TEST_PASSWORD, wrongHash)

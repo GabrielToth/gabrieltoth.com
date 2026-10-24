@@ -11,8 +11,11 @@ import { beforeEach, describe, expect, it } from "vitest"
 describe("Security Test: Salt Uniqueness ", () => {
     beforeEach(() => {
         // Reset environment variables before each test
-        process.env.ARGON2_MEMORY_COST = "64"
-        process.env.ARGON2_TIME_COST = "3"
+        // Salt uniqueness is independent of the Argon2id cost parameters.
+        // Use the minimum allowed cost so the property-based runs stay well
+        // inside the CI timeout budget while still exercising real hashing.
+        process.env.ARGON2_MEMORY_COST = "16"
+        process.env.ARGON2_TIME_COST = "2"
         process.env.ARGON2_PARALLELISM = "2"
         process.env.PEPPER_SECRET =
             "dev-pepper-test-very-long-string-32chars-minimum-required!"

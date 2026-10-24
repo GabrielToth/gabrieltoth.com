@@ -2,7 +2,7 @@
 
 import { comparePassword, hashPassword } from "@/lib/auth/password-hashing"
 import { validatePassword } from "@/lib/auth/password-security/password-validator"
-import argon2 from "argon2"
+import * as argon2 from "argon2"
 import { beforeEach, describe, expect, it, vi } from "vitest"
 
 describe("Password storage security", () => {
@@ -505,8 +505,7 @@ describe("Password storage security", () => {
                 memoryCost: 64 * 1024,
                 timeCost: 3,
                 parallelism: 2,
-                type: 2,
-                version: 19,
+                type: "argon2id",
             })
 
             const result = await validatePassword(password, argon2Hash)

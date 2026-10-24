@@ -51,7 +51,10 @@ describe("Argon2id Password Hashing", () => {
             // Hash should start with $argon2id$v=19$
             expect(result.hash).toMatch(/^\$argon2id\$v=19\$/)
             // Should contain memory, time, and parallelism parameters
-            expect(result.hash).toMatch(/m=\d+,t=\d+,p=\d+/)
+            // (newer argon2 releases emit them in a different order)
+            expect(result.hash).toMatch(/m=\d+/)
+            expect(result.hash).toMatch(/t=\d+/)
+            expect(result.hash).toMatch(/p=\d+/)
         })
 
         it("should include salt in hash output", async () => {
